@@ -3,7 +3,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { RouteType } from 'routes';
 
-import { InputTerm } from 'api/phases/types';
+import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
 import Button from 'components/UI/ButtonWithLink';
 
@@ -17,11 +17,28 @@ import tracks from './tracks';
 interface Props {
   linkTo: RouteType;
   inputTerm: InputTerm;
+  participationMethod: ParticipationMethod;
 }
 
-const NewIdeaButton = ({ linkTo, inputTerm }: Props) => {
+const NewIdeaButton = ({ linkTo, inputTerm, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+  const buttonText =
+    participationMethod === 'common_ground'
+      ? formatMessage(messages.createInput)
+      : formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.newIdea,
+            option: messages.newOption,
+            project: messages.newProject,
+            question: messages.newQuestion,
+            issue: messages.newIssue,
+            contribution: messages.newContribution,
+            proposal: messages.newProposal,
+            initiative: messages.newInitiative,
+            petition: messages.newPetition,
+          })
+        );
 
   return (
     <Button
@@ -34,19 +51,7 @@ const NewIdeaButton = ({ linkTo, inputTerm }: Props) => {
           pathnameFrom: pathname,
         });
       }}
-      text={formatMessage(
-        getInputTermMessage(inputTerm, {
-          idea: messages.newIdea,
-          option: messages.newOption,
-          project: messages.newProject,
-          question: messages.newQuestion,
-          issue: messages.newIssue,
-          contribution: messages.newContribution,
-          proposal: messages.newProposal,
-          initiative: messages.newInitiative,
-          petition: messages.newPetition,
-        })
-      )}
+      text={buttonText}
     />
   );
 };
