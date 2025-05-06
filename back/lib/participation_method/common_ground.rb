@@ -14,5 +14,28 @@ module ParticipationMethod
     def built_in_title_required?
       true
     end
+
+    def default_fields(custom_form)
+      multiloc_service = MultilocService.new
+
+      [
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
+          key: 'title_multiloc',
+          code: 'title_multiloc',
+          input_type: 'text_multiloc',
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.title.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: {},
+          required: true,
+          enabled: true,
+          ordering: 0,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+        )
+      ]
+    end
   end
 end
