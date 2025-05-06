@@ -1,9 +1,16 @@
 <html>
 <head>
   <title><%= project.title_multiloc[locale] %> - <%= phase.title_multiloc[locale] %></title>
+
   <% if font_config %>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
     <script>WebFont.load(<%== font_config %>);</script>
+  <% end %>
+
+  <% if font_styles %>
+    <style>
+      <%== font_styles %>
+    </style>
   <% end %>
 
   <style>

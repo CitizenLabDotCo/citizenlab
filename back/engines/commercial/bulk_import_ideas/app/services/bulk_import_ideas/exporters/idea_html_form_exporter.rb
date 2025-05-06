@@ -65,7 +65,8 @@ module BulkImportIdeas::Exporters
         logo_url: logo_url,
         page_copy: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.page') },
         font_family: font_family,
-        font_config: font_config
+        font_config: font_config,
+        font_styles: font_styles
       }
     end
 
@@ -160,32 +161,43 @@ module BulkImportIdeas::Exporters
       "'#{style['customFontName']}', #{default}"
     end
 
+    # Font loader config will be used only for Adobe custom fonts
     def font_config
-      return if style == {}
+      return if style['customFontAdobeId'].blank?
 
-      webfont_config = if style['customFontAdobeId']
-        {
-          typekit: {
-            id: style['customFontAdobeId']
-          }
+      {
+        typekit: {
+          id: style['customFontAdobeId']
         }
-      elsif style['customFontURL'] && style['customFontName']
-        # TODO: Need to add the host into the CSS/font URLs if they are relative
-        # TODO: This is giving cross origin issues for CSS URL
-        # And needs to load cross origin as full URL the HTML is rendered locally by gutenberg
-        # Have tried to copy the CSS into the HTML but still get Cross Origin issues
-        # WienerMelange_W_Rg
-        # https://mitgestalten.wien.gv.at/fonts/042c3a7a-211a-4a6e-9a40-8773648b9c97/WienFont2.css
-        {
-          custom: {
-            families: [style['customFontName']],
-            urls: [style['customFontURL']]
-          }
-        }
+      }.to_json
+    end
+
+    # For custom font configs we must base64 embed the fonts in the document to avoid CORS issues
+    def font_styles
+      return unless style['customFontURL'] && style['customFontName']
+
+      # Fetch the CSS file
+      base_url = AppConfiguration.instance.base_frontend_uri
+      css_url = custom_font_url(style['customFontURL'], base_url)
+      css_content = Net::HTTP.get(css_url)
+
+      # Return the CSS with the font URLs replaced with base64-encoded data URIs
+      css_host = css_url.host ? "#{css_url.scheme}://#{css_url.host}" : base_url
+      css_content.gsub(/url\(['"]?([^'")]+)['"]?\)/) do
+        font_url = custom_font_url(::Regexp.last_match(1), css_host)
+        font_data = Net::HTTP.get(font_url)
+        base64_font = Base64.strict_encode64(font_data)
+        "url('data:font/#{File.extname(font_url.to_s).delete('.')};base64,#{base64_font}')"
       end
-      return unless webfont_config
+    end
 
-      webfont_config.to_json
+    # Add the hostname to the font URL if it is a relative URL
+    def custom_font_url(url, host = nil)
+      custom_font_url = URI.parse(url)
+      if custom_font_url.host.nil? && host
+        custom_font_url = URI.join(host, custom_font_url)
+      end
+      custom_font_url
     end
   end
 end
