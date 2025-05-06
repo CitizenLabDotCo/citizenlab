@@ -268,7 +268,7 @@ describe('Survey builder', () => {
   });
 
   it('allows deleting survey results when user clicks the delete button', () => {
-    const randNumber = Math.floor(Math.random() * 1000).toString();
+    const numberAnswer = '37';
 
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
@@ -291,7 +291,7 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`*[id^="properties${questionTitle}"]`).type(randNumber, {
+    cy.get(`*[id^="properties${questionTitle}"]`).type(numberAnswer, {
       force: true,
     });
 
