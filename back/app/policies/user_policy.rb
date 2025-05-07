@@ -57,11 +57,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def block?
-    index_xlsx?
+    user&.active? && user.admin?
   end
 
   def unblock?
-    index_xlsx?
+    user&.active? && user.admin?
   end
 
   def blocked_count?
