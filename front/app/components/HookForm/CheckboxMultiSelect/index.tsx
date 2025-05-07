@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -41,8 +41,7 @@ const CheckboxMultiSelect = ({ name, options }: Props) => {
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
   const theme = useTheme();
-
-  const [dataArray, setData] = useState([Array(options.length).fill(false)]);
+  const checkedOptions = watch(name) || [];
 
   return (
     <>
@@ -52,13 +51,13 @@ const CheckboxMultiSelect = ({ name, options }: Props) => {
         render={({ field: { ref: _ref } }) => {
           return (
             <Box display="block">
-              {options.map((option, index: number) => (
+              {options.map((option) => (
                 <StyledBox
                   // hoverColor={theme.colors.tenantPrimaryLighten75}
                   style={{ cursor: 'pointer' }}
                   mb="12px"
                   border={
-                    dataArray.includes(option.value)
+                    checkedOptions.includes(option.value)
                       ? `2px solid ${theme.colors.tenantPrimary}`
                       : `1px solid ${theme.colors.tenantPrimary}`
                   }
@@ -75,16 +74,20 @@ const CheckboxMultiSelect = ({ name, options }: Props) => {
                         {option.label}
                       </Text>
                     }
-                    checked={dataArray.includes(option.value)}
+                    checked={checkedOptions.includes(option.value)}
                     usePrimaryBorder={true}
                     onChange={() => {
-                      if (dataArray.includes(option.value)) {
-                        setData(
-                          dataArray.filter((value) => value !== option.value)
+                      if (checkedOptions.includes(option.value)) {
+                        setValue(
+                          name,
+                          checkedOptions.filter(
+                            (value) => value !== option.value
+                          )
                         );
                       } else {
-                        setData([...dataArray, option.value]);
+                        setValue(name, [...checkedOptions, option.value]);
                       }
+                      trigger(name);
                     }}
                   />
                 </StyledBox>
