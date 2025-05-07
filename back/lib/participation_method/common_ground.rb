@@ -15,6 +15,12 @@ module ParticipationMethod
       true
     end
 
+    def assign_defaults(input)
+      # The common ground participation method does not use the idea status, but all
+      # inputs must have one. We are using the same default as for ideation.
+      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed', participation_method: 'ideation')
+    end
+
     def default_fields(custom_form)
       multiloc_service = MultilocService.new
 
