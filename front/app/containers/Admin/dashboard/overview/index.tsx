@@ -28,6 +28,7 @@ import { getSensibleResolution } from './getSensibleResolution';
 import overviewMessages from './messages';
 import InputStatusCard from './charts/InputStatusCard';
 import EmailDeliveriesCard from './charts/EmailDeliveriesCard';
+import InvitationsCard from './charts/InvitationsCard';
 
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
@@ -226,8 +227,7 @@ const OverviewDashboard = () => {
               endAtMoment={endAtMoment}
               resolution={resolution}
             />
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.invitations"
+            <InvitationsCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
