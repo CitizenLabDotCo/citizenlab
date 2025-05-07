@@ -8,7 +8,6 @@ import {
   omitBy,
   cloneDeep,
 } from 'lodash-es';
-import { Moment } from 'moment';
 import { IntlFormatters } from 'react-intl';
 import {
   InsertConfigurationOptions,
@@ -36,7 +35,6 @@ import {
   Resolution,
 } from 'components/admin/GraphCards/typings';
 import { ManagerType } from 'components/admin/PostManager';
-import { IResolution } from 'components/admin/ResolutionControl';
 import { OutletRenderProps } from 'components/Outlet';
 import PageLoading from 'components/UI/PageLoading';
 import { ITabItem } from 'components/UI/Tabs';
@@ -94,12 +92,6 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
-  };
-  'app.containers.Admin.dashboard.summary.emailDeliveries': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
   };
   'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;

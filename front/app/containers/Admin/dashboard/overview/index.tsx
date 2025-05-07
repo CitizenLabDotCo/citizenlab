@@ -27,6 +27,7 @@ import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicCh
 import { getSensibleResolution } from './getSensibleResolution';
 import overviewMessages from './messages';
 import InputStatusCard from './charts/InputStatusCard';
+import EmailDeliveriesCard from './charts/EmailDeliveriesCard';
 
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
@@ -219,8 +220,7 @@ const OverviewDashboard = () => {
             />
           </Column>
           <Column>
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.emailDeliveries"
+            <EmailDeliveriesCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}

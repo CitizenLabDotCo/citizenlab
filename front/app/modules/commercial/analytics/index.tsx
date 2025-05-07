@@ -4,10 +4,6 @@ import { AdminRoute } from 'containers/Admin/routes';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-const EmailDeliveriesCard = React.lazy(
-  () => import('./admin/components/EmailDeliveriesCard')
-);
-
 const VisitorsContainer = React.lazy(
   () => import('./admin/containers/Visitors')
 );
@@ -36,8 +32,6 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.dashboard.summary.emailDeliveries':
-      EmailDeliveriesCard,
     'app.containers.Admin.dashboard.summary.invitations': InvitationsCard,
     'app.containers.Admin.dashboard.summary.events': EventsCard,
     'app.containers.Admin.dashboard.summary.projectStatus': ProjectStatusCard,
