@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Lietotājvārds",
   "app.containers.SignUp.viennaDataProtection": "vienna privātuma politika",
   "app.containers.SiteMap.contributions": "Ieguldījumi",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Sīkfaili",
   "app.containers.SiteMap.issues": "Komentāri",
   "app.containers.SiteMap.options": "Iespējas",
   "app.containers.SiteMap.projects": "Projekti",

@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "صارف کا نام",
   "app.containers.SignUp.viennaDataProtection": "ویانا کی رازداری کی پالیسی",
   "app.containers.SiteMap.contributions": "شراکتیں",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "کوکیز",
   "app.containers.SiteMap.issues": "تبصرے",
   "app.containers.SiteMap.options": "اختیارات",
   "app.containers.SiteMap.projects": "پروجیکٹس",

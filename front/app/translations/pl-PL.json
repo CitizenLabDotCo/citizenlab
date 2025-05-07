@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Nazwa użytkownika",
   "app.containers.SignUp.viennaDataProtection": "polityka prywatności vienna",
   "app.containers.SiteMap.contributions": "Wkład",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Ciasteczka",
   "app.containers.SiteMap.issues": "Potrzeby",
   "app.containers.SiteMap.options": "Opcje",
   "app.containers.SiteMap.projects": "Projekty",

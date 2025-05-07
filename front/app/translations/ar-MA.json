@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "اسم المستخدم",
   "app.containers.SignUp.viennaDataProtection": "سياسة خصوصية Vienna",
   "app.containers.SiteMap.contributions": "المُساهمات",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "ملفات تعريف الارتباط",
   "app.containers.SiteMap.issues": "التعليقات ممكنة",
   "app.containers.SiteMap.options": "الخيارات",
   "app.containers.SiteMap.projects": "المشاريع",

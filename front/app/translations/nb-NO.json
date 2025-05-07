@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Brukernavn",
   "app.containers.SignUp.viennaDataProtection": "vienna personvernerklæring",
   "app.containers.SiteMap.contributions": "Bidrag",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Informasjonskapsler",
   "app.containers.SiteMap.issues": "Kommentarer",
   "app.containers.SiteMap.options": "Alternativer",
   "app.containers.SiteMap.projects": "Prosjekter",
