@@ -202,7 +202,7 @@ class OmniauthCallbackController < ApplicationController
     cookies[:cl2_jwt] = {
       value: auth_token(@user, provider).token,
       expires: 1.month.from_now,
-      secure: !Rails.env.development? && !Rails.env.test?,
+      secure: !Rails.env.local?,
       sameSite: 'strict'
     }
   end
