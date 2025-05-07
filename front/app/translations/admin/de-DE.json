@@ -655,7 +655,7 @@
   "app.containers.Admin.PagesAndMenu.heroBannerError": "Hero Banner konnte nicht gespeichert werden",
   "app.containers.Admin.PagesAndMenu.heroBannerMessageSuccess": "Hero Banner gespeichert",
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Hero Banner speichern",
-  "app.containers.Admin.PagesAndMenu.homeTitle": "Willkommen",
+  "app.containers.Admin.PagesAndMenu.homeTitle": "Startseite",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Geben Sie Inhalte für mindestens eine Sprache ein",
   "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber": "Sie können nur bis zu 5 Elemente zur Navigationsleiste hinzufügen.",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Seiten & Menü | {orgName}",
