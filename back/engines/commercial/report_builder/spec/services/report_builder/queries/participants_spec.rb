@@ -232,5 +232,22 @@ RSpec.describe ReportBuilder::Queries::Participants do
         participation_rate_whole_period: 0.5
       })
     end
+
+    it 'handles cases where there is no data' do
+      params = {
+        start_at: Date.new(2025, 2, 1),
+        end_at: Date.new(2025, 3, 1),
+        compare_start_at: Date.new(2025, 1, 1),
+        compare_end_at: Date.new(2025, 2, 1)
+      }
+
+      expect(query.run_query(**params)).to eq({
+        participants_timeseries: [],
+        participants_whole_period: 0,
+        participation_rate_whole_period: 0,
+        participants_compared_period: 0,
+        participation_rate_compared_period: 0
+      })
+    end
   end
 end
