@@ -20,13 +20,6 @@ export default function useFeatureFlag({
 
   const setting = appConfiguration.data.attributes.settings[name];
 
-  if (
-    name === 'community_monitor' &&
-    setting?.allowed &&
-    new Date() < new Date('2025-07-01')
-  )
-    return true; // TODO: Remove trial period after 2025-06-30;
-
   if (onlyCheckEnabled) {
     return setting ? setting.enabled : false;
   }
