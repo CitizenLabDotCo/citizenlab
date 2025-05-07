@@ -7,9 +7,6 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 const VisitorsContainer = React.lazy(
   () => import('./admin/containers/Visitors')
 );
-const ProjectStatusCard = React.lazy(
-  () => import('./admin/components/ProjectStatusCard')
-);
 
 export enum analyticsRoutes {
   visitors = 'visitors',
@@ -26,9 +23,6 @@ const configuration: ModuleConfiguration = {
         element: <VisitorsContainer />,
       },
     ],
-  },
-  outlets: {
-    'app.containers.Admin.dashboard.summary.projectStatus': ProjectStatusCard,
   },
 };
 

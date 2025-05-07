@@ -93,7 +93,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
   'app.containers.IdeasShow.MetaInformation': {
     ideaId: string;
     compact?: boolean;

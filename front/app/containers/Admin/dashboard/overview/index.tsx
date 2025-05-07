@@ -30,6 +30,7 @@ import InputStatusCard from './charts/InputStatusCard';
 import EmailDeliveriesCard from './charts/EmailDeliveriesCard';
 import InvitationsCard from './charts/InvitationsCard';
 import EventsCard from './charts/EventsCard';
+import ProjectStatusCard from './charts/ProjectStatusCard';
 
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
@@ -162,8 +163,7 @@ const OverviewDashboard = () => {
           {formatMessage(overviewMessages.projectsAndParticipation)}
         </Title>
         <Column>
-          <Outlet
-            id="app.containers.Admin.dashboard.summary.projectStatus"
+          <ProjectStatusCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
