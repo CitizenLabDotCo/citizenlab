@@ -286,7 +286,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Versleep de bijdragen om deze te kopiëren naar andere projectfasen.",
   "app.components.admin.PostManager.title": "Titel",
   "app.components.admin.PostManager.topicsTab": "Tags",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Voeg tags toe aan een bijdrage door ze naar daar te verslepen.",
   "app.components.admin.PostManager.view": "Bekijk",
   "app.components.admin.PostManager.votes": "Stemmen",
   "app.components.admin.PostManager.votesByInputExportFileName": "stemmen_per_bijdrage",
