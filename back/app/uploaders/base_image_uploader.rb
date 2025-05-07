@@ -3,7 +3,7 @@
 class BaseImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
-  ALLOWED_TYPES = %w[jpg jpeg gif png webp svg]
+  ALLOWED_TYPES = %w[jpg jpeg gif png webp]
 
   # Using process at the class level applies it to all versions, including the original.
   process :strip
