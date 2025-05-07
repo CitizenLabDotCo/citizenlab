@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Όνομα χρήστη",
   "app.containers.SignUp.viennaDataProtection": "την πολιτική απορρήτου της Βιέννης",
   "app.containers.SiteMap.contributions": "Συνεισφορές",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Cookies",
   "app.containers.SiteMap.issues": "Σχόλια",
   "app.containers.SiteMap.options": "Επιλογές",
   "app.containers.SiteMap.projects": "Έργα",
