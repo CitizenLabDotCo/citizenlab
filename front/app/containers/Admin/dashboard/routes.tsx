@@ -3,11 +3,11 @@ import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
-import Visitors from './visitors';
 
 const DashboardWrapper = lazy(() => import('.'));
 const Overview = lazy(() => import('./overview'));
 const Users = lazy(() => import('./users'));
+const Visitors = lazy(() => import('./visitors'));
 const ManagementFeed = lazy(() => import('./ManagementFeed'));
 
 export enum dashboardRoutes {
