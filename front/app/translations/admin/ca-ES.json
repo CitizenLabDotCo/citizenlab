@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Podeu combinar respostes en línia i fora de línia. Per penjar respostes fora de línia, aneu a la pestanya \"Enquesta\" d'aquest projecte i feu clic a \"Importa\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.",
   "app.containers.Admin.projects.all.notes": "Notes",
-  "app.containers.Admin.projects.all.personalDataExplanation2": "Check the box below, if you want your downloaded PDF to contain name, last name, and email fields. Upon upload of the paper form, we will use that user data, to auto-generate an account for the offline survey respondent.",
+  "app.containers.Admin.projects.all.personalDataExplanation2": "Marqueu la casella següent si voleu que el PDF descarregat contingui els camps de nom, cognom i correu electrònic. En penjar el formulari en paper, utilitzarem aquestes dades d'usuari per generar automàticament un compte per al participant de l'enquesta fora de línia.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Summary",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Comments",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Comment summary is available when there are 5 or more comments.",
