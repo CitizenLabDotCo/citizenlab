@@ -72,10 +72,6 @@ export interface ICommonGroundResults {
   data: CommonGroundResultsData;
 }
 
-export interface ICommonGroundStatements {
-  data: CommonGroundStatement[];
-}
-
 export interface ICommonGroundProgress {
   data: ProgressData;
 }
