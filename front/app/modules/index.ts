@@ -3,9 +3,6 @@ import { loadModules } from 'utils/moduleUtils';
 import adminProjectTemplatesConfiguration, {
   projectTemplateRouteTypes,
 } from './commercial/admin_project_templates';
-import analyticsConfiguration, {
-  analyticsRouteTypes,
-} from './commercial/analytics';
 import bulkIdeaImportConfiguration, {
   bulkIdeaImportRouteTypes,
 } from './commercial/bulk_idea_import';
@@ -48,7 +45,6 @@ import widgetsConfiguration, { widgetsRouteTypes } from './commercial/widgets';
 
 export type moduleRouteTypes =
   | projectTemplateRouteTypes
-  | analyticsRouteTypes
   | bulkIdeaImportRouteTypes
   | moderationRouteTypes
   | representativenessRouteTypes
@@ -147,9 +143,6 @@ export default loadModules([
   },
   {
     configuration: widgetsConfiguration,
-  },
-  {
-    configuration: analyticsConfiguration,
   },
   {
     configuration: idViennaSamlConfiguration,
