@@ -19,7 +19,6 @@ import Warning from 'components/UI/Warning';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { isSuperAdmin } from 'utils/permissions/roles';
 
 import messages from '../messages';
@@ -56,13 +55,7 @@ const SimilarityDetectionConfig = ({
     appConfiguration?.data.attributes.settings.core.timezone;
   if (!tenantTimezone) return null;
 
-  const timeLeftInDays = getPeriodRemainingUntil(
-    '2025-06-30',
-    tenantTimezone,
-    'days'
-  );
-  const isTrialOver = timeLeftInDays < 0;
-  const showEarlyAccessMessage = !isTrialOver && isInputIQActivated;
+  const showEarlyAccessMessage = isInputIQActivated;
   const showUpsellTooltip = !isInputIQAllowed;
   const allowConfiguringThreshold = isSuperAdmin(user) && isInputIQActivated;
 
