@@ -753,8 +753,6 @@
   "app.containers.Admin.Users.userInsights": "Uvidi korisnika",
   "app.containers.Admin.Users.youCantDeleteYourself": "Ne možete obrisati vlastiti račun putem administratorske stranice",
   "app.containers.Admin.Users.youCantUnadminYourself": "U ovom trenutku ne možete napustiti ulogu administratora",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Ova je značajka dostupna u otvorenoj beta verziji za vaš plan do 30. lipnja 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Monitor zajednice",
   "app.containers.Admin.communityMonitor.healthScore": "Ocjena zdravlja",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Ovaj rezultat je prosjek svih pitanja na skali sentimenta na koja su sudionici odgovorili za odabrano razdoblje.",

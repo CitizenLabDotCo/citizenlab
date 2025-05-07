@@ -753,8 +753,6 @@
   "app.containers.Admin.Users.userInsights": "Lietotāju ieskats",
   "app.containers.Admin.Users.youCantDeleteYourself": "Savu kontu jūs nevarat dzēst, izmantojot lietotāja administratora lapu.",
   "app.containers.Admin.Users.youCantUnadminYourself": "Jūs šobrīd nevarat atteikties no administratora lomas.",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Šī funkcija jūsu plānam ir pieejama atvērtā beta versijā līdz 2025. gada 30. jūnijam.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Kopienas uzraudzītājs",
   "app.containers.Admin.communityMonitor.healthScore": "Veselības rādītājs",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Šis rādītājs ir vidējais rādītājs no visiem noskaņojuma skalas jautājumiem, uz kuriem dalībnieki atbildēja par izvēlēto periodu.",

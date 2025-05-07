@@ -753,8 +753,6 @@
   "app.containers.Admin.Users.userInsights": "Mewnwelediadau defnyddwyr",
   "app.containers.Admin.Users.youCantDeleteYourself": "Ni allwch ddileu eich cyfrif eich hun trwy dudalen weinyddol y defnyddiwr",
   "app.containers.Admin.Users.youCantUnadminYourself": "Ni allwch roi'r gorau i'ch rôl fel gweinyddwr nawr",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Mae'r nodwedd hon ar gael mewn beta agored ar gyfer eich cynllun tan 30 Mehefin 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Monitor cymunedol",
   "app.containers.Admin.communityMonitor.healthScore": "Sgôr Iechyd",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Y sgôr hwn yw cyfartaledd yr holl gwestiynau ar raddfa teimlad a atebwyd gan gyfranogwyr am y cyfnod a ddewiswyd.",
