@@ -94,7 +94,6 @@ export interface OutletsPropertyMap {
     type: GroupCreationModal;
   };
   'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
-  'app.containers.Admin.dashboard.summary.events': StatCardProps;
   'app.containers.IdeasShow.MetaInformation': {
     ideaId: string;
     compact?: boolean;

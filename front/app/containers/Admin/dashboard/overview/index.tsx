@@ -29,6 +29,7 @@ import overviewMessages from './messages';
 import InputStatusCard from './charts/InputStatusCard';
 import EmailDeliveriesCard from './charts/EmailDeliveriesCard';
 import InvitationsCard from './charts/InvitationsCard';
+import EventsCard from './charts/EventsCard';
 
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
@@ -212,8 +213,7 @@ const OverviewDashboard = () => {
               endAtMoment={endAtMoment}
               resolution={resolution}
             />
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.events"
+            <EventsCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}

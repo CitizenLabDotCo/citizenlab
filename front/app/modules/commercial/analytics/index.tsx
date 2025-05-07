@@ -7,7 +7,6 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 const VisitorsContainer = React.lazy(
   () => import('./admin/containers/Visitors')
 );
-const EventsCard = React.lazy(() => import('./admin/components/EventsCard'));
 const ProjectStatusCard = React.lazy(
   () => import('./admin/components/ProjectStatusCard')
 );
@@ -29,7 +28,6 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.dashboard.summary.events': EventsCard,
     'app.containers.Admin.dashboard.summary.projectStatus': ProjectStatusCard,
   },
 };
