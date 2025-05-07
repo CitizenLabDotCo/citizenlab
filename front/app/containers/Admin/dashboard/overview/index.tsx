@@ -26,6 +26,7 @@ import SelectableResourceByProjectChart from './charts/SelectableResourceByProje
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import { getSensibleResolution } from './getSensibleResolution';
 import overviewMessages from './messages';
+import InputStatusCard from './charts/InputStatusCard';
 
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
@@ -203,8 +204,7 @@ const OverviewDashboard = () => {
             {formatMessage(overviewMessages.management)}
           </Title>
           <Column>
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.inputStatus"
+            <InputStatusCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}

@@ -95,12 +95,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.dashboard.summary.inputStatus': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
   'app.containers.Admin.dashboard.summary.emailDeliveries': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;
