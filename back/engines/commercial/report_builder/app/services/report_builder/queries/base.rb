@@ -9,16 +9,4 @@ class ReportBuilder::Queries::Base
       raise ArgumentError, "Invalid resolution: #{resolution}. Must be one of: #{valid_resolutions.join(', ')}"
     end
   end
-
-  def validate_roles(roles)
-    return if roles.nil?
-
-    valid_roles = %w[admin project_folder_moderator project_moderator user]
-
-    roles.each do |role|
-      unless valid_roles.include?(role)
-        raise ArgumentError, "Invalid role: #{role}. Must be one of: #{valid_roles.join(', ')}"
-      end
-    end
-  end
 end

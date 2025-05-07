@@ -1,5 +1,12 @@
 module ReportBuilder
   class Queries::Participants < ReportBuilder::Queries::Base
+    # Calculates participant timeseries, counts and participation rates over specified time periods
+    # @param start_at [String, Date] Beginning of analysis period (YYYY-MM-DD)
+    # @param end_at [String, Date] End of analysis period (YYYY-MM-DD)
+    # @param project_id [String] Optional project ID to filter participants
+    # @param exclude_roles [<String>] Flag to exclude certain roles from participant counts ('exclude_admins_and_moderators')
+    # @param resolution [String] Time grouping ('day', 'week', or 'month')
+    # @return [Hash] Participant timeseries, counts and participation rates
     def run_query(
       start_at: nil,
       end_at: nil,
@@ -11,7 +18,6 @@ module ReportBuilder
       **_other_props
     )
       validate_resolution(resolution)
-      validate_roles(exclude_roles)
 
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
@@ -88,14 +94,12 @@ module ReportBuilder
           .where(dimension_project_id: project_id)
       end
 
-      if exclude_roles.present?
+      if exclude_roles == 'exclude_admins_and_moderators'
         participations = participations
           .joins('INNER JOIN users ON users.id = analytics_fact_participations.dimension_user_id')
 
-        exclude_roles.each do |role|
-          participations = participations
-            .where.not("users.roles::TEXT LIKE '%#{role}%'")
-        end
+        # Normal users have a 'rules' attribute which is just an empty array.
+        participations = participations.where("jsonb_array_length(users.roles) = 0")
       end
 
       participations
@@ -117,9 +121,9 @@ module ReportBuilder
           .where(impact_tracking_pageviews: { project_id: project_id })
       end
 
-      if exclude_roles.present?
+      if exclude_roles == 'exclude_admins_and_moderators'
         query = query
-          .where("highest_role IS NULL OR highest_role NOT IN (#{exclude_roles.map { |r| "'#{r}'" }.join(', ')})")
+          .where("highest_role IS NULL OR highest_role = 'user'")
       end
 
       visitors = query.distinct.count(:monthly_user_hash)
