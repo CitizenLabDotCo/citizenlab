@@ -1,7 +1,5 @@
 module ReportBuilder
   class Queries::Participants < ReportBuilder::Queries::Base
-    ADMINS_AND_MODERATOR_ROLES = %w[admin project_folder_moderator project_moderator]
-
     def run_query(
       start_at: nil,
       end_at: nil,
@@ -93,10 +91,8 @@ module ReportBuilder
         participations = participations
           .joins('INNER JOIN users ON users.id = analytics_fact_participations.dimension_user_id')
 
-        ADMINS_AND_MODERATOR_ROLES.each do |role|
-          participations = participations
-            .where.not("users.roles::TEXT LIKE '%#{role}%'")
-        end
+        # Normal users have a 'rules' attribute which is just an empty array.
+        participations = participations.where("jsonb_array_length(users.roles) = 0")
       end
 
       participations
