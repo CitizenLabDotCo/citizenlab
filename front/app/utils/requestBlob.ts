@@ -8,7 +8,8 @@ export function requestBlob(
   type:
     | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     | 'text/calendar'
-    | 'application/geo+json',
+    | 'application/geo+json'
+    | 'application/pdf',
   queryParametersObject?
 ): Promise<Blob> {
   const urlParams = stringify(queryParametersObject, {

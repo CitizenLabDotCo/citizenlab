@@ -50,6 +50,7 @@ type FormBuilderTopBarProps = {
   autosaveEnabled: boolean;
   showAutosaveToggle: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
+  phaseId: string;
 };
 
 const FormBuilderTopBar = ({
@@ -59,15 +60,15 @@ const FormBuilderTopBar = ({
   autosaveEnabled,
   setAutosaveEnabled,
   showAutosaveToggle,
+  phaseId,
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams() as {
+  const { projectId } = useParams() as {
     projectId: string;
-    phaseId?: string;
   };
   const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId || null);
+  const { data: phase } = usePhase(phaseId);
   const {
     formState: { isDirty },
   } = useFormContext();
@@ -77,11 +78,11 @@ const FormBuilderTopBar = ({
     setShowLeaveModal(false);
   };
 
-  if (!project) {
+  if (!project || !phase) {
     return null;
   }
 
-  const isPostingEnabled = getIsPostingEnabled(phase?.data);
+  const isPostingEnabled = getIsPostingEnabled(phase.data);
 
   const handleGoback = () => {
     if (isDirty) {
@@ -164,13 +165,11 @@ const FormBuilderTopBar = ({
             />
           </Box>
         )}
-        {builderConfig.onDownloadPDF && (
-          <DownloadPDFButtonWithModal
-            mr="20px"
-            onExport={builderConfig.onDownloadPDF}
-            formType={builderConfig.type}
-          />
-        )}
+        <DownloadPDFButtonWithModal
+          mr="20px"
+          formType={builderConfig.type}
+          phaseId={phaseId}
+        />
         <Button
           buttonStyle="secondary-outlined"
           icon="eye"

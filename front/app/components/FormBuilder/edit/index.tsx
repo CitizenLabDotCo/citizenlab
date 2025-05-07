@@ -63,7 +63,7 @@ type FormEditProps = {
     customFields: IFlatCustomField[];
   };
   projectId: string;
-  phaseId?: string;
+  phaseId: string;
   builderConfig: FormBuilderConfig;
   totalSubmissions: number;
   viewFormLink: RouteType;
@@ -424,6 +424,7 @@ const FormEdit = ({
               autosaveEnabled={autosaveEnabled}
               setAutosaveEnabled={setAutosaveEnabled}
               showAutosaveToggle={totalSubmissions === 0} // Only allow autosave if no survey submissions
+              phaseId={phaseId}
             />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
               <Box width="210px">
@@ -511,15 +512,16 @@ const FormBuilderPage = ({
   viewFormLink,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId?: string;
-  };
+  const { projectId, phaseId } = useParams();
   const { data: submissionCount } = useFormSubmissionCount({
     phaseId,
   });
 
   const formCustomFields = builderConfig.formCustomFields;
+
+  if (typeof projectId !== 'string' || typeof phaseId !== 'string') {
+    return null;
+  }
 
   if (isNilOrError(formCustomFields) || isNilOrError(submissionCount)) {
     return <Spinner />;
