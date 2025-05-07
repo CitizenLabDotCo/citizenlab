@@ -124,6 +124,7 @@ const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
         </Title>
       }
       niceHeader
+      closeOnClickOutside={false}
     >
       <Box p="24px">
         <CollapsibleContainer
