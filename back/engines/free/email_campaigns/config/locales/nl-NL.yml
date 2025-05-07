@@ -243,7 +243,7 @@ nl:
       yesterday: Gisteren
     comment_on_idea_you_follow:
       cta_reply_to: 'Reageer op %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      event_description: '%{authorNameFull} heeft een reactie geplaatst op ''%{inputTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
       main_header:
         idea: '%{authorName} heeft gereageerd op een idee dat je volgt'
         question: '%{authorName} heeft gereageerd op een vraag die je volgt'
