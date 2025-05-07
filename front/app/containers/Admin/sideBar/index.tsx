@@ -37,7 +37,7 @@ import { UserMenu } from './UserMenu';
 const Menu = styled.div`
   z-index: 10;
   flex: 0 0 auto;
-  width: 210px;
+  width: 224px;
 
   @media print {
     display: none;
@@ -50,7 +50,7 @@ const Menu = styled.div`
 
 const MenuInner = styled.nav`
   flex: 0 0 auto;
-  width: 210px;
+  width: 224px;
   display: flex;
   flex-direction: column;
   align-items: center;
