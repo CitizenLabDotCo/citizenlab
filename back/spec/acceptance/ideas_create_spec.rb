@@ -1,15 +1,19 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-def public_input_params(spec)
-  spec.parameter :title_multiloc, 'Multi-locale field with the idea title', scope: :idea, required: true, extra: 'Maximum 100 characters'
-  spec.parameter :body_multiloc, 'Multi-locale field with the idea body', scope: :idea, extra: 'Required if not draft'
-  spec.parameter :topic_ids, 'Array of ids of the associated topics', scope: :idea
-  spec.parameter :cosponsor_ids, 'Array of ids of the desired cosponsors', scope: :idea
-  spec.parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to', scope: :idea
-  spec.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
-  spec.parameter :idea_images_attributes, 'an array of base64 images to create', scope: :idea
-  spec.parameter :idea_files_attributes, 'an array of base64 files to create', scope: :idea
+def define_title_multiloc_param(context)
+  context.parameter :title_multiloc, 'Multi-locale field with the idea title', scope: :idea, required: true
+end
+
+def public_input_params(context)
+  define_title_multiloc_param(context)
+  context.parameter :body_multiloc, 'Multi-locale field with the idea body', scope: :idea, extra: 'Required if not draft'
+  context.parameter :topic_ids, 'Array of ids of the associated topics', scope: :idea
+  context.parameter :cosponsor_ids, 'Array of ids of the desired cosponsors', scope: :idea
+  context.parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to', scope: :idea
+  context.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
+  context.parameter :idea_images_attributes, 'an array of base64 images to create', scope: :idea
+  context.parameter :idea_files_attributes, 'an array of base64 files to create', scope: :idea
 end
 
 resource 'Ideas' do
@@ -618,8 +622,7 @@ resource 'Ideas' do
     end
 
     context 'in a common ground phase' do
-      # [Adrien] Rework probably too many parameters and body should not be required.
-      public_input_params(self)
+      define_title_multiloc_param(self)
 
       # [Adrien] with_permissions necessary?
       let(:phase) { create(:common_ground_phase, :ongoing, with_permissions: true) }
