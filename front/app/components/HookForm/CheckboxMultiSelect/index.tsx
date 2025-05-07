@@ -1,0 +1,117 @@
+import React, { useState } from 'react';
+
+import {
+  Box,
+  CheckboxWithLabel,
+  colors,
+  SelectProps,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
+import { darken } from 'polished';
+import { Controller, useFormContext } from 'react-hook-form';
+import styled, { useTheme } from 'styled-components';
+import { CLError, IOption, RHFErrors } from 'typings';
+
+import Error, { TFieldName } from 'components/UI/Error';
+interface Props extends Omit<SelectProps, 'onChange'> {
+  name: string;
+  options: IOption[];
+}
+
+const StyledBox = styled(Box)`
+  cursor: pointer;
+  background-color: ${colors.grey100};
+  &:hover {
+    background-color: ${darken(0.05, colors.grey100)};
+  }
+`;
+
+const CheckboxMultiSelect = ({ name, options }: Props) => {
+  const {
+    trigger,
+    watch,
+    setValue,
+    formState: { errors: formContextErrors },
+    control,
+  } = useFormContext();
+  const errors = get(formContextErrors, name) as RHFErrors;
+  const validationError = errors?.message;
+
+  // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
+  const apiError = errors?.error && ([errors] as CLError[]);
+  const theme = useTheme();
+
+  const [dataArray, setData] = useState([Array(options.length).fill(false)]);
+
+  return (
+    <>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field: { ref: _ref } }) => {
+          return (
+            <Box display="block">
+              {options.map((option, index: number) => (
+                <StyledBox
+                  // hoverColor={theme.colors.tenantPrimaryLighten75}
+                  style={{ cursor: 'pointer' }}
+                  mb="12px"
+                  border={
+                    dataArray.includes(option.value)
+                      ? `2px solid ${theme.colors.tenantPrimary}`
+                      : `1px solid ${theme.colors.tenantPrimary}`
+                  }
+                  background={theme.colors.tenantPrimaryLighten95}
+                  key={option.value}
+                  borderRadius="3px"
+                >
+                  <CheckboxWithLabel
+                    size="20px"
+                    padding="18px 20px 18px 20px"
+                    checkedColor={'tenantPrimary'}
+                    label={
+                      <Text m="0px" color={'tenantPrimary'}>
+                        {option.label}
+                      </Text>
+                    }
+                    checked={dataArray.includes(option.value)}
+                    usePrimaryBorder={true}
+                    onChange={() => {
+                      if (dataArray.includes(option.value)) {
+                        setData(
+                          dataArray.filter((value) => value !== option.value)
+                        );
+                      } else {
+                        setData([...dataArray, option.value]);
+                      }
+                    }}
+                  />
+                </StyledBox>
+              ))}
+            </Box>
+          );
+        }}
+      />
+      {validationError && (
+        <Error
+          marginTop="8px"
+          marginBottom="8px"
+          text={validationError}
+          scrollIntoView={false}
+        />
+      )}
+      {apiError && (
+        <Error
+          fieldName={name as TFieldName}
+          apiErrors={apiError}
+          marginTop="8px"
+          marginBottom="8px"
+          scrollIntoView={false}
+        />
+      )}
+    </>
+  );
+};
+
+export default CheckboxMultiSelect;

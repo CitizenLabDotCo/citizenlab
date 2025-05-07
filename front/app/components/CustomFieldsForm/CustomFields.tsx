@@ -7,17 +7,17 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
 import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
+import CheckboxMultiSelect from 'components/HookForm/CheckboxMultiSelect';
 import FileUploader from 'components/HookForm/FileUploader';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import RadioSingleSelect from 'components/HookForm/RadioSingleSelect';
 import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
-import RadioSingleSelect from 'components/HookForm/RadioSingleSelect';
-import MultipleSelect from 'components/HookForm/MultipleSelect';
 
 const renderField = (
   question: IFlatCustomField,
@@ -53,7 +53,7 @@ const renderField = (
       ); // <Select name={question.key} options={selectOptions} />; // There seems to be an issue with the style?
     case 'multiselect':
       return (
-        <MultipleSelect
+        <CheckboxMultiSelect
           name={question.key}
           options={extractOptions(question, localize)}
         />
