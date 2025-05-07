@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "User name",
   "app.containers.SignUp.viennaDataProtection": "the vienna privacy policy",
   "app.containers.SiteMap.contributions": "Ilanngussat",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Cookies",
   "app.containers.SiteMap.issues": "Ajornartorsiutit",
   "app.containers.SiteMap.options": "Periarfissat",
   "app.containers.SiteMap.projects": "Suliniutit",
