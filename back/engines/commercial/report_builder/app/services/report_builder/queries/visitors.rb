@@ -11,7 +11,6 @@ module ReportBuilder
       **_other_props
     )
       validate_resolution(resolution)
-      validate_roles(exclude_roles)
 
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
@@ -73,9 +72,9 @@ module ReportBuilder
     end
 
     def exclude_roles_if_needed(sessions, exclude_roles)
-      if exclude_roles.present?
+      if exclude_roles == 'exclude_admins_and_moderators'
         sessions = sessions
-          .where("highest_role IS NULL OR highest_role NOT IN (#{exclude_roles.map { |r| "'#{r}'" }.join(', ')})")
+          .where("highest_role IS NULL OR highest_role = 'user'")
       end
 
       sessions
