@@ -578,4 +578,66 @@ resource 'Ideas' do
       end
     end
   end
+
+  context 'when not logged in' do
+    let(:user) { create(:user) }
+    let(:project) { create(:single_phase_proposals_project) }
+
+    let(:ineligible_proposal) do
+      create(
+        :idea,
+        project: project,
+        idea_status: create(:proposals_status, code: 'ineligible')
+      )
+    end
+
+    let(:expired_proposal) do
+      create(
+        :idea,
+        project: project,
+        idea_status: create(:proposals_status, code: 'expired')
+      )
+    end
+
+    let(:proposed_proposal) do
+      create(
+        :idea,
+        project: project,
+        idea_status: create(:proposals_status, code: 'proposed')
+      )
+    end
+
+    let(:upvote_disabled_reason) do
+      response_data.dig(
+        :attributes,
+        :action_descriptors,
+        :reacting_idea,
+        :up,
+        :disabled_reason
+      )
+    end
+
+    get 'web_api/v1/ideas/by_slug/:slug' do
+      example 'Includes not_reactable_status_code in response when ineligible' do
+        do_request slug: ineligible_proposal.slug
+
+        expect(status).to eq 200
+        expect(upvote_disabled_reason).to eq 'not_reactable_status_code'
+      end
+
+      example 'Includes not_reactable_status_code in response when expired' do
+        do_request slug: expired_proposal.slug
+
+        expect(status).to eq 200
+        expect(upvote_disabled_reason).to eq 'not_reactable_status_code'
+      end
+
+      example 'Includes user_not_signed_in in response when proposed' do
+        do_request slug: proposed_proposal.slug
+
+        expect(status).to eq 200
+        expect(upvote_disabled_reason).to eq 'user_not_signed_in'
+      end
+    end
+  end
 end
