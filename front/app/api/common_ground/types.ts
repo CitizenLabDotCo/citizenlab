@@ -29,21 +29,6 @@ export interface CommonGroundResultsData {
   };
 }
 
-export interface CommonGroundStatement {
-  id: string;
-  type: 'statement';
-  attributes: {
-    author: string;
-    publishedAt: string;
-    body: Multiloc;
-    reactions: {
-      agree: number;
-      unsure: number;
-      disagree: number;
-    };
-  };
-}
-
 export interface CommonGroundProgressStatement {
   id: string;
   author: string;
