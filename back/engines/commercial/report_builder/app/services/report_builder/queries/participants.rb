@@ -1,5 +1,7 @@
 module ReportBuilder
   class Queries::Participants < ReportBuilder::Queries::Base
+    ADMINS_AND_MODERATOR_ROLES = %w[admin project_folder_moderator project_moderator]
+
     def run_query(
       start_at: nil,
       end_at: nil,
@@ -11,7 +13,6 @@ module ReportBuilder
       **_other_props
     )
       validate_resolution(resolution)
-      validate_roles(exclude_roles)
 
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
@@ -88,11 +89,11 @@ module ReportBuilder
           .where(dimension_project_id: project_id)
       end
 
-      if exclude_roles.present?
+      if exclude_roles == 'exclude_admins_and_moderators'
         participations = participations
           .joins('INNER JOIN users ON users.id = analytics_fact_participations.dimension_user_id')
 
-        exclude_roles.each do |role|
+        ADMINS_AND_MODERATOR_ROLES.each do |role|
           participations = participations
             .where.not("users.roles::TEXT LIKE '%#{role}%'")
         end
@@ -117,9 +118,9 @@ module ReportBuilder
           .where(impact_tracking_pageviews: { project_id: project_id })
       end
 
-      if exclude_roles.present?
+      if exclude_roles == 'exclude_admins_and_moderators'
         query = query
-          .where("highest_role IS NULL OR highest_role NOT IN (#{exclude_roles.map { |r| "'#{r}'" }.join(', ')})")
+          .where("highest_role IS NULL OR highest_role = 'user'")
       end
 
       visitors = query.distinct.count(:monthly_user_hash)

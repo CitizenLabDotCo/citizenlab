@@ -220,7 +220,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       params = {
         start_at: @date_september - 1.day,
         end_at: @date_september + 1.day,
-        exclude_roles: ['admin']
+        exclude_roles: 'exclude_admins_and_moderators'
       }
 
       expect(query.run_query(**params)).to eq({
