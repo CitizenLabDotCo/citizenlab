@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'gotenberg'
-
 module BulkImportIdeas::Exporters
   class IdeaHtmlPdfFormExporter < IdeaHtmlFormExporter
     def format
@@ -17,16 +15,14 @@ module BulkImportIdeas::Exporters
     end
 
     def export
-      # Render the form from HTML as a PDF using Chromium on Gotenburg
+      # Render the form from HTML as a PDF using Chromium on Gotenberg
       html = ActionController::Base.new.render_to_string render_config
       gb = GotenbergClient.new
       gb.render_to_pdf(html)
     end
 
-    # TODO: MAYBE NEED SOMETHING LIKE THIS TO GET THE EXACT POSITION OF THE TEXT IN PDF
-    # https://stackoverflow.com/questions/59944941/how-to-get-the-position-coordinates-of-an-text-inside-of-a-pdf
     def importer_data
-      # Extract the text from this PDF so we understand which pages each field are on
+      # Extract the text from this PDF so we understand which pages and approx location each field is on
       file = export
       pdf_io = StringIO.new(file)
       reader = PDF::Reader.new(pdf_io)
