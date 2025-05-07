@@ -2976,7 +2976,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registracije",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Ukupno registracija",
   "app.modules.commercial.analytics.admin.components.Tab": "Posjetitelji",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "\"Trajanje posjeta\" i \"Prikazi stranice po posjetu\" broje se samo za posjetitelje koji su prihvatili kolačiće. Posjeti i posjetitelji temelje se na svim posjetiteljima.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Prethodnih 30 dana:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Prethodnih 7 dana:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Prikaza stranica po posjetu",

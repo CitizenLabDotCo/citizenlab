@@ -2976,7 +2976,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registreringer",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Registreringer totalt",
   "app.modules.commercial.analytics.admin.components.Tab": "Besøkende",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "\"Varighet på besøk\" og \"Sidevisninger per besøk\" telles bare for besøkende som har akseptert informasjonskapsler. Besøk og besøkende er basert på alle besøkende.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "De siste 30 dagene:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "De siste 7 dagene:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Sidevisninger per besøk",

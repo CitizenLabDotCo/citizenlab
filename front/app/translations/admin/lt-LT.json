@@ -2976,7 +2976,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registracijos",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Iš viso registracijų",
   "app.modules.commercial.analytics.admin.components.Tab": "Lankytojai",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "\"Apsilankymo trukmė\" ir \"Apsilankymo puslapių peržiūros\" skaičiuojamos tik tiems lankytojams, kurie priėmė slapukus. Apsilankymai ir lankytojai skaičiuojami pagal visus lankytojus.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Per paskutines 30 dienų:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Paskutinės 7 dienos:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Vieno apsilankymo puslapių peržiūros",

@@ -2976,7 +2976,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "التسجيلات",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "إجمالي التسجيلات",
   "app.modules.commercial.analytics.admin.components.Tab": "زوار",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "يتم احتساب \"مدة الزيارة\" و\"مشاهدات الصفحة لكل زيارة\" فقط للزوار الذين قبلوا ملفات تعريف الارتباط. الزيارات والزوار تعتمد على جميع الزوار.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "آخر 30 يومًا:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "آخر 7 أيام:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "مشاهدات الصفحة في كل زيارة",

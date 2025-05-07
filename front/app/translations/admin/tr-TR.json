@@ -2976,7 +2976,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Kayıtlar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Toplam kayıtlar",
   "app.modules.commercial.analytics.admin.components.Tab": "Ziyaretçiler",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "\"Ziyaret süresi\" ve \"Ziyaret başına sayfa görüntüleme\" yalnızca çerezleri kabul eden ziyaretçiler için sayılır. Ziyaretler ve ziyaretçiler tüm ziyaretçilere dayanmaktadır.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Son 30 gün:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Son 7 gün:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Ziyaret başına sayfa görüntülemesi",

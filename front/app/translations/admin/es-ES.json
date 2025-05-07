@@ -2976,7 +2976,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registros",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Registros totales",
   "app.modules.commercial.analytics.admin.components.Tab": "Visitantes",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "\"Duración de la visita\" y \"Páginas vistas por visita\" sólo se cuentan para los visitantes que aceptaron cookies. Las visitas y los visitantes se basan en todos los visitantes.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Últimos 30 días",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Últimos 7 días",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Pageviews por visita",
