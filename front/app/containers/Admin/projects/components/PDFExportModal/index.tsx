@@ -13,6 +13,7 @@ import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import { object, boolean } from 'yup';
 
+import useUpdateCustomForm from 'api/custom_form/useUpdateCustomForm';
 import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
@@ -25,7 +26,6 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl, MessageDescriptor } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import { saveIdeaFormAsPDF } from '../../project/inputForm/saveIdeaFormAsPDF';
 import { supportsNativeSurvey } from '../../project/inputImporter/ReviewSection/utils';
@@ -35,11 +35,13 @@ import messages from './messages';
 
 export interface FormPDFExportFormValues {
   print_start_multiloc: Multiloc;
+  print_end_multiloc: Multiloc;
   personal_data: boolean;
 }
 
 const DEFAULT_VALUES = {
   print_start_multiloc: {},
+  print_end_multiloc: {},
   personal_data: false,
 } satisfies FormPDFExportFormValues;
 
@@ -48,6 +50,7 @@ interface Props {
   formType: FormType;
   onClose: () => void;
   phaseId: string;
+  projectId: string;
 }
 
 const CLICK_EXPORT_MESSAGES: { [key in FormType]: MessageDescriptor } = {
@@ -60,18 +63,28 @@ const IT_IS_POSSIBLE_MESSAGES: { [key in FormType]: MessageDescriptor } = {
   survey: messages.itIsAlsoPossibleSurvey,
 };
 
-const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
+const PDFExportModal = ({
+  open,
+  formType,
+  onClose,
+  phaseId,
+  projectId,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const locale = useLocale();
   const { data: phase } = usePhase(phaseId);
+  const { mutateAsync: updateCustomForm } = useUpdateCustomForm({
+    projectId,
+    // WIP: still needs isFormPhaseSpecific check
+    phaseId,
+  });
 
   const schema = object({
     personal_data: boolean(),
-    print_start_multiloc: validateMultilocForEveryLocale(
-      formatMessage(messages.instructionsStartBodyError)
-    ),
+    print_start_multiloc: object(),
+    print_end_multiloc: object(),
   });
 
   const methods = useForm({
@@ -102,6 +115,10 @@ const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
     setLoading(true);
 
     try {
+      await updateCustomForm({
+        printStartMultiloc: formValues.print_start_multiloc,
+        printEndMultiloc: formValues.print_end_multiloc,
+      });
       await onExport(formValues);
       setLoading(false);
       onClose();
