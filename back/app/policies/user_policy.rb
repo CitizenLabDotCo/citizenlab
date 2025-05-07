@@ -20,7 +20,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def index?
-    user&.active? && user.admin?
+    user&.active? && !user.normal_user?
   end
 
   def seats?
@@ -57,11 +57,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def block?
-    index?
+    index_xlsx?
   end
 
   def unblock?
-    index?
+    index_xlsx?
   end
 
   def blocked_count?

@@ -111,7 +111,7 @@ describe UserPolicy do
       it { is_expected.to     permit(:show)    }
       it { is_expected.to     permit(:update)  }
       it { is_expected.to     permit(:destroy) }
-      it { is_expected.not_to permit(:index)   }
+      it { is_expected.to     permit(:index)   }
       it { is_expected.not_to permit(:block)   }
       it { is_expected.not_to permit(:unblock) }
       it { is_expected.not_to permit(:index_xlsx) }
@@ -128,7 +128,7 @@ describe UserPolicy do
       it { is_expected.to     permit(:show)    }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
-      it { is_expected.not_to permit(:index)   }
+      it { is_expected.to     permit(:index)   }
       it { is_expected.not_to permit(:block)   }
       it { is_expected.not_to permit(:unblock) }
       it { is_expected.not_to permit(:index_xlsx) }
@@ -165,7 +165,7 @@ describe UserPolicy do
       it { is_expected.to     permit(:show)    }
       it { is_expected.to     permit(:update)  }
       it { is_expected.to     permit(:destroy) }
-      it { is_expected.not_to permit(:index)   }
+      it { is_expected.to     permit(:index)   }
       it { is_expected.not_to permit(:block)   }
       it { is_expected.not_to permit(:unblock) }
       it { is_expected.not_to permit(:index_xlsx) }
@@ -182,7 +182,7 @@ describe UserPolicy do
       it { is_expected.to     permit(:show)    }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
-      it { is_expected.not_to permit(:index)   }
+      it { is_expected.to     permit(:index)   }
       it { is_expected.not_to permit(:block)   }
       it { is_expected.not_to permit(:unblock) }
       it { is_expected.not_to permit(:index_xlsx) }
