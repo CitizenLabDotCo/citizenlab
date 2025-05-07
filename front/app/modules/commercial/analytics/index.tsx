@@ -5,7 +5,7 @@ import { AdminRoute } from 'containers/Admin/routes';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const VisitorsContainer = React.lazy(
-  () => import('./admin/containers/Visitors')
+  () => import('../../../containers/Admin/dashboard/visitors')
 );
 
 export enum analyticsRoutes {
