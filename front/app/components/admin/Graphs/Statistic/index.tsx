@@ -28,7 +28,7 @@ const Statistic = ({
 }: Props) => {
   const { formatNumber } = useIntl();
 
-  // Format the value according to the locale
+  // When value is a number, format according to the locale
   const formattedValue =
     typeof value === 'string' ? value : value && formatNumber(value);
 
