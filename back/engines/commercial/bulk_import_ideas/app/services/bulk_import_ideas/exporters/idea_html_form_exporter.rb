@@ -155,7 +155,6 @@ module BulkImportIdeas::Exporters
     end
 
     def font_family
-      # TODO: Do we need to configure Public Sans somewhere?
       default = "'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif"
       return default unless style['customFontName']
 

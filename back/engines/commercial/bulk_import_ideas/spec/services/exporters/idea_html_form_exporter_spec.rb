@@ -74,4 +74,96 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
       end
     end
   end
+
+  describe 'font_family' do
+    let(:font_family) { service.send(:font_family) }
+
+    it 'returns default fonts by default' do
+      expect(font_family).to eq "'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif"
+    end
+
+    it 'returns custom font name if set' do
+      allow(AppConfiguration.instance).to receive(:style).and_return('customFontName' => 'Fonty McFontface')
+      expect(font_family).to eq "'Fonty McFontface', 'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif"
+    end
+  end
+
+  describe 'font_config' do
+    let(:font_config) { service.send(:font_config) }
+
+    it 'returns nil by default' do
+      expect(font_config).to be_nil
+    end
+
+    it 'returns font loader config if customFontAdobeId is set' do
+      allow(AppConfiguration.instance).to receive(:style).and_return('customFontAdobeId' => 'lord_font_of_fonttown')
+      expect(font_config).to eq({
+        typekit: {
+          id: 'lord_font_of_fonttown'
+        }
+      }.to_json)
+    end
+  end
+
+  describe 'font_styles' do
+    let(:font_styles) { service.send(:font_styles) }
+
+    it 'returns nothing by default' do
+      expect(font_styles).to be_nil
+    end
+
+    it 'returns nothing if only customFontURL is set' do
+      allow(AppConfiguration.instance).to receive(:style).and_return('customFontURL' => 'http://example.com/fonts.css')
+      expect(font_styles).to be_nil
+    end
+
+    it 'returns nothing if only customFontName is set' do
+      allow(AppConfiguration.instance).to receive(:style).and_return('customFontName' => 'Fonty McFontface')
+      expect(font_styles).to be_nil
+    end
+
+    it 'returns font styles replaced with base64 encoded versions of the font files' do
+      allow(AppConfiguration.instance).to receive(:style).and_return(
+        'customFontName' => 'Fonty McFontface',
+        'customFontURL' => 'https://example.com/fonts.css'
+      )
+
+      # Mock the returns of Net::HTTP.get
+      allow(Net::HTTP).to receive(:get).with(URI.parse('https://example.com/fonts.css')).and_return("
+        @font-face {
+            font-family: 'FontyMcFontFace';
+            src:url('/fonts/WOFF/FontyMcFontFace.woff') format('woff');
+          }
+        @font-face {
+          font-family: 'FontyMcFontFaceItalic';
+          src:url('/fonts/WOFF/FontyMcFontFaceItalic.woff') format('woff');
+        }
+      ")
+      allow(Net::HTTP).to receive(:get).with(URI.parse('https://example.com/fonts/WOFF/FontyMcFontFace.woff')).and_return('NORMAL')
+      allow(Net::HTTP).to receive(:get).with(URI.parse('https://example.com/fonts/WOFF/FontyMcFontFaceItalic.woff')).and_return('ITALIC')
+
+      expect(font_styles).to eq("
+        @font-face {
+            font-family: 'FontyMcFontFace';
+            src:url('data:font/woff;base64,Tk9STUFM') format('woff');
+          }
+        @font-face {
+          font-family: 'FontyMcFontFaceItalic';
+          src:url('data:font/woff;base64,SVRBTElD') format('woff');
+        }
+      ")
+    end
+  end
+
+  describe 'custom_font_url' do
+    it 'returns the existing host in the URL if it is absolute' do
+      custom_font_url = service.send(:custom_font_url, 'https://test.com/fonts.css', 'https://other.com')
+      expect(custom_font_url.to_s).to eq 'https://test.com/fonts.css'
+    end
+
+    it 'returns the URL with the supplied host if it is relative' do
+      custom_font_url = service.send(:custom_font_url, '/fonts.css', 'https://other.com')
+      expect(custom_font_url.to_s).to eq 'https://other.com/fonts.css'
+    end
+  end
 end
