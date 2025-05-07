@@ -1,5 +1,12 @@
 module ReportBuilder
   class Queries::Participants < ReportBuilder::Queries::Base
+    # Calculates participant timeseries, counts and participation rates over specified time periods
+    # @param start_at [String, Date] Beginning of analysis period (YYYY-MM-DD)
+    # @param end_at [String, Date] End of analysis period (YYYY-MM-DD)
+    # @param project_id [String] Optional project ID to filter participants
+    # @param exclude_roles [<String>] Flag to exclude certain roles from participant counts ('exclude_admins_and_moderators')
+    # @param resolution [String] Time grouping ('day', 'week', or 'month')
+    # @return [Hash] Participant timeseries, counts and participation rates
     def run_query(
       start_at: nil,
       end_at: nil,
