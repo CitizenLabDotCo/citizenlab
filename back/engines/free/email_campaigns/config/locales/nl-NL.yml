@@ -243,7 +243,7 @@ nl:
       yesterday: Gisteren
     comment_on_idea_you_follow:
       cta_reply_to: 'Reageer op %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      event_description: '%{authorNameFull} heeft een reactie geplaatst op ''%{inputTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
       main_header:
         idea: '%{authorName} heeft gereageerd op een idee dat je volgt'
         question: '%{authorName} heeft gereageerd op een vraag die je volgt'
@@ -253,7 +253,7 @@ nl:
         option: '%{authorName} heeft gereageerd op een optie die je volgt'
         proposal: '%{authorName} heeft gereageerd op een voorstel dat je volgt'
         petition: '%{authorName} heeft gereageerd op een petitie die je volgt'
-      subject: 'There''s a new comment on "%{input_title}"'
+      subject: 'Er is een nieuwe reactie op "%{input_title}"'
       preheader: '%{authorName} heeft een reactie achtergelaten op een idee voor %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'Er is een nieuwe invoer gepubliceerd op je platform'
@@ -305,8 +305,8 @@ nl:
       main_header: '''%{post}'' heeft een nieuwe interne reactie'
       preheader: '''%{post}'' heeft een nieuwe interne reactie'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
+      header_message: '%{feedback_author_name} schreef een update bij %{input_title}''.'
+      header_title: 'Er is een update op "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:
