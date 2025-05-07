@@ -7,13 +7,8 @@ import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import useLocale from 'hooks/useLocale';
-
-import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
-
 import FormBuilder from 'components/FormBuilder/edit';
 
-import { saveIdeaFormAsPDF } from '../saveIdeaFormAsPDF';
 import { ideationConfig, proposalsConfig } from '../utils';
 
 const configs = {
@@ -39,15 +34,7 @@ const IdeaFormBuilder = () => {
     phaseId: config.isFormPhaseSpecific ? phaseId : undefined,
   });
 
-  const locale = useLocale();
-
   const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/form`;
-
-  const handleExportPDF = async ({
-    personal_data,
-  }: FormPDFExportFormValues) => {
-    await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
-  };
 
   if (!project || !phase) return null;
 
@@ -57,7 +44,6 @@ const IdeaFormBuilder = () => {
         ...config,
         formCustomFields,
         goBackUrl,
-        onDownloadPDF: handleExportPDF,
       }}
       viewFormLink={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
     />

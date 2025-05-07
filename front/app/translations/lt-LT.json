@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Vartotojo vardas",
   "app.containers.SignUp.viennaDataProtection": "Vienos privatumo politika",
   "app.containers.SiteMap.contributions": "Įnašai",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Slapukai",
   "app.containers.SiteMap.issues": "Komentarai",
   "app.containers.SiteMap.options": "Parinktys",
   "app.containers.SiteMap.projects": "Projektai",

@@ -7,6 +7,7 @@ import Dates from './Dates';
 import Method from './Method';
 import Population from './Population';
 import Search from './Search';
+import Topic from './Topic';
 
 const Filters = () => {
   return (
@@ -21,6 +22,7 @@ const Filters = () => {
         <Country />
         <Method />
         <Population />
+        <Topic />
       </Box>
       <Search />
     </Box>
