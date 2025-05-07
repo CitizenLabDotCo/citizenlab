@@ -8,9 +8,7 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import PDFExportModal, {
-  FormPDFExportFormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
+import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal';
 
 import UpsellTooltip from 'components/UpsellTooltip';
 
@@ -19,10 +17,10 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  onExport: (formValues: FormPDFExportFormValues) => Promise<void>;
+  phaseId: string;
 }
 
-const DownloadPDFDropdownListItemWithModal = ({ onExport }: Props) => {
+const DownloadPDFDropdownListItemWithModal = ({ phaseId }: Props) => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const importPrintedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
@@ -49,7 +47,7 @@ const DownloadPDFDropdownListItemWithModal = ({ onExport }: Props) => {
         open={exportModalOpen}
         formType="survey"
         onClose={() => setExportModalOpen(false)}
-        onExport={onExport}
+        phaseId={phaseId}
       />
     </>
   );

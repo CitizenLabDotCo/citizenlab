@@ -12,6 +12,10 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { useTheme } from 'styled-components';
 import { object, boolean } from 'yup';
 
+import usePhase from 'api/phases/usePhase';
+
+import useLocale from 'hooks/useLocale';
+
 import { FormType } from 'components/FormBuilder/utils';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
@@ -19,6 +23,10 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl, MessageDescriptor } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+
+import { saveIdeaFormAsPDF } from '../../project/inputForm/saveIdeaFormAsPDF';
+import { supportsNativeSurvey } from '../../project/inputImporter/ReviewSection/utils';
+import { saveSurveyAsPDF } from '../../project/nativeSurvey/saveSurveyAsPDF';
 
 import messages from './messages';
 
@@ -34,7 +42,7 @@ interface Props {
   open: boolean;
   formType: FormType;
   onClose: () => void;
-  onExport: (params: FormPDFExportFormValues) => Promise<void>;
+  phaseId: string;
 }
 
 const CLICK_EXPORT_MESSAGES: { [key in FormType]: MessageDescriptor } = {
@@ -47,10 +55,12 @@ const IT_IS_POSSIBLE_MESSAGES: { [key in FormType]: MessageDescriptor } = {
   survey: messages.itIsAlsoPossibleSurvey,
 };
 
-const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
+const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
+  const locale = useLocale();
+  const { data: phase } = usePhase(phaseId);
 
   const schema = object({
     personal_data: boolean(),
@@ -61,6 +71,24 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
+
+  if (!phase) {
+    return null;
+  }
+
+  const participationMethod = phase.data.attributes.participation_method;
+
+  const onExport = async ({ personal_data }: FormPDFExportFormValues) => {
+    if (supportsNativeSurvey(participationMethod)) {
+      await saveSurveyAsPDF({
+        phaseId,
+        locale,
+        personal_data,
+      });
+    } else {
+      await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
+    }
+  };
 
   const handleExport = async (formValues: FormPDFExportFormValues) => {
     setLoading(true);

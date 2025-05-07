@@ -5,9 +5,7 @@ import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 
-import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
 import { API_PATH } from 'containers/App/constants';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
@@ -16,11 +14,9 @@ import Button from 'components/UI/ButtonWithLink';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
-import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 
 export const InputForm = () => {
   const inputImporterAllowed = useFeatureFlag({
@@ -31,15 +27,6 @@ export const InputForm = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
-  };
-
-  const locale = useLocale();
-
-  const handleExportPDF = async ({
-    personal_data,
-  }: FormPDFExportFormValues) => {
-    if (isNilOrError(locale)) return;
-    await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
   };
 
   const downloadExampleXlsxFile = async () => {
@@ -73,8 +60,8 @@ export const InputForm = () => {
           </Button>
           <DownloadPDFButtonWithModal
             mr="8px"
-            onExport={handleExportPDF}
             formType="input_form"
+            phaseId={phaseId}
           />
           <UpsellTooltip disabled={inputImporterAllowed}>
             <Button
