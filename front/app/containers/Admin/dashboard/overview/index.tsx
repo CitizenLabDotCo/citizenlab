@@ -12,7 +12,6 @@ import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard
 import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
-import Outlet from 'components/Outlet';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
