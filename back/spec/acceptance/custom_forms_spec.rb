@@ -119,7 +119,7 @@ resource 'Custom Forms' do
       let(:project_id) { context.id }
 
       get 'web_api/v1/projects/:project_id/custom_form' do
-        example_request 'Returns the custom form for a phase' do
+        example_request 'Returns the custom form for a project' do
           assert_status 200
         end
       end
