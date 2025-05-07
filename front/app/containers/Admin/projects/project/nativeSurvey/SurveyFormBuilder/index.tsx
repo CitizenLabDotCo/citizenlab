@@ -9,18 +9,19 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocale from 'hooks/useLocale';
 
 import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
-import { API_PATH } from 'containers/App/constants';
 
 import FormBuilder from 'components/FormBuilder/edit';
 
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
 
-const SurveyFormBuilder = () => {
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId?: string;
-  };
+const SurveyFormBuilder = ({
+  projectId,
+  phaseId,
+}: {
+  projectId: string;
+  phaseId: string;
+}) => {
   const [searchParams] = useSearchParams();
   const copyFrom = searchParams.get('copy_from');
   const { data: phase } = usePhase(phaseId);
@@ -44,11 +45,10 @@ const SurveyFormBuilder = () => {
     : clearOptionAndStatementIds(formCustomFields);
 
   // PDF downloading
-  const downloadPdfLink = `${API_PATH}/phases/${phaseId}/importer/export_form/idea/pdf`;
   const handleExportPDF = async ({
     personal_data,
   }: FormPDFExportFormValues) => {
-    await saveSurveyAsPDF({ downloadPdfLink, locale, personal_data });
+    await saveSurveyAsPDF({ phaseId, locale, personal_data });
   };
 
   return (
@@ -64,4 +64,12 @@ const SurveyFormBuilder = () => {
   );
 };
 
-export default SurveyFormBuilder;
+export default () => {
+  const { projectId, phaseId } = useParams();
+
+  if (typeof projectId !== 'string' || typeof phaseId !== 'string') {
+    return null;
+  }
+
+  return <SurveyFormBuilder projectId={projectId} phaseId={phaseId} />;
+};

@@ -25,7 +25,6 @@ import DownloadPDFButtonWithModal from 'components/FormBuilder/components/FormBu
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
 
@@ -58,12 +57,6 @@ const EmptyState = () => {
     return null;
   }
 
-  const { downloadPdfLink: surveyDownloadPdfLink } = getFormActionsConfig(
-    project.data,
-    () => {},
-    phase.data
-  );
-
   const downloadExampleXlsxFile = async () => {
     const blob = await requestBlob(
       `${API_PATH}/phases/${phaseId}/importer/export_form/idea/xlsx`,
@@ -79,7 +72,7 @@ const EmptyState = () => {
 
     if (supportsNativeSurvey(participationMethod)) {
       await saveSurveyAsPDF({
-        downloadPdfLink: surveyDownloadPdfLink,
+        phaseId,
         locale,
         personal_data,
       });
