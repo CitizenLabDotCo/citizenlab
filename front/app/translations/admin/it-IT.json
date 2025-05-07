@@ -1040,7 +1040,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Puoi combinare risposte online e offline. Per caricare le risposte offline, vai alla scheda \"Sondaggio\" di questo progetto e clicca su \"Importa\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.",
   "app.containers.Admin.projects.all.notes": "Note",
-  "app.containers.Admin.projects.all.personalDataExplanation2": "Check the box below, if you want your downloaded PDF to contain name, last name, and email fields. Upon upload of the paper form, we will use that user data, to auto-generate an account for the offline survey respondent.",
+  "app.containers.Admin.projects.all.personalDataExplanation2": "Seleziona la casella sottostante se vuoi che il PDF scaricato contenga i campi nome, cognome ed e-mail. Al momento del caricamento del modulo cartaceo, utilizzeremo i dati dell'utente per generare automaticamente un account per il partecipante all'indagine offline.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Summary",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Comments",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Comment summary is available when there are 5 or more comments.",
