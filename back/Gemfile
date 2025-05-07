@@ -132,7 +132,7 @@ gem 'prawn', '~> 2.5'
 gem 'prawn-grouping', '~> 0.2.0'
 
 # Libraries for HTML to PDF
-gem 'gotenberg-ruby'
+gem 'gotenberg-client'
 gem 'pdf-reader'
 gem 'stringio'
 
