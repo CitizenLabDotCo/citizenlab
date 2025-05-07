@@ -20,7 +20,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def index?
-    user&.active? && !user.normal_user?
+    user&.active? && user.admin?
   end
 
   def seats?
