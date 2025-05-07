@@ -871,6 +871,7 @@
   "app.containers.Admin.inspirationHub.Filters.Country": "Land",
   "app.containers.Admin.inspirationHub.Filters.Method": "Methode",
   "app.containers.Admin.inspirationHub.Filters.Search": "Zoeken",
+  "app.containers.Admin.inspirationHub.Filters.Topic": "Thema",
   "app.containers.Admin.inspirationHub.Filters.population": "Inwonersaantal",
   "app.containers.Admin.inspirationHub.Highlighted": "Uitgelicht",
   "app.containers.Admin.inspirationHub.Ideation": "Ideeënvorming",

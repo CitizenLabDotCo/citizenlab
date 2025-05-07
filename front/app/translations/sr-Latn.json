@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Korisničko ime",
   "app.containers.SignUp.viennaDataProtection": "bečka politika privatnosti",
   "app.containers.SiteMap.contributions": "Doprinosi",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Cookies",
   "app.containers.SiteMap.issues": "Problemi",
   "app.containers.SiteMap.options": "Solucije",
   "app.containers.SiteMap.projects": "Projekti",
