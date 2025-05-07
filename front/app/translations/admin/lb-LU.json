@@ -1034,7 +1034,7 @@
   "app.containers.Admin.projects.all.logicNotInPDF": "Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.",
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "Wéi och ëmmer, dëst ass net an Ärem aktuelle Plang abegraff. Kontaktéiert Äre Regierungs Erfolleg Manager oder Admin fir et opzemaachen.",
   "app.containers.Admin.projects.all.notes": "Notizen",
-  "app.containers.Admin.projects.all.personalDataExplanation2": "Check the box below, if you want your downloaded PDF to contain name, last name, and email fields. Upon upload of the paper form, we will use that user data, to auto-generate an account for the offline survey respondent.",
+  "app.containers.Admin.projects.all.personalDataExplanation2": "Maacht e Kräizchen an der Këscht hei ënnendrënner, wann Dir wëllt, datt Äert erofgeluede PDF Felder fir Numm, Familljennumm an E-Mail enthält. Nom Eroplueden vum Pabeierformular benotze mir dës Benotzerdaten, fir automatesch e Kont fir de Befroten vun der Offline-Ëmfro ze generéieren.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Summary",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Comments",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Comment summary is available when there are 5 or more comments.",
