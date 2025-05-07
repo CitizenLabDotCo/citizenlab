@@ -6,12 +6,12 @@ import {
   getProjectFilter,
 } from 'components/admin/GraphCards/_utils/query';
 
-import { underscoreCase } from '../StatCard/useStatCard/parse';
+import { underscoreCase } from '../../../../../../components/admin/GraphCards/StatCard/useStatCard/parse';
 import {
   StatCardData,
   StatCardProps,
   StatCardConfig,
-} from '../StatCard/useStatCard/typings';
+} from '../../../../../../components/admin/GraphCards/StatCard/useStatCard/typings';
 
 import messages from './messages';
 

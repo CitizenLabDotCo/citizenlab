@@ -12,7 +12,6 @@ import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard
 import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
-import Outlet from 'components/Outlet';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -26,6 +25,11 @@ import SelectableResourceByProjectChart from './charts/SelectableResourceByProje
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import { getSensibleResolution } from './getSensibleResolution';
 import overviewMessages from './messages';
+import InputStatusCard from './charts/InputStatusCard';
+import EmailDeliveriesCard from './charts/EmailDeliveriesCard';
+import InvitationsCard from './charts/InvitationsCard';
+import EventsCard from './charts/EventsCard';
+import ProjectStatusCard from './charts/ProjectStatusCard';
 
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
@@ -158,8 +162,7 @@ const OverviewDashboard = () => {
           {formatMessage(overviewMessages.projectsAndParticipation)}
         </Title>
         <Column>
-          <Outlet
-            id="app.containers.Admin.dashboard.summary.projectStatus"
+          <ProjectStatusCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
@@ -203,15 +206,13 @@ const OverviewDashboard = () => {
             {formatMessage(overviewMessages.management)}
           </Title>
           <Column>
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.inputStatus"
+            <InputStatusCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={resolution}
             />
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.events"
+            <EventsCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
@@ -219,15 +220,13 @@ const OverviewDashboard = () => {
             />
           </Column>
           <Column>
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.emailDeliveries"
+            <EmailDeliveriesCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={resolution}
             />
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.invitations"
+            <InvitationsCard
               projectId={currentProjectFilter}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}

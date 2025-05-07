@@ -12,8 +12,8 @@ import {
 import VisitorsCard from 'components/admin/GraphCards/VisitorsCard';
 import VisitorsTrafficSourcesCard from 'components/admin/GraphCards/VisitorsTrafficSourcesCard';
 
-import VisitorsLanguageCard from '../../components/VisitorsLanguageCard';
-import VisitorsTypeCard from '../../components/VisitorsTypeCard';
+import VisitorsLanguageCard from './VisitorsLanguageCard';
+import VisitorsTypeCard from './VisitorsTypeCard';
 
 type Props = ProjectId & Dates & Resolution;
 

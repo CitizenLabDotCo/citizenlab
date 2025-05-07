@@ -1,7 +1,7 @@
 import React from 'react';
 
-import StatCard from '../StatCard';
-import { StatCardProps } from '../StatCard/useStatCard/typings';
+import StatCard from '../../../../../../components/admin/GraphCards/StatCard';
+import { StatCardProps } from '../../../../../../components/admin/GraphCards/StatCard/useStatCard/typings';
 
 import { eventsConfig } from './config';
 

@@ -6,12 +6,12 @@ import { formatCountValue } from 'components/admin/GraphCards/_utils/parse';
 import { getDateFilter } from 'components/admin/GraphCards/_utils/query';
 import { getTimePeriodMoment } from 'components/admin/GraphCards/_utils/resolution';
 
-import { underscoreCase } from '../StatCard/useStatCard/parse';
+import { underscoreCase } from '../../../../../../components/admin/GraphCards/StatCard/useStatCard/parse';
 import {
   StatCardData,
   StatCardProps,
   StatCardConfig,
-} from '../StatCard/useStatCard/typings';
+} from '../../../../../../components/admin/GraphCards/StatCard/useStatCard/typings';
 
 import messages from './messages';
 
