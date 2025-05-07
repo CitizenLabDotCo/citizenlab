@@ -1,5 +1,5 @@
 module ReportBuilder
-  class Queries::Visitors < ReportBuilder::Queries::Base
+  class Queries::VisitorLanguages < ReportBuilder::Queries::Base
     def run_query(
       start_at: nil,
       end_at: nil,
