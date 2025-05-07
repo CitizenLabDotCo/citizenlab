@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require "gotenberg"
+
+require 'gotenberg'
 
 module BulkImportIdeas::Exporters
   class IdeaHtmlPdfFormExporter < IdeaHtmlFormExporter
@@ -18,18 +19,8 @@ module BulkImportIdeas::Exporters
     def export
       # Render the form from HTML as a PDF using Chromium on Gotenburg
       html = ActionController::Base.new.render_to_string render_config
-      gotenberg_url = ENV['GOTENBURG_PDF_URL'].presence || 'http://gotenberg:3000'
-
-      gb = ::Gotenberg::Client.new(gotenberg_url)
-      output_pdf = Tempfile.new("my-pdf.pdf")
-      gb.html(html, output_pdf)
-      output_pdf
-
-      # ::Gotenberg::Chromium.call(gotenberg_url) do |doc|
-      #   doc.html html
-      #   doc.prefer_css_page_size
-      # end.to_binary
-
+      gb = GotenbergClient.new
+      gb.render_to_pdf(html)
     end
 
     # TODO: MAYBE NEED SOMETHING LIKE THIS TO GET THE EXACT POSITION OF THE TEXT IN PDF

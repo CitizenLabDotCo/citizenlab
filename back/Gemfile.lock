@@ -711,9 +711,6 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    gotenberg-client (0.1.1.9)
-      faraday
-      faraday-multipart
     graphql (2.4.13)
       base64
       fiber-storage
@@ -1355,7 +1352,6 @@ DEPENDENCIES
   frontend!
   google-cloud-document_ai (~> 1.4)
   google_tag_manager!
-  gotenberg-client
   groupdate (~> 6.5)
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
