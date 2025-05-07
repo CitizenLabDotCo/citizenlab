@@ -5,7 +5,7 @@ export interface IPhaseFileData {
     file: {
       url: string;
     };
-    ordering: string | null;
+    ordering: number | null;
     name: string;
     size: number;
     created_at: string;
