@@ -1346,7 +1346,9 @@ DEPENDENCIES
   email_campaigns!
   factory_bot_rails
   faker
+  faraday
   faraday-jwt (~> 0.1.0)
+  faraday-multipart
   flag_inappropriate_content!
   fog-aws (~> 3.24)
   frontend!
