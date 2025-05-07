@@ -28,14 +28,9 @@ const Statistic = ({
 }: Props) => {
   const { formatNumber } = useIntl();
 
-  // Format the numbers according to the locale
+  // Format the value according to the locale
   const formattedValue =
-    typeof value === 'string' ? formatNumber(parseInt(value, 10)) : value;
-
-  const formattedBottomLabelValue =
-    typeof bottomLabelValue === 'string'
-      ? formatNumber(parseInt(bottomLabelValue, 10))
-      : bottomLabelValue;
+    typeof value === 'string' ? value : value && formatNumber(value);
 
   return (
     <Box
@@ -56,7 +51,7 @@ const Statistic = ({
       {bottomLabel && (
         <StatisticBottomLabel
           bottomLabel={bottomLabel}
-          bottomLabelValue={formattedBottomLabelValue}
+          bottomLabelValue={bottomLabelValue}
         />
       )}
     </Box>
