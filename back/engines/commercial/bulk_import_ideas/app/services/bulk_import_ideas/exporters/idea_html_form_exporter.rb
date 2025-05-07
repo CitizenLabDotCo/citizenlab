@@ -150,10 +150,6 @@ module BulkImportIdeas::Exporters
       "*#{message}"
     end
 
-    def style
-      @style ||= AppConfiguration.instance.style
-    end
-
     def font_family
       default = "'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif"
       return default unless style['customFontName']
@@ -198,6 +194,10 @@ module BulkImportIdeas::Exporters
         custom_font_url = URI.join(host, custom_font_url)
       end
       custom_font_url
+    end
+
+    def style
+      @style ||= AppConfiguration.instance.style
     end
   end
 end
