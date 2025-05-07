@@ -3077,7 +3077,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "Terminé",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "Suivre des {areasTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "Il n'y a actuellement aucun projet actif pour vous dans les {areasTerm} que vous suivez.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows": "Ce widget affiche les projets liés aux {areasTerm} que l'utilisateur suit. Si l'utilisateur ne suit pas encore de {areasTerm}, la liste des {areasTerm} disponibles sera affichée (avec un maximum de 100 {areasTerm}).",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Aucun projet ou dossier publié disponible",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Projets et dossiers publiés",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Ce widget affichera les projets et dossiers publiés, selon l'ordre défini sur la page des projets. Ce comportement est similaire à celui de l'onglet \"Actif\" de l'ancienne version du widget de projets.",

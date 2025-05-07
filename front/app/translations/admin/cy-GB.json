@@ -3077,7 +3077,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "Wedi'i wneud",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "Dilynwch {areasTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "Ar hyn o bryd nid oes unrhyw brosiectau gweithredol i chi yn y {areasTerm} rydych chi'n ei ddilyn.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows": "Mae'r teclyn hwn yn dangos prosiectau sy'n gysylltiedig â'r {areasTerm} mae'r defnyddiwr yn ei ddilyn. Os nad yw'r defnyddiwr yn dilyn unrhyw {areasTerm} eto, bydd y teclyn yn dangos y {areasTerm} sydd ar gael i'w ddilyn. Yn yr achos hwn bydd y teclyn yn dangos uchafswm o 100 {areasTerm}.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Dim prosiectau neu ffolderi cyhoeddedig ar gael",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Prosiectau a ffolderi cyhoeddedig",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Bydd y teclyn hwn yn achos y prosiectau a'r ffolderi sy'n cael eu cyhoeddi ar hyn o bryd, gan barchu'r drefn a ddiffinnir ar y dudalen prosiectau. Mae'r ymddygiad hwn yr un peth â thab \"gweithredol\" y teclyn prosiectau \"etifeddiaeth\".",

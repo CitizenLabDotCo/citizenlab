@@ -3077,7 +3077,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "Hecho",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "Sigue {areasTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "Actualmente no hay proyectos activos para ti en la página {areasTerm} que sigues.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows": "Este widget muestra los proyectos asociados a la {areasTerm} que sigue el usuario. Si el usuario aún no sigue ninguna {areasTerm} , el widget mostrará las {areasTerm} disponibles para seguir. En este caso, el widget mostrará un máximo de 100 {areasTerm}.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "No hay proyectos publicados ni carpetas disponibles",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Proyectos y carpetas publicados",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Este widget mostrará los proyectos y carpetas que estén publicados en ese momento, respetando el orden definido en la página de proyectos. Este comportamiento es el mismo que el de la pestaña \"activo\" del widget de proyectos \"heredado\".",

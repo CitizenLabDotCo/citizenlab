@@ -3077,7 +3077,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "Fertig",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "{areasTerm} folgen",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "In dem/den {areasTerm}, dem/du du folgst, gibt es derzeit keine aktiven Projekte.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows": "Dieses Widget zeigt Projekte an, die mit dem {areasTerm} verbunden sind, dem Nutzer*innen folgen. Wenn Nutzer*innen noch keinem {areasTerm} folgen, zeigt das Widget die verfügbaren {areasTerm} zum Folgen an. In diesem Fall zeigt das Widget maximal 100 {areasTerm} an.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Keine veröffentlichten Projekte oder Ordner verfügbar",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Veröffentlichte Projekte und Ordner",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Dieses Widget zeigt die Projekte und Ordner an, die derzeit veröffentlicht sind, wobei die auf der Projektseite festgelegte Reihenfolge beibehalten wird. Dieses Verhalten entspricht dem der Registerkarte \"Aktiv\" des Widgets \"Projekte und Ordner (alte Ansicht)\".",

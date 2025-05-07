@@ -3077,7 +3077,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "Done",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "Follow {areasTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "There are currently no active projects for you in the {areasTerm} that you follow.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows": "This widget shows projects associated with the {areasTerm} the user follows. If the user does not follow any {areasTerm} yet, the widget will show the available {areasTerm} to follow. In this case the widget will show a maximum of 100 {areasTerm}.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "No published projects or folders available",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Published projects and folders",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "This widget will case the projects and folders that are currently published, respecting the ordering defined on the projects page. This behavior is the same as the \"active\" tab of the \"legacy\" projects widget.",
