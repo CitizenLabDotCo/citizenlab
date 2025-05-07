@@ -116,10 +116,10 @@ export interface DemographicsParams extends BaseParams {
   props: DemographicsProps;
 }
 
-type Role = 'admin' | 'project_folder_moderator' | 'project_moderator' | 'user';
+type ExcludeRoles = 'exclude_admins_and_moderators';
 
 export interface ParticipantsProps extends AnalyticsProps, CompareProps {
-  exclude_roles?: Role[];
+  exclude_roles?: ExcludeRoles;
 }
 
 export interface ParticipantsParams extends BaseParams {
