@@ -99,7 +99,7 @@ module ReportBuilder
           .joins('INNER JOIN users ON users.id = analytics_fact_participations.dimension_user_id')
 
         # Normal users have a 'rules' attribute which is just an empty array.
-        participations = participations.where("jsonb_array_length(users.roles) = 0")
+        participations = participations.where('jsonb_array_length(users.roles) = 0')
       end
 
       participations

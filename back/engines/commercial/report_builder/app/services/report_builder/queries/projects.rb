@@ -11,6 +11,7 @@ module ReportBuilder
         .joins(:admin_publication)
         .where(id: overlapping_project_ids)
         .where(admin_publication: { publication_status: publication_statuses })
+        .not_hidden
 
       periods = Phase
         .select(
