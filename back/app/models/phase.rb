@@ -368,8 +368,6 @@ class Phase < ApplicationRecord
       ParticipationMethod::Information.new(self)
     when 'ideation'
       ParticipationMethod::Ideation.new(self)
-    when 'common_ground'
-      ParticipationMethod::CommonGround.new(self)
     when 'proposals'
       ParticipationMethod::Proposals.new(self)
     when 'native_survey'
