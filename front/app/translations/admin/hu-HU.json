@@ -1040,7 +1040,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Az online és offline válaszokat kombinálhatja. Offline válaszok feltöltéséhez lépjen a projekt „Felmérés” lapjára, és kattintson az „Importálás” gombra.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.",
   "app.containers.Admin.projects.all.notes": "Megjegyzések",
-  "app.containers.Admin.projects.all.personalDataExplanation2": "Check the box below, if you want your downloaded PDF to contain name, last name, and email fields. Upon upload of the paper form, we will use that user data, to auto-generate an account for the offline survey respondent.",
+  "app.containers.Admin.projects.all.personalDataExplanation2": "Jelölje be az alábbi négyzetet, ha azt szeretné, hogy a letöltött PDF tartalmazza a név, vezetéknév és e-mail mezőket. A papír alapú űrlap feltöltésekor ezeket a felhasználói adatokat fogjuk felhasználni egy fiók automatikus létrehozásához az offline felmérés válaszadója számára.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Summary",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Comments",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Comment summary is available when there are 5 or more comments.",
