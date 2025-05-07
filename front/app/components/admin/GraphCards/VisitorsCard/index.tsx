@@ -41,7 +41,6 @@ const VisitorsCard = ({
   return (
     <GraphCard
       title={cardTitle}
-      infoTooltipContent={formatMessage(messages.cardTitleTooltipMessage)}
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
