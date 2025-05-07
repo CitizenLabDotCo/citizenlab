@@ -29,17 +29,10 @@ import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { SignUpInFlow } from 'containers/Authentication/typings';
 
-import {
-  Dates,
-  ProjectId,
-  Resolution,
-} from 'components/admin/GraphCards/typings';
 import { ManagerType } from 'components/admin/PostManager';
 import { OutletRenderProps } from 'components/Outlet';
 import PageLoading from 'components/UI/PageLoading';
 import { ITabItem } from 'components/UI/Tabs';
-
-export type StatCardProps = ProjectId & Dates & Resolution;
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
