@@ -16,8 +16,6 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
-import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
-
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';
@@ -34,7 +32,6 @@ type Props = {
   setShowDeleteModal: (show: boolean) => void;
   setDropdownOpened: (opened: boolean) => void;
   downloadExcelLink: string;
-  onPDFExport?: (formValues: FormPDFExportFormValues) => Promise<void>;
 };
 
 const DropdownSettings = ({
@@ -45,7 +42,6 @@ const DropdownSettings = ({
   isDropdownOpened,
   downloadExcelLink,
   setShowDeleteModal,
-  onPDFExport,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -127,11 +123,7 @@ const DropdownSettings = ({
                     {formatMessage(messages.duplicateAnotherSurvey)}
                   </Text>
                 </DropdownListItem>
-                {onPDFExport && (
-                  <DownloadPDFDropdownListItemWithModal
-                    onExport={onPDFExport}
-                  />
-                )}
+                <DownloadPDFDropdownListItemWithModal phaseId={phaseId} />
                 <UpsellTooltip
                   disabled={inputImporterAllowed}
                   // Needed to ensure DropdownListItem takes up the full width of the dropdown

@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Felhasználónév",
   "app.containers.SignUp.viennaDataProtection": "a bécsi adatvédelmi szabályzat",
   "app.containers.SiteMap.contributions": "Hozzájárulások",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Cookies",
   "app.containers.SiteMap.issues": "Megjegyzések",
   "app.containers.SiteMap.options": "Opciók",
   "app.containers.SiteMap.projects": "Projektek",

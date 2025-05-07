@@ -199,6 +199,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       await updateIdea({
         id: ideaId,
         requestBody: {
+          publication_status: 'published',
           ...supportedFormData,
           ...(location_description ? { location_description } : {}),
           ...(location_point_geojson ? { location_point_geojson } : {}),
