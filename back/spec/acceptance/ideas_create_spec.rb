@@ -616,6 +616,49 @@ resource 'Ideas' do
         end
       end
     end
+
+    context 'in a common ground phase' do
+      # [Adrien] Rework probably too many parameters and body should not be required.
+      public_input_params(self)
+
+      # [Adrien] with_permissions necessary?
+      let(:phase) { create(:common_ground_phase, :ongoing, with_permissions: true) }
+      let(:project) { phase.project }
+
+      let(:idea_attrs) { attributes_for(:idea) }
+      let(:title_multiloc) { idea_attrs[:title_multiloc] }
+      let(:publication_status) { 'published' }
+
+      context 'when visitor' do
+        example_request '[Unauthorized] Cannot create a common-ground input' do
+          assert_status 401
+          expect(json_response_body)
+            .to match(errors: { base: [{ error: 'posting_not_supported' }] })
+        end
+      end
+
+      context 'when regular user' do
+        before { header_token_for(user) }
+
+        let(:user) { create(:user) }
+
+        example_request '[Unauthorized] Cannot create a common-ground input' do
+          assert_status 401
+          expect(json_response_body)
+            .to match(errors: { base: [{ error: 'posting_not_supported' }] })
+        end
+      end
+
+      context 'when admin-like' do
+        before { admin_header_token }
+
+        let(:phase_ids) { [phase.id] }
+
+        example_request 'Create a common-ground input' do
+          assert_status 201
+        end
+      end
+    end
   end
 end
 

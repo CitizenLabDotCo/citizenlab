@@ -153,5 +153,10 @@ FactoryBot.define do
     factory :common_ground_phase do
       participation_method { 'common_ground' }
     end
+
+    trait :ongoing do
+      start_at { Time.zone.today - 7.days }
+      end_at { Time.zone.today + 7.days }
+    end
   end
 end
