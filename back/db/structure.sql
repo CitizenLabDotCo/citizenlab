@@ -2198,7 +2198,8 @@ CREATE TABLE public.custom_fields (
     ask_follow_up boolean DEFAULT false NOT NULL,
     page_button_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     page_button_link character varying,
-    question_category character varying
+    question_category character varying,
+    include_in_printed_form boolean DEFAULT true NOT NULL
 );
 
 
@@ -7075,6 +7076,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250502112945'),
 ('20250501134516'),
 ('20250416120221'),
 ('20250415094344'),

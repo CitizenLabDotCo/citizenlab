@@ -459,6 +459,7 @@ module IdeaCustomFields
         :map_config_id,
         :ask_follow_up,
         :question_category,
+        :include_in_printed_form,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES,
           page_button_label_multiloc: CL2_SUPPORTED_LOCALES,
