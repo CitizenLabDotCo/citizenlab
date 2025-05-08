@@ -60,11 +60,14 @@ resource 'Omniauth Callback', document: false do
       expect(response_headers['Location']).to include('authentication_error=true')
     end
   end
+
   context 'when the user is logged in' do
     before { @user = create(:user) }
 
     parameter :user_id, 'User ID', required: true
+
     let(:user_id) { @user.id }
+
     get '/auth/clave_unica/logout_data' do
       example_request 'Returns ClaveUnica redirect URL' do
         expect(status).to eq(200)
