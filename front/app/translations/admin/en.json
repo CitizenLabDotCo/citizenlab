@@ -1041,8 +1041,6 @@
   "app.containers.Admin.projects.all.deleteProjectConfirmation": "Are you sure you want to delete this project? This cannot be undone.",
   "app.containers.Admin.projects.all.deleteProjectError": "There was an error deleting this project, please try again later.",
   "app.containers.Admin.projects.all.exportAsPDF1": "Download PDF form",
-  "app.containers.Admin.projects.all.instructionsStart": "Instructions at the start",
-  "app.containers.Admin.projects.all.instructionsStartBodyError": "Instructions at the start is required for every locale",
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "You can combine online and offline responses. To upload offline responses, go to the 'Input manager' tab of this project, and click 'Import'.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "You can combine online and offline responses. To upload offline responses, go to the 'Survey' tab of this project, and click 'Import'.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.",
