@@ -806,6 +806,8 @@
   "app.containers.Admin.communityMonitor.upsell.upsellDescription6": "Preswylwyr yn cael eu recriwtio ar hap ar y platfform",
   "app.containers.Admin.communityMonitor.upsell.upsellDescription7": "Adroddiadau PDF chwarterol, yn barod i'w rhannu",
   "app.containers.Admin.communityMonitor.upsell.upsellTitle": "Deall sut mae'ch cymuned yn teimlo cyn i faterion dyfu",
+  "app.containers.Admin.earlyAccessLabel": "Mynediad Cynnar",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Mae hon yn nodwedd sydd newydd ei rhyddhau sydd ar gael yn Mynediad Cynnar.",
   "app.containers.Admin.emails.addCampaign": "Creu e-bost",
   "app.containers.Admin.emails.addCampaignTitle": "Creu e-bost newydd",
   "app.containers.Admin.emails.allParticipantsInProject": "Pawb sy'n cymryd rhan yn y prosiect",
