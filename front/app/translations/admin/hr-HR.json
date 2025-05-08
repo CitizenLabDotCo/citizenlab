@@ -806,6 +806,8 @@
   "app.containers.Admin.communityMonitor.upsell.upsellDescription6": "Stanovnici nasumično regrutirani na platformi",
   "app.containers.Admin.communityMonitor.upsell.upsellDescription7": "Tromjesečna izvješća u PDF formatu, spremna za dijeljenje",
   "app.containers.Admin.communityMonitor.upsell.upsellTitle": "Shvatite kako se vaša zajednica osjeća prije nego problemi porastu",
+  "app.containers.Admin.earlyAccessLabel": "Rani pristup",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Ovo je novoizdana značajka dostupna u ranom pristupu.",
   "app.containers.Admin.emails.addCampaign": "Stvorite e-poštu",
   "app.containers.Admin.emails.addCampaignTitle": "Kreirajte novu e-poruku",
   "app.containers.Admin.emails.allParticipantsInProject": "Svi sudionici projekta",
