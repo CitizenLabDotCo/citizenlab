@@ -9,11 +9,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import { object, boolean } from 'yup';
 
 import useUpdateCustomForm from 'api/custom_form/useUpdateCustomForm';
+import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
@@ -45,14 +47,6 @@ const DEFAULT_VALUES = {
   personal_data: false,
 } satisfies FormPDFExportFormValues;
 
-interface Props {
-  open: boolean;
-  formType: FormType;
-  onClose: () => void;
-  phaseId: string;
-  projectId: string;
-}
-
 const CLICK_EXPORT_MESSAGES: { [key in FormType]: MessageDescriptor } = {
   input_form: messages.clickExportToPDFIdeaForm,
   survey: messages.clickExportToPDFSurvey,
@@ -63,23 +57,22 @@ const IT_IS_POSSIBLE_MESSAGES: { [key in FormType]: MessageDescriptor } = {
   survey: messages.itIsAlsoPossibleSurvey,
 };
 
+type PDFExportModalProps = Props & {
+  phase: IPhaseData;
+};
+
 const PDFExportModal = ({
   open,
   formType,
   onClose,
-  phaseId,
-  projectId,
-}: Props) => {
+  phase,
+}: PDFExportModalProps) => {
   const { formatMessage } = useIntl();
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const locale = useLocale();
-  const { data: phase } = usePhase(phaseId);
-  const { mutateAsync: updateCustomForm } = useUpdateCustomForm({
-    projectId,
-    // WIP: still needs isFormPhaseSpecific check
-    phaseId,
-  });
+  const { mutateAsync: updateCustomForm } = useUpdateCustomForm(phase);
+  const phaseId = phase.id;
 
   const schema = object({
     personal_data: boolean(),
@@ -93,11 +86,7 @@ const PDFExportModal = ({
     resolver: yupResolver(schema),
   });
 
-  if (!phase) {
-    return null;
-  }
-
-  const participationMethod = phase.data.attributes.participation_method;
+  const participationMethod = phase.attributes.participation_method;
 
   const onExport = async ({ personal_data }: FormPDFExportFormValues) => {
     if (supportsNativeSurvey(participationMethod)) {
@@ -224,4 +213,19 @@ const PDFExportModal = ({
   );
 };
 
-export default PDFExportModal;
+type Props = {
+  open: boolean;
+  formType: FormType;
+  onClose: () => void;
+};
+
+export default (props: Props) => {
+  const { phaseId } = useParams();
+  const { data: phase } = usePhase(phaseId);
+
+  if (!phase) {
+    return null;
+  }
+
+  return <PDFExportModal phase={phase.data} {...props} />;
+};
