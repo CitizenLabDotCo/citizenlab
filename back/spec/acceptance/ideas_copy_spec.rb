@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
+require_relative 'shared/errors_examples'
 
 resource 'Ideas' do
   before do
@@ -20,9 +21,19 @@ resource 'Ideas' do
     let(:phase_id) { from_phase.id }
     let!(:ideas) { create_list(:idea, 3, phases: [from_phase]) }
 
-    example_request 'Copy ideas' do
-      expect(status).to eq(200)
-      expect(to_phase.ideas.size).to eq(ideas.size)
+    context 'when regular user' do
+      before { header_token_for create(:user) }
+
+      include_examples 'unauthorized'
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'Copy ideas into the target phase' do
+        expect(status).to eq(200)
+        expect(to_phase.ideas.size).to eq(ideas.size)
+      end
     end
   end
 end
