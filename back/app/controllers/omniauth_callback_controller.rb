@@ -203,7 +203,7 @@ class OmniauthCallbackController < ApplicationController
       value: auth_token(@user, provider).token,
       expires: 1.month.from_now,
       secure: !Rails.env.local?,
-      sameSite: 'strict'
+      same_site: 'Strict'
     }
   end
 
