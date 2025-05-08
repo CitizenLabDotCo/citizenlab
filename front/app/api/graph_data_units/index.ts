@@ -25,7 +25,7 @@ import { ReactionsByTimeResponse } from './responseTypes/ReactionsByTimeWidget';
 import { RegistrationsResponse } from './responseTypes/RegistrationsWidget';
 import { SingleIdeaResponse } from './responseTypes/SingleIdeaWidget';
 import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
-import { VisitorsLanguagesResponse } from './responseTypes/VisitorLanguagesWidget';
+import { VisitorsLanguagesResponse } from './responseTypes/VisitorsLanguagesWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
 import { VisitorsResponse } from './responseTypes/VisitorsWidget';
 // Hooks
