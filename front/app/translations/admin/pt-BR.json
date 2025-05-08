@@ -806,6 +806,8 @@
   "app.containers.Admin.communityMonitor.upsell.upsellDescription6": "Residentes recrutados aleatoriamente na plataforma",
   "app.containers.Admin.communityMonitor.upsell.upsellDescription7": "Relatórios trimestrais em PDF, prontos para serem compartilhados",
   "app.containers.Admin.communityMonitor.upsell.upsellTitle": "Entenda como sua comunidade se sente antes que os problemas aumentem",
+  "app.containers.Admin.earlyAccessLabel": "Acesso antecipado",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Esse é um recurso recém-lançado disponível no Acesso antecipado.",
   "app.containers.Admin.emails.addCampaign": "Criar e-mail",
   "app.containers.Admin.emails.addCampaignTitle": "Criar um novo e-mail",
   "app.containers.Admin.emails.allParticipantsInProject": "Todos os participantes do projeto",
