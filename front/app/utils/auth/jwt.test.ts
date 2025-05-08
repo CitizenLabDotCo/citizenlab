@@ -1,4 +1,5 @@
 import * as cookies from 'js-cookie';
+import { SECURE_COOKIE } from '../cookie';
 import { setJwt } from './jwt';
 
 jest.mock('js-cookie', () => ({
@@ -6,8 +7,6 @@ jest.mock('js-cookie', () => ({
   get: jest.fn(),
   remove: jest.fn(),
 }));
-
-import { SECURE_COOKIE } from '../cookie';
 
 describe('jwt utilities', () => {
   afterEach(() => {
