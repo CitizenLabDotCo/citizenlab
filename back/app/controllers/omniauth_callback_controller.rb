@@ -202,7 +202,7 @@ class OmniauthCallbackController < ApplicationController
     cookies[:cl2_jwt] = {
       value: auth_token(@user, provider).token,
       expires: 1.month.from_now,
-      secure: !Rails.env.local?,
+      secure: false, # Unfortunately, we can't use secure cookies in production yet (probably some HTTP steps somewhere)
       same_site: 'Lax' # Strict won't work due to SSO redirect, so we explicitly document use of Lax
     }
   end
