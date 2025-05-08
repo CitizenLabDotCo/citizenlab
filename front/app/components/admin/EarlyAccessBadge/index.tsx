@@ -7,44 +7,36 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-type Props = {
-  showBadge: boolean;
-};
-
-const EarlyAccessBadge = ({ showBadge }: Props) => {
+const EarlyAccessBadge = () => {
   const { formatMessage } = useIntl();
   return (
-    <>
-      {showBadge && (
-        <Box display="flex">
-          <Badge
-            color={colors.primary}
-            style={{
-              border: 'none',
-              padding: '0px',
-            }}
+    <Box display="flex">
+      <Badge
+        color={colors.primary}
+        style={{
+          border: 'none',
+          padding: '0px',
+        }}
+      >
+        <Box mt="0px" display="flex" alignItems="center">
+          {formatMessage(messages.earlyAccessLabel)}
+          <Tooltip
+            content={
+              <Box w="240px" style={{ textTransform: 'none' }}>
+                {formatMessage(messages.earlyAccessLabelExplanation)}
+              </Box>
+            }
           >
-            <Box mt="0px" display="flex" alignItems="center">
-              {formatMessage(messages.earlyAccessLabel)}
-              <Tooltip
-                content={
-                  <Box w="240px" style={{ textTransform: 'none' }}>
-                    {formatMessage(messages.earlyAccessLabelExplanation)}
-                  </Box>
-                }
-              >
-                <Icon
-                  ml="4px"
-                  width="16px"
-                  name="info-outline"
-                  fill={colors.primary}
-                />
-              </Tooltip>
-            </Box>
-          </Badge>
+            <Icon
+              ml="4px"
+              width="16px"
+              name="info-outline"
+              fill={colors.primary}
+            />
+          </Tooltip>
         </Box>
-      )}
-    </>
+      </Badge>
+    </Box>
   );
 };
 

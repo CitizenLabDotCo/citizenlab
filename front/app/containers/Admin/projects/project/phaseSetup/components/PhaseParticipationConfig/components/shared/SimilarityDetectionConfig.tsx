@@ -76,7 +76,7 @@ const SimilarityDetectionConfig = ({
             label={
               <>
                 <FormattedMessage {...messages.enableSimilarInputDetection} />
-                <EarlyAccessBadge showBadge={showEarlyAccessMessage} />
+                {showEarlyAccessMessage && <EarlyAccessBadge />}
               </>
             }
             checked={!!similarity_enabled && isInputIQActivated}

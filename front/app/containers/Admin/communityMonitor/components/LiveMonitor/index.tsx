@@ -38,7 +38,7 @@ const LiveMonitor = () => {
             {formatMessage(messages.communityMonitorLabel)}
           </Title>
           <Box mt="8px">
-            <EarlyAccessBadge showBadge={true} />
+            <EarlyAccessBadge />
           </Box>
         </Box>
 
