@@ -16,7 +16,11 @@ module ReportBuilder
         pageviews = pageviews.where(project_id: project_id)
       end
 
-      # TODO exclude_roles
+      if exclude_roles == 'exclude_admins_and_moderators'
+        pageviews = pageviews
+          .joins("LEFT JOIN impact_tracking_sessions ON impact_tracking_pageviews.session_id = impact_tracking_sessions.id")
+          .where("impact_tracking_sessions.highest_role IS NULL OR impact_tracking_sessions.highest_role = 'user'")
+      end
 
       # We first remove the 'en' locale from the list of supported locales,
       # because we want to make sure it is the last case in the SQL query.
