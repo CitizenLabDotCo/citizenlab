@@ -170,7 +170,8 @@ const PDFExportModal = ({
             <Feedback onlyShowErrors />
             <CollapsibleContainer
               mb="24px"
-              title={formatMessage(messages.instructionsStart)}
+              // To be configured
+              title={'Instructions start'}
               titleVariant="h4"
               titleAs="h2"
               titleFontWeight="bold"
@@ -182,7 +183,8 @@ const PDFExportModal = ({
               <Box p="24px">
                 <QuillMultilocWithLocaleSwitcher
                   name="print_start_multiloc"
-                  label={formatMessage(messages.instructionsStart)}
+                  // To be configured
+                  label={'Instructions start'}
                   noImages
                   noVideos
                   // noLinks
