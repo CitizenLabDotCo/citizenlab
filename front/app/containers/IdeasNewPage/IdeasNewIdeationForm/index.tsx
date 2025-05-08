@@ -60,7 +60,7 @@ const getConfig = (
 
 interface FormValues {
   title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
+  body_multiloc?: Multiloc; // Can be empty for the common_ground participation method
   author_id?: string;
   idea_images_attributes?: { image: string }[];
   idea_files_attributes?: {
@@ -175,9 +175,13 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     const disclaimerNeeded =
       data.idea_files_attributes ||
       data.idea_images_attributes ||
-      Object.values(data.body_multiloc).some((value) => value.includes('<img'));
+      Object.values(data.body_multiloc || {}).some((value) =>
+        value.includes('<img')
+      );
 
     setFormData(data);
+    console.log('handleDisclaimer', data);
+    console.log('disclaimerNeeded', disclaimerNeeded);
 
     if (data.publication_status === 'published') {
       if (disclaimerNeeded) {
@@ -218,7 +222,6 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       location_point_geojson,
       project_id: project.data.id,
       phase_ids,
-      publication_status: undefined, // TODO: Change this logic when handling draft ideas
     });
     updateSearchParams({ idea_id: idea.data.id });
     onSubmitCallback?.();

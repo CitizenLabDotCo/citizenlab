@@ -49,9 +49,10 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
     sort: 'new',
     projects: [projectId],
     phase: phaseId,
-    transitive: true,
+    transitive: false,
   });
   const { data: ideas, isLoading } = useIdeas(queryParameters);
+  console.log('ideas', ideas);
   const [previewPostId, setPreviewPostId] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
   const [selection, setSelection] = useState<Set<string>>(new Set());
