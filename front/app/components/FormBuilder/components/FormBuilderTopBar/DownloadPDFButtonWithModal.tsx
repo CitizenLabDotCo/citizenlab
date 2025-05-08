@@ -4,9 +4,7 @@ import { Button, ButtonProps } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import PDFExportModal, {
-  FormPDFExportFormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
+import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal';
 
 import { FormType } from 'components/FormBuilder/utils';
 import UpsellTooltip from 'components/UpsellTooltip';
@@ -16,13 +14,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props extends ButtonProps {
-  onExport: (formValues: FormPDFExportFormValues) => Promise<void>;
   formType: FormType;
+  phaseId: string;
 }
 
 const DownloadPDFButtonWithModal = ({
-  onExport,
   formType,
+  phaseId,
   ...buttonProps
 }: Props) => {
   const importPrintedFormsAllowed = useFeatureFlag({
@@ -48,7 +46,7 @@ const DownloadPDFButtonWithModal = ({
         open={exportModalOpen}
         formType={formType}
         onClose={() => setExportModalOpen(false)}
-        onExport={onExport}
+        phaseId={phaseId}
       />
     </>
   );

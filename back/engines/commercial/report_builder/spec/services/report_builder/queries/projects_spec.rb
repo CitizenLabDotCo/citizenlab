@@ -42,6 +42,9 @@ RSpec.describe ReportBuilder::Queries::Projects do
       # Empty project
       create(:project)
 
+      # Community monitor project - should not be returned
+      create(:community_monitor_project)
+
       # Make TimeBoundariesParser work as expected
       AppConfiguration.instance.update!(created_at: Date.new(2019, 12, 31))
 

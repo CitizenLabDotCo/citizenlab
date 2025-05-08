@@ -12,12 +12,9 @@ import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 
-import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
 import buttonMessages from 'containers/Admin/projects/project/inputForm/messages';
 import { API_PATH } from 'containers/App/constants';
 
@@ -25,24 +22,17 @@ import DownloadPDFButtonWithModal from 'components/FormBuilder/components/FormBu
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
-import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
 
-import { saveIdeaFormAsPDF } from '../../inputForm/saveIdeaFormAsPDF';
-import { saveSurveyAsPDF } from '../../nativeSurvey/saveSurveyAsPDF';
 import sharedMessages from '../messages';
 
 import messages from './messages';
 import { isPDFUploadSupported, supportsNativeSurvey } from './utils';
 
 const EmptyState = () => {
-  const locale = useLocale();
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
+  const { phaseId } = useParams() as {
     phaseId: string;
   };
-  const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 
   const participationMethod = phase?.data.attributes.participation_method;
@@ -54,38 +44,12 @@ const EmptyState = () => {
 
   const pdfImportSupported = isPDFUploadSupported(participationMethod);
 
-  if (!project || !phase) {
-    return null;
-  }
-
-  const { downloadPdfLink: surveyDownloadPdfLink } = getFormActionsConfig(
-    project.data,
-    () => {},
-    phase.data
-  );
-
   const downloadExampleXlsxFile = async () => {
     const blob = await requestBlob(
       `${API_PATH}/phases/${phaseId}/importer/export_form/idea/xlsx`,
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     );
     saveAs(blob, 'example.xlsx');
-  };
-
-  const handleExportPDF = async ({
-    personal_data,
-  }: FormPDFExportFormValues) => {
-    if (isNilOrError(locale)) return;
-
-    if (supportsNativeSurvey(participationMethod)) {
-      await saveSurveyAsPDF({
-        downloadPdfLink: surveyDownloadPdfLink,
-        locale,
-        personal_data,
-      });
-    } else {
-      await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
-    }
   };
 
   return (
@@ -127,8 +91,8 @@ const EmptyState = () => {
                   ? 'survey'
                   : 'input_form'
               }
-              onExport={handleExportPDF}
               mr="8px"
+              phaseId={phaseId}
             />
           )}
           <UpsellTooltip disabled={inputImporterAllowed}>
