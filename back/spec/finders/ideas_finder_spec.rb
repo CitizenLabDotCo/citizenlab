@@ -43,13 +43,21 @@ describe IdeasFinder do
   end
 
   describe '#transitive_condition' do
-    before do
+    let!(:non_transitive_ids) { create_pair(:proposal).pluck(:id) }
+
+    it 'returns transitive ideas' do
       params[:transitive] = true
-      create(:proposal)
+      expect(result_record_ids).to match_array ideas.map(&:id)
     end
 
-    it 'returns the correct records' do
-      expect(result_record_ids).to match_array ideas.map(&:id)
+    it 'returns non-transitive ideas' do
+      params[:transitive] = 'false'
+      expect(result_record_ids).to match_array non_transitive_ids
+    end
+
+    it 'does not filter records' do
+      params.delete(:transitive)
+      expect(result_record_ids).to match_array ideas.map(&:id) + non_transitive_ids
     end
   end
 
