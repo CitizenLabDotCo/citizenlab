@@ -806,6 +806,8 @@
   "app.containers.Admin.communityMonitor.upsell.upsellDescription6": "Residents recruited randomly on the platform",
   "app.containers.Admin.communityMonitor.upsell.upsellDescription7": "Quarterly PDF reports, ready to share",
   "app.containers.Admin.communityMonitor.upsell.upsellTitle": "Understand how your community feels before issues grow",
+  "app.containers.Admin.earlyAccessLabel": "Early Access",
+  "app.containers.Admin.earlyAccessLabelExplanation": "This is a newly released feature available in Early Access.",
   "app.containers.Admin.emails.addCampaign": "Create email",
   "app.containers.Admin.emails.addCampaignTitle": "Направите нову е-пошту",
   "app.containers.Admin.emails.allParticipantsInProject": "All participants in project",
