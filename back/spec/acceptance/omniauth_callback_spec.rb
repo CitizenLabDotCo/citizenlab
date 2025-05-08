@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -60,9 +61,8 @@ resource 'Omniauth Callback', document: false do
     end
   end
   context 'when the user is logged in' do
-    before do
-      @user = create(:user)
-    end
+    before { @user = create(:user) }
+
     parameter :user_id, 'User ID', required: true
     let(:user_id) { @user.id }
     get '/auth/clave_unica/logout_data' do
