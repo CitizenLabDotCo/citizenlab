@@ -1,5 +1,5 @@
 module ReportBuilder
-  class Queries::VisitorTypes < ReportBuilder::Queries::Base
+  class Queries::DeviceTypes < ReportBuilder::Queries::Base
     def run_query(
       start_at: nil,
       end_at: nil,
