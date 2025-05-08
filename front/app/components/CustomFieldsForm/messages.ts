@@ -37,4 +37,14 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.fieldRequired',
     defaultMessage: 'The field "{fieldName}" is required',
   },
+  fieldMaximum: {
+    id: 'app.components.CustomFieldsForm.fieldMaximum',
+    defaultMessage:
+      'At most {maxSelections} options can be selected for the field "{fieldName}"',
+  },
+  fieldMinimum: {
+    id: 'app.components.CustomFieldsForm.fieldMinimum',
+    defaultMessage:
+      'At least {minSelections} options can be selected for the field "{fieldName}"',
+  },
 });

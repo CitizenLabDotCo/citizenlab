@@ -21,7 +21,14 @@ const generateYupValidationSchema = ({
   const schema: Record<string, any> = {};
 
   pageQuestions.forEach((question) => {
-    const { input_type, key, required, title_multiloc } = question;
+    const {
+      input_type,
+      key,
+      required,
+      minimum_select_count,
+      maximum_select_count,
+      title_multiloc,
+    } = question;
 
     switch (input_type) {
       case 'text_multiloc': {
@@ -104,14 +111,45 @@ const generateYupValidationSchema = ({
       }
 
       case 'multiselect': {
-        // TODO: Deal with minimum_select_count and maximum_select_count attributes
         // Should we also enum the option keys?
-        schema[key] = required
-          ? array()
-              .of(string())
-              .min(1, formatMessage(messages.topicRequired))
-              .required(formatMessage(messages.topicRequired))
-          : array().nullable();
+        let fieldSchema = array().of(string());
+        if (required) {
+          fieldSchema = fieldSchema
+            .required(
+              formatMessage(messages.fieldRequired, {
+                fieldName: localize(title_multiloc),
+              })
+            )
+            .min(
+              1,
+              formatMessage(messages.fieldRequired, {
+                fieldName: localize(title_multiloc),
+              })
+            );
+        } else {
+          fieldSchema = fieldSchema.default([]);
+        }
+
+        if (minimum_select_count) {
+          fieldSchema = fieldSchema.min(
+            minimum_select_count,
+            formatMessage(messages.fieldMinimum, {
+              minSelections: minimum_select_count,
+              fieldName: localize(title_multiloc),
+            })
+          );
+        }
+        if (maximum_select_count) {
+          fieldSchema = fieldSchema.max(
+            maximum_select_count,
+            formatMessage(messages.fieldMaximum, {
+              maxSelections: maximum_select_count,
+              fieldName: localize(title_multiloc),
+            })
+          );
+        }
+
+        schema[key] = fieldSchema;
         break;
       }
 

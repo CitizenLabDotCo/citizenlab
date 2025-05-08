@@ -57,7 +57,7 @@ const renderField = (
           name={question.key}
           options={extractOptions(question, localize)}
         />
-      );
+      ); // <MultipleSelect name={question.key}  options={extractOptions(question, localize)};
     case 'image_files':
       return (
         <ImagesDropzone name={question.key} imagePreviewRatio={135 / 298} />
