@@ -18,11 +18,12 @@ FactoryBot.define do
     publication_status { 'published' }
     budget { 750 }
     proposed_budget { 500 }
-    association :project, factory: :single_phase_ideation_project
+    project { phases.present? ? phases.first.project : association(:single_phase_ideation_project) }
     author
     idea_status
     location_point_geojson { { 'type' => 'Point', 'coordinates' => [51.11520776293035, 3.921154106874878] } }
     location_description { 'Some road' }
+
     after(:create) do |idea|
       idea.phases = idea.project.phases.select { |phase| phase.participation_method == 'ideation' } if idea.phases.empty?
     end
