@@ -185,7 +185,7 @@ const PDFExportModal = ({
                   label={'Instructions start'}
                   noImages
                   noVideos
-                  // noLinks
+                  noLinks
                 />
               </Box>
             </CollapsibleContainer>
