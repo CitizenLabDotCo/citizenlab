@@ -22,15 +22,22 @@ module ReportBuilder
         "WHEN starts_with(path, '/#{locale}') THEN '#{locale}'"    
       end
 
-      binding.pry
-
       locales = pageviews
         .select(
-          :session_id,
-          "locale = CASE #{cases.join(' ')} ELSE NULL END"
+          "count(distinct session_id) as count, " \
+          "CASE #{cases.join(' ')} ELSE NULL END as locale"
         )
-        .where('locale IS NOT NULL')
-        .group(:session_id, :locale)
+        .group(:locale)
+
+      {
+        sessions_per_locale: locales.each_with_object({}) do |row, obj|
+          locale = row['locale']
+          return unless locale.present?
+          count = row['count'].to_i
+
+          obj[locale] = count
+        end
+      }
     end
   end
 end

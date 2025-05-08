@@ -17,6 +17,7 @@ RSpec.describe ReportBuilder::Queries::VisitorLanguages do
       create(:pageview, session_id: session1.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
       create(:pageview, session_id: session1.id, path: '/en/ideas', created_at: DateTime.new(2022, 10, 10, 11, 2, 0))
   
+      # Session where the locale changes during the session
       session2 = create(:session, created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
       create(:pageview, session_id: session2.id, path: '/en/', created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
       create(:pageview, session_id: session2.id, path: '/nl-BE/ideas', created_at: DateTime.new(2022, 10, 11, 11, 2, 0))
@@ -26,7 +27,12 @@ RSpec.describe ReportBuilder::Queries::VisitorLanguages do
         end_at: Date.new(2022, 11, 1)
       }
   
-      expect(query.run_query(**params)).to eq({})
+      expect(query.run_query(**params)).to eq({
+        sessions_per_locale: {
+          "en" => 2,
+          "nl-BE" => 1,
+        }
+      })
     end
   end
 end
