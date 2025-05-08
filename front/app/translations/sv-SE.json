@@ -646,7 +646,7 @@
   "app.components.form.controls.optionalParentheses": "(valfritt)",
   "app.components.form.controls.rankingInstructions": "Dra och släpp för att rangordna alternativ.",
   "app.components.form.controls.selectAsManyAsYouLike": "*Välj så många du vill",
-  "app.components.form.controls.selectBetween": "*Välj mellan alternativen {minItems} och {maxItems}",
+  "app.components.form.controls.selectBetween": "*Väl minst {minItems} och upp till {maxItems} alternativ",
   "app.components.form.controls.selectExactly2": "* Välj exakt {selectExactly, plural, one {# alternativ} other {# alternativ}}",
   "app.components.form.controls.selectMany": "*Välj hur många du vill",
   "app.components.form.controls.tapOnFullscreenMapToAdd4": "Tryck på kartan för att rita. Dra sedan på punkterna för att flytta dem.",
