@@ -75,10 +75,12 @@ module BulkImportIdeas::Exporters
     end
 
     def format_fields
+      question_num = 0
       @form_fields.map do |field|
         {
           title: field.title_multiloc[@locale],
           description: print_description(field),
+          question_number: field.page? ? nil : question_num += 1,
           input_type: field.input_type,
           instructions: multiselect_print_instructions(field),
           visibility_disclaimer: print_visibility_disclaimer(field),
