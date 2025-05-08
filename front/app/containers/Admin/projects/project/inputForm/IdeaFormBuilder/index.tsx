@@ -12,8 +12,11 @@ import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { ideationConfig, proposalsConfig } from '../utils';
 
-const configs: { [key in 'ideation' | 'proposals']: FormBuilderConfig } = {
+const configs: {
+  [key in 'ideation' | 'voting' | 'proposals']: FormBuilderConfig;
+} = {
   ideation: ideationConfig,
+  voting: ideationConfig,
   proposals: proposalsConfig,
 };
 
@@ -23,7 +26,9 @@ const IdeaFormBuilder = ({
   projectId,
   projectSlug,
 }: {
-  participationMethod: 'ideation' | 'proposals';
+  // All participation methods that use "simpleFormEditor"
+  // (see front/app/utils/configs/participationMethodConfig/index.tsx)
+  participationMethod: 'ideation' | 'proposals' | 'voting';
   phaseId: string;
   projectId: string;
   projectSlug: string;
@@ -60,6 +65,7 @@ export default () => {
 
   if (
     participationMethod === 'ideation' ||
+    participationMethod === 'voting' ||
     participationMethod === 'proposals'
   ) {
     return (
