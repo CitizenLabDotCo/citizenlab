@@ -299,6 +299,33 @@ class WebApi::V1::IdeasController < ApplicationController
     render json: json_result
   end
 
+  def copy
+    dest_phase = Phase.find(params[:phase_id])
+
+    ideas = IdeasFinder.new(
+      params.require(:filters),
+      scope: policy_scope(Idea).submitted_or_published,
+      current_user: current_user
+    ).find_records
+
+    new_ids = ideas.map do |idea|
+      idea.dup.tap do |i|
+        i.project = dest_phase.project
+        i.phases = [dest_phase]
+        i.slug = nil
+      end.save!
+    end
+
+    copied_ideas = Idea.where(id: new_ids)
+      .then { |ideas_| paginate(ideas_) }
+
+    render json: linked_json(
+      copied_ideas,
+      WebApi::V1::IdeaSerializer,
+      serialization_options_for(copied_ideas)
+    )
+  end
+
   private
 
   def phase_for_input
