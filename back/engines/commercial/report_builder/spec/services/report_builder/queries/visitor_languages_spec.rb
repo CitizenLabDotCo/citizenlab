@@ -151,5 +151,24 @@ RSpec.describe ReportBuilder::Queries::VisitorLanguages do
         }
       })
     end
+
+    it 'works if everything is nil' do
+      session1 = create(:session, created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/ideas', created_at: DateTime.new(2022, 10, 10, 11, 2, 0))
+  
+      session2 = create(:session, created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/nl-BE/', created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/nl-BE/ideas', created_at: DateTime.new(2022, 10, 11, 11, 2, 0))
+
+      params = {
+        start_at: Date.new(2023, 10, 1),
+        end_at: Date.new(2023, 11, 1)
+      }
+
+      expect(query.run_query(**params)).to eq({
+        sessions_per_locale: {}
+      })
+    end
   end
 end
