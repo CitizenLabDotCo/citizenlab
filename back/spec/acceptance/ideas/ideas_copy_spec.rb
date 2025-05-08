@@ -2,23 +2,22 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
+
 require_relative '../shared/errors_examples'
+require_relative 'shared/parameters'
 
 resource 'Ideas' do
-  before do
-    header 'Content-Type', 'application/json'
-  end
+  header 'Content-Type', 'application/json'
 
-  post 'web_api/v1/phases/:to_phase_id/inputs/copy' do
-    with_options scope: :filters do
-      parameter :phase_id, 'The ID of the phase'
-    end
+  post 'web_api/v1/phases/:phase_id/inputs/copy' do
+    extend SharedParameters
+    define_filter_params(scope: :filters)
 
     let(:from_phase) { create(:phase) }
     let(:to_phase) { create(:phase) }
 
-    let(:to_phase_id) { to_phase.id }
-    let(:phase_id) { from_phase.id }
+    let(:phase_id) { to_phase.id }
+    let(:phase) { from_phase.id }
     let!(:ideas) { create_list(:idea, 3, phases: [from_phase]) }
 
     context 'when regular user' do
