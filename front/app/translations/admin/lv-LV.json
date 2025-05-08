@@ -806,6 +806,8 @@
   "app.containers.Admin.communityMonitor.upsell.upsellDescription6": "Iedzīvotāji, kas platformā pieņemti darbā pēc nejaušības principa",
   "app.containers.Admin.communityMonitor.upsell.upsellDescription7": "Ceturkšņa PDF pārskati, kas ir gatavi kopīgošanai",
   "app.containers.Admin.communityMonitor.upsell.upsellTitle": "Izpratne par to, kā jūtas jūsu kopiena, pirms problēmas pieaug",
+  "app.containers.Admin.earlyAccessLabel": "Agrīnā piekļuve",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Šī ir nesen izlaista funkcija, kas pieejama agrīnās piekļuves programmā.",
   "app.containers.Admin.emails.addCampaign": "Izveidot e-pastu",
   "app.containers.Admin.emails.addCampaignTitle": "Izveidot jaunu e-pastu",
   "app.containers.Admin.emails.allParticipantsInProject": "Visi projekta dalībnieki",
