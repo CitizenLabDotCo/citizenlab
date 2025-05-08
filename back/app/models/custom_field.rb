@@ -263,7 +263,7 @@ class CustomField < ApplicationRecord
   def printable?
     return false unless include_in_printed_form
 
-    ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types = %w[date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
     ignore_field_types.exclude?(input_type)
   end
 

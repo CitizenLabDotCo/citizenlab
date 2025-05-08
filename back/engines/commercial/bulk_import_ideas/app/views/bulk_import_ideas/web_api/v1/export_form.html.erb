@@ -46,7 +46,7 @@
       #questions {
         h2 { margin-bottom: 8px; }
         p { margin-top: 0; }
-        div.question { page-break-inside: avoid; margin-bottom: 30px; }
+        div.question, div.page { page-break-inside: avoid; margin-bottom: 30px; }
       }
   </style>
 </head>
@@ -81,65 +81,72 @@
 
 <div id="questions">
 <% fields.each_with_index do |field, _i| %>
-  <div class="question">
-    <h2>
-      <%= field[:title] %>
-      <% if field[:optional] %>
-        <span class="optional">(<%= optional %>)</span>
-      <% end %>
-    </h2>
-    <%= sanitize field[:description] %>
+  <% if field[:input_type] == 'page' %>
+    <div class="page">
+      <h2><%= field[:title] %></h2>
+      <%= sanitize field[:description] %>
+    </div>
 
-    <p>
-      <%= sanitize field[:print_visibility_disclaimer] %>
-      <%= field[:multiselect_print_instructions] %>
-    </p>
+  <% else %>
+    <div class="question">
+      <h3>
+        <%= field[:title] %>
+        <% if field[:optional] %>
+          <span class="optional">(<%= optional %>)</span>
+        <% end %>
+      </h3>
+      <%= sanitize field[:description] %>
 
-    <% if field[:input_type] == 'select' %>
-      <div class="options">
-        <% field[:options].each do |option| %>
+      <p>
+        <%= sanitize field[:print_visibility_disclaimer] %>
+        <%= field[:multiselect_print_instructions] %>
+      </p>
+
+      <% if field[:input_type] == 'select' %>
+        <div class="options">
+          <% field[:options].each do |option| %>
+              <div class="select">
+                <div class="checkbox radio"></div>
+                <div><%= option[:title] %></div>
+              </div>
+          <% end %>
+        </div>
+
+      <% elsif field[:input_type] == 'multiselect' %>
+        <div class="options">
+          <% field[:options].each do |option| %>
             <div class="select">
-              <div class="checkbox radio"></div>
+              <div class="checkbox"></div>
               <div><%= option[:title] %></div>
             </div>
-        <% end %>
-      </div>
+          <% end %>
+        </div>
 
-    <% elsif field[:input_type] == 'multiselect' %>
-      <div class="options">
-        <% field[:options].each do |option| %>
-          <div class="select">
-            <div class="checkbox"></div>
-            <div><%= option[:title] %></div>
-          </div>
+      <% elsif %w[multiline_text html_multiloc].include? field[:input_type] %>
+        <% 7.times do %>
+          <div class="line"></div>
         <% end %>
-      </div>
 
-    <% elsif %w[multiline_text html_multiloc].include? field[:input_type] %>
-      <% 7.times do %>
+      <% else %>
+        <%
+          # Fallback currently covers:
+          # - text
+          # - text_multiloc
+          # - number
+          # - linear_scale
+          # - rating
+          # - sentiment_linear_scale
+          # - select_image
+          # - multiselect_image
+          # - checkbox
+          # - html
+          # - line
+          # - polygon
+        %>
         <div class="line"></div>
       <% end %>
-
-    <% else %>
-      <%
-        # Fallback currently covers:
-        # - text
-        # - text_multiloc
-        # - number
-        # - linear_scale
-        # - rating
-        # - sentiment_linear_scale
-        # - select_image
-        # - multiselect_image
-        # - checkbox
-        # - html
-        # - line
-        # - polygon
-      %>
-      <div class="line"></div>
-    <% end %>
-
-  </div>
+    </div>
+  <% end %>
 <% end %>
 </div>
 
