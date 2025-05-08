@@ -2744,6 +2744,7 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Texte de la bannière",
   "app.containers.ContentBuilder.homepage.button": "Bouton",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Mise en page",
+  "app.containers.ContentBuilder.homepage.customizationNotAvailable2": "La personnalisation des paramètres autres que l'image et le texte de la bannière de la page d'accueil n'est pas incluse dans votre licence actuelle. Contactez votre GovSuccess Manager pour en savoir plus.",
   "app.containers.ContentBuilder.homepage.customized_button": "Personnalisé",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Texte du bouton",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Lien du bouton",
