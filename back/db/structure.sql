@@ -2212,7 +2212,10 @@ CREATE TABLE public.custom_forms (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     participation_context_id uuid NOT NULL,
-    participation_context_type character varying NOT NULL
+    participation_context_type character varying NOT NULL,
+    fields_last_updated_at timestamp(6) without time zone DEFAULT now() NOT NULL,
+    print_start_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    print_end_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -7074,6 +7077,7 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20250502112945'),
+('20250501134516'),
 ('20250416120221'),
 ('20250415094344'),
 ('20250409111817'),
