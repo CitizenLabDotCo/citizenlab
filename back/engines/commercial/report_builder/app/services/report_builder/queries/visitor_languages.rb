@@ -23,8 +23,14 @@ module ReportBuilder
       end
 
       locales = pageviews
-        .select("CASE #{cases} ELSE NULL END AS locale")
+        .select(
+          :session_id,
+          "CASE #{cases.join(' ')} ELSE NULL END AS locale"
+        )
         .where('locale IS NOT NULL')
+        .group(:session_id, :locale)
+
+      binding.pry
     end
   end
 end

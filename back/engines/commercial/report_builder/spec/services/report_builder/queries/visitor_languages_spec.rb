@@ -1,0 +1,32 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe ReportBuilder::Queries::VisitorLanguages do
+  subject(:query) { described_class.new(build(:user)) }
+
+  describe '#run_query' do
+    before_all do
+      # Make TimeBoundariesParser work as expected
+      AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
+    end
+
+    it 'handles sessions where the locale changes during the session' do
+      # Session where both pageviews have the same locale
+      session1 = create(:session, created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/ideas', created_at: DateTime.new(2022, 10, 10, 11, 2, 0))
+  
+      session2 = create(:session, created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/en/', created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/nl-BE/ideas', created_at: DateTime.new(2022, 10, 11, 11, 2, 0))
+  
+      params = {
+        start_at: Date.new(2022, 8, 1),
+        end_at: Date.new(2022, 11, 1)
+      }
+  
+      expect(query.run_query(**params)).to eq({})
+    end
+  end
+end
