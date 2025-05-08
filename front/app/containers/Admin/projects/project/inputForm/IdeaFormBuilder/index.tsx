@@ -63,6 +63,11 @@ export default () => {
 
   const participationMethod = phase.data.attributes.participation_method;
 
+  // These checks are strictly not necessary since this component should only render
+  // for one of these participation methods (all participation methods that use "simpleFormEditor";
+  // see front/app/utils/configs/participationMethodConfig/index.tsx).
+  // They're here for documenting purposes + they provide
+  // better types inside IdeaFormBuilder for now.
   if (
     participationMethod === 'ideation' ||
     participationMethod === 'voting' ||
