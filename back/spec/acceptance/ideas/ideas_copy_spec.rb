@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
-require_relative 'shared/errors_examples'
+require_relative '../shared/errors_examples'
 
 resource 'Ideas' do
   before do
