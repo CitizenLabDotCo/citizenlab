@@ -3,6 +3,55 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+
+def mock_app_configuration
+  app_config_mock = instance_double(AppConfiguration)
+  allow(app_config_mock).to receive(:closest_locale_to).and_return('en')
+  allow(app_config_mock).to receive(:feature_activated?).with('facebook_login').and_return(true)
+  allow(app_config_mock).to receive(:feature_activated?).with('user_confirmation').and_return(false)
+  allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_id').and_return('mock_facebook_app_id')
+  allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_secret').and_return('mock_facebook_app_secret')
+  allow(AppConfiguration).to receive(:instance).and_return(app_config_mock)
+
+  app_config_mock
+end
+
+def mock_facebook_auth_method(user)
+  facebook_method = instance_double(OmniauthMethods::Facebook)
+  allow(facebook_method).to receive_messages(
+    profile_to_user_attrs: { email: user.email, first_name: user.first_name },
+    email_confirmed?: true,
+    verification_prioritized?: false,
+    updateable_user_attrs: [],
+    can_merge?: true
+  )
+
+  facebook_method
+end
+
+def mock_authentication_service(facebook_method, user)
+  auth_service_mock = instance_double(AuthenticationService)
+  allow(auth_service_mock).to receive(:method_by_provider).with('facebook').and_return(facebook_method)
+  allow(auth_service_mock).to receive(:prevent_user_account_hijacking).and_return(user)
+
+  auth_service_mock
+end
+
+def mock_omniauth_callback_controller(auth_service_mock)
+  # Mock auth token
+  auth_token_double = instance_double(AuthToken::AuthToken, token: 'test-jwt-token')
+  allow_any_instance_of(OmniauthCallbackController).to receive(:auth_token).and_return(auth_token_double)
+
+  # Make sure set_auth_cookie is actually called
+  allow_any_instance_of(OmniauthCallbackController).to receive(:set_auth_cookie).and_call_original
+
+  # Mock other methods
+  allow_any_instance_of(OmniauthCallbackController).to receive(:authentication_service).and_return(auth_service_mock)
+  allow_any_instance_of(OmniauthCallbackController).to receive(:update_user!).and_return(true)
+  allow_any_instance_of(OmniauthCallbackController).to receive(:verified_for_sso?).and_return(true)
+  allow_any_instance_of(OmniauthCallbackController).to receive(:signin_success_redirect)
+end
+
 resource 'Omniauth Callback', document: false do
   before { header 'Content-Type', 'application/json' }
 
