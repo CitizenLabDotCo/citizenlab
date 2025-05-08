@@ -1,5 +1,5 @@
-import { setJwt } from './jwt';
 import * as cookies from 'js-cookie';
+import { setJwt } from './jwt';
 
 jest.mock('js-cookie', () => ({
   set: jest.fn(),
