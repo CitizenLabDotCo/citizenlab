@@ -1,11 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors, Multiloc } from 'typings';
 
+import { IPhaseData } from 'api/phases/types';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import getApiEndPoint from './getApiEndpoint';
 import customFormKeys from './keys';
-import { ICustomForm, ICustomFormParameters } from './types';
+import { ICustomForm } from './types';
 
 type UpdateCustomFormProperties = {
   printStartMultiloc: Multiloc;
@@ -31,9 +33,10 @@ const updateCustomForm = async ({
   });
 };
 
-const useUpdateCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
-  const apiEndpoint = getApiEndPoint(projectId, phaseId);
+const useUpdateCustomForm = (phase: IPhaseData) => {
   const queryClient = useQueryClient();
+  const apiEndpoint = getApiEndPoint(phase);
+
   return useMutation<ICustomForm, CLErrors, UpdateCustomFormProperties>({
     mutationFn: ({ printStartMultiloc, printEndMultiloc }) =>
       updateCustomForm({
@@ -44,8 +47,8 @@ const useUpdateCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: customFormKeys.item({
-          projectId,
-          phaseId,
+          projectId: phase.relationships.project.data.id,
+          phaseId: phase.id,
         }),
       });
     },
