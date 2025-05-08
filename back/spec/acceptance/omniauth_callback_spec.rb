@@ -3,7 +3,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 def mock_app_configuration
   app_config_mock = instance_double(AppConfiguration)
   allow(app_config_mock).to receive(:closest_locale_to).and_return('en')
@@ -123,7 +122,7 @@ resource 'Omniauth Callback', document: false do
         cookie_header = response_headers['Set-Cookie']
         expect(cookie_header).to include('cl2_jwt=test-jwt-token')
         expect(cookie_header).to include('SameSite=Lax')
-        expect(cookie_header.include?('Secure')).to eq(false) # No HTTPS in the test environment
+        expect(cookie_header.include?('Secure')).to be(false) # No HTTPS in the test environment
         expect(cookie_header).to match(/expires=.+GMT/i)
       end
     end
