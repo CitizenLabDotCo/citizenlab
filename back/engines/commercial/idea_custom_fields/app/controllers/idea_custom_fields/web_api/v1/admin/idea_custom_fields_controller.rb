@@ -176,6 +176,8 @@ module IdeaCustomFields
       given_fields = update_all_params.fetch :custom_fields, []
       given_field_ids = given_fields.pluck(:id)
 
+      binding.pry
+
       ActiveRecord::Base.transaction do
         delete_fields = fields.reject { |field| given_field_ids.include? field.id }
         delete_fields.each { |field| delete_field! field }

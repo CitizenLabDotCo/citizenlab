@@ -259,6 +259,7 @@ const FormEdit = ({
               page_button_label_multiloc:
                 field.page_button_label_multiloc || {},
               page_button_link: field.page_button_link || '',
+              include_in_printed_form: field.include_in_printed_form || false,
             }
           : {}),
         ...(field.map_config_id && {
