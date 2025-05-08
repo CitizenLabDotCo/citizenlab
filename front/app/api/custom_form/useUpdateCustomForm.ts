@@ -16,12 +16,10 @@ type UpdateCustomFormProperties = {
 
 const updateCustomForm = async ({
   apiEndpoint,
-  printStartMultiloc,
-  printEndMultiloc,
+  formValues: { printStartMultiloc, printEndMultiloc },
 }: {
   apiEndpoint: string;
-  printStartMultiloc: Multiloc;
-  printEndMultiloc: Multiloc;
+  formValues: UpdateCustomFormProperties;
 }) => {
   return fetcher<ICustomForm>({
     path: `/${apiEndpoint}`,
@@ -38,11 +36,10 @@ const useUpdateCustomForm = (phase: IPhaseData) => {
   const apiEndpoint = getApiEndPoint(phase);
 
   return useMutation<ICustomForm, CLErrors, UpdateCustomFormProperties>({
-    mutationFn: ({ printStartMultiloc, printEndMultiloc }) =>
+    mutationFn: (formValues) =>
       updateCustomForm({
         apiEndpoint,
-        printStartMultiloc,
-        printEndMultiloc,
+        formValues,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
