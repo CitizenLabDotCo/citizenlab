@@ -122,6 +122,8 @@
   "app.components.ContentUploadDisclaimer.onCancel": "Cancel",
   "app.components.CustomFieldsForm.descriptionMinLength": "The description must be at least {min} characters long",
   "app.components.CustomFieldsForm.descriptionRequired": "The description is required",
+  "app.components.CustomFieldsForm.fieldMaximum": "At most {maxSelections} options can be selected for the field \"{fieldName}\"",
+  "app.components.CustomFieldsForm.fieldMinimum": "At least {minSelections} options can be selected for the field \"{fieldName}\"",
   "app.components.CustomFieldsForm.fieldRequired": "The field \"{fieldName}\" is required",
   "app.components.CustomFieldsForm.fileRequired": "At least one file is required",
   "app.components.CustomFieldsForm.imageRequired": "The image is required",
