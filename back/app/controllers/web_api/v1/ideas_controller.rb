@@ -301,6 +301,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def copy
     dest_phase = Phase.find(params[:phase_id])
+    authorize(dest_phase, :copy_inputs_to_phase?)
 
     ideas = IdeasFinder.new(
       params.require(:filters),
