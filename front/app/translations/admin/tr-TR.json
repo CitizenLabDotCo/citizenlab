@@ -806,6 +806,8 @@
   "app.containers.Admin.communityMonitor.upsell.upsellDescription6": "Platformda rastgele işe alınan sakinler",
   "app.containers.Admin.communityMonitor.upsell.upsellDescription7": "Üç aylık PDF raporları, paylaşıma hazır",
   "app.containers.Admin.communityMonitor.upsell.upsellTitle": "Sorunlar büyümeden önce topluluğunuzun nasıl hissettiğini anlayın",
+  "app.containers.Admin.earlyAccessLabel": "Erken Erişim",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Bu, Erken Erişim'de bulunan yeni yayınlanmış bir özelliktir.",
   "app.containers.Admin.emails.addCampaign": "E-posta oluşturun",
   "app.containers.Admin.emails.addCampaignTitle": "Yeni bir e-posta oluşturun",
   "app.containers.Admin.emails.allParticipantsInProject": "Projedeki tüm katılımcılar",

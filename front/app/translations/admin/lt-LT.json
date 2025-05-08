@@ -806,6 +806,8 @@
   "app.containers.Admin.communityMonitor.upsell.upsellDescription6": "Atsitiktine tvarka platformoje įdarbinti gyventojai",
   "app.containers.Admin.communityMonitor.upsell.upsellDescription7": "Ketvirtinės PDF ataskaitos, paruoštos bendrinti",
   "app.containers.Admin.communityMonitor.upsell.upsellTitle": "Supraskite, kaip jaučiasi jūsų bendruomenė, kol problemos dar neišaugo",
+  "app.containers.Admin.earlyAccessLabel": "Ankstyvoji prieiga",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Tai naujai išleista funkcija, kurią galima naudoti ankstyvosios prieigos sistemoje.",
   "app.containers.Admin.emails.addCampaign": "Sukurti el. paštą",
   "app.containers.Admin.emails.addCampaignTitle": "Sukurti naują el. paštą",
   "app.containers.Admin.emails.allParticipantsInProject": "Visi projekto dalyviai",

@@ -806,6 +806,8 @@
   "app.containers.Admin.communityMonitor.upsell.upsellDescription6": "Beboere rekruttert tilfeldig på plattformen",
   "app.containers.Admin.communityMonitor.upsell.upsellDescription7": "Kvartalsvise PDF-rapporter, klare til deling",
   "app.containers.Admin.communityMonitor.upsell.upsellTitle": "Forstå hva lokalsamfunnet føler før problemene vokser",
+  "app.containers.Admin.earlyAccessLabel": "Tidlig tilgang",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Dette er en ny funksjon som er tilgjengelig i Early Access.",
   "app.containers.Admin.emails.addCampaign": "Opprett e-post",
   "app.containers.Admin.emails.addCampaignTitle": "Opprett en ny e-post",
   "app.containers.Admin.emails.allParticipantsInProject": "Alle deltakere i prosjektet",
