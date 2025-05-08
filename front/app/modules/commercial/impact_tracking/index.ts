@@ -117,7 +117,12 @@ const configuration: ModuleConfiguration = {
 
       if (hasLocale(strippedPath)) {
         if (!sessionTracked) {
-          trackSessionStarted(strippedPath); // This will also track the first page view
+          // We add a small timeout, because some browsers
+          // seem to block the request if it happens too fast.
+          setTimeout(() => {
+            trackSessionStarted(strippedPath); // This will also track the first page view
+          }, 1000);
+
           sessionTracked = true;
         } else {
           trackPageView(strippedPath);
