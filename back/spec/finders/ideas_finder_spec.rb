@@ -5,11 +5,12 @@ require 'rails_helper'
 describe IdeasFinder do
   subject(:finder) { described_class.new(params, **options) }
 
+  let(:timeline_project) { create(:project_with_phases) }
+  let!(:ideas) { create_list(:idea_with_topics, 5, project: timeline_project) }
+
   let(:params) { {} }
   let(:options) { {} }
   let(:result_record_ids) { finder.find_records.pluck(:id) }
-  let(:timeline_project) { create(:project_with_phases) }
-  let!(:ideas) { create_list(:idea_with_topics, 5, project: timeline_project) }
 
   before_all { create(:idea_status_proposed) }
 
