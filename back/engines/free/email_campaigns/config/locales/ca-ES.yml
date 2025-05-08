@@ -243,7 +243,7 @@ ca:
       yesterday: Ahir
     comment_on_idea_you_follow:
       cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      event_description: '%{authorNameFull} va fer una reacció a la teva idea "%{inputTitle}". Feu clic al botó següent per continuar la conversa amb %{authorName}.'
       main_header:
         idea: '%{authorName} ha comentat una idea que segueixes'
         question: '%{authorName} ha comentat una pregunta que segueixes'
@@ -253,7 +253,7 @@ ca:
         option: '%{authorName} ha comentat una opció que segueixes'
         proposal: '%{authorName} ha comentat una proposta que segueixes'
         petition: '%{authorName} ha comentat una petició que segueixes'
-      subject: 'There''s a new comment on "%{input_title}"'
+      subject: 'Hi ha un comentari nou a "%{input_title}"'
       preheader: '%{authorName} va deixar un comentari sobre una idea per a %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'S''ha publicat una nova entrada a la vostra plataforma'
@@ -305,8 +305,8 @@ ca:
       main_header: '''%{post}'' té un nou comentari intern'
       preheader: '''%{post}'' té un nou comentari intern'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
+      header_message: '%{feedback_author_name} ha fet una actualització sobre %{input_title}''.'
+      header_title: 'Hi ha un comentari nou a "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:
