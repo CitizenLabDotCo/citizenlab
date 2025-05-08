@@ -25,7 +25,7 @@ module ReportBuilder
       locales = pageviews
         .select(
           :session_id,
-          "CASE #{cases.join(' ')} ELSE NULL END AS locale"
+          "(CASE #{cases.join(' ')} ELSE NULL END) AS locale"
         )
         .where('locale IS NOT NULL')
         .group(:session_id, :locale)
