@@ -806,6 +806,8 @@
   "app.containers.Admin.communityMonitor.upsell.upsellDescription6": "تم اختيار السكان عشوائيا على المنصة",
   "app.containers.Admin.communityMonitor.upsell.upsellDescription7": "تقارير PDF ربع سنوية، جاهزة للمشاركة",
   "app.containers.Admin.communityMonitor.upsell.upsellTitle": "فهم مشاعر مجتمعك قبل أن تتفاقم المشكلات",
+  "app.containers.Admin.earlyAccessLabel": "الوصول المبكر",
+  "app.containers.Admin.earlyAccessLabelExplanation": "هذه ميزة تم إصدارها حديثًا ومتوفرة في مرحلة الوصول المبكر.",
   "app.containers.Admin.emails.addCampaign": "إنشاء البريد الإلكتروني",
   "app.containers.Admin.emails.addCampaignTitle": "أنشئ بريدًا إلكترونيًا جديدًا",
   "app.containers.Admin.emails.allParticipantsInProject": "جميع المشاركين في المشروع",
