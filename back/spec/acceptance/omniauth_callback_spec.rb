@@ -4,33 +4,35 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 def mock_app_configuration
-  app_config_mock = double('AppConfiguration')
+  app_config_mock = instance_double('AppConfiguration')
   allow(app_config_mock).to receive(:closest_locale_to).and_return('en')
   allow(app_config_mock).to receive(:feature_activated?).with('facebook_login').and_return(true)
   allow(app_config_mock).to receive(:feature_activated?).with('user_confirmation').and_return(false)
   allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_id').and_return('mock_facebook_app_id')
   allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_secret').and_return('mock_facebook_app_secret')
   allow(AppConfiguration).to receive(:instance).and_return(app_config_mock)
+
   app_config_mock
 end
 
 def mock_facebook_auth_method(user)
-  facebook_method = double('OmniauthMethods::Facebook')
-  allow(facebook_method).to receive(:profile_to_user_attrs).and_return({
-    email: user.email, 
-    first_name: user.first_name
-  })
-  allow(facebook_method).to receive(:email_confirmed?).and_return(true)
-  allow(facebook_method).to receive(:verification_prioritized?).and_return(false)
-  allow(facebook_method).to receive(:updateable_user_attrs).and_return([])
-  allow(facebook_method).to receive(:can_merge?).and_return(true)
+  facebook_method = instance_double('OmniauthMethods::Facebook')
+  allow(facebook_method).to receive_messages(
+    profile_to_user_attrs: { email: user.email, first_name: user.first_name },
+    email_confirmed?: true,
+    verification_prioritized?: false,
+    updateable_user_attrs: [],
+    can_merge?: true
+  )
+
   facebook_method
 end
 
 def mock_authentication_service(facebook_method, user)
-  auth_service_mock = double('AuthenticationService')
+  auth_service_mock = instance_double('AuthenticationService')
   allow(auth_service_mock).to receive(:method_by_provider).with('facebook').and_return(facebook_method)
   allow(auth_service_mock).to receive(:prevent_user_account_hijacking).and_return(user)
+
   auth_service_mock
 end
 
@@ -38,10 +40,10 @@ def mock_omniauth_callback_controller(auth_service_mock, user)
   # Mock auth token
   auth_token_double = instance_double(AuthToken::AuthToken, token: 'test-jwt-token')
   allow_any_instance_of(OmniauthCallbackController).to receive(:auth_token).and_return(auth_token_double)
-  
+
   # Make sure set_auth_cookie is actually called
   allow_any_instance_of(OmniauthCallbackController).to receive(:set_auth_cookie).and_call_original
-  
+
   # Mock other methods
   allow_any_instance_of(OmniauthCallbackController).to receive(:authentication_service).and_return(auth_service_mock)
   allow_any_instance_of(OmniauthCallbackController).to receive(:update_user!).and_return(true)
@@ -79,8 +81,8 @@ resource 'Omniauth Callback', document: false do
   context 'when authenticating via OAuth' do
     before do
       @user = create(:user)
-      
-      # Skip OmniAuth's actual authentication - add missing raw_info
+
+      # Mock OmniAuth's authentication
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
         'provider' => 'facebook',
@@ -96,17 +98,17 @@ resource 'Omniauth Callback', document: false do
           }
         }
       })
-      
+
       # Mock identity to return our test user
-      identity_double = double('Identity', user: @user)
+      identity_double = instance_double('Identity', user: @user)
       allow(Identity).to receive(:find_or_build_with_omniauth).and_return(identity_double)
-      
+
       mock_app_configuration
       facebook_method = mock_facebook_auth_method(@user)
       auth_service_mock = mock_authentication_service(facebook_method, @user)
       mock_omniauth_callback_controller(auth_service_mock, @user)
     end
-    
+
     after do
       OmniAuth.config.test_mode = false
     end
@@ -114,7 +116,7 @@ resource 'Omniauth Callback', document: false do
     get '/auth/facebook/callback' do
       example 'Sets secure cookie with expected headers' do
         do_request
-        
+
         expect(status).to eq(204)
 
         cookie_header = response_headers['Set-Cookie']
