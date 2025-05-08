@@ -18,9 +18,18 @@ module ReportBuilder
 
       # TODO exclude_roles
 
-      cases = CL2_SUPPORTED_LOCALES.map do |locale|
+      # We first remove the 'en' locale from the list of supported locales,
+      # because we want to make sure it is the last case in the SQL query.
+      # If it is not the last case, it will match other locales that start with 'en',
+      # like 'en-US' or 'en-GB'.
+      locales_without_en = CL2_SUPPORTED_LOCALES.reject { |locale| locale.to_s == 'en' }
+
+      cases = locales_without_en.map do |locale|
         "WHEN starts_with(path, '/#{locale}') THEN '#{locale}'"    
       end
+
+      # We add the 'en' locale manually as the last case in the SQL query.
+      cases << "WHEN starts_with(path, '/en') THEN 'en'"
 
       locales = pageviews
         .select(

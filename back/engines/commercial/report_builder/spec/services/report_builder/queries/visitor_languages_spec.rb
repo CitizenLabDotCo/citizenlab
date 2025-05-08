@@ -80,6 +80,28 @@ RSpec.describe ReportBuilder::Queries::VisitorLanguages do
       })
     end
 
+    it 'works correctly for locales starging with "en"' do
+      session1 = create(:session, created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/ideas', created_at: DateTime.new(2022, 10, 10, 11, 2, 0))
+  
+      session2 = create(:session, created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/en-GB/', created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/en-GB/ideas', created_at: DateTime.new(2022, 10, 11, 11, 2, 0))
+
+      params = {
+        start_at: Date.new(2022, 8, 1),
+        end_at: Date.new(2022, 11, 1),
+      }
+  
+      expect(query.run_query(**params)).to eq({
+        sessions_per_locale: {
+          "en" => 1,
+          "en-GB" => 1,
+        }
+      })
+    end
+
     it 'filters by project_id' do
       project = create(:project)
 
