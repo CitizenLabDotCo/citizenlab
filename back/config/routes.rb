@@ -172,6 +172,10 @@ Rails.application.routes.draw do
           delete 'inputs', action: 'delete_inputs'
         end
 
+        resources :inputs, only: [], controller: 'ideas' do
+          post 'copy', on: :collection
+        end
+
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'json_forms_schema', on: :collection
