@@ -86,10 +86,8 @@ const PDFExportModal = ({
     resolver: yupResolver(schema),
   });
 
-  const participationMethod = phase.attributes.participation_method;
-
   const onExport = async ({ personal_data }: FormPDFExportFormValues) => {
-    if (supportsNativeSurvey(participationMethod)) {
+    if (supportsNativeSurvey(phase.attributes.participation_method)) {
       await saveSurveyAsPDF({
         phaseId,
         locale,
