@@ -31,7 +31,7 @@ module BulkImportIdeas::Exporters
       end
 
       output_pdf = Tempfile.new('gotenberg.pdf')
-      output_pdf.write(response.body.force_encoding('utf-8'))
+      output_pdf.write(response.body)
       output_pdf
     end
 

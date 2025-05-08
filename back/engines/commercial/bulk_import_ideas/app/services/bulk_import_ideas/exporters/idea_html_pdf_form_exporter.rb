@@ -14,8 +14,8 @@ module BulkImportIdeas::Exporters
       'form.pdf'
     end
 
+    # Render the form from HTML as a PDF using Chromium on Gotenberg container
     def export
-      # Render the form from HTML as a PDF using Chromium on Gotenberg
       html = ActionController::Base.new.render_to_string render_config
       gb = GotenbergClient.new
       gb.render_to_pdf(html)
@@ -35,8 +35,6 @@ module BulkImportIdeas::Exporters
       end
 
       @importer_fields = []
-
-      # TODO: What happens to question titles over multiple lines?
       @form_fields.each do |field|
         add_to_importer_fields(field, pages, 'field')
         field.options.each do |option|
