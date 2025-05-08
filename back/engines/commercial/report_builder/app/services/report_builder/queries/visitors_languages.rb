@@ -6,7 +6,7 @@ module ReportBuilder
       project_id: nil,
       exclude_roles: nil,
       **_other_props
-    ) 
+    )
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
       pageviews = ImpactTracking::Pageview
@@ -18,7 +18,7 @@ module ReportBuilder
 
       if exclude_roles == 'exclude_admins_and_moderators'
         pageviews = pageviews
-          .joins("LEFT JOIN impact_tracking_sessions ON impact_tracking_pageviews.session_id = impact_tracking_sessions.id")
+          .joins('LEFT JOIN impact_tracking_sessions ON impact_tracking_pageviews.session_id = impact_tracking_sessions.id')
           .where("impact_tracking_sessions.highest_role IS NULL OR impact_tracking_sessions.highest_role = 'user'")
       end
 
@@ -29,7 +29,7 @@ module ReportBuilder
       locales_without_en = CL2_SUPPORTED_LOCALES.reject { |locale| locale.to_s == 'en' }
 
       cases = locales_without_en.map do |locale|
-        "WHEN starts_with(path, '/#{locale}') THEN '#{locale}'"    
+        "WHEN starts_with(path, '/#{locale}') THEN '#{locale}'"
       end
 
       # We add the 'en' locale manually as the last case in the SQL query.
@@ -37,7 +37,7 @@ module ReportBuilder
 
       locales = pageviews
         .select(
-          "count(distinct session_id) as count, " \
+          'count(distinct session_id) as count, ' \
           "CASE #{cases.join(' ')} ELSE NULL END as locale"
         )
         .group(:locale)
