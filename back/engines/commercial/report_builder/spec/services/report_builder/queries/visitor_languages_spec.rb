@@ -11,7 +11,52 @@ RSpec.describe ReportBuilder::Queries::VisitorLanguages do
       AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
     end
 
-    it 'handles sessions where the locale changes during the session' do
+    it 'returns the number of sessions per locale' do
+      session1 = create(:session, created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/ideas', created_at: DateTime.new(2022, 10, 10, 11, 2, 0))
+  
+      session2 = create(:session, created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/nl-BE/', created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/nl-BE/ideas', created_at: DateTime.new(2022, 10, 11, 11, 2, 0))
+  
+      params = {
+        start_at: Date.new(2022, 8, 1),
+        end_at: Date.new(2022, 11, 1)
+      }
+  
+      expect(query.run_query(**params)).to eq({
+        sessions_per_locale: {
+          "en" => 1,
+          "nl-BE" => 1,
+        }
+      })
+    end
+
+    it 'excludes paths without locales' do
+      # Session where both pageviews use the english locale
+      session1 = create(:session, created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/ideas', created_at: DateTime.new(2022, 10, 10, 11, 2, 0))
+  
+      # Session where the pageviews do not have a locale
+      session2 = create(:session, created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/', created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/ideas', created_at: DateTime.new(2022, 10, 11, 11, 2, 0))
+  
+      params = {
+        start_at: Date.new(2022, 8, 1),
+        end_at: Date.new(2022, 11, 1)
+      }
+  
+      expect(query.run_query(**params)).to eq({
+        sessions_per_locale: {
+          "en" => 1
+        }
+      })
+    end
+
+    it 'when the locale changes during the session, it is counted as two sessions' do
       # Session where both pageviews have the same locale
       session1 = create(:session, created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
       create(:pageview, session_id: session1.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
@@ -34,5 +79,35 @@ RSpec.describe ReportBuilder::Queries::VisitorLanguages do
         }
       })
     end
+
+    it 'filters by project_id' do
+      project = create(:project)
+
+      # Session where project is visited
+      session1 = create(:session, created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/projects/p1', project_id: project.id, created_at: DateTime.new(2022, 10, 10, 11, 2, 0))
+  
+      # Session where project is not visited
+      session2 = create(:session, created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/nl-BE/', created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: '/nl-BE/ideas', created_at: DateTime.new(2022, 10, 11, 11, 2, 0))
+  
+      params = {
+        start_at: Date.new(2022, 8, 1),
+        end_at: Date.new(2022, 11, 1),
+        project_id: project.id
+      }
+  
+      expect(query.run_query(**params)).to eq({
+        sessions_per_locale: {
+          "en" => 1,
+        }
+      })
+    end
+
+    # it 'excludes roles' do
+      # TODO
+    # end
   end
 end

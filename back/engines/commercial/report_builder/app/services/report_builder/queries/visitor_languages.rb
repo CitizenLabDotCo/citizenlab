@@ -32,10 +32,11 @@ module ReportBuilder
       {
         sessions_per_locale: locales.each_with_object({}) do |row, obj|
           locale = row['locale']
-          return unless locale.present?
-          count = row['count'].to_i
 
-          obj[locale] = count
+          if locale.present?
+            count = row['count'].to_i
+            obj[locale] = count
+          end
         end
       }
     end
