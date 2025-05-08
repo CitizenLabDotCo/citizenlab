@@ -7,7 +7,7 @@ export type ResolvedName =
   | 'SingleIdeaWidget'
   | 'VisitorsWidget'
   | 'VisitorsTrafficSourcesWidget'
-  | 'VisitorLanguagesWidget'
+  | 'VisitorsLanguagesWidget'
   | 'DemographicsWidget'
   | 'GenderWidget'
   | 'AgeWidget'
@@ -110,7 +110,7 @@ export interface VisitorsLanguagesProps extends DateProps {
   exclude_roles?: ExcludeRoles;
 }
 export interface VisitorsLanguagesParams extends BaseParams {
-  resolved_name: 'VisitorLanguagesWidget';
+  resolved_name: 'VisitorsLanguagesWidget';
   props: VisitorsLanguagesProps;
 }
 
