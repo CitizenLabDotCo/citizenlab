@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 def mock_app_configuration
-  app_config_mock = instance_double('AppConfiguration')
+  app_config_mock = instance_double(AppConfiguration)
   allow(app_config_mock).to receive(:closest_locale_to).and_return('en')
   allow(app_config_mock).to receive(:feature_activated?).with('facebook_login').and_return(true)
   allow(app_config_mock).to receive(:feature_activated?).with('user_confirmation').and_return(false)
@@ -16,7 +16,7 @@ def mock_app_configuration
 end
 
 def mock_facebook_auth_method(user)
-  facebook_method = instance_double('OmniauthMethods::Facebook')
+  facebook_method = instance_double(OmniauthMethods::Facebook)
   allow(facebook_method).to receive_messages(
     profile_to_user_attrs: { email: user.email, first_name: user.first_name },
     email_confirmed?: true,
@@ -29,14 +29,14 @@ def mock_facebook_auth_method(user)
 end
 
 def mock_authentication_service(facebook_method, user)
-  auth_service_mock = instance_double('AuthenticationService')
+  auth_service_mock = instance_double(AuthenticationService)
   allow(auth_service_mock).to receive(:method_by_provider).with('facebook').and_return(facebook_method)
   allow(auth_service_mock).to receive(:prevent_user_account_hijacking).and_return(user)
 
   auth_service_mock
 end
 
-def mock_omniauth_callback_controller(auth_service_mock, user)
+def mock_omniauth_callback_controller(auth_service_mock)
   # Mock auth token
   auth_token_double = instance_double(AuthToken::AuthToken, token: 'test-jwt-token')
   allow_any_instance_of(OmniauthCallbackController).to receive(:auth_token).and_return(auth_token_double)
@@ -100,19 +100,19 @@ resource 'Omniauth Callback', document: false do
       })
 
       # Mock identity to return our test user
-      identity_double = instance_double('Identity', user: @user)
+      identity_double = instance_double(Identity, user: @user)
       allow(Identity).to receive(:find_or_build_with_omniauth).and_return(identity_double)
 
       mock_app_configuration
       facebook_method = mock_facebook_auth_method(@user)
       auth_service_mock = mock_authentication_service(facebook_method, @user)
-      mock_omniauth_callback_controller(auth_service_mock, @user)
+      mock_omniauth_callback_controller(auth_service_mock)
     end
 
     after do
       OmniAuth.config.test_mode = false
     end
-  
+
     get '/auth/facebook/callback' do
       example 'Sets secure cookie with expected headers' do
         do_request
