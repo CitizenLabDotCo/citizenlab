@@ -1,6 +1,6 @@
 import createRoutes from 'routes';
 
-import { API_PATH } from 'containers/App/constants';
+import { API_PATH, locales } from 'containers/App/constants';
 import authenticationTracks from 'containers/Authentication/tracks';
 
 import { events$, pageChanges$ } from 'utils/analytics';
@@ -12,8 +12,9 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 let sessionId: string | undefined;
 let allAppPaths: string[] | undefined;
 let previousPathTracked: string | undefined;
+let sessionTracked = false;
 
-const trackSessionStarted = async () => {
+const trackSessionStarted = async (path: string) => {
   // eslint-disable-next-line
   const referrer = document.referrer ?? window.frames?.top?.document.referrer;
 
@@ -46,7 +47,7 @@ const trackSessionStarted = async () => {
 
   // Because the first page view depends on the response of the session creation,
   // we handle it here and ignore the first page view event (see below).
-  trackPageView(window.location.pathname);
+  trackPageView(path);
 };
 
 const upgradeSession = () => {
@@ -65,15 +66,6 @@ const trackPageView = async (path: string) => {
   // For some reason, sometimes the page view event is triggered twice
   // for the same path. This prevents that.
   if (previousPathTracked === path) return;
-
-  // On first homepage load, if we don't enter the platform on a locale,
-  // we set the locale immediately. Usually, we set the locale before the
-  // page track event fires, but in some cases our app is too slow.
-  // This then triggers the page view event twice.
-  // With this check, we avoid logging this pageview twice.
-  // We check both '/' and '' because the path can be either-
-  // usually it's '/' but some browsers seem to omit the trailing slash.
-  if (path === '/' || path === '') return;
 
   // We also only start tracking page views after the session has been created.
   if (sessionId === undefined) return;
@@ -99,12 +91,37 @@ const trackPageView = async (path: string) => {
   });
 };
 
+const stripPath = (path: string) => {
+  if (path.length < 2) return path;
+  if (path.endsWith('/')) return path.slice(0, -1);
+  return path;
+};
+
+const hasLocale = (path: string) => {
+  for (const locale of locales) {
+    if (path.startsWith(`/${locale}/`) || path === `/${locale}`) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
-    trackSessionStarted();
-
     pageChanges$.subscribe((e) => {
-      trackPageView(e.path);
+      // We remove the trailing slash from the path,
+      // so that we don't track e.g. /en and /en/ as two different paths.
+      const strippedPath = stripPath(e.path);
+
+      if (hasLocale(strippedPath)) {
+        if (!sessionTracked) {
+          trackSessionStarted(strippedPath); // This will also track the first page view
+          sessionTracked = true;
+        } else {
+          trackPageView(strippedPath);
+        }
+      }
     });
 
     events$.subscribe((event) => {
