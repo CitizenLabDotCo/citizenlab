@@ -2942,7 +2942,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal or attended events.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Participants",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Stopa učešća",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Percentage of visitors that become participants. Only participants and visitors that accepted cookies are counted.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Ukupno učesnika",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automatske kampanje",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automatska e-pošta",

@@ -2942,7 +2942,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Deltagare är användare eller besökare som har deltagit i ett projekt, publicerat eller interagerat med ett förslag eller deltagit i evenemang.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Deltagare",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Deltagandefrekvens",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Andel av besökarna som blir deltagare. Endast deltagare och besökare som accepterat cookies räknas.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Totalt antal deltagare",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automatiserade kampanjer",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automatiserade e-postmeddelanden",

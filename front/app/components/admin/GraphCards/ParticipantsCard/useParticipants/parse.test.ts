@@ -8,16 +8,16 @@ describe('parseTimeSeries', () => {
   it('works', () => {
     const timeSeries = [
       {
-        first_dimension_date_created_date: '2022-10-01',
-        count_participant_id: 4,
+        date_group: '2022-10-01',
+        participants: 4,
       },
       {
-        first_dimension_date_created_date: '2022-09-02',
-        count_participant_id: 1,
+        date_group: '2022-09-01',
+        participants: 1,
       },
       {
-        first_dimension_date_created_date: '2022-11-14',
-        count_participant_id: 3,
+        date_group: '2022-11-01',
+        participants: 3,
       },
     ];
 
@@ -53,16 +53,13 @@ describe('parseTimeSeries', () => {
 
 describe('parseStats', () => {
   it('works', () => {
-    const responseData: ParticipantsResponse['data']['attributes'] = [
-      [],
-      [{ count_participant_id: 8 }],
-      [{ count_visitor_id: 4 }],
-      [{ count_participant_id: 2 }],
-
-      [{ count_participant_id: 6 }],
-      [{ count_visitor_id: 4 }],
-      [{ count_participant_id: 1 }],
-    ];
+    const responseData: ParticipantsResponse['data']['attributes'] = {
+      participants_timeseries: [],
+      participants_whole_period: 8,
+      participation_rate_whole_period: 0.5,
+      participants_compared_period: 6,
+      participation_rate_compared_period: 0.25,
+    };
 
     const expectedOutput = {
       participants: {
@@ -78,22 +75,14 @@ describe('parseStats', () => {
     expect(parseStats(responseData)).toEqual(expectedOutput);
   });
 
-  it('works when last period visitors is empty array', () => {
-    const responseData: ParticipantsResponse['data']['attributes'] = [
-      [
-        {
-          first_dimension_date_created_date: '2022-11-09',
-          count_participant_id: 3,
-        },
-      ],
-      [{ count_participant_id: 3 }],
-      [{ count_visitor_id: 1 }],
-      [{ count_participant_id: 1 }],
-
-      [{ count_participant_id: 3 }],
-      [],
-      [],
-    ];
+  it('works when last period had no visitors', () => {
+    const responseData: ParticipantsResponse['data']['attributes'] = {
+      participants_timeseries: [],
+      participants_whole_period: 3,
+      participation_rate_whole_period: 1,
+      participants_compared_period: 3,
+      participation_rate_compared_period: 0,
+    };
 
     const expectedOutput = {
       participants: {

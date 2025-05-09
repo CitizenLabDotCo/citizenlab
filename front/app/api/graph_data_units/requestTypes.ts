@@ -116,7 +116,11 @@ export interface DemographicsParams extends BaseParams {
   props: DemographicsProps;
 }
 
-export interface ParticipantsProps extends AnalyticsProps, CompareProps {}
+type ExcludeRoles = 'exclude_admins_and_moderators';
+
+export interface ParticipantsProps extends AnalyticsProps, CompareProps {
+  exclude_roles?: ExcludeRoles;
+}
 
 export interface ParticipantsParams extends BaseParams {
   resolved_name: 'ParticipantsWidget';

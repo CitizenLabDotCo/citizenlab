@@ -2942,7 +2942,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "شرکاء وہ صارف یا زائرین ہیں جنہوں نے کسی پروجیکٹ میں حصہ لیا ہے، کسی پروپوزل کے ساتھ پوسٹ کیا یا بات چیت کی ہے یا ایونٹس میں شرکت کی ہے۔",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "شرکاء",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "شرکت کی شرح",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "ان زائرین کا فیصد جو شرکت کرتے ہیں۔ کوکیز کو قبول کرنے والے صرف شرکاء اور مہمانوں کو شمار کیا جاتا ہے۔",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "کل شرکاء",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "خودکار مہمات",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "خودکار ای میلز",
