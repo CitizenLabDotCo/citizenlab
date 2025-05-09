@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { MessageDescriptor } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
@@ -56,7 +58,9 @@ const CommonGroundTabs = ({ phase }: Props) => {
         />
       </Box>
       {currentTab === 'statements' && (
-        <CommonGroundStatements phaseId={phaseId} />
+        <DndProvider backend={HTML5Backend}>
+          <CommonGroundStatements phaseId={phaseId} />
+        </DndProvider>
       )}
       {currentTab === 'results' && <CommonGroundResults phaseId={phaseId} />}
     </Box>
