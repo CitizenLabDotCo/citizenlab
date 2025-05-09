@@ -52,9 +52,9 @@
         span.number { width: 30px; display: inline-block; }
           div.content {
             margin-left: 30px;
-            margin-bottom: 20px;
+            margin-right: 30px;
           }
-        p { margin-top: 0; }
+        p { margin-top: 0; margin-bottom: 4px;}
         div.question, div.page { page-break-inside: avoid; margin-bottom: 30px; }
         div.unsupported p { color: #666; font-style: italic; }
       }
@@ -152,6 +152,13 @@
   <% end %>
 <% end %>
 </div>
+
+<!-- configurable end text footer -->
+<% if footer %>
+  <div id="footer">
+    <%== footer %>
+  </div>
+<% end %>
 
 </body>
 </html>

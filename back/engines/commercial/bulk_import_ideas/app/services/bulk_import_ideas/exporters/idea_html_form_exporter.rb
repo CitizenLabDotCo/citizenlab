@@ -37,7 +37,8 @@ module BulkImportIdeas::Exporters
       {
         form_title: form_title,
         fields: format_fields,
-        header: default_print_header_multiloc[@locale],
+        header: form_header,
+        footer: form_footer,
         personal_data: {
           enabled: @personal_data_enabled,
           heading: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.personal_data') },
@@ -65,6 +66,21 @@ module BulkImportIdeas::Exporters
       "#{@project.title_multiloc[@locale]} - #{@phase.title_multiloc[@locale]}"
     end
 
+    # TODO: Get this into the default values of the custom_form model so it can be edited and not just replaced - but this is difficult
+    def form_header
+      form = @participation_method.custom_form
+      return format_html_field(default_print_start_multiloc[@locale]) if form.print_start_multiloc == {}
+
+      print_start = TextImageService.new.render_data_images_multiloc(form.print_start_multiloc, field: :print_end_multiloc, imageable: form)
+      format_html_field(print_start[@locale])
+    end
+
+    def form_footer
+      form = @participation_method.custom_form
+      print_end = TextImageService.new.render_data_images_multiloc(form.print_end_multiloc, field: :print_end_multiloc, imageable: form)
+      format_html_field(print_end[@locale])
+    end
+
     def organization_name(locale = @locale)
       AppConfiguration.instance.settings('core', 'organization_name')[locale]
     end
@@ -73,7 +89,8 @@ module BulkImportIdeas::Exporters
       @phase.pmethod.supports_public_visibility? ? 'public' : 'private'
     end
 
-    def default_print_header_multiloc
+    def default_print_start_multiloc
+      logo_url = AppConfiguration.instance.logo&.medium&.url
       configured_locales = AppConfiguration.instance.settings('core', 'locales')
       configured_locales.index_with do |locale|
         <<~HTML
@@ -86,10 +103,6 @@ module BulkImportIdeas::Exporters
           </ul>
         HTML
       end
-    end
-
-    def logo_url
-      AppConfiguration.instance.logo&.medium&.url
     end
 
     def format_fields
@@ -143,12 +156,17 @@ module BulkImportIdeas::Exporters
       end
     end
 
+    # Empty method to override in PDF version of the exporter
+    def format_html_field(description)
+      description
+    end
+
     def field_print_description(field)
       if (field.linear_scale? || field.rating?) && field.description_multiloc[@locale].blank? # TODO: Is rating correct here as it returns nil below (old code)
         linear_scale_print_description(field)
       else
         description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
-        description[@locale]
+        format_html_field(description[@locale])
       end
     end
 

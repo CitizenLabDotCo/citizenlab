@@ -82,16 +82,11 @@ module BulkImportIdeas::Exporters
       end
     end
 
-    # Dev only methods to allow rendering of images in the PDF
-    def print_description(field)
-      description = super
+    # Allow rendering of images in the PDF
+    def format_html_field(description)
+      description = super(description)
       description&.sub!('localhost:4000', 'cl-back-web:4000') if Rails.env.development?
       description
-    end
-
-    def logo_url
-      url = super
-      url&.sub!('localhost:4000', 'cl-back-web:4000') # TEMP: Dev only?
     end
   end
 end
