@@ -3,6 +3,7 @@ import { CLErrors } from 'typings';
 
 import commentsKeys from 'api/comments/keys';
 import ideasKeys from 'api/ideas/keys';
+import moderationsKeys from 'api/moderations/keys';
 import userCommentsCount from 'api/user_comments_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -53,6 +54,9 @@ const useMarkCommentForDeletion = ({
       if (parentCommentId) {
         queryClient.invalidateQueries({
           queryKey: commentsKeys.list({ commentId: parentCommentId }),
+        });
+        queryClient.invalidateQueries({
+          queryKey: moderationsKeys.all(),
         });
       }
 
