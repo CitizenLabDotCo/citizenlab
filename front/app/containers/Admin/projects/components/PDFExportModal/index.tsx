@@ -178,7 +178,7 @@ const PDFExportModal = ({
               borderRadius={theme.borderRadius}
               isOpenByDefault
             >
-              <Box p="24px">
+              <Box p="24px" pt="12px">
                 <QuillMultilocWithLocaleSwitcher
                   name="print_start_multiloc"
                   // To be configured
@@ -201,7 +201,7 @@ const PDFExportModal = ({
               borderRadius={theme.borderRadius}
               isOpenByDefault
             >
-              <Box p="24px">
+              <Box p="24px" pt="12px">
                 <QuillMultilocWithLocaleSwitcher
                   name="print_end_multiloc"
                   // To be configured
