@@ -3,7 +3,19 @@
 module ParticipationMethod
   class Base
     def self.all_methods
-      [DocumentAnnotation, Ideation, Information, NativeSurvey, CommunityMonitorSurvey, Poll, Proposals, Survey, Volunteering, Voting]
+      [
+        CommonGround,
+        CommunityMonitorSurvey,
+        DocumentAnnotation,
+        Ideation,
+        Information,
+        NativeSurvey,
+        Poll,
+        Proposals,
+        Survey,
+        Volunteering,
+        Voting
+      ]
     end
 
     def initialize(phase)
@@ -86,7 +98,11 @@ module ParticipationMethod
       false
     end
 
-    def supports_built_in_fields?
+    def built_in_title_required?
+      false
+    end
+
+    def built_in_body_required?
       false
     end
 
@@ -138,10 +154,13 @@ module ParticipationMethod
       false
     end
 
+    # Returns whether this participation method supports idea statuses?
     def supports_status?
       false
     end
 
+    # Returns whether this participation method supports new input submissions from
+    # end-users.
     def supports_submission?
       false
     end
@@ -154,6 +173,7 @@ module ParticipationMethod
       true
     end
 
+    # Returns whether inputs in this participation method can be moved to another phase.
     def transitive?
       false
     end

@@ -11,6 +11,12 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'common_ground_phase factory' do
+    it 'is valid' do
+      expect(build(:common_ground_phase)).to be_valid
+    end
+  end
+
   describe 'description sanitizer' do
     it 'sanitizes script tags in the description' do
       phase = create(:phase, description_multiloc: {
