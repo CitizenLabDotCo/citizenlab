@@ -57,6 +57,7 @@ const AdminProjectProposals = () => {
             </Button>
             {phase && (
               <NewIdeaButton
+                participationMethod={phase.data.attributes.participation_method}
                 inputTerm={phase.data.attributes.input_term}
                 linkTo={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
               />

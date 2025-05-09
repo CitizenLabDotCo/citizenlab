@@ -37,6 +37,15 @@ export default defineMessages({
     defaultMessage:
       "Tap into your users' collective intelligence. Invite them to submit, discuss ideas, and/or provide feedback in a public forum.",
   },
+  commonGroundTitle: {
+    id: 'app.containers.AdminPage.phase.methodPicker.commonGroundTitle',
+    defaultMessage: 'Find common ground',
+  },
+  commonGroundDescription: {
+    id: 'app.containers.AdminPage.phase.methodPicker.commonGroundDescription',
+    defaultMessage:
+      'Help participants surface agreement and disagreement, one idea at a time.',
+  },
   proposalsTitle: {
     id: 'app.containers.AdminPage.phase.methodPicker.proposalsTitle',
     defaultMessage: 'Proposals, petitions or initiatives',

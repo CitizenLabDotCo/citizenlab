@@ -1,3 +1,5 @@
+import { ParticipationMethod } from 'api/phases/types';
+
 // There are broadly three variants of pages (based on their behavior):
 // 1. The page that comes after the submission, e.g. the "success" page
 // 2. The page where you have the submit button
@@ -7,13 +9,20 @@
 // a different button ("Submit" instead of "Next").
 // The last page is always the 'after submission' page,
 // and the page before that is always the 'submission' page.
-const getPageVariant = (currentStep: number, numberOfPages: number) => {
-  if (currentStep === numberOfPages - 1) {
-    return 'after-submission';
+const getPageVariant = (
+  currentStep: number,
+  numberOfPages: number,
+  participationMethod?: ParticipationMethod
+) => {
+  if (
+    currentStep === numberOfPages - 2 ||
+    participationMethod === 'common_ground'
+  ) {
+    return 'submission';
   }
 
-  if (currentStep === numberOfPages - 2) {
-    return 'submission';
+  if (currentStep === numberOfPages - 1) {
+    return 'after-submission';
   }
 
   return 'other';

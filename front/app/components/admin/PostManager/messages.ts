@@ -285,4 +285,21 @@ export default defineMessages({
     defaultMessage:
       'Screening is turned off for this phase. Go to phase setup to enable it',
   },
+  noInputs: {
+    id: 'app.components.admin.PostManager.noInputs',
+    defaultMessage: 'No inputs yet',
+  },
+  noInputsDescription: {
+    id: 'app.components.admin.PostManager.noInputsDescription',
+    defaultMessage:
+      'You add your own input or start from a past participation project.',
+  },
+  createInput: {
+    id: 'app.components.admin.PostManager.createInput',
+    defaultMessage: 'Create input',
+  },
+  startFromPastInputs: {
+    id: 'app.components.admin.PostManager.startFromPastInputs',
+    defaultMessage: 'Start from past inputs',
+  },
 });

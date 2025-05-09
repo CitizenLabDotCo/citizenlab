@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.ideation',
     defaultMessage: 'Ideation',
   },
+  commonGround: {
+    id: 'app.containers.Admin.reporting.widgets.MethodsUsed.commonGround',
+    defaultMessage: 'Common ground',
+  },
   proposals: {
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.proposals',
     defaultMessage: 'Proposals',

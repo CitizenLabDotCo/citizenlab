@@ -7,6 +7,7 @@ import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
+import CommonGroundInputManager from 'components/admin/PostManager/CommonGroundInputManager';
 import InputManager, {
   TFilterMenu,
 } from 'components/admin/PostManager/InputManager';
@@ -33,6 +34,8 @@ const AdminProjectIdeas = () => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);
+  const isCommonGround =
+    phase?.data.attributes.participation_method === 'common_ground';
 
   if (
     project === undefined ||
@@ -56,25 +59,30 @@ const AdminProjectIdeas = () => {
             <FormattedMessage {...messages.titleInputManager} />
           </Title>
           <Box display="flex" gap="8px">
-            <Button
-              width="auto"
-              linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
-              icon="page"
-              buttonStyle="secondary-outlined"
-            >
-              <FormattedMessage {...ownMessages.importInputs} />
-            </Button>
+            {!isCommonGround && (
+              <Button
+                width="auto"
+                linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
+                icon="page"
+                buttonStyle="secondary-outlined"
+              >
+                <FormattedMessage {...ownMessages.importInputs} />
+              </Button>
+            )}
             {phase && (
               <NewIdeaButton
+                participationMethod={phase.data.attributes.participation_method}
                 inputTerm={phase.data.attributes.input_term}
                 linkTo={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
               />
             )}
           </Box>
         </Box>
-        <Text color="textSecondary">
-          <FormattedMessage {...messages.subtitleInputManager} />
-        </Text>
+        {!isCommonGround && (
+          <Text color="textSecondary">
+            <FormattedMessage {...messages.subtitleInputManager} />
+          </Text>
+        )}
         <Box display="flex">
           {phase?.data.attributes.participation_method === 'voting' &&
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -102,14 +110,18 @@ const AdminProjectIdeas = () => {
             ))}
         </Box>
       </Box>
-      <InputManager
-        key={phaseId}
-        projectId={projectId}
-        phases={phases?.data}
-        phaseId={phaseId}
-        visibleFilterMenus={timelineProjectVisibleFilterMenus}
-        defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
-      />
+      {isCommonGround ? (
+        <CommonGroundInputManager projectId={projectId} phaseId={phaseId} />
+      ) : (
+        <InputManager
+          key={phaseId}
+          projectId={projectId}
+          phases={phases?.data}
+          phaseId={phaseId}
+          visibleFilterMenus={timelineProjectVisibleFilterMenus}
+          defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
+        />
+      )}
     </>
   );
 };

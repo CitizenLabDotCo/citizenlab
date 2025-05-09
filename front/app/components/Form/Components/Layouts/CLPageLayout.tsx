@@ -136,9 +136,9 @@ const CLPageLayout = memo(
     const phaseId =
       phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
-    const supportsNativeSurvey = methodSupportsNativeSurvey(
-      phase?.data.attributes.participation_method
-    );
+    const participationMethod = phase?.data.attributes.participation_method;
+    const supportsNativeSurvey =
+      methodSupportsNativeSurvey(participationMethod);
     const allowAnonymousPosting =
       phase?.data.attributes.allow_anonymous_participation;
 
@@ -169,7 +169,11 @@ const CLPageLayout = memo(
     const currentStepNumber = userPagePath.length - 1;
     const currentPage = userPagePath[currentStepNumber];
 
-    const pageVariant = getPageVariant(currentStepNumber, visiblePages.length);
+    const pageVariant = getPageVariant(
+      currentStepNumber,
+      visiblePages.length,
+      participationMethod
+    );
     const hasPreviousPage = currentStepNumber !== 0;
 
     const isMapPage = currentPage.options.page_layout === 'map';
@@ -263,6 +267,15 @@ const CLPageLayout = memo(
         setShowAllErrors?.(true);
         setScrollToError(true);
         return;
+      }
+
+      if (
+        participationMethod === 'common_ground' &&
+        pageVariant === 'submission'
+      ) {
+        clHistory.push(
+          `/admin/projects/${project?.data.id}/phases/${phaseId}/ideas`
+        );
       }
 
       if (pageVariant === 'after-submission') {
@@ -549,9 +562,7 @@ const CLPageLayout = memo(
                       showIdeaId && (
                         <SubmissionReference
                           inputId={ideaId}
-                          participationMethod={
-                            phase?.data.attributes.participation_method
-                          }
+                          participationMethod={participationMethod}
                         />
                       )}
                   </Box>
