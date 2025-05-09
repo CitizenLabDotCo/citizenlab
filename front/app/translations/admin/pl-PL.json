@@ -2745,7 +2745,6 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Tekst banera",
   "app.containers.ContentBuilder.homepage.button": "Przycisk",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Układ",
-  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "Twoja obecna licencja nie obejmuje dostosowywania ustawień innych niż tekst na banerze strony głównej. Skontaktuj się ze swoim menedżerem GovSuccess, aby dowiedzieć się więcej na ten temat.",
   "app.containers.ContentBuilder.homepage.customized_button": "Niestandardowy",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Tekst przycisku",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Przycisk łącza",

@@ -2745,7 +2745,6 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Afiş metni",
   "app.containers.ContentBuilder.homepage.button": "Düğme",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Düzen",
-  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "Ana sayfa banner'ındaki metin dışındaki ayarların özelleştirilmesi mevcut lisansınıza dahil değildir. Bu konuda daha fazla bilgi edinmek için GovSuccess Yöneticinize ulaşın.",
   "app.containers.ContentBuilder.homepage.customized_button": "Özel",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Düğme metni",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Düğme bağlantısı",
