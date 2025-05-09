@@ -753,8 +753,6 @@
   "app.containers.Admin.Users.userInsights": "Nutzer*innen-Einblicke",
   "app.containers.Admin.Users.youCantDeleteYourself": "Sie können Ihr eigenes Konto nicht über die Benutzerverwaltungsseite löschen",
   "app.containers.Admin.Users.youCantUnadminYourself": "Sie können Ihre Rolle als Admin jetzt nicht aufgeben",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Diese Funktion ist in der offenen Beta-Phase für Ihre Lizenz bis zum 30. Juni 2025 verfügbar.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Gemeinschaftspuls",
   "app.containers.Admin.communityMonitor.healthScore": "Bewertung",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Dieser Wert ist der Durchschnitt aller Fragen auf der Gefühlsskala, die von den Teilnehmenden für den ausgewählten Zeitraum beantwortet wurden.",

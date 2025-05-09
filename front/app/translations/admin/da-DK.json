@@ -753,8 +753,6 @@
   "app.containers.Admin.Users.userInsights": "Brugerindsigt",
   "app.containers.Admin.Users.youCantDeleteYourself": "Du kan ikke slette din egen konto via brugeradministrationssiden",
   "app.containers.Admin.Users.youCantUnadminYourself": "Du kan ikke opgive din rolle som administrator nu",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Denne funktion er tilgængelig i åben beta for din plan indtil 30. juni 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Borgerbarometer",
   "app.containers.Admin.communityMonitor.healthScore": "Sundhedsscore",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Denne score er gennemsnittet af alle spørgsmål på Sentiment-skalaen, som deltagerne har besvaret i den valgte periode.",

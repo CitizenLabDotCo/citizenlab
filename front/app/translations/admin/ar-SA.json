@@ -753,8 +753,6 @@
   "app.containers.Admin.Users.userInsights": "رؤى المستخدم",
   "app.containers.Admin.Users.youCantDeleteYourself": "لا يمكنك حذف حسابك الخاص عبر صفحة المسؤول للمستخدمين",
   "app.containers.Admin.Users.youCantUnadminYourself": "لا يمكنك التخلي عن دورك كمسؤول الآن",
-  "app.containers.Admin.communityMonitor.betaLabel": "بيتا",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "تتوفر هذه الميزة في الإصدار التجريبي المفتوح لخطتك حتى 30 يونيو 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "مراقب المجتمع",
   "app.containers.Admin.communityMonitor.healthScore": "درجة الصحة",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "هذه النتيجة هي متوسط جميع أسئلة مقياس المشاعر التي أجاب عليها المشاركون خلال الفترة المحددة.",
