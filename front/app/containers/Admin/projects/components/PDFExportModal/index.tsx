@@ -189,6 +189,29 @@ const PDFExportModal = ({
                 />
               </Box>
             </CollapsibleContainer>
+            <CollapsibleContainer
+              mb="24px"
+              // To be configured
+              title={'Instructions end'}
+              titleVariant="h4"
+              titleAs="h2"
+              titleFontWeight="bold"
+              titlePadding="16px"
+              border={`1px solid ${theme.colors.grey300}`}
+              borderRadius={theme.borderRadius}
+              isOpenByDefault
+            >
+              <Box p="24px">
+                <QuillMultilocWithLocaleSwitcher
+                  name="print_end_multiloc"
+                  // To be configured
+                  label={'Instructions end'}
+                  noImages
+                  noVideos
+                  noLinks
+                />
+              </Box>
+            </CollapsibleContainer>
             <CheckboxWithLabel
               name="personal_data"
               label={
