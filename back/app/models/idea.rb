@@ -227,7 +227,10 @@ class Idea < ApplicationRecord
   scope :publicly_visible, lambda {
     where_pmethod(&:supports_public_visibility?)
   }
-  scope :transitive, -> { where creation_phase: nil }
+
+  scope :transitive, lambda { |transitive = true|
+    transitive ? where(creation_phase: nil) : where.not(creation_phase: nil)
+  }
 
   scope :native_survey, -> { where(creation_phase: Phase.where(participation_method: 'native_survey')) } # TODO: Delete
   scope :draft_surveys, lambda { # TODO: Delete

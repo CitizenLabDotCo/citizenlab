@@ -51,6 +51,7 @@ RSpec.describe ParticipationMethod::CommonGround do
   its(:supports_assignment?) { is_expected.to be(false) }
   its(:supports_toxicity_detection?) { is_expected.to be(true) }
   its(:return_disabled_actions?) { is_expected.to be(false) }
+  its(:supports_public_visibility?) { is_expected.to be(true) }
 
   its(:form_logic_enabled?) { is_expected.to be(false) }
   its(:user_fields_in_form?) { is_expected.to be(false) }
@@ -61,10 +62,6 @@ RSpec.describe ParticipationMethod::CommonGround do
   # Support for results export will be added later.
   its(:supports_exports?) { is_expected.to be(false) }
   its(:supports_private_attributes_in_export?) { is_expected.to be(false) }
-
-  # Very likely to change, but for now, even if the inputs can be accessed individually,
-  # the full list of inputs is not made publicly available.
-  its(:supports_public_visibility?) { is_expected.to be(false) }
 
   # We might reconsider this in the future, but for now we don't want to allow users
   # to post new inputs.
