@@ -120,7 +120,7 @@ describe IdeaPolicy do
             when 'posting_limited_max_reached'
               create(:idea, project: idea.project, author: idea.author)
               allow_any_instance_of(ParticipationMethod::Ideation)
-                .to receive(:supports_multiple_posts?).and_return(false)
+                .to receive(:allow_posting_again_after).and_return(nil)
             end
           end
 
