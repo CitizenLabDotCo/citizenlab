@@ -13,7 +13,6 @@ module MultiTenancy
           title_multiloc: { 'en' => 'Are you a politician?' },
           description_multiloc: { 'en' => 'We use this to provide you with customized information' },
           required: false,
-          answer_visible_to: 'admins'
         )
 
         CustomFieldOption.create!(custom_field: custom_field, key: 'active_politician',

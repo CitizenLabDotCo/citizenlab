@@ -2177,7 +2177,6 @@ CREATE TABLE public.custom_fields (
     hidden boolean DEFAULT false NOT NULL,
     maximum integer,
     logic jsonb DEFAULT '{}'::jsonb NOT NULL,
-    answer_visible_to character varying,
     select_count_enabled boolean DEFAULT false NOT NULL,
     maximum_select_count integer,
     minimum_select_count integer,
@@ -7076,6 +7075,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250509131056'),
 ('20250502112945'),
 ('20250501134516'),
 ('20250416120221'),

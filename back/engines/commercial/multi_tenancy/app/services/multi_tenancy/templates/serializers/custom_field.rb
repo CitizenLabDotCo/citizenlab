@@ -7,7 +7,6 @@ module MultiTenancy
         ref_attribute :resource
 
         attributes %i[
-          answer_visible_to
           code
           description_multiloc
           enabled
