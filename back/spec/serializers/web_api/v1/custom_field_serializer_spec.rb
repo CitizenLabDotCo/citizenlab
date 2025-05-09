@@ -46,7 +46,8 @@ describe WebApi::V1::CustomFieldSerializer do
         logic: {},
         constraints: {},
         answer_visible_to: 'admins',
-        random_option_ordering: false
+        random_option_ordering: false,
+        include_in_printed_form: true
       })
     end
   end
@@ -95,7 +96,8 @@ describe WebApi::V1::CustomFieldSerializer do
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: {},
         constraints: {},
-        random_option_ordering: false
+        random_option_ordering: false,
+        include_in_printed_form: true
       })
     end
   end
@@ -132,7 +134,8 @@ describe WebApi::V1::CustomFieldSerializer do
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: {},
         constraints: {},
-        random_option_ordering: false
+        random_option_ordering: false,
+        include_in_printed_form: true
       })
     end
   end
@@ -157,7 +160,8 @@ describe WebApi::V1::CustomFieldSerializer do
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: {},
         constraints: {},
-        random_option_ordering: false
+        random_option_ordering: false,
+        include_in_printed_form: true
       })
     end
   end
@@ -189,7 +193,8 @@ describe WebApi::V1::CustomFieldSerializer do
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: { 'next_page_id' => 'TEMP-ID-1' },
         constraints: {},
-        random_option_ordering: false
+        random_option_ordering: false,
+        include_in_printed_form: true
       })
     end
   end
@@ -217,7 +222,8 @@ describe WebApi::V1::CustomFieldSerializer do
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: {},
         constraints: {},
-        random_option_ordering: false
+        random_option_ordering: false,
+        include_in_printed_form: true
       })
     end
   end
@@ -242,7 +248,8 @@ describe WebApi::V1::CustomFieldSerializer do
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: {},
         constraints: {},
-        random_option_ordering: false
+        random_option_ordering: false,
+        include_in_printed_form: true
       })
     end
   end

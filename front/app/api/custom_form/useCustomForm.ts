@@ -8,8 +8,8 @@ import { CustomFormKeys, ICustomForm, ICustomFormParameters } from './types';
 
 const fetchCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
   const apiEndpoint = phaseId
-    ? `admin/phases/${phaseId}/custom_fields/custom_form`
-    : `admin/projects/${projectId}/custom_fields/custom_form`;
+    ? `phases/${phaseId}/custom_form`
+    : `projects/${projectId}/custom_form`;
 
   return fetcher<ICustomForm>({
     path: `/${apiEndpoint}`,
