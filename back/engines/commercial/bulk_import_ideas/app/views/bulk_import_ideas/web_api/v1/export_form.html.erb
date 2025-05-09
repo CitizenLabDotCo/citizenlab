@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title><%= project.title_multiloc[locale] %> - <%= phase.title_multiloc[locale] %></title>
+  <title><%= form_title %></title>
 
   <% if font_config %>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
@@ -28,7 +28,7 @@
       h1 { font-size: 18pt; }
       h2 { font-size: 16pt; }
       h3 { font-size: 14pt; }
-      p, li { font-size: 12pt; }
+      h4, p, li { font-size: 12pt; }
 
       div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px; }
       div.select { display: flex; align-items: center; margin-top: -6px; }
@@ -38,12 +38,14 @@
 
       #header {
         margin-bottom: 30px;
-        img { width: 225px; height: auto; margin-bottom: 0; }
+        img { height: auto; }
         h1 { margin-top: 0; }
         ul.instructions { border-left: solid 4px #000; padding-top: 5px; padding-bottom: 5px }
       }
 
-      #personal-data { page-break-after: always; }
+      #personal-data {
+        page-break-after: always;
+      }
 
       #questions {
         h2, h3 { margin-bottom: 8px; }
@@ -54,21 +56,18 @@
           }
         p { margin-top: 0; }
         div.question, div.page { page-break-inside: avoid; margin-bottom: 30px; }
+        div.unsupported p { color: #666; font-style: italic; }
       }
   </style>
 </head>
 <body>
+
+<!-- Logo, Title and Instructions (configurable) -->
 <div id="header">
-  <img src="<%= logo_url %>" alt="Logo" style="margin-bottom: 20px;" />
-  <h1><%= project.title_multiloc[locale] %> - <%= phase.title_multiloc[locale] %></h1>
-  <h2><%= instructions[:title] %></h2>
-  <ul class="instructions">
-    <li><%== instructions[:bullet1] %></li>
-    <li><%== instructions[:bullet2] %></li>
-  </ul>
+  <%== header %>
 </div>
 
-<!-- TODO: Personal data section -->
+<!-- Personal data section -->
 <% if personal_data[:enabled] %>
   <div id="personal-data">
     <h2><%= personal_data[:heading] %></h2>
@@ -96,12 +95,16 @@
 
   <% else %>
     <div class="question">
-      <h3>
-        <span class="number"><%= field[:question_number] %>. </span><%= field[:title] %>
-        <% if field[:optional] %>
-          <span class="optional">(<%= optional %>)</span>
-        <% end %>
-      </h3>
+      <% if field[:additional_text_question] %>
+        <h4><span class="number"> </span><%= field[:title] %></h4>
+      <% else %>
+        <h3>
+          <span class="number"><%= field[:question_number] %> </span><%= field[:title] %>
+          <% if field[:optional] %>
+            <span class="optional">(<%= optional %>)</span>
+          <% end %>
+        </h3>
+      <% end %>
       <div class="content">
         <%== sanitize field[:description] %>
 
@@ -110,7 +113,7 @@
           <%= field[:multiselect_print_instructions] %>
         </p>
 
-        <% if field[:input_type] == 'select' %>
+        <% if field[:format] == :single_select %>
           <div class="options">
             <% field[:options].each do |option| %>
                 <div class="select">
@@ -120,7 +123,7 @@
             <% end %>
           </div>
 
-        <% elsif field[:input_type] == 'multiselect' %>
+        <% elsif field[:format] == :multi_select %>
           <div class="options">
             <% field[:options].each do |option| %>
               <div class="select">
@@ -130,28 +133,19 @@
             <% end %>
           </div>
 
-        <% elsif %w[multiline_text html_multiloc].include? field[:input_type] %>
+        <% elsif field[:format] == :multi_line_text %>
           <% 7.times do %>
             <div class="line"></div>
           <% end %>
 
-        <% else %>
-          <%
-            # Fallback currently covers:
-            # - text
-            # - text_multiloc
-            # - number
-            # - linear_scale
-            # - rating
-            # - sentiment_linear_scale
-            # - select_image
-            # - multiselect_image
-            # - checkbox
-            # - html
-            # - line
-            # - polygon
-          %>
+        <% elsif field[:format] == :single_line_text %>
           <div class="line"></div>
+
+        <% else %>
+          <div class="unsupported">
+            <p><%= unsupported_field_text %></p>
+          </div>
+
         <% end %>
       </div>
     </div>

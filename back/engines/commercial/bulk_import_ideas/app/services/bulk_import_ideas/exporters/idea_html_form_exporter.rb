@@ -34,19 +34,10 @@ module BulkImportIdeas::Exporters
     end
 
     def template_values
-      organization_name = AppConfiguration.instance.settings('core', 'organization_name')[@locale]
-      personal_data_visibility = @phase.pmethod.supports_public_visibility? ? 'public' : 'private'
-
       {
-        locale: @locale,
-        phase: @phase,
-        project: @project,
+        form_title: form_title,
         fields: format_fields,
-        instructions: {
-          title: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.instructions') },
-          bullet1: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.write_as_clearly') },
-          bullet2: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.write_in_language') }
-        },
+        header: default_print_header_multiloc[@locale],
         personal_data: {
           enabled: @personal_data_enabled,
           heading: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.personal_data') },
@@ -62,12 +53,39 @@ module BulkImportIdeas::Exporters
           checkbox: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box', organizationName: organization_name) }
         },
         optional: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') },
-        logo_url: logo_url,
+        unsupported_field_text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.unsupported_field') },
         page_copy: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.page') },
         font_family: font_family,
         font_config: font_config,
         font_styles: font_styles
       }
+    end
+
+    def form_title
+      "#{@project.title_multiloc[@locale]} - #{@phase.title_multiloc[@locale]}"
+    end
+
+    def organization_name(locale = @locale)
+      AppConfiguration.instance.settings('core', 'organization_name')[locale]
+    end
+
+    def personal_data_visibility
+      @phase.pmethod.supports_public_visibility? ? 'public' : 'private'
+    end
+
+    def default_print_header_multiloc
+      configured_locales = AppConfiguration.instance.settings('core', 'locales')
+      configured_locales.index_with do |locale|
+        <<~HTML
+          <h1><img src="#{logo_url}" alt="#{organization_name(locale)}" /></h1>
+          <h1>#{form_title}</h1>
+          <h2>#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.instructions') }}</h2>
+          <ul class="instructions">
+          <li>#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.write_as_clearly') }}</li>
+          <li>#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.write_in_language') }}</li>
+          </ul>
+        HTML
+      end
     end
 
     def logo_url
@@ -79,8 +97,10 @@ module BulkImportIdeas::Exporters
       @form_fields.map do |field|
         {
           title: field.title_multiloc[@locale],
-          description: print_description(field),
-          question_number: field.page? ? nil : question_num += 1,
+          description: field_print_description(field),
+          question_number: field.page? || field.additional_text_question? ? nil : "#{question_num += 1}.",
+          additional_text_question: field.additional_text_question?,
+          format: field_print_format(field),
           input_type: field.input_type,
           instructions: multiselect_print_instructions(field),
           visibility_disclaimer: print_visibility_disclaimer(field),
@@ -95,7 +115,35 @@ module BulkImportIdeas::Exporters
       end
     end
 
-    def print_description(field)
+    def field_print_format(field)
+      case field.input_type
+      when 'page'
+        :page
+      when 'select'
+        :single_select
+      when 'multiselect'
+        :multi_select
+      when 'multiline_text', 'html_multiloc'
+        :multi_line_text
+      when 'text', 'text_multiloc', 'number', 'linear_scale'
+        :single_line_text
+      else
+        # CURRENTLY UNSUPPORTED
+        # rating
+        # multiselect_image
+        # file_upload
+        # shapefile_upload
+        # point
+        # line
+        # polygon
+        # ranking
+        # matrix_linear_scale
+        # sentiment_linear_scale
+        :unsupported
+      end
+    end
+
+    def field_print_description(field)
       if (field.linear_scale? || field.rating?) && field.description_multiloc[@locale].blank? # TODO: Is rating correct here as it returns nil below (old code)
         linear_scale_print_description(field)
       else
