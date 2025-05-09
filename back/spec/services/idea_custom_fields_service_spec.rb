@@ -256,26 +256,6 @@ describe IdeaCustomFieldsService do
       end
     end
 
-    describe 'enabled_public_fields' do
-      it 'excludes disabled & answer_visible_to: admins fields' do
-        location_field = custom_form.custom_fields.find_by(code: 'location_description')
-        location_field.update!(answer_visible_to: 'admins')
-        output = service.enabled_public_fields
-        expect(output.map(&:code)).to eq [
-          'title_page',
-          'title_multiloc',
-          'body_page',
-          'body_multiloc',
-          'uploads_page',
-          'idea_images_attributes',
-          'idea_files_attributes',
-          'details_page',
-          'topic_ids',
-          nil
-        ]
-      end
-    end
-
     describe 'extra_visible_fields' do
       it 'excludes disabled and built-in fields' do
         output = service.extra_visible_fields

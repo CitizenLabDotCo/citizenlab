@@ -55,8 +55,7 @@ describe WebApi::V1::CustomFieldSerializer do
         description_multiloc: { 'en' => 'Which councils are you attending in our city?' },
         input_type: 'text',
         key: 'extra',
-        title_multiloc: { 'en' => 'Did you attend' },
-        answer_visible_to: 'admins'
+        title_multiloc: { 'en' => 'Did you attend' }
       }))
     end
   end
