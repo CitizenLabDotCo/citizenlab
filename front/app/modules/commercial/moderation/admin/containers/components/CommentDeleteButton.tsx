@@ -1,4 +1,4 @@
-import React, { FormEvent, useState, useRef } from 'react';
+import React, { FormEvent, useState } from 'react';
 
 import { Tooltip } from '@citizenlab/cl2-component-library';
 
@@ -15,7 +15,6 @@ import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
 
-// Typing
 export interface Props {
   commentId?: string;
   ideaId?: string;
@@ -24,8 +23,6 @@ export interface Props {
 }
 
 const DeleteCommentButton = ({ ideaId, comment, projectId }: Props) => {
-  const deleteCommentButtonRef = useRef<HTMLButtonElement>(null);
-
   const commentId = comment.id;
   const { mutate: markForDeletion } = useMarkCommentForDeletion({
     ideaId,
@@ -78,7 +75,6 @@ const DeleteCommentButton = ({ ideaId, comment, projectId }: Props) => {
           onClick={() => {
             openDeleteModal();
           }}
-          ref={deleteCommentButtonRef}
           buttonStyle="text"
           p="4px"
           iconSize="18px"
