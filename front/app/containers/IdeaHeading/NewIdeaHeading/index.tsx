@@ -35,7 +35,7 @@ const StyledTitle = styled(Text)`
 `;
 
 type Props = {
-  phaseId?: string;
+  phaseId: string;
   idea?: IIdeaData;
   titleText?: string | React.ReactNode;
 };
