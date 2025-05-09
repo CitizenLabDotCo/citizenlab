@@ -303,25 +303,15 @@ class WebApi::V1::IdeasController < ApplicationController
     dest_phase = Phase.find(params[:phase_id])
     authorize(dest_phase, :copy_inputs_to_phase?)
 
-    ideas = IdeasFinder.new(
+    copied_ideas = Ideas::CopyService.new.copy(
       params.require(:filters),
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
-
-    new_ids = ideas.map do |idea|
-      idea.dup.tap do |i|
-        i.project = dest_phase.project
-        i.phases = [dest_phase]
-        i.slug = nil
-      end.save!
-    end
-
-    copied_ideas = Idea.where(id: new_ids)
-      .then { |ideas_| paginate(ideas_) }
+      dest_phase,
+      current_user,
+      policy_scope(Idea).submitted_or_published
+    )
 
     render json: linked_json(
-      copied_ideas,
+      paginate(copied_ideas),
       WebApi::V1::IdeaSerializer,
       serialization_options_for(copied_ideas)
     )
