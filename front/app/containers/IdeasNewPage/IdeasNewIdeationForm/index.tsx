@@ -180,8 +180,6 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       );
 
     setFormData(data);
-    console.log('handleDisclaimer', data);
-    console.log('disclaimerNeeded', disclaimerNeeded);
 
     if (data.publication_status === 'published') {
       if (disclaimerNeeded) {

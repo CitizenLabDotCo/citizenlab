@@ -17,7 +17,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IIdeaData, IIdeaQueryParameters } from 'api/ideas/types';
-// import useDeleteIdea from 'api/ideas/useDeleteIdea'; // deletion handled by ActionBar components
 import useIdeas from 'api/ideas/useIdeas';
 
 import { ManagerType, PreviewMode } from 'components/admin/PostManager';
@@ -52,11 +51,10 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
     transitive: false,
   });
   const { data: ideas, isLoading } = useIdeas(queryParameters);
-  console.log('ideas', ideas);
   const [previewPostId, setPreviewPostId] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
   const [selection, setSelection] = useState<Set<string>>(new Set());
-  // for edit/delete action bar
+
   const resetSelection = () => setSelection(new Set());
   const openPreviewEdit = () => {
     const id = [...selection][0];
@@ -74,7 +72,7 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
     setPreviewPostId(null);
     setPreviewMode('view');
   };
-  // Selection handlers
+
   const allSelected = !!(
     ideas &&
     ideas.data.length > 0 &&
@@ -127,7 +125,6 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
 
   return (
     <>
-      {/* Edit/Delete action bar for selected inputs */}
       {selection.size > 0 && (
         <Box mb="16px">
           <ActionBar
