@@ -22,4 +22,9 @@ export default defineMessages({
     id: 'app.components.ideas.similarIdeas.engageHere',
     defaultMessage: 'Engage here',
   },
+  similarSubmissionsAnnounceResults: {
+    id: 'app.components.ideas.similarIdeas.similarSubmissionsAnnounceResults',
+    defaultMessage:
+      '{count, plural, =0 {No similar submissions found.} one {One similar submission found.} other {{count} similar submissions found.}}',
+  },
 });
