@@ -2,12 +2,10 @@
 
 module ParticipationMethod
   class CommunityMonitorSurvey < NativeSurvey
+    ALLOWED_EXTRA_FIELD_TYPES = %w[page sentiment_linear_scale]
+
     def self.method_str
       'community_monitor_survey'
-    end
-
-    def allowed_extra_field_input_types
-      %w[page sentiment_linear_scale]
     end
 
     def default_fields(custom_form)

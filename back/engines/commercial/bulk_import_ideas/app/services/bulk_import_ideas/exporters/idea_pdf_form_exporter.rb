@@ -15,7 +15,7 @@ module BulkImportIdeas::Exporters
 
     def initialize(phase, locale, personal_data_enabled)
       super
-      @form_fields = IdeaCustomFieldsService.new(phase.pmethod.custom_form).printable_fields
+      @form_fields = IdeaCustomFieldsService.new(phase.pmethod.custom_form).printable_fields_legacy
       @personal_data_enabled = personal_data_enabled
       @previous_cursor = nil
       @app_configuration = AppConfiguration.instance

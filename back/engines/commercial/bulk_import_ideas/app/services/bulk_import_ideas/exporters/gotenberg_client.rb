@@ -31,7 +31,8 @@ module BulkImportIdeas::Exporters
       end
 
       output_pdf = Tempfile.new('gotenberg.pdf')
-      output_pdf.write(response.body)
+      # TODO: Get this error without force_encoding Encoding::UndefinedConversionError: \"\\xD3\" from ASCII-8BIT to UTF-8
+      output_pdf.write(response.body.force_encoding('UTF-8'))
       output_pdf
     end
 
