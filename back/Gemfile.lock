@@ -1411,7 +1411,6 @@ DEPENDENCIES
   puma (~> 6.4.3)
   pundit (~> 2.3.2)
   que (~> 2.3.0)
-  rack (~> 2)
   rack-attack (~> 6)
   rack-cors (= 2.0.0)
   rack-mini-profiler
