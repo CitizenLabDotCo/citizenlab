@@ -299,6 +299,24 @@ class WebApi::V1::IdeasController < ApplicationController
     render json: json_result
   end
 
+  def copy
+    dest_phase = Phase.find(params[:phase_id])
+    authorize(dest_phase, :copy_inputs_to_phase?)
+
+    copied_ideas = Ideas::CopyService.new.copy(
+      params.require(:filters),
+      dest_phase,
+      current_user,
+      policy_scope(Idea).submitted_or_published
+    )
+
+    render json: linked_json(
+      paginate(copied_ideas),
+      WebApi::V1::IdeaSerializer,
+      serialization_options_for(copied_ideas)
+    )
+  end
+
   private
 
   def phase_for_input
