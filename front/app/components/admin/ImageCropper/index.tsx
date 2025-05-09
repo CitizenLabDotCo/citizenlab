@@ -58,7 +58,7 @@ const ImageCropper = ({
       data-testid="image-cropper"
     >
       {image && (
-        <div>
+        <div style={{ position: 'relative', height: '100%' }}>
           <Cropper
             image={image.base64}
             crop={crop}
@@ -68,6 +68,23 @@ const ImageCropper = ({
             onCropComplete={onCropComplete}
             objectFit="contain"
           />
+
+          {/* 3:1 visual overlay inside 4:1 crop area */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '17%',
+              width: '66%', // 3:1
+              height: '37%',
+              transform: 'translateY(-50%)',
+              borderRight: '2px dashed rgba(255, 255, 255, 0.8)',
+              borderLeft: '2px dashed rgba(255, 255, 255, 0.8)',
+              pointerEvents: 'none',
+              boxSizing: 'border-box',
+            }}
+          />
+
           <RemoveImageButton onClick={onRemove} />
         </div>
       )}
