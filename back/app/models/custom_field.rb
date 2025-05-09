@@ -263,10 +263,11 @@ class CustomField < ApplicationRecord
   def printable?
     return false unless include_in_printed_form
 
-    # Support all field types that are supported in the form editor
+    # Support all field types that are supported in the form editor - TBC
+    build_in_types = %w[text_multiloc html_multiloc image_files files topic_ids]
     ideation_types = ParticipationMethod::Ideation::ALLOWED_EXTRA_FIELD_TYPES
     native_survey_types = ParticipationMethod::NativeSurvey::ALLOWED_EXTRA_FIELD_TYPES
-    all_input_types = ideation_types + native_survey_types
+    all_input_types = build_in_types + ideation_types + native_survey_types
 
     all_input_types.include? input_type
   end
@@ -377,10 +378,19 @@ class CustomField < ApplicationRecord
     return unless includes_other_option?
 
     # TODO: Replace 'other' with the actual key of the other option
+    # NEW METHOD i18n_to_multiloc with option
+    # def i18n_to_multiloc(key, locales: nil, ...options)
+    #     (locales || app_configuration.settings('core', 'locales')).each_with_object({}) do |locale, result|
+    #       I18n.with_locale(locale) do
+    #         result[locale] = I18n.t(key, raise: true, ...options)
+    #       end
+    #     end
+    #   end
     other_field_key = "#{key}_other"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
       print_version ? 'custom_fields.ideas.other_input_field.print_title' : 'custom_fields.ideas.other_input_field.title',
       locales: CL2_SUPPORTED_LOCALES
+      # other_name: options.detect { |o| o[:other] == true }&.title_multiloc # SOMETHING LIKE THIS
     )
 
     # Replace {other_option} in the title string with the title of the other option
