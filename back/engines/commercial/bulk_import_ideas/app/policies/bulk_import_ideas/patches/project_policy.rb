@@ -8,7 +8,7 @@ module BulkImportIdeas
       end
 
       def export_form?
-        active_moderator?
+        true
       end
 
       def draft_records?

@@ -49,6 +49,10 @@ module BulkImportIdeas::Exporters
       XlsxService.new.hash_array_to_xlsx [columns]
     end
 
+    def format
+      'xlsx'
+    end
+
     def mime_type
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     end

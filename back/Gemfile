@@ -128,8 +128,14 @@ gem 'faker'
 gem 'order_as_specified'
 gem 'scenic'
 gem 'ice_cube', '~> 0.17'
+
+# Libraries for PDF generation /reading
 gem 'prawn', '~> 2.5'
 gem 'prawn-grouping', '~> 0.2.0'
+gem 'pdf-reader'
+gem 'stringio'
+gem 'faraday'
+gem 'faraday-multipart'
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an

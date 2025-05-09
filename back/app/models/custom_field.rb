@@ -387,6 +387,7 @@ class CustomField < ApplicationRecord
     CustomField.new(
       key: other_field_key,
       input_type: 'text',
+      resource: resource,
       title_multiloc: replaced_title_multiloc,
       required: true,
       enabled: true
@@ -427,6 +428,7 @@ class CustomField < ApplicationRecord
     @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options
   end
 
+  # @deprecated New HTML PDF formatter does this in {IdeaHtmlFormExporter} instead.
   def linear_scale_print_description(locale)
     return nil unless linear_scale?
 

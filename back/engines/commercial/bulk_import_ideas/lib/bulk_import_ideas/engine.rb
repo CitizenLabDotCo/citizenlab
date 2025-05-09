@@ -19,5 +19,10 @@ module BulkImportIdeas
       require 'bulk_import_ideas/feature_specification'
       AppConfiguration::Settings.add_feature ::BulkImportIdeas::FeatureSpecification
     end
+
+    initializer 'bulk_import_ideas.add_view_paths' do |app|
+      # Add views for HTML/PDF generation to the view search paths
+      app.config.paths['app/views'].unshift(root.join('app/views').to_s)
+    end
   end
 end
