@@ -102,7 +102,7 @@ const IconTooltip: FC<Props> = memo<Props>(
 
     return (
       <Tooltip
-        placement={placement || 'right-end'}
+        placement={placement || 'auto'}
         theme={theme || ''}
         maxWidth={maxTooltipWidth || 350}
         useContentWrapper={false}
