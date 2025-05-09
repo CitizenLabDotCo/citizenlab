@@ -6,7 +6,6 @@ import { DeleteReason, ICommentData } from 'api/comments/types';
 import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
 
 import CommentsAdminDeletionModal from 'components/PostShowComponents/Comments/Comment/CommentsAdminDeletionModal';
-import { deleteCommentModalClosed } from 'components/PostShowComponents/Comments/events';
 import Button from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
@@ -29,7 +28,7 @@ const DeleteCommentButton = ({ ideaId, comment, projectId }: Props) => {
     parentCommentId: commentId,
   });
 
-  const [modalVisible_delete, setModalVisible_delete] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const canDelete = usePermission({
     item: comment,
@@ -38,13 +37,12 @@ const DeleteCommentButton = ({ ideaId, comment, projectId }: Props) => {
   });
 
   const openDeleteModal = () => {
-    setModalVisible_delete(true);
+    setModalVisible(true);
   };
 
   const closeDeleteModal = (event?: FormEvent) => {
     event && event.preventDefault();
-    setModalVisible_delete(false);
-    deleteCommentModalClosed();
+    setModalVisible(false);
   };
 
   const deleteComment = async (reason?: DeleteReason) => {
@@ -57,7 +55,6 @@ const DeleteCommentButton = ({ ideaId, comment, projectId }: Props) => {
       },
       {
         onSuccess: () => {
-          deleteCommentModalClosed();
           closeDeleteModal();
         },
       }
@@ -84,9 +81,8 @@ const DeleteCommentButton = ({ ideaId, comment, projectId }: Props) => {
       </Tooltip>
 
       <Modal
-        opened={modalVisible_delete}
+        opened={modalVisible}
         close={closeDeleteModal}
-        className="e2e-comment-deletion-modal"
         header={<FormattedMessage {...messages.confirmCommentDeletion} />}
       >
         <CommentsAdminDeletionModal
