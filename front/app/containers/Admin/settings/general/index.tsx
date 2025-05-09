@@ -17,6 +17,8 @@ import {
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { Section, SubSectionTitle } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
 
@@ -24,6 +26,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
+import ProjectReview from '../projectReview';
 
 import Form from './Form';
 
@@ -72,6 +75,8 @@ const SettingsGeneralTab = () => {
   } = useUpdateAppConfiguration();
 
   const { formatMessage } = useIntl();
+
+  const projectReviewEnabled = useFeatureFlag({ name: 'project_review' });
 
   const handleOnSubmit = async (formValues: FormValues) => {
     await updateAppConfigurationAsync({ settings: { core: formValues } });
@@ -213,6 +218,8 @@ const SettingsGeneralTab = () => {
             <Error text={formatMessage(messages.settingsSavingError)} />
           )}
         </StyledSection>
+
+        {projectReviewEnabled && <ProjectReview />}
       </>
     );
   }

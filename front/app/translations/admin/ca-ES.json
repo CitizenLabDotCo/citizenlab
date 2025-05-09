@@ -1339,7 +1339,6 @@
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Polítiques",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
   "app.containers.AdminPage.SettingsPage.tabSettings": "General",
-  "app.containers.AdminPage.SettingsPage.tabTopics": "Gestor d'etiquetes",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "Giny",
   "app.containers.AdminPage.SettingsPage.tablet": "Tauleta",
   "app.containers.AdminPage.SettingsPage.terminologyTooltip": "Definiu quina unitat geogràfica voleu utilitzar per als vostres projectes (p. ex., barris, districtes, districtes, etc.)",

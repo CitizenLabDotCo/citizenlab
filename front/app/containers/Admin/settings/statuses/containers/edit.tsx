@@ -48,7 +48,7 @@ const Edit = ({ variant }: { variant: IdeaStatusParticipationMethod }) => {
   };
 
   const goBack = () => {
-    clHistory.push(`/admin/settings/${variant}/statuses`);
+    clHistory.push(`/admin/settings/statuses/${variant}`);
   };
 
   if (ideaStatuses && ideaStatus && tenantLocales) {

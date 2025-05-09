@@ -2,7 +2,7 @@
 describe('Ideation status form', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/settings/ideation/statuses');
+    cy.visit('/admin/settings/statuses/ideation');
     cy.acceptCookies();
   });
 

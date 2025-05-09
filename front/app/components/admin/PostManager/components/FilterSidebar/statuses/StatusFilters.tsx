@@ -46,8 +46,8 @@ const StatusFilters = ({
 
   const linkToStatusSettings =
     type === 'AllIdeas' || type === 'ProjectIdeas'
-      ? '/admin/settings/ideation/statuses'
-      : '/admin/settings/proposals/statuses';
+      ? '/admin/settings/statuses/ideation'
+      : '/admin/settings/statuses/proposals';
 
   return (
     <Box display="flex" flexDirection="column">
