@@ -241,7 +241,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: {},
+                constraints: {}
               ),
               type: 'custom_field',
               relationships: { options: { data: [
