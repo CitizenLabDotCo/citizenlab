@@ -2942,6 +2942,7 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "ਭਾਗੀਦਾਰ ਉਹ ਉਪਭੋਗਤਾ ਜਾਂ ਵਿਜ਼ਟਰ ਹੁੰਦੇ ਹਨ ਜਿਨ੍ਹਾਂ ਨੇ ਕਿਸੇ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਹਿੱਸਾ ਲਿਆ ਹੈ, ਕਿਸੇ ਪ੍ਰਸਤਾਵ ਨਾਲ ਪੋਸਟ ਕੀਤਾ ਜਾਂ ਇੰਟਰੈਕਟ ਕੀਤਾ ਹੈ ਜਾਂ ਸਮਾਗਮਾਂ ਵਿੱਚ ਭਾਗ ਲਿਆ ਹੈ।",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "ਭਾਗ ਲੈਣ ਵਾਲੇ",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "ਭਾਗੀਦਾਰੀ ਦਰ",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip4": "ਭਾਗੀਦਾਰ ਬਣਨ ਵਾਲੇ ਸੈਲਾਨੀਆਂ ਦਾ ਪ੍ਰਤੀਸ਼ਤ।",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "ਕੁੱਲ ਭਾਗੀਦਾਰ",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "ਸਵੈਚਲਿਤ ਮੁਹਿੰਮਾਂ",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "ਸਵੈਚਲਿਤ ਈਮੇਲਾਂ",
