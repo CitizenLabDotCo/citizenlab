@@ -2942,6 +2942,7 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Katılımcılar, bir projeye katılmış, bir teklif göndermiş veya etkileşimde bulunmuş ya da etkinliklere katılmış kullanıcılar veya ziyaretçilerdir.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Katılımcılar",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Katılım oranı",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip4": "Katılımcı olan ziyaretçilerin yüzdesi.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Toplam katılımcılar",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Otomatik kampanyalar",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Otomatik e-postalar",
