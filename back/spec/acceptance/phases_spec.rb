@@ -211,6 +211,10 @@ resource 'Phases' do
             next_idea: { data: { id: next_idea.id, type: 'idea' } }
           }
         )
+
+        expect(json_response_body[:included]).to include(
+          hash_including(id: next_idea.id, type: 'idea')
+        )
       end
 
       context 'when the phase is not "common ground"' do

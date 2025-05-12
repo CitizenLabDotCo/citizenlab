@@ -120,7 +120,7 @@ class WebApi::V1::PhasesController < ApplicationController
       .user_progress(current_user)
 
     render json: WebApi::V1::CommonGround::ProgressSerializer
-      .new(progress)
+      .new(progress, include: [:next_idea], params: jsonapi_serializer_params)
       .serializable_hash
   rescue CommonGround::ProgressService::UnsupportedPhaseError
     send_not_found
