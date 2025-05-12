@@ -24,7 +24,10 @@ export function setJwt(
   rememberMe: boolean,
   tokenLifetime?: number
 ) {
-  const attrs = { secure: SECURE_COOKIE } as CookieAttributes;
+  const attrs = {
+    secure: SECURE_COOKIE,
+    sameSite: 'strict',
+  } as CookieAttributes;
   if (rememberMe) {
     attrs.expires = tokenLifetime; // If omitted, the cookie becomes a session cookie. Fore more info, check https://stackoverflow.com/a/36421888
   }

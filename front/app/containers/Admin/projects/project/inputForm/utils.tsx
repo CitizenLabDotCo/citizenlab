@@ -9,6 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
+// ideationConfig is also used for participation method 'voting'
 export const ideationConfig: FormBuilderConfig = {
   type: 'input_form',
   formBuilderTitle: messages.inputForm,
