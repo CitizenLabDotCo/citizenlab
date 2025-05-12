@@ -19,19 +19,15 @@ module BulkImportIdeas::Exporters
         preferCssPageSize: true
       }
       url = "#{@api_url}/forms/chromium/convert/html"
-      begin
-        conn = Faraday.new(url) do |f|
-          f.request :multipart, flat_encode: true
-          f.adapter :net_http
-        end
-        response = conn.post(url, payload)
-      rescue StandardError
-        # TODO: Handle this error better
-        response = ''
+
+      conn = Faraday.new(url) do |f|
+        f.request :multipart, flat_encode: true
+        f.adapter :net_http
       end
+      response = conn.post(url, payload)
 
       output_pdf = Tempfile.new('gotenberg.pdf')
-      output_pdf.write(response.body)
+      output_pdf.write(response.body.force_encoding('UTF-8'))
       output_pdf
     end
 

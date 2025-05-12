@@ -91,7 +91,7 @@ module BulkImportIdeas::Exporters
     end
 
     def print_description(field)
-      if (field.linear_scale? || field.rating?) && field.description_multiloc[@locale].blank? # TODO: Is rating correct here as it returns nil below (old code)
+      if (field.linear_scale? || field.rating?) && field.description_multiloc[@locale].blank?
         linear_scale_print_description(field)
       else
         description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
@@ -105,10 +105,10 @@ module BulkImportIdeas::Exporters
       min_text = multiloc_service.t(field.linear_scale_label_1_multiloc, @locale)
       min_label = "1#{min_text.present? ? " (#{min_text})" : ''}"
 
-      max_text = multiloc_service.t(field.nth_linear_scale_multiloc(maximum), @locale)
-      max_label = maximum.to_s + (max_text.present? ? " (#{max_text})" : '')
+      max_text = multiloc_service.t(field.nth_linear_scale_multiloc(field.maximum), @locale)
+      max_label = field.maximum.to_s + (max_text.present? ? " (#{max_text})" : '')
 
-      I18n.with_locale(locale) do
+      I18n.with_locale(@locale) do
         I18n.t(
           'form_builder.pdf_export.linear_scale_print_description',
           min_label: min_label,
