@@ -24,6 +24,7 @@ const LocationInput = ({ name, fieldName, ...rest }: Props) => {
     formState: { errors: formContextErrors },
     control,
     setValue,
+    watch,
   } = useFormContext();
 
   const errors = get(formContextErrors, name) as RHFErrors;
@@ -40,6 +41,15 @@ const LocationInput = ({ name, fieldName, ...rest }: Props) => {
     return location_point_geojson;
   };
 
+  const locationDescription = watch(name);
+
+  const value = locationDescription
+    ? {
+        label: locationDescription,
+        value: locationDescription,
+      }
+    : null;
+
   return (
     <Box width="100%">
       <Controller
@@ -50,13 +60,15 @@ const LocationInput = ({ name, fieldName, ...rest }: Props) => {
             id={name}
             {...field}
             {...rest}
-            onChange={async (option: Option) => {
-              field.onChange(option);
-
-              const location_point_geojson = await getLocationGeojson(
-                option.value
-              );
-              setValue('location_point_geojson', location_point_geojson);
+            value={value}
+            onChange={async (option: Option | null) => {
+              if (locationDescription) {
+                const location_point_geojson = await getLocationGeojson(
+                  locationDescription
+                );
+                setValue('location_point_geojson', location_point_geojson);
+              }
+              setValue(name, option?.value || null);
             }}
           />
         )}

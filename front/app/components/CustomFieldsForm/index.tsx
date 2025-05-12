@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -51,6 +51,9 @@ const CustomFieldsForm = ({
     phaseId: participationMethod !== 'ideation' ? phaseId : undefined,
   });
 
+  const [formValues, setFormValues] = useState<any>({});
+  const [currentPageNumber, setCurrentPageNumber] = useState(0);
+
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
   const showTogglePostAnonymously =
     phase?.data.attributes.allow_anonymous_participation &&
@@ -58,19 +61,33 @@ const CustomFieldsForm = ({
 
   return (
     <Box overflow="scroll" w="100%">
-      {nestedPagesData.map((pageData, index) => (
+      {nestedPagesData[currentPageNumber] && (
         <CustomFieldsPage
-          key={pageData.page.id}
-          page={pageData.page}
-          pageQuestions={pageData.pageQuestions}
-          index={index}
-          lastPageIndex={nestedPagesData.length - 1}
+          key={nestedPagesData[currentPageNumber].page.id}
+          page={nestedPagesData[currentPageNumber].page}
+          pageQuestions={nestedPagesData[currentPageNumber].pageQuestions}
+          currentPageNumber={currentPageNumber}
+          lastPageNumber={nestedPagesData.length - 1}
+          setCurrentPageNumber={setCurrentPageNumber}
           showTogglePostAnonymously={showTogglePostAnonymously}
           participationMethod={participationMethod}
           idea={idea}
           projectId={projectId}
+          onSubmit={(formValues) => {
+            setFormValues((prevValues) => ({
+              ...prevValues,
+              ...formValues,
+            }));
+            console.log('Form values:', formValues);
+          }}
+          pageButtonLabelMultiloc={
+            customFields?.find(
+              (field) => field.id === nestedPagesData[currentPageNumber].page.id
+            )?.page_button_label_multiloc
+          }
+          phase={phase?.data}
         />
-      ))}
+      )}
     </Box>
   );
 };

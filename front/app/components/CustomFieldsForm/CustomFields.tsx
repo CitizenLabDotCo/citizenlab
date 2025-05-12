@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -139,7 +140,6 @@ const CustomFields = ({
   projectId?: string;
 }) => {
   const localize = useLocalize();
-  console.log(questions);
   return (
     <>
       {questions
@@ -156,10 +156,10 @@ const CustomFields = ({
           };
 
           return (
-            <Fragment key={question.id}>
+            <Box key={question.id} mb="24px">
               <FormLabel {...labelProps} />
               {renderField(question, localize, projectId)}
-            </Fragment>
+            </Box>
           );
         })}
     </>
