@@ -6,7 +6,7 @@ module BulkImportIdeas::Exporters
       @api_url = ENV.fetch('GOTENBURG_PDF_URL', 'http://gotenberg:3000')
     end
 
-    # Use Gotenberg web service to render html to PDF
+    # Use Gotenberg web service (separate docker container) to render html to PDF
     def render_to_pdf(html)
       return false unless up?
 
