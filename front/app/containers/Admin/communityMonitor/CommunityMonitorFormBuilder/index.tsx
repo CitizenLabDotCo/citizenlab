@@ -28,16 +28,14 @@ const CommunityMonitorSurveyFormBuilder = () => {
   if (!phase || !project || !formCustomFields) return null;
 
   return (
-    <>
-      <FormBuilder
-        builderConfig={{
-          ...communityMonitorConfig,
-          formCustomFields,
-          goBackUrl: `/admin/community-monitor/settings`,
-        }}
-        viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
-      />
-    </>
+    <FormBuilder
+      builderConfig={{
+        ...communityMonitorConfig,
+        formCustomFields,
+        goBackUrl: `/admin/community-monitor/settings`,
+      }}
+      viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
+    />
   );
 };
 

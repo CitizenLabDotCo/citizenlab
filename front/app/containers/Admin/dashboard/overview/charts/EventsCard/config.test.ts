@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import { Query } from 'api/analytics/types';
 
-import { StatCardData } from '../StatCard/useStatCard/typings';
+import { StatCardData } from '../../../../../../components/admin/GraphCards/StatCard/useStatCard/typings';
 
 import { EventsCardLabels, eventsConfig } from './config';
 
