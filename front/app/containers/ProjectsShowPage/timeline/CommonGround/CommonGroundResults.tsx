@@ -4,18 +4,17 @@ import {
   Box,
   Title,
   defaultCardStyle,
-  colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
 
 import T from 'components/T';
-import ProgressBar from 'components/UI/ProgressBar';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import OutcomeBreakdownBar from './OutcomeBreakdownBar';
 
 const ResultCard = styled.div`
   ${defaultCardStyle};
@@ -55,30 +54,12 @@ const CommonGroundResults = ({ phaseId }: Props) => {
             <Box mb="8px">
               <T value={item.label} supportHtml />
             </Box>
-            <Box mb="8px">
-              {formatMessage(messages.agreeLabel)}: {item.agree}
-              <ProgressBar
-                progress={item.agree / item.total}
-                color={colors.green500}
-                bgColor={colors.background}
-              />
-            </Box>
-            <Box mb="8px">
-              {formatMessage(messages.unsureLabel)}: {item.unsure}
-              <ProgressBar
-                progress={item.unsure / item.total}
-                color={colors.coolGrey500}
-                bgColor={colors.background}
-              />
-            </Box>
-            <Box mb="8px">
-              {formatMessage(messages.disagreeLabel)}: {item.disagree}
-              <ProgressBar
-                progress={item.disagree / item.total}
-                color="#D62D20"
-                bgColor={colors.background}
-              />
-            </Box>
+            <OutcomeBreakdownBar
+              agreedPercent={Math.round((item.agree / item.total) * 100)}
+              unsurePercent={Math.round((item.unsure / item.total) * 100)}
+              disagreePercent={Math.round((item.disagree / item.total) * 100)}
+              totalCount={item.total}
+            />
           </ResultCard>
         ))}
       </Box>
@@ -89,30 +70,12 @@ const CommonGroundResults = ({ phaseId }: Props) => {
             <Box mb="8px">
               <T value={item.label} supportHtml />
             </Box>
-            <Box mb="8px">
-              {formatMessage(messages.agreeLabel)}: {item.agree}
-              <ProgressBar
-                progress={item.agree / item.total}
-                color={colors.green500}
-                bgColor={colors.background}
-              />
-            </Box>
-            <Box mb="8px">
-              {formatMessage(messages.unsureLabel)}: {item.unsure}
-              <ProgressBar
-                progress={item.unsure / item.total}
-                color={colors.coolGrey500}
-                bgColor={colors.background}
-              />
-            </Box>
-            <Box mb="8px">
-              {formatMessage(messages.disagreeLabel)}: {item.disagree}
-              <ProgressBar
-                progress={item.disagree / item.total}
-                color="#D62D20"
-                bgColor={colors.background}
-              />
-            </Box>
+            <OutcomeBreakdownBar
+              agreedPercent={Math.round((item.agree / item.total) * 100)}
+              unsurePercent={Math.round((item.unsure / item.total) * 100)}
+              disagreePercent={Math.round((item.disagree / item.total) * 100)}
+              totalCount={item.total}
+            />
           </ResultCard>
         ))}
       </Box>
