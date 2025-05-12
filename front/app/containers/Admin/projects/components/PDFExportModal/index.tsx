@@ -18,6 +18,7 @@ import useUpdateCustomForm from 'api/custom_form/useUpdateCustomForm';
 import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { FormType } from 'components/FormBuilder/utils';
@@ -41,12 +42,6 @@ export interface FormPDFExportFormValues {
   personal_data: boolean;
 }
 
-const DEFAULT_VALUES = {
-  print_start_multiloc: {},
-  print_end_multiloc: {},
-  personal_data: false,
-} satisfies FormPDFExportFormValues;
-
 const CLICK_EXPORT_MESSAGES: { [key in FormType]: MessageDescriptor } = {
   input_form: messages.clickExportToPDFIdeaForm,
   survey: messages.clickExportToPDFSurvey,
@@ -67,6 +62,16 @@ const PDFExportModal = ({
   onClose,
   phase,
 }: PDFExportModalProps) => {
+  const htmlPdfsActive = useFeatureFlag({
+    name: 'html_pdfs',
+  });
+  const DEFAULT_VALUES = {
+    ...(htmlPdfsActive && {
+      print_start_multiloc: {},
+      print_end_multiloc: {},
+    }),
+    personal_data: false,
+  };
   const { formatMessage } = useIntl();
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
@@ -76,8 +81,10 @@ const PDFExportModal = ({
 
   const schema = object({
     personal_data: boolean(),
-    print_start_multiloc: object(),
-    print_end_multiloc: object(),
+    ...(htmlPdfsActive && {
+      print_start_multiloc: object(),
+      print_end_multiloc: object(),
+    }),
   });
 
   const methods = useForm({
@@ -102,10 +109,12 @@ const PDFExportModal = ({
     setLoading(true);
 
     try {
-      await updateCustomForm({
-        printStartMultiloc: formValues.print_start_multiloc,
-        printEndMultiloc: formValues.print_end_multiloc,
-      });
+      if (htmlPdfsActive) {
+        await updateCustomForm({
+          printStartMultiloc: formValues.print_start_multiloc,
+          printEndMultiloc: formValues.print_end_multiloc,
+        });
+      }
       await onExport(formValues);
       setLoading(false);
       onClose();
@@ -166,58 +175,62 @@ const PDFExportModal = ({
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleExport)}>
             <Feedback onlyShowErrors />
-            <CollapsibleContainer
-              mb="24px"
-              // To be configured
-              title={'Start of the form'}
-              titleVariant="h4"
-              titleAs="h2"
-              titleFontWeight="bold"
-              titlePadding="16px"
-              border={`1px solid ${theme.colors.grey300}`}
-              borderRadius={theme.borderRadius}
-              isOpenByDefault
-            >
-              <Box p="24px" pt="12px">
-                <QuillMultilocWithLocaleSwitcher
-                  name="print_start_multiloc"
+            {htmlPdfsActive && (
+              <>
+                <CollapsibleContainer
+                  mb="24px"
                   // To be configured
-                  label={'Customise the start of the form.'}
-                  noImages
-                  noVideos
-                  noLinks
-                  labelTooltipText={
-                    "You can set a logo at the top, specify the form's title, provide instructions about how to fill out the form, etc.."
-                  }
-                />
-              </Box>
-            </CollapsibleContainer>
-            <CollapsibleContainer
-              mb="24px"
-              // To be configured
-              title={'End of the form'}
-              titleVariant="h4"
-              titleAs="h2"
-              titleFontWeight="bold"
-              titlePadding="16px"
-              border={`1px solid ${theme.colors.grey300}`}
-              borderRadius={theme.borderRadius}
-              isOpenByDefault
-            >
-              <Box p="24px" pt="12px">
-                <QuillMultilocWithLocaleSwitcher
-                  name="print_end_multiloc"
+                  title={'Start of the form'}
+                  titleVariant="h4"
+                  titleAs="h2"
+                  titleFontWeight="bold"
+                  titlePadding="16px"
+                  border={`1px solid ${theme.colors.grey300}`}
+                  borderRadius={theme.borderRadius}
+                  isOpenByDefault
+                >
+                  <Box p="24px" pt="12px">
+                    <QuillMultilocWithLocaleSwitcher
+                      name="print_start_multiloc"
+                      // To be configured
+                      label={'Customise the start of the form.'}
+                      noImages
+                      noVideos
+                      noLinks
+                      labelTooltipText={
+                        "You can set a logo at the top, specify the form's title, provide instructions about how to fill out the form, etc.."
+                      }
+                    />
+                  </Box>
+                </CollapsibleContainer>
+                <CollapsibleContainer
+                  mb="24px"
                   // To be configured
-                  label={'Customise the end of the form.'}
-                  noImages
-                  noVideos
-                  noLinks
-                  labelTooltipText={
-                    'You can add instructions about where to send the form, mention this website, when you will follow up, etc. here.'
-                  }
-                />
-              </Box>
-            </CollapsibleContainer>
+                  title={'End of the form'}
+                  titleVariant="h4"
+                  titleAs="h2"
+                  titleFontWeight="bold"
+                  titlePadding="16px"
+                  border={`1px solid ${theme.colors.grey300}`}
+                  borderRadius={theme.borderRadius}
+                  isOpenByDefault
+                >
+                  <Box p="24px" pt="12px">
+                    <QuillMultilocWithLocaleSwitcher
+                      name="print_end_multiloc"
+                      // To be configured
+                      label={'Customise the end of the form.'}
+                      noImages
+                      noVideos
+                      noLinks
+                      labelTooltipText={
+                        'You can add instructions about where to send the form, mention this website, when you will follow up, etc. here.'
+                      }
+                    />
+                  </Box>
+                </CollapsibleContainer>
+              </>
+            )}
             <CheckboxWithLabel
               name="personal_data"
               label={
