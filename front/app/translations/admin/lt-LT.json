@@ -2942,6 +2942,7 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Dalyviai - tai naudotojai arba lankytojai, kurie dalyvavo projekte, paskelbė pasiūlymą arba su juo sąveikavo, arba dalyvavo renginiuose.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Dalyviai",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Dalyvavimo lygis",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip4": "Lankytojų, kurie tampa dalyviais, procentinė dalis.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Bendras dalyvių skaičius",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automatinės kampanijos",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automatiniai el. laiškai",
