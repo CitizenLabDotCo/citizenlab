@@ -24,7 +24,8 @@ import { FormLabel } from 'components/UI/FormComponents';
 
 const extractOptions = (
   question: IFlatCustomField,
-  localize: Localize
+  localize: Localize,
+  randomize = false
 ): IOption[] => {
   let result: IOption[] = [];
   if (question.options) {
@@ -34,6 +35,13 @@ const extractOptions = (
         label: localize(selectOption.title_multiloc),
       } as IOption;
     });
+
+    if (randomize) {
+      for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+      }
+    }
   }
   return result;
 };
@@ -75,17 +83,25 @@ const renderField = (
       return question.dropdown_layout ? (
         <Select
           name={question.key}
-          options={extractOptions(question, localize)}
+          options={extractOptions(
+            question,
+            localize,
+            question.random_option_ordering
+          )}
         />
       ) : (
         <RadioGroup name={question.key}>
-          {question.options?.map((option, i) => (
+          {extractOptions(
+            question,
+            localize,
+            question.random_option_ordering
+          ).map((option) => (
             <Radio
               name={question.key}
-              id={option.id || i.toString()}
-              key={option.key}
-              value={option.key}
-              label={localize(option.title_multiloc)}
+              id={option.value}
+              key={option.value}
+              value={option.value}
+              label={option.label}
             />
           ))}
         </RadioGroup>
