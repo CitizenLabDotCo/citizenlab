@@ -122,6 +122,8 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: WebApi::V1::CommonGround::ProgressSerializer
       .new(progress)
       .serializable_hash
+  rescue CommonGround::ProgressService::UnsupportedPhaseError
+    send_not_found
   end
 
   private

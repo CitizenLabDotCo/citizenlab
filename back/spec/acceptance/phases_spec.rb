@@ -198,6 +198,14 @@ resource 'Phases' do
           relationships: { next_idea: { data: nil } }
         )
       end
+
+      context 'when the phase is not "common ground"' do
+        let(:id) { create(:phase).id }
+
+        example_request 'Not found (404)' do
+          assert_status 404
+        end
+      end
     end
   end
 
