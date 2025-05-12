@@ -27,7 +27,7 @@ module CommonGround
     end
 
     def ideas
-      phase.ideas
+      phase.ideas.published
     end
 
     def reacted_ideas(user)
