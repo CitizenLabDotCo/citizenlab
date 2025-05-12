@@ -92,7 +92,10 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
             <StyledLabel htmlFor={id}>
               <span>{label}</span>
               {labelTooltipText && (
-                <StyledIconTooltip content={labelTooltipText} />
+                <StyledIconTooltip
+                  placement="auto"
+                  content={labelTooltipText}
+                />
               )}
             </StyledLabel>
           )}
