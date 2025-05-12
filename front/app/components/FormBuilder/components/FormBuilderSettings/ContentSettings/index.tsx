@@ -83,19 +83,17 @@ export const ContentSettings = ({
         platformLocale
       )}
       {!isFieldGrouping && (
-        <>
-          <SectionField id="e2e-required-toggle">
-            <Toggle
-              name={`customFields.${field.index}.required`}
-              disabled={disableTogglingRequired}
-              label={
-                <Text as="span" variant="bodyM" my="0px">
-                  <FormattedMessage {...messages.requiredToggleLabel} />
-                </Text>
-              }
-            />
-          </SectionField>
-        </>
+        <SectionField id="e2e-required-toggle">
+          <Toggle
+            name={`customFields.${field.index}.required`}
+            disabled={disableTogglingRequired}
+            label={
+              <Text as="span" variant="bodyM" my="0px">
+                <FormattedMessage {...messages.requiredToggleLabel} />
+              </Text>
+            }
+          />
+        </SectionField>
       )}
     </Box>
   );
