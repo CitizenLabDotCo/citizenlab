@@ -2976,7 +2976,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "ਰਜਿਸਟ੍ਰੇਸ਼ਨਾਂ",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "ਕੁੱਲ ਰਜਿਸਟ੍ਰੇਸ਼ਨਾਂ",
   "app.modules.commercial.analytics.admin.components.Tab": "ਵਿਜ਼ਟਰ",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "\"ਵਿਜ਼ਿਟ ਅਵਧੀ\" ਅਤੇ \"ਪ੍ਰਤੀ ਵਿਜ਼ਿਟ ਪੇਜ ਵਿਯੂਜ਼\" ਨੂੰ ਸਿਰਫ ਉਹਨਾਂ ਸੈਲਾਨੀਆਂ ਲਈ ਗਿਣਿਆ ਜਾਂਦਾ ਹੈ ਜਿਨ੍ਹਾਂ ਨੇ ਕੂਕੀਜ਼ ਸਵੀਕਾਰ ਕੀਤੇ ਹਨ। ਮੁਲਾਕਾਤਾਂ ਅਤੇ ਵਿਜ਼ਟਰ ਸਾਰੇ ਵਿਜ਼ਟਰਾਂ 'ਤੇ ਅਧਾਰਤ ਹਨ।",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "ਪਿਛਲੇ 30 ਦਿਨ:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "ਪਿਛਲੇ 7 ਦਿਨ:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "ਪ੍ਰਤੀ ਫੇਰੀ ਪੰਨਾ ਦ੍ਰਿਸ਼",

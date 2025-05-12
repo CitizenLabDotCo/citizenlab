@@ -2976,7 +2976,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Cofrestriadau",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Cyfanswm cofrestriadau",
   "app.modules.commercial.analytics.admin.components.Tab": "Ymwelwyr",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "Dim ond ar gyfer ymwelwyr sy'n derbyn cwcis y mae \"hyd ymweliad\" a \"Golygfeydd Tudalen fesul ymweliad\" yn cael eu cyfrif. Mae ymweliadau ac ymwelwyr yn seiliedig ar bob ymwelydd.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "30 diwrnod diwethaf:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "7 diwrnod diwethaf:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Pageviews fesul ymweliad",

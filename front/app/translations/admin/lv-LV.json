@@ -2976,7 +2976,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Reģistrācijas",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Kopējais reģistrāciju skaits",
   "app.modules.commercial.analytics.admin.components.Tab": "Apmeklētāji",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "\"Apmeklējuma ilgums\" un \"Apmeklējumu skaits\" tiek uzskaitīti tikai tiem apmeklētājiem, kuri ir pieņēmuši sīkfailus. Apmeklējumu un apmeklētāju skaits tiek aprēķināts, ņemot vērā visus apmeklētājus.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Pēdējās 30 dienas:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Pēdējās 7 dienas:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Lapas skatījumu skaits vienā apmeklējumā",
