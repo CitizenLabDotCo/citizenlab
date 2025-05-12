@@ -187,11 +187,15 @@ resource 'Phases' do
 
       example_request 'Get progress of a phase' do
         assert_status 200
-        expect(json_response_body).to match(
-          data: {
-            type: 'common-ground-progress',
-            attributes: {}
-          }
+
+        expect(response_data).to match(
+          id: phase.id,
+          type: 'common_ground_progress',
+          attributes: {
+            num_ideas: be >= 0,
+            num_reacted_ideas: 0
+          },
+          relationships: { next_idea: { data: nil } }
         )
       end
     end

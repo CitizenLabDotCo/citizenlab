@@ -119,7 +119,9 @@ class WebApi::V1::PhasesController < ApplicationController
       .new(@phase)
       .user_progress(current_user)
 
-    render json: raw_json(progress, type: 'common-ground-progress')
+    render json: WebApi::V1::CommonGround::ProgressSerializer
+      .new(progress)
+      .serializable_hash
   end
 
   private
