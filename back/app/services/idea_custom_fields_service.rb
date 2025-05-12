@@ -49,11 +49,9 @@ class IdeaCustomFieldsService
     enabled_fields_with_other_options(print_version: true).select(&:printable?)
   end
 
-  # This supports only the deprecated prawn based PDF export/import
+  # This supports the deprecated prawn based PDF export/import that did not support all field types
   def printable_fields_legacy
-    # NOTE: User fields from 'user_fields_in_form' are not supported
-    fields = enabled_fields_with_other_options.reject { |field| field.key&.start_with?('u_') }
-    fields.select(&:printable?)
+    enabled_fields_with_other_options.select(&:printable_legacy?)
   end
 
   def importable_fields

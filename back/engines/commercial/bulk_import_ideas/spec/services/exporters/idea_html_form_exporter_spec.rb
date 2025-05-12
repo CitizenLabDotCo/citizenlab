@@ -49,7 +49,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
     end
 
     context 'questions' do
-      let!(:titles) { parsed_html.css('div#questions div.question h2').map(&:text) }
+      let!(:titles) { parsed_html.css('div#questions div.question h3').map(&:text) }
 
       it 'returns title, description of all questions' do
         expect(titles[0]).to include 'Text field'

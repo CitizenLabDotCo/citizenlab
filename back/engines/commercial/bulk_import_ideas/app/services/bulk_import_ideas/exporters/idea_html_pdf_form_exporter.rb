@@ -82,11 +82,11 @@ module BulkImportIdeas::Exporters
       end
     end
 
-    # Allow rendering of images in the PDF
+    # Allow rendering of images in the PDF when in development
     def format_html_field(description)
-      description = super(description)
-      description&.sub!('localhost:4000', 'cl-back-web:4000') if Rails.env.development?
-      description
+      new_description = super
+      new_description&.sub!('localhost:4000', 'cl-back-web:4000') if Rails.env.development?
+      new_description
     end
   end
 end
