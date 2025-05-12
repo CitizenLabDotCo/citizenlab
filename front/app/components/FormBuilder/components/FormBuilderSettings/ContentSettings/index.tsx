@@ -26,7 +26,7 @@ type ContentSettingsProps = {
   formHasSubmissions: boolean;
 };
 
-export const ContentSettings = ({
+const ContentSettings = ({
   field,
   locales,
   formHasSubmissions,
@@ -104,3 +104,5 @@ export const ContentSettings = ({
   }
   return null;
 };
+
+export default ContentSettings;
