@@ -2,12 +2,6 @@
 
 module UserCustomFields
   class UserCustomFieldPolicy < ApplicationPolicy
-    class Scope < ApplicationPolicy::Scope
-      def resolve
-        scope
-      end
-    end
-
     def create?
       user&.active? && user.admin? && !record.code
     end

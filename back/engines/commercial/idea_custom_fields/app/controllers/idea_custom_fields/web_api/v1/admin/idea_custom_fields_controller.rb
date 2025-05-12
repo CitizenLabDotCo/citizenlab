@@ -30,9 +30,12 @@ module IdeaCustomFields
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
-      service = IdeaCustomFieldsService.new(@custom_form)
 
-      fields = params[:copy] == 'true' ? service.duplicate_all_fields : service.all_fields
+      fields = if params[:copy] == 'true'
+        IdeaCustomFieldsService.new(@custom_form).duplicate_all_fields
+      else
+        CustomFieldPolicy::Scope.new(pundit_user, CustomField, @custom_form).resolve
+      end
       fields = fields.filter(&:support_free_text_value?) if params[:support_free_text_value].present?
       fields = fields.filter { |field| params[:input_types].include?(field.input_type) } if params[:input_types].present?
 

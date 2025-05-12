@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module IdeaCustomFields
-  class IdeaCustomFieldPolicy < ApplicationPolicy
+  class IdeaCustomFieldPolicy < CustomFieldPolicy
     def index?
       can_access_custom_fields? record
     end
