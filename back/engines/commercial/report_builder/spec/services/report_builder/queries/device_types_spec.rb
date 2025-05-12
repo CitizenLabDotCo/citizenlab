@@ -22,10 +22,10 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
 
       params = {
         start_at: Date.new(2023, 1, 1),
-        end_at: Date.new(2023, 3, 1),
+        end_at: Date.new(2023, 3, 1)
       }
 
-      result = expect(query.run_query(**params)).to eq({
+      expect(query.run_query(**params)).to eq({
         counts_per_device_type: {
           'desktop_or_other' => 2,
           'mobile' => 3
@@ -44,10 +44,10 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
 
       params = {
         start_at: Date.new(2023, 1, 1),
-        end_at: Date.new(2023, 3, 1),
+        end_at: Date.new(2023, 3, 1)
       }
 
-      result = expect(query.run_query(**params)).to eq({
+      expect(query.run_query(**params)).to eq({
         counts_per_device_type: {
           'mobile' => 3
         }
@@ -75,7 +75,7 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
         project_id: project_id
       }
 
-      result = expect(query.run_query(**params)).to eq({
+      expect(query.run_query(**params)).to eq({
         counts_per_device_type: {
           'mobile' => 3
         }
@@ -97,7 +97,7 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
         exclude_roles: 'exclude_admins_and_moderators'
       }
 
-      result = expect(query.run_query(**params)).to eq({
+      expect(query.run_query(**params)).to eq({
         counts_per_device_type: {
           'mobile' => 3
         }
@@ -107,10 +107,10 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
     it 'works if everything is nil' do
       params = {
         start_at: Date.new(2023, 1, 1),
-        end_at: Date.new(2023, 3, 1),
+        end_at: Date.new(2023, 3, 1)
       }
 
-      result = expect(query.run_query(**params)).to eq({
+      expect(query.run_query(**params)).to eq({
         counts_per_device_type: {}
       })
     end
