@@ -8,6 +8,10 @@ module ParticipationMethod
       'community_monitor_survey'
     end
 
+    def allowed_extra_field_input_types
+      ALLOWED_EXTRA_FIELD_TYPES
+    end
+
     def default_fields(custom_form)
       return [] if custom_form.persisted?
 
