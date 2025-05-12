@@ -78,7 +78,6 @@ const CustomFieldsForm = ({
               ...prevValues,
               ...formValues,
             }));
-            console.log('Form values:', formValues);
           }}
           pageButtonLabelMultiloc={
             customFields?.find(
@@ -86,6 +85,7 @@ const CustomFieldsForm = ({
             )?.page_button_label_multiloc
           }
           phase={phase?.data}
+          defaultValues={formValues}
         />
       )}
     </Box>

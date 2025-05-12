@@ -40,6 +40,7 @@ type CustomFieldsPage = {
   onSubmit: (formValues: any) => void;
   pageButtonLabelMultiloc?: Multiloc;
   phase?: IPhaseData;
+  defaultValues?: any;
 };
 
 const CustomFieldsPage = ({
@@ -55,6 +56,7 @@ const CustomFieldsPage = ({
   setCurrentPageNumber,
   pageButtonLabelMultiloc,
   phase,
+  defaultValues,
 }: CustomFieldsPage) => {
   const { formatMessage } = useIntl();
   const pagesRef = useRef<HTMLDivElement>(null);
@@ -89,19 +91,16 @@ const CustomFieldsPage = ({
   const methods = useForm({
     mode: 'onBlur',
     resolver: yupResolver(schema),
+    defaultValues,
   });
 
   const onFormSubmit = async (formValues) => {
-    console.log('here');
-
     onSubmit(formValues);
-    if (currentPageNumber < lastPageNumber - 1) {
+    if (currentPageNumber < lastPageNumber) {
       setCurrentPageNumber(currentPageNumber + 1);
       pagesRef.current?.scrollTo(0, 0);
     }
   };
-
-  console.log(page);
 
   return (
     <FormProvider {...methods}>

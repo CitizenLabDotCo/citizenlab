@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
