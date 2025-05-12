@@ -12,7 +12,25 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
     end
 
     it 'works' do
-      expect(1 + 1).to be(2)
+      2.times do
+        create(:session, created_at: Date.new(2023, 2, 1), device_type: 'desktop_or_other')
+      end
+
+      3.times do
+        create(:session, created_at: Date.new(2023, 2, 1), device_type: 'mobile')
+      end
+
+      params = {
+        start_at: Date.new(2023, 1, 1),
+        end_at: Date.new(2023, 3, 1),
+      }
+
+      result = query.run_query(**params).to eq({
+        counts_per_device_type: {
+          'desktop_or_other' => 2,
+          'mobile' => 3
+        }
+      })
     end
   end
 end

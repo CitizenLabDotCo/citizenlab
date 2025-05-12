@@ -13,8 +13,16 @@ module ReportBuilder
       sessions = apply_project_filter_if_needed(sessions, project_id)
       sessions = exclude_roles_if_needed(sessions, exclude_roles)
 
-      sessions
-        .group(:visitor_)
+      counts_per_device_type = sessions
+        .group(:device_type)
+        .count
+        .each_with_object({}) do |row, obj|
+          obj[row['device_type']] = row['count']
+        end
+
+      {
+        counts_per_device_type: counts_per_device_type
+      }
     end
 
     def apply_project_filter_if_needed(sessions, project_id)
