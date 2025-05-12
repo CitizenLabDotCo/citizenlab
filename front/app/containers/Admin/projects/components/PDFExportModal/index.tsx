@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  Button,
   CollapsibleContainer,
   Text,
   Title,
@@ -22,7 +21,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { FormType } from 'components/FormBuilder/utils';
-import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
 import Modal from 'components/UI/Modal';
 
@@ -33,8 +31,10 @@ import { saveIdeaFormAsPDF } from '../../project/inputForm/saveIdeaFormAsPDF';
 import { supportsNativeSurvey } from '../../project/inputImporter/ReviewSection/utils';
 import { saveSurveyAsPDF } from '../../project/nativeSurvey/saveSurveyAsPDF';
 
+import FormActions from './FormActions';
 import messages from './messages';
 import MultilocFieldCollapsible from './MultilocFieldCollapsible';
+import PersonalDataCheckbox from './PersonalDataCheckbox';
 
 export interface FormPDFExportFormValues {
   print_start_multiloc: Multiloc;
@@ -194,23 +194,8 @@ const PDFExportModal = ({
                 />
               </>
             )}
-            <CheckboxWithLabel
-              name="personal_data"
-              label={
-                <Text as="span" m="0">
-                  <FormattedMessage {...messages.askPersonalData3} />
-                </Text>
-              }
-              labelTooltipText={
-                <FormattedMessage {...messages.personalDataExplanation5} />
-              }
-              mb="24px"
-            />
-            <Box display="flex">
-              <Button type="submit" processing={loading}>
-                <FormattedMessage {...messages.exportAsPDF} />
-              </Button>
-            </Box>
+            <PersonalDataCheckbox />
+            <FormActions loading={loading} />
           </form>
         </FormProvider>
       </Box>
