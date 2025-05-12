@@ -40,7 +40,7 @@ export type AnswersType =
     }[]
   | undefined;
 
-export const LogicSettings = ({
+const LogicSettings = ({
   pageOptions,
   field,
   builderConfig,
@@ -175,3 +175,5 @@ export const LogicSettings = ({
     </>
   );
 };
+
+export default LogicSettings;
