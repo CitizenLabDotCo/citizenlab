@@ -8,7 +8,7 @@ module BulkImportIdeas
       end
 
       def export_form?
-        true
+        show?
       end
 
       def draft_records?
