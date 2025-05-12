@@ -167,7 +167,7 @@ Rails.application.routes.draw do
           get :as_xlsx, action: 'index_xlsx'
           get :mini, action: 'show_mini'
           get 'submission_count'
-          get 'progress', action: 'progress'
+          get 'progress', action: 'show_progress'
           delete 'inputs', action: 'delete_inputs'
         end
 
