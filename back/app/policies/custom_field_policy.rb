@@ -10,7 +10,7 @@ class CustomFieldPolicy < ApplicationPolicy
     def resolve
       if user && UserRoleService.new.can_moderate?(custom_form&.participation_context, user)
         scope.all
-      elsif !custom_form || policy_for(project).show?
+      elsif !custom_form&.participation_context || policy_for(custom_form.participation_context).show?
         scope.not_hidden.enabled
       else
         scope.none
