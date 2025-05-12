@@ -3,10 +3,10 @@
 module BulkImportIdeas::Exporters
   class GotenbergClient
     def initialize
-      @api_url = ENV['GOTENBURG_PDF_URL'].presence || 'http://gotenberg:3000'
+      @api_url = ENV.fetch('GOTENBURG_PDF_URL', 'http://gotenberg:3000')
     end
 
-    # Use Gotenberg web service to render html to PDF
+    # Use Gotenberg web service (separate docker container) to render html to PDF
     def render_to_pdf(html)
       return false unless up?
 
@@ -19,16 +19,12 @@ module BulkImportIdeas::Exporters
         preferCssPageSize: true
       }
       url = "#{@api_url}/forms/chromium/convert/html"
-      begin
-        conn = Faraday.new(url) do |f|
-          f.request :multipart, flat_encode: true
-          f.adapter :net_http
-        end
-        response = conn.post(url, payload)
-      rescue StandardError
-        # TODO: Handle this error better
-        response = ''
+
+      conn = Faraday.new(url) do |f|
+        f.request :multipart, flat_encode: true
+        f.adapter :net_http
       end
+      response = conn.post(url, payload)
 
       output_pdf = Tempfile.new('gotenberg.pdf')
       # TODO: Get this error without force_encoding Encoding::UndefinedConversionError: \"\\xD3\" from ASCII-8BIT to UTF-8

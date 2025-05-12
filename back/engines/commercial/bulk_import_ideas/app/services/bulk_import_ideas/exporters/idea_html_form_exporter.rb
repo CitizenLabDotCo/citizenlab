@@ -162,7 +162,7 @@ module BulkImportIdeas::Exporters
     end
 
     def field_print_description(field)
-      if (field.linear_scale? || field.rating?) && field.description_multiloc[@locale].blank? # TODO: Is rating correct here as it returns nil below (old code)
+      if (field.linear_scale? || field.rating?) && field.description_multiloc[@locale].blank?
         linear_scale_print_description(field)
       else
         description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
