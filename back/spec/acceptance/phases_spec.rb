@@ -173,36 +173,51 @@ resource 'Phases' do
   end
 
   get 'web_api/v1/phases/:id/progress' do
-    let(:phase) { create(:common_ground_phase) }
+    explanation 'Get progress of the current user in a Common Ground phase'
+
+    let_it_be(:phase) { create(:common_ground_phase) }
     let(:id) { phase.id }
 
     context 'when visitor' do
-      example_request 'Unauthorized (401)' do
+      example 'Unauthorized (401)', document: false do
+        do_request
         assert_status 401
       end
     end
 
     context 'when logged in' do
-      before { header_token_for(create(:user)) }
+      before do
+        current_user = create(:user)
+        header_token_for(current_user)
 
-      example_request 'Get progress of a phase' do
+        i1, @i2 = create_pair(:idea, project: phase.project, phases: [phase])
+        create(:reaction, reactable: i1, user: current_user)
+      end
+
+      # The next idea is necessarily the one that doesn't have a reaction
+      let(:next_idea) { @i2 }
+
+      example_request 'Get user progress' do
         assert_status 200
 
         expect(response_data).to match(
           id: phase.id,
           type: 'common_ground_progress',
           attributes: {
-            num_ideas: be >= 0,
-            num_reacted_ideas: 0
+            num_ideas: 2,
+            num_reacted_ideas: 1
           },
-          relationships: { next_idea: { data: nil } }
+          relationships: {
+            next_idea: { data: { id: next_idea.id, type: 'idea' } }
+          }
         )
       end
 
       context 'when the phase is not "common ground"' do
         let(:id) { create(:phase).id }
 
-        example_request 'Not found (404)' do
+        example 'Not found (404)', document: false do
+          do_request
           assert_status 404
         end
       end
