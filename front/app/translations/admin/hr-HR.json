@@ -2942,6 +2942,7 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Sudionici su korisnici ili posjetitelji koji su sudjelovali u projektu, objavili ili stupili u interakciju s prijedlogom ili su prisustvovali događajima.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Sudionici",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Stopa sudjelovanja",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip4": "Postotak posjetitelja koji postaju sudionici.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Ukupan broj sudionika",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automatske kampanje",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automatske e-poruke",
