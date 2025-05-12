@@ -14,7 +14,8 @@ import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import RadioSingleSelect from 'components/HookForm/RadioSingleSelect';
+import RadioGroup from 'components/HookForm/RadioGroup';
+import Radio from 'components/HookForm/RadioGroup/Radio';
 import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -33,9 +34,18 @@ const renderField = (
           maxCharCount={question.key === 'title_multiloc' ? 120 : undefined}
         />
       );
+    case 'html_multiloc':
+      return (
+        <QuillMultilocWithLocaleSwitcher
+          name={question.key}
+          hideLocaleSwitcher
+        />
+      );
     case 'text':
     case 'number':
-      return (
+      return question.key === 'location_description' ? (
+        <LocationInput name={question.key} />
+      ) : (
         <Input
           type={question.input_type === 'number' ? 'number' : 'text'}
           name={question.key}
@@ -45,12 +55,18 @@ const renderField = (
       return <TextArea name={question.key} />;
     case 'select':
       return (
-        <RadioSingleSelect
-          name={question.key}
-          options={extractOptions(question, localize)}
-          required={question.required}
-        />
-      ); // <Select name={question.key} options={selectOptions} />; // There seems to be an issue with the style?
+        <RadioGroup name={question.key}>
+          {question.options?.map((option, i) => (
+            <Radio
+              name={question.key}
+              id={option.id || i.toString()}
+              key={option.key}
+              value={option.key}
+              label={localize(option.title_multiloc)}
+            />
+          ))}
+        </RadioGroup>
+      );
     case 'multiselect':
       return (
         <CheckboxMultiSelect
@@ -67,17 +83,6 @@ const renderField = (
     case 'topic_ids':
       return <Topics name={question.key} projectId={projectId} />;
     default:
-      // Special cases by key
-      if (question.key === 'location_description') {
-        return <LocationInput name={question.key} />;
-      } else if (question.key === 'body_multiloc') {
-        return (
-          <QuillMultilocWithLocaleSwitcher
-            name={question.key}
-            hideLocaleSwitcher
-          />
-        );
-      }
       return null;
   }
 };
