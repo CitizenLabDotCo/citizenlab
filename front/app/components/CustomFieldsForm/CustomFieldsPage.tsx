@@ -58,29 +58,24 @@ const CustomFieldsPage = ({
   phase,
   defaultValues,
 }: CustomFieldsPage) => {
+  const { data: phases } = usePhases(projectId);
+
+  const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const pagesRef = useRef<HTMLDivElement>(null);
+  const theme = useTheme();
+
+  const { pathname } = useLocation();
+  const isAdminPage = isPage('admin', pathname);
+  const isIdeaEditPage = isPage('idea_edit', pathname);
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
-  const localize = useLocalize();
-  const theme = useTheme();
-  const isIdeaEditPage = isPage('idea_edit', location.pathname);
+  const pagesRef = useRef<HTMLDivElement>(null);
+
+  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+    useState(false);
   const [postAnonymously, setPostAnonymously] = useState(
     idea?.data.attributes.anonymous || false
   );
-  const { data: phases } = usePhases(projectId);
-  const { pathname } = useLocation();
-  const isAdminPage = isPage('admin', pathname);
-  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
-    useState(false);
-
-  const handleOnChangeAnonymousPosting = () => {
-    if (!postAnonymously) {
-      setShowAnonymousConfirmationModal(true);
-    }
-
-    setPostAnonymously((postAnonymously) => !postAnonymously);
-  };
 
   const schema = generateYupValidationSchema({
     pageQuestions,
@@ -102,6 +97,13 @@ const CustomFieldsPage = ({
     }
   };
 
+  const handleOnChangeAnonymousPosting = () => {
+    if (!postAnonymously) {
+      setShowAnonymousConfirmationModal(true);
+    }
+
+    setPostAnonymously((postAnonymously) => !postAnonymously);
+  };
   return (
     <FormProvider {...methods}>
       <form>

@@ -55,9 +55,21 @@ const CustomFieldsForm = ({
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
+
   const showTogglePostAnonymously =
     phase?.data.attributes.allow_anonymous_participation &&
     participationMethod !== 'native_survey';
+
+  const pageButtonLabelMultiloc = customFields?.find(
+    (field) => field.id === nestedPagesData[currentPageNumber].page.id
+  )?.page_button_label_multiloc;
+
+  const onSubmit = (formValues: any) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      ...formValues,
+    }));
+  };
 
   return (
     <Box overflow="scroll" w="100%">
@@ -73,17 +85,8 @@ const CustomFieldsForm = ({
           participationMethod={participationMethod}
           idea={idea}
           projectId={projectId}
-          onSubmit={(formValues) => {
-            setFormValues((prevValues) => ({
-              ...prevValues,
-              ...formValues,
-            }));
-          }}
-          pageButtonLabelMultiloc={
-            customFields?.find(
-              (field) => field.id === nestedPagesData[currentPageNumber].page.id
-            )?.page_button_label_multiloc
-          }
+          onSubmit={onSubmit}
+          pageButtonLabelMultiloc={pageButtonLabelMultiloc}
           phase={phase?.data}
           defaultValues={formValues}
         />
