@@ -176,7 +176,7 @@ const PDFExportModal = ({
           <form onSubmit={methods.handleSubmit(handleExport)}>
             <Feedback onlyShowErrors />
             {htmlPdfsActive && (
-              <>
+              <Box mb="24px">
                 <MultilocFieldCollapsible
                   title={formatMessage(
                     messages.collapsibleInstructionsStartTitle
@@ -191,8 +191,9 @@ const PDFExportModal = ({
                   )}
                   name="print_end_multiloc"
                   label={formatMessage(messages.customiseEnd)}
+                  mb="0"
                 />
-              </>
+              </Box>
             )}
             <PersonalDataCheckbox />
             <FormActions loading={loading} />
