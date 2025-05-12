@@ -115,7 +115,11 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def show_progress
-    render json: raw_json({}, type: 'common-ground-progress')
+    progress = CommonGround::ProgressService
+      .new(@phase)
+      .user_progress(current_user)
+
+    render json: raw_json(progress, type: 'common-ground-progress')
   end
 
   private
