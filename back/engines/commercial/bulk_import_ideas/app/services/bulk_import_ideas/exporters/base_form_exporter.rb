@@ -14,6 +14,10 @@ module BulkImportIdeas::Exporters
       raise NotImplementedError, 'This method is not yet implemented'
     end
 
+    def format
+      raise NotImplementedError, 'This method is not yet implemented'
+    end
+
     def mime_type
       raise NotImplementedError, 'This method is not yet implemented'
     end
