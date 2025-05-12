@@ -74,7 +74,7 @@ en:
         description:
       other_input_field:
         title: Type your answer
-        print_title: If other, please specify
+        print_title: If '%{other_option}', please specify
       ask_follow_up_field:
         title: Tell us why
     community_monitor:

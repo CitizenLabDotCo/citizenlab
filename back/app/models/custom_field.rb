@@ -376,42 +376,30 @@ class CustomField < ApplicationRecord
     resource.project_id if resource_type == 'CustomForm'
   end
 
+  def i18n_to_multiloc(key, locales: nil, **options)
+    (locales || app_configuration.settings('core', 'locales')).each_with_object({}) do |locale, result|
+      localised_options = options.transform_values { |option| option[locale.to_s] }
+      I18n.with_locale(locale) do
+        result[locale] = I18n.t(key, raise: true, **localised_options)
+      end
+    end
+  end
+
   def other_option_text_field(print_version: false)
     return unless includes_other_option?
 
-    # TODO: Replace 'other' with the actual key of the other option
-    # NEW METHOD i18n_to_multiloc with option
-    # def i18n_to_multiloc(key, locales: nil, ...options)
-    #     (locales || app_configuration.settings('core', 'locales')).each_with_object({}) do |locale, result|
-    #       I18n.with_locale(locale) do
-    #         result[locale] = I18n.t(key, raise: true, ...options)
-    #       end
-    #     end
-    #   end
     other_field_key = "#{key}_other"
+    other_option_title_multiloc = options.detect { |option| option[:other] == true }&.title_multiloc
     title_multiloc = MultilocService.new.i18n_to_multiloc(
       print_version ? 'custom_fields.ideas.other_input_field.print_title' : 'custom_fields.ideas.other_input_field.title',
-      locales: CL2_SUPPORTED_LOCALES
-      # other_name: options.detect { |o| o[:other] == true }&.title_multiloc # SOMETHING LIKE THIS
+      other_option: other_option_title_multiloc
     )
-
-    # Replace {other_option} in the title string with the title of the other option
-    other_option = options.detect { |o| o[:other] == true }
-    replace_string = '{other_option}'
-    replaced_title_multiloc = {}
-    title_multiloc.each do |locale, title|
-      replaced_title_multiloc[locale] = if other_option.title_multiloc[locale.to_s]
-        title.gsub(/#{replace_string}/, other_option.title_multiloc[locale.to_s]) if other_option.title_multiloc[locale.to_s]
-      else
-        title
-      end
-    end
 
     CustomField.new(
       key: other_field_key,
       input_type: 'text',
       resource: resource,
-      title_multiloc: replaced_title_multiloc,
+      title_multiloc: title_multiloc,
       required: true,
       enabled: true
     )
@@ -422,8 +410,7 @@ class CustomField < ApplicationRecord
 
     follow_up_field_key = "#{key}_follow_up"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
-      'custom_fields.ideas.ask_follow_up_field.title',
-      locales: CL2_SUPPORTED_LOCALES
+      'custom_fields.ideas.ask_follow_up_field.title'
     )
 
     CustomField.new(
