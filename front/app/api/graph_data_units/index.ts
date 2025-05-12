@@ -12,6 +12,7 @@ import {
   MethodsUsedProps,
   ParticipationProps,
   ProjectsProps,
+  DeviceTypesProps,
 } from './requestTypes';
 // Response types
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
@@ -26,6 +27,8 @@ import { SingleIdeaResponse } from './responseTypes/SingleIdeaWidget';
 import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
 import { VisitorsResponse } from './responseTypes/VisitorsWidget';
+import { DeviceTypesResponse } from './responseTypes/DeviceTypesWidget';
+
 // Hooks
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
@@ -237,6 +240,13 @@ export const useParticipationLive = (
 export const useProjects = (props: ProjectsProps = {}) => {
   return useGraphDataUnits<ProjectsResponse>({
     resolved_name: 'ProjectsWidget',
+    props,
+  });
+};
+
+export const useDeviceTypesLive = (props: DeviceTypesProps) => {
+  return useGraphDataUnitsLive<DeviceTypesResponse>({
+    resolved_name: 'DeviceTypesWidget',
     props,
   });
 };

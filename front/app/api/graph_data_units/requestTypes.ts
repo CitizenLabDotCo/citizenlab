@@ -35,7 +35,8 @@ export type ParametersLive =
   | RegistrationsParams
   | MethodsUsedParams
   | ParticipationParams
-  | ProjectsParams;
+  | ProjectsParams
+  | DeviceTypesParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
 
