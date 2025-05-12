@@ -83,8 +83,15 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
       })
     end
 
-    # it 'works if everything is nil' do
-      # TODO
-    # end
+    it 'works if everything is nil' do
+      params = {
+        start_at: Date.new(2023, 1, 1),
+        end_at: Date.new(2023, 3, 1),
+      }
+
+      result = expect(query.run_query(**params)).to eq({
+        counts_per_device_type: {}
+      })
+    end
   end
 end
