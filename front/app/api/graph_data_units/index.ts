@@ -14,7 +14,6 @@ import {
   ProjectsProps,
   DeviceTypesProps,
 } from './requestTypes';
-
 // Response types
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
 import { DeviceTypesResponse } from './responseTypes/DeviceTypesWidget';
@@ -29,7 +28,6 @@ import { SingleIdeaResponse } from './responseTypes/SingleIdeaWidget';
 import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
 import { VisitorsResponse } from './responseTypes/VisitorsWidget';
-
 // Hooks
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
