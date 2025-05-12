@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module UserCustomFields
-  class UserCustomFieldPolicy < ApplicationPolicy
+  class UserCustomFieldPolicy < CustomFieldPolicy
     def create?
       user&.active? && user.admin? && !record.code
     end
