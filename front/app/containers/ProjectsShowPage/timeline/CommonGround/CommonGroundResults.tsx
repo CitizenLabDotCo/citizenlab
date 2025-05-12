@@ -4,6 +4,7 @@ import {
   Box,
   Title,
   defaultCardStyle,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -28,10 +29,44 @@ interface Props {
 
 const CommonGroundResults = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
+  const isPhone = useBreakpoint('phone');
   const { data: results, isLoading, isError } = useCommonGroundResults(phaseId);
   if (isLoading || isError) return null;
+
   const { numParticipants, numStatements, numVotes, majority, divisive } =
     results.data.attributes;
+
+  const renderStatementList = (title: string, items: typeof majority) => (
+    <Box mb="24px">
+      <Title variant="h3">{title}</Title>
+      {items.map((item, index) => (
+        <ResultCard key={index}>
+          <Box
+            display="flex"
+            flexDirection={isPhone ? 'column' : 'row'}
+            justifyContent="space-between"
+            alignItems={isPhone ? 'flex-start' : 'center'}
+          >
+            <Box
+              width={isPhone ? '100%' : 'calc(100% - 182px)'}
+              mb={isPhone ? '8px' : undefined}
+              mr={isPhone ? undefined : '16px'}
+            >
+              <T value={item.label} supportHtml />
+            </Box>
+            <Box width={isPhone ? '100%' : '166px'} flexShrink={0}>
+              <OutcomeBreakdownBar
+                agreedPercent={Math.round((item.agree / item.total) * 100)}
+                unsurePercent={Math.round((item.unsure / item.total) * 100)}
+                disagreePercent={Math.round((item.disagree / item.total) * 100)}
+                totalCount={item.total}
+              />
+            </Box>
+          </Box>
+        </ResultCard>
+      ))}
+    </Box>
+  );
 
   return (
     <Box mt="24px">
@@ -47,38 +82,9 @@ const CommonGroundResults = ({ phaseId }: Props) => {
           <strong>{formatMessage(messages.votes)}</strong>: {numVotes}
         </Box>
       </Box>
-      <Box mb="24px">
-        <Title variant="h3">{formatMessage(messages.majority)}</Title>
-        {majority.map((item, index) => (
-          <ResultCard key={index}>
-            <Box mb="8px">
-              <T value={item.label} supportHtml />
-            </Box>
-            <OutcomeBreakdownBar
-              agreedPercent={Math.round((item.agree / item.total) * 100)}
-              unsurePercent={Math.round((item.unsure / item.total) * 100)}
-              disagreePercent={Math.round((item.disagree / item.total) * 100)}
-              totalCount={item.total}
-            />
-          </ResultCard>
-        ))}
-      </Box>
-      <Box mb="24px">
-        <Title variant="h3">{formatMessage(messages.divisive)}</Title>
-        {divisive.map((item, index) => (
-          <ResultCard key={index}>
-            <Box mb="8px">
-              <T value={item.label} supportHtml />
-            </Box>
-            <OutcomeBreakdownBar
-              agreedPercent={Math.round((item.agree / item.total) * 100)}
-              unsurePercent={Math.round((item.unsure / item.total) * 100)}
-              disagreePercent={Math.round((item.disagree / item.total) * 100)}
-              totalCount={item.total}
-            />
-          </ResultCard>
-        ))}
-      </Box>
+
+      {renderStatementList(formatMessage(messages.majority), majority)}
+      {renderStatementList(formatMessage(messages.divisive), divisive)}
     </Box>
   );
 };
