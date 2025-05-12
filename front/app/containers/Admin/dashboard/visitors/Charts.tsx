@@ -13,7 +13,7 @@ import VisitorsCard from 'components/admin/GraphCards/VisitorsCard';
 import VisitorsTrafficSourcesCard from 'components/admin/GraphCards/VisitorsTrafficSourcesCard';
 
 import VisitorsLanguageCard from './VisitorsLanguageCard';
-import VisitorsTypeCard from './VisitorsTypeCard';
+import DeviceTypesCard from './DeviceTypesCard';
 
 type Props = ProjectId & Dates & Resolution;
 
@@ -43,7 +43,7 @@ const Charts = (props: Props) => {
           <VisitorsLanguageCard {...props} />
         </Box>
         <Box width="50%">
-          <VisitorsTypeCard {...props} />
+          <DeviceTypesCard {...props} />
         </Box>
       </Box>
     </>

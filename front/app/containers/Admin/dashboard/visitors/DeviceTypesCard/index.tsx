@@ -14,6 +14,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
 import renderTooltip from './renderTooltip';
 import useDeviceTypes from './useDeviceTypes';
+import { getTranslations } from './translations';
 
 type Props = ProjectId & Dates;
 
@@ -38,6 +39,7 @@ const DeviceTypesCard = ({ projectId, startAtMoment, endAtMoment }: Props) => {
   };
 
   const cardTitle = formatMessage(messages.title);
+  const translations = getTranslations(formatMessage);
 
   if (isNilOrError(pieData)) {
     return (
@@ -51,7 +53,7 @@ const DeviceTypesCard = ({ projectId, startAtMoment, endAtMoment }: Props) => {
     (row): LegendItem => ({
       icon: 'circle',
       color: row.color,
-      label: `${row.name} (${row.percentage}%)`,
+      label: `${translations[row.name]} (${row.percentage}%)`,
     })
   );
 
