@@ -107,8 +107,8 @@ module BulkImportIdeas::Exporters
 
     def format_fields
       question_num = 0
-      fields = @form_fields.map do |field|
-        next unless field.title_multiloc[@locale].present?
+      fields = @form_fields.filter_map do |field|
+        next if field.title_multiloc[@locale].blank?
 
         {
           title: field.title_multiloc[@locale],
@@ -127,7 +127,7 @@ module BulkImportIdeas::Exporters
             }
           end
         }
-      end.compact
+      end
 
       group_fields(fields)
     end
