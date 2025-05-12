@@ -195,7 +195,6 @@ const PDFExportModal = ({
                     <QuillMultilocWithLocaleSwitcher
                       name="print_start_multiloc"
                       label={formatMessage(messages.customiseStart)}
-                      noImages
                       noVideos
                       noLinks
                     />
@@ -219,7 +218,6 @@ const PDFExportModal = ({
                     <QuillMultilocWithLocaleSwitcher
                       name="print_end_multiloc"
                       label={formatMessage(messages.customiseEnd)}
-                      noImages
                       noVideos
                       noLinks
                     />
