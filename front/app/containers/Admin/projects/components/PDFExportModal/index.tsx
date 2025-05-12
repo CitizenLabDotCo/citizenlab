@@ -24,7 +24,6 @@ import useLocale from 'hooks/useLocale';
 import { FormType } from 'components/FormBuilder/utils';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl, MessageDescriptor } from 'utils/cl-intl';
@@ -35,6 +34,7 @@ import { supportsNativeSurvey } from '../../project/inputImporter/ReviewSection/
 import { saveSurveyAsPDF } from '../../project/nativeSurvey/saveSurveyAsPDF';
 
 import messages from './messages';
+import MultilocFieldCollapsible from './MultilocFieldCollapsible';
 
 export interface FormPDFExportFormValues {
   print_start_multiloc: Multiloc;
@@ -177,52 +177,21 @@ const PDFExportModal = ({
             <Feedback onlyShowErrors />
             {htmlPdfsActive && (
               <>
-                <CollapsibleContainer
-                  mb="24px"
-                  // To be configured
+                <MultilocFieldCollapsible
                   title={formatMessage(
                     messages.collapsibleInstructionsStartTitle
                   )}
-                  titleVariant="h4"
-                  titleAs="h2"
-                  titleFontWeight="bold"
-                  titlePadding="16px"
-                  border={`1px solid ${theme.colors.grey300}`}
-                  borderRadius={theme.borderRadius}
-                  isOpenByDefault
-                >
-                  <Box p="24px" pt="12px">
-                    <QuillMultilocWithLocaleSwitcher
-                      name="print_start_multiloc"
-                      label={formatMessage(messages.customiseStart)}
-                      noVideos
-                      noLinks
-                    />
-                  </Box>
-                </CollapsibleContainer>
-                <CollapsibleContainer
-                  mb="24px"
-                  // To be configured
+                  name="print_start_multiloc"
+                  label={formatMessage(messages.customiseStart)}
+                />
+
+                <MultilocFieldCollapsible
                   title={formatMessage(
                     messages.collapsibleInstructionsEndTitle
                   )}
-                  titleVariant="h4"
-                  titleAs="h2"
-                  titleFontWeight="bold"
-                  titlePadding="16px"
-                  border={`1px solid ${theme.colors.grey300}`}
-                  borderRadius={theme.borderRadius}
-                  isOpenByDefault
-                >
-                  <Box p="24px" pt="12px">
-                    <QuillMultilocWithLocaleSwitcher
-                      name="print_end_multiloc"
-                      label={formatMessage(messages.customiseEnd)}
-                      noVideos
-                      noLinks
-                    />
-                  </Box>
-                </CollapsibleContainer>
+                  name="print_end_multiloc"
+                  label={formatMessage(messages.customiseEnd)}
+                />
               </>
             )}
             <CheckboxWithLabel
