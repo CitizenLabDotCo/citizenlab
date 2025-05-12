@@ -2942,7 +2942,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Deltakere er brukere eller besøkende som har deltatt i et prosjekt, lagt ut eller interagert med et forslag eller deltatt på arrangementer.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Deltakere",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Deltakelsesprosent",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Prosentandel av besøkende som blir deltakere. Bare deltakere og besøkende som har godtatt informasjonskapsler, telles med.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Totalt antall deltakere",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automatiserte kampanjer",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automatiserte e-poster",

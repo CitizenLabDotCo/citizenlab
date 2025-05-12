@@ -4,7 +4,7 @@ module ReportBuilder
   class QueryRepository
     GRAPH_RESOLVED_NAMES_CLASSES = {
       'ReactionsByTimeWidget' => Queries::Analytics::ReactionsByTime,
-      'ParticipantsWidget' => Queries::Analytics::Participants,
+      'ParticipantsWidget' => Queries::Participants,
       'VisitorsWidget' => Queries::Analytics::Visitors,
       'VisitorsTrafficSourcesWidget' => Queries::Analytics::TrafficSources,
       'SurveyQuestionResultWidget' => Queries::SurveyQuestionResult,

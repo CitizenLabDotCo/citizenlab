@@ -2942,7 +2942,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Mae cyfranogwyr yn ddefnyddwyr neu'n ymwelwyr sydd wedi cymryd rhan mewn prosiect, wedi postio neu ryngweithio â chynnig neu wedi mynychu digwyddiadau.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Cyfranogwyr",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Cyfradd cyfranogiad",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Canran yr ymwelwyr sy'n dod yn gyfranogwyr. Dim ond cyfranogwyr ac ymwelwyr a dderbyniodd gwcis sy'n cael eu cyfrif.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Cyfanswm y cyfranogwyr",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Ymgyrchoedd awtomataidd",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "E-byst awtomataidd",
