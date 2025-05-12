@@ -13,33 +13,42 @@ import ImageCropper, { ImageCropperProps } from '.';
 const Container = ({
   aspectRatioWidth,
   aspectRatioHeight,
+  showMobileCropLines = false,
   ...otherProps
 }: ImageCropperProps) => {
   const { formatMessage } = useIntl();
   return (
     <Box>
       <ImageCropper
-        {...{ aspectRatioWidth, aspectRatioHeight }}
+        {...{ aspectRatioWidth, aspectRatioHeight, showMobileCropLines }}
         {...otherProps}
       />
       <Warning>
-        <Text>
-          <FormattedMessage
-            {...messages.info}
-            values={{
-              link: (
-                <a
-                  href={formatMessage(messages.imageSupportPageURL)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <FormattedMessage {...messages.infoLinkText} />
-                </a>
-              ),
-              aspect: `${aspectRatioWidth}:${aspectRatioHeight}`,
-            }}
-          />
-        </Text>
+        <Box>
+          <Text>
+            <FormattedMessage
+              {...messages.info}
+              values={{
+                link: (
+                  <a
+                    href={formatMessage(messages.imageSupportPageURL)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FormattedMessage {...messages.infoLinkText} />
+                  </a>
+                ),
+                aspect: `${aspectRatioWidth}:${aspectRatioHeight}`,
+              }}
+            />
+          </Text>
+
+          {showMobileCropLines && (
+            <Text fontStyle="italic">
+              <FormattedMessage {...messages.mobileCropExplanation} />
+            </Text>
+          )}
+        </Box>
       </Warning>
     </Box>
   );
