@@ -15,7 +15,7 @@ import PieChart from 'components/admin/Graphs/PieChart';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import renderTooltip from '../VisitorsTypeCard/renderTooltip';
+import renderTooltip from '../DeviceTypesCard/renderTooltip';
 
 import messages from './messages';
 import useVisitorLanguages from './useVisitorLanguages';
