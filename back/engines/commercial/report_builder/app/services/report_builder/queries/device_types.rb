@@ -14,6 +14,7 @@ module ReportBuilder
       sessions = exclude_roles_if_needed(sessions, exclude_roles)
 
       counts_per_device_type = sessions
+        .where.not(device_type: nil)
         .group(:device_type)
         .count
 

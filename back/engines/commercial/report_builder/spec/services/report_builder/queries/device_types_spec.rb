@@ -33,6 +33,27 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
       })
     end
 
+    it 'filters out nil device types' do
+      2.times do
+        create(:session, created_at: Date.new(2023, 2, 1), device_type: nil)
+      end
+
+      3.times do
+        create(:session, created_at: Date.new(2023, 2, 1), device_type: 'mobile')
+      end
+
+      params = {
+        start_at: Date.new(2023, 1, 1),
+        end_at: Date.new(2023, 3, 1),
+      }
+
+      result = expect(query.run_query(**params)).to eq({
+        counts_per_device_type: {
+          'mobile' => 3
+        }
+      })
+    end
+
     it 'filters by project' do
       project = create(:project_with_active_ideation_phase)
       project_path = "/en/projects/#{project.slug}"
