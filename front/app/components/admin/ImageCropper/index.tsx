@@ -14,6 +14,7 @@ type ImageCropperProps = {
   aspectRatioWidth: number;
   aspectRatioHeight: number;
   onRemove: () => void;
+  showMobileCropLines?: boolean;
 };
 
 const ImageCropper = ({
@@ -22,6 +23,7 @@ const ImageCropper = ({
   aspectRatioWidth,
   aspectRatioHeight,
   onRemove,
+  showMobileCropLines = false,
 }: ImageCropperProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [cropChanged, setCropChanged] = useState(false);
@@ -50,6 +52,15 @@ const ImageCropper = ({
     setCrop(location);
   }, []);
 
+  const [mediaSize, setMediaSize] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
+
+  const handleMediaLoaded = (mediaSize: { width: number; height: number }) => {
+    setMediaSize(mediaSize);
+  };
+
   return (
     <Box
       position="relative"
@@ -67,23 +78,26 @@ const ImageCropper = ({
             onCropChange={handleCropChange}
             onCropComplete={onCropComplete}
             objectFit="contain"
+            onMediaLoaded={handleMediaLoaded}
           />
 
-          {/* 3:1 visual overlay inside 4:1 crop area */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '17%',
-              width: '66%', // 3:1
-              height: '37%',
-              transform: 'translateY(-50%)',
-              borderRight: '2px dashed rgba(255, 255, 255, 0.8)',
-              borderLeft: '2px dashed rgba(255, 255, 255, 0.8)',
-              pointerEvents: 'none',
-              boxSizing: 'border-box',
-            }}
-          />
+          {/* 3:1 visual overlay inside crop area for mobile view */}
+          {mediaSize && showMobileCropLines && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                width: `${mediaSize.width * 0.75}px`,
+                height: `110px`,
+                maxHeight: `${mediaSize.height}px`,
+                transform: 'translate(-50%, -50%)',
+                borderLeft: '2px dashed rgba(255, 255, 255, 0.8)',
+                borderRight: '2px dashed rgba(255, 255, 255, 0.8)',
+                pointerEvents: 'none',
+              }}
+            />
+          )}
 
           <RemoveImageButton onClick={onRemove} />
         </div>
