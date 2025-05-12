@@ -376,15 +376,6 @@ class CustomField < ApplicationRecord
     resource.project_id if resource_type == 'CustomForm'
   end
 
-  def i18n_to_multiloc(key, locales: nil, **options)
-    (locales || app_configuration.settings('core', 'locales')).each_with_object({}) do |locale, result|
-      localised_options = options.transform_values { |option| option[locale.to_s] }
-      I18n.with_locale(locale) do
-        result[locale] = I18n.t(key, raise: true, **localised_options)
-      end
-    end
-  end
-
   def other_option_text_field(print_version: false)
     return unless includes_other_option?
 

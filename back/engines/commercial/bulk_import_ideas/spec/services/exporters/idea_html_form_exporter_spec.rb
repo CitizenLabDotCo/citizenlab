@@ -166,4 +166,39 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
       expect(custom_font_url.to_s).to eq 'https://other.com/fonts.css'
     end
   end
+
+  describe 'group_fields' do
+    it 'groups page fields with their first child question, otherwise each question has its own group' do
+      # NOTE: Truncated fields object - only includes what is necessary for the method
+      fields = [
+        { input_type: 'page' },
+        { input_type: 'text_multiloc' },
+        { input_type: 'page' },
+        { input_type: 'html_multiloc' },
+        { input_type: 'page' },
+        { input_type: 'image_files' },
+        { input_type: 'files' },
+        { input_type: 'page' },
+        { input_type: 'page' },
+        { input_type: 'multiline_text' },
+        { input_type: 'text' },
+        { input_type: 'page' }
+      ]
+
+      expect(service.send(:group_fields, fields)).to eq [
+        { input_type: 'page', field_group: { start: true, end: false } },
+        { input_type: 'text_multiloc', field_group: { start: false, end: true } },
+        { input_type: 'page', field_group: { start: true, end: false } },
+        { input_type: 'html_multiloc', field_group: { start: false, end: true } },
+        { input_type: 'page', field_group: { start: true, end: false } },
+        { input_type: 'image_files', field_group: { start: false, end: true } },
+        { input_type: 'files', field_group: { start: true, end: true } },
+        { input_type: 'page', field_group: { start: true, end: true } },
+        { input_type: 'page', field_group: { start: true, end: false } },
+        { input_type: 'multiline_text', field_group: { start: false, end: true } },
+        { input_type: 'text', field_group: { start: true, end: true } },
+        { input_type: 'page', field_group: { start: true, end: true } }
+      ]
+    end
+  end
 end

@@ -107,7 +107,9 @@ module BulkImportIdeas::Exporters
 
     def format_fields
       question_num = 0
-      @form_fields.map do |field|
+      fields = @form_fields.map do |field|
+        next unless field.title_multiloc[@locale].present?
+
         {
           title: field.title_multiloc[@locale],
           description: field_print_description(field),
@@ -125,6 +127,25 @@ module BulkImportIdeas::Exporters
             }
           end
         }
+      end.compact
+
+      group_fields(fields)
+    end
+
+    # Group fields together so that the first question of a page appears on the same printed page as the question
+    # Otherwise each question is in a group of it's own
+    def group_fields(fields)
+      fields.each_with_index do |field, index|
+        field[:field_group] = {}
+        if field[:input_type] == 'page'
+          # If the next field is not a page, then do not end the field group
+          field[:field_group][:start] = true
+          field[:field_group][:end] = !fields[index + 1] || fields[index + 1][:input_type] == 'page'
+        else
+          # Don't start a field group if the previous field was a page (group starts with the page)
+          field[:field_group][:start] = fields[index - 1][:input_type] != 'page'
+          field[:field_group][:end] = true
+        end
       end
     end
 
