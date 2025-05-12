@@ -172,6 +172,31 @@ resource 'Phases' do
     end
   end
 
+  get 'web_api/v1/phases/:id/progress' do
+    let(:phase) { create(:common_ground_phase) }
+    let(:id) { phase.id }
+
+    context 'when visitor' do
+      example_request 'Unauthorized (401)' do
+        assert_status 401
+      end
+    end
+
+    context 'when logged in' do
+      before { header_token_for(create(:user)) }
+
+      example_request 'Get progress of a phase' do
+        assert_status 200
+        expect(json_response_body).to match(
+          data: {
+            type: 'common-ground-progress',
+            attributes: {}
+          }
+        )
+      end
+    end
+  end
+
   delete 'web_api/v1/phases/:id/inputs' do
     let(:project) { create(:project_with_active_native_survey_phase) }
     let(:active_phase) { project.phases.first }

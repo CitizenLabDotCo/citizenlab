@@ -22,6 +22,7 @@ describe PhasePolicy do
       it { is_expected.to     permit(:submission_count) }
       it { is_expected.not_to permit(:index_xlsx) }
       it { is_expected.not_to permit(:delete_inputs) }
+      it { is_expected.not_to permit(:show_progress) }
 
       it 'should index the phase' do
         expect(scope.resolve.size).to eq 1
@@ -39,6 +40,7 @@ describe PhasePolicy do
       it { is_expected.to     permit(:submission_count) }
       it { is_expected.not_to permit(:index_xlsx) }
       it { is_expected.not_to permit(:delete_inputs) }
+      it { is_expected.to     permit(:show_progress) }
 
       it 'should index the phase' do
         expect(scope.resolve.size).to eq 1
@@ -56,6 +58,7 @@ describe PhasePolicy do
       it { is_expected.to    permit(:submission_count) }
       it { is_expected.to    permit(:index_xlsx) }
       it { is_expected.to    permit(:delete_inputs) }
+      it { is_expected.to    permit(:show_progress) }
 
       it 'should index the phase' do
         expect(scope.resolve.size).to eq 1
@@ -73,6 +76,7 @@ describe PhasePolicy do
       it { is_expected.to permit(:submission_count) }
       it { is_expected.to permit(:index_xlsx) }
       it { is_expected.to permit(:delete_inputs) }
+      it { is_expected.to permit(:show_progress) }
 
       it 'indexes the phase' do
         expect(scope.resolve.size).to eq 1
@@ -93,6 +97,7 @@ describe PhasePolicy do
     it { is_expected.not_to permit(:submission_count) }
     it { is_expected.not_to permit(:index_xlsx) }
     it { is_expected.not_to permit(:delete_inputs) }
+    it { is_expected.not_to permit(:show_progress) }
 
     it 'should not index the phase' do
       expect(scope.resolve.size).to eq 0
@@ -112,6 +117,7 @@ describe PhasePolicy do
     it { is_expected.not_to permit(:submission_count) }
     it { is_expected.not_to permit(:index_xlsx) }
     it { is_expected.not_to permit(:delete_inputs) }
+    it { is_expected.not_to permit(:show_progress) }
 
     it 'should not index the phase' do
       expect(scope.resolve.size).to eq 0
@@ -131,6 +137,7 @@ describe PhasePolicy do
     it { is_expected.to     permit(:submission_count) }
     it { is_expected.not_to permit(:index_xlsx) }
     it { is_expected.not_to permit(:delete_inputs) }
+    it { is_expected.to     permit(:show_progress) }
 
     it 'should index the phase' do
       expect(scope.resolve.size).to eq 1
