@@ -53,7 +53,6 @@ const CheckboxMultiSelect = ({ name, options }: Props) => {
             <Box display="block">
               {options.map((option) => (
                 <StyledBox
-                  // hoverColor={theme.colors.tenantPrimaryLighten75}
                   style={{ cursor: 'pointer' }}
                   mb="12px"
                   border={
@@ -81,7 +80,7 @@ const CheckboxMultiSelect = ({ name, options }: Props) => {
                         setValue(
                           name,
                           checkedOptions.filter(
-                            (value) => value !== option.value
+                            (value: string) => value !== option.value
                           )
                         );
                       } else {

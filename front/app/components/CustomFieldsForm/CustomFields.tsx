@@ -13,12 +13,30 @@ import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
+import MultipleSelect from 'components/HookForm/MultipleSelect';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import RadioGroup from 'components/HookForm/RadioGroup';
 import Radio from 'components/HookForm/RadioGroup/Radio';
+import Select from 'components/HookForm/Select';
 import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
+
+const extractOptions = (
+  question: IFlatCustomField,
+  localize: Localize
+): IOption[] => {
+  let result: IOption[] = [];
+  if (question.options) {
+    result = question.options.map((selectOption) => {
+      return {
+        value: selectOption.key,
+        label: localize(selectOption.title_multiloc),
+      } as IOption;
+    });
+  }
+  return result;
+};
 
 const renderField = (
   question: IFlatCustomField,
@@ -54,7 +72,12 @@ const renderField = (
     case 'multiline_text':
       return <TextArea name={question.key} />;
     case 'select':
-      return (
+      return question.dropdown_layout ? (
+        <Select
+          name={question.key}
+          options={extractOptions(question, localize)}
+        />
+      ) : (
         <RadioGroup name={question.key}>
           {question.options?.map((option, i) => (
             <Radio
@@ -68,12 +91,17 @@ const renderField = (
         </RadioGroup>
       );
     case 'multiselect':
-      return (
+      return question.dropdown_layout ? (
+        <MultipleSelect
+          name={question.key}
+          options={extractOptions(question, localize)}
+        />
+      ) : (
         <CheckboxMultiSelect
           name={question.key}
           options={extractOptions(question, localize)}
         />
-      ); // <MultipleSelect name={question.key}  options={extractOptions(question, localize)};
+      );
     case 'image_files':
       return (
         <ImagesDropzone name={question.key} imagePreviewRatio={135 / 298} />
@@ -120,22 +148,6 @@ const CustomFields = ({
         })}
     </>
   );
-};
-
-const extractOptions = (
-  question: IFlatCustomField,
-  localize: Localize
-): IOption[] => {
-  let result: IOption[] = [];
-  if (question.options) {
-    result = question.options.map((selectOption) => {
-      return {
-        value: selectOption.key,
-        label: localize(selectOption.title_multiloc),
-      } as IOption;
-    });
-  }
-  return result;
 };
 
 export default CustomFields;
