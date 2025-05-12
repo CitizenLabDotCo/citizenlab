@@ -42,6 +42,7 @@
 #  page_button_label_multiloc     :jsonb            not null
 #  page_button_link               :string
 #  question_category              :string
+#  include_in_printed_form        :boolean          default(TRUE), not null
 #
 # Indexes
 #
@@ -260,8 +261,10 @@ class CustomField < ApplicationRecord
   end
 
   def printable?
+    return false unless include_in_printed_form
+
     ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
-    ignore_field_types.exclude? input_type
+    ignore_field_types.exclude?(input_type)
   end
 
   def importable?
@@ -384,6 +387,7 @@ class CustomField < ApplicationRecord
     CustomField.new(
       key: other_field_key,
       input_type: 'text',
+      resource: resource,
       title_multiloc: replaced_title_multiloc,
       required: true,
       enabled: true
@@ -424,6 +428,7 @@ class CustomField < ApplicationRecord
     @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options
   end
 
+  # @deprecated New HTML PDF formatter does this in {IdeaHtmlFormExporter} instead.
   def linear_scale_print_description(locale)
     return nil unless linear_scale?
 

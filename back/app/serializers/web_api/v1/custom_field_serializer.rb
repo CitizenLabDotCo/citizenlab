@@ -2,7 +2,7 @@
 
 class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   attributes :key, :input_type, :title_multiloc, :required, :ordering,
-    :enabled, :code, :created_at, :updated_at, :logic, :random_option_ordering
+    :enabled, :code, :created_at, :updated_at, :logic, :random_option_ordering, :include_in_printed_form
 
   attribute :description_multiloc do |field|
     TextImageService.new.render_data_images_multiloc field.description_multiloc, field: :description_multiloc, imageable: field
