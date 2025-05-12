@@ -435,6 +435,48 @@ RSpec.describe CustomField do
     end
   end
 
+  describe 'visible_to_public?' do
+    it 'returns true for a default input field' do
+      field = build(:custom_field, :for_custom_form, input_type: 'text_multiloc', code: 'title_multiloc')
+      expect(field.visible_to_public?).to be true
+    end
+
+    it 'returns false for a custom input field' do
+      field = build(:custom_field, :for_custom_form, input_type: 'number')
+      expect(field.visible_to_public?).to be false
+    end
+
+    it 'returns true for a custom input page' do
+      field = build(:custom_field_page, :for_custom_form)
+      expect(field.visible_to_public?).to be true
+    end
+
+    it 'returns true for a custom input end page' do
+      field = build(:custom_field_form_end_page, :for_custom_form)
+      expect(field.visible_to_public?).to be true
+    end
+
+    it 'returns false for a default registration field' do
+      field = build(:custom_field_birthyear)
+      expect(field.visible_to_public?).to be false
+    end
+
+    it 'returns false for a custom registration field' do
+      field = build(:custom_field_select, :for_registration)
+      expect(field.visible_to_public?).to be false
+    end
+
+    it 'returns false for a custom registration page' do
+      field = build(:custom_field_page, :for_registration)
+      expect(field.visible_to_public?).to be false
+    end
+
+    it 'returns false for a custom registration end page' do
+      field = build(:custom_field_form_end_page, :for_registration)
+      expect(field.visible_to_public?).to be false
+    end
+  end
+
   describe 'maximum_select_count' do
     let(:field) { create(:custom_field_multiselect, :with_options) }
 
