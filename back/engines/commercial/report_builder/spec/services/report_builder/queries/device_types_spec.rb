@@ -25,7 +25,7 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
         end_at: Date.new(2023, 3, 1),
       }
 
-      result = query.run_query(**params).to eq({
+      result = expect(query.run_query(**params)).to eq({
         counts_per_device_type: {
           'desktop_or_other' => 2,
           'mobile' => 3

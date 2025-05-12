@@ -16,9 +16,6 @@ module ReportBuilder
       counts_per_device_type = sessions
         .group(:device_type)
         .count
-        .each_with_object({}) do |row, obj|
-          obj[row['device_type']] = row['count']
-        end
 
       {
         counts_per_device_type: counts_per_device_type
