@@ -1,14 +1,10 @@
+import { Multiloc } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import customFormKeys from './keys';
-import { Multiloc } from 'typings';
 
 export type CustomFormKeys = Keys<typeof customFormKeys>;
-
-export interface ICustomFormParameters {
-  projectId: string;
-  phaseId?: string;
-}
 
 export type CustomFormAttributes = {
   opened_at: string;

@@ -13,7 +13,6 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
@@ -34,12 +33,11 @@ const StyledTitle = styled(Text)`
 `;
 
 type Props = {
-  phaseId?: string;
-  idea?: IIdeaData;
+  phaseId: string;
   titleText?: string | React.ReactNode;
 };
 
-const NewIdeaHeading = ({ phaseId, titleText, idea }: Props) => {
+const NewIdeaHeading = ({ phaseId, titleText }: Props) => {
   const { slug: projectSlug } = useParams();
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: authUser } = useAuthUser();
@@ -64,9 +62,6 @@ const NewIdeaHeading = ({ phaseId, titleText, idea }: Props) => {
   const linkToFormBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/form/edit`;
 
   const returnToProject = () => {
-    if (idea) {
-      clHistory.push(`/ideas/${idea.attributes.slug}`);
-    }
     clHistory.push(`/projects/${projectSlug}`);
   };
 
