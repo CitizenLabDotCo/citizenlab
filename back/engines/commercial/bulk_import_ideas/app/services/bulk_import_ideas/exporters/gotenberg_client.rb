@@ -3,7 +3,7 @@
 module BulkImportIdeas::Exporters
   class GotenbergClient
     def initialize
-      @api_url = ENV['GOTENBURG_PDF_URL'].presence || 'http://gotenberg:3000'
+      @api_url = ENV.fetch('GOTENBURG_PDF_URL', 'http://gotenberg:3000')
     end
 
     # Use Gotenberg web service to render html to PDF
