@@ -2942,6 +2942,7 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Uczestnicy to użytkownicy lub odwiedzający, którzy wzięli udział w projekcie, opublikowali lub weszli w interakcję z propozycją lub uczestniczyli w wydarzeniach.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Uczestnicy",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Wskaźnik uczestnictwa",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip4": "Odsetek odwiedzających, którzy stają się uczestnikami.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Uczestnicy ogółem",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Kampanie zautomatyzowane",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Zautomatyzowane wiadomości e-mail",
