@@ -8,7 +8,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import { object, boolean } from 'yup';
@@ -205,14 +204,14 @@ const PDFExportModal = ({
 };
 
 type Props = {
+  phaseId: string;
   open: boolean;
   formType: FormType;
   onClose: () => void;
 };
 
 export default (props: Props) => {
-  const { phaseId } = useParams();
-  const { data: phase } = usePhase(phaseId);
+  const { data: phase } = usePhase(props.phaseId);
 
   if (!phase) {
     return null;
