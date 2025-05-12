@@ -180,7 +180,9 @@ const PDFExportModal = ({
                 <CollapsibleContainer
                   mb="24px"
                   // To be configured
-                  title={'Start of the form'}
+                  title={formatMessage(
+                    messages.collapsibleInstructionsStartTitle
+                  )}
                   titleVariant="h4"
                   titleAs="h2"
                   titleFontWeight="bold"
@@ -192,21 +194,19 @@ const PDFExportModal = ({
                   <Box p="24px" pt="12px">
                     <QuillMultilocWithLocaleSwitcher
                       name="print_start_multiloc"
-                      // To be configured
-                      label={'Customise the start of the form.'}
+                      label={formatMessage(messages.customiseStart)}
                       noImages
                       noVideos
                       noLinks
-                      labelTooltipText={
-                        "You can set a logo at the top, specify the form's title, provide instructions about how to fill out the form, etc.."
-                      }
                     />
                   </Box>
                 </CollapsibleContainer>
                 <CollapsibleContainer
                   mb="24px"
                   // To be configured
-                  title={'End of the form'}
+                  title={formatMessage(
+                    messages.collapsibleInstructionsEndTitle
+                  )}
                   titleVariant="h4"
                   titleAs="h2"
                   titleFontWeight="bold"
@@ -218,14 +218,10 @@ const PDFExportModal = ({
                   <Box p="24px" pt="12px">
                     <QuillMultilocWithLocaleSwitcher
                       name="print_end_multiloc"
-                      // To be configured
-                      label={'Customise the end of the form.'}
+                      label={formatMessage(messages.customiseEnd)}
                       noImages
                       noVideos
                       noLinks
-                      labelTooltipText={
-                        'You can add instructions about where to send the form, mention this website, when you will follow up, etc. here.'
-                      }
                     />
                   </Box>
                 </CollapsibleContainer>
