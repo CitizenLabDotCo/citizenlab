@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Besuche",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Besuche\" ist die Anzahl der Sitzungen. Wenn dieselbe Person die Plattform mehrmals besucht hat, wird jeder Besuch gezählt.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Gestern:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Anzahl",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Sprache",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Anzahl der Besucher*innen",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Prozentualer Anteil der Besucher*innen",
