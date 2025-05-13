@@ -20,7 +20,7 @@ module BulkImportIdeas::Parsers
       job_ids = []
       job_first_idea_index = 1
       files.each_slice(IDEAS_PER_JOB) do |sliced_files|
-        job = BulkImportIdeas::IdeaImportJob.perform_later('pdf', sliced_files, @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
+        job = BulkImportIdeas::IdeaImportJob.perform_later(self.class, sliced_files, @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
         job_ids << job.job_id
         job_first_idea_index += IDEAS_PER_JOB
       end
@@ -202,6 +202,12 @@ module BulkImportIdeas::Parsers
         next_question = form_fields[form_fields.find_index(processed_field) + 1]
         if next_question && next_question[:name].split.count > 4
           processed_field[:value] = processed_field[:value].gsub(/#{next_question[:name]}*/, '')
+        end
+
+        # Strip out text from unsupported fields that might come next
+        if field[:next_page_split_text]
+          split_string = processed_field[:value].split(field[:next_page_split_text])
+          processed_field[:value] = split_string[0] if split_string.count > 1
         end
 
         # Strip out 'this answer may be shared with moderators...' text

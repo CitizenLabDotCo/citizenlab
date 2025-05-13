@@ -34,8 +34,10 @@ module BulkImportIdeas::Exporters
       end
 
       @importer_fields = []
-      form_fields.each do |field|
-        add_to_importer_fields(field, pages, 'field')
+      question_num = 0 # TODO: Question number is repeated in printing of the PDF
+      form_fields.each_with_index do |field, index|
+        question_number = field.page? || field.additional_text_question? ? nil : "#{question_num += 1}. "
+        add_to_importer_fields(field, pages, 'field', question_number, form_fields[index + 1])
         field.options.each do |option|
           add_to_importer_fields(option, pages, 'option')
         end
@@ -49,8 +51,8 @@ module BulkImportIdeas::Exporters
 
     private
 
-    def add_to_importer_fields(field_or_option, pdf_pages, type = 'field')
-      title = custom_field_service.handle_title(field_or_option, @locale)
+    def add_to_importer_fields(field_or_option, pdf_pages, type = 'field', question_number = nil, next_field = nil)
+      title = question_number.to_s + custom_field_service.handle_title(field_or_option, @locale)
 
       pdf_pages.each_with_index do |lines, index|
         page_num = index + 1
@@ -66,6 +68,9 @@ module BulkImportIdeas::Exporters
           # Blank out the field once found
           pdf_pages[index][lines.find_index(title)] = ''
 
+          # Should not include if the field is not pdf_importable? Same with the options?
+          next if type == 'field' && !field_or_option.pdf_importable?
+
           @importer_fields << {
             name: title,
             description: type == 'field' ? ActionView::Base.full_sanitizer.sanitize(field_or_option[:description_multiloc][@locale]) : nil,
@@ -75,7 +80,9 @@ module BulkImportIdeas::Exporters
             key: key,
             parent_key: parent_key,
             page: page_num,
-            position: position.to_i
+            position: position.to_i,
+            # TODO: Needs the page number to also be passed in
+            next_page_split_text: next_field && !next_field.pdf_importable? ? custom_field_service.handle_title(next_field, @locale) : nil,
           }
         end
       end
