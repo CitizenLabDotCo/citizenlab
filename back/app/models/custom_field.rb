@@ -280,7 +280,12 @@ class CustomField < ApplicationRecord
     ignore_field_types.exclude? input_type
   end
 
-  def importable?
+  def pdf_importable?
+    ignore_field_types = %w[page date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
+    printable? && ignore_field_types.exclude?(input_type)
+  end
+
+  def xlsx_importable?
     ignore_field_types = %w[page date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
     ignore_field_types.exclude? input_type
   end

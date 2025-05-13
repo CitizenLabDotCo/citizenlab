@@ -54,8 +54,8 @@ class IdeaCustomFieldsService
     enabled_fields_with_other_options.select(&:printable_legacy?)
   end
 
-  def importable_fields
-    enabled_fields_with_other_options.select(&:importable?)
+  def xlsx_importable_fields
+    enabled_fields_with_other_options.select(&:xlsx_importable?)
   end
 
   def enabled_fields

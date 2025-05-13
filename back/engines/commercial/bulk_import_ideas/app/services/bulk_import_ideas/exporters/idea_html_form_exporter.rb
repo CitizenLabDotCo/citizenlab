@@ -5,7 +5,6 @@ module BulkImportIdeas::Exporters
     def initialize(phase, locale, personal_data_enabled)
       super
       @personal_data_enabled = personal_data_enabled
-      @form_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).printable_fields
     end
 
     def export
@@ -23,6 +22,10 @@ module BulkImportIdeas::Exporters
     end
 
     private
+
+    def form_fields
+      @form_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).printable_fields
+    end
 
     def render_config
       {
@@ -107,7 +110,7 @@ module BulkImportIdeas::Exporters
 
     def format_fields
       question_num = 0
-      fields = @form_fields.filter_map do |field|
+      fields = form_fields.filter_map do |field|
         next if field.title_multiloc[@locale].blank?
 
         {

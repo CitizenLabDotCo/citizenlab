@@ -34,7 +34,7 @@ module BulkImportIdeas::Exporters
       end
 
       @importer_fields = []
-      @form_fields.each do |field|
+      form_fields.each do |field|
         add_to_importer_fields(field, pages, 'field')
         field.options.each do |option|
           add_to_importer_fields(option, pages, 'option')
