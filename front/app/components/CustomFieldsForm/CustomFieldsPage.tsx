@@ -1,6 +1,11 @@
 import React, { useState, useRef } from 'react';
 
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
@@ -26,6 +31,7 @@ import { isPage } from 'utils/helperUtils';
 
 import CustomFields from './CustomFields';
 import generateYupValidationSchema from './generateYupSchema';
+import messages from './messages';
 
 type CustomFieldsPage = {
   page: IFlatCustomField;
@@ -41,6 +47,7 @@ type CustomFieldsPage = {
   pageButtonLabelMultiloc?: Multiloc;
   phase?: IPhaseData;
   defaultValues?: any;
+  formCompletionPercentage?: number;
 };
 
 const CustomFieldsPage = ({
@@ -57,6 +64,7 @@ const CustomFieldsPage = ({
   pageButtonLabelMultiloc,
   phase,
   defaultValues,
+  formCompletionPercentage,
 }: CustomFieldsPage) => {
   const { data: phases } = usePhases(projectId);
 
@@ -104,6 +112,7 @@ const CustomFieldsPage = ({
 
     setPostAnonymously((postAnonymously) => !postAnonymously);
   };
+
   return (
     <FormProvider {...methods}>
       <form>
@@ -249,24 +258,24 @@ const CustomFieldsPage = ({
             alignItems="center"
             zIndex="1000"
           >
-            {/* <Box
-          w="100%"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={percentageAnswered}
-          aria-label={formatMessage(messages.progressBarLabel)}
-          zIndex="1000"
-        >
-          <Box background={colors.background}>
             <Box
-              w={`${percentageAnswered}%`}
-              h="4px"
-              background={theme.colors.tenantSecondary}
-              style={{ transition: 'width 0.3s ease-in-out' }}
-            />
-          </Box>
-        </Box> */}
+              w="100%"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={formCompletionPercentage}
+              aria-label={formatMessage(messages.progressBarLabel)}
+              zIndex="1000"
+            >
+              <Box background={colors.background}>
+                <Box
+                  w={`${formCompletionPercentage}%`}
+                  h="4px"
+                  background={theme.colors.tenantSecondary}
+                  style={{ transition: 'width 0.3s ease-in-out' }}
+                />
+              </Box>
+            </Box>
 
             <Box w="100%" zIndex="1000">
               <PageControlButtons

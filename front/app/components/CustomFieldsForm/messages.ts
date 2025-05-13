@@ -47,4 +47,8 @@ export default defineMessages({
     defaultMessage:
       'At least {minSelections} options can be selected for the field "{fieldName}"',
   },
+  progressBarLabel: {
+    id: 'app.components.CustomFieldsForm.progressBarLabel',
+    defaultMessage: 'Progress',
+  },
 });

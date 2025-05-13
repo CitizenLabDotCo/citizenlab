@@ -57,6 +57,32 @@ interface FormValues {
   publication_status?: IdeaPublicationStatus;
 }
 
+function getFormCompletionPercentage(
+  customFields: IFlatCustomField[],
+  formValues: Record<string, any> = {}
+) {
+  // Count total required fields and answered required fields
+  let totalRequiredFields = 0;
+  let answeredRequiredFields = 0;
+
+  customFields.forEach((field) => {
+    if (field.required) {
+      totalRequiredFields += 1;
+      if (formValues[field.key]) {
+        answeredRequiredFields += 1;
+      }
+    }
+  });
+
+  // If no required fields, consider it 100% complete
+  if (totalRequiredFields === 0) {
+    return 100;
+  }
+
+  // Calculate and return percentage
+  return Math.round((answeredRequiredFields / totalRequiredFields) * 100);
+}
+
 const CustomFieldsForm = ({
   projectId,
   phaseId,
@@ -117,6 +143,11 @@ const CustomFieldsForm = ({
     }
   };
 
+  const formCompletionPercentage = getFormCompletionPercentage(
+    customFields || [],
+    formValues
+  );
+  console.log('Form completion percentage:', formCompletionPercentage);
   return (
     <Box overflow="scroll" w="100%">
       {nestedPagesData[currentPageNumber] && (
@@ -135,6 +166,7 @@ const CustomFieldsForm = ({
           pageButtonLabelMultiloc={pageButtonLabelMultiloc}
           phase={phase?.data}
           defaultValues={formValues}
+          formCompletionPercentage={formCompletionPercentage}
         />
       )}
     </Box>
