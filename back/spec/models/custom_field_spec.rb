@@ -466,14 +466,14 @@ RSpec.describe CustomField do
       expect(field.visible_to_public?).to be false
     end
 
-    it 'returns false for a custom registration page' do
+    it 'returns true for a custom registration page' do
       field = build(:custom_field_page, :for_registration)
-      expect(field.visible_to_public?).to be false
+      expect(field.visible_to_public?).to be true
     end
 
-    it 'returns false for a custom registration end page' do
+    it 'returns true for a custom registration end page' do
       field = build(:custom_field_form_end_page, :for_registration)
-      expect(field.visible_to_public?).to be false
+      expect(field.visible_to_public?).to be true
     end
   end
 
