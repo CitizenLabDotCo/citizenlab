@@ -5,25 +5,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.survey2',
     defaultMessage: 'Survey',
   },
-  surveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyDescription2',
-    defaultMessage: "Create and edit the questions in this projects's survey.",
-  },
-  downloadAllResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2',
-    defaultMessage: 'Download all survey results',
-  },
   surveyResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResponses',
     defaultMessage: 'Survey responses',
-  },
-  downloadResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults2',
-    defaultMessage: 'Download survey results',
-  },
-  downloadSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurvey',
-    defaultMessage: 'Download survey as pdf',
   },
   downloadExcelTemplateTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip',
@@ -39,17 +23,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
     defaultMessage: 'Open for responses',
   },
-  deleteSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2',
-    defaultMessage: 'Delete survey results',
-  },
   viewSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults2',
     defaultMessage: 'View survey results ({count})',
-  },
-  editSurveyContent: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2',
-    defaultMessage: 'Edit survey content',
   },
   editSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey1',
@@ -63,31 +39,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning',
     defaultMessage:
       'Submissions to this survey have started to come in. Changes to the survey may result in data loss and incomplete data in the exported files.',
-  },
-  deleteResultsConfirmationQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2',
-    defaultMessage: 'Are you sure you want to delete all survey results?',
-  },
-  deleteResultsInfo: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsInfo2',
-    defaultMessage: 'This cannot be undone',
-  },
-  cancelDeleteButtonText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText2',
-    defaultMessage: 'Cancel',
-  },
-  confirmDeleteButtonText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText2',
-    defaultMessage: 'Yes, delete survey results',
-  },
-  disabledSurveyMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2',
-    defaultMessage:
-      "Survey content can't be edited as survey results have started coming in.",
-  },
-  deleteResultsLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2',
-    defaultMessage: 'Delete the results if you need to make changes.',
   },
   viewSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurvey2',
@@ -166,10 +117,6 @@ export default defineMessages({
   shapefile_upload: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.shapefile_upload',
     defaultMessage: 'Esri shapefile upload',
-  },
-  downloadExcelTemplate: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate',
-    defaultMessage: 'Download an Excel template',
   },
   importInputs: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',
