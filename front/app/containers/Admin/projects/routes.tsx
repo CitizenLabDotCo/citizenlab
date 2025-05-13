@@ -45,7 +45,9 @@ const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
 
 const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
-const AdminPhaseSurveyForm = lazy(() => import('./project/surveyForm'));
+const AdminPhaseSurveyFormTabPanel = lazy(
+  () => import('./project/surveyForm/SurveyFormTabPanel')
+);
 
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));
 const InputImporter = lazy(() => import('./project/inputImporter'));
@@ -57,10 +59,8 @@ const AdminProjectVolunteeringNew = lazy(
 const AdminProjectVolunteeringEdit = lazy(
   () => import('./project/volunteering/EditCause')
 );
-const AdminAllowedTopicsComponent = React.lazy(
-  () => import('./project/topics')
-);
-const AdminCustomMapConfigComponent = React.lazy(
+const AdminAllowedTopicsComponent = lazy(() => import('./project/topics'));
+const AdminCustomMapConfigComponent = lazy(
   () => import('containers/Admin/CustomMapConfigPage')
 );
 
@@ -523,7 +523,7 @@ const createAdminProjectsRoutes = () => {
                 path: projectsRoutes.projectPhaseSurveyForm,
                 element: (
                   <PageLoading>
-                    <AdminPhaseSurveyForm />
+                    <AdminPhaseSurveyFormTabPanel />
                   </PageLoading>
                 ),
               },
