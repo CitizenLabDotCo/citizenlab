@@ -13,7 +13,7 @@ interface RequestParams {
   format: string;
   locale: SupportedLocale;
   personal_data: boolean;
-  legacy: boolean;
+  legacy?: boolean;
 }
 
 interface JobIdResponse {
