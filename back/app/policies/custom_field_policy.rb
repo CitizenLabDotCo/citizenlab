@@ -17,4 +17,15 @@ class CustomFieldPolicy < ApplicationPolicy
       end
     end
   end
+
+  def show?
+    form = record.custom_form
+    if user && UserRoleService.new.can_moderate?(form&.participation_context, user)
+      true
+    elsif !form&.participation_context || policy_for(form.participation_context).show?
+      !record.hidden? && record.enabled?
+    else
+      false
+    end
+  end
 end

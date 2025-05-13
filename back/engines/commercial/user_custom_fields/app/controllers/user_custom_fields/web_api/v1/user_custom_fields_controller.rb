@@ -7,7 +7,7 @@ module UserCustomFields
     skip_after_action :verify_policy_scoped
 
     def index
-      @custom_fields = policy_scope(CustomField, policy_scope_class: UserCustomFieldPolicy::Scope)
+      @custom_fields = policy_scope(CustomField.registration, policy_scope_class: UserCustomFieldPolicy::Scope)
         .registration.order(:ordering)
       @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
 

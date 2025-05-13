@@ -31,10 +31,18 @@ module IdeaCustomFields
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
 
+      # The elsif and else parts are a bit messy because of the challenges of combining arrays from
+      # the IdeaCustomFieldsService and the scope from the policy, while falling back to non-
+      # persisted default fields. In my opinion, we should always persist the default fields, and
+      # replace the IdeaCustomFieldsService by a generalized CustomFieldPolicy.
+      service = IdeaCustomFieldsService.new(@custom_form)
       fields = if params[:copy] == 'true'
-        IdeaCustomFieldsService.new(@custom_form).duplicate_all_fields
+        service.duplicate_all_fields
+      elsif @custom_form.custom_field_ids.present?
+        authorized_ids = IdeaCustomFieldPolicy::Scope.new(pundit_user, @custom_form.custom_fields, @custom_form).resolve.ids
+        service.all_fields.select { |field| authorized_ids.include? field.id }
       else
-        CustomFieldPolicy::Scope.new(pundit_user, CustomField, @custom_form).resolve
+        service.all_fields.select { |field| IdeaCustomFieldPolicy.new(current_user, field).show? }
       end
       fields = fields.filter(&:support_free_text_value?) if params[:support_free_text_value].present?
       fields = fields.filter { |field| params[:input_types].include?(field.input_type) } if params[:input_types].present?
