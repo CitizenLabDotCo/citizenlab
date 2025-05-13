@@ -18,8 +18,8 @@ resource 'Idea form exports' do
         let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
         let!(:custom_field) { create(:custom_field, resource: custom_form) }
 
-        context 'PDF download (deprecated version)' do
-          let(:format) { 'pdf' }
+        context 'PDF download (deprecated legacy version)' do
+          let(:format) { 'legacy_pdf' }
 
           example 'Get a pdf version of the idea form', document: false do
             do_request
@@ -51,7 +51,7 @@ resource 'Idea form exports' do
         end
 
         context 'PDF rendered from HTML' do
-          let(:format) { 'htmlpdf' }
+          let(:format) { 'pdf' }
 
           example 'Get an PDF version of the idea form', document: false do
             # Mock the PDF export to avoid call to Gutenberg
