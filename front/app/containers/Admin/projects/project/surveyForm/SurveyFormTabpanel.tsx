@@ -18,7 +18,7 @@ import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
 
-export const InputForm = () => {
+export const SurveyFormTabpanel = () => {
   const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
     onlyCheckAllowed: true,
@@ -48,7 +48,7 @@ export const InputForm = () => {
             <FormattedMessage {...messages.inputFormDescription} />
           </SectionDescription>
         </Box>
-        <Box display="flex" flexDirection="row">
+        <Box display="flex">
           <Button
             mr="8px"
             linkTo={`/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`}
@@ -80,4 +80,4 @@ export const InputForm = () => {
   );
 };
 
-export default InputForm;
+export default SurveyFormTabpanel;
