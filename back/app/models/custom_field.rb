@@ -249,8 +249,10 @@ class CustomField < ApplicationRecord
 
   def visible_to_public?
     return true if %w[author_id budget].include?(code)
+    return true if page?
+    return true if custom_form_type? && built_in?
 
-    custom_form_type? && (built_in? || page?)
+    false
   end
 
   def submittable?
