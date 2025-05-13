@@ -86,8 +86,8 @@ const PDFExportModal = ({
     mode: 'onSubmit',
     defaultValues: {
       ...(htmlPdfsActive && {
-        print_start_multiloc: customForm?.data.attributes.print_start_multiloc,
-        print_end_multiloc: customForm?.data.attributes.print_end_multiloc,
+        print_start_multiloc: {},
+        print_end_multiloc: {},
       }),
       personal_data: false,
     },
