@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Posete",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "„Posete” označava broj sesija. Ako je osoba posetila platformu više puta, računa se svaka poseta.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Juče:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Count",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Jezik",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Broj posetilaca",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Procenat posetilaca",
