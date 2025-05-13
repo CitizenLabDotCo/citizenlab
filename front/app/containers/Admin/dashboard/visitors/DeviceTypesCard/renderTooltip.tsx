@@ -5,10 +5,9 @@ import { Tooltip } from 'recharts';
 
 import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { useIntl } from 'react-intl';
 import { getTranslations } from './translations';
 
 interface CustomTooltipProps {
