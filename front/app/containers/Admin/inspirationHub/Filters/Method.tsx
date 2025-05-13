@@ -48,7 +48,9 @@ const Method = () => {
       selected={participationMethods ?? []}
       values={options}
       mr="0px"
-      onChange={(participationMethods: ParticipationMethod[]) => {
+      onChange={(
+        participationMethods: Exclude<ParticipationMethod, 'survey'>[]
+      ) => {
         setRansackParam(
           'q[phases_participation_method_in]',
           participationMethods
