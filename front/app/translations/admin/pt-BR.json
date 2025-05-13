@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Visitas",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Visitantes\" é o número de visitantes únicos. Se uma pessoa visita a plataforma várias vezes, são contados apenas uma vez.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Ontem:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Contagem",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Idioma",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Número de visitantes",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Porcentagem de visitas",
