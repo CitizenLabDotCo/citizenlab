@@ -153,7 +153,7 @@ module BulkImportIdeas
       return CONSTANTIZER.fetch(model)[class_type] if class_type == :serializer_class
 
       # TEMP: If new pdf format feature flag is on then change format from pdf to htmlpdf is used
-      legacy = bulk_create_params[:legacy] # Allows backdoor access to the old pdf format whilst feature flag is on
+      legacy = params[:import] ? bulk_create_params[:legacy] || false : false # Allows backdoor access to the old pdf format whilst feature flag is on
       format = 'htmlpdf' if format == 'pdf' && AppConfiguration.instance.settings.dig('html_pdfs', 'enabled') && !legacy
 
       CONSTANTIZER.fetch(model).fetch(format)[class_type]
