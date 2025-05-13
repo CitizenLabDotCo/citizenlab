@@ -82,7 +82,7 @@ module BulkImportIdeas::Exporters
             page: page_num,
             position: position.to_i,
             # TODO: Needs the page number to also be passed in
-            next_page_split_text: next_field && !next_field.pdf_importable? ? custom_field_service.handle_title(next_field, @locale) : nil,
+            next_page_split_text: next_field && !next_field.pdf_importable? ? custom_field_service.handle_title(next_field, @locale) : nil
           }
         end
       end

@@ -5,7 +5,7 @@ require 'prawn'
 require 'prawn/measurement_extensions'
 module BulkImportIdeas::Exporters
   class IdeaPdfFormExporter < BaseFormExporter
-    attr_reader :participation_context, :form_fields, :previous_cursor
+    attr_reader :participation_context, :previous_cursor
 
     delegate :generate_multiselect_instructions, to: :class
     private :generate_multiselect_instructions
