@@ -127,6 +127,7 @@
   "app.components.CustomFieldsForm.fieldRequired": "The field \"{fieldName}\" is required",
   "app.components.CustomFieldsForm.fileRequired": "At least one file is required",
   "app.components.CustomFieldsForm.imageRequired": "The image is required",
+  "app.components.CustomFieldsForm.progressBarLabel": "Progress",
   "app.components.CustomFieldsForm.titleMaxLength": "The title must be at most {max} characters long",
   "app.components.CustomFieldsForm.titleMinLength": "The title must be at least {min} characters long",
   "app.components.CustomFieldsForm.titleRequired": "The title is required",
