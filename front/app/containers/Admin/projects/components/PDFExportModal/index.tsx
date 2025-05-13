@@ -94,7 +94,6 @@ const PDFExportModal = ({
     resolver: yupResolver(schema),
   });
 
-  // Populate the form after page reload
   useEffect(() => {
     if (htmlPdfsActive && customForm) {
       methods.reset({
