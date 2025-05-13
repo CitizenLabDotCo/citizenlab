@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# @deprecated Use {IdeaPdfHtmlFileExporter} instead.
 require 'prawn'
 require 'prawn/measurement_extensions'
 module BulkImportIdeas::Exporters
@@ -23,6 +24,10 @@ module BulkImportIdeas::Exporters
 
     def export
       generate_pdf.render
+    end
+
+    def format
+      'pdf'
     end
 
     def mime_type
@@ -295,7 +300,7 @@ module BulkImportIdeas::Exporters
     end
 
     def generate_visibility_disclaimer(custom_field)
-      return unless @phase.pmethod.supports_public_visibility? && custom_field.answer_visible_to == 'admins'
+      return if !@phase.pmethod.supports_public_visibility? || custom_field.visible_to_public?
 
       I18n.with_locale(@locale) do
         I18n.t('form_builder.pdf_export.this_answer')

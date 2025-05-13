@@ -2,6 +2,7 @@
 
 module BulkImportIdeas
   class WebApi::V1::BulkImportController < ApplicationController
+    skip_before_action :authenticate_user, only: %i[export_form]
     before_action :authorize_bulk_import_ideas, only: %i[bulk_create_async export_form draft_records approve_all]
 
     CONSTANTIZER = {
@@ -14,6 +15,14 @@ module BulkImportIdeas
         'pdf' => {
           exporter_class: Exporters::IdeaPdfFormExporter,
           parser_class: Parsers::IdeaPdfFileParser
+        },
+        'htmlpdf' => {
+          exporter_class: Exporters::IdeaHtmlPdfFormExporter,
+          parser_class: Parsers::IdeaHtmlPdfFileParser
+        },
+        'html' => {
+          exporter_class: Exporters::IdeaHtmlFormExporter,
+          parser_class: nil # Not implemented for importing
         }
       }
     }
@@ -36,13 +45,20 @@ module BulkImportIdeas
     end
 
     def export_form
-      send_not_found unless supported_model? && supported_format?
+      send_not_found and return unless supported_model? && supported_format?
 
-      locale = params[:locale] || current_user.locale
+      locale = params[:locale] || current_user.locale || Locale.default
       personal_data_enabled = params[:personal_data] == 'true'
 
       service = form_exporter_service.new(@phase, locale, personal_data_enabled)
-      send_data service.export, type: service.mime_type, filename: service.filename
+      file = service.export
+
+      send_not_found and return unless file
+
+      # If the export is HTML-based, we are not sending a binary file so need to render differently
+      render html: file and return if service.format == 'html'
+
+      send_data file, type: service.mime_type, filename: service.filename
     end
 
     def approve_all
@@ -117,25 +133,33 @@ module BulkImportIdeas
     end
 
     def file_parser_service
-      model = params[:model]
-      format = params[:format]
       locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
       personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
       phase_id = params[:id]
 
-      service = CONSTANTIZER.fetch(model).fetch(format)[:parser_class]
+      service = find_class(:parser_class)
       @file_parser_service ||= service.new(current_user, locale, phase_id, personal_data_enabled)
     end
 
     def form_exporter_service
+      find_class(:exporter_class)
+    end
+
+    # Find the class for the given type (exporter_class, parser_class, serializer_class)
+    def find_class(class_type)
       model = params[:model]
       format = params[:format]
-      CONSTANTIZER.fetch(model).fetch(format)[:exporter_class]
+
+      return CONSTANTIZER.fetch(model)[class_type] if class_type == :serializer_class
+
+      # TEMP: If new pdf format feature flag is on then change format from pdf to htmlpdf is used
+      format = 'htmlpdf' if format == 'pdf' && AppConfiguration.instance.settings.dig('html_pdfs', 'enabled')
+
+      CONSTANTIZER.fetch(model).fetch(format)[class_type]
     end
 
     def serializer
-      model = params[:model]
-      CONSTANTIZER.fetch(model)[:serializer_class]
+      find_class(:serializer_class)
     end
 
     def supported_model?
