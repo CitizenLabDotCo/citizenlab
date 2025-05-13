@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Note: Any important area of the image should be contained within the vertical dashed lines, as the image will be cropped to a 3:1 ratio on mobile devices.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Header text for registered users",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Add Events to navigation bar",
