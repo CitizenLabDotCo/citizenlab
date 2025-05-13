@@ -30,7 +30,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-import DeleteModerationComment from './components/DeleteModerationComment';
+import DeleteModerationComment from './DeleteModeration/DeleteModerationComment';
 import messages from './messages';
 import ModerationContentCell from './ModerationContentCell';
 import tracks from './tracks';
