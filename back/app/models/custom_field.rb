@@ -249,7 +249,7 @@ class CustomField < ApplicationRecord
 
   def visible_to_public?
     return true if %w[author_id budget].include?(code)
-    return true if page?
+    return true if page? # It's possible that this line can be removed (but we would need to properly test to be sure)
     return true if custom_form_type? && built_in?
 
     false
