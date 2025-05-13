@@ -30,9 +30,6 @@ import impactTrackingConfiguration from './commercial/impact_tracking';
 import intercomConfiguration from './commercial/intercom';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import matomoConfiguration from './commercial/matomo';
-import moderationConfiguration, {
-  moderationRouteTypes,
-} from './commercial/moderation';
 import posthogConfiguration from './commercial/posthog_integration';
 import posthogUserTrackingConfiguration from './commercial/posthog_user_tracking';
 import satismeterConfiguration from './commercial/satismeter';
@@ -43,7 +40,6 @@ import widgetsConfiguration, { widgetsRouteTypes } from './commercial/widgets';
 export type moduleRouteTypes =
   | projectTemplateRouteTypes
   | bulkIdeaImportRouteTypes
-  | moderationRouteTypes
   | widgetsRouteTypes;
 
 export default loadModules([
@@ -73,9 +69,6 @@ export default loadModules([
   },
   {
     configuration: segmentConfiguration,
-  },
-  {
-    configuration: moderationConfiguration,
   },
   {
     configuration: flagInappropriateContentConfiguration,

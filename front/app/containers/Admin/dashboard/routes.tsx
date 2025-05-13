@@ -12,6 +12,10 @@ const ReferenceDataInterface = React.lazy(
   () => import('../Representativeness/ReferenceDataInterface')
 );
 
+const AdminModerationComponent = React.lazy(
+  () => import('containers/Admin/Moderation')
+);
+
 const DashboardWrapper = lazy(() => import('.'));
 const Overview = lazy(() => import('./overview'));
 const Users = lazy(() => import('./users'));
@@ -98,10 +102,10 @@ const createAdminDashboardRoutes = () => {
         path: representativenessRoutes.editBaseData,
         element: <ReferenceDataInterface />,
       },
-      // {
-      //   path: moderationRoutes.moderation,
-      //   element: <AdminModerationComponent />,
-      // },
+      {
+        path: moderationRoutes.moderation,
+        element: <AdminModerationComponent />,
+      },
     ],
   };
 };

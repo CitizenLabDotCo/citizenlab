@@ -9,10 +9,8 @@ import { injectIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-declare module 'modules/commercial/moderation/admin/containers/index' {
-  export interface ITabNamesMap {
-    warnings: 'warnings';
-  }
+export interface ITabNamesMap {
+  warnings: 'warnings';
 }
 
 interface Props {
