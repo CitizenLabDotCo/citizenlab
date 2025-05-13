@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Visites",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Visites\" és el nombre de sessions. Si una persona ha visitat la plataforma diverses vegades, cada visita es compta.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Ahir:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Compte",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Language",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Nombre de visitants",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Percentatge de visitants",
