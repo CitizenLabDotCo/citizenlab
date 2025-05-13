@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Apsilankymai",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Apsilankymai\" - tai sesijų skaičius. Jei asmuo platformoje lankėsi kelis kartus, skaičiuojamas kiekvienas apsilankymas.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Vakar:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Skaičiuokite",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Kalba",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Lankytojų skaičius",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Lankytojų procentinė dalis",
