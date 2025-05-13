@@ -19,7 +19,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter do
   describe 'importer_data' do
     before do
       # Stub the export method to return a PDF file from fixtures
-      allow(service).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read)
+      allow(service).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf'))
     end
 
     it 'returns form meta data for importer - page count, fields, options and positions' do

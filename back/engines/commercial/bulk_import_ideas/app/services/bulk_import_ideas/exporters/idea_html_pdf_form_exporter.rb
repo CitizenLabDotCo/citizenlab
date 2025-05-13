@@ -24,7 +24,6 @@ module BulkImportIdeas::Exporters
     def importer_data
       # Extract the text from this PDF so we understand which pages and approx location each field is on
       file = export
-      # pdf_io = StringIO.new(file.read)
       reader = PDF::Reader.new(file)
 
       pages = reader.pages.map do |page|
