@@ -14,8 +14,7 @@ type ImageCropperProps = {
   aspectRatioWidth: number;
   aspectRatioHeight: number;
   onRemove: () => void;
-  showMobileCropLines?: boolean;
-  mobileCropAspectRatioWidth?: number;
+  show3x1MobileCropLines?: boolean;
 };
 
 const ImageCropper = ({
@@ -24,8 +23,7 @@ const ImageCropper = ({
   aspectRatioWidth,
   aspectRatioHeight,
   onRemove,
-  showMobileCropLines = false,
-  mobileCropAspectRatioWidth,
+  show3x1MobileCropLines = false,
 }: ImageCropperProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [cropChanged, setCropChanged] = useState(false);
@@ -84,15 +82,13 @@ const ImageCropper = ({
           />
 
           {/* 3:1 visual overlay inside crop area for mobile view */}
-          {mediaSize && showMobileCropLines && mobileCropAspectRatioWidth && (
+          {mediaSize && show3x1MobileCropLines && (
             <div
               style={{
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: `${
-                  (mediaSize.width * 1) / mobileCropAspectRatioWidth
-                }px`,
+                width: `${mediaSize.width * 0.75}px`,
                 height: `110px`,
                 maxHeight: `${mediaSize.height}px`,
                 transform: 'translate(-50%, -50%)',

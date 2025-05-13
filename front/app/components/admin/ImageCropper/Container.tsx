@@ -13,14 +13,14 @@ import ImageCropper, { ImageCropperProps } from '.';
 const Container = ({
   aspectRatioWidth,
   aspectRatioHeight,
-  showMobileCropLines = false,
+  show3x1MobileCropLines = false,
   ...otherProps
 }: ImageCropperProps) => {
   const { formatMessage } = useIntl();
   return (
     <Box>
       <ImageCropper
-        {...{ aspectRatioWidth, aspectRatioHeight, showMobileCropLines }}
+        {...{ aspectRatioWidth, aspectRatioHeight, show3x1MobileCropLines }}
         {...otherProps}
       />
       <Warning>
@@ -43,7 +43,7 @@ const Container = ({
             />
           </Text>
 
-          {showMobileCropLines && (
+          {show3x1MobileCropLines && (
             <Text fontStyle="italic">
               <FormattedMessage {...messages.mobileCropExplanation} />
             </Text>
