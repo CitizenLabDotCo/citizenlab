@@ -1,9 +1,5 @@
 import React from 'react';
 
-import visitorCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
-
-import { useIntl } from 'utils/cl-intl';
-
 import Card from '../../_shared/Card';
 import messages from '../messages';
 
@@ -12,16 +8,8 @@ import { Props } from './typings';
 import VisitorsCard from './VisitorsCard';
 
 const VisitorsWidget = ({ title, ...props }: Props) => {
-  const { formatMessage } = useIntl();
-
   return (
-    <Card
-      title={title}
-      infoTooltipContent={formatMessage(
-        visitorCardMessages.cardTitleTooltipMessage
-      )}
-      pagebreak
-    >
+    <Card title={title} pagebreak>
       <VisitorsCard {...props} />
     </Card>
   );

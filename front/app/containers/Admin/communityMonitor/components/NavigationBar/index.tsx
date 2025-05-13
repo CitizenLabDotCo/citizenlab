@@ -26,7 +26,7 @@ const NavigationBar = () => {
 
   return (
     <Box
-      ml={isTabletOrSmaller ? '60px' : '200px'}
+      ml={isTabletOrSmaller ? '60px' : '220px'}
       position="fixed"
       top="0"
       left="0"

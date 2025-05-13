@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "ਉਪਭੋਗਤਾ ਨਾਮ",
   "app.containers.SignUp.viennaDataProtection": "ਵਿਯੇਨ੍ਨਾ ਗੋਪਨੀਯਤਾ ਨੀਤੀ",
   "app.containers.SiteMap.contributions": "ਯੋਗਦਾਨ",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "ਕੂਕੀਜ਼",
   "app.containers.SiteMap.issues": "ਟਿੱਪਣੀਆਂ",
   "app.containers.SiteMap.options": "ਵਿਕਲਪ",
   "app.containers.SiteMap.projects": "ਪ੍ਰੋਜੈਕਟਸ",
