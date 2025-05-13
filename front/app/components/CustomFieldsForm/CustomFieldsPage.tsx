@@ -8,12 +8,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
-import { IIdea } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
@@ -27,6 +27,7 @@ import SubmissionReference from 'components/Form/Components/Layouts/SubmissionRe
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { isPage } from 'utils/helperUtils';
 
 import CustomFields from './CustomFields';
@@ -41,7 +42,7 @@ type CustomFieldsPage = {
   lastPageNumber: number;
   showTogglePostAnonymously?: boolean;
   participationMethod?: ParticipationMethod;
-  idea?: IIdea;
+  ideaId?: string;
   projectId: string;
   onSubmit: (formValues: any) => void;
   pageButtonLabelMultiloc?: Multiloc;
@@ -56,7 +57,7 @@ const CustomFieldsPage = ({
   lastPageNumber,
   showTogglePostAnonymously,
   participationMethod,
-  idea,
+  ideaId: initialIdeaId,
   projectId,
   onSubmit,
   currentPageNumber,
@@ -66,6 +67,7 @@ const CustomFieldsPage = ({
   defaultValues,
   formCompletionPercentage,
 }: CustomFieldsPage) => {
+  console.log(page);
   const { data: phases } = usePhases(projectId);
 
   const localize = useLocalize();
@@ -78,6 +80,10 @@ const CustomFieldsPage = ({
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
   const pagesRef = useRef<HTMLDivElement>(null);
+
+  const [searchParams] = useSearchParams();
+  const ideaId = initialIdeaId || searchParams.get('idea_id');
+  const { data: idea } = useIdeaById(ideaId ?? undefined);
 
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
@@ -112,6 +118,12 @@ const CustomFieldsPage = ({
 
     setPostAnonymously((postAnonymously) => !postAnonymously);
   };
+
+  // If the idea (survey submission) has no author relationship,
+  // it was either created through 'anyone' permissions or with
+  // the anonymous toggle on. In these cases, we show the idea id
+  // on the success page.
+  const showIdeaId = idea ? !idea.data.relationships.author?.data : false;
 
   return (
     <FormProvider {...methods}>
@@ -227,12 +239,14 @@ const CustomFieldsPage = ({
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
-                    {currentPageNumber === lastPageNumber && idea && (
-                      <SubmissionReference
-                        inputId={idea.data.id}
-                        participationMethod={participationMethod}
-                      />
-                    )}
+                    {currentPageNumber === lastPageNumber &&
+                      idea &&
+                      showIdeaId && (
+                        <SubmissionReference
+                          inputId={idea.data.id}
+                          participationMethod={participationMethod}
+                        />
+                      )}
                   </Box>
                 </Box>
               </Box>
@@ -279,14 +293,28 @@ const CustomFieldsPage = ({
 
             <Box w="100%" zIndex="1000">
               <PageControlButtons
-                handleNextAndSubmit={methods.handleSubmit(onFormSubmit)}
-                handlePrevious={() => {
-                  setCurrentPageNumber(currentPageNumber - 1);
+                handleNextAndSubmit={() => {
                   pagesRef.current?.scrollTo(0, 0);
+                  if (currentPageNumber === lastPageNumber) {
+                    clHistory.push({
+                      pathname: `/ideas/${idea?.data.attributes.slug}`,
+                    });
+                  }
+                  methods.handleSubmit(onFormSubmit)();
+                }}
+                handlePrevious={() => {
+                  pagesRef.current?.scrollTo(0, 0);
+                  setCurrentPageNumber(currentPageNumber - 1);
                 }}
                 hasPreviousPage={currentPageNumber > 0}
                 isLoading={false}
-                pageVariant={'other'}
+                pageVariant={
+                  currentPageNumber === lastPageNumber
+                    ? 'after-submission'
+                    : currentPageNumber === lastPageNumber - 1
+                    ? 'submission'
+                    : 'other'
+                }
                 phases={phases?.data}
                 currentPhase={phase}
                 pageButtonLabelMultiloc={pageButtonLabelMultiloc}
