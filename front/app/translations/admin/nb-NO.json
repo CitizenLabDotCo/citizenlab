@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Dette bildet beskjæres alltid til et bestemt forhold for å sikre at alle viktige aspekter vises til enhver tid. {link} for denne bildetypen er {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "anbefalt forhold",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Merk: Alle viktige deler av bildet bør være innenfor de vertikale stiplede linjene, ettersom bildet vil bli beskåret til et 3:1-forhold på mobile enheter.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Overskriftstekst for registrerte brukere",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Advarsel: Fargen du har valgt, har ikke høy nok kontrast. Dette kan føre til at teksten blir vanskelig å lese. Velg en mørkere farge for å optimalisere lesbarheten.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Legg til arrangementer i navigasjonslinjen",
