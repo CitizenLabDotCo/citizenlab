@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Obraz jest zawsze przycięty do określonej proporcji, aby mieć pewność, że wszystkie kluczowe aspekty są zawsze widoczne. {link} dla tego typu obrazu to {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "zalecana rozdzielczość",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Uwaga: Każdy ważny obszar obrazu powinien być zawarty w pionowych liniach przerywanych, ponieważ obraz zostanie przycięty do proporcji 3:1 na urządzeniach mobilnych.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Tekst nagłówka dla zarejestrowanych użytkowników",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Ostrzeżenie: wybrany kolor nie ma wystarczająco wysokiego kontrastu. Może to spowodować, że tekst będzie trudny do odczytania. Wybierz ciemniejszy kolor, aby zoptymalizować czytelność.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Dodaj wydarzenia do paska nawigacji",
