@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Besøk",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Besøk\" er antall økter. Hvis en person har besøkt plattformen flere ganger, telles hvert besøk.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "I går:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Telle",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Språk",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Antall besøkende",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Prosentandel av besøkende",
