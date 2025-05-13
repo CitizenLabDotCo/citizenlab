@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Besøg",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Visits\" er antallet af sessioner. Hvis en person har besøgt platformen flere gange, tælles hvert besøg med.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "I går:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Antal",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Sprog",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Antal besøgende",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Procentdel af besøgende",
