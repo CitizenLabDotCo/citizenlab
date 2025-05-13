@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Vierailut",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Käynnit\" on istuntojen määrä. Jos henkilö on käynyt alustalla useita kertoja, jokainen käynti lasketaan.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Eilen:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Laskea",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Kieli",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Vierailijoiden määrä",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Kävijöiden prosenttiosuus",
