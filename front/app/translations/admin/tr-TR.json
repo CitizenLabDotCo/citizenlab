@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Ziyaretler",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Ziyaretler\" oturum sayısıdır. Platformu birden fazla kez ziyaret eden kişinin her ziyareti sayılır.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Dün:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Saymak",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Dil",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Ziyaretçi sayısı",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Ziyaretçi yüzdesi",
