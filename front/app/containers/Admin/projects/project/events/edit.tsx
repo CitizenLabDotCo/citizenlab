@@ -35,6 +35,7 @@ import useLocale from 'hooks/useLocale';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Button from 'components/UI/ButtonWithLink';
@@ -91,6 +92,7 @@ const AdminProjectEventEdit = () => {
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
+  const [croppedImgBase64, setCroppedImgBase64] = useState<string | null>(null);
 
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
     isCreatingNewEvent ? initializeEventTimes() : {}
@@ -313,7 +315,7 @@ const AdminProjectEventEdit = () => {
       addEventImage({
         eventId: data.data.id,
         image: {
-          image: uploadedImage.base64,
+          image: croppedImgBase64 || uploadedImage.base64,
           ...(eventImageAltText
             ? { alt_text_multiloc: eventImageAltText }
             : {}),
@@ -389,14 +391,19 @@ const AdminProjectEventEdit = () => {
   };
 
   const handleOnSubmit = async (e: FormEvent) => {
+    const uploadedAndCroppedImage = uploadedImage;
+    if (uploadedAndCroppedImage && croppedImgBase64) {
+      uploadedAndCroppedImage.base64 = croppedImgBase64;
+    }
+
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
     const locationPointUpdated =
       eventAttrs.address_1 || successfulGeocode ? locationPoint : null;
 
     const imageChanged =
-      (uploadedImage !== null && !uploadedImage.remote) ||
-      (uploadedImage === null && remoteEventImage !== undefined);
+      (uploadedAndCroppedImage !== null && !uploadedAndCroppedImage.remote) ||
+      (uploadedAndCroppedImage === null && remoteEventImage !== undefined);
 
     e.preventDefault();
     try {
@@ -491,9 +498,17 @@ const AdminProjectEventEdit = () => {
     setHasAltTextChanged(true);
   };
 
+  const handleImageCropChange = (imgBase64: string) => {
+    if (uploadedImage) {
+      setCroppedImgBase64(imgBase64);
+    }
+  };
+
   if (event !== undefined && isInitialLoading) {
     return <Spinner />;
   }
+
+  const imageShouldBeSaved = uploadedImage ? !uploadedImage.remote : false;
 
   return (
     <Box mt="44px" mx="44px">
@@ -534,17 +549,33 @@ const AdminProjectEventEdit = () => {
               </SectionField>
               <SectionField>
                 <Label>{formatMessage(messages.eventImage)}</Label>
-                <ImagesDropzone
-                  images={uploadedImage ? [uploadedImage] : []}
-                  maxImagePreviewWidth="360px"
-                  objectFit="contain"
-                  acceptedFileTypes={{
-                    'image/*': ['.jpg', '.jpeg', '.png'],
-                  }}
-                  onAdd={handleOnImageAdd}
-                  onRemove={handleOnImageRemove}
-                  imagePreviewRatio={1 / 2}
-                />
+
+                {!imageShouldBeSaved && (
+                  <ImagesDropzone
+                    images={uploadedImage ? [uploadedImage] : []}
+                    maxImagePreviewWidth="360px"
+                    objectFit="contain"
+                    acceptedFileTypes={{
+                      'image/*': ['.jpg', '.jpeg', '.png'],
+                    }}
+                    onAdd={handleOnImageAdd}
+                    onRemove={handleOnImageRemove}
+                    imagePreviewRatio={1 / 2}
+                  />
+                )}
+
+                {imageShouldBeSaved && (
+                  <Box display="flex" flexDirection="column" gap="8px">
+                    <ImageCropperContainer
+                      image={uploadedImage}
+                      onComplete={handleImageCropChange}
+                      aspectRatioWidth={3}
+                      aspectRatioHeight={1}
+                      onRemove={handleOnImageRemove}
+                      showMobileCropLines={true}
+                    />
+                  </Box>
+                )}
               </SectionField>
               {uploadedImage && (
                 <SectionField>
