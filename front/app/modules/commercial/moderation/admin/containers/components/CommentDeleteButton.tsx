@@ -30,7 +30,7 @@ const DeleteCommentButton = ({ ideaId, comment, projectId }: Props) => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const canDelete = usePermission({
+  const canDeleteComment = usePermission({
     item: comment,
     action: 'delete',
     context: { projectId },
@@ -61,7 +61,7 @@ const DeleteCommentButton = ({ ideaId, comment, projectId }: Props) => {
     );
   };
 
-  if (!canDelete) {
+  if (!canDeleteComment) {
     return null;
   }
 
