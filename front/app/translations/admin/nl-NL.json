@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Bezoeken",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Bezoeken\" is het aantal sessies. Als een persoon het platform meerdere keren heeft bezocht, wordt elk bezoek geteld.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Gisteren:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Aantal",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Taal",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Aantal bezoekers",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Percentage van bezoekers",
