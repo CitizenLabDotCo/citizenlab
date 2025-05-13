@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { IOption } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
@@ -23,29 +22,7 @@ import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
 
-const extractOptions = (
-  question: IFlatCustomField,
-  localize: Localize,
-  randomize = false
-): IOption[] => {
-  let result: IOption[] = [];
-  if (question.options) {
-    result = question.options.map((selectOption) => {
-      return {
-        value: selectOption.key,
-        label: localize(selectOption.title_multiloc),
-      } as IOption;
-    });
-
-    if (randomize) {
-      for (let i = result.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [result[i], result[j]] = [result[j], result[i]];
-      }
-    }
-  }
-  return result;
-};
+import { extractOptions } from './util';
 
 const renderField = (
   question: IFlatCustomField,

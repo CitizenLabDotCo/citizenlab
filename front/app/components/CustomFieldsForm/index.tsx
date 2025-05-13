@@ -4,7 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
-import { IFlatCustomField } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import { IdeaPublicationStatus } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
@@ -18,29 +17,11 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import CustomFieldsPage from './CustomFieldsPage';
+import {
+  convertCustomFieldsToNestedPages,
+  getFormCompletionPercentage,
+} from './util';
 
-const convertCustomFieldsToNestedPages = (customFields: IFlatCustomField[]) => {
-  const nestedPagesData: {
-    page: IFlatCustomField;
-    pageQuestions: IFlatCustomField[];
-  }[] = [];
-
-  customFields.forEach((field) => {
-    if (field.input_type === 'page') {
-      nestedPagesData.push({
-        page: field,
-        pageQuestions: [],
-      });
-    } else {
-      const lastPagesElement = nestedPagesData[nestedPagesData.length - 1];
-      lastPagesElement.pageQuestions.push({
-        ...field,
-      });
-    }
-  });
-
-  return nestedPagesData;
-};
 interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
@@ -55,32 +36,6 @@ interface FormValues {
   topic_ids?: string[];
   cosponsor_ids?: string[];
   publication_status?: IdeaPublicationStatus;
-}
-
-function getFormCompletionPercentage(
-  customFields: IFlatCustomField[],
-  formValues: Record<string, any> = {}
-) {
-  // Count total required fields and answered required fields
-  let totalRequiredFields = 0;
-  let answeredRequiredFields = 0;
-
-  customFields.forEach((field) => {
-    if (field.required) {
-      totalRequiredFields += 1;
-      if (formValues[field.key]) {
-        answeredRequiredFields += 1;
-      }
-    }
-  });
-
-  // If no required fields, consider it 100% complete
-  if (totalRequiredFields === 0) {
-    return 100;
-  }
-
-  // Calculate and return percentage
-  return Math.round((answeredRequiredFields / totalRequiredFields) * 100);
 }
 
 const CustomFieldsForm = ({
@@ -147,7 +102,7 @@ const CustomFieldsForm = ({
     customFields || [],
     formValues
   );
-  console.log('Form completion percentage:', formCompletionPercentage);
+
   return (
     <Box overflow="scroll" w="100%">
       {nestedPagesData[currentPageNumber] && (
