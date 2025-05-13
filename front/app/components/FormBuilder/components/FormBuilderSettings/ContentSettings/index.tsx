@@ -15,7 +15,6 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import Toggle from 'components/HookForm/Toggle';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 import FieldTypeSwitcher from '../FieldTypeSwitcher';
@@ -26,7 +25,7 @@ type ContentSettingsProps = {
   formHasSubmissions: boolean;
 };
 
-export const ContentSettings = ({
+const ContentSettings = ({
   field,
   locales,
   formHasSubmissions,
@@ -46,61 +45,58 @@ export const ContentSettings = ({
     field.code || ''
   );
 
-  if (!isNilOrError(platformLocale)) {
-    return (
-      <Box mt="16px">
-        {!isFieldGrouping && (
-          <>
-            <FieldTypeSwitcher
-              field={field}
-              formHasSubmissions={formHasSubmissions}
-            />
-            {!lockedAttributes?.title_multiloc && (
-              <SectionField>
-                <InputMultilocWithLocaleSwitcher
-                  initiallySelectedLocale={platformLocale}
-                  id="e2e-title-multiloc"
-                  name={`customFields.${field.index}.title_multiloc`}
-                  label={<FormattedMessage {...messages.questionTitle} />}
-                  onKeyDown={handleKeyDown}
-                />
-              </SectionField>
-            )}
+  return (
+    <Box mt="16px">
+      {!isFieldGrouping && (
+        <>
+          <FieldTypeSwitcher
+            field={field}
+            formHasSubmissions={formHasSubmissions}
+          />
+          {!lockedAttributes?.title_multiloc && (
             <SectionField>
-              <QuillMultilocWithLocaleSwitcher
-                name={`customFields.${field.index}.description_multiloc`}
-                label={
-                  <FormattedMessage {...messages.questionDescriptionOptional} />
-                }
-                noAlign={true}
-                maxHeight="150px"
+              <InputMultilocWithLocaleSwitcher
+                initiallySelectedLocale={platformLocale}
+                id="e2e-title-multiloc"
+                name={`customFields.${field.index}.title_multiloc`}
+                label={<FormattedMessage {...messages.questionTitle} />}
+                onKeyDown={handleKeyDown}
               />
             </SectionField>
-          </>
-        )}
-        {getAdditionalSettings(
-          field,
-          watch(`customFields.${field.index}.input_type`),
-          locales,
-          platformLocale
-        )}
-        {!isFieldGrouping && (
-          <>
-            <SectionField id="e2e-required-toggle">
-              <Toggle
-                name={`customFields.${field.index}.required`}
-                disabled={disableTogglingRequired}
-                label={
-                  <Text as="span" variant="bodyM" my="0px">
-                    <FormattedMessage {...messages.requiredToggleLabel} />
-                  </Text>
-                }
-              />
-            </SectionField>
-          </>
-        )}
-      </Box>
-    );
-  }
-  return null;
+          )}
+          <SectionField>
+            <QuillMultilocWithLocaleSwitcher
+              name={`customFields.${field.index}.description_multiloc`}
+              label={
+                <FormattedMessage {...messages.questionDescriptionOptional} />
+              }
+              noAlign={true}
+              maxHeight="150px"
+            />
+          </SectionField>
+        </>
+      )}
+      {getAdditionalSettings(
+        field,
+        watch(`customFields.${field.index}.input_type`),
+        locales,
+        platformLocale
+      )}
+      {!isFieldGrouping && (
+        <SectionField id="e2e-required-toggle">
+          <Toggle
+            name={`customFields.${field.index}.required`}
+            disabled={disableTogglingRequired}
+            label={
+              <Text as="span" variant="bodyM" my="0px">
+                <FormattedMessage {...messages.requiredToggleLabel} />
+              </Text>
+            }
+          />
+        </SectionField>
+      )}
+    </Box>
+  );
 };
+
+export default ContentSettings;

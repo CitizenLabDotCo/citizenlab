@@ -11,7 +11,6 @@ type FormActionsConfig = {
   editFormLink: RouteType;
   inputImporterLink: RouteType;
   downloadExcelLink: string;
-  downloadPdfLink: string;
   heading?: Multiloc;
   postingEnabled: boolean;
   togglePostingEnabled: () => void;
@@ -27,7 +26,6 @@ export const getFormActionsConfig = (
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
     inputImporterLink: `/admin/projects/${project.id}/phases/${phase.id}/input-importer`,
     downloadExcelLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/xlsx`,
-    downloadPdfLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/pdf`,
     heading: phase.attributes.title_multiloc,
     postingEnabled: phase.attributes.submission_enabled,
     togglePostingEnabled: () => {

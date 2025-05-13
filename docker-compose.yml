@@ -93,6 +93,14 @@ services:
     profiles:
       - openapi
 
+  # For generating PDFs
+  gotenberg:
+    container_name: cl-gotenberg
+    image: gotenberg/gotenberg:8
+    restart: always
+    ports:
+      - 7000:3000
+
 volumes:
   postgres:
   bundle_path:

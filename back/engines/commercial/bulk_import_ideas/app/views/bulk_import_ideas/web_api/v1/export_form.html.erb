@@ -1,0 +1,135 @@
+<html>
+<head>
+  <title><%= project.title_multiloc[locale] %> - <%= phase.title_multiloc[locale] %></title>
+  <style>
+      @page {
+        size: A4;
+        margin: 40px 40px 80px;
+        @bottom-right {
+          font-family: "OpenSans", sans-serif; /* NOTE: OpenSans does not work, but we intend to change to use the custom fonts for each platform anyway */
+          content: '<%= page_copy %> ' counter(page);
+          margin-bottom: 10px;
+        }
+      }
+
+      body { font-family: "OpenSans", sans-serif; }
+      h1 { font-size: 18pt; }
+      h2, h3 { font-size: 15pt; }
+      p, li { font-size: 12pt; }
+
+      div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px; }
+      div.select { display: flex; align-items: center; margin-top: -6px; }
+      div.checkbox { border: solid 1px #000; width: 12px; height: 12px; margin: 8px 10px 8px 4px; display: inline-block; }
+      div.radio { border-radius: 50%; }
+      span.optional { font-weight: normal; }
+
+      #header {
+        img { width: 225px; height: auto; margin-bottom: 0; }
+        h1 { margin-top: 0; }
+        ul.instructions { border-left: solid 4px #000; padding-top: 5px; padding-bottom: 5px }
+      }
+
+      #personal-data { page-break-after: always; }
+
+      #questions {
+        h2 { margin-bottom: 8px; }
+        p { margin-top: 0; }
+        div.question { page-break-inside: avoid; margin-bottom: 30px; }
+      }
+  </style>
+</head>
+<body>
+<div id="header">
+  <img src="<%= logo_url %>" alt="Logo" style="margin-bottom: 20px;" />
+  <h1><%= project.title_multiloc[locale] %> - <%= phase.title_multiloc[locale] %></h1>
+  <h2><%= instructions[:title] %></h2>
+  <ul class="instructions">
+    <li><%== instructions[:bullet1] %></li>
+    <li><%== instructions[:bullet2] %></li>
+  </ul>
+</div>
+
+<!-- TODO: Personal data section -->
+<% if personal_data[:enabled] %>
+  <div id="personal-data">
+    <h2><%= personal_data[:heading] %></h2>
+    <p><%= personal_data[:intro] %></p>
+    <h3><%= personal_data[:first_name] %> <span class="optional">(<%= optional %>)</span></h3>
+    <div class="line"></div>
+    <h3><%= personal_data[:last_name] %> <span class="optional">(<%= optional %>)</span></h3>
+    <div class="line"></div>
+    <h3><%= personal_data[:email_address] %> <span class="optional">(<%= optional %>)</span></h3>
+    <div class="line"></div>
+    <div class="select">
+      <div class="checkbox"></div>
+      <p><%= personal_data[:checkbox] %></p>
+    </div>
+  </div>
+<% end %>
+
+<div id="questions">
+<% fields.each_with_index do |field, _i| %>
+  <div class="question">
+    <h2>
+      <%= field[:title] %>
+      <% if field[:optional] %>
+        <span class="optional">(<%= optional %>)</span>
+      <% end %>
+    </h2>
+    <%= sanitize field[:description] %>
+
+    <p>
+      <%= sanitize field[:print_visibility_disclaimer] %>
+      <%= field[:multiselect_print_instructions] %>
+    </p>
+
+    <% if field[:input_type] == 'select' %>
+      <div class="options">
+        <% field[:options].each do |option| %>
+            <div class="select">
+              <div class="checkbox radio"></div>
+              <div><%= option[:title] %></div>
+            </div>
+        <% end %>
+      </div>
+
+    <% elsif field[:input_type] == 'multiselect' %>
+      <div class="options">
+        <% field[:options].each do |option| %>
+          <div class="select">
+            <div class="checkbox"></div>
+            <div><%= option[:title] %></div>
+          </div>
+        <% end %>
+      </div>
+
+    <% elsif %w[multiline_text html_multiloc].include? field[:input_type] %>
+      <% 7.times do %>
+        <div class="line"></div>
+      <% end %>
+
+    <% else %>
+      <%
+        # Fallback currently covers:
+        # - text
+        # - text_multiloc
+        # - number
+        # - linear_scale
+        # - rating
+        # - sentiment_linear_scale
+        # - select_image
+        # - multiselect_image
+        # - checkbox
+        # - html
+        # - line
+        # - polygon
+      %>
+      <div class="line"></div>
+    <% end %>
+
+  </div>
+<% end %>
+</div>
+
+</body>
+</html>

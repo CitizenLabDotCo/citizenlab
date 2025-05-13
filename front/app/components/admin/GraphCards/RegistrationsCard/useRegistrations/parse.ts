@@ -11,6 +11,8 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 import { keys, get } from 'utils/helperUtils';
 
+import { formatPercentage } from '../../_utils/format';
+
 import { Translations } from './translations';
 import { TimeSeries, TimeSeriesRow, Stats } from './typings';
 
@@ -46,12 +48,6 @@ export const parseTimeSeries = (
     endAtMoment,
     resolution
   );
-};
-
-const formatPercentage = (value: number | undefined) => {
-  if (value === undefined) return '0%';
-  const cappedValue = Math.min(value, 1);
-  return cappedValue.toLocaleString(undefined, { style: 'percent' });
 };
 
 export const parseStats = (

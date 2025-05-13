@@ -7,7 +7,6 @@ module MultiTenancy
         ref_attribute :resource
 
         attributes %i[
-          answer_visible_to
           code
           description_multiloc
           enabled
@@ -36,6 +35,8 @@ module MultiTenancy
           page_button_label_multiloc
           page_button_link
           ask_follow_up
+          question_category
+          include_in_printed_form
         ]
 
         # Enigmatic comment from the previous implementation:
