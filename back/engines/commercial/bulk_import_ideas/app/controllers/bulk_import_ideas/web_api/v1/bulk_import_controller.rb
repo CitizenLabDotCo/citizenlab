@@ -115,7 +115,7 @@ module BulkImportIdeas
     def bulk_create_params
       params
         .require(:import)
-        .permit(%i[file locale personal_data])
+        .permit(%i[file locale personal_data legacy])
     end
 
     def authorize_bulk_import_ideas
@@ -153,7 +153,8 @@ module BulkImportIdeas
       return CONSTANTIZER.fetch(model)[class_type] if class_type == :serializer_class
 
       # TEMP: If new pdf format feature flag is on then change format from pdf to htmlpdf is used
-      format = 'htmlpdf' if format == 'pdf' && AppConfiguration.instance.settings.dig('html_pdfs', 'enabled')
+      legacy = bulk_create_params[:legacy] # Allows backdoor access to the old pdf format whilst feature flag is on
+      format = 'htmlpdf' if format == 'pdf' && AppConfiguration.instance.settings.dig('html_pdfs', 'enabled') && !legacy
 
       CONSTANTIZER.fetch(model).fetch(format)[class_type]
     end
