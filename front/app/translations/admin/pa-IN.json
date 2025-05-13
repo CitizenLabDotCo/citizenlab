@@ -2745,7 +2745,6 @@
   "app.containers.ContentBuilder.homepage.bannerText": "ਬੈਨਰ ਟੈਕਸਟ",
   "app.containers.ContentBuilder.homepage.button": "ਬਟਨ",
   "app.containers.ContentBuilder.homepage.chooseLayout": "ਖਾਕਾ",
-  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "ਹੋਮਪੇਜ ਬੈਨਰ 'ਤੇ ਟੈਕਸਟ ਤੋਂ ਇਲਾਵਾ ਸੈਟਿੰਗਾਂ ਨੂੰ ਅਨੁਕੂਲਿਤ ਕਰਨਾ ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਲਾਇਸੈਂਸ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.containers.ContentBuilder.homepage.customized_button": "ਕਸਟਮ",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "ਬਟਨ ਟੈਕਸਟ",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "ਬਟਨ ਲਿੰਕ",

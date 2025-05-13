@@ -2745,7 +2745,6 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Texte de la bannière",
   "app.containers.ContentBuilder.homepage.button": "Bouton",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Mise en page",
-  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "La personnalisation des paramètres de la page d'accueil, à l'exception du texte de la bannière, n'est pas incluse dans votre licence actuelle. Contactez votre Spécialiste en participation pour en savoir plus.",
   "app.containers.ContentBuilder.homepage.customized_button": "Personnalisé",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Texte du bouton",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Lien du bouton",
