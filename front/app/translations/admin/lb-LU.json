@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Visitten",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "“Visitten” ass d’Unzuel vu Sessiounen. Wann eng Persoun d’Plattform e puermol besicht huet, gëtt all Visitt gezielt.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Gëschter:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Zuel",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Language",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Unzuel vu Visiteuren",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Prozentsaz vu Visiteuren",
