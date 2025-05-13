@@ -311,11 +311,11 @@ const AdminProjectEventEdit = () => {
         imageId: remoteImageId,
       });
     }
-    if (uploadedImage && !uploadedImage.remote) {
+    if (uploadedImage && croppedImgBase64 && !uploadedImage.remote) {
       addEventImage({
         eventId: data.data.id,
         image: {
-          image: croppedImgBase64 || uploadedImage.base64,
+          image: croppedImgBase64 || '',
           ...(eventImageAltText
             ? { alt_text_multiloc: eventImageAltText }
             : {}),
@@ -499,9 +499,7 @@ const AdminProjectEventEdit = () => {
   };
 
   const handleImageCropChange = (imgBase64: string) => {
-    if (uploadedImage) {
-      setCroppedImgBase64(imgBase64);
-    }
+    setCroppedImgBase64(imgBase64);
   };
 
   if (event !== undefined && isInitialLoading) {
@@ -560,7 +558,7 @@ const AdminProjectEventEdit = () => {
                     }}
                     onAdd={handleOnImageAdd}
                     onRemove={handleOnImageRemove}
-                    imagePreviewRatio={1 / 2}
+                    imagePreviewRatio={1 / 3}
                   />
                 )}
 
@@ -572,7 +570,6 @@ const AdminProjectEventEdit = () => {
                       aspectRatioWidth={3}
                       aspectRatioHeight={1}
                       onRemove={handleOnImageRemove}
-                      showMobileCropLines={true}
                     />
                   </Box>
                 )}
