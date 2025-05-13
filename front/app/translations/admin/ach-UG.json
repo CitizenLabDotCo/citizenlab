@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "crwdns4530083:0crwdne4530083:0",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "crwdns4530085:0crwdne4530085:0",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "crwdns4530087:0crwdne4530087:0",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "crwdns4544509:0crwdne4544509:0",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "crwdns4530089:0crwdne4530089:0",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "crwdns4530091:0crwdne4530091:0",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "crwdns4530093:0crwdne4530093:0",
