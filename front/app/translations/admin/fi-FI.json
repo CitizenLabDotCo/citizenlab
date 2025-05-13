@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Tämä kuva rajataan aina tiettyyn suhteeseen varmistaakseen, että kaikki tärkeät näkökohdat ovat aina näkyvissä. Tämän kuvatyypin {link} on {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "suositeltu suhde",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Huomautus: Kuvan kaikkien tärkeiden alueiden tulee olla pystysuorien katkoviivojen sisällä, koska kuva rajataan mobiililaitteilla kuvasuhteeseen 3:1.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Otsikkoteksti rekisteröityneille käyttäjille",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Varoitus: valitsemasi värin kontrasti ei ole tarpeeksi korkea. Tämä voi johtaa tekstiin, jota on vaikea lukea. Valitse tummempi väri parantaaksesi luettavuutta.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Lisää tapahtumia navigointipalkkiin",
