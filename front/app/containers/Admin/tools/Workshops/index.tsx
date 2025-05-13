@@ -9,7 +9,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import workshopsImage from './workshops2.png';
+import workshopsImage from './workshops.jpg';
 
 export const Workshops = () => {
   const { formatMessage } = useIntl();
