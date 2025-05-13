@@ -7,25 +7,19 @@ import Field from '.';
 
 const mockAddReferenceDistribution = jest.fn();
 
-jest.mock(
-  '../../api/reference_distribution/useAddReferenceDistribution',
-  () => {
-    return jest.fn(() => ({
-      mutateAsync: mockAddReferenceDistribution,
-    }));
-  }
-);
+jest.mock('api/reference_distribution/useAddReferenceDistribution', () => {
+  return jest.fn(() => ({
+    mutateAsync: mockAddReferenceDistribution,
+  }));
+});
 
 const mockDeleteReferenceDistribution = jest.fn();
 
-jest.mock(
-  '../../api/reference_distribution/useDeleteReferenceDistribution',
-  () => {
-    return jest.fn(() => ({
-      mutateAsync: mockDeleteReferenceDistribution,
-    }));
-  }
-);
+jest.mock('api/reference_distribution/useDeleteReferenceDistribution', () => {
+  return jest.fn(() => ({
+    mutateAsync: mockDeleteReferenceDistribution,
+  }));
+});
 
 let mockCustomFieldOptions;
 
