@@ -4,34 +4,42 @@ import { XlsxData } from 'components/admin/ReportExportMenu';
 import { roundPercentages } from 'utils/math';
 
 import { Translations } from './translations';
-import { Response, PieRow } from './typings';
+import { PieRow } from './typings';
+import { VisitorsLanguagesResponse } from 'api/graph_data_units/responseTypes/VisitorsLanguagesWidget';
+import { keys } from 'utils/helperUtils';
 
-export const parsePieData = (
-  data: Response['data']['attributes']
-): PieRow[] | null => {
-  if (data.length === 0) return null;
+export const parsePieData = ({
+  sessions_per_locale,
+}: VisitorsLanguagesResponse['data']['attributes']): PieRow[] | null => {
+  const asArray = keys(sessions_per_locale).map((key) => ({
+    locale: key,
+    count: sessions_per_locale[key],
+  }));
 
-  const percentages = roundPercentages(
-    data.map(({ count_visitor_id }) => count_visitor_id)
-  );
+  const percentages = roundPercentages(asArray.map(({ count }) => count));
 
-  return data.map((row, i) => ({
-    name: row.first_dimension_locales_name.toUpperCase(),
-    value: row.count_visitor_id,
+  return asArray.map((row, i) => ({
+    name: row.locale.toUpperCase(),
+    value: row.count,
     color: categoricalColorScheme({ rowIndex: i }),
     percentage: percentages[i],
   }));
 };
 
 export const parseExcelData = (
-  data: Response['data']['attributes'],
+  { sessions_per_locale }: VisitorsLanguagesResponse['data']['attributes'],
   translations: Translations
 ): XlsxData | null => {
-  if (data.length === 0) return null;
+  const asArray = keys(sessions_per_locale).map((key) => ({
+    locale: key,
+    count: sessions_per_locale[key],
+  }));
 
-  const visitorsLanguageData = data.map((row) => ({
-    [translations.language]: row.first_dimension_locales_name.toUpperCase(),
-    [translations.count]: row.count_visitor_id,
+  if (asArray.length === 0) return null;
+
+  const visitorsLanguageData = asArray.map((row) => ({
+    [translations.language]: row.locale.toUpperCase(),
+    [translations.count]: row.count,
   }));
 
   const xlsxData = {

@@ -7,6 +7,7 @@ export type ResolvedName =
   | 'SingleIdeaWidget'
   | 'VisitorsWidget'
   | 'VisitorsTrafficSourcesWidget'
+  | 'VisitorsLanguagesWidget'
   | 'DemographicsWidget'
   | 'GenderWidget'
   | 'AgeWidget'
@@ -29,6 +30,7 @@ export type ParametersLive =
   | SingleIdeaParams
   | VisitorsParams
   | VisitorsTrafficSourcesParams
+  | VisitorsLanguagesParams
   | DemographicsParams
   | ParticipantsParams
   | ReactionsByTimeParams
@@ -39,6 +41,7 @@ export type ParametersLive =
   | DeviceTypesParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
+type ExcludeRoles = 'exclude_admins_and_moderators';
 
 export interface SurveyQuestionResultProps {
   phase_id: string;
@@ -105,6 +108,15 @@ export interface VisitorsTrafficSourcesParams extends BaseParams {
   props: VisitorsTrafficSourcesProps;
 }
 
+export interface VisitorsLanguagesProps extends DateProps {
+  project_id?: string;
+  exclude_roles?: ExcludeRoles;
+}
+export interface VisitorsLanguagesParams extends BaseParams {
+  resolved_name: 'VisitorsLanguagesWidget';
+  props: VisitorsLanguagesProps;
+}
+
 interface BaseDemographicsProps extends DateProps, ProjectId {
   group_id?: string | null;
 }
@@ -117,8 +129,6 @@ export interface DemographicsParams extends BaseParams {
   resolved_name: 'DemographicsWidget';
   props: DemographicsProps;
 }
-
-type ExcludeRoles = 'exclude_admins_and_moderators';
 
 export interface ParticipantsProps extends AnalyticsProps, CompareProps {
   exclude_roles?: ExcludeRoles;

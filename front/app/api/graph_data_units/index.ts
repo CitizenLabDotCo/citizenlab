@@ -13,6 +13,7 @@ import {
   ParticipationProps,
   ProjectsProps,
   DeviceTypesProps,
+  VisitorsLanguagesProps,
 } from './requestTypes';
 // Response types
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
@@ -26,6 +27,7 @@ import { ReactionsByTimeResponse } from './responseTypes/ReactionsByTimeWidget';
 import { RegistrationsResponse } from './responseTypes/RegistrationsWidget';
 import { SingleIdeaResponse } from './responseTypes/SingleIdeaWidget';
 import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
+import { VisitorsLanguagesResponse } from './responseTypes/VisitorsLanguagesWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
 import { VisitorsResponse } from './responseTypes/VisitorsWidget';
 // Hooks
@@ -107,6 +109,13 @@ export const useVisitorsTrafficSourcesLive = (
 ) => {
   return useGraphDataUnitsLive<VisitorsTrafficSourcesResponse>({
     resolved_name: 'VisitorsTrafficSourcesWidget',
+    props,
+  });
+};
+
+export const useVisitorsLanguagesLive = (props: VisitorsLanguagesProps) => {
+  return useGraphDataUnitsLive<VisitorsLanguagesResponse>({
+    resolved_name: 'VisitorsLanguagesWidget',
     props,
   });
 };

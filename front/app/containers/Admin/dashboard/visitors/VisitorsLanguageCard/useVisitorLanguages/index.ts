@@ -1,43 +1,10 @@
-import { Query, QuerySchema } from 'api/analytics/types';
-import useAnalytics from 'api/analytics/useAnalytics';
-
-import {
-  getProjectFilter,
-  getDateFilter,
-} from 'components/admin/GraphCards/_utils/query';
-
 import { useIntl } from 'utils/cl-intl';
 
 import { parsePieData, parseExcelData } from './parse';
 import { getTranslations } from './translations';
-import { Response, QueryParameters } from './typings';
+import { QueryParameters } from './typings';
 
-const query = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-}: QueryParameters): Query => {
-  const localesCountQuery: QuerySchema = {
-    fact: 'visit',
-    filters: {
-      ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilter(
-        'dimension_date_first_action',
-        startAtMoment,
-        endAtMoment
-      ),
-    },
-    groups: 'dimension_locales.id',
-    aggregations: {
-      visitor_id: 'count',
-      'dimension_locales.name': 'first',
-    },
-  };
-
-  return {
-    query: localesCountQuery,
-  };
-};
+import { useVisitorsLanguagesLive } from 'api/graph_data_units';
 
 export default function useVisitorsData({
   projectId,
@@ -46,13 +13,11 @@ export default function useVisitorsData({
 }: QueryParameters) {
   const { formatMessage } = useIntl();
 
-  const { data: analytics } = useAnalytics<Response>(
-    query({
-      projectId,
-      startAtMoment,
-      endAtMoment,
-    })
-  );
+  const { data: analytics } = useVisitorsLanguagesLive({
+    project_id: projectId,
+    start_at: startAtMoment?.local().format('YYYY-MM-DD'),
+    end_at: endAtMoment?.local().format('YYYY-MM-DD'),
+  });
 
   const translations = getTranslations(formatMessage);
 
