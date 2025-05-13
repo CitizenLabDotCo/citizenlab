@@ -158,11 +158,27 @@ const generateYupValidationSchema = ({
           ? array()
               .min(1, formatMessage(messages.imageRequired))
               .required(formatMessage(messages.imageRequired))
+              .transform((value) => {
+                if (value) {
+                  return value.map((image) => {
+                    if (image.base64) {
+                      return { image: image.base64 };
+                    }
+                    return null;
+                  });
+                }
+                return null;
+              })
           : array()
               .nullable()
               .transform((value) => {
-                if (value[0] && value[0].base64) {
-                  return [{ image: value[0].base64 }];
+                if (value) {
+                  return value.map((image) => {
+                    if (image.base64) {
+                      return { image: image.base64 };
+                    }
+                    return null;
+                  });
                 }
                 return null;
               });
@@ -174,8 +190,42 @@ const generateYupValidationSchema = ({
           ? array()
               .min(1, formatMessage(messages.fileRequired))
               .required(formatMessage(messages.fileRequired))
-          : array().nullable();
-
+              .transform((value) => {
+                if (value) {
+                  return value.map((file) => {
+                    if (file.base64 && file.filename) {
+                      return {
+                        file_by_content: {
+                          content: file.base64,
+                          name: file.filename,
+                        },
+                        name: file.filename,
+                      };
+                    }
+                    return null;
+                  });
+                }
+                return null;
+              })
+          : array()
+              .nullable()
+              .transform((value) => {
+                if (value) {
+                  return value.map((file) => {
+                    if (file.base64 && file.filename) {
+                      return {
+                        file_by_content: {
+                          content: file.base64,
+                          name: file.filename,
+                        },
+                        name: file.filename,
+                      };
+                    }
+                    return null;
+                  });
+                }
+                return null;
+              });
         break;
       }
 
