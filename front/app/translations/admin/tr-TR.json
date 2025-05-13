@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Bu görüntü her zaman belirli bir oranda kırpılarak tüm önemli unsurların her zaman görüntülenmesi sağlanır. Bu görüntü türü için {link} adresi {aspect}şeklindedir.",
   "app.components.Admin.ImageCropper.infoLinkText": "önerilen oran",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Not: Mobil cihazlarda görüntü 3:1 oranında kırpılacağından, görüntünün önemli alanları dikey kesikli çizgilerin içinde yer almalıdır.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Kayıtlı kullanıcılar için başlık metni",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Uyarı: Seçtiğiniz renk yeterince yüksek kontrasta sahip değil. Bu durum metinlerin zor okummasına neden olabilir. Okunabilirliği optimize etmek için daha koyu bir renk seçin.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Gezinme çubuğuna Etkinlikler ekleyin",
