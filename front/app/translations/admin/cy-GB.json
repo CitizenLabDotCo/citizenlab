@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Ymweliadau",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Ymweliadau\" yw nifer y sesiynau. Os ymwelodd person â'r platfform sawl gwaith, mae pob ymweliad yn cael ei gyfrif.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Ddoe:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Cyfrif",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Iaith",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Nifer yr ymwelwyr",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Canran yr ymwelwyr",
