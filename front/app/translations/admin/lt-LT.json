@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Šis vaizdas visada apkarpomas tam tikru santykiu, kad visada būtų matomi visi svarbiausi aspektai. Šio tipo vaizdas {link} yra {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "rekomenduojamas santykis",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Pastaba: bet kuri svarbi vaizdo sritis turi būti vertikaliose brūkšninėse linijose, nes mobiliuosiuose įrenginiuose vaizdas bus apkarpytas iki 3:1 santykio.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Registruotų naudotojų antraštės tekstas",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Įspėjimas: pasirinkta spalva nėra pakankamai kontrastinga. Dėl to tekstas gali būti sunkiai įskaitomas. Pasirinkite tamsesnę spalvą, kad optimizuotumėte įskaitomumą.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Įtraukti įvykius į naršymo juostą",
