@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Visitas",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Visitas\" es el número de sesiones. Si una persona visita la plataforma varias veces, se cuenta cada visita.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Ayer:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Recuento",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Idioma",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Número de visitantes",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Porcentaje de visitantes",
