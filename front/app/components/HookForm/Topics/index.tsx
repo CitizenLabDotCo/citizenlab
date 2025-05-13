@@ -23,7 +23,6 @@ interface Props
 
 const Topics = ({ name, projectId, ...rest }: Props) => {
   const {
-    trigger,
     setValue,
     formState: { errors: formContextErrors },
     control,
@@ -60,7 +59,6 @@ const Topics = ({ name, projectId, ...rest }: Props) => {
               availableTopics={getAllowedTopics()}
               onClick={(topicIds: string[]) => {
                 setValue(name, topicIds);
-                trigger();
               }}
             />
           );

@@ -23,7 +23,6 @@ const ImagesDropzone = ({ name, inputLabel, ...rest }: Props) => {
     formState: { errors },
     control,
   } = useFormContext();
-
   const errorMessage = errors[name]?.message as string | undefined;
 
   return (

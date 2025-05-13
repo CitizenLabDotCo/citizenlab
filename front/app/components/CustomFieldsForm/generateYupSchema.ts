@@ -158,7 +158,14 @@ const generateYupValidationSchema = ({
           ? array()
               .min(1, formatMessage(messages.imageRequired))
               .required(formatMessage(messages.imageRequired))
-          : array().nullable();
+          : array()
+              .nullable()
+              .transform((value) => {
+                if (value[0] && value[0].base64) {
+                  return [{ image: value[0].base64 }];
+                }
+                return null;
+              });
         break;
       }
 
@@ -168,6 +175,7 @@ const generateYupValidationSchema = ({
               .min(1, formatMessage(messages.fileRequired))
               .required(formatMessage(messages.fileRequired))
           : array().nullable();
+
         break;
       }
 

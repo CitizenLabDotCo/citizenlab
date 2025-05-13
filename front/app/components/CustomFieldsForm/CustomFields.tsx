@@ -121,7 +121,13 @@ const renderField = (
       );
     case 'image_files':
       return (
-        <ImagesDropzone name={question.key} imagePreviewRatio={135 / 298} />
+        <ImagesDropzone
+          name={question.key}
+          imagePreviewRatio={135 / 298}
+          acceptedFileTypes={{
+            'image/*': ['.jpg', '.jpeg', '.png'],
+          }}
+        />
       );
     case 'files':
       return <FileUploader name={question.key} />;
