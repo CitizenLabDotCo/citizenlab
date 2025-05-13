@@ -26,20 +26,20 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    visitors: row.count_monthly_user_hash,
-    visits: row.count,
+    visitors: row.visitors,
+    visits: row.visits,
     date: date.format('YYYY-MM-DD'),
   };
 };
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(get(row, 'first_dimension_date_created_date'));
+  return moment(get(row, 'date_group'));
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: VisitorsResponse['data']['attributes'][0],
+  responseTimeSeries: VisitorsResponse['data']['attributes']['visitors_timeseries'],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
@@ -55,32 +55,33 @@ export const parseTimeSeries = (
 export const parseStats = (
   attributes: VisitorsResponse['data']['attributes']
 ): Stats => {
-  const sessionTotalsWholePeriod = attributes[1][0];
-  const sessionTotalsLastPeriod = attributes[3]?.[0];
-
-  const matomoVisitsWholePeriod = attributes[2][0];
-  const matomoVisitsLastPeriod = attributes[4]?.[0];
+  const {
+    visitors_whole_period,
+    visitors_compared_period,
+    visits_whole_period,
+    visits_compared_period,
+    avg_seconds_per_session_whole_period,
+    avg_seconds_per_session_compared_period,
+    avg_pages_visited_whole_period,
+    avg_pages_visited_compared_period,
+  } = attributes;
 
   return {
     visitors: {
-      value:
-        sessionTotalsWholePeriod?.count_monthly_user_hash.toLocaleString() ??
-        '0',
-      lastPeriod:
-        sessionTotalsLastPeriod?.count_monthly_user_hash.toLocaleString() ??
-        '0',
+      value: visitors_whole_period.toLocaleString(),
+      lastPeriod: visitors_compared_period?.toLocaleString() ?? '0',
     },
     visits: {
-      value: sessionTotalsWholePeriod?.count.toLocaleString() ?? '0',
-      lastPeriod: sessionTotalsLastPeriod?.count.toLocaleString() ?? '0',
+      value: visits_whole_period.toLocaleString(),
+      lastPeriod: visits_compared_period?.toLocaleString() ?? '0',
     },
     visitDuration: {
-      value: parseVisitDuration(matomoVisitsWholePeriod?.avg_duration),
-      lastPeriod: parseVisitDuration(matomoVisitsLastPeriod?.avg_duration),
+      value: parseVisitDuration(avg_seconds_per_session_whole_period),
+      lastPeriod: parseVisitDuration(avg_seconds_per_session_compared_period),
     },
     pageViews: {
-      value: parsePageViews(matomoVisitsWholePeriod?.avg_pages_visited),
-      lastPeriod: parsePageViews(matomoVisitsLastPeriod?.avg_pages_visited),
+      value: parsePageViews(avg_pages_visited_whole_period),
+      lastPeriod: parsePageViews(avg_pages_visited_compared_period),
     },
   };
 };
@@ -111,18 +112,18 @@ export const parseExcelData = (
   };
 };
 
-const parsePageViews = (pageViews: string | null | undefined) => {
+const parsePageViews = (pageViews: number | undefined) => {
   if (!pageViews) return '-';
-  return formatPageViews(+pageViews);
+  return formatPageViews(pageViews);
 };
 
 export const formatPageViews = (pageViews: number) => {
   return round(pageViews, 2).toLocaleString();
 };
 
-const parseVisitDuration = (seconds: string | null | undefined) => {
+const parseVisitDuration = (seconds: number | undefined) => {
   if (!seconds) return '-';
-  return formatVisitDuration(+seconds);
+  return formatVisitDuration(seconds);
 };
 
 export const formatVisitDuration = (seconds: number) => {

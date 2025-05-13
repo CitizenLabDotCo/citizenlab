@@ -9,8 +9,7 @@ class JsonFormsService
     input_type: 'text',
     title_multiloc: MultilocService.new.i18n_to_multiloc('custom_fields.ideas.author_id.title', locales: CL2_SUPPORTED_LOCALES),
     required: false,
-    enabled: true,
-    answer_visible_to: 'public'
+    enabled: true
   )
   BUDGET_FIELD = CustomField.new(
     key: 'budget',
@@ -18,8 +17,7 @@ class JsonFormsService
     input_type: 'number',
     title_multiloc: MultilocService.new.i18n_to_multiloc('custom_fields.ideas.budget.title', locales: CL2_SUPPORTED_LOCALES),
     required: false,
-    enabled: true,
-    answer_visible_to: 'public'
+    enabled: true
   )
 
   def initialize
