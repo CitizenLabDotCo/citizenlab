@@ -6,7 +6,6 @@ import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
-import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
@@ -20,6 +19,7 @@ import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 
+import { useSyncFolderFiles } from 'hooks/files/useSyncFolderFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
@@ -70,8 +70,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     Resource hooks
     ==============
   */
-  const { mutateAsync: deleteProjectFolderFile } = useDeleteProjectFolderFile();
   const { mutateAsync: addProjectFolderFile } = useAddProjectFolderFile();
+  const syncProjectFolderFiles = useSyncFolderFiles();
+
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const { data: projectFolderFilesRemote } = useProjectFolderFiles({
     projectFolderId,
@@ -283,6 +284,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     []
   );
 
+  const handleFilesReorder = (updatedFiles: UploadFile[]) => {
+    setProjectFolderFiles(updatedFiles);
+    setSubmitState('enabled');
+  };
+
   const validate = useCallback(() => {
     let valid = false;
     if (!isNilOrError(tenantLocales)) {
@@ -401,25 +407,28 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 imageId: folderCardImageToRemove.id,
               });
 
-            const filesToAddPromises = projectFolderFiles
-              .filter((file) => !file.remote)
-              .map((file) =>
-                addProjectFolderFile({
-                  projectFolderId,
-                  file: file.base64,
-                  name: file.name,
-                })
-              );
-            const filesToRemovePromises = projectFolderFilesToRemove.map((id) =>
-              deleteProjectFolderFile({ projectFolderId, fileId: id })
+            const initialFileOrdering = projectFolderFilesRemote?.data.reduce(
+              (acc, file) => {
+                if (file.id) {
+                  acc[file.id] = file.attributes.ordering;
+                }
+                return acc;
+              },
+              {}
             );
+
+            const folderFilesPromise = await syncProjectFolderFiles({
+              projectFolderId,
+              projectFolderFiles,
+              filesToRemove: projectFolderFilesToRemove,
+              fileOrdering: initialFileOrdering || {},
+            });
 
             await Promise.all<any>([
               cardToAddPromise,
               cardToEditPromise,
               cardToRemovePromises,
-              ...filesToAddPromises,
-              ...filesToRemovePromises,
+              folderFilesPromise,
             ]);
 
             const changedTitleMultiloc = !isEqual(
@@ -682,6 +691,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             onFileAdd={handleProjectFolderFileOnAdd}
             onFileRemove={handleProjectFolderFileOnRemove}
             files={projectFolderFiles}
+            onFileReorder={handleFilesReorder}
+            enableDragAndDrop
+            multiple
           />
         </SectionField>
         <SubmitWrapper

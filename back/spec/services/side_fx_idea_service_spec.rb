@@ -131,23 +131,11 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it 'enqueues an upsert embedding job when the input_iq feature is turned off (before trial period)' do
+    it "doesn't enqueue an upsert embedding job when the input_iq feature is turned off" do
       idea = create(:idea, author: user)
-      travel_to(Date.parse('2025-06-29')) do
-        expect { service.after_create(idea, user) }
-          .to enqueue_job(UpsertEmbeddingJob)
-          .with(idea)
-          .exactly(1).times
-      end
-    end
-
-    it "doesn't enqueue an upsert embedding job when the input_iq feature is turned off (after trial period)" do
-      idea = create(:idea, author: user)
-      travel_to(Date.parse('2025-07-01')) do
-        expect { service.after_create(idea, user) }
-          .not_to enqueue_job(UpsertEmbeddingJob)
-          .with(idea)
-      end
+      expect { service.after_create(idea, user) }
+        .not_to enqueue_job(UpsertEmbeddingJob)
+        .with(idea)
     end
 
     it "doesn't enqueue an upsert embedding job for survey responses" do
@@ -385,25 +373,12 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it "doesn't enqueue an upsert embedding job when the input_iq feature is turned off (before trial period)" do
+    it "doesn't enqueue an upsert embedding job when the input_iq feature is turned off" do
       idea = create(:idea, author: user)
       idea.update!(title_multiloc: { en: 'changed' })
-      travel_to(Date.parse('2025-06-29')) do
-        expect { service.after_update(idea, user) }
-          .to enqueue_job(UpsertEmbeddingJob)
-          .with(idea)
-          .exactly(1).times
-      end
-    end
-
-    it "doesn't enqueue an upsert embedding job when the input_iq feature is turned off (after trial period)" do
-      idea = create(:idea, author: user)
-      idea.update!(title_multiloc: { en: 'changed' })
-      travel_to(Date.parse('2025-07-01')) do
-        expect { service.after_update(idea, user) }
-          .not_to enqueue_job(UpsertEmbeddingJob)
-          .with(idea)
-      end
+      expect { service.after_update(idea, user) }
+        .not_to enqueue_job(UpsertEmbeddingJob)
+        .with(idea)
     end
 
     it "doesn't enqueue an upsert embedding job for survey responses" do

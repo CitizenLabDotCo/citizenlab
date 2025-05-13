@@ -271,6 +271,7 @@ export interface IAppConfigurationSettings {
     project_id: string;
   };
   user_fields_in_surveys?: AppConfigurationFeature;
+  html_pdfs?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

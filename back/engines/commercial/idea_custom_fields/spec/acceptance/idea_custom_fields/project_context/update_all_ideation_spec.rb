@@ -47,7 +47,8 @@ resource 'Idea Custom Fields' do
         title_multiloc: { 'en' => 'Final page' },
         description_multiloc: { 'en' => 'Thank you for participating!' },
         input_type: 'page',
-        page_layout: 'default'
+        page_layout: 'default',
+        include_in_printed_form: false
       }
     end
 
@@ -132,7 +133,6 @@ resource 'Idea Custom Fields' do
                     title_multiloc: true
                   }
                 },
-                answer_visible_to: 'public',
                 page_layout: 'default',
                 random_option_ordering: false
               ),
@@ -160,7 +160,6 @@ resource 'Idea Custom Fields' do
                     required: true
                   }
                 },
-                answer_visible_to: 'public',
                 random_option_ordering: false
               ),
               id: an_instance_of(String),
@@ -181,7 +180,6 @@ resource 'Idea Custom Fields' do
                 updated_at: an_instance_of(String),
                 logic: {},
                 constraints: {},
-                answer_visible_to: 'public',
                 page_layout: 'default',
                 random_option_ordering: false
               ),
@@ -209,7 +207,6 @@ resource 'Idea Custom Fields' do
                     title_multiloc: true
                   }
                 },
-                answer_visible_to: 'public',
                 random_option_ordering: false
               ),
               id: an_instance_of(String),
@@ -244,8 +241,7 @@ resource 'Idea Custom Fields' do
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
                 logic: {},
-                constraints: {},
-                answer_visible_to: 'admins'
+                constraints: {}
               ),
               type: 'custom_field',
               relationships: { options: { data: [
@@ -267,7 +263,6 @@ resource 'Idea Custom Fields' do
                 updated_at: an_instance_of(String),
                 logic: {},
                 constraints: {},
-                answer_visible_to: 'public',
                 page_layout: 'default',
                 random_option_ordering: false
               ),
