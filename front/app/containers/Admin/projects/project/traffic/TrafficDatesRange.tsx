@@ -54,7 +54,7 @@ const TrafficDatesRange = ({
         </Warning>
       </Box>
 
-      <Box mx="44px">
+      <Box mx="36px">
         <Charts
           projectId={projectId}
           startAtMoment={moment(startAt)}
