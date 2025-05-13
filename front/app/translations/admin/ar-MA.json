@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "الزيارات",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"الزيارات\" هو عدد جلسات العمل. إذا زار شخص المنصة عدة مرات، فسيتم إحصاء كل زيارة.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "أمس:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "عدد",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "اللغة",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "عدد الزائرين",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "نسبة الزائرين",
