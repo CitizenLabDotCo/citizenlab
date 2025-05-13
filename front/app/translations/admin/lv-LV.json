@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Apmeklējumi",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Apmeklējumi\" ir sesiju skaits. Ja persona apmeklē platformu vairākas reizes, tiek ieskaitīts katrs apmeklējums.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Vakar:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Count",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Valoda",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Apmeklētāju skaits",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Apmeklētāju īpatsvars",
