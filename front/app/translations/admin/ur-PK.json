@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "دورے",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"ملاقات\" سیشنز کی تعداد ہے۔ اگر کوئی شخص متعدد بار پلیٹ فارم کا دورہ کرتا ہے، تو ہر وزٹ کو شمار کیا جاتا ہے۔",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "کل:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "شمار",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "زبان",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "زائرین کی تعداد",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "زائرین کا فیصد",
