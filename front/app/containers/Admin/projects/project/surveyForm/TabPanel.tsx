@@ -18,7 +18,7 @@ import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
 
-const SurveyFormTabpanel = ({
+const TabPanel = ({
   projectId,
   phaseId,
 }: {
@@ -88,5 +88,5 @@ export default () => {
     return null;
   }
 
-  return <SurveyFormTabpanel projectId={projectId} phaseId={phaseId} />;
+  return <TabPanel projectId={projectId} phaseId={phaseId} />;
 };
