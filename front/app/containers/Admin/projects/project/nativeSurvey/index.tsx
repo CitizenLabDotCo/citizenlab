@@ -19,7 +19,6 @@ import EditWarningModal from 'components/admin/SurveyEditWarningModal';
 import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import AnalysisBanner from './AnalysisBanner';
@@ -66,7 +65,6 @@ const Forms = () => {
 
   // Variables from form config
   const {
-    downloadExcelLink,
     postingEnabled,
     togglePostingEnabled,
     editFormLink,
@@ -148,26 +146,12 @@ const Forms = () => {
               linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
               icon="eye"
               iconSize="20px"
-              buttonStyle="secondary-outlined"
+              buttonStyle="primary"
               width="auto"
               openLinkInNewTab
               mr="8px"
             >
               {formatMessage(messages.viewSurveyText)}
-            </Button>
-            <Button
-              icon="edit"
-              iconSize="20px"
-              buttonStyle="admin-dark"
-              width="auto"
-              onClick={() => {
-                haveSubmissionsComeIn
-                  ? setShowEditWarningModal(true)
-                  : clHistory.push(editFormLink);
-              }}
-              data-cy="e2e-edit-survey-content"
-            >
-              {formatMessage(messages.editSurvey)}
             </Button>
             <DropdownSettings
               haveSubmissionsComeIn={haveSubmissionsComeIn}
@@ -175,7 +159,6 @@ const Forms = () => {
               handleDownloadResults={handleDownloadResults}
               setDropdownOpened={setDropdownOpened}
               isDropdownOpened={isDropdownOpened}
-              downloadExcelLink={downloadExcelLink}
               setShowDeleteModal={setShowDeleteModal}
             />
           </Box>
