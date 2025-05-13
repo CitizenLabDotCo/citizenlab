@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Deze afbeelding wordt altijd bijgesneden tot een bepaalde verhouding om ervoor te zorgen dat alle cruciale aspecten altijd worden weergegeven. De {link} voor dit afbeeldingstype is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "aanbevolen verhouding",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Opmerking: Elk belangrijk deel van de afbeelding moet binnen de verticale stippellijnen vallen, omdat de afbeelding wordt bijgesneden tot een verhouding van 3:1 op mobiele apparaten.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Bannertitel voor geregistreerde gebruikers",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Opgelet: Deze kleur heeft een te laag contrast. Hierdoor wordt sommige tekst moeilijk leesbaar. Kies een donkerdere kleur om de leesbaarheid te verbeteren.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Activiteiten toevoegen aan navigatiebalk",
