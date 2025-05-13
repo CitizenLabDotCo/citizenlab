@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "ਮੁਲਾਕਾਤਾਂ",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"ਵਿਜ਼ਿਟ\" ਸੈਸ਼ਨਾਂ ਦੀ ਸੰਖਿਆ ਹੈ। ਜੇਕਰ ਕੋਈ ਵਿਅਕਤੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਕਈ ਵਾਰ ਜਾਂਦਾ ਹੈ, ਤਾਂ ਹਰੇਕ ਮੁਲਾਕਾਤ ਨੂੰ ਗਿਣਿਆ ਜਾਂਦਾ ਹੈ।",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "ਕੱਲ੍ਹ:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "ਗਿਣਤੀ",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "ਭਾਸ਼ਾ",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "ਸੈਲਾਨੀਆਂ ਦੀ ਗਿਣਤੀ",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "ਸੈਲਾਨੀਆਂ ਦੀ ਪ੍ਰਤੀਸ਼ਤਤਾ",
