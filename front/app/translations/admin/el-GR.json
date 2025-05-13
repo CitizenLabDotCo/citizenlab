@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Επισκέψεις",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Επισκέψεις\" είναι ο αριθμός των συνεδριών. Εάν ένα άτομο επισκέφθηκε την πλατφόρμα πολλές φορές, κάθε επίσκεψη μετράται.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Χθες:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Κόμη",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Language",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Αριθμός επισκεπτών",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Ποσοστό επισκεπτών",
