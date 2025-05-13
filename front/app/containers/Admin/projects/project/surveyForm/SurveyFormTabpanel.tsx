@@ -18,16 +18,17 @@ import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
 
-export const SurveyFormTabpanel = () => {
+const SurveyFormTabpanel = ({
+  projectId,
+  phaseId,
+}: {
+  projectId: string;
+  phaseId: string;
+}) => {
   const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
     onlyCheckAllowed: true,
   });
-
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
 
   const downloadExampleXlsxFile = async () => {
     const blob = await requestBlob(
@@ -80,4 +81,12 @@ export const SurveyFormTabpanel = () => {
   );
 };
 
-export default SurveyFormTabpanel;
+export default () => {
+  const { projectId, phaseId } = useParams();
+
+  if (!projectId || !phaseId) {
+    return null;
+  }
+
+  return <SurveyFormTabpanel projectId={projectId} phaseId={phaseId} />;
+};
