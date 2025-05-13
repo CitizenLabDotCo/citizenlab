@@ -809,7 +809,7 @@
   "app.containers.Admin.communityMonitor.upsell.upsellDescription7": "Driemaandelijkse PDF-rapporten, klaar om te delen",
   "app.containers.Admin.communityMonitor.upsell.upsellTitle": "Begrijp hoe je gemeenschap zich voelt voordat er problemen ontstaan",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.count": "Aantal",
-  "app.containers.Admin.dashboard.visitors.DeviceTypesCard.desktop": "Desktop of ander",
+  "app.containers.Admin.dashboard.visitors.DeviceTypesCard.desktop": "Desktop of overig",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.mobile": "Mobiel",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "Tablet",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "Apparaattypen",
