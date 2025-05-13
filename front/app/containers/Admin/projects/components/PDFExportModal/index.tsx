@@ -37,8 +37,8 @@ import MultilocFieldCollapsible from './MultilocFieldCollapsible';
 import PersonalDataCheckbox from './PersonalDataCheckbox';
 
 export interface FormPDFExportFormValues {
-  print_start_multiloc: Multiloc;
-  print_end_multiloc: Multiloc;
+  print_start_multiloc?: Multiloc;
+  print_end_multiloc?: Multiloc;
   personal_data: boolean;
 }
 
