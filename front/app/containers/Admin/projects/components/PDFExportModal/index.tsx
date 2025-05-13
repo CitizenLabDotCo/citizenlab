@@ -147,6 +147,8 @@ const PDFExportModal = ({
         </Title>
       }
       niceHeader
+      // This is necessary to prevent the modal from closing when you e.g. select text in
+      // the textarea and happen to arrive outside of the modal with your cursor.
       closeOnClickOutside={false}
     >
       <Box p="24px">
