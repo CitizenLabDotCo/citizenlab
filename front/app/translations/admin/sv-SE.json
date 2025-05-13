@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Besök",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Besök\" är antalet sessioner. Om en person har besökt plattformen flera gånger räknas varje besök.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "I går:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Räkna",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Språk",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Numărul de vizitatori",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Procentul de vizitatori",
