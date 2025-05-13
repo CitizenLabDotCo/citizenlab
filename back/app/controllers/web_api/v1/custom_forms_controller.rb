@@ -13,8 +13,9 @@ class WebApi::V1::CustomFormsController < ApplicationController
 
   def update
     @custom_form.assign_attributes update_params
-    if @custom_form.save
-      SideFxCustomFormService.new.after_update(@custom_form, current_user, { updated: true })
+    # Don't save if the form data has not changed - we don't want to update the timestamp so we can cache it better
+    if !@custom_form.changed? || @custom_form.save
+      SideFxCustomFormService.new.after_update(@custom_form, current_user, { updated: true }) if @custom_form.changed?
       render json: WebApi::V1::CustomFormSerializer.new(
         @custom_form.reload,
         params: jsonapi_serializer_params,
