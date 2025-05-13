@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Den här bilden beskärs alltid till ett visst förhållande för att se till att alla viktiga aspekter alltid visas. Den här bildtypens {link} är {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "rekommenderat förhållande",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Obs: Alla viktiga delar av bilden bör ligga inom de vertikala streckade linjerna, eftersom bilden kommer att beskäras till ett förhållande på 3:1 på mobila enheter.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Rubriktext för registrerade användare",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Varning! Färgen du valde har inte tillräckligt hög kontrast. Det kan göra texten svår att läsa. Välj en mörkare färg för att optimera läsbarheten.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Lägg till evenemang i navigeringsfältet",
