@@ -2992,6 +2992,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visits": "Odwiedziny",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.visitsStatTooltipMessage": "\"Odwiedziny\" to liczba sesji. Jeśli osoba odwiedziła platformę wielokrotnie, każda wizyta jest liczona.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.yesterday": "Wczoraj:",
+  "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count": "Licz",
   "app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title": "Język",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.numberOfVisitors": "Liczba odwiedzających",
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.percentageOfVisitors": "Odsetek odwiedzających",
