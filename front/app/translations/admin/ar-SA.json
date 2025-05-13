@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "يتم اقتصاص هذه الصورة دائمًا بنسبة معينة للتأكد من ظهور جميع النواحي البالغة الأهمية في جميع الأوقات. {link} لنوع هذه الصورة {aspect}‏.",
   "app.components.Admin.ImageCropper.infoLinkText": "النسبة الموصى بها",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "ملاحظة: يجب أن تكون أي منطقة مهمة من الصورة داخل الخطوط المتقطعة العمودية، حيث سيتم اقتصاص الصورة إلى نسبة 3:1 على الأجهزة المحمولة.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "نص ترويسة المستخدمين المسجلين",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "تحذير: اللون الذي اخترته ليس بالتباين الكافي. ما يعني أن النص ستصعُب قراءته. اختر لونًا أغمق لتحسين قابلية القراءة.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "إضافة أحداث إلى شريط التنقل",
