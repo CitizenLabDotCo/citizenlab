@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -12,6 +12,7 @@ import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import { object, boolean } from 'yup';
 
+import useCustomForm from 'api/custom_form/useCustomForm';
 import useUpdateCustomForm from 'api/custom_form/useUpdateCustomForm';
 import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -64,17 +65,12 @@ const PDFExportModal = ({
   const htmlPdfsActive = useFeatureFlag({
     name: 'html_pdfs',
   });
-  const DEFAULT_VALUES = {
-    ...(htmlPdfsActive && {
-      print_start_multiloc: {},
-      print_end_multiloc: {},
-    }),
-    personal_data: false,
-  };
+
   const { formatMessage } = useIntl();
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const locale = useLocale();
+  const { data: customForm } = useCustomForm(phase);
   const { mutateAsync: updateCustomForm } = useUpdateCustomForm(phase);
   const phaseId = phase.id;
 
@@ -88,9 +84,26 @@ const PDFExportModal = ({
 
   const methods = useForm({
     mode: 'onSubmit',
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: {
+      ...(htmlPdfsActive && {
+        print_start_multiloc: customForm?.data.attributes.print_start_multiloc,
+        print_end_multiloc: customForm?.data.attributes.print_end_multiloc,
+      }),
+      personal_data: false,
+    },
     resolver: yupResolver(schema),
   });
+
+  // Populate the form after page reload
+  useEffect(() => {
+    if (htmlPdfsActive && customForm) {
+      methods.reset({
+        ...methods.getValues(),
+        print_start_multiloc: customForm.data.attributes.print_start_multiloc,
+        print_end_multiloc: customForm.data.attributes.print_end_multiloc,
+      });
+    }
+  }, [customForm, htmlPdfsActive, methods]);
 
   const onExport = async ({ personal_data }: FormPDFExportFormValues) => {
     if (supportsNativeSurvey(phase.attributes.participation_method)) {
@@ -117,7 +130,6 @@ const PDFExportModal = ({
       await onExport(formValues);
       setLoading(false);
       onClose();
-      methods.reset();
     } catch (e) {
       setLoading(false);
 
