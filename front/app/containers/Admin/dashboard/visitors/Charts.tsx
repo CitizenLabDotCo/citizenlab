@@ -11,9 +11,8 @@ import {
 } from 'components/admin/GraphCards/typings';
 import VisitorsCard from 'components/admin/GraphCards/VisitorsCard';
 import VisitorsTrafficSourcesCard from 'components/admin/GraphCards/VisitorsTrafficSourcesCard';
-
-import VisitorsLanguageCard from './VisitorsLanguageCard';
-import DeviceTypesCard from './DeviceTypesCard';
+import VisitorsLanguageCard from 'components/admin/GraphCards/VisitorsLanguageCard';
+import DeviceTypesCard from 'components/admin/GraphCards/DeviceTypesCard';
 
 type Props = ProjectId & Dates & Resolution;
 
