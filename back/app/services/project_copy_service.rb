@@ -157,7 +157,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'enabled' => field.enabled,
         'required' => field.required,
         'code' => field.code,
-        'answer_visible_to' => field.answer_visible_to,
         'hidden' => field.hidden,
         'maximum' => field.maximum,
         'ask_follow_up' => field.ask_follow_up,
