@@ -45,6 +45,7 @@ const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
 
 const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
+const AdminPhaseSurveyForm = lazy(() => import('./project/surveyForm'));
 
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));
 const InputImporter = lazy(() => import('./project/inputImporter'));
@@ -111,6 +112,7 @@ export enum projectsRoutes {
   projectPhaseVolunteering = ':phaseId/volunteering',
   projectPhaseMap = ':phaseId/map',
   projectPhaseNativeSurvey = ':phaseId/native-survey',
+  projectPhaseSurveyForm = ':phaseId/survey-form',
   projectPhaseVolunteeringNewCause = ':phaseId/volunteering/causes/new',
   projectPhaseIdeaFormEdit = ':phaseId/form/edit',
   projectPhaseNativeSurveyEdit = ':phaseId/native-survey/edit',
@@ -156,8 +158,10 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/form/edit`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit?${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
@@ -512,6 +516,14 @@ const createAdminProjectsRoutes = () => {
                 element: (
                   <PageLoading>
                     <AdminProjectsSurvey />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseSurveyForm,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseSurveyForm />
                   </PageLoading>
                 ),
               },
