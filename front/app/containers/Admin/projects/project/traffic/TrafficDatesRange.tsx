@@ -10,7 +10,8 @@ import { useIntl } from 'utils/cl-intl';
 import { toBackendDateString, parseBackendDateString } from 'utils/dateUtils';
 
 import messages from './messages';
-import TrafficReportPreview from './TrafficReportPreview';
+import Charts from './Charts';
+import moment from 'moment';
 
 const TrafficDatesRange = ({
   defaultStartDate,
@@ -54,10 +55,11 @@ const TrafficDatesRange = ({
       </Box>
 
       <Box p="44px" mx="44px" bg="white">
-        <TrafficReportPreview
+        <Charts
           projectId={projectId}
-          startAt={startAt}
-          endAt={endAt}
+          startAtMoment={moment(startAt)}
+          endAtMoment={moment(endAt)}
+          resolution="month"
         />
       </Box>
     </div>
