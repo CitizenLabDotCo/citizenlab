@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Mit dem Content Builder können Sie erweiterte Layout-Optionen nutzen.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Projekt ansehen",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Ende der Umfrage",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Download einer Excel-Vorlage",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Erstellen einer intelligenten Gruppe",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Nutzer*innen, die alle der folgenden Bedingungen erfüllen, werden automatisch zur Gruppe hinzugefügt:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Mindestens eine Regel eingeben",
