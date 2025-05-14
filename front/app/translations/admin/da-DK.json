@@ -873,6 +873,7 @@
   "app.containers.Admin.inspirationHub.AllProjects": "Alle projekter",
   "app.containers.Admin.inspirationHub.CommunityMonitorSurvey": "Borgerbarometer",
   "app.containers.Admin.inspirationHub.DocumentAnnotation": "Dokument-annotering",
+  "app.containers.Admin.inspirationHub.ExternalSurvey": "Ekstern undersøgelse",
   "app.containers.Admin.inspirationHub.Filters.Country": "Land",
   "app.containers.Admin.inspirationHub.Filters.Method": "Metode",
   "app.containers.Admin.inspirationHub.Filters.Search": "Søg på",
