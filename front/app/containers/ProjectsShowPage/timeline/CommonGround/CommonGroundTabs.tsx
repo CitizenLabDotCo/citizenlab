@@ -3,7 +3,6 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { MessageDescriptor } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
 import useCommonGroundProgress from 'api/common_ground/useCommonGroundProgress';
