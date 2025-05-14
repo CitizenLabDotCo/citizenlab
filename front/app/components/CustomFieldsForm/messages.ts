@@ -26,8 +26,8 @@ export default defineMessages({
     defaultMessage: 'The image is required',
   },
   fileRequired: {
-    id: 'app.components.CustomFieldsForm.fileRequired',
-    defaultMessage: 'At least one file is required',
+    id: 'app.components.CustomFieldsForm.attachmentRequired',
+    defaultMessage: 'At least one attachment is required',
   },
   topicRequired: {
     id: 'app.components.CustomFieldsForm.topicRequired',

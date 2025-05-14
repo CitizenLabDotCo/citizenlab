@@ -67,7 +67,6 @@ const CustomFieldsPage = ({
   defaultValues,
   formCompletionPercentage,
 }: CustomFieldsPage) => {
-  console.log(page);
   const { data: phases } = usePhases(projectId);
 
   const localize = useLocalize();

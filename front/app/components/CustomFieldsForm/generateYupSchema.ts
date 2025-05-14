@@ -168,42 +168,8 @@ const generateYupValidationSchema = ({
           ? array()
               .min(1, formatMessage(messages.fileRequired))
               .required(formatMessage(messages.fileRequired))
-              .transform((value) => {
-                if (value) {
-                  return value.map((file) => {
-                    if (file.base64 && file.filename) {
-                      return {
-                        file_by_content: {
-                          content: file.base64,
-                          name: file.filename,
-                        },
-                        name: file.filename,
-                      };
-                    }
-                    return null;
-                  });
-                }
-                return null;
-              })
-          : array()
-              .nullable()
-              .transform((value) => {
-                if (value) {
-                  return value.map((file) => {
-                    if (file.base64 && file.filename) {
-                      return {
-                        file_by_content: {
-                          content: file.base64,
-                          name: file.filename,
-                        },
-                        name: file.filename,
-                      };
-                    }
-                    return null;
-                  });
-                }
-                return null;
-              });
+          : array().nullable();
+
         break;
       }
 

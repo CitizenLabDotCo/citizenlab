@@ -8,7 +8,6 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 
 import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
 import CheckboxMultiSelect from 'components/HookForm/CheckboxMultiSelect';
-import FileUploader from 'components/HookForm/FileUploader';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
@@ -21,6 +20,7 @@ import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
 
+import FileUploaderField from './Fields/FileUploadField';
 import ImageField from './Fields/ImageField';
 import { extractOptions } from './util';
 
@@ -107,7 +107,7 @@ const renderField = (
         />
       );
     case 'files':
-      return <FileUploader name={question.key} />;
+      return <FileUploaderField name={question.key} />;
     case 'topic_ids':
       return <Topics name={question.key} projectId={projectId} />;
     default:
