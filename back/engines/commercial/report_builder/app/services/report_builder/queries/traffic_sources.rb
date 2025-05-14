@@ -33,6 +33,17 @@ module ReportBuilder
       https://webmail.ux.proximus.be
     ]
 
+    SSO_REFERRERS = %w[
+      https://accounts.claveunica.gob.cl
+      https://accounts.google.com
+      https://login.microsoftonline.com
+      https://my.esr.nhs.uk
+      https://nemlog-in.mitid.dk
+      https://frederikssund.criipto.id
+      https://pvp.wien.gv.at
+      https://app.franceconnect.gouv.fr
+    ]
+
     def run_query(
       start_at: nil,
       end_at: nil,
@@ -50,6 +61,7 @@ module ReportBuilder
       cases += generate_cases(SEARCH_ENGINE_REFERRERS, SEARCH_ENGINE_DOMAINS, 'search_engine')
       cases += generate_cases(SOCIAL_NETWORK_REFERRERS, SOCIAL_NETWORK_DOMAINS, 'social_network')
       cases += generate_cases(EMAIL_CAMPAIGN_REFERRERS, [], 'email_campaign')
+      cases += generate_cases(SSO_REFERRERS, [], 'sso_redirect')
 
       referrer_types = sessions
         .select(
