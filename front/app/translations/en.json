@@ -84,7 +84,7 @@
   "app.components.CommonGroundResults.votesLabel": "Votes",
   "app.components.CommonGroundStatements.agreeLabel": "Agree",
   "app.components.CommonGroundStatements.disagreeLabel": "Disagree",
-  "app.components.CommonGroundStatements.noMoreStatements": "No more statements",
+  "app.components.CommonGroundStatements.noMoreInputs": "There are no statements to respond to right now. You'll get notified as soon as new ones are available.",
   "app.components.CommonGroundStatements.unsureLabel": "Unsure",
   "app.components.CommonGroundTabs.resultsTabLabel": "Results",
   "app.components.CommonGroundTabs.statementsTabLabel": "Statements",
