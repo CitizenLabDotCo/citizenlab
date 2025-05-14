@@ -1359,7 +1359,6 @@
   "app.containers.Admin.reporting.widgets.MethodsUsed.survey": "External survey",
   "app.containers.Admin.reporting.widgets.MethodsUsed.volunteering": "Volunteering",
   "app.containers.Admin.reporting.widgets.MethodsUsed.voting": "Voting",
-  "app.containers.Admin.surveyFormTab.downloadExcelTemplate": "Download an Excel template",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Edit survey form",
   "app.containers.Admin.surveyFormTab.inputFormDescription": "Specify what information should be provided, add short descriptions or instructions to guide participant responses and specify whether each field is optional or required.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Survey form",
