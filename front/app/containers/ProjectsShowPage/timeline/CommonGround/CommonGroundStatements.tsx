@@ -44,7 +44,6 @@ const StatementCard = styled.div<{
 }>`
   ${defaultCardStyle};
   position: relative;
-  margin: 0 8px;
   padding: 16px;
   background: ${({ bgColor }) => bgColor};
   box-shadow: ${({ isDragging }) =>
