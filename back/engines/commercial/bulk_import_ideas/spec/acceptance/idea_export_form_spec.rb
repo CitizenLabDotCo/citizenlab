@@ -53,11 +53,37 @@ resource 'Idea form exports' do
         context 'PDF rendered from HTML' do
           let(:format) { 'pdf' }
 
-          example 'Get an PDF version of the idea form', document: false do
-            # Mock the PDF export to avoid call to Gutenberg
-            allow_any_instance_of(BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read)
-            do_request
-            assert_status 200
+          context 'feature flag enabled' do
+            before { SettingsService.new.activate_feature! 'html_pdfs' }
+
+            example 'Get an PDF version of the idea form', document: false do
+              # Expect the HTML PDF generator to be invoked
+              expect_any_instance_of(BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter).to receive(:export).and_return(
+                Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
+              )
+              do_request
+              assert_status 200
+            end
+
+            example 'Get the legacy PDF version of the idea form when ?legacy=true', document: false do
+              # Expect the Legacy PDF generator to be invoked
+              expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
+                Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
+              )
+              do_request({ import: { legacy: true } })
+              assert_status 200
+            end
+          end
+
+          context 'feature flag is not enabled' do
+            example 'Get the legacy PDF version of the idea form', document: false do
+              # Expect the Legacy PDF generator to be invoked
+              expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
+                Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
+              )
+              do_request
+              assert_status 200
+            end
           end
         end
 
