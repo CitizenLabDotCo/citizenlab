@@ -180,6 +180,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Auto-saving is enabled by default when you open the form editor. Any time you close the field settings panel using the \"X\" button, it will automatically trigger a save.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download as pdf",
   "app.components.FormSync.downloadExcelTemplate": "Download an Excel template",
+  "app.components.FormSync.downloadExcelTemplateTooltip": "Excel templates will not include any mapping input questions as these are not supported for bulk importing at this time.",
   "app.components.GoBackButton.group.edit.goBack": "Povratak nazad",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Vratite se na prethodnu stranicu",
   "app.components.HookForm.Feedback.errorTitle": "Došlo je do problema",

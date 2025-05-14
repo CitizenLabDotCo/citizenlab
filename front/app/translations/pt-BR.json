@@ -180,6 +180,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "O salvamento automático é ativado por padrão quando você abre o editor de formulários. Sempre que você fechar o painel de configurações de campo usando o botão \"X\", ele acionará automaticamente um salvamento.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Baixe como pdf",
   "app.components.FormSync.downloadExcelTemplate": "Faça o download de um modelo do Excel",
+  "app.components.FormSync.downloadExcelTemplateTooltip": "Os modelos do Excel não incluirão nenhuma pergunta de entrada de mapeamento, pois elas não são compatíveis com a importação em massa no momento.",
   "app.components.GoBackButton.group.edit.goBack": "Voltar",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Voltar à página anterior",
   "app.components.HookForm.Feedback.errorTitle": "Há um problema",
