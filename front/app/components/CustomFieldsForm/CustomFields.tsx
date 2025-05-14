@@ -9,7 +9,6 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
 import CheckboxMultiSelect from 'components/HookForm/CheckboxMultiSelect';
 import FileUploader from 'components/HookForm/FileUploader';
-import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
@@ -22,6 +21,7 @@ import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
 
+import ImageField from './Fields/ImageField';
 import { extractOptions } from './util';
 
 const renderField = (
@@ -98,7 +98,7 @@ const renderField = (
       );
     case 'image_files':
       return (
-        <ImagesDropzone
+        <ImageField
           name={question.key}
           imagePreviewRatio={135 / 298}
           acceptedFileTypes={{
