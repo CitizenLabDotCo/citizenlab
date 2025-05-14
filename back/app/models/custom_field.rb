@@ -261,7 +261,7 @@ class CustomField < ApplicationRecord
   end
 
   def printable?
-    return false unless include_in_printed_form
+    return false unless enabled? && include_in_printed_form
 
     # Support all field types that are supported in the form editor - TBC
     build_in_types = %w[text_multiloc html_multiloc image_files files topic_ids]

@@ -34,9 +34,9 @@ module BulkImportIdeas::Exporters
       end
 
       @importer_fields = []
-      question_num = 0 # TODO: Question number is repeated in printing of the PDF
+      question_num = 0
       form_fields.each_with_index do |field, index|
-        question_number = field.page? || field.additional_text_question? ? nil : "#{question_num += 1}. "
+        question_number = field_has_question_number?(field) ? question_num += 1 : nil
         add_to_importer_fields(field, pages, 'field', question_number, form_fields[index + 1])
         field.options.each do |option|
           add_to_importer_fields(option, pages, 'option')
@@ -52,7 +52,7 @@ module BulkImportIdeas::Exporters
     private
 
     def add_to_importer_fields(field_or_option, pdf_pages, type = 'field', question_number = nil, next_field = nil)
-      title = question_number.to_s + custom_field_service.handle_title(field_or_option, @locale)
+      title = field_print_title(field_or_option, question_number, type)
 
       pdf_pages.each_with_index do |lines, index|
         page_num = index + 1
@@ -81,11 +81,27 @@ module BulkImportIdeas::Exporters
             parent_key: parent_key,
             page: page_num,
             position: position.to_i,
-            # TODO: Needs the page number to also be passed in
-            next_page_split_text: next_field && !next_field.pdf_importable? ? custom_field_service.handle_title(next_field, @locale) : nil
+            next_page_split_text: text_to_split_field(next_field, question_number)
           }
         end
       end
+    end
+
+    # Works out if the field after this question is not importable
+    # If this is the case then we grab the question title / first line of text
+    # so that when we import we can split the scanned text on this string
+    # and ignore the text after it, otherwise the importer will see the question as part of the scanned text
+    def text_to_split_field(next_field, current_question_number)
+      if next_field && !next_field.pdf_importable?
+        # Get text from
+        question_number = current_question_number && field_has_question_number?(next_field) ? current_question_number + 1 : nil
+        field_print_title(next_field, question_number)
+      elsif next_field.nil? && @participation_method.custom_form.print_end_multiloc[@locale].present?
+        # Get text from the end of the form config
+        # TODO: This does not quite do it yet, as the HTML is not split over lines
+        ActionView::Base.full_sanitizer.sanitize(@participation_method.custom_form.print_end_multiloc[@locale])
+      end
+      # TODO: truncate long text in case the text wraps on multiple lines
     end
 
     # Allow rendering of images in the PDF when in development

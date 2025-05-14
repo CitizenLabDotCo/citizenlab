@@ -12,14 +12,8 @@ describe BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter do
   describe 'importer_data' do
     context 'ideation form' do
       let(:project) { create(:single_phase_ideation_project) }
-      let!(:importer_data) { service.importer_data }
+      let(:importer_data) { service.importer_data }
       let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      # let!(:custom_field) do
-      #   field = create(:custom_field_select, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Would you like some help?' })
-      #   field.options.create!(key: 'yes', title_multiloc: { 'en' => 'yes' })
-      #   field.options.create!(key: 'no', title_multiloc: { 'en' => 'no' })
-      #   field
-      # end
 
       before do
         # Stub the export method to return a PDF file from fixtures
@@ -39,10 +33,19 @@ describe BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter do
         expect(importer_data[:fields].pluck(:position)).to eq [26, 39, 17]
       end
 
-      it 'returns text strings to identify the start of the next that is NOT importable' do
+      it 'returns text strings to identify the start of the next field that is NOT importable' do
         expect(importer_data[:fields].pluck(:next_page_split_text)).to eq [
           'Tell us more', 'Images and attachments', nil
         ]
+      end
+
+      it 'returns text string to identify end text of the form that is not importable' do
+        custom_form.update!(
+          print_end_multiloc: { 'en' => "<h1>End of form</h1><p>Here is some other text too</p>" }
+        )
+        expect(importer_data[:fields].pluck(:next_page_split_text)).to eq [
+                                                                            'Tell us more', 'Images and attachments', 'End of formHere is some other text too'
+                                                                          ]
       end
     end
   end

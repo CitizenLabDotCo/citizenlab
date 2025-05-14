@@ -114,9 +114,9 @@ module BulkImportIdeas::Exporters
         next if field.title_multiloc[@locale].blank?
 
         {
-          title: field.title_multiloc[@locale],
+          title: field_print_title(field),
           description: field_print_description(field),
-          question_number: field.page? || field.additional_text_question? ? nil : "#{question_num += 1}.",
+          question_number: field_has_question_number?(field) ? "#{question_num += 1}." : '',
           additional_text_question: field.additional_text_question?,
           format: field_print_format(field),
           input_type: field.input_type,
@@ -185,6 +185,12 @@ module BulkImportIdeas::Exporters
       description
     end
 
+    def field_print_title(field, question_number = nil, type = 'field')
+      title = question_number && type == 'field' ? "#{question_number}. " : ''
+      title += custom_field_service.handle_title(field, @locale)
+      title
+    end
+
     def field_print_description(field)
       if (field.linear_scale? || field.rating?) && field.description_multiloc[@locale].blank?
         linear_scale_print_description(field)
@@ -192,6 +198,10 @@ module BulkImportIdeas::Exporters
         description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
         format_html_field(description[@locale])
       end
+    end
+
+    def field_has_question_number?(field)
+      !field.page? && !field.additional_text_question?
     end
 
     def linear_scale_print_description(field)
