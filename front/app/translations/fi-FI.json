@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Content Builderin avulla voit käyttää kehittyneempiä asetteluvaihtoehtoja.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Näytä projekti",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Kyselyn loppu",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Lataa Excel-malli",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Luo älykäs ryhmä",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Käyttäjät, jotka täyttävät kaikki seuraavat ehdot, lisätään automaattisesti ryhmään:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Anna vähintään yksi sääntö",
