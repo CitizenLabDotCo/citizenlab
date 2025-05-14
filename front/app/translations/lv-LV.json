@@ -179,6 +179,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automātiskā saglabāšana",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Pēc noklusējuma, atverot veidlapas redaktoru, ir iespējota automātiskā saglabāšana. Katru reizi, kad aizverat lauka iestatījumu paneli, izmantojot pogu \"X\", automātiski tiek veikta saglabāšana.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lejupielādēt kā pdf",
+  "app.components.FormSync.downloadExcelTemplate": "Lejupielādēt Excel veidni",
   "app.components.GoBackButton.group.edit.goBack": "Atgriezties",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Atgriezties uz iepriekšējo lapu",
   "app.components.HookForm.Feedback.errorTitle": "Ir radusies problēma",
