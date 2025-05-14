@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Izmantojot Satura konstruktoru, varat izmantot plašākas izkārtojuma iespējas.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Apskatīt projektu",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Aptaujas beigas",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Lejupielādēt Excel veidni",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Izveidot viedo grupu",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Lietotāji, kas atbilst visiem šiem nosacījumiem, tiks automātiski pievienoti grupai:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Norādīt vismaz vienu noteikumu",
