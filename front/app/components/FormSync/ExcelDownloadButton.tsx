@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, IconTooltip } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -9,7 +9,7 @@ import { API_PATH } from 'containers/App/constants';
 
 import UpsellTooltip from 'components/UpsellTooltip';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
@@ -19,6 +19,7 @@ interface Props {
 }
 
 const ExcelDownloadButton = ({ phaseId }: Props) => {
+  const { formatMessage } = useIntl();
   const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
     onlyCheckAllowed: true,
@@ -40,7 +41,12 @@ const ExcelDownloadButton = ({ phaseId }: Props) => {
         onClick={downloadExampleXlsxFile}
         disabled={!inputImporterAllowed}
       >
-        <FormattedMessage {...messages.downloadExcelTemplate} />
+        <Box display="flex" alignItems="center" gap="4px">
+          <FormattedMessage {...messages.downloadExcelTemplate} />
+          <IconTooltip
+            content={formatMessage(messages.downloadExcelTemplateTooltip)}
+          />
+        </Box>
       </Button>
     </UpsellTooltip>
   );
