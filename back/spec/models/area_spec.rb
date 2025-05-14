@@ -22,9 +22,9 @@ RSpec.describe Area do
   describe 'description_multiloc' do
     it 'sanitizes script tags in the description' do
       area = create(:area, description_multiloc: {
-        'en' => '<p>Test</p><script>This should be removed!</script>'
+        'en' => '<p>Test</p><script>These tags should be removed!</script>'
       })
-      expect(area.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
+      expect(area.description_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
     end
   end
 
@@ -32,6 +32,25 @@ RSpec.describe Area do
     it 'with invalid locales marks the model as invalid' do
       area = build(:area, description_multiloc: { 'se-BI' => 'awesome area' })
       expect(area).to be_invalid
+    end
+  end
+
+  describe '#sanitize_title_multiloc' do
+    it 'removes all HTML tags from organization_name multiloc' do
+      area = build(
+        :area,
+        title_multiloc: {
+          'en' => 'My area of <script>alert("XSS")</script> Springfield',
+          'fr-BE' => 'South Elyse <img src=x onerror=alert(1)>',
+          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      )
+
+      area.save!
+
+      expect(area.title_multiloc['en']).to eq('My area of alert("XSS") Springfield')
+      expect(area.title_multiloc['fr-BE']).to eq('South Elyse ')
+      expect(area.title_multiloc['nl-BE']).to eq('Plain text with formatting')
     end
   end
 
