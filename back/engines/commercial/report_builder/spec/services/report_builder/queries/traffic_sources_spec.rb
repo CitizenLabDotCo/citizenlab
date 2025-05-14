@@ -11,9 +11,17 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
     end
 
-    # it 'identifies direct traffic' do
-      # TODO
-    # end
+    it 'identifies direct traffic (referrer is empty string or nil)' do
+      create(:session, referrer: '')
+      create(:session, referrer: nil)
+      create(:session, referrer: nil)
+
+      expect(query.run_query).to eq({
+        sessions_per_referrer_type: {
+          'direct_entry' => 3,
+        }
+      })
+    end
 
     it 'identifies search engines' do
       create(:session, referrer: 'https://www.google.com/')

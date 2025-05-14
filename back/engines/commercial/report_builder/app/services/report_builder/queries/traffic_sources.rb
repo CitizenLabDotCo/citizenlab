@@ -1,5 +1,9 @@
 module ReportBuilder
   class Queries::TrafficSources < ReportBuilder::Queries::Base
+    DIRECT_ENTRY_CASES = [
+      "WHEN referrer IS NULL OR referrer = '' THEN 'direct_entry'",
+    ]
+
     SEARCH_ENGINE_REFERRERS = ['android-app://com.google.android.googlequicksearchbox/']
     SEARCH_ENGINE_DOMAINS = %w[
       google bing duckduckgo ecosia yahoo yandex msn qwant startpage
@@ -25,7 +29,8 @@ module ReportBuilder
       sessions = apply_project_filter_if_needed(sessions, project_id)
       sessions = exclude_roles_if_needed(sessions, exclude_roles)
 
-      cases = generate_cases(SEARCH_ENGINE_REFERRERS, SEARCH_ENGINE_DOMAINS, 'search_engine')
+      cases = DIRECT_ENTRY_CASES
+      cases += generate_cases(SEARCH_ENGINE_REFERRERS, SEARCH_ENGINE_DOMAINS, 'search_engine')
       cases += generate_cases(SOCIAL_NETWORK_REFERRERS, SOCIAL_NETWORK_DOMAINS, 'social_network')
 
       referrer_types = sessions
