@@ -14,8 +14,4 @@ export default defineMessages({
     id: 'app.containers.Admin.surveyFormTab.editSurveyForm',
     defaultMessage: 'Edit survey form',
   },
-  downloadExcelTemplate: {
-    id: 'app.containers.Admin.surveyFormTab.downloadExcelTemplate',
-    defaultMessage: 'Download an Excel template',
-  },
 });
