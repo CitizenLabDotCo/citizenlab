@@ -873,6 +873,7 @@
   "app.containers.Admin.inspirationHub.AllProjects": "جميع المشاريع",
   "app.containers.Admin.inspirationHub.CommunityMonitorSurvey": "مراقب المجتمع",
   "app.containers.Admin.inspirationHub.DocumentAnnotation": "شرح الوثيقة",
+  "app.containers.Admin.inspirationHub.ExternalSurvey": "المسح الخارجي",
   "app.containers.Admin.inspirationHub.Filters.Country": "دولة",
   "app.containers.Admin.inspirationHub.Filters.Method": "طريقة",
   "app.containers.Admin.inspirationHub.Filters.Search": "يبحث",
