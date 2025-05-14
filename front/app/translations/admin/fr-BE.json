@@ -539,7 +539,7 @@
   "app.containers.Admin.Moderation.comment": "Commentaire",
   "app.containers.Admin.Moderation.commentDeletionCancelButton": "Annuler",
   "app.containers.Admin.Moderation.commentDeletionConfirmButton": "Supprimer",
-  "app.containers.Admin.Moderation.confirmCommentDeletion": "Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette suppression est permanente et ne peut être annulée.",
+  "app.containers.Admin.Moderation.confirmCommentDeletion": "Voulez-vous vraiment supprimer ce commentaire ? Cette action est définitive et irréversible.",
   "app.containers.Admin.Moderation.content": "Contenu",
   "app.containers.Admin.Moderation.date": "Date",
   "app.containers.Admin.Moderation.deleteComment": "Supprimer le commentaire",
