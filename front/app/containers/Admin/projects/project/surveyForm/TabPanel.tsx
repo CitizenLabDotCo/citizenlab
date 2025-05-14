@@ -20,35 +20,31 @@ const TabPanel = ({
   phaseId: string;
 }) => {
   return (
-    <>
-      <Box gap="0px" flexWrap="wrap" width="100%" display="flex">
-        <Box width="100%">
-          <SectionTitle>
-            <FormattedMessage {...messages.surveyForm} />
-          </SectionTitle>
-          <SectionDescription style={{ maxWidth: '700px' }}>
-            <FormattedMessage {...messages.inputFormDescription} />
-          </SectionDescription>
-        </Box>
-        <Box display="flex">
-          <Button
-            mr="8px"
-            linkTo={`/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`}
-            width="auto"
-            icon="edit"
-            data-cy="e2e-edit-survey-form"
-          >
-            <FormattedMessage {...messages.editSurveyForm} />
-          </Button>
-          <DownloadPDFButtonWithModal
-            mr="8px"
-            formType="survey"
-            phaseId={phaseId}
-          />
-          <ExcelDownloadButton phaseId={phaseId} />
-        </Box>
+    <Box maxWidth="700px">
+      <SectionTitle>
+        <FormattedMessage {...messages.surveyForm} />
+      </SectionTitle>
+      <SectionDescription>
+        <FormattedMessage {...messages.inputFormDescription} />
+      </SectionDescription>
+      <Box display="flex">
+        <Button
+          mr="8px"
+          linkTo={`/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`}
+          width="auto"
+          icon="edit"
+          data-cy="e2e-edit-survey-form"
+        >
+          <FormattedMessage {...messages.editSurveyForm} />
+        </Button>
+        <DownloadPDFButtonWithModal
+          mr="8px"
+          formType="survey"
+          phaseId={phaseId}
+        />
+        <ExcelDownloadButton phaseId={phaseId} />
       </Box>
-    </>
+    </Box>
   );
 };
 
