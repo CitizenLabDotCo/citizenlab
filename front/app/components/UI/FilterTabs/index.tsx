@@ -53,17 +53,17 @@ const CountText = styled.span`
   `}
 `;
 
-// If ShowCount is true, then each element should have a count otherwise it should be optional
-export type TabData<ShowCount extends boolean> = {
-  [key: string]: ShowCount extends true
-    ? { label: MessageDescriptor; count: number }
-    : { label: MessageDescriptor; count?: number };
+export type TabData = {
+  [key: string]: {
+    label: MessageDescriptor;
+    count?: number;
+  };
 };
 
 interface Props<ShowCount extends boolean> {
   currentTab: string;
   availableTabs: string[];
-  tabData: TabData<ShowCount>;
+  tabData: TabData;
   onChangeTab: (tab: string) => void;
   getTabId?: (tab: string) => string;
   getTabPanelId?: (tab: string) => string;
@@ -125,7 +125,9 @@ const Tabs = <ShowCount extends boolean>({
         >
           <div aria-hidden>
             <FormattedMessage {...tabData[tab].label} />
-            {showCount && <CountText>({tabData[tab].count})</CountText>}
+            {showCount && typeof tabData[tab].count === 'number' && (
+              <CountText>({tabData[tab].count})</CountText>
+            )}
           </div>
 
           {getScreenReaderTextForTab && (
