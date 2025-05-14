@@ -51,10 +51,10 @@ export const fetchCommonGroundProgressStub = async (
   return {
     data: {
       id: 'stub-phase-progress-1',
-      type: 'phase-progress',
+      type: 'common_ground_progress',
       attributes: {
-        numIdeas: sampleStatements.length,
-        numIdeasReacted: currentIndex,
+        num_ideas: sampleStatements.length,
+        num_reacted_ideas: currentIndex,
         nextIdea: nextStatement || null,
       },
       relationships: {
@@ -83,10 +83,10 @@ export const reactToIdeaStub = async (
   return {
     data: {
       id: 'stub-phase-progress-1',
-      type: 'phase-progress',
+      type: 'common_ground_progress',
       attributes: {
-        numIdeas: sampleStatements.length,
-        numIdeasReacted: currentIndex,
+        num_ideas: sampleStatements.length,
+        num_reacted_ideas: currentIndex,
         nextIdea: nextStatement || null,
       },
       relationships: {

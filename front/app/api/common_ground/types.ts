@@ -26,6 +26,8 @@ export interface CommonGroundResultsData {
     numVotes: number;
     majority: CommonGroundResultItem[];
     divisive: CommonGroundResultItem[];
+    uncertain: CommonGroundResultItem[];
+    allStatements: CommonGroundResultItem[];
   };
 }
 
@@ -38,10 +40,10 @@ export interface CommonGroundProgressStatement {
 
 export interface ProgressData {
   id: string;
-  type: 'phase-progress';
+  type: 'common_ground_progress';
   attributes: {
-    numIdeas: number;
-    numIdeasReacted: number;
+    num_ideas: number;
+    num_reacted_ideas: number;
     nextIdea: CommonGroundProgressStatement | null;
   };
   relationships: {

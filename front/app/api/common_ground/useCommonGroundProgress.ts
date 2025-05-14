@@ -14,7 +14,7 @@ export const fetchCommonGroundProgress = ({
   phaseId?: string | null;
 }): Promise<ICommonGroundProgress> =>
   fetcher<ICommonGroundProgress>({
-    path: `/phases/${phaseId}/common_ground/progress`,
+    path: `/phases/${phaseId}/progress`,
     action: 'get',
   });
 

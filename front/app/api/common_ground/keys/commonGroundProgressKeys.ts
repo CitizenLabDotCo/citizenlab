@@ -1,6 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'phase-progress' };
+const baseKey = { type: 'common_ground_progress' };
 
 const commonGroundProgressKeys = {
   all: () => [baseKey],
