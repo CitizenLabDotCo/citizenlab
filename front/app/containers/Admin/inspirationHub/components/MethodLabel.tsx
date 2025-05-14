@@ -9,7 +9,7 @@ import { useIntl } from 'utils/cl-intl';
 import { PARTICIPATION_METHOD_LABELS } from '../constants';
 
 interface Props {
-  participationMethod: ParticipationMethod;
+  participationMethod: Exclude<ParticipationMethod, 'survey'>;
 }
 
 const MethodLabel = ({ participationMethod }: Props) => {

@@ -7,12 +7,12 @@ const notEmpty = (
 
 export const getMethods = (
   projectLibraryPhases: (ProjectLibraryPhase | undefined)[]
-) => {
+): Exclude<ParticipationMethod, 'survey'>[] => {
   const methods = projectLibraryPhases
     .map((phase) => phase?.data.attributes.participation_method)
     .filter(notEmpty);
 
   const deduplicatedMethods = [...new Set(methods)];
 
-  return deduplicatedMethods;
+  return deduplicatedMethods.filter((method) => method !== 'survey');
 };
