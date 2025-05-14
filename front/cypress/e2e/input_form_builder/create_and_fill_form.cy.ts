@@ -195,6 +195,15 @@ describe('Input form builder', () => {
       '{downArrow}{enter}'
     );
 
+    // Cannot proceed to the next page without filling in the required custom field
+    cy.get('[data-cy="e2e-submit-form"]').click();
+    // Verify that an error is shown and that we stay on the page
+    cy.get('.e2e-error-message');
+    cy.url().should(
+      'eq',
+      `${Cypress.config().baseUrl}/en/projects/${projectSlug}/ideas/new`
+    );
+
     // Fill in required custom field
     cy.contains(questionTitle).should('exist');
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
