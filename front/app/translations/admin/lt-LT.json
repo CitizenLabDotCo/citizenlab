@@ -873,6 +873,7 @@
   "app.containers.Admin.inspirationHub.AllProjects": "Visi projektai",
   "app.containers.Admin.inspirationHub.CommunityMonitorSurvey": "Bendrijos stebėtojas",
   "app.containers.Admin.inspirationHub.DocumentAnnotation": "Dokumento anotacija",
+  "app.containers.Admin.inspirationHub.ExternalSurvey": "Išorinė apklausa",
   "app.containers.Admin.inspirationHub.Filters.Country": "Šalis",
   "app.containers.Admin.inspirationHub.Filters.Method": "Metodas",
   "app.containers.Admin.inspirationHub.Filters.Search": "Paieška",
