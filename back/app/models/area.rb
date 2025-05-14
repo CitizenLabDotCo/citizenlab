@@ -87,6 +87,7 @@ class Area < ApplicationRecord
 
   def sanitize_title_multiloc
     return unless title_multiloc&.any?
+
     strip_title
 
     self.title_multiloc = SanitizationService.new.sanitize_multiloc(
