@@ -9,6 +9,7 @@ import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import DuplicateSurveyButtonWithModal from './DuplicateSurveyButtonWithModal';
 import EditButtonWithWarningModal from './EditButtonWithWarningModal';
 import messages from './messages';
 
@@ -29,12 +30,20 @@ const TabPanel = ({
       </SectionDescription>
       <Box display="flex">
         <EditButtonWithWarningModal projectId={projectId} phaseId={phaseId} />
-        <DownloadPDFButtonWithModal
-          mr="8px"
-          formType="survey"
-          phaseId={phaseId}
-        />
-        <ExcelDownloadButton phaseId={phaseId} />
+        <DuplicateSurveyButtonWithModal phaseId={phaseId} />
+      </Box>
+      <Box>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.downloads} />
+        </SubSectionTitle>
+        <Box display="flex">
+          <DownloadPDFButtonWithModal
+            mr="8px"
+            formType="survey"
+            phaseId={phaseId}
+          />
+          <ExcelDownloadButton phaseId={phaseId} />
+        </Box>
       </Box>
     </Box>
   );
