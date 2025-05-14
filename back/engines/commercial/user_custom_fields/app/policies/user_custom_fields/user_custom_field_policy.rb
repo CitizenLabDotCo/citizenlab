@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 
 module UserCustomFields
-  class UserCustomFieldPolicy < ApplicationPolicy
-    class Scope < ApplicationPolicy::Scope
-      def resolve
-        scope
-      end
-    end
-
+  class UserCustomFieldPolicy < CustomFieldPolicy
     def create?
       user&.active? && user.admin? && !record.code
     end
