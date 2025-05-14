@@ -43,7 +43,7 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
           padding="6px 12px"
           fontSize="14px"
         >
-          <FormattedMessage {...messages.addOpinion} />
+          <FormattedMessage {...messages.viewInputs} />
         </Button>
       }
     />
