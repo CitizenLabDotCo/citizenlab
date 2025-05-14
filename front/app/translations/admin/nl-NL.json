@@ -1345,7 +1345,7 @@
   "app.containers.Admin.reporting.widgets.MethodsUsed.survey": "Externe enquête",
   "app.containers.Admin.reporting.widgets.MethodsUsed.volunteering": "Vrijwilligers zoeken",
   "app.containers.Admin.reporting.widgets.MethodsUsed.voting": "Stemming",
-  "app.containers.Admin.surveyFormTab.editSurveyForm": "Enquêteformulier bewerken",
+  "app.containers.Admin.surveyFormTab.editSurveyForm": "Vragenlijstformulier bewerken",
   "app.containers.Admin.surveyFormTab.inputFormDescription": "Specificeer welke informatie moet worden verstrekt, voeg korte beschrijvingen of instructies toe om de antwoorden van deelnemers te sturen en specificeer of een veld optioneel of vereist is.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Enquêteformulier",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Nieuw token aanmaken",
