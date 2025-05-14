@@ -7,8 +7,6 @@ describe CommunityMonitorService do
   let!(:project) { create(:community_monitor_project) }
   let(:current_user) { create(:admin) }
 
-  before { travel_to(Date.parse('2025-07-01')) } # TODO: Remove trial period after 2025-06-30
-
   describe '#enabled?' do
     context 'when feature is enabled' do
       it 'returns true' do

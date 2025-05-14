@@ -41,6 +41,7 @@ const Population = () => {
       }}
       title={formatMessage(messages.population)}
       name="population-select"
+      mr="0px"
     />
   );
 };

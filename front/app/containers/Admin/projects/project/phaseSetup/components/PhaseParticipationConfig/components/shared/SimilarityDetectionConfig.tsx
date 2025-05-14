@@ -19,7 +19,6 @@ import Warning from 'components/UI/Warning';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { isSuperAdmin } from 'utils/permissions/roles';
 
 import messages from '../messages';
@@ -44,6 +43,7 @@ const SimilarityDetectionConfig = ({
   handleSimilarityEnabledChange,
   handleThresholdChange,
 }: Props) => {
+  const isInputIQActivated = useFeatureFlag({ name: 'input_iq' });
   const isInputIQAllowed = useFeatureFlag({
     name: 'input_iq',
     onlyCheckAllowed: true,
@@ -55,16 +55,9 @@ const SimilarityDetectionConfig = ({
     appConfiguration?.data.attributes.settings.core.timezone;
   if (!tenantTimezone) return null;
 
-  const timeLeftInDays = getPeriodRemainingUntil(
-    '2025-06-30',
-    tenantTimezone,
-    'days'
-  );
-  const isTrialOver = timeLeftInDays < 0;
-  const showWarningMessage = !isTrialOver && !isInputIQAllowed;
-  const showUpsellTooltip = isTrialOver && !isInputIQAllowed;
-  const featureAllowed = isInputIQAllowed || !isTrialOver;
-  const allowConfiguringThreshold = isSuperAdmin(user) && featureAllowed;
+  const showEarlyAccessMessage = isInputIQActivated;
+  const showUpsellTooltip = !isInputIQAllowed;
+  const allowConfiguringThreshold = isSuperAdmin(user) && isInputIQActivated;
 
   return (
     <SectionField display="flex">
@@ -78,7 +71,7 @@ const SimilarityDetectionConfig = ({
       </SubSectionTitle>
 
       <Box display="flex" flexDirection="column" gap="16px" width="100%">
-        {showWarningMessage && (
+        {showEarlyAccessMessage && (
           <Warning>
             <FormattedMessage {...messages.warningSimilarInputDetectionTrial} />
           </Warning>
@@ -88,10 +81,10 @@ const SimilarityDetectionConfig = ({
             label={
               <FormattedMessage {...messages.enableSimilarInputDetection} />
             }
-            checked={!!similarity_enabled && featureAllowed}
+            checked={!!similarity_enabled && isInputIQActivated}
             onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}
             id="similarity_enabled"
-            disabled={!featureAllowed}
+            disabled={!isInputIQActivated}
           />
         </UpsellTooltip>
         <Error apiErrors={apiErrors?.similarity_enabled} />
@@ -117,7 +110,7 @@ const SimilarityDetectionConfig = ({
                   <IconTooltip
                     content={
                       <FormattedMessage
-                        {...messages.similarityThresholdTitleTooltip}
+                        {...messages.similarityThresholdTitleTooltipMessage}
                       />
                     }
                   />
@@ -145,7 +138,7 @@ const SimilarityDetectionConfig = ({
                   <IconTooltip
                     content={
                       <FormattedMessage
-                        {...messages.similarityThresholdBodyTooltip}
+                        {...messages.similarityThresholdBodyTooltipMessage}
                       />
                     }
                   />

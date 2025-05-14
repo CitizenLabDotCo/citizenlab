@@ -1164,6 +1164,18 @@
         }
       },
 
+      "html_pdfs": {
+        "type": "object",
+        "title": "Use HTML PDF generator",
+        "description": "Enables the new more advanced PDF generation for export and import (DO NOT USE UNTIL FURTHER NOTICE).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "input_importer": {
         "type": "object",
         "title": "Input importer",
@@ -1436,6 +1448,18 @@
             "description": "Do not edit unless you know what you're doing. This is usually set by the system",
             "type": "string"
           }
+        }
+      },
+
+      "common_ground": {
+        "type": "object",
+        "title": "Common ground",
+        "description": "New participation method that is currently under development. [DO NOT ENABLE]",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       }
     },

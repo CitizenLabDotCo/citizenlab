@@ -330,6 +330,10 @@ namespace :cl2_back do
         project_library: {
           enabled: false,
           allowed: false
+        },
+        common_ground: {
+          enabled: true,
+          allowed: true
         }
       }
     )

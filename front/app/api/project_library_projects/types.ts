@@ -20,8 +20,12 @@ export type SortType =
 export type RansackParams = {
   // filters
   'q[tenant_country_code_in]'?: string[];
-  'q[phases_participation_method_in]'?: ParticipationMethod[];
+  'q[phases_participation_method_in]'?: Exclude<
+    ParticipationMethod,
+    'survey'
+  >[];
   'q[tenant_population_group_in]'?: PopulationGroup[];
+  'q[topic_id_in]'?: string[];
   'q[practical_end_at_gteq]'?: string;
   'q[practical_end_at_lt]'?: string;
   'q[title_en_or_description_en_or_tenant_name_cont]'?: string;

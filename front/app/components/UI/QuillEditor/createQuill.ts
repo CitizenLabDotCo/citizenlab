@@ -4,12 +4,13 @@ import { attributes } from './altTextToImagesModule';
 
 interface Params {
   id: string;
-  toolbarId?: string;
-  noImages?: boolean;
-  noVideos?: boolean;
-  noAlign?: boolean;
+  toolbarId: string;
+  noImages: boolean;
+  noVideos: boolean;
+  noAlign: boolean;
   limitedTextFormatting?: boolean;
   withCTAButton?: boolean;
+  noLinks: boolean;
   onBlur?: () => void;
 }
 
@@ -22,6 +23,7 @@ export const createQuill = (
     noAlign,
     noImages,
     noVideos,
+    noLinks,
     withCTAButton,
     onBlur,
   }: Params
@@ -31,7 +33,7 @@ export const createQuill = (
     formats: [
       'bold',
       'italic',
-      'link',
+      ...(!noLinks ? ['link'] : []),
       ...attributes,
       ...(withCTAButton ? ['button'] : []),
       ...(!limitedTextFormatting ? ['header', 'list'] : []),
@@ -42,7 +44,7 @@ export const createQuill = (
     modules: {
       altTextToImages: true,
       blotFormatter: !noImages || !noVideos,
-      toolbar: toolbarId ? `#${toolbarId}` : false,
+      toolbar: `#${toolbarId}`,
       keyboard: {
         bindings: {
           // overwrite default tab behavior

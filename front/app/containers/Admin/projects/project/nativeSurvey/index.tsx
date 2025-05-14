@@ -12,10 +12,6 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
 
-import PDFExportModal, {
-  FormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
-
 import FormResults from 'components/admin/FormResults';
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
@@ -26,9 +22,9 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
+import AnalysisBanner from './AnalysisBanner';
 import CopySurveyModal from './CopySurveyModal';
 import messages from './messages';
-import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 
 const Forms = () => {
   const locale = useLocale();
@@ -50,7 +46,6 @@ const Forms = () => {
   });
 
   // Modal states
-  const [exportModalOpen, setExportModalOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditWarningModal, setShowEditWarningModal] = useState(false);
   const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
@@ -71,7 +66,6 @@ const Forms = () => {
 
   // Variables from form config
   const {
-    downloadPdfLink,
     downloadExcelLink,
     postingEnabled,
     togglePostingEnabled,
@@ -107,13 +101,6 @@ const Forms = () => {
       setIsDownloading(false);
     }
   };
-  const handleExportPDF = async ({ personal_data }: FormValues) => {
-    await saveSurveyAsPDF({
-      downloadPdfLink,
-      locale,
-      personal_data,
-    });
-  };
 
   if (isDownloading) {
     return (
@@ -126,6 +113,7 @@ const Forms = () => {
   return (
     <>
       <Box width="100%">
+        <AnalysisBanner />
         <Box
           width="100%"
           display="flex"
@@ -185,7 +173,6 @@ const Forms = () => {
               haveSubmissionsComeIn={haveSubmissionsComeIn}
               setShowCopySurveyModal={setShowCopySurveyModal}
               handleDownloadResults={handleDownloadResults}
-              setExportModalOpen={setExportModalOpen}
               setDropdownOpened={setDropdownOpened}
               isDropdownOpened={isDropdownOpened}
               downloadExcelLink={downloadExcelLink}
@@ -207,12 +194,6 @@ const Forms = () => {
           surveyFormPersisted={surveyFormPersisted}
         />
       </Box>
-      <PDFExportModal
-        open={exportModalOpen}
-        formType="survey"
-        onClose={() => setExportModalOpen(false)}
-        onExport={handleExportPDF}
-      />
       <DeleteModal
         showDeleteModal={showDeleteModal}
         closeDeleteModal={closeDeleteModal}
