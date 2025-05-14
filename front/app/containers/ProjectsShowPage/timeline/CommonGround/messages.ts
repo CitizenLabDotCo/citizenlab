@@ -21,9 +21,10 @@ export default defineMessages({
     id: 'app.components.CommonGroundStatements.disagreeLabel',
     defaultMessage: 'Disagree',
   },
-  noMoreStatements: {
-    id: 'app.components.CommonGroundStatements.noMoreStatements',
-    defaultMessage: 'No more statements',
+  noMoreInputs: {
+    id: 'app.components.CommonGroundStatements.noMoreInputs',
+    defaultMessage:
+      "There are no statements to respond to right now. You'll get notified as soon as new ones are available.",
   },
   participants: {
     id: 'app.components.CommonGroundResults.participantsLabel',

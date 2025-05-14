@@ -127,7 +127,30 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
   const startRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   if (!current) {
-    return <Box mt="24px">{formatMessage(messages.noMoreStatements)}</Box>;
+    return (
+      <Box mt="8px" width="100%" minHeight="260px">
+        <StatementCard
+          bgColor="white"
+          transform="translate3d(0px, 0px, 0)"
+          isAnimating={false}
+          isDragging={false}
+          border={`1px solid ${colors.grey400}`}
+          style={{ cursor: 'default' }}
+        >
+          <Box
+            display="flex"
+            p="10px 18px"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100px"
+          >
+            <Text fontSize="l" color="grey800">
+              {formatMessage(messages.noMoreInputs)}
+            </Text>
+          </Box>
+        </StatementCard>
+      </Box>
+    );
   }
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
