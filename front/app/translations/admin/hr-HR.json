@@ -2102,7 +2102,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Korisnici",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Skupite sva polja",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Opis polja",
-  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Preuzmite Excel predložak",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Uredi obrazac za unos",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Omogućeno",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Uključi ovo polje.",
