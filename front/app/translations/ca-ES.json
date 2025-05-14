@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "L'ús del Content Builder us permetrà utilitzar opcions de disseny més avançades.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Veure projecte",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Final de l'enquesta",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Descarregar una plantilla d'Excel",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Creeu un grup intel·ligent",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Els usuaris que compleixin totes les condicions següents s'afegiran automàticament al grup:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Proporcioneu almenys una regla",
