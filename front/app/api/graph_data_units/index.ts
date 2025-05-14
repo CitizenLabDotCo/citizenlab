@@ -12,10 +12,12 @@ import {
   MethodsUsedProps,
   ParticipationProps,
   ProjectsProps,
+  DeviceTypesProps,
   VisitorsLanguagesProps,
 } from './requestTypes';
 // Response types
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
+import { DeviceTypesResponse } from './responseTypes/DeviceTypesWidget';
 import { MethodsUsedResponse } from './responseTypes/MethodsUsedWidget';
 import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
 import { ParticipantsResponse } from './responseTypes/ParticipantsWidget';
@@ -246,6 +248,13 @@ export const useParticipationLive = (
 export const useProjects = (props: ProjectsProps = {}) => {
   return useGraphDataUnits<ProjectsResponse>({
     resolved_name: 'ProjectsWidget',
+    props,
+  });
+};
+
+export const useDeviceTypesLive = (props: DeviceTypesProps) => {
+  return useGraphDataUnitsLive<DeviceTypesResponse>({
+    resolved_name: 'DeviceTypesWidget',
     props,
   });
 };

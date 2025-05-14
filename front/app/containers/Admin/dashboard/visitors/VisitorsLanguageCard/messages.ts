@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.title',
     defaultMessage: 'Language',
   },
+  count: {
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsLanguageCard.count',
+    defaultMessage: 'Count',
+  },
 });

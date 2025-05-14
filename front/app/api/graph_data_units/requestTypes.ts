@@ -16,7 +16,8 @@ export type ResolvedName =
   | 'RegistrationsWidget'
   | 'MethodsUsedWidget'
   | 'ParticipationWidget'
-  | 'ProjectsWidget';
+  | 'ProjectsWidget'
+  | 'DeviceTypesWidget';
 
 export interface BaseParams {
   resolved_name: ResolvedName;
@@ -36,7 +37,8 @@ export type ParametersLive =
   | RegistrationsParams
   | MethodsUsedParams
   | ParticipationParams
-  | ProjectsParams;
+  | ProjectsParams
+  | DeviceTypesParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
 type ExcludeRoles = 'exclude_admins_and_moderators';
@@ -60,8 +62,11 @@ interface DateProps {
   end_at?: string | null;
 }
 
-export interface AnalyticsProps extends DateProps {
-  project_id?: string | undefined;
+interface ProjectId {
+  project_id?: string | null;
+}
+
+export interface AnalyticsProps extends DateProps, ProjectId {
   resolution?: IResolution;
 }
 
@@ -97,9 +102,7 @@ export interface VisitorsParams extends BaseParams {
   props: VisitorsProps;
 }
 
-export interface VisitorsTrafficSourcesProps extends DateProps {
-  project_id?: string;
-}
+export interface VisitorsTrafficSourcesProps extends DateProps, ProjectId {}
 export interface VisitorsTrafficSourcesParams extends BaseParams {
   resolved_name: 'VisitorsTrafficSourcesWidget';
   props: VisitorsTrafficSourcesProps;
@@ -114,8 +117,7 @@ export interface VisitorsLanguagesParams extends BaseParams {
   props: VisitorsLanguagesProps;
 }
 
-interface BaseDemographicsProps extends DateProps {
-  project_id?: string;
+interface BaseDemographicsProps extends DateProps, ProjectId {
   group_id?: string | null;
 }
 
@@ -176,6 +178,15 @@ export interface ProjectsProps extends DateProps {
 interface ProjectsParams extends BaseParams {
   resolved_name: 'ProjectsWidget';
   props: ProjectsProps;
+}
+
+export interface DeviceTypesProps extends DateProps, ProjectId {
+  exclude_roles?: ExcludeRoles;
+}
+
+export interface DeviceTypesParams extends BaseParams {
+  resolved_name: 'DeviceTypesWidget';
+  props: DeviceTypesProps;
 }
 
 // published
