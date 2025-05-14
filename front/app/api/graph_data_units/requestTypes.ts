@@ -100,7 +100,9 @@ export interface VisitorsParams extends BaseParams {
   props: VisitorsProps;
 }
 
-export interface VisitorsTrafficSourcesProps extends DateProps, ProjectId {}
+export interface VisitorsTrafficSourcesProps extends DateProps, ProjectId {
+  exclude_roles?: ExcludeRoles;
+}
 export interface VisitorsTrafficSourcesParams extends BaseParams {
   resolved_name: 'VisitorsTrafficSourcesWidget';
   props: VisitorsTrafficSourcesProps;
