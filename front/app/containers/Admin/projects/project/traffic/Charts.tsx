@@ -1,9 +1,7 @@
 import React from 'react';
 
-import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
-import ParticipantsCard from 'components/admin/GraphCards/ParticipantsCard';
-import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
 import {
   ProjectId,
   Dates,
@@ -17,26 +15,10 @@ import DeviceTypesCard from 'components/admin/GraphCards/DeviceTypesCard';
 type Props = ProjectId & Dates & Resolution;
 
 const Charts = (props: Props) => {
-  const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
-
   return (
     <>
       <VisitorsCard {...props} />
       <VisitorsTrafficSourcesCard {...props} />
-      <Box display="flex" flexDirection="row">
-        <Box width="50%">
-          <RegistrationsCard
-            {...props}
-            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
-          />
-        </Box>
-        <Box width="50%">
-          <ParticipantsCard
-            {...props}
-            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
-          />
-        </Box>
-      </Box>
       <Box display="flex" flexDirection="row">
         <Box width="50%">
           <VisitorsLanguageCard {...props} />
