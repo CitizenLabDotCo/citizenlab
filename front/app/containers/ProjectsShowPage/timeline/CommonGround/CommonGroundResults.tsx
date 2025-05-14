@@ -68,7 +68,7 @@ const CommonGroundResults = ({ phaseId }: Props) => {
   );
 
   return (
-    <Box mt="24px" bg="white" p="30px 30px 48px 30px">
+    <Box mt="8px" bg="white" p="30px 30px 48px 30px">
       <Box display="flex" mb="24px">
         <Box mr="24px">
           <strong>{formatMessage(messages.participants)}</strong>:{' '}
