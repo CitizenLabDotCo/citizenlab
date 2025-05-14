@@ -1760,6 +1760,7 @@
   "app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff2": "Voting results won't be shared at the end of the phase unless you modify it in the phase setup.",
   "app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOn2": "These results will be automatically shared once the phase ends. Modify the end date of this phase to change when the results are shared.",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Export the survey results (.xlsx)",
+  "app.containers.AdminPage.ProjectEdit.SurveyResults.resultsTab": "Results",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Here, you can download the results of the Typeform survey(s) within this project as an Excel file.",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.surveyFormTab": "Survey form",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.surveyResultsTab": "Survey Results",
