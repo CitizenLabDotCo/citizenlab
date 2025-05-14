@@ -50,4 +50,10 @@ class PhasePolicy < ApplicationPolicy
   def active_moderator?
     policy_for(record.project).active_moderator?
   end
+
+  def show_progress?
+    return false unless active?
+
+    policy_for(record.project).show?
+  end
 end
