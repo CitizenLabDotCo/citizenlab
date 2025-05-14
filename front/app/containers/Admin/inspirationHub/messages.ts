@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Survey',
     defaultMessage: 'Survey',
   },
+  externalSurvey: {
+    id: 'app.containers.Admin.inspirationHub.ExternalSurvey',
+    defaultMessage: 'External survey',
+  },
   voting: {
     id: 'app.containers.Admin.inspirationHub.Voting',
     defaultMessage: 'Voting',
