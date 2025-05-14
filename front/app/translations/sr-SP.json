@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Using the Content Builder will let you use more advanced layout options.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "View project",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Крај анкете",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Download an Excel template",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Направите паметну групу",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Корисници који испуњавају све следеће услове биће аутоматски додати у групу:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Наведите бар једно правило",
