@@ -276,7 +276,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
     it 'for avg seconds and pages per session: it ignores sessions without pageviews' do
       # Create sessions with no pageviews
       10.times do
-        session = create(:session, created_at: Date.new(2022, 7, 2), monthly_user_hash: 'some_hash')
+        create(:session, created_at: Date.new(2022, 7, 2), monthly_user_hash: 'some_hash')
       end
 
       params = {
