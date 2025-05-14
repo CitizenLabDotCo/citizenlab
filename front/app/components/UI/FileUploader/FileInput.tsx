@@ -1,4 +1,4 @@
-import React, { FormEvent, ChangeEvent } from 'react';
+import React, { FormEvent, useState, ChangeEvent } from 'react';
 
 import {
   colors,
@@ -6,11 +6,12 @@ import {
   defaultOutline,
   isRtl,
   Icon,
+  Error,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getBase64FromFile } from 'utils/fileUtils';
 
 import messages from './messages';
@@ -156,6 +157,9 @@ interface Props {
 }
 
 const FileInput = ({ className, id, onAdd, multiple = false }: Props) => {
+  const { formatMessage } = useIntl();
+
+  const [errors, setErrors] = useState<string[]>([]);
   const onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
     // so we can upload the same file again after deleting it
@@ -166,6 +170,9 @@ const FileInput = ({ className, id, onAdd, multiple = false }: Props) => {
     const files = event.target.files;
 
     if (files && files.length > 0) {
+      // Reset errors
+      setErrors([]);
+
       Array.from(files).forEach(async (file: UploadFile) => {
         const base64 = await getBase64FromFile(file);
         file.base64 = base64;
@@ -175,9 +182,19 @@ const FileInput = ({ className, id, onAdd, multiple = false }: Props) => {
           base64.substring(base64.indexOf(':') + 1, base64.indexOf(';base64'));
         if (!fileAccept.includes(file.extension)) {
           file.error = ['incorrect_extension'];
+          setErrors((prevErrors) => [...prevErrors, 'incorrect_extension']);
         }
-        file.remote = false;
-        onAdd(file);
+
+        if (file.size / 1000000 > 10) {
+          // File is larger than 10MB
+          file.error = ['file_too_large'];
+          setErrors((prevErrors) => [...prevErrors, 'file_too_large']);
+        }
+
+        if (!file.error) {
+          file.remote = false;
+          onAdd(file);
+        }
       });
     }
   };
@@ -198,6 +215,12 @@ const FileInput = ({ className, id, onAdd, multiple = false }: Props) => {
         <StyledIcon name="upload-file" ariaHidden />
         <FormattedMessage {...messages.fileInputDescription} />
       </Label>
+      {errors.map((error: string, index) => (
+        <Error
+          key={`${error}-${index}`}
+          text={formatMessage(messages[error])}
+        />
+      ))}
     </Container>
   );
 };
