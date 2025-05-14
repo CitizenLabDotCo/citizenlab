@@ -2102,7 +2102,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Gebruikers",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Alle velden samenvouwen",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Beschrijving van het veld",
-  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Download een Excel-sjabloon",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Bewerk invulformulier",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Ingeschakeld",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Dit veld toevoegen.",

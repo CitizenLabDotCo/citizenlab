@@ -2102,7 +2102,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Defnyddwyr",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Crebachu pob maes",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Disgrifiad o'r maes",
-  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Lawrlwythwch templed Excel",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Golygu ffurflen fewnbwn",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Galluogwyd",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Cynhwyswch y maes hwn.",
