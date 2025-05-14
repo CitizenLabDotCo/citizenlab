@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "سيسمح لك استخدام \"منشئ المحتوى\" باستخدام خيارات تخطيط أكثر تقدمًا.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "عرض المشروع",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "نهاية الاستبيان",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "تنزيل قالب Excel",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "أنشئ مجموعة ذكية",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "ستتم إضافة المستخدمين المستوفين لجميع الشروط التالية إلى المجموعة تلقائيًا:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "إدخال قاعدة واحدة على الأقل",
