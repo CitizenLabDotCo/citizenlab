@@ -2102,6 +2102,7 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Users",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Collapse all fields",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Field description",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Download an Excel template",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Edit input form",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Enabled",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Include this field.",

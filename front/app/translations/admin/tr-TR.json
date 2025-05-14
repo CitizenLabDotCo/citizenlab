@@ -2102,6 +2102,7 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Kullanıcılar",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Tüm alanları daralt",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Alan açıklaması",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Bir Excel şablonu indirin",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Giriş formunu düzenleme",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Etkin",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Bu alanı dahil edin.",

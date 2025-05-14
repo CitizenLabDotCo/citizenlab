@@ -1055,7 +1055,6 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Using the Content Builder will let you use more advanced layout options.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "View project",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Survey end",
-  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Download an Excel template",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Create a smart group",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Users matching all of the following conditions will be automatically added to the group:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Provide at least one rule",

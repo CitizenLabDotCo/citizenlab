@@ -2102,6 +2102,7 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "صارفین",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "تمام فیلڈز کو سکیڑیں۔",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "فیلڈ کی تفصیل",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "ایکسل ٹیمپلیٹ ڈاؤن لوڈ کریں۔",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "ان پٹ فارم میں ترمیم کریں۔",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "فعال",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "اس فیلڈ کو شامل کریں۔",

@@ -2102,6 +2102,7 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Nutzer*innen",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Alle Felder einklappen",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Feldbeschreibung",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Download einer Excel-Vorlage",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Eingabeformular bearbeiten",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Aktiviert",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Fügen Sie dieses Feld ein.",

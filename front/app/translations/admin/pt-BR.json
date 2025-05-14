@@ -2102,6 +2102,7 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Utilizadores",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Preencher todos os campos",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Descrição do campo",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Baixe um modelo Excel",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Editar formulário de entrada",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Ativado",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Inclua este campo.",

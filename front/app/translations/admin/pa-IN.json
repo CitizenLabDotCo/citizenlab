@@ -2102,6 +2102,7 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "ਉਪਭੋਗਤਾ",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "ਸਾਰੇ ਖੇਤਰਾਂ ਨੂੰ ਸਮੇਟੋ",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "ਖੇਤਰ ਦਾ ਵੇਰਵਾ",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "ਇੱਕ ਐਕਸਲ ਟੈਂਪਲੇਟ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "ਇਨਪੁਟ ਫਾਰਮ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "ਸਮਰਥਿਤ",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "ਇਸ ਖੇਤਰ ਨੂੰ ਸ਼ਾਮਲ ਕਰੋ।",
