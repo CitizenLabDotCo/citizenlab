@@ -72,21 +72,26 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
           'social_network' => 18,
         }
       })
-
     end
 
-    # it 'identifies email campaigns' do
-    #   create(:session, referrer: 'android-app://com.google.android.gm/') # gmail app
-    #   create(:session, referrer: 'https://mail.google.com/') # gmail web
-    #   create(:session, referrer: 'https://eb05g.r.ag.d.sendibm3.com/') # brevo
-    #   create(:session, referrer: 'https://b12s9.r.sp1-brevo.net/') # brevo
-    #   create(:session, referrer: 'ttps://email.bt.com/')
-    #   create(:session, referrer: 'https://outlook.live.com/')
-    #   create(:session, referrer: 'https://deref-gmx.net/')
-    #   create(:session, referrer: 'https://mail02.orange.fr/')
+    it 'identifies email campaigns' do
+      create(:session, referrer: 'android-app://com.google.android.gm/') # gmail app
+      create(:session, referrer: 'https://mail.google.com/') # gmail web
+      create(:session, referrer: 'https://eb05g.r.ag.d.sendibm3.com/') # brevo
+      create(:session, referrer: 'https://b12s9.r.sp1-brevo.net/') # brevo
+      create(:session, referrer: 'https://email.bt.com/')
+      create(:session, referrer: 'https://outlook.live.com/')
+      create(:session, referrer: 'https://mail.telenet.be/')
+      create(:session, referrer: 'https://deref-gmx.net/')
+      create(:session, referrer: 'https://mail02.orange.fr/')
+      create(:session, referrer: 'https://mail01.orange.fr/')
 
-    #   # TODO
-    # end
+      expect(query.run_query).to eq({
+        sessions_per_referrer_type: {
+          'email_campaign' => 10,
+        }
+      })
+    end
 
     # it 'identifies other traffic' do
       # TODO
