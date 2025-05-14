@@ -256,6 +256,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
             justify={isPhone ? 'left' : 'center'}
             textColor={colors.textPrimary}
             onClick={() => reactToIdea({ ideaId: current.id, mode: 'agree' })}
+            whiteSpace="normal"
             fullWidth
           >
             {formatMessage(messages.agreeLabel)}
@@ -263,8 +264,10 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
           <Button
             buttonStyle="secondary-outlined"
             icon="sentiment-neutral"
+            iconColor={colors.grey700}
             justify={isPhone ? 'left' : 'center'}
             textColor={colors.textPrimary}
+            whiteSpace="normal"
             onClick={() => reactToIdea({ ideaId: current.id, mode: 'unsure' })}
             fullWidth
           >
@@ -276,6 +279,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
             iconColor={colors.red600}
             justify={isPhone ? 'left' : 'center'}
             textColor={colors.textPrimary}
+            whiteSpace="normal"
             onClick={() =>
               reactToIdea({ ideaId: current.id, mode: 'disagree' })
             }
