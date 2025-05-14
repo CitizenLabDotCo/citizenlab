@@ -10,31 +10,41 @@ const sampleStatements: CommonGroundProgressStatement[] = [
     id: '1',
     author: 'Alice',
     publishedAt: '2h ago',
-    body: { en: 'We should invest in public transport.' },
+    body: {
+      en: 'Investing in public transport will ease traffic, cut emissions, and make the city more accessible for everyone.',
+    },
   },
   {
     id: '2',
     author: 'Bob',
     publishedAt: '5h ago',
-    body: { en: 'More green spaces are needed in the city.' },
+    body: {
+      en: "The city lacks enough parks and trees. Let's create more green spaces to support nature and mental health.",
+    },
   },
   {
     id: '3',
     author: 'Charlie',
     publishedAt: '1d ago',
-    body: { en: 'Affordable housing should be a top priority.' },
+    body: {
+      en: 'Affordable housing must be prioritized to ensure that everyone has a safe, decent, and stable place to live.',
+    },
   },
   {
     id: '4',
     author: 'Diana',
     publishedAt: '3d ago',
-    body: { en: 'We need more bike lanes across the city.' },
+    body: {
+      en: 'Build more bike lanes so people can ride safely, reduce car use, and help make the city healthier and cleaner.',
+    },
   },
   {
     id: '5',
     author: 'Eve',
     publishedAt: '4d ago',
-    body: { en: 'Community centers should be funded better.' },
+    body: {
+      en: "Let's invest more in community centers—they bring people together and offer vital services to all age groups.",
+    },
   },
 ];
 
