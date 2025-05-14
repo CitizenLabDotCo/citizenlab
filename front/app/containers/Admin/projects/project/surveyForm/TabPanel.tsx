@@ -3,12 +3,17 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import {
+  SectionTitle,
+  SectionDescription,
+  SubSectionTitle,
+} from 'components/admin/Section';
 import DownloadPDFButtonWithModal from 'components/FormBuilder/components/FormBuilderTopBar/DownloadPDFButtonWithModal';
 import ExcelDownloadButton from 'components/FormSync/ExcelDownloadButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import DuplicateSurveyButtonWithModal from './DuplicateSurveyButtonWithModal';
 import EditButtonWithWarningModal from './EditButtonWithWarningModal';
 import messages from './messages';
 
@@ -29,12 +34,20 @@ const TabPanel = ({
       </SectionDescription>
       <Box display="flex">
         <EditButtonWithWarningModal projectId={projectId} phaseId={phaseId} />
-        <DownloadPDFButtonWithModal
-          mr="8px"
-          formType="survey"
-          phaseId={phaseId}
-        />
-        <ExcelDownloadButton phaseId={phaseId} />
+        <DuplicateSurveyButtonWithModal phaseId={phaseId} />
+      </Box>
+      <Box>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.downloads} />
+        </SubSectionTitle>
+        <Box display="flex">
+          <DownloadPDFButtonWithModal
+            mr="8px"
+            formType="survey"
+            phaseId={phaseId}
+          />
+          <ExcelDownloadButton phaseId={phaseId} />
+        </Box>
       </Box>
     </Box>
   );
