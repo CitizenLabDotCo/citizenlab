@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "A Content Builder használatával fejlettebb elrendezési beállításokat használhat.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Projekt megtekintése",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "A felmérés vége",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Excel-sablon letöltése",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Hozzon létre egy intelligens csoportot",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "A következő feltételek mindegyikének megfelelő felhasználók automatikusan hozzáadódnak a csoporthoz:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Adjon meg legalább egy szabályt",
