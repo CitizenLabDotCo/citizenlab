@@ -98,7 +98,7 @@ export interface ProjectLibraryProjectData {
       data: { id: string; type: 'project_library_phase' }[];
     };
     topic: {
-      data: { id: string; type: 'project_library_topid' };
+      data: { id: string; type: 'project_library_topic' };
     };
   };
 }
