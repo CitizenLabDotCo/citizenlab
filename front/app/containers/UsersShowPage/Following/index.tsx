@@ -35,7 +35,7 @@ const Following = () => {
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
-  const tabData: TabData<false> = {
+  const tabData: TabData = {
     Project: {
       label: messages.projects,
     },
