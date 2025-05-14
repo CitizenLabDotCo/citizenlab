@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Η χρήση του Content Builder θα σας επιτρέψει να χρησιμοποιήσετε πιο προηγμένες επιλογές διάταξης.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Προβολή έργου",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Τέλος της έρευνας",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Κατεβάστε ένα πρότυπο Excel",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Δημιουργία μιας έξυπνης ομάδας",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Οι χρήστες που πληρούν όλες τις παρακάτω προϋποθέσεις θα προστεθούν αυτόματα στην ομάδα:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Παρέχετε τουλάχιστον έναν κανόνα",

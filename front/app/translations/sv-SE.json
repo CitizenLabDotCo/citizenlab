@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Med hjälp av Content Builder kan du använda mer avancerade layoutalternativ.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Visa projekt",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Undersökningens slut",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Ladda ner en Excel-mall",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Skapa en smart grupp",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Användare som matchar samtliga följande villkor läggs automatiskt till i gruppen:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Ange minst en regel",

@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Naudodami turinio konstruktorių galėsite naudoti pažangesnes išdėstymo parinktis.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Peržiūrėti projektą",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Apklausos pabaiga",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Atsisiųsti \"Excel\" šabloną",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Sukurti išmaniąją grupę",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Vartotojai, atitinkantys visas toliau nurodytas sąlygas, bus automatiškai įtraukti į grupę:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Pateikite bent vieną taisyklę",

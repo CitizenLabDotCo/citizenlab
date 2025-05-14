@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Bydd defnyddio'r Content Builder yn caniatáu ichi ddefnyddio opsiynau cynllun mwy datblygedig.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Gweld prosiect",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Diwedd yr arolwg",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Lawrlwythwch templed Excel",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Creu grŵp smart",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Bydd defnyddwyr sy'n cyfateb i'r holl amodau canlynol yn cael eu hychwanegu'n awtomatig at y grŵp:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Darparwch o leiaf un rheol",

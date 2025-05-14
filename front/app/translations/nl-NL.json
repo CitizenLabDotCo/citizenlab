@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Als je de content builder gebruikt, kun je geavanceerdere layout-opties gebruiken.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Bekijk het project",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Einde vragenlijst",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Download een Excel-sjabloon",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Maak een slimme groep aan",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Gebruikers die voldoen aan al deze voorwaarden zullen automatisch aan de groep worden toegevoegd:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Voer ten minste één regel in",

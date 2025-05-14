@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "ਸਮਗਰੀ ਨਿਰਮਾਤਾ ਦੀ ਵਰਤੋਂ ਕਰਨ ਨਾਲ ਤੁਸੀਂ ਵਧੇਰੇ ਉੱਨਤ ਖਾਕਾ ਵਿਕਲਪਾਂ ਦੀ ਵਰਤੋਂ ਕਰ ਸਕੋਗੇ।",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "ਪ੍ਰੋਜੈਕਟ ਦੇਖੋ",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "ਸਰਵੇਖਣ ਸਮਾਪਤ",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "ਇੱਕ ਐਕਸਲ ਟੈਂਪਲੇਟ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "ਇੱਕ ਸਮਾਰਟ ਗਰੁੱਪ ਬਣਾਓ",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "ਹੇਠ ਲਿਖੀਆਂ ਸਾਰੀਆਂ ਸ਼ਰਤਾਂ ਨਾਲ ਮੇਲ ਖਾਂਦੇ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਆਪਣੇ ਆਪ ਸਮੂਹ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤਾ ਜਾਵੇਗਾ:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "ਘੱਟੋ-ਘੱਟ ਇੱਕ ਨਿਯਮ ਪ੍ਰਦਾਨ ਕਰੋ",

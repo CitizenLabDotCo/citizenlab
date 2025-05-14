@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "El uso del constructor de contenido le permitirá utilizar opciones de diseño más avanzadas.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Vista del proyecto",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Fin de la encuesta",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Descargar una plantilla Excel",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Crear un grupo smart",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Los usuarios que cumplen todas las condiciones siguientes se añadirá automáticamente al Grupo:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Proporcionar al menos una regla",

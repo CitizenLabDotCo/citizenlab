@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Korištenje Content Buildera omogućit će vam korištenje naprednijih opcija izgleda.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Pogledaj projekt",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Završetak upitnika",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Preuzmite Excel predložak",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Kreirajte pametnu grupu",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Korisnici koji zadovoljavaju navedene uvjete automatski će biti dodani u grupu:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Unesite barem jedno pravilo",

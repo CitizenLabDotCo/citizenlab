@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "L'utilisation de l'éditeur sur-mesure vous permettra d'utiliser des options de mise en page plus avancées.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Visualiser le projet",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Fin de l'enquête",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Télécharger un modèle Excel",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Créer un groupe automatique",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Les utilisateurs correspondant à toutes les conditions suivantes seront automatiquement ajoutés à ce groupe :",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Fournir au moins une règle",

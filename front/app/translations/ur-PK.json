@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Content Builder کا استعمال آپ کو لے آؤٹ کے مزید جدید اختیارات استعمال کرنے دے گا۔",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "پروجیکٹ دیکھیں",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "سروے ختم",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "ایکسل ٹیمپلیٹ ڈاؤن لوڈ کریں۔",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "ایک سمارٹ گروپ بنائیں",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "مندرجہ ذیل تمام شرائط سے مماثل صارفین خود بخود گروپ میں شامل ہو جائیں گے۔",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "کم از کم ایک اصول فراہم کریں۔",

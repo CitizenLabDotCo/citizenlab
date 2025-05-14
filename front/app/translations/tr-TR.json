@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "İçerik Oluşturucuyu kullanmak daha gelişmiş düzen seçeneklerini kullanmanızı sağlar.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Projeyi görüntüle",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Anket sonu",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Bir Excel şablonu indirin",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Akıllı grup oluşturun",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Aşağıdaki koşulların tümünü karşılayan kullanıcılar otomatik olarak gruba eklenir:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "En az bir kural girin",
