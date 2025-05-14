@@ -1055,6 +1055,7 @@
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "D'Benotzung vum Inhalt Builder léisst Iech méi fortgeschratt Layoutoptiounen benotzen.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Kuckt de Projet",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Enn vun der Ëmfo",
+  "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Eng Excel-Schabloun eroflueden",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Eng Smart Grupp uleeën",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Benotzer, déi all déi follgend Konditiounen erfëllen, ginn automatesch dem Grupp bäigefüügt:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Gitt mindestens eng Roll an",
