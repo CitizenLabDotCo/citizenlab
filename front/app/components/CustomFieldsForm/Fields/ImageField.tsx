@@ -52,6 +52,7 @@ const ImageField = ({ name, inputLabel, ...rest }: Props) => {
             <ImagesDropzoneComponent
               {...field}
               {...rest}
+              data-cy={'e2e-idea-image-upload'}
               id={name}
               images={images}
               onAdd={(file) => {

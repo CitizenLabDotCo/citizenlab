@@ -26,7 +26,7 @@ const Topics = ({ name, projectId, ...rest }: Props) => {
     setValue,
     formState: { errors: formContextErrors },
     control,
-    watch,
+    getValues,
   } = useFormContext();
 
   const errors = formContextErrors[name] as RHFErrors;
@@ -55,7 +55,7 @@ const Topics = ({ name, projectId, ...rest }: Props) => {
             <TopicsPicker
               {...field}
               {...rest}
-              selectedTopicIds={watch(name) || []}
+              selectedTopicIds={getValues(name) || []}
               availableTopics={getAllowedTopics()}
               onClick={(topicIds: string[]) => {
                 setValue(name, topicIds);

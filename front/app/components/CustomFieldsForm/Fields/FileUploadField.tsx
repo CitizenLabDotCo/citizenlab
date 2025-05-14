@@ -20,7 +20,7 @@ interface Props
   remoteFiles?: UploadFile[] | null;
 }
 
-type FileToUpload = {
+type FileToUploadFormat = {
   file_by_content: {
     content: string;
     name: string;
@@ -47,7 +47,7 @@ const FileUploaderField = ({ name, remoteFiles, ...rest }: Props) => {
 
   useEffect(() => {
     if (getValues(name)?.length !== files.length) {
-      getValues(name)?.forEach((file: FileToUpload) => {
+      getValues(name)?.forEach((file: FileToUploadFormat) => {
         convertUrlToUploadFile(
           file.file_by_content.content,
           null,
@@ -72,6 +72,7 @@ const FileUploaderField = ({ name, remoteFiles, ...rest }: Props) => {
             <FileUploaderComponent
               {...field}
               {...rest}
+              data-cy={'e2e-idea-file-upload'}
               id={name}
               files={files}
               onFileAdd={(file) => {
@@ -97,7 +98,7 @@ const FileUploaderField = ({ name, remoteFiles, ...rest }: Props) => {
                 setValue(
                   name,
                   field.value.filter(
-                    (file: FileToUpload) =>
+                    (file: FileToUploadFormat) =>
                       fileToRemove.base64 !== file.file_by_content.content
                   ),
                   { shouldDirty: true }

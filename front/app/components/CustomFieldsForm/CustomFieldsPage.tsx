@@ -126,7 +126,7 @@ const CustomFieldsPage = ({
 
   return (
     <FormProvider {...methods}>
-      <form>
+      <form id="idea-form">
         <Box
           id="container"
           display="flex"

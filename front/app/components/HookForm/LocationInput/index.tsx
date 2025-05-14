@@ -57,6 +57,7 @@ const LocationInput = ({ name, fieldName, ...rest }: Props) => {
         control={control}
         render={({ field: { ref: _ref, ...field } }) => (
           <LocationInputComponent
+            className="e2e-idea-form-location-input-field"
             id={name}
             {...field}
             {...rest}

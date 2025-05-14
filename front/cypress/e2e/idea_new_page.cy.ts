@@ -20,15 +20,13 @@ describe('Idea new page for continuous project', () => {
     cy.acceptCookies();
   });
 
-  it.skip('shows an error when no title is provided', () => {
+  it('shows an error when no title is provided', () => {
     const value = randomString(9);
     cy.get('#idea-form');
-    cy.get('#e2e-idea-description-input .ql-editor').type(value);
-    cy.get('#e2e-idea-description-input .ql-editor').contains(value);
     cy.wait(1000);
     // Try to go to the next page
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.get('#e2e-idea-title-input .e2e-error-message');
+    cy.get('.e2e-error-message').should('exist');
   });
 
   it('shows a back button to navigate to the projects page', () => {
@@ -41,36 +39,36 @@ describe('Idea new page for continuous project', () => {
     );
   });
 
-  it.skip('shows an error when no description is provided', () => {
+  it('shows an error when no description is provided', () => {
     const value = randomString(9);
     cy.get('#idea-form');
-    cy.get('#e2e-idea-title-input input').type(value);
-    cy.get('#e2e-idea-title-input input').should('contain.value', value);
-    cy.wait(1000);
+    cy.get('#e2e-idea-title-input').type(value);
+    cy.get('#e2e-idea-title-input').should('contain.value', value);
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
     // Try to go to the next page
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.get('#e2e-idea-description-input .e2e-error-message');
+    cy.get(' .e2e-error-message').should('exist');
   });
 
   it('shows an error when the title is less than 3 characters long', () => {
     cy.get('#idea-form');
-    cy.get('#e2e-idea-title-input input').type(randomString(2));
+    cy.get('#e2e-idea-title-input').type(randomString(2));
     // Try to go to the next page
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.get('#e2e-idea-title-input .e2e-error-message');
+    cy.get('.e2e-error-message').should('exist');
   });
 
   it('shows an error when the description is less than 3 characters long', () => {
     const title = randomString(10);
     cy.get('#idea-form');
-    cy.get('#e2e-idea-title-input input').type(title);
-    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+    cy.get('#e2e-idea-title-input').type(title);
+    cy.get('#e2e-idea-title-input').should('contain.value', title);
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     // Try to go to the next page
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.get('#e2e-idea-description-input .e2e-error-message');
+    cy.get('.e2e-error-message').should('exist');
   });
 
   it.skip('saves correct location point when provided in URL', () => {
@@ -90,8 +88,8 @@ describe('Idea new page for continuous project', () => {
     cy.contains('Add new idea').should('exist');
 
     // Add a title
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-title-input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
@@ -129,8 +127,8 @@ describe('Idea new page for continuous project', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-title-input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
@@ -141,8 +139,8 @@ describe('Idea new page for continuous project', () => {
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     // verify that image and file upload components are present
-    cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
+    cy.get('[data-cy="e2e-idea-image-upload"]');
+    cy.get('[data-cy="e2e-idea-file-upload"]');
 
     // Go to the page with topics
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
@@ -156,11 +154,11 @@ describe('Idea new page for continuous project', () => {
       .should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type(
+    cy.get('.e2e-idea-form-location-input-field').type(
       'Boulevard Anspach Brussels'
     );
     cy.wait(7000);
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
+    cy.get('.e2e-idea-form-location-input-field').type('{enter}');
 
     // save the form
     cy.get('[data-cy="e2e-submit-form"]').click();
@@ -248,8 +246,8 @@ describe('Idea new page for timeline project', () => {
     cy.contains('Add new idea').should('exist');
 
     // Add a title
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-title-input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
@@ -261,8 +259,8 @@ describe('Idea new page for timeline project', () => {
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     // verify that image and file upload components are present
-    cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
+    cy.get('[data-cy="e2e-idea-image-upload"]');
+    cy.get('[data-cy="e2e-idea-file-upload"]');
 
     // Go to the page with topics
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
@@ -276,11 +274,11 @@ describe('Idea new page for timeline project', () => {
       .should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type(
+    cy.get('.e2e-idea-form-location-input-field').type(
       'Boulevard Anspach Brussels'
     );
     cy.wait(7000);
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
+    cy.get('.e2e-idea-form-location-input-field').type('{enter}');
 
     // save the form
     cy.get('[data-cy="e2e-submit-form"]').click();
