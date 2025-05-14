@@ -873,6 +873,7 @@
   "app.containers.Admin.inspirationHub.AllProjects": "Kaikki projektit",
   "app.containers.Admin.inspirationHub.CommunityMonitorSurvey": "yhteisön valvoja",
   "app.containers.Admin.inspirationHub.DocumentAnnotation": "Asiakirjan huomautus",
+  "app.containers.Admin.inspirationHub.ExternalSurvey": "Ulkoinen kysely",
   "app.containers.Admin.inspirationHub.Filters.Country": "Maa",
   "app.containers.Admin.inspirationHub.Filters.Method": "Menetelmä",
   "app.containers.Admin.inspirationHub.Filters.Search": "Haku",

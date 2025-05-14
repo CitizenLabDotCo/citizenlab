@@ -873,6 +873,7 @@
   "app.containers.Admin.inspirationHub.AllProjects": "Tüm projeler",
   "app.containers.Admin.inspirationHub.CommunityMonitorSurvey": "Topluluk gözlemcisi",
   "app.containers.Admin.inspirationHub.DocumentAnnotation": "Belge açıklaması",
+  "app.containers.Admin.inspirationHub.ExternalSurvey": "Dış anket",
   "app.containers.Admin.inspirationHub.Filters.Country": "Ülke",
   "app.containers.Admin.inspirationHub.Filters.Method": "Yöntem",
   "app.containers.Admin.inspirationHub.Filters.Search": "Arama",

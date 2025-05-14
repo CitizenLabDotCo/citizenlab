@@ -873,6 +873,7 @@
   "app.containers.Admin.inspirationHub.AllProjects": "Alle prosjekter",
   "app.containers.Admin.inspirationHub.CommunityMonitorSurvey": "Fellesskapets overvåker",
   "app.containers.Admin.inspirationHub.DocumentAnnotation": "Dokumentkommentarer",
+  "app.containers.Admin.inspirationHub.ExternalSurvey": "Ekstern undersøkelse",
   "app.containers.Admin.inspirationHub.Filters.Country": "Land",
   "app.containers.Admin.inspirationHub.Filters.Method": "Metode",
   "app.containers.Admin.inspirationHub.Filters.Search": "Søk",

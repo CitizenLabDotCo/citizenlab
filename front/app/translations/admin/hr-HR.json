@@ -873,6 +873,7 @@
   "app.containers.Admin.inspirationHub.AllProjects": "Svi projekti",
   "app.containers.Admin.inspirationHub.CommunityMonitorSurvey": "Monitor zajednice",
   "app.containers.Admin.inspirationHub.DocumentAnnotation": "Bilješka dokumenta",
+  "app.containers.Admin.inspirationHub.ExternalSurvey": "Vanjski pregled",
   "app.containers.Admin.inspirationHub.Filters.Country": "Zemlja",
   "app.containers.Admin.inspirationHub.Filters.Method": "metoda",
   "app.containers.Admin.inspirationHub.Filters.Search": "Pretraživanje",
