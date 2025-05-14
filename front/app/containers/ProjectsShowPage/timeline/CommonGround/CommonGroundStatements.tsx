@@ -6,6 +6,7 @@ import {
   Text,
   defaultCardStyle,
   colors,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -27,17 +28,17 @@ const BackdropCard = styled.div<{ offset: number }>`
   top: ${({ offset }) => offset * 8}px;
   left: 0;
   right: 0;
-  width: 95%;
-  height: 50%;
+  width: 96%;
+  height: 60%;
   margin: 0 auto;
   background: white;
   z-index: 1;
   pointer-events: none;
   user-select: none;
-  border-radius: 8px;
+  border-radius: 4px;
 `;
 
-const StatementCard = styled.div<{
+const StatementCard = styled(Box)<{
   bgColor: string;
   transform: string;
   isAnimating: boolean;
@@ -51,7 +52,7 @@ const StatementCard = styled.div<{
     isDragging
       ? '0px 8px 16px rgba(0, 0, 0, 0.12)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08)'};
-  border-radius: 8px;
+  border-radius: 4px;
   transform: ${({ transform }) => transform};
   transition: ${({ isAnimating }) =>
     isAnimating
@@ -69,7 +70,7 @@ const StatementCard = styled.div<{
   }
 `;
 
-const ActionIndicator = styled.div<{
+const ActionIndicator = styled(Box)<{
   type: 'agree' | 'disagree' | 'unsure';
   visible: boolean;
 }>`
@@ -117,6 +118,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
   const { mutate: reactToIdea } = useReactToStatement(phaseId);
   const current = progressData?.data.attributes.nextIdea;
   const { formatMessage } = useIntl();
+  const isPhone = useBreakpoint('phone');
 
   // swipe state
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -222,6 +224,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
+        border={`1px solid ${colors.grey400}`}
       >
         <Box mb="12px" id={`statement-body-${current.id}`}>
           <Text fontSize="l">
@@ -239,11 +242,19 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
           {formatMessage(messages.unsureLabel)}
         </ActionIndicator>
 
-        <Box display="flex" w="100%" justifyContent="space-between" gap="8px">
+        <Box
+          display="flex"
+          w="100%"
+          justifyContent="space-between"
+          gap="8px"
+          flexDirection={isPhone ? 'column' : 'row'}
+        >
           <Button
             buttonStyle="secondary-outlined"
             icon="check-circle"
             iconColor={colors.green500}
+            justify={isPhone ? 'left' : 'center'}
+            textColor={colors.textPrimary}
             onClick={() => reactToIdea({ ideaId: current.id, mode: 'agree' })}
             fullWidth
           >
@@ -252,6 +263,8 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
           <Button
             buttonStyle="secondary-outlined"
             icon="sentiment-neutral"
+            justify={isPhone ? 'left' : 'center'}
+            textColor={colors.textPrimary}
             onClick={() => reactToIdea({ ideaId: current.id, mode: 'unsure' })}
             fullWidth
           >
@@ -261,6 +274,8 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
             buttonStyle="secondary-outlined"
             icon="cancel"
             iconColor={colors.red600}
+            justify={isPhone ? 'left' : 'center'}
+            textColor={colors.textPrimary}
             onClick={() =>
               reactToIdea({ ideaId: current.id, mode: 'disagree' })
             }
