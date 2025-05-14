@@ -82,7 +82,7 @@ module BulkImportIdeas::Exporters
             page: page_num,
             position: position.to_i,
             content_delimiters: {
-              start: nil, # TODO
+              start: field_content_start_delimiter(field_or_option),
               end: field_content_end_delimiter(next_field, question_number)
             }
           }
@@ -90,13 +90,12 @@ module BulkImportIdeas::Exporters
       end
     end
 
-    # Works out if the field after this question is not importable
-    # If this is the case then we grab the question title / first line of text
-    # so that when we import we can split the scanned text on this string
-    # and ignore the text after it, otherwise the importer will see the question as part of the scanned text
+    # Grabs the title of the next field so that we can split out from the value
+    # any greedily scanned text that includes content from the next part of the form and not handwritten text
     def field_content_end_delimiter(next_field, current_question_number)
-      if next_field && !next_field.pdf_importable?
-        # Get text from
+      # TODO: Get the visibility_disclaimer text here too
+      if next_field
+        # Get text delimiter from the next field title
         question_number = current_question_number && field_has_question_number?(next_field) ? current_question_number + 1 : nil
         field_print_title(next_field, question_number)
       elsif next_field.nil? && @participation_method.custom_form.print_end_multiloc[@locale].present?
@@ -105,6 +104,15 @@ module BulkImportIdeas::Exporters
         ActionView::Base.full_sanitizer.sanitize(@participation_method.custom_form.print_end_multiloc[@locale])
       end
       # TODO: truncate long text in case the text wraps on multiple lines
+    end
+
+    # Grabs the end of the description field can split out from the value
+    # any greedily scanned text that includes content from the form and not handwritten text
+    def field_content_start_delimiter(_field)
+      # TODO: JS - start delimiter could be
+      # end of description - last line of description?
+      # multiselect_print_instructions (if multiselect do maybe not needed)
+      nil
     end
 
     # Allow rendering of images in the PDF when in development

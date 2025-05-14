@@ -2,13 +2,10 @@
 
 module BulkImportIdeas::Parsers
   class IdeaHtmlPdfFileParser < IdeaPdfFileParser
-    def import_form_data
-      @import_form_data ||= BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
-    end
 
     private
 
-    def process_text_values(field, _all_fields)
+    def process_text_field_value(field, _all_fields)
       value = field[:value]
 
       # Strip out greedily scanned text from the start and end of fields based on text strings in delimiters
@@ -17,16 +14,20 @@ module BulkImportIdeas::Parsers
       end_delimiter = field[:content_delimiters][:end]
 
       if start_delimiter
-        split_string = field[:value].split(start_delimiter)
+        split_string = value.split(start_delimiter)
         value = split_string[1] if split_string.count > 1
       end
 
       if end_delimiter
-        split_string = field[:value].split(end_delimiter)
+        split_string = value.split(end_delimiter)
         value = split_string[0] if split_string.count > 1
       end
 
-      value
+      value.strip
+    end
+
+    def import_form_data
+      @import_form_data ||= BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
     end
 
     def printable_form_fields

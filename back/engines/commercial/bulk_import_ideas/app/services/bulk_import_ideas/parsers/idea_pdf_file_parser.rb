@@ -194,14 +194,14 @@ module BulkImportIdeas::Parsers
       processed_field = super
 
       if TEXT_FIELD_TYPES.include?(processed_field[:input_type]) && processed_field[:value]
-        processed_field[:value] = process_text_values(processed_field, form_fields)
+        processed_field[:value] = process_text_field_value(processed_field, form_fields)
       end
 
       processed_field
     end
 
     # NOTE: Overridden in sub class
-    def process_text_values(field, all_fields)
+    def process_text_field_value(field, all_fields)
       value = field[:value]
 
       # Strip out text that has leaked from the field description and name into the value
