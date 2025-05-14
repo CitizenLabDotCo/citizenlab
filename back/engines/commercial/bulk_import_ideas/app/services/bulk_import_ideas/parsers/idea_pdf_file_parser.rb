@@ -194,30 +194,30 @@ module BulkImportIdeas::Parsers
       processed_field = super
 
       if TEXT_FIELD_TYPES.include?(processed_field[:input_type]) && processed_field[:value]
-        # Strip out text that has leaked from the field description and name into the value
-        processed_field[:value] = processed_field[:value].gsub(/#{processed_field[:description]}/, '')
-        processed_field[:value] = processed_field[:value].gsub(/\A\s*#{processed_field[:name]}/, '')
-
-        # Strip out out any text that has leaked from the next questions title into the value
-        next_question = form_fields[form_fields.find_index(processed_field) + 1]
-        if next_question && next_question[:name].split.count > 4
-          processed_field[:value] = processed_field[:value].gsub(/#{next_question[:name]}*/, '')
-        end
-
-        # Strip out text from unsupported fields that might come next
-        if field[:next_page_split_text]
-          split_string = processed_field[:value].split(field[:next_page_split_text])
-          processed_field[:value] = split_string[0] if split_string.count > 1
-        end
-
-        # Strip out 'this answer may be shared with moderators...' text
-        this_answer_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }
-        processed_field[:value] = processed_field[:value].gsub(/\*#{this_answer_copy}/, '')
-
-        processed_field[:value] = processed_field[:value].strip
+        processed_field[:value] = process_text_values(processed_field, form_fields)
       end
 
       processed_field
+    end
+
+    # NOTE: Overridden in sub class
+    def process_text_values(field, all_fields)
+      value = field[:value]
+
+      # Strip out text that has leaked from the field description and name into the value
+      value = value.gsub(/#{field[:description]}/, '')
+      value = value.gsub(/\A\s*#{field[:name]}/, '')
+
+      # Strip out out any text that has leaked from the next questions title into the value
+      next_question = all_fields[all_fields.find_index(field) + 1]
+      if next_question && next_question[:name].split.count > 4
+        value = value.gsub(/#{next_question[:name]}*/, '')
+      end
+
+      # Strip out 'this answer may be shared with moderators...' text
+      this_answer_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }
+      value = value.gsub(/\*#{this_answer_copy}/, '')
+      value.strip
     end
 
     def complete_page_range(pages1, pages2)

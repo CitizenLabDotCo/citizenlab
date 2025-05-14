@@ -41,11 +41,11 @@ describe BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter do
 
       it 'returns text string to identify end text of the form that is not importable' do
         custom_form.update!(
-          print_end_multiloc: { 'en' => "<h1>End of form</h1><p>Here is some other text too</p>" }
+          print_end_multiloc: { 'en' => '<h1>End of form</h1><p>Here is some other text too</p>' }
         )
         expect(importer_data[:fields].pluck(:next_page_split_text)).to eq [
-                                                                            'Tell us more', 'Images and attachments', 'End of formHere is some other text too'
-                                                                          ]
+          'Tell us more', 'Images and attachments', 'End of formHere is some other text too'
+        ]
       end
     end
   end

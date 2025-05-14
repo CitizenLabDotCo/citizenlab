@@ -81,7 +81,10 @@ module BulkImportIdeas::Exporters
             parent_key: parent_key,
             page: page_num,
             position: position.to_i,
-            next_page_split_text: text_to_split_field(next_field, question_number)
+            content_delimiters: {
+              start: nil, # TODO
+              end: field_content_end_delimiter(next_field, question_number)
+            }
           }
         end
       end
@@ -91,7 +94,7 @@ module BulkImportIdeas::Exporters
     # If this is the case then we grab the question title / first line of text
     # so that when we import we can split the scanned text on this string
     # and ignore the text after it, otherwise the importer will see the question as part of the scanned text
-    def text_to_split_field(next_field, current_question_number)
+    def field_content_end_delimiter(next_field, current_question_number)
       if next_field && !next_field.pdf_importable?
         # Get text from
         question_number = current_question_number && field_has_question_number?(next_field) ? current_question_number + 1 : nil
