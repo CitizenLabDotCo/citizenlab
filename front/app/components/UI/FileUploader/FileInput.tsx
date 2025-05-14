@@ -177,7 +177,7 @@ const FileInput = ({
     const files = event.target.files;
 
     if (files && files.length > 0) {
-      // Reset errors
+      // Reset any error state
       setError(undefined);
 
       Array.from(files).forEach(async (file: UploadFile) => {

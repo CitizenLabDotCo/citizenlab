@@ -15,7 +15,7 @@ export default defineMessages({
       '{fileName} is not supported by our system, it will not be uploaded.',
   },
   file_too_large: {
-    id: 'app.components.FileUploader.file_too_large',
+    id: 'app.components.FileUploader.file_too_large2',
     defaultMessage: 'Files larger than {maxSizeMb}MB are not permitted.',
   },
   a11y_removeFile: {
