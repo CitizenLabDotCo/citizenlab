@@ -154,9 +154,16 @@ interface Props {
   className?: string;
   id: string;
   multiple?: boolean;
+  maxSizeMb?: number;
 }
 
-const FileInput = ({ className, id, onAdd, multiple = false }: Props) => {
+const FileInput = ({
+  className,
+  id,
+  onAdd,
+  maxSizeMb,
+  multiple = false,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   const [errors, setErrors] = useState<string[]>([]);
@@ -185,10 +192,12 @@ const FileInput = ({ className, id, onAdd, multiple = false }: Props) => {
           setErrors((prevErrors) => [...prevErrors, 'incorrect_extension']);
         }
 
-        if (file.size / 1000000 > 10) {
-          // File is larger than 10MB
-          file.error = ['file_too_large'];
-          setErrors((prevErrors) => [...prevErrors, 'file_too_large']);
+        if (maxSizeMb) {
+          if (file.size / 1000000 > maxSizeMb) {
+            // File is larger than maxSize
+            file.error = ['file_too_large'];
+            setErrors((prevErrors) => [...prevErrors, 'file_too_large']);
+          }
         }
 
         if (!file.error) {
@@ -218,7 +227,9 @@ const FileInput = ({ className, id, onAdd, multiple = false }: Props) => {
       {errors.map((error: string, index) => (
         <Error
           key={`${error}-${index}`}
-          text={formatMessage(messages[error])}
+          text={formatMessage(messages[error], {
+            maxSizeMb: maxSizeMb || 0,
+          })}
         />
       ))}
     </Container>
