@@ -6,9 +6,10 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { MessageDescriptor } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
+import useCommonGroundProgress from 'api/common_ground/useCommonGroundProgress';
 import { IPhaseData } from 'api/phases/types';
 
-import Tabs from 'components/UI/FilterTabs';
+import Tabs, { TabData } from 'components/UI/FilterTabs';
 
 import CommonGroundResults from './CommonGroundResults';
 import CommonGroundStatements from './CommonGroundStatements';
@@ -16,11 +17,6 @@ import messages from './messages';
 
 const tabs = ['statements', 'results'];
 type TabKey = (typeof tabs)[number];
-
-const tabData: Record<TabKey, { label: MessageDescriptor }> = {
-  statements: { label: messages.statementsTabLabel },
-  results: { label: messages.resultsTabLabel },
-};
 
 interface Props {
   phase: IPhaseData;
@@ -33,6 +29,24 @@ const CommonGroundTabs = ({ phase }: Props) => {
     ? currentTabParam
     : 'statements';
   const phaseId = phase.id;
+
+  const { data: progressData } = useCommonGroundProgress(phaseId);
+
+  const remainingStatementsCount = progressData
+    ? progressData.data.attributes.num_ideas -
+      progressData.data.attributes.num_reacted_ideas
+    : 0;
+
+  const tabData: TabData = {
+    statements: {
+      label: messages.statementsTabLabel,
+      count: remainingStatementsCount,
+    },
+    results: {
+      label: messages.resultsTabLabel,
+      count: undefined,
+    },
+  };
 
   const onChangeTab = (tab: string) => {
     setSearchParams({ tab });
@@ -53,7 +67,7 @@ const CommonGroundTabs = ({ phase }: Props) => {
           availableTabs={tabs}
           tabData={tabData}
           onChangeTab={onChangeTab}
-          showCount={false}
+          showCount={true}
           fullWidth
         />
       </Box>
