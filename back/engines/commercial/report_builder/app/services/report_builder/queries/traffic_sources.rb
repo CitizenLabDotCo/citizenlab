@@ -6,6 +6,12 @@ module ReportBuilder
       search.brave search.yahoo cl.search.yahoo
     ].freeze
 
+    SOCIAL_NETWORK_REFERRERS = ['android-app://com.linkedin.android/']
+    SOCIAL_NETWORK_DOMAINS = %w[
+      facebook instagram linkedin snapchat reddit hoplr tiktok twitter x
+      m.facebook l.facebook lm.facebook l.instagram out.reddit lnkd.in bsky
+    ].freeze
+
     def run_query(
       start_at: nil,
       end_at: nil,
@@ -19,7 +25,8 @@ module ReportBuilder
       sessions = apply_project_filter_if_needed(sessions, project_id)
       sessions = exclude_roles_if_needed(sessions, exclude_roles)
 
-      cases = search_engine_cases
+      cases = generate_cases(SEARCH_ENGINE_REFERRERS, SEARCH_ENGINE_DOMAINS, 'search_engine')
+      cases += generate_cases(SOCIAL_NETWORK_REFERRERS, SOCIAL_NETWORK_DOMAINS, 'social_network')
 
       referrer_types = sessions
         .select(
@@ -58,15 +65,15 @@ module ReportBuilder
       sessions
     end
 
-    def search_engine_cases
-      domain_variants = SEARCH_ENGINE_REFERRERS.dup
+    def generate_cases(referrers, domains, type)
+      domain_variants = referrers.dup
 
-      SEARCH_ENGINE_DOMAINS.each do |domain|
+      domains.each do |domain|
         domain_variants += generate_domain_variants(domain)
       end
 
       domain_variants.map do |domain_variant|
-        "WHEN starts_with(referrer, '#{domain_variant}') THEN 'search_engine'"
+        "WHEN starts_with(referrer, '#{domain_variant}') THEN '#{type}'"
       end
     end
 

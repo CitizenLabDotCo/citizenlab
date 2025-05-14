@@ -11,6 +11,10 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
     end
 
+    # it 'identifies direct traffic' do
+      # TODO
+    # end
+
     it 'identifies search engines' do
       create(:session, referrer: 'https://www.google.com/')
       create(:session, referrer: 'https://www.bing.com/')
@@ -35,9 +39,33 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       })
     end
 
-    # it 'identifies social networks' do
-      # TODO
-    # end
+    it 'identifies social networks' do
+      create(:session, referrer: 'https://www.facebook.com/')
+      create(:session, referrer: 'https://m.facebook.com/')
+      create(:session, referrer: 'https://lm.facebook.com/')
+      create(:session, referrer: 'https://l.facebook.com/')
+      create(:session, referrer: 'https://www.instagram.com/')
+      create(:session, referrer: 'https://l.instagram.com/')
+      create(:session, referrer: 'http://instagram.com/')
+      create(:session, referrer: 'https://www.linkedin.com/')
+      create(:session, referrer: 'https://www.snapchat.com/')
+      create(:session, referrer: 'android-app://com.linkedin.android/')
+      create(:session, referrer: 'https://www.reddit.com/')
+      create(:session, referrer: 'https://out.reddit.com/')
+      create(:session, referrer: 'https://www.hoplr.com/')
+      create(:session, referrer: 'https://www.tiktok.com/')
+      create(:session, referrer: 'https://www.twitter.com/')
+      create(:session, referrer: 'https://x.com')
+      create(:session, referrer: 'https://lnkd.in/')
+      create(:session, referrer: 'https://bsky.app/')
+
+      expect(query.run_query).to eq({
+        sessions_per_referrer_type: {
+          'social_network' => 18,
+        }
+      })
+
+    end
 
     # it 'identifies email campaigns' do
     #   create(:session, referrer: 'android-app://com.google.android.gm/') # gmail app
@@ -50,10 +78,6 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
     #   create(:session, referrer: 'https://mail02.orange.fr/')
 
     #   # TODO
-    # end
-
-    # it 'identifies direct traffic' do
-      # TODO
     # end
 
     # it 'identifies other traffic' do
