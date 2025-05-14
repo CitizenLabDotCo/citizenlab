@@ -47,7 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Cette image est toujours recadrée à un certain ratio afin de s'assurer que tous les aspects cruciaux sont affichés à tout moment. Le {link} de ce type d'image est {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "ratio recommandé",
-  "app.components.Admin.ImageCropper.mobileCropExplanation": "Remarque : toute zone importante de l'image doit être contenue dans les lignes verticales en pointillés, car l'image sera recadrée à un ratio de 3:1 sur les appareils mobiles.",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Note : Veillez à ce que les parties importantes de l'image restent bien à l'intérieur des lignes verticales en pointillés, car l'image sera recadrée au format 3:1 sur mobile.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Texte de la bannière pour les utilisateurs connectés",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Attention : la couleur que vous avez sélectionné n’est pas assez contrastée. Cela peut entraîner des problèmes de lecture. Choisissez une couleur plus foncée pour optimiser la lisibilité.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Ajouter des événements à la barre de navigation",
