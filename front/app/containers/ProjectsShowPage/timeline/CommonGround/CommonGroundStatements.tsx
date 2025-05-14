@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react';
 import {
   Box,
   Button,
+  Text,
   defaultCardStyle,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -222,15 +223,10 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
       >
-        <Box display="flex" justifyContent="space-between" mb="8px">
-          <Box as="span">{current.author}</Box>
-          <Box as="span" color="textSecondary">
-            {current.publishedAt}
-          </Box>
-        </Box>
-
         <Box mb="12px" id={`statement-body-${current.id}`}>
-          <T value={current.body} supportHtml />
+          <Text fontSize="l">
+            <T value={current.body} supportHtml />
+          </Text>
         </Box>
 
         <ActionIndicator type="agree" visible={dragOffset.x < -50}>
@@ -243,29 +239,32 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
           {formatMessage(messages.unsureLabel)}
         </ActionIndicator>
 
-        <Box display="flex" w="100%" justifyContent="space-between">
+        <Box display="flex" w="100%" justifyContent="space-between" gap="8px">
           <Button
-            buttonStyle="text"
+            buttonStyle="secondary-outlined"
             icon="check-circle"
             iconColor={colors.green500}
             onClick={() => reactToIdea({ ideaId: current.id, mode: 'agree' })}
+            fullWidth
           >
             {formatMessage(messages.agreeLabel)}
           </Button>
           <Button
-            buttonStyle="text"
+            buttonStyle="secondary-outlined"
             icon="sentiment-neutral"
             onClick={() => reactToIdea({ ideaId: current.id, mode: 'unsure' })}
+            fullWidth
           >
             {formatMessage(messages.unsureLabel)}
           </Button>
           <Button
-            buttonStyle="text"
+            buttonStyle="secondary-outlined"
             icon="cancel"
             iconColor={colors.red600}
             onClick={() =>
               reactToIdea({ ideaId: current.id, mode: 'disagree' })
             }
+            fullWidth
           >
             {formatMessage(messages.disagreeLabel)}
           </Button>
