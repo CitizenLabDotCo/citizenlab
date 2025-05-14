@@ -93,9 +93,16 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       })
     end
 
-    # it 'identifies other traffic' do
-      # TODO
-    # end
+    it 'identifies other traffic' do
+      create(:session, referrer: 'https://www.example.com/')
+      create(:session, referrer: 'https://www.gov.uk/')
+
+      expect(query.run_query).to eq({
+        sessions_per_referrer_type: {
+          'other' => 2,
+        }
+      })
+    end
 
     # it 'ignores SSO redirects' do
       # TODO

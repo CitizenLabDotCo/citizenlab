@@ -20,6 +20,7 @@ module ReportBuilder
       android-app://com.google.android.gm
       https://mail.google.com
       https://eb05g.r.ag.d.sendibm3.com
+      https://b12s9.r.sp1-brevo.net
       https://eb05g.r.a1.sendibm3.com
       https://outlook.live.com
       https://mail.telenet.be
@@ -53,7 +54,7 @@ module ReportBuilder
       referrer_types = sessions
         .select(
           "count(*) as count, " \
-          "CASE #{cases.join(' ')} ELSE NULL END as referrer_type"
+          "CASE #{cases.join(' ')} ELSE 'other' END as referrer_type"
         )
         .group(:referrer_type)
 
