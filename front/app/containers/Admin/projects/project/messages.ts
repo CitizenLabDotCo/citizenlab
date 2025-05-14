@@ -402,6 +402,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyResultsTab',
     defaultMessage: 'Survey Results',
   },
+  resultsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.resultsTab',
+    defaultMessage: 'Results',
+  },
   surveyTab: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyTab',
     defaultMessage: 'Survey',
