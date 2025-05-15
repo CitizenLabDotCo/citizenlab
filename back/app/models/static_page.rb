@@ -57,6 +57,9 @@ class StaticPage < ApplicationRecord
 
   before_validation :set_code, on: :create
 
+  before_validation :sanitize_title_multiloc
+  before_validation :sanitize_banner_cta_button_multiloc
+  before_validation :sanitize_banner_subheader_multiloc
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
@@ -188,6 +191,33 @@ class StaticPage < ApplicationRecord
     self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
     self[attribute] = @service.remove_multiloc_empty_trailing_tags(self[attribute])
     self[attribute] = @service.linkify_multiloc(self[attribute])
+  end
+
+  def sanitize_title_multiloc
+    return unless title_multiloc && title_multiloc.any?
+
+    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
+      title_multiloc,
+      []
+    )
+  end
+
+  def sanitize_banner_cta_button_multiloc
+    return unless banner_cta_button_multiloc && banner_cta_button_multiloc.any?
+
+    self.banner_cta_button_multiloc = SanitizationService.new.sanitize_multiloc(
+      banner_cta_button_multiloc,
+      []
+    )
+  end
+
+  def sanitize_banner_subheader_multiloc
+    return unless banner_subheader_multiloc && banner_subheader_multiloc.any?
+
+    self.banner_subheader_multiloc = SanitizationService.new.sanitize_multiloc(
+      banner_subheader_multiloc,
+      []
+    )
   end
 
   def destroy_obsolete_associations
