@@ -4,11 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import GraphCard from 'components/admin/GraphCard';
 import EmptyPieChart from 'components/admin/GraphCards/EmptyPieChart';
-import {
-  ProjectId,
-  Dates,
-  Resolution,
-} from 'components/admin/GraphCards/typings';
+import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import PieChart from 'components/admin/Graphs/PieChart';
 
@@ -17,20 +13,16 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import renderTooltip from './renderTooltip';
-import useVisitorTypes from './useVisitorTypes';
+import useDeviceTypes from './useDeviceTypes';
+import { getTranslations } from './translations';
 
-type Props = ProjectId & Dates & Resolution;
+type Props = ProjectId & Dates;
 
-const VisitorsCard = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: Props) => {
+const DeviceTypesCard = ({ projectId, startAtMoment, endAtMoment }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { pieData, xlsxData } = useVisitorTypes({
+  const { pieData, xlsxData } = useDeviceTypes({
     projectId,
     startAtMoment,
     endAtMoment,
@@ -47,6 +39,7 @@ const VisitorsCard = ({
   };
 
   const cardTitle = formatMessage(messages.title);
+  const translations = getTranslations(formatMessage);
 
   if (isNilOrError(pieData)) {
     return (
@@ -60,7 +53,7 @@ const VisitorsCard = ({
     (row): LegendItem => ({
       icon: 'circle',
       color: row.color,
-      label: `${row.name} (${row.percentage}%)`,
+      label: `${translations[row.name]} (${row.percentage}%)`,
     })
   );
 
@@ -77,7 +70,6 @@ const VisitorsCard = ({
         startAt,
         endAt,
         currentProjectFilter: projectId,
-        resolution,
       }}
     >
       <Box height="initial" p="20px">
@@ -109,4 +101,4 @@ const VisitorsCard = ({
   );
 };
 
-export default VisitorsCard;
+export default DeviceTypesCard;

@@ -140,8 +140,8 @@ export default defineMessages({
     defaultMessage: 'This is how registered users see the banner.',
   },
   customizationNotAvailable: {
-    id: 'app.containers.ContentBuilder.homepage.customizationNotAvailable',
+    id: 'app.containers.ContentBuilder.homepage.customizationNotAvailable2',
     defaultMessage:
-      'Customizing settings other than the text on the homepage banner is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
+      'Customizing settings other than the image and text on the homepage banner is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
 });

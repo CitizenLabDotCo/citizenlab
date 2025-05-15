@@ -72,5 +72,25 @@ resource 'Idea Custom Fields' do
         ]
       end
     end
+
+    context 'when resident' do
+      let!(:hidden_field) { create(:custom_field_text, resource: form, key: 'extra_field2', hidden: true) }
+      let!(:disabled_field) { create(:custom_field_text, resource: form, key: 'extra_field3', enabled: false) }
+
+      before { resident_header_token }
+
+      example_request 'List all allowed custom fields for a project' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data].size).to eq 12
+        expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to eq [
+          nil, 'title_multiloc',
+          nil, 'body_multiloc',
+          nil, 'idea_images_attributes', 'idea_files_attributes',
+          nil, 'topic_ids', 'location_description',
+          'extra_field1', 'form_end'
+        ]
+      end
+    end
   end
 end

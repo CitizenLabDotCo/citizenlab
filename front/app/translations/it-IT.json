@@ -179,6 +179,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Salvataggio automatico",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Il salvataggio automatico è abilitato per impostazione predefinita quando apri l'editor del modulo. Ogni volta che chiudi il pannello delle impostazioni del campo utilizzando il pulsante \"X\", si attiverà automaticamente un salvataggio.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Scarica come pdf",
+  "app.components.FormSync.downloadExcelTemplate": "Scarica un modello Excel",
   "app.components.GoBackButton.group.edit.goBack": "Torna indietro",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Torna alla pagina precedente",
   "app.components.HookForm.Feedback.errorTitle": "C'è un problema",
