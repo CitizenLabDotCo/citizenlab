@@ -1,15 +1,11 @@
 import React from 'react';
 
 import Card from '../../_shared/Card';
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 import messages from '../messages';
-import { ChartWidgetProps } from '../typings';
+import { Props } from './typings';
 
 import VisitorsTrafficSourcesCard from './VisitorTrafficSourcesCard';
-
-type Props = ChartWidgetProps & {
-  view?: 'chart' | 'table';
-};
+import Settings from './Settings';
 
 const VisitorsTrafficSourcesWidget = ({ title, ...props }: Props) => {
   return (
@@ -27,7 +23,7 @@ VisitorsTrafficSourcesWidget.craft = {
     endAtMoment: null,
   },
   related: {
-    settings: ChartWidgetSettings,
+    settings: Settings,
   },
 };
 

@@ -12,10 +12,11 @@ import messages from '../messages';
 import Chart from './Chart';
 import Table from './Table';
 import useVisitorReferrerTypes from './useVisitorReferrerTypes';
+import { View } from './typings';
 
 type Props = ProjectId &
   DatesStrings & {
-    view?: 'chart' | 'table';
+    view?: View;
   };
 
 const VisitorsTrafficSourcesCard = ({
