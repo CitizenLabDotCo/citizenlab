@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "Tablett",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "Enhetstyper",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "Enhetstyp",
+  "app.containers.Admin.earlyAccessLabel": "Tidig åtkomst",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Detta är en nyutvecklad funktion som finns tillgänglig i Early Access.",
   "app.containers.Admin.emails.addCampaign": "Skapa e-post",
   "app.containers.Admin.emails.addCampaignTitle": "Skapa ett nytt e-postmeddelande",
   "app.containers.Admin.emails.allParticipantsInProject": "Alla deltagare i projektet",
