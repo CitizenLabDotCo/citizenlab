@@ -1,6 +1,6 @@
 import 'cypress-file-upload';
 import './dnd';
-import moment = require('moment');
+import * as moment from 'moment';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
