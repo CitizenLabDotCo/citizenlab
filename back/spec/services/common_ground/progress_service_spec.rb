@@ -5,18 +5,28 @@ require 'rails_helper'
 describe CommonGround::ProgressService do
   subject(:service) { described_class.new(phase) }
 
-  let_it_be(:phase) { create(:common_ground_phase) }
+  describe '#initialize' do
+    context 'when phase is not a common ground phase' do
+      let(:phase) { create(:information_phase) }
 
-  before_all do
-    # Ideas and reaction that should not be taken into account.
-    create(:idea)
-    create(:reaction)
+      it 'raises error when phase is not a common ground phase' do
+        expect { service }
+          .to raise_error(CommonGround::ProgressService::UnsupportedPhaseError)
+      end
+    end
   end
 
   describe '#user_progress' do
     subject(:progress) { service.user_progress(user) }
 
+    let_it_be(:phase) { create(:common_ground_phase) }
     let_it_be(:user) { create(:user) }
+
+    before_all do
+      # Ideas and reaction that should not be taken into account.
+      create(:idea)
+      create(:reaction)
+    end
 
     context 'when there is no inputs' do
       it 'returns progress for the given user' do

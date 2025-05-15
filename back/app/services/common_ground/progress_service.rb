@@ -56,6 +56,6 @@ module CommonGround
       def next_idea_id = next_idea&.id
     end
 
-    class UnsupportedPhaseError < StandardError; end
+    class UnsupportedPhaseError < ArgumentError; end
   end
 end
