@@ -12,9 +12,12 @@ namespace :single_use do
       type['resolvedName'] if type.is_a?(Hash)
     end
 
-    def republish_report(report)
-      user = User.super_admins.first || User.admins.first
-      ReportBuilder::ReportPublisher.new(report, user).publish
+    def republish_report(report, execute)
+      user = report.owner || User.super_admins.first || User.admins.first
+
+      if execute
+        ReportBuilder::ReportPublisher.new(report, user).publish
+      end
     rescue ActiveRecord::RecordNotFound => e
       Rails.logger.error(
         message: 'Cannot refresh report data',
@@ -64,13 +67,10 @@ namespace :single_use do
 
       # 4. Loop over reports and republish them
       report_ids.each do |report_id|
-        report = ReportBuilder::Report.where(id: report_id)
+        report = ReportBuilder::Report.find(report_id)
 
         puts "\nrepublishing report: #{report_id}\n\n"
-
-        if execute
-          republish_report(report)
-        end
+        republish_report(report, execute)
       end
     end
   end
