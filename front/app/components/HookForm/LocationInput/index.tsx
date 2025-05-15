@@ -61,6 +61,7 @@ const LocationInput = ({ name, fieldName, ...rest }: Props) => {
             id={name}
             {...field}
             {...rest}
+            form={'_none'}
             value={value}
             onChange={async (option: Option | null) => {
               if (locationDescription) {

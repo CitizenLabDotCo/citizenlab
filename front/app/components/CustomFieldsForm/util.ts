@@ -34,25 +34,23 @@ export function getFormCompletionPercentage(
   formValues: Record<string, any> = {}
 ) {
   // Count total required fields and answered required fields
-  let totalRequiredFields = 0;
-  let answeredRequiredFields = 0;
+  let totalFields = 0;
+  let answeredFields = 0;
 
   customFields.forEach((field) => {
-    if (field.required) {
-      totalRequiredFields += 1;
-      if (formValues[field.key]) {
-        answeredRequiredFields += 1;
-      }
+    totalFields += 1;
+    if (formValues[field.key]) {
+      answeredFields += 1;
     }
   });
 
   // If no required fields, consider it 100% complete
-  if (totalRequiredFields === 0) {
+  if (totalFields === 0) {
     return 100;
   }
 
   // Calculate and return percentage
-  return Math.round((answeredRequiredFields / totalRequiredFields) * 100);
+  return Math.round((answeredFields / totalFields) * 100);
 }
 
 export const extractOptions = (

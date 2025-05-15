@@ -158,7 +158,10 @@ describe('Idea new page for continuous project', () => {
       'Boulevard Anspach Brussels'
     );
     cy.wait(7000);
-    cy.get('.e2e-idea-form-location-input-field').type('{enter}');
+    cy.get('.e2e-idea-form-location-input-field input')
+      .first()
+      .focus()
+      .type('{enter}');
 
     // save the form
     cy.get('[data-cy="e2e-submit-form"]').click();
@@ -278,7 +281,10 @@ describe('Idea new page for timeline project', () => {
       'Boulevard Anspach Brussels'
     );
     cy.wait(7000);
-    cy.get('.e2e-idea-form-location-input-field').type('{enter}');
+    cy.get('.e2e-idea-form-location-input-field input')
+      .first()
+      .focus()
+      .type('{enter}');
 
     // save the form
     cy.get('[data-cy="e2e-submit-form"]').click();
