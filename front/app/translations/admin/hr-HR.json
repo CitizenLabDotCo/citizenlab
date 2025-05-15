@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "Tableta",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "Vrste uređaja",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "Vrsta uređaja",
+  "app.containers.Admin.earlyAccessLabel": "Rani pristup",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Ovo je novoizdana značajka dostupna u ranom pristupu.",
   "app.containers.Admin.emails.addCampaign": "Stvorite e-poštu",
   "app.containers.Admin.emails.addCampaignTitle": "Kreirajte novu e-poruku",
   "app.containers.Admin.emails.allParticipantsInProject": "Svi sudionici projekta",
