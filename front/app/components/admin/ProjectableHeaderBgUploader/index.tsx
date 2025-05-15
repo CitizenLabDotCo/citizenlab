@@ -67,6 +67,7 @@ const ProjectableHeaderBgUploader = ({
             aspectRatioWidth={PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH}
             aspectRatioHeight={PROJECTABLE_HEADER_BG_ASPECT_RATIO_HEIGHT}
             onRemove={handleImageRemove}
+            show3x1MobileCropLines={true}
           />
         </Box>
       ) : (
