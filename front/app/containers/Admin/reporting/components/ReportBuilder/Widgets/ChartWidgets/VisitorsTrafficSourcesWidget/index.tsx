@@ -7,10 +7,11 @@ import { ChartWidgetProps } from '../typings';
 
 import VisitorsTrafficSourcesCard from './VisitorTrafficSourcesCard';
 
-const VisitorsTrafficSourcesWidget = ({
-  title,
-  ...props
-}: ChartWidgetProps) => {
+type Props = ChartWidgetProps & {
+  view?: 'chart' | 'table';
+};
+
+const VisitorsTrafficSourcesWidget = ({ title, ...props }: Props) => {
   return (
     <Card title={title} pagebreak>
       <VisitorsTrafficSourcesCard {...props} />

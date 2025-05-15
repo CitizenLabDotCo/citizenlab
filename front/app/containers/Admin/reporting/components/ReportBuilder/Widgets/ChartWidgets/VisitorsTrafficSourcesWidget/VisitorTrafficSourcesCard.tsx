@@ -12,9 +12,17 @@ import messages from '../messages';
 import Chart from './Chart';
 import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 
-type Props = ProjectId & DatesStrings;
+type Props = ProjectId &
+  DatesStrings & {
+    view?: 'chart' | 'table';
+  };
 
-const VisitorsTrafficSourcesCard = ({ projectId, startAt, endAt }: Props) => {
+const VisitorsTrafficSourcesCard = ({
+  projectId,
+  startAt,
+  endAt,
+  view = 'chart',
+}: Props) => {
   const { pieData, tableData } = useVisitorReferrerTypes({
     projectId,
     startAt,
@@ -28,7 +36,7 @@ const VisitorsTrafficSourcesCard = ({ projectId, startAt, endAt }: Props) => {
 
   return (
     <Box width="100%" height="220px" mt="20px" pb="10px">
-      <Chart pieData={pieData} layout={layout} />
+      {view === 'chart' ? <Chart pieData={pieData} layout={layout} /> : <></>}
     </Box>
   );
 };
