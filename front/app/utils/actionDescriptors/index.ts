@@ -109,7 +109,6 @@ const actionDisabledMessages: {
   react_on_inputs: {
     project_inactive: messages.commonGroundDisabledProjectInactive,
     project_not_visible: messages.commonGroundDisabledNotPermitted,
-    not_common_ground: messages.commonGroundDisabledNotActivePhase,
     user_not_active: messages.commonGroundNotActiveUser,
     user_not_verified: messages.commonGroundDisabledNotVerified,
     user_missing_requirements: messages.surveyDisabledNotActiveUser,

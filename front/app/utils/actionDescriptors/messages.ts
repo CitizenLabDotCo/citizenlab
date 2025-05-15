@@ -234,11 +234,6 @@ export default defineMessages({
     id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundNotActiveUser',
     defaultMessage: 'Please {completeRegistrationLink} to react to the inputs.',
   },
-  commonGroundDisabledNotActivePhase: {
-    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundDisabledNotActivePhase',
-    defaultMessage:
-      'You can only react to the inputs when this phase in the timeline is active.',
-  },
   commonGroundDisabledNotVerified: {
     id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundDisabledNotVerified',
     defaultMessage:

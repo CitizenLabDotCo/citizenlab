@@ -43,10 +43,6 @@ export type ProjectReactingDisabledReason =
 
 export type ProjectSurveyDisabledReason = 'not_survey' | ProjectDisabledReason;
 
-export type ProjectCommonGroundDisabledReason =
-  | 'not_common_ground'
-  | ProjectDisabledReason;
-
 export type ProjectPollDisabledReason =
   | 'not_poll'
   | 'already_responded'
@@ -123,5 +119,4 @@ export type DisabledReason =
   | ProjectVolunteeringDisabledReason
   | IdeaReactingDisabledReason
   | IdeaCommentingDisabledReason
-  | IdeaVotingDisabledReason
-  | ProjectCommonGroundDisabledReason;
+  | IdeaVotingDisabledReason;

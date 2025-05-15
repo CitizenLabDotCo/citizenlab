@@ -12,7 +12,6 @@ import {
   ProjectSurveyDisabledReason,
   ProjectVotingDisabledReason,
   ProjectVolunteeringDisabledReason,
-  ProjectCommonGroundDisabledReason,
 } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -111,7 +110,7 @@ export type ActionDescriptors = {
   voting: ActionDescriptor<ProjectVotingDisabledReason>;
   attending_event: ActionDescriptor<ProjectDisabledReason>;
   volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
-  react_on_inputs: ActionDescriptor<ProjectCommonGroundDisabledReason>;
+  react_on_inputs: ActionDescriptor<ProjectDisabledReason>;
 };
 
 export interface IProjectData {
