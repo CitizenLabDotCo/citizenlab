@@ -59,14 +59,10 @@ class CustomForm < ApplicationRecord
   private
 
   def sanitize_print_start_multiloc
-    return unless print_start_multiloc
-
     self.print_start_multiloc = sanitize_multiloc(print_start_multiloc)
   end
 
   def sanitize_print_end_multiloc
-    return unless print_end_multiloc
-
     self.print_end_multiloc = sanitize_multiloc(print_end_multiloc)
   end
 

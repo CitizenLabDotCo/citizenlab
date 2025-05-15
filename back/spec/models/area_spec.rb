@@ -49,7 +49,7 @@ RSpec.describe Area do
       area.save!
 
       expect(area.title_multiloc['en']).to eq('My area of alert("XSS") Springfield')
-      expect(area.title_multiloc['fr-BE']).to eq('South Elyse ')
+      expect(area.title_multiloc['fr-BE']).to eq('South Elyse')
       expect(area.title_multiloc['nl-BE']).to eq('Plain text with formatting')
     end
   end
