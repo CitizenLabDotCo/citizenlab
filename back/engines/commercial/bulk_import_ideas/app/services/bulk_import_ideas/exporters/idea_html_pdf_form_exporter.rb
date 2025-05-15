@@ -21,98 +21,112 @@ module BulkImportIdeas::Exporters
       gb.render_to_pdf(html)
     end
 
+    # Extract the text from this PDF so we understand how each field is laid out in the PDF - Needed for the PDF import
     def importer_data
-      # Extract the text from this PDF so we understand which pages and approx location each field is on
-      file = export
-      reader = PDF::Reader.new(file)
+      @importer_data ||= begin
+        file = export
+        reader = PDF::Reader.new(file)
 
-      pages = reader.pages.map do |page|
-        page.text.split("\n").map do |line|
-          # Remove the optional text from each line
-          line.sub("(#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }})", '')&.strip
+        # Get an array of lines for each page of the PDF
+        pages = reader.pages.map do |page|
+          page.text.split("\n").map do |line|
+            # TODO: Do not need to do this - this could also be scanned
+            line.sub(optional_text, '')&.strip # Remove the optional text from each field title
+          end
         end
-      end
 
-      @importer_fields = []
-      question_num = 0
-      form_fields.each_with_index do |field, index|
-        question_number = field_has_question_number?(field) ? question_num += 1 : nil
-        add_to_importer_fields(field, pages, 'field', question_number, form_fields[index + 1])
-        field.options.each do |option|
-          add_to_importer_fields(option, pages, 'option')
+        field_import_configs = []
+        question_num = 0
+        form_fields.each_with_index do |field, index|
+          question_number = field_has_question_number?(field) ? question_num += 1 : nil
+          field_import_configs << import_config_for_field(field, pages, question_number, form_fields[index + 1])
+          field.options.each do |option|
+            field_import_configs << import_config_for_field(option, pages)
+          end
         end
-      end
 
-      {
-        page_count: reader.pages.count,
-        fields: @importer_fields
-      }
+        {
+          page_count: pages.count,
+          fields: field_import_configs.compact
+        }
+      end
     end
 
     private
 
-    def add_to_importer_fields(field_or_option, pdf_pages, type = 'field', question_number = nil, next_field = nil)
-      title = field_print_title(field_or_option, question_number, type)
+    def import_config_for_field(field_or_option, pdf_pages, question_number = nil, next_field = nil)
+      field_config = nil
+      type = field_or_option.is_a?(CustomField) ? 'field' : 'option'
+      title = field_print_title(field_or_option, question_number, type) # TODO: Another function to create the title with (optional + question numbers)
 
-      pdf_pages.each_with_index do |lines, index|
+      pdf_pages.each_with_index do |page_lines, index|
         page_num = index + 1
-        field_line_num = lines.find_index(title)
-        total_lines = lines.length
+        field_line_num = page_lines.find_index { |value| value.start_with?(title.slice(0, 60)) } # Title is shortened to ensure questions with long titles are found in the PDF
+
         if field_line_num
           # Convert the line number into a position 0 - 100 in the page (equivalent of what the google form parser returns)
-          position = ((field_line_num + 1) * (100 / total_lines.to_f)).round
+          position = ((field_line_num + 1) * (100 / page_lines.length.to_f)).round
 
-          key = field_or_option.key
-          parent_key = type == 'option' ? field_or_option.custom_field.key : nil
-
-          # Blank out the field once found
-          pdf_pages[index][lines.find_index(title)] = ''
-
-          # Should not include if the field is not pdf_importable? Same with the options?
+          # Do not include if the field is not pdf_importable?
           next if type == 'field' && !field_or_option.pdf_importable?
 
-          @importer_fields << {
+          field_config = {
             name: title,
-            description: type == 'field' ? ActionView::Base.full_sanitizer.sanitize(field_or_option[:description_multiloc][@locale]) : nil,
             type: type,
-            input_type: field_or_option[:input_type],
-            code: field_or_option[:code],
-            key: key,
-            parent_key: parent_key,
+            key: field_or_option.key,
             page: page_num,
-            position: position.to_i,
-            content_delimiters: {
-              start: field_content_start_delimiter(field_or_option),
-              end: field_content_end_delimiter(next_field, question_number)
-            }
+            position: position.to_i
           }
+
+          if type == 'field'
+            # Only needed for custom fields
+            field_config[:input_type] = field_or_option[:input_type]
+            field_config[:code] = field_or_option[:code]
+            field_config[:description] = ActionView::Base.full_sanitizer.sanitize(field_or_option[:description_multiloc][@locale])
+            field_config[:content_delimiters] = field_content_delimiters(field_or_option, next_field, question_number, page_lines, field_line_num)
+          else
+            # Only needed for options
+            field_config[:parent_key] = field_or_option.custom_field.key
+
+            # Blank out option once processed - To avoid them being found again when there multiple options with the same value
+            pdf_pages[index][page_lines.find_index(title)] = ''
+          end
+
+          break # No need to check the rest of the pages - causes issues with duplicate options if we do
         end
       end
+
+      field_config
     end
 
-    # Grabs the title of the next field so that we can split out from the value
-    # any greedily scanned text that includes content from the next part of the form and not handwritten text
-    def field_content_end_delimiter(next_field, current_question_number)
-      # TODO: Get the visibility_disclaimer text here too
+    # Grabs the text lines where fields start and end so that we can split out from the value
+    # any greedily scanned text that includes content from the part of the form and not handwritten text
+    # End delimiter is the text line where the next field or element starts
+    # Start delimiter is the text line before - end of previous field title / description
+    # If the field is the last on a page there is no end delimiter
+    def field_content_delimiters(field, next_field, current_question_number, page_lines, _field_line_num)
+      return unless field.support_text? # Delimiters are only needed for text fields
+
+      page_text = page_lines.reject(&:empty?) # Remove empty lines
+      page_text.pop # Remove the last line which is always the page number
+
+      next_line_index = nil
+
       if next_field
-        # Get text delimiter from the next field title
-        question_number = current_question_number && field_has_question_number?(next_field) ? current_question_number + 1 : nil
-        field_print_title(next_field, question_number)
+        # Get delimiter by looking at the next page
+        next_question_number = current_question_number && field_has_question_number?(next_field) ? current_question_number + 1 : nil
+        next_question_title = field_print_title(next_field, next_question_number)
+        next_line_index = page_text.find_index { |value| next_question_title.start_with?(value) } # TODO: New method for finding text
       elsif next_field.nil? && @participation_method.custom_form.print_end_multiloc[@locale].present?
-        # Get text from the end of the form config
-        # TODO: This does not quite do it yet, as the HTML is not split over lines
-        ActionView::Base.full_sanitizer.sanitize(@participation_method.custom_form.print_end_multiloc[@locale])
+        # Get delimiter from the end of the form
+        end_text = ActionView::Base.full_sanitizer.sanitize(@participation_method.custom_form.print_end_multiloc[@locale])
+        next_line_index = page_text.find_index { |value| end_text.start_with?(value) }
       end
-      # TODO: truncate long text in case the text wraps on multiple lines
-    end
 
-    # Grabs the end of the description field can split out from the value
-    # any greedily scanned text that includes content from the form and not handwritten text
-    def field_content_start_delimiter(_field)
-      # TODO: JS - start delimiter could be
-      # end of description - last line of description?
-      # multiselect_print_instructions (if multiselect do maybe not needed)
-      nil
+      {
+        start: next_line_index ? page_text[next_line_index - 1] : page_text.last,
+        end: next_line_index ? page_text[next_line_index] : nil
+      }
     end
 
     # Allow rendering of images in the PDF when in development

@@ -56,7 +56,7 @@ module BulkImportIdeas::Exporters
           email_address: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') },
           checkbox: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box', organizationName: organization_name) }
         },
-        optional: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') },
+        optional: optional_text,
         unsupported_field_text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.unsupported_field') },
         page_copy: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.page') },
         font_family: font_family,
@@ -106,6 +106,10 @@ module BulkImportIdeas::Exporters
           </ul>
         HTML
       end
+    end
+
+    def optional_text
+      "(#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }})"
     end
 
     def format_fields

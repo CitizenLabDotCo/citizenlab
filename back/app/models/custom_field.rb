@@ -155,7 +155,11 @@ class CustomField < ApplicationRecord
   end
 
   def support_free_text_value?
-    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?) || support_follow_up?
+    support_text? || (support_options? && includes_other_option?) || support_follow_up?
+  end
+
+  def support_text?
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
   end
 
   def support_option_images?

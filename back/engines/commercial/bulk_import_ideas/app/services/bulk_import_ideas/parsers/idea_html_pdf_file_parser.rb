@@ -2,16 +2,15 @@
 
 module BulkImportIdeas::Parsers
   class IdeaHtmlPdfFileParser < IdeaPdfFileParser
-
     private
 
     def process_text_field_value(field, _all_fields)
       value = field[:value]
 
-      # Strip out greedily scanned text from the start and end of fields based on text strings in delimiters
+      # Strip out greedily scanned text from the start and end of text fields based on text strings in delimiters
       # eg next question title, form end text, end of description
-      start_delimiter = field[:content_delimiters][:start]
-      end_delimiter = field[:content_delimiters][:end]
+      start_delimiter = field.dig(:content_delimiters, :start)
+      end_delimiter = field.dig(:content_delimiters, :end)
 
       if start_delimiter
         split_string = value.split(start_delimiter)
