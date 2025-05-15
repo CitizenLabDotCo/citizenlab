@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "crwdns209068:0crwdne209068:0",
   "app.components.Admin.ImageCropper.info": "crwdns209070:0{link}crwdnd209070:0{aspect}crwdne209070:0",
   "app.components.Admin.ImageCropper.infoLinkText": "crwdns209072:0crwdne209072:0",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "crwdns4582161:0crwdne4582161:0",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "crwdns209074:0crwdne209074:0",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "crwdns209076:0crwdne209076:0",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "crwdns209078:0crwdne209078:0",

@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Šis attēls vienmēr tiek apgriezts noteiktā proporcijā, lai vienmēr būtu redzami visi svarīgākie aspekti. Šim attēla tipam ir {link} {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "ieteicamā attiecība",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Piezīme: Jebkurai svarīgai attēla zonai jāiekļaujas vertikālajās pārtrauktajās līnijās, jo mobilajās ierīcēs attēls tiks apgriezts proporcijā 3:1.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Galvenes teksts reģistrētajiem lietotājiem",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Brīdinājums: izvēlētajai krāsai nav pietiekami liela kontrasta. Tā rezultātā teksts var būt grūti salasāms. Lai optimizētu lasāmību, izvēlieties tumšāku krāsu.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Pievienot Notikumus navigācijas joslai",

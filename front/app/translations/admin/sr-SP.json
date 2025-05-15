@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Ова слика се увек исече у одређеном односу како би се осигурало да су сви кључни аспекти увек приказани. {link} за овај тип слике је {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "препоручени однос",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Note: Any important area of the image should be contained within the vertical dashed lines, as the image will be cropped to a 3:1 ratio on mobile devices.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Текст заглавља за регистроване кориснике",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Упозорење: боја коју сте изабрали нема довољно висок контраст. То може довести до текста који је тешко читати. Изаберите тамнију боју да бисте оптимизовали читљивост.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Додајте догађаје на траку за навигацију",
