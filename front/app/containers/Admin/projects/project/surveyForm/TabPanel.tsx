@@ -21,7 +21,7 @@ const TabPanel = ({
 }) => {
   return (
     <Box maxWidth="700px">
-      <SectionTitle>
+      <SectionTitle data-cy="e2e-survey-form-title">
         <FormattedMessage {...messages.surveyForm} />
       </SectionTitle>
       <SectionDescription>
