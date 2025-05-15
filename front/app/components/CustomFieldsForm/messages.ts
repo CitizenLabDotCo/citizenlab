@@ -82,4 +82,8 @@ export default defineMessages({
     defaultMessage:
       "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location (eg: -33.019808, -71.495676).",
   },
+  typeYourAnswer: {
+    id: 'app.components.CustomFieldsForm.typeYourAnswer',
+    defaultMessage: 'Type your answer',
+  },
 });

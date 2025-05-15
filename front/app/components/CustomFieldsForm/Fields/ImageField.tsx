@@ -32,7 +32,7 @@ const ImageField = ({ name, inputLabel, ...rest }: Props) => {
 
   useEffect(() => {
     if (getValues(name)) {
-      convertUrlToUploadFile(getValues(name)[0].image).then((file) => {
+      convertUrlToUploadFile(getValues(name)[0]?.image).then((file) => {
         setImages(file ? [file] : []);
       });
     }
@@ -57,7 +57,7 @@ const ImageField = ({ name, inputLabel, ...rest }: Props) => {
               images={images}
               onAdd={(file) => {
                 setImages([file[0]]);
-                setValue(name, [{ image: file[0].base64 }], {
+                setValue(name, [{ image: file[0]?.base64 }], {
                   shouldDirty: true,
                 });
                 trigger(name);

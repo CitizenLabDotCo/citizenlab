@@ -99,7 +99,6 @@ const generateYupValidationSchema = ({
       }
 
       case 'select': {
-        // Should we also enum the option keys?
         schema[key] = required
           ? string().required(
               formatMessage(messages.fieldRequired, {
@@ -107,11 +106,23 @@ const generateYupValidationSchema = ({
               })
             )
           : string();
+
+        // Other option
+        const fieldSchemaOther = string().when(key, {
+          is: (value?: string) => value === 'other',
+          then: string().required(
+            formatMessage(messages.fieldRequired, {
+              fieldName: localize(title_multiloc),
+            })
+          ),
+          otherwise: string().notRequired(),
+        });
+        schema[`${key}_other`] = fieldSchemaOther;
+
         break;
       }
 
       case 'multiselect': {
-        // Should we also enum the option keys?
         let fieldSchema = array().of(string());
         if (required) {
           fieldSchema = fieldSchema
@@ -126,8 +137,6 @@ const generateYupValidationSchema = ({
                 fieldName: localize(title_multiloc),
               })
             );
-        } else {
-          fieldSchema = fieldSchema.default([]);
         }
 
         if (minimum_select_count) {
@@ -149,7 +158,19 @@ const generateYupValidationSchema = ({
           );
         }
 
+        // Other option
+        const fieldSchemaOther = string().when(key, {
+          is: (value?: string[]) => value?.includes('other'),
+          then: string().required(
+            formatMessage(messages.fieldRequired, {
+              fieldName: localize(title_multiloc),
+            })
+          ),
+          otherwise: string().notRequired(),
+        });
+
         schema[key] = fieldSchema;
+        schema[`${key}_other`] = fieldSchemaOther;
         break;
       }
 
