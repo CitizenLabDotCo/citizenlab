@@ -28,7 +28,8 @@ class OfficialFeedback < ApplicationRecord
 
   belongs_to :user, optional: true
 
-  before_validation :sanitize_body_multiloc
+  before_validation :sanitize_body_multiloc, if: :body_multiloc
+  before_validation :sanitize_author_multiloc, if: :author_multiloc
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
@@ -45,6 +46,13 @@ class OfficialFeedback < ApplicationRecord
     self.body_multiloc = service.sanitize_multiloc body_multiloc, %i[mention]
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc
     self.body_multiloc = service.linkify_multiloc body_multiloc
+  end
+
+  def sanitize_author_multiloc
+    self.author_multiloc = SanitizationService.new.sanitize_multiloc(
+      author_multiloc,
+      []
+    )
   end
 
   def remove_notifications
