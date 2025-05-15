@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Ova se slika uvijek obrezuje na određeni omjer kako bi svi ključni aspekti bili uvijek prikazani. {link} za ovaj tip slike jest {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "preporučeni omjer",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Napomena: Svako važno područje slike treba biti unutar okomitih isprekidanih linija jer će slika na mobilnim uređajima biti obrezana na omjer 3:1.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Tekst zaglavlja za registrirane korisnike",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Upozorenje: boja koju ste odabrali nema dovoljno visok kontrast. To može rezultirati tekstom koji je teško čitati. Odaberite tamniju boju kako biste optimizirali čitljivost.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Dodajte Događaje na navigacijsku traku",
