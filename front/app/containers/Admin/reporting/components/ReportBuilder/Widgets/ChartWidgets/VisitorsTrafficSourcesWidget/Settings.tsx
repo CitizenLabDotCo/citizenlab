@@ -44,8 +44,9 @@ const ViewInput = () => {
   ];
 
   return (
-    <Box>
+    <Box mb="20px">
       <Select
+        label={formatMessage(messages.view)}
         value={view}
         onChange={(e) => handleChangeView(e.value)}
         options={options}

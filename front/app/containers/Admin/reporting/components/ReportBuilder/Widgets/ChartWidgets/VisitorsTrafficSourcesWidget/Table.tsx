@@ -21,7 +21,7 @@ interface Props {
 
 const TableView = ({ tableData }: Props) => {
   return (
-    <Box px="20px">
+    <Box>
       <Table
         border={`1px solid ${colors.grey300}`}
         borderRadius={stylingConsts.borderRadius}

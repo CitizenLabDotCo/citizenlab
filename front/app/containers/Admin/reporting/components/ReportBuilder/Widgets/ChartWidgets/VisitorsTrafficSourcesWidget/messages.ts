@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.widgets.chart.visitorsTrafficSources.table',
     defaultMessage: 'Table',
   },
+  view: {
+    id: 'app.containers.Admin.reporting.widgets.chart.visitorsTrafficSources.view',
+    defaultMessage: 'View',
+  },
 });
