@@ -11,6 +11,9 @@ RSpec.describe Phase do
     end
   end
 
+  it { is_expected.to belong_to(:project) }
+  it { is_expected.to validate_presence_of(:title_multiloc) }
+
   describe 'description sanitizer' do
     it 'sanitizes script tags in the description' do
       phase = create(:phase, description_multiloc: {

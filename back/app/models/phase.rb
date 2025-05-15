@@ -303,29 +303,48 @@ class Phase < ApplicationRecord
   end
 
   def sanitize_title_multiloc
-    self.title_multiloc = sanitize_simple_multiloc(title_multiloc)
+    return unless title_multiloc&.any?
+
+    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
+      title_multiloc,
+      []
+    )
   end
 
   def sanitize_voting_term_singular_multiloc
-    self.voting_term_singular_multiloc = sanitize_simple_multiloc(voting_term_singular_multiloc)
+    return unless voting_term_singular_multiloc&.any?
+
+    self.voting_term_singular_multiloc = SanitizationService.new.sanitize_multiloc(
+      voting_term_singular_multiloc,
+      []
+    )
   end
 
   def sanitize_voting_term_plural_multiloc
-    self.voting_term_plural_multiloc = sanitize_simple_multiloc(voting_term_plural_multiloc)
+    return unless voting_term_plural_multiloc&.any?
+
+    self.voting_term_plural_multiloc = SanitizationService.new.sanitize_multiloc(
+      voting_term_plural_multiloc,
+      []
+    )
   end
 
   def sanitize_native_survey_title_multiloc
-    self.native_survey_title_multiloc = sanitize_simple_multiloc(native_survey_title_multiloc)
+    return unless native_survey_title_multiloc&.any?
+
+    self.native_survey_title_multiloc = SanitizationService.new.sanitize_multiloc(
+      native_survey_title_multiloc,
+      []
+    )
   end
 
   def sanitize_native_survey_button_multiloc
-    self.native_survey_button_multiloc = sanitize_simple_multiloc(native_survey_button_multiloc)
-  end
+    return unless native_survey_button_multiloc&.any?
 
-  def sanitize_simple_multiloc(multiloc)
-    return unless multiloc&.any?
-
-    SanitizationService.new.sanitize_multiloc(multiloc, [])
+    self.native_survey_button_multiloc = SanitizationService.new.sanitize_multiloc(
+      native_survey_button_multiloc,
+      []
+    )
   end
 
   def validate_end_at
@@ -375,6 +394,8 @@ class Phase < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
