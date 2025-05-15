@@ -41,6 +41,7 @@ class NavBarItem < ApplicationRecord
   validates :project, presence: true, if: :project?
 
   before_validation :set_code, on: :create
+  before_validation :sanitize_title_multiloc, if: :title_multiloc # Enables testing of fallback title mechanism 
 
   scope :only_default, lambda {
     result = left_joins(:static_page)
@@ -79,6 +80,13 @@ class NavBarItem < ApplicationRecord
 
   def set_code
     self.code ||= 'custom'
+  end
+
+  def sanitize_title_multiloc
+    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
+      title_multiloc,
+      []
+    )
   end
 
   def fallback_title_multiloc

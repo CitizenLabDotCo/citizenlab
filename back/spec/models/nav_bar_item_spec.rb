@@ -40,4 +40,23 @@ RSpec.describe NavBarItem do
       end
     end
   end
+
+  describe '#sanitize_title_multiloc' do
+    it 'removes all HTML tags from title_multiloc' do
+      nav_bar_item = build(
+        :nav_bar_item,
+        title_multiloc: {
+          'en' => 'Something <script>alert("XSS")</script> something',
+          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
+          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      )
+
+      nav_bar_item.save!
+
+      expect(nav_bar_item.title_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(nav_bar_item.title_multiloc['fr-BE']).to eq('Something ')
+      expect(nav_bar_item.title_multiloc['nl-BE']).to eq('Plain text with formatting')
+    end
+  end
 end
