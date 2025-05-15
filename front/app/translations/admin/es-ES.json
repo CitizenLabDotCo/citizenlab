@@ -2758,6 +2758,7 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Texto de banner",
   "app.containers.ContentBuilder.homepage.button": "Botón",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Diseño",
+  "app.containers.ContentBuilder.homepage.customizationNotAvailable2": "En tu licencia actual no se incluye la personalización de otros ajustes que no sean la imagen y el texto del banner de la página de inicio. Ponte en contacto con tu Gestor de GovSuccess para obtener más información al respecto.",
   "app.containers.ContentBuilder.homepage.customized_button": "Personalizado",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Texto del botón",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Enlace al botón",
