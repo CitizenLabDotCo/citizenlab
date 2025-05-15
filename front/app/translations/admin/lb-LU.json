@@ -754,7 +754,7 @@
   "app.containers.Admin.Users.youCantDeleteYourself": "You cannot delete your own account via the user admin page",
   "app.containers.Admin.Users.youCantUnadminYourself": "You cannot give up your role as an admin now",
   "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "This feature is available in open beta for your plan until June 30th 2025.",
+  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Dës Funktioun ass bis den 30. Juni 2025 an der oppener Betaversioun fir Äre Plang verfügbar.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Community monitor",
   "app.containers.Admin.communityMonitor.healthScore": "Health Score",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "This score is the average of all sentiment-scale questions answered by participants for the period selected.",
