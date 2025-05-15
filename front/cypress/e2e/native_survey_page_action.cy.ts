@@ -2,9 +2,6 @@ import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
 describe('Native survey project page actions', () => {
-  const projectTitle = randomString();
-  const projectDescription = randomString();
-  const projectDescriptionPreview = randomString(30);
   const userFirstName = randomString(10);
   const userLastName = randomString(10);
   const userPassword = randomString(10);
@@ -13,7 +10,6 @@ describe('Native survey project page actions', () => {
   const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
   const phaseFutureTitle = 'Future survey phase';
   let userId: string;
-  let phaseId: string;
 
   before(() => {
     // create a regular user
@@ -27,6 +23,8 @@ describe('Native survey project page actions', () => {
   describe('with project with 1 open ended survey phase active', () => {
     let projectIdWithOneOpenEndedPhase: string;
     let projectSlugWithOneOpenEndedPhase: string;
+    let phaseId: string;
+
     beforeEach(() => {
       if (projectIdWithOneOpenEndedPhase) {
         cy.apiRemoveProject(projectIdWithOneOpenEndedPhase);
@@ -34,30 +32,11 @@ describe('Native survey project page actions', () => {
       }
 
       // Create active project with one open ended phase
-      cy.apiCreateProject({
-        title: projectTitle,
-        descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
-        publicationStatus: 'published',
-      })
-        .then((project) => {
-          projectIdWithOneOpenEndedPhase = project.body.data.id;
-          projectSlugWithOneOpenEndedPhase = project.body.data.attributes.slug;
-          return cy.apiCreatePhase({
-            projectId: projectIdWithOneOpenEndedPhase,
-            title: 'firstPhaseTitle',
-            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-            participationMethod: 'native_survey',
-            nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-            nativeSurveyTitleMultiloc: { en: 'Survey' },
-            canPost: true,
-            canComment: true,
-            canReact: true,
-          });
-        })
-        .then((phase) => {
-          phaseId = phase.body.data.id;
-        });
+      cy.createProjectWithNativeSurveyPhase().then((result) => {
+        projectIdWithOneOpenEndedPhase = result.projectId;
+        projectSlugWithOneOpenEndedPhase = result.projectSlug;
+        phaseId = result.phaseId;
+      });
     });
 
     afterEach(() => {
@@ -125,6 +104,7 @@ describe('Native survey project page actions', () => {
   describe('archived project', () => {
     let projectIdArchived: string;
     let projectSlugArchived: string;
+
     beforeEach(() => {
       if (projectIdArchived) {
         cy.apiRemoveProject(projectIdArchived);
@@ -132,25 +112,12 @@ describe('Native survey project page actions', () => {
       }
 
       // Create archived project
-      cy.apiCreateProject({
-        title: projectTitle,
-        descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
+      cy.createProjectWithNativeSurveyPhase({
         publicationStatus: 'archived',
-      }).then((project) => {
-        projectIdArchived = project.body.data.id;
-        projectSlugArchived = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId: projectIdArchived,
-          title: 'phaseTitle',
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: false,
-          canComment: true,
-          canReact: true,
-        });
+        canPost: false,
+      }).then((result) => {
+        projectIdArchived = result.projectId;
+        projectSlugArchived = result.projectSlug;
       });
     });
 
@@ -183,28 +150,15 @@ describe('Native survey project page actions', () => {
         projectIdWithFutureSurvey = '';
       }
 
-      // Create timeline project with no active phase
-      cy.apiCreateProject({
-        title: projectTitle,
-        descriptionPreview: projectDescriptionPreview,
-        description: randomString(),
-        publicationStatus: 'published',
-      }).then((project) => {
-        projectIdWithFutureSurvey = project.body.data.id;
-        projectSlugWithFutureSurvey = project.body.data.attributes.slug;
-        cy.apiCreatePhase({
-          projectId: projectIdWithFutureSurvey,
-          title: 'Future ',
-          startAt: inTwoDays,
-          endAt: inTwoMonths,
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canComment: true,
-          canPost: true,
-          canReact: true,
-          description: `description ${phaseFutureTitle}`,
-        });
+      // Create timeline project with future native survey phase
+      cy.createProjectWithNativeSurveyPhase({
+        phaseStartAt: inTwoDays,
+        phaseEndAt: inTwoMonths,
+        phaseTitle: 'Future ',
+        description: `description ${phaseFutureTitle}`,
+      }).then((result) => {
+        projectIdWithFutureSurvey = result.projectId;
+        projectSlugWithFutureSurvey = result.projectSlug;
       });
     });
 
@@ -242,26 +196,12 @@ describe('Native survey project page actions', () => {
         projectIdWithPostingDisabled = '';
       }
 
-      // Create active timeline project with present native survey phase and posting disabled
-      cy.apiCreateProject({
-        title: projectTitle,
-        descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
-        publicationStatus: 'published',
-      }).then((project) => {
-        projectIdWithPostingDisabled = project.body.data.id;
-        projectSlugPostingDisabled = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId: projectIdWithPostingDisabled,
-          title: 'phaseTitle',
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: false,
-          canComment: true,
-          canReact: true,
-        });
+      // Create native survey phase with posting disabled
+      cy.createProjectWithNativeSurveyPhase({
+        canPost: false,
+      }).then((result) => {
+        projectIdWithPostingDisabled = result.projectId;
+        projectSlugPostingDisabled = result.projectSlug;
       });
     });
 
