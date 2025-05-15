@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "گولی",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "ڈیوائس کی اقسام",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "ڈیوائس کی قسم",
+  "app.containers.Admin.earlyAccessLabel": "ابتدائی رسائی",
+  "app.containers.Admin.earlyAccessLabelExplanation": "یہ ایک نئی جاری کردہ خصوصیت ہے جو ابتدائی رسائی میں دستیاب ہے۔",
   "app.containers.Admin.emails.addCampaign": "ای میل بنائیں",
   "app.containers.Admin.emails.addCampaignTitle": "ایک نیا ای میل بنائیں",
   "app.containers.Admin.emails.allParticipantsInProject": "پروجیکٹ میں تمام شرکاء",
