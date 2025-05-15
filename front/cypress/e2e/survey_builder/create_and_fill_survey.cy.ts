@@ -9,12 +9,9 @@ const waitForCustomFormFields = () => {
 };
 
 describe('Survey builder', () => {
-  const projectTitle = randomString();
   const phaseTitle = randomString();
-  const projectDescription = randomString();
   let questionTitle = randomString();
   const answer = randomString();
-  const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
@@ -23,30 +20,11 @@ describe('Survey builder', () => {
     cy.setAdminLoginCookie();
     questionTitle = randomString();
 
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    })
-      .then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId,
-          title: phaseTitle,
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: true,
-          canComment: true,
-          canReact: true,
-        });
-      })
-      .then((phase) => {
-        phaseId = phase.body.data.id;
-      });
+    cy.createProjectWithNativeSurveyPhase().then((result) => {
+      projectId = result.projectId;
+      projectSlug = result.projectSlug;
+      phaseId = result.phaseId;
+    });
   });
 
   afterEach(() => {
