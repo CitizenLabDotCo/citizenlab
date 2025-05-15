@@ -6,6 +6,7 @@ import {
   Icon,
   colors,
   Tooltip,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { rgba } from 'polished';
@@ -29,6 +30,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
+import DeleteModerationComment from './DeleteModeration/DeleteModerationComment';
 import messages from './messages';
 import ModerationContentCell from './ModerationContentCell';
 import tracks from './tracks';
@@ -256,32 +258,38 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
         </Cell>
         {viewLink && (
           <Cell>
-            <Tooltip
-              placement="bottom-end"
-              content={
-                <FormattedMessage
-                  {...{
-                    Idea: messages.goToPost,
-                    Comment: messages.goToComment,
-                  }[moderatableType]}
-                />
-              }
-            >
-              <GoToLinkWrapper>
-                <GoToLink
-                  to={viewLink}
-                  onClick={handleGoToLinkOnClick}
-                  data-type={moderatableType}
-                >
-                  <GoToIcon
-                    name="open-in-new"
-                    fill={colors.textSecondary}
-                    width="18px"
-                    height="18px"
+            <Box display="flex" gap="8px" alignItems="center">
+              {moderation.attributes.moderatable_type === 'Comment' &&
+                hasActiveInappropriateContentFlag && (
+                  <DeleteModerationComment moderation={moderation} />
+                )}
+              <Tooltip
+                placement="bottom-end"
+                content={
+                  <FormattedMessage
+                    {...{
+                      Idea: messages.goToPost,
+                      Comment: messages.goToComment,
+                    }[moderatableType]}
                   />
-                </GoToLink>
-              </GoToLinkWrapper>
-            </Tooltip>
+                }
+              >
+                <GoToLinkWrapper>
+                  <GoToLink
+                    to={viewLink}
+                    onClick={handleGoToLinkOnClick}
+                    data-type={moderatableType}
+                  >
+                    <GoToIcon
+                      name="open-in-new"
+                      fill={colors.textSecondary}
+                      width="18px"
+                      height="18px"
+                    />
+                  </GoToLink>
+                </GoToLinkWrapper>
+              </Tooltip>
+            </Box>
           </Cell>
         )}
       </Container>
