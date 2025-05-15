@@ -23,8 +23,13 @@ class CustomForm < ApplicationRecord
 
   validates :participation_context, presence: true
   validates :participation_context_id, uniqueness: { scope: %i[participation_context_type] } # https://github.com/rails/rails/issues/34312#issuecomment-586870322
-
+  validates :print_start_multiloc, presence: true, multiloc: { presence: true }
+  validates :print_end_multiloc, presence: true, multiloc: { presence: true }
+  
   delegate :project_id, to: :participation_context
+
+  before_validation :sanitize_print_start_multiloc
+  before_validation :sanitize_print_end_multiloc
 
   # Fixes custom fields ordering by:
   # - Moving the first container field (page) to the first position if any
@@ -51,5 +56,29 @@ class CustomForm < ApplicationRecord
   # Timestamp when the fields (not the form) were last updated.
   def fields_updated!
     update!(fields_last_updated_at: Time.now)
+  end
+
+  private
+  def sanitize_print_start_multiloc
+    return unless print_start_multiloc
+  
+    self.print_start_multiloc = sanitize_multiloc(print_start_multiloc)
+  end
+
+  def sanitize_print_end_multiloc
+    return unless print_end_multiloc
+
+    self.print_end_multiloc = sanitize_multiloc(print_end_multiloc)
+  end
+
+  def sanitize_multiloc(multiloc)
+    service = SanitizationService.new
+
+    multiloc = service.sanitize_multiloc(
+      multiloc,
+      %i[title alignment list decoration image video]
+    )
+    
+    service.remove_multiloc_empty_trailing_tags multiloc
   end
 end

@@ -31,4 +31,32 @@ RSpec.describe CustomForm do
       expect(form.custom_fields.pluck(:ordering)).to eq [0, 1, 2]
     end
   end
+
+  describe 'multiloc_sanitization' do
+    it 'sanitizes script tags in the description' do
+      custom_form = create(
+        :custom_form,
+        print_start_multiloc: {
+          'en' => '<p>Test</p><script>These tags should be removed!</script>'
+        },
+        print_end_multiloc: {
+          'en' => '<p>Test</p><script>These tags should be removed!</script>'
+        }
+      )
+
+      expect(custom_form.print_start_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
+    end
+  end
+
+  describe 'validations' do
+    it 'is invalid with invalid locales in print_start_multiloc' do
+      custom_form = build(:custom_form, print_start_multiloc: { 'se-BI' => 'some text' })
+      expect(custom_form).to be_invalid
+    end
+
+    it 'is invalid with invalid locales in print_end_multiloc' do
+      custom_form = build(:custom_form, print_end_multiloc: { 'se-BI' => 'some text' })
+      expect(custom_form).to be_invalid
+    end
+  end
 end
