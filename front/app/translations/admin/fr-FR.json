@@ -758,8 +758,6 @@
   "app.containers.Admin.Users.userInsights": "Statistiques utilisateurs",
   "app.containers.Admin.Users.youCantDeleteYourself": "Vous ne pouvez pas supprimer votre propre compte via le panneau administrateur",
   "app.containers.Admin.Users.youCantUnadminYourself": "Vous ne pouvez pas supprimer votre rôle d'administrateur vous-même",
-  "app.containers.Admin.communityMonitor.betaLabel": "Bêta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Cette fonctionnalité est disponible en version bêta ouverte pour votre plan jusqu'au 30 juin 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Observatoire de communauté",
   "app.containers.Admin.communityMonitor.healthScore": "Indice de santé",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Ce score correspond à la moyenne des réponses données aux questions à échelle de sentiment pendant la période sélectionnée.",

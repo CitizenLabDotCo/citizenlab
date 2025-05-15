@@ -758,8 +758,6 @@
   "app.containers.Admin.Users.userInsights": "صارف کی بصیرت",
   "app.containers.Admin.Users.youCantDeleteYourself": "آپ صارف کے منتظم صفحہ کے ذریعے اپنا اکاؤنٹ حذف نہیں کر سکتے",
   "app.containers.Admin.Users.youCantUnadminYourself": "اب آپ بطور ایڈمن اپنا کردار ترک نہیں کر سکتے",
-  "app.containers.Admin.communityMonitor.betaLabel": "بیٹا",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "یہ خصوصیت آپ کے پلان کے لیے 30 جون 2025 تک اوپن بیٹا میں دستیاب ہے۔",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "کمیونٹی مانیٹر",
   "app.containers.Admin.communityMonitor.healthScore": "ہیلتھ سکور",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "یہ اسکور ان تمام جذباتی پیمانے پر سوالات کی اوسط ہے جو شرکاء نے منتخب کردہ مدت کے لیے جواب دیے ہیں۔",

@@ -13,9 +13,9 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import EarlyAccessBadge from 'components/admin/EarlyAccessBadge';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import Warning from 'components/UI/Warning';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -71,15 +71,13 @@ const SimilarityDetectionConfig = ({
       </SubSectionTitle>
 
       <Box display="flex" flexDirection="column" gap="16px" width="100%">
-        {showEarlyAccessMessage && (
-          <Warning>
-            <FormattedMessage {...messages.warningSimilarInputDetectionTrial} />
-          </Warning>
-        )}
         <UpsellTooltip disabled={!showUpsellTooltip}>
           <Toggle
             label={
-              <FormattedMessage {...messages.enableSimilarInputDetection} />
+              <>
+                <FormattedMessage {...messages.enableSimilarInputDetection} />
+                {showEarlyAccessMessage && <EarlyAccessBadge />}
+              </>
             }
             checked={!!similarity_enabled && isInputIQActivated}
             onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}

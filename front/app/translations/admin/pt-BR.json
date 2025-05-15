@@ -758,8 +758,6 @@
   "app.containers.Admin.Users.userInsights": "Insights do usuário",
   "app.containers.Admin.Users.youCantDeleteYourself": "Você não pode deletar sua própria conta através da página de administração do usuário",
   "app.containers.Admin.Users.youCantUnadminYourself": "Você não pode desistir de sua função de administrador agora",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Esse recurso está disponível em versão beta aberta para o seu plano até 30 de junho de 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Monitoramento da comunidade",
   "app.containers.Admin.communityMonitor.healthScore": "Pontuação de saúde",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Essa pontuação é a média de todas as perguntas da escala de sentimentos respondidas pelos participantes no período selecionado.",

@@ -758,8 +758,6 @@
   "app.containers.Admin.Users.userInsights": "Inzichten van gebruikers",
   "app.containers.Admin.Users.youCantDeleteYourself": "Je kunt je eigen account niet verwijderen via de platformbeheerders gebruikerspagina",
   "app.containers.Admin.Users.youCantUnadminYourself": "Je kunt nu je rol van platformbeheerder niet opgeven",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Deze functie is beschikbaar in open bèta voor jouw plan tot 30 juni 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Gemeenschapsmonitor",
   "app.containers.Admin.communityMonitor.healthScore": "Gezondheidsscore",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Deze score is het gemiddelde van alle sentiment-schaalvragen die door deelnemers zijn beantwoord voor de geselecteerde periode.",

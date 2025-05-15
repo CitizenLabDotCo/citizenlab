@@ -758,8 +758,6 @@
   "app.containers.Admin.Users.userInsights": "Vartotojo įžvalgos",
   "app.containers.Admin.Users.youCantDeleteYourself": "Negalite ištrinti savo paskyros per naudotojo administratoriaus puslapį",
   "app.containers.Admin.Users.youCantUnadminYourself": "Dabar negalite atsisakyti administratoriaus vaidmens",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Ši funkcija jūsų planui prieinama atviroje beta versijoje iki 2025 m. birželio 30 d.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Bendrijos stebėtojas",
   "app.containers.Admin.communityMonitor.healthScore": "Sveikatos balas",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Šis balas yra visų jausmų skalės klausimų, į kuriuos dalyviai atsakė pasirinktu laikotarpiu, vidurkis.",

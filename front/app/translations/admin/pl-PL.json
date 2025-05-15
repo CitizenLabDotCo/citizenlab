@@ -758,8 +758,6 @@
   "app.containers.Admin.Users.userInsights": "Spostrzeżenia użytkowników",
   "app.containers.Admin.Users.youCantDeleteYourself": "Nie możesz usunąć własnego konta z panelu administratora",
   "app.containers.Admin.Users.youCantUnadminYourself": "Nie możesz zrezygnować ze swojej roli administratora",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Ta funkcja jest dostępna w otwartej wersji beta dla Twojego planu do 30 czerwca 2025 r.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Monitor społeczności",
   "app.containers.Admin.communityMonitor.healthScore": "Wynik zdrowotny",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Wynik ten jest średnią wszystkich pytań w skali nastrojów, na które uczestnicy odpowiedzieli w wybranym okresie.",

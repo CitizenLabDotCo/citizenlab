@@ -758,8 +758,6 @@
   "app.containers.Admin.Users.userInsights": "Conocimiento del usuario",
   "app.containers.Admin.Users.youCantDeleteYourself": "No puedes eliminar tu propia cuenta a través de la página de administración de usuario",
   "app.containers.Admin.Users.youCantUnadminYourself": "No puedes terminar tu papel como administrador ahora",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Esta función está disponible en beta abierta para tu plan hasta el 30 de junio de 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Barómetro de satisfacción",
   "app.containers.Admin.communityMonitor.healthScore": "Índice de bienestar",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Esta puntuación es la media de todas las preguntas de la escala de sentimientos contestadas por los participantes en el periodo seleccionado.",

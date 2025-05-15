@@ -758,8 +758,6 @@
   "app.containers.Admin.Users.userInsights": "Käyttäjien oivalluksia",
   "app.containers.Admin.Users.youCantDeleteYourself": "Et voi poistaa omaa tiliäsi käyttäjän admin-sivun kautta",
   "app.containers.Admin.Users.youCantUnadminYourself": "Et voi luopua roolistasi järjestelmänvalvojana nyt",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beeta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Tämä ominaisuus on käytettävissä tilauksesi avoimessa betaversiossa 30.6.2025 asti.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "yhteisön valvoja",
   "app.containers.Admin.communityMonitor.healthScore": "Terveyspisteet",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Tämä pistemäärä on keskiarvo kaikista mielipideasteikon kysymyksistä, joihin osallistujat ovat vastanneet valitulla ajanjaksolla.",

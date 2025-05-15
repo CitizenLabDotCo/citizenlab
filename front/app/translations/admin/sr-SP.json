@@ -758,8 +758,6 @@
   "app.containers.Admin.Users.userInsights": "Увиди корисника",
   "app.containers.Admin.Users.youCantDeleteYourself": "Не можете избрисати сопствени налог преко корисничке администраторске странице",
   "app.containers.Admin.Users.youCantUnadminYourself": "Не можете сада одустати од своје улоге администратора",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "This feature is available in open beta for your plan until June 30th 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Community monitor",
   "app.containers.Admin.communityMonitor.healthScore": "Health Score",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "This score is the average of all sentiment-scale questions answered by participants for the period selected.",

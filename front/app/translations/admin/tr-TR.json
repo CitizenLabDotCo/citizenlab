@@ -758,8 +758,6 @@
   "app.containers.Admin.Users.userInsights": "Kullanıcı içgörüleri",
   "app.containers.Admin.Users.youCantDeleteYourself": "Kullanıcı yönetici sayfası üzerinden kendi hesabınızı silemezsiniz",
   "app.containers.Admin.Users.youCantUnadminYourself": "Yönetici rolünüzden şu anda vazgeçemezsiniz",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Bu özellik, 30 Haziran 2025 tarihine kadar planınız için açık beta olarak kullanılabilir.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Topluluk gözlemcisi",
   "app.containers.Admin.communityMonitor.healthScore": "Sağlık Puanı",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Bu puan, seçilen dönem için katılımcılar tarafından yanıtlanan tüm duygu ölçeği sorularının ortalamasıdır.",

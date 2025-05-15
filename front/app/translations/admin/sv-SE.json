@@ -758,8 +758,6 @@
   "app.containers.Admin.Users.userInsights": "Användarinsikter",
   "app.containers.Admin.Users.youCantDeleteYourself": "Du kan inte ta bort ditt eget konto via användaradminsidan",
   "app.containers.Admin.Users.youCantUnadminYourself": "Du kan inte lämna din roll som administratör nu",
-  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Denna funktion är tillgänglig i öppen beta för din plan fram till den 30 juni 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Gemenskapens övervakare",
   "app.containers.Admin.communityMonitor.healthScore": "Hälsoindex",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Denna poäng är genomsnittet av alla frågor på sentimentskalan som deltagarna har besvarat under den valda perioden.",
