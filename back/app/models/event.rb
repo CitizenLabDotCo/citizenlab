@@ -55,7 +55,7 @@ class Event < ApplicationRecord
   before_validation :sanitize_location_multiloc, if: :location_multiloc
   before_validation :sanitize_address_2_multiloc
   before_validation :sanitize_attend_button_multiloc
-  before_validation :sanitize_title_multiloc
+  before_validation :sanitize_title_multiloc, if: :title_multiloc
   before_validation :strip_title
 
   scope :with_project_publication_statuses, (proc do |publication_statuses|

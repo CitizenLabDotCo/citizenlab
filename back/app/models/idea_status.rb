@@ -30,8 +30,8 @@ class IdeaStatus < ApplicationRecord
 
   has_many :ideas
 
-  before_validation :sanitize_description_multiloc
-  before_validation :sanitize_title_multiloc
+  before_validation :sanitize_description_multiloc, if: :description_multiloc
+  before_validation :sanitize_title_multiloc, if: :title_multiloc
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
