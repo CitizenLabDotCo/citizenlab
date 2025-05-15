@@ -35,6 +35,7 @@ class Group < ApplicationRecord
   validates :membership_type, presence: true, inclusion: { in: proc { membership_types } }
 
   before_validation :set_membership_type, on: :create
+  before_validation :sanitize_title_multiloc
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction) }
@@ -87,6 +88,15 @@ class Group < ApplicationRecord
 
   def set_membership_type
     self.membership_type ||= 'manual'
+  end
+
+  def sanitize_title_multiloc
+    return unless title_multiloc&.any?
+
+    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
+      title_multiloc,
+      []
+    )
   end
 
   def strip_title
