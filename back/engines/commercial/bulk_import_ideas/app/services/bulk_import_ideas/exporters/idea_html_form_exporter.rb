@@ -189,10 +189,8 @@ module BulkImportIdeas::Exporters
       description
     end
 
-    def field_print_title(field, question_number = nil, type = 'field')
-      title = question_number && type == 'field' ? "#{question_number}. " : ''
-      title += custom_field_service.handle_title(field, @locale)
-      title
+    def field_print_title(field)
+      custom_field_service.handle_title(field, @locale)
     end
 
     def field_print_description(field)

@@ -208,7 +208,7 @@ class IdeaCustomFieldsService
     fields.each do |field|
       all_fields << field
       all_fields << field.other_option_text_field(print_version:) if field.other_option_text_field(print_version:)
-      all_fields << field.follow_up_text_field if field.follow_up_text_field && !print_version # Note: Currently not supported in print version
+      all_fields << field.follow_up_text_field if field.follow_up_text_field && !print_version # NOTE: Currently not supported in print version
     end
     all_fields
   end

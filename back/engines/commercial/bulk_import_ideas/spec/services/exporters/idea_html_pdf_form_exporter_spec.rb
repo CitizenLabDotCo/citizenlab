@@ -19,7 +19,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter do
           :with_default_fields,
           participation_context: project,
           print_start_multiloc: { 'en' => '<h2>Welcome to the survey</h2>' },
-          print_end_multiloc: { "en": "<h2>Thank you for submitting the form</h2><p>It really is very kind of you to do so.</p>" }
+          print_end_multiloc: { en: '<h2>Thank you for submitting the form</h2><p>It really is very kind of you to do so.</p>' }
         )
         create(:custom_field, resource: form, title_multiloc: { en: 'A short answer question' }, ordering: 7, key: 'short_answer_1')
         select1 = create(:custom_field_multiselect, resource: form, title_multiloc: { en: 'A single choice question' }, ordering: 8, key: 'singlechoice_1')

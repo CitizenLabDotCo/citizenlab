@@ -30,7 +30,6 @@ module BulkImportIdeas::Exporters
         # Get an array of lines for each page of the PDF
         pages = reader.pages.map do |page|
           page.text.split("\n").map do |line|
-            # TODO: Do not need to do this - this could also be scanned
             line.sub(optional_text, '')&.strip # Remove the optional text from each field title
           end
         end
@@ -57,12 +56,11 @@ module BulkImportIdeas::Exporters
     def import_config_for_field(field_or_option, pdf_pages, question_number = nil, next_field = nil)
       field_config = nil
       type = field_or_option.is_a?(CustomField) ? 'field' : 'option'
-      title = field_print_title(field_or_option, question_number, type) # TODO: Another function to create the title with (optional + question numbers)
+      title = field_full_print_title(field_or_option, question_number, type)
 
       pdf_pages.each_with_index do |page_lines, index|
         page_num = index + 1
-        field_line_num = page_lines.find_index { |value| value.start_with?(title.slice(0, 60)) } # Title is shortened to ensure questions with long titles are found in the PDF
-
+        field_line_num = find_page_line(page_lines, title)
         if field_line_num
           # Convert the line number into a position 0 - 100 in the page (equivalent of what the google form parser returns)
           position = ((field_line_num + 1) * (100 / page_lines.length.to_f)).round
@@ -88,7 +86,7 @@ module BulkImportIdeas::Exporters
             # Only needed for options
             field_config[:parent_key] = field_or_option.custom_field.key
 
-            # Blank out option once processed - To avoid them being found again when there multiple options with the same value
+            # Blank out option once processed - To avoid them being found again when there multiple options on a page with the same value
             pdf_pages[index][page_lines.find_index(title)] = ''
           end
 
@@ -113,20 +111,32 @@ module BulkImportIdeas::Exporters
       next_line_index = nil
 
       if next_field
-        # Get delimiter by looking at the next page
+        # Get delimiter by using the next field
         next_question_number = current_question_number && field_has_question_number?(next_field) ? current_question_number + 1 : nil
-        next_question_title = field_print_title(next_field, next_question_number)
-        next_line_index = page_text.find_index { |value| next_question_title.start_with?(value) } # TODO: New method for finding text
+        next_question_title = field_full_print_title(next_field, next_question_number)
+        next_line_index = find_page_line(page_text, next_question_title)
       elsif next_field.nil? && @participation_method.custom_form.print_end_multiloc[@locale].present?
         # Get delimiter from the end of the form
         end_text = ActionView::Base.full_sanitizer.sanitize(@participation_method.custom_form.print_end_multiloc[@locale])
-        next_line_index = page_text.find_index { |value| end_text.start_with?(value) }
+        next_line_index = find_page_line(page_text, end_text)
       end
 
       {
         start: next_line_index ? page_text[next_line_index - 1] : page_text.last,
         end: next_line_index ? page_text[next_line_index] : nil
       }
+    end
+
+    # Find the index of the line in the page that matches the start of the text
+    def find_page_line(page, text)
+      page.find_index { |value| value.present? && text.start_with?(value) }
+    end
+
+    # Returns full printed title with number eg "1. Title"
+    def field_full_print_title(field, question_number = nil, type = 'field')
+      title = type == 'field' && question_number ? "#{question_number}. " : ''
+      title += field_print_title(field)
+      title
     end
 
     # Allow rendering of images in the PDF when in development
