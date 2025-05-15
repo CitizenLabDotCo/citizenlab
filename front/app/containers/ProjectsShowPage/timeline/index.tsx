@@ -157,12 +157,15 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
               votingMethod={votingMethod}
             />
           )}
+          {participationMethod === 'common_ground' && (
+            <CommonGroundTabs
+              phaseId={selectedPhase.id}
+              project={project.data}
+            />
+          )}
         </ContentContainer>
         {showReport && (
           <PhaseReport reportId={reportId} phaseId={selectedPhaseId} />
-        )}
-        {participationMethod === 'common_ground' && (
-          <CommonGroundTabs phase={selectedPhase} />
         )}
       </StyledSectionContainer>
     );
