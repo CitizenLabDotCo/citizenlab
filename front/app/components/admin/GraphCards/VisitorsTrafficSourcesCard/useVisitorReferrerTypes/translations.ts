@@ -5,11 +5,11 @@ import cardMessages from '../messages';
 import messages from './messages';
 
 export interface Translations {
-  'Direct Entry': string;
-  'Social Networks': string;
-  'Search Engines': string;
-  Websites: string;
-  Campaigns: string;
+  direct_entry: string;
+  social_network: string;
+  seach_engine: string;
+  other: string;
+  campaign: string;
   trafficSources: string;
   trafficSource: string;
   numberOfVisits: string;
@@ -19,11 +19,11 @@ export interface Translations {
 export const getTranslations = (
   formatMessage: FormatMessage
 ): Translations => ({
-  'Direct Entry': formatMessage(messages.directEntry),
-  'Social Networks': formatMessage(messages.socialNetworks),
-  'Search Engines': formatMessage(messages.searchEngines),
-  Websites: formatMessage(messages.websites),
-  Campaigns: formatMessage(messages.campaigns),
+  direct_entry: formatMessage(messages.directEntry),
+  social_network: formatMessage(messages.socialNetworks),
+  seach_engine: formatMessage(messages.searchEngines),
+  other: formatMessage(messages.websites),
+  campaign: formatMessage(messages.campaigns),
   trafficSources: formatMessage(cardMessages.visitorsTrafficSources),
   trafficSource: formatMessage(messages.trafficSource),
   numberOfVisits: formatMessage(messages.numberOfVisits),
