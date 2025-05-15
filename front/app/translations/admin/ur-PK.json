@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.cizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "اس تصویر کو ہمیشہ ایک خاص تناسب سے تراش لیا جاتا ہے تاکہ یہ یقینی بنایا جا سکے کہ تمام اہم پہلو ہر وقت ڈسپلے پر ہیں۔ اس تصویر کی قسم کے لیے {link} ہے {aspect}۔",
   "app.components.Admin.ImageCropper.infoLinkText": "تجویز کردہ تناسب",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "نوٹ: تصویر کا کوئی بھی اہم حصہ عمودی ڈیشڈ لائنوں کے اندر ہونا چاہیے، کیونکہ تصویر کو موبائل آلات پر 3:1 کے تناسب سے تراش لیا جائے گا۔",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "رجسٹرڈ صارفین کے لیے ہیڈر کا متن",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "انتباہ: آپ نے جو رنگ منتخب کیا ہے اس میں کافی زیادہ تضاد نہیں ہے۔ اس کے نتیجے میں ایسا متن ہو سکتا ہے جسے پڑھنا مشکل ہو۔ پڑھنے کی اہلیت کو بہتر بنانے کے لیے گہرا رنگ منتخب کریں۔",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "نیویگیشن بار میں ایونٹس شامل کریں۔",
