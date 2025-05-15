@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "Tablette",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "Types d'appareils",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "Type d'appareil",
+  "app.containers.Admin.earlyAccessLabel": "Accès anticipé",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Il s'agit d'une nouvelle fonctionnalité disponible en accès anticipé.",
   "app.containers.Admin.emails.addCampaign": "Créer un e-mail",
   "app.containers.Admin.emails.addCampaignTitle": "Créer un nouvel email",
   "app.containers.Admin.emails.allParticipantsInProject": "Tous les participants du projet",
