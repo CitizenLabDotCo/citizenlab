@@ -1,7 +1,7 @@
 module ReportBuilder
   class Queries::TrafficSources < ReportBuilder::Queries::Base
     DIRECT_ENTRY_CASES = [
-      "WHEN referrer IS NULL OR referrer = '' THEN 'direct_entry'",
+      "WHEN referrer IS NULL OR referrer = '' THEN 'direct_entry'"
     ]
 
     SEARCH_ENGINE_REFERRERS = ['android-app://com.google.android.googlequicksearchbox']
@@ -47,7 +47,7 @@ module ReportBuilder
 
       referrer_types = sessions
         .select(
-          "count(*) as count, " \
+          'count(*) as count, ' \
           "CASE #{cases.join(' ')} ELSE 'other' END as referrer_type"
         )
         .group(:referrer_type)
@@ -99,7 +99,7 @@ module ReportBuilder
         "https://#{domain}",
         "https://www.#{domain}",
         "http://#{domain}",
-        "http://www.#{domain}",
+        "http://www.#{domain}"
       ]
     end
   end

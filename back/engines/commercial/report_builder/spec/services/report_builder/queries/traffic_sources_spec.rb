@@ -18,7 +18,7 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
 
       expect(query.run_query).to eq({
         sessions_per_referrer_type: {
-          'direct_entry' => 3,
+          'direct_entry' => 3
         }
       })
     end
@@ -42,7 +42,7 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
 
       expect(query.run_query).to eq({
         sessions_per_referrer_type: {
-          'search_engine' => 15,
+          'search_engine' => 15
         }
       })
     end
@@ -69,7 +69,7 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
 
       expect(query.run_query).to eq({
         sessions_per_referrer_type: {
-          'social_network' => 18,
+          'social_network' => 18
         }
       })
     end
@@ -86,7 +86,7 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
 
       expect(query.run_query).to eq({
         sessions_per_referrer_type: {
-          'sso_redirect' => 8,
+          'sso_redirect' => 8
         }
       })
     end
@@ -97,7 +97,7 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
 
       expect(query.run_query).to eq({
         sessions_per_referrer_type: {
-          'other' => 2,
+          'other' => 2
         }
       })
     end
