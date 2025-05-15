@@ -16,10 +16,8 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       create(:session, referrer: nil)
       create(:session, referrer: nil)
 
-      expect(query.run_query).to eq({
-        sessions_per_referrer_type: {
-          'direct_entry' => 3
-        }
+      expect(query.run_query()[:sessions_per_referrer_type]).to eq({
+        'direct_entry' => 3
       })
     end
 
@@ -40,10 +38,8 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       create(:session, referrer: 'https://www.startpage.com/')
       create(:session, referrer: 'https://search.brave.com/')
 
-      expect(query.run_query).to eq({
-        sessions_per_referrer_type: {
-          'search_engine' => 15
-        }
+      expect(query.run_query()[:sessions_per_referrer_type]).to eq({
+        'search_engine' => 15
       })
     end
 
@@ -67,10 +63,8 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       create(:session, referrer: 'https://lnkd.in/')
       create(:session, referrer: 'https://bsky.app/')
 
-      expect(query.run_query).to eq({
-        sessions_per_referrer_type: {
-          'social_network' => 18
-        }
+      expect(query.run_query()[:sessions_per_referrer_type]).to eq({
+        'social_network' => 18
       })
     end
 
@@ -84,10 +78,8 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       create(:session, referrer: 'https://pvp.wien.gv.at/')
       create(:session, referrer: 'https://app.franceconnect.gouv.fr/')
 
-      expect(query.run_query).to eq({
-        sessions_per_referrer_type: {
-          'sso_redirect' => 8
-        }
+      expect(query.run_query()[:sessions_per_referrer_type]).to eq({
+        'sso_redirect' => 8
       })
     end
 
@@ -95,10 +87,8 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       create(:session, referrer: 'https://www.example.com/')
       create(:session, referrer: 'https://www.gov.uk/')
 
-      expect(query.run_query).to eq({
-        sessions_per_referrer_type: {
-          'other' => 2
-        }
+      expect(query.run_query()[:sessions_per_referrer_type]).to eq({
+        'other' => 2
       })
     end
   end
