@@ -76,4 +76,23 @@ RSpec.describe CustomFieldOption do
       })
     end
   end
+
+  describe '#sanitize_title_multiloc' do
+    it 'removes all HTML tags from organization_name multiloc' do
+      cfo = build(
+        :custom_field_option,
+        title_multiloc: {
+          'en' => 'Thing <script>alert("XSS")</script> something',
+          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
+          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      )
+
+      cfo.save!
+
+      expect(cfo.title_multiloc['en']).to eq('Thing alert("XSS") something')
+      expect(cfo.title_multiloc['fr-BE']).to eq('Something ')
+      expect(cfo.title_multiloc['nl-BE']).to eq('Plain text with formatting')
+    end
+  end
 end
