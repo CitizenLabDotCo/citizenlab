@@ -602,6 +602,25 @@ RSpec.describe Idea do
     end
   end
 
+  describe '#sanitize_title_multiloc' do
+    it 'removes all HTML tags from title_multiloc' do
+      idea = build(
+        :idea,
+        title_multiloc: {
+          'en' => 'Something <script>alert("XSS")</script> something',
+          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
+          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      )
+
+      idea.save!
+
+      expect(idea.title_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(idea.title_multiloc['fr-BE']).to eq('Something ')
+      expect(idea.title_multiloc['nl-BE']).to eq('Plain text with formatting')
+    end
+  end
+
   describe 'title' do
     it 'is stripped from spaces at beginning and ending' do
       idea = create(:idea, title_multiloc: { 'en' => ' my fantastic idea  ' })
