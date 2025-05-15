@@ -52,6 +52,7 @@ RSpec.describe ParticipationMethod::CommonGround do
   its(:supports_toxicity_detection?) { is_expected.to be(true) }
   its(:return_disabled_actions?) { is_expected.to be(false) }
   its(:supports_public_visibility?) { is_expected.to be(true) }
+  its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
 
   its(:form_logic_enabled?) { is_expected.to be(false) }
   its(:user_fields_in_form?) { is_expected.to be(false) }

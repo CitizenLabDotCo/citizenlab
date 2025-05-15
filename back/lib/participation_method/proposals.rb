@@ -42,6 +42,10 @@ module ParticipationMethod
       true
     end
 
+    def add_autoreaction_to_inputs?
+      true
+    end
+
     def default_input_term
       'proposal'
     end
