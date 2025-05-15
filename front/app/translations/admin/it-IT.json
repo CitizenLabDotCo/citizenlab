@@ -751,7 +751,7 @@
   "app.containers.Admin.Users.youCantDeleteYourself": "Non puoi cancellare il tuo account tramite la pagina di amministrazione dell'utente",
   "app.containers.Admin.Users.youCantUnadminYourself": "Non puoi rinunciare ora al tuo ruolo di amministratore",
   "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "This feature is available in open beta for your plan until June 30th 2025.",
+  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Questa funzione è disponibile in open beta per il tuo piano fino al 30 giugno 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Community monitor",
   "app.containers.Admin.communityMonitor.healthScore": "Health Score",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "This score is the average of all sentiment-scale questions answered by participants for the period selected.",
