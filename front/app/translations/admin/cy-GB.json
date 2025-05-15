@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimenions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "Mae'r ddelwedd hon bob amser yn cael ei thorri i gymhareb benodol i sicrhau bod yr holl agweddau hanfodol yn cael eu harddangos bob amser. Y {link} ar gyfer y math hwn o ddelwedd yw {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "gymhareb a argymhellir",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "Nodyn: Dylai unrhyw ran bwysig o'r ddelwedd fod o fewn y llinellau toredig fertigol, gan y bydd y ddelwedd yn cael ei thocio i gymhareb 3:1 ar ddyfeisiau symudol.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Testun pennawd ar gyfer defnyddwyr cofrestredig",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Rhybudd: nid oes cyferbyniad digon uchel rhwng y lliw a ddewisoch. Gall hyn arwain at destun sy'n anodd ei ddarllen. Dewiswch liw tywyllach i wneud y gorau o ddarllenadwyedd.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Ychwanegu Digwyddiadau i'r bar llywio",
