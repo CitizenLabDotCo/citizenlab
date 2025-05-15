@@ -199,11 +199,6 @@ export default defineMessages({
     defaultMessage:
       'Only certain users can take this survey. Please {signUpLink} or {logInLink} first.',
   },
-  surveyDisabledMaybeNotVerified: {
-    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified',
-    defaultMessage:
-      'Only verified users can take this survey. Please {signUpLink} or {logInLink} first.',
-  },
   surveyDisabledNotActiveUser: {
     id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser',
     defaultMessage: 'Please {completeRegistrationLink} to take the survey.',
@@ -217,6 +212,41 @@ export default defineMessages({
     id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified',
     defaultMessage:
       'Taking this survey requires verification of your account. {verificationLink}',
+  },
+
+  // 'react_on_inputs'
+  commonGroundDisabledProjectInactive: {
+    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundDisabledProjectInactive',
+    defaultMessage:
+      'Reacting on the inputs is no longer available, since this project is no longer active.',
+  },
+  commonGroundDisabledNotPermitted: {
+    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundDisabledNotPermitted',
+    defaultMessage:
+      "Unfortunately, you don't have the rights to react to the inputs.",
+  },
+  commonGroundDisabledMaybeNotPermitted: {
+    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundDisabledMaybeNotPermitted',
+    defaultMessage:
+      'Only certain users can add their reactions to the inputs. Please {signUpLink} or {logInLink} first to see whether you comply.',
+  },
+  commonGroundNotActiveUser: {
+    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundNotActiveUser',
+    defaultMessage: 'Please {completeRegistrationLink} to react to the inputs.',
+  },
+  commonGroundDisabledNotActivePhase: {
+    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundDisabledNotActivePhase',
+    defaultMessage:
+      'You can only react to the inputs when this phase in the timeline is active.',
+  },
+  commonGroundDisabledNotVerified: {
+    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundDisabledNotVerified',
+    defaultMessage:
+      'Reacting to the inputs requires verification of your account. {verificationLink}',
+  },
+  commonGroundNotInGroup: {
+    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundNotInGroup',
+    defaultMessage: 'You do not meet the requirements to react to the inputs.',
   },
 
   // 'taking_poll'
