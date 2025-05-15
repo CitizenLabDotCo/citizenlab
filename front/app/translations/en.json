@@ -139,6 +139,7 @@
   "app.components.CustomFieldsForm.titleRequired": "The title is required",
   "app.components.CustomFieldsForm.topicRequired": "At least one tag is required",
   "app.components.CustomFieldsForm.typeYourAnswer": "Type your answer",
+  "app.components.CustomFieldsForm.typeYourAnswerRequired": "It is required to type your answer",
   "app.components.CustomFieldsForm.validCordinatesTooltip2": "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location (eg: -33.019808, -71.495676).",
   "app.components.ErrorBoundary.errorFormErrorFormEntry": "Some fields were invalid. Please correct the errors and try again.",
   "app.components.ErrorBoundary.errorFormErrorGeneric": "An unknown error occurred while submitting your report. Please try again.",
