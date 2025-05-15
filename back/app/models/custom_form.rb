@@ -25,7 +25,7 @@ class CustomForm < ApplicationRecord
   validates :participation_context_id, uniqueness: { scope: %i[participation_context_type] } # https://github.com/rails/rails/issues/34312#issuecomment-586870322
   validates :print_start_multiloc, presence: true, multiloc: { presence: true }
   validates :print_end_multiloc, presence: true, multiloc: { presence: true }
-  
+
   delegate :project_id, to: :participation_context
 
   before_validation :sanitize_print_start_multiloc
@@ -61,7 +61,7 @@ class CustomForm < ApplicationRecord
   private
   def sanitize_print_start_multiloc
     return unless print_start_multiloc
-  
+
     self.print_start_multiloc = sanitize_multiloc(print_start_multiloc)
   end
 
@@ -78,7 +78,7 @@ class CustomForm < ApplicationRecord
       multiloc,
       %i[title alignment list decoration image video]
     )
-    
+
     service.remove_multiloc_empty_trailing_tags multiloc
   end
 end
