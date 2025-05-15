@@ -30,6 +30,8 @@ class IdeaStatus < ApplicationRecord
 
   has_many :ideas
 
+  before_validation :sanitize_description_multiloc
+  before_validation :sanitize_title_multiloc
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
@@ -53,6 +55,24 @@ class IdeaStatus < ApplicationRecord
   end
 
   private
+
+  def sanitize_title_multiloc
+    return unless title_multiloc&.any?
+
+    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
+      title_multiloc,
+      []
+    )
+  end
+
+  def sanitize_description_multiloc
+    return unless description_multiloc&.any?
+
+    self.description_multiloc = SanitizationService.new.sanitize_multiloc(
+      description_multiloc,
+      []
+    )
+  end
 
   def strip_title
     title_multiloc.each { |key, value| title_multiloc[key] = value.strip }

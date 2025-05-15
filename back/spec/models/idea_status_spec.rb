@@ -43,4 +43,42 @@ RSpec.describe IdeaStatus do
       expect(subject.destroyed?).to be true
     end
   end
+
+  describe '#sanitize_title_multiloc' do
+    it 'removes all HTML tags from title_multiloc' do
+      idea_status = build(
+        :idea_status,
+        title_multiloc: {
+          'en' => 'Something <script>alert("XSS")</script> something',
+          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
+          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      )
+
+      idea_status.save!
+
+      expect(idea_status.title_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(idea_status.title_multiloc['fr-BE']).to eq('Something')
+      expect(idea_status.title_multiloc['nl-BE']).to eq('Plain text with formatting')
+    end
+  end
+
+  describe '#sanitize_description_multiloc' do
+    it 'removes all HTML tags from description_multiloc' do
+      idea_status = build(
+        :idea_status,
+        description_multiloc: {
+          'en' => 'Something <script>alert("XSS")</script> something',
+          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
+          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      )
+
+      idea_status.save!
+
+      expect(idea_status.description_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(idea_status.description_multiloc['fr-BE']).to eq('Something ')
+      expect(idea_status.description_multiloc['nl-BE']).to eq('Plain text with formatting')
+    end
+  end
 end
