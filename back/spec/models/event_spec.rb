@@ -44,7 +44,7 @@ RSpec.describe Event do
       }
     end
 
-    shared_examples "sanitizes HTML in multiloc" do |field_name, options = {}|
+    shared_examples 'sanitizes HTML in multiloc' do |field_name, options = {}|
       it "removes all HTML tags from #{field_name}" do
         event = build(:event, field_name => multiloc)
         event.save!
@@ -62,10 +62,10 @@ RSpec.describe Event do
       end
     end
 
-    include_examples "sanitizes HTML in multiloc", :location_multiloc
-    include_examples "sanitizes HTML in multiloc", :address_2_multiloc
-    include_examples "sanitizes HTML in multiloc", :attend_button_multiloc
-    include_examples "sanitizes HTML in multiloc", :title_multiloc, strip_spaces: true
+    include_examples 'sanitizes HTML in multiloc', :location_multiloc
+    include_examples 'sanitizes HTML in multiloc', :address_2_multiloc
+    include_examples 'sanitizes HTML in multiloc', :attend_button_multiloc
+    include_examples 'sanitizes HTML in multiloc', :title_multiloc, strip_spaces: true
   end
 
   describe 'timing validation' do

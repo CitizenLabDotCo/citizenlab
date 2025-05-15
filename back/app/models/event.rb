@@ -118,10 +118,8 @@ class Event < ApplicationRecord
   end
 
   def strip_title
-    puts "BEFORE strip_title: #{title_multiloc.inspect}"
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
-    puts "AFTER strip_title: #{title_multiloc.inspect}"
   end
 end
