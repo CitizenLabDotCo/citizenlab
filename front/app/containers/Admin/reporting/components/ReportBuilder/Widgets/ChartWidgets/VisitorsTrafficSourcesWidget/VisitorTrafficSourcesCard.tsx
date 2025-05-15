@@ -6,8 +6,6 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 import { ProjectId, DatesStrings } from 'components/admin/GraphCards/typings';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import NoData from '../../_shared/NoData';
 import messages from '../messages';
 
@@ -17,14 +15,14 @@ import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 type Props = ProjectId & DatesStrings;
 
 const VisitorsTrafficSourcesCard = ({ projectId, startAt, endAt }: Props) => {
-  const { pieData } = useVisitorReferrerTypes({
+  const { pieData, tableData } = useVisitorReferrerTypes({
     projectId,
     startAt,
     endAt,
   });
   const layout = useLayout();
 
-  if (isNilOrError(pieData)) {
+  if (!pieData || !tableData) {
     return <NoData message={messages.noData} />;
   }
 
