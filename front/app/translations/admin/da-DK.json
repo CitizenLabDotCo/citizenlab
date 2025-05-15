@@ -2758,6 +2758,7 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Bannertekst",
   "app.containers.ContentBuilder.homepage.button": "Knap",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Layout",
+  "app.containers.ContentBuilder.homepage.customizationNotAvailable2": "Tilpasning af andre indstillinger end billedet og teksten på startbanneret er ikke inkluderet i din nuværende licens. Kontakt Søren Kielgast for at få mere at vide om det.",
   "app.containers.ContentBuilder.homepage.customized_button": "Brugerdefineret",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Knaptekst",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Link til knap",
