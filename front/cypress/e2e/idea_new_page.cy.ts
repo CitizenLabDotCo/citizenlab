@@ -63,7 +63,7 @@ describe('Idea submission form', () => {
     cy.get('#e2e-idea-title-input .e2e-error-message');
   });
 
-  it.only('shows no error when the description is less than 3 characters long', () => {
+  it('shows no error when the description is less than 3 characters long', () => {
     const ideaTitle = randomString(10);
     cy.get('#e2e-idea-title-input input').type(ideaTitle);
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
@@ -80,20 +80,22 @@ describe('Idea submission form', () => {
     cy.contains(ideaTitle).should('exist');
   });
 
-  it.skip('saves correct location point when provided in URL', () => {
+  it('saves correct location point when provided in URL', () => {
     cy.intercept('POST', '**/ideas').as('submitIdea');
 
     const ideaTitle = randomString(40);
     const ideaContent = randomString(60);
-    const geocodedLocation = 'Maria-Louizasquare 47, 1000 Brussel, Belgium';
-    const lat = 50.84682103382404;
-    const long = 4.378963708877564;
+    const geocodedLocation = 'Korenmarkt 11, 9000 Gent, Belgium';
+    const lat = 51.0546195;
+    const long = 3.7219968;
 
     // Go to URL with lat/long where point is in body of water
     cy.visit(
       `/projects/an-idea-bring-it-to-your-council/ideas/new?lat=${lat}&lng=${long}`
     );
     cy.get('#idea-form');
+    // So typing the title doesn't get interrupted
+    cy.wait(1000);
     cy.contains('Add new idea').should('exist');
 
     // Add a title
@@ -111,11 +113,7 @@ describe('Idea submission form', () => {
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     // Check that the geocoder has autofilled the location
-    cy.get('.e2e-idea-form-location-input-field [class^=singleValue]').should(
-      'contain.value',
-      geocodedLocation
-    );
-    cy.wait(1000);
+    cy.get('.e2e-idea-form-location-input-field').contains(geocodedLocation);
     // save the idea
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(3000);
