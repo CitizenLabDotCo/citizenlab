@@ -67,6 +67,8 @@ class CustomForm < ApplicationRecord
   end
 
   def sanitize_multiloc(multiloc)
+    return nil unless multiloc&.any?
+
     service = SanitizationService.new
 
     multiloc = service.sanitize_multiloc(

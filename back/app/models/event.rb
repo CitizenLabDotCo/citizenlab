@@ -52,10 +52,10 @@ class Event < ApplicationRecord
   validate :validate_start_at_before_end_at
 
   before_validation :sanitize_description_multiloc
-  before_validation :sanitize_location_multiloc, if: :location_multiloc
+  before_validation :sanitize_location_multiloc
   before_validation :sanitize_address_2_multiloc
   before_validation :sanitize_attend_button_multiloc
-  before_validation :sanitize_title_multiloc, if: :title_multiloc
+  before_validation :sanitize_title_multiloc
   before_validation :strip_title
 
   scope :with_project_publication_statuses, (proc do |publication_statuses|
@@ -76,31 +76,25 @@ class Event < ApplicationRecord
   end
 
   def sanitize_address_2_multiloc
-    self.address_2_multiloc = SanitizationService.new.sanitize_multiloc(
-      address_2_multiloc,
-      []
-    )
+    self.address_2_multiloc = sanitize_simple_multiloc(address_2_multiloc)
   end
 
   def sanitize_location_multiloc
-    self.location_multiloc = SanitizationService.new.sanitize_multiloc(
-      location_multiloc,
-      []
-    )
+    self.location_multiloc = sanitize_simple_multiloc(location_multiloc)
   end
 
   def sanitize_attend_button_multiloc
-    self.attend_button_multiloc = SanitizationService.new.sanitize_multiloc(
-      attend_button_multiloc,
-      []
-    )
+    self.attend_button_multiloc = sanitize_simple_multiloc(attend_button_multiloc)
   end
 
   def sanitize_title_multiloc
-    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
-      title_multiloc,
-      []
-    )
+    self.title_multiloc = sanitize_simple_multiloc(title_multiloc)
+  end
+
+  def sanitize_simple_multiloc(multiloc)
+    return {} unless multiloc&.any?
+
+    SanitizationService.new.sanitize_multiloc(multiloc, [])
   end
 
   def validate_start_at_before_end_at

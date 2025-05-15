@@ -38,7 +38,7 @@ class Area < ApplicationRecord
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   before_validation :sanitize_description_multiloc
-  before_validation :sanitize_title_multiloc, if: :title_multiloc
+  before_validation :sanitize_title_multiloc
   before_validation :strip_title
 
   # The area is a custom field option of the domicile custom field.
@@ -91,6 +91,8 @@ class Area < ApplicationRecord
   end
 
   def sanitize_title_multiloc
+    return unless title_multiloc&.any?
+
     strip_title
 
     self.title_multiloc = SanitizationService.new.sanitize_multiloc(

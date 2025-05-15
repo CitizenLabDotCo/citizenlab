@@ -43,8 +43,8 @@ module ProjectFolders
 
     before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
-    before_validation :sanitize_header_bg_alt_text_multiloc, if: :header_bg_alt_text_multiloc
-    before_validation :sanitize_title_multiloc, if: :title_multiloc
+    before_validation :sanitize_header_bg_alt_text_multiloc
+    before_validation :sanitize_title_multiloc
     before_validation :strip_title
     before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
 
@@ -96,17 +96,17 @@ module ProjectFolders
     end
 
     def sanitize_header_bg_alt_text_multiloc
-      self.header_bg_alt_text_multiloc = SanitizationService.new.sanitize_multiloc(
-        header_bg_alt_text_multiloc,
-        []
-      )
+      self.header_bg_alt_text_multiloc = sanitize_simple_multiloc(header_bg_alt_text_multiloc)
     end
 
     def sanitize_title_multiloc
-      self.title_multiloc = SanitizationService.new.sanitize_multiloc(
-        title_multiloc,
-        []
-      )
+      self.title_multiloc = sanitize_simple_multiloc(title_multiloc)
+    end
+
+    def sanitize_simple_multiloc(multiloc)
+      return {} unless multiloc&.any?
+
+      SanitizationService.new.sanitize_multiloc(multiloc, [])
     end
 
     def strip_title
