@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "ਟੈਬਲੇਟ",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "ਡਿਵਾਈਸ ਦੀਆਂ ਕਿਸਮਾਂ",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "ਡਿਵਾਈਸ ਦੀ ਕਿਸਮ",
+  "app.containers.Admin.earlyAccessLabel": "ਜਲਦੀ ਪਹੁੰਚ",
+  "app.containers.Admin.earlyAccessLabelExplanation": "ਇਹ ਇੱਕ ਨਵੀਂ ਜਾਰੀ ਕੀਤੀ ਗਈ ਵਿਸ਼ੇਸ਼ਤਾ ਹੈ ਜੋ ਅਰਲੀ ਐਕਸੈਸ ਵਿੱਚ ਉਪਲਬਧ ਹੈ।",
   "app.containers.Admin.emails.addCampaign": "ਈਮੇਲ ਬਣਾਓ",
   "app.containers.Admin.emails.addCampaignTitle": "ਇੱਕ ਨਵੀਂ ਈਮੇਲ ਬਣਾਓ",
   "app.containers.Admin.emails.allParticipantsInProject": "ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਸਾਰੇ ਭਾਗੀਦਾਰ",
