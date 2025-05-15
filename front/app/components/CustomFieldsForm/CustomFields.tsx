@@ -4,18 +4,13 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import useLocalize, { Localize } from 'hooks/useLocalize';
+import useLocalize from 'hooks/useLocalize';
 
 import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
-import CheckboxMultiSelect from 'components/HookForm/CheckboxMultiSelect';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
-import MultipleSelect from 'components/HookForm/MultipleSelect';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import RadioGroup from 'components/HookForm/RadioGroup';
-import Radio from 'components/HookForm/RadioGroup/Radio';
-import Select from 'components/HookForm/Select';
 import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -24,14 +19,12 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import FileUploaderField from './Fields/FileUploadField';
 import ImageField from './Fields/ImageField';
+import MultiSelectField from './Fields/MultiSelectField';
+import SingleSelectField from './Fields/SingleSelectField';
 import messages from './messages';
-import { extractOptions, getInstructionMessage } from './util';
+import { getInstructionMessage } from './util';
 
-const renderField = (
-  question: IFlatCustomField,
-  localize: Localize,
-  projectId?: string
-) => {
+const renderField = (question: IFlatCustomField, projectId?: string) => {
   switch (question.input_type) {
     case 'text_multiloc':
       return (
@@ -63,44 +56,9 @@ const renderField = (
     case 'multiline_text':
       return <TextArea name={question.key} />;
     case 'select':
-      return question.dropdown_layout ? (
-        <Select
-          name={question.key}
-          options={extractOptions(
-            question,
-            localize,
-            question.random_option_ordering
-          )}
-        />
-      ) : (
-        <RadioGroup name={question.key}>
-          {extractOptions(
-            question,
-            localize,
-            question.random_option_ordering
-          ).map((option) => (
-            <Radio
-              name={question.key}
-              id={option.value}
-              key={option.value}
-              value={option.value}
-              label={option.label}
-            />
-          ))}
-        </RadioGroup>
-      );
+      return <SingleSelectField question={question} />;
     case 'multiselect':
-      return question.dropdown_layout ? (
-        <MultipleSelect
-          name={question.key}
-          options={extractOptions(question, localize)}
-        />
-      ) : (
-        <CheckboxMultiSelect
-          name={question.key}
-          options={extractOptions(question, localize)}
-        />
-      );
+      return <MultiSelectField question={question} />;
     case 'image_files':
       return (
         <ImageField
@@ -162,7 +120,7 @@ const CustomFields = ({
                   <FormattedMessage {...messages.notPublic} />
                 </Text>
               )}
-              {renderField(question, localize, projectId)}
+              {renderField(question, projectId)}
             </Box>
           );
         })}
