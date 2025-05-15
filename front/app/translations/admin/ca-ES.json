@@ -754,7 +754,7 @@
   "app.containers.Admin.Users.youCantDeleteYourself": "No podeu esborrar el vostre compte a través de la pàgina d'administració de l'usuari",
   "app.containers.Admin.Users.youCantUnadminYourself": "Ara no podeu renunciar al vostre paper d'administrador",
   "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "This feature is available in open beta for your plan until June 30th 2025.",
+  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Aquesta funció està disponible en beta oberta per al teu pla fins al 30 de juny de 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Community monitor",
   "app.containers.Admin.communityMonitor.healthScore": "Health Score",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "This score is the average of all sentiment-scale questions answered by participants for the period selected.",
