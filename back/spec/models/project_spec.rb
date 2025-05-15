@@ -76,6 +76,38 @@ RSpec.describe Project do
     end
   end
 
+  describe 'sanitization of simple multilocs' do
+    let(:multiloc) do
+      {
+        'en' => 'Something <script>alert("XSS")</script> something',
+        'fr-BE' => 'Something <img src=x onerror=alert(1)>',
+        'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+      }
+    end
+
+    shared_examples 'sanitizes HTML in multiloc' do |field_name, options = {}|
+      it "removes all HTML tags from #{field_name}" do
+        project = build(:project, field_name => multiloc)
+        project.save!
+
+        expect(project.public_send(field_name)['en']).to eq('Something alert("XSS") something')
+
+        # Use different expectation for fr-BE based on options
+        if options[:strip_spaces]
+          expect(project.public_send(field_name)['fr-BE']).to eq('Something')
+        else
+          expect(project.public_send(field_name)['fr-BE']).to eq('Something ')
+        end
+
+        expect(project.public_send(field_name)['nl-BE']).to eq('Plain text with formatting')
+      end
+    end
+
+    include_examples 'sanitizes HTML in multiloc', :description_preview_multiloc
+    include_examples 'sanitizes HTML in multiloc', :header_bg_alt_text_multiloc
+    include_examples 'sanitizes HTML in multiloc', :title_multiloc, strip_spaces: true
+  end
+
   describe 'destroy' do
     it 'can be realised' do
       project = create(:project_xl)
