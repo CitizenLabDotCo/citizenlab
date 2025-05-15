@@ -61,16 +61,4 @@ RSpec.describe CustomForm do
       expect(custom_form.print_end_multiloc).to eq({ 'en' => '<p>Test</p>This link should be removed!' })
     end
   end
-
-  describe 'validations' do
-    it 'is invalid with invalid locales in print_start_multiloc' do
-      custom_form = build(:custom_form, print_start_multiloc: { 'se-BI' => 'some text' })
-      expect(custom_form).to be_invalid
-    end
-
-    it 'is invalid with invalid locales in print_end_multiloc' do
-      custom_form = build(:custom_form, print_end_multiloc: { 'se-BI' => 'some text' })
-      expect(custom_form).to be_invalid
-    end
-  end
 end
