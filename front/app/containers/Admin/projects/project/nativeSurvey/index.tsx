@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Title, Toggle, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Title, Toggle } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
@@ -15,7 +15,6 @@ import useLocale from 'hooks/useLocale';
 import FormResults from 'components/admin/FormResults';
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
-import EditWarningModal from 'components/admin/SurveyEditWarningModal';
 import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -46,7 +45,6 @@ const Forms = () => {
 
   // Modal states
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showEditWarningModal, setShowEditWarningModal] = useState(false);
   const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
 
   // Other states
@@ -164,12 +162,6 @@ const Forms = () => {
           </Box>
         </Box>
         <FormResults />
-        <EditWarningModal
-          editFormLink={editFormLink}
-          showEditWarningModal={showEditWarningModal}
-          setShowEditWarningModal={setShowEditWarningModal}
-          handleDownloadResults={handleDownloadResults}
-        />
         <CopySurveyModal
           editFormLink={editFormLink}
           showCopySurveyModal={showCopySurveyModal}
