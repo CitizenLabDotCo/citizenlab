@@ -2758,6 +2758,7 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Текст банера",
   "app.containers.ContentBuilder.homepage.button": "Дугме",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Лаиоут",
+  "app.containers.ContentBuilder.homepage.customizationNotAvailable2": "Customizing settings other than the image and text on the homepage banner is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.ContentBuilder.homepage.customized_button": "Обичај",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Текст дугмета",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Веза са дугметом",
