@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "Planšetinis kompiuteris",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "Įrenginių tipai",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "Įrenginio tipas",
+  "app.containers.Admin.earlyAccessLabel": "Ankstyvoji prieiga",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Tai naujai išleista funkcija, kurią galima naudoti ankstyvosios prieigos sistemoje.",
   "app.containers.Admin.emails.addCampaign": "Sukurti el. paštą",
   "app.containers.Admin.emails.addCampaignTitle": "Sukurti naują el. paštą",
   "app.containers.Admin.emails.allParticipantsInProject": "Visi projekto dalyviai",
