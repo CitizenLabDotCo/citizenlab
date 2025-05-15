@@ -43,7 +43,7 @@ export default defineMessages({
     defaultMessage: 'Import inputs',
   },
   noProject: {
-    id: 'app.components.formBuilder.copySurveyModal.noProject',
+    id: 'app.components.admin.PostManager.noProject',
     defaultMessage: 'No project',
   },
 });
