@@ -47,6 +47,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "ਇਹ ਚਿੱਤਰ ਹਮੇਸ਼ਾ ਇੱਕ ਖਾਸ ਅਨੁਪਾਤ ਵਿੱਚ ਕੱਟਿਆ ਜਾਂਦਾ ਹੈ ਤਾਂ ਜੋ ਇਹ ਯਕੀਨੀ ਬਣਾਇਆ ਜਾ ਸਕੇ ਕਿ ਸਾਰੇ ਮਹੱਤਵਪੂਰਨ ਪਹਿਲੂ ਹਰ ਸਮੇਂ ਪ੍ਰਦਰਸ਼ਿਤ ਹੁੰਦੇ ਹਨ। ਇਸ ਚਿੱਤਰ ਕਿਸਮ ਲਈ {link} ਹੈ {aspect}।",
   "app.components.Admin.ImageCropper.infoLinkText": "ਸਿਫਾਰਸ਼ੀ ਅਨੁਪਾਤ",
+  "app.components.Admin.ImageCropper.mobileCropExplanation": "ਨੋਟ: ਚਿੱਤਰ ਦਾ ਕੋਈ ਵੀ ਮਹੱਤਵਪੂਰਨ ਖੇਤਰ ਲੰਬਕਾਰੀ ਡੈਸ਼ਡ ਲਾਈਨਾਂ ਦੇ ਅੰਦਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ, ਕਿਉਂਕਿ ਮੋਬਾਈਲ ਡਿਵਾਈਸਾਂ 'ਤੇ ਚਿੱਤਰ ਨੂੰ 3:1 ਦੇ ਅਨੁਪਾਤ ਵਿੱਚ ਕੱਟਿਆ ਜਾਵੇਗਾ।",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾਵਾਂ ਲਈ ਹੈਡਰ ਟੈਕਸਟ",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "ਚੇਤਾਵਨੀ: ਤੁਹਾਡੇ ਦੁਆਰਾ ਚੁਣੇ ਗਏ ਰੰਗ ਵਿੱਚ ਉੱਚਾ ਕੰਟ੍ਰਾਸਟ ਨਹੀਂ ਹੈ। ਇਸ ਦੇ ਨਤੀਜੇ ਵਜੋਂ ਉਹ ਟੈਕਸਟ ਹੋ ਸਕਦਾ ਹੈ ਜੋ ਪੜ੍ਹਨਾ ਔਖਾ ਹੈ। ਪੜ੍ਹਨਯੋਗਤਾ ਨੂੰ ਅਨੁਕੂਲ ਬਣਾਉਣ ਲਈ ਇੱਕ ਗੂੜਾ ਰੰਗ ਚੁਣੋ।",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "ਨੈਵੀਗੇਸ਼ਨ ਬਾਰ ਵਿੱਚ ਇਵੈਂਟ ਸ਼ਾਮਲ ਕਰੋ",
