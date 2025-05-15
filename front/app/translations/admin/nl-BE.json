@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "Tablet",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "Apparaattypen",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "Type apparaat",
+  "app.containers.Admin.earlyAccessLabel": "Vroege Toegang",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Dit is een nieuwe functie die beschikbaar is in Vroege Toegang.",
   "app.containers.Admin.emails.addCampaign": "E-mail maken",
   "app.containers.Admin.emails.addCampaignTitle": "Maak een nieuwe e-mail aan",
   "app.containers.Admin.emails.allParticipantsInProject": "Alle deelnemers van het project",
