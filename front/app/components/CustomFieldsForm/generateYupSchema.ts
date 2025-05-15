@@ -111,9 +111,7 @@ const generateYupValidationSchema = ({
         const fieldSchemaOther = string().when(key, {
           is: (value?: string) => value === 'other',
           then: string().required(
-            formatMessage(messages.fieldRequired, {
-              fieldName: localize(title_multiloc),
-            })
+            formatMessage(messages.typeYourAnswerRequired)
           ),
           otherwise: string().notRequired(),
         });
@@ -162,9 +160,7 @@ const generateYupValidationSchema = ({
         const fieldSchemaOther = string().when(key, {
           is: (value?: string[]) => value?.includes('other'),
           then: string().required(
-            formatMessage(messages.fieldRequired, {
-              fieldName: localize(title_multiloc),
-            })
+            formatMessage(messages.typeYourAnswerRequired)
           ),
           otherwise: string().notRequired(),
         });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -21,24 +21,17 @@ const SingleSelectField = ({ question }) => {
 
   const value = watch(question.key);
 
+  const options = useMemo(() => {
+    return extractOptions(question, localize, question.random_option_ordering);
+  }, [question, localize]);
+
   return (
     <>
       {question.dropdown_layout ? (
-        <Select
-          name={question.key}
-          options={extractOptions(
-            question,
-            localize,
-            question.random_option_ordering
-          )}
-        />
+        <Select name={question.key} options={options} />
       ) : (
         <RadioGroup name={question.key}>
-          {extractOptions(
-            question,
-            localize,
-            question.random_option_ordering
-          ).map((option) => (
+          {options.map((option) => (
             <Radio
               name={question.key}
               id={option.value}

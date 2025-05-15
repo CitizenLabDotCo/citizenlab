@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -20,18 +20,16 @@ const MultiSelectField = ({ question }) => {
 
   const value = watch(question.key);
 
+  const options = useMemo(() => {
+    return extractOptions(question, localize, question.random_option_ordering);
+  }, [question, localize]);
+
   return (
     <>
       {question.dropdown_layout ? (
-        <MultipleSelect
-          name={question.key}
-          options={extractOptions(question, localize)}
-        />
+        <MultipleSelect name={question.key} options={options} />
       ) : (
-        <CheckboxMultiSelect
-          name={question.key}
-          options={extractOptions(question, localize)}
-        />
+        <CheckboxMultiSelect name={question.key} options={options} />
       )}
       {value?.includes('other') && (
         <Input

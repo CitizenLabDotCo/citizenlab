@@ -86,4 +86,8 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.typeYourAnswer',
     defaultMessage: 'Type your answer',
   },
+  typeYourAnswerRequired: {
+    id: 'app.components.CustomFieldsForm.typeYourAnswerRequired',
+    defaultMessage: 'It is required to type your answer',
+  },
 });

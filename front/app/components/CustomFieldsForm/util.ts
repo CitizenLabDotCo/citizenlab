@@ -74,10 +74,23 @@ export const extractOptions = (
     });
 
     if (randomize) {
-      for (let i = result.length - 1; i > 0; i--) {
+      // Separate "other" options from regular options
+      const otherOptions = result.filter((option) => option.value === 'other');
+      const regularOptions = result.filter(
+        (option) => option.value !== 'other'
+      );
+
+      // Shuffle only regular options
+      for (let i = regularOptions.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [result[i], result[j]] = [result[j], result[i]];
+        [regularOptions[i], regularOptions[j]] = [
+          regularOptions[j],
+          regularOptions[i],
+        ];
       }
+
+      // Recombine arrays
+      result = [...regularOptions, ...otherOptions];
     }
   }
   return result;
