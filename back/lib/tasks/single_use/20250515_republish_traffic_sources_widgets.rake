@@ -42,7 +42,7 @@ namespace :single_use do
       report_ids = []
 
       published_layouts.each do |layout|
-        layout.craftjs_json.dup.each do |(node_id, node)|
+        layout.craftjs_json.dup.each do |(_node_id, node)|
           next unless resolved_name(node) == 'VisitorsTrafficSourcesWidget'
 
           # Add new 'view' prop
@@ -55,12 +55,12 @@ namespace :single_use do
             report_ids << report_id
           end
         end
-        
+
         if layout.changed? && execute
           layout.save!
-          puts "/n"
+          puts '/n'
           puts "Updated props in layout: #{layout.id}"
-          puts "/n"
+          puts '/n'
         end
       end
 
@@ -68,9 +68,9 @@ namespace :single_use do
       report_ids.each do |report_id|
         report = ReportBuilder::Report.where(id: report_id)
 
-        puts "/n/n"
+        puts '/n/n'
         puts "republishing report: #{report_id}"
-        puts "/n/n"
+        puts '/n/n'
 
         if execute
           republish_report(report)
