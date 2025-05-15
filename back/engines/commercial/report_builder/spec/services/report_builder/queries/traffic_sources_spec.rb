@@ -74,25 +74,6 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       })
     end
 
-    it 'identifies email campaigns' do
-      create(:session, referrer: 'android-app://com.google.android.gm/') # gmail app
-      create(:session, referrer: 'https://mail.google.com/') # gmail web
-      create(:session, referrer: 'https://eb05g.r.ag.d.sendibm3.com/') # brevo
-      create(:session, referrer: 'https://b12s9.r.sp1-brevo.net/') # brevo
-      create(:session, referrer: 'https://email.bt.com/')
-      create(:session, referrer: 'https://outlook.live.com/')
-      create(:session, referrer: 'https://mail.telenet.be/')
-      create(:session, referrer: 'https://deref-gmx.net/')
-      create(:session, referrer: 'https://mail02.orange.fr/')
-      create(:session, referrer: 'https://mail01.orange.fr/')
-
-      expect(query.run_query).to eq({
-        sessions_per_referrer_type: {
-          'email_campaign' => 10,
-        }
-      })
-    end
-
     it 'identifies SSO redirects' do
       create(:session, referrer: 'https://accounts.claveunica.gob.cl/')
       create(:session, referrer: 'https://accounts.google.com/')

@@ -16,23 +16,6 @@ module ReportBuilder
       m.facebook l.facebook lm.facebook l.instagram out.reddit lnkd.in bsky
     ].freeze
 
-    EMAIL_CAMPAIGN_REFERRERS = %w[
-      android-app://com.google.android.gm
-      https://mail.google.com
-      https://eb05g.r.ag.d.sendibm3.com
-      https://b12s9.r.sp1-brevo.net
-      https://eb05g.r.a1.sendibm3.com
-      https://outlook.live.com
-      https://mail.telenet.be
-      https://deref-gmx.net
-      https://mail02.orange.fr
-      https://mail01.orange.fr
-      https://email.bt.com
-      https://mail.yahoo.com
-      https://email.t-online.de
-      https://webmail.ux.proximus.be
-    ]
-
     SSO_REFERRERS = %w[
       https://accounts.claveunica.gob.cl
       https://accounts.google.com
@@ -60,7 +43,6 @@ module ReportBuilder
       cases = DIRECT_ENTRY_CASES
       cases += generate_cases(SEARCH_ENGINE_REFERRERS, SEARCH_ENGINE_DOMAINS, 'search_engine')
       cases += generate_cases(SOCIAL_NETWORK_REFERRERS, SOCIAL_NETWORK_DOMAINS, 'social_network')
-      cases += generate_cases(EMAIL_CAMPAIGN_REFERRERS, [], 'email_campaign')
       cases += generate_cases(SSO_REFERRERS, [], 'sso_redirect')
 
       referrer_types = sessions
