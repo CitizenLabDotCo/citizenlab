@@ -12,7 +12,7 @@ RSpec.describe CustomFieldMatrixStatement do
   it { is_expected.to belong_to(:custom_field) }
 
   describe '#sanitize_title_multiloc' do
-    it 'removes all HTML tags from organization_name multiloc' do
+    it 'removes all HTML tags from title_multiloc' do
       cfms = build(
         :custom_field_matrix_statement,
         title_multiloc: {

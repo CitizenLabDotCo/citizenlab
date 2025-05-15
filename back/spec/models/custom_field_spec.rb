@@ -382,7 +382,7 @@ RSpec.describe CustomField do
   end
 
   describe '#sanitize_title_multiloc' do
-    it 'removes all HTML tags from organization_name multiloc' do
+    it 'removes all HTML tags from title multiloc' do
       cf = build(
         :custom_field_option,
         title_multiloc: {

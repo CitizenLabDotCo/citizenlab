@@ -36,7 +36,7 @@ RSpec.describe Area do
   end
 
   describe '#sanitize_title_multiloc' do
-    it 'removes all HTML tags from organization_name multiloc' do
+    it 'removes all HTML tags from title_multiloc' do
       area = build(
         :area,
         title_multiloc: {
