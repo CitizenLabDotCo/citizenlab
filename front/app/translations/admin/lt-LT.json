@@ -2758,6 +2758,7 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Reklaminio skydelio tekstas",
   "app.containers.ContentBuilder.homepage.button": "Mygtukas",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Maketavimas",
+  "app.containers.ContentBuilder.homepage.customizationNotAvailable2": "Į dabartinę licenciją neįtrauktas kitų nustatymų, išskyrus pagrindinio puslapio reklaminio skydelio vaizdą ir tekstą, pritaikymas. Susisiekite su savo \"GovSuccess\" vadybininku ir sužinokite apie tai daugiau.",
   "app.containers.ContentBuilder.homepage.customized_button": "Pasirinktinis",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Mygtuko tekstas",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Mygtuko nuoroda",

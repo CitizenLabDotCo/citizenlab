@@ -2758,6 +2758,7 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Bannerin teksti",
   "app.containers.ContentBuilder.homepage.button": "Painike",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Layout",
+  "app.containers.ContentBuilder.homepage.customizationNotAvailable2": "Muiden asetusten kuin kotisivun bannerin kuvan ja tekstin mukauttaminen ei sisälly nykyiseen lisenssiisi. Ota yhteyttä GovSuccess-päällikköösi saadaksesi lisätietoja.",
   "app.containers.ContentBuilder.homepage.customized_button": "Mukautettu",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Painikkeen teksti",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Painikkeen linkki",
