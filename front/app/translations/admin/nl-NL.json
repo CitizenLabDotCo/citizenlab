@@ -2758,7 +2758,6 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Bannertitel",
   "app.containers.ContentBuilder.homepage.button": "Knop",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Opmaak",
-  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "Het aanpassen van andere instellingen dan de tekst op de homepagina banner is niet in je huidige licentie inbegrepen. Neem contact op met je Government Success Manager voor meer informatie.",
   "app.containers.ContentBuilder.homepage.customized_button": "Aangepast",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Tekst op de knop",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Link voor de knop",

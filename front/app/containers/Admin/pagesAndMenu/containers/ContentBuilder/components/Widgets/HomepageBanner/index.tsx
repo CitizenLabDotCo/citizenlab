@@ -380,39 +380,37 @@ const HomepageBannerSettings = () => {
         }}
       />
 
-      {customHomepageBannerAllowed && (
-        <>
-          <Label htmlFor="bannerImage">
-            {formatMessage(messages.bannerImage)}
-          </Label>
-          {homepageSettings.banner_layout === 'fixed_ratio_layout' &&
-          imageFiles.length > 0 ? (
-            <ImageCropperContainer
-              image={imageFiles[0] || null}
-              onComplete={handleOnAdd}
-              aspectRatioWidth={3}
-              aspectRatioHeight={1}
-              onRemove={handleOnRemove}
-            />
-          ) : (
-            <ImagesDropzone
-              id="bannerImage"
-              images={imageFiles}
-              imagePreviewRatio={1 / 2}
-              maxImagePreviewWidth="360px"
-              objectFit="contain"
-              acceptedFileTypes={{
-                'image/*': ['.jpg', '.jpeg', '.png'],
-              }}
-              onAdd={(images) => {
-                setImageFiles(images);
-                handleOnAdd(images[0].base64);
-              }}
-              onRemove={handleOnRemove}
-            />
-          )}
-        </>
-      )}
+      <>
+        <Label htmlFor="bannerImage">
+          {formatMessage(messages.bannerImage)}
+        </Label>
+        {homepageSettings.banner_layout === 'fixed_ratio_layout' &&
+        imageFiles.length > 0 ? (
+          <ImageCropperContainer
+            image={imageFiles[0] || null}
+            onComplete={handleOnAdd}
+            aspectRatioWidth={3}
+            aspectRatioHeight={1}
+            onRemove={handleOnRemove}
+          />
+        ) : (
+          <ImagesDropzone
+            id="bannerImage"
+            images={imageFiles}
+            imagePreviewRatio={1 / 2}
+            maxImagePreviewWidth="360px"
+            objectFit="contain"
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png'],
+            }}
+            onAdd={(images) => {
+              setImageFiles(images);
+              handleOnAdd(images[0].base64);
+            }}
+            onRemove={handleOnRemove}
+          />
+        )}
+      </>
 
       <Box
         display="flex"

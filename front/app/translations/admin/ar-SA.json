@@ -2758,7 +2758,6 @@
   "app.containers.ContentBuilder.homepage.bannerText": "نص البانر",
   "app.containers.ContentBuilder.homepage.button": "زر",
   "app.containers.ContentBuilder.homepage.chooseLayout": "تَخطِيط",
-  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "لا يتم تضمين تخصيص الإعدادات بخلاف النص الموجود على شعار الصفحة الرئيسية في ترخيصك الحالي. تواصل مع مدير GovSuccess الخاص بك لمعرفة المزيد حول هذا الموضوع.",
   "app.containers.ContentBuilder.homepage.customized_button": "مخصص",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "زر كتابة",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "رابط الزر",

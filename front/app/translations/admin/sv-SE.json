@@ -2758,7 +2758,6 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Text för banner",
   "app.containers.ContentBuilder.homepage.button": "Knapp",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Layout",
-  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "Anpassning av andra inställningar än texten på hemsidans banner ingår inte i din nuvarande licens. Kontakta din GovSuccess Manager för att få veta mer om det.",
   "app.containers.ContentBuilder.homepage.customized_button": "Anpassad",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Text för knapp",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Länk till knapp",

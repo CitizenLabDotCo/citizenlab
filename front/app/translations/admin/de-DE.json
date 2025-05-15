@@ -2758,7 +2758,6 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Banner-Text",
   "app.containers.ContentBuilder.homepage.button": "Button",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Layout",
-  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "Die Anpassung von Einstellungen, die über den Text auf dem Homepage-Banner hinausgehen, ist in Ihrer aktuellen Lizenz nicht enthalten. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
   "app.containers.ContentBuilder.homepage.customized_button": "Benutzerdefiniert",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Text des Buttons",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Button-Link",
