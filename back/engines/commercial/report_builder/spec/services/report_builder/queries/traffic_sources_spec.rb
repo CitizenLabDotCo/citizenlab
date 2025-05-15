@@ -93,37 +93,29 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
     end
 
     it 'includes top 50 referrers, sorted desc by visits' do
-      3.times do
-        create(:session, referrer: 'https://www.google.com/')
-      end
-
-      5.times do
-        create(:session, referrer: 'https://www.facebook.com/')
-      end
-
-      2.times do
-        create(:session, referrer: 'https://www.example.com/', monthly_user_hash: '123')
-        create(:session, referrer: 'https://www.example.com/', monthly_user_hash: '456')
-      end
+      create_list(:session, 3, referrer: 'https://www.google.com/')
+      create_list(:session, 5, referrer: 'https://www.facebook.com/')
+      create_list(:session, 2, referrer: 'https://www.example.com/', monthly_user_hash: '123')
+      create_list(:session, 2, referrer: 'https://www.example.com/', monthly_user_hash: '456')
 
       expect(query.run_query[:top_50_referrers]).to eq([
         {
-          'referrer' => 'https://www.facebook.com/',
-          'visits' => 5,
-          'visitors' => 1,
-          'referrer_type' => 'social_network'
+          referrer: 'https://www.facebook.com/',
+          visits: 5,
+          visitors: 1,
+          referrer_type: 'social_network'
         },
         {
-          'referrer' => 'https://www.example.com/',
-          'visits' => 4,
-          'visitors' => 2,
-          'referrer_type' => 'other'
+          referrer: 'https://www.example.com/',
+          visits: 4,
+          visitors: 2,
+          referrer_type: 'other'
         },
         {
-          'referrer' => 'https://www.google.com/',
-          'visits' => 3,
-          'visitors' => 1,
-          'referrer_type' => 'search_engine'
+          referrer: 'https://www.google.com/',
+          visits: 3,
+          visitors: 1,
+          referrer_type: 'search_engine'
         }
       ])
     end

@@ -62,7 +62,19 @@ module ReportBuilder
         .group(:referrer)
         .order('visits DESC')
         .limit(50)
-        .to_a
+        .map do |row|
+          referrer = row['referrer']
+          visits = row['visits'].to_i
+          visitors = row['visitors'].to_i
+          referrer_type = row['referrer_type']
+
+          {
+            referrer: referrer,
+            visits: visits,
+            visitors: visitors,
+            referrer_type: referrer_type
+          }
+        end
 
       {
         sessions_per_referrer_type: referrer_types.each_with_object({}) do |row, obj|
