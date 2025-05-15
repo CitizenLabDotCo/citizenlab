@@ -2341,7 +2341,6 @@
   "app.containers.AdminPage.SettingsPage.tabProposalStatuses1": "Proposal statuses",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
   "app.containers.AdminPage.SettingsPage.tabSettings": "General",
-  "app.containers.AdminPage.SettingsPage.tabTopics": "Tag manager",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
   "app.containers.AdminPage.SettingsPage.tablet": "Tablet",
   "app.containers.AdminPage.SettingsPage.terminologyTooltip": "Define what geographic unit you would like to use for your projects (e.g., neighbourhoods, districts, boroughs, etc.)",

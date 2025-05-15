@@ -2341,7 +2341,6 @@
   "app.containers.AdminPage.SettingsPage.tabProposalStatuses1": "Vorschlagsstatus",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registrierung",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Allgemein",
-  "app.containers.AdminPage.SettingsPage.tabTopics": "Themen-Manager",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
   "app.containers.AdminPage.SettingsPage.tablet": "Tablet",
   "app.containers.AdminPage.SettingsPage.terminologyTooltip": "Definieren Sie, welche geografische Einheit Sie für Ihre Projekte verwenden möchten (z. B. Stadtteile, Bezirke, Stadtbezirke usw.)",

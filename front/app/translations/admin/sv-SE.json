@@ -2341,7 +2341,6 @@
   "app.containers.AdminPage.SettingsPage.tabProposalStatuses1": "Status för förslag",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registrering",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Allmänt",
-  "app.containers.AdminPage.SettingsPage.tabTopics": "Ämneshanteraren",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
   "app.containers.AdminPage.SettingsPage.tablet": "Surfplatta",
   "app.containers.AdminPage.SettingsPage.terminologyTooltip": "Definiera vilken geografisk enhet du vill använda för dina projekt (t.ex. områden, distrikt och stadsdelar)",

@@ -2341,7 +2341,6 @@
   "app.containers.AdminPage.SettingsPage.tabProposalStatuses1": "Ehdotuksen tilat",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Rekisteröinti",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Yleinen",
-  "app.containers.AdminPage.SettingsPage.tabTopics": "Tag Manager",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
   "app.containers.AdminPage.SettingsPage.tablet": "Tabletti",
   "app.containers.AdminPage.SettingsPage.terminologyTooltip": "Määritä, mitä maantieteellistä yksikköä haluat käyttää projekteissasi (esim. kaupunginosat, piirit, kaupunginosat jne.)",

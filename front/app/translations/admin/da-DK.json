@@ -2341,7 +2341,6 @@
   "app.containers.AdminPage.SettingsPage.tabProposalStatuses1": "Status for forslag",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registrerings",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Generelt",
-  "app.containers.AdminPage.SettingsPage.tabTopics": "Emner/tags",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
   "app.containers.AdminPage.SettingsPage.tablet": "Tablet",
   "app.containers.AdminPage.SettingsPage.terminologyTooltip": "Definer hvilken geografisk enhed du ønsker at bruge til dine projekter (f.eks. kvarterer, distrikter, bydele osv.)",

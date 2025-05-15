@@ -2341,7 +2341,6 @@
   "app.containers.AdminPage.SettingsPage.tabProposalStatuses1": "Teklif durumları",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Kayıt",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Genel",
-  "app.containers.AdminPage.SettingsPage.tabTopics": "Etiket yöneticisi",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
   "app.containers.AdminPage.SettingsPage.tablet": "Tablet",
   "app.containers.AdminPage.SettingsPage.terminologyTooltip": "Projeleriniz için hangi coğrafi birimi kullanmak istediğinizi tanımlayın (mahalleler, ilçeler, semtler vb.)",
