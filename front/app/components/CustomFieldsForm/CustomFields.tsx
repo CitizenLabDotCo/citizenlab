@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
@@ -20,9 +20,12 @@ import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import FileUploaderField from './Fields/FileUploadField';
 import ImageField from './Fields/ImageField';
-import { extractOptions } from './util';
+import messages from './messages';
+import { extractOptions, getInstructionMessage } from './util';
 
 const renderField = (
   question: IFlatCustomField,
@@ -125,6 +128,7 @@ const CustomFields = ({
   projectId?: string;
 }) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   return (
     <>
       {questions
@@ -140,9 +144,24 @@ const CustomFields = ({
             subtextSupportsHtml: true,
           };
 
+          const answerNotPublic = !question.visible_to_public;
+
           return (
             <Box key={question.id} mb="24px">
               <FormLabel {...labelProps} />
+              <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
+                {getInstructionMessage({
+                  minItems: question.minimum_select_count,
+                  maxItems: question.maximum_select_count,
+                  formatMessage,
+                  optionsLength: question.options?.length || 0,
+                })}
+              </Text>
+              {answerNotPublic && (
+                <Text mt="0px" fontSize="s">
+                  <FormattedMessage {...messages.notPublic} />
+                </Text>
+              )}
               {renderField(question, localize, projectId)}
             </Box>
           );

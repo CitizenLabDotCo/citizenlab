@@ -51,4 +51,35 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.progressBarLabel',
     defaultMessage: 'Progress',
   },
+  selectMany: {
+    id: 'app.components.CustomFieldsForm.selectMany',
+    defaultMessage: '*Choose as many as you like',
+  },
+  adminFieldTooltip: {
+    id: 'app.components.CustomFieldsForm.adminFieldTooltip',
+    defaultMessage: 'Field only visible to admins',
+  },
+  notPublic: {
+    id: 'app.components.CustomFieldsForm.notPublic1',
+    defaultMessage:
+      '*This answer will only be shared with project managers, and not to the public.',
+  },
+  selectBetween: {
+    id: 'app.components.CustomFieldsForm.selectBetween',
+    defaultMessage: '*Select between { minItems } and { maxItems } options',
+  },
+  selectExactly: {
+    id: 'app.components.CustomFieldsForm.selectExactly2',
+    defaultMessage:
+      '*Select exactly {selectExactly, plural, one {# option} other {# options}}',
+  },
+  selectAsManyAsYouLike: {
+    id: 'app.components.CustomFieldsForm.selectAsManyAsYouLike',
+    defaultMessage: '*Select as many as you like',
+  },
+  validCordinatesTooltip: {
+    id: 'app.components.CustomFieldsForm.validCordinatesTooltip2',
+    defaultMessage:
+      "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location (eg: -33.019808, -71.495676).",
+  },
 });
