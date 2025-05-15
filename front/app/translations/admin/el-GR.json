@@ -754,7 +754,7 @@
   "app.containers.Admin.Users.youCantDeleteYourself": "Δεν μπορείτε να διαγράψετε τον δικό σας λογαριασμό μέσω της σελίδας διαχείρισης χρηστών",
   "app.containers.Admin.Users.youCantUnadminYourself": "Δεν μπορείτε να παραιτηθείτε από το ρόλο σας ως διαχειριστής τώρα",
   "app.containers.Admin.communityMonitor.betaLabel": "Beta",
-  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "This feature is available in open beta for your plan until June 30th 2025.",
+  "app.containers.Admin.communityMonitor.betaTooltipExplanation2": "Αυτή η λειτουργία είναι διαθέσιμη σε ανοιχτή beta για το πρόγραμμά σας μέχρι τις 30 Ιουνίου 2025.",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Community monitor",
   "app.containers.Admin.communityMonitor.healthScore": "Health Score",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "This score is the average of all sentiment-scale questions answered by participants for the period selected.",
