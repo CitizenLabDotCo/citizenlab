@@ -13,7 +13,7 @@ namespace :single_use do
     end
 
     def republish_report(report)
-      user = report.owner || User.super_admins.first || User.admins.first
+      user = User.super_admins.first || User.admins.first
       ReportBuilder::ReportPublisher.new(report, user).publish
     rescue ActiveRecord::RecordNotFound => e
       Rails.logger.error(
@@ -47,6 +47,7 @@ namespace :single_use do
 
           # Add new 'view' prop
           node['props']['view'] = 'chart'
+          puts "\nUpdated props in layout: #{layout.id}\n\n"
 
           # Add report id to list if not on there yet
           report_id = layout.content_buildable_id
@@ -58,9 +59,6 @@ namespace :single_use do
 
         if layout.changed? && execute
           layout.save!
-          puts '/n'
-          puts "Updated props in layout: #{layout.id}"
-          puts '/n'
         end
       end
 
@@ -68,9 +66,7 @@ namespace :single_use do
       report_ids.each do |report_id|
         report = ReportBuilder::Report.where(id: report_id)
 
-        puts '/n/n'
-        puts "republishing report: #{report_id}"
-        puts '/n/n'
+        puts "\nrepublishing report: #{report_id}\n\n"
 
         if execute
           republish_report(report)
