@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "جهاز لوحي",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "أنواع الأجهزة",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "نوع الجهاز",
+  "app.containers.Admin.earlyAccessLabel": "الوصول المبكر",
+  "app.containers.Admin.earlyAccessLabelExplanation": "هذه ميزة تم إصدارها حديثًا ومتوفرة في مرحلة الوصول المبكر.",
   "app.containers.Admin.emails.addCampaign": "إنشاء البريد الإلكتروني",
   "app.containers.Admin.emails.addCampaignTitle": "أنشئ بريدًا إلكترونيًا جديدًا",
   "app.containers.Admin.emails.allParticipantsInProject": "جميع المشاركين في المشروع",

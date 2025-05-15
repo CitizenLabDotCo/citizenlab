@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "Tabletti",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "Laitetyypit",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "Laitetyyppi",
+  "app.containers.Admin.earlyAccessLabel": "Ennakkokäyttöoikeus",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Tämä on uusi ominaisuus, joka on saatavilla Early Accessissa.",
   "app.containers.Admin.emails.addCampaign": "Luo sähköposti",
   "app.containers.Admin.emails.addCampaignTitle": "Luo uusi sähköposti",
   "app.containers.Admin.emails.allParticipantsInProject": "Kaikki projektiin osallistujat",

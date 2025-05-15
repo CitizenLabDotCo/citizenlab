@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "Tablet",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "Cihaz Türleri",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "Cihaz Tipi",
+  "app.containers.Admin.earlyAccessLabel": "Erken Erişim",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Bu, Erken Erişim'de bulunan yeni yayınlanmış bir özelliktir.",
   "app.containers.Admin.emails.addCampaign": "E-posta oluşturun",
   "app.containers.Admin.emails.addCampaignTitle": "Yeni bir e-posta oluşturun",
   "app.containers.Admin.emails.allParticipantsInProject": "Projedeki tüm katılımcılar",

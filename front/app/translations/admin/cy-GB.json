@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "Tabled",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "Mathau o Ddyfeisiau",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "Math o Ddyfais",
+  "app.containers.Admin.earlyAccessLabel": "Mynediad Cynnar",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Mae hon yn nodwedd sydd newydd ei rhyddhau sydd ar gael yn Mynediad Cynnar.",
   "app.containers.Admin.emails.addCampaign": "Creu e-bost",
   "app.containers.Admin.emails.addCampaignTitle": "Creu e-bost newydd",
   "app.containers.Admin.emails.allParticipantsInProject": "Pawb sy'n cymryd rhan yn y prosiect",
