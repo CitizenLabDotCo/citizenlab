@@ -179,6 +179,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "crwdns4482367:0crwdne4482367:0",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "crwdns4482369:0crwdne4482369:0",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "crwdns4482371:0crwdne4482371:0",
+  "app.components.FormSync.downloadExcelTemplate": "crwdns4582159:0crwdne4582159:0",
   "app.components.GoBackButton.group.edit.goBack": "crwdns4482373:0crwdne4482373:0",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "crwdns4482375:0crwdne4482375:0",
   "app.components.HookForm.Feedback.errorTitle": "crwdns4482377:0crwdne4482377:0",
