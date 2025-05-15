@@ -92,7 +92,7 @@ class Event < ApplicationRecord
   end
 
   def sanitize_simple_multiloc(multiloc)
-    return {} unless multiloc&.any?
+    return unless multiloc&.any?
 
     SanitizationService.new.sanitize_multiloc(multiloc, [])
   end
@@ -104,6 +104,8 @@ class Event < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
