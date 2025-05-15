@@ -630,6 +630,7 @@ resource 'Ideas' do
 
       let(:idea_attrs) { attributes_for(:idea) }
       let(:title_multiloc) { idea_attrs[:title_multiloc] }
+      let(:body_multiloc) { idea_attrs[:body_multiloc] }
       let(:publication_status) { 'published' }
 
       context 'when visitor' do
@@ -657,8 +658,18 @@ resource 'Ideas' do
 
         let(:phase_ids) { [phase.id] }
 
-        example_request 'Create a common-ground input' do
+        example 'Create a common-ground input' do
+          expect { do_request }
+            .to change(Idea, :count).by(1)
+            .and not_change(Reaction, :count)
+
           assert_status 201
+
+          expect(response_data[:attributes].with_indifferent_access).to include(
+            title_multiloc: title_multiloc,
+            body_multiloc: {},
+            publication_status: 'published'
+          )
         end
       end
     end

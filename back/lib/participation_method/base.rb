@@ -210,6 +210,22 @@ module ParticipationMethod
       false
     end
 
+    # Whether to add a reaction to inputs when they are submitted.
+    # See +Idea::SUBMISSION_STATUSES+ for what it means for an input to be considered
+    # submitted.
+    #
+    # One issue with this is that reactions aren’t scoped to a specific phase, and an
+    # input can be associated with multiple phases. In practice, though, ideas are
+    # typically associated with only one phase before submission, even if this isn’t
+    # enforced.
+    #
+    # Currently, a reaction will be added only if at least one of the input’s phases has
+    # +add_autoreaction_to_inputs?+ set to true — which, in principle, should be just one
+    # phase.
+    def add_autoreaction_to_inputs?
+      false
+    end
+
     private
 
     attr_reader :phase
