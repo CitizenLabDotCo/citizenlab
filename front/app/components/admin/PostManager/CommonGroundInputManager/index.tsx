@@ -34,6 +34,7 @@ import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
+import ImportInputsModal from './ImportInputsModal';
 import messages from './messages';
 
 interface Props {
@@ -54,6 +55,7 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
   const [previewPostId, setPreviewPostId] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
   const [selection, setSelection] = useState<Set<string>>(new Set());
+  const [showPastInputsModal, setShowPastInputsModal] = useState(false);
 
   const resetSelection = () => setSelection(new Set());
   const openPreviewEdit = () => {
@@ -112,10 +114,17 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
           <Button buttonStyle="secondary-outlined" width="auto">
             <FormattedMessage {...messages.createInput} />
           </Button>
-          <Button buttonStyle="admin-dark">
+          <Button
+            buttonStyle="admin-dark"
+            onClick={() => setShowPastInputsModal(true)}
+          >
             <FormattedMessage {...messages.startFromPastInputs} />
           </Button>
         </Box>
+        <ImportInputsModal
+          showPastInputsModal={showPastInputsModal}
+          setShowPastInputsModal={setShowPastInputsModal}
+        />
       </NoPostPage>
     );
   }
