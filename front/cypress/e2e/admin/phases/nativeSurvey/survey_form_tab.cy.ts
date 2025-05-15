@@ -21,11 +21,10 @@ describe('Survey Form Tab Navigation', () => {
 
   it('should navigate to survey form tab and verify content loads', () => {
     // Verify the tab panel loaded by checking section title
-    cy.contains('Survey form').should('be.visible');
+    cy.get('[data-cy="e2e-survey-form-title"]').should('be.visible');
 
     // Check that the edit button is visible
     cy.get('[data-cy="e2e-edit-survey-form"]').should('be.visible');
-    cy.contains('Edit survey form').should('be.visible');
   });
 
   it('should navigate to survey form builder page when clicking the edit button', () => {
