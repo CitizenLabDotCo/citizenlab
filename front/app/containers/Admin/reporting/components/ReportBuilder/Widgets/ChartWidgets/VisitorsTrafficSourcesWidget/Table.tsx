@@ -43,7 +43,7 @@ const TableView = ({ tableData }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          {tableData.map((row, i) => (
+          {tableData.slice(0, 5).map((row, i) => (
             <Tr key={i}>
               <Td background={colors.grey50}>
                 ({row.referrer_type}) {row.referrer}
