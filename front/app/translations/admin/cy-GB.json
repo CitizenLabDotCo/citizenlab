@@ -2758,6 +2758,7 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Testun baner",
   "app.containers.ContentBuilder.homepage.button": "Botwm",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Gosodiad",
+  "app.containers.ContentBuilder.homepage.customizationNotAvailable2": "Nid yw addasu gosodiadau heblaw am y ddelwedd a'r testun ar faner yr hafan wedi'i gynnwys yn eich trwydded gyfredol. Cysylltwch â'ch Rheolwr GovSuccess i ddysgu mwy amdano.",
   "app.containers.ContentBuilder.homepage.customized_button": "Custom",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Testun botwm",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Cyswllt botwm",
