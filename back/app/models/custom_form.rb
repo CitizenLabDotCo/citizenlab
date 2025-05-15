@@ -57,6 +57,7 @@ class CustomForm < ApplicationRecord
   end
 
   private
+
   def sanitize_print_start_multiloc
     return unless print_start_multiloc
 

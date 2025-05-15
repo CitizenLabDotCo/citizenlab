@@ -26,4 +26,17 @@ class EventImage < ApplicationRecord
 
   validates :event, presence: true
   validates :ordering, numericality: { only_integer: true }, allow_nil: true
+
+  before_validation :sanitize_alt_text_multiloc
+
+  private
+
+  def sanitize_alt_text_multiloc
+    return unless alt_text_multiloc&.any?
+
+    self.alt_text_multiloc = SanitizationService.new.sanitize_multiloc(
+      alt_text_multiloc,
+      []
+    )
+  end
 end
