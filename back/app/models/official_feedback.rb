@@ -48,7 +48,6 @@ class OfficialFeedback < ApplicationRecord
     self.body_multiloc = service.sanitize_multiloc body_multiloc, %i[mention]
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc
     self.body_multiloc = service.linkify_multiloc body_multiloc
-    puts "Sanitized body_multiloc: #{body_multiloc}"
   end
 
   def sanitize_author_multiloc

@@ -14,6 +14,7 @@ RSpec.describe OfficialFeedback do
   it { is_expected.to have_many(:notifications).dependent(:nullify) }
   it { is_expected.to validate_presence_of(:idea) }
   it { is_expected.to validate_presence_of(:body_multiloc) }
+  it { is_expected.to validate_presence_of(:author_multiloc) }
 
   describe 'body_multiloc' do
     it '#sanitize_body_multiloc sanitizes script tags in the body' do
