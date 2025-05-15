@@ -1,12 +1,13 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { debounce } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+
+import useDebouncedValue from 'hooks/useDebouncedValue';
 
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
@@ -22,8 +23,8 @@ const AdminPublicationSearchInput = ({
   adminPublicationIds,
   onChange,
 }: Props) => {
-  const [visibleSearchTerm, setVisibleSearchTerm] = useState('');
   const [search, setSearch] = useState('');
+  const debouncedSearch = useDebouncedValue(search, 200);
   const theme = useTheme();
 
   const {
@@ -32,20 +33,13 @@ const AdminPublicationSearchInput = ({
     hasNextPage,
     isFetchingNextPage,
   } = useAdminPublications({
-    search,
+    search: debouncedSearch,
     publicationStatusFilter: ['published', 'archived'],
     pageSize: 6,
   });
 
-  const inputChangeDebounced = useMemo(() => {
-    return debounce((searchTerm: string) => {
-      setSearch(searchTerm);
-    }, 200);
-  }, []);
-
   const handleInputChange = (searchTerm: string) => {
-    setVisibleSearchTerm(searchTerm);
-    inputChangeDebounced(searchTerm);
+    setSearch(searchTerm);
   };
 
   const options = getOptions(
@@ -62,7 +56,7 @@ const AdminPublicationSearchInput = ({
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={true}
         value={null}
-        inputValue={visibleSearchTerm}
+        inputValue={search}
         placeholder={''}
         options={options}
         getOptionValue={getOptionId}
