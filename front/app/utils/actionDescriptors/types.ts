@@ -43,6 +43,10 @@ export type ProjectReactingDisabledReason =
 
 export type ProjectSurveyDisabledReason = 'not_survey' | ProjectDisabledReason;
 
+export type ProjectCommonGroundDisabledReason =
+  | 'not_common_ground'
+  | ProjectDisabledReason;
+
 export type ProjectPollDisabledReason =
   | 'not_poll'
   | 'already_responded'
@@ -103,7 +107,8 @@ export type ActionDescriptorAction =
   | 'taking_survey'
   | 'taking_poll'
   | 'attending_event'
-  | 'volunteering';
+  | 'volunteering'
+  | 'react_on_inputs';
 
 // All disabled reasons
 export type DisabledReason =
@@ -118,4 +123,5 @@ export type DisabledReason =
   | ProjectVolunteeringDisabledReason
   | IdeaReactingDisabledReason
   | IdeaCommentingDisabledReason
-  | IdeaVotingDisabledReason;
+  | IdeaVotingDisabledReason
+  | ProjectCommonGroundDisabledReason;
