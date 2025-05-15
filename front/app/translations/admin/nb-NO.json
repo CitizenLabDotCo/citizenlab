@@ -817,6 +817,8 @@
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.tablet": "Nettbrett",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.title": "Enhetstyper",
   "app.containers.Admin.dashboard.visitors.DeviceTypesCard.type": "Enhetstype",
+  "app.containers.Admin.earlyAccessLabel": "Tidlig tilgang",
+  "app.containers.Admin.earlyAccessLabelExplanation": "Dette er en ny funksjon som er tilgjengelig i Early Access.",
   "app.containers.Admin.emails.addCampaign": "Opprett e-post",
   "app.containers.Admin.emails.addCampaignTitle": "Opprett en ny e-post",
   "app.containers.Admin.emails.allParticipantsInProject": "Alle deltakere i prosjektet",
