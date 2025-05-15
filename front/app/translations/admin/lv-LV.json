@@ -2758,6 +2758,7 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Bannera teksts",
   "app.containers.ContentBuilder.homepage.button": "Poga",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Izkārtojums",
+  "app.containers.ContentBuilder.homepage.customizationNotAvailable2": "Pašreizējā licencē nav iekļauta citu iestatījumu pielāgošana, izņemot sākuma lapas banera attēlu un tekstu. Sazinieties ar savu GovSuccess menedžeri, lai uzzinātu vairāk par to.",
   "app.containers.ContentBuilder.homepage.customized_button": "Pielāgots",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Pogas teksts",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Pogas saite",
