@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   title: {
-    id: 'app.components.admin.PostManager.title',
+    id: 'app.components.admin.commonGroundInputManager.title',
     defaultMessage: 'Title',
   },
   noInputs: {
