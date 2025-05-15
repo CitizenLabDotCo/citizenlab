@@ -264,17 +264,21 @@ class Project < ApplicationRecord
   end
 
   def sanitize_description_preview_multiloc
-    self.description_preview_multiloc = sanitize_simple_multiloc(description_preview_multiloc)
+    return unless description_preview_multiloc&.any?
+
+    self.description_preview_multiloc = SanitizationService.new.sanitize_multiloc(
+      description_preview_multiloc,
+      []
+    )
   end
 
   def sanitize_header_bg_alt_text_multiloc
-    self.header_bg_alt_text_multiloc = sanitize_simple_multiloc(header_bg_alt_text_multiloc)
-  end
+    return unless header_bg_alt_text_multiloc&.any?
 
-  def sanitize_simple_multiloc(multiloc)
-    return unless multiloc&.any?
-
-    SanitizationService.new.sanitize_multiloc(multiloc, [])
+    self.header_bg_alt_text_multiloc = SanitizationService.new.sanitize_multiloc(
+      header_bg_alt_text_multiloc,
+      []
+    )
   end
 
   def set_visible_to
