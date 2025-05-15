@@ -504,7 +504,9 @@ const ReactionButton = ({
             </Button>
           )}
           {disabledReason && (
-            <ScreenReaderOnly id={describedById}>
+            <ScreenReaderOnly
+              id={disabledReasonMessage ? undefined : describedById}
+            >
               {`. `}
               {disabledMessage}
             </ScreenReaderOnly>

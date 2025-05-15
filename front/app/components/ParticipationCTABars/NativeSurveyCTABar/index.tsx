@@ -48,8 +48,6 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
         hasUserParticipated ? null : (
           <Box w="100%">
             <IdeaButton
-              id="project-survey-button-bar"
-              data-testid="e2e-project-survey-button-bar"
               projectId={project.id}
               fontWeight="500"
               bgColor={theme.colors.white}
