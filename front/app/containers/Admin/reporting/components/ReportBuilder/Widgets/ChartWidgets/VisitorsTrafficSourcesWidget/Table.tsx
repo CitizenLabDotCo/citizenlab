@@ -9,7 +9,6 @@ import {
   Th,
   Tbody,
   Td,
-  Text,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
@@ -17,10 +16,10 @@ import messages from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/mes
 import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
-  data: VisitorsTrafficSourcesResponse['data']['attributes']['top_50_referrers'];
+  tableData: VisitorsTrafficSourcesResponse['data']['attributes']['top_50_referrers'];
 }
 
-const TableView = ({ data }: Props) => {
+const TableView = ({ tableData }: Props) => {
   return (
     <Box px="20px">
       <Table
@@ -44,7 +43,7 @@ const TableView = ({ data }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          {data.map((row, i) => (
+          {tableData.map((row, i) => (
             <Tr key={i}>
               <Td background={colors.grey50}>
                 ({row.referrer_type}) {row.referrer}

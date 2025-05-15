@@ -10,6 +10,7 @@ import NoData from '../../_shared/NoData';
 import messages from '../messages';
 
 import Chart from './Chart';
+import Table from './Table';
 import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 
 type Props = ProjectId &
@@ -36,7 +37,11 @@ const VisitorsTrafficSourcesCard = ({
 
   return (
     <Box width="100%" height="220px" mt="20px" pb="10px">
-      {view === 'chart' ? <Chart pieData={pieData} layout={layout} /> : <></>}
+      {view === 'chart' ? (
+        <Chart pieData={pieData} layout={layout} />
+      ) : (
+        <Table tableData={tableData} />
+      )}
     </Box>
   );
 };
