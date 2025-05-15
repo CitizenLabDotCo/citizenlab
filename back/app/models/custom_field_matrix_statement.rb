@@ -37,12 +37,14 @@ class CustomFieldMatrixStatement < ApplicationRecord
   private
 
   def generate_key
+    return unless title_multiloc&.any?
+
     title = title_multiloc.values.first
     self.key ||= title && CustomFieldService.new.generate_key(title)
   end
 
   def sanitize_title_multiloc
-    return {} unless title_multiloc&.any?
+    return unless title_multiloc&.any?
 
     self.title_multiloc = SanitizationService.new.sanitize_multiloc(
       title_multiloc,

@@ -10,6 +10,15 @@ RSpec.describe CustomFieldMatrixStatement do
   end
 
   it { is_expected.to belong_to(:custom_field) }
+  it { is_expected.to validate_presence_of(:title_multiloc) }
+
+  it do
+    # Create a matrix statement without a title so generate_key won't run
+    subject = build(:custom_field_matrix_statement, title_multiloc: {})
+    expect(subject).to validate_presence_of(:key)
+  end
+
+  it { is_expected.to validate_uniqueness_of(:key).scoped_to(:custom_field_id) }
 
   describe '#sanitize_title_multiloc' do
     it 'removes all HTML tags from title_multiloc' do

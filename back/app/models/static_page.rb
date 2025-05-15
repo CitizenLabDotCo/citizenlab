@@ -194,7 +194,7 @@ class StaticPage < ApplicationRecord
   end
 
   def sanitize_title_multiloc
-    return unless title_multiloc && title_multiloc.any?
+    return unless title_multiloc&.any?
 
     self.title_multiloc = SanitizationService.new.sanitize_multiloc(
       title_multiloc,
@@ -203,7 +203,7 @@ class StaticPage < ApplicationRecord
   end
 
   def sanitize_banner_cta_button_multiloc
-    return unless banner_cta_button_multiloc && banner_cta_button_multiloc.any?
+    return unless banner_cta_button_multiloc&.any?
 
     self.banner_cta_button_multiloc = SanitizationService.new.sanitize_multiloc(
       banner_cta_button_multiloc,
@@ -212,7 +212,7 @@ class StaticPage < ApplicationRecord
   end
 
   def sanitize_banner_subheader_multiloc
-    return unless banner_subheader_multiloc && banner_subheader_multiloc.any?
+    return unless banner_subheader_multiloc&.any?
 
     self.banner_subheader_multiloc = SanitizationService.new.sanitize_multiloc(
       banner_subheader_multiloc,
