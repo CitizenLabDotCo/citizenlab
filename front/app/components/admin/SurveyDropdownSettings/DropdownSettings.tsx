@@ -9,9 +9,6 @@ import {
   Text,
   DropdownListItem,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
-
-import useInputSchema from 'hooks/useInputSchema';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -19,7 +16,6 @@ import messages from './messages';
 
 type Props = {
   haveSubmissionsComeIn: boolean;
-  setShowCopySurveyModal?: (show: boolean) => void;
   handleDownloadResults: () => void;
   isDropdownOpened: boolean;
   setShowDeleteModal: (show: boolean) => void;
@@ -28,19 +24,12 @@ type Props = {
 
 const DropdownSettings = ({
   haveSubmissionsComeIn,
-  setShowCopySurveyModal,
   handleDownloadResults,
-  setDropdownOpened,
   isDropdownOpened,
+  setDropdownOpened,
   setShowDeleteModal,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
-
-  const { uiSchema } = useInputSchema({ projectId, phaseId });
 
   // Functions to handle states
   const openDeleteModal = () => {
@@ -75,32 +64,6 @@ const DropdownSettings = ({
         right="70px"
         content={
           <>
-            {uiSchema && (
-              <>
-                <DropdownListItem
-                  onClick={() => {
-                    setShowCopySurveyModal?.(true);
-                  }}
-                  disabled={haveSubmissionsComeIn}
-                >
-                  <Icon
-                    name="copy"
-                    fill={
-                      haveSubmissionsComeIn
-                        ? colors.grey400
-                        : colors.coolGrey600
-                    }
-                    mr="4px"
-                  />
-                  <Text
-                    my="0px"
-                    color={haveSubmissionsComeIn ? 'grey400' : 'black'}
-                  >
-                    {formatMessage(messages.duplicateAnotherSurvey)}
-                  </Text>
-                </DropdownListItem>
-              </>
-            )}
             <DropdownListItem
               onClick={handleDownloadResults}
               data-cy="e2e-download-survey-results"
