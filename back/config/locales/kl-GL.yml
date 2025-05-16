@@ -1,7 +1,43 @@
 kl:
+  locales:
+    en: English
+    ar-MA: Arabic (Morocco)
+    ar-SA: Arabic (Saudi Arabia)
+    ca-ES: Catalan
+    cy-GB: Welsh
+    da-DK: Danish
+    de-DE: German
+    el-GR: Greek
+    en-CA: English (Canada)
+    en-GB: English (UK)
+    en-IE: English (Ireland)
+    es-CL: Spanish (Chile)
+    es-ES: Spanish (Spain)
+    fi-FI: Finnish
+    fr-BE: French (Belgium)
+    fr-FR: French
+    hr-HR: Croatian
+    hu-HU: Hungarian
+    it-IT: Italian
+    kl-GL: Greenlandic
+    lb-LU: Luxembourgish
+    lv-LV: Latvian
+    mi: Maori
+    nb-NO: Norwegian (Bokmål)
+    nl-BE: Dutch (Belgium)
+    nl-NL: Dutch
+    pl-PL: Polish
+    pt-BR: Portuguese (Brazil)
+    ro-RO: Romanian
+    sr-Latn: Serbian (Latin)
+    sr-SP: Serbian (Cyrillic)
+    sv-SE: Swedish
+    tr-TR: Turkish
   symbols:
     outside: allami
   idea_statuses:
+    prescreening: screening
+    prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
     proposed: siunnersuutigineqareerpoq
     proposed_description: Isumassarsiaq una illoqarfimmut siunnersuutaareerpoq
     viewed: takuneqareerpoq
@@ -14,6 +50,14 @@ kl:
     implemented_description: Isumassarsiaq una illoqarfimmit atuutilersinneqareerpoq
     rejected: itigartinneqarpoq
     rejected_description: Isumassarsiaq una itigartinneqarpoq
+    expired: expired
+    expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
+    threshold_reached: threshold reached
+    threshold_reached_description: This input has met the required support threshold and will now be considered for further action.
+    answered: answered
+    answered_description: The project manager has published an official feedback on this input.
+    ineligible: ineligible
+    ineligible_description: This input has been reviewed and, unfortunately, has been rejected. An official update has been provided with more details.
   topics:
     nature: Pinngortitaq aamma uumassusillit assigiinngissitaarnerat
     nature_description: Pinngortitaq aamma uumassusillit assigiinngissitaarnerat
@@ -47,13 +91,16 @@ kl:
     services_description: Pisortat kiffartuussinerat
     other: Allat
     other_description: Allat
+    quality_of_life: Quality of life
+    service_delivery: Service delivery
+    governance_and_trust: Governance and trust
   static_pages:
     terms_and_conditions_title: Atugassarititaasut aamma Piumasaqaatit
     terms_and_conditions_body: >
-      <p> Denne engagementsplatform online sigter mod at give så mange mennesker som muligt muligheden for at reflektere over fremtiden for den by eller institution, der sammen med Go Vocal, har oprettet denne platform. Disse bidrag er underlagt en række regler for at holde debatten åben og konstruktiv. Nedenfor kan du finde de generelle betingelser for vores platform, da vi er overbeviste om, at klare regler giver den bedste garanti for et konstruktivt online fællesskab.</p> <p> Da Go Vocal værdsætter feedback fra platformens brugerne, byder vi dine idéer mere end velkomne, så vi kan forbedre platformen yderligere. Du kan videresende dine forslag til support@govocal.com.</p> <h2>Hvem kan registrere sig på denne platform?</h2> <p>Alle, der ønsker, kan følge debatten online. Alle er i stand til at læse de indsendte idéer og reaktioner. Hvis du selv vil deltage i debatten (dele dine idéer, svare på andres idéer eller støtte eksisterende bidrag), skal du oprette en konto. Kun registrerede deltagere kan indsende et aktivt bidrag til denne idéplatforme online. </p> <p> Du kan registrere dig via din e-mailadresse eller oprette en konto ved blot at linke den til din Facebook- eller Google-profil.</p> <p> Oprettelsen af en brugerkonto giver ikke denne bruger ejerskab over kontoen. Go Vocal forbeholder sig retten til at nægte, suspendere eller slette konti, hvis brugeren f.eks. ikke overholder gældende regler eller tidligere har fået en brugerkonto nægtet eller slettet./p> <p> Hver konto skal overholde følgende regler: </p> <ul> <li> <strong> Hver konto er strengt personlig </strong> <p> Hver konto skal være unik og knyttet til en fysisk person. Hver bruger har ret til at oprette én konto. Hvis det bestemmes, at en person har flere konti, forbeholder Go Vocal sig retten til at slette alle disse konti. Enhver bruger skal være mindst 12 år gammel. </p> </li> <li> <strong> En konto kan ikke overføres til en anden person </strong> <p> Da hver konto er strengt knyttet til én bestemt person, kan denne konto ikke overføres til en anden person uden tilladelse fra Go Vocal. Dette forbud om overførsel skal forstås i bredeste forstand. Go Vocal forbeholder sig retten til at nægte eller slette denne konto i tilfælde af overtrædelser. </p> </li> <li> <strong> En konto kan ikke bruges til kommercielle formål. </strong> <p> Go Vocal-platformen er beregnet til at øge deltagelse, engagement og inddragelse. En konto kan derfor kun bruges i denne forstand. Al brug af konti til det ene formål at udnytte den til kommercielle fordele er forbudt. </p> </li> <li> <strong> Kontooplysningerne skal altid forblive fortrolige </strong> <p> Det er ikke tilladt for en anden person end den faktiske person, der oprettede kontoen, at anvende denne konto. Den person, der opretter kontoen, skal sikre, at han/hun opbevarer adgangskoden og loginoplysningerne. Vi anbefaler dig at bruge en "stærk" adgangskode (en adgangskode med en kombination af små og store bogstaver samt tal). Go Vocal kan under ingen omstændigheder holdes ansvarlig for tab eller skade på kontoen, hvis ovenstående betingelser ikke er opfyldt af brugeren. Go Vocal kan heller ikke holdes ansvarlig for tyveri af din konto ved f.eks. phishing. Go Vocal vil aldrig bede sine brugere om personlige data såsom loginoplysninger eller adgangskode via e-mail. Hvis der anmodes om personlige oplysninger, vil brugeren altid blive omdirigeret til Go Vocal-platformen. </p> </li> </ul> <h2> Begrænsninger til indhold og brug af platformen </h2> <p> For at sikre, at Go Vocal-platformen fungerer korrekt, og at du kan kommunikere og oprette forbindelse til andre, er der begrænsninger for den type indhold, der kan offentliggøres på platformen: </p> <ul> <li> <strong> Krænkende adfærd: </strong> <p> Vi tror på ytringsfriheden. For at sikre, at platformen kan bruges på en konstruktiv måde af brugerne, med respekt for forskellige meninger og uden at folk skal være bange for at udtrykke deres meninger eller overbevisning, tillader vi ikke stødende eller krækende opførsel. Chikane, trusler og brug af frygt mod andre brugere vil derfor ikke tolereres.</p> <p> Konti og relaterede konti, som nedenstående handlinger udføres med, kan midlertidigt blokeres og/eller slettes permanent. </p> <p> <ul> <li> Voldelige trusler (direkte eller indirekte): Du må ikke true eller promovere vold, herunder fremme af terrorisme. </li> <li>Chikane: Du må måske ikke tilskynde til eller være involveret i bevidst fornærmelse eller chikane af andre. Her er nogle af de faktorer, som vi tager højde for, når vi foretager en vurdering om misbrug og stødende adfærd: Hvorvidt hovedformålet med den rapporterede konto er chikanerende eller sender stødende meddelelser til andre; hvorvidt den rapporterede adfærd er ensrettet eller indeholder trusler; hvorvidt den rapporterede konto opfordrer andre til at true en anden konto; og hvorvidt den rapporterede konto sender truende meddelelser til en konto fra flere konti.</li> <li>Hadetale: Du må ikke fremme vold mod andre mennesker eller direkte angribe eller true dem på grundlag af race, etnisk baggrund, nationalitet, seksuel orientering, køn, kønsidentitet, filosofisk tilknytning, alder, handicap eller sygdom. Vi tillader heller ikke konti, hvis hovedformål er at incitere andre til at gøre skade på andre på baggrund af disse kategorier.</li> <li> Misbrug af flere konti: Det er ikke tilladt at oprette flere konti til overlappende brug for at undgå midlertidig eller permanent suspension af en individuel konto. </li> <li> Private oplysninger: Du må ikke offentliggøre eller sende andres fortrolige data og private oplysninger uden deres udtrykkelige tilladelse og samtykke. Disse data inkluderer f.eks. kreditkortnumre, adresseoplysninger, telefonnumre eller oplysninger, der udgør dele af en persons privatliv.</li> <li> Personefterligning: Du må muligvis ikke få adgang til platformen, hvis en anden bedrager, forvirrer eller truer på en måde, der rent faktisk dæk eller truer andre. </li> </ul> </p> </li> <li> <strong> Spam </strong> <p> Vi bestræber os altid på at beskytte brugerne af platformen Go Vocal mod teknisk misbrug og spam. Konti, hvor nedenstående handlinger udføres, kan blokeres midlertidigt eller slettes permanent. </p> <ul> <li> Malware / phishing / vira / orme / trojanske heste: Du må ikke sende skadeligt indhold eller links til sådant indhold med det formål at beskadige eller forstyrre andres browsere eller computere eller at krænke andres privatliv. </li> <li> Spam: Du kan ikke bruge Go Vocal-platformen til at sende spam til andre mennesker. </li> </ul> </li> </ul> <h2> Overtrædelse af gældende love </h2> <p> Brug af kontoen må på ingen måde overtræde gældende love. Dette inkluderer overtrædelser af lovgivning om privatlivets fred, intellektuel ejendomsret, straffeloven, m.m....</p> <p> Kontoen må på ingen måde bruges til at promovere ulovlige aktiviteter. </p> <h2> I tilfælde af overtrædelse af ovennævnte regler </h2> <p> Hvis Go Vocal registrerer overtrædelser af de førnævnte regler, forbeholder den sig retten til at slette de relevante meddelelser og endda suspendere eller permanent slette brugerprofiler. </p> <p> Go Vocal kan ikke holdes ansvarlig på nogen måde for meddelelser, der overtræder ovenstående regler, og som er sendt af brugere eller tredjepart. Webadministratoren vil nøje overvåge, at disse regler ikke overtrædes, men strengt overholdes. Hvis en bruger bemærker en overtrædelse, kan man altid rapportere dette til følgende e-mailadresse: support@govocal.com.</p> <p>Det er muligt, at filer kan downloades via platformen, uanset om de skyldes en bruger, eller at brugerne bevidst placerer skadelige hyperlinks. Enhver brugers download eller klik på et hyperlink, der er placeret af en bruger, gøres på egen risiko og eget ansvar. Enhver skade, der opstår, er fuldstændigt og udelukkende denne brugers ansvar. </p> <h2> Intellektuelle ejendomsrettigheder </h2> <p> Go Vocal respekterer andres immaterielle rettigheder og forventer, at brugere af denne platform også respekterer disse rettigheder. Go Vocal forbeholder sig retten til at fjerne indhold, der krænker intellektuel ejendomsret. En brugers gentagne overtrædelser af intellektuel ejendomsret af enhver art vil give anledning til, at Go Vocals suspenderer eller sletter kontoen. </p> <p> Krænkelser af intellektuel ejendomsret kan rapporteres via følgende e-mailadresse: support@govocal.com</p> <h2> Ejendomsrettigheder Go Vocal </h2> <p> Go Vocal’s platform er beskyttet af intellektuelle ejendomsrettigheder, der vedrører indhold, kildekode, database m.m. Brug af denne platform betyder på ingen måde en overførsel af disse intellektuelle rettigheder til brugere af platformen. Enhver bruger skal være opmærksom på disse rettigheder og skal handle i overensstemmelse hermed. </p> <p> Det er således forbudt at gengive, distribuere, ændre eller overføre platformen og dens indhold uden tilladelse. </p>
+      <p> Denne engagementsplatform online sigter mod at give så mange mennesker som muligt muligheden for at reflektere over fremtiden for den by eller institution, der sammen med CitizenLab, har oprettet denne platform. Disse bidrag er underlagt en række regler for at holde debatten åben og konstruktiv. Nedenfor kan du finde de generelle betingelser for vores platform, da vi er overbeviste om, at klare regler giver den bedste garanti for et konstruktivt online fællesskab.</p> <p> Da CitizenLab værdsætter feedback fra platformens brugerne, byder vi dine idéer mere end velkomne, så vi kan forbedre platformen yderligere. Du kan videresende dine forslag til support@citizenlab.co.</p> <h2>Hvem kan registrere sig på denne platform?</h2> <p>Alle, der ønsker, kan følge debatten online. Alle er i stand til at læse de indsendte idéer og reaktioner. Hvis du selv vil deltage i debatten (dele dine idéer, svare på andres idéer eller støtte eksisterende bidrag), skal du oprette en konto. Kun registrerede deltagere kan indsende et aktivt bidrag til denne idéplatforme online. </p> <p> Du kan registrere dig via din e-mailadresse eller oprette en konto ved blot at linke den til din Facebook- eller Google-profil.</p> <p> Oprettelsen af en brugerkonto giver ikke denne bruger ejerskab over kontoen. CitizenLab forbeholder sig retten til at nægte, suspendere eller slette konti, hvis brugeren f.eks. ikke overholder gældende regler eller tidligere har fået en brugerkonto nægtet eller slettet./p> <p> Hver konto skal overholde følgende regler: </p> <ul> <li> <strong> Hver konto er strengt personlig </strong> <p> Hver konto skal være unik og knyttet til en fysisk person. Hver bruger har ret til at oprette én konto. Hvis det bestemmes, at en person har flere konti, forbeholder CitizenLab sig retten til at slette alle disse konti. Enhver bruger skal være mindst 12 år gammel. </p> </li> <li> <strong> En konto kan ikke overføres til en anden person </strong> <p> Da hver konto er strengt knyttet til én bestemt person, kan denne konto ikke overføres til en anden person uden tilladelse fra CitizenLab. Dette forbud om overførsel skal forstås i bredeste forstand. CitizenLab forbeholder sig retten til at nægte eller slette denne konto i tilfælde af overtrædelser. </p> </li> <li> <strong> En konto kan ikke bruges til kommercielle formål. </strong> <p> CitizenLab-platformen er beregnet til at øge deltagelse, engagement og inddragelse. En konto kan derfor kun bruges i denne forstand. Al brug af konti til det ene formål at udnytte den til kommercielle fordele er forbudt. </p> </li> <li> <strong> Kontooplysningerne skal altid forblive fortrolige </strong> <p> Det er ikke tilladt for en anden person end den faktiske person, der oprettede kontoen, at anvende denne konto. Den person, der opretter kontoen, skal sikre, at han/hun opbevarer adgangskoden og loginoplysningerne. Vi anbefaler dig at bruge en "stærk" adgangskode (en adgangskode med en kombination af små og store bogstaver samt tal). CitizenLab kan under ingen omstændigheder holdes ansvarlig for tab eller skade på kontoen, hvis ovenstående betingelser ikke er opfyldt af brugeren. CitizenLab kan heller ikke holdes ansvarlig for tyveri af din konto ved f.eks. phishing. CitizenLab vil aldrig bede sine brugere om personlige data såsom loginoplysninger eller adgangskode via e-mail. Hvis der anmodes om personlige oplysninger, vil brugeren altid blive omdirigeret til CitizenLab-platformen. </p> </li> </ul> <h2> Begrænsninger til indhold og brug af platformen </h2> <p> For at sikre, at CitizenLab-platformen fungerer korrekt, og at du kan kommunikere og oprette forbindelse til andre, er der begrænsninger for den type indhold, der kan offentliggøres på platformen: </p> <ul> <li> <strong> Krænkende adfærd: </strong> <p> Vi tror på ytringsfriheden. For at sikre, at platformen kan bruges på en konstruktiv måde af brugerne, med respekt for forskellige meninger og uden at folk skal være bange for at udtrykke deres meninger eller overbevisning, tillader vi ikke stødende eller krækende opførsel. Chikane, trusler og brug af frygt mod andre brugere vil derfor ikke tolereres.</p> <p> Konti og relaterede konti, som nedenstående handlinger udføres med, kan midlertidigt blokeres og/eller slettes permanent. </p> <p> <ul> <li> Voldelige trusler (direkte eller indirekte): Du må ikke true eller promovere vold, herunder fremme af terrorisme. </li> <li>Chikane: Du må måske ikke tilskynde til eller være involveret i bevidst fornærmelse eller chikane af andre. Her er nogle af de faktorer, som vi tager højde for, når vi foretager en vurdering om misbrug og stødende adfærd: Hvorvidt hovedformålet med den rapporterede konto er chikanerende eller sender stødende meddelelser til andre; hvorvidt den rapporterede adfærd er ensrettet eller indeholder trusler; hvorvidt den rapporterede konto opfordrer andre til at true en anden konto; og hvorvidt den rapporterede konto sender truende meddelelser til en konto fra flere konti.</li> <li>Hadetale: Du må ikke fremme vold mod andre mennesker eller direkte angribe eller true dem på grundlag af race, etnisk baggrund, nationalitet, seksuel orientering, køn, kønsidentitet, filosofisk tilknytning, alder, handicap eller sygdom. Vi tillader heller ikke konti, hvis hovedformål er at incitere andre til at gøre skade på andre på baggrund af disse kategorier.</li> <li> Misbrug af flere konti: Det er ikke tilladt at oprette flere konti til overlappende brug for at undgå midlertidig eller permanent suspension af en individuel konto. </li> <li> Private oplysninger: Du må ikke offentliggøre eller sende andres fortrolige data og private oplysninger uden deres udtrykkelige tilladelse og samtykke. Disse data inkluderer f.eks. kreditkortnumre, adresseoplysninger, telefonnumre eller oplysninger, der udgør dele af en persons privatliv.</li> <li> Personefterligning: Du må muligvis ikke få adgang til platformen, hvis en anden bedrager, forvirrer eller truer på en måde, der rent faktisk dæk eller truer andre. </li> </ul> </p> </li> <li> <strong> Spam </strong> <p> Vi bestræber os altid på at beskytte brugerne af platformen CitizenLab mod teknisk misbrug og spam. Konti, hvor nedenstående handlinger udføres, kan blokeres midlertidigt eller slettes permanent. </p> <ul> <li> Malware / phishing / vira / orme / trojanske heste: Du må ikke sende skadeligt indhold eller links til sådant indhold med det formål at beskadige eller forstyrre andres browsere eller computere eller at krænke andres privatliv. </li> <li> Spam: Du kan ikke bruge CitizenLab-platformen til at sende spam til andre mennesker. </li> </ul> </li> </ul> <h2> Overtrædelse af gældende love </h2> <p> Brug af kontoen må på ingen måde overtræde gældende love. Dette inkluderer overtrædelser af lovgivning om privatlivets fred, intellektuel ejendomsret, straffeloven, m.m....</p> <p> Kontoen må på ingen måde bruges til at promovere ulovlige aktiviteter. </p> <h2> I tilfælde af overtrædelse af ovennævnte regler </h2> <p> Hvis Citizenlab registrerer overtrædelser af de førnævnte regler, forbeholder den sig retten til at slette de relevante meddelelser og endda suspendere eller permanent slette brugerprofiler. </p> <p> CitizenLab kan ikke holdes ansvarlig på nogen måde for meddelelser, der overtræder ovenstående regler, og som er sendt af brugere eller tredjepart. Webadministratoren vil nøje overvåge, at disse regler ikke overtrædes, men strengt overholdes. Hvis en bruger bemærker en overtrædelse, kan man altid rapportere dette til følgende e-mailadresse: support@citizenlab.co.</p> <p>Det er muligt, at filer kan downloades via platformen, uanset om de skyldes en bruger, eller at brugerne bevidst placerer skadelige hyperlinks. Enhver brugers download eller klik på et hyperlink, der er placeret af en bruger, gøres på egen risiko og eget ansvar. Enhver skade, der opstår, er fuldstændigt og udelukkende denne brugers ansvar. </p> <h2> Intellektuelle ejendomsrettigheder </h2> <p> CitizenLab respekterer andres immaterielle rettigheder og forventer, at brugere af denne platform også respekterer disse rettigheder. CitizenLab forbeholder sig retten til at fjerne indhold, der krænker intellektuel ejendomsret. En brugers gentagne overtrædelser af intellektuel ejendomsret af enhver art vil give anledning til, at CitizenLabs suspenderer eller sletter kontoen. </p> <p> Krænkelser af intellektuel ejendomsret kan rapporteres via følgende e-mailadresse: support@citizenlab.co</p> <h2> Ejendomsrettigheder CitizenLab </h2> <p> CitizenLab’s platform er beskyttet af intellektuelle ejendomsrettigheder, der vedrører indhold, kildekode, database m.m. Brug af denne platform betyder på ingen måde en overførsel af disse intellektuelle rettigheder til brugere af platformen. Enhver bruger skal være opmærksom på disse rettigheder og skal handle i overensstemmelse hermed. </p> <p> Det er således forbudt at gengive, distribuere, ændre eller overføre platformen og dens indhold uden tilladelse. </p>
     privacy_policy_title: Privacy Policy
     privacy_policy_body: >
-      <p>Ansvarlig for behandlingen af dine oplysninger:</p> <p>Go Vocal NV - Pachecolaan 34 - 1000 Brussels - Belgium</p> <p>Kontakt via e-mailadresse: support@govocal.com</p> <h2>1. PRIVATLIVSPOLITIK</h2> <p>Denne 'privatlivspolitik' gælder for 'personlige data' indsamlet af Go Vocal på vegne af dataejeren via dette websted.</p> <h2>2. HVAD ER PERSONLIGE OPLYSNINGER?</h2> <p>I denne privatlivspolitik henviser personlige oplysninger til data, der gør det muligt at identificere dig. En identificerbar person er en person, der kan identificeres, enten direkte eller indirekte, især ved at henvise til et identifikationsnummer eller til en eller flere faktorer, der er knyttet til fysisk, fysiologisk, mental, økonomisk, kulturel eller social identitet. Et typisk eksempel på personlige oplysninger er dit navn og din e-mailadresse.</p> <h2>3. HVAD PERSONOPLYSNINGER INDSAMLER VI?</h2> <p>Vi indsamler muligvis dine personlige oplysninger fra følgende tre kilder:</p> <h3>3.1 Personlige oplysninger, som du leverer under registreringsprocessen på platformen, hvoraf nogle er valgfri.</h3> <p>De personlige oplysninger, som vi muligvis indsamler fra dig, er:</p> <ul> <li>For- og efternavn</li> <li>E-mailadresse</li> <li>Fødselsår</li> <li>Køn</li> <li>Bopælsområde</li> <li>Foretrukne sprog</li> </ul> <p>Denne liste kan udvides på anmodning fra dataejeren. Hvis du vælger at logge på via en bekræftelsesprocedure fra tredjepart som Google eller Facebook får vi udleveret disse data fra dem.</p> <h3>3.2 Personlige data, som du leverer, når du foretager en handling på vores platform</h3> <p>Hver handling, du foretager på platformen (afstemning, opslag af en idé, kommentarer, besvarelse af en meningsmåling, osv.) registreres og gemmes. Disse data er også knyttet til dine registreringsdata (3.1), hvilket betyder, at dataejeren kan linke din platformprofil til disse deltagelsesdata.</p> <h3>3.3 Personlige data, som vi indsamler, når du besøger vores platfor</h3> <p>Vi (og tredjeparter, der handler på vores vegne) indsamler information om brugen af vores platform for at sikre en velfungerede og sikker platform. Med henblik herpå indsamler vi tekniske oplysninger, der kan identificere dig, såsom din IP-adresse og browserdetaljer. Ved at bruge vores tjenester accepterer du, at disse data indsamles. Vi samler også brugsdata for at forbedre vores tjenester. Du kan fravælge denne samling til enhver tid.</p> <h2>4. HVORDAN BRUGER VI PERSONLIGE OPLYSNINGER?</h2> <p>Vi bruger muligvis dine personlige oplysninger til følgende formål:</p> <ul> <li>Først og fremmest at kommunikere dit input til dataejeren med relevant kontekst og udarbejde samlede rapporter om alle de oplysninger indsamlet på denne platform for at hjælpe deres beslutningstagning.</li><li>For at oprette og vedligeholde din brugerprofil på dette websted.</li> <li>For at administrere identifikation og godkendelse af brugere.</li> <li>For at give oplysninger om dit lokalområde og/eller give dig besked, når aktiviteter på platformen kan være af interessere for dig. Du kan til enhver tid fravælge denne type e-mails fra din brugerprofil.</li> </ul> <p>De personlige oplysninger gemmes og behandles kun i den periode, der kræves for formålet med behandlingen. Derefter bliver oplysningerne slettet eller anonymiseret.</p> <h2>5. HVEM DELER VI DINE PERSONLIGE OPLYSNINGER MED?</h2> <p>Vi deler dine personlige oplysninger med dataejeren, som vi indsamler disse data for. Vi vil aldrig sælge eller udleje dine personlige oplysninger til andre tjenesteudbydere, og vi vil heller ikke dele dine personlige oplysninger med tjenesteudbydere, der ikke overholder GDPR. Nogle af vores underudbydere eller -tjenester har delvis adgang til disse data, men de kan ikke bruge dem til andre formål end dem, vi har tildelt dem til at opnå. </p> <h2>6. HVOR OVERFØRER VI DINE PERSONLIGE OPLYSNINGER TIL?</h2> <p>Vi overfører kun dine personlige oplysninger til tjenesteudbydere, der er etableret uden for Det Europæiske Økonomiske Samarbejdsområde, hvis de overholder artikel 44 GDPR. </p> <h2>7. HVAD ER DINE RETTIGHEDER?</h2> <p>Du har til enhver tid ret til at se dine personlige oplysninger såvel som retten til at blive informeret om Go Vocal’s brug af dine personlige data..</p> <h3>7.1Ret til rettelse, sletning og begrænsning af behandlingen</h3> <p>Du kan frit beslutte, om du vil overlevere dine personlige oplysninger til Go Vocal eller ej. Derudover har du altid ret til at anmode Go Vocal om at rette, supplere eller slette dine personlige oplysninger. Du anerkender, at hvis du enten nægter at give eller vælger at slette personlige oplysninger, kan det betyder, at visse tjenester ikke længere kan leveres. Du kan også anmode om, at behandlingen af dine personlige oplysninger er begrænset. Hvis du vælger at fjerne din konto fra platformen, fjernes de personlige oplysninger, der blev indsamlet om dig, fra vores servere. Nogle personlige oplysninger om dig forbliver muligvis i som registrerede oplysninger (logfiler), vi opbevarer af sikkerhedsmæssige og juridiske årsager i op til 30 dage.</p> <h3>7.2 Ret til indsigelse</h3> <p>Du har ret til at gøre indsigelse mod behandlingen af dine personlige oplysninger af alvorlige og legitime grunde. Derudover har du altid ret til at gøre indsigelse mod brugen af dine personlige oplysninger til direkte markedsføringsformål, og i sådanne tilfælde behøver du ikke angive årsager.</p> <h3>7.3 Ret til dataportabilitet</h3> <p>Du har ret til at indhente de personlige oplysninger, du har givet Go Vocal i en struktureret, typisk og maskinlæsbar format. Du kan også bede om at få dine personlige oplysninger overført til andre dataansvarlig.</p> <h3>7.4 Ret til at trække samtykke tilbage</h3> <p>I det omfang behandlingen er baseret på dit forudgående samtykke, har du ret til at trække denne godkendelse tilbage.</p> <h3>7.5 Udøvelse af dine rettigheder</h3> <p>Du kan udøve dine rettigheder ved at kontakte Go Vocal med dette formål, enten via e-mail til support@govocal.com, med post til Pachecolaan 34, 1000 Brussels, Belgien eller ved at bruge formularen Kontakt os på vores websted, forudsat at du vedlægger en kopi af dit identitetskort.</p> <h3>7.6 Profilering og automatiseret beslutningstagning</h3> <p>Behandlingen af dine personlige oplysninger inkluderer ikke profilering og udsættes ikke af Go Vocal til automatisk beslutningstagning.</p> <h3>7.7 Ret til at indgive en klage</h3> <p>Du har ret til at indgive en klage til den belgiske kommission for privatliv: Drukpersstraat 35, 1000 Brussels, Belgium, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. Dette påvirker ikke fritagelse for en civil domstol.</p> <h2>8. YDERLIGERE OPLYSNINGER OM DATAINDSAMLING OG -BEHANDLING</h2> <h3>Juridiske procedure</h3> <p>Go Vocal og dataejer kan muligvis anvende brugerens personlige oplysninger til juridiske formål, ved en domstol eller under forskellige faser af retssager i tilfælde af ulovlig brug af denne applikation eller de relaterede tjenester. Brugeren er opmærksom på, at den dataansvarlige og databehandlere muligvis er forpligtet til at videregive personoplysningerne på anmodning fra kompetente regeringsinstitutioner til behandling af dataene.</p> <h3>Sikkerhedsforanstaltninger</h3> <p>Go Vocal har udviklet sikkerhedsforanstaltninger, der er tilpasset på det teknologiske og organisatoriske niveau, for at forhindre ødelæggelse, tab, forfalskning, ændring, forbudt adgang eller fejlagtig videregivelse til tredjepart af personlige oplysninger såvel som enhver anden forbudt behandling af disse oplysninger. Go Vocal kan under ingen omstændigheder holdes ansvarlig for direkte eller indirekte tab som følge af forkert eller ulovlig brug af dine personlige oplysninger af en tredjepart. Du skal til enhver tid overholde sikkerhedsinstruktionerne ved bl.a. at forhindre al forbudt adgang til dine loginoplysninger og adgangskode. Du er alene ansvarlig for brugen fra webstedet på din computer, IP-adresse og dine identifikationsoplysninger samt for fortroligheden heraf.</p> <h3>Ændringer af denne privatlivspolitik</h3> <p>Go Vocal forbeholder sig retten til når som helst at ændre denne privatlivspolitik ved at underrette brugere på denne side. Vi opfordrer dig til at tjekke denne side for mulige ændringer og opdateringer. Datoen for den sidste ændring vises nederst på siden. Hvis en bruger gør indsigelse mod ændringer i politikken, bør brugeren ikke fortsætte med at bruge denne applikation. Medmindre andet er angivet, gælder den gyldige privatlivspolitik, der var gældende på det tidspunkt, for alle personlige data, som den dataansvarlige har gemt til behandling af data om brugere.</p> <p><em>Seneste opdatering: 17/12/2019</em></p>
+      <p>Ansvarlig for behandlingen af dine oplysninger:</p> <p>CitizenLab NV - Anspachlaan 65 - 1000 Brussels - Belgium</p> <p>Kontakt via e-mailadresse: support@citizenlab.co</p> <h2>1. PRIVATLIVSPOLITIK</h2> <p>Denne 'privatlivspolitik' gælder for 'personlige data' indsamlet af CitizenLab på vegne af dataejeren via dette websted.</p> <h2>2. HVAD ER PERSONLIGE OPLYSNINGER?</h2> <p>I denne privatlivspolitik henviser personlige oplysninger til data, der gør det muligt at identificere dig. En identificerbar person er en person, der kan identificeres, enten direkte eller indirekte, især ved at henvise til et identifikationsnummer eller til en eller flere faktorer, der er knyttet til fysisk, fysiologisk, mental, økonomisk, kulturel eller social identitet. Et typisk eksempel på personlige oplysninger er dit navn og din e-mailadresse.</p> <h2>3. HVAD PERSONOPLYSNINGER INDSAMLER VI?</h2> <p>Vi indsamler muligvis dine personlige oplysninger fra følgende tre kilder:</p> <h3>3.1 Personlige oplysninger, som du leverer under registreringsprocessen på platformen, hvoraf nogle er valgfri.</h3> <p>De personlige oplysninger, som vi muligvis indsamler fra dig, er:</p> <ul> <li>For- og efternavn</li> <li>E-mailadresse</li> <li>Fødselsår</li> <li>Køn</li> <li>Bopælsområde</li> <li>Foretrukne sprog</li> </ul> <p>Denne liste kan udvides på anmodning fra dataejeren. Hvis du vælger at logge på via en bekræftelsesprocedure fra tredjepart som Google eller Facebook får vi udleveret disse data fra dem.</p> <h3>3.2 Personlige data, som du leverer, når du foretager en handling på vores platform</h3> <p>Hver handling, du foretager på platformen (afstemning, opslag af en idé, kommentarer, besvarelse af en meningsmåling, osv.) registreres og gemmes. Disse data er også knyttet til dine registreringsdata (3.1), hvilket betyder, at dataejeren kan linke din platformprofil til disse deltagelsesdata.</p> <h3>3.3 Personlige data, som vi indsamler, når du besøger vores platfor</h3> <p>Vi (og tredjeparter, der handler på vores vegne) indsamler information om brugen af vores platform for at sikre en velfungerede og sikker platform. Med henblik herpå indsamler vi tekniske oplysninger, der kan identificere dig, såsom din IP-adresse og browserdetaljer. Ved at bruge vores tjenester accepterer du, at disse data indsamles. Vi samler også brugsdata for at forbedre vores tjenester. Du kan fravælge denne samling til enhver tid.</p> <h2>4. HVORDAN BRUGER VI PERSONLIGE OPLYSNINGER?</h2> <p>Vi bruger muligvis dine personlige oplysninger til følgende formål:</p> <ul> <li>Først og fremmest at kommunikere dit input til dataejeren med relevant kontekst og udarbejde samlede rapporter om alle de oplysninger indsamlet på denne platform for at hjælpe deres beslutningstagning.</li><li>For at oprette og vedligeholde din brugerprofil på dette websted.</li> <li>For at administrere identifikation og godkendelse af brugere.</li> <li>For at give oplysninger om dit lokalområde og/eller give dig besked, når aktiviteter på platformen kan være af interessere for dig. Du kan til enhver tid fravælge denne type e-mails fra din brugerprofil.</li> </ul> <p>De personlige oplysninger gemmes og behandles kun i den periode, der kræves for formålet med behandlingen. Derefter bliver oplysningerne slettet eller anonymiseret.</p> <h2>5. HVEM DELER VI DINE PERSONLIGE OPLYSNINGER MED?</h2> <p>Vi deler dine personlige oplysninger med dataejeren, som vi indsamler disse data for. Vi vil aldrig sælge eller udleje dine personlige oplysninger til andre tjenesteudbydere, og vi vil heller ikke dele dine personlige oplysninger med tjenesteudbydere, der ikke overholder GDPR. Nogle af vores underudbydere eller -tjenester har delvis adgang til disse data, men de kan ikke bruge dem til andre formål end dem, vi har tildelt dem til at opnå. </p> <h2>6. HVOR OVERFØRER VI DINE PERSONLIGE OPLYSNINGER TIL?</h2> <p>Vi overfører kun dine personlige oplysninger til tjenesteudbydere, der er etableret uden for Det Europæiske Økonomiske Samarbejdsområde, hvis de overholder artikel 44 GDPR. </p> <h2>7. HVAD ER DINE RETTIGHEDER?</h2> <p>Du har til enhver tid ret til at se dine personlige oplysninger såvel som retten til at blive informeret om Citizenlab’s brug af dine personlige data..</p> <h3>7.1Ret til rettelse, sletning og begrænsning af behandlingen</h3> <p>Du kan frit beslutte, om du vil overlevere dine personlige oplysninger til Citizenlab eller ej. Derudover har du altid ret til at anmode Citizenlab om at rette, supplere eller slette dine personlige oplysninger. Du anerkender, at hvis du enten nægter at give eller vælger at slette personlige oplysninger, kan det betyder, at visse tjenester ikke længere kan leveres. Du kan også anmode om, at behandlingen af dine personlige oplysninger er begrænset. Hvis du vælger at fjerne din konto fra platformen, fjernes de personlige oplysninger, der blev indsamlet om dig, fra vores servere. Nogle personlige oplysninger om dig forbliver muligvis i som registrerede oplysninger (logfiler), vi opbevarer af sikkerhedsmæssige og juridiske årsager i op til 30 dage.</p> <h3>7.2 Ret til indsigelse</h3> <p>Du har ret til at gøre indsigelse mod behandlingen af dine personlige oplysninger af alvorlige og legitime grunde. Derudover har du altid ret til at gøre indsigelse mod brugen af dine personlige oplysninger til direkte markedsføringsformål, og i sådanne tilfælde behøver du ikke angive årsager.</p> <h3>7.3 Ret til dataportabilitet</h3> <p>Du har ret til at indhente de personlige oplysninger, du har givet Citizenlab i en struktureret, typisk og maskinlæsbar format. Du kan også bede om at få dine personlige oplysninger overført til andre dataansvarlig.</p> <h3>7.4 Ret til at trække samtykke tilbage</h3> <p>I det omfang behandlingen er baseret på dit forudgående samtykke, har du ret til at trække denne godkendelse tilbage.</p> <h3>7.5 Udøvelse af dine rettigheder</h3> <p>Du kan udøve dine rettigheder ved at kontakte Citizenlab med dette formål, enten via e-mail til support@citizenlab.co, med post til Anspachlaan 65, 1000 Brussels, Belgien eller ved at bruge formularen Kontakt os på vores websted, forudsat at du vedlægger en kopi af dit identitetskort.</p> <h3>7.6 Profilering og automatiseret beslutningstagning</h3> <p>Behandlingen af dine personlige oplysninger inkluderer ikke profilering og udsættes ikke af Citizenlab til automatisk beslutningstagning.</p> <h3>7.7 Ret til at indgive en klage</h3> <p>Du har ret til at indgive en klage til den belgiske kommission for privatliv: Drukpersstraat 35, 1000 Brussels, Belgium, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. Dette påvirker ikke fritagelse for en civil domstol.</p> <h2>8. YDERLIGERE OPLYSNINGER OM DATAINDSAMLING OG -BEHANDLING</h2> <h3>Juridiske procedure</h3> <p>CitizenLab og dataejer kan muligvis anvende brugerens personlige oplysninger til juridiske formål, ved en domstol eller under forskellige faser af retssager i tilfælde af ulovlig brug af denne applikation eller de relaterede tjenester. Brugeren er opmærksom på, at den dataansvarlige og databehandlere muligvis er forpligtet til at videregive personoplysningerne på anmodning fra kompetente regeringsinstitutioner til behandling af dataene.</p> <h3>Sikkerhedsforanstaltninger</h3> <p>Citizenlab har udviklet sikkerhedsforanstaltninger, der er tilpasset på det teknologiske og organisatoriske niveau, for at forhindre ødelæggelse, tab, forfalskning, ændring, forbudt adgang eller fejlagtig videregivelse til tredjepart af personlige oplysninger såvel som enhver anden forbudt behandling af disse oplysninger. Citizenlab kan under ingen omstændigheder holdes ansvarlig for direkte eller indirekte tab som følge af forkert eller ulovlig brug af dine personlige oplysninger af en tredjepart. Du skal til enhver tid overholde sikkerhedsinstruktionerne ved bl.a. at forhindre al forbudt adgang til dine loginoplysninger og adgangskode. Du er alene ansvarlig for brugen fra webstedet på din computer, IP-adresse og dine identifikationsoplysninger samt for fortroligheden heraf.</p> <h3>Ændringer af denne privatlivspolitik</h3> <p>CitizenLab forbeholder sig retten til når som helst at ændre denne privatlivspolitik ved at underrette brugere på denne side. Vi opfordrer dig til at tjekke denne side for mulige ændringer og opdateringer. Datoen for den sidste ændring vises nederst på siden. Hvis en bruger gør indsigelse mod ændringer i politikken, bør brugeren ikke fortsætte med at bruge denne applikation. Medmindre andet er angivet, gælder den gyldige privatlivspolitik, der var gældende på det tidspunkt, for alle personlige data, som den dataansvarlige har gemt til behandling af data om brugere.</p> <p><em>Seneste opdatering: 17/12/2019</em></p>
     infopage_title: Qupperneq paasissutissiivik
     infopage_body: "Oplev mere information relateret til platformen."
     faq_title: Apeqqutit akulikitsumik apeqqutigineqartartut
@@ -78,6 +125,11 @@ kl:
     open_idea_project_description_preview: Immaqa isumassarsiaqarput suli suliniutigineqaleriinngitsunik? Uunga nassiuguk, tapersersortissannik katersigit, taamaalillutillu politikkikkut oqallisitigiguk!
     open_idea_project_description: >
       <p>Here, you can start your own idea if it doesn't fit within one of the existing projects.</p><p><strong>The objective?</strong> To get your idea on the political agenda.</p><p><strong>How?</strong> By gathering support, namely at least 100 votes in 3 months. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... After you've done that, start sharing your idea on social media or through email. Invite people to join the discussion on your idea, or simply convince them to support it by voting in favour.</p><p><strong>About what?</strong> Your idea can be about a lot of things, as long as it is related to your city and its policy. It can be a problem you experience, a solution you envision or even a combination of both. It can be wild and on the long term, or very tangible and a quick win.</p><p><strong>And then? </strong>Did you reach 100 votes in 3 months? Congratulations! The city will now take your idea in consideration. If your idea is considered to be feasible and does not harm specific groups or individuals, you will get the chance to present your proposal during the council meeting. During that same meeting, the council members will give you direct feedback on what they will or won't do with your idea and why. If you don't gather 100 votes in 3 months, your proposal won't be considered.</p><p>We're curious to learn about your ideas!</p>
+  phases:
+    open_idea_phase_title: Current phase
+    native_survey_title: Survey
+    native_survey_button: Take the survey
+    community_monitor_title: Community monitor
   events:
     council_meeting_title: Siunnersuisooqatigiit ataatsimiinnerat
     council_meeting_description: >
@@ -90,8 +142,6 @@ kl:
         title: Ukioq inunngorfik
       domicile:
         title: Najugaq
-      education:
-        title: Ilinniagaq
     ideas:
       title:
         title: Atorfiup taaguutaa
@@ -104,6 +154,9 @@ kl:
       topic_ids:
         title: Pineqartut
         description:
+      consponsor_ids:
+        title: Co-sponsors
+        description: Invite co-sponsors through the field below. The invited co-sponsor(s) will receive an email.
       location:
         title: Sumi
         description:
@@ -118,14 +171,58 @@ kl:
       attachments:
         title: Filit ilanngussat
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Tell us more
+        description:
+      uploads_page:
         title: Images and attachments
         description:
-      section3:
+      details_page:
         title: Details
         description:
+      other_input_field:
+        title: Type your answer
+      ask_follow_up_field:
+        title: Tell us why
+    community_monitor:
+      questions:
+        place_to_live:
+          title: City as a place to live
+        sense_of_safety:
+          title: Overall sense of safety
+        access_to_parks:
+          title: Access to parks, green spaces, and recreational opportunities
+        affordable_housing:
+          title: Availability of affordable housing
+        employment_opportunities:
+          title: Employment and economic advancement opportunities
+        quality_of_services:
+          title: Overall quality of services provided by the city
+        overall_value:
+          title: Overall value you receive for your city taxes and fees
+        cleanliness_and_maintenance:
+          title: Overall cleanliness and maintenance of streets and public spaces
+        trust_in_government:
+          title: Trust in local government
+        responsiveness_of_officials:
+          title: Responsiveness of elected officials to community concerns
+        transparency_of_money_spent:
+          title: Transparency about how municipal tax money is spent
+      question_categories:
+        quality_of_life: Quality of life
+        service_delivery: Service delivery
+        governance_and_trust: Governance and trust
+        other: Other
+      labels:
+        label_1: Very poor
+        label_2: Poor
+        label_3: Fair
+        label_4: Good
+        label_5: Excellent
+      form_end:
+        button_text: Back to home
   custom_forms:
     categories:
       main_content:
@@ -141,6 +238,12 @@ kl:
           title: Suna ajornartorsiutaava?
         option:
           title: Suna toqqagassaraajuk?
+        proposal:
+          title: Innuttaasutut siunnersuutit sunaava?
+        initiative:
+          title: Innuttaasutut siunnersuutit sunaava?
+        petition:
+          title: What is your petition?
   custom_field_options:
     gender:
       male: Angut
@@ -148,61 +251,121 @@ kl:
       unspecified: Allassimanngilaq
     domicile:
       outside: Allami
-    education:
-      ISCED2: Tunngaviusumik atuarfik
-      ISCED3: Inuusuttut ilinniarfiat
-      ISCED4: Ingerlaqqittumik ilinniagaqarneq
-      ISCED5: Ingerlaqqittumik sivikitsumik ilinniagaqarneq
-      ISCED6: Bachelorgrad imaluunniit assingusoq
-      ISCED7: Kandidatgrad imaluunniit assingusoq
-      ISCED8: Ph.d. imaluunniit assingusoq
-  initiatives:
-    default_threshold_reached_message: >
-      <p> Tagerne er inviteret til at præsentere deres borgerforslag på næste rådsmøde. Vi bringer en officiel opdatering. </p>
-    default_eligibility_criteria: >
-      Kommunimi politikkeqarfiit piginnaasallu iluaniissaaq. Tamanna illit nammineq soqutigisat pinnagu tamat soqutigisaannut iluaqutaassaaq. Innuttaasut allat arnat angutillu, sumi inunngorsimaneq, ukiut imaluunniit tunuliaqutaasut piinnarlugit assigiinngisitsisoqarneq ajorpoq. Allanut ajoqutaanngilaq.
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset your password for %{organizationName}'
       cta_reset_password: 'Kode isissutit allanngortiguk'
       message_you_reset_your_password: 'Isissutivit allanngortinnissaanut %{organizationName}p ilaasortat saaffiginnittarfianut ikioqquvutit. Nutaamik qularnaatsumik kodemik isissutissamik toqqaanissannut ataani tuugassaq tooruk.'
       subject: '%{organizationName}: Kode isissutissat aallaqqaataaneeruk'
       title_reset_your_password: 'Kode isissutissat nutaaq allaguk'
   xlsx_export:
+    anonymous: 'Anonymous'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Latitude'
-      longitude: 'Longitude'
-      author_fullname: 'Author name'
-      author_email: 'Author email'
-      author_id: 'Author ID'
-      budget: 'Budget'
-      created_at: 'Submitted at'
-      published_at: 'Published at'
-      comments_count: 'Comments'
-      upvotes_count: 'Upvotes'
-      downvotes_count: 'Downvotes'
-      input_url: 'URL'
-      project: 'Project'
-      status: 'Status'
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
+      attachments: 'Attachments'
+      author_email: 'Author email'
+      author_fullname: 'Author name'
+      author_id: 'Author ID'
+      budget: 'Budget'
+      comments_count: 'Comments'
+      cost: 'Cost'
+      created_at: 'Submitted at'
+      description: 'Description'
+      dislikes_count: 'Dislikes'
+      email: 'Email'
+      first_name: 'First name(s)'
+      image_url: 'Image URL'
+      input_id: 'ID'
+      manual_votes: 'Offline votes'
+      input_url: 'URL'
+      last_name: 'Last name'
+      latitude: 'Latitude'
+      likes_count: 'Likes'
+      location: 'Location'
+      longitude: 'Longitude'
+      participants: 'Participants'
+      picks: 'Picks'
+      project: 'Project'
+      published_at: 'Published at'
+      registration_completed_at: 'Registration completed at'
+      status: 'Status'
+      submitted_at: 'Submitted at'
+      tags: 'Tags'
+      title: 'Title'
+      user_data: 'User data'
+      votes_count: 'Votes'
   form_builder:
     default_select_field:
       title: 'Your question'
       option1: 'Option 1'
       option2: 'Option 2'
     form_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title_text_3: 'Thank you for sharing your input!'
+      description_text_3: "Your input has been successfully submitted."
+    form_user_page:
+      title_text: 'About you'
+    pdf_export:
+      personal_data: 'Inummut paasissutissat'
+      personal_data_explanation_public: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
+      personal_data_explanation_private: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
+      first_name: 'First name(s)'
+      last_name: 'Last name'
+      email_address: 'Mailadressi'
+      by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
+      optional: 'nammineq toqqarsinnaasaq'
+      permission: 'Permission'
+      choose_as_many: 'Qanorlunniit amerlatigisunik toqqaasinnaavutit'
+      choose_exactly:
+        one: 'Choose exactly %{count} option'
+        other: 'Choose exactly %{count} options'
+      choose_between: 'Choose between %{min} and %{max} options'
+      choose_at_least: 'Choose at least %{count} options'
+      choose_at_most: 'Choose at most %{count} options'
+      this_answer: 'This answer will only be shared with moderators, and not to the public.'
+      page: 'Qupperneq'
+      date_published: 'Date Published (dd-mm-yyyy)'
+      instructions: 'Instructions'
+      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
+      write_in_language: 'Write your answers in the same language as this form'
+      linear_scale_print_description: 'Please write a number between %{min_label} and %{max_label} only'
   project_copy:
     title_suffix: 'Copy'
   confirmations_mailer:
     send_confirmation_code:
       subject: "%{organizationName} peqataatitsinikkut nittartagaanut emailit uppernarsaruk"
+      preheader: 'Confirm your email address for %{organizationName}'
       header: "Uppernarsaaninnut isissutissat"
       header_message: "Aluu %{firstName}!"
-      thanks_for_signing_up: "Qujanaq, %{organizationName} peqataatitsinikkut nittartagaanut ilaasortanngoravit."
-      please_confirm_your_email_address: "Ilaasortanngornissat naammassiniarlugu, emailit uppernarsaruk."
+      confirm_email_address: "Emailit uppernarsaruk"
+      thanks_for_signing_up1: "Thank you for your participation. Please enter this confirmation code in the window on %{organizationName}'s participation platform:"
+      best_regards: "Best regards,"
+      ignore_email: "If you didn't request a code, you can safely ignore this email."
+      expire_code: "This code will be expired in "
+      24_hours: "24 hours."
       copy_paste_the_link_below: "Isissutissaq ataaniittoq ilaasortanngornissamut immersugassamut ikkuguk."
       the_link_is_valid_for: "Una linkeq nalunaaquttap akunneri 24-it atuutissaaq. <a href=\"%{link}\"> qaangiuppat isissutissamik nutaamik qinusinnaavutit."
       did_you_receive_this_email_in_error: "Ajornartoornermi una emaili pissarsiaraajuk? <a href=\"%{link}\">."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Your account has been temporarily disabled'
+      preheader: 'Your account on the participation platform of %{organizationName} has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
+  user:
+    anon_first_name: "User"
+    anon_scheme:
+      animals: 'alligator,crocodile,alpaca,ant,antelope,ape,armadillo,baboon,badger,bat,bear,beaver,bee,beetle,buffalo,butterfly,camel,water buffalo,caribou,cat,cattle,cheetah,chimpanzee,chinchilla,cicada,clam,cockroach,cod,coyote,crab,cricket,crow,raven,deer,dinosaur,dog,dolphin,porpoise,duck,eagle,eel,elephant,elk,ferret,fish,fly,fox,frog,toad,gerbil,giraffe,gnat,gnu,wildebeest,goat,goldfish,goose,gorilla,grasshopper,guinea pig,hamster,hare,hedgehog,herring,hippopotamus,hornet,horse,hound,hyena,impala,jackal,jellyfish,kangaroo,wallaby,koala,leopard,lion,lizard,llama,locust,louse,macaw,mallard,mammoth,manatee,marten,mink,minnow,mole,moose,mosquito,mouse,rat,mule,muskrat,otter,ox,oyster,panda,pig,platypus,porcupine,prairie dog,pug,rabbit,raccoon,reindeer,rhinoceros,salmon,sardine,scorpion,seal,sea lion,serval,shark,sheep,skunk,snail,snake,spider,squirrel,swan,termite,tiger,trout,turtle,tortoise,walrus,wasp,whale,wolf,wombat,woodchuck,worm,yak,yellowjacket,zebra'
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
+  voting_method:
+    default_voting_term_singular: "vote"
+    default_voting_term_plural: "votes"
+  ics_calendar_event:
+    event_details: "Event details"
