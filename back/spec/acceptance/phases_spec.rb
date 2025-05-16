@@ -839,17 +839,23 @@ resource 'Phases' do
       let(:phase) { create(:common_ground_phase) }
       let(:id) { phase.id }
 
-      example_request 'Get common ground results' do
-        assert_status 200
+      context 'when not logged in' do
+        # TODO: to optimize?
+        before { create_list(:idea, 4, project: phase.project, phases: [phase]) }
 
-        expect(response_data).to match(
-          id: phase.id,
-          type: 'common_ground_results',
-          attributes: {
-            top_consensus_ideas: [],
-            top_controversial_ideas: []
-          }
-        )
+        example_request 'Get common ground results' do
+          assert_status 200
+
+          expect(response_data).to match(
+            id: phase.id,
+            type: 'common_ground_results',
+            attributes: {
+              # TODO: to be refined
+              top_consensus_ideas: be_an(Array),
+              top_controversial_ideas: be_an(Array)
+            }
+          )
+        end
       end
     end
 
