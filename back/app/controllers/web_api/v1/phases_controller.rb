@@ -83,13 +83,11 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def common_ground_results
-    render json: {
-      data: {
-        id: @phase.id,
-        type: 'common_ground_results',
-        attributes: {}
-      }
-    }
+    results = CommonGround::ResultsService.new(@phase).results
+
+    render json: WebApi::V1::CommonGround::ResultsSerializer
+      .new(results, params: jsonapi_serializer_params)
+      .serializable_hash
   end
 
   # Used for community_monitor_survey dashboard
