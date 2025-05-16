@@ -27,6 +27,10 @@ module CommonGround
     end
 
     def ideas
+      # Currently, we don’t see a use for the other publication statuses in Common Ground.
+      # In the future, we might want to filter based on idea statuses (+IdeaStatus+),
+      # for example to exclude rejected ideas/statements. But for now, only admin-like
+      # users can add statements, so there’s no need for moderation.
       phase.ideas.published
     end
 
@@ -52,6 +56,6 @@ module CommonGround
       def next_idea_id = next_idea&.id
     end
 
-    class UnsupportedPhaseError < StandardError; end
+    class UnsupportedPhaseError < ArgumentError; end
   end
 end

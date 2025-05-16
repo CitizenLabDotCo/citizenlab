@@ -449,6 +449,10 @@ module ParticipationMethod
       true
     end
 
+    def add_autoreaction_to_inputs?
+      true
+    end
+
     private
 
     def proposed_budget_in_form?

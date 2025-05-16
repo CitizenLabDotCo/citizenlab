@@ -113,6 +113,7 @@ RSpec.describe ParticipationMethod::Survey do
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:user_fields_in_form?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
+  its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do

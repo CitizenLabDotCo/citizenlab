@@ -211,6 +211,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:supports_custom_field_categories?) { is_expected.to be true }
   its(:supports_multiple_phase_reports?) { is_expected.to be true }
+  its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do
