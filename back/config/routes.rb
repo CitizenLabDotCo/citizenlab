@@ -163,6 +163,7 @@ Rails.application.routes.draw do
       resources :phases, only: %i[show show_mini edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
         member do
           get 'survey_results'
+          get 'common_ground_results'
           get 'sentiment_by_quarter'
           get :as_xlsx, action: 'index_xlsx'
           get :mini, action: 'show_mini'
