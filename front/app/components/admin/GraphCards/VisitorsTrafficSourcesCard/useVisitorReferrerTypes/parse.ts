@@ -6,19 +6,23 @@ import { roundPercentages } from 'utils/math';
 
 import { Translations } from './translations';
 import { PieRow } from './typings';
+import { keys } from 'utils/helperUtils';
 
 export const parsePieData = (
-  data: VisitorsTrafficSourcesResponse['data']['attributes'],
+  {
+    sessions_per_referrer_type,
+  }: VisitorsTrafficSourcesResponse['data']['attributes'],
   translations: Translations
 ): PieRow[] | null => {
-  if (data.length === 0) return null;
+  const referrerTypes = keys(sessions_per_referrer_type);
+  if (referrerTypes.length === 0) return null;
 
-  const counts = data.map(({ count }) => count);
+  const counts = referrerTypes.map((key) => sessions_per_referrer_type[key]);
   const percentages = roundPercentages(counts);
 
-  return data.map((row, i) => ({
-    name: translations[row.first_dimension_referrer_type_name],
-    value: row.count,
+  return referrerTypes.map((key, i) => ({
+    name: translations[key],
+    value: counts[i],
     percentage: percentages[i],
     color: categoricalColorScheme({ rowIndex: i }),
   }));

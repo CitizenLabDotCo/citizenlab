@@ -1,19 +1,14 @@
-interface TrafficSourcesRow {
-  count: number;
-  'dimension_referrer_type.id': string;
-  first_dimension_referrer_type_name: ReferrerTypeName;
-}
-
-export type ReferrerTypeName =
-  | 'Direct Entry'
-  | 'Social Networks'
-  | 'Search Engines'
-  | 'Websites'
-  | 'Campaigns';
+type ReferrerType =
+  | 'direct_entry'
+  | 'search_engine'
+  | 'social_network'
+  | 'other';
 
 export interface VisitorsTrafficSourcesResponse {
   data: {
     type: 'report_builder_data_units';
-    attributes: TrafficSourcesRow[];
+    attributes: {
+      sessions_per_referrer_type: Record<ReferrerType, number>;
+    };
   };
 }
