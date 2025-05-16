@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "تحذير: قد يتضمن الاستطلاع المضمن مشكلات في إمكانية الوصول لمستخدمي قارئ الشاشة. إذا واجهت أي تحديات، يرجى التواصل مع مسؤول المنصة للحصول على رابط للاستبيان من المنصة الأصلية. وبدلاً من ذلك، يمكنك طلب طرق أخرى لملء الاستبيان.",
   "app.containers.ProjectsShowPage.process.survey.survey": "الاستبيان",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "لتعرف إن كان بإمكانك المشاركة في هذا الاستبيان، يُرجى {logInLink} إلى المنصة أولًا.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "يمكن للمستخدمين الذين تم التحقق من هوياتهم فقط المشاركة في هذا الاستبيان. يُرجى {signUpLink} أو {logInLink} أولًا.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "يمكن المشاركة في هذا الاستبيان فقط عندما تكون هذه المرحلة في الجدول الزمني نشطة.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "الرجاء {completeRegistrationLink} لإجراء الاستطلاع.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "للأسف، ليس لديك الحق بالمشاركة في هذا الاستبيان.",

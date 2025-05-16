@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Advertencia: La encuesta incrustada puede tener problemas de accesibilidad para los usuarios de lectores de pantalla. Si tienes algún problema, ponte en contacto con el administrador de la plataforma para recibir un enlace a la encuesta desde la plataforma original. Alternativamente, puedes solicitar otras formas de rellenar la encuesta.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Consulta",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Para saber si puedes participar en esta consulta, por favor {logInLink} a la plataforma primero.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Sólo los usuarios verificados pueden responder esta consulta. Por favor {signUpLink} o {logInLink} primero.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "La consulta puede solamente responderse cuando esta fase en la línea de tiempo este activa.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Por favor, {completeRegistrationLink} para realizar la encuesta.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Lamentablemente, no tienes los permisos para participar en esta consulta",

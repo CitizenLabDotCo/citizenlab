@@ -84,6 +84,10 @@ export const project: IProjectData = {
         enabled: false,
         disabled_reason: 'not_volunteering',
       },
+      react_on_inputs: {
+        enabled: true,
+        disabled_reason: null,
+      },
     },
     avatars_count: 8,
     participants_count: 8,

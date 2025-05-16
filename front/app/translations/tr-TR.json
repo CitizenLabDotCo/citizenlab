@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Uyarı: Yerleştirilmiş anket, ekran okuyucu kullanıcıları için erişilebilirlik sorunları içerebilir. Herhangi bir sorunla karşılaşırsanız, orijinal platformdan ankete bir bağlantı almak için lütfen platform yöneticisine ulaşın. Alternatif olarak, anketi doldurmak için başka yollar da talep edebilirsiniz.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Anket",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Bu ankete katılıp katılamayacağınızı öğrenmek için lütfen önce platformda {logInLink}.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Bu ankete yalnızca doğrulanmış kullanıcılar katılabilir. Lütfen önce {signUpLink} veya {logInLink}.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Bu ankete yalnızca bu aşama zaman çizelgesinde aktif olduğunda katılabilirsiniz.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Ankete katılmak için lütfen {completeRegistrationLink} adresini ziyaret ediniz.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Bu anket şu anda etkin değil",

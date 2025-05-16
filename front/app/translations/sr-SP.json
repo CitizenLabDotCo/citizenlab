@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Warning: The embedded survey may have accessibility issues for screenreader users. If you experience any challenges, please reach out to the platform admin to receive a link to the survey from the original platform. Alternatively, you can request other ways to fill out the survey.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Анкета",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Да бисте сазнали да ли можете да учествујете у овој анкети, прво {logInLink} на платформи.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Само верификовани учесници могу попунити ову анкету. Молимо прво {signUpLink} или {logInLink}.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Ова анкета се може узети само када је ова фаза на временској линији активна.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Молимо {completeRegistrationLink} да попуните анкету.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Ова анкета тренутно није омогућена",

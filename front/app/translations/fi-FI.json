@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Varoitus: Upotetussa kyselyssä voi olla esteettömyysongelmia näytönlukulaitteiden käyttäjille. Jos kohtaat haasteita, ota yhteyttä alustan järjestelmänvalvojaan saadaksesi linkin kyselyyn alkuperäiseltä alustalta. Vaihtoehtoisesti voit pyytää muita tapoja täyttää kysely.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Kysely",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Jos haluat tietää, voitko osallistua tähän kyselyyn, siirry ensin alustalle {logInLink} .",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Vain vahvistetut osallistujat voivat osallistua tähän kyselyyn. Ole hyvä ja {signUpLink} tai {logInLink} ensin.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Tämä kysely voidaan suorittaa vain, kun tämä aikajanan vaihe on aktiivinen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Ole hyvä ja {completeRegistrationLink} vastaa kyselyyn.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Tämä kysely ei ole tällä hetkellä käytössä",

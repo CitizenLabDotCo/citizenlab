@@ -26,6 +26,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../../../../messages';
 
+import commonGroundImage from './assets/common_ground.png';
 import documentImage from './assets/document.png';
 import ideationImage from './assets/ideation.png';
 import informationImage from './assets/information.png';
@@ -171,6 +172,16 @@ const ParticipationMethodPicker = ({
               image={proposalsImage}
               selected={selectedMethod === 'proposals'}
               participation_method="proposals"
+            />
+
+            <ParticipationMethodChoice
+              key="common_ground"
+              title={formatMessage(messages2.commonGroundTitle)}
+              subtitle={formatMessage(messages2.commonGroundDescription)}
+              onClick={(event) => handleMethodSelect(event, 'common_ground')}
+              image={commonGroundImage}
+              selected={selectedMethod === 'common_ground'}
+              participation_method="common_ground"
             />
 
             <ParticipationMethodChoice

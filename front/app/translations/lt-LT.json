@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Įspėjimas: Perspėjimas: Įterpta apklausa gali būti neprieinama ekrano skaitytuvų naudotojams. Jei kyla sunkumų, kreipkitės į platformos administratorių, kad gautumėte apklausos nuorodą iš originalios platformos. Arba galite paprašyti kitų būdų užpildyti apklausą.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Apklausa",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Norėdami sužinoti, ar galite dalyvauti šioje apklausoje, pirmiausia prisijunkite prie platformos {logInLink} .",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Šią apklausą gali atlikti tik patikrinti dalyviai. Pirmiausia apsilankykite {signUpLink} arba {logInLink} .",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Šią apklausą galima atlikti tik tada, kai šis laiko juostos etapas yra aktyvus.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Prašome {completeRegistrationLink} atlikti apklausą.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Ši apklausa šiuo metu nėra įjungta",

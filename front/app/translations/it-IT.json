@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Attenzione: L'indagine incorporata potrebbe presentare problemi di accessibilità per gli utenti di screenreader. In caso di problemi, contatta l'amministratore della piattaforma per ricevere un link all'indagine dalla piattaforma originale. In alternativa, puoi richiedere altri modi per compilare l'indagine.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Sondaggio",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Per sapere se puoi partecipare a questo sondaggio, ti preghiamo di {logInLink} accedere prima alla piattaforma.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Solo i partecipanti verificati possono partecipare a questo sondaggio. Si prega di {signUpLink} o {logInLink} prima.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Questo sondaggio può essere fatto solo quando questa fase della linea temporale è attiva.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Si prega di {completeRegistrationLink} per partecipare al sondaggio.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Questo sondaggio non è attualmente abilitato",

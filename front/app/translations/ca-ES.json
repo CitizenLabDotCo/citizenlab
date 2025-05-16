@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Avís: l'enquesta incrustada pot tenir problemes d'accessibilitat per als usuaris de lectors de pantalla. Si teniu cap repte, poseu-vos en contacte amb l'administrador de la plataforma per rebre un enllaç a l'enquesta des de la plataforma original. Alternativament, podeu sol·licitar altres maneres d'omplir l'enquesta.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Enquesta",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Per saber si podeu participar en aquesta enquesta, {logInLink} primer a la plataforma.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Només els participants verificats poden participar en aquesta enquesta. Primer {signUpLink} o {logInLink}.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Aquesta enquesta només es pot fer quan aquesta fase de la línia de temps està activa.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Si us plau, {completeRegistrationLink} per respondre l'enquesta.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Aquesta enquesta no està activada actualment",

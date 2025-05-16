@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Προειδοποίηση: Η ενσωματωμένη έρευνα μπορεί να έχει προβλήματα προσβασιμότητας για τους χρήστες συσκευών ανάγνωσης οθόνης. Εάν αντιμετωπίζετε προβλήματα, παρακαλούμε επικοινωνήστε με τον διαχειριστή της πλατφόρμας για να λάβετε έναν σύνδεσμο για την έρευνα από την αρχική πλατφόρμα. Εναλλακτικά, μπορείτε να ζητήσετε άλλους τρόπους συμπλήρωσης της έρευνας.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Έρευνα",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Για να μάθετε αν μπορείτε να λάβετε μέρος σε αυτή την έρευνα, παρακαλούμε {logInLink} στην πλατφόρμα πρώτα.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Μόνο επαληθευμένοι συμμετέχοντες μπορούν να λάβουν μέρος σε αυτή την έρευνα. Παρακαλούμε {signUpLink} ή {logInLink} πρώτα.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Αυτή η έρευνα μπορεί να πραγματοποιηθεί μόνο όταν αυτή η φάση στο χρονοδιάγραμμα είναι ενεργή.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Παρακαλούμε {completeRegistrationLink} για να λάβετε μέρος στην έρευνα.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Αυτή η έρευνα δεν είναι προς το παρόν ενεργοποιημένη",

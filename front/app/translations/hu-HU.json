@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Figyelmeztetés: A beágyazott felmérés akadálymentesítési problémákat okozhat a képernyőolvasót használó felhasználók számára. Ha bármilyen kihívást tapasztal, forduljon a platform adminisztrátorához, hogy megkapja a kérdőív linkjét az eredeti platformról. Alternatív megoldásként más módokat is kérhet a kérdőív kitöltésére.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Felmérés",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Ha szeretné tudni, hogy részt vehet-e ebben a felmérésben, kérjük, először {logInLink} lépjen be a platformra.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Csak ellenőrzött résztvevők vehetnek részt ebben a felmérésben. Kérjük, először {signUpLink} vagy {logInLink} .",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Ez a felmérés csak akkor tölthető ki, ha az idővonal ezen szakasza aktív.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Kérjük, {completeRegistrationLink} töltse ki a felmérést.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Ez a felmérés jelenleg nincs engedélyezve",

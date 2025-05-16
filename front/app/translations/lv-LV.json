@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Brīdinājums: Ielīmētajā apsekojumā var būt problēmas ar ekrānlasītāju lietotāju piekļuvi. Ja rodas problēmas, lūdzu, sazinieties ar platformas administratoru, lai saņemtu saiti uz aptauju no sākotnējās platformas. Varat arī pieprasīt citus veidus, kā aizpildīt aptauju.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Aptauja",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Lai uzzinātu, vai varat piedalīties šajā pētījumā, vispirms lūdzu, {logInLink} platformai.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Šo pētījumu var veikt tikai pārbaudīti dalībnieki. Lūdzu, vispirms {signUpLink} vai {logInLink}.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Šo pētījumu var veikt tikai tad, kad šis laika līnijas posms ir aktīvs.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Lūdzu, {completeRegistrationLink} , lai piedalītos aptaujā.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Šis pētījums pašlaik nav aktivizēts",

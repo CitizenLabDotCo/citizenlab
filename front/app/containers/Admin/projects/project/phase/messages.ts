@@ -62,6 +62,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.inPlatformSurveyPhase',
     defaultMessage: 'In platform survey phase',
   },
+  commonGroundPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.commonGroundPhase',
+    defaultMessage: 'Common ground phase',
+  },
   everyone: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.everyone',
     defaultMessage: 'Everyone',
@@ -101,6 +105,10 @@ export default defineMessages({
   react: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.react',
     defaultMessage: '<b>React:</b>  {participants}',
+  },
+  reactToInputs: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.reactToInputs',
+    defaultMessage: '<b>Reacting to inputs:</b>  {participants}',
   },
   takingSurvey: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingSurvey',

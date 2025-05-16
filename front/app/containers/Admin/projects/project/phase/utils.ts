@@ -74,5 +74,7 @@ export const getParticipationActionLabel = (action: IPhasePermissionAction) => {
       return messages.attendingEvent;
     case 'volunteering':
       return messages.volunteering;
+    case 'react_on_inputs':
+      return messages.reactToInputs;
   }
 };
