@@ -1911,7 +1911,7 @@
   "app.containers.VoteControl.voteErrorTitle": "Er ging iets mis",
   "app.containers.admin.ContentBuilder.default": "standaard",
   "app.containers.admin.ContentBuilder.imageTextCards": "Afbeelding- en tekstkaarten",
-  "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & accordions",
+  "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & accordeons",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolom",
   "app.containers.admin.ContentBuilder.projectDescription": "Projectbeschrijving",
   "app.containers.app.navbar.admin": "Beheer platform",
