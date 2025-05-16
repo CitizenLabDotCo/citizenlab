@@ -28,6 +28,16 @@ export const parsePieData = (
   }));
 };
 
+export const parseTableData = (
+  { top_50_referrers }: VisitorsTrafficSourcesResponse['data']['attributes'],
+  translations: Translations
+) => {
+  return top_50_referrers.map(({ referrer_type, ...rest }) => ({
+    ...rest,
+    referrer_type: translations[referrer_type],
+  }));
+};
+
 export const parseExcelData = (
   pieData: PieRow[] | null,
   translations: Translations
