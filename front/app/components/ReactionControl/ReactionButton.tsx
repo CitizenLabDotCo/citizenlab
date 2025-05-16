@@ -404,7 +404,7 @@ const ReactionButton = ({
     const projectName = localize(project.data.attributes.title_multiloc);
     const buttonReactionModeIsActive = buttonReactionMode === userReactionMode;
 
-    const describedById = disabledReason ? `tooltip-${ideaId}` : undefined;
+    const describedById = `tooltip-${ideaId}`;
 
     const disabledMessage = disabledReasonMessage && (
       // We can't put id on FormattedMessage:
@@ -416,6 +416,7 @@ const ReactionButton = ({
           enabledFromDate,
           projectName,
         }}
+        aria-hidden
       />
     );
 
