@@ -5,7 +5,7 @@ class WebApi::V1::PhasesController < ApplicationController
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   before_action :set_phase, only: %i[
     show show_mini update destroy survey_results sentiment_by_quarter
-    submission_count index_xlsx delete_inputs show_progress
+    submission_count index_xlsx delete_inputs show_progress common_ground_results
   ]
 
   def index
@@ -80,6 +80,16 @@ class WebApi::V1::PhasesController < ApplicationController
     end
 
     render json: raw_json(results)
+  end
+
+  def common_ground_results
+    render json: {
+      data: {
+        id: @phase.id,
+        type: 'common_ground_results',
+        attributes: {}
+      }
+    }
   end
 
   # Used for community_monitor_survey dashboard

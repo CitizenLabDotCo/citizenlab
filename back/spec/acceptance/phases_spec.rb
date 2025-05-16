@@ -835,6 +835,21 @@ resource 'Phases' do
       end
     end
 
+    get 'web_api/v1/phases/:id/common_ground_results' do
+      let(:phase) { create(:common_ground_phase) }
+      let(:id) { phase.id }
+
+      example_request 'Get common ground results' do
+        assert_status 200
+
+        expect(response_data).to match(
+          id: phase.id,
+          type: 'common_ground_results',
+          attributes: {}
+        )
+      end
+    end
+
     get 'web_api/v1/phases/:id/sentiment_by_quarter' do
       let(:project) { create(:community_monitor_project) }
       let(:active_phase) { project.phases.first }
