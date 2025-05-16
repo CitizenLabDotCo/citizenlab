@@ -111,6 +111,8 @@ const CollapsibleContainer = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (event: React.MouseEvent) => {
+    // Prevent form submission when the button is inside a form
+    event.preventDefault();
     // We need to stop propagation to prevent the click event from being caught by
     // any parent components which can cause unintended onClick events to be triggered.
     event.stopPropagation();

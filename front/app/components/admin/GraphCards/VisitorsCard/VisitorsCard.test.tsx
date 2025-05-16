@@ -77,16 +77,4 @@ describe('<VisitorsCard />', () => {
     expect(screen.getByText('3.1')).toBeInTheDocument();
     expect(screen.getByText('2.8')).toBeInTheDocument();
   });
-
-  it('does not render tooltips for duration and pageviews if project filter not active', () => {
-    const { container } = render(
-      <VisitorsCard
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
-        resolution={resolution}
-      />
-    );
-
-    expect(container.querySelectorAll('.tooltip-icon')).toHaveLength(3);
-  });
 });

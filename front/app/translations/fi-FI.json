@@ -179,6 +179,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automaattinen tallennus",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Automaattinen tallennus on oletusarvoisesti käytössä, kun avaat lomakeeditorin. Aina kun suljet kenttäasetuspaneelin \"X\"-painikkeella, se käynnistää automaattisesti tallennuksen.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lataa pdf-muodossa",
+  "app.components.FormSync.downloadExcelTemplate": "Lataa Excel-malli",
   "app.components.GoBackButton.group.edit.goBack": "Mene takaisin",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Palaa edelliselle sivulle",
   "app.components.HookForm.Feedback.errorTitle": "On ongelma",
