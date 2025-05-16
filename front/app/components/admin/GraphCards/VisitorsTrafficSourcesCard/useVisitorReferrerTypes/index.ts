@@ -5,7 +5,7 @@ import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 import { useIntl } from 'utils/cl-intl';
 import { momentToIsoDate } from 'utils/dateUtils';
 
-import { parsePieData, parseExcelData } from './parse';
+import { parsePieData, parseTableData, parseExcelData } from './parse';
 import { getTranslations } from './translations';
 
 type QueryParameters = ProjectId & Dates;
@@ -15,7 +15,7 @@ export default function useVisitorsReferrerTypes({
   startAtMoment,
   endAtMoment,
 }: QueryParameters) {
-  const { data: analytics } = useVisitorsTrafficSourcesLive({
+  const { data } = useVisitorsTrafficSourcesLive({
     project_id: projectId,
     start_at: momentToIsoDate(startAtMoment),
     end_at: momentToIsoDate(endAtMoment),
@@ -24,10 +24,15 @@ export default function useVisitorsReferrerTypes({
   const { formatMessage } = useIntl();
   const translations = getTranslations(formatMessage);
 
-  const pieData = analytics
-    ? parsePieData(analytics.data.attributes, translations)
-    : null;
-  const xlsxData = pieData ? parseExcelData(pieData, translations) : null;
+  const pieData = data
+    ? parsePieData(data.data.attributes, translations)
+    : undefined;
 
-  return { pieData, xlsxData };
+  const tableData = data
+    ? parseTableData(data.data.attributes, translations)
+    : undefined;
+
+  const xlsxData = pieData ? parseExcelData(pieData, translations) : undefined;
+
+  return { pieData, tableData, xlsxData };
 }
