@@ -15,6 +15,7 @@ import { ICustomForm } from './types';
 type UpdateCustomFormProperties = {
   printStartMultiloc?: Multiloc;
   printEndMultiloc?: Multiloc;
+  printPersonalDataFields?: boolean;
 };
 
 /**
@@ -31,7 +32,7 @@ const updateCustomForm = async ({
   formValues: UpdateCustomFormProperties;
 }) => {
   // Only include properties that are defined
-  const body: Record<string, Multiloc> = {};
+  const body: Record<string, Multiloc | boolean> = {};
 
   if (formValues.printStartMultiloc) {
     body.print_start_multiloc = formValues.printStartMultiloc;
@@ -39,6 +40,10 @@ const updateCustomForm = async ({
 
   if (formValues.printEndMultiloc) {
     body.print_end_multiloc = formValues.printEndMultiloc;
+  }
+
+  if (typeof formValues.printPersonalDataFields === 'boolean') {
+    body.print_personal_data_fields = formValues.printPersonalDataFields;
   }
 
   return fetcher<ICustomForm>({

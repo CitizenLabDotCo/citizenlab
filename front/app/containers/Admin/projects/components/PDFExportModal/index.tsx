@@ -75,11 +75,11 @@ const PDFExportModal = ({
   const phaseId = phase.id;
 
   const schema = object({
-    personal_data: boolean(),
     ...(htmlPdfsActive && {
       print_start_multiloc: object(),
       print_end_multiloc: object(),
     }),
+    personal_data: boolean(),
   });
 
   const methods = useForm({
@@ -95,10 +95,13 @@ const PDFExportModal = ({
   });
 
   useEffect(() => {
-    if (htmlPdfsActive && customForm) {
+    if (customForm) {
       methods.reset({
-        print_start_multiloc: customForm.data.attributes.print_start_multiloc,
-        print_end_multiloc: customForm.data.attributes.print_end_multiloc,
+        ...(htmlPdfsActive && {
+          print_start_multiloc: customForm.data.attributes.print_start_multiloc,
+          print_end_multiloc: customForm.data.attributes.print_end_multiloc,
+        }),
+        personal_data: customForm.data.attributes.print_personal_data_fields,
       });
     }
   }, [customForm, htmlPdfsActive, methods]);
@@ -119,12 +122,13 @@ const PDFExportModal = ({
     setLoading(true);
 
     try {
-      if (htmlPdfsActive) {
-        await updateCustomForm({
+      await updateCustomForm({
+        ...(htmlPdfsActive && {
           printStartMultiloc: formValues.print_start_multiloc,
           printEndMultiloc: formValues.print_end_multiloc,
-        });
-      }
+        }),
+        printPersonalDataFields: formValues.personal_data,
+      });
       await onExport(formValues);
       setLoading(false);
       onClose();
