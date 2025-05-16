@@ -10,8 +10,8 @@ RSpec.describe ProjectFolders::Folder do
   end
 
   it { is_expected.to validate_presence_of(:title_multiloc) }
-  
-  it "validates presence of slug" do
+
+  it 'validates presence of slug' do
     folder = build(:project_folder)
     allow(folder).to receive(:generate_slug) # Stub to do nothing
     folder.slug = nil

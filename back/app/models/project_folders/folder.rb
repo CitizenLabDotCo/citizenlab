@@ -97,7 +97,7 @@ module ProjectFolders
 
     def sanitize_header_bg_alt_text_multiloc
       return unless header_bg_alt_text_multiloc&.any?
-  
+
       self.header_bg_alt_text_multiloc = SanitizationService.new.sanitize_multiloc(
         header_bg_alt_text_multiloc,
         []
@@ -106,7 +106,7 @@ module ProjectFolders
 
     def sanitize_title_multiloc
       return unless title_multiloc&.any?
-  
+
       self.title_multiloc = SanitizationService.new.sanitize_multiloc(
         title_multiloc,
         []
