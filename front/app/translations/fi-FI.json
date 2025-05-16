@@ -646,7 +646,7 @@
   "app.components.form.controls.optionalParentheses": "(valinnainen)",
   "app.components.form.controls.rankingInstructions": "Sijoita vaihtoehtoja vetämällä ja pudottamalla.",
   "app.components.form.controls.selectAsManyAsYouLike": "*Valitse yksi tai useampi alla olevista vaihtoehdoista",
-  "app.components.form.controls.selectBetween": "*Valitse vaihtoehdoista {minItems} ja {maxItems}",
+  "app.components.form.controls.selectBetween": "*Valitse {minItems} - {maxItems} vaihtoehtoa",
   "app.components.form.controls.selectExactly2": "*Valitse täsmälleen {selectExactly, plural, one {# vaihtoehto} other {# vaihtoehtoa}}",
   "app.components.form.controls.selectMany": "*Valitse yksi tai useampi alla olevista vaihtoehdoista",
   "app.components.form.controls.tapOnFullscreenMapToAdd4": "Piirrä napauttamalla karttaa. Siirrä sitten pisteitä vetämällä niitä.",
