@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 
 import usePhase from 'api/phases/usePhase';
 import useSubmissionCount from 'api/submission_count/useSubmissionCount';
@@ -13,9 +14,10 @@ import messages from './messages';
 
 interface Props {
   phaseId: string;
+  editFormLink: RouteType;
 }
 
-const DuplicateSurveyButtonWithModal = ({ phaseId }: Props) => {
+const DuplicateSurveyButtonWithModal = ({ phaseId, editFormLink }: Props) => {
   const { data: submissionCount } = useSubmissionCount({
     phaseId,
   });
