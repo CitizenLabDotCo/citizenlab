@@ -43,8 +43,6 @@ export const parseExcelData = (
   tableData: VisitorsTrafficSourcesResponse['data']['attributes']['top_50_referrers'],
   translations: Translations
 ) => {
-  if (pieData === null) return null;
-
   const trafficSourceData = pieData.map((row) => ({
     [translations.trafficSource]: row.name,
     [translations.numberOfVisits]: row.value,
