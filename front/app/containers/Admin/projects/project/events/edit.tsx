@@ -391,19 +391,14 @@ const AdminProjectEventEdit = () => {
   };
 
   const handleOnSubmit = async (e: FormEvent) => {
-    const uploadedAndCroppedImage = uploadedImage;
-    if (uploadedAndCroppedImage && croppedImgBase64) {
-      uploadedAndCroppedImage.base64 = croppedImgBase64;
-    }
-
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
     const locationPointUpdated =
       eventAttrs.address_1 || successfulGeocode ? locationPoint : null;
 
     const imageChanged =
-      (uploadedAndCroppedImage !== null && !uploadedAndCroppedImage.remote) ||
-      (uploadedAndCroppedImage === null && remoteEventImage !== undefined);
+      (uploadedImage !== null && !uploadedImage.remote) ||
+      (uploadedImage === null && remoteEventImage !== undefined);
 
     e.preventDefault();
     try {
