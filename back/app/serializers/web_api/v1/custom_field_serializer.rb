@@ -8,9 +8,11 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     TextImageService.new.render_data_images_multiloc field.description_multiloc, field: :description_multiloc, imageable: field
   end
 
-  attribute :answer_visible_to, if: proc { |_object, params|
+  attribute :visible_to_public, if: proc { |_field, params|
     params[:supports_answer_visible_to]
-  }
+  } do |field|
+    field.visible_to_public?
+  end
 
   attribute :hidden, if: proc { |object, _params|
     object.resource_type == 'User'

@@ -4,8 +4,8 @@ module ReportBuilder
   class QueryRepository
     GRAPH_RESOLVED_NAMES_CLASSES = {
       'ReactionsByTimeWidget' => Queries::Analytics::ReactionsByTime,
-      'ParticipantsWidget' => Queries::Analytics::Participants,
-      'VisitorsWidget' => Queries::Analytics::Visitors,
+      'VisitorsWidget' => Queries::Visitors,
+      'ParticipantsWidget' => Queries::Participants,
       'VisitorsTrafficSourcesWidget' => Queries::Analytics::TrafficSources,
       'SurveyQuestionResultWidget' => Queries::SurveyQuestionResult,
       'MostReactedIdeasWidget' => Queries::MostReactedIdeas,
@@ -14,7 +14,9 @@ module ReportBuilder
       'RegistrationsWidget' => Queries::Registrations,
       'MethodsUsedWidget' => Queries::MethodsUsed,
       'ParticipationWidget' => Queries::Analytics::Participation,
-      'ProjectsWidget' => Queries::Projects
+      'ProjectsWidget' => Queries::Projects,
+      'DeviceTypesWidget' => Queries::DeviceTypes,
+      'VisitorsLanguagesWidget' => Queries::VisitorsLanguages
     }.freeze
 
     def initialize(current_user)

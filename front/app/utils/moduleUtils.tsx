@@ -8,7 +8,6 @@ import {
   omitBy,
   cloneDeep,
 } from 'lodash-es';
-import { Moment } from 'moment';
 import { IntlFormatters } from 'react-intl';
 import {
   InsertConfigurationOptions,
@@ -30,18 +29,10 @@ import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { SignUpInFlow } from 'containers/Authentication/typings';
 
-import {
-  Dates,
-  ProjectId,
-  Resolution,
-} from 'components/admin/GraphCards/typings';
 import { ManagerType } from 'components/admin/PostManager';
-import { IResolution } from 'components/admin/ResolutionControl';
 import { OutletRenderProps } from 'components/Outlet';
 import PageLoading from 'components/UI/PageLoading';
 import { ITabItem } from 'components/UI/Tabs';
-
-export type StatCardProps = ProjectId & Dates & Resolution;
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -95,21 +86,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.dashboard.summary.inputStatus': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.emailDeliveries': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
-  'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
-  'app.containers.Admin.dashboard.summary.events': StatCardProps;
   'app.containers.IdeasShow.MetaInformation': {
     ideaId: string;
     compact?: boolean;

@@ -97,7 +97,6 @@ const PDFExportModal = ({
   useEffect(() => {
     if (htmlPdfsActive && customForm) {
       methods.reset({
-        ...methods.getValues(),
         print_start_multiloc: customForm.data.attributes.print_start_multiloc,
         print_end_multiloc: customForm.data.attributes.print_end_multiloc,
       });
