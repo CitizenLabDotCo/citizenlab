@@ -168,6 +168,11 @@ Rails.application.routes.draw do
         get :mini, on: :member, action: 'show_mini'
         get 'submission_count', on: :member
         delete 'inputs', on: :member, action: 'delete_inputs'
+
+        resources :inputs, only: [], controller: 'ideas' do
+          post 'copy', on: :collection
+        end
+
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'json_forms_schema', on: :collection
         end
