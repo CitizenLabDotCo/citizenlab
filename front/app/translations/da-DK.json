@@ -180,7 +180,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Automatisk lagring er aktiveret som standard, når du åbner formulareditoren. Hver gang du lukker panelet med feltindstillinger ved hjælp af \"X\"-knappen, vil det automatisk udløse en lagring.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download som pdf",
   "app.components.FormSync.downloadExcelTemplate": "Download en Excel-skabelon",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Excel-skabeloner vil ikke indeholde spørgsmål om kortlægningsinput, da disse ikke understøttes til masseimport på nuværende tidspunkt.",
+  "app.components.FormSync.downloadExcelTemplateTooltip": "Excel-skabeloner vil ikke indeholde kortlægningsinput, da disse ikke understøttes til masseimport på nuværende tidspunkt.",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbage",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Gå tilbage til forrige side",
   "app.components.HookForm.Feedback.errorTitle": "Der er et problem",
