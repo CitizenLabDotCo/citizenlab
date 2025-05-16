@@ -67,7 +67,7 @@ class Idea < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
   SUBMISSION_STATUSES = %w[submitted published].freeze
 
-  slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
+  slug from: proc { |idea| idea&.participation_method_on_creation&.generate_slug(idea) }
 
   belongs_to :author, class_name: 'User', optional: true
   belongs_to :project, touch: true
@@ -485,6 +485,8 @@ class Idea < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

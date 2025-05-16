@@ -13,6 +13,8 @@ RSpec.describe IdeaStatus do
     end
   end
 
+  it { is_expected.to validate_presence_of(:title_multiloc) }
+
   context 'when its code is required' do
     subject { create(:idea_status, code: code) }
 
