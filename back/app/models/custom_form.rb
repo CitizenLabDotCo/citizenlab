@@ -75,7 +75,7 @@ class CustomForm < ApplicationRecord
 
     multiloc = service.sanitize_multiloc(
       multiloc,
-      %i[title alignment list decoration image video]
+      %i[title alignment list decoration image]
     )
 
     service.remove_multiloc_empty_trailing_tags multiloc
