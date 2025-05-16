@@ -17,6 +17,8 @@ namespace :single_use do
 
       if execute
         ReportBuilder::ReportPublisher.new(report, user).publish
+      else
+        puts "\nWould republish report: #{report.id}\n\n"
       end
     rescue ActiveRecord::RecordNotFound => e
       Rails.logger.error(
@@ -60,8 +62,12 @@ namespace :single_use do
           end
         end
 
-        if layout.changed? && execute
-          layout.save!
+        if layout.changed?
+          if execute
+            layout.save!
+          else
+            puts "\nWould save layout: #{layout.id}\n\n"
+          end
         end
       end
 
