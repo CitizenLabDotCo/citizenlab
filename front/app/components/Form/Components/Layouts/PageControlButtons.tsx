@@ -9,6 +9,7 @@ import {
   IconNames,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 
 import { IPhaseData } from 'api/phases/types';
 import { getInputTerm } from 'api/phases/utils';
@@ -16,8 +17,6 @@ import { getInputTerm } from 'api/phases/utils';
 import useLocalize from 'hooks/useLocalize';
 
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
-
-import { PageType } from 'components/Form/typings';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -51,7 +50,7 @@ interface Props {
   pageVariant: PageVariant;
   phases: IPhaseData[] | undefined;
   currentPhase: IPhaseData | undefined;
-  currentPage: PageType;
+  pageButtonLabelMultiloc?: Multiloc;
 }
 
 const PageControlButtons = ({
@@ -61,7 +60,7 @@ const PageControlButtons = ({
   isLoading,
   pageVariant,
   phases,
-  currentPage,
+  pageButtonLabelMultiloc,
   currentPhase,
 }: Props) => {
   const theme = useTheme();
@@ -73,9 +72,9 @@ const PageControlButtons = ({
     if (pageVariant !== 'after-submission') {
       return formatMessage(BUTTON_MESSAGES[pageVariant]);
     } else {
-      if (localize(currentPage.options.page_button_label_multiloc)) {
+      if (localize(pageButtonLabelMultiloc)) {
         // Page is using a custom button label
-        return localize(currentPage.options.page_button_label_multiloc);
+        return localize(pageButtonLabelMultiloc);
       }
     }
 

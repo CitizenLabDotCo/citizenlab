@@ -70,6 +70,7 @@ const useCustomFields = ({
           optionsForCustomField.length > 0
             ? optionsForCustomField.map((option) => ({
                 id: option.data?.data.id,
+                key: option.data?.data.attributes.key,
                 title_multiloc:
                   option.data?.data.attributes.title_multiloc || {},
                 other: option.data?.data.attributes.other || false,

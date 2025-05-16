@@ -38,6 +38,7 @@ const FileUploader = ({
   className,
   enableDragAndDrop = false,
   multiple = false,
+  ...rest
 }: Props) => {
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
 
@@ -91,6 +92,7 @@ const FileUploader = ({
       key={id}
       data-cy="e2e-file-uploader-container"
       w="100%"
+      {...rest}
     >
       <FileInput onAdd={handleFileOnAdd} id={id} multiple={multiple} />
       <Error fieldName="file" apiErrors={apiErrors?.file} />

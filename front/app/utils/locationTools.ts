@@ -2,7 +2,7 @@ import { isNumber } from 'lodash-es';
 
 import fetcher from './cl-react-query/fetcher';
 
-type Point = {
+export type Point = {
   type: 'Point';
   coordinates: [number, number];
 };

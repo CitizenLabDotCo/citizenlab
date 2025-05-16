@@ -17,6 +17,7 @@ export interface ICustomFieldsParameters {
 
 export type ICustomFieldInputType =
   | 'text'
+  | 'text_multiloc'
   | 'multiline_text'
   | 'multiselect'
   | 'number'
@@ -42,6 +43,7 @@ export type ICustomFieldInputType =
 
 export type IOptionsType = {
   id?: string;
+  key?: string;
   title_multiloc: Multiloc;
   other?: boolean;
   temp_id?: string;
@@ -143,6 +145,7 @@ export type IFlatCustomField = Omit<
     options?: IOptionsType[];
     matrix_statements?: IMatrixStatementsType[];
     map_config?: { data: IRelationship };
+    visible_to_public?: boolean;
   };
 
 export type ICustomFieldSettingsTab = 'content' | 'logic';

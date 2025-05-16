@@ -13,7 +13,7 @@ import { Multiloc } from 'typings';
 import { IdeaPublicationStatus } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
 import useAuthUser from 'api/me/useAuthUser';
-import { IPhases, IPhaseData } from 'api/phases/types';
+import { IPhases, IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
@@ -25,11 +25,10 @@ import useLocale from 'hooks/useLocale';
 
 import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
 import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
-import { InputSelectContext } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import Form from 'components/Form';
+import CustomFieldsForm from 'components/CustomFieldsForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
@@ -77,9 +76,14 @@ interface FormValues {
 interface Props {
   project: IProject;
   phaseId: string | undefined;
+  participationMethod?: ParticipationMethod;
 }
 
-const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
+const IdeasNewIdeationForm = ({
+  project,
+  phaseId,
+  participationMethod,
+}: Props) => {
   const locale = useLocale();
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
@@ -327,7 +331,12 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                     pb={isSmallerThanPhone ? '0' : '80px'}
                     display="flex"
                   >
-                    <InputSelectContext.Provider
+                    <CustomFieldsForm
+                      projectId={project.data.id}
+                      phaseId={phaseId}
+                      participationMethod={participationMethod}
+                    />
+                    {/* <InputSelectContext.Provider
                       value={{
                         onIdeaSelect: setSelectedIdeaId,
                         title,
@@ -349,7 +358,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                         showSubmitButton={false}
                         config={'input'}
                       />
-                    </InputSelectContext.Provider>
+                    </InputSelectContext.Provider> */}
                   </Box>
                 </Box>
                 <ContentUploadDisclaimer
