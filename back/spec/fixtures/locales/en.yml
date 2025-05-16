@@ -34,6 +34,7 @@ en:
       write_in_language: 'Write your answers in the same language as this form'
       linear_scale_print_description: 'Please write a number between %{min_label} and %{max_label} only'
       unsupported_field: This field cannot be completed on paper. Please use the online version of this form instead.
+      ranking_print_description: 'Please write a number from 1 (most preferred) and %{max_rank} (least preferred) in each box. Use each number only once.'
   custom_fields:
     ideas:
       title:

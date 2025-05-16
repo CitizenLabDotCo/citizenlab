@@ -11,10 +11,16 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let!(:page_field) { create(:custom_field_page, resource: custom_form) }
   let!(:text_field) { create(:custom_field_text, resource: custom_form, required: true, title_multiloc: { 'en' => 'Text field' }) }
   let!(:multiline_field) { create(:custom_field_multiline_text, resource: custom_form, title_multiloc: { 'en' => 'Multiline field' }) }
-  let!(:select_field) do
-    field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
+  let!(:multiselect_field) do
+    field = create(:custom_field_multiselect, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Select field' })
     field.options.create!(key: 'option1', title_multiloc: { 'en' => 'Option 1' })
     field.options.create!(key: 'option2', title_multiloc: { 'en' => 'Option 2' })
+    field
+  end
+  let!(:ranking_field) do
+    field = create(:custom_field_ranking, resource: custom_form, key: 'ranking_field', title_multiloc: { 'en' => 'Ranking field' })
+    field.options.create!(key: 'ranking_one', title_multiloc: { 'en' => 'Ranking one' })
+    field.options.create!(key: 'ranking_two', title_multiloc: { 'en' => 'Ranking two' })
     field
   end
   let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
@@ -51,7 +57,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
     context 'questions' do
       let!(:titles) { parsed_html.css('div#questions div.question h3').map(&:text) }
 
-      it 'returns title, description of all questions' do
+      it 'returns title of all questions' do
         expect(titles[0]).to include 'Text field'
         expect(titles[1]).to include 'Multiline field'
         expect(titles[2]).to include 'Select field'
@@ -64,13 +70,27 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
       end
 
       it 'shows 1 line for short text fields' do
-        single_line_text = parsed_html.css('div#questions div.question')[0]
+        single_line_text = parsed_html.css("div##{text_field.id}")
         expect(single_line_text.css('div.line').count).to eq 1
       end
 
       it 'shows 7 lines for longer text fields' do
-        multi_line_text = parsed_html.css('div#questions div.question')[1]
+        multi_line_text = parsed_html.css("div##{multiline_field.id}")
         expect(multi_line_text.css('div.line').count).to eq 7
+      end
+
+      it 'shows multiselect instructions and options' do
+        multiselect = parsed_html.css("div##{multiselect_field.id}")
+        expect(multiselect.text).to include '*Choose as many as you like'
+        expect(multiselect.text).to include 'Option 1'
+        expect(multiselect.text).to include 'Option 2'
+      end
+
+      it 'shows ranking instructions and options' do
+        ranking = parsed_html.css("div##{ranking_field.id}")
+        expect(ranking.text).to include 'Please write a number from 1 (most preferred) and 2 (least preferred) in each box. Use each number only once.'
+        expect(ranking.text).to include 'Ranking one'
+        expect(ranking.text).to include 'Ranking two'
       end
     end
   end
