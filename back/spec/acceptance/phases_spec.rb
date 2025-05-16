@@ -840,14 +840,20 @@ resource 'Phases' do
       let(:id) { phase.id }
 
       context 'when not logged in' do
-        # TODO: to optimize?
-        before do
-          i1, i2, i3, = create_list(:idea, 4, project: phase.project, phases: [phase])
+        def create_idea(phase, upvotes = 0, downvotes = 0)
+          idea = create(:idea, project: phase.project, phases: [phase])
+          create_list(:reaction, upvotes, reactable: idea, mode: 'up')
+          create_list(:reaction, downvotes, reactable: idea, mode: 'down')
+          idea
+        end
 
-          create(:reaction, reactable: i1, mode: 'up')
-          create(:reaction, reactable: i2, mode: 'down')
-          create(:reaction, reactable: i3, mode: 'up')
-          create(:reaction, reactable: i3, mode: 'down')
+        let!(:i1) { create_idea(phase, 2, 1) }
+        let!(:i2) { create_idea(phase, 0, 1) }
+        let!(:i3) { create_idea(phase, 1, 1) }
+
+        before do
+          # idea without reactions that should not be included in results
+          create_idea(phase, 0, 0)
         end
 
         example_request 'Get common ground results' do
@@ -857,15 +863,30 @@ resource 'Phases' do
             id: phase.id,
             type: 'common_ground_results',
             attributes: {
-              # TODO: to be refined
-              top_consensus_ideas: have_attributes(size: 3),
+              top_consensus_ideas: be_an(Array),
               top_controversial_ideas: be_an(Array)
             }
+          )
+
+          expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id, i1.id, i3.id]
+          expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id, i1.id, i2.id]
+
+          top_controversial_idea = response_data.dig(:attributes, :top_controversial_ideas, 0)
+          expect(top_controversial_idea.with_indifferent_access).to match(
+            id: i3.id,
+            title_multiloc: i3.title_multiloc,
+            votes: { up: 1, down: 1, neutral: 0 }
+          )
+
+          top_consensus_idea = response_data.dig(:attributes, :top_consensus_ideas, 0)
+          expect(top_consensus_idea.with_indifferent_access).to match(
+            id: i2.id,
+            title_multiloc: i2.title_multiloc,
+            votes: { up: 0, down: 1, neutral: 0 }
           )
         end
       end
     end
-
     get 'web_api/v1/phases/:id/sentiment_by_quarter' do
       let(:project) { create(:community_monitor_project) }
       let(:active_phase) { project.phases.first }
