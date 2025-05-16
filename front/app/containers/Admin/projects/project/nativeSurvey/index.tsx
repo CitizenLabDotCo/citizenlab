@@ -21,7 +21,6 @@ import { useIntl } from 'utils/cl-intl';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import AnalysisBanner from './AnalysisBanner';
-import CopySurveyModal from './CopySurveyModal';
 import messages from './messages';
 
 const Forms = () => {
@@ -45,7 +44,6 @@ const Forms = () => {
 
   // Modal states
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
 
   // Other states
   const [isDropdownOpened, setDropdownOpened] = useState(false);
@@ -58,16 +56,10 @@ const Forms = () => {
   // Form-related variables
   const haveSubmissionsComeIn =
     submissionCount.data.attributes.totalSubmissions > 0;
-  const surveyFormPersisted =
-    phase.data.attributes.custom_form_persisted || false;
 
   // Variables from form config
-  const {
-    postingEnabled,
-    togglePostingEnabled,
-    editFormLink,
-    inputImporterLink,
-  } = getFormActionsConfig(project.data, updatePhase, phase.data);
+  const { postingEnabled, togglePostingEnabled, inputImporterLink } =
+    getFormActionsConfig(project.data, updatePhase, phase.data);
 
   // Functions to handle modal states
   const closeDeleteModal = () => {
@@ -153,7 +145,6 @@ const Forms = () => {
             </Button>
             <DropdownSettings
               haveSubmissionsComeIn={haveSubmissionsComeIn}
-              setShowCopySurveyModal={setShowCopySurveyModal}
               handleDownloadResults={handleDownloadResults}
               setDropdownOpened={setDropdownOpened}
               isDropdownOpened={isDropdownOpened}
@@ -162,12 +153,6 @@ const Forms = () => {
           </Box>
         </Box>
         <FormResults />
-        <CopySurveyModal
-          editFormLink={editFormLink}
-          showCopySurveyModal={showCopySurveyModal}
-          setShowCopySurveyModal={setShowCopySurveyModal}
-          surveyFormPersisted={surveyFormPersisted}
-        />
       </Box>
       <DeleteModal
         showDeleteModal={showDeleteModal}

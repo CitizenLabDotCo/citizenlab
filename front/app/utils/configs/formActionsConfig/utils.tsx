@@ -6,7 +6,6 @@ import { IProjectData } from 'api/projects/types';
 
 type FormActionsConfig = {
   phaseId?: string;
-  editFormLink: RouteType;
   inputImporterLink: RouteType;
   heading?: Multiloc;
   postingEnabled: boolean;
@@ -20,7 +19,6 @@ export const getFormActionsConfig = (
 ): FormActionsConfig => {
   return {
     phaseId: phase.id,
-    editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
     inputImporterLink: `/admin/projects/${project.id}/phases/${phase.id}/input-importer`,
     heading: phase.attributes.title_multiloc,
     postingEnabled: phase.attributes.submission_enabled,
