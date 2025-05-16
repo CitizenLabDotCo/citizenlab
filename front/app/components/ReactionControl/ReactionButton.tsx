@@ -404,21 +404,20 @@ const ReactionButton = ({
     const projectName = localize(project.data.attributes.title_multiloc);
     const buttonReactionModeIsActive = buttonReactionMode === userReactionMode;
 
-    const describedById = disabledReason ? `tooltip-${ideaId}` : undefined;
+    const describedById = `tooltip-${ideaId}`;
 
     const disabledMessage = disabledReasonMessage && (
       // We can't put id on FormattedMessage:
       // - If it's after the message descriptor, it'll overwrite the message descriptor's id.
       // - It it's before the message descriptor, it'll be overwritten by the message descriptor's id.
-      <span id={describedById}>
-        <FormattedMessage
-          {...disabledReasonMessage}
-          values={{
-            enabledFromDate,
-            projectName,
-          }}
-        />
-      </span>
+      <FormattedMessage
+        {...disabledReasonMessage}
+        values={{
+          enabledFromDate,
+          projectName,
+        }}
+        aria-hidden
+      />
     );
 
     return (
@@ -437,7 +436,7 @@ const ReactionButton = ({
               icon={buttonReactionModeIsActive ? 'check' : 'vote-ballot'}
               bgColor={buttonReactionModeIsActive ? colors.success : undefined}
               className="e2e-ideacard-vote-button"
-              aria-describedby={describedById}
+              aria-describedby={disabledReason ? describedById : undefined}
             >
               {buttonReactionModeIsActive ? (
                 <FormattedMessage {...messages.voted} />
@@ -468,7 +467,7 @@ const ReactionButton = ({
                 }[buttonReactionMode],
                 buttonReactionModeEnabled ? 'enabled' : '',
               ].join(' ')}
-              aria-describedby={describedById}
+              aria-describedby={disabledReason ? describedById : undefined}
             >
               <ReactionIconContainer
                 styleType={styleType}
