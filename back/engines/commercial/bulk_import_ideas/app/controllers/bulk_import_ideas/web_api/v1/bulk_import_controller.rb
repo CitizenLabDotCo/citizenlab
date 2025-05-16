@@ -116,7 +116,7 @@ module BulkImportIdeas
     def bulk_create_params
       params
         .require(:import)
-        .permit(%i[file locale personal_data legacy])
+        .permit(%i[file locale personal_data legacy_pdf])
     end
 
     def authorize_bulk_import_ideas
@@ -160,7 +160,7 @@ module BulkImportIdeas
 
     # Use legacy pdf if the html_pdfs feature flag is off or ?legacy=true in importer url
     def use_legacy_pdf?
-      legacy = params[:import] ? !!bulk_create_params[:legacy] : false # Allows backdoor access to the old pdf format whilst feature flag is on
+      legacy = params[:import] ? !!bulk_create_params[:legacy_pdf] : false # Allows backdoor access to the old pdf format whilst feature flag is on
       !AppConfiguration.instance.settings.dig('html_pdfs', 'enabled') || legacy
     end
 
