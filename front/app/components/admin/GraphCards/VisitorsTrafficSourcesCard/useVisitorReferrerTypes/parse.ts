@@ -39,7 +39,8 @@ export const parseTableData = (
 };
 
 export const parseExcelData = (
-  pieData: PieRow[] | null,
+  pieData: PieRow[],
+  tableData: VisitorsTrafficSourcesResponse['data']['attributes']['top_50_referrers'],
   translations: Translations
 ) => {
   if (pieData === null) return null;
@@ -50,8 +51,16 @@ export const parseExcelData = (
     [translations.percentageOfVisits]: row.percentage,
   }));
 
+  const referrerData = tableData.map((row) => ({
+    [translations.referrer]: row.referrer,
+    [translations.trafficSource]: translations[row.referrer_type],
+    [translations.numberOfVisits]: row.visits,
+    [translations.numberOfVisitors]: row.visitors,
+  }));
+
   const xlsxData = {
     [translations.trafficSources]: trafficSourceData,
+    [translations.referrerWebsites]: referrerData,
   };
 
   return xlsxData;

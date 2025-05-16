@@ -11,7 +11,6 @@ import EmptyPieChart from '../EmptyPieChart';
 import { ProjectId, Dates } from '../typings';
 
 import Chart from './Chart';
-import getXlsxData from './getXlsxData';
 import messages from './messages';
 import ReferrerListLink from './RefferListLink';
 import Table from './Table';
@@ -58,16 +57,7 @@ const VisitorsTrafficSourcesCard = ({
         name: cardTitle,
         svgNode: currentView === 'chart' ? graphRef : undefined,
         xlsx: {
-          onDownload: () =>
-            getXlsxData(
-              {
-                projectId,
-                startAtMoment,
-                endAtMoment,
-              },
-              xlsxData,
-              formatMessage
-            ),
+          data: xlsxData,
         },
         startAt,
         endAt,

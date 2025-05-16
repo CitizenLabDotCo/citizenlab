@@ -32,7 +32,10 @@ export default function useVisitorsReferrerTypes({
     ? parseTableData(data.data.attributes, translations)
     : undefined;
 
-  const xlsxData = pieData ? parseExcelData(pieData, translations) : undefined;
+  const xlsxData =
+    pieData && tableData
+      ? parseExcelData(pieData, tableData, translations)
+      : undefined;
 
   return { pieData, tableData, xlsxData };
 }
