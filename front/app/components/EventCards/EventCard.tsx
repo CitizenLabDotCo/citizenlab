@@ -29,7 +29,7 @@ const Container = styled.li`
   box-shadow: none;
   border: solid 1px #ccc;
   border-radius: 6px;
-  overflow: hidden; // Ensures image and inner content respect radius
+  overflow: hidden; // Ensures image and inner content respect border radius
   position: relative;
 
   &:hover {
@@ -42,7 +42,7 @@ const Container = styled.li`
 const AspectRatioBox = styled.div`
   position: relative;
   width: 100%;
-  padding-top: calc(100% / 3); /* Enforces 3:1 aspect ratio */
+  padding-top: 33.33%; /* Enforces 3:1 aspect ratio */
   overflow: hidden;
 `;
 
