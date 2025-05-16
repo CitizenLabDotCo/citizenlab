@@ -70,7 +70,7 @@ resource 'Idea form exports' do
               expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
                 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
               )
-              do_request({ import: { legacy: true } })
+              do_request({ import: { legacy_pdf: true } })
               assert_status 200
             end
           end
