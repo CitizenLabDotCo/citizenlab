@@ -44,7 +44,6 @@ const EditButtonWithWarningModal = ({ phaseId, editFormLink }: Props) => {
   return (
     <>
       <Button
-        mr="8px"
         onClick={() => {
           submissionCount.data.attributes.totalSubmissions > 0
             ? setShowEditWarningModal(true)
