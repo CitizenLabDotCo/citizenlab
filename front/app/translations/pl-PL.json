@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Ostrzeżenie: Wbudowana ankieta może mieć problemy z dostępnością dla użytkowników czytników ekranu. Jeśli napotkasz jakiekolwiek trudności, skontaktuj się z administratorem platformy, aby otrzymać link do ankiety z oryginalnej platformy. Możesz też poprosić o inne sposoby wypełnienia ankiety.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Ankieta",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Aby dowiedzieć się, czy możesz wziąć udział w tej ankiecie, proszę najpierw {logInLink} do platformy.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Tylko zweryfikowani użytkownicy mogą wypełnić tą ankietę. Proszę najpierw {signUpLink} lub {logInLink}.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Ta ankieta może być przeprowadzone tylko wtedy, gdy ten etap na osi czasu jest aktywny.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Prosimy o {completeRegistrationLink} , aby wziąć udział w ankiecie.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Niestety, nie masz uprawnień do wzięcia udziału w tej ankiecie.",

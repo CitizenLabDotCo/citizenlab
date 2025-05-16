@@ -829,7 +829,6 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {0 voluntari} one {# voluntar} other {# voluntari}}",
   "app.containers.ProjectsShowPage.process.survey.survey": "Sondaj",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Pentru a ști dacă puteți lua parte la acest chestionar, vă rugăm ca mai întâi să vă logați {logInLink} pe platformă.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Numai utilizatorii verificați pot participa la acest sondaj. Vă rugăm să {signUpLink} sau {logInLink} mai întâi.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Se poate răspunde la acest chestionar doar atunci când această etapă din cronologie este activă.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Din păcate, nu aveți permisiunea de a participa la acest chestionar.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Pentru a putea completa acest chestionar trebuie să vă verificăm identitatea. {verificationLink}",

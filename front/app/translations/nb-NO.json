@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Advarsel: Den innebygde undersøkelsen kan ha tilgjengelighetsproblemer for brukere av skjermlesere. Hvis du opplever utfordringer, kan du kontakte plattformadministratoren for å få tilsendt en lenke til undersøkelsen fra den opprinnelige plattformen. Alternativt kan du be om andre måter å fylle ut undersøkelsen på.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Spørreundersøkelse",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "For å vite om du kan delta i denne undersøkelsen, må du først gå inn på plattformen {logInLink} .",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Kun verifiserte deltakere kan delta i denne undersøkelsen. Vennligst {signUpLink} eller {logInLink} først.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Denne undersøkelsen kan bare gjennomføres når denne fasen i tidslinjen er aktiv.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Vennligst {completeRegistrationLink} for å svare på undersøkelsen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Denne undersøkelsen er ikke aktivert for øyeblikket",

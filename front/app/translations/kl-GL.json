@@ -1008,7 +1008,6 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {no frivillige} one {# frivillig} other {# frivillige}}",
   "app.containers.ProjectsShowPage.process.survey.survey": "Immersuilluni apersuineq",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Misissuinermut uunga peqataasinnaanerlutit paasiniarukku isaaffimmut uunga iseqqaartariaqarputit {logInLink}.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Atuisut nalunaarsorneqarsimasut taamaallaat misissuinermi matumani peqataasinnaapput.  {signUpLink} imaluunniit {logInLink} toqqaqqaalaaruk",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Misissuineq una aatsaat ingerlanneqarsinnaavoq nikeriarfik piffissamut nalunaarsuiffik aatsaat ikissimappat",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Please {completeRegistrationLink} to take the survey.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Ajoraluartumik uuminnga misissuisinnaatitaanngilatit.",

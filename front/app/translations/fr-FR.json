@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Attention : Les enquêtes intégrées peuvent poser des problèmes d'accessibilité pour les utilisateurs de lecteurs d'écran. Si vous rencontrez des difficultés, veuillez contacter l'administrateur de la plateforme pour obtenir un lien vers l'enquête sur la plateforme d'origine. Vous pouvez également demander d'autres moyens pour répondre à l'enquête.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Enquête",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Pour savoir si vous pouvez participer à cette enquête, {logInLink}.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Seuls les utilisateurs vérifiés peuvent répondre à cette enquête. Veuillez commencer par {signUpLink} ou {logInLink}.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Vous pourrez participer à cette enquête lorsque cette phase du processus sera active.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Veuillez {completeRegistrationLink} pour répondre à l'enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Cette enquête n'est pas activée actuellement",

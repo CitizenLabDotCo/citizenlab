@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "انتباہ: ایمبیڈڈ سروے میں اسکرین ریڈر صارفین کے لیے قابل رسائی مسائل ہو سکتے ہیں۔ اگر آپ کو کوئی چیلنج درپیش ہے، تو براہ کرم اصل پلیٹ فارم سے سروے کا لنک حاصل کرنے کے لیے پلیٹ فارم کے منتظم سے رابطہ کریں۔ متبادل طور پر، آپ سروے کو پُر کرنے کے لیے دوسرے طریقوں سے درخواست کر سکتے ہیں۔",
   "app.containers.ProjectsShowPage.process.survey.survey": "سروے",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "یہ جاننے کے لیے کہ آیا آپ اس سروے میں حصہ لے سکتے ہیں، براہ کرم پہلے پلیٹ فارم پر {logInLink} جائیں۔",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "صرف تصدیق شدہ شرکاء ہی اس سروے میں حصہ لے سکتے ہیں۔ براہ کرم پہلے {signUpLink} یا {logInLink} ۔",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "یہ سروے صرف اس وقت لیا جا سکتا ہے جب ٹائم لائن میں یہ مرحلہ فعال ہو۔",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "سروے میں حصہ لینے کے لیے براہ کرم {completeRegistrationLink} ۔",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "یہ سروے فی الحال فعال نہیں ہے۔",

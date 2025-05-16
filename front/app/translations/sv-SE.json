@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Varning: Den inbäddade enkäten Den inbäddade enkäten kan ha tillgänglighetsproblem för användare av skärmläsare. Om du upplever några utmaningar, vänligen kontakta plattformsadministratören för att få en länk till undersökningen från den ursprungliga plattformen. Alternativt kan du begära andra sätt att fylla i enkäten.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Undersökning",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "{logInLink} på plattformen först för att få veta om du kan delta i den här undersökningen.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Endast verifierade deltagare kan delta i den här undersökningen. {signUpLink} eller {logInLink} först.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Den här undersökningen kan endast göras när denna fas på tidslinjen är aktiv.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Vänligen {completeRegistrationLink} för att svara på enkäten.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Den här undersökningen är för närvarande inte aktiverad",

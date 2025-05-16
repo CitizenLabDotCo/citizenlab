@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Warnung: Die eingebettete Umfrage kann Probleme mit der Zugänglichkeit für Screenreader-Nutzer*innen haben. Wenn Sie auf Probleme stoßen, wenden Sie sich bitte an den Plattform-Admin, um einen Link zur Umfrage von der ursprünglichen Plattform zu erhalten. Alternativ können Sie auch andere Möglichkeiten zum Ausfüllen der Umfrage anfordern.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Umfrage",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Um zu erfahren, ob Sie an dieser Umfrage teilnehmen können, besuchen Sie bitte zuerst {logInLink} die Plattform.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Nur verifizierte Nutzer*innen können an dieser Umfrage teilnehmen. Bitte {signUpLink} oder {logInLink} zuerst.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "An der Umfrage kann nur teilgenommen werden, wenn diese Phase aktiv ist.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Bitte {completeRegistrationLink}, um an der Umfrage teilzunehmen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Leider verfügst du über keine Rechte, um an dieser Umfrage teilzunehmen.",

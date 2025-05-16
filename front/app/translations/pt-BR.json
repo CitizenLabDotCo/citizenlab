@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Aviso: A pesquisa incorporada pode ter problemas de acessibilidade para usuários de leitores de tela. Se você tiver algum problema, entre em contato com o administrador da plataforma para receber um link para a pesquisa da plataforma original. Como alternativa, você pode solicitar outras maneiras de preencher a pesquisa.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Pesquisa",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Para saber se você pode participar desta pesquisa, por favor {logInLink} à plataforma primeiro.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Apenas usuários verificados podem participar desta pesquisa. Por favor {signUpLink} ou {logInLink} primeiro.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Esta pesquisa só pode ser realizada quando esta fase da linha do tempo estiver ativa.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Por favor {completeRegistrationLink} para fazer o inquérito.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Esta pesquisa não está ativada no momento",

@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Warning: The embedded survey may have accessibility issues for screenreader users. If you experience any challenges, please reach out to the platform admin to receive a link to the survey from the original platform. Alternatively, you can request other ways to fill out the survey.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Upitnik",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Da biste znali da li možete da učestvujete u ovom upitniku, molimo vas {logInLink} na platformu.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Samo verifikovani učesnici mogu da pristupe ovom upitniku. Molimo vas {signUpLink} ili {logInLink}.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Ovaj upitnik se može popuniti tek nakon što ova faza bude aktivna.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Молимо {completeRegistrationLink} да попуните анкету.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Ova anketa trenutno nije omogućena",

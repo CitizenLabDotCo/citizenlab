@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "ਚੇਤਾਵਨੀ: ਏਮਬੇਡ ਕੀਤੇ ਸਰਵੇਖਣ ਵਿੱਚ ਸਕ੍ਰੀਨ ਰੀਡਰ ਉਪਭੋਗਤਾਵਾਂ ਲਈ ਪਹੁੰਚਯੋਗਤਾ ਸਮੱਸਿਆਵਾਂ ਹੋ ਸਕਦੀਆਂ ਹਨ। ਜੇਕਰ ਤੁਹਾਨੂੰ ਕੋਈ ਚੁਣੌਤੀਆਂ ਆਉਂਦੀਆਂ ਹਨ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਮੂਲ ਪਲੇਟਫਾਰਮ ਤੋਂ ਸਰਵੇਖਣ ਦਾ ਲਿੰਕ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਪਲੇਟਫਾਰਮ ਪ੍ਰਸ਼ਾਸਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ। ਵਿਕਲਪਕ ਤੌਰ 'ਤੇ, ਤੁਸੀਂ ਸਰਵੇਖਣ ਨੂੰ ਭਰਨ ਲਈ ਹੋਰ ਤਰੀਕਿਆਂ ਦੀ ਬੇਨਤੀ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.containers.ProjectsShowPage.process.survey.survey": "ਸਰਵੇਖਣ",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "ਇਹ ਜਾਣਨ ਲਈ ਕਿ ਕੀ ਤੁਸੀਂ ਇਸ ਸਰਵੇਖਣ ਵਿੱਚ ਹਿੱਸਾ ਲੈ ਸਕਦੇ ਹੋ, ਕਿਰਪਾ ਕਰਕੇ ਪਹਿਲਾਂ ਪਲੇਟਫਾਰਮ 'ਤੇ {logInLink} ਪਹੁੰਚੋ।",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "ਸਿਰਫ਼ ਪ੍ਰਮਾਣਿਤ ਭਾਗੀਦਾਰ ਹੀ ਇਸ ਸਰਵੇਖਣ ਵਿੱਚ ਹਿੱਸਾ ਲੈ ਸਕਦੇ ਹਨ। ਕਿਰਪਾ ਕਰਕੇ ਪਹਿਲਾਂ {signUpLink} ਜਾਂ {logInLink} ।",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "ਇਹ ਸਰਵੇਖਣ ਉਦੋਂ ਹੀ ਲਿਆ ਜਾ ਸਕਦਾ ਹੈ ਜਦੋਂ ਸਮਾਂ-ਸੀਮਾ ਵਿੱਚ ਇਹ ਪੜਾਅ ਸਰਗਰਮ ਹੋਵੇ।",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "ਸਰਵੇਖਣ ਲੈਣ ਲਈ ਕਿਰਪਾ ਕਰਕੇ {completeRegistrationLink} ।",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "ਇਹ ਸਰਵੇਖਣ ਵਰਤਮਾਨ ਵਿੱਚ ਸਮਰੱਥ ਨਹੀਂ ਹੈ",

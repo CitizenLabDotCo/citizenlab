@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Advarsel: Den indlejrede undersøgelse kan have tilgængelighedsproblemer for brugere af skærmlæsere. Hvis du oplever udfordringer, bedes du kontakte platformens administrator for at modtage et link til undersøgelsen fra den oprindelige platform. Alternativt kan du anmode om andre måder at udfylde undersøgelsen på.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Spørgeundersøgelse",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "For at finde ud af, om du kan deltage i denne undersøgelse, skal du først {logInLink} på platformen.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Kun registrerede brugere kan deltage i denne survey. Venligst {signUpLink} eller {logInLink} først.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Denne undersøgelse kan kun tages, når denne fase i tidslinjen er aktiv.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Du bedes henvende dig til {completeRegistrationLink} for at deltage i undersøgelsen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Desværre har du ikke rettigheder til at tage denne undersøgelse.",

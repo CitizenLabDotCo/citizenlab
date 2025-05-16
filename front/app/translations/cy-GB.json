@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Rhybudd: Mae'n bosibl y bydd gan yr arolwg sydd wedi'i fewnosod broblemau hygyrchedd i ddefnyddwyr darllenwyr sgrin. Os ydych chi'n profi unrhyw heriau, cysylltwch â gweinyddwr y platfform i dderbyn dolen i'r arolwg o'r platfform gwreiddiol. Fel arall, gallwch ofyn am ffyrdd eraill o lenwi'r arolwg.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Arolwg",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "I wybod a allwch chi gymryd rhan yn yr arolwg hwn, os gwelwch yn dda {logInLink} i'r platfform yn gyntaf.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Dim ond cyfranogwyr dilys all gymryd yr arolwg hwn. Os gwelwch yn dda {signUpLink} neu {logInLink} yn gyntaf.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Dim ond pan fydd y cam hwn yn y llinell amser yn weithredol y gellir cynnal yr arolwg hwn.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Os gwelwch yn dda {completeRegistrationLink} i gymryd yr arolwg.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Nid yw'r arolwg hwn wedi'i alluogi ar hyn o bryd",

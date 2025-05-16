@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Opgepasst: Déi embedded Ëmfro kann Accessibilitéitsprobleemer fir Screenreader Benotzer hunn. Wann Dir Erausfuerderunge erliewt, kontaktéiert w.e.g. den Plattformadministrator fir e Link op d'Ëmfro vun der ursprénglecher Plattform ze kréien. Alternativ kënnt Dir aner Weeër ufroen fir d'Ëmfro auszefëllen.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Ëmfro",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Fir gewuer ze ginn, ob Dir un dëser Ëmfro deelhuele kënnt, wgl. {logInLink} fir d’éischt op d’Plattform.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Nëmmen iwwerpréiwte Benotzer kënnen un dëser Ëmfro deelhuelen. Wgl. fir d’éischt. {signUpLink} oder {logInLink}.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Un dëser Ëmfro kann nëmmen deelgeholl ginn, wann dës Phas vum Prozess aktiv ass.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Weg {completeRegistrationLink} fir d'Ëmfro ze huelen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Dës Ëmfro ass momentan net aktivéiert",

@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Warning: The embedded survey may have accessibility issues for screenreader users. If you experience any challenges, please reach out to the platform admin to receive a link to the survey from the original platform. Alternatively, you can request other ways to fill out the survey.",
   "app.containers.ProjectsShowPage.process.survey.survey": "{tenantName, select, westminster {Westminster’s Innovation Challenge - Your idea} other {Survey}}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Please {logInLink} to the platform to see how you can participate.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Only verified participants can take this survey. Please {signUpLink} or {logInLink} first.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "This action can only be completed when this phase is active.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Please {completeRegistrationLink} to take the survey.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "This survey is not currently enabled",

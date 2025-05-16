@@ -1724,7 +1724,6 @@
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Waarschuwing: De ingesloten enquête kan toegankelijkheidsproblemen veroorzaken voor gebruikers van screenreaders. Als je problemen ondervindt, neem dan contact op met de platformbeheerder om een link naar de enquête op het oorspronkelijke platform te ontvangen. Je kunt ook andere manieren aanvragen om de enquête in te vullen.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Enquête",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Om te weten of je kunt deelnemen aan deze enquête, moet je eerst even {logInLink} op het platform.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Enkel geverifieerde gebruikers kunnen deelnemen aan deze enquête. Gelieve eerst te {signUpLink} of te {logInLink}.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Aan deze enquête kan alleen worden deelgenomen wanneer de desbetreffende fase van de tijdlijn actief is.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Gelieve {completeRegistrationLink} om de enquête in te vullen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Helaas, je hebt geen rechten om deel te nemen aan deze enquête.",

@@ -677,7 +677,6 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {no volunteers} one {# volunteer} other {# volunteers}}",
   "app.containers.ProjectsShowPage.process.survey.survey": "Survey",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "To know if you can take part in this survey, please {logInLink} to the platform first.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified": "Only verified participants can take this survey. Please {signUpLink} or {logInLink} first.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "This survey can only be taken when this phase in the timeline is active.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "This survey is not currently enabled",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Taking this survey requires verification of your identity. {verificationLink}",
