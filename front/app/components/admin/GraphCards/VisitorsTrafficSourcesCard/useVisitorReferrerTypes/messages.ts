@@ -33,4 +33,16 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.percentageOfVisits',
     defaultMessage: 'Percentage of visits',
   },
+  referrerWebsites: {
+    id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.referrerWebsites',
+    defaultMessage: 'Referrer websites',
+  },
+  referrer: {
+    id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.referrer',
+    defaultMessage: 'Referrer',
+  },
+  numberOfVisitors: {
+    id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.numberOfVisitors',
+    defaultMessage: 'Number of visitors',
+  },
 });

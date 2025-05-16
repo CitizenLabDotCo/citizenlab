@@ -1,7 +1,10 @@
 import { useVisitorsTrafficSources } from 'api/graph_data_units';
 
 import { ProjectId, DatesStrings } from 'components/admin/GraphCards/typings';
-import { parsePieData } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
+import {
+  parsePieData,
+  parseTableData,
+} from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
 import { getTranslations } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/translations';
 
 import { useIntl } from 'utils/cl-intl';
@@ -26,12 +29,9 @@ export default function useVisitorsReferrerTypes({
     ? parsePieData(data.data.attributes, translations)
     : undefined;
 
-  const tableData = data?.data.attributes.top_50_referrers.map(
-    ({ referrer_type, ...rest }) => ({
-      ...rest,
-      referrer_type: translations[referrer_type],
-    })
-  );
+  const tableData = data
+    ? parseTableData(data.data.attributes, translations)
+    : undefined;
 
   return { pieData, tableData };
 }
