@@ -9,6 +9,16 @@ RSpec.describe ProjectFolders::Folder do
     end
   end
 
+  it { is_expected.to validate_presence_of(:title_multiloc) }
+  
+  it "validates presence of slug" do
+    folder = build(:project_folder)
+    allow(folder).to receive(:generate_slug) # Stub to do nothing
+    folder.slug = nil
+    expect(folder).to be_invalid
+    expect(folder.errors[:slug]).to include("can't be blank")
+  end
+
   describe 'Folder without admin publication' do
     it 'is invalid' do
       folder = create(:project_folder)
