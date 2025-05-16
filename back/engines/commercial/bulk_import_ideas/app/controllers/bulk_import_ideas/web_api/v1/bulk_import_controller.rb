@@ -160,7 +160,7 @@ module BulkImportIdeas
 
     # Use legacy pdf if the html_pdfs feature flag is off or ?legacy=true in importer url
     def use_legacy_pdf?
-      legacy = params[:import] ? bulk_create_params[:legacy] || false : false # Allows backdoor access to the old pdf format whilst feature flag is on
+      legacy = params[:import] ? !!bulk_create_params[:legacy] : false # Allows backdoor access to the old pdf format whilst feature flag is on
       !AppConfiguration.instance.settings.dig('html_pdfs', 'enabled') || legacy
     end
 
