@@ -13,7 +13,7 @@ interface RequestParams {
   format: string;
   locale: SupportedLocale;
   personal_data: boolean;
-  legacy?: boolean;
+  legacy_pdf?: boolean;
 }
 
 interface JobIdResponse {
@@ -27,12 +27,12 @@ const addOfflineIdeas = async ({
   format,
   locale,
   personal_data,
-  legacy,
+  legacy_pdf,
 }: RequestParams): Promise<JobIdResponse> =>
   fetcher<JobIdResponse>({
     path: `/phases/${phase_id}/importer/bulk_create_async/idea/${format}`,
     action: 'post',
-    body: { import: { file, locale, personal_data, legacy } },
+    body: { import: { file, locale, personal_data, legacy_pdf } },
   });
 
 const useAddOfflineIdeasAsync = () => {

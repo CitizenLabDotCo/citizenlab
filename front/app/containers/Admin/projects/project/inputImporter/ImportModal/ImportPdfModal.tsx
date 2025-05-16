@@ -56,7 +56,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
 
   // TEMP: Remove this when the legacy PDF format is no longer required
   const [searchParams] = useSearchParams();
-  const legacyPdfImport = searchParams.get('legacy') === 'true' || false;
+  const legacyPdfImport = searchParams.get('legacy_pdf') !== null;
 
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
@@ -106,7 +106,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         phase_id: phaseId,
         file: file.base64,
         format: 'pdf',
-        legacy: legacyPdfImport,
+        legacy_pdf: legacyPdfImport,
         ...rest,
       });
 
