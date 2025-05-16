@@ -14,4 +14,16 @@ export default defineMessages({
     id: 'app.containers.Admin.surveyFormTab.editSurveyForm',
     defaultMessage: 'Edit survey form',
   },
+  downloads: {
+    id: 'app.containers.Admin.surveyFormTab.downloads',
+    defaultMessage: 'Downloads',
+  },
+  or: {
+    id: 'app.containers.Admin.surveyFormTab.or',
+    defaultMessage: 'or',
+  },
+  duplicateAnotherSurvey: {
+    id: 'app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey',
+    defaultMessage: 'Duplicate another survey',
+  },
 });

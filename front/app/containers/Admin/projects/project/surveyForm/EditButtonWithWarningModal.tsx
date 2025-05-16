@@ -17,13 +17,12 @@ import clHistory from 'utils/cl-router/history';
 import messages from './messages';
 
 interface Props {
-  projectId: string;
   phaseId: string;
+  editFormLink: RouteType;
 }
 
-const EditButtonWithWarningModal = ({ projectId, phaseId }: Props) => {
+const EditButtonWithWarningModal = ({ phaseId, editFormLink }: Props) => {
   const [showEditWarningModal, setShowEditWarningModal] = useState(false);
-  const editFormLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`;
   const locale = useLocale();
   const { data: phase } = usePhase(phaseId);
   const { data: submissionCount } = useFormSubmissionCount({
@@ -45,7 +44,6 @@ const EditButtonWithWarningModal = ({ projectId, phaseId }: Props) => {
   return (
     <>
       <Button
-        mr="8px"
         onClick={() => {
           submissionCount.data.attributes.totalSubmissions > 0
             ? setShowEditWarningModal(true)
