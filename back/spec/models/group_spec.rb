@@ -9,6 +9,16 @@ RSpec.describe Group do
     end
   end
 
+  it { is_expected.to validate_presence_of(:title_multiloc) }
+
+  it 'validates presence of slug' do
+    group = build(:group)
+    allow(group).to receive(:generate_slug) # Stub to do nothing
+    group.slug = nil
+    expect(group).to be_invalid
+    expect(group.errors[:slug]).to include("can't be blank")
+  end
+
   context 'users (members)' do
     it 'can be assigned to manual groups' do
       g1 = create(:group)
@@ -76,6 +86,25 @@ RSpec.describe Group do
     it 'generates a slug based on the first non-empty locale' do
       group.update!(title_multiloc: { 'nl-BE' => 'titel', 'fr-BE' => 'titlefrançais' })
       expect(group.slug).to eq 'titel'
+    end
+  end
+
+  describe '#sanitize_title_multiloc' do
+    it 'removes all HTML tags from title_multiloc' do
+      group = build(
+        :group,
+        title_multiloc: {
+          'en' => 'Something <script>alert("XSS")</script> something',
+          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
+          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      )
+
+      group.save!
+
+      expect(group.title_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(group.title_multiloc['fr-BE']).to eq('Something')
+      expect(group.title_multiloc['nl-BE']).to eq('Plain text with formatting')
     end
   end
 end

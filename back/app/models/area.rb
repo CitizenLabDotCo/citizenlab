@@ -38,7 +38,12 @@ class Area < ApplicationRecord
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   before_validation :sanitize_description_multiloc
+  before_validation :sanitize_title_multiloc
   before_validation :strip_title
+
+  # The area is a custom field option of the domicile custom field.
+  # This is only relevant for the domicile custom field.
+  # The association is optional because the area can be used in other contexts.
 
   # If the domicile custom field exists, each area is associated to one of its options.
   # The two associated resources are kept in sync: changes to the
@@ -85,7 +90,20 @@ class Area < ApplicationRecord
     self.description_multiloc = service.linkify_multiloc description_multiloc
   end
 
+  def sanitize_title_multiloc
+    return unless title_multiloc&.any?
+
+    strip_title
+
+    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
+      title_multiloc,
+      []
+    )
+  end
+
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

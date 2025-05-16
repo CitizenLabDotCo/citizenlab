@@ -70,6 +70,9 @@ class Project < ApplicationRecord
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
+  before_validation :sanitize_title_multiloc
+  before_validation :sanitize_description_preview_multiloc
+  before_validation :sanitize_header_bg_alt_text_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
   before_validation :strip_title
@@ -251,11 +254,40 @@ class Project < ApplicationRecord
     self.description_multiloc = service.linkify_multiloc(description_multiloc)
   end
 
+  def sanitize_title_multiloc
+    return unless title_multiloc&.any?
+
+    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
+      title_multiloc,
+      []
+    )
+  end
+
+  def sanitize_description_preview_multiloc
+    return unless description_preview_multiloc&.any?
+
+    self.description_preview_multiloc = SanitizationService.new.sanitize_multiloc(
+      description_preview_multiloc,
+      []
+    )
+  end
+
+  def sanitize_header_bg_alt_text_multiloc
+    return unless header_bg_alt_text_multiloc&.any?
+
+    self.header_bg_alt_text_multiloc = SanitizationService.new.sanitize_multiloc(
+      header_bg_alt_text_multiloc,
+      []
+    )
+  end
+
   def set_visible_to
     self.visible_to ||= 'public'
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

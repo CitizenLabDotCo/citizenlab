@@ -9,6 +9,8 @@ RSpec.describe Topic do
     end
   end
 
+  it { is_expected.to validate_presence_of(:title_multiloc) }
+
   describe 'order_ideas_count' do
     # topic 0: ideas 1, 3, 6 (3)
     # topic 1: / (0)
@@ -36,5 +38,36 @@ RSpec.describe Topic do
       expect(sorted_topics.map(&:id).take(3)).to eq [topics[0].id, topics[5].id, topics[3].id]
       expect(sorted_topics.map(&:id).last).to eq topics[2].id
     end
+  end
+
+  describe 'sanitization of simple multilocs' do
+    let(:multiloc) do
+      {
+        'en' => 'Something <script>alert("XSS")</script> something',
+        'fr-BE' => 'Something <img src=x onerror=alert(1)>',
+        'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+      }
+    end
+
+    shared_examples 'sanitizes HTML in multiloc' do |field_name, options = {}|
+      it "removes all HTML tags from #{field_name}" do
+        topic = build(:topic, field_name => multiloc)
+        topic.save!
+
+        expect(topic.public_send(field_name)['en']).to eq('Something alert("XSS") something')
+
+        # Use different expectation for fr-BE based on options
+        if options[:strip_spaces]
+          expect(topic.public_send(field_name)['fr-BE']).to eq('Something')
+        else
+          expect(topic.public_send(field_name)['fr-BE']).to eq('Something ')
+        end
+
+        expect(topic.public_send(field_name)['nl-BE']).to eq('Plain text with formatting')
+      end
+    end
+
+    include_examples 'sanitizes HTML in multiloc', :description_multiloc
+    include_examples 'sanitizes HTML in multiloc', :title_multiloc, strip_spaces: true
   end
 end

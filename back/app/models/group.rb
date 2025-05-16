@@ -20,7 +20,7 @@
 class Group < ApplicationRecord
   include EmailCampaigns::GroupDecorator
 
-  slug from: proc { |group| group.title_multiloc.values.find(&:present?) }
+  slug from: proc { |group| group.title_multiloc&.values&.find(&:present?) }
 
   has_many :groups_projects, dependent: :destroy
   has_many :projects, through: :groups_projects
@@ -35,6 +35,7 @@ class Group < ApplicationRecord
   validates :membership_type, presence: true, inclusion: { in: proc { membership_types } }
 
   before_validation :set_membership_type, on: :create
+  before_validation :sanitize_title_multiloc
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction) }
@@ -89,7 +90,18 @@ class Group < ApplicationRecord
     self.membership_type ||= 'manual'
   end
 
+  def sanitize_title_multiloc
+    return unless title_multiloc&.any?
+
+    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
+      title_multiloc,
+      []
+    )
+  end
+
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

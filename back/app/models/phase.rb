@@ -91,6 +91,11 @@ class Phase < ApplicationRecord
   belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
 
   before_validation :sanitize_description_multiloc
+  before_validation :sanitize_title_multiloc
+  before_validation :sanitize_voting_term_singular_multiloc
+  before_validation :sanitize_voting_term_plural_multiloc
+  before_validation :sanitize_native_survey_title_multiloc
+  before_validation :sanitize_native_survey_button_multiloc
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_presentation_mode, on: :create
@@ -297,6 +302,51 @@ class Phase < ApplicationRecord
     self.description_multiloc = service.linkify_multiloc(description_multiloc)
   end
 
+  def sanitize_title_multiloc
+    return unless title_multiloc&.any?
+
+    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
+      title_multiloc,
+      []
+    )
+  end
+
+  def sanitize_voting_term_singular_multiloc
+    return unless voting_term_singular_multiloc&.any?
+
+    self.voting_term_singular_multiloc = SanitizationService.new.sanitize_multiloc(
+      voting_term_singular_multiloc,
+      []
+    )
+  end
+
+  def sanitize_voting_term_plural_multiloc
+    return unless voting_term_plural_multiloc&.any?
+
+    self.voting_term_plural_multiloc = SanitizationService.new.sanitize_multiloc(
+      voting_term_plural_multiloc,
+      []
+    )
+  end
+
+  def sanitize_native_survey_title_multiloc
+    return unless native_survey_title_multiloc&.any?
+
+    self.native_survey_title_multiloc = SanitizationService.new.sanitize_multiloc(
+      native_survey_title_multiloc,
+      []
+    )
+  end
+
+  def sanitize_native_survey_button_multiloc
+    return unless native_survey_button_multiloc&.any?
+
+    self.native_survey_button_multiloc = SanitizationService.new.sanitize_multiloc(
+      native_survey_button_multiloc,
+      []
+    )
+  end
+
   def validate_end_at
     return if end_at.present? || TimelineService.new.last_phase?(self)
 
@@ -344,6 +394,8 @@ class Phase < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

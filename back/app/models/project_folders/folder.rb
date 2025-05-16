@@ -24,7 +24,7 @@ module ProjectFolders
     self.table_name = 'project_folders_folders'
     include PgSearch::Model
 
-    slug from: proc { |project| project.title_multiloc.values.find(&:present?) }
+    slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
     has_one :admin_publication, as: :publication, dependent: :destroy
     accepts_nested_attributes_for :admin_publication, update_only: true
@@ -43,6 +43,8 @@ module ProjectFolders
 
     before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
+    before_validation :sanitize_header_bg_alt_text_multiloc
+    before_validation :sanitize_title_multiloc
     before_validation :strip_title
     before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
 
@@ -93,10 +95,36 @@ module ProjectFolders
       self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags description_preview_multiloc
     end
 
+    def sanitize_header_bg_alt_text_multiloc
+      return unless header_bg_alt_text_multiloc&.any?
+
+      self.header_bg_alt_text_multiloc = SanitizationService.new.sanitize_multiloc(
+        header_bg_alt_text_multiloc,
+        []
+      )
+    end
+
+    def sanitize_title_multiloc
+      return unless title_multiloc&.any?
+
+      self.title_multiloc = SanitizationService.new.sanitize_multiloc(
+        title_multiloc,
+        []
+      )
+    end
+
     def strip_title
+      return unless title_multiloc&.any?
+
       title_multiloc.each do |key, value|
         title_multiloc[key] = value.strip
       end
+    end
+
+    def set_slug
+      return unless title_multiloc&.any?
+
+      self.slug = title_multiloc.values.find(&:present?)
     end
 
     def set_admin_publication
