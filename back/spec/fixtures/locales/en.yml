@@ -29,6 +29,11 @@ en:
       this_answer: This answer will only be shared with moderators, and not to the public.
       page: Page
       date_published: Date Published (dd-mm-yyyy)
+      instructions: 'Instructions'
+      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
+      write_in_language: 'Write your answers in the same language as this form'
+      linear_scale_print_description: 'Please write a number between %{min_label} and %{max_label} only'
+      unsupported_field: This field cannot be completed on paper. Please use the online version of this form instead.
   custom_fields:
     ideas:
       title:
@@ -69,6 +74,7 @@ en:
         description:
       other_input_field:
         title: Type your answer
+        print_title: If '%{other_option}', please specify
       ask_follow_up_field:
         title: Tell us why
     community_monitor:

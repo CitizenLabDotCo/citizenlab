@@ -29,10 +29,11 @@ class MultilocService
     result.is_a?(String) ? result : +'' # return a non-frozen empty string
   end
 
-  def i18n_to_multiloc(key, locales: nil)
+  def i18n_to_multiloc(key, locales: nil, **multiloc_substitutions)
     (locales || app_configuration.settings('core', 'locales')).each_with_object({}) do |locale, result|
+      localised_substitutions = multiloc_substitutions.transform_values { |option| option[locale.to_s] }
       I18n.with_locale(locale) do
-        result[locale] = I18n.t(key, raise: true)
+        result[locale] = I18n.t(key, raise: true, **localised_substitutions)
       end
     end
   end

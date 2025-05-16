@@ -96,6 +96,39 @@ describe MultilocService do
         'fr-FR' => 'bonjour!'
       })
     end
+
+    context 'with **options' do
+      before do
+        I18n.backend.store_translations(:en, {
+          greetings: {
+            hello: 'hello %{first_name}'
+          }
+        })
+        I18n.backend.store_translations(:'nl-BE', {
+          greetings: {
+            hello: 'hallo %{first_name}'
+          }
+        })
+        I18n.backend.store_translations(:'fr-FR', {
+          greetings: {
+            hello: 'bonjour %{first_name}'
+          }
+        })
+      end
+
+      it 'assembles a multiloc object for a given translation key' do
+        multiloc_first_name = {
+          'en' => 'James',
+          'nl-BE' => 'Jacobus',
+          'fr-FR' => 'Jacques'
+        }
+        expect(service.i18n_to_multiloc('greetings.hello', first_name: multiloc_first_name)).to eq({
+          'en' => 'hello James',
+          'nl-BE' => 'hallo Jacobus',
+          'fr-FR' => 'bonjour Jacques'
+        })
+      end
+    end
   end
 
   describe 'block_to_multiloc' do

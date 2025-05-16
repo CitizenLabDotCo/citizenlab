@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { UploadFile, SupportedLocale } from 'typings';
 import { object, string, mixed, boolean } from 'yup';
 
@@ -53,6 +53,10 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
+
+  // TEMP: Remove this when the legacy PDF format is no longer required
+  const [searchParams] = useSearchParams();
+  const legacyPdfImport = searchParams.get('legacy_pdf') !== null;
 
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
@@ -102,6 +106,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         phase_id: phaseId,
         file: file.base64,
         format: 'pdf',
+        legacy_pdf: legacyPdfImport,
         ...rest,
       });
 
