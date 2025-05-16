@@ -33,7 +33,7 @@ describe CommonGround::ProgressService do
         expect(progress.phase_id).to eq(phase.id)
         expect(progress.num_ideas).to eq(0)
         expect(progress.num_reacted_ideas).to eq(0)
-        expect(progress.next_idea).to eq(nil)
+        expect(progress.next_idea).to be_nil
       end
     end
 
