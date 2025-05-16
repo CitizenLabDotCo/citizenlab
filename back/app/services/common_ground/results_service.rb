@@ -10,22 +10,20 @@ module CommonGround
       Results.new(
         phase_id: @phase.id,
         top_consensus_ideas: top_consensus_ideas(n),
-        top_controversial_ideas: top_controversial_ideas(n)
+        top_controversial_ideas: top_consensus_ideas(n, reverse: true)
       )
     end
 
     private
 
-    def top_consensus_ideas(n)
+    def top_consensus_ideas(n, reverse: false)
+      order_sql = Arel.sql('greatest(likes_count, dislikes_count) * 1.0 / (likes_count + dislikes_count)')
+
       @phase
         .ideas.published
         .where('likes_count + dislikes_count > 0')
-        .order(Arel.sql('greatest(likes_count, dislikes_count) * 1.0 / (likes_count + dislikes_count) desc'))
+        .order(reverse ? order_sql.asc : order_sql.desc)
         .limit(n)
-    end
-
-    def top_controversial_ideas(n)
-      @phase.ideas.take(n)
     end
 
     Results = Struct.new(
