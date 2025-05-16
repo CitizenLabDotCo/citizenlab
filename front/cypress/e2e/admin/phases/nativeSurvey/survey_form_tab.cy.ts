@@ -38,9 +38,7 @@ describe('Survey Form Tab Navigation', () => {
     );
 
     // Verify the form builder content has loaded
-    cy.get('[data-cy="e2e-survey-form-builder"]').should('exist');
-
-    // Check for content of the form builder
+    cy.get('[data-cy="e2e-survey-form-builder"]').should('be.visible');
     cy.get('[data-cy="e2e-form-builder-toolbox"]').should('be.visible');
     cy.get('[data-cy="e2e-form-builder-top-bar"]').should('be.visible');
   });
