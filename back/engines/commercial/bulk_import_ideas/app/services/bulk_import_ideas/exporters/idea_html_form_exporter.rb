@@ -124,7 +124,6 @@ module BulkImportIdeas::Exporters
           additional_text_question: field.additional_text_question?,
           format: field_print_format(field),
           input_type: field.input_type,
-          instructions: multiselect_print_instructions(field),
           visibility_disclaimer: print_visibility_disclaimer(field),
           optional: !field.required?,
           options: field.options.map do |option|
@@ -186,7 +185,7 @@ module BulkImportIdeas::Exporters
 
     # Empty method to override in PDF version of the exporter
     def format_html_field(description)
-      description
+      description || ''
     end
 
     def field_print_title(field)
@@ -198,7 +197,9 @@ module BulkImportIdeas::Exporters
         linear_scale_print_description(field)
       else
         description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
-        format_html_field(description[@locale])
+        html = format_html_field(description[@locale])
+        html += multiselect_print_instructions(field)
+        html
       end
     end
 
@@ -215,13 +216,15 @@ module BulkImportIdeas::Exporters
       max_text = multiloc_service.t(field.nth_linear_scale_multiloc(field.maximum), @locale)
       max_label = field.maximum.to_s + (max_text.present? ? " (#{max_text})" : '')
 
-      I18n.with_locale(@locale) do
+      description = I18n.with_locale(@locale) do
         I18n.t(
           'form_builder.pdf_export.linear_scale_print_description',
           min_label: min_label,
           max_label: max_label
         )
       end
+
+      "<p>#{description}</p>"
     end
 
     def print_visibility_disclaimer(field)
@@ -229,7 +232,7 @@ module BulkImportIdeas::Exporters
     end
 
     def multiselect_print_instructions(field)
-      return unless field.input_type == 'multiselect'
+      return '' unless field.input_type == 'multiselect'
 
       min = field.minimum_select_count
       max = field.maximum_select_count
@@ -251,7 +254,7 @@ module BulkImportIdeas::Exporters
           I18n.t('form_builder.pdf_export.choose_as_many')
         end
       end
-      "*#{message}"
+      "<p>*#{message}</p>"
     end
 
     def font_family
