@@ -13,9 +13,9 @@ export const parsePieData = (
     sessions_per_referrer_type,
   }: VisitorsTrafficSourcesResponse['data']['attributes'],
   translations: Translations
-): PieRow[] | null => {
+): PieRow[] | undefined => {
   const referrerTypes = keys(sessions_per_referrer_type);
-  if (referrerTypes.length === 0) return null;
+  if (referrerTypes.length === 0) return undefined;
 
   const counts = referrerTypes.map((key) => sessions_per_referrer_type[key]);
   const percentages = roundPercentages(counts);
