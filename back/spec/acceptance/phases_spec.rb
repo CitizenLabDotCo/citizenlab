@@ -841,7 +841,14 @@ resource 'Phases' do
 
       context 'when not logged in' do
         # TODO: to optimize?
-        before { create_list(:idea, 4, project: phase.project, phases: [phase]) }
+        before do
+          i1, i2, i3, = create_list(:idea, 4, project: phase.project, phases: [phase])
+
+          create(:reaction, reactable: i1, mode: 'up')
+          create(:reaction, reactable: i2, mode: 'down')
+          create(:reaction, reactable: i3, mode: 'up')
+          create(:reaction, reactable: i3, mode: 'down')
+        end
 
         example_request 'Get common ground results' do
           assert_status 200
@@ -851,7 +858,7 @@ resource 'Phases' do
             type: 'common_ground_results',
             attributes: {
               # TODO: to be refined
-              top_consensus_ideas: be_an(Array),
+              top_consensus_ideas: have_attributes(size: 3),
               top_controversial_ideas: be_an(Array)
             }
           )
