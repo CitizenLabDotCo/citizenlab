@@ -28,7 +28,7 @@
     h1 { font-size: 18pt; }
     h2 { font-size: 16pt; }
     h3 { font-size: 14pt; }
-    h4, p, li { font-size: 12pt; line-height: 1.2; }
+    h4, p, li, td, th { font-size: 12pt; line-height: 1.2; }
 
     div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px; }
     div.select, div.ranking { display: flex; align-items: center; margin-top: -6px; }
@@ -68,6 +68,22 @@
           background: #eee;
           img { object-fit: contain; height: 140px; }
           svg { border-radius: 5px; object-fit: contain; height: 50px; margin: 45px 0 45px 0; }
+        }
+      }
+      div.matrix {
+        table {
+          margin-top: 10px;
+          border-collapse: collapse;
+          width: 100%;
+          th, td {
+            border-bottom: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+            font-weight: normal;
+          }
+          td.statement {
+            text-align: left;
+          }
         }
       }
     }
@@ -184,6 +200,26 @@
                   <div><%= option[:title] %></div>
                 </div>
               <% end %>
+            </div>
+
+          <% elsif field[:format] == :matrix_linear_scale %>
+            <div class="matrix">
+              <table>
+                <tr>
+                  <th></th>
+                  <% field[:matrix][:labels].each do |label| %>
+                    <th style="width: <%= field[:matrix][:label_width] %>%"><%= label %></th>
+                  <% end %>
+                </tr>
+                <% field[:matrix][:statements].each do |statement| %>
+                  <tr>
+                    <td class="statement"><%= statement %></td>
+                    <% field[:matrix][:labels].each do |_| %>
+                      <td><div class="checkbox radio"></div></td>
+                    <% end %>
+                  </tr>
+                  <% end %>
+              </table>
             </div>
 
           <% else %>
