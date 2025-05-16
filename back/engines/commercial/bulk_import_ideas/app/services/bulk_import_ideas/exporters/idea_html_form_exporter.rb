@@ -118,6 +118,7 @@ module BulkImportIdeas::Exporters
         next if field.title_multiloc[@locale].blank?
 
         {
+          id: field.id,
           title: field_print_title(field),
           description: field_print_description(field),
           question_number: field_has_question_number?(field) ? "#{question_num += 1}." : '',
@@ -167,6 +168,8 @@ module BulkImportIdeas::Exporters
         :multi_line_text
       when 'text', 'text_multiloc', 'number', 'linear_scale'
         :single_line_text
+      when 'ranking'
+        :ranking
       else
         # CURRENTLY UNSUPPORTED
         # rating
@@ -176,7 +179,6 @@ module BulkImportIdeas::Exporters
         # point
         # line
         # polygon
-        # ranking
         # matrix_linear_scale
         # sentiment_linear_scale
         :unsupported
@@ -185,7 +187,7 @@ module BulkImportIdeas::Exporters
 
     # Empty method to override in PDF version of the exporter
     def format_html_field(description)
-      description || ''
+      description
     end
 
     def field_print_title(field)
@@ -194,11 +196,12 @@ module BulkImportIdeas::Exporters
 
     def field_print_description(field)
       if (field.linear_scale? || field.rating?) && field.description_multiloc[@locale].blank?
-        linear_scale_print_description(field)
+        linear_scale_print_instructions(field)
       else
         description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
-        html = format_html_field(description[@locale])
+        html = format_html_field(description[@locale]) || ''
         html += multiselect_print_instructions(field)
+        html += ranking_print_instructions(field)
         html
       end
     end
@@ -207,7 +210,7 @@ module BulkImportIdeas::Exporters
       !field.page? && !field.additional_text_question?
     end
 
-    def linear_scale_print_description(field)
+    def linear_scale_print_instructions(field)
       multiloc_service = MultilocService.new
 
       min_text = multiloc_service.t(field.linear_scale_label_1_multiloc, @locale)
@@ -221,6 +224,20 @@ module BulkImportIdeas::Exporters
           'form_builder.pdf_export.linear_scale_print_description',
           min_label: min_label,
           max_label: max_label
+        )
+      end
+
+      "<p>#{description}</p>"
+    end
+
+    def ranking_print_instructions(field)
+      return '' unless field.input_type == 'ranking'
+
+      max_rank = field.options.length
+      description = I18n.with_locale(@locale) do
+        I18n.t(
+          'form_builder.pdf_export.ranking_print_description',
+          max_rank: max_rank
         )
       end
 

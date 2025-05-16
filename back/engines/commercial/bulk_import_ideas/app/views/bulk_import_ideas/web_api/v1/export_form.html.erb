@@ -28,11 +28,12 @@
       h1 { font-size: 18pt; }
       h2 { font-size: 16pt; }
       h3 { font-size: 14pt; }
-      h4, p, li { font-size: 12pt; }
+      h4, p, li { font-size: 12pt; line-height: 1.2; }
 
       div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px; }
-      div.select { display: flex; align-items: center; margin-top: -6px; }
-      div.checkbox { border: solid 1px #000; width: 12px; height: 12px; margin: 8px 10px 8px 4px; display: inline-block; }
+      div.select, div.ranking { display: flex; align-items: center; margin-top: -6px; }
+      div.checkbox { border: solid 1px #000; width: 12px; height: 12px; margin: 8px 10px 8px 2px; display: inline-block; }
+      div.ranking-box { border: solid 1px #000; width: 24px; height: 24px; margin: 8px 10px 8px 2px; display: inline-block; }
       div.radio { border-radius: 50%; }
       span.optional { font-weight: normal; }
       div.field-group { page-break-inside: avoid; }
@@ -89,13 +90,13 @@
 <% fields.each do |field| %>
   <% if field[:field_group][:start] %><div class="field-group"><% end %>
     <% if field[:input_type] == 'page' %>
-      <div class="page">
+      <div class="page" id="<%= field[:id] %>">
         <h2><%= field[:title] %></h2>
         <%= sanitize field[:description] %>
       </div>
 
     <% else %>
-      <div class="question">
+      <div class="question" id="<%= field[:id] %>">
         <% if field[:additional_text_question] %>
           <h4><span class="number"> </span><%= field[:title] %></h4>
         <% else %>
@@ -136,6 +137,16 @@
 
           <% elsif field[:format] == :single_line_text %>
             <div class="line"></div>
+
+          <% elsif field[:format] == :ranking %>
+            <div class="options">
+              <% field[:options].each do |option| %>
+                <div class="ranking">
+                  <div class="ranking-box"></div>
+                  <div><%= option[:title] %></div>
+                </div>
+              <% end %>
+            </div>
 
           <% else %>
             <div class="unsupported">
