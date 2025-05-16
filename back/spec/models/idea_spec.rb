@@ -42,7 +42,7 @@ RSpec.describe Idea do
       expect(idea).to be_invalid
       expect(idea.errors[:body_multiloc]).to include("can't be blank")
     end
-    
+
     it 'does not require body_multiloc when supports_built_in_fields? is false' do
       idea = build(:idea)
       allow(idea).to receive(:supports_built_in_fields?).and_return(false)
