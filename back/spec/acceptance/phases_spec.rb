@@ -845,7 +845,10 @@ resource 'Phases' do
         expect(response_data).to match(
           id: phase.id,
           type: 'common_ground_results',
-          attributes: {}
+          attributes: {
+            top_consensus_ideas: [],
+            top_controversial_ideas: []
+          }
         )
       end
     end
