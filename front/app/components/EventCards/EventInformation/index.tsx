@@ -51,13 +51,6 @@ const PrimaryLink = styled(Link)`
 
   // Place the pseudo-element on top of the whole card.
   z-index: 1; /* 3 */
-
-  ::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-  }
 `;
 
 interface Props {
