@@ -29,7 +29,7 @@ module AnonymousParticipation
 
     # Ensure author is always nil if anonymous is set and anonymous is false if author is present
     def set_anonymous_values
-      set_author_hash if author_id_changed? || anonymous_changed?
+      set_author_hash
       if anonymous_changed?(to: true)
         self.author = nil
       elsif author_id.present?
@@ -38,13 +38,23 @@ module AnonymousParticipation
     end
 
     def set_author_hash
-      return if author_id.blank?
-
-      self.author_hash = self.class.create_author_hash author_id, project_string, anonymous?
+      if author_id.present? && (author_id_changed? || anonymous_changed?)
+        # Set for records with an author
+        self.author_hash = self.class.create_author_hash author_id, project_string, anonymous?
+      elsif author_id.blank? && !persisted? && everyone_tracking_author_hash
+        # Set for logged out users when 'everyone' permission enabled
+        self.author_hash = everyone_tracking_author_hash
+      end
     end
 
     def project_string
       try(:project_id)
+    end
+
+    def everyone_tracking_author_hash
+      return unless instance_of?(Idea)
+
+      Permissions::EveryoneTrackingService.new(author, creation_phase, request).logged_out_author_hash
     end
   end
 end

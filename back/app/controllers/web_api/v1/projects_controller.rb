@@ -147,7 +147,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
-      params: jsonapi_serializer_params.merge(use_cache: params[:use_cache]),
+      params: jsonapi_serializer_params.merge(use_cache: params[:use_cache], request: request),
       include: %i[admin_publication project_images current_phase avatars]
     ).serializable_hash
   end
@@ -324,9 +324,10 @@ class WebApi::V1::ProjectsController < ApplicationController
     project = CommunityMonitorService.new.find_or_create_project(current_user)
 
     authorize project
+
     render json: WebApi::V1::ProjectSerializer.new(
       project,
-      params: jsonapi_serializer_params,
+      params: jsonapi_serializer_params.merge(request: request),
       include: %i[current_phase]
     ).serializable_hash
   end

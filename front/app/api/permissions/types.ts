@@ -26,6 +26,7 @@ export interface IGlobalPermissionData {
     global_custom_fields: boolean;
     verification_enabled: boolean;
     verification_expiry: number | null;
+    everyone_tracking_enabled: boolean;
   };
   relationships: {
     permission_scope: {

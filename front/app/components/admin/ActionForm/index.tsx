@@ -5,6 +5,8 @@ import {
   Button,
   Title,
   fontSizes,
+  Text,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
@@ -29,6 +31,7 @@ type Changes = {
   group_ids?: string[];
   verification_expiry?: number | null;
   access_denied_explanation_multiloc?: Multiloc;
+  everyone_tracking_enabled?: boolean;
 };
 
 interface Props {
@@ -46,6 +49,7 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
       action,
       verification_enabled,
       verification_expiry,
+      everyone_tracking_enabled,
     },
     relationships,
   } = permissionData;
@@ -73,6 +77,15 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
     (participation_method === 'survey' && action === 'taking_survey');
 
   const userFieldsInForm = !!phase?.data.attributes.user_fields_in_form;
+
+  // Currently only community monitor supports everyone tracking
+  const canUseEveryoneTracking =
+    participation_method === 'community_monitor_survey' &&
+    action === 'posting_idea' &&
+    permitted_by === 'everyone';
+  const handleEveryoneTrackingUpdate = (everyone_tracking_enabled: boolean) => {
+    onChange({ everyone_tracking_enabled });
+  };
 
   if (!permissionsCustomFields) return null;
 
@@ -168,6 +181,44 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
                   />
                 </span>
               </Button>
+            </Box>
+          )}
+          {canUseEveryoneTracking && (
+            <Box mt="28px" width="90%">
+              <Title variant="h4" color="primary" mb={'8px'}>
+                <FormattedMessage {...messages.everyoneTracking} />
+              </Title>
+              <Toggle
+                checked={everyone_tracking_enabled || false}
+                onChange={() => {
+                  handleEveryoneTrackingUpdate(!everyone_tracking_enabled);
+                }}
+                label={
+                  <Box ml="8px" id="e2e-everyone-tracking-toggle">
+                    <Box display="flex">
+                      <Text
+                        color="primary"
+                        mb="0px"
+                        fontSize="m"
+                        fontWeight="semi-bold"
+                      >
+                        <FormattedMessage
+                          {...messages.everyoneTrackingToggle}
+                        />
+                      </Text>
+                    </Box>
+
+                    <Text color="coolGrey600" mt="0px" fontSize="m">
+                      <FormattedMessage
+                        {...messages.everyoneTrackingDescription}
+                      />{' '}
+                      <span style={{ fontStyle: 'italic' }}>
+                        <FormattedMessage {...messages.everyoneTrackingNote} />
+                      </span>
+                    </Text>
+                  </Box>
+                }
+              />
             </Box>
           )}
         </>

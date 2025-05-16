@@ -51,8 +51,9 @@ module Permissions
     # Actions not to block if the project is inactive - ie no current phase
     IGNORED_PHASE_ACTIONS = %w[attending_event].freeze
 
-    def initialize(phase, user, user_requirements_service: nil)
+    def initialize(phase, user, user_requirements_service: nil, request: nil)
       super(user, user_requirements_service: user_requirements_service)
+      @request = request
       @phase ||= phase
     end
 
@@ -90,22 +91,22 @@ module Permissions
 
     private
 
-    attr_reader :phase
+    attr_reader :phase, :request
 
     # Phase methods
     def posting_idea_denied_reason_for_action
       if !participation_method.supports_submission?
-        POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
+        POSTING_DENIED_REASONS[:posting_not_supported]
       elsif !phase.submission_enabled
-        POSTING_DENIED_REASONS[:posting_disabled] # TODO: Rename to sumbission_disabled
-      elsif user && posting_limit_reached?
+        POSTING_DENIED_REASONS[:posting_disabled]
+      elsif posting_limit_reached?
         POSTING_DENIED_REASONS[:posting_limited_max_reached]
       end
     end
 
     def editing_idea_denied_reason_for_action
       unless participation_method.supports_submission?
-        POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
+        POSTING_DENIED_REASONS[:posting_not_supported]
       end
     end
 
@@ -173,12 +174,26 @@ module Permissions
     # Helper methods
 
     def posting_limit_reached?
-      return false if phase.pmethod.supports_multiple_posts?
-      return true if phase.ideas.published.exists?(author: user)
+      allow_posting_again_after = phase.pmethod.allow_posting_again_after || 10.years
+      return false if allow_posting_again_after == 0.seconds
 
-      if phase.allow_anonymous_participation?
-        author_hash = Idea.create_author_hash user.id, phase.project.id, true
-        return true if phase.ideas.published.exists?(author_hash: author_hash)
+      if user
+        return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author: user)
+
+        if phase.allow_anonymous_participation?
+          author_hash = Idea.create_author_hash(user.id, phase.project.id, true)
+          return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hash)
+        end
+      elsif request # NOTE: Only present if method.supports_everyone_tracking? is true
+        tracking_service = Permissions::EveryoneTrackingService.new(user, phase, request)
+
+        # No consent, so only empty cookie present
+        return true if tracking_service.submitted_without_tracking_consent?
+
+        # Check cookies for author_hashes for the 'everyone' permission
+        author_hashes = tracking_service.author_hashes_from_request
+
+        return true if author_hashes && phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hashes)
       end
 
       false
