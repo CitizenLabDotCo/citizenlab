@@ -107,7 +107,7 @@ export default defineMessages({
     defaultMessage: '<b>React:</b>  {participants}',
   },
   reactToInputs: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.react',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.reactToInputs',
     defaultMessage: '<b>Reacting to inputs:</b>  {participants}',
   },
   takingSurvey: {
