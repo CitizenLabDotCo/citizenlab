@@ -9,6 +9,12 @@ export interface VisitorsTrafficSourcesResponse {
     type: 'report_builder_data_units';
     attributes: {
       sessions_per_referrer_type: Record<ReferrerType, number>;
+      top_50_referrers: {
+        referrer: string;
+        visits: number;
+        visitors: number;
+        referrer_type: ReferrerType;
+      }[];
     };
   };
 }

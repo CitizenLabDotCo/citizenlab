@@ -13,7 +13,7 @@ export default function useVisitorsReferrerTypes({
   startAt,
   endAt,
 }: QueryParameters) {
-  const { data: analytics } = useVisitorsTrafficSources({
+  const { data } = useVisitorsTrafficSources({
     project_id: projectId,
     start_at: startAt,
     end_at: endAt,
@@ -22,9 +22,16 @@ export default function useVisitorsReferrerTypes({
   const { formatMessage } = useIntl();
   const translations = getTranslations(formatMessage);
 
-  const pieData = analytics
-    ? parsePieData(analytics.data.attributes, translations)
-    : null;
+  const pieData = data
+    ? parsePieData(data.data.attributes, translations)
+    : undefined;
 
-  return { pieData };
+  const tableData = data?.data.attributes.top_50_referrers.map(
+    ({ referrer_type, ...rest }) => ({
+      ...rest,
+      referrer_type: translations[referrer_type],
+    })
+  );
+
+  return { pieData, tableData };
 }
