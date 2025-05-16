@@ -103,6 +103,7 @@ const FormBuilderTopBar = ({
       background={`${colors.white}`}
       borderBottom={`1px solid ${colors.borderLight}`}
       top="0px"
+      data-cy="e2e-form-builder-top-bar"
     >
       <Box
         p="16px"

@@ -412,6 +412,7 @@ const FormEdit = ({
       position="fixed"
       bgColor={colors.background}
       h="100vh"
+      data-cy="e2e-survey-form-builder"
     >
       <HelmetIntl title={messages.helmetTitle} />
       <FocusOn>
