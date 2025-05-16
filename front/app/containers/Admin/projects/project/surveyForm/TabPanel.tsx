@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import {
   SectionTitle,
@@ -24,6 +25,8 @@ const TabPanel = ({
   projectId: string;
   phaseId: string;
 }) => {
+  const editFormLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`;
+
   return (
     <Box maxWidth="700px">
       <SectionTitle>
@@ -33,8 +36,14 @@ const TabPanel = ({
         <FormattedMessage {...messages.inputFormDescription} />
       </SectionDescription>
       <Box display="flex">
-        <EditButtonWithWarningModal projectId={projectId} phaseId={phaseId} />
-        <DuplicateSurveyButtonWithModal phaseId={phaseId} />
+        <EditButtonWithWarningModal
+          phaseId={phaseId}
+          editFormLink={editFormLink}
+        />
+        <DuplicateSurveyButtonWithModal
+          phaseId={phaseId}
+          editFormLink={editFormLink}
+        />
       </Box>
       <Box>
         <SubSectionTitle>
