@@ -72,16 +72,16 @@ module BulkImportIdeas::Exporters
     # TODO: Get this into the default values of the custom_form model so it can be edited and not just replaced - but this is difficult
     def form_header
       form = @participation_method.custom_form
-      return format_html_field(default_print_start_multiloc[@locale]) if form.print_start_multiloc == {}
+      return format_urls(default_print_start_multiloc[@locale]) if form.print_start_multiloc == {}
 
       print_start = TextImageService.new.render_data_images_multiloc(form.print_start_multiloc, field: :print_end_multiloc, imageable: form)
-      format_html_field(print_start[@locale])
+      format_urls(print_start[@locale])
     end
 
     def form_footer
       form = @participation_method.custom_form
       print_end = TextImageService.new.render_data_images_multiloc(form.print_end_multiloc, field: :print_end_multiloc, imageable: form)
-      format_html_field(print_end[@locale])
+      format_urls(print_end[@locale])
     end
 
     def organization_name(locale = @locale)
@@ -130,13 +130,20 @@ module BulkImportIdeas::Exporters
           options: field.options.map do |option|
             {
               id: option.id,
-              title: option.title_multiloc[@locale]
+              title: option.title_multiloc[@locale],
+              image_url: option_image_url(field, option)
             }
           end
         }
       end
 
       group_fields(fields)
+    end
+
+    def option_image_url(field, option)
+      return nil unless field.support_option_images? && option.image
+
+      format_urls(option.image.image.versions[:large].url)
     end
 
     # Group fields together so that the first question of a page appears on the same printed page as the question
@@ -164,6 +171,8 @@ module BulkImportIdeas::Exporters
         :single_select
       when 'multiselect'
         :multi_select
+      when 'multiselect_image'
+        :multi_select_image
       when 'multiline_text', 'html_multiloc'
         :multi_line_text
       when 'text', 'text_multiloc', 'number', 'linear_scale'
@@ -173,7 +182,6 @@ module BulkImportIdeas::Exporters
       else
         # CURRENTLY UNSUPPORTED
         # rating
-        # multiselect_image
         # file_upload
         # shapefile_upload
         # point
@@ -185,8 +193,8 @@ module BulkImportIdeas::Exporters
       end
     end
 
-    # Empty method to override in PDF version of the exporter
-    def format_html_field(description)
+    # Empty method to override in PDF version of the exporter - where URLs need to be changed
+    def format_urls(description)
       description
     end
 
@@ -199,7 +207,7 @@ module BulkImportIdeas::Exporters
         linear_scale_print_instructions(field)
       else
         description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
-        html = format_html_field(description[@locale]) || ''
+        html = format_urls(description[@locale]) || ''
         html += multiselect_print_instructions(field)
         html += ranking_print_instructions(field)
         html
@@ -249,7 +257,7 @@ module BulkImportIdeas::Exporters
     end
 
     def multiselect_print_instructions(field)
-      return '' unless field.input_type == 'multiselect'
+      return '' unless field.multiselect?
 
       min = field.minimum_select_count
       max = field.maximum_select_count
