@@ -28,8 +28,7 @@ module MultiTenancy
           title_multiloc: { 'en' => 'Your favourite name for a swimming pool' },
           description_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence },
           input_type: 'text',
-          required: false,
-          answer_visible_to: 'admins'
+          required: false
         )
 
         CustomField.create!(
@@ -37,8 +36,7 @@ module MultiTenancy
           input_type: 'point',
           title_multiloc: { 'en' => 'Where do want a new bike park?' },
           description_multiloc: { 'en' => 'Click on the map to indicate your preferred location' },
-          required: false,
-          answer_visible_to: 'admins'
+          required: false
         )
       end
     end

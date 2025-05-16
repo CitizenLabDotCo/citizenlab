@@ -12,6 +12,7 @@
 #  fields_last_updated_at     :datetime         not null
 #  print_start_multiloc       :jsonb            not null
 #  print_end_multiloc         :jsonb            not null
+#  print_personal_data_fields :boolean          default(FALSE), not null
 #
 # Indexes
 #

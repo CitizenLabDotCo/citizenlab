@@ -56,7 +56,7 @@ describe WebApi::V1::CustomFieldSerializer do
         input_type: 'text',
         key: 'extra',
         title_multiloc: { 'en' => 'Did you attend' },
-        answer_visible_to: 'admins'
+        visible_to_public: false
       }))
     end
   end

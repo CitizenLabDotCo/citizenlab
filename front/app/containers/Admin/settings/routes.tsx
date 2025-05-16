@@ -32,16 +32,15 @@ const AdminTopicsNewComponent = lazy(() => import('./topics/New'));
 const AdminTopicsEditComponent = lazy(() => import('./topics/Edit'));
 
 // statuses
-const StatusesComponent = React.lazy(() => import('./statuses/containers/'));
+const StatusesMain = React.lazy(
+  () => import('./statuses/containers/statusesMain')
+);
 const NewStatusComponent = React.lazy(
   () => import('./statuses/containers/new')
 );
 const StatusShowComponent = React.lazy(
   () => import('./statuses/containers/edit')
 );
-
-// approval
-const ProjectReview = lazy(() => import('./projectReview'));
 
 export enum settingsRoutes {
   settings = 'settings',
@@ -59,7 +58,6 @@ export enum settingsRoutes {
   proposals = 'proposals',
   statuses = 'statuses',
   statusId = ':statusId',
-  projectReview = 'review',
 }
 
 export type settingRouteTypes =
@@ -73,13 +71,13 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.new}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${string}/${settingsRoutes.edit}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.ideation}/${settingsRoutes.statuses}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.ideation}/${settingsRoutes.statuses}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.ideation}/${settingsRoutes.statuses}/${string}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}/${string}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.projectReview}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.proposals}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.proposals}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.proposals}/${string}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${string}`>
   | registrationRouteTypes;
 
 export default () => ({
@@ -117,6 +115,58 @@ export default () => ({
           <AdminSettingsPolicies />
         </PageLoading>
       ),
+    },
+    {
+      path: settingsRoutes.statuses,
+      element: (
+        <PageLoading>
+          <StatusesMain />
+        </PageLoading>
+      ),
+      children: [
+        {
+          path: settingsRoutes.ideation,
+          children: [
+            {
+              path: settingsRoutes.new,
+              element: (
+                <PageLoading>
+                  <NewStatusComponent variant="ideation" />
+                </PageLoading>
+              ),
+            },
+            {
+              path: settingsRoutes.statusId,
+              element: (
+                <PageLoading>
+                  <StatusShowComponent variant="ideation" />
+                </PageLoading>
+              ),
+            },
+          ],
+        },
+        {
+          path: settingsRoutes.proposals,
+          children: [
+            {
+              path: settingsRoutes.new,
+              element: (
+                <PageLoading>
+                  <NewStatusComponent variant="proposals" />
+                </PageLoading>
+              ),
+            },
+            {
+              path: settingsRoutes.statusId,
+              element: (
+                <PageLoading>
+                  <StatusShowComponent variant="proposals" />
+                </PageLoading>
+              ),
+            },
+          ],
+        },
+      ],
     },
     registrationRoutes(),
     {
@@ -176,74 +226,6 @@ export default () => ({
           ),
         },
       ],
-    },
-    {
-      path: `${settingsRoutes.ideation}/${settingsRoutes.statuses}`,
-
-      children: [
-        {
-          index: true,
-          element: (
-            <PageLoading>
-              <StatusesComponent variant="ideation" />
-            </PageLoading>
-          ),
-        },
-        {
-          path: settingsRoutes.new,
-          element: (
-            <PageLoading>
-              <NewStatusComponent variant="ideation" />
-            </PageLoading>
-          ),
-        },
-        {
-          path: settingsRoutes.statusId,
-          element: (
-            <PageLoading>
-              <StatusShowComponent variant="ideation" />
-            </PageLoading>
-          ),
-        },
-      ],
-    },
-    {
-      path: `${settingsRoutes.proposals}/${settingsRoutes.statuses}`,
-
-      children: [
-        {
-          index: true,
-          element: (
-            <PageLoading>
-              <StatusesComponent variant="proposals" />
-            </PageLoading>
-          ),
-        },
-        {
-          path: settingsRoutes.new,
-          element: (
-            <PageLoading>
-              <NewStatusComponent variant="proposals" />
-            </PageLoading>
-          ),
-        },
-        {
-          path: settingsRoutes.statusId,
-          element: (
-            <PageLoading>
-              <StatusShowComponent variant="proposals" />
-            </PageLoading>
-          ),
-        },
-      ],
-    },
-    {
-      path: settingsRoutes.projectReview,
-      element: (
-        <PageLoading>
-          <ProjectReview />
-        </PageLoading>
-      ),
     },
     ...moduleConfiguration.routes['admin.settings'],
   ],

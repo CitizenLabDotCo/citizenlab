@@ -210,7 +210,7 @@ module BulkImportIdeas::Exporters
     end
 
     def print_visibility_disclaimer(field)
-      @phase.pmethod.supports_public_visibility? && field.answer_visible_to == 'admins' ? "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }}" : ''
+      @phase.pmethod.supports_public_visibility? && !field.visible_to_public? ? "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }}" : ''
     end
 
     def multiselect_print_instructions(field)
