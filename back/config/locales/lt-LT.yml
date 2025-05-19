@@ -184,6 +184,7 @@ lt:
         description:
       other_input_field:
         title: Įveskite atsakymą
+        print_title: Jei "%{other_option}", nurodykite
       ask_follow_up_field:
         title: Papasakokite mums, kodėl
     community_monitor:
@@ -331,6 +332,7 @@ lt:
       write_as_clearly: 'Rašykite kuo <b>aiškiau</b> - šios formos gali būti nuskaitytos.'
       write_in_language: 'Atsakymus rašykite ta pačia kalba, kaip ir šioje formoje'
       linear_scale_print_description: 'Parašykite tik skaičių nuo %{min_label} iki %{max_label}'
+      unsupported_field: 'Šis laukelis negali būti pildomas popieriuje. Vietoj to naudokite internetinę šios formos versiją.'
   project_copy:
     title_suffix: 'Kopijuoti'
   confirmations_mailer:
