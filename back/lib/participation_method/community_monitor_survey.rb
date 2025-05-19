@@ -47,6 +47,13 @@ module ParticipationMethod
       false
     end
 
+    def everyone_tracking_enabled?
+      permission = phase.permissions&.find_by(action: 'posting_idea')
+      return false unless permission
+
+      permission.everyone_tracking_enabled?
+    end
+
     def validate_phase
       if phase.project.phases.count > 1
         phase.errors.add(:base, :too_many_phases, message: 'community_monitor project can only have one phase')
@@ -59,6 +66,10 @@ module ParticipationMethod
       if phase.end_at.present?
         phase.errors.add(:base, :has_end_at, message: 'community_monitor projects cannot have an end date')
       end
+    end
+
+    def allow_posting_again_after
+      3.months
     end
 
     def supports_event_attendance?
