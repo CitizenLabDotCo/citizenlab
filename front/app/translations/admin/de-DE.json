@@ -678,7 +678,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.projects": "Projekte",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.projectsPublished": "veröffentlichte Projekte",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.reportTitle": "Plattform-Bericht",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjects": "Ihre Projekte",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjects": "Eure Projekte",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjectsDescription": "Der folgende Abschnitt gibt einen Überblick über die öffentlich sichtbaren Projekte im gewählten Zeitraum, über die in diesen Projekten am häufigsten verwendeten Methoden und über die Metriken, die den Gesamtumfang der Beteiligung betreffen.",
   "app.containers.Admin.Reporting.Widgets.RegistrationsWidget.registrationsTimeline": "Zeitleiste der Registrierungen",
   "app.containers.Admin.Users.BlockedUsers.blockedUsers": "Gesperrte Nutzer*innen",
