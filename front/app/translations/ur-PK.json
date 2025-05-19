@@ -180,6 +180,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "جب آپ فارم ایڈیٹر کھولتے ہیں تو خودکار بچت بطور ڈیفالٹ فعال ہوتی ہے۔ جب بھی آپ \"X\" بٹن کا استعمال کرتے ہوئے فیلڈ سیٹنگ پینل کو بند کرتے ہیں، یہ خود بخود ایک بچت کو متحرک کر دے گا۔",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "پی ڈی ایف کے طور پر ڈاؤن لوڈ کریں۔",
   "app.components.FormSync.downloadExcelTemplate": "ایکسل ٹیمپلیٹ ڈاؤن لوڈ کریں۔",
+  "app.components.FormSync.downloadExcelTemplateTooltip": "ایکسل ٹیمپلیٹس میں کوئی میپنگ ان پٹ سوالات شامل نہیں ہوں گے کیونکہ یہ اس وقت بلک امپورٹنگ کے لیے تعاون یافتہ نہیں ہیں۔",
   "app.components.GoBackButton.group.edit.goBack": "واپس جاؤ",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "پچھلے صفحے پر واپس جائیں۔",
   "app.components.HookForm.Feedback.errorTitle": "ایک مسئلہ ہے۔",
