@@ -240,14 +240,12 @@ module BulkImportIdeas::Exporters
     end
 
     def map_print_instructions(field)
-      message_id = case field.input_type
-      when 'point'
-        'form_builder.pdf_export.point_print_description'
-      when 'line'
-        'form_builder.pdf_export.line_print_description'
-      when 'polygon'
-        'form_builder.pdf_export.polygon_print_description'
-      end
+      messages = {
+        'point' => 'form_builder.pdf_export.point_print_description',
+        'line' => 'form_builder.pdf_export.line_print_description',
+        'polygon' => 'form_builder.pdf_export.polygon_print_description'
+      }
+      message_id = messages[field.input_type]
       return '' unless message_id
 
       "<p><em>#{I18n.with_locale(@locale) { I18n.t(message_id) }}</em></p>"
