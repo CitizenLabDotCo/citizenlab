@@ -404,7 +404,9 @@ const ReactionButton = ({
     const projectName = localize(project.data.attributes.title_multiloc);
     const buttonReactionModeIsActive = buttonReactionMode === userReactionMode;
 
-    const describedById = disabledReason ? `tooltip-${ideaId}` : undefined;
+    const describedById = disabledReason
+      ? `describedbyid-${ideaId}`
+      : undefined;
 
     const disabledMessage = disabledReasonMessage && (
       <FormattedMessage
