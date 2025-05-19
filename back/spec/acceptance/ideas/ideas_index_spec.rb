@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
+require_relative 'shared/parameters'
 
 resource 'Ideas' do
   explanation 'Proposals from citizens to the city.'
@@ -7,22 +8,13 @@ resource 'Ideas' do
   before { header 'Content-Type', 'application/json' }
 
   get 'web_api/v1/ideas' do
+    extend SharedParameters
+    define_filter_params
+
     with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of ideas per page'
     end
-    parameter :topics, 'Filter by topics (OR)', required: false
-    parameter :projects, 'Filter by projects (OR)', required: false
-    parameter :phase, 'Filter by project phase', required: false
-    parameter :basket_id, 'Filter by basket', required: false
-    parameter :author, 'Filter by author (user id)', required: false
-    parameter :idea_status, 'Filter by status (idea status id)', required: false
-    parameter :search, 'Filter by searching in title and body', required: false
-    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'likes_count', '-likes_count', 'dislikes_count', '-dislikes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'votes_count', '-votes_count', 'budget', '-budget', 'random'", required: false
-    parameter :publication_status, 'Filter by publication status; returns all published ideas by default', required: false
-    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
-    parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
-    parameter :filter_trending, 'Filter out truly trending ideas', required: false
 
     context 'when moderator' do
       before { header_token_for(moderator) }
