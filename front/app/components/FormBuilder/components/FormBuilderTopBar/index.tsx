@@ -24,6 +24,7 @@ import {
   FormBuilderConfig,
   getIsPostingEnabled,
 } from 'components/FormBuilder/utils';
+import DownloadPDFButtonWithModal from 'components/FormSync/DownloadPDFButtonWithModal';
 import Button from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
@@ -35,7 +36,6 @@ import clHistory from 'utils/cl-router/history';
 import messages from '../messages';
 import tracks from '../tracks';
 
-import DownloadPDFButtonWithModal from './DownloadPDFButtonWithModal';
 import ownMessages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`

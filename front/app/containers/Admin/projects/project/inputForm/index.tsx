@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import DownloadPDFButtonWithModal from 'components/FormBuilder/components/FormBuilderTopBar/DownloadPDFButtonWithModal';
+import DownloadPDFButtonWithModal from 'components/FormSync/DownloadPDFButtonWithModal';
 import ExcelDownloadButton from 'components/FormSync/ExcelDownloadButton';
 import Button from 'components/UI/ButtonWithLink';
 
