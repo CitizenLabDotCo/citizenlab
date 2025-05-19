@@ -52,6 +52,30 @@ module ReportBuilder
         )
         .group(:referrer_type)
 
+      top_50_referrers = sessions
+        .select(
+          'count(*) as visits, ' \
+          'count(distinct(monthly_user_hash)) as visitors, ' \
+          "CASE #{cases.join(' ')} ELSE 'other' END as referrer_type," \
+          'referrer'
+        )
+        .group(:referrer)
+        .order('visits DESC')
+        .limit(50)
+        .map do |row|
+          referrer = row['referrer']
+          visits = row['visits'].to_i
+          visitors = row['visitors'].to_i
+          referrer_type = row['referrer_type']
+
+          {
+            referrer: referrer,
+            visits: visits,
+            visitors: visitors,
+            referrer_type: referrer_type
+          }
+        end
+
       {
         sessions_per_referrer_type: referrer_types.each_with_object({}) do |row, obj|
           referrer_type = row['referrer_type']
@@ -60,7 +84,9 @@ module ReportBuilder
             count = row['count'].to_i
             obj[referrer_type] = count
           end
-        end
+        end,
+
+        top_50_referrers: top_50_referrers
       }
     end
 
