@@ -39,7 +39,7 @@ import PersonalDataCheckbox from './PersonalDataCheckbox';
 export interface FormPDFExportFormValues {
   print_start_multiloc?: Multiloc;
   print_end_multiloc?: Multiloc;
-  personal_data: boolean;
+  print_personal_data_fields: boolean;
 }
 
 const CLICK_EXPORT_MESSAGES: { [key in FormType]: MessageDescriptor } = {
@@ -79,7 +79,7 @@ const PDFExportModal = ({
       print_start_multiloc: object(),
       print_end_multiloc: object(),
     }),
-    personal_data: boolean(),
+    print_personal_data_fields: boolean(),
   });
 
   const methods = useForm({
@@ -89,7 +89,7 @@ const PDFExportModal = ({
         print_start_multiloc: {},
         print_end_multiloc: {},
       }),
-      personal_data: false,
+      print_personal_data_fields: false,
     },
     resolver: yupResolver(schema),
   });
@@ -101,12 +101,15 @@ const PDFExportModal = ({
           print_start_multiloc: customForm.data.attributes.print_start_multiloc,
           print_end_multiloc: customForm.data.attributes.print_end_multiloc,
         }),
-        personal_data: customForm.data.attributes.print_personal_data_fields,
+        print_personal_data_fields:
+          customForm.data.attributes.print_personal_data_fields,
       });
     }
   }, [customForm, htmlPdfsActive, methods]);
 
-  const onExport = async ({ personal_data }: FormPDFExportFormValues) => {
+  const onExport = async ({
+    print_personal_data_fields: personal_data,
+  }: FormPDFExportFormValues) => {
     if (supportsNativeSurvey(phase.attributes.participation_method)) {
       await saveSurveyAsPDF({
         phaseId,
@@ -127,7 +130,7 @@ const PDFExportModal = ({
           printStartMultiloc: formValues.print_start_multiloc,
           printEndMultiloc: formValues.print_end_multiloc,
         }),
-        printPersonalDataFields: formValues.personal_data,
+        printPersonalDataFields: formValues.print_personal_data_fields,
       });
       await onExport(formValues);
       setLoading(false);
