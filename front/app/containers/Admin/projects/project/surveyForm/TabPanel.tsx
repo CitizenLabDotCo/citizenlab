@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 
@@ -36,9 +36,6 @@ const TabPanel = ({
           phaseId={phaseId}
           editFormLink={editFormLink}
         />
-        <Text m="0" as="span">
-          <FormattedMessage {...messages.or} />
-        </Text>
         <DuplicateSurveyButtonWithModal
           phaseId={phaseId}
           editFormLink={editFormLink}

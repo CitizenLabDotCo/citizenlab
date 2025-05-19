@@ -55,9 +55,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey1',
     defaultMessage: 'Edit',
   },
-  viewSurveyText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText',
-    defaultMessage: 'View',
+  newSubmission: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.newSubmission',
+    defaultMessage: 'New submission',
   },
   existingSubmissionsWarning: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning',
