@@ -14,7 +14,7 @@ RSpec.describe Reaction do
     end
   end
 
-  context 'uniquness' do
+  context 'uniqueness' do
     it "can't create 2 reactions for the same reactable and user" do
       idea = create(:idea)
       user = create(:user)
