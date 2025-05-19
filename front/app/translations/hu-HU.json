@@ -180,6 +180,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Az űrlapszerkesztő megnyitásakor az automatikus mentés alapértelmezés szerint engedélyezve van. Amikor az \"X\" gombbal bezárja a mezőbeállítások panelt, az automatikusan mentést indít el.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Letöltés pdf formátumban",
   "app.components.FormSync.downloadExcelTemplate": "Excel-sablon letöltése",
+  "app.components.FormSync.downloadExcelTemplateTooltip": "Az Excel-sablonok nem tartalmaznak majd leképezési beviteli kérdéseket, mivel ezek tömeges importálása jelenleg nem támogatott.",
   "app.components.GoBackButton.group.edit.goBack": "Menj vissza",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Vissza az előző oldalra",
   "app.components.HookForm.Feedback.errorTitle": "Van egy probléma",
