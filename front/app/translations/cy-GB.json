@@ -180,6 +180,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Mae arbed yn awtomatig yn cael ei alluogi yn ddiofyn pan fyddwch chi'n agor golygydd y ffurflen. Unrhyw bryd y byddwch chi'n cau'r panel gosodiadau maes gan ddefnyddio'r botwm \"X\", bydd yn sbarduno arbediad yn awtomatig.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lawrlwythwch fel pdf",
   "app.components.FormSync.downloadExcelTemplate": "Lawrlwythwch templed Excel",
+  "app.components.FormSync.downloadExcelTemplateTooltip": "Ni fydd templedi Excel yn cynnwys unrhyw gwestiynau mewnbwn mapio gan nad yw'r rhain yn cael eu cefnogi ar gyfer mewnforio swmp ar hyn o bryd.",
   "app.components.GoBackButton.group.edit.goBack": "Mynd yn ôl",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Ewch yn ôl i'r dudalen flaenorol",
   "app.components.HookForm.Feedback.errorTitle": "Mae yna broblem",
