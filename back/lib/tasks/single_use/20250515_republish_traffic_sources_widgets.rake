@@ -28,6 +28,34 @@ namespace :single_use do
       )
     end
 
+    def replace_published_data(report, execute)
+      layout = report.layout
+
+      layout.craftjs_json.dup.each do |(node_id, node)|
+        next unless resolved_name(node) == 'VisitorsTrafficSourcesWidget'
+
+        data_unit = ReportBuilder::PublishedGraphDataUnit
+          .where(graph_id: node_id, report_id: report.id)
+          .first
+
+        if data_unit.present?
+          new_data = {
+            sessions_per_referrer_type: {},
+            top_50_referrers: []
+          }
+
+          if execute
+            puts "\nReplacing data in unit: #{data_unit.id}\n\n"
+            # Replace data with empty data
+            data_unit.data = new_data
+            data_unit.save!
+          else
+            puts "\nWould replace data in unit: #{data_unit.id}\n\n"
+          end
+        end
+      end
+    end
+
     Tenant.safe_switch_each do |tenant|
       puts "\nProcessing tenant #{tenant.host} \n\n"
 
@@ -76,8 +104,10 @@ namespace :single_use do
         report = ReportBuilder::Report.find(report_id)
 
         phase = Phase.find(report.phase_id)
+
         if phase.nil?
-          puts "\nReport #{report_id} phase was deleted, skipping\n\n"
+          puts "\nReport #{report_id} phase was deleted. Replacing with empty placeholder data.\n\n"
+          replace_published_data(report, execute)
         else
           puts "\nRepublishing report: #{report_id}\n\n"
           republish_report(report, execute)
