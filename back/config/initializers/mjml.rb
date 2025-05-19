@@ -5,4 +5,5 @@ Mjml.setup do |config|
   # This slightly reduces the time to initialize Rails
   # as mjml-rails doesn't need to search for the binary.
   config.mjml_binary = ENV.fetch('MJML_BINARY_PATH', '/usr/bin/mjml')
+  config.use_mrml = true
 end
