@@ -14,6 +14,9 @@ export interface Translations {
   trafficSource: string;
   numberOfVisits: string;
   percentageOfVisits: string;
+  referrerWebsites: string;
+  referrer: string;
+  numberOfVisitors: string;
 }
 
 export const getTranslations = (
@@ -28,4 +31,7 @@ export const getTranslations = (
   trafficSource: formatMessage(messages.trafficSource),
   numberOfVisits: formatMessage(messages.numberOfVisits),
   percentageOfVisits: formatMessage(messages.percentageOfVisits),
+  referrerWebsites: formatMessage(messages.referrerWebsites),
+  referrer: formatMessage(messages.referrer),
+  numberOfVisitors: formatMessage(messages.numberOfVisitors),
 });
