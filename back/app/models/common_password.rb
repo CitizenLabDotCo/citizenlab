@@ -12,7 +12,8 @@
 #  index_common_passwords_on_password  (password)
 #
 class CommonPassword < ApplicationRecord
-  COMMON_PASSWORDS_FILE = './public/common_passwords/100k-most-used-passwords-NCSC.txt'
+  # https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/Pwdb_top-1000000.txt
+  COMMON_PASSWORDS_FILE = './public/common_passwords/Pwdb_top-1000000.txt'
 
   def self.initialize!
     CommonPassword.delete_all
