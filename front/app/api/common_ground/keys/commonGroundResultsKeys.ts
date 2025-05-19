@@ -1,6 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'phase-results' };
+const baseKey = { type: 'common_ground_results' };
 
 const commonGroundResultsKeys = {
   all: () => [baseKey],
