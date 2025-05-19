@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class IdeaPublishedMailer < ActionMailer::Base # < ApplicationMailer
+  class IdeaPublishedMailer < TestApplicationMailer
     def test_idea_published
       mail(to: "user@example.com", from: "app@example.com") do |format|
         format.text
