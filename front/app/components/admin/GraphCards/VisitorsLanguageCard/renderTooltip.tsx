@@ -31,7 +31,7 @@ const CustomTooltip = ({ payload }: CustomTooltipProps) => {
   return (
     <TooltipOutline label={name}>
       <Text color="blue500" mt="4px" mb="4px" fontSize="s">
-        <FormattedMessage {...messages.visitors} />: {value} ({percentage}%)
+        <FormattedMessage {...messages.count} />: {value} ({percentage}%)
       </Text>
     </TooltipOutline>
   );

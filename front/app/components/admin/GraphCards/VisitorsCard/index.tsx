@@ -29,14 +29,12 @@ const VisitorsCard = ({
     startAtMoment,
     endAtMoment,
     resolution,
+    projectId,
   });
 
   const cardTitle = formatMessage(messages.visitors);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
-
-  const shownTimeseries = projectId ? null : timeSeries;
-  const shownStats = projectId ? undefined : stats;
 
   return (
     <GraphCard
@@ -52,13 +50,13 @@ const VisitorsCard = ({
     >
       <Box px="20px" width="100%" display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row">
-          <VisitorStats stats={shownStats} resolution={currentResolution} />
+          <VisitorStats stats={stats} resolution={currentResolution} />
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="flex-end">
           <Box pt="8px" width="95%" maxWidth="800px" height="250px">
             <Chart
-              timeSeries={shownTimeseries}
+              timeSeries={timeSeries}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={currentResolution}

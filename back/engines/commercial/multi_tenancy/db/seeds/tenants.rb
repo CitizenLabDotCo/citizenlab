@@ -437,8 +437,9 @@ module MultiTenancy
               allowed: true
             },
             user_session_recording: {
-              enabled: true,
-              allowed: true
+              # Disable for E2E tests on localhost
+              enabled: false,
+              allowed: false
             },
             analysis: {
               enabled: true,

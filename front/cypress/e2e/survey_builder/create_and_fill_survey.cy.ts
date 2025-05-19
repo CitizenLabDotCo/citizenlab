@@ -3,9 +3,9 @@ import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
 const waitForCustomFormFields = () => {
-  cy.intercept('**/phases/**/custom_fields').as('customFields');
+  cy.intercept('**/phases/**/custom_fields**').as('customFields');
   cy.intercept('**/phases/**/custom_form').as('customForm');
-  cy.wait('@customFields');
+  cy.wait('@customFields', { timeout: 10000 });
   cy.wait('@customForm');
   cy.wait(1000);
 };

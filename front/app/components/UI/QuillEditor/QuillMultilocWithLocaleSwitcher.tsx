@@ -99,7 +99,11 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
             <StyledLabel htmlFor={id}>
               <span>{label}</span>
               {labelTooltipText && (
-                <StyledIconTooltip content={labelTooltipText} />
+                <StyledIconTooltip
+                  // Added to ensure the content is visible when the multiloc is inside a modal.
+                  placement="auto"
+                  content={labelTooltipText}
+                />
               )}
             </StyledLabel>
           )}

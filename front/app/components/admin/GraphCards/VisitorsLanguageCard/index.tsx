@@ -15,9 +15,8 @@ import PieChart from 'components/admin/Graphs/PieChart';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import renderTooltip from '../VisitorsTypeCard/renderTooltip';
-
 import messages from './messages';
+import renderTooltip from './renderTooltip';
 import useVisitorLanguages from './useVisitorLanguages';
 
 type Props = ProjectId & Dates & Resolution;

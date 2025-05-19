@@ -15,4 +15,9 @@ export default defineMessages({
     defaultMessage:
       'https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
+  mobileCropExplanation: {
+    id: 'app.components.Admin.ImageCropper.mobileCropExplanation',
+    defaultMessage:
+      'Note: Any important area of the image should be contained within the vertical dashed lines, as the image will be cropped to a 3:1 ratio on mobile devices.',
+  },
 });
