@@ -1351,7 +1351,7 @@
   "app.containers.Admin.reporting.widgets.MethodsUsed.volunteering": "Volontariat",
   "app.containers.Admin.reporting.widgets.MethodsUsed.voting": "Vote",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Modifier le formulaire",
-  "app.containers.Admin.surveyFormTab.inputFormDescription": "Précisez quelles informations doivent être fournies, ajoutez de courtes descriptions ou instructions pour guider les réponses des participants et indiquez si chaque champ est facultatif ou obligatoire.",
+  "app.containers.Admin.surveyFormTab.inputFormDescription": "Précisez les informations à fournir, ajoutez de courtes descriptions ou instructions pour guider les réponses des participants, et indiquez si chaque champ est facultatif ou obligatoire.",
   "app.containers.Admin.surveyFormTab.surveyForm": "Formulaire de l'enquête",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Créer un nouveau jeton",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Annuler",
