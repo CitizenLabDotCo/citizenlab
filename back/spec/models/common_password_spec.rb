@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CommonPassword, type: :model do
+RSpec.describe CommonPassword do
   describe '.check' do
     before do
       described_class.initialize! # This will use TEST_PASSWORDS_FILE to avoid issues on CI due to large file size of COMMON_PASSWORDS_FILE
@@ -27,7 +27,7 @@ RSpec.describe CommonPassword, type: :model do
     it 'loads all passwords from test file' do
       described_class.initialize!
       expect(described_class.count).to eq 5
-      expect(described_class.where(password: ['password123', 'letmein', 'qwerty']).count).to eq 3
+      expect(described_class.where(password: %w[password123 letmein qwerty]).count).to eq 3
     end
   end
 end
