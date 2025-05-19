@@ -68,7 +68,7 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       })
     end
 
-    it 'filtesr out SSO redirects' do
+    it 'filters out SSO redirects' do
       create(:session, referrer: 'https://accounts.claveunica.gob.cl/')
       create(:session, referrer: 'https://accounts.google.com/')
       create(:session, referrer: 'https://login.microsoftonline.com/')
