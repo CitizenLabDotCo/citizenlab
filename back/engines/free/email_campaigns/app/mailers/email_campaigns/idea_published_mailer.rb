@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class IdeaPublishedMailer < ApplicationMailer
+  class IdeaPublishedMailer < ActionMailer::Base # < ApplicationMailer
+    def test_idea_published
+      mail(to: "user@example.com", from: "app@example.com") do |format|
+        format.text
+        format.mjml
+      end
+    end
+
     protected
 
     def subject

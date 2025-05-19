@@ -20,7 +20,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
         recipient: recipient
       ).first.merge({ recipient: recipient })
     end
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).test_idea_published.deliver_now }
 
     it 'renders the subject' do
       expect(mail.subject).to eq('Your idea has been published')
