@@ -10,6 +10,14 @@ RSpec.describe Project do
     it { is_expected.to have_one(:review).class_name('ProjectReview').dependent(:destroy) }
     it { is_expected.to validate_presence_of(:title_multiloc) }
 
+    it 'validates presence of slug' do
+      project = build(:project)
+      allow(project).to receive(:generate_slug) # Stub to do nothing
+      project.slug = nil
+      expect(project).to be_invalid
+      expect(project.errors[:slug]).to include("can't be blank")
+    end
+
     it 'has a preview token' do
       expect(project.preview_token).to be_present
     end
