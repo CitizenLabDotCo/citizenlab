@@ -61,7 +61,7 @@ const AuthorField = ({ name, id }: Props) => {
               onChange={(userOption) => {
                 setValue(name, userOption?.id || null);
               }}
-              placeholder={formatMessage(messages.userPickerPlaceholder)}
+              placeholder={formatMessage(messages.authorFieldPlaceholder)}
             />
           );
         }}
