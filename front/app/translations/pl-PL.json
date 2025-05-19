@@ -180,6 +180,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Automatyczne zapisywanie jest domyślnie włączone, gdy otwierasz edytor formularzy. Za każdym razem, gdy zamkniesz panel ustawień pola za pomocą przycisku \"X\", automatycznie uruchomi się zapisywanie.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Pobierz jako pdf",
   "app.components.FormSync.downloadExcelTemplate": "Pobierz szablon Excel",
+  "app.components.FormSync.downloadExcelTemplateTooltip": "Szablony Excel nie będą zawierać żadnych pytań dotyczących mapowania, ponieważ nie są one obecnie obsługiwane w przypadku importu zbiorczego.",
   "app.components.GoBackButton.group.edit.goBack": "Wróć",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Wróć do poprzedniej strony",
   "app.components.HookForm.Feedback.errorTitle": "Jest problem",
