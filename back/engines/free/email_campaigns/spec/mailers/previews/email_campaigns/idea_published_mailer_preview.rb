@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class IdeaPublishedMailerPreview < ActionMailer::Preview
-    # include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
       idea = Idea.first
@@ -25,9 +25,7 @@ module EmailCampaigns
       }
       campaign = EmailCampaigns::Campaigns::IdeaPublished.first
 
-      # campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
-
-      EmailCampaigns::IdeaPublishedMailer.with(campaign: campaign, command: command).test_idea_published
+      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end
   end
 end
