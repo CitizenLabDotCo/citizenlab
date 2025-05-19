@@ -8,7 +8,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let(:project) { create(:project, title_multiloc: { en: 'PROJECT' }) }
   let(:phase) { create(:native_survey_phase, project: project, title_multiloc: { en: 'PHASE' }) }
   let(:custom_form) { create(:custom_form, participation_context: phase) }
-  let!(:page_field) { create(:custom_field_page, resource: custom_form) }
+  let!(:page_field) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' }) }
   let!(:text_field) { create(:custom_field_text, resource: custom_form, required: true, title_multiloc: { 'en' => 'Text field' }) }
   let!(:multiline_field) { create(:custom_field_multiline_text, resource: custom_form, title_multiloc: { 'en' => 'Multiline field' }) }
   let!(:multiselect_field) do
@@ -54,6 +54,10 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
     field.matrix_statements.create!(title_multiloc: { 'en' => 'Matrix statement two' })
     field
   end
+  let!(:map_page) { create(:custom_field_page, page_layout: 'map', resource: custom_form, title_multiloc: { 'en' => 'Map page' }) }
+  let!(:point_field) { create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' }) }
+  let!(:line_field) { create(:custom_field_line, resource: custom_form, title_multiloc: { 'en' => 'Line field' }) }
+  let!(:polygon_field) { create(:custom_field_polygon, resource: custom_form, title_multiloc: { 'en' => 'Polygon field' }) }
 
   let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
 
@@ -96,6 +100,9 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(titles[3]).to include 'Ranking field'
         expect(titles[4]).to include 'Select image field'
         expect(titles[5]).to include 'Matrix field'
+        expect(titles[6]).to include 'Point field'
+        expect(titles[7]).to include 'Line field'
+        expect(titles[8]).to include 'Polygon field'
       end
 
       it 'shows optional if questions are not required' do
@@ -105,6 +112,15 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(titles[3]).to include '(optional)'
         expect(titles[4]).to include '(optional)'
         expect(titles[5]).to include '(optional)'
+        expect(titles[6]).to include '(optional)'
+        expect(titles[7]).to include '(optional)'
+        expect(titles[8]).to include '(optional)'
+      end
+
+      it 'returns page titles' do
+        pages = parsed_html.css('div#questions div.page h2').map(&:text)
+        expect(pages[0]).to include 'First page'
+        expect(pages[1]).to include 'Map page'
       end
 
       it 'shows 1 line for short text fields' do
@@ -149,6 +165,33 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(matrix.text).to include 'Neutral'
         expect(matrix.text).to include 'Agree'
         expect(matrix.text).to include 'Strongly agree'
+      end
+
+      it 'shows a map image and instructions for a point field' do
+        point = parsed_html.css("div##{point_field.id}")
+        expect(point.text).to include 'Please draw an X on the map below to show the location or write the address instead.'
+        expect(point.css('img').count).to eq 1
+        expect(point.css('img')[0]['src']).to include 'api.maptiler.com'
+      end
+
+      it 'shows a map image and instructions for a line field' do
+        line = parsed_html.css("div##{line_field.id}")
+        expect(line.text).to include 'Please draw a route on the map below.'
+        expect(line.css('img').count).to eq 1
+        expect(line.css('img')[0]['src']).to include 'api.maptiler.com'
+      end
+
+      it 'shows a map image and instructions for a polygon field' do
+        polygon = parsed_html.css("div##{polygon_field.id}")
+        expect(polygon.text).to include 'Please draw a shape on the map below.'
+        expect(polygon.css('img').count).to eq 1
+        expect(polygon.css('img')[0]['src']).to include 'api.maptiler.com'
+      end
+
+      it 'shows a map image for a map page' do
+        page = parsed_html.css("div##{map_page.id}")
+        expect(page.css('img').count).to eq 1
+        expect(page.css('img')[0]['src']).to include 'api.maptiler.com'
       end
     end
   end
