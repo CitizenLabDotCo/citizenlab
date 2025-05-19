@@ -27,14 +27,19 @@ const CommonGroundResults = ({ phaseId }: Props) => {
   const { data: results, isLoading, isError } = useCommonGroundResults(phaseId);
   if (isLoading || isError) return null;
 
-  const { numParticipants, numStatements, numVotes, majority, divisive } =
-    results.data.attributes;
+  const {
+    numParticipants,
+    numStatements,
+    numVotes,
+    top_consensus_ideas,
+    top_controversial_ideas,
+  } = results.data.attributes;
 
   const renderList = (title: string, items: CommonGroundResultItem[]) => (
     <Box mb="32px">
       <Title variant="h4">{title}</Title>
-      {items.map((item, index) => (
-        <React.Fragment key={index}>
+      {items.map((item) => (
+        <React.Fragment key={item.id}>
           <Box py="12px">
             <Box
               display="flex"
@@ -47,16 +52,28 @@ const CommonGroundResults = ({ phaseId }: Props) => {
                 mb={isPhone ? '8px' : undefined}
                 mr={isPhone ? undefined : '16px'}
               >
-                <T value={item.label} supportHtml />
+                <T value={item.title_multiloc} supportHtml />
               </Box>
               <Box width="166px" flexShrink={0}>
                 <OutcomeBreakdownBar
-                  agreedPercent={Math.round((item.agree / item.total) * 100)}
-                  unsurePercent={Math.round((item.unsure / item.total) * 100)}
-                  disagreePercent={Math.round(
-                    (item.disagree / item.total) * 100
+                  agreedPercent={Math.round(
+                    (item.votes.up /
+                      (item.votes.up + item.votes.down + item.votes.neutral)) *
+                      100
                   )}
-                  totalCount={item.total}
+                  unsurePercent={Math.round(
+                    (item.votes.neutral /
+                      (item.votes.up + item.votes.down + item.votes.neutral)) *
+                      100
+                  )}
+                  disagreePercent={Math.round(
+                    (item.votes.down /
+                      (item.votes.up + item.votes.down + item.votes.neutral)) *
+                      100
+                  )}
+                  totalCount={
+                    item.votes.up + item.votes.down + item.votes.neutral
+                  }
                 />
               </Box>
             </Box>
@@ -82,8 +99,8 @@ const CommonGroundResults = ({ phaseId }: Props) => {
         </Box>
       </Box>
 
-      {renderList(formatMessage(messages.majority), majority)}
-      {renderList(formatMessage(messages.divisive), divisive)}
+      {renderList(formatMessage(messages.majority), top_consensus_ideas)}
+      {renderList(formatMessage(messages.divisive), top_controversial_ideas)}
     </Box>
   );
 };
