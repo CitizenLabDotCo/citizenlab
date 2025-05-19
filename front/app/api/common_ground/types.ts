@@ -10,24 +10,24 @@ export type CommonGroundResultsKeys = Keys<typeof commonGroundResultsKeys>;
 export type CommonGroundProgressKeys = Keys<typeof commonGroundProgressKeys>;
 
 export interface CommonGroundResultItem {
-  label: Multiloc;
-  agree: number;
-  unsure: number;
-  disagree: number;
-  total: number;
+  id: string;
+  title_multiloc: Multiloc;
+  votes: {
+    up: number;
+    down: number;
+    neutral: number;
+  };
 }
 
 export interface CommonGroundResultsData {
   id: string;
-  type: 'phase-results';
+  type: 'common_ground_results';
   attributes: {
     numParticipants: number;
     numStatements: number;
     numVotes: number;
-    majority: CommonGroundResultItem[];
-    divisive: CommonGroundResultItem[];
-    uncertain: CommonGroundResultItem[];
-    allStatements: CommonGroundResultItem[];
+    top_consensus_ideas: CommonGroundResultItem[];
+    top_controversial_ideas: CommonGroundResultItem[];
   };
 }
 
