@@ -1,7 +1,5 @@
 import { ILinks } from 'typings';
 
-import { ReferrerTypeName } from 'api/graph_data_units/responseTypes/VisitorsTrafficSourcesWidget';
-
 import { ProjectId, Dates, Pagination } from '../../typings';
 
 export type QueryParameters = ProjectId & Dates & Pagination;
@@ -15,7 +13,7 @@ export interface ReferrerListResponse {
 export interface ReferrerRow {
   count: number;
   count_visitor_id: number;
-  'dimension_referrer_type.name': ReferrerTypeName;
+  'dimension_referrer_type.name': string;
   referrer_name: string | null;
 }
 
