@@ -41,14 +41,12 @@ const TabPanel = ({
           editFormLink={editFormLink}
         />
       </Box>
-      <Box>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.downloads} />
-        </SubSectionTitle>
-        <Box display="flex" gap="8px">
-          <DownloadPDFButtonWithModal formType="survey" phaseId={phaseId} />
-          <ExcelDownloadButton phaseId={phaseId} />
-        </Box>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.downloads} />
+      </SubSectionTitle>
+      <Box display="flex" gap="8px">
+        <DownloadPDFButtonWithModal formType="survey" phaseId={phaseId} />
+        <ExcelDownloadButton phaseId={phaseId} />
       </Box>
     </Box>
   );
