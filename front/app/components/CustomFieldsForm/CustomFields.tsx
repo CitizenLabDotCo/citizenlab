@@ -19,6 +19,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import FileUploaderField from './Fields/FileUploadField';
 import ImageField from './Fields/ImageField';
+import LinearScaleField from './Fields/LinearScale';
 import MultiSelectField from './Fields/MultiSelectField';
 import SingleSelectField from './Fields/SingleSelectField';
 import messages from './messages';
@@ -73,6 +74,8 @@ const renderField = (question: IFlatCustomField, projectId?: string) => {
       return <FileUploaderField name={question.key} />;
     case 'topic_ids':
       return <Topics name={question.key} projectId={projectId} />;
+    case 'linear_scale':
+      return <LinearScaleField question={question} />;
     default:
       return null;
   }
