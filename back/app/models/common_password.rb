@@ -14,10 +14,13 @@
 class CommonPassword < ApplicationRecord
   # https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/Pwdb_top-1000000.txt
   COMMON_PASSWORDS_FILE = './public/common_passwords/Pwdb_top-1000000.txt'
+  TEST_PASSWORDS_FILE = './spec/fixtures/common_passwords_test.txt'
 
   def self.initialize!
+    file_path = Rails.env.test? ? TEST_PASSWORDS_FILE : COMMON_PASSWORDS_FILE
+
     CommonPassword.delete_all
-    pwds = open(COMMON_PASSWORDS_FILE).readlines.map do |password|
+    pwds = open(file_path).readlines.map do |password|
       CommonPassword.new password: password.strip
     end
     # Bulk insert in one query
