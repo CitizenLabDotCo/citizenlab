@@ -134,14 +134,13 @@ const Forms = () => {
             </Button>
             <Button
               linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
-              icon="eye"
-              iconSize="20px"
+              icon="plus"
               buttonStyle="primary"
               width="auto"
               openLinkInNewTab
               mr="8px"
             >
-              {formatMessage(messages.viewSurveyText)}
+              {formatMessage(messages.newSubmission)}
             </Button>
             <DropdownSettings
               haveSubmissionsComeIn={haveSubmissionsComeIn}
