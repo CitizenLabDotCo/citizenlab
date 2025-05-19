@@ -2228,7 +2228,7 @@
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Herzlichen Glückwunsch, Ihr Budget wurde übermittelt!</b> Sie können Ihre Optionen unten jederzeit überprüfen oder ändern.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Herzlichen Glückwunsch, Ihr Budget wurde eingereicht!</b> Sie können Ihre Optionen unten jederzeit überprüfen.",
   "app.utils.votingMethodUtils.budgets": "Budgets",
-  "app.utils.votingMethodUtils.castYourVote": "Geben Sie Ihre Stimme ab",
+  "app.utils.votingMethodUtils.castYourVote": "Abstimmen",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea2": "Sie können eine maximale Anzahl von {maxVotes} {voteTerm} pro Option hinzufügen.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": "Wenn Sie fertig sind, klicken Sie auf \"Senden\", um Ihre Stimme abzugeben.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2": "Wählen Sie Ihre bevorzugten Optionen, indem Sie auf \"Auswählen\" klicken.",
