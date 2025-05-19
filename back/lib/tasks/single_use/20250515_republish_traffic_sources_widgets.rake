@@ -77,11 +77,11 @@ namespace :single_use do
 
         phase = Phase.find(report.phase_id)
         if phase.nil?
-          puts "\nReport #{report_id} has no phase, skipping\n\n"
+          puts "\nReport #{report_id} phase was deleted, skipping\n\n"
+        else
+          puts "\nRepublishing report: #{report_id}\n\n"
+          republish_report(report, execute)
         end
-
-        puts "\nrepublishing report: #{report_id}\n\n"
-        republish_report(report, execute)
       end
     end
   end
