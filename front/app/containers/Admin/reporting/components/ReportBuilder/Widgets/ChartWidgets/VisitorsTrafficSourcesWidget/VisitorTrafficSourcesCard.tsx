@@ -44,15 +44,20 @@ const VisitorsTrafficSourcesCard = ({
 
   return (
     <Box>
-      <Box width="100%" height="220px" mt="20px" pb="10px">
+      <Box
+        width="100%"
+        height={view === 'chart' ? '220px' : undefined}
+        mt="20px"
+        pb="10px"
+      >
         {view === 'chart' ? (
           <Chart pieData={pieData} layout={layout} />
         ) : (
-          <Table tableData={tableData} />
+          <>
+            <Table tableData={tableData} />
+            <ReferrerListLink onOpenModal={openModal} />
+          </>
         )}
-      </Box>
-      <Box ml="20px" mt="40px">
-        <ReferrerListLink onOpenModal={openModal} />
       </Box>
       <TableModal tableData={tableData} open={modalOpen} onClose={closeModal} />
     </Box>
