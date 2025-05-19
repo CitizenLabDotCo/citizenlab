@@ -23,6 +23,38 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
     field.options.create!(key: 'ranking_two', title_multiloc: { 'en' => 'Ranking two' })
     field
   end
+  let!(:multiselect_image_field) do
+    field = create(
+      :custom_field_multiselect_image,
+      resource: custom_form,
+      title_multiloc: { 'en' => 'Select image field' },
+      select_count_enabled: true,
+      minimum_select_count: 1,
+      maximum_select_count: 2
+    )
+    field.options.create!(title_multiloc: { 'en' => 'Image one' }, image: create(:custom_field_option_image))
+    field.options.create!(title_multiloc: { 'en' => 'Image two' }, image: create(:custom_field_option_image))
+    field.options.create!(title_multiloc: { 'en' => 'Image three' }, image: create(:custom_field_option_image))
+    field
+  end
+  let!(:matrix_field) do
+    field = create(
+      :custom_field_matrix_linear_scale,
+      resource: custom_form,
+      key: 'matrix_field',
+      title_multiloc: { 'en' => 'Matrix field' },
+      linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+      linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+      linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+      linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+      linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+      maximum: 5
+    )
+    field.matrix_statements.create!(title_multiloc: { 'en' => 'Matrix statement one' })
+    field.matrix_statements.create!(title_multiloc: { 'en' => 'Matrix statement two' })
+    field
+  end
+
   let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
 
   describe 'export' do
@@ -61,12 +93,18 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(titles[0]).to include 'Text field'
         expect(titles[1]).to include 'Multiline field'
         expect(titles[2]).to include 'Select field'
+        expect(titles[3]).to include 'Ranking field'
+        expect(titles[4]).to include 'Select image field'
+        expect(titles[5]).to include 'Matrix field'
       end
 
       it 'shows optional if questions are not required' do
         expect(titles[0]).not_to include '(optional)'
         expect(titles[1]).to include '(optional)'
         expect(titles[2]).to include '(optional)'
+        expect(titles[3]).to include '(optional)'
+        expect(titles[4]).to include '(optional)'
+        expect(titles[5]).to include '(optional)'
       end
 
       it 'shows 1 line for short text fields' do
@@ -75,8 +113,8 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
       end
 
       it 'shows 7 lines for longer text fields' do
-        multi_line_text = parsed_html.css("div##{multiline_field.id}")
-        expect(multi_line_text.css('div.line').count).to eq 7
+        multiline_text = parsed_html.css("div##{multiline_field.id}")
+        expect(multiline_text.css('div.line').count).to eq 7
       end
 
       it 'shows multiselect instructions and options' do
@@ -91,6 +129,26 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(ranking.text).to include 'Please write a number from 1 (most preferred) and 2 (least preferred) in each box. Use each number only once.'
         expect(ranking.text).to include 'Ranking one'
         expect(ranking.text).to include 'Ranking two'
+      end
+
+      it 'shows multiselect image instructions and options' do
+        multiselect_image = parsed_html.css("div##{multiselect_image_field.id}")
+        expect(multiselect_image.text).to include '*Choose between 1 and 2 options'
+        expect(multiselect_image.text).to include 'Image one'
+        expect(multiselect_image.text).to include 'Image two'
+        expect(multiselect_image.text).to include 'Image three'
+      end
+
+      it 'shows matrix statements and instructions' do
+        matrix = parsed_html.css("div##{matrix_field.id}")
+        expect(matrix.text).to include 'For each row, mark one circle with a cross to indicate your preference.'
+        expect(matrix.text).to include 'Matrix statement one'
+        expect(matrix.text).to include 'Matrix statement two'
+        expect(matrix.text).to include 'Strongly disagree'
+        expect(matrix.text).to include 'Disagree'
+        expect(matrix.text).to include 'Neutral'
+        expect(matrix.text).to include 'Agree'
+        expect(matrix.text).to include 'Strongly agree'
       end
     end
   end
