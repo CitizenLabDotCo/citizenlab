@@ -2,108 +2,100 @@ kl:
   email_campaigns:
     campaign_type_description:
       "manual": Tamanut nalunaarutit
+      "manual_project_participants": Official messages to project participants
       "admin_rights_received": Aqutsisuusinnaassuseqarneq tiguneqarpoq
       "comment_deleted_by_admin": Oqaaseqaatikka peerlugit
       "comment_marked_as_spam": Spaminik oqaaseqaatinik nalunaarut
       "comment_on_your_comment": Oqaaseqaatinnut akissut
-      "comment_on_your_idea": Isumassarsiannut oqaaseqaat
-      "comment_on_your_initiative": Innuttaasutut siunnersuutinnut oqaaseqaat
-      "first_idea_published": Isumassarsiannik siullermik avammut saqqummiineq
+      "comment_on_idea_you_follow": A comment on an idea that you follow
+      "community_monitor_report": Community monitor report
+      "cosponsor_of_your_idea": A user accepts my invitation to co-sponsor my proposal
+      "event_registration_confirmation": Event registration confirmation
       "idea_marked_as_spam": Spam pillugit isumassarsianut nalunaarusiorneq
       "idea_published": Isumassarsiannik avammut saqqummiineq
-      "initiative_assigned_to_you": Innuttaasut siunnersuutaannik uannut tunniussineq
-      "initiative_marked_as_spam": Spam pillugit innuttaasut siunnersuutaannut nalunaarusiorneq
-      "initiative_published": Innuttaasutut siunnersuutinnik avammut saqqummiussineq
+      "invitation_to_cosponsor_idea": Invitation to co-sponsor a proposal
       "invite_received": Invitation
       "invite_reminder": Qaaqqusinissamut eqqaasitsissut
+      "internal_comment_on_idea_assigned_to_you": Internal comment on input assigned to me
+      "internal_comment_on_idea_you_commented_internally_on": Internal comment on input I commented internally on
+      "internal_comment_on_idea_you_moderate": Internal comment on input in project or folder I manage
+      "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned input in unmanaged project
+      "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "mention_in_official_feedback": Nutarterinermi taaneqarneq
+      "mention_in_internal_comment": Mention in an internal comment
       "new_comment_for_admin": Suliniummut ingerlatannut nutaamik oqaaseqaat
-      "new_comment_on_commented_idea": Isumassarsiamut oqaaseqarfigisimasannut oqaaseqaat nutaaq
-      "new_comment_on_commented_initiative": Innuttaasup isumassarsiaanut oqaaseqarfigisimasannut oqaaseqaat nutaaq
-      "new_comment_on_voted_idea": Isumassarsiamut taasiffigisimasannut oqaaseqaat nutaaq
-      "new_comment_on_voted_initiative": Isumassarsiamut siunnersuummut taasiffigisimasannut oqaaseqaat nutaaq
       "new_idea_for_admin": Suliniummut ingerlatannut isumassarsiaq nutaaq
-      "new_initiative_for_admin": Innuttaasup siunnersuutaa nutaaq
-      "official_feedback_on_commented_idea": Isumassarsiamut oqaaseqarfigisimasannut siunnersuummik nutarterineq
-      "official_feedback_on_commented_initiative": Innuttaasup siunnersuutaanut oqaaseqarfigisimasannut nutarterineq
-      "official_feedback_on_voted_idea": Siunnersuummik taasiffigisimasannut nutarterineq
-      "official_feedback_on_voted_initiative": Innuttaasutut siunnersuummut taasiffigisimasannut nutarterineq
-      "official_feedback_on_your_idea": Isumassarsiannik nutarterineq
-      "official_feedback_on_your_initiative": Innutaasutut siunnersuutigisimasannik nutarterineq
+      "official_feedback_on_idea_you_follow": Update on an input that you follow
       "password_reset": Kodemik isissutissamik allannguineq
       "project_moderation_rights_received": Suliniummik ingerlataqarsinnaasutut pisinnaatitaaffiit tiguneqarput
       "project_folder_moderation_rights_received": Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
       "project_phase_started": Suliniummut nikeriarfik nutaaq
       "project_phase_upcoming": Suliniummut nikeriarfik nutaaq takkuttussaq
-      "status_change_of_commented_idea": Isumasssarsiap oqaaseqarfigisimasama killiffiani allanngorneq
-      "status_change_of_commented_initiative": Innuttaasumut isumassarsiap oqaaseqarfigisimasama klliffiani allanngorneq
-      "status_change_of_voted_idea": Isumassarsiap taasiffigisimasama killiffiani allanngorneq
-      "status_change_of_voted_initiative": Innuttaasutut siunnersuutip taasiffigisimasama killiffiani allanngorneq
-      "status_change_of_your_idea": Isumassarsiama killiffiani allanngorneq
-      "status_change_of_your_initiative": Innuttaasutut siunnersuusiami killiffiani allanngorneq
+      "project_published": Project published
+      "project_review_request": Project review request
+      "project_review_state_change": Project approved
+      "status_change_on_idea_you_follow": Status change of an input that you follow
+      "survey_submitted": Survey submitted
       "threshold_reached_for_admin": Innuttaasut siunnersuutaasa taasiffigineqarsinnaanerata amerlassusaat anguneqarpoq
       "welcome": Nalunaarsorneqareerpat
       "admin_digest": Aqutsisut takussutissartaat sapaatip akunnikkaartoq
       "moderator_digest": Suliniummik ingerlatsisut takussutissartaat sapaatip akunnikkaartoq
       "assignee_digest": Sapaatip akunnikkaartumik isumassarsiat tunniunneqarsimasut takussutissartaat
       "user_digest": Sapaatip akunneranut takussutissaq
-      "your_proposed_initiatives_digest": Sapaatip akunnikkaartumik innuttaasutut siunnersuusiannut takussutissaq
-    admin_campaign_type_description:
-      "manual": Pisortatigoortumik nalunaarut - atuisunut tamanut
-      "admin_rights_received": Naleqqussaanissamut pisinnaatitaaffiit tiguneqarput - administrator-it
-      "comment_deleted_by_admin": Oqaaseqaativit peernera - atuisut tamaasa
-      "comment_marked_as_spam": Oqaaseqaatit spam-iunerinik nalunaaruteqarneq - administrator-it aamma suliniutinik aqutsisut
-      "comment_on_your_comment": Oqaaseqaatinnut akissut - atuisut tamaasa
-      "comment_on_your_idea": Isumassarsiat oqaaseqaatileruk - atuisut tamaasa
-      "comment_on_your_initiative": Siunnersuutit oqaaseqaatileruk - atuisut tamaasa
-      "first_idea_published": Isumassarsiavit siulliup saqqummersinnera - atuisut tamaasa
-      "idea_marked_as_spam": Isumassarsiat spam-iunerinik nalunaaruteqarneq - administrator-it aamma suliniutinut aqutsisut
-      "idea_published": Isumassarsiavit saqqummersinnera - atuisut tamaasa
-      "initiative_assigned_to_you": Siunnersuummik siammarterineq - administrator-it
-      "initiative_marked_as_spam": Siunnersuutit spam-iunerinik nalunaaruteqarneq - administrator-it
-      "initiative_published": Siunnersuutivit saqqummersinnera - administratorer-it
-      "invite_received": Aggersaaneq - atuisut tamaasa
-      "invite_reminder": Aggersaanermut eqqaasissut - atuisut tamaasa
-      "mention_in_comment": Oqaaseqaammi taaneqarpoq - atuisut tamaasa
-      "mention_in_official_feedback": Nutartikkami taaneqarpoq - atuisut tamaasa
-      "new_comment_for_admin": Oqaaseqaat nutaaq - administrator-it aamma suliniutinik aqutsisut
-      "new_comment_on_commented_idea": Isumassarsiamut oqaaseqaateqarfigisannut oqaaseqaat nutaaq - atuisut tamaasa
-      "new_comment_on_commented_initiative": Siunnersuummut oqaaseqaateqarfigisannut oqaaseqaat nutaaq - atuisut tamaasa
-      "new_comment_on_voted_idea": Isumassarsiamut taasimasannut oqaaseqaat nutaaq - atuisut tamaasa
-      "new_comment_on_voted_initiative": Siunnersuummut taasimasannut oqaaseqaat nutaaq - atuisut tamaasa
-      "new_idea_for_admin": Isumassarsiaq nutaaq - administrator-it aamma suliniutinik aqutsisut
-      "new_initiative_for_admin": Siunnersuut nutaaq - administrator-it
-      "official_feedback_on_commented_idea": Isumassarsiap oqaaseqaateqarfigisavit nutarternera - atuisut tamaasa
-      "official_feedback_on_commented_initiative": Siunnersuutip oqaaseqaateqarfigisavit nutarternera - atuisut tamaasa
-      "official_feedback_on_voted_idea": Isumassarsiap taasimasavit nutarternera - atuisut tamaasa
-      "official_feedback_on_voted_initiative": Siunnersuutip taasimasavit nutarternera - atuisut tamaasa
-      "official_feedback_on_your_idea": Isumassarsiavit nutarternera - atuisut tamaasa
-      "official_feedback_on_your_initiative": Siunnersuutivit nutarternera - atuisut tamaasa
-      "password_reset": Isissutitut kode aallaqqaataaniit aallartittussanngorlugu aaqqiguk - atuisut tamaasa
-      "project_moderation_rights_received": Suliniummi nakkutilliisussatut pisinnaatitaaffilerneqarputit - suliniummi aqutsisut
-      "project_folder_moderation_rights_received": Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
-      "project_phase_started": Suliniummut immikkoortoq nutaaq - suliniummut peqataasut
-      "project_phase_upcoming": Suliniummut immikkoortussaq - administrator-it aamma suliniutinik aqutsisut
-      "status_change_of_commented_idea": Isumassarsiap oqaaseqaateqarfigisavit killiffia allanngortoq - atuisut tamaasa
-      "status_change_of_commented_initiative": Siunnersuutip oqaaseqaateqarfigisavit killiffia allanngortoq - atuisut tamaasa
-      "status_change_of_voted_idea": Isumassarsiap taasiffigisavit killiffia allanngortoq - atuisut tamaasa
-      "status_change_of_voted_initiative": Siunnersuutip taasiffigisavit killiffia allanngortoq - atuisut tamaasa
-      "status_change_of_your_idea": Isumassarsiavit killiffia allanngortoq - atuisut tamaasa
-      "status_change_of_your_initiative": Siunnersuutivit killiffia allanngortoq - atuisut tamaasa
-      "threshold_reached_for_admin": Siunnersuutip taaneqarsinnaaneranut amerlassutsit naammatsipput - administrator-it
-      "welcome": Atuisunut nutaanut mailikkut tikilluaqqussut - atuisut tamaasa
-      "admin_digest": Sap. ak. pisut - administrator-it
-      "moderator_digest": Sap. ak. pisut - suliniutinik aqutsisut
-      "assignee_digest": Isumassarsiatut siammarterneqartut sap. ak. takussutissartai - administrator-it aamma suliniutinik aqutsisut
-      "user_digest": Sap. ak. pisut - atuisut tamaasa
-      "your_proposed_initiatives_digest": Siunnersuutitit sap. ak. ingerlanerani takussutissartai - atuisut tamaasa
+      "voting_basket_submitted": Confirmation of voting
+      "native_survey_not_submitted": Survey not submitted
+      "voting_basket_not_submitted": Votes not submitted
+      "voting_last_chance": Last chance to vote
+      "voting_phase_started": New project phase with voting
+      "voting_results": Voting results
+      "your_input_in_screening": My input awaits screening
+    general:
+      by_author: 'by %{authorName}'
+      author_wrote: '%{authorName} wrote:'
+      cta_goto_idea: 'Go to this idea'
+      cta_goto_input: 'Go to this input'
+      cta_goto:
+        idea: 'Go to this idea'
+        question: 'Go to this question'
+        contribution: 'Go to this contribution'
+        project: 'Go to this project'
+        issue: 'Go to this issue'
+        option: 'Go to this option'
+        proposal: 'Go to this proposal'
+        petition: 'Go to this petition'
+      cta_goto_your:
+        idea: 'Go to your idea'
+        question: 'Go to your question'
+        contribution: 'Go to your contribution'
+        project: 'Go to your project'
+        issue: 'Go to your issue'
+        option: 'Go to your option'
+        proposal: 'Go to your proposal'
+        petition: 'Go to your petition'
+      cta_goto_proposal: 'Go to this proposal'
+      cta_goto_project: 'Go to this project'
+    schedules:
+      weekly:
+        "0": "Weekly, on Sundays at %{hourOfDay}"
+        "1": "Weekly, on Mondays at %{hourOfDay}"
+        "2": "Weekly, on Tuesdays at %{hourOfDay}"
+        "3": "Weekly, on Wednesdays at %{hourOfDay}"
+        "4": "Weekly, on Thursdays at %{hourOfDay}"
+        "5": "Weekly, on Fridays at %{hourOfDay}"
+        "6": "Weekly, on Saturdays at %{hourOfDay}"
+      quarterly: "Quarterly, on the first day of the quarter"
     footer:
       "link_privacy_policy": "Kinaasutsimik isertuusinermi politikki"
       "link_terms_conditions": "Piumasaqaatit atugassarititaasullu"
       "link_unsubscribe": "Atuisuujunnaarneq"
       "powered_by": "Ingerlanneqartoq"
-      "statement": "Emaili una %{organizationName} sinnerlugu Go Vocalimit nassiunneqarpoq, %{organizationLink}-imut atuisutut nalunaarsimagavit. Siunissami emailinik ima ittunik nassinneqartarusunngikkuit una %{unsubscribeLink} tooruk."
+      "recipient_statement": "This e-mail was sent to you by Go Vocal on behalf of %{organizationName}, because you are a registered user of %{organizationLink}."
+      "unsubscribe_statement": "You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "atuisuujunnaarit"
+    follow:
+      "unfollow_here": "You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
+    manual:
+      preheader: 'You have mail from %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Oqaaseqaativit peerneqarneranut pissutaasoq:'
       cta_view: 'Isumassarsiaq una takujuk'
@@ -122,17 +114,16 @@ kl:
       text_introduction: 'Sapaatip akunnerani kingullermi isumassarsiat suliat malunnaataanerusut allattorlugit ilinnut katersorpavut. Platforminni susoqarnersoq paasiniaruk!'
       cta_visit_the_platform: 'Platformit pulaaruk'
       new_users: 'Atuisut nutaat'
-      new_ideas: 'Isumassarsiat nutaat'
+      new_inputs: 'New inputs'
       new_comments: 'Oqaaseqaatit nutaat'
       title_activity_past_week: 'Sapaatip akunnerani kingullermi suliat'
       title_no_activity_past_week: 'Sapaatip akunnerani kingullermi suliaqanngilaq'
-      title_initiatives_past_week: 'Sapaatip akunnerani kingullermi innuttaasunit siunnersuutit nutaat'
-      title_successful_initiatives_past_week: 'Innuttaasunit siunnersuut sapaatip akunnerani kingullermi taasiffissap killiganut anngussimasut'
+      reached_threshold: 'Reached the threshold'
       yesterday_by_author: 'Ippassaq %{author}-mit'
       today_by_author: 'Ullumi %{author}-mit'
       x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
     admin_rights_received:
-      cta_moderate_platform: 'Platformit tigujuk'
+      cta_manage_platform: 'Manage your platform'
       message_you_became_administrator: 'Peqataasunut platformimut aqutsisutut pisinnaatitaalerputit'
       preheader: '%{organizationName}mut peqataasunut platformimut aqutsisutut pisinnaatitaalerputit'
       subject: '%{organizationName}p platformiani aqutsisunngorputit'
@@ -158,126 +149,89 @@ kl:
       today: Ullumikkut
       wrong_content: 'Oqaaseqaat pisariaqanngilaq.'
       yesterday: Ippassaq
-    comment_on_your_initiative:
-      commented: '%{authorFirstName} allappoq:'
-      cta_reply_to: 'Akissut %{commentAuthor}'
-      event_description: '%{authorNameFull} innuttaasunut siunnersuutinnut"%{initiativeTitle}" qisuariarpoq. %{authorName} ingerlateqqinniarukku ataaniittoq tuugassaq tooruk.'
-      main_header: '%{commentAuthor} innuttaasunut siunnersuutit oqaaseqarfigaa'
-      subject: '%{organizationName}p platformiani oqaaseqaammik tigusaqarputit'
-      preheader: '%{authorName} innuttaasunut siunnersuutinnut %{organizationName} oqaaseqaateqarpoq'
+    community_monitor_report:
+      subject: 'A new community monitor report is available'
+      title: 'A new community monitor report is available'
+      text_introduction: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
+      cta_report_button: 'View report'
+      report_name: 'Community monitor report'
+    cosponsor_of_your_idea:
+      cta_reply_to: 'View your proposal'
+      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
+      main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      preheader: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
     assignee_digest:
       subject: 'Isumassarsiat utimut nalunaarnissannik piumasaqaatitallit: %{numberIdeas}'
       preheader: '%{organizationName}mut aallartitamit eqikkaaneq'
       title_your_weekly_report: '%{firstName}, innuttaasunut paasissutissap utimut nalunaarnissat utaqqivaa'
       cta_manage_your_input: 'Siunnersuutitit aqukkit'
-      assigned_ideas: 'Isumassarsiat ilinnit utertitsivigineqarnissaminnik utaqqipput'
+      x_inputs_need_your_feedback: 'inputs need your feedback'
       title_assignment_past_week: 'Isumassarsiat kingulliit ilinnut tunniunneqartut'
       title_no_assignment_past_week: 'Sapaatip akunnerani kingullermi ilinnut isumassarsianik nutaanik tunniussisoqanngilaq'
       yesterday_by_author: 'Ippassaq %{author}-mit'
       today_by_author: 'Ullumi %{author}-mit'
       x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
-      idea_section: Isumassarsiat
-      initiative_section: Innuttaasunit siunnersuut
-      title_initiatives_past_week: 'Innuttaasunit siunnersuutit ilinnut tunniunneqartut'
-      title_successful_initiatives_past_week: 'Innuttaasunit siunnersuutit ilinnut tunniunneqartut killigititamiittut'
+      title_successful_past_week: 'Assigned to you that reached the threshold'
     idea_marked_as_spam:
-      by_author: 'uannga %{authorName}'
-      cta_review_idea: 'Isumassarsiaq nalilersoruk'
+      cta_review: 'Review'
       report_inappropriate_offensive_content: 'Imarisai tulluutinngitsutut narrujuumminartutullu isigaakka.'
       report_not_an_idea: 'Uuma imaa isumassarsiaanngilaq uungalu tulluuttuunani.'
       subject: 'Platformimi %{organizationName}mi spam-imik nalunaaruteqarputit'
       preheader: 'Spamimik nalunaarut iliuuseqarfigiuk'
       reported_this_because: '%{reporterFirstName} nalunaarutiginnippoq pissutigalugu:'
       title_spam_report: '%{firstName} %{lastName} spam nalunaarutigaa'
-    initiative_marked_as_spam:
-      by_author: 'uannga %{authorName}'
-      cta_review_initiative: 'Innuttaasunut siunnersuut unnerluutigiuk'
-      report_inappropriate_offensive_content: 'Imarisai tulluutinngitsutut narrujuumminartutullu isigaakka.'
-      report_not_an_initiative: 'Imarisaq una siunnersuutaanngilaq uaniittussaananilu.'
-      subject: 'Platformimi %{organizationName}mi spam-imik nalunaaruteqarputit'
-      preheader: 'Spamimik nalunaarut iliuuseqarfigiuk'
-      reported_this_because: '%{reporterFirstName} nalunaarutiginnippoq pissutigalugu:'
-      title_spam_report: '%{firstName} %{lastName} spam nalunaarutigaa'
-    initiative_assigned_to_you:
-      by_author: 'uannga %{authorName}'
-      cta_reply_to: '%{authorName} utertitsiffigiuk'
-      event_description_initiative: 'Innuttaasunit siunnersuut ilinnut tunniunneqartoq. Paasissutissat kingulliit ilanngullugit takussutissamik allannikkut imaluunniit killiffiata allanngorneratigut utertitsigit.'
-      main_header: '%{firstName}, nutaamik tunineqarputit'
-      subject: 'Platformimi %{organizationName}mi nutaamik tunineqarputit'
-      preheader_initiative: '%{authorName}p innuttaasunit siunnersuutaa ilinnut tunniunneqarpoq'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Co-sponsor this proposal'
+      event_description: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
+      event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
+      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
+      event_description_action: 'Click below to read the proposal.'
+      main_header: 'You have been invited to co-sponsor a proposal'
+      subject: 'You have been invited to co-sponsor a proposal'
+      preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
     invite_reminder:
       cta_accept_invitation: 'Qaaqqusissutit akueriuk'
       invitation_header: 'Qaaqqusissutit utaqqineqarpoq'
       preheader: 'Ullualuit matuma siorna peqataanermi platformiminni %{organizationName} qaaqqusissummik nassippaatsit.'
+      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
       subject: '%{organizationName}mi peqataanermi platformimi qaaqqusissut utaqqiinnartoq'
     invite_received:
       added_a_message: '%{organizationName} imatut allappoq:'
       cta_accept_invitation: 'Qaaqqusissutit akueriuk'
       invitation_header: 'Qaaqquneqarputit!'
       invitation_header_message: '%{organizationName}p peqataasunut plaformiminnut qaaqquaatsit.'
+      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
       preheader: '%{organizationName}p peqataasunut platformianut peqataanissannut qaaqqusissummik nassippaatsit.'
       subject: '%{organizationName}mi platformimi peqataanissannut qaaqqusaavutit'
-    initiative_published:
-      action_add_image: '%{addImageLink} takuneqarsinnaanera allisarlugu'
-      action_published_initiative: 'Innuttaasunut siunnersuut saqqummersitaq'
-      action_send_email: 'Atassuteqarfitit %{sendEmailLink}mik nassikkit'
-      action_share_fb: 'Ikinngutitit %{fbLink}miittut oqaluttuutikkit'
-      action_share_link: '%{link} assilineratigut kanaalini tamani siammarteruk'
-      action_share_twitter: 'Malinnitsitit %{twitterLink}kkut paasitikkit'
-      cta_view_initiative: 'Innuttaasunut siunnersuutinnukarit'
-      link: Innersuussaq
-      main_header: 'Innuttaasunut siunnersuummik saqqummiivutit! Tapersersortissaanik nassaariarta.'
-      message_next_steps: '%{userFirstName}, innuttaasunut siunnersuutit peqataasunut platformimi %{organizationName}-mi saqqummersinneqarpoq. Inuit innuttaasunut siunnersuutinnut qisuariarpata nalunaarfigineqassaatit. Iliuusissavit tullia ataani tulliuttumi paasiniaruk.'
-      message_get_votes: 'Taasinerup killissaa angujuk:'
-      preheader: 'Qujanaq innuttaasunut siunnersuutit siammarterakku, %{initiativeTitle}, uunga %{organizationName}. Innuttaasunut siunnersuutinnut taperserneqarnissamik tulliuttoq tassaavoq avatangiisinnut tamanut siaruarlugu.'
-      send_email: e-maili
-      subject: 'Innuttaasunut siunnersuutit platformimi %{organizationName}mi saqqummersinneqarpoq'
-    mention_in_official_feedback:
-      by_author: 'uannga %{authorName}'
-      commented: '%{organizationName} allappoq:'
-      cta_reply_to: '%{organizationName}mut akissut'
-      event_description: '%{organizationName} isumassarsiami ''%{post}''mi oqaaseqaammini taavaatit. Linki ataaniittoq tooruk %{organizationName} oqaloqatiginiarukku'
-      main_header: 'Taaneqarputit'
-      subject: '%{organizationName}p oqaaseqaammini taavaatit'
-      preheader: '%{commentAuthor}ip oqaaseqaammini taavaatit'
-    new_comment_on_commented_idea:
-      commented: '%{commentAuthor} allappoq:'
-      cta_reply_to: 'Akissut %{commentAuthor}'
-      event_description: '%{commentAuthorFull} %{organizationName}p peqataasunut platformimi isumassarsiamut "%{ideaTitle}"mut allapportaaq. Ataaniittoq tooruk %{commentAuthor}mik oqaloqatigiinnermik aallartitsiniaruit.'
-      main_header: '%{commentAuthor} isumassarsiamut tassunga oqaaseqaammik allappoq'
-      subject: 'Isumassarsiamut oqaaseqarfigisannut oqaaseqaammik allamik takkuttoqarpoq'
-      preheader: '%{commentAuthor} aamma isumassarsiamut %{organizationName}mut oqaaseqaateqarpoq'
     mention_in_comment:
-      by_author: 'uannga %{authorName}'
-      commented: '%{commentAuthor} allappoq:'
       cta_reply_to: 'Akissut %{commentAuthor}'
       event_description: '%{commentAuthorFull}p isumassarsiami ''%{post}''imi taavaatit. Ataaniittoq linki tooruk %{commentAuthor}imik oqaloqatiginninnermik aallartitsiniaruit'
       main_header: 'Inuit eqqartorpaatsit'
       subject: '%{organizationName}p platformiani atit taaneqarpoq'
       preheader: '%{commentAuthor}p oqaaseqaammi taavaatit'
+    mention_in_internal_comment:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} mentioned you in an internal comment.'
+      subject: '%{firstName} mentioned you in an internal comment.'
+      main_header: '%{firstName} mentioned you in an internal comment.'
+      preheader: '%{authorNameFull} mentioned you in an internal comment.'
     moderator_digest:
       subject: 'Sapaatip akunnikkaartumik suliami oqallinnermi aqutsisutut %{time}'
       preheader: '%{organizationName}mut suliami oqallinnermi aqutsinermi eqikkaaneq'
       title_your_weekly_report: '%{firstName}, sapaatip akunnikkaartumik nalunaarusiat'
       text_introduction: 'Sapaatip akunnerani kingullermi isumassarsiat suliat malunnaataanerusut allattorlugit katersorpavut. Illit sulianni susoqarnersoq paasiniaruk!'
-      cta_moderate: 'Sulianni ingerlatsineq tigujuk'
+      cta_manage: 'Manage your project'
       new_users: 'Atuisut nutaat'
       new_ideas: 'Isumassarsiat nutaat'
       new_comments: 'Oqaaseqaatit nutaat'
-      title_activity_past_week: 'Sapaatip akunnerani kingullermi suliat'
-      title_no_activity_past_week: 'Sapaatip akunnerani kingullermi suliaqanngilaq'
+      title_inputs_past_week: 'New inputs in the past week'
+      title_no_inputs_past_week: 'No new inputs in past week'
+      title_threshold_reached: Threshold reached in the past week
       yesterday_by_author: 'Ippassaq %{author}-mit'
       today_by_author: 'Ullumi %{author}-mit'
       x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} allappoq:'
-      cta_reply_to: 'Akissut %{commentAuthor}'
-      event_description: '%{commentAuthorFull} innuttaasunut siunnersuummut "%{initiativeTitle}"mut aamma allappoq %{organizationName}mi peqataasunut platformimi. %{commentAuthor}mik oqaloqatigiinnermik aallartitsiniaruit ataaniittoq tuugassaq tooruk.'
-      main_header: '%{commentAuthor} innuttaasunut siunnersuummut tassunga oqaaseqaammik allappoq'
-      subject: 'Innuttaasunut siunnersuummut oqaaseqaateqarfigisannut alla oqaaseqaasiorpoq'
-      preheader: '%{commentAuthor} aamma %{organizationName}mi innuttaasunut siunnersuummut oqaaseqaasiorpoq'
     new_comment_for_admin:
-      by_author: 'uannga %{authorName}'
       commented: '%{authorFirstName} oqaaseqaateqarpoq:'
       cta_reply_to: '%{commentAuthor}p oqaaseqaataa takujuk'
       days_ago: '%{numberOfDays} ullut matuma siorna'
@@ -287,47 +241,29 @@ kl:
       preheader: '%{authorName} oqaaseqaateqarpoq'
       today: Ullumikkut
       yesterday: Ippassaq
-    comment_on_your_idea:
-      by_author: 'uannga %{authorName}'
-      commented: '%{authorFirstName} allappoq:'
-      cta_reply_to: 'Akissut %{commentAuthor}'
-      event_description: '%{authorNameFull} isumassarsiannut "%{ideaTitle}" qisuariarpoq. %{authorName}mik oqaloqateqarneq ingerlateqqinniarlugu ataaniittoq tuugassaq tooruk.'
-      main_header: '%{authorName}p isumassarsiat oqaaseqarfigaa'
-      subject: '%{organizationName}p platformiani oqaaseqaammik tigusaqarputit'
-      preheader: '%{authorName} isumassarsianni %{organizationName}mi oqaaseqaateqarpoq'
-    new_comment_on_voted_initiative:
-      commented: '%{commentAuthor} allappoq:'
-      cta_reply_to: 'Una innuttaasunut siunnersuut takujuk'
-      event_description: '%{commentAuthor}ip innuttaasunut siunnersuummut ''%{initiativeTitle}''mut taasimasannut, oqaaseqaateqarpoq. %{organizationName}p platformiani oqallinnermut peqataagit!'
-      main_header: '%{firstName}, innuttaasunut siunnersuummut taasimasannut nutaamik oqaaseqaateqarpoq'
-      subject: 'Innuttaasunit siunnersuummut illit taanikuusannut nutaamik oqaaseqaateqarpoq'
-      preheader: '%{commentAuthor} %{organizationName}p platformiani innuttaasunut siunnersuut illit qinernikuusat oqaaseqaateqarfigaa'
-    new_comment_on_voted_idea:
-      commented: '%{commentAuthor} oqaaseqaatigaa:'
-      cta_reply_to: 'Akissut %{commentAuthor}'
-      days_ago: '%{numberOfDays} ullut matuma siorna'
-      event_description: '%{commentAuthor} isumassarsiamut ''%{ideaTitle}''mut illit taasimasarnut oqaaseqaateqarpoq. %{organizationName}p platformiani oqallinnermut peqataagit!'
-      main_header: '%{firstName}, isumassarsiamut taasimasannut oqaaseqaammik nutaamik takkuttoqarpoq! '
-      subject: 'Isumassarsiamut taasimasannut oqaaseqaammik nutaamik takkuttoqarpoq! '
-      preheader: '%{commentAuthor} %{organizationName}p platformiani taasimasannut oqaaseqaateqarpoq'
-      today: Ullumikkut
-      yesterday: Ippassaq
-    new_initiative_for_admin:
-      by_author: 'uannga %{authorName}'
-      commented: '%{authorFirstName} allappoq:'
-      cta_reply_to: '%{authorName} utertitsiffigiuk'
-      event_description: '%{authorName} platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiivoq. Massakkut takujuk, utertiffigiuk imaluunniit isumassarsiaq allamik taarseruk!'
-      main_header: '%{firstName}, platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiisoqarpoq'
-      subject: 'Innuttaasunut siunnersuummik platformimut %{organizationName}mi tamanut saqqummiisoqarpoq'
-      preheader: '%{authorName} platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiivoq'
+    comment_on_idea_you_follow:
+      cta_reply_to: 'Reply to %{commentAuthor}'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header:
+        idea: '%{authorName} commented on an idea you follow'
+        question: '%{authorName} commented on a question you follow'
+        contribution: '%{authorName} commented on a contribution you follow'
+        project: '%{authorName} commented on a project you follow'
+        issue: '%{authorName} commented on an issue you follow'
+        option: '%{authorName} commented on an option you follow'
+        proposal: '%{authorName} commented on a proposal you follow'
+        petition: '%{authorName} commented on a petition you follow'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} left a comment on an idea for %{organizationName}'
     new_idea_for_admin:
-      by_author: 'uannga %{authorName}'
-      commented: '%{authorFirstName} oqaaseqaateqarpoq:'
-      cta_reply_to: '%{authorName} utertitsiffigiuk'
+      main_header_publication: 'A new input has been published on your platform'
+      event_description_publication: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
+      cta_publication: 'Give feedback to %{authorName}'
+      main_header_prescreening: 'An input requires your review'
+      event_description_prescreening: '%{authorName} has submitted a new input on your platform.'
+      input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
+      cta_prescreening: 'Review the input'
       days_ago: '%{numberOfDays} ullut matuma siorna'
-      event_description: '%{authorName} platforminni isumassarsiamik tamanut saqqummiivoq. Massakkut takujuk, utertiffigiuk imaluunniit isumassarsiaq allamik taarseruk !'
-      main_header: '%{firstName}, platforminni isumassarsiamik nutaamik tamanut saqqummiisoqarpoq'
-      subject: 'Isumassarsiaq nutaaq %{organizationName}p platformiani tamanut saqqummiunneqarpoq'
       preheader: '%{authorName} platforminni isumassarsiamik nutaamik tamanut saqqummiivoq'
       today: Ullumikkut
       yesterday: Ippassaq
@@ -338,55 +274,49 @@ kl:
       main_header: '%{authorName} oqaaseqaatinnut qisuariarpoq'
       preheader: '%{authorName} %{organizationName}p platformiani oqaaseqaatinnut akissuteqarpoq'
       replied: '%{authorFirstName} akivoq:'
-    official_feedback_on_commented_initiative:
-      by_author: 'uannga %{authorName}'
-      updated: '%{officialName} allappoq:'
-      cta_view: 'Uunga innuttaasunit siunnersuummukarit'
-      event_description: '%{officialName} innuttaanut siunnersuummut ''%{initiativeTitle}''mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{organizationName} oqaloqatiginiarukku ataaniittoq tuugassaq tooruk.'
-      main_header: 'Innuttaasunit siunnersuut oqaaseqarfiginikuusat pillugu kingulliit ilanngullugit takussutissiisoqarpoq'
-      subject: 'Innuttaasunut siunnersuut oqaaseqarfiginikuusat peqataanermi platformimi %{organizationName}miittoq kingulliit ilanngullugit takussutissiarineqarpoq'
-      preheader: '%{officialName} innuttaasunut siunnersuummut oqaaseqarfiginikuusannut utertitsivoq'
-    official_feedback_on_voted_idea:
-      by_author: 'uannga %{authorName}'
-      updated: '%{officialName} allappoq:'
-      cta_view: 'Isumassarsiamukarit'
-      event_description: '%{officialName} isumassarsiamut ''%{ideaTitle}''mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{officialName} oqaloqatigiinnermut peqataaniarlutit ataaniittoq tuugassaq tooruk.'
-      subject: 'Isumassarsiaq taasimasat %{organizationName}p platformimi paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq'
-      preheader: 'Isumassarsiaq taasimasat %{officialName}ip paasissutissat kingulliit ilanngullugit takussutissiivoq'
-      main_header: ""
-    official_feedback_on_commented_idea:
-      by_author: 'uannga %{authorName}'
-      updated: '%{officialName} allappoq:'
-      cta_view: 'Isumassarsiamukarit'
-      event_description: '%{officialName} isumassarsiamut ''%{ideaTitle}''mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{officialName} oqaloqatigiinnermut peqataaniarlutit ataaniittoq tuugassaq tooruk.'
-      main_header: 'Isumassarsiamut oqaaseqarfiginikuusannut paasissutissanik kingulliit ilanngullugit takussutissiisoqarpoq'
-      subject: 'Isumassarsiaq %{organizationName}p platformiani oqaaseqarfigisimasat tamanut paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq'
-      preheader: '%{officialName} isumassarsiamut oqaaseqaateqarfiginikuusarnut tamanut paasissutissat kingulliit ilanngullugit takussutissiaqarpoq.'
-    official_feedback_on_your_idea:
-      by_author: 'uannga %{authorName}'
-      updated: '%{officialName} allappoq:'
-      cta_view: 'Isumassarsiannukarit'
-      event_description: '%{officialName} isumassarsiarnut ''%{ideaTitle}''mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{officialName}i oqallinnermik aallartitsiffiginiarlugu ataaniittoq tuugassaq tooruk.'
-      main_header: '%{organizationName}imit paasissutissat kingulliit ilanngullugit takussutissamik pivutit'
-      subject: '%{organizationName}imit paasissutissat kingulliit ilanngullugit takussutissamik pivutit'
-      preheader: '%{officialName} isumassarsiannut tamanut paasissutissat kingulliit ilanngullugit takussutissamik ilanngussivoq'
-    official_feedback_on_voted_initiative:
-      by_author: 'uannga %{authorName}'
-      updated: '%{officialName} allappoq:'
-      cta_view: 'Uunga innuttaasunit siunnersuummukarit'
-      event_description: '%{officialName} innuttaanut siunnersuummut ''%{initiativeTitle}''mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{organizationName} oqaloqatiginiarukku ataaniittoq tuugassaq tooruk.'
-      main_header: 'Innuttaasunut siunnersuummut taanikuusannut paasissutissat kingulliit ilanngullugit takussutissiisoqarpoq'
-      subject: 'Innuttaasunut siunnersuut taanikuusat peqataanermi platformimi %{organizationName}miittoq paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq'
-      preheader: '%{officialName} innuttaasunut siunnersuummut taanikuusannut utertitsivoq'
-    official_feedback_on_your_initiative:
-      updated: '%{officialName} allappoq:'
-      cta_view: 'Innuttaasunut siunnersuutinnukarit'
-      event_description: '%{officialName} innuttaasunut siunnersuutinnut ''%{initiativeTitle}''mut paasissutissat kingulliit ilanngullugit takussutissiivoq. %{organizationName} oqaloqatiginiarukku ataaniittoq tuugassaq tooruk.'
-      main_header: '%{officialName}mit paasissutissat kingulliit ilanngullugit takussutissinneqarputit'
-      subject: '%{organizationName}mi peqataasunut platformimi paasissutissat kingulliit ilanngullugit takussutissinneqarputit'
-      preheader: '%{officialName} innuttaasunut siunnersuutinnut tamanut paasissutissat kingulliit ilanngullugit takussutissiivoq'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented on your internal comment.'
+      subject: 'You have received a comment on your internal comment on ''%{post}'''
+      main_header: 'You have received a comment on your internal comment on ''%{post}'''
+      preheader: '%{authorName} replied to your internal comment on ''%{post}'''
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an input assigned to you.'
+      subject: 'New internal comment on ''%{post}'''
+      main_header: 'New internal comment on ''%{post}'''
+      preheader: 'New internal comment on ''%{post}'''
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an input you commented internally on.'
+      subject: 'New internal comment on ''%{post}'''
+      main_header: 'New internal comment on ''%{post}'''
+      preheader: 'New internal comment on ''%{post}'''
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an input in a project or folder you manage.'
+      subject: 'New internal comment on ''%{post}'''
+      main_header: 'New internal comment on ''%{post}'''
+      preheader: 'New internal comment on ''%{post}'''
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: 'View comment by %{firstName}'
+      event_description: '%{authorNameFull} commented internally on an unassigned input in an unmanaged project.'
+      subject: 'New internal comment on ''%{post}'''
+      main_header: 'New internal comment on ''%{post}'''
+      preheader: 'New internal comment on ''%{post}'''
+    official_feedback_on_idea_you_follow:
+      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      header_title: 'There''s an update on "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
+      preheader: 'There''s an update on an input you follow'
+    mention_in_official_feedback:
+      cta_reply_to: '%{organizationName}mut akissut'
+      event_description: '%{organizationName} isumassarsiami ''%{post}''mi oqaaseqaammini taavaatit. Linki ataaniittoq tooruk %{organizationName} oqaloqatiginiarukku'
+      main_header: 'Taaneqarputit'
+      subject: '%{organizationName}p oqaaseqaammini taavaatit'
+      preheader: '%{commentAuthor}ip oqaaseqaammini taavaatit'
     project_moderation_rights_received:
-      cta_moderate_project: 'Suliniut una tigujuk'
+      cta_manage_project: 'Manage this project'
       message_you_became_moderator: '%{organizationName}p ilaasortaanut aqutsisup suliniutit ukua ilinnut tunniuppai:'
       no_ideas: 'Suli isumassarsiaqanngilaq'
       preheader: '%{organizationName}p platformimi ilaasortanut aqutsisup suliniutit ukua ilinnut tunniuppai'
@@ -431,48 +361,27 @@ kl:
       new_phase: 'Suliniut fasemut ''%{phaseTitle}'' pivoq'
       subject: '%{projectName}mi fasemut nutaamut piareersarit'
       preheader: '%{projectName}mut suliniummik nutaamik aallartitsisoqarpoq '
-    status_change_of_commented_idea:
-      status_change: 'Isumassarsiamut killiffik nutaaq tassaavoq ''%{ideaStatus}'''
-      cta_view_idea: 'Isumassarsiamukarit'
-      event_description: '%{organizationName}p isumassarsiaq ''%{ideaTitle}'' namminneq peqataasunut platformiminni nutaanik ilaartuivoq.'
-      main_header: 'Isumassarsiaq taasat nutaamik killiffeqarpoq'
-      subject: 'Isumassarsiap oqaaseqarfigisavit killiffia allanngortinneqarpoq'
-      preheader: '%{organizationName}p isumassarsiap oqaaseqarfigisavit killiffia allanngortippaa'
-    status_change_of_your_idea:
-      status_change: 'Isumassarsiannut killiffik nutaaq tassaavoq ''%{ideaStatus}'''
-      cta_view_idea: 'Isumassarsiannukarit'
-      event_description: '%{organizationName} peqataasunut platformimi isumassarsiarnut ''%{ideaTitle}''mut paasissutissat kingulliit ilanngullugit takussutissiipput.'
-      main_header: 'Isumassarsiat nutaamut killippoq'
-      subject: 'Isumassarsianni killiffik allanngortinneqarpoq'
-      preheader: '%{organizationName} isumassarsiannut killiffimmik allannguivoq'
-    status_change_of_voted_idea:
-      status_change: 'Isumassarsiamut killiffik nutaaq tassaavoq ''%{ideaStatus}'''
-      cta_view_idea: 'Isumassarsiamukarit'
-      event_description: '%{organizationName}p isumassarsiaq ''%{ideaTitle}'' namminneq peqataasunut platformiminni nutaanik ilaartuivoq.'
-      main_header: 'Isumassarsiaq taasat nutaamik killiffeqarpoq'
-      subject: 'Isumassarsiami taasanni killiffik allanngortinneqarpoq'
-      preheader: '%{organizationName} isumassarsiami taasanni killiffimmik allannguivoq'
-    status_change_of_voted_initiative:
-      status_change: 'Innuttaasunut siunnersuummut killiffik nutaaq tassaavoq ''%{initiativeStatus}'''
-      cta_view_initiative: 'Uunga innuttaasunit siunnersuummukarit'
-      event_description: 'Innuttaasunut siunnersuummut ''%{initiativeTitle}'' killiffik peqataasunut platformimi %{organizationName} digitaliusumik paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq.'
-      main_header: 'Innuttaasunut siunnersuut taasat nutaamik killiffeqalerpoq'
-      subject: 'Innuttaasunut siunnersuutip taanikuusavit killiffia allanngortinneqarpoq'
-      preheader: 'Innuttaasunut siunnersuutip taanikuusavit killiffia allanngortinneqarpoq'
-    status_change_of_commented_initiative:
-      status_change: 'Innuttaasunut siunnersuummut killiffik nutaaq tassaavoq ''%{initiativeStatus}'''
-      cta_view_initiative: 'Uunga innuttaasunit siunnersuummukarit'
-      event_description: 'Innuttaasunut siunnersuummut ''%{initiativeTitle}'' killiffik peqataasunut platformimi %{organizationName} digitaliusumik paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq.'
-      main_header: 'Innuttaasunut siunnersuut oqaaseqarfiginikuusat, nutaamik killiffeqalerpoq'
-      subject: 'Innuttaasunut siunnersuutip oqaaseqarfigisavit killiffia allanngortinneqarpoq'
-      preheader: 'Innuttaasunut siunnersuutip oqaaseqarfigisavit killiffia allanngortinneqarpoq'
-    status_change_of_your_initiative:
-      status_change: 'Innuttaasunut siunnersuutivit killiffia nutaaq tassaavoq ''%{initiativeStatus}'''
-      cta_view_initiative: 'Innuttaasunut siunnersuutinnukarit'
-      event_description: 'Innuttaasunut siunnersuummut ''%{initiativeTitle}'' killiffik peqataasunut platformimi %{organizationName} digitaliusumik paasissutissat kingulliit ilanngullugit takussutissiarineqarpoq.'
-      main_header: 'Innuttaasunut siunnersuutit nutaamik killiffeqalerpoq'
-      subject: 'Innuttaasunut siunnersuutivit killiffia allanngortinneqarpoq'
-      preheader: 'Innuttaasunut siunnersuutivit killiffia allanngortinneqarpoq'
+    project_published:
+      subject: 'A new project was published on the platform of %{organizationName}'
+      header_title: 'A new project was published'
+      header_message: 'The participation platform of %{organizationName} just published the following project:'
+      preheader: 'A new project was published'
+    project_review_request:
+      subject: 'Review request: A project is waiting for approval.'
+      header: '%{requesterName} has invited you to review the project "%{projectTitle}"'
+      header_message: "Currently, the project is in draft mode and isn't visible to users. Once you've reviewed and approved it, the moderator will be able to publish it."
+      cta_review_project: "Review the project"
+    project_review_state_change:
+      subject: '"%{projectTitle}" has been approved'
+      header: '%{reviewerName} approved the project "%{projectTitle}"'
+      header_message: "The project is now ready to go live. You can publish it whenever you're ready!"
+      cta_go_to_project: "Go to project settings"
+    status_change_on_idea_you_follow:
+      status_change: 'The new status of this input is ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
     user_digest:
       subject: "%{organizationName}mut peqataanermi platformimi sapaatip akunnikkaartumik paasissutissat kingullit ilanngullugit takussutissaq"
       commented: "%{authorFirstName} oqaaseqaateqarpoq:"
@@ -481,45 +390,23 @@ kl:
       intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
       cta_go_to_the_platform: "Platformi pulaaruk"
       title_no_activity_past_week: "Sapaatip akunnerani kingullermi suliaqanngilaq"
-      title_proposals: "Proposals started"
-      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
-      title_successful_proposals: "Proposals that reached the threshold"
+      successful_proposals_title: "Reached the threshold"
       successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
       today_by_author: "Ullumi %{author}-mit"
       yesterday_by_author: "Ippassaq %{author}-mit"
       x_days_ago_by_author: "Ullut %{x} matuma siorna %{author}-mit"
-      trending_ideas: "Trending ideas"
-      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      trending_title: "Trending"
+      trending_text: "Interested in what’s been happening on the platform? Here are the three most trending contributions and what people are saying about them."
       no_notifications: "No notifications"
       one_notification: "1 notification"
       multiple_notifications: "%{notifCount} notifications"
       no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
       unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
     threshold_reached_for_admin:
-      by_author: 'uannga %{authorName}'
       cta_process_initiative: 'Suliniut una tullianut ingerlateqqiguk'
-      event_description: 'Platforminni suliniut taasinermi killiffissaminut killippoq. Tullianut ingerlaniaruit ataaniittoq tuugassaq tooruk!'
       main_header: 'Suliniutip taasinermi killiffissani anguaa!'
       subject: 'Platforminni suliniutip taasinermi killiffissani anguaa'
       preheader: 'Tulliata naammassinissaa qulakkeeruk'
-    first_idea_published:
-      action_add_image: '%{addImageLink} takuneqarsinnaanera allisarlugu'
-      action_comment: '%{textComment} isumassarsianut pioreersunut'
-      action_published_idea: 'Isumassarsiaq saqqummeriigaq'
-      action_send_email: 'Atassuteqarfitit %{sendEmailLink}mik nassikkit'
-      action_share_fb: 'Ikinngutitit %{fbLink}miittut oqaluttuutikkit'
-      action_share_link: '%{link} assilineratigut kanaalini tamani siammarteruk'
-      action_share_twitter: 'Malinnitsitit %{twitterLink}kkut paasitikkit'
-      add_image: 'Assimik ilanngussigit'
-      cta_view_idea: 'Isumassarsiannukarit'
-      event_description: '%{firstName}, %{organizationName}p peqataasunut platformiani siullerpaamik isumassarsigavit. Isumassarsiat inuit ilannguffigippassuk nalunaarfigineqassaatit. Iliuusissavit tullia sunaanersoq paasiniaruk.'
-      link: Innersuussaq
-      main_header: '%{firstName}, Isumassarsiat siulleq saqqummiuppat!'
-      message_get_votes: 'Isumassarsiannik inuit amerlanerit angukkit.'
-      preheader: '%{firstName}, %{organizationName}p peqataasunut platformiani siullerpaamik isumassarsigavit. Isumassarsiannut tapersersuisussanik nassaarnissamut piffissanngorpoq.'
-      see_you: 'Platformimi takus!'
-      send_email: e-maili
-      subject: 'Plaftormimi %{organizationName}mut isumassarsiat siulleq'
     welcome:
       cta_join_platform: 'Platformi misissuataaruk'
       subject: '%{organizationName}-mut platformimut tikilluarit'
@@ -527,30 +414,204 @@ kl:
       message_welcome: 'Pilluarit, %{organizationName}-mi platformimi peqataanissamut nalunaarsimavutit. Ilisimasat, isumassarsiat isummatillu siaruartikkit platformilu misissuataaruk. Eqqaamajuk, aamma assitaliisinnaagavit naatsumillu kinaanerit oqaluttuaralugu.'
       preheader: 'Uani %{organizationName} platformimi taamaaliorsinnaavutit'
     idea_published:
-      action_add_image: '%{addImageLink} takuneqarsinnaanera allisarlugu'
-      action_published_idea: 'Isumassarsiaq saqqummeriigaq'
-      action_send_email: 'Atassuteqarfitit %{sendEmailLink}mik nassikkit'
-      action_share_fb: 'Ikinngutitit %{fbLink}miittut oqaluttuutikkit'
-      action_share_link: '%{link} assilineratigut kanaalini tamani siammarteruk'
-      action_share_twitter: 'Malinnitsitit %{twitterLink}kkut paasitikkit'
-      add_image: 'Assimik ilanngussigit'
-      cta_view_idea: 'Isumassarsiannukarit'
-      event_description: '%{firstName}, isumassarsiat %{organizationName}ip peqataasunut platformimi saqqummersinneqarpoq. Inummit isumassarsiat sunniuteqarfigineqarpat nalunaarfigineqassaatit. Paasiniaruk ataani suna tulliusinnaanersoq.'
-      link: Innersuussaq
+      subject:
+        idea: 'Your idea has been published'
+        question: 'Your question has been published'
+        contribution: 'Your contribution has been published'
+        project: 'Your project has been published'
+        issue: 'Your issue has been published'
+        option: 'Your option has been published'
+        proposal: 'Your proposal has been published'
+        petition: 'Your petition has been published'
       main_header: 'Isumassarsiamik saqqummiivutit! Atuarneqarnissaa qulakkeeriartigu.'
+      header_message: 'Let''s make sure it gets read.'
       message_get_votes: 'Isumassarsiannik inuit amerlanerit angukkit.'
-      preheader: '%{firstName}, pilluarit isumassarsiannik %{organizationName}p platformianut saqqummiigavit. Isumassarsiannut tapersersuisussanik nassaarnissamut piffissanngorpoq.'
-      see_you: 'Platformimi takus!'
+      action_published_idea: 'Isumassarsiaq saqqummeriigaq'
+      action_add_image: '%{addImageLink} takuneqarsinnaanera allisarlugu'
+      add_image: 'Assimik ilanngussigit'
+      action_share_fb: 'Ikinngutitit %{fbLink}miittut oqaluttuutikkit'
+      action_share_twitter: 'Malinnitsitit %{twitterLink}kkut paasitikkit'
+      action_send_email: 'Atassuteqarfitit %{sendEmailLink}mik nassikkit'
       send_email: e-maili
-      subject: 'Isumassarsiat %{organizationName}p platformiani '
-      message_next_steps: ""
-    your_proposed_initiatives_digest:
-      subject: 'Sapaatip akunnikkaartumik innuttaasunut siunnersuummik paasissutissat kingulliit ilanngullugit takussutissiinerit'
-      preheader: 'Sapaatip akunnerani kingullermi innuttaasunut siunnersuutinnut sumik pisoqarpa?'
-      title_your_weekly_report: 'Innuttaasunut siunnersuutit qanoq ingerlava?'
-      text_introduction: 'Ataatani kisitsisit nanikkit, innuttaasunullu siunnersuummut qupperninnukarlutit, tapersersortinik naammattunik iliuuseqarnikkut katersiniarlutit.'
-      cta_see_your_initiative: 'Innuttaasunut siunnersuutinnukarit'
-      total_votes: 'Taasinerit amerlassusai'
-      new_votes: 'Taasinerit nutaat'
-      remaining_votes: 'Taasinerit sinneruttut'
-      remaining_days: 'Ullut sinneruttut'
+      action_share_link: '%{link} assilineratigut kanaalini tamani siammarteruk'
+      link: Innersuussaq
+      preheader: '%{firstName}, pilluarit isumassarsiannik %{organizationName}p platformianut saqqummiigavit. Isumassarsiannut tapersersuisussanik nassaarnissamut piffissanngorpoq.'
+    your_input_in_screening:
+      main_header:
+        idea: 'Your idea is in "%{prescreening_status_title}"'
+        question: 'Your question is in "%{prescreening_status_title}"'
+        contribution: 'Your contribution is in "%{prescreening_status_title}"'
+        project: 'Your project is in "%{prescreening_status_title}"'
+        issue: 'Your issue is in "%{prescreening_status_title}"'
+        option: 'Your option is in "%{prescreening_status_title}"'
+        proposal: 'Your proposal is in "%{prescreening_status_title}"'
+        petition: 'Your petition is in "%{prescreening_status_title}"'
+      message: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
+      subject: '"%{input_title}" is almost published'
+      preheader: 'It''s currently in %{prescreening_status_title}'
+    voting_basket_submitted:
+      subject: '%{organizationName}: You voted successfully'
+      preheader: 'You voted successfully on the participation platform of %{organizationName}'
+      title_basket_submitted: 'You voted successfully'
+      event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
+      cta_see_votes_submitted: 'See votes submitted'
+      cta_message: 'Click the button below to participate'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Almost there! Submit your answers'
+      preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
+      title_native_survey_not_submitted: 'Almost there! Submit your answers'
+      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
+      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
+      cta_complete_your_survey_response: 'Resume your survey response'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: You didn''t submit your votes'
+      preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
+      title_basket_not_submitted: 'You didn''t submit your votes'
+      event_description: 'You selected a few options for %{contextTitle} but you didn''t submit your selection.'
+      cta_view_options_and_vote: 'View options and vote'
+      cta_message: 'Click the button below to submit your selected options'
+    voting_last_chance:
+      subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
+      preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
+      title_last_chance: 'Last chance to vote for %{phaseTitle}'
+      body_1: 'The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.'
+      body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
+      body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
+      cta_vote: 'Vote'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} vote results revealed!'
+      preheader: '%{phaseTitle} vote results revealed on the participation platform of %{organizationName}'
+      title_results: '%{phaseTitle} vote results revealed!'
+      body_1: 'Results are in!'
+      body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
+      body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
+      cta_see_results: 'See results in the platform'
+    event_registration_confirmation:
+      subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      preheader: "%{firstName}, thanks for registering for %{eventTitle}"
+      header_message: "%{firstName}, thanks for registering for"
+      event_details:
+        labels:
+          date: 'Ulloq'
+          location: 'Sumiiffik'
+          online_link: 'Online link'
+          description: 'Nassuiaat'
+          project: 'Suliniut'
+      cta_go_to_event: 'View the event'
+      cta_add_to_calendar: 'Add to your calendar'
+    voting_phase_started:
+      subject: '%{organizationName}: The voting phase started for %{projectName}'
+      preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
+      event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
+      cta_message: 'Click the button below to participate'
+      cta_vote: 'Go to the platform to vote'
+    survey_submitted:
+      subject: '%{organizationName}: Thank you for your response! 🎉'
+      preheader: 'Here are the details of your submission.'
+      main_header: 'Thank you for sharing your thoughts on "%{projectName}"!'
+      your_input_submitted: 'Your input for "%{projectName}" has been submitted successfully.'
+      if_you_would_like_to_review: 'If you would like to review your submission, you can download your responses below.'
+      your_submission_has_id: 'Your submission has the following unique identifier:'
+      you_can_use_this_id: 'You can use this identifier to contact the platform administrators in case you want your submission to be removed.'
+      download_responses: 'Download your responses'
+    admin_labels:
+      recipient_role:
+        admins: 'To admins'
+        admins_and_managers: 'To admins & managers'
+        managers: 'To managers'
+        project_participants: 'To project participants'
+        registered_users: 'To registered users'
+      recipient_segment:
+        admins: 'Admins'
+        admins_and_managers: 'Admins & managers'
+        admins_and_managers_assigned_to_the_input: 'Admins & managers assigned to the input'
+        admins_and_managers_managing_the_project: 'Admins & managers managing the project'
+        admins_assigned_to_a_proposal: 'Admins assigned to a proposal'
+        all_users: 'All users'
+        all_users_who_uploaded_proposals: 'All users who uploaded proposals'
+        managers: 'Managers'
+        managers_managing_the_project: 'Managers managing the project'
+        new_attendee: 'Newly registered user'
+        project_reviewers: 'Project reviewers and folder managers'
+        project_review_requester: 'User who requested the project review'
+        user_who_commented: 'User who commented'
+        user_who_is_invited_to_cosponsor_a_proposal: 'User who is invited to co-sponsor a proposal'
+        user_who_is_mentioned: 'User who is mentioned'
+        user_who_is_receiving_admin_rights: 'User who is receiving admin rights'
+        user_who_is_receiving_folder_moderator_rights: 'User who is receiving folder moderator rights'
+        user_who_is_receiving_project_moderator_rights: 'User who is receiving project moderator rights'
+        user_who_published_the_input: 'User who published the input'
+        user_who_published_the_proposal: 'User who published the proposal'
+        user_who_registers: 'User who registers'
+        user_who_submitted_the_input: 'User who submitted the input'
+        user_who_voted: 'User who voted'
+        user_who_was_invited: 'User who was invited'
+        user_with_unsubmitted_survey: 'User who has started but not submitted their survey'
+        user_with_unsubmitted_votes: 'User who has not submitted their votes'
+        users_who_engaged_but_not_voted: 'Users who engaged with the project but have not voted'
+        users_who_engaged_with_the_project: 'Users who engaged with the project'
+        users_who_follow_the_input: 'Users who follow the input'
+        users_who_follow_the_project: 'Users who follow the project'
+        users_who_follow_the_proposal: 'Users who follow the proposal'
+      content_type:
+        comments: 'Comments'
+        content_moderation: 'Content moderation'
+        events: 'Pisussat'
+        general: 'General'
+        inputs: 'Inputs'
+        internal_comments: 'Internal comments'
+        permissions: 'Permissions'
+        projects: 'Projects'
+        proposals: 'Proposals'
+        reactions: 'Reactions'
+        voting: 'Voting'
+        surveys: 'Surveys'
+      trigger:
+        7_days_after_invite_is_sent: '7 days after invite is sent'
+        7_days_before_the_project_changes_phase: '7 days before the project changes phase'
+        comment_is_deleted: 'Comment is deleted'
+        comment_is_flagged_as_spam: 'Comment is flagged as spam'
+        content_gets_flagged_as_innapropiate: 'Content gets flagged as innapropiate'
+        initiative_resubmitted_for_review: 'Proposal resubmitted for review'
+        input_is_assigned: 'Input is assigned'
+        input_is_flagged_as_spam: 'Input is flagged as spam'
+        input_is_published: 'Input is published'
+        input_is_updated: 'Input receives official feedback'
+        input_status_changes: 'Input status changes'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Internal comment is posted on input assigned to user'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Internal comment is posted on input in project or folder user manages'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Internal comment is posted on input user commented internally on'
+        internal_comment_is_posted_on_idea_user_moderates: 'Internal comment is posted on input user moderates'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Internal comment is posted on unassigned input in unmanaged project'
+        project_review_request: 'Moderator requested a project review'
+        project_review_state_change: 'Reviewer approved the project'
+        new_input_awaits_screening: 'New input awaits screening'
+        new_input_is_published: 'New input is published'
+        new_proposal_is_posted: 'New proposal is posted'
+        project_phase_changes: 'Project phase changes'
+        project_published: 'Project published'
+        proposal_gets_reported_as_spam: 'Proposal gets reported as spam'
+        proposal_is_assigned_to_admin: 'Proposal is assigned to admin'
+        proposal_is_published: 'Proposal is published'
+        proposal_is_updated: 'Proposal receives official feedback'
+        proposal_is_upvoted_above_threshold: 'Proposal is upvoted above threshold'
+        proposal_status_changes: 'Proposal status changes'
+        registration_to_event: 'Registration to an event'
+        survey_1_day_after_draft_saved: '1 day after user last saved the survey in draft'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'User accepts invitation to co-sponsor a proposal'
+        user_comments: 'User comments'
+        user_comments_on_input: 'User comments on input'
+        user_comments_on_proposal: 'User comments on proposal'
+        user_is_given_admin_rights: 'User is given admin rights'
+        user_is_given_folder_moderator_rights: 'User is given folder moderator rights'
+        user_is_given_project_moderator_rights: 'User is given project moderator rights'
+        user_is_invited_to_cosponsor_a_proposal: 'User is invited to co-sponsor a proposal'
+        user_is_mentioned: 'User is mentioned'
+        user_is_mentioned_in_internal_comment: 'User is mentioned in internal comment'
+        user_registers_for_the_first_time: 'User registers for the first time'
+        user_replies_to_comment: 'User replies to comment'
+        user_replies_to_internal_comment: 'User replies to internal comment'
+        voting_1_day_after_last_votes: '1 day after user last voted'
+        voting_2_days_before_phase_closes: '2 days before voting phase closes'
+        voting_basket_submitted: 'Votes are submitted'
+        voting_phase_ended: 'Voting phase ended'
