@@ -227,23 +227,23 @@ de:
     categories:
       main_content:
         idea:
-          title: Was ist Ihr Beitrag?
+          title: Was ist deine Idee?
         question:
-          title: Was ist Ihre Frage?
+          title: Was ist deine Frage?
         contribution:
-          title: Was ist Ihr Beitrag?
+          title: Was ist dein Beitrag?
         project:
-          title: Was ist Ihr Projekt?
+          title: Was ist dein Projekt?
         issue:
-          title: Was ist Ihr Vorhaben?
+          title: Was ist dein Vorhaben?
         option:
-          title: Was ist Ihre Option?
+          title: Was ist deine Option?
         proposal:
           title: Was ist dein Vorschlag?
         initiative:
-          title: Was ist Ihre Initiative?
+          title: Was ist deine Initiative?
         petition:
-          title: Was ist Ihre Petition?
+          title: Was ist deine Petition?
   custom_field_options:
     gender:
       male: Männlich
