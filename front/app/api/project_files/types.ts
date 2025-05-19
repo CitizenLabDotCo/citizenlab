@@ -11,7 +11,7 @@ export interface IProjectFileData {
     file: {
       url: string;
     };
-    ordering: string | null;
+    ordering: number | null;
     name: string;
     size: number;
     created_at: string;
@@ -32,6 +32,7 @@ export interface AddProjectFileObject {
   file: {
     name: string;
     file: string;
+    ordering?: number;
   };
 }
 

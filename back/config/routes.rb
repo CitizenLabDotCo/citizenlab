@@ -176,6 +176,8 @@ Rails.application.routes.draw do
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'json_forms_schema', on: :collection
         end
+        get 'custom_form', on: :member, controller: 'custom_forms', action: 'show', defaults: { container_type: 'Phase' }
+        patch 'custom_form', on: :member, controller: 'custom_forms', action: 'update', defaults: { container_type: 'Phase' }
       end
 
       resources :projects, concerns: %i[followable], defaults: { followable: 'Project', parent_param: :project_id } do
@@ -213,6 +215,9 @@ Rails.application.routes.draw do
           get :votes_by_input_xlsx
 
           delete :participation_data, action: 'destroy_participation_data'
+
+          get 'custom_form', controller: 'custom_forms', action: 'show', defaults: { container_type: 'Project' }
+          patch 'custom_form', controller: 'custom_forms', action: 'update', defaults: { container_type: 'Project' }
         end
       end
 

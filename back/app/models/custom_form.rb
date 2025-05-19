@@ -9,6 +9,10 @@
 #  updated_at                 :datetime         not null
 #  participation_context_id   :uuid             not null
 #  participation_context_type :string           not null
+#  fields_last_updated_at     :datetime         not null
+#  print_start_multiloc       :jsonb            not null
+#  print_end_multiloc         :jsonb            not null
+#  print_personal_data_fields :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -43,5 +47,10 @@ class CustomForm < ApplicationRecord
         field.update_column(:ordering, index)
       end
     end
+  end
+
+  # Timestamp when the fields (not the form) were last updated.
+  def fields_updated!
+    update!(fields_last_updated_at: Time.now)
   end
 end

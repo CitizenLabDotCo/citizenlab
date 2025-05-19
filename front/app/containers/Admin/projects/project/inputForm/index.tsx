@@ -1,40 +1,21 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import { API_PATH } from 'containers/App/constants';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import DownloadPDFButtonWithModal from 'components/FormBuilder/components/FormBuilderTopBar/DownloadPDFButtonWithModal';
+import ExcelDownloadButton from 'components/FormSync/ExcelDownloadButton';
 import Button from 'components/UI/ButtonWithLink';
-import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
 
 export const InputForm = () => {
-  const inputImporterAllowed = useFeatureFlag({
-    name: 'input_importer',
-    onlyCheckAllowed: true,
-  });
-
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
-  };
-
-  const downloadExampleXlsxFile = async () => {
-    const blob = await requestBlob(
-      `${API_PATH}/phases/${phaseId}/importer/export_form/idea/xlsx`,
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    );
-    saveAs(blob, 'example.xlsx');
   };
 
   return (
@@ -63,17 +44,7 @@ export const InputForm = () => {
             formType="input_form"
             phaseId={phaseId}
           />
-          <UpsellTooltip disabled={inputImporterAllowed}>
-            <Button
-              mr="8px"
-              buttonStyle="secondary-outlined"
-              icon="download"
-              onClick={downloadExampleXlsxFile}
-              disabled={!inputImporterAllowed}
-            >
-              <FormattedMessage {...messages.downloadExcelTemplate} />
-            </Button>
-          </UpsellTooltip>
+          <ExcelDownloadButton phaseId={phaseId} />
         </Box>
       </Box>
     </>

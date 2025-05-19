@@ -22,6 +22,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
+import AnalysisBanner from './AnalysisBanner';
 import CopySurveyModal from './CopySurveyModal';
 import messages from './messages';
 
@@ -112,6 +113,7 @@ const Forms = () => {
   return (
     <>
       <Box width="100%">
+        <AnalysisBanner />
         <Box
           width="100%"
           display="flex"

@@ -53,7 +53,7 @@ export interface IProjectFolderImageData {
   type: string;
   attributes: {
     versions: ProjectFolderImageSizes;
-    ordering: string | null;
+    ordering: number | null;
     created_at: string;
     updated_at: string;
     alt_text_multiloc: Multiloc;

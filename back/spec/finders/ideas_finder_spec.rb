@@ -5,8 +5,8 @@ require 'rails_helper'
 describe IdeasFinder do
   subject(:finder) { described_class.new(params, **options) }
 
-  let(:timeline_project) { create(:project_with_phases) }
-  let!(:ideas) { create_list(:idea_with_topics, 5, project: timeline_project) }
+  let_it_be(:timeline_project) { create(:project_with_phases) }
+  let_it_be(:ideas) { create_list(:idea_with_topics, 5, project: timeline_project) }
 
   let(:params) { {} }
   let(:options) { {} }
