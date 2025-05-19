@@ -184,6 +184,7 @@ fi:
         description:
       other_input_field:
         title: Kirjoita vastauksesi
+        print_title: Jos '%{other_option}', tarkenna
       ask_follow_up_field:
         title: Kerro meille miksi
     community_monitor:
@@ -329,6 +330,7 @@ fi:
       write_as_clearly: 'Kirjoita mahdollisimman selkeällä käsialalla'
       write_in_language: 'Kirjoita vastauksesi samalla kielellä kuin tämä lomake'
       linear_scale_print_description: 'Kirjoita vain numero väliltä %{min_label} ja %{max_label}'
+      unsupported_field: 'Tätä kenttää ei voi täyttää paperilla. Käytä sen sijaan lomakkeen verkkoversiota.'
   project_copy:
     title_suffix: 'Kopio'
   confirmations_mailer:
