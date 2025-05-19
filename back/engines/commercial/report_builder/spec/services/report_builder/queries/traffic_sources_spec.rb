@@ -68,7 +68,7 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       })
     end
 
-    it 'identifies SSO redirects' do
+    it 'filtesr out SSO redirects' do
       create(:session, referrer: 'https://accounts.claveunica.gob.cl/')
       create(:session, referrer: 'https://accounts.google.com/')
       create(:session, referrer: 'https://login.microsoftonline.com/')
@@ -78,9 +78,7 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       create(:session, referrer: 'https://pvp.wien.gv.at/')
       create(:session, referrer: 'https://app.franceconnect.gouv.fr/')
 
-      expect(query.run_query[:sessions_per_referrer_type]).to eq({
-        'sso_redirect' => 8
-      })
+      expect(query.run_query[:sessions_per_referrer_type]).to eq({})
     end
 
     it 'identifies other traffic' do
@@ -97,6 +95,37 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       create_list(:session, 5, referrer: 'https://www.facebook.com/')
       create_list(:session, 2, referrer: 'https://www.example.com/', monthly_user_hash: '123')
       create_list(:session, 2, referrer: 'https://www.example.com/', monthly_user_hash: '456')
+
+      expect(query.run_query[:top_50_referrers]).to eq([
+        {
+          referrer: 'https://www.facebook.com/',
+          visits: 5,
+          visitors: 1,
+          referrer_type: 'social_network'
+        },
+        {
+          referrer: 'https://www.example.com/',
+          visits: 4,
+          visitors: 2,
+          referrer_type: 'other'
+        },
+        {
+          referrer: 'https://www.google.com/',
+          visits: 3,
+          visitors: 1,
+          referrer_type: 'search_engine'
+        }
+      ])
+    end
+
+    it 'does not include sso redirects in top 50 referrers' do
+      create_list(:session, 3, referrer: 'https://www.google.com/')
+      create_list(:session, 5, referrer: 'https://www.facebook.com/')
+      create_list(:session, 2, referrer: 'https://www.example.com/', monthly_user_hash: '123')
+      create_list(:session, 2, referrer: 'https://www.example.com/', monthly_user_hash: '456')
+
+      # SSO referrers
+      create_list(:session, 3, referrer: 'https://accounts.claveunica.gob.cl/')
 
       expect(query.run_query[:top_50_referrers]).to eq([
         {

@@ -39,11 +39,14 @@ module ReportBuilder
       sessions = ImpactTracking::Session.where(created_at: start_date..end_date)
       sessions = apply_project_filter_if_needed(sessions, project_id)
       sessions = exclude_roles_if_needed(sessions, exclude_roles)
+      
+      SSO_REFERRERS.each do |sso_referrer|
+        sessions = sessions.where.not("referrer IS NOT NULL AND referrer LIKE ?", "#{sso_referrer}%")
+      end
 
       cases = DIRECT_ENTRY_CASES
       cases += generate_cases(SEARCH_ENGINE_REFERRERS, SEARCH_ENGINE_DOMAINS, 'search_engine')
       cases += generate_cases(SOCIAL_NETWORK_REFERRERS, SOCIAL_NETWORK_DOMAINS, 'social_network')
-      cases += generate_cases(SSO_REFERRERS, [], 'sso_redirect')
 
       referrer_types = sessions
         .select(
@@ -80,7 +83,8 @@ module ReportBuilder
         sessions_per_referrer_type: referrer_types.each_with_object({}) do |row, obj|
           referrer_type = row['referrer_type']
 
-          if referrer_type.present?
+          # Skip SSO redirects
+          if referrer_type.present? && referrer_type != 'sso_redirect'
             count = row['count'].to_i
             obj[referrer_type] = count
           end
