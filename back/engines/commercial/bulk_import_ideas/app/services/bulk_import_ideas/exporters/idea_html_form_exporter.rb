@@ -134,7 +134,8 @@ module BulkImportIdeas::Exporters
               image_url: option_image_url(field, option)
             }
           end,
-          matrix: field_matrix_details(field)
+          matrix: field_matrix_details(field),
+          map_url: field_map_url(field)
         }
       end
 
@@ -182,15 +183,13 @@ module BulkImportIdeas::Exporters
         :ranking
       when 'matrix_linear_scale'
         :matrix_linear_scale
+      when 'point', 'line', 'polygon'
+        :mapping
       else
         # CURRENTLY UNSUPPORTED
         # rating
         # file_upload
         # shapefile_upload
-        # point
-        # line
-        # polygon
-        # matrix_linear_scale
         # sentiment_linear_scale
         :unsupported
       end
@@ -214,12 +213,44 @@ module BulkImportIdeas::Exporters
         html += multiselect_print_instructions(field)
         html += ranking_print_instructions(field)
         html += matrix_print_instructions(field)
+        html += map_print_instructions(field)
         html
       end
     end
 
     def field_has_question_number?(field)
       !field.page? && !field.additional_text_question?
+    end
+
+    def field_map_url(field)
+      return unless %w[point line polygon page].include? field.input_type
+      return if field.input_type == 'page' && field.page_layout != 'map'
+
+      # Use map config from field > project > platform in that order
+      map_config = field.map_config || @project.map_config
+      zoom = map_config&.zoom_level&.to_f || platform_map_config['zoom_level'].to_f
+      longitude = map_config&.center&.x || platform_map_config.dig('map_center', 'long')
+      latitude = map_config&.center&.y || platform_map_config.dig('map_center', 'lat')
+
+      # TODO: Can we use the map provider from the field?
+      # TODO: Can we do anything with layers?
+
+      # Static map API to generate an image
+      "https://api.maptiler.com/maps/basic/static/#{longitude},#{latitude},#{zoom}/650x420@2x.png?key=R0U21P01bsRLx7I7ZRqp&attribution=bottomleft"
+    end
+
+    def map_print_instructions(field)
+      message_id = case field.input_type
+      when 'point'
+        'form_builder.pdf_export.point_print_description'
+      when 'line'
+        'form_builder.pdf_export.line_print_description'
+      when 'polygon'
+        'form_builder.pdf_export.polygon_print_description'
+      end
+      return '' unless message_id
+
+      "<p><em>#{I18n.with_locale(@locale) { I18n.t(message_id) }}</em></p>"
     end
 
     def linear_scale_print_instructions(field)
@@ -356,6 +387,10 @@ module BulkImportIdeas::Exporters
 
     def style
       @style ||= AppConfiguration.instance.style
+    end
+
+    def platform_map_config
+      @platform_map_config ||= AppConfiguration.instance.settings('maps')
     end
   end
 end

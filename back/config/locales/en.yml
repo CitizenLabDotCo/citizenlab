@@ -333,6 +333,9 @@ en:
       unsupported_field: 'This field cannot be completed on paper. Please use the online version of this form instead.'
       ranking_print_description: 'Please write a number from 1 (most preferred) and %{max_rank} (least preferred) in each box. Use each number only once.'
       matrix_print_description: 'For each row, mark one circle with a cross to indicate your preference.'
+      point_print_description: 'Please draw an X on the map below to show the location or write the address instead.'
+      line_print_description: 'Please draw a route on the map below.'
+      polygon_print_description: 'Please draw a shape on the map below.'
   project_copy:
     title_suffix: 'Copy'
   confirmations_mailer:

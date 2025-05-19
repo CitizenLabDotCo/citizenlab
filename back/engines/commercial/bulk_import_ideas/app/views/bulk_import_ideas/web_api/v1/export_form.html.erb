@@ -86,6 +86,11 @@
           }
         }
       }
+      div.mapping {
+        img { margin-top: 10px; width: 480px; }
+        div.line { width: 480px; }
+      }
+      div.page img { margin-top: 10px; width: 510px; }
     }
   </style>
 </head>
@@ -121,6 +126,11 @@
       <div class="page" id="<%= field[:id] %>">
         <h2><%= field[:title] %></h2>
         <%= sanitize field[:description] %>
+
+        <% if field[:map_url] %>
+          <img alt="" src="<%= field[:map_url] %>">
+        <% end %>
+
       </div>
 
     <% else %>
@@ -220,6 +230,15 @@
                   </tr>
                   <% end %>
               </table>
+            </div>
+
+          <% elsif field[:format] == :mapping %>
+            <div class="mapping">
+              <% if field[:input_type] == 'point' %>
+                <div class="line"></div>
+                <div class="line"></div>
+              <% end %>
+              <img alt="" src="<%= field[:map_url] %>">
             </div>
 
           <% else %>
