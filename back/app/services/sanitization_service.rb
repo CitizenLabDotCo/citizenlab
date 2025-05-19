@@ -13,18 +13,15 @@ class SanitizationService
   # Sanitizes a string from malicious and unwanted input.
   # @param sanitize [String] string input to be sanitized
   # @param features [Array<Symbol>] A list of allowed features
-  # @note TODO: What exactly is a feature? HTML tags, attributes? Predefined list somewhere?
+  # See {IframeScrubber, EDITOR_FEATURES} for the list of allowed tags and attributes.
   def sanitize(text, features)
     scrubber = IframeScrubber.new(features)
+    sanitized = SANITIZER.sanitize(text, scrubber: scrubber)
 
-    sanitized = SANITIZER.sanitize(
-      text,
-      scrubber: scrubber
-    )
     if sanitized == text
       sanitized
     else
-      sanitize sanitized, features
+      sanitize(sanitized, features)
     end
   end
 

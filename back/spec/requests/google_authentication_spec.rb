@@ -167,6 +167,13 @@ describe 'google authentication' do
         user_id: user.id
       })
       expect(cookies[:cl2_jwt]).to be_present
+
+      expect(LogActivityJob).to have_been_enqueued.with(
+        user,
+        'completed_registration',
+        nil,
+        user.updated_at.to_i
+      ).exactly(1).times
     end
 
     it 'creates a new user with previously selected locale' do
@@ -219,6 +226,18 @@ describe 'google authentication' do
           user = User.find_by(email: 'boris.brompton@orange.uk')
           expect(user.confirmation_required?).to be(true)
         end
+
+        it "does not log 'registration_completed' activity job" do
+          get '/auth/google'
+          follow_redirect!
+
+          expect(LogActivityJob).not_to have_been_enqueued.with(
+            anything,
+            'completed_registration',
+            anything,
+            anything
+          )
+        end
       end
     end
   end
@@ -245,5 +264,12 @@ describe 'google authentication' do
       user_id: user.id
     })
     expect(cookies[:cl2_jwt]).to be_present
+
+    expect(LogActivityJob).to have_been_enqueued.with(
+      user,
+      'completed_registration',
+      nil,
+      user.updated_at.to_i
+    ).exactly(1).times
   end
 end

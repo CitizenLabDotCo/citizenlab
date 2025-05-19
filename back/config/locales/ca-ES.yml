@@ -171,12 +171,15 @@ ca:
       attachments:
         title: Adjunts
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Explica'ns més
+        description:
+      uploads_page:
         title: Imatges i fitxers adjunts
         description:
-      page3:
+      details_page:
         title: Detalls
         description:
       other_input_field:

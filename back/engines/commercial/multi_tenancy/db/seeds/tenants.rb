@@ -82,6 +82,10 @@ module MultiTenancy
               allowed: true,
               enabled: true
             },
+            twoday_login: {
+              allowed: true,
+              enabled: true
+            },
             franceconnect_login: {
               allowed: true,
               enabled: false,
@@ -336,6 +340,14 @@ module MultiTenancy
                   client_secret: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_SECRET', 'fake secret'),
                   ui_method_name: 'ID Austria',
                   enabled_for_verified_actions: true
+                },
+                {
+                  name: 'twoday',
+                  client_id: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_SECRET', 'fake secret'),
+                  domain: ENV.fetch('DEFAULT_ID_TWODAY_DOMAIN', 'fake domain'),
+                  ui_method_name: 'Bank ID',
+                  enabled_for_verified_actions: true
                 }
               ]
             },
@@ -420,19 +432,20 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            user_session_recording: {
+            html_pdfs: {
               enabled: true,
               allowed: true
+            },
+            user_session_recording: {
+              # Disable for E2E tests on localhost
+              enabled: false,
+              allowed: false
             },
             analysis: {
               enabled: true,
               allowed: true
             },
             large_summaries: {
-              enabled: true,
-              allowed: true
-            },
-            comments_summaries: {
               enabled: true,
               allowed: true
             },
@@ -495,6 +508,10 @@ module MultiTenancy
               project_id: ''
             },
             user_fields_in_surveys: {
+              enabled: true,
+              allowed: true
+            },
+            common_ground: {
               enabled: true,
               allowed: true
             }

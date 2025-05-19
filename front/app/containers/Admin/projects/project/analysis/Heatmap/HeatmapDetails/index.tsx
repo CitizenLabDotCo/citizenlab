@@ -8,6 +8,7 @@ import {
   Tbody,
   stylingConsts,
   Select,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
@@ -17,38 +18,44 @@ import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeat
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
+import useCustomFieldOption from 'api/custom_field_options/useCustomFieldOption';
+import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import { IUserCustomFieldOptions } from 'api/user_custom_fields_options/types';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import useLocalize from 'hooks/useLocalize';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import Tag from '../../Tags/Tag';
 import messages from '../messages';
+import tracks from '../tracks';
 
 import HeatmapCellTagVsBin from './HeatmapCellTagVsBin';
 import HeatmapTableHead from './HeatmapTableHead';
 import StyledTable from './StyledTable';
 import { useGetOptionText } from './utils';
 
-const OptionTextTd = ({
-  bin,
-  options,
-}: {
-  bin: ICustomFieldBinData;
-  options?: IUserCustomFieldOptions;
-}) => {
+const OptionTextTd = ({ bin }: { bin: ICustomFieldBinData }) => {
+  const { data: option } = useCustomFieldOption({
+    optionId: bin.relationships.custom_field_option?.data?.id,
+    enabled: !!bin.relationships.custom_field_option?.data?.id,
+  });
   const optionText = useGetOptionText({
     bin,
-    options,
+    option,
   });
 
-  return <Td>{optionText}</Td>;
+  return (
+    <Td>
+      <Text fontWeight="bold" m="0px" color="inherit" fontSize="s">
+        {optionText}
+      </Text>
+    </Td>
+  );
 };
 
 interface HeatMapProps {
@@ -106,12 +113,8 @@ const HeatmapDetails = ({
     analysisId,
   });
 
-  const { data: columnOptions } = useUserCustomFieldsOptions(
-    selectedColumnFieldId
-  );
-  const { data: rowOptions } = useUserCustomFieldsOptions(
-    !isSelectedRowTypeTags ? selectedRowType : undefined
-  );
+  const { data: columnOptions } = useCustomFieldOptions(selectedColumnFieldId);
+
   const { data: columnBins } = useCustomFieldBins(selectedColumnFieldId);
   const { data: rowBins } = useCustomFieldBins(
     !isSelectedRowTypeTags ? selectedRowType : undefined
@@ -154,7 +157,10 @@ const HeatmapDetails = ({
             size="small"
             label={formatMessage(messages.rowValues)}
             value={selectedRowType}
-            onChange={(option) => setSelectedRowType(option.value)}
+            onChange={(option) => {
+              setSelectedRowType(option.value);
+              trackEventByName(tracks.heatmapChangeRowValues);
+            }}
             options={[
               {
                 value: 'tags',
@@ -163,6 +169,7 @@ const HeatmapDetails = ({
               ...inputCustomFields.map((field) => ({
                 value: field.id,
                 label: localize(field.title_multiloc),
+                disabled: selectedColumnFieldId === field.id,
               })),
             ]}
             disabled={inputCustomFieldsIds.length === 0}
@@ -173,7 +180,10 @@ const HeatmapDetails = ({
             size="small"
             label={formatMessage(messages.columnValues)}
             value={selectedColumnFieldId}
-            onChange={(option) => setSelectedColumnFieldId(option.value)}
+            onChange={(option) => {
+              setSelectedColumnFieldId(option.value);
+              trackEventByName(tracks.heatmapChangeColumnValues);
+            }}
             options={[
               ...userCustomFields.map((field) => ({
                 value: field.id,
@@ -182,6 +192,7 @@ const HeatmapDetails = ({
               ...inputCustomFields.map((field) => ({
                 value: field.id,
                 label: localize(field.title_multiloc),
+                disabled: selectedRowType === field.id,
               })),
             ]}
           />
@@ -191,7 +202,10 @@ const HeatmapDetails = ({
             size="small"
             value={unit}
             label={formatMessage(messages.units)}
-            onChange={(option) => setUnit(option.value)}
+            onChange={(option) => {
+              trackEventByName(tracks.heatmapChangeUnit);
+              setUnit(option.value);
+            }}
             disabled={
               analysis?.data.attributes.participation_method === 'native_survey'
             }
@@ -226,8 +240,10 @@ const HeatmapDetails = ({
                   {columnBins.data.map((bin) => {
                     const cell = analysisHeatmapCells?.data.find(
                       (cell) =>
-                        cell.relationships.row.data.id === tag.id &&
-                        cell.relationships.column.data.id === bin.id
+                        (cell.relationships.row.data.id === tag.id &&
+                          cell.relationships.column.data.id === bin.id) || //Also search for the transposed row/column, because the back-end only generates one version
+                        (cell.relationships.column.data.id === tag.id &&
+                          cell.relationships.row.data.id === bin.id)
                     );
 
                     return (
@@ -248,13 +264,15 @@ const HeatmapDetails = ({
               {rowBins?.data.map((rowBin) => (
                 <Tr key={rowBin.id}>
                   <Td>
-                    <OptionTextTd bin={rowBin} options={rowOptions} />
+                    <OptionTextTd bin={rowBin} />
                   </Td>
                   {columnBins.data.map((columnBin) => {
                     const cell = analysisHeatmapCells?.data.find(
                       (cell) =>
-                        cell.relationships.row.data.id === rowBin.id &&
-                        cell.relationships.column.data.id === columnBin.id
+                        (cell.relationships.row.data.id === rowBin.id &&
+                          cell.relationships.column.data.id === columnBin.id) || //Also search for the transposed row/column, because the back-end only generates one version
+                        (cell.relationships.column.data.id === rowBin.id &&
+                          cell.relationships.row.data.id === columnBin.id)
                     );
 
                     return (

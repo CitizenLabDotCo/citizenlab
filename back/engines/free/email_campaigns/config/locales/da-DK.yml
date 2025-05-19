@@ -8,6 +8,7 @@ da:
       "comment_marked_as_spam": Rapportering af kommentar-spam
       "comment_on_your_comment": Et svar på min kommentar
       "comment_on_idea_you_follow": En kommentar til en idé, som du følger
+      "community_monitor_report": Rapport fra Borgerbarometer
       "cosponsor_of_your_idea": En bruger accepterer min invitation til at være medstiller på mit forslag
       "event_registration_confirmation": Bekræftelse af tilmelding til begivenhed
       "idea_marked_as_spam": Rapportering af idé-spam
@@ -67,7 +68,7 @@ da:
         question: 'Gå til dit spørgsmål'
         contribution: 'Gå til dit bidrag'
         project: 'Gå til dit projekt'
-        issue: 'Gå til dit problem'
+        issue: 'Gå til dit input'
         option: 'Gå til din valgmulighed'
         proposal: 'Gå til dit forslag'
         petition: 'Gå til din underskriftsindsamling'
@@ -82,6 +83,7 @@ da:
         "4": "Hver uge, om torsdagen %{hourOfDay}"
         "5": "Hver uge, om fredagen %{hourOfDay}"
         "6": "Hver uge, om lørdagen %{hourOfDay}"
+      quarterly: "Kvartalsvis på den første dag i kvartalet"
     footer:
       "link_privacy_policy": "Anonymitetspolitik"
       "link_terms_conditions": "Betingelser og vilkår"
@@ -122,12 +124,12 @@ da:
       x_days_ago_by_author: '%{x} dage siden af %{author}'
     admin_rights_received:
       cta_manage_platform: 'Administrer din platform'
-      message_you_became_administrator: 'Du har fået administratorrettigheder til deltagelsesplatformen for %{organizationName}.'
-      preheader: 'Du har fået administratorrettigheder til deltagelsesplatformen for %{organizationName}'
+      message_you_became_administrator: 'Du har fået administratorrettigheder til inddragelsesplatform for %{organizationName}.'
+      preheader: 'Du har fået administratorrettigheder til borgerinddragelsesplatformen for %{organizationName}'
       subject: 'Du er blevet administrator af %{organizationName}s platform'
       text_create_participatory_process: 'Som administrator kan du oprette og konfigurere nye deltagelsesprojekter. Du kan tilføje nye faser ved hjælp af tidslinjen. Hver af disse faser kan have sin egen adfærd med hensyn til idépostering, kommentering og afstemning.'
       text_moderate_analyse_input: 'Når projekterne er lanceret, kommer de første idéer ind. Du vil modtage ugentlige rapporter med alle kerneaktiviteter, så du hele tiden er på forkant. Idéoversigten hjælper dig med at moderere input og samarbejde om at behandle det.'
-      text_platform_setup: 'Som administrator kan du oprette din deltagelsesplatform. Vælg logo, billeder og farver, skriv en personlig besked på din hjemmeside, send invitationer og definer, hvad du vil vide om dine brugere, ...'
+      text_platform_setup: 'Som administrator kan du oprette din inddragelsesplatform. Vælg logo, billeder og farver, skriv en personlig besked på din hjemmeside, send invitationer og definer, hvad du vil vide om dine brugere, ...'
       title_create_participatory_process: 'Design deltagelsesprocessen'
       title_moderate_analyse_input: 'Moderér og analyser input'
       title_platform_setup: 'Sæt din platform op'
@@ -147,6 +149,12 @@ da:
       today: I dag
       wrong_content: 'Kommentaren er ikke relevant.'
       yesterday: I går
+    community_monitor_report:
+      subject: 'En ny Borgerbarometer-rapport er tilgængelig'
+      title: 'En ny Borgerbarometer-rapport er tilgængelig'
+      text_introduction: 'Der er oprettet en Borgerbarometer-rapport for det foregående kvartal. Du kan få adgang til den ved at klikke på knappen nedenfor og logge ind.'
+      cta_report_button: 'Se rapport'
+      report_name: 'Rapport fra Borgerbarometer'
     cosponsor_of_your_idea:
       cta_reply_to: 'Se dit forslag'
       event_description: 'Tillykke! %{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag.'
@@ -185,16 +193,16 @@ da:
     invite_reminder:
       cta_accept_invitation: 'Acceptér din invitation'
       invitation_header: 'Din invitation er afventende'
-      preheader: '%{organizationName} sendte dig en invitation til at deltage på deres deltagelsesplatform for nogle dage siden.'
+      preheader: '%{organizationName} sendte dig en invitation til at deltage på deres inddragelsesplatform for nogle dage siden.'
       invitation_expiry_message: 'Denne invitation udløber om cirka %{expiryDaysRemaining} dage.'
-      subject: 'Afventende invitation for deltagelsesplatformen for %{organizationName}'
+      subject: 'Afventende invitation for inddragelsesplatform for %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} skrev dette:'
       cta_accept_invitation: 'Acceptér din invitation'
       invitation_header: 'Du er inviteret!'
-      invitation_header_message: '%{organizationName} inviterede dig til deres deltagelsesplatform.'
+      invitation_header_message: '%{organizationName} inviterede dig til deres inddragelsesplatform.'
       invitation_expiry_message: 'Denne invitation udløber om %{expiryDays} dage.'
-      preheader: '%{organizationName} sendte dig en invitation til at deltage i deres deltagelsesplatform.'
+      preheader: '%{organizationName} sendte dig en invitation til at deltage i deres inddragelsesplatform.'
       subject: 'Du er inviteret til at deltage i platformen for %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Svar %{commentAuthor}'
@@ -309,9 +317,9 @@ da:
       preheader: '%{commentAuthor} nævnte dig i sin kommentar'
     project_moderation_rights_received:
       cta_manage_project: 'Administrer dette projekt'
-      message_you_became_moderator: 'En administrator af %{organizationName}s deltagelsesplatform har lige gjort dig til projektleder for følgende projekt:'
+      message_you_became_moderator: 'En administrator af %{organizationName}s inddragelsesplatform har lige gjort dig til projektleder for følgende projekt:'
       no_ideas: 'Ingen idéer endnu'
-      preheader: 'En administrator af %{organizationName}s deltagelsesplatform har lige gjort dig til projektleder for følgende projekt'
+      preheader: 'En administrator af %{organizationName}s inddragelsesplatform har lige gjort dig til projektleder for følgende projekt'
       subject: 'Du blev projektleder på platformen for %{organizationName}'
       text_design_participatory_process: 'Som projektmoderator har du mulighed for at konfigurere hvordan brugere interagerer med dit projekt. Du kan tilføje nye faser ved at bruge tidslinjen. Hver af disse faser kan have sin egen adfærd med hensyn til idéopslag, kommentering og afstemning.'
       text_moderate_analyse_input: 'Når projektet er lanceret, vil dine første idéer komme ind. Du vil modtage ugentlige rapporter med alle vigtige aktiviteter, så du kan bevare overblikket over tingene. Idéoversigten i din projektlederoversigt vil hjælpe dig med at forstå hvilke idéer der får flest ja- og nej-stemmer.'
@@ -324,7 +332,7 @@ da:
       x_ideas: '%{numberOfIdeas} ideer'
     project_folder_moderation_rights_received:
       cta_view_folder_button: 'Se på denne mappe'
-      message_added_as_folderadmin: 'Du er blevet tilføjet som administrator og modtaget rettigheder på %{organizationName}s deltagelsesplatform for følgende mappe:'
+      message_added_as_folderadmin: 'Du er blevet tilføjet som administrator og modtaget rettigheder på %{organizationName}s inddragelsesplatform for følgende mappe:'
       no_projects: 'Ingen projekter endnu'
       preheader: 'En administrator af %{organizationName} borgerinddragelsesplatformen har lige tilføjet dig som leder af følgende projektmappe'
       subject: 'Du blev projektmappe leder på dette %{organizationName}s platform'
@@ -375,7 +383,7 @@ da:
       subject: 'Status for "%{input_title}" er ændret'
       preheader: 'Et input, du følger, har fået ny status'
     user_digest:
-      subject: "Ugentlig opdatering af deltagelsesplatformen for %{organizationName}"
+      subject: "Ugentlig opdatering af inddragelsesplatform for %{organizationName}"
       commented: "%{authorFirstName} kommenterede:"
       preheader: "Ugentlig oversigt for %{organizationName}"
       title_your_weekly_report: "Find ud af hvad der skete i sidste uge"
@@ -403,7 +411,7 @@ da:
       cta_join_platform: 'Udforsk platformen'
       subject: 'Velkommen til platformen for %{organizationName}'
       main_header: Velkommen!
-      message_welcome: 'Tillykke, du har tilmeldt dig deltagelsesplatformen for %{organizationName}. Udforsk platformen og husk, at du også kan tilføje et profilbillede og en kort beskrivelse, hvor du fortæller, hvem du er.'
+      message_welcome: 'Tillykke, du har tilmeldt dig inddragelsesplatform for %{organizationName}. Udforsk platformen og husk, at du også kan tilføje et profilbillede og en kort beskrivelse, hvor du fortæller, hvem du er.'
       preheader: 'Her er det du kan gøre på %{organizationName} platformen'
     idea_published:
       subject:
@@ -415,13 +423,13 @@ da:
         option: 'Din mulighed er blevet offentliggjort'
         proposal: 'Dit forslag er blevet offentliggjort'
         petition: 'Din underskriftsindsamling er blevet offentliggjort'
-      main_header: 'Du slog en idé op! Lad os sikre, at den bliver læst.'
+      main_header: 'Du skrev "%{input_title}"'
       header_message: 'Lad os sørge for, at den bliver læst.'
       message_get_votes: 'Nå flere personer med dine idéer:'
       action_published_idea: 'Publiceret idé'
       action_add_image: '%{addImageLink} for at øge synlighed'
       add_image: 'Tilføj et billede'
-      action_share_fb: 'Fortæl dine venner på %{fbLink}'
+      action_share_fb: 'Del med dine venner på %{fbLink}'
       action_share_twitter: 'Fortæl dine følgere på %{twitterLink}'
       action_send_email: 'Send dine kontakter en %{sendEmailLink}'
       send_email: e-mail

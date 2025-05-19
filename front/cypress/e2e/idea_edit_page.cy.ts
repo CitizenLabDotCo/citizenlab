@@ -43,8 +43,7 @@ describe('Idea edit page', () => {
     }
   });
 
-  // Temporary skip flaky test. Edwin
-  it.skip('has a working idea edit form', () => {
+  it('has a working idea edit form', () => {
     cy.setLoginCookie(email, password);
     cy.intercept('GET', `**/ideas/${ideaId}**`).as('idea');
 
@@ -62,20 +61,17 @@ describe('Idea edit page', () => {
     cy.wait('@idea');
 
     cy.get('#e2e-idea-edit-page');
-    cy.get('#idea-form', { timeout: 100000 }).should('exist');
-    // cy.get('#idea-form').should('exist');
+    cy.get('#idea-form').should('exist');
     cy.get('#e2e-idea-title-input input').as('titleInput');
-    cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
 
     // check initial form values
     cy.get('@titleInput').should('exist');
-    cy.get('@descriptionInput').should('exist');
     cy.get('@titleInput').should(($input) => {
       expect($input.val()).to.eq(ideaTitle);
     });
-    cy.get('@descriptionInput').should(($el) => {
-      expect($el.text().trim()).to.eq(ideaContent);
-    });
+
+    // So typing the title doesn't get interrupted
+    cy.wait(1000);
 
     // Edit title and description
     cy.get('@titleInput')
@@ -83,17 +79,34 @@ describe('Idea edit page', () => {
       .should('exist')
       .should('not.be.disabled')
       .type(newIdeaTitle, { delay: 0 });
+
+    // verify the new values
+    cy.get('@titleInput').should('exist');
+    cy.get('@titleInput').should('contain.value', newIdeaTitle);
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
+
+    // check initial form values
+    cy.get('@descriptionInput').should('exist');
+    cy.get('@descriptionInput').should(($el) => {
+      expect($el.text().trim()).to.eq(ideaContent);
+    });
+
+    // So typing the description doesn't get interrupted
+    cy.wait(1000);
+
+    // Edit title and description
     cy.get('@descriptionInput')
       .clear()
       .should('exist')
       .should('not.be.disabled')
       .type(newIdeaContent);
 
-    cy.wait(1000);
-
     // verify the new values
-    cy.get('@titleInput').should('exist');
-    cy.get('@titleInput').should('contain.value', newIdeaTitle);
+    cy.get('@descriptionInput').should('exist');
     cy.get('@descriptionInput').contains(newIdeaContent);
 
     // Go to the next page of the idea form
@@ -178,7 +191,7 @@ describe('Idea edit page', () => {
     cy.contains(`${lastName}, ${firstName}`).should('exist');
   });
 
-  it('has a go close button that redirects the user to the edit page when clicked', () => {
+  it('has a close button that redirects the user to the edit page when clicked', () => {
     cy.setAdminLoginCookie();
     // Go to idea edit page
     cy.visit(`/ideas/edit/${ideaId}`);

@@ -14,6 +14,7 @@ import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
   IFlatCustomField,
+  IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -35,12 +36,15 @@ interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField, index: number) => void;
   builderConfig: FormBuilderConfig;
   move: (indexA: number, indexB: number) => void;
+  // Callback to focus a field in the right-hand settings pane
+  onSelectField: (field: IFlatCustomFieldWithIndex) => void;
 }
 
 const FormBuilderToolbox = ({
   onAddField,
   builderConfig,
   move,
+  onSelectField,
 }: FormBuilderToolboxProps) => {
   const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
     name: 'input_form_custom_fields',
@@ -68,78 +72,87 @@ const FormBuilderToolbox = ({
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
-    // We insert the new field at the index of the last
-    // field, which means that it will be inserted before
-    // the last field. This is because the last field is the
-    // 'survey end' page, which should always be the last field.
-    const index = formCustomFields.length - 1;
-
-    onAddField(
-      {
-        id: `${Math.floor(Date.now() * Math.random())}`,
-        temp_id: generateTempId(),
-        logic: {
-          ...(inputType !== 'page' ? { rules: [] } : undefined),
-        },
-        isLocalOnly: true,
-        description_multiloc: {},
-        input_type: inputType,
-        required: false,
-        title_multiloc: {
-          [locale]: '',
-        },
-        linear_scale_label_1_multiloc: getInitialLinearScaleLabel({
-          value: 1,
-          inputType,
-          formatMessage,
-          locale,
-        }),
-        linear_scale_label_2_multiloc: getInitialLinearScaleLabel({
-          value: 2,
-          inputType,
-          formatMessage,
-          locale,
-        }),
-        linear_scale_label_3_multiloc: getInitialLinearScaleLabel({
-          value: 3,
-          inputType,
-          formatMessage,
-          locale,
-        }),
-        linear_scale_label_4_multiloc: getInitialLinearScaleLabel({
-          value: 4,
-          inputType,
-          formatMessage,
-          locale,
-        }),
-        linear_scale_label_5_multiloc: getInitialLinearScaleLabel({
-          value: 5,
-          inputType,
-          formatMessage,
-          locale,
-        }),
-        linear_scale_label_6_multiloc: {},
-        linear_scale_label_7_multiloc: {},
-        linear_scale_label_8_multiloc: {},
-        linear_scale_label_9_multiloc: {},
-        linear_scale_label_10_multiloc: {},
-        linear_scale_label_11_multiloc: {},
-        maximum: 5,
-        ask_follow_up: false,
-        options: [
-          {
-            title_multiloc: {},
-          },
-        ],
-        matrix_statements: [
-          {
-            title_multiloc: {},
-          },
-        ],
-        enabled: true,
+    const createField = (type: ICustomFieldInputType) => ({
+      id: `${Math.floor(Date.now() * Math.random())}`,
+      temp_id: generateTempId(),
+      logic: {
+        ...(type !== 'page' ? { rules: [] } : undefined),
       },
-      index
-    );
+      isLocalOnly: true,
+      description_multiloc: {},
+      input_type: type,
+      required: false,
+      title_multiloc: {
+        [locale]: '',
+      },
+      linear_scale_label_1_multiloc: getInitialLinearScaleLabel({
+        value: 1,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_2_multiloc: getInitialLinearScaleLabel({
+        value: 2,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_3_multiloc: getInitialLinearScaleLabel({
+        value: 3,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_4_multiloc: getInitialLinearScaleLabel({
+        value: 4,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_5_multiloc: getInitialLinearScaleLabel({
+        value: 5,
+        inputType: type,
+        formatMessage,
+        locale,
+      }),
+      linear_scale_label_6_multiloc: {},
+      linear_scale_label_7_multiloc: {},
+      linear_scale_label_8_multiloc: {},
+      linear_scale_label_9_multiloc: {},
+      linear_scale_label_10_multiloc: {},
+      linear_scale_label_11_multiloc: {},
+      maximum: 5,
+      ask_follow_up: false,
+      options: [
+        {
+          title_multiloc: {},
+        },
+      ],
+      matrix_statements: [
+        {
+          title_multiloc: {},
+        },
+      ],
+      enabled: true,
+    });
+
+    const previousField = formCustomFields[formCustomFields.length - 2];
+    const isLastFieldTitleOrBody =
+      previousField.key === 'title_multiloc' ||
+      previousField.key === 'body_multiloc';
+
+    // If the field before the last is a title or body field, we add a new page and add it to the new page
+    // This is because the title and description pages should only have those fields
+    if (isLastFieldTitleOrBody && inputType !== 'page') {
+      const indexForPage = formCustomFields.length - 1;
+      onAddField(createField('page'), indexForPage);
+
+      const indexForInputField = indexForPage + 1;
+      onAddField(createField(inputType), indexForInputField);
+    } else {
+      const indexForInputField = formCustomFields.length - 1;
+      onAddField(createField(inputType), indexForInputField);
+    }
   };
 
   return (
@@ -160,7 +173,12 @@ const FormBuilderToolbox = ({
       <Box overflowY="auto" w="100%" display="inline">
         <LayoutFields addField={addField} builderConfig={builderConfig} />
         {builderConfig.displayBuiltInFields && (
-          <BuiltInFields move={move} builderConfig={builderConfig} />
+          <BuiltInFields
+            move={move}
+            builderConfig={builderConfig}
+            addField={addField}
+            onSelectField={onSelectField}
+          />
         )}
         <Box display="flex" alignItems="center" ml="16px" mt="16px">
           <Title
@@ -266,8 +284,7 @@ const FormBuilderToolbox = ({
           inputType="rating"
           disabled={isCustomFieldsDisabled}
         />
-        {/* TODO: Re-enable once the Sentiment Question is fully released */}
-        {/* <ToolboxItem
+        <ToolboxItem
           icon="survey-sentiment"
           label={formatMessage(messages.sentiment)}
           onClick={() => addField('sentiment_linear_scale')}
@@ -275,7 +292,7 @@ const FormBuilderToolbox = ({
           fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="sentiment_linear_scale"
           disabled={isCustomFieldsDisabled}
-        /> */}
+        />
         <ToolboxItem
           icon="survey-matrix"
           label={formatMessage(messages.matrix)}

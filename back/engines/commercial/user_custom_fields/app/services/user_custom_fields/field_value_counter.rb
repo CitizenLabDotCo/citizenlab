@@ -11,15 +11,16 @@ module UserCustomFields
     # who do not have a value for the custom field. The key of this entry is equal to
     # +UNKNOWN_VALUE_LABEL+.
     #
-    # @param [ActiveRecord::Relation] users
+    # @param [ActiveRecord::Relation] records - users OR ideas
     # @param [UserCustomField] user_custom_field
     # @param [Symbol] by index the counts by
     #   - option id if +by+ is +:option_id+
     #   - area id if +by+ is +:area_id+ (only for domicile field)
     #   - option key otherwise.
+    # @param [String] record_type - are the records passed in users (default) or ideas
     # @return [ActiveSupport::HashWithIndifferentAccess]
-    def self.counts_by_field_option(users, custom_field, by: :option_key)
-      field_values = select_field_values(users, custom_field)
+    def self.counts_by_field_option(records, custom_field, by: :option_key, record_type: 'users')
+      field_values = select_field_values(records, custom_field, record_type)
 
       # Warning: The method +count+ cannot be used here because it introduces a SQL syntax
       # error while rewriting the SELECT clause. This is because the 'field_value' column is a
@@ -52,27 +53,29 @@ module UserCustomFields
       counts.with_indifferent_access
     end
 
-    # Returns an ActiveRecord::Relation of all the custom field values for the given users.
+    # Returns an ActiveRecord::Relation of all the user custom field values for the given records (users or ideas).
+    # Ideas are supported so that surveys that allow user fields in the survey form can be analyzed.
     # It returns a view (result set) with a single column named 'field_value'. Essentially,
     # something that looks like:
     #   SELECT ... AS field_value FROM ...
     #
     # Each user results in one or multiple rows, depending on the type of custom field.
     # Custom fields with multiple values (e.g. multiselect) are returned as multiple rows.
-    # If the custom field has no value for a given user, the resulting row contains NULL.
-    private_class_method def self.select_field_values(users, custom_field)
+    # If the custom field has no value for a given user or idea, the resulting row contains NULL.
+    private_class_method def self.select_field_values(records, custom_field, record_type)
+      field_key = record_type == 'ideas' ? "u_#{custom_field.key}" : custom_field.key
       case custom_field.input_type
       when 'select', 'checkbox', 'number'
-        users.select("custom_field_values->'#{custom_field.key}' as field_value")
+        records.select("custom_field_values->'#{field_key}' as field_value")
       when 'multiselect'
-        users.joins(<<~SQL.squish).select('cfv.field_value as field_value')
+        records.joins(<<~SQL.squish).select('cfv.field_value as field_value')
           LEFT JOIN (
             SELECT
-              jsonb_array_elements(custom_field_values->'#{custom_field.key}') as field_value,
-              id as user_id
-            FROM users
+              jsonb_array_elements(custom_field_values->'#{field_key}') as field_value,
+              id as record_id
+            FROM #{record_type}
           ) as cfv
-          ON users.id = cfv.user_id
+          ON #{record_type}.id = cfv.record_id
         SQL
       else
         raise NotSupportedFieldTypeError

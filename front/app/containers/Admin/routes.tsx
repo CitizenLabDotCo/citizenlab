@@ -13,6 +13,9 @@ import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 
+import communityMonitorsRoutes, {
+  communityMonitorRouteTypes,
+} from './communityMonitor/routes';
 import createDashboardRoutes, { dashboardRouteTypes } from './dashboard/routes';
 import ideasRoutes, { ideaRouteTypes } from './ideas/routes';
 import inspirationHubRoutes, {
@@ -55,6 +58,7 @@ export type AdminRouteTypes =
   | dashboardRouteTypes
   | projectFolderRouteTypes
   | toolRouteTypes
+  | communityMonitorRouteTypes
   | reportingRouteTypes
   | messagingRouteTypes
   | pagesAndMenuRouteTypes
@@ -153,6 +157,7 @@ const createAdminRoutes = () => {
       projectFoldersRoutes(),
       ...reportingRoutes(),
       toolsRoutes(),
+      communityMonitorsRoutes(),
       inspirationHubRoutes(),
       // This path is only reachable via URL.
       // It's a pragmatic solution to reduce workload

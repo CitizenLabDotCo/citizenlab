@@ -9,8 +9,17 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
   let!(:project) { create(:project, custom_form: custom_form) }
   let!(:idea_custom_field) { create(:custom_field, resource: custom_form) }
 
-  context 'for a normal user' do
+  context 'for a normal user who can access the project' do
     let(:user) { create(:user) }
+
+    it { is_expected.to permit(:index) }
+    it { is_expected.to permit(:show) }
+    it { is_expected.not_to permit(:update_all) }
+  end
+
+  context 'for a normal user who cannot access the project' do
+    let(:user) { create(:user) }
+    let!(:project) { create(:private_admins_project, custom_form: custom_form) }
 
     it { is_expected.not_to permit(:index) }
     it { is_expected.not_to permit(:show) }
@@ -44,8 +53,8 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
   context 'for a moderator of another project' do
     let(:user) { create(:project_moderator) }
 
-    it { is_expected.not_to permit(:index) }
-    it { is_expected.not_to permit(:show) }
+    it { is_expected.to permit(:index) }
+    it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:update_all) }
   end
 

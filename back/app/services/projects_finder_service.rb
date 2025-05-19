@@ -109,6 +109,7 @@ class ProjectsFinderService
     @projects
       .joins("INNER JOIN (#{subquery.to_sql}) AS subquery ON projects.id = subquery.project_id")
       .select('projects.*, subquery.latest_follower_created_at')
+      .not_in_draft_folder
       .order('subquery.latest_follower_created_at DESC')
   end
 
@@ -118,7 +119,7 @@ class ProjectsFinderService
   # Ordered by created_at, newest first.
   # # => [Project]
   def projects_for_areas
-    @projects = @projects.not_draft
+    @projects = @projects.not_draft.not_in_draft_folder
 
     projects = if @areas.present?
       @projects.where(include_all_areas: true).or(@projects.with_some_areas(@areas))
@@ -146,6 +147,7 @@ class ProjectsFinderService
     base_scope = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .joins('INNER JOIN phases ON phases.project_id = projects.id')
+      .not_in_draft_folder
 
     include_finished = %w[finished finished_and_archived].include?(@filter_by)
     include_archived = %w[archived finished_and_archived].include?(@filter_by)

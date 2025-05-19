@@ -171,12 +171,15 @@ es:
       attachments:
         title: Archivos adjuntos
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Cuéntanos más
+        description:
+      uploads_page:
         title: Imágenes y archivos adjuntos
         description:
-      page3:
+      details_page:
         title: Detalles
         description:
       other_input_field:
@@ -301,7 +304,7 @@ es:
       title_text_3: '¡Gracias por compartir tu aportación!'
       description_text_3: "Tu aportación se ha enviado correctamente."
     form_user_page:
-      title_text: 'Acerca de ti'
+      title_text: 'Sobre ti'
     pdf_export:
       personal_data: 'Datos personales'
       personal_data_explanation_public: "Enviaremos tu aportación a la plataforma de participación online de %{organizationName}. Si quieres que tu nombre aparezca como autor de esta aportación y recibir por correo electrónico actualizaciones relacionadas con ella, rellena los siguientes campos de esta página y crearemos una cuenta para ti. Tu correo electrónico no será público y sólo lo utilizará %{organizationName}. Si quieres permanecer en el anonimato, o no estás de acuerdo en que utilicemos tus datos personales de esta forma, puedes dejarlos vacíos."

@@ -2,19 +2,19 @@ fr:
   analysis:
     example_tag_n: Exemple d'étiquette %{n}
     cell_statement:
-      percent_more: "%{percent}% de plus"
-      percent_less: "%{percent}% en moins"
-      range_min_max: "%{min} à l'adresse %{max}"
+      percent_more: "%{percent}% plus"
+      percent_less: "%{percent}% moins"
+      range_min_max: "entre %{min} et %{max}"
       range_min: "%{min} ou plus"
       range_max: "%{max} ou moins"
       tag_vs_bin:
-        inputs: "Les personnes qui répondent '%{answer}' à '%{question}' affichent %{percent_more_less} dans '%{tag}' plus que la moyenne."
-        likes: "Les personnes qui répondent \"%{answer}\" à \"%{question}\" aiment les apports de %{percent_more_less} dans \"%{tag}\" plus que la moyenne."
+        inputs: "Les personnes qui répondent « %{answer} » à « %{question} » postent %{percent_more_less} avec le tag « %{tag} » que la moyenne."
+        likes: "Les personnes qui répondent « %{answer} » à « %{question} » aiment les contributions avec le tag « %{tag} » %{percent_more_less} souvent que la moyenne."
         dislikes: "Les personnes qui répondent \"%{answer}\" à \"%{question}\" n'apprécient pas les entrées de %{percent_more_less} dans \"%{tag}\" plus que la moyenne."
-        participants: "Les personnes qui répondent '%{answer}' à '%{question}' participent %{percent_more_less} à '%{tag}' plus que la moyenne."
+        participants: "Les personnes qui répondent « %{answer} » à « %{question} » participent %{percent_more_less} souvent dans « %{tag} » que la moyenne."
       bin_vs_bin:
-        inputs: "Les personnes qui répondent \"%{answer1}\" à \"%{question1}\" répondent \"%{answer2}\" à \"%{question2}\" %{percent_more_less} plus que la moyenne."
-        likes: "Les personnes qui répondent \"%{answer1}\" à \"%{question1}\" aiment plus que la moyenne les apports de %{percent_more_less} lorsqu'elles répondent \"%{answer2}\" à \"%{question2}\"."
-        dislikes: "Les personnes qui répondent '%{answer1}' à '%{question1}' n'aiment pas les apports de %{percent_more_less} lorsqu'elles répondent '%{answer2}' à '%{question2}' que la moyenne."
-        participants: "Les personnes qui répondent \"%{answer1}\" à \"%{question1}\" participent plus que la moyenne à %{percent_more_less} lorsqu'elles répondent \"%{answer2}\" à \"%{question2}\"."
+        inputs: "Les personnes qui répondent « %{answer1} » à « %{question1} » répondent « %{answer2} » à « %{question2} » %{percent_more_less} souvent que la moyenne."
+        likes: "Les personnes qui répondent « %{answer1} » à « %{question1} » aiment les contributions dont la réponse à « %{question2} » est « %{answer2} » %{percent_more_less} souvent que la moyenne."
+        dislikes: "Les personnes qui répondent « %{answer1} » à « %{question1} » n'aiment pas les contributions dont la réponse à « %{question2} » est « %{answer2} » %{percent_more_less} souvent que la moyenne."
+        participants: "Les personnes qui répondent %{answer1} à %{question1} et %{answer2} à %{question2} participent %{percent_more_less} souvent que la moyenne."
 

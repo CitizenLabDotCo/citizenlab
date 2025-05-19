@@ -6,9 +6,6 @@ UserCustomFields::Engine.routes.draw do
       scope :users do
         resources :custom_fields, controller: 'user_custom_fields' do
           patch 'reorder', on: :member
-          resources :custom_field_options, controller: '/web_api/v1/custom_field_options' do
-            patch 'reorder', on: :member
-          end
 
           resource :reference_distribution, controller: 'ref_distributions', only: %i[show create destroy]
           resource :rscore, controller: 'r_scores', only: %i[show]

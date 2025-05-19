@@ -8,6 +8,7 @@ de:
       "comment_marked_as_spam": Kommentar wird als Spam markiert
       "comment_on_your_comment": Antwort auf einen Kommentar
       "comment_on_idea_you_follow": Ein Kommentar zu einer Idee, der Sie folgen
+      "community_monitor_report": Gemeinschaftspuls-Bericht
       "cosponsor_of_your_idea": Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
       "event_registration_confirmation": Anmeldebestätigung für die Veranstaltung
       "idea_marked_as_spam": Beitrag wird als Spam gekennzeichnet
@@ -82,6 +83,7 @@ de:
         "4": "Wöchentlich, donnerstags um %{hourOfDay}"
         "5": "Wöchentlich, freitags um %{hourOfDay}"
         "6": "Wöchentlich, samstags um %{hourOfDay}"
+      quarterly: "Vierteljährlich, am ersten Tag des Quartals"
     footer:
       "link_privacy_policy": "Impressum & Datenschutz"
       "link_terms_conditions": "Nutzungsbedingungen"
@@ -147,6 +149,12 @@ de:
       today: Heute
       wrong_content: 'Der Kommentar ist nicht relevant.'
       yesterday: Gestern
+    community_monitor_report:
+      subject: 'Ein neuer Gemeinschaftspuls-Bericht ist verfügbar'
+      title: 'Ein neuer Gemeinschaftspuls-Bericht ist verfügbar'
+      text_introduction: 'Ein Gemeinschaftspuls-Bericht wurde für das letzte Quartal erstellt. Sie können darauf zugreifen, indem Sie auf den Button unten klicken und sich anmelden.'
+      cta_report_button: 'Bericht ansehen'
+      report_name: 'Gemeinschaftspuls-Bericht'
     cosponsor_of_your_idea:
       cta_reply_to: 'Eigenen Vorschlag ansehen'
       event_description: 'Herzlichen Glückwunsch! %{cosponsorName} hat deine Einladung zum Unterstützen deines Vorschlags angenommen.'

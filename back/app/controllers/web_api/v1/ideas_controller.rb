@@ -93,7 +93,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = policy_scope(Idea)
       .where(author: current_user)
       .submitted_or_published
-      .native_survey
+      .supports_survey
 
     ideas = paginate ideas
 
@@ -280,7 +280,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def similar_ideas
-    require_feature! 'authoring_assistance'
+    require_feature! 'input_iq'
 
     idea = Idea.new idea_params_for_similarities
     service = SimilarIdeasService.new(idea)

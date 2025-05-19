@@ -23,6 +23,8 @@ import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
 import useCustomForm from 'api/custom_form/useCustomForm';
+import { IPhaseData } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
@@ -51,6 +53,7 @@ import {
   getReorderedFields,
   DragAndDropResult,
   supportsLinearScaleLabels,
+  getQuestionCategory,
 } from './utils';
 
 interface FormValues {
@@ -61,21 +64,21 @@ type FormEditProps = {
   defaultValues: {
     customFields: IFlatCustomField[];
   };
-  projectId: string;
-  phaseId?: string;
   builderConfig: FormBuilderConfig;
   totalSubmissions: number;
   viewFormLink: RouteType;
+  phase: IPhaseData;
 };
 
 const FormEdit = ({
   defaultValues,
-  phaseId,
-  projectId,
   builderConfig,
   totalSubmissions,
   viewFormLink,
+  phase,
 }: FormEditProps) => {
+  const phaseId = phase.id;
+  const projectId = phase.relationships.project.data.id;
   const { formatMessage } = useIntl();
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
@@ -92,11 +95,7 @@ const FormEdit = ({
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
 
-  const { data: customForm } = useCustomForm({
-    projectId,
-    phaseId: isFormPhaseSpecific ? phaseId : undefined,
-  });
-  const formLastUpdatedAt = customForm?.data.attributes.updated_at;
+  const { data: customForm } = useCustomForm(phase);
 
   // Set the form opened at date from the API date only when the form is first loaded
   const [formOpenedAt, setFormOpenedAt] = useState<string | undefined>();
@@ -252,12 +251,14 @@ const FormEdit = ({
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
+        question_category: getQuestionCategory(field, customFields),
         ...(field.page_layout || field.input_type === 'page'
           ? {
               page_layout: field.page_layout || 'default',
               page_button_label_multiloc:
                 field.page_button_label_multiloc || {},
               page_button_link: field.page_button_link || '',
+              include_in_printed_form: field.include_in_printed_form || false,
             }
           : {}),
         ...(field.map_config_id && {
@@ -329,7 +330,8 @@ const FormEdit = ({
           customForm: {
             saveType: autosave ? 'auto' : 'manual',
             openedAt: formOpenedAt,
-            lastUpdatedAt: formLastUpdatedAt,
+            fieldsLastUpdatedAt:
+              customForm?.data.attributes.fields_last_updated_at,
           },
         },
         {
@@ -422,6 +424,7 @@ const FormEdit = ({
               autosaveEnabled={autosaveEnabled}
               setAutosaveEnabled={setAutosaveEnabled}
               showAutosaveToggle={totalSubmissions === 0} // Only allow autosave if no survey submissions
+              phaseId={phaseId}
             />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
               <Box width="210px">
@@ -429,6 +432,7 @@ const FormEdit = ({
                   onAddField={onAddField}
                   builderConfig={builderConfig}
                   move={move}
+                  onSelectField={setSelectedField}
                 />
               </Box>
               <Box
@@ -508,15 +512,17 @@ const FormBuilderPage = ({
   viewFormLink,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId?: string;
-  };
+  const { phaseId } = useParams();
   const { data: submissionCount } = useFormSubmissionCount({
     phaseId,
   });
+  const { data: phase } = usePhase(phaseId);
 
   const formCustomFields = builderConfig.formCustomFields;
+
+  if (!phase) {
+    return null;
+  }
 
   if (isNilOrError(formCustomFields) || isNilOrError(submissionCount)) {
     return <Spinner />;
@@ -526,8 +532,7 @@ const FormBuilderPage = ({
     ? createPortal(
         <FormEdit
           defaultValues={{ customFields: formCustomFields }}
-          phaseId={phaseId}
-          projectId={projectId}
+          phase={phase.data}
           builderConfig={builderConfig}
           totalSubmissions={submissionCount.data.attributes.totalSubmissions}
           viewFormLink={viewFormLink}

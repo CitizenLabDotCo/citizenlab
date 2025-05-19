@@ -7,6 +7,7 @@ import Dates from './Dates';
 import Method from './Method';
 import Population from './Population';
 import Search from './Search';
+import Topic from './Topic';
 
 const Filters = () => {
   return (
@@ -17,10 +18,11 @@ const Filters = () => {
       alignItems="center"
     >
       <Box display="flex" flexDirection="row" alignItems="center">
+        <Dates />
         <Country />
         <Method />
         <Population />
-        <Dates />
+        <Topic />
       </Box>
       <Search />
     </Box>

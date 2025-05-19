@@ -9,6 +9,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
+import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import IdeasShow from 'containers/IdeasShow';
@@ -113,6 +114,7 @@ const IdeaMapOverlay = memo<Props>(
     const { data: idea } = useIdeaById(
       typeof selectedIdeaId === 'string' ? selectedIdeaId : undefined
     );
+    const { data: phase } = usePhase(phaseId);
     const { windowWidth } = useWindowSize();
     const timeoutRef = useRef<number>();
     const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
@@ -191,6 +193,9 @@ const IdeaMapOverlay = memo<Props>(
                   deselectIdeaOnMap={() => {
                     onSelectIdea(null);
                   }}
+                  // This component is only used when there's timeline context atm.
+                  // This means that, in practice, there should always be a phase (id).
+                  phase={phase?.data}
                 />
                 <StyledIdeasShow
                   ideaId={idea.data.id}

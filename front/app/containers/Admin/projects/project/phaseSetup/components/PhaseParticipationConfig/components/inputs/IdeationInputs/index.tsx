@@ -17,6 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
+import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ReactingLimitInput } from '../../shared/styling';
 import PrescreeningToggle from '../_shared/PrescreeningToggle';
 import SortingPicker from '../_shared/SortingPicker';
@@ -30,6 +31,9 @@ interface Props {
   reacting_enabled?: boolean | null;
   reacting_like_method: 'unlimited' | 'limited' | null | undefined;
   reacting_like_limited_max: number | null | undefined;
+  similarity_enabled?: boolean | null;
+  similarity_threshold_title: number | null | undefined;
+  similarity_threshold_body: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
   noLikingLimitError?: string;
   reacting_dislike_enabled: boolean | null | undefined;
@@ -60,6 +64,11 @@ interface Props {
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
   prescreening_enabled: boolean | null | undefined;
   togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
+  handleSimilarityEnabledChange: (value: boolean) => void;
+  handleThresholdChange: (
+    field: 'similarity_threshold_title' | 'similarity_threshold_body',
+    value: number
+  ) => void;
 }
 
 const IdeationInputs = ({
@@ -92,10 +101,14 @@ const IdeationInputs = ({
   handleIdeaDefaultSortMethodChange,
   prescreening_enabled,
   togglePrescreeningEnabled,
+  similarity_enabled,
+  similarity_threshold_title,
+  similarity_threshold_body,
+  handleSimilarityEnabledChange,
+  handleThresholdChange,
 }: Props) => {
-  const prescreeningIdeationAllowed = useFeatureFlag({
+  const prescreeningIdeationEnabled = useFeatureFlag({
     name: 'prescreening_ideation',
-    onlyCheckAllowed: true,
   });
 
   return (
@@ -110,11 +123,12 @@ const IdeationInputs = ({
         input_term={input_term}
         handleInputTermChange={handleInputTermChange}
       />
-      <PrescreeningToggle
-        prescreening_enabled={prescreening_enabled}
-        togglePrescreeningEnabled={togglePrescreeningEnabled}
-        prescreeningFeatureAllowed={prescreeningIdeationAllowed}
-      />
+      {prescreeningIdeationEnabled && (
+        <PrescreeningToggle
+          prescreening_enabled={prescreening_enabled}
+          togglePrescreeningEnabled={togglePrescreeningEnabled}
+        />
+      )}
       <UserActions
         submission_enabled={submission_enabled || false}
         commenting_enabled={commenting_enabled || false}
@@ -209,6 +223,15 @@ const IdeationInputs = ({
           )}
         </FeatureFlag>
       )}
+
+      <SimilarityDetectionConfig
+        apiErrors={apiErrors}
+        similarity_enabled={similarity_enabled}
+        similarity_threshold_title={similarity_threshold_title}
+        similarity_threshold_body={similarity_threshold_body}
+        handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+        handleThresholdChange={handleThresholdChange}
+      />
 
       <DefaultViewPicker
         presentation_mode={presentation_mode}

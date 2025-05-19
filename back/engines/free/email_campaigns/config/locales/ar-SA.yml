@@ -8,6 +8,7 @@ ar:
       "comment_marked_as_spam": الإبلاغ عن التعليق كـ مزعج
       "comment_on_your_comment": رد على تعليقي
       "comment_on_idea_you_follow": تعليق على فكرة تتابعها
+      "community_monitor_report": تقرير مراقبة المجتمع
       "cosponsor_of_your_idea": يقبل المستخدم دعوتي للمشاركة في رعاية اقتراحي
       "event_registration_confirmation": تأكيد تسجيل الحدث
       "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة
@@ -82,6 +83,7 @@ ar:
         "4": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
         "5": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
         "6": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
+      quarterly: "ربع سنوي، في اليوم الأول من الربع"
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
@@ -147,6 +149,12 @@ ar:
       today: اليوم
       wrong_content: 'التعليق غير ذي صلة.'
       yesterday: الأمس
+    community_monitor_report:
+      subject: 'تقرير مراقبة المجتمع الجديد متاح الآن'
+      title: 'تقرير مراقبة المجتمع الجديد متاح الآن'
+      text_introduction: 'تم إنشاء تقرير مراقبة المجتمع للربع السابق. يمكنك الوصول إليه بالنقر على الزر أدناه وتسجيل الدخول.'
+      cta_report_button: 'عرض التقرير'
+      report_name: 'تقرير مراقبة المجتمع'
     cosponsor_of_your_idea:
       cta_reply_to: 'عرض اقتراحك'
       event_description: 'تهانينا! لقد قبل %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك.'

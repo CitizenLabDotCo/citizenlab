@@ -8,6 +8,7 @@ fi:
       "comment_marked_as_spam": Kommentoi roskapostiraportti
       "comment_on_your_comment": Vastaus kommenttiini
       "comment_on_idea_you_follow": Kommentti ideaan, jota seuraat
+      "community_monitor_report": Yhteisön valvontaraportti
       "cosponsor_of_your_idea": Käyttäjä hyväksyy kutsuni sponsoroida ehdotustani
       "event_registration_confirmation": Tapahtuman ilmoittautumisvahvistus
       "idea_marked_as_spam": Idea roskapostiraportti
@@ -82,6 +83,7 @@ fi:
         "4": "Viikoittain, torstaisin %{hourOfDay}"
         "5": "Viikoittain, perjantaisin kello %{hourOfDay}"
         "6": "Viikoittain lauantaisin kello %{hourOfDay}"
+      quarterly: "Neljännesvuosittain, neljänneksen ensimmäisenä päivänä"
     footer:
       "link_privacy_policy": "Tietosuojakäytäntö"
       "link_terms_conditions": "käyttöehdot"
@@ -147,6 +149,12 @@ fi:
       today: Tänään
       wrong_content: 'Kommentti ei liity asiaan.'
       yesterday: Eilen
+    community_monitor_report:
+      subject: 'Uusi yhteisön valvontaraportti on saatavilla'
+      title: 'Uusi yhteisön valvontaraportti on saatavilla'
+      text_introduction: 'Yhteisömonitoriraportti on luotu edelliseltä vuosineljännekseltä. Pääset siihen klikkaamalla alla olevaa painiketta ja kirjautumalla sisään.'
+      cta_report_button: 'Näytä raportti'
+      report_name: 'Yhteisön valvontaraportti'
     cosponsor_of_your_idea:
       cta_reply_to: 'Katso ehdotuksesi'
       event_description: 'Onnittelut! %{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi.'

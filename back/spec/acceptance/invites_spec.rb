@@ -346,6 +346,13 @@ resource 'Invites' do
         expect(boulettos&.dig(:attributes, :last_name)).to eq('Boulettos')
         expect(boulettos&.dig(:attributes, :invite_status)).to eq('accepted')
         expect(invite.reload.invitee.registration_completed_at).not_to be_nil
+
+        expect(LogActivityJob).to have_been_enqueued.with(
+          invite.invitee,
+          'completed_registration',
+          invite.invitee,
+          invite.invitee.updated_at.to_i
+        ).exactly(1).times
       end
 
       describe do

@@ -20,7 +20,6 @@ const InputFilterCollapsible = ({ title, children, className }: Props) => {
     <CollapsibleContainer
       titleAs="h3"
       titleVariant="h6"
-      titleFontWeight="bold"
       title={title.toUpperCase()}
       titlePadding="12px"
       background="white"

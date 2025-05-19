@@ -20,7 +20,7 @@ type IUpdateCustomFieldProperties = {
   customForm: {
     saveType: 'auto' | 'manual';
     openedAt?: string;
-    lastUpdatedAt?: string;
+    fieldsLastUpdatedAt?: string;
   };
 };
 
@@ -40,7 +40,7 @@ const updateCustomField = async ({
       custom_fields: customFields,
       form_save_type: customForm.saveType,
       form_opened_at: customForm.openedAt,
-      form_last_updated_at: customForm.lastUpdatedAt,
+      fields_last_updated_at: customForm.fieldsLastUpdatedAt,
     },
   });
 };

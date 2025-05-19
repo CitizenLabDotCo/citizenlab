@@ -1164,6 +1164,18 @@
         }
       },
 
+      "html_pdfs": {
+        "type": "object",
+        "title": "Use HTML PDF generator",
+        "description": "Enables the new more advanced PDF generation for export and import (DO NOT USE UNTIL FURTHER NOTICE).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "input_importer": {
         "type": "object",
         "title": "Input importer",
@@ -1216,18 +1228,6 @@
         "type": "object",
         "title": "AI-powered analysis for surveys and ideation (large summaries)",
         "description": "Enables the use of AI-powered analysis for surveys and ideation for a large number of inputs.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "comments_summaries": {
-        "type": "object",
-        "title": "AI-powered analysis of comments in ideation",
-        "description": "Enables the use of AI-powered analysis for comments in ideation. When active, the comments under an input can be summarized, and the comments are included in the main summarization feature.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1356,9 +1356,9 @@
         }
       },
 
-      "authoring_assistance": {
+      "input_iq": {
         "type": "object",
-        "title": "Authoring assistance",
+        "title": "InputIQ",
         "description":	"Help the user with writing better ideas and proposals through AI assistance while typing in the input form. Inputs posted while the feature was disabled will not be listed as similar inputs.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
@@ -1382,7 +1382,7 @@
 
       "project_library": {
         "type": "object",
-        "title": "Project library - do not enable!",
+        "title": "Inspiration hub",
         "description": "Temporary feature flag we are using to be able to hide our work in progress from the live platforms. Do not enable this feature!",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
@@ -1395,7 +1395,7 @@
       "user_fields_in_surveys": {
         "type": "object",
         "title": "User fields in surveys",
-        "description": "Allow surveys to include user fields in a survey form. DO NOT USE UNTIL FURTHER NOTICE.",
+        "description": "Allow surveys to embed user fields directly in the survey form, instead of asking through registration. DO NOT ENABLE EXCEPT ON TEST PLATFORMS. Currently in live test on community monitor.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1449,6 +1449,18 @@
             "type": "string"
           }
         }
+      },
+
+      "common_ground": {
+        "type": "object",
+        "title": "Common ground",
+        "description": "New participation method that is currently under development. [DO NOT ENABLE]",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
@@ -1479,7 +1491,6 @@
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],
-    "comments_summaries": ["analysis"],
     "auto_insights": ["analysis"],
     "import_printed_forms": ["input_importer"]
   },

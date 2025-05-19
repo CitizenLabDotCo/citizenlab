@@ -37,7 +37,7 @@ sv:
     outside: någon annanstans
   idea_statuses:
     prescreening: förhandsgranskning
-    prescreening_description: Denna inmatning granskas för närvarande av projektledaren och är ännu inte synlig för allmänheten.
+    prescreening_description: Detta bidrag granskas för närvarande av projektledaren och är ännu inte synligt för allmänheten.
     proposed: föreslagen
     proposed_description: Den här idén har föreslagits till staden
     viewed: har setts
@@ -171,12 +171,15 @@ sv:
       attachments:
         title: Bilagor
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Berätta mer för oss
+        description:
+      uploads_page:
         title: Bilder och bilagor
         description:
-      page3:
+      details_page:
         title: Detaljer
         description:
       other_input_field:
@@ -252,7 +255,7 @@ sv:
     send_reset_password:
       preheader: 'Återställ ditt lösenord för %{organizationName}'
       cta_reset_password: 'Återställ ditt lösenord'
-      message_you_reset_your_password: 'Du begärde en lösenordsåterställning för plattformen för deltagande för %{organizationName}. Klicka på knappen nedan för att välja ett nytt, säkert lösenord. Länken upphör att gälla om 1 timme.'
+      message_you_reset_your_password: 'Du begärde en lösenordsåterställning på plattformen för involvering från %{organizationName}. Klicka på knappen nedan för att välja ett nytt, säkert lösenord. Länken upphör att gälla om 1 timme.'
       subject: '%{organizationName}: Återställ ditt lösenord'
       title_reset_your_password: 'Välj ett nytt lösenord'
   xlsx_export:
@@ -316,7 +319,7 @@ sv:
       choose_exactly:
         one: 'Välj exakt %{count} alternativ'
         other: 'Välj exakt %{count} alternativ'
-      choose_between: 'Välj mellan %{min} och %{max}'
+      choose_between: 'Väl minst %{min} och upp till %{max} alternativ'
       choose_at_least: 'Välj minst %{count} alternativ'
       choose_at_most: 'Välj högst %{count} alternativ'
       this_answer: 'Detta svar kommer endast att delas med moderatorer och inte med allmänheten.'
@@ -330,12 +333,12 @@ sv:
     title_suffix: 'Kopia'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Bekräfta din e-postadress för %{organizationName}s plattform för deltagande"
+      subject: "Bekräfta din e-postadress för %{organizationName}s involveringsplattform"
       preheader: 'Bekräfta din e-postadress för %{organizationName}'
       header: "Din bekräftelsekod"
       header_message: "Hej %{firstName}!"
       confirm_email_address: "Bekräfta din e-postadress"
-      thanks_for_signing_up1: "Tack för din medverkan. Vänligen ange denna bekräftelsekod i fönstret på %{organizationName}:s plattform för deltagande:"
+      thanks_for_signing_up1: "Tack för din medverkan. Vänligen ange denna bekräftelsekod i fönstret på %{organizationName}s involveringsplattform:"
       best_regards: "Med vänliga hälsningar,"
       ignore_email: "Om du inte har begärt en kod kan du ignorera det här e-postmeddelandet."
       expire_code: "Den här koden kommer att gå ut om"

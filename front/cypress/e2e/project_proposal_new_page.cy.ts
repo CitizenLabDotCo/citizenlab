@@ -63,17 +63,19 @@ describe('Project proposal new page', () => {
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist'); // Change to proposal later
-    // add a title and description
+    // Add a title
     cy.get('#e2e-idea-title-input input')
       .click()
       .type(proposalTitle, { delay: 0 });
-    cy.get('#e2e-idea-description-input .ql-editor').type(proposalContent);
-
-    // verify the title and description
     cy.get('#e2e-idea-title-input input').should(
       'contain.value',
       proposalTitle
     );
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Add a description
+    cy.get('#e2e-idea-description-input .ql-editor').type(proposalContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(proposalContent);
 
     // Go to the next page of the form

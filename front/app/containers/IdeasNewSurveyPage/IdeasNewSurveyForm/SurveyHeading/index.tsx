@@ -9,12 +9,13 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import ideasKeys from 'api/ideas/keys';
 import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import Button from 'components/UI/ButtonWithLink';
@@ -24,6 +25,8 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import { getLeaveFormDestination } from '../utils';
 
 import messages from './messages';
 
@@ -41,9 +44,14 @@ type Props = {
 };
 
 const SurveyHeading = ({ titleText, phaseId }: Props) => {
+  const location = useLocation();
+
   const { slug: projectSlug } = useParams();
   const { data: project } = useProjectBySlug(projectSlug);
+  const { data: phase } = usePhase(phaseId);
   const { data: authUser } = useAuthUser();
+
+  const phaseParticipationMethod = phase?.data.attributes.participation_method;
 
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -62,10 +70,28 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
 
   const showEditSurveyButton =
     !isSmallerThanPhone && canModerateProject(project.data, authUser);
-  const linkToSurveyBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/native-survey/edit`;
+  const linkToSurveyBuilder: RouteType =
+    phaseParticipationMethod === 'community_monitor_survey'
+      ? `/admin/community-monitor/projects/${project.data.id}/phases/${phaseId}/survey/edit`
+      : `/admin/projects/${project.data.id}/phases/${phaseId}/native-survey/edit`;
 
-  const returnToProject = () => {
-    clHistory.push(`/projects/${projectSlug}`);
+  const leaveForm = () => {
+    const leaveFormDestination = getLeaveFormDestination(
+      phaseParticipationMethod
+    );
+
+    switch (leaveFormDestination) {
+      case 'go-back':
+        // If there is a back history, go back, otherwise go to the homepage
+        location.key !== 'default' ? clHistory.goBack() : clHistory.push('/');
+        break;
+      case 'project-page':
+        clHistory.push(`/projects/${projectSlug}`);
+        break;
+      default:
+        clHistory.push(`/projects/${projectSlug}`);
+    }
+
     // We need to invalidate any previously cached draft idea.
     // Invalidating the draft while "in" the survey (I.e. In the useUpdateIdea
     // when survey page next/previous buttons clicked) causes issues.
@@ -122,7 +148,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
               event?.preventDefault();
 
               if (hasBeenSubmitted) {
-                returnToProject();
+                leaveForm();
               } else {
                 openModal();
               }
@@ -168,7 +194,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
               buttonStyle={authUser ? 'primary' : 'delete'}
               width="100%"
               mb={isSmallerThanPhone ? '16px' : undefined}
-              onClick={returnToProject}
+              onClick={leaveForm}
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
             </Button>

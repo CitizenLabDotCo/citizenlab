@@ -82,7 +82,7 @@ module UserCustomFields
       end
 
       def generate_key(area)
-        area_name = area.title_multiloc.values.first.parameterize.snakecase
+        area_name = ::Utils.snakecase(area.title_multiloc.values.first.parameterize)
         "area-#{area.ordering}-#{area_name}"
       end
     end

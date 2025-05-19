@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  demographicInsights: {
-    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights',
-    defaultMessage: 'Demographic insights',
+  autoInsights: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights',
+    defaultMessage: 'Auto-insights',
   },
   explore: {
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.explore',
@@ -28,6 +28,10 @@ export default defineMessages({
   statisticalSignificance: {
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.significant',
     defaultMessage: 'Statistically significant insight.',
+  },
+  noStatisticalSignificance: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.noSignificant',
+    defaultMessage: 'Not a statistically significant insight.',
   },
   summarize: {
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.summarize',
@@ -85,5 +89,9 @@ export default defineMessages({
   tags: {
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.tags',
     defaultMessage: 'Analysis tags',
+  },
+  viewAutoInsights: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.viewAutoInsights',
+    defaultMessage: 'View auto-insights',
   },
 });

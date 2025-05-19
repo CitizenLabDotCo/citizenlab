@@ -6,12 +6,14 @@ import { IAnalysisHeatmapCellData } from 'api/analysis_heat_map_cells/types';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import { ITagData } from 'api/analysis_tags/types';
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
+import useCustomFieldOption from 'api/custom_field_options/useCustomFieldOption';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   cell?: IAnalysisHeatmapCellData;
@@ -32,25 +34,18 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
     'type' in row.attributes &&
     row.attributes.type === 'CustomFieldBins::OptionBin';
 
-  const rowCustomFieldId =
-    'custom_field' in row.relationships
-      ? row.relationships.custom_field.data?.id || ''
-      : '';
-
   const rowOptionId =
     'custom_field_option' in row.relationships &&
     row.relationships.custom_field_option?.data
       ? row.relationships.custom_field_option.data.id
       : '';
 
-  const { data: rowCustomFieldOption } = useUserCustomFieldsOption({
-    customFieldId: rowCustomFieldId,
+  const { data: rowCustomFieldOption } = useCustomFieldOption({
     optionId: rowOptionId,
     enabled: isRowOptionBin,
   });
 
-  const { data: columnCustomFieldOption } = useUserCustomFieldsOption({
-    customFieldId: column.relationships.custom_field.data?.id || '',
+  const { data: columnCustomFieldOption } = useCustomFieldOption({
     optionId: column.relationships.custom_field_option?.data?.id || '',
     enabled: column.attributes.type === 'CustomFieldBins::OptionBin',
   });
@@ -69,14 +64,32 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
     const isUserField = userCustomFieldsIds.includes(fieldId);
     const keyPrefix = isUserField ? 'author_custom_' : 'input_custom_';
     const binType = bin.attributes.type;
+    const isAgeBin = binType === 'CustomFieldBins::AgeBin';
+    const isRangeBin = binType === 'CustomFieldBins::RangeBin';
 
-    const isRangeType = [
-      'CustomFieldBins::AgeBin',
-      'CustomFieldBins::RangeBin',
-    ].includes(binType);
     const isOptionBin = binType === 'CustomFieldBins::OptionBin';
+    if (isAgeBin) {
+      const fromKey = `${keyPrefix}${fieldId}_from`;
+      const toKey = `${keyPrefix}${fieldId}_to`;
+      // Get current date and offset by 6 months (into the past)
+      const currentDate = new Date();
+      currentDate.setMonth(currentDate.getMonth() - 6);
+      const currentYear = currentDate.getFullYear();
 
-    if (isRangeType) {
+      // Calculate ages from birth years
+      const ageFrom = bin.attributes.range?.end
+        ? (currentYear - bin.attributes.range.end).toString()
+        : undefined;
+      const ageTo = bin.attributes.range?.begin
+        ? (currentYear - bin.attributes.range.begin).toString()
+        : undefined;
+
+      return {
+        [fromKey]: ageFrom,
+        [toKey]: ageTo,
+      };
+    }
+    if (isRangeBin) {
       // For range type bins
       const fromKey = `${keyPrefix}${fieldId}_from`;
       const toKey = `${keyPrefix}${fieldId}_to`;
@@ -116,6 +129,8 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
   const handleSummarize = () => {
     if (!cell || column.relationships.custom_field_option === null) return;
 
+    trackEventByName(tracks.autoInsightSummarize);
+
     const filters = {
       ...formFilters(row, 'row'),
       ...formFilters(column, 'column'),
@@ -128,6 +143,13 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
   };
 
   const isDisabled = !cell || column.relationships.custom_field_option === null;
+
+  // Only show the button if the cell unit is of type 'inputs'
+  // This is the only filter we fully support for now so showing the button
+  // for other types would be misleading
+  if (cell?.attributes.unit !== 'inputs') {
+    return null;
+  }
 
   return (
     <Button

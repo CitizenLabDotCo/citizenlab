@@ -129,7 +129,7 @@ fr:
     open_idea_phase_title: Phase en cours
     native_survey_title: Enquête
     native_survey_button: Répondre à l'enquête
-    community_monitor_title: Observatoire de la communauté
+    community_monitor_title: Observatoire de communauté
   events:
     council_meeting_title: Conseil Communal
     council_meeting_description: >
@@ -171,12 +171,15 @@ fr:
       attachments:
         title: Pièces jointes
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Dites-nous en plus
+        description:
+      uploads_page:
         title: Images et pièces jointes
         description:
-      page3:
+      details_page:
         title: Détails 
         description:
       other_input_field:
@@ -214,7 +217,7 @@ fr:
         other: Autre
       labels:
         label_1: Mauvais
-        label_2: Insuffisant
+        label_2: Faible
         label_3: Correct
         label_4: Bon
         label_5: Excellent

@@ -85,7 +85,7 @@ gem 'json-schema', '~> 4.3'
 gem 'activerecord-postgis-adapter', '~> 9.0.2'
 
 gem 'carrierwave', '~> 3.0.7'
-gem 'carrierwave-base64', '~> 2.10'
+gem 'carrierwave-base64', '~> 2.11'
 gem 'fog-aws', '~> 3.24'
 
 gem 'api-pagination', '~> 5.0.0'
@@ -102,7 +102,7 @@ gem 'interactor'
 gem 'interactor-rails'
 gem 'liquid', '~> 5.5'
 gem 'mini_magick', '~> 4.13'
-gem 'nokogiri', '~> 1.18.4'
+gem 'nokogiri', '~> 1.18.8'
 gem 'pg_search', '~> 2.3.5'
 gem 'premailer-rails', '~> 1.12.0'
 gem 'rest-client'
@@ -128,8 +128,14 @@ gem 'faker'
 gem 'order_as_specified'
 gem 'scenic'
 gem 'ice_cube', '~> 0.17'
+
+# Libraries for PDF generation /reading
 gem 'prawn', '~> 2.5'
 gem 'prawn-grouping', '~> 0.2.0'
+gem 'pdf-reader'
+gem 'stringio'
+gem 'faraday'
+gem 'faraday-multipart'
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an
@@ -238,7 +244,8 @@ commercial_engines = [
   'id_nemlog_in',
   'id_oostende_rrn',
   'id_hoplr',
-  'id_vienna_saml'
+  'id_vienna_saml',
+  'id_twoday'
 ]
 
 commercial_engines.each do |engine_name|

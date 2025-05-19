@@ -5,10 +5,7 @@ import { definePermissionRule } from 'utils/permissions/permissions';
 
 import { isAdmin, isProjectModerator } from '../roles';
 
-import {
-  isProjectFolderModerator,
-  userModeratesFolder,
-} from './projectFolderPermissions';
+import { userModeratesFolder } from './projectFolderPermissions';
 
 definePermissionRule('project', 'create', (_project: IProjectData, user) => {
   return isAdmin(user);
@@ -22,25 +19,24 @@ definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
   return isAdmin(user);
 });
 
+const canReview = (project: IProjectData, user: IUser | undefined) =>
+  isAdmin(user) ||
+  (!!project.attributes.folder_id &&
+    userModeratesFolder(user, project.attributes.folder_id));
+
+definePermissionRule(
+  'project',
+  'review',
+  (project: IProjectData, user, _tenant) => canReview(project, user)
+);
+
 definePermissionRule(
   'project',
   'publish',
   (project: IProjectData, user, _tenant, isProjectApproved: boolean) => {
     return (
-      isAdmin(user) ||
-      isProjectFolderModerator(user, project.attributes.folder_id) ||
+      canReview(project, user) ||
       (isProjectApproved && isProjectModerator(user, project.id))
-    );
-  }
-);
-
-definePermissionRule(
-  'project',
-  'review',
-  (project: IProjectData, user, _tenant) => {
-    return (
-      isAdmin(user) ||
-      isProjectFolderModerator(user, project.attributes.folder_id)
     );
   }
 );

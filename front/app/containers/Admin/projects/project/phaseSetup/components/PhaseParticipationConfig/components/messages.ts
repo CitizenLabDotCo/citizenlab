@@ -161,17 +161,40 @@ export default defineMessages({
     id: 'app.components.formBuilder.cancelMethodChange1',
     defaultMessage: 'Cancel',
   },
-  userFieldsInSurveyTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userFieldsInSurveyTitle2',
-    defaultMessage: 'Demographic fields in survey form',
+  similarInputDetectionTitle: {
+    id: 'app.containers.phaseConfig.similarInputDetectionTitle',
+    defaultMessage: 'Similar input detection',
   },
-  userFieldsInSurveyToggle: {
-    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userFieldsInSurveyToggle2',
-    defaultMessage: 'Show demographic fields in survey?',
-  },
-  userFieldsInSurveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userFieldsInSurveyDescription2',
+  similarInputDetectionTooltip: {
+    id: 'app.containers.phaseConfig.similarInputDetectionTooltip',
     defaultMessage:
-      'If you enable this option, user registration fields will be shown as the last page in the survey instead of as part of the signup process.',
+      'Show participants similar input while they type to help avoid duplicates.',
+  },
+  warningSimilarInputDetectionTrial: {
+    id: 'app.containers.phaseConfig.warningSimilarInputDetectionTrial',
+    defaultMessage:
+      "This feature is available as part of an early access offering until June 30th, 2025. If you'd like to continue using it beyond that date, please reach out to your Government Success Manager or admin to discuss activation options.",
+  },
+  enableSimilarInputDetection: {
+    id: 'app.containers.phaseConfig.enableSimilarInputDetection',
+    defaultMessage: 'Enable similar input detection',
+  },
+  similarityThresholdTitle: {
+    id: 'app.containers.phaseConfig.similarityThresholdTitle',
+    defaultMessage: 'Similarity threshold (title)',
+  },
+  similarityThresholdTitleTooltipMessage: {
+    id: 'app.containers.phaseConfig.similarityThresholdTitleTooltipMessage',
+    defaultMessage:
+      'This controls how similar two titles must be to be flagged as similar. Use a value between 0 (strict) and 1 (lenient). Lower values return fewer but more accurate matches.',
+  },
+  similarityThresholdBody: {
+    id: 'app.containers.phaseConfig.similarityThresholdBody',
+    defaultMessage: 'Similarity threshold (body)',
+  },
+  similarityThresholdBodyTooltipMessage: {
+    id: 'app.containers.phaseConfig.similarityThresholdBodyTooltipMessage',
+    defaultMessage:
+      'This controls how similar two descriptions must be to be flagged as similar. Use a value between 0 (strict) and 1 (lenient). Lower values return fewer but more accurate matches.',
   },
 });

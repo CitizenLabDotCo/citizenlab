@@ -354,9 +354,9 @@ RSpec.describe CustomField do
   describe 'description sanitizer' do
     it 'sanitizes script tags in the description' do
       custom_field = create(:custom_field, description_multiloc: {
-        'en' => '<p>Test</p><script>This should be removed!</script><p>But this should stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>'
+        'en' => '<p>Test</p><script>This content will stay</script><p>This content will also stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>'
       })
-      expect(custom_field.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!<p>But this should stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>' })
+      expect(custom_field.description_multiloc).to eq({ 'en' => '<p>Test</p>This content will stay<p>This content will also stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>' })
     end
 
     it 'does not sanitize allowed tags in the description' do
@@ -411,7 +411,7 @@ RSpec.describe CustomField do
       page = described_class.new(
         resource: resource,
         input_type: 'page',
-        code: 'ideation_page1',
+        code: 'title_page',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your question?'
@@ -427,7 +427,7 @@ RSpec.describe CustomField do
       page = described_class.new(
         resource: resource,
         input_type: 'page',
-        code: 'ideation_page1',
+        code: 'title_page',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your contribution?'
@@ -435,46 +435,45 @@ RSpec.describe CustomField do
     end
   end
 
-  describe 'field_visible_to' do
-    context 'for an unsupported value' do
-      it 'is not valid' do
-        field = build(:custom_field, answer_visible_to: 'aliens')
-        expect(field).not_to be_valid
-      end
+  describe 'visible_to_public?' do
+    it 'returns true for a default input field' do
+      field = build(:custom_field, :for_custom_form, input_type: 'text_multiloc', code: 'title_multiloc')
+      expect(field.visible_to_public?).to be true
     end
 
-    context 'when not set and is of type CustomForm' do
-      let(:field) { build(:custom_field, resource_type: 'CustomForm') }
-
-      it 'sets admins by default before validation' do
-        field.validate!
-        expect(field.answer_visible_to).to eq 'admins'
-      end
-
-      it 'sets public by default if field is a page' do
-        field.input_type = 'page'
-        field.page_layout = 'default'
-        field.validate!
-        expect(field.answer_visible_to).to eq 'public'
-      end
-
-      it 'sets public by default if the field is built-in' do
-        field.code = 'title_multiloc'
-        field.validate!
-        expect(field.answer_visible_to).to eq 'public'
-      end
+    it 'returns false for a custom input field' do
+      field = build(:custom_field, :for_custom_form, input_type: 'number')
+      expect(field.visible_to_public?).to be false
     end
 
-    context 'when not set and is of type User' do
-      let(:field) { build(:custom_field, resource_type: 'User') }
+    it 'returns true for a custom input page' do
+      field = build(:custom_field_page, :for_custom_form)
+      expect(field.visible_to_public?).to be true
+    end
 
-      it 'always sets the value to "admins"' do
-        field.input_type = 'page'
-        field.page_layout = 'default'
-        field.code = 'gender'
-        field.validate!
-        expect(field.answer_visible_to).to eq 'admins'
-      end
+    it 'returns true for a custom input end page' do
+      field = build(:custom_field_form_end_page, :for_custom_form)
+      expect(field.visible_to_public?).to be true
+    end
+
+    it 'returns false for a default registration field' do
+      field = build(:custom_field_birthyear)
+      expect(field.visible_to_public?).to be false
+    end
+
+    it 'returns false for a custom registration field' do
+      field = build(:custom_field_select, :for_registration)
+      expect(field.visible_to_public?).to be false
+    end
+
+    it 'returns true for a custom registration page' do
+      field = build(:custom_field_page, :for_registration)
+      expect(field.visible_to_public?).to be true
+    end
+
+    it 'returns true for a custom registration end page' do
+      field = build(:custom_field_form_end_page, :for_registration)
+      expect(field.visible_to_public?).to be true
     end
   end
 
@@ -640,7 +639,7 @@ RSpec.describe CustomField do
     let(:field) { create(:custom_field, resource: form) }
 
     context 'community_monitor_survey project' do
-      let(:project) { create(:community_monitor_project_with_active_phase) }
+      let(:project) { create(:community_monitor_project) }
 
       it 'can have an allowed category associated' do
         field.question_category = 'quality_of_life'

@@ -95,7 +95,7 @@ module Analysis
     protected
 
     def gpt4
-      @gpt4 ||= LLM::GPT4o.new
+      @gpt4 ||= LLM::GPT41.new
     end
 
     def gpt4mini

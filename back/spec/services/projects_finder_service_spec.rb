@@ -150,6 +150,16 @@ describe ProjectsFinderService do
       expect(result).not_to include(unfollowed_project)
     end
 
+    it 'excludes projects in draft folder' do
+      active_ideation_project = create(:project_with_active_ideation_phase)
+      create(:follower, followable: active_ideation_project, user: user)
+      folder = create(:project_folder, projects: [active_ideation_project])
+      folder.admin_publication.update!(publication_status: 'draft')
+
+      expect(Project.count).to eq 3
+      expect(result).not_to include(active_ideation_project)
+    end
+
     it 'includes projects containing an Idea the user has followed' do
       project_with_followed_idea = create(:project)
       idea = create(:idea, project: project_with_followed_idea)
@@ -249,6 +259,14 @@ describe ProjectsFinderService do
         expect(result).to eq [finished_project1]
       end
 
+      it 'excludes projects in draft folder' do
+        folder = create(:project_folder, projects: [finished_project1])
+        folder.admin_publication.update!(publication_status: 'draft')
+
+        expect(Project.count).to eq 2
+        expect(result).not_to include(finished_project1)
+      end
+
       it 'includes unfinished projects with a last phase that contains a visible report' do
         unfinished_project2 = create(:project)
         create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now)
@@ -346,6 +364,14 @@ describe ProjectsFinderService do
         expect(result).to eq [archived_project]
       end
 
+      it 'excludes projects in draft folder' do
+        folder = create(:project_folder, projects: [archived_project])
+        folder.admin_publication.update!(publication_status: 'draft')
+
+        expect(Project.count).to eq 5
+        expect(result).not_to include(archived_project)
+      end
+
       it 'lists projects ordered by last_phase end_at DESC (Nulls first)' do
         archived_project2 = create(
           :project_with_past_information_phase,
@@ -407,6 +433,15 @@ describe ProjectsFinderService do
 
         expect(result).to eq [endless_project, unfinished_project1, finished_project1, archived_project]
       end
+
+      it 'excludes projects in draft folder' do
+        folder = create(:project_folder, projects: [unfinished_project1, archived_project])
+        folder.admin_publication.update!(publication_status: 'draft')
+
+        expect(Project.count).to eq 7
+        expect(result).not_to include(unfinished_project1)
+        expect(result).not_to include(archived_project)
+      end
     end
   end
 
@@ -465,6 +500,19 @@ describe ProjectsFinderService do
       result = service.new(Project.all, user, { areas: [area1.id] }).projects_for_areas
 
       expect(result).to eq [project_for_all_areas]
+    end
+
+    it 'excludes projects in draft folder' do
+      folder = create(:project_folder, projects: [project_with_areas, project_for_all_areas])
+      folder.admin_publication.update!(publication_status: 'draft')
+
+      create(:follower, followable: area1, user: user)
+
+      result = service.new(Project.all, user, { areas: [area1.id] }).projects_for_areas
+
+      expect(Project.count).to eq 3
+      expect(result).not_to include(project_with_areas)
+      expect(result).not_to include(project_for_all_areas)
     end
   end
 end

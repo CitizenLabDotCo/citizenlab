@@ -36,7 +36,7 @@ export default function useRegistrations({
     () =>
       analytics?.data
         ? parseTimeSeries(
-            analytics.data.attributes[0],
+            analytics.data.attributes.registrations_timeseries,
             startAtMoment,
             endAtMoment,
             currentResolution

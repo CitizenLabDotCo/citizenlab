@@ -6,7 +6,6 @@ import {
   Text,
   Button,
   IconButton,
-  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
@@ -15,12 +14,13 @@ import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeat
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useCustomFieldBin from 'api/custom_field_bins/useCustomFieldBin';
 
-import useLocalize from 'hooks/useLocalize';
-
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import StatementText from './StatementText';
 import SummarizeButton from './SummarizeButton';
+import tracks from './tracks';
 
 interface HeatMapInsightsProps {
   onExploreClick: ({
@@ -39,7 +39,6 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     string | undefined
   >();
 
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   const { analysisId } = useParams() as { analysisId: string };
@@ -47,7 +46,7 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,
     maxPValue: 0.05,
-    pageSize: 12,
+    pageSize: 25,
   });
 
   const selectedCell = analysisHeatmapCells?.data.find(
@@ -71,15 +70,17 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     : tags?.data.find(
         (tag) => tag.id === selectedCell?.relationships.row.data.id
       );
+
   useEffect(() => {
     if (analysisHeatmapCells && analysisHeatmapCells.data.length > 0) {
       setSelectedInsightId(analysisHeatmapCells.data[0].id);
     }
   }, [analysisHeatmapCells]);
 
-  if (!analysisHeatmapCells) return <Spinner />;
+  if (!analysisHeatmapCells) return null;
 
   const handleChangeInsight = (offset: number) => {
+    trackEventByName(tracks.useAutoInsightsCarrousel);
     setSelectedInsightId((currentId) => {
       const insights = analysisHeatmapCells.data;
       const currentIndex = insights.findIndex(
@@ -119,9 +120,7 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
   return (
     <>
       <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Text fontWeight="bold">
-          {formatMessage(messages.demographicInsights)}
-        </Text>
+        <Text fontWeight="bold">{formatMessage(messages.autoInsights)}</Text>
         <Box display="flex" alignItems="center" justifyContent="flex-end">
           <IconButton
             iconName="chevron-left"
@@ -157,14 +156,15 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
           bg={colors.teal50}
           borderRadius="3px"
         >
-          <Text>{localize(selectedCell.attributes.statement_multiloc)}</Text>
+          <StatementText cell={selectedCell} />
           <Box display="flex">
             <Button
               buttonStyle="text"
               icon="eye"
               size="s"
               p="0px"
-              onClick={() =>
+              onClick={() => {
+                trackEventByName(tracks.autoInsightExplore);
                 onExploreClick({
                   unit: selectedCell.attributes.unit,
                   columnCustomFieldId:
@@ -173,8 +173,8 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
                     selectedCell.relationships.row.data.type === 'tags'
                       ? 'tags'
                       : rowBin?.data.relationships.custom_field.data?.id,
-                })
-              }
+                });
+              }}
             >
               {formatMessage(messages.explore)}
             </Button>

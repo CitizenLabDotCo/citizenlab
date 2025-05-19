@@ -19,6 +19,9 @@ module Analysis
         if field.other_option_text_field
           add_field(field.other_option_text_field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
         end
+        if field.input_type == 'sentiment_linear_scale'
+          add_field(field.follow_up_text_field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
+        end
       end
     end
 

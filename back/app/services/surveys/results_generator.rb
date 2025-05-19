@@ -157,7 +157,8 @@ module Surveys
         totalResponseCount: @inputs.size,
         questionResponseCount: response_count,
         pageNumber: nil,
-        questionNumber: nil
+        questionNumber: nil,
+        questionCategory: field.question_category
       }
     end
 

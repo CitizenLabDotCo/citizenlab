@@ -33,6 +33,10 @@ export default function useAnySSOEnabled() {
     name: 'keycloak_login',
   });
 
+  const twodayLoginEnabled = useFeatureFlag({
+    name: 'twoday_login',
+  });
+
   const anySSOEnabled =
     fakeSSOEnabled ||
     googleLoginEnabled ||
@@ -45,6 +49,7 @@ export default function useAnySSOEnabled() {
     hoplrLoginEnabled ||
     criiptoLoginEnabled ||
     keycloakLoginEnabled ||
+    twodayLoginEnabled ||
     idAustriaLoginEnabled;
 
   return anySSOEnabled;

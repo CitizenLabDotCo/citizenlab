@@ -66,7 +66,7 @@ interface Props {
   idea: IIdeaData;
   deselectIdeaOnMap?: () => void;
   className?: string;
-  phase?: IPhaseData;
+  phase: IPhaseData | undefined;
 }
 
 const IdeaShowPageTopBar = ({
@@ -123,17 +123,14 @@ const IdeaShowPageTopBar = ({
     }
   }, [goBack, deselectIdeaOnMap, project]);
 
-  if (!phase) return null;
-
-  const votingConfig = getVotingMethodConfig(phase.attributes.voting_method);
-  const ideaIsInParticipationContext = isIdeaInParticipationContext(
-    idea,
-    phase
-  );
-  const participationMethod = phase.attributes.participation_method;
+  const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
+  const ideaIsInParticipationContext = phase
+    ? isIdeaInParticipationContext(idea, phase)
+    : false;
+  const participationMethod = phase?.attributes.participation_method;
 
   return (
-    <Container className={className || ''}>
+    <Container className={className || ''} data-cy="e2e-ideashowpage-topbar">
       <TopBarInner>
         <Left>
           <GoBackButtonSolid
@@ -162,15 +159,17 @@ const IdeaShowPageTopBar = ({
                 variant={'text'}
               />
             )}
-          {participationMethod === 'voting' && ideaIsInParticipationContext && (
-            <Box mr="8px">
-              {votingConfig?.getIdeaPageVoteInput({
-                ideaId,
-                phase,
-                compact: true,
-              })}
-            </Box>
-          )}
+          {participationMethod === 'voting' &&
+            ideaIsInParticipationContext &&
+            phase && (
+              <Box mr="8px">
+                {votingConfig?.getIdeaPageVoteInput({
+                  ideaId,
+                  phase,
+                  compact: true,
+                })}
+              </Box>
+            )}
         </Right>
       </TopBarInner>
     </Container>

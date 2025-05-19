@@ -426,6 +426,7 @@ ALTER TABLE IF EXISTS ONLY public.polls_responses DROP CONSTRAINT IF EXISTS poll
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS polls_response_options_pkey;
 ALTER TABLE IF EXISTS ONLY public.polls_questions DROP CONSTRAINT IF EXISTS polls_questions_pkey;
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS polls_options_pkey;
+ALTER TABLE IF EXISTS public.phases DROP CONSTRAINT IF EXISTS phases_start_before_end;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS phases_pkey;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS phase_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.permissions DROP CONSTRAINT IF EXISTS permissions_pkey;
@@ -1062,8 +1063,8 @@ CREATE TABLE public.analysis_heatmap_cells (
     column_id uuid NOT NULL,
     unit character varying NOT NULL,
     count integer NOT NULL,
-    lift double precision NOT NULL,
-    p_value double precision NOT NULL,
+    lift numeric(20,15) NOT NULL,
+    p_value numeric(20,15) NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -1627,9 +1628,11 @@ CREATE TABLE public.phases (
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
     manual_voters_last_updated_at timestamp(6) without time zone,
-    user_fields_in_form boolean DEFAULT false NOT NULL,
+    survey_popup_frequency integer,
     similarity_threshold_title double precision DEFAULT 0.3,
-    similarity_threshold_body double precision DEFAULT 0.4
+    similarity_threshold_body double precision DEFAULT 0.4,
+    similarity_enabled boolean DEFAULT true NOT NULL,
+    user_fields_in_form boolean DEFAULT false NOT NULL
 );
 
 
@@ -2175,7 +2178,6 @@ CREATE TABLE public.custom_fields (
     hidden boolean DEFAULT false NOT NULL,
     maximum integer,
     logic jsonb DEFAULT '{}'::jsonb NOT NULL,
-    answer_visible_to character varying,
     select_count_enabled boolean DEFAULT false NOT NULL,
     maximum_select_count integer,
     minimum_select_count integer,
@@ -2196,7 +2198,8 @@ CREATE TABLE public.custom_fields (
     ask_follow_up boolean DEFAULT false NOT NULL,
     page_button_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     page_button_link character varying,
-    question_category character varying
+    question_category character varying,
+    include_in_printed_form boolean DEFAULT true NOT NULL
 );
 
 
@@ -2209,7 +2212,11 @@ CREATE TABLE public.custom_forms (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     participation_context_id uuid NOT NULL,
-    participation_context_type character varying NOT NULL
+    participation_context_type character varying NOT NULL,
+    fields_last_updated_at timestamp(6) without time zone DEFAULT now() NOT NULL,
+    print_start_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    print_end_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    print_personal_data_fields boolean DEFAULT false NOT NULL
 );
 
 
@@ -3101,7 +3108,9 @@ CREATE TABLE public.report_builder_reports (
     updated_at timestamp(6) without time zone NOT NULL,
     phase_id uuid,
     visible boolean DEFAULT false NOT NULL,
-    name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED
+    name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED,
+    year integer,
+    quarter integer
 );
 
 
@@ -3976,6 +3985,14 @@ ALTER TABLE ONLY public.phase_files
 
 ALTER TABLE ONLY public.phases
     ADD CONSTRAINT phases_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: phases phases_start_before_end; Type: CHECK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE public.phases
+    ADD CONSTRAINT phases_start_before_end CHECK (((start_at IS NULL) OR (end_at IS NULL) OR (start_at <= end_at))) NOT VALID;
 
 
 --
@@ -5758,7 +5775,7 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 -- Name: index_report_builder_reports_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
 
 
 --
@@ -7068,8 +7085,18 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250513160156'),
+('20250509140651'),
+('20250509131056'),
+('20250502112945'),
+('20250501134516'),
+('20250416120221'),
+('20250415094344'),
+('20250409111817'),
+('20250327095857'),
 ('20250320010716'),
 ('20250319145637'),
+('20250317825496'),
 ('20250317143543'),
 ('20250311141109'),
 ('20250307924725'),

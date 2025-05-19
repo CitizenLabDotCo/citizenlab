@@ -3,6 +3,8 @@ import React from 'react';
 import { IInputsData } from 'api/analysis_inputs/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
+import { getRelatedTextAnswer } from '../../../../util';
+
 import BodyMultilocLongField from './CustomFieldLongFieldValues/BodyMultilocLongField';
 import CheckboxLongField from './CustomFieldLongFieldValues/CheckboxLongField';
 import DateLongField from './CustomFieldLongFieldValues/DateLongField';
@@ -11,6 +13,7 @@ import LineLongField from './CustomFieldLongFieldValues/LineLongField';
 import LocationDescriptionLongField from './CustomFieldLongFieldValues/LocationDescriptionLongField';
 import MatrixLongField from './CustomFieldLongFieldValues/MatrixLongField';
 import MultilineTextLongField from './CustomFieldLongFieldValues/MultilineTextLongField';
+import MultiselectImageLongField from './CustomFieldLongFieldValues/MultiselectImageLongField';
 import MultiselectLongField from './CustomFieldLongFieldValues/MultiselectLongField';
 import PointfileLongField from './CustomFieldLongFieldValues/PointLongField';
 import PolygonLongField from './CustomFieldLongFieldValues/PolygonLongField';
@@ -48,6 +51,12 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
   const rawValue =
     input.attributes.custom_field_values[customField.data.attributes.key];
 
+  // Get any related text answer for the custom field (E.g. "other" or "follow up" answer)
+  const rawValueRelatedTextAnswer = getRelatedTextAnswer(
+    input,
+    customField.data.attributes.key
+  );
+
   switch (customField.data.attributes.code) {
     case 'title_multiloc':
       return <TitleMultilocLongField input={input} customField={customField} />;
@@ -70,28 +79,46 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
           return <TextLongField input={input} customField={customField} />;
         case 'number':
         case 'rating':
+        case 'sentiment_linear_scale':
         case 'linear_scale': {
           return (
             <LinearScaleLongField
               input={input}
               customField={customField}
               rawValue={rawValue}
+              rawValueRelatedTextAnswer={rawValueRelatedTextAnswer}
             />
           );
         }
         case 'multiline_text': {
           return (
-            <MultilineTextLongField input={input} customField={customField} />
+            <MultilineTextLongField
+              input={input}
+              customField={customField}
+              rawValueRelatedTextAnswer={rawValueRelatedTextAnswer}
+            />
           );
         }
         case 'select': {
           return (
-            <SelectLongField customField={customField} rawValue={rawValue} />
+            <SelectLongField
+              customField={customField}
+              rawValue={rawValue}
+              rawValueRelatedTextAnswer={rawValueRelatedTextAnswer}
+            />
           );
         }
         case 'multiselect': {
           return (
             <MultiselectLongField
+              rawValue={rawValue}
+              customField={customField}
+            />
+          );
+        }
+        case 'multiselect_image': {
+          return (
+            <MultiselectImageLongField
               rawValue={rawValue}
               customField={customField}
             />

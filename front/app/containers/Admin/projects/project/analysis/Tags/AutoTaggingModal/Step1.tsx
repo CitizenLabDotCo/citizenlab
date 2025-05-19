@@ -65,6 +65,10 @@ const Step1 = ({
   onChangeAutoTaggingTarget,
   filters,
 }: Props) => {
+  const analysisEnabled = useFeatureFlag({
+    name: 'analysis',
+    onlyCheckAllowed: true,
+  });
   const advancedAutotaggingAllowed = useFeatureFlag({
     name: 'advanced_autotagging',
     onlyCheckAllowed: true,
@@ -158,7 +162,7 @@ const Step1 = ({
           tagType="custom"
           title={formatMessage(messages.classificationByLabelTitle)}
           onSelect={() => onSelectMethod('label_classification')}
-          isDisabled={isLoading}
+          isDisabled={!analysisEnabled}
           isLoading={isLoading && loadingMethod === 'label_classification'}
           tooltip={formatMessage(messages.classificationByLabelTooltip)}
         >

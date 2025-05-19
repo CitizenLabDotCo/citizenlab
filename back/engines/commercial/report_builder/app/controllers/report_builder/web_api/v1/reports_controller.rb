@@ -7,6 +7,7 @@ module ReportBuilder
         skip_before_action :authenticate_user
 
         def index
+          default_scope = ReportBuilder::Report.global # No phase_id means global reports
           finder_params = {}.tap do |f_params|
             # Avoid to create params with nil values if they are not present
             f_params[:text_search] = params[:search] if params.key?(:search)
@@ -18,9 +19,14 @@ module ReportBuilder
               when 'false' then false
               end
             end
+
+            if params.key?(:community_monitor)
+              default_scope = ReportBuilder::Report.all # We need to include reports with a phase id to find community_monitor
+              f_params[:community_monitor] = true # Just the presence of the param is enough - false does not mean anything
+            end
           end
 
-          reports = policy_scope(ReportBuilder::Report.global)
+          reports = policy_scope(default_scope)
             .then { ReportBuilder::ReportFinder.new(_1, **finder_params).execute }
             .then { paginate(_1) }
 
@@ -144,6 +150,8 @@ module ReportBuilder
               :name,
               :phase_id,
               :visible,
+              :year,
+              :quarter,
               layout: [craftjs_json: {}]
             )
 

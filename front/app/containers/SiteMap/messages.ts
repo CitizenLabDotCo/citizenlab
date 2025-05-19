@@ -118,4 +118,8 @@ export default defineMessages({
     id: 'containers.SiteMap.folderInfo',
     defaultMessage: 'More info',
   },
+  cookiePolicyLinkTitle: {
+    id: 'app.containers.SiteMap.cookiePolicyLinkTitle',
+    defaultMessage: 'Cookies',
+  },
 });

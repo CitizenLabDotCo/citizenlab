@@ -84,6 +84,10 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   is_not_topic: messages.predicate_is_not_topic,
   is_one_of_areas: messages.predicate_is_one_of_areas,
   is_not_area: messages.predicate_is_not_area,
+
+  // Community monitor
+  taken_survey: messages.predicate_taken_survey,
+  not_taken_survey: messages.predicate_not_taken_survey,
 };
 
 const PredicateSelector = memo(

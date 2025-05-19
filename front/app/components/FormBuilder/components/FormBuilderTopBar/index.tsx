@@ -18,7 +18,6 @@ import styled from 'styled-components';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import {
@@ -28,7 +27,6 @@ import {
 import Button from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
-import UpsellTooltip from 'components/UpsellTooltip';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -37,6 +35,7 @@ import clHistory from 'utils/cl-router/history';
 import messages from '../messages';
 import tracks from '../tracks';
 
+import DownloadPDFButtonWithModal from './DownloadPDFButtonWithModal';
 import ownMessages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
@@ -51,6 +50,7 @@ type FormBuilderTopBarProps = {
   autosaveEnabled: boolean;
   showAutosaveToggle: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
+  phaseId: string;
 };
 
 const FormBuilderTopBar = ({
@@ -60,19 +60,15 @@ const FormBuilderTopBar = ({
   autosaveEnabled,
   setAutosaveEnabled,
   showAutosaveToggle,
+  phaseId,
 }: FormBuilderTopBarProps) => {
-  const importPrintedFormsAllowed = useFeatureFlag({
-    name: 'import_printed_forms',
-    onlyCheckAllowed: true,
-  });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams() as {
+  const { projectId } = useParams() as {
     projectId: string;
-    phaseId?: string;
   };
   const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId || null);
+  const { data: phase } = usePhase(phaseId);
   const {
     formState: { isDirty },
   } = useFormContext();
@@ -82,11 +78,11 @@ const FormBuilderTopBar = ({
     setShowLeaveModal(false);
   };
 
-  if (!project) {
+  if (!project || !phase) {
     return null;
   }
 
-  const isPostingEnabled = getIsPostingEnabled(phase?.data);
+  const isPostingEnabled = getIsPostingEnabled(phase.data);
 
   const handleGoback = () => {
     if (isDirty) {
@@ -169,19 +165,11 @@ const FormBuilderTopBar = ({
             />
           </Box>
         )}
-        {builderConfig.onDownloadPDF && (
-          <UpsellTooltip disabled={importPrintedFormsAllowed}>
-            <Button
-              buttonStyle="secondary-outlined"
-              icon="download"
-              mr="20px"
-              onClick={builderConfig.onDownloadPDF}
-              disabled={!importPrintedFormsAllowed}
-            >
-              <FormattedMessage {...ownMessages.downloadPDF} />
-            </Button>
-          </UpsellTooltip>
-        )}
+        <DownloadPDFButtonWithModal
+          mr="20px"
+          formType={builderConfig.type}
+          phaseId={phaseId}
+        />
         <Button
           buttonStyle="secondary-outlined"
           icon="eye"

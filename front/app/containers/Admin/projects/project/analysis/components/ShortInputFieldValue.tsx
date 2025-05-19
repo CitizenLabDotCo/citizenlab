@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { isNil } from 'lodash-es';
 import { FormattedDate } from 'react-intl';
 
+import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 import { IIdeaCustomField } from 'api/idea_custom_fields/types';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import T from 'components/T';
 
@@ -15,6 +16,7 @@ import messages from '../messages';
 type Props = {
   customField: IIdeaCustomField;
   rawValue?: any;
+  rawValueRelatedTextAnswer?: string;
 };
 
 const SelectOptionText = ({
@@ -41,7 +43,11 @@ const SelectOptionText = ({
  * the custom field for that input. Only renders anything for non-built-in
  * custom fields
  */
-const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
+const ShortInputFieldValue = ({
+  customField,
+  rawValue,
+  rawValueRelatedTextAnswer,
+}: Props) => {
   const { formatMessage } = useIntl();
   // We only render non-built-in custom fields, assuming the parent has
   // dedicated logic to render the built-in fields
@@ -57,22 +63,48 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
     case 'number':
     case 'checkbox':
     case 'rating':
+    case 'sentiment_linear_scale':
     case 'linear_scale': {
       if (rawValue === null || rawValue === undefined || rawValue === '') {
         return <>No Answer</>;
       } else {
-        return <>{rawValue}</>;
+        return (
+          <Box display="flex" flexDirection="column">
+            <Box>{rawValue}</Box>
+            <Box>{rawValueRelatedTextAnswer}</Box>
+          </Box>
+        );
       }
     }
     case 'select': {
       return (
-        <SelectOptionText
-          customFieldId={customField.data.id}
-          selectedOptionKey={rawValue}
-        />
+        <Box>
+          <SelectOptionText
+            customFieldId={customField.data.id}
+            selectedOptionKey={rawValue}
+          />
+          <Box>{rawValueRelatedTextAnswer}</Box>
+        </Box>
       );
     }
     case 'multiselect': {
+      return (
+        <>
+          {(rawValue as string[]).map((optionKey, index) => (
+            <>
+              {index !== 0 && ', '}
+              <SelectOptionText
+                key={`${optionKey}-${index}`}
+                customFieldId={customField.data.id}
+                selectedOptionKey={optionKey}
+              />
+            </>
+          ))}
+          <Box>{rawValueRelatedTextAnswer}</Box>
+        </>
+      );
+    }
+    case 'multiselect_image': {
       return (
         <>
           {(rawValue as string[]).map((optionKey, index) => (

@@ -171,12 +171,15 @@ nb:
       attachments:
         title: Vedlegg
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Fortell oss mer
+        description:
+      uploads_page:
         title: Bilder og vedlegg
         description:
-      page3:
+      details_page:
         title: Detaljer
         description:
       other_input_field:

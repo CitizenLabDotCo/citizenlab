@@ -25,6 +25,9 @@ import VisitorsTrafficSourcesWidget, {
   visitorsTrafficSourcesTitle,
 } from './ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
+import CommunityMonitorHealthScoreWidget, {
+  communityMonitorHealthScoreTitle,
+} from './CommunityMonitorHealthScoreWidget';
 import IframeMultiloc, { iframeMultilocTitle } from './IframeMultiloc';
 import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
 import MostReactedIdeasWidget, {
@@ -44,6 +47,7 @@ export const WIDGETS = {
   ImageMultiloc,
   WhiteSpace,
   SurveyQuestionResultWidget,
+  CommunityMonitorHealthScoreWidget,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,
   MostReactedIdeasWidget,
@@ -54,12 +58,9 @@ export const WIDGETS = {
   MethodsUsedWidget,
   ParticipationWidget,
   ProjectsWidget,
-
+  ParticipantsWidget,
   // RENAMED (TODO rename in migration)
   ActiveUsersWidget: ParticipantsWidget,
-
-  // Needs to come after ActiveUsersWidget to be resolved correctly by the resolver
-  ParticipantsWidget,
 
   // DEPRECATED
   ReactionsByTimeWidget,
@@ -73,6 +74,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   TwoColumn: twoColumnTitle,
   ImageMultiloc: imageMultilocTitle,
   SurveyQuestionResultWidget: surveyQuestionResultTitle,
+  CommunityMonitorHealthScoreWidget: communityMonitorHealthScoreTitle,
   MostReactedIdeasWidget: mostReactedIdeasTitle,
   SingleIdeaWidget: singleIdeaTitle,
   VisitorsWidget: visitorsTitle,
@@ -104,6 +106,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyQuestionResultWidget',
+  'CommunityMonitorHealthScoreWidget',
   'DemographicsWidget',
   'IframeMultiloc',
   'RegistrationsWidget',

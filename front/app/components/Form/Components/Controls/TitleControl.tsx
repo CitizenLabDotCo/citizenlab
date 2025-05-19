@@ -1,8 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 
 import { Box, Input } from '@citizenlab/cl2-component-library';
 import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import { debounce } from 'lodash-es';
+
+import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
+import SimilarIdeasList from 'containers/IdeasNewPage/SimilarInputs/SimilarInputsList';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -30,6 +34,12 @@ export const TitleControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
+  const { setTitle, showSimilarInputs } = useIdeaSelect();
+
+  const debouncedSetTitle = useMemo(
+    () => debounce((val: string) => setTitle(val), 400),
+    [setTitle]
+  );
 
   const onChange = useCallback(
     (value: string) => {
@@ -37,8 +47,11 @@ export const TitleControl = ({
         path,
         schema.type === 'number' && value ? parseInt(value, 10) : value
       );
+      if (showSimilarInputs) {
+        debouncedSetTitle(value);
+      }
     },
-    [schema.type, handleChange, path]
+    [handleChange, path, schema.type, showSimilarInputs, debouncedSetTitle]
   );
 
   if (!visible) {
@@ -86,6 +99,7 @@ export const TitleControl = ({
         fieldPath={path}
         didBlur={didBlur}
       />
+      {showSimilarInputs && <SimilarIdeasList />}
     </Box>
   );
 };

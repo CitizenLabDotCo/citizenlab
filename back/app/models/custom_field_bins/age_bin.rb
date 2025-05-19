@@ -60,7 +60,7 @@ module CustomFieldBins
     private
 
     def range_is_numerical
-      errors.add(:range, 'must be numerical') unless range.begin.is_a?(Integer) && (range.end.is_a?(Integer) || range.end.nil?)
+      errors.add(:range, 'must be numerical') unless range.begin.is_a?(Integer) && (range.end.is_a?(Integer) || range.end.nil? || range.end == Float::INFINITY)
     end
 
     def range_is_positive

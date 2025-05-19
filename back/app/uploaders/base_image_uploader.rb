@@ -3,7 +3,10 @@
 class BaseImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
-  ALLOWED_TYPES = %w[jpg jpeg gif png webp svg]
+  ALLOWED_TYPES = %w[jpg jpeg gif png webp]
+
+  # Using process at the class level applies it to all versions, including the original.
+  process :strip
 
   # We're not caching, since the external image optimization process will
   # quickly generate a new version that should replace this one asap
@@ -77,5 +80,19 @@ class BaseImageUploader < BaseUploader
     img.gravity gravity
     img.background 'rgba(255,255,255,0.0)'
     img.extent "#{target_width}x#{target_height}" if current_width != target_width || current_height != target_height
+  end
+
+  # Strip the image of any profiles, comments or these PNG chunks: bKGD,cHRM,EXIF,gAMA,
+  # iCCP,iTXt,sRGB,tEXt,zCCP,zTXt,date.
+  # (https://imagemagick.org/script/command-line-options.php#strip)
+  #
+  # It is a bit heavy-handed and removes a lot of things, including colour profiles which
+  # can have an effect on the image rendering. It also recompresses the image. Overall, it
+  # seems to remove vibrancy from the image.
+  def strip
+    manipulate! do |img|
+      img.strip
+      img
+    end
   end
 end

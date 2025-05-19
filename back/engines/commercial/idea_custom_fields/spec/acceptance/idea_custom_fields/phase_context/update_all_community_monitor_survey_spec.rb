@@ -32,7 +32,8 @@ resource 'Idea Custom Fields' do
         key: 'page1',
         title_multiloc: { 'en' => 'First page' },
         input_type: 'page',
-        page_layout: 'default'
+        page_layout: 'default',
+        include_in_printed_form: true
       }
     end
 
@@ -43,7 +44,8 @@ resource 'Idea Custom Fields' do
         title_multiloc: { 'en' => 'Final page' },
         description_multiloc: { 'en' => 'Thank you for participating!' },
         input_type: 'page',
-        page_layout: 'default'
+        page_layout: 'default',
+        include_in_printed_form: false
       }
     end
 
@@ -114,7 +116,8 @@ resource 'Idea Custom Fields' do
             linear_scale_label_9_multiloc: {},
             linear_scale_label_10_multiloc: {},
             linear_scale_label_11_multiloc: {},
-            question_category: 'quality_of_life'
+            question_category: 'quality_of_life',
+            include_in_printed_form: true
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -139,7 +142,8 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             page_layout: 'default',
-            question_category: 'other'
+            question_category: 'other',
+            include_in_printed_form: true
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -171,21 +175,19 @@ resource 'Idea Custom Fields' do
           )
         end
 
-        example 'First page & last page must be present' do
+        example '[error] first custom field is not a page' do
           request = {
             custom_fields: [
               { input_type: 'sentiment_linear_scale', title_multiloc: { en: 'First field' } },
-              { input_type: 'sentiment_linear_scale', title_multiloc: { en: 'Second field' } }
+              { input_type: 'sentiment_linear_scale', title_multiloc: { en: 'Second field' } },
+              last_page
             ]
           }
           do_request request
+
           assert_status 422
-          expect(json_response_body.dig(:errors, :'0')).to eq(
-            { structure: [{ error: "First field must be of type 'page'" }] }
-          )
-          expect(json_response_body.dig(:errors, :'1')).to eq(
-            { structure: [{ error: "Last field must be of type 'page' with a key of 'form_end'" }] }
-          )
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { form: [{ error: 'no_first_page' }] } })
         end
       end
     end

@@ -17,29 +17,40 @@ type Props = {
   input: IInputsData;
   customField: IIdeaCustomField;
   rawValue: any;
+  rawValueRelatedTextAnswer?: string;
 };
 
-const LinearScaleLongField = ({ input, customField, rawValue }: Props) => {
+const LinearScaleLongField = ({
+  input,
+  customField,
+  rawValue,
+  rawValueRelatedTextAnswer,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   return (
     <Box>
-      <Title variant="h5" m="0px">
-        <T value={customField.data.attributes.title_multiloc} />
-      </Title>
-      <Box display="flex" justifyContent="flex-start" alignItems="flex-start">
-        <Text m="0">
-          {input.attributes.custom_field_values[
-            customField.data.attributes.key
-          ] || formatMessage(messages.noAnswer)}
-        </Text>
-        <Box ml="8px">
-          <FilterToggleButton
-            customFieldId={customField.data.id}
-            value={rawValue || null}
-          />
+      <Box>
+        <Title variant="h5" m="0px">
+          <T value={customField.data.attributes.title_multiloc} />
+        </Title>
+        <Box display="flex" justifyContent="flex-start" alignItems="flex-start">
+          <Text m="0">
+            {input.attributes.custom_field_values[
+              customField.data.attributes.key
+            ] || formatMessage(messages.noAnswer)}
+          </Text>
+          <Box ml="8px">
+            <FilterToggleButton
+              customFieldId={customField.data.id}
+              value={rawValue || null}
+            />
+          </Box>
         </Box>
       </Box>
+      {rawValueRelatedTextAnswer && (
+        <Text my="4px">{rawValueRelatedTextAnswer}</Text>
+      )}
     </Box>
   );
 };

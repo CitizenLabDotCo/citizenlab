@@ -148,6 +148,10 @@ export const getIdeaPostingRules = ({
       };
     }
 
+    const supportsNativeSurvey =
+      phase?.attributes.participation_method === 'native_survey' ||
+      phase?.attributes.participation_method === 'community_monitor_survey';
+
     // timeline
     if (phase) {
       // not an enabled ideation or native survey or proposals phase
@@ -155,7 +159,7 @@ export const getIdeaPostingRules = ({
         !(
           (phase.attributes.participation_method === 'ideation' ||
             phase.attributes.participation_method === 'proposals' ||
-            phase.attributes.participation_method === 'native_survey') &&
+            supportsNativeSurvey) &&
           phase.attributes.submission_enabled &&
           disabled_reason !== 'posting_not_supported'
         )

@@ -3,9 +3,6 @@ import { loadModules } from 'utils/moduleUtils';
 import adminProjectTemplatesConfiguration, {
   projectTemplateRouteTypes,
 } from './commercial/admin_project_templates';
-import analyticsConfiguration, {
-  analyticsRouteTypes,
-} from './commercial/analytics';
 import bulkIdeaImportConfiguration, {
   bulkIdeaImportRouteTypes,
 } from './commercial/bulk_idea_import';
@@ -26,20 +23,15 @@ import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import idKeycloakConfiguration from './commercial/id_keycloak';
 import idNemLogInConfiguration from './commercial/id_nemlog_in';
 import idOostendeRrnConfiguration from './commercial/id_oostende_rrn';
+import idTwodayConfiguration from './commercial/id_twoday';
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import impactTrackingConfiguration from './commercial/impact_tracking';
 import intercomConfiguration from './commercial/intercom';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import matomoConfiguration from './commercial/matomo';
-import moderationConfiguration, {
-  moderationRouteTypes,
-} from './commercial/moderation';
 import posthogConfiguration from './commercial/posthog_integration';
 import posthogUserTrackingConfiguration from './commercial/posthog_user_tracking';
-import representativenessConfiguration, {
-  representativenessRouteTypes,
-} from './commercial/representativeness';
 import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import smartGroupsConfiguration from './commercial/smart_groups';
@@ -47,10 +39,7 @@ import widgetsConfiguration, { widgetsRouteTypes } from './commercial/widgets';
 
 export type moduleRouteTypes =
   | projectTemplateRouteTypes
-  | analyticsRouteTypes
   | bulkIdeaImportRouteTypes
-  | moderationRouteTypes
-  | representativenessRouteTypes
   | widgetsRouteTypes;
 
 export default loadModules([
@@ -80,9 +69,6 @@ export default loadModules([
   },
   {
     configuration: segmentConfiguration,
-  },
-  {
-    configuration: moderationConfiguration,
   },
   {
     configuration: flagInappropriateContentConfiguration,
@@ -121,6 +107,9 @@ export default loadModules([
     configuration: idKeycloakConfiguration,
   },
   {
+    configuration: idTwodayConfiguration,
+  },
+  {
     configuration: idBogusConfiguration,
   },
   {
@@ -145,13 +134,7 @@ export default loadModules([
     configuration: widgetsConfiguration,
   },
   {
-    configuration: analyticsConfiguration,
-  },
-  {
     configuration: idViennaSamlConfiguration,
-  },
-  {
-    configuration: representativenessConfiguration,
   },
   {
     configuration: impactTrackingConfiguration,

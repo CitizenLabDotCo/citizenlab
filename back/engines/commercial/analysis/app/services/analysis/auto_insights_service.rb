@@ -43,6 +43,7 @@ module Analysis
           end
 
         add_lift!(cells)
+
         HeatmapCell.insert_all!(
           cells.map do |cell|
             cell.attributes.except('id', 'created_at', 'updated_at')

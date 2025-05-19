@@ -171,12 +171,15 @@ cy:
       attachments:
         title: Ymlyniadau
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Dywedwch fwy wrthym
+        description:
+      uploads_page:
         title: Delweddau ac atodiadau
         description:
-      page3:
+      details_page:
         title: Manylion
         description:
       other_input_field:

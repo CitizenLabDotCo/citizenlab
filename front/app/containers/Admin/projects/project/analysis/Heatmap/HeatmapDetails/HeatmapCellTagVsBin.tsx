@@ -14,11 +14,10 @@ import { IAnalysisHeatmapCellData } from 'api/analysis_heat_map_cells/types';
 import { ITagData } from 'api/analysis_tags/types';
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 
-import useLocalize from 'hooks/useLocalize';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
+import StatementText from '../StatementText';
 import SummarizeButton from '../SummarizeButton';
 
 import {
@@ -33,8 +32,6 @@ interface Props {
 }
 
 const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
-  const localize = useLocalize();
-
   if (!cell) {
     return (
       <Shimmer
@@ -42,7 +39,7 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
         bgColor={colors.grey200}
         py="20px"
         position="relative"
-        minHeight="60px"
+        minHeight="92px"
       />
     );
   }
@@ -54,15 +51,12 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
   const cellBgColor = getCellBgColor(lift, isSignificant);
   const cellTextColor = getCellTextColor(lift, isSignificant);
 
-  if (cell.attributes.count === 0) {
-    return null;
-  }
   return (
     <Tooltip
       disabled={!cell}
       content={
         <Box p="12px">
-          <Text>{localize(cell.attributes.statement_multiloc)}</Text>
+          <StatementText cell={cell} />
           <Text color="textSecondary">
             <FormattedMessage
               {...messages.instances}
@@ -70,10 +64,15 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
             />
           </Text>
           {isSignificant ? (
-            <Text fontWeight="bold">
+            <Text fontWeight="bold" display="flex">
+              <Icon name="check-circle" mr="4px" width="20px" height="20px" />
               <FormattedMessage {...messages.statisticalSignificance} />
             </Text>
-          ) : null}
+          ) : (
+            <Text fontWeight="bold">
+              <FormattedMessage {...messages.noStatisticalSignificance} />
+            </Text>
+          )}
 
           <SummarizeButton
             row={row}
@@ -97,7 +96,16 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
           textAlign="center"
           fontWeight="bold"
           color="inherit"
-          fontSize="xs"
+          fontSize="xl"
+        >
+          {cell.attributes.count}
+        </Text>
+        <Text
+          m="0px"
+          textAlign="center"
+          fontWeight="bold"
+          color={cellTextColor === colors.white ? 'inherit' : 'textSecondary'}
+          fontSize="s"
         >
           {convertLiftToPercentage(lift)}
         </Text>

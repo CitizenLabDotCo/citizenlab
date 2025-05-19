@@ -27,6 +27,7 @@ import Link from 'utils/cl-router/Link';
 import messages from '../../../../../../messages';
 import { ValidationErrors } from '../../../../../typings';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
+import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
 
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
@@ -61,6 +62,14 @@ export interface VotingInputsProps {
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
+  similarity_enabled?: boolean | null;
+  similarity_threshold_title: number | null | undefined;
+  similarity_threshold_body: number | null | undefined;
+  handleSimilarityEnabledChange: (value: boolean) => void;
+  handleThresholdChange: (
+    field: 'similarity_threshold_title' | 'similarity_threshold_body',
+    value: number
+  ) => void;
 }
 
 export default ({
@@ -84,6 +93,11 @@ export default ({
   presentation_mode,
   handleIdeasDisplayChange,
   handleVotingMethodOnChange,
+  similarity_enabled,
+  similarity_threshold_title,
+  similarity_threshold_body,
+  handleSimilarityEnabledChange,
+  handleThresholdChange,
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -220,6 +234,15 @@ export default ({
           autoshare_results_enabled={autoshare_results_enabled}
           toggleAutoshareResultsEnabled={toggleAutoshareResultsEnabled}
           apiErrors={apiErrors}
+        />
+
+        <SimilarityDetectionConfig
+          apiErrors={apiErrors}
+          similarity_enabled={similarity_enabled}
+          similarity_threshold_title={similarity_threshold_title}
+          similarity_threshold_body={similarity_threshold_body}
+          handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+          handleThresholdChange={handleThresholdChange}
         />
 
         <DefaultViewPicker

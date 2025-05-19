@@ -6,7 +6,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
   skip_before_action :authenticate_user
 
   def index
-    @options = policy_scope(CustomFieldOption).where(custom_field: @custom_field).order(:ordering)
+    @options = policy_scope(CustomFieldOption).where(custom_field: @custom_field).order(:ordering).includes(:image)
     render json: WebApi::V1::CustomFieldOptionSerializer.new(@options, params: jsonapi_serializer_params).serializable_hash
   end
 

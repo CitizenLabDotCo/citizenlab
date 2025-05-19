@@ -38,8 +38,9 @@ export const builtInFieldKeys = [
 
 export type BuiltInKeyType = (typeof builtInFieldKeys)[number];
 
+export type FormType = 'survey' | 'input_form';
 export type FormBuilderConfig = {
-  type: 'survey' | 'input_form';
+  type: FormType;
   formBuilderTitle: MessageDescriptor;
   viewFormLinkCopy: MessageDescriptor;
   formSavedSuccessMessage: MessageDescriptor;
@@ -56,6 +57,9 @@ export type FormBuilderConfig = {
   showStatusBadge: boolean;
   isLogicEnabled: boolean;
   alwaysShowCustomFields: boolean;
+  /* For Ideation, when you configure the form it gets applied to ALL ideation phases within a project, 
+  however when you configure the form for surveys for example, 
+  each survey phase within a project can have a different form */
   isFormPhaseSpecific: boolean;
 
   goBackUrl?: RouteType;
@@ -68,8 +72,6 @@ export type FormBuilderConfig = {
     handleClose: () => void
   ) => React.JSX.Element | null;
   getUserFieldsNotice?: () => void;
-
-  onDownloadPDF?: () => void;
 };
 
 export const getIsPostingEnabled = (

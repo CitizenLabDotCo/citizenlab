@@ -8,6 +8,7 @@ ca:
       "comment_marked_as_spam": Comenteu l'informe de correu brossa
       "comment_on_your_comment": Una resposta al meu comentari
       "comment_on_idea_you_follow": Un comentari sobre una idea que segueixes
+      "community_monitor_report": Informe del monitor comunitari
       "cosponsor_of_your_idea": Un usuari accepta la meva invitació per copatrocinar la meva proposta
       "event_registration_confirmation": Confirmació de registre de l'esdeveniment
       "idea_marked_as_spam": Informe de correu brossa d'idees
@@ -82,6 +83,7 @@ ca:
         "4": "Setmanalment, els dijous a les %{hourOfDay}"
         "5": "Setmanalment, els divendres a les %{hourOfDay}"
         "6": "Setmanalment, els dissabtes a les %{hourOfDay}"
+      quarterly: "Trimestral, el primer dia del trimestre"
     footer:
       "link_privacy_policy": "Política de privacitat"
       "link_terms_conditions": "Termes i Condicions"
@@ -147,6 +149,12 @@ ca:
       today: Avui
       wrong_content: 'El comentari no és rellevant.'
       yesterday: Ahir
+    community_monitor_report:
+      subject: 'Hi ha disponible un nou informe de monitor de la comunitat'
+      title: 'Hi ha disponible un nou informe de monitor de la comunitat'
+      text_introduction: 'S''ha elaborat un informe del monitor comunitari del trimestre anterior. Podeu accedir-hi fent clic al botó següent i iniciant sessió.'
+      cta_report_button: 'Veure informe'
+      report_name: 'Informe del monitor comunitari'
     cosponsor_of_your_idea:
       cta_reply_to: 'Consulta la teva proposta'
       event_description: 'Felicitats! %{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta.'
@@ -235,7 +243,7 @@ ca:
       yesterday: Ahir
     comment_on_idea_you_follow:
       cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      event_description: '%{authorNameFull} va fer una reacció a la teva idea "%{inputTitle}". Feu clic al botó següent per continuar la conversa amb %{authorName}.'
       main_header:
         idea: '%{authorName} ha comentat una idea que segueixes'
         question: '%{authorName} ha comentat una pregunta que segueixes'
@@ -245,7 +253,7 @@ ca:
         option: '%{authorName} ha comentat una opció que segueixes'
         proposal: '%{authorName} ha comentat una proposta que segueixes'
         petition: '%{authorName} ha comentat una petició que segueixes'
-      subject: 'There''s a new comment on "%{input_title}"'
+      subject: 'Hi ha un comentari nou a "%{input_title}"'
       preheader: '%{authorName} va deixar un comentari sobre una idea per a %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'S''ha publicat una nova entrada a la vostra plataforma'
@@ -297,8 +305,8 @@ ca:
       main_header: '''%{post}'' té un nou comentari intern'
       preheader: '''%{post}'' té un nou comentari intern'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
+      header_message: '%{feedback_author_name} ha fet una actualització sobre %{input_title}''.'
+      header_title: 'Hi ha un comentari nou a "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:

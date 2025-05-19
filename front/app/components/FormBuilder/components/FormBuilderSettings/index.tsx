@@ -32,8 +32,8 @@ import messages from '../messages';
 import tracks from '../tracks';
 import { getFieldNumbers } from '../utils';
 
-import { ContentSettings } from './ContentSettings';
-import { LogicSettings } from './LogicSettings';
+import ContentSettings from './ContentSettings';
+import LogicSettings from './LogicSettings';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;

@@ -21,7 +21,7 @@ module MultiTenancy
       # Transform the models hash to make it compatible with the `TenantDeserializer`.
       def self.format_for_deserializer!(template)
         models = template['models']
-        models.transform_keys! { |record_class| record_class.name.snakecase }
+        models.transform_keys! { |record_class| ::Utils.snakecase(record_class.name) }
         models.transform_values!(&:values)
         models.deep_transform_keys!(&:to_s)
       end

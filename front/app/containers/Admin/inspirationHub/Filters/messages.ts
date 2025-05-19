@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Filters.population',
     defaultMessage: 'Population',
   },
+  topic: {
+    id: 'app.containers.Admin.inspirationHub.Filters.Topic',
+    defaultMessage: 'Topic',
+  },
 });

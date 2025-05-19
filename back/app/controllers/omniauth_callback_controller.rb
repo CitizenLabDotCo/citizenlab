@@ -81,8 +81,9 @@ class OmniauthCallbackController < ApplicationController
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
+          SideFxUserService.new.after_update(@user, nil) # Logs 'registration_completed' activity Job`
           @invite.save!
-          SideFxInviteService.new.after_accept @invite
+          SideFxInviteService.new.after_accept @invite # Logs 'accepted' activity Job
           verify_and_sign_in(auth, @user, verify, sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
@@ -92,6 +93,7 @@ class OmniauthCallbackController < ApplicationController
       else # !@user.invite_pending?
         begin
           update_user!(auth, @user, authver_method)
+          SideFxUserService.new.after_update(@user, nil)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           signin_failure_redirect
@@ -199,7 +201,9 @@ class OmniauthCallbackController < ApplicationController
   def set_auth_cookie(provider: nil)
     cookies[:cl2_jwt] = {
       value: auth_token(@user, provider).token,
-      expires: 1.month.from_now
+      expires: 1.month.from_now,
+      secure: false, # Unfortunately, we can't use secure cookies in production yet (probably some HTTP steps somewhere)
+      same_site: 'Lax' # Strict won't work due to SSO redirect, so we explicitly document use of Lax
     }
   end
 

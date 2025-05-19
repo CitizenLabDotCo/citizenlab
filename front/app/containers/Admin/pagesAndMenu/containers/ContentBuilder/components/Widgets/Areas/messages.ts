@@ -11,9 +11,9 @@ export default defineMessages({
       'There are currently no active projects for you in the {areasTerm} that you follow.',
   },
   thisWidgetShows: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows',
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2',
     defaultMessage:
-      'This widget shows projects associated with the {areasTerm} the user follows. If the user does not follow any {areasTerm} yet, the widget will show the available {areasTerm} to follow. In this case the widget will show a maximum of 100 {areasTerm}.',
+      'This widget shows projects associated with the "areas" the user follows. Note that your platform might use a different name for "areas"- see the "Areas" tab in the platform settings. If the user does not follow any areas yet, the widget will show the available areas to follow. In this case the widget will show a maximum of 100 areas.',
   },
   followAreas1: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1',

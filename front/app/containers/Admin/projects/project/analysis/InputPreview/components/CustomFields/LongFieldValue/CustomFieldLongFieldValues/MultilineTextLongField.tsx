@@ -14,20 +14,30 @@ import messages from '../../../../../messages';
 type Props = {
   input: IInputsData;
   customField: IIdeaCustomField;
+  rawValueRelatedTextAnswer?: string;
 };
 
-const MultilineTextLongField = ({ input, customField }: Props) => {
+const MultilineTextLongField = ({
+  input,
+  customField,
+  rawValueRelatedTextAnswer,
+}: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Box>
-      <Title variant="h5" m="0px">
-        <T value={customField.data.attributes.title_multiloc} />
-      </Title>
-      <Text whiteSpace="pre-line">
-        {input.attributes.custom_field_values[
-          customField.data.attributes.key
-        ] || formatMessage(messages.noAnswer)}
-      </Text>
+      <Box>
+        <Title variant="h5" m="0px">
+          <T value={customField.data.attributes.title_multiloc} />
+        </Title>
+        <Text whiteSpace="pre-line">
+          {input.attributes.custom_field_values[
+            customField.data.attributes.key
+          ] || formatMessage(messages.noAnswer)}
+        </Text>
+      </Box>
+      {rawValueRelatedTextAnswer && (
+        <Text my="4px">{rawValueRelatedTextAnswer}</Text>
+      )}
     </Box>
   );
 };

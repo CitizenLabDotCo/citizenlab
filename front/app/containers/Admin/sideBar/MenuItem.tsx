@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { media, colors, Icon, Box } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -32,9 +33,9 @@ const Text = styled.div`
   `}
 `;
 
-const MenuItemLink = styled(Link)`
+const MenuItemLink = styled(Link)<{ active: boolean }>`
   flex: 0 0 auto;
-  width: 210px;
+  width: 224px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -75,6 +76,21 @@ const MenuItemLink = styled(Link)`
     }
   }
 
+  ${({ active }) =>
+    active
+      ? `
+    background: rgba(0, 0, 0, 0.7);
+    .cl-icon {
+      .cl-icon-primary {
+        fill: ${colors.teal400};
+      }
+      .cl-icon-accent {
+        fill: ${colors.blue400};
+      }
+    }
+  `
+      : ''}
+
   ${media.tablet`
     width: 56px;
     padding-right: 5px;
@@ -91,6 +107,7 @@ const MenuItem = ({ navItem }: Props) => {
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   });
   const { data: user } = useAuthUser();
+  const { pathname } = useLocation();
 
   const hasPermission = usePermission({
     action: 'access',
@@ -108,10 +125,15 @@ const MenuItem = ({ navItem }: Props) => {
     if (!enabledAndHasPermission) return null;
   }
 
+  const inspirationHubActive =
+    navItem.link.startsWith('/admin/inspiration-hub') &&
+    pathname.includes('/admin/inspiration-hub');
+
   return (
     <MenuItemLink
       to={navItem.link}
       className={`intercom-admin-menu-item-${navItem.name}`}
+      active={inspirationHubActive}
     >
       <>
         <Box

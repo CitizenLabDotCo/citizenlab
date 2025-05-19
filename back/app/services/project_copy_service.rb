@@ -157,10 +157,11 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'enabled' => field.enabled,
         'required' => field.required,
         'code' => field.code,
-        'answer_visible_to' => field.answer_visible_to,
         'hidden' => field.hidden,
         'maximum' => field.maximum,
         'ask_follow_up' => field.ask_follow_up,
+        'question_category' => field.question_category,
+        'include_in_printed_form' => field.include_in_printed_form,
         'linear_scale_label_1_multiloc' => field.linear_scale_label_1_multiloc,
         'linear_scale_label_2_multiloc' => field.linear_scale_label_2_multiloc,
         'linear_scale_label_3_multiloc' => field.linear_scale_label_3_multiloc,
@@ -333,6 +334,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       if yml_phase['participation_method'] == 'survey'
         yml_phase['survey_embed_url'] = phase.survey_embed_url
         yml_phase['survey_service'] = phase.survey_service
+        yml_phase['survey_popup_frequency'] = phase.survey_popup_frequency
       end
 
       if yml_phase['participation_method'] == 'document_annotation'

@@ -32,6 +32,13 @@ module Permissions
 
         IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase&.prescreening_enabled && idea.published?
       else
+        # Check for idea status reason first, to avoid situations where FE presents user
+        # with what looks like a possible action, (i.e. reacting), redirects user to signin flow,
+        # and then once signed in, the user finds the action is not possible.
+        if action == 'reacting_idea' && IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code)
+          return IDEA_DENIED_REASONS[:not_reactable_status_code]
+        end
+
         reason = super
         return reason if reason
         return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
@@ -40,11 +47,7 @@ module Permissions
         # We preserved the behaviour that was already there, but we're not
         # sure if this is the desired behaviour.
         current_phase = @timeline_service.current_phase_not_archived project
-        return IDEA_DENIED_REASONS[:idea_not_in_current_phase] if current_phase && !idea_in_current_phase?(current_phase)
-
-        if action == 'reacting_idea' && IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea.idea_status.code)
-          IDEA_DENIED_REASONS[:not_reactable_status_code]
-        end
+        IDEA_DENIED_REASONS[:idea_not_in_current_phase] if current_phase && !idea_in_current_phase?(current_phase)
       end
     end
 

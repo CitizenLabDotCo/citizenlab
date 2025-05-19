@@ -1,5 +1,6 @@
 import { SupportedLocale } from 'typings';
 
+import { IAppConfiguration } from 'api/app_configuration/types';
 import {
   IIdeaJsonFormSchemas,
   CustomFieldCodes,
@@ -8,6 +9,15 @@ import { IPhaseData } from 'api/phases/types';
 
 import { pastPresentOrFuture } from './dateUtils';
 import { isNilOrError } from './helperUtils';
+
+export function isCommunityMonitorProject(
+  projectId: string,
+  appConfig?: IAppConfiguration
+) {
+  const communityMonitorProjectId =
+    appConfig?.data.attributes.settings.community_monitor?.project_id;
+  return projectId === communityMonitorProjectId;
+}
 
 export function isFieldEnabled(
   fieldCode: CustomFieldCodes,

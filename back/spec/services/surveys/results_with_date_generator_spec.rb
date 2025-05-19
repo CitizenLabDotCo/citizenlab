@@ -16,8 +16,8 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
       let(:single_result) { generator.generate_result_for_field(sentiment_linear_scale_field.id) }
 
       context 'example 1' do
-        let(:year) { '2025' }
-        let(:quarter) { '2' }
+        let(:year) { 2025 }
+        let(:quarter) { 2 }
 
         it 'returns the correct totals' do
           expect(generated_results[:results].count).to eq 18

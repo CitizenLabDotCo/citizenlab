@@ -36,7 +36,9 @@ export const useRansackParam = <ParamName extends keyof RansackParams>(
   const paramValue = searchParams.get(paramName);
 
   if (paramName.endsWith('in]')) {
-    return paramValue === null ? [] : JSON.parse(paramValue);
+    return (
+      paramValue === null ? [] : JSON.parse(paramValue)
+    ) as RansackParams[typeof paramName];
   }
 
   return paramValue as RansackParams[typeof paramName];
@@ -46,9 +48,10 @@ const RANSACK_PARAMS: (keyof RansackParams)[] = [
   'q[tenant_country_code_in]',
   'q[phases_participation_method_in]',
   'q[tenant_population_group_in]',
+  'q[topic_id_in]',
   'q[practical_end_at_gteq]',
   'q[practical_end_at_lt]',
-  'q[title_en_or_description_en_or_tenant_name_cont]',
+  'q[title_en_or_description_en_or_tenant_name_or_title_multiloc_text_cont]',
   'q[s]',
 ];
 

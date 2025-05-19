@@ -47,6 +47,9 @@ describe('Timeline ideation with anonymous participation allowed', () => {
 
     // add a title and description
     cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // Go to the next page of the idea form
@@ -82,8 +85,12 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.acceptCookies();
 
-    // add a title and description
+    // Add a title
     cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Add a description
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // Go to the next page of the idea form

@@ -53,7 +53,7 @@ resource 'Ideas' do
           expect(json_schema.keys).to eq %i[en fr-FR nl-NL]
           expect(ui_schema.keys).to eq %i[en fr-FR nl-NL]
           { 'en' => 'Author', 'fr-FR' => 'Auteur', 'nl-NL' => 'Auteur' }.each do |locale, author_label|
-            author_ui_elt = ui_schema.dig(locale.to_sym, :elements, 0, :elements, 1)
+            author_ui_elt = ui_schema.dig(locale.to_sym, :elements, 0, :elements, 0)
             expect(author_ui_elt).to match({
               type: 'Control',
               scope: '#/properties/author_id',

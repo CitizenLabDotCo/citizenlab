@@ -67,12 +67,16 @@ describe('Input form builder', () => {
     cy.contains('Add new idea').should('exist');
     // add a title and description
     cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent, {
-      force: true,
-    });
 
     // verify the title and description
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Add a description
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent, {
+      force: true,
+    });
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // Go to the next page of the idea form
@@ -159,12 +163,13 @@ describe('Input form builder', () => {
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
-    // add a title and description
-    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
-    // verify the title and description
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // Go to the next page of the idea form
@@ -192,6 +197,15 @@ describe('Input form builder', () => {
       '{downArrow}{enter}'
     );
 
+    // Cannot proceed to the next page without filling in the required custom field
+    cy.get('[data-cy="e2e-submit-form"]').click();
+    // Verify that an error is shown and that we stay on the page
+    cy.get('.e2e-error-message');
+    cy.url().should(
+      'eq',
+      `${Cypress.config().baseUrl}/en/projects/${projectSlug}/ideas/new`
+    );
+
     // Fill in required custom field
     cy.contains(questionTitle).should('exist');
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
@@ -200,11 +214,13 @@ describe('Input form builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(3000);
 
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    // Close with the cross button
+    cy.get('[data-cy="e2e-leave-new-idea-button"]').should('exist').click();
 
-    // verify the content of the newly created idea page
-    cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
+    // The new idea appears on the project page
+    cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
+    cy.contains(ideaTitle).should('exist').click();
+    cy.wait(1000);
 
     // Verify that the answer is not shown on the idea page
     cy.contains(questionTitle).should('not.exist');

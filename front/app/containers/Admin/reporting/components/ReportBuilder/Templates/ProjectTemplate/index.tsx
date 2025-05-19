@@ -36,7 +36,7 @@ import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import TwoColumn from '../../Widgets/TwoColumn';
 import { TemplateContext } from '../context';
-import { getPeriod } from '../utils';
+import { getPeriod, toMultiloc } from '../utils';
 
 import { getTemplateData } from './getTemplateData';
 import messages from './messages';
@@ -149,12 +149,6 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
     });
   };
 
-  const toMultiloc = (message: MessageDescriptor) => {
-    return createMultiloc(appConfigurationLocales, (locale) => {
-      return formatMessageWithLocale(locale, message);
-    });
-  };
-
   const filteredSurveyQuestions = surveyQuestions
     ? surveyQuestions.data.filter((field) =>
         SURVEY_QUESTION_INPUT_TYPES.has(field.attributes.input_type)
@@ -196,7 +190,11 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
       <WhiteSpace />
       <ParticipantsWidget
         projectId={projectId}
-        title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
+        title={toMultiloc(
+          WIDGET_TITLES.ParticipantsWidget,
+          appConfigurationLocales,
+          formatMessageWithLocale
+        )}
         {...projectPeriod}
       />
       <WhiteSpace />
@@ -212,7 +210,11 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
       ))}
       {participationMethod === 'ideation' && (
         <MostReactedIdeasWidget
-          title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
+          title={toMultiloc(
+            WIDGET_TITLES.MostReactedIdeasWidget,
+            appConfigurationLocales,
+            formatMessageWithLocale
+          )}
           projectId={projectId}
           phaseId={phaseId}
           numberOfIdeas={5}

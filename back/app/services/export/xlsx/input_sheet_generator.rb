@@ -159,6 +159,7 @@ module Export
             end
             input_fields << Export::CustomFieldForExport.new(field, @value_visitor)
             input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
+            input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
           end
         end
       end

@@ -13,8 +13,8 @@ fi:
         dislikes: "Ihmiset, jotka vastaavat '%{answer}' arvoon '%{question}', eivät pidä %{percent_more_less} syötteistä '%{tag}' keskimääräistä enemmän."
         participants: "Ihmiset, jotka vastaavat '%{answer}' '%{question}', osallistuvat %{percent_more_less} ryhmään '%{tag}keskimääräistä enemmän."
       bin_vs_bin:
-        inputs: "People who respond '%{answer1}' to '%{question1}' answer '%{answer2}' to '%{question2}' %{percent_more_less} than average."
+        inputs: "Ihmiset, jotka vastaavat %{answer1} - %{question1}, vastaavat %{answer2} - %{question2} %{percent_more_less} keskimääräistä enemmän."
         likes: "Ihmiset, jotka vastaavat '%{answer1}' arvoon '%{question1}', pitävät %{percent_more_less} syötteistä, kun he vastaavat '%{answer2}' -%{question2}' kuin keskimäärin."
         dislikes: "Ihmiset, jotka vastaavat '%{answer1}' arvoon '%{question1}', eivät pidä %{percent_more_less} syötteistä, kun he vastaavat '%{answer2}' -%{question2}' keskimääräistä enemmän."
-        participants: "People who respond '%{answer1}' to '%{question1}' participate %{percent_more_less} when they answer '%{answer2}' to '%{question2}' than average."
+        participants: "Ihmiset, jotka vastaavat %{answer1} - %{question1}, osallistuvat %{percent_more_less} -tapahtumaan, kun he vastaavat %{answer2} - %{question2} -tapahtumaan keskimääräistä enemmän."
 

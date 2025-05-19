@@ -10,8 +10,8 @@
 #  column_id   :uuid             not null
 #  unit        :string           not null
 #  count       :integer          not null
-#  lift        :float            not null
-#  p_value     :float            not null
+#  lift        :decimal(20, 15)  not null
+#  p_value     :decimal(20, 15)  not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #

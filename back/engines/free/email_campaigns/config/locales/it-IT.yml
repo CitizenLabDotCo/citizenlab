@@ -8,6 +8,7 @@ it:
       "comment_marked_as_spam": Segnalazione di spam di commenti
       "comment_on_your_comment": Una risposta al mio commento
       "comment_on_idea_you_follow": Un commento su un'idea che segui
+      "community_monitor_report": Rapporto di monitoraggio della comunità
       "cosponsor_of_your_idea": Un utente accetta il mio invito a co-sponsorizzare la mia proposta
       "event_registration_confirmation": Conferma della registrazione all'evento
       "idea_marked_as_spam": Segnalazione di spam di idee
@@ -82,6 +83,7 @@ it:
         "4": "Settimanalmente, il giovedì %{hourOfDay}"
         "5": "Settimanalmente, il venerdì %{hourOfDay}"
         "6": "Settimanalmente, il sabato %{hourOfDay}"
+      quarterly: "Trimestralmente, il primo giorno del trimestre"
     footer:
       "link_privacy_policy": "Politica sulla privacy"
       "link_terms_conditions": "Termini e condizioni"
@@ -147,6 +149,12 @@ it:
       today: Oggi
       wrong_content: 'Il commento non è pertinente.'
       yesterday: Ieri
+    community_monitor_report:
+      subject: 'È disponibile un nuovo rapporto di monitoraggio della comunità'
+      title: 'È disponibile un nuovo rapporto di monitoraggio della comunità'
+      text_introduction: 'È stato creato un rapporto di monitoraggio della comunità per il trimestre precedente. Puoi accedervi cliccando sul pulsante qui sotto ed effettuando il login.'
+      cta_report_button: 'Visualizza il rapporto'
+      report_name: 'Rapporto di monitoraggio della comunità'
     cosponsor_of_your_idea:
       cta_reply_to: 'Visualizza la tua proposta'
       event_description: 'Congratulazioni! %{cosponsorName} ha accettato l''invito a co-sponsorizzare la tua proposta.'

@@ -4,21 +4,23 @@ module Surveys
   class ResultsWithDateGenerator < ResultsGenerator
     def initialize(phase, structure_by_category: false, year: nil, quarter: nil)
       super(phase, structure_by_category: structure_by_category)
-      filter_inputs_by_quarter(year, quarter) if year && quarter
+      @year = year&.to_i
+      @quarter = quarter&.to_i
+      filter_inputs_by_quarter
     end
 
     private
 
-    def filter_inputs_by_quarter(year, quarter)
-      raise ArgumentError, 'Invalid date format' unless year.match?(/^\d{4}$/) && quarter.match?(/^[1-4]$/)
+    def filter_inputs_by_quarter
+      return unless @year && @quarter
 
-      @year = year
-      @quarter = quarter
-      @inputs = @inputs.where(created_at: quarter_to_date_range(year, quarter))
+      raise ArgumentError, 'Invalid date format' unless valid_quarter?
+
+      @inputs = @inputs.where(created_at: quarter_to_date_range(@year, @quarter))
     end
 
     def add_averages(results)
-      super unless @year && @quarter
+      return super unless @year && @quarter
 
       # Get the averages by quarter
       averages = AverageGenerator.new(phase).field_averages_by_quarter
@@ -36,8 +38,6 @@ module Surveys
     end
 
     def quarter_to_date_range(year, quarter)
-      year = year.to_i
-      quarter = quarter.to_i
       case quarter
       when 1
         start_date = Date.new(year, 1, 1)
@@ -63,8 +63,6 @@ module Surveys
     end
 
     def previous_quarter(year, quarter)
-      year = year.to_i
-      quarter = quarter.to_i
       if quarter == 1
         year -= 1
         quarter = 4
@@ -72,6 +70,10 @@ module Surveys
         quarter -= 1
       end
       format_quarter(year, quarter)
+    end
+
+    def valid_quarter?
+      (2024..2050).cover?(@year) && (1..4).cover?(@quarter)
     end
   end
 end

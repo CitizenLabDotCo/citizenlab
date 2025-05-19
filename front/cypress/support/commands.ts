@@ -1,5 +1,6 @@
 import 'cypress-file-upload';
 import './dnd';
+import * as moment from 'moment';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
@@ -30,6 +31,7 @@ declare global {
       apiGetUsersCount: typeof apiGetUsersCount;
       apiGetSeats: typeof apiGetSeats;
       apiGetAppConfiguration: typeof apiGetAppConfiguration;
+      apiGetCommunityMonitorProject: typeof apiGetCommunityMonitorProject;
       logout: typeof logout;
       acceptCookies: typeof acceptCookies;
       getIdeaById: typeof getIdeaById;
@@ -48,6 +50,7 @@ declare global {
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
       apiEditProject: typeof apiEditProject;
+      apiEditPhase: typeof apiEditPhase;
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
@@ -84,6 +87,8 @@ declare global {
       uploadProjectFolderImage: typeof uploadProjectFolderImage;
       uploadProjectImage: typeof uploadProjectImage;
       apiCreateModeratorForProject: typeof apiCreateModeratorForProject;
+      apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
+      createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
     }
   }
 }
@@ -423,6 +428,21 @@ function apiGetAppConfiguration() {
       },
       method: 'GET',
       url: `web_api/v1/app_configuration`,
+    });
+  });
+}
+
+function apiGetCommunityMonitorProject() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/projects/community_monitor`,
     });
   });
 }
@@ -822,6 +842,33 @@ function apiCreateProject({
   });
 }
 
+// apiEditPhase can be extended with other phase attributes as needed.
+function apiEditPhase({
+  phaseId,
+  submission_enabled,
+}: {
+  phaseId: string;
+  submission_enabled?: boolean;
+}) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/phases/${phaseId}`,
+      body: {
+        phase: {
+          submission_enabled,
+        },
+      },
+    });
+  });
+}
+
 function apiEditProject({
   projectId,
   title,
@@ -829,6 +876,7 @@ function apiEditProject({
   description,
   publicationStatus = 'published',
   assigneeId,
+  submission_enabled,
 }: {
   projectId: string;
   title?: string;
@@ -838,6 +886,7 @@ function apiEditProject({
   assigneeId?: string;
   surveyUrl?: string;
   votingMaxTotal?: number;
+  submission_enabled?: boolean;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
@@ -856,6 +905,7 @@ function apiEditProject({
             admin_publication_attributes: {
               publication_status: publicationStatus,
             },
+            submission_enabled,
           }),
           ...(title && {
             title_multiloc: {
@@ -874,6 +924,9 @@ function apiEditProject({
               en: description,
               'nl-BE': description,
             },
+          }),
+          ...(submission_enabled && {
+            submission_enabled,
           }),
           ...(assigneeId && { default_assignee_id: assigneeId }),
         },
@@ -1195,7 +1248,7 @@ function apiCreateCustomFieldOption(optionName: string, customFieldId: string) {
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/users/custom_fields/${customFieldId}/custom_field_options`,
+      url: `web_api/v1/custom_fields/${customFieldId}/custom_field_options`,
       body: {
         title_multiloc: {
           en: optionName,
@@ -1817,6 +1870,127 @@ function notIntersectsViewport(subject?: any) {
   expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.false;
 }
 
+function apiCreateNativeSurveyPhase({
+  projectId,
+  title,
+  startAt,
+  endAt,
+  canPost = true,
+  canReact = true,
+  canComment = true,
+  description,
+  nativeSurveyButtonMultiloc = { en: 'Take the survey' },
+  nativeSurveyTitleMultiloc = { en: 'Survey' },
+  allow_anonymous_participation,
+  presentation_mode,
+}: {
+  projectId: string;
+  title: string;
+  startAt: string;
+  endAt?: string;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+  description?: string;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
+  allow_anonymous_participation?: boolean;
+  presentation_mode?: 'card' | 'map';
+}) {
+  return cy.apiCreatePhase({
+    projectId,
+    title,
+    startAt,
+    endAt,
+    participationMethod: 'native_survey',
+    canPost,
+    canReact,
+    canComment,
+    description,
+    nativeSurveyButtonMultiloc,
+    nativeSurveyTitleMultiloc,
+    allow_anonymous_participation,
+    presentation_mode,
+  });
+}
+
+type NativeSurveyPhaseResult = {
+  projectId: string;
+  projectSlug: string;
+  phaseId: string;
+};
+
+function createProjectWithNativeSurveyPhase({
+  projectTitle = randomString(),
+  projectDescriptionPreview = randomString(30),
+  projectDescription = randomString(),
+  publicationStatus = 'published',
+  phaseTitle = randomString(),
+  phaseStartAt = moment().subtract(9, 'month').format('DD/MM/YYYY'),
+  phaseEndAt,
+  canPost = true,
+  canReact = true,
+  canComment = true,
+  description,
+  nativeSurveyButtonMultiloc = { en: 'Take the survey' },
+  nativeSurveyTitleMultiloc = { en: 'Survey' },
+  allow_anonymous_participation,
+  presentation_mode,
+}: {
+  projectTitle?: string;
+  projectDescriptionPreview?: string;
+  projectDescription?: string;
+  publicationStatus?: IProjectAttributes['publication_status'];
+  phaseTitle?: string;
+  phaseStartAt?: string;
+  phaseEndAt?: string;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+  description?: string;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
+  allow_anonymous_participation?: boolean;
+  presentation_mode?: 'card' | 'map';
+} = {}): Cypress.Chainable<NativeSurveyPhaseResult> {
+  return cy
+    .apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus,
+    })
+    .then((project) => {
+      const projectId = project.body.data.id;
+      const projectSlug = project.body.data.attributes.slug;
+
+      return cy
+        .apiCreateNativeSurveyPhase({
+          projectId,
+          title: phaseTitle,
+          startAt: phaseStartAt,
+          endAt: phaseEndAt,
+          canPost,
+          canReact,
+          canComment,
+          description,
+          nativeSurveyButtonMultiloc,
+          nativeSurveyTitleMultiloc,
+          allow_anonymous_participation,
+          presentation_mode,
+        })
+        .then((phase) => {
+          const phaseId = phase.body.data.id;
+
+          return {
+            projectId,
+            projectSlug,
+            phaseId,
+          };
+        });
+    });
+}
+
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
@@ -1830,6 +2004,10 @@ Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
 Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
 Cypress.Commands.add('apiGetSeats', apiGetSeats);
 Cypress.Commands.add('apiGetAppConfiguration', apiGetAppConfiguration);
+Cypress.Commands.add(
+  'apiGetCommunityMonitorProject',
+  apiGetCommunityMonitorProject
+);
 Cypress.Commands.add('apiUpdateAppConfiguration', apiUpdateAppConfiguration);
 Cypress.Commands.add('apiGetPhasePermission', apiGetPhasePermission);
 Cypress.Commands.add('apiSetPhasePermission', apiSetPhasePermission);
@@ -1854,6 +2032,7 @@ Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
 Cypress.Commands.add('apiEditProject', apiEditProject);
+Cypress.Commands.add('apiEditPhase', apiEditPhase);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
 Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
@@ -1917,4 +2096,9 @@ Cypress.Commands.add('uploadProjectImage', uploadProjectImage);
 Cypress.Commands.add(
   'apiCreateModeratorForProject',
   apiCreateModeratorForProject
+);
+Cypress.Commands.add('apiCreateNativeSurveyPhase', apiCreateNativeSurveyPhase);
+Cypress.Commands.add(
+  'createProjectWithNativeSurveyPhase',
+  createProjectWithNativeSurveyPhase
 );

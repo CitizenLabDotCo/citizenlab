@@ -21,7 +21,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
     let(:generated_results) { generator.generate_results }
 
     before_all do
-      # Update fields from survey_setup shared context with some (meaningless but valid) form_end logic
+      # Update fields from survey_setup shared context with some (meaningless but valid) end_page logic
       linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: last_page_field.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
       page_field.update!(logic: { next_page_id: last_page_field.id })
     end
@@ -593,7 +593,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         questionViewedCount: 0,
         pageNumber: 6,
         logic: {},
-        key: 'form_end' # important as this is the last page
+        key: 'form_end'
       }
     end
 
@@ -913,7 +913,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       expect(results[0].keys).not_to include(:key, :questionViewedCount)
     end
 
-    it 'removes the last page (form_end) from the results' do
+    it 'removes the end page from the results' do
       expect(results.size).to eq(2)
       expect(results.pluck(:inputType)).to eq(%w[page select])
     end

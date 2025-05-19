@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
-import { isEmpty, isString } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
-import useAddProjectFile from 'api/project_files/useAddProjectFile';
-import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 import useProjectFiles from 'api/project_files/useProjectFiles';
-import useUpdateProjectFile from 'api/project_files/useUpdateProjectFile';
 import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 import useProjectImages, {
@@ -23,6 +20,7 @@ import useAddProject from 'api/projects/useAddProject';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import { useSyncProjectFiles } from 'hooks/files/useSyncProjectFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -49,6 +47,7 @@ import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -102,9 +101,8 @@ const AdminProjectsProjectGeneral = () => {
   const { mutateAsync: addProject } = useAddProject();
 
   const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
-  const { mutateAsync: addProjectFile } = useAddProjectFile();
-  const { mutateAsync: updateProjectFile } = useUpdateProjectFile();
-  const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
+  const syncProjectFiles = useSyncProjectFiles();
+
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 
   const [processing, setProcessing] = useState(false);
@@ -137,6 +135,12 @@ const AdminProjectsProjectGeneral = () => {
 
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
+
+  const showProjectFolderSelect =
+    usePermission({
+      item: 'project_folder',
+      action: 'create_project_in_folder',
+    }) && isProjectFoldersEnabled;
 
   useEffect(() => {
     (async () => {
@@ -369,63 +373,20 @@ const AdminProjectsProjectGeneral = () => {
               })
             : null;
 
-        const filesToAddPromises = projectFiles
-          .filter((file) => !file.remote)
-          .map((file) => {
-            if (latestProjectId) {
-              return addProjectFile({
-                projectId: latestProjectId,
-                file: { file: file.base64, name: file.name },
-              });
-            }
-
-            return;
-          });
-        const filesToRemovePromises = projectFilesToRemove
-          .filter((file) => file.remote === true && isString(file.id))
-          .map((file) => {
-            if (latestProjectId && file.id) {
-              return deleteProjectFile({
-                projectId: latestProjectId,
-                fileId: file.id,
-              });
-            }
-
-            return;
-          });
-
-        const reorderedFiles = projectFiles.filter((file) => {
-          const initialOrdering = file.id
-            ? initialProjectFilesOrdering[file.id]
-            : undefined;
-          return (
-            file.remote &&
-            typeof file.ordering !== 'undefined' &&
-            (typeof initialOrdering === 'undefined' ||
-              file.ordering !== initialOrdering)
-          );
-        });
-
-        const filesToReorderPromises = reorderedFiles.map((file) => {
-          if (latestProjectId && file.id) {
-            return updateProjectFile({
+        const projectFilesPromise = latestProjectId
+          ? syncProjectFiles({
               projectId: latestProjectId,
-              fileId: file.id,
-              file: {
-                ordering: file.ordering,
-              },
-            });
-          }
-          return;
-        });
+              projectFiles,
+              filesToRemove: projectFilesToRemove,
+              fileOrdering: initialProjectFilesOrdering,
+            })
+          : undefined;
 
         await Promise.all([
           cardImageToAddPromise,
           cardImageToUpdatePromise,
           cardImageToRemovePromise,
-          ...filesToAddPromises,
-          ...filesToRemovePromises,
-          ...filesToReorderPromises,
+          projectFilesPromise,
         ] as Promise<any>[]);
 
         setSubmitState('success');
@@ -522,11 +483,14 @@ const AdminProjectsProjectGeneral = () => {
     setSubmitState('enabled');
   };
 
+  const isNewProject = !projectId;
+
   return (
     <Box ref={containerRef}>
       <StyledForm
         className="e2e-project-general-form intercom-projects-new-project-form"
         onSubmit={onSubmit}
+        showStickySaveButton={showStickySaveButton}
       >
         <Section>
           {projectId && (
@@ -539,7 +503,13 @@ const AdminProjectsProjectGeneral = () => {
               </SectionDescription>
             </>
           )}
-          <Warning>{formatMessage(messages.publicationStatusWarning)}</Warning>
+
+          {!isNewProject && (
+            <Warning>
+              {formatMessage(messages.publicationStatusWarning)}
+            </Warning>
+          )}
+
           <Highlighter fragmentId={fragmentId}>
             <ProjectNameInput
               titleMultiloc={projectAttrs.title_multiloc}
@@ -593,14 +563,14 @@ const AdminProjectsProjectGeneral = () => {
             onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
           />
 
-          {isProjectFoldersEnabled && (
+          {showProjectFolderSelect && (
             <Highlighter fragmentId={folderFragmentId}>
               <ProjectFolderSelect
                 projectAttrs={projectAttrs}
                 onProjectAttributesDiffChange={
                   handleProjectAttributeDiffOnChange
                 }
-                isNewProject={!projectId}
+                isNewProject={isNewProject}
               />
             </Highlighter>
           )}
@@ -669,39 +639,33 @@ const AdminProjectsProjectGeneral = () => {
             handleProjectFileOnRemove={handleProjectFileOnRemove}
             onFileReorder={handleFilesReorder}
           />
-
-          {/* 
-            The sticky save button is only shown when you edit a form so that the user 
-            is not forced to scroll to the bottom of the page to save it.
-          */}
-
-          <Box
-            {...(showStickySaveButton && {
-              position: 'fixed',
-              borderTop: `1px solid ${colors.divider}`,
-              bottom: '0',
-              w: `calc(${width}px + ${defaultAdminCardPadding * 2}px)`,
-              ml: `-${defaultAdminCardPadding}px`,
-              background: colors.white,
-              display: 'flex',
-              justifyContent: 'flex-start',
-              px: `${defaultAdminCardPadding}px`,
-            })}
-            py="8px"
-          >
-            <SubmitWrapper
-              className="intercom-projects-new-project-save-button"
-              loading={processing}
-              status={submitState}
-              messages={{
-                buttonSave: messages.saveProject,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-          </Box>
         </Section>
+        <Box
+          {...(showStickySaveButton && {
+            position: 'fixed',
+            borderTop: `1px solid ${colors.divider}`,
+            bottom: '0',
+            w: `calc(${width}px + ${defaultAdminCardPadding * 2}px)`,
+            ml: `-${defaultAdminCardPadding}px`,
+            background: colors.white,
+            display: 'flex',
+            justifyContent: 'flex-start',
+            px: `${defaultAdminCardPadding}px`,
+          })}
+          py="8px"
+        >
+          <SubmitWrapper
+            className="intercom-projects-new-project-save-button"
+            loading={processing}
+            status={submitState}
+            messages={{
+              buttonSave: messages.saveProject,
+              buttonSuccess: messages.saveSuccess,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
+          />
+        </Box>
       </StyledForm>
     </Box>
   );

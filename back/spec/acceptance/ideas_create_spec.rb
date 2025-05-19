@@ -546,8 +546,12 @@ resource 'Ideas' do
     end
 
     context 'in a community monitor survey phase' do
-      let(:project) { create(:community_monitor_project, default_assignee_id: create(:admin).id) }
-      let(:phase) { create(:community_monitor_survey_phase, project: project, with_permissions: true) }
+      let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
+      let(:project) do
+        project = phase.project
+        project.update! default_assignee_id: create(:admin).id
+        project
+      end
 
       let(:extra_field_name) { 'custom_field_name1' }
       let(:form) { create(:custom_form, participation_context: phase) }

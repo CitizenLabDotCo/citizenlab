@@ -94,13 +94,14 @@ RSpec.describe ParticipationMethod::Ideation do
       expect(
         participation_method.default_fields(create(:custom_form, participation_context: phase)).filter_map(&:code)
       ).to eq %w[
-        ideation_page1
+        title_page
         title_multiloc
+        body_page
         body_multiloc
-        ideation_page2
+        uploads_page
         idea_images_attributes
         idea_files_attributes
-        ideation_page3
+        details_page
         topic_ids
         location_description
         proposed_budget
@@ -187,7 +188,7 @@ RSpec.describe ParticipationMethod::Ideation do
     it 'has constraints on built in fields to lock certain values from being changed' do
       expect(participation_method.constraints.size).to be 8
       expect(participation_method.constraints.keys).to match_array %i[
-        ideation_page1
+        title_page
         title_multiloc
         body_multiloc
         idea_images_attributes

@@ -28,7 +28,7 @@ describe Analysis::AutoInsightsService do
         # - 3 genders
         # - 2 options in custom_field1
         # - 3 linear scale bins in custom_field2
-        # So we should get (2*3+2*2+2*3)+(3*2+3*3)+(2*3)=16+15+6=37 cells
+        # So we should get ((2*3+2*2+2*3)+(3*2+3*3)+(2*3))*2=(16+15+6)*2=74 cells
         expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(37)
         male, female, unspecified = custom_field_gender.options.map { |o| o.custom_field_bins.first }
         expect(Analysis::HeatmapCell.find_by(row: tag1, column: male)).to have_attributes(
@@ -161,8 +161,8 @@ describe Analysis::AutoInsightsService do
         )
         expect(Analysis::HeatmapCell.find_by(row: tag2, column: male)).to have_attributes(
           count: 2,
-          p_value: 1.0,
-          lift: 0.9333333333333333,
+          p_value: 1,
+          lift: 0.933333333333333,
           row: tag2,
           column: male,
           unit: 'participants'
@@ -170,7 +170,7 @@ describe Analysis::AutoInsightsService do
         expect(Analysis::HeatmapCell.find_by(row: tag2, column: female)).to have_attributes(
           count: 1,
           p_value: 1.0,
-          lift: 1.1666666666666667,
+          lift: 1.166666666666667,
           row: tag2,
           column: female,
           unit: 'participants'

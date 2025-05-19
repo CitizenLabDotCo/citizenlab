@@ -109,6 +109,7 @@ export interface IAttributes {
   random_option_ordering?: boolean;
   dropdown_layout?: boolean;
   question_category?: string;
+  include_in_printed_form?: boolean;
 }
 
 export interface ICustomFieldResponse {
@@ -123,6 +124,9 @@ export interface ICustomFieldResponse {
       data: IRelationship[];
     };
     map_config?: {
+      data: IRelationship;
+    };
+    resource?: {
       data: IRelationship;
     };
   };
@@ -175,6 +179,8 @@ export type IFlatCreateCustomField = Optional<
   | 'random_option_ordering'
   | 'dropdown_layout'
   | 'question_category'
+  | 'ask_follow_up'
+  | 'include_in_printed_form'
 > & {
   isLocalOnly: boolean;
 };

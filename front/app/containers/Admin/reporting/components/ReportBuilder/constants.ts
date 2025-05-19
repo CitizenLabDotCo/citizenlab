@@ -8,6 +8,7 @@ export const SURVEY_QUESTION_INPUT_TYPES = new Set([
   'rating',
   'multiselect_image',
   'matrix_linear_scale',
+  'sentiment_linear_scale',
   'ranking',
   'point',
   'line',
@@ -18,6 +19,7 @@ export const SURVEY_QUESTION_INPUT_TYPES = new Set([
 export const SLICE_SURVEY_QUESTION_INPUT_TYPES = new Set([
   'select',
   'linear_scale',
+  'sentiment_linear_scale',
   'rating',
 ]);
 

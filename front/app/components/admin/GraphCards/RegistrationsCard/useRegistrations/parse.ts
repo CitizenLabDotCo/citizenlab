@@ -5,12 +5,13 @@ import {
   RegistrationsResponse,
 } from 'api/graph_data_units/responseTypes/RegistrationsWidget';
 
-import { getConversionRate } from 'components/admin/GraphCards/_utils/parse';
 import { RESOLUTION_TO_MESSAGE_KEY } from 'components/admin/GraphCards/_utils/resolution';
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { keys, get } from 'utils/helperUtils';
+
+import { formatPercentage } from '../../_utils/format';
 
 import { Translations } from './translations';
 import { TimeSeries, TimeSeriesRow, Stats } from './typings';
@@ -24,19 +25,19 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    registrations: row.count,
+    registrations: row.registrations,
     date: date.format('YYYY-MM-DD'),
   };
 };
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(get(row, 'first_dimension_date_registration_date'));
+  return moment(get(row, 'date_group'));
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: RegistrationsResponse['data']['attributes'][0],
+  responseTimeSeries: RegistrationsResponse['data']['attributes']['registrations_timeseries'],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
@@ -52,33 +53,21 @@ export const parseTimeSeries = (
 export const parseStats = (
   data: RegistrationsResponse['data']['attributes']
 ): Stats => {
-  const registrationsWholePeriod = data[1][0];
-  const registrationsLastPeriod = data[4]?.[0];
-
-  const visitsWholePeriod = data[2][0];
-  const visitsLastPeriod = data[5]?.[0];
-
-  const registrationsVisitorsWholePeriod = data[3][0];
-  const registrationsVisitorsLastPeriod = data[6]?.[0];
-
-  const registrationRateWholePeriod = getConversionRate(
-    registrationsVisitorsWholePeriod?.count ?? 0,
-    visitsWholePeriod?.count_visitor_id ?? 0
-  );
-
-  const registrationRateLastPeriod = getConversionRate(
-    registrationsVisitorsLastPeriod?.count ?? 0,
-    visitsLastPeriod?.count_visitor_id ?? 0
-  );
+  const {
+    registrations_whole_period,
+    registration_rate_whole_period,
+    registrations_compared_period,
+    registration_rate_compared_period,
+  } = data;
 
   return {
     registrations: {
-      value: (registrationsWholePeriod?.count ?? 0).toString(),
-      lastPeriod: (registrationsLastPeriod?.count ?? 0).toString(),
+      value: registrations_whole_period.toString(),
+      lastPeriod: (registrations_compared_period ?? 0).toString(),
     },
     registrationRate: {
-      value: registrationRateWholePeriod,
-      lastPeriod: registrationRateLastPeriod,
+      value: formatPercentage(registration_rate_whole_period),
+      lastPeriod: formatPercentage(registration_rate_compared_period),
     },
   };
 };

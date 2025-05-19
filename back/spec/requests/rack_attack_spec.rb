@@ -558,7 +558,7 @@ describe 'Rack::Attack' do
     allow_any_instance_of(CohereMultilingualEmbeddings).to receive(:embedding) do
       create(:embeddings_similarity).embedding
     end
-    SettingsService.new.activate_feature! 'authoring_assistance'
+    SettingsService.new.activate_feature! 'input_iq'
 
     project_id = create(:project_with_active_ideation_phase).id
     params_proc = proc do |title|

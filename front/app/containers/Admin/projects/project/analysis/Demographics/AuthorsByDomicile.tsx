@@ -21,7 +21,7 @@ import {
 } from 'recharts';
 
 import useAuthorsByDomicile from 'api/analysis_stats/useAuthorsByDomicile';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import useLocalize from 'hooks/useLocalize';
 

@@ -4,7 +4,7 @@ import useAppConfigurationLocales from './useAppConfigurationLocales';
 import useLocale from './useLocale';
 
 interface Props {
-  projectId: string | undefined;
+  projectId?: string;
   phaseId?: string | null;
   inputId?: string | null;
 }

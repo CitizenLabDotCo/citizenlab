@@ -227,11 +227,12 @@ const InputManager = ({
 
   const onResetParams = () => {
     setQueryParameters(
-      // Don't reset the project filter if we're in the project input manager
+      // Don't reset the project filter OR phase filter if we're in the project input manager
       // or all ideas (including from other projects) will be visible.
       type === 'ProjectIdeas' && typeof projectId === 'string'
         ? {
             projects: [projectId],
+            phase: queryParameters.phase,
           }
         : {}
     );

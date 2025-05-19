@@ -33,7 +33,6 @@ const Population = () => {
       multipleSelectionAllowed
       selected={populationGroups ?? []}
       values={OPTIONS}
-      mr="12px"
       onChange={(populationGroups: PopulationGroup[]) => {
         setRansackParam('q[tenant_population_group_in]', populationGroups);
         trackEventByName(tracks.setPopulationGroup, {
@@ -42,6 +41,7 @@ const Population = () => {
       }}
       title={formatMessage(messages.population)}
       name="population-select"
+      mr="0px"
     />
   );
 };

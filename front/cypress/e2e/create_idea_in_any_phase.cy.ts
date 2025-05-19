@@ -62,9 +62,15 @@ describe('Idea creation', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
 
-    cy.get('#e2e-idea-title-input input')
-      .click()
-      .type(`${newIdeaTitle}`, { delay: 0 });
+    // The next line was flaky on CI where the "type" command resulted in skipped letters
+    // Seems to be a known problem, and one solution is to type then clear to "warm up" Cypress
+    // Related: https://github.com/cypress-io/cypress/issues/3817
+    cy.get('#e2e-idea-title-input input').type('x');
+    cy.get('#e2e-idea-title-input input').clear();
+    cy.get('#e2e-idea-title-input input').type(`${newIdeaTitle}`);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
     cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
 
     // Go to the next page of the idea form

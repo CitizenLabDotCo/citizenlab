@@ -20,7 +20,6 @@
 #  hidden                         :boolean          default(FALSE), not null
 #  maximum                        :integer
 #  logic                          :jsonb            not null
-#  answer_visible_to              :string
 #  select_count_enabled           :boolean          default(FALSE), not null
 #  maximum_select_count           :integer
 #  minimum_select_count           :integer
@@ -39,9 +38,10 @@
 #  linear_scale_label_10_multiloc :jsonb            not null
 #  linear_scale_label_11_multiloc :jsonb            not null
 #  ask_follow_up                  :boolean          default(FALSE), not null
-#  question_category              :string
 #  page_button_label_multiloc     :jsonb            not null
 #  page_button_link               :string
+#  question_category              :string
+#  include_in_printed_form        :boolean          default(TRUE), not null
 #
 # Indexes
 #
@@ -76,10 +76,10 @@ class CustomField < ApplicationRecord
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
-    location_description proposed_budget title_multiloc topic_ids cosponsor_ids ideation_page1 ideation_page2 ideation_page3
+    location_description proposed_budget title_multiloc topic_ids cosponsor_ids
+    title_page body_page uploads_page details_page
+    page_quality_of_life page_service_delivery page_governance_and_trust
   ].freeze
-  VISIBLE_TO_PUBLIC = 'public'
-  VISIBLE_TO_ADMINS = 'admins'
   PAGE_LAYOUTS = %w[default map].freeze
   QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust other].freeze
 
@@ -98,7 +98,6 @@ class CustomField < ApplicationRecord
   validates :hidden, inclusion: { in: [true, false] }
   validates :select_count_enabled, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
-  validates :answer_visible_to, presence: true, inclusion: { in: [VISIBLE_TO_PUBLIC, VISIBLE_TO_ADMINS] }
   validates :maximum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
@@ -108,7 +107,6 @@ class CustomField < ApplicationRecord
   validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
 
   before_validation :set_default_enabled
-  before_validation :set_default_answer_visible_to
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
@@ -147,8 +145,12 @@ class CustomField < ApplicationRecord
     ask_follow_up
   end
 
+  def support_follow_up?
+    %w[sentiment_linear_scale].include?(input_type)
+  end
+
   def support_free_text_value?
-    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?)
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?) || support_follow_up?
   end
 
   def support_option_images?
@@ -246,7 +248,11 @@ class CustomField < ApplicationRecord
   end
 
   def visible_to_public?
-    answer_visible_to == VISIBLE_TO_PUBLIC
+    return true if %w[author_id budget].include?(code)
+    return true if page? # It's possible that this line can be removed (but we would need to properly test to be sure)
+    return true if custom_form_type? && built_in?
+
+    false
   end
 
   def submittable?
@@ -254,8 +260,10 @@ class CustomField < ApplicationRecord
   end
 
   def printable?
+    return false unless include_in_printed_form
+
     ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
-    ignore_field_types.exclude? input_type
+    ignore_field_types.exclude?(input_type)
   end
 
   def importable?
@@ -340,9 +348,9 @@ class CustomField < ApplicationRecord
     visitor.send visitor_method, self
   end
 
-  # Special behaviour for ideation page 1
+  # Special behaviour for the title page
   def title_multiloc
-    if code == 'ideation_page1'
+    if code == 'title_page'
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else
@@ -378,6 +386,7 @@ class CustomField < ApplicationRecord
     CustomField.new(
       key: other_field_key,
       input_type: 'text',
+      resource: resource,
       title_multiloc: replaced_title_multiloc,
       required: true,
       enabled: true
@@ -418,6 +427,7 @@ class CustomField < ApplicationRecord
     @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options
   end
 
+  # @deprecated New HTML PDF formatter does this in {IdeaHtmlFormExporter} instead.
   def linear_scale_print_description(locale)
     return nil unless linear_scale?
 
@@ -474,16 +484,6 @@ class CustomField < ApplicationRecord
 
   def set_default_enabled
     self.enabled = true if enabled.nil?
-  end
-
-  def set_default_answer_visible_to
-    return unless answer_visible_to.nil?
-
-    self.answer_visible_to = if custom_form_type? && (built_in? || page?)
-      VISIBLE_TO_PUBLIC
-    else
-      VISIBLE_TO_ADMINS
-    end
   end
 
   def generate_key

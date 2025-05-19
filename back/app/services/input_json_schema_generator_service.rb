@@ -10,7 +10,7 @@ class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
       properties: locales.index_with do |_locale|
         {
           type: 'string',
-          minLength: 10,
+          minLength: 3,
           maxLength: 120
         }
       end
@@ -26,7 +26,7 @@ class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
       properties: locales.index_with do |_locale|
         {
           type: 'string',
-          minLength: 40
+          minLength: 3
         }
       end
     }

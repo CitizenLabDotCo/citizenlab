@@ -329,7 +329,7 @@ resource 'BulkImportIdeasImportIdeas' do
   end
 
   def stub_external_api
-    allow_any_instance_of(Analysis::LLM::GPT4o).to receive(:chat).and_return('[{}]')
+    allow_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return('[{}]')
 
     expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
     expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
