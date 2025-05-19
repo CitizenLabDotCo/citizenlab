@@ -56,7 +56,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
 
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
-      ? `/admin/projects/${projectId}/phases/${phaseId}/survey_form`
+      ? `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
       : `/admin/projects/${projectId}/phases/${phaseId}/form`;
 
   const defaultValues: FormValues = {
