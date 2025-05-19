@@ -14,7 +14,7 @@ export const fetchCommonGroundResults = ({
   phaseId?: string | null;
 }): Promise<ICommonGroundResults> =>
   fetcher<ICommonGroundResults>({
-    path: `/phases/${phaseId}/common_ground/results`,
+    path: `/phases/${phaseId}/common_ground_results`,
     action: 'get',
   });
 
