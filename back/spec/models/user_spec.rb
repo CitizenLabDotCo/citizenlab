@@ -287,7 +287,7 @@ RSpec.describe User do
     end
 
     it 'is invalid if its a common password' do
-      CommonPassword.initialize!
+      allow(CommonPassword).to receive(:check).with('batman').and_return(true)
       u = build(:user, password: 'batman')
       expect(u).to be_invalid
     end
