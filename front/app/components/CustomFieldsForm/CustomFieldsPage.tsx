@@ -31,6 +31,7 @@ import clHistory from 'utils/cl-router/history';
 import { isPage } from 'utils/helperUtils';
 
 import CustomFields from './CustomFields';
+import AuthorField from './Fields/AuthorField';
 import generateYupValidationSchema from './generateYupSchema';
 import messages from './messages';
 
@@ -224,6 +225,12 @@ const CustomFieldsPage = ({
                         />
                       </QuillEditedContent>
                     </Box>
+
+                    {currentPageNumber === 0 && (
+                      <Box mb="24px">
+                        <AuthorField name="author_id" />
+                      </Box>
+                    )}
 
                     <CustomFields
                       questions={pageQuestions}

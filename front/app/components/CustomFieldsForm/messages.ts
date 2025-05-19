@@ -90,4 +90,12 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.typeYourAnswerRequired',
     defaultMessage: 'It is required to type your answer',
   },
+  userPickerPlaceholder: {
+    id: 'app.components.CustomFieldsForm.userPickerPlaceholder',
+    defaultMessage: 'Start typing to search by user email or name...',
+  },
+  authorFieldLabel: {
+    id: 'app.components.CustomFieldsForm.authorFieldLabel',
+    defaultMessage: 'Author',
+  },
 });
