@@ -15,6 +15,7 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
 
   private
 
+  # @return [Phase]
   def phase
     @phase ||= Phase.find params[:phase_id]
   end

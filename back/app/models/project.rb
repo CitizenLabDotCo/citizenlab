@@ -214,6 +214,7 @@ class Project < ApplicationRecord
     self.folder_changed = false
   end
 
+  # @return [ParticipationMethod::Base]
   def pmethod
     # NOTE: if a project is passed to this method, timeline projects used to always return 'Ideation'
     # as it was never set and defaulted to this when the participation_method was available on the project
