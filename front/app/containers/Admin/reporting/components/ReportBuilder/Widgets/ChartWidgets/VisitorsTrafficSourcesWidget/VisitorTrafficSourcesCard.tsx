@@ -55,7 +55,9 @@ const VisitorsTrafficSourcesCard = ({
         ) : (
           <>
             <Table tableData={tableData} />
-            <ReferrerListLink onOpenModal={openModal} />
+            <Box mt="12px">
+              <ReferrerListLink onOpenModal={openModal} />
+            </Box>
           </>
         )}
       </Box>
