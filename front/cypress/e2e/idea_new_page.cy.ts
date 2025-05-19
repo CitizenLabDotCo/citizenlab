@@ -30,8 +30,8 @@ describe('Idea submission form', () => {
 
   it('shows a back button to navigate to the projects page', () => {
     const ideaTitle = randomString(9);
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-title-input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     cy.get('[data-cy="e2e-leave-new-idea-button"]').click();
