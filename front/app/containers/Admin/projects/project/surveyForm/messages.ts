@@ -19,7 +19,7 @@ export default defineMessages({
     defaultMessage: 'Downloads',
   },
   duplicateAnotherSurvey: {
-    id: 'app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey',
+    id: 'app.containers.Admin.surveyFormTab.duplicateAnotherSurvey',
     defaultMessage: 'Duplicate another survey',
   },
 });
