@@ -51,9 +51,7 @@ describe('Form builder long text field', () => {
 
   it('adds long text field and user can fill in data in the field', () => {
     const testText = randomString(400);
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.get('[data-cy="e2e-long-answer"]');
     cy.wait(2000);
     cy.get('[data-cy="e2e-long-answer"]').click();

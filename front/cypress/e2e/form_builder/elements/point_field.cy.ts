@@ -50,9 +50,7 @@ describe('Form builder point field', () => {
   });
 
   it('adds point field and tests validations', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.get('[data-cy="e2e-point-field"]');
     cy.wait(2000);
     cy.get('[data-cy="e2e-point-field"]').click();
@@ -76,9 +74,7 @@ describe('Form builder point field', () => {
     checkMapInputWorks();
 
     // Configure the map in the back office
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.contains(questionTitle).click();
     cy.get('[data-cy="e2e-configure-map-button"]').click();
     cy.get('[data-cy="e2e-web-map-upload-btn"]').click();
