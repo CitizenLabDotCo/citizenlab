@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { UploadFile } from 'typings';
@@ -62,7 +63,7 @@ const FileUploaderField = ({ name, remoteFiles, ...rest }: Props) => {
   const errorMessage = get(errors, name)?.message as string | undefined;
 
   return (
-    <>
+    <Box data-cy="e2e-idea-file-upload" width="100%">
       <Controller
         name={name}
         control={control}
@@ -123,7 +124,7 @@ const FileUploaderField = ({ name, remoteFiles, ...rest }: Props) => {
           scrollIntoView={false}
         />
       )}
-    </>
+    </Box>
   );
 };
 

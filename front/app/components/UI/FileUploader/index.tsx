@@ -38,7 +38,6 @@ const FileUploader = ({
   className,
   enableDragAndDrop = false,
   multiple = false,
-  ...rest
 }: Props) => {
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
 
@@ -85,14 +84,12 @@ const FileUploader = ({
   };
 
   const fileNames = files.map((file) => file.name).join(', ');
-
   const content = (
     <Box
       className={className}
       key={id}
       data-cy="e2e-file-uploader-container"
       w="100%"
-      {...rest}
     >
       <FileInput onAdd={handleFileOnAdd} id={id} multiple={multiple} />
       <Error fieldName="file" apiErrors={apiErrors?.file} />
