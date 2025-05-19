@@ -75,6 +75,11 @@ namespace :single_use do
       report_ids.each do |report_id|
         report = ReportBuilder::Report.find(report_id)
 
+        phase = Phase.find(report.phase_id)
+        if phase.nil?
+          puts "\nReport #{report_id} has no phase, skipping\n\n"
+        end
+
         puts "\nrepublishing report: #{report_id}\n\n"
         republish_report(report, execute)
       end
