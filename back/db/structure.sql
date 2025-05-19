@@ -1574,7 +1574,8 @@ CREATE TABLE public.ideas (
     submitted_at timestamp(6) without time zone,
     manual_votes_amount integer,
     manual_votes_last_updated_by_id uuid,
-    manual_votes_last_updated_at timestamp(6) without time zone
+    manual_votes_last_updated_at timestamp(6) without time zone,
+    neutral_reactions_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -7085,6 +7086,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250519080057'),
 ('20250513160156'),
 ('20250509140651'),
 ('20250509131056'),

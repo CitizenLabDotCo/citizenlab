@@ -152,7 +152,7 @@ class SideFxIdeaService
     return unless idea.phases.any? { |phase| phase.pmethod.add_autoreaction_to_inputs? }
     return if Permissions::IdeaPermissionsService.new(idea, idea.author).denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
 
-    idea.reactions.create!(mode: 'up', user: idea.author) if !idea.reactions.exists?(mode: 'up', user: idea.author)
+    idea.reactions.create!(mode: 'up', user: idea.author) unless idea.reactions.exists?(user: idea.author)
     idea.reload
   end
 
