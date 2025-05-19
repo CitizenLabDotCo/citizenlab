@@ -18,7 +18,8 @@ RSpec.describe Reaction do
     describe 'Creating a Reaction' do
       it 'is valid for an Idea' do
         idea = create(:idea)
-        expect { create(:reaction, mode: 'neutral', reactable: idea) }.to change(Reaction, :count).by(1)
+        expect { create(:reaction, mode: 'neutral', reactable: idea) }
+          .to change(Reaction, :count).by(1)
       end
 
       it 'is invalid for a Comment' do
@@ -26,6 +27,12 @@ RSpec.describe Reaction do
         reaction = build(:reaction, mode: 'neutral', reactable: comment)
         expect(reaction).not_to be_valid
         expect(reaction.errors[:mode]).to include('neutral mode is only valid for ideas')
+      end
+
+      it 'increments the idea neutral reaction count' do
+        idea = create(:idea)
+        expect { create(:reaction, mode: 'neutral', reactable: idea) }
+          .to change { idea.reload.neutral_reactions_count }.by(1)
       end
     end
   end
