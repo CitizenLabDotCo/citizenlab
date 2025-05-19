@@ -62,10 +62,10 @@ RSpec.describe Sluggable do
         # Annoyingly complex way to get past the validations that would prevent
         # saving a sluggable with nil title_multiloc.
         allow(sluggable).to receive(:valid?).and_wrap_original do |method, *args|
-          sluggable.errors.clear  # Clear all errors before validation
-          method.call(*args)      # Run the validations
-          sluggable.errors.delete(:title_multiloc)  # Remove any title_multiloc errors after
-          !sluggable.errors.any?  # Return validation result
+          sluggable.errors.clear # Clear all errors before validation
+          method.call(*args) # Run the validations
+          sluggable.errors.delete(:title_multiloc) # Remove any title_multiloc errors after
+          sluggable.errors.none? # Return validation result
         end
 
         sluggable.save!
@@ -80,10 +80,10 @@ RSpec.describe Sluggable do
         # Annoyingly complex way to get past the validations that would prevent
         # saving a sluggable with nil title_multiloc.
         allow(sluggable).to receive(:valid?).and_wrap_original do |method, *args|
-          sluggable.errors.clear  # Clear all errors before validation
-          method.call(*args)      # Run the validations
-          sluggable.errors.delete(:title_multiloc)  # Remove any title_multiloc errors after
-          !sluggable.errors.any?  # Return validation result
+          sluggable.errors.clear # Clear all errors before validation
+          method.call(*args) # Run the validations
+          sluggable.errors.delete(:title_multiloc) # Remove any title_multiloc errors after
+          sluggable.errors.none? # Return validation result
         end
 
         sluggable.save!
