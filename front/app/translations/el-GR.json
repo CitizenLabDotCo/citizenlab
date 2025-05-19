@@ -179,6 +179,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Αυτόματη αποθήκευση",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Η αυτόματη αποθήκευση είναι ενεργοποιημένη από προεπιλογή όταν ανοίγετε τον επεξεργαστή φόρμας. Κάθε φορά που κλείνετε τον πίνακα ρυθμίσεων πεδίου χρησιμοποιώντας το κουμπί \"X\", θα ενεργοποιείται αυτόματα η αποθήκευση.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Λήψη ως pdf",
+  "app.components.FormSync.downloadExcelTemplate": "Κατεβάστε ένα πρότυπο Excel",
   "app.components.GoBackButton.group.edit.goBack": "Επιστροφή",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Επιστροφή στην προηγούμενη σελίδα",
   "app.components.HookForm.Feedback.errorTitle": "Υπάρχει ένα πρόβλημα",

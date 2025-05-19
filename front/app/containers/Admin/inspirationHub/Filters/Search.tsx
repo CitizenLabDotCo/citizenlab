@@ -16,7 +16,7 @@ import tracks from './tracks';
 const Search = () => {
   const { formatMessage } = useIntl();
   const value = useRansackParam(
-    'q[title_en_or_description_en_or_tenant_name_cont]'
+    'q[title_en_or_description_en_or_tenant_name_or_title_multiloc_text_cont]'
   );
 
   const trackSearchEvent = useMemo(() => {
@@ -30,7 +30,7 @@ const Search = () => {
       defaultValue={value}
       onChange={(search) => {
         setRansackParam(
-          'q[title_en_or_description_en_or_tenant_name_cont]',
+          'q[title_en_or_description_en_or_tenant_name_or_title_multiloc_text_cont]',
           search ?? undefined
         );
 

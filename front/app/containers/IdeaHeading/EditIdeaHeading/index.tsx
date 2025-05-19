@@ -22,6 +22,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
+import { useSearchParams } from 'react-router-dom';
 
 const StyledTitle = styled(Text)`
   text-overflow: ellipsis;
@@ -44,6 +45,9 @@ const EditIdeaHeading = ({ titleText, idea, projectId }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [searchParams] = useSearchParams();
+  const ideaSubmitted = searchParams.get('idea_id') !== null;
+
   const openModal = () => {
     setShowLeaveModal(true);
   };
@@ -92,7 +96,11 @@ const EditIdeaHeading = ({ titleText, idea, projectId }: Props) => {
             iconName="close"
             onClick={(event) => {
               event?.preventDefault();
-              openModal();
+              if (ideaSubmitted) {
+                returnToIdea();
+              } else {
+                openModal();
+              }
             }}
             iconColor={colors.textSecondary}
             iconColorOnHover={colors.black}

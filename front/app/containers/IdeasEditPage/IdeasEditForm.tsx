@@ -30,7 +30,6 @@ import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
@@ -155,15 +154,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const tenantTimezone =
     appConfiguration?.data.attributes.settings.core.timezone;
   if (!tenantTimezone) return null;
-  const timeLeftInDays = getPeriodRemainingUntil(
-    '2025-06-30',
-    tenantTimezone,
-    'days'
-  );
-  const isTrialOver = timeLeftInDays < 0;
   const showSimilarInputs = !!(
-    phase?.data.attributes.similarity_enabled &&
-    (isInputIQEnabled || !isTrialOver)
+    phase?.data.attributes.similarity_enabled && isInputIQEnabled
   );
 
   if (isLoadingInputSchema) return <FullPageSpinner />;

@@ -195,6 +195,15 @@ describe('Input form builder', () => {
       '{downArrow}{enter}'
     );
 
+    // Cannot proceed to the next page without filling in the required custom field
+    cy.get('[data-cy="e2e-submit-form"]').click();
+    // Verify that an error is shown and that we stay on the page
+    cy.get('.e2e-error-message');
+    cy.url().should(
+      'eq',
+      `${Cypress.config().baseUrl}/en/projects/${projectSlug}/ideas/new`
+    );
+
     // Fill in required custom field
     cy.contains(questionTitle).should('exist');
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
@@ -203,11 +212,13 @@ describe('Input form builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(3000);
 
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    // Close with the cross button
+    cy.get('[data-cy="e2e-leave-new-idea-button"]').should('exist').click();
 
-    // verify the content of the newly created idea page
-    cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
+    // The new idea appears on the project page
+    cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
+    cy.contains(ideaTitle).should('exist').click();
+    cy.wait(1000);
 
     // Verify that the answer is not shown on the idea page
     cy.contains(questionTitle).should('not.exist');
