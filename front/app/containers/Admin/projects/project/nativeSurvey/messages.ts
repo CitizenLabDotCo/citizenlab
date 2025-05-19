@@ -9,11 +9,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResponses',
     defaultMessage: 'Survey responses',
   },
-  downloadExcelTemplateTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip',
-    defaultMessage:
-      'Excel templates will not include any mapping input questions as these are not supported for bulk importing at this time.',
-  },
   informationText: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.informationText4',
     defaultMessage:
@@ -26,10 +21,6 @@ export default defineMessages({
   viewSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults2',
     defaultMessage: 'View survey results ({count})',
-  },
-  editSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey1',
-    defaultMessage: 'Edit',
   },
   newSubmission: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.newSubmission',
@@ -66,6 +57,7 @@ export default defineMessages({
     defaultMessage:
       'If no logic is added, the survey will follow its normal flow. If both the page and its questions have logic, the question logic will take precedence. Ensure this aligns with your intended survey flow. For more information, visit {supportPageLink}',
   },
+  /* Start input types */
   ranking: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.ranking2',
     defaultMessage: 'Ranking',
@@ -118,12 +110,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.shapefile_upload',
     defaultMessage: 'Esri shapefile upload',
   },
+  /* End input types */
   importInputs: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',
     defaultMessage: 'Import',
-  },
-  duplicateAnotherSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey',
-    defaultMessage: 'Duplicate another survey',
   },
 });
