@@ -3033,7 +3033,7 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.numberOfVisitors": "Anzahl der Besucher*innen",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.percentageOfVisits": "Prozentsatz der Besuche",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.referrer": "Weiterleitung",
-  "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.referrerWebsites": "Empfehlende Websites",
+  "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.referrerWebsites": "Verweisende Webseiten",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.searchEngines": "Suchmaschinen",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.socialNetworks": "Soziale Netzwerke",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.trafficSource": "Kommunikations-Kanäle",
