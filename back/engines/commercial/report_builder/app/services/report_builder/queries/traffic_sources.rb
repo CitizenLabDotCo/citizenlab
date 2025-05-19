@@ -83,8 +83,7 @@ module ReportBuilder
         sessions_per_referrer_type: referrer_types.each_with_object({}) do |row, obj|
           referrer_type = row['referrer_type']
 
-          # Skip SSO redirects
-          if referrer_type.present? && referrer_type != 'sso_redirect'
+          if referrer_type.present?
             count = row['count'].to_i
             obj[referrer_type] = count
           end
