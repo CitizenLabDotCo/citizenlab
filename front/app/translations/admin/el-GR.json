@@ -1087,7 +1087,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.survey2": "Survey",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Total {count} responses",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "View survey",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults2": "View survey results ({count})",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL ενσωμάτωσης",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Υπηρεσία",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Μπορείτε να βρείτε περισσότερες πληροφορίες σχετικά με τον τρόπο ενσωμάτωσης μιας έρευνας {surveyServiceTooltipLink}.",

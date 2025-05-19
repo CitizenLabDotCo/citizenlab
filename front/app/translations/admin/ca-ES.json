@@ -1087,7 +1087,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.survey2": "Survey",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Total {count} responses",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "View survey",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults2": "View survey results ({count})",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Inserir l'URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Servei",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Podeu trobar més informació sobre com inserir una enquesta {surveyServiceTooltipLink}.",

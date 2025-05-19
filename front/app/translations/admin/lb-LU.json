@@ -870,7 +870,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.survey2": "Ëmfro",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Gesamtzuel {count} Äntwerten",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Ëmfro ukucken",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults2": "Resultater vun de Ëmfro ukucken ({count})",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Embed URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Service",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "You can find more information on how to embed a survey {surveyServiceTooltipLink}.",
