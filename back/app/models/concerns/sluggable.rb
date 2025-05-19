@@ -31,7 +31,7 @@ module Sluggable
   def generate_slug
     return if slug
 
-    from_value = self.class.slug_from.call(self)
+    from_value = self.class.slug_from&.call(self)
     self.slug = SlugService.new.generate_slug(self, from_value, excluded: self.class.slug_except)
     self.slug = generate_fallback_slug if !SLUG_REGEX.match?(slug)
   end
@@ -41,8 +41,8 @@ module Sluggable
   def slug_enabled?
     self.class.slug? && (!self.class.slug_if || self.class.slug_if&.call(self))
   end
-end
 
-def generate_fallback_slug
-  SecureRandom.uuid
+  def generate_fallback_slug
+    SecureRandom.uuid
+  end
 end

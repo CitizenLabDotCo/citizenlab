@@ -55,6 +55,42 @@ RSpec.describe Sluggable do
           expect(sluggable).to be_valid
         end
       end
+
+      it 'generates a fallback slug when the from_value is nil' do
+        sluggable = build(sluggable_factories[:slug_from_first_title], title_multiloc: nil)
+
+        # Annoyingly complex way to get past the validations that would prevent
+        # saving a sluggable with nil title_multiloc.
+        allow(sluggable).to receive(:valid?).and_wrap_original do |method, *args|
+          sluggable.errors.clear  # Clear all errors before validation
+          method.call(*args)      # Run the validations
+          sluggable.errors.delete(:title_multiloc)  # Remove any title_multiloc errors after
+          !sluggable.errors.any?  # Return validation result
+        end
+
+        sluggable.save!
+
+        expect(sluggable.slug).to be_present
+        expect(sluggable.slug).to match(Sluggable::SLUG_REGEX)
+      end
+
+      it 'generates a fallback slug when the from_value is empty' do
+        sluggable = build(sluggable_factories[:slug_from_first_title], title_multiloc: {})
+
+        # Annoyingly complex way to get past the validations that would prevent
+        # saving a sluggable with nil title_multiloc.
+        allow(sluggable).to receive(:valid?).and_wrap_original do |method, *args|
+          sluggable.errors.clear  # Clear all errors before validation
+          method.call(*args)      # Run the validations
+          sluggable.errors.delete(:title_multiloc)  # Remove any title_multiloc errors after
+          !sluggable.errors.any?  # Return validation result
+        end
+
+        sluggable.save!
+
+        expect(sluggable.slug).to be_present
+        expect(sluggable.slug).to match(Sluggable::SLUG_REGEX)
+      end
     end
 
     describe 'validate' do
