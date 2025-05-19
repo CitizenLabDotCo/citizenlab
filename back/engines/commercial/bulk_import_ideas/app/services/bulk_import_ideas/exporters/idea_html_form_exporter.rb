@@ -296,7 +296,7 @@ module BulkImportIdeas::Exporters
           I18n.t('form_builder.pdf_export.choose_as_many')
         end
       end
-      format_instructions(message)
+      format_instructions("*#{message}")
     end
 
     def field_matrix_details(field)
