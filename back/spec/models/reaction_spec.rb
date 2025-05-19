@@ -19,7 +19,7 @@ RSpec.describe Reaction do
       it 'is valid for an Idea' do
         idea = create(:idea)
         expect { create(:reaction, mode: 'neutral', reactable: idea) }
-          .to change(Reaction, :count).by(1)
+          .to change(described_class, :count).by(1)
       end
 
       it 'is invalid for a Comment' do
