@@ -49,12 +49,8 @@ const TabPanel = ({
         <SubSectionTitle>
           <FormattedMessage {...messages.downloads} />
         </SubSectionTitle>
-        <Box display="flex">
-          <DownloadPDFButtonWithModal
-            mr="8px"
-            formType="survey"
-            phaseId={phaseId}
-          />
+        <Box display="flex" gap="8px">
+          <DownloadPDFButtonWithModal formType="survey" phaseId={phaseId} />
           <ExcelDownloadButton phaseId={phaseId} />
         </Box>
       </Box>
