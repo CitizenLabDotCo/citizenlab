@@ -184,6 +184,7 @@ de:
         description:
       other_input_field:
         title: Antwort eingeben
+        print_title: Wenn '%{other_option}', bitte angeben
       ask_follow_up_field:
         title: Erzähl uns mehr
     community_monitor:
@@ -329,6 +330,7 @@ de:
       write_as_clearly: 'Schreiben Sie so <b>deutlich</b> wie möglich - diese Formulare werden gescannt'
       write_in_language: 'Schreiben Sie Ihre Antworten bitte in der gleichen Sprache wie dieses Formular'
       linear_scale_print_description: 'Bitte schreiben Sie nur eine Zahl zwischen %{min_label} und %{max_label}'
+      unsupported_field: 'Dieses Feld kann nicht auf Papier ausgefüllt werden. Bitte verwenden Sie stattdessen die Online-Version dieses Formulars.'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:

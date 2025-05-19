@@ -184,6 +184,7 @@ el:
         description:
       other_input_field:
         title: Πληκτρολογήστε την απάντησή σας
+        print_title: Εάν "%{other_option}", διευκρινίστε
       ask_follow_up_field:
         title: Πείτε μας γιατί
     community_monitor:
@@ -329,6 +330,7 @@ el:
       write_as_clearly: 'Γράψτε όσο το δυνατόν πιο καθαρά <b></b> - τα έντυπα αυτά μπορεί να σαρωθούν.'
       write_in_language: 'Γράψτε τις απαντήσεις σας στην ίδια γλώσσα με το παρόν έντυπο.'
       linear_scale_print_description: 'Παρακαλώ γράψτε έναν αριθμό μεταξύ %{min_label} και %{max_label} μόνο'
+      unsupported_field: 'Το πεδίο αυτό δεν μπορεί να συμπληρωθεί σε χαρτί. Παρακαλούμε χρησιμοποιήστε την ηλεκτρονική έκδοση αυτού του εντύπου.'
   project_copy:
     title_suffix: 'Aντίγραφο'
   confirmations_mailer:
