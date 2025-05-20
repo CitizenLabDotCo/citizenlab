@@ -14,6 +14,7 @@ import styled, { useTheme } from 'styled-components';
 import messages from 'components/Form/Components/Controls/messages';
 import RankingOption from './RankingOption';
 import useLocalize from 'hooks/useLocalize';
+import { DragAndDropResult } from 'components/FormBuilder/edit/utils';
 
 const Ul = styled.ul`
   padding: 0;
@@ -24,7 +25,7 @@ const Ul = styled.ul`
 interface Props {
   value?: string[];
   question: IFlatCustomField;
-  onChange: (value: string[]) => void;
+  onChange: (value?: string[]) => void;
 }
 
 const getOptionsFromData = (
@@ -38,7 +39,7 @@ const getOptionsFromData = (
     .filter((value): value is IOption => !!value);
 };
 
-const Ranking = ({ value: data, question }: Props) => {
+const Ranking = ({ value: data, question, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const theme = useTheme();
@@ -55,6 +56,30 @@ const Ranking = ({ value: data, question }: Props) => {
   const options = data
     ? getOptionsFromData(data, questionOptions)
     : questionOptions;
+
+  // updateData: Function to update the form data with a specific option order.
+  const updateData = (newOptionOrder?: IOption[]) => {
+    onChange(newOptionOrder?.map((option: IOption) => option.value));
+  };
+
+  // moveOptionInArray: Function to move an option in the array to a new index & update the form data.
+  const moveOptionInArray = (sourceIndex: number, destinationIndex: number) => {
+    const updatedOptions = [...options];
+    const [removed] = updatedOptions.splice(sourceIndex, 1);
+    updatedOptions.splice(destinationIndex, 0, removed);
+    updateData(updatedOptions);
+  };
+
+  // reorderFieldsAfterDrag: Function to reorder and save the options after a drag and drop.
+  const reorderFieldsAfterDrag = (result: DragAndDropResult) => {
+    const { source, destination } = result;
+    if (!destination) return;
+
+    const sourceIndex = source.index;
+    const destinationIndex = destination.index;
+
+    moveOptionInArray(sourceIndex, destinationIndex);
+  };
 
   return (
     <Box
@@ -73,7 +98,7 @@ const Ranking = ({ value: data, question }: Props) => {
             <Text m="0px" aria-hidden color="tenantPrimary">
               {formatMessage(messages.rankingInstructions)}
             </Text>
-            <Ul aria-labelledby={`ranking-question-label-${id}`}>
+            <Ul aria-labelledby={`ranking-question-label-${question.key}`}>
               {options?.map((option: IOption, index: number) => (
                 <RankingOption option={option} index={index} />
               ))}
@@ -90,7 +115,6 @@ const Ranking = ({ value: data, question }: Props) => {
               text={formatMessage(messages.clearAll)}
               onClick={() => {
                 updateData(undefined);
-                setDidBlur(true);
               }}
             />
           </Box>
