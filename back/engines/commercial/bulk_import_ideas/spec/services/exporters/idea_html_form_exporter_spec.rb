@@ -54,6 +54,8 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
     field.matrix_statements.create!(title_multiloc: { 'en' => 'Matrix statement two' })
     field
   end
+  let!(:rating_field) { create(:custom_field_rating, resource: custom_form, key: 'rating_field', title_multiloc: { 'en' => 'Rating field' }) }
+  let!(:sentiment_linear_scale_field) { create(:custom_field_sentiment_linear_scale, resource: custom_form, key: 'sentiment_field', title_multiloc: { 'en' => 'Sentiment scale field' }) }
   let!(:map_page) { create(:custom_field_page, page_layout: 'map', resource: custom_form, title_multiloc: { 'en' => 'Map page' }) }
   let!(:point_field) { create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' }) }
   let!(:line_field) { create(:custom_field_line, resource: custom_form, title_multiloc: { 'en' => 'Line field' }) }
@@ -100,9 +102,11 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(titles[3]).to include 'Ranking field'
         expect(titles[4]).to include 'Select image field'
         expect(titles[5]).to include 'Matrix field'
-        expect(titles[6]).to include 'Point field'
-        expect(titles[7]).to include 'Line field'
-        expect(titles[8]).to include 'Polygon field'
+        expect(titles[6]).to include 'Rating field'
+        expect(titles[7]).to include 'Sentiment scale field'
+        expect(titles[8]).to include 'Point field'
+        expect(titles[9]).to include 'Line field'
+        expect(titles[10]).to include 'Polygon field'
       end
 
       it 'shows optional if questions are not required' do
@@ -115,6 +119,8 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(titles[6]).to include '(optional)'
         expect(titles[7]).to include '(optional)'
         expect(titles[8]).to include '(optional)'
+        expect(titles[9]).to include '(optional)'
+        expect(titles[10]).to include '(optional)'
       end
 
       it 'returns page titles' do
@@ -165,6 +171,17 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(matrix.text).to include 'Neutral'
         expect(matrix.text).to include 'Agree'
         expect(matrix.text).to include 'Strongly agree'
+      end
+
+      it 'shows rating field instructions' do
+        rating = parsed_html.css("div##{rating_field.id}")
+        expect(rating.text).to include 'Rate this by writing a number between 1 (worst) and 5 (best).'
+      end
+
+      it 'shows sentiment scale field instructions' do
+        sentiment_scale = parsed_html.css("div##{sentiment_linear_scale_field.id}")
+        expect(sentiment_scale.text).to include 'Please write a number between 1 and 5.'
+        expect(sentiment_scale.text).to include '1 = Strongly disagree, 3 = Neutral, 5 = Strongly agree.'
       end
 
       it 'shows a map image and instructions for a point field' do

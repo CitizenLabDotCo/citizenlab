@@ -177,7 +177,7 @@ module BulkImportIdeas::Exporters
         :multi_select_image
       when 'multiline_text', 'html_multiloc'
         :multi_line_text
-      when 'text', 'text_multiloc', 'number', 'linear_scale'
+      when 'text', 'text_multiloc', 'number', 'linear_scale', 'rating', 'sentiment_linear_scale'
         :single_line_text
       when 'ranking'
         :ranking
@@ -187,10 +187,8 @@ module BulkImportIdeas::Exporters
         :mapping
       else
         # CURRENTLY UNSUPPORTED
-        # rating
         # file_upload
         # shapefile_upload
-        # sentiment_linear_scale
         :unsupported
       end
     end
@@ -205,17 +203,16 @@ module BulkImportIdeas::Exporters
     end
 
     def field_print_description(field)
-      if (field.linear_scale? || field.rating?) && field.description_multiloc[@locale].blank?
-        linear_scale_print_instructions(field)
-      else
-        description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
-        html = format_urls(description[@locale]) || ''
-        html += multiselect_print_instructions(field)
-        html += ranking_print_instructions(field)
-        html += matrix_print_instructions(field)
-        html += map_print_instructions(field)
-        html
-      end
+      description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
+      html = format_urls(description[@locale]) || ''
+      html += linear_scale_print_instructions(field)
+      html += sentiment_linear_scale_print_instructions(field)
+      html += rating_print_instructions(field)
+      html += multiselect_print_instructions(field)
+      html += ranking_print_instructions(field)
+      html += matrix_print_instructions(field)
+      html += map_print_instructions(field)
+      html
     end
 
     def field_has_question_number?(field)
@@ -252,6 +249,8 @@ module BulkImportIdeas::Exporters
     end
 
     def linear_scale_print_instructions(field)
+      return '' unless field.input_type == 'linear_scale'
+
       multiloc_service = MultilocService.new
 
       min_text = multiloc_service.t(field.linear_scale_label_1_multiloc, @locale)
@@ -268,7 +267,45 @@ module BulkImportIdeas::Exporters
         )
       end
 
-      "<p>#{description}</p>"
+      format_instructions(description)
+    end
+
+    def sentiment_linear_scale_print_instructions(field)
+      return '' unless field.input_type == 'sentiment_linear_scale'
+
+      description = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.sentiment_linear_scale_print_description') }
+
+      multiloc_service = MultilocService.new
+      min_label = multiloc_service.t(field.linear_scale_label_1_multiloc, @locale)
+      neutral_label = multiloc_service.t(field.linear_scale_label_3_multiloc, @locale)
+      max_label = multiloc_service.t(field.linear_scale_label_5_multiloc, @locale)
+
+      if min_label && neutral_label && max_label
+        label_text = I18n.with_locale(@locale) do
+          I18n.t(
+            'form_builder.pdf_export.sentiment_linear_scale_print_labels',
+            min_label: min_label,
+            neutral_label: neutral_label,
+            max_label: max_label
+          )
+        end
+        description += " <br>#{label_text}"
+      end
+
+      format_instructions(description)
+    end
+
+    def rating_print_instructions(field)
+      return '' unless field.input_type == 'rating'
+
+      description = I18n.with_locale(@locale) do
+        I18n.t(
+          'form_builder.pdf_export.rating_print_description',
+          max_stars: field.maximum
+        )
+      end
+
+      format_instructions(description)
     end
 
     def ranking_print_instructions(field)
@@ -282,7 +319,7 @@ module BulkImportIdeas::Exporters
         )
       end
 
-      "<p>#{description}</p>"
+      format_instructions(description)
     end
 
     def print_visibility_disclaimer(field)
@@ -312,7 +349,7 @@ module BulkImportIdeas::Exporters
           I18n.t('form_builder.pdf_export.choose_as_many')
         end
       end
-      "<p>*#{message}</p>"
+      format_instructions("*#{message}")
     end
 
     def field_matrix_details(field)
@@ -334,7 +371,13 @@ module BulkImportIdeas::Exporters
         I18n.t('form_builder.pdf_export.matrix_print_description')
       end
 
-      "<p>#{description}</p>"
+      format_instructions(description)
+    end
+
+    def format_instructions(instructions)
+      return '' if instructions.blank?
+
+      "<p><em>#{instructions}</em></p>"
     end
 
     def font_family
