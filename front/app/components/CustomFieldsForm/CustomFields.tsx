@@ -79,7 +79,7 @@ const renderField = ({
         />
       );
     case 'files':
-      return <FileUploaderField name={question.key} />;
+      return <FileUploaderField name={question.key} ideaId={ideaId} />;
     case 'topic_ids':
       return <Topics name={question.key} projectId={projectId} />;
     default:
