@@ -850,11 +850,11 @@ resource 'Phases' do
 
         let!(:i1) { create_idea(phase, 1, 0, 2) }
         let!(:i2) { create_idea(phase, 1, 1, 0) }
-        let!(:i3) { create_idea(phase, 1, 2, 1) }
+        let!(:i3) { create_idea(phase, 1, 1, 1) }
 
         before do
           # idea with only neutral reactions that should not be included in results
-          create_idea(phase, 0, 2, 0)
+          create_idea(phase, 0, 1, 0)
         end
 
         example_request 'Get common ground results' do
@@ -865,7 +865,12 @@ resource 'Phases' do
             type: 'common_ground_results',
             attributes: {
               top_consensus_ideas: be_an(Array),
-              top_controversial_ideas: be_an(Array)
+              top_controversial_ideas: be_an(Array),
+              stats: {
+                num_participants: 9, # each reaction is from a different user
+                num_ideas: 4,
+                votes: { up: 3, down: 3, neutral: 3 }
+              }
             }
           )
 
@@ -876,7 +881,7 @@ resource 'Phases' do
           expect(top_controversial_idea.with_indifferent_access).to match(
             id: i3.id,
             title_multiloc: i3.title_multiloc,
-            votes: { down: 1, neutral: 2, up: 1 }
+            votes: { down: 1, neutral: 1, up: 1 }
           )
 
           top_consensus_idea = response_data.dig(:attributes, :top_consensus_ideas, 0)
@@ -888,6 +893,7 @@ resource 'Phases' do
         end
       end
     end
+
     get 'web_api/v1/phases/:id/sentiment_by_quarter' do
       let(:project) { create(:community_monitor_project) }
       let(:active_phase) { project.phases.first }
