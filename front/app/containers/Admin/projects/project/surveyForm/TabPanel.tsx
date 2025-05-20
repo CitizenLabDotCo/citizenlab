@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import DownloadPDFButtonWithModal from 'components/FormBuilder/components/FormBuilderTopBar/DownloadPDFButtonWithModal';
-import ExcelDownloadButton from 'components/FormSync/ExcelDownloadButton';
+import ExcelDownloadButton from 'components/admin/FormSync/ExcelDownloadButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
