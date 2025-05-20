@@ -34,13 +34,39 @@ const StyledSelect = styled(Select)`
 `;
 
 interface Props {
+  data?: string[];
   option: IOption;
+  options: IOption[];
   index: number;
+  moveOptionInArray: (sourceIndex: number, destinationIndex: number) => void;
 }
 
-const RankingOption = ({ option, index }: Props) => {
+const RankingOption = ({
+  data,
+  option,
+  options,
+  index,
+  moveOptionInArray,
+}: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
+
+  // getRankOfOption: Function to get the rank of a specific option in the current options array.
+  const getRankOfOption = (currentOption: IOption) => {
+    return data
+      ? options.findIndex(
+          (option: IOption) => option.value === currentOption.value
+        ) + 1
+      : '';
+  };
+
+  // rankDropdownOptions: For the select dropdown, generate the rank number options.
+  const rankDropdownOptions = options.map(
+    (_option: IOption, index: number) => ({
+      value: index + 1,
+      label: `${index + 1}`,
+    })
+  );
 
   return (
     <li aria-roledescription="sortable">

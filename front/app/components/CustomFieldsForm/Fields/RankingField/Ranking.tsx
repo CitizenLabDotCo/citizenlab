@@ -100,7 +100,13 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
             </Text>
             <Ul aria-labelledby={`ranking-question-label-${question.key}`}>
               {options.map((option: IOption, index: number) => (
-                <RankingOption option={option} index={index} />
+                <RankingOption
+                  data={data}
+                  option={option}
+                  options={options}
+                  index={index}
+                  moveOptionInArray={moveOptionInArray}
+                />
               ))}
             </Ul>
           </Drop>
