@@ -2,8 +2,8 @@
 
 module EmailCampaigns
   module MailerHelper
-    def email
-      described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now
+    def mail_body(mail)
+      mail.body.encoded.gsub("=\r\n", '')
     end
   end
 end
