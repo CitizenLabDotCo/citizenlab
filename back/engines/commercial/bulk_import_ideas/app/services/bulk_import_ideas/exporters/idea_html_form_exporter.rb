@@ -176,7 +176,7 @@ module BulkImportIdeas::Exporters
         :multi_select_image
       when 'multiline_text', 'html_multiloc'
         :multi_line_text
-      when 'text', 'text_multiloc', 'number', 'linear_scale'
+      when 'text', 'text_multiloc', 'number', 'linear_scale', 'rating'
         :single_line_text
       when 'ranking'
         :ranking
@@ -206,8 +206,10 @@ module BulkImportIdeas::Exporters
     end
 
     def field_print_description(field)
-      if (field.linear_scale? || field.rating?) && field.description_multiloc[@locale].blank?
+      if field.linear_scale? && field.description_multiloc[@locale].blank?
         linear_scale_print_instructions(field)
+      elsif field.rating? && field.description_multiloc[@locale].blank?
+        rating_print_instructions(field)
       else
         description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
         html = format_urls(description[@locale]) || ''
@@ -239,7 +241,18 @@ module BulkImportIdeas::Exporters
         )
       end
 
-      "<p>#{description}</p>"
+      format_instructions(description)
+    end
+
+    def rating_print_instructions(field)
+      description = I18n.with_locale(@locale) do
+        I18n.t(
+          'form_builder.pdf_export.rating_print_description',
+          max_stars: field.maximum
+        )
+      end
+
+      format_instructions(description)
     end
 
     def ranking_print_instructions(field)
@@ -253,7 +266,7 @@ module BulkImportIdeas::Exporters
         )
       end
 
-      "<p>#{description}</p>"
+      format_instructions(description)
     end
 
     def print_visibility_disclaimer(field)
@@ -283,7 +296,7 @@ module BulkImportIdeas::Exporters
           I18n.t('form_builder.pdf_export.choose_as_many')
         end
       end
-      "<p>*#{message}</p>"
+      format_instructions("*#{message}")
     end
 
     def field_matrix_details(field)
@@ -305,7 +318,13 @@ module BulkImportIdeas::Exporters
         I18n.t('form_builder.pdf_export.matrix_print_description')
       end
 
-      "<p>#{description}</p>"
+      format_instructions(description)
+    end
+
+    def format_instructions(instructions)
+      return '' if instructions.blank?
+
+      "<p><em>#{instructions}</em></p>"
     end
 
     def font_family
