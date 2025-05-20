@@ -40,10 +40,13 @@ module ReportBuilder
       sessions = apply_project_filter_if_needed(sessions, project_id)
       sessions = exclude_roles_if_needed(sessions, exclude_roles)
 
+      SSO_REFERRERS.each do |sso_referrer|
+        sessions = sessions.where.not("referrer IS NOT NULL AND starts_with(referrer, '#{sso_referrer}')")
+      end
+
       cases = DIRECT_ENTRY_CASES
       cases += generate_cases(SEARCH_ENGINE_REFERRERS, SEARCH_ENGINE_DOMAINS, 'search_engine')
       cases += generate_cases(SOCIAL_NETWORK_REFERRERS, SOCIAL_NETWORK_DOMAINS, 'social_network')
-      cases += generate_cases(SSO_REFERRERS, [], 'sso_redirect')
 
       referrer_types = sessions
         .select(
