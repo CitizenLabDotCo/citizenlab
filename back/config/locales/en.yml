@@ -334,6 +334,8 @@ en:
       ranking_print_description: 'Please write a number from 1 (most preferred) and %{max_rank} (least preferred) in each box. Use each number only once.'
       matrix_print_description: 'For each row, mark one circle with a cross to indicate your preference.'
       rating_print_description: 'Rate this by writing a number between 1 (worst) and %{max_stars} (best).'
+      sentiment_linear_scale_print_description: 'Please write a number between 1 and 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
   project_copy:
     title_suffix: 'Copy'
   confirmations_mailer:
