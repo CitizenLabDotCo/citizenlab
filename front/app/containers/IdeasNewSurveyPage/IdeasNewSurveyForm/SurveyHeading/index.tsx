@@ -73,7 +73,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const linkToSurveyBuilder: RouteType =
     phaseParticipationMethod === 'community_monitor_survey'
       ? `/admin/community-monitor/projects/${project.data.id}/phases/${phaseId}/survey/edit`
-      : `/admin/projects/${project.data.id}/phases/${phaseId}/native-survey/edit`;
+      : `/admin/projects/${project.data.id}/phases/${phaseId}/survey-form/edit`;
 
   const leaveForm = () => {
     const leaveFormDestination = getLeaveFormDestination(

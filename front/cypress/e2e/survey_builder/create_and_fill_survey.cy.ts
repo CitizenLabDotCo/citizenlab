@@ -109,14 +109,12 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-edit-survey-link"]').click();
     cy.location('pathname').should(
       'eq',
-      `/en/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+      `/en/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
     );
   });
 
   it('deletes a field when the delete button is clicked', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     waitForCustomFormFields();
     cy.get('[data-cy="e2e-linear-scale"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
@@ -126,9 +124,7 @@ describe('Survey builder', () => {
     // Should show success message on saving
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
 
     cy.contains(questionTitle).should('exist').click();
 
@@ -155,9 +151,7 @@ describe('Survey builder', () => {
     const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
     const multipleChoiceChooseManyTitle = 'multiplechoicechoosemultiplefield';
     const linearScaleTitle = 'linearscalefield';
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     waitForCustomFormFields();
 
     // Multiple choice choose one
@@ -235,7 +229,7 @@ describe('Survey builder', () => {
     cy.get(`[data-cy="e2e-edit-survey-form"]`).click();
     cy.get(`[data-cy="e2e-edit-warning-modal"]`).should('exist');
     cy.get(`[data-cy="e2e-edit-warning-modal-continue"]`).click();
-    cy.url().should('include', `/native-survey/edit`);
+    cy.url().should('include', `/survey-form/edit`);
   });
 
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
@@ -268,9 +262,7 @@ describe('Survey builder', () => {
   it('allows deleting survey results when user clicks the delete button', () => {
     const numberAnswer = '37';
 
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     waitForCustomFormFields();
     cy.get('[data-cy="e2e-number-field"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
@@ -312,9 +304,7 @@ describe('Survey builder', () => {
   });
 
   it('allows export of survey results', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     waitForCustomFormFields();
     cy.get('[data-cy="e2e-long-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });

@@ -21,9 +21,7 @@ describe('Survey page logic', () => {
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit(
-      `/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.get('[data-cy="e2e-field-row"]').should('have.length', 3);
 
     // Make sure first page references "Ending"
