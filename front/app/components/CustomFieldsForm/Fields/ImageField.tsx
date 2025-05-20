@@ -55,7 +55,9 @@ const ImageField = ({ name, inputLabel, ideaId, ...rest }: Props) => {
               image.id
             )
           )
-        ).then((images) => images.filter((image) => image !== null));
+        ).then(
+          (images) => images.filter((image) => image !== null) as UploadFile[]
+        );
         setImages(images);
       };
       convertImages();

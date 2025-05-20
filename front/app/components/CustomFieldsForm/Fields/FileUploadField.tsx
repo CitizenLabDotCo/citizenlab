@@ -59,7 +59,9 @@ const FileUploaderField = ({ name, ideaId, ...rest }: Props) => {
               file.attributes.name
             )
           )
-        ).then((files) => files.filter((file) => file !== null));
+        ).then(
+          (files) => files.filter((file) => file !== null) as UploadFile[]
+        );
         setFiles(remoteFiles);
       };
       convertFiles();
