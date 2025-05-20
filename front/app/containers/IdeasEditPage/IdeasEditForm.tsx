@@ -12,6 +12,7 @@ import { IdeaPublicationStatus, IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
@@ -19,11 +20,10 @@ import useInputSchema from 'hooks/useInputSchema';
 import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
-import { InputSelectContext } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import Form from 'components/Form';
+import CustomFieldsForm from 'components/CustomFieldsForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
@@ -78,6 +78,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   });
   const phaseId = idea?.data.relationships.phases.data[0].id;
   const { data: phase } = usePhase(phaseId);
+  const { data: project } = useProjectById(projectId);
 
   const {
     schema,
@@ -320,8 +321,9 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                     // Height is recalculated on window resize via useWindowSize hook
                     h={calculateDynamicHeight(isSmallerThanPhone)}
                     pb={isSmallerThanPhone ? '0' : '80px'}
+                    overflowY="auto"
                   >
-                    <InputSelectContext.Provider
+                    {/* <InputSelectContext.Provider
                       value={{
                         onIdeaSelect: setSelectedIdeaId,
                         title,
@@ -344,7 +346,15 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                         loading={loading}
                         showSubmitButton={false}
                       />
-                    </InputSelectContext.Provider>
+                    </InputSelectContext.Provider> */}
+                    {project && (
+                      <CustomFieldsForm
+                        projectId={project.data.id}
+                        phaseId={phaseId}
+                        participationMethod={'ideation'}
+                        initialFormData={idea.data.attributes}
+                      />
+                    )}
                   </Box>
                 </Box>
                 <ContentUploadDisclaimer

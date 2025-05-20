@@ -88,13 +88,17 @@ const generateYupValidationSchema = ({
       }
 
       case 'number': {
-        schema[key] = required
-          ? number().required(
-              formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
-              })
-            )
-          : number();
+        if (key === 'proposed_budget') {
+          schema[key] = number().nullable();
+        } else {
+          schema[key] = required
+            ? number().required(
+                formatMessage(messages.fieldRequired, {
+                  fieldName: localize(title_multiloc),
+                })
+              )
+            : number();
+        }
         break;
       }
 

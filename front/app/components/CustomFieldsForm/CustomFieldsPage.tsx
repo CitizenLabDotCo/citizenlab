@@ -19,6 +19,7 @@ import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { FormValues } from 'containers/EmailChange';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -102,7 +103,7 @@ const CustomFieldsPage = ({
     defaultValues,
   });
 
-  const onFormSubmit = async (formValues) => {
+  const onFormSubmit = async (formValues: FormValues) => {
     onSubmit(formValues);
     if (currentPageNumber < lastPageNumber) {
       setCurrentPageNumber(currentPageNumber + 1);

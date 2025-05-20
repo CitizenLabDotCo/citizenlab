@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Label } from '@citizenlab/cl2-component-library';
+import { Box, Label } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 import { UploadFile } from 'typings';
 
@@ -41,7 +41,7 @@ const ImageField = ({ name, inputLabel, ...rest }: Props) => {
   const errorMessage = errors[name]?.message as string | undefined;
 
   return (
-    <>
+    <Box data-cy={'e2e-idea-image-upload'} width="100%">
       {inputLabel && <Label htmlFor={name}>{inputLabel}</Label>}
       <Controller
         name={name}
@@ -52,7 +52,6 @@ const ImageField = ({ name, inputLabel, ...rest }: Props) => {
             <ImagesDropzoneComponent
               {...field}
               {...rest}
-              data-cy={'e2e-idea-image-upload'}
               id={name}
               images={images}
               onAdd={(file) => {
@@ -78,7 +77,7 @@ const ImageField = ({ name, inputLabel, ...rest }: Props) => {
           scrollIntoView={false}
         />
       )}
-    </>
+    </Box>
   );
 };
 
