@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { CLError, RHFErrors } from 'typings';
+
+import useLocale from 'hooks/useLocale';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import {
@@ -12,7 +15,7 @@ import {
   Option,
 } from 'components/UI/LocationInput';
 
-import { geocode, Point } from 'utils/locationTools';
+import { geocode, Point, reverseGeocode } from 'utils/locationTools';
 
 interface Props extends LocationInputProps {
   name: string;
@@ -21,11 +24,15 @@ interface Props extends LocationInputProps {
 
 const LocationInput = ({ name, fieldName, ...rest }: Props) => {
   const {
-    formState: { errors: formContextErrors },
+    formState: { errors: formContextErrors, touchedFields },
     control,
     setValue,
     watch,
   } = useFormContext();
+  const locale = useLocale();
+  const [searchParams] = useSearchParams();
+  const latitude = searchParams.get('lat');
+  const longitude = searchParams.get('lng');
 
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
@@ -41,7 +48,46 @@ const LocationInput = ({ name, fieldName, ...rest }: Props) => {
     return location_point_geojson;
   };
 
+  const getLocationDescription = useCallback(async () => {
+    let location_description: string | undefined;
+
+    if (latitude && longitude) {
+      // If the user has provided a location, we use that
+      const lat = Number(latitude);
+      const lng = Number(longitude);
+      location_description = await reverseGeocode(lat, lng, locale);
+    }
+
+    return location_description;
+  }, [latitude, longitude, locale]);
+
   const locationDescription = watch(name);
+
+  useEffect(() => {
+    if (latitude && longitude && !touchedFields[name]) {
+      const fetchLocationDescription = async () => {
+        const location_description = await getLocationDescription();
+        if (location_description) {
+          setValue(name, location_description);
+
+          setValue('location_point_geojson', {
+            coordinates: [longitude, latitude],
+          });
+        }
+      };
+
+      fetchLocationDescription();
+    }
+  }, [
+    latitude,
+    longitude,
+    locale,
+    name,
+    setValue,
+    locationDescription,
+    getLocationDescription,
+    touchedFields,
+  ]);
 
   const value = locationDescription
     ? {
@@ -68,9 +114,13 @@ const LocationInput = ({ name, fieldName, ...rest }: Props) => {
                 const location_point_geojson = await getLocationGeojson(
                   locationDescription
                 );
-                setValue('location_point_geojson', location_point_geojson);
+                setValue('location_point_geojson', {
+                  coordinates: [location_point_geojson],
+                });
               }
-              setValue(name, option?.value || null);
+              setValue(name, option?.value || null, {
+                shouldTouch: true,
+              });
             }}
           />
         )}
