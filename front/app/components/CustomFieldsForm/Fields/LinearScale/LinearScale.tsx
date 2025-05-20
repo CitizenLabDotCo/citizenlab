@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
@@ -11,6 +11,9 @@ import useLocalize from 'hooks/useLocalize';
 import { Multiloc } from 'typings';
 
 import messages from 'components/Form/Components/Controls/messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import { FormLabel } from 'components/UI/FormComponents';
+import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
 
 interface Props {
   value?: number;
@@ -27,6 +30,7 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
 
   const minimum = 1;
   const maximum = question.maximum ?? 11;
+  const name = question.key;
 
   const getAriaValueText = (value: number, total: number) => {
     // If the value has a label, read it out
@@ -93,18 +97,27 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
 
   return (
     <>
-      {/* {answerNotPublic && (
-              <Text mb="8px" mt="0px" fontSize="s">
-                <FormattedMessage {...messages.notPublic} />
-              </Text>
-            )} */}
+      <FormLabel
+        htmlFor={sanitizeForClassname(name)}
+        labelValue={localize(question.title_multiloc)}
+        optional={!question.required}
+        subtextValue={getSubtextElement(
+          localize(question.description_multiloc)
+        )}
+        subtextSupportsHtml
+      />
+      {question.visible_to_public === false && (
+        <Text mb="8px" mt="0px" fontSize="s">
+          <FormattedMessage {...messages.notPublic} />
+        </Text>
+      )}
       <Box
         data-testid="linearScaleControl"
         role="slider"
         ref={sliderRef}
         aria-valuemin={minimum}
         aria-valuemax={maximum}
-        aria-labelledby={sanitizeForClassname(question.key)}
+        aria-labelledby={sanitizeForClassname(name)}
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >
@@ -128,7 +141,6 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
           })}
         </Box>
         <Labels question={question} maximum={maximum} />
-        {/* <VerificationIcon show={uischema.options?.verificationLocked} /> */}
       </Box>
     </>
   );
