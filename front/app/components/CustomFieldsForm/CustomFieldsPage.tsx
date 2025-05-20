@@ -82,8 +82,8 @@ const CustomFieldsPage = ({
   const pagesRef = useRef<HTMLDivElement>(null);
 
   const [searchParams] = useSearchParams();
-  const ideaId = initialIdeaId || searchParams.get('idea_id');
-  const { data: idea } = useIdeaById(ideaId ?? undefined);
+  const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
+  const { data: idea } = useIdeaById(ideaId);
 
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
@@ -229,6 +229,7 @@ const CustomFieldsPage = ({
                     <CustomFields
                       questions={pageQuestions}
                       projectId={projectId}
+                      ideaId={ideaId}
                     />
 
                     {currentPageNumber === lastPageNumber - 1 &&

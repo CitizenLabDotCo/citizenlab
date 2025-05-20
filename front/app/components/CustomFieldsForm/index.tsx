@@ -7,6 +7,7 @@ import { Multiloc } from 'typings';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import { IdeaPublicationStatus } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
@@ -50,17 +51,20 @@ const CustomFieldsForm = ({
   participationMethod?: ParticipationMethod;
   initialFormData?: FormValues;
 }) => {
-  const { slug } = useParams() as { slug: string };
+  const { slug, ideaId } = useParams();
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const { data: idea } = useIdeaBySlug(slug);
+  const { data: ideaWithSlug } = useIdeaBySlug(slug || null);
+  const { data: ideaWithId } = useIdeaById(ideaId);
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: customFields } = useCustomFields({
     projectId,
     phaseId: participationMethod !== 'ideation' ? phaseId : undefined,
   });
+
+  const idea = ideaWithSlug || ideaWithId;
 
   const [formValues, setFormValues] = useState<FormValues | undefined>(
     initialFormData
