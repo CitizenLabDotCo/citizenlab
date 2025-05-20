@@ -65,7 +65,7 @@ const ImageField = ({ name, inputLabel, ideaId, ...rest }: Props) => {
   const errorMessage = errors[name]?.message as string | undefined;
 
   return (
-    <Box data-cy={'e2e-idea-image-upload'} width="100%">
+    <Box id={'e2e-idea-image-upload'} width="100%">
       {inputLabel && <Label htmlFor={name}>{inputLabel}</Label>}
       <Controller
         name={name}
