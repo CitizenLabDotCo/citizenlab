@@ -9,12 +9,9 @@ const waitForCustomFormFields = () => {
 };
 
 describe('Survey builder', () => {
-  const projectTitle = randomString();
   const phaseTitle = randomString();
-  const projectDescription = randomString();
   let questionTitle = randomString();
   const answer = randomString();
-  const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
@@ -23,30 +20,11 @@ describe('Survey builder', () => {
     cy.setAdminLoginCookie();
     questionTitle = randomString();
 
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    })
-      .then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId,
-          title: phaseTitle,
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: true,
-          canComment: true,
-          canReact: true,
-        });
-      })
-      .then((phase) => {
-        phaseId = phase.body.data.id;
-      });
+    cy.createProjectWithNativeSurveyPhase({ phaseTitle }).then((result) => {
+      projectId = result.projectId;
+      projectSlug = result.projectSlug;
+      phaseId = result.phaseId;
+    });
   });
 
   afterEach(() => {
@@ -326,10 +304,10 @@ describe('Survey builder', () => {
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
+    cy.get('[data-cy="e2e-submit-form"]').should('be.visible');
     cy.get('[data-cy="e2e-submit-form"]').click();
-    cy.get('[data-cy="e2e-page-number-1"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-page-number-1"]').should('be.visible');
+    cy.get('[data-cy="e2e-after-submission"]').should('be.visible');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.get('[data-cy="e2e-more-survey-actions-button"]').click();
@@ -337,12 +315,11 @@ describe('Survey builder', () => {
     // Click button to export survey results
     cy.get('[data-cy="e2e-download-survey-results"]').click();
 
+    // Check that file is downloaded
+    const downloadsFolder = Cypress.config('downloadsFolder');
     const fileName = `${snakeCase(phaseTitle)}_${moment().format(
       'YYYY-MM-DD'
     )}.xlsx`;
-
-    // Check that file is downloaded
-    const downloadsFolder = Cypress.config('downloadsFolder');
     cy.readFile(`${downloadsFolder}/${fileName}`).should('exist');
 
     // Delete the downloads folder and its contents
