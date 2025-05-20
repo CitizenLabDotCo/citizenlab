@@ -4,14 +4,13 @@ import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import LinearScaleButton from './LinearScaleButton';
 import Labels from './Labels';
 import useLocalize from 'hooks/useLocalize';
 import { Multiloc } from 'typings';
 
 import messages from 'components/Form/Components/Controls/messages';
-import { FormattedMessage } from 'utils/cl-intl';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
 
@@ -34,7 +33,8 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
 
   const getAriaValueText = (value: number, total: number) => {
     // If the value has a label, read it out
-    const label: Multiloc = question[`linear_scale_label_${value}_multiloc`];
+    const label: Multiloc | undefined =
+      question[`linear_scale_label_${value}_multiloc`];
 
     if (label) {
       return formatMessage(messages.valueOutOfTotalWithLabel, {
@@ -45,7 +45,7 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
     }
 
     // If we don't have a label but we do have a maximum, read out the current value & maximum label
-    const maxLabel: Multiloc =
+    const maxLabel: Multiloc | undefined =
       question[`linear_scale_label_${maximum}_multiloc`];
 
     if (maxLabel) {
@@ -131,6 +131,7 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
             const visualIndex = i + 1;
             return (
               <LinearScaleButton
+                key={visualIndex}
                 question={question}
                 visualIndex={visualIndex}
                 data={data}
