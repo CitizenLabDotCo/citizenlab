@@ -20,7 +20,7 @@ describe('Survey builder', () => {
     cy.setAdminLoginCookie();
     questionTitle = randomString();
 
-    cy.createProjectWithNativeSurveyPhase().then((result) => {
+    cy.createProjectWithNativeSurveyPhase({ phaseTitle }).then((result) => {
       projectId = result.projectId;
       projectSlug = result.projectSlug;
       phaseId = result.phaseId;
@@ -304,10 +304,10 @@ describe('Survey builder', () => {
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
+    cy.get('[data-cy="e2e-submit-form"]').should('be.visible');
     cy.get('[data-cy="e2e-submit-form"]').click();
-    cy.get('[data-cy="e2e-page-number-1"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-page-number-1"]').should('be.visible');
+    cy.get('[data-cy="e2e-after-submission"]').should('be.visible');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.get('[data-cy="e2e-more-survey-actions-button"]').click();
@@ -315,12 +315,11 @@ describe('Survey builder', () => {
     // Click button to export survey results
     cy.get('[data-cy="e2e-download-survey-results"]').click();
 
+    // Check that file is downloaded
+    const downloadsFolder = Cypress.config('downloadsFolder');
     const fileName = `${snakeCase(phaseTitle)}_${moment().format(
       'YYYY-MM-DD'
     )}.xlsx`;
-
-    // Check that file is downloaded
-    const downloadsFolder = Cypress.config('downloadsFolder');
     cy.readFile(`${downloadsFolder}/${fileName}`).should('exist');
 
     // Delete the downloads folder and its contents
