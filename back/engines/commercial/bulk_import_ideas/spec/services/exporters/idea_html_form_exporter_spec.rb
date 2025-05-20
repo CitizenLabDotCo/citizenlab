@@ -54,7 +54,8 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
     field.matrix_statements.create!(title_multiloc: { 'en' => 'Matrix statement two' })
     field
   end
-
+  let!(:rating_field) { create(:custom_field_rating, resource: custom_form, key: 'rating_field', title_multiloc: { 'en' => 'Rating field' }) }
+  let!(:sentiment_linear_scale_field) { create(:custom_field_sentiment_linear_scale, resource: custom_form, key: 'sentiment_field', title_multiloc: { 'en' => 'Sentiment scale field' }) }
   let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
 
   describe 'export' do
@@ -96,6 +97,8 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(titles[3]).to include 'Ranking field'
         expect(titles[4]).to include 'Select image field'
         expect(titles[5]).to include 'Matrix field'
+        expect(titles[6]).to include 'Rating field'
+        expect(titles[7]).to include 'Sentiment scale field'
       end
 
       it 'shows optional if questions are not required' do
@@ -105,6 +108,8 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(titles[3]).to include '(optional)'
         expect(titles[4]).to include '(optional)'
         expect(titles[5]).to include '(optional)'
+        expect(titles[6]).to include '(optional)'
+        expect(titles[7]).to include '(optional)'
       end
 
       it 'shows 1 line for short text fields' do
@@ -149,6 +154,17 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(matrix.text).to include 'Neutral'
         expect(matrix.text).to include 'Agree'
         expect(matrix.text).to include 'Strongly agree'
+      end
+
+      it 'shows rating field instructions' do
+        rating = parsed_html.css("div##{rating_field.id}")
+        expect(rating.text).to include 'Rate this by writing a number between 1 (worst) and 5 (best).'
+      end
+
+      it 'shows sentiment scale field instructions' do
+        sentiment_scale = parsed_html.css("div##{sentiment_linear_scale_field.id}")
+        expect(sentiment_scale.text).to include 'Please write a number between 1 and 5.'
+        expect(sentiment_scale.text).to include '1 = Strongly disagree, 3 = Neutral, 5 = Strongly agree.'
       end
     end
   end
