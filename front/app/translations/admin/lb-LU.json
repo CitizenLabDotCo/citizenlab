@@ -303,7 +303,7 @@
   "app.components.admin.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-Virlagen enthalen keng Froen zur Mapping-Input, well dës am Moment net fir de Masseimport ënnerstëtzt ginn.",
   "app.components.admin.ProjectEdit.survey.downloadResults2": "Download survey results",
   "app.components.admin.ProjectEdit.survey.downloadSurvey": "Ëmfro als PDF eroflueden",
-  "app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicate another survey",
+  "app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey": "Eng aner Ëmfro duplizéieren",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "from",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "group",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "project",
