@@ -13,6 +13,7 @@ interface Props {
   question: IFlatCustomField;
   visualIndex: number;
   data?: number;
+  maximum: number;
   onSelect: (value: number) => void;
 }
 
@@ -20,13 +21,13 @@ const LinearScaleButton = ({
   question,
   visualIndex,
   data,
+  maximum,
   onSelect,
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
 
   const name = question.key;
-  const maximum = question.maximum ?? 11;
 
   const getButtonWidth = () => {
     if (isSmallerThanPhone) {

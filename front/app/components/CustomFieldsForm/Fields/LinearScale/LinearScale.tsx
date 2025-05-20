@@ -7,6 +7,10 @@ import { sanitizeForClassname } from 'utils/JSONFormUtils';
 import { useIntl } from 'utils/cl-intl';
 import LinearScaleButton from './LinearScaleButton';
 import Labels from './Labels';
+import useLocalize from 'hooks/useLocalize';
+import { Multiloc } from 'typings';
+
+import messages from 'components/Form/Components/Controls/messages';
 
 interface Props {
   data?: number;
@@ -17,6 +21,7 @@ interface Props {
 const LinearScale = ({ data, question, onSelect }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const sliderRef = useRef<HTMLDivElement>(null);
 
@@ -25,20 +30,26 @@ const LinearScale = ({ data, question, onSelect }: Props) => {
 
   const getAriaValueText = (value: number, total: number) => {
     // If the value has a label, read it out
-    if (uischema.options?.[`linear_scale_label${value}`]) {
+    const label: Multiloc = question[`linear_scale_label_${value}_multiloc`];
+
+    if (label) {
       return formatMessage(messages.valueOutOfTotalWithLabel, {
         value,
         total,
-        label: uischema.options[`linear_scale_label${value}`],
+        label: localize(label),
       });
     }
+
     // If we don't have a label but we do have a maximum, read out the current value & maximum label
-    else if (uischema.options?.[`linear_scale_label${maximum}`]) {
+    const maxLabel: Multiloc =
+      question[`linear_scale_label_${maximum}_multiloc`];
+
+    if (maxLabel) {
       return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
         value,
         total,
         maxValue: maximum,
-        maxLabel: uischema.options[`linear_scale_label${maximum}`],
+        maxLabel: localize(maxLabel),
       });
     }
     // Otherwise, just read out the value and the maximum value
@@ -110,12 +121,13 @@ const LinearScale = ({ data, question, onSelect }: Props) => {
                 question={question}
                 visualIndex={visualIndex}
                 data={data}
+                maximum={maximum}
                 onSelect={onSelect}
               />
             );
           })}
         </Box>
-        <Labels />
+        <Labels question={question} maximum={maximum} />
         {/* <VerificationIcon show={uischema.options?.verificationLocked} /> */}
       </Box>
     </>
