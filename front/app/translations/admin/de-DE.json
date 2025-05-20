@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Kurze Antwort",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Insgesamt {count} Antwort(en)",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Umfrage ansehen",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "Vorschau",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "Vorschau",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL einbetten",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Umfragetool",

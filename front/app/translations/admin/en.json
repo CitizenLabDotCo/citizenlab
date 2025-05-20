@@ -2031,7 +2031,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Short answer",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Total {count} responses",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "View survey",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "View",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "View",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Embed URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Service",

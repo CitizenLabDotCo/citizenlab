@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Kratak odgovor",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Ukupno {count} odgovora",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Prikaži upitnik",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "Pogled",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "Pogled",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Umetni URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Servis",

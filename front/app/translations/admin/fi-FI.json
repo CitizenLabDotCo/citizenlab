@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Lyhyt vastaus",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Yhteensä {count} vastausta",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Katso kysely",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "Näytä",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "Näytä",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Upota URL-osoite",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Palvelu",

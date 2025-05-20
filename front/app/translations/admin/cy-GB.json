@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Ateb byr",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Cyfanswm {count} ymatebion",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Gweld arolwg",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "Golwg",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "Golwg",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Mewnosod URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Gwasanaeth",

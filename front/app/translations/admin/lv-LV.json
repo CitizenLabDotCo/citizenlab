@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Īsa atbilde",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Kopā {count} atbildes",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Apskatīt apsekojumu",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "Skatīt",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "Skatīt",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Iestrādāt URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Apkalpošana",

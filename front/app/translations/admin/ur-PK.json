@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "مختصر جواب",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "کل {count} جوابات",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "سروے دیکھیں",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "دیکھیں",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "دیکھیں",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "یو آر ایل ایمبیڈ کریں۔",
   "app.containers.AdminPage.ProjectEdit.surveyService": "سروس",

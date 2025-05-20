@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "اجابة قصيرة",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "إجمالي {count} استجابة/استجابات",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "عرض الاستبيان",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "منظر",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "منظر",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL مضمن",
   "app.containers.AdminPage.ProjectEdit.surveyService": "الخدمة",

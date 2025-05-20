@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Krótka odpowiedź",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Ogółem {count} odpowiedzi",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Przeglądać badania",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "Zobacz",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "Zobacz",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Zamieść URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Dostawca ankiety",

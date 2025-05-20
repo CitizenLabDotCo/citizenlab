@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Кратак одговор",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Укупно {count} одговора",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Прикажи анкету",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "View",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "View",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Угради УРЛ",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Услуга",

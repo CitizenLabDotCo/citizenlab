@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Trumpas atsakymas",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Iš viso {count} atsakymų",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Peržiūrėti apklausą",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "Peržiūrėti",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "Peržiūrėti",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Įterpimo URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Paslauga",

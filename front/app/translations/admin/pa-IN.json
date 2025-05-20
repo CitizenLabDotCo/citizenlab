@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "ਛੋਟਾ ਜਵਾਬ",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "ਕੁੱਲ {count} ਜਵਾਬ",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "ਸਰਵੇਖਣ ਦੇਖੋ",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "ਦੇਖੋ",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "ਵੇਖੋ",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "ਏਮਬੇਡ URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "ਸੇਵਾ",

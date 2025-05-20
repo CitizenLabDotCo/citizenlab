@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Resposta curta",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Total {count} respostas",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Ver pesquisa",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "Ver",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "Ver",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL de incorporação",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Serviço",

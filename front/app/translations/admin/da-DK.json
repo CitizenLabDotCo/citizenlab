@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Kort svar",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Samlede {count} svar",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Se undersøgelsen",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "Se",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "Se",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Indlejre URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Service",

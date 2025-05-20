@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Kort antwoord",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "In totaal {count} antwoorden",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Bekijk vragenlijst",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "Bekijk",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "Bekijk",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Embed URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Programma",

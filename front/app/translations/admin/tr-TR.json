@@ -2020,7 +2020,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.text2": "Kısa cevap",
   "app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2": "Toplam {count} yanıtlar",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurvey2": "Anketi görüntüle",
-  "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText": "Görünüm",
   "app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2": "Görünüm",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL'yi yerleştir",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Hizmet",
