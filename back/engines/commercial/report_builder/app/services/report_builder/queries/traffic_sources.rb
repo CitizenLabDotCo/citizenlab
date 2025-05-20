@@ -41,7 +41,7 @@ module ReportBuilder
       sessions = exclude_roles_if_needed(sessions, exclude_roles)
       
       SSO_REFERRERS.each do |sso_referrer|
-        sessions = sessions.where.not("referrer IS NOT NULL AND starts_with(referrer, '#{sso_referrer}'")
+        sessions = sessions.where.not("referrer IS NOT NULL AND starts_with(referrer, '#{sso_referrer}')")
       end
 
       cases = DIRECT_ENTRY_CASES
