@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Title, Toggle, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Title, Toggle } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
@@ -15,15 +15,12 @@ import useLocale from 'hooks/useLocale';
 import FormResults from 'components/admin/FormResults';
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
-import EditWarningModal from 'components/admin/SurveyEditWarningModal';
 import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import AnalysisBanner from './AnalysisBanner';
-import CopySurveyModal from './CopySurveyModal';
 import messages from './messages';
 
 const Forms = () => {
@@ -47,8 +44,6 @@ const Forms = () => {
 
   // Modal states
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showEditWarningModal, setShowEditWarningModal] = useState(false);
-  const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
 
   // Other states
   const [isDropdownOpened, setDropdownOpened] = useState(false);
@@ -61,17 +56,10 @@ const Forms = () => {
   // Form-related variables
   const haveSubmissionsComeIn =
     submissionCount.data.attributes.totalSubmissions > 0;
-  const surveyFormPersisted =
-    phase.data.attributes.custom_form_persisted || false;
 
   // Variables from form config
-  const {
-    downloadExcelLink,
-    postingEnabled,
-    togglePostingEnabled,
-    editFormLink,
-    inputImporterLink,
-  } = getFormActionsConfig(project.data, updatePhase, phase.data);
+  const { postingEnabled, togglePostingEnabled, inputImporterLink } =
+    getFormActionsConfig(project.data, updatePhase, phase.data);
 
   // Functions to handle modal states
   const closeDeleteModal = () => {
@@ -146,53 +134,24 @@ const Forms = () => {
             </Button>
             <Button
               linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
-              icon="eye"
-              iconSize="20px"
-              buttonStyle="secondary-outlined"
+              icon="plus"
+              buttonStyle="primary"
               width="auto"
               openLinkInNewTab
               mr="8px"
             >
-              {formatMessage(messages.viewSurveyText)}
-            </Button>
-            <Button
-              icon="edit"
-              iconSize="20px"
-              buttonStyle="admin-dark"
-              width="auto"
-              onClick={() => {
-                haveSubmissionsComeIn
-                  ? setShowEditWarningModal(true)
-                  : clHistory.push(editFormLink);
-              }}
-              data-cy="e2e-edit-survey-content"
-            >
-              {formatMessage(messages.editSurvey)}
+              {formatMessage(messages.newSubmission)}
             </Button>
             <DropdownSettings
               haveSubmissionsComeIn={haveSubmissionsComeIn}
-              setShowCopySurveyModal={setShowCopySurveyModal}
               handleDownloadResults={handleDownloadResults}
               setDropdownOpened={setDropdownOpened}
               isDropdownOpened={isDropdownOpened}
-              downloadExcelLink={downloadExcelLink}
               setShowDeleteModal={setShowDeleteModal}
             />
           </Box>
         </Box>
         <FormResults />
-        <EditWarningModal
-          editFormLink={editFormLink}
-          showEditWarningModal={showEditWarningModal}
-          setShowEditWarningModal={setShowEditWarningModal}
-          handleDownloadResults={handleDownloadResults}
-        />
-        <CopySurveyModal
-          editFormLink={editFormLink}
-          showCopySurveyModal={showCopySurveyModal}
-          setShowCopySurveyModal={setShowCopySurveyModal}
-          surveyFormPersisted={surveyFormPersisted}
-        />
       </Box>
       <DeleteModal
         showDeleteModal={showDeleteModal}
