@@ -3,7 +3,8 @@
 module EmailCampaigns
   module MailerHelper
     def mail_body(mail)
-      mail.body.encoded.gsub("=\r\n", '').gsub('=3D', '=')
+      part = mail.html_part || mail
+      part.body.decoded
     end
   end
 end
