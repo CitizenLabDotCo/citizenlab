@@ -9,4 +9,9 @@ export default defineMessages({
     id: 'app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF',
     defaultMessage: 'Download as pdf',
   },
+  downloadExcelTemplateTooltip: {
+    id: 'app.components.FormSync.downloadExcelTemplateTooltip',
+    defaultMessage:
+      'Excel templates will not include any mapping input questions as these are not supported for bulk importing at this time.',
+  },
 });
