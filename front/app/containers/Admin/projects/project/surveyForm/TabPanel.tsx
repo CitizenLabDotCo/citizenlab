@@ -6,7 +6,11 @@ import { RouteType } from 'routes';
 
 import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import ExcelDownloadButton from 'components/admin/FormSync/ExcelDownloadButton';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import {
+  SectionTitle,
+  SectionDescription,
+  SubSectionTitle,
+} from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
