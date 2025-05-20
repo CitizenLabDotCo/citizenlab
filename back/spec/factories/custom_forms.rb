@@ -3,8 +3,6 @@
 FactoryBot.define do
   factory :custom_form do
     participation_context { create(:single_phase_ideation_project) }
-    print_start_multiloc { { 'en' => 'Start' } }
-    print_end_multiloc { { 'en' => 'End' } }
 
     trait :with_default_fields do
       after(:create) do |cf|
