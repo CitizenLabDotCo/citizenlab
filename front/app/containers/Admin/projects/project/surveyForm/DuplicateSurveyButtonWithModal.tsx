@@ -43,7 +43,7 @@ const DuplicateSurveyButtonWithModal = ({ phaseId, editFormLink }: Props) => {
         icon="copy"
         buttonStyle="primary-outlined"
       >
-        <FormattedMessage {...messages.duplicateAnotherSurvey} />
+        <FormattedMessage {...messages.duplicateAnotherSurvey1} />
       </Button>
       <CopySurveyModal
         editFormLink={editFormLink}

@@ -18,8 +18,8 @@ export default defineMessages({
     id: 'app.containers.Admin.surveyFormTab.downloads',
     defaultMessage: 'Downloads',
   },
-  duplicateAnotherSurvey: {
-    id: 'app.containers.Admin.surveyFormTab.duplicateAnotherSurvey',
+  duplicateAnotherSurvey1: {
+    id: 'app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1',
     defaultMessage: 'Duplicate another survey',
   },
 });
