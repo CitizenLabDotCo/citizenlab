@@ -1,9 +1,0 @@
-<mj-section padding="0 25px 10px">
-  <mj-column>
-    <mj-text>
-      <p style="margin-bottom: 20px; font-weight: 700;">
-        <%= "event.idea_url" %>
-      </p>
-    </mj-text>
-  </mj-column>
-</mj-section>
