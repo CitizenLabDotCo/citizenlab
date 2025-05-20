@@ -303,7 +303,7 @@
   "app.components.admin.ProjectEdit.survey.downloadExcelTemplateTooltip": "Az Excel-sablonok nem tartalmaznak majd leképezési beviteli kérdéseket, mivel ezek tömeges importálása jelenleg nem támogatott.",
   "app.components.admin.ProjectEdit.survey.downloadResults2": "Download survey results",
   "app.components.admin.ProjectEdit.survey.downloadSurvey": "Felmérés letöltése pdf formátumban",
-  "app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicate another survey",
+  "app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey": "Másik felmérés másolása",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "from",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "group",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "project",
