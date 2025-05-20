@@ -212,19 +212,20 @@ const generateYupValidationSchema = ({
       }
 
       case 'ranking': {
-        schema[key] = required
-          ? array()
-              .of(string())
-              .min(
-                question.options?.length ?? 1,
-                formatMessage(messages.fieldRequired)
-              )
-              .max(
-                question.options?.length ?? 100,
-                formatMessage(messages.fieldRequired)
-              )
-              .required(formatMessage(messages.topicRequired))
-          : array().nullable();
+        const numberOfOptions = question.options?.length;
+
+        // type guard, numberOfOptions should always be defined
+        schema[key] =
+          required && numberOfOptions !== undefined
+            ? array()
+                .of(string())
+                .min(numberOfOptions, formatMessage(messages.fieldRequired))
+                .max(
+                  numberOfOptions ?? 100,
+                  formatMessage(messages.fieldRequired)
+                )
+                .required(formatMessage(messages.topicRequired))
+            : array().nullable();
         break;
       }
     }
