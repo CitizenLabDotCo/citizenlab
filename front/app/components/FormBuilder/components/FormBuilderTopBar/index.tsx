@@ -20,11 +20,11 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import {
   FormBuilderConfig,
   getIsPostingEnabled,
 } from 'components/FormBuilder/utils';
-import DownloadPDFButtonWithModal from 'components/FormSync/DownloadPDFButtonWithModal';
 import Button from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
@@ -103,6 +103,7 @@ const FormBuilderTopBar = ({
       background={`${colors.white}`}
       borderBottom={`1px solid ${colors.borderLight}`}
       top="0px"
+      data-cy="e2e-form-builder-top-bar"
     >
       <Box
         p="16px"

@@ -4,9 +4,7 @@ import moment = require('moment');
 
 const waitForCustomFormFields = () => {
   cy.intercept('**/phases/**/custom_fields**').as('customFields');
-  cy.intercept('**/phases/**/custom_form').as('customForm');
   cy.wait('@customFields', { timeout: 10000 });
-  cy.wait('@customForm');
   cy.wait(1000);
 };
 
@@ -58,8 +56,8 @@ describe('Survey builder', () => {
   });
 
   it('can create survey, save survey, and user can respond to survey', () => {
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
+    cy.get('[data-cy="e2e-edit-survey-form"]').click();
     waitForCustomFormFields();
     cy.get('[data-cy="e2e-short-answer"]').click();
 
@@ -233,8 +231,8 @@ describe('Survey builder', () => {
     cy.get(`[data-cy="e2e-${snakeCase(linearScaleTitle)}"]`).should('exist');
 
     // Verify that when trying to edit the survey, a warning modal is now shown
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.get(`[data-cy="e2e-edit-survey-content"]`).click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
+    cy.get(`[data-cy="e2e-edit-survey-form"]`).click();
     cy.get(`[data-cy="e2e-edit-warning-modal"]`).should('exist');
     cy.get(`[data-cy="e2e-edit-warning-modal-continue"]`).click();
     cy.url().should('include', `/native-survey/edit`);
@@ -243,8 +241,8 @@ describe('Survey builder', () => {
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
     const projectUrl = `/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`;
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
+    cy.get('[data-cy="e2e-edit-survey-form"]').click();
     waitForCustomFormFields();
 
     cy.get('[data-cy="e2e-number-field"]').click();
@@ -369,8 +367,8 @@ describe('Survey builder', () => {
       cy.get('.e2e-permission-registered-users').click();
     });
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
+    cy.get('[data-cy="e2e-edit-survey-form"]').click();
     waitForCustomFormFields();
 
     cy.get('[data-cy="e2e-short-answer"]').click();
@@ -414,8 +412,8 @@ describe('Survey builder', () => {
     const page3Title = randomString();
     const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
+    cy.get('[data-cy="e2e-edit-survey-form"]').click();
     waitForCustomFormFields();
 
     // First page
@@ -513,8 +511,8 @@ describe('Survey builder', () => {
     const firstSingleChoiceTitle = 'firstSingleChoiceTitle';
     const secondSingleChoiceTitle = 'secondSingleChoiceTitle';
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
+    cy.get('[data-cy="e2e-edit-survey-form"]').click();
     waitForCustomFormFields();
 
     cy.get('[data-cy="e2e-short-answer"]').click();
@@ -656,8 +654,8 @@ describe('Survey builder', () => {
       cy.get('.e2e-permission-registered-users').click();
     });
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
+    cy.get('[data-cy="e2e-edit-survey-form"]').click();
     waitForCustomFormFields();
 
     // Add a required single-select
@@ -707,8 +705,8 @@ describe('Survey builder', () => {
     const page3Title = randomString();
     const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
+    cy.get('[data-cy="e2e-edit-survey-form"]').click();
     waitForCustomFormFields();
 
     cy.get('[data-cy="e2e-short-answer"]').click();
@@ -793,8 +791,8 @@ describe('Survey builder', () => {
     const page4Title = randomString();
     const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
+    cy.get('[data-cy="e2e-edit-survey-form"]').click();
     waitForCustomFormFields();
 
     cy.get('[data-cy="e2e-short-answer"]').click();
@@ -879,8 +877,8 @@ describe('Survey builder', () => {
     const page4Title = randomString();
     const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
+    cy.get('[data-cy="e2e-edit-survey-form"]').click();
     waitForCustomFormFields();
 
     cy.get('[data-cy="e2e-short-answer"]').click();
