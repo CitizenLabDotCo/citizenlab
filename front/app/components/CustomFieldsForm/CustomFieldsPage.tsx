@@ -14,6 +14,7 @@ import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
@@ -29,6 +30,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isPage } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
 
 import CustomFields from './CustomFields';
 import AuthorField from './Fields/AuthorField';
@@ -68,6 +70,7 @@ const CustomFieldsPage = ({
   defaultValues,
   formCompletionPercentage,
 }: CustomFieldsPage) => {
+  const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
 
   const localize = useLocalize();
@@ -226,7 +229,7 @@ const CustomFieldsPage = ({
                       </QuillEditedContent>
                     </Box>
 
-                    {currentPageNumber === 0 && (
+                    {currentPageNumber === 0 && isAdmin(authUser) && (
                       <Box mb="24px">
                         <AuthorField name="author_id" />
                       </Box>
