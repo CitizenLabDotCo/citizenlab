@@ -55,8 +55,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey1',
     defaultMessage: 'Edit',
   },
-  newSubmission: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.newSubmission',
+  newSubmission1: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.newSubmission1',
     defaultMessage: 'New submission',
   },
   existingSubmissionsWarning: {
@@ -174,9 +174,5 @@ export default defineMessages({
   importInputs: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',
     defaultMessage: 'Import',
-  },
-  duplicateAnotherSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey',
-    defaultMessage: 'Duplicate another survey',
   },
 });

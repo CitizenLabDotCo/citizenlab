@@ -140,7 +140,7 @@ const Forms = () => {
               openLinkInNewTab
               mr="8px"
             >
-              {formatMessage(messages.newSubmission)}
+              {formatMessage(messages.newSubmission1)}
             </Button>
             <DropdownSettings
               haveSubmissionsComeIn={haveSubmissionsComeIn}
