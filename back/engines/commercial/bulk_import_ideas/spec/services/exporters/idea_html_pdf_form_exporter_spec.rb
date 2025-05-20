@@ -12,8 +12,8 @@ describe BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter do
   describe 'importer_data' do
     # NOTE: When changing these tests ensure that the PDF ideation form matches the form created here
     context 'ideation form' do
-      let(:project) do
-        project = create(:single_phase_ideation_project)
+      let_it_be(:project) { create(:single_phase_ideation_project) }
+      let_it_be(:form) do
         form = create(
           :custom_form,
           :with_default_fields,
@@ -32,8 +32,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter do
         create(:custom_field_option, custom_field: select3, title_multiloc: { en: 'Option one' }, key: 'option_one_3')
         create(:custom_field_option, custom_field: select3, title_multiloc: { en: 'Option two' }, key: 'option_two_3')
         create(:custom_field, resource: form, title_multiloc: { en: 'Short answer question with a really long title that will wrap onto multiple lines' }, ordering: 15, key: 'shortanswer_2')
-
-        project
+        form
       end
 
       let(:importer_data) { service.importer_data }
@@ -104,6 +103,23 @@ describe BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter do
           start: '*This answer will only be shared with moderators, and not to the public.',
           end: 'Thank you for submitting the form'
         })
+      end
+
+      it 'returns data from the cache if the form has not changed' do
+        Rails.cache.clear
+        cache_key = "pdf_importer_data/#{form.id}_en_#{form.updated_at.to_i}_false"
+
+        service1 = described_class.new project.phases.first, 'en', false
+        expect(Rails.cache.read(cache_key)).to be_nil
+        importer_data1 = service1.importer_data
+        expect(Rails.cache.read(cache_key)).to eq importer_data1
+
+        allow(PDF::Reader).to receive(:new)
+        service2 = described_class.new project.phases.first, 'en', false
+        importer_data2 = service2.importer_data
+        expect(PDF::Reader).not_to have_received(:new)
+
+        expect(importer_data2).to eq importer_data1
       end
     end
   end
