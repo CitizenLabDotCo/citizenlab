@@ -184,7 +184,7 @@ module BulkImportIdeas::Exporters
       when 'matrix_linear_scale'
         :matrix_linear_scale
       when 'point', 'line', 'polygon'
-        :mapping
+        field_map_url(field) ? :mapping : :unsupported
       else
         # CURRENTLY UNSUPPORTED
         # file_upload
@@ -229,11 +229,18 @@ module BulkImportIdeas::Exporters
       longitude = map_config&.center&.x || platform_map_config.dig('map_center', 'long')
       latitude = map_config&.center&.y || platform_map_config.dig('map_center', 'lat')
 
-      # TODO: Can we use the map provider from the field?
+      tile_provider = map_config&.tile_provider || platform_map_config['tile_provider']
+      binding.pry
+      return unless tile_provider.include?('api.maptiler.com') # Means we do not currently support the wien.gv.at tile provider
+
+      # Extract the key from the tile provider URL
+      key = tile_provider.match(/key=([^&]+)/)[1]
+      return unless key
+
       # TODO: Can we do anything with layers?
 
-      # Static map API to generate an image
-      "https://api.maptiler.com/maps/basic/static/#{longitude},#{latitude},#{zoom}/650x420@2x.png?key=R0U21P01bsRLx7I7ZRqp&attribution=bottomleft"
+      # Use the static map API with basic maps to generate an image (even if the tile provider is not using basic)
+      "https://api.maptiler.com/maps/basic/static/#{longitude},#{latitude},#{zoom}/650x420@2x.png?key=#{key}&attribution=bottomleft"
     end
 
     def map_print_instructions(field)

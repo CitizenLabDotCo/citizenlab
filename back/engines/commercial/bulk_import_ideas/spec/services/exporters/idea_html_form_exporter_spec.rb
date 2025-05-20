@@ -60,8 +60,19 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let!(:point_field) { create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' }) }
   let!(:line_field) { create(:custom_field_line, resource: custom_form, title_multiloc: { 'en' => 'Line field' }) }
   let!(:polygon_field) { create(:custom_field_polygon, resource: custom_form, title_multiloc: { 'en' => 'Polygon field' }) }
-
   let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
+
+before do
+  settings = AppConfiguration.instance
+  binding.pry
+  settings['maps'] = {
+    "allowed"=>true,
+    "enabled"=>true,
+    "tile_provider"=>"https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=MAP_TILER_KEY",
+    "map_center"=>{ "lat"=>0, "long"=>0 },
+    "zoom_level"=>2
+  }
+  end
 
   describe 'export' do
     let!(:parsed_html) { Nokogiri::HTML(service.export) }
