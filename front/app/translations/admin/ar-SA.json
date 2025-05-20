@@ -2005,7 +2005,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "لن تتضمن قوالب Excel أي أسئلة حول إدخال التعيينات، حيث إنها غير مدعومة للاستيراد المجمع في الوقت الحالي.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "تنزيل نتائج الاستبيان",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "تحميل الاستبيان بصيغة pdf",
-  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "تكرار استطلاع آخر",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "يحرر",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "يحرر",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "تعديل محتوى الاستبيان",

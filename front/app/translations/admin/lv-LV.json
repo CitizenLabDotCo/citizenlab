@@ -2005,7 +2005,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel veidnēs nebūs iekļauti kartēšanas ievades jautājumi, jo pašlaik tie netiek atbalstīti masveida importēšanai.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Aptaujas rezultātu lejupielāde",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Lejupielādēt apsekojumu pdf formātā",
-  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Dublēt citu apsekojumu",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Rediģēt",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "Rediģēt",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Aptaujas satura rediģēšana",

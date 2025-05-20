@@ -2005,7 +2005,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Les modèles Excel n'incluent pas les questions de type cartographie, car leur importation n'est pas encore prise en charge.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Télécharger les résultats de l'enquête",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Télécharger l'enquête au format PDF",
-  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Dupliquer une autre enquête",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Editer",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "Modifier",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Modifier le contenu de l'enquête",

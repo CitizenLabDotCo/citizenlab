@@ -2005,7 +2005,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Las plantillas de Excel no incluirán ninguna pregunta de introducción de mapas, ya que por el momento no se admiten para la importación masiva.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Descargar los resultados de la encuesta",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Descargar encuesta como pdf",
-  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicar otra encuesta",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Editar",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "Editar",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Editar el contenido de la encuesta",

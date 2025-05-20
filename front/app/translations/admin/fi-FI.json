@@ -2005,7 +2005,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-mallit eivät sisällä kartoitussyöttökysymyksiä, koska niitä ei tueta joukkotuonnissa tällä hetkellä.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Lataa kyselyn tulokset",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Lataa kysely pdf-muodossa",
-  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Kopioi toinen kysely",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Muokkaa",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "Muokata",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Muokkaa kyselyn sisältöä",

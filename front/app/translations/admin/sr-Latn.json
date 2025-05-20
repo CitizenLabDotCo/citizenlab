@@ -2005,7 +2005,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel templates will not include any mapping input questions as these are not supported for bulk importing at this time.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Preuzmi rezultate ankete",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download survey as pdf",
-  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicate another survey",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Edit",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "Edit",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Uredi sadržaj ankete",

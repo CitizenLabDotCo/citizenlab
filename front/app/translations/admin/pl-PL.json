@@ -2005,7 +2005,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Szablony Excel nie będą zawierać żadnych pytań dotyczących mapowania, ponieważ nie są one obecnie obsługiwane w przypadku importu zbiorczego.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Pobierz wyniki badania",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Pobierz ankietę w formacie pdf",
-  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Powiel inną ankietę",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Edytuj",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "Edytuj",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Edycja treści ankiety",

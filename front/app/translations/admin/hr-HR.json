@@ -2005,7 +2005,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Predlošci programa Excel neće sadržavati nikakva pitanja o unosu mapiranja jer trenutno nisu podržana za skupni uvoz.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Preuzmi rezultate upitnika",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Preuzmite anketu kao pdf",
-  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Umnoži još jednu anketu",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Uredi",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "Uredi",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Uredi sadržaj upitnika",

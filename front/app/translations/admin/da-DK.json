@@ -2005,7 +2005,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-skabeloner vil ikke indeholde spørgsmål om kortlægningsinput, da disse ikke understøttes til masseimport på nuværende tidspunkt.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Hent undersøgelsesresultater",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download undersøgelsen som pdf",
-  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Kopier en anden survey",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Rediger",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "Rediger",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Rediger undersøgelsesindhold",

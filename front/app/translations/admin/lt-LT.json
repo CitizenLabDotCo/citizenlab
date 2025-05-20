@@ -2005,7 +2005,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Į \"Excel\" šablonus nebus įtraukti jokie žemėlapių įvesties klausimai, nes šiuo metu jie nepalaikomi masiniam importui.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Atsisiųsti apklausos rezultatus",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Atsisiųsti apklausą kaip pdf",
-  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Dubliuoti kitą apklausą",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Redaguoti",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "Redaguoti",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Redaguoti apklausos turinį",

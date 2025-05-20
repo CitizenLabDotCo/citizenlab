@@ -2005,7 +2005,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-sjablonen bevatten geen kaart-gerelateerde vragen, omdat deze op dit moment niet worden ondersteund voor bulkimport.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Download de resultaten van de enquête",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download vragenlijst als pdf",
-  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Een andere vragenlijst dupliceren",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Bewerk",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey2": "Bewerk",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Inhoud van de enquête bewerken",
