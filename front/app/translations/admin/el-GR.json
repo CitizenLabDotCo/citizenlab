@@ -303,7 +303,7 @@
   "app.components.admin.ProjectEdit.survey.downloadExcelTemplateTooltip": "Τα πρότυπα του Excel δεν θα περιλαμβάνουν ερωτήσεις εισαγωγής χαρτογράφησης, καθώς δεν υποστηρίζονται για μαζική εισαγωγή προς το παρόν.",
   "app.components.admin.ProjectEdit.survey.downloadResults2": "Download survey results",
   "app.components.admin.ProjectEdit.survey.downloadSurvey": "Κατεβάστε την έρευνα ως pdf",
-  "app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicate another survey",
+  "app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey": "Αντιγραφή άλλης έρευνας",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "από",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "ομάδα",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "έργο",
