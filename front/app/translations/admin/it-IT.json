@@ -303,7 +303,7 @@
   "app.components.admin.ProjectEdit.survey.downloadExcelTemplateTooltip": "I modelli Excel non includeranno domande di inserimento della mappatura perché al momento non sono supportati per l'importazione in blocco.",
   "app.components.admin.ProjectEdit.survey.downloadResults2": "Download survey results",
   "app.components.admin.ProjectEdit.survey.downloadSurvey": "Scarica il sondaggio in formato pdf",
-  "app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicate another survey",
+  "app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey": "Duplica un'altra indagine",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "da",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "gruppo",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "progetto",
