@@ -302,7 +302,7 @@ da:
       option1: 'Mulighed 1'
       option2: 'Mulighed 2'
     form_end_page:
-      title_text_3: 'Tak fordi du deler dit input!'
+      title_text_3: 'Tak fordi du deler dit bidrag!'
       description_text_3: "Dit input er blevet sendt med succes."
     form_user_page:
       title_text: 'Om dig'
