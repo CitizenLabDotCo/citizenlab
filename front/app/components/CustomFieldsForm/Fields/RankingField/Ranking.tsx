@@ -13,6 +13,7 @@ import styled, { useTheme } from 'styled-components';
 
 import messages from 'components/Form/Components/Controls/messages';
 import RankingOption from './RankingOption';
+import useLocalize from 'hooks/useLocalize';
 
 const Ul = styled.ul`
   padding: 0;
@@ -21,12 +22,39 @@ const Ul = styled.ul`
 `;
 
 interface Props {
+  value?: string[];
   question: IFlatCustomField;
+  onChange: (value: string[]) => void;
 }
 
-const Ranking = ({ question }: Props) => {
+const getOptionsFromData = (
+  data: string[],
+  optionsFromSchema: IOption[]
+): IOption[] => {
+  return data
+    .map((optionKey: string) => {
+      return optionsFromSchema.find((option) => option.value === optionKey);
+    })
+    .filter((value): value is IOption => !!value);
+};
+
+const Ranking = ({ value: data, question }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const theme = useTheme();
+
+  if (!question.options) return null;
+
+  // If form data present, get options in that ranking order.
+  // Otherwise, get option order from the question.
+  const questionOptions: IOption[] = question.options.map((option) => ({
+    value: option.key,
+    label: localize(option.title_multiloc),
+  }));
+
+  const options = data
+    ? getOptionsFromData(data, questionOptions)
+    : questionOptions;
 
   return (
     <Box
@@ -46,8 +74,8 @@ const Ranking = ({ question }: Props) => {
               {formatMessage(messages.rankingInstructions)}
             </Text>
             <Ul aria-labelledby={`ranking-question-label-${id}`}>
-              {options.map((option: IOption, index: number) => (
-                <RankingOption />
+              {options?.map((option: IOption, index: number) => (
+                <RankingOption option={option} index={index} />
               ))}
             </Ul>
           </Drop>
