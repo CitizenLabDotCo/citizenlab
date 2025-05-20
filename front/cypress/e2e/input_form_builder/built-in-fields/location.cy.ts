@@ -53,7 +53,7 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Fill in the title and description since these are required
-    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').type(title, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
@@ -105,7 +105,7 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Fill in the title and description since these are required
-    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').type(title, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
