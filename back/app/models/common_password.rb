@@ -17,8 +17,8 @@ class CommonPassword < ApplicationRecord
   TEST_PASSWORDS_FILE = './spec/fixtures/common_passwords_test.txt'
 
   def self.initialize!
-    # Use the large file only in production or staging, to keep db:reset fast in other environments.
-    file_path = Rails.env.production? || Rails.env.staging ? COMMON_PASSWORDS_FILE : TEST_PASSWORDS_FILE
+    # Use the small file dev or test environments, to keep db:reset fast.
+    file_path = Rails.env.test? || Rails.env.development ? TEST_PASSWORDS_FILE : COMMON_PASSWORDS_FILE
 
     CommonPassword.delete_all
     pwds = open(file_path).readlines.map do |password|
