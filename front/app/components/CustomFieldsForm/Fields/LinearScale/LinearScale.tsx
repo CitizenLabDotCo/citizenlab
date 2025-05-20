@@ -13,12 +13,12 @@ import { Multiloc } from 'typings';
 import messages from 'components/Form/Components/Controls/messages';
 
 interface Props {
-  data?: number;
+  value?: number;
   question: IFlatCustomField;
-  onSelect: (value: number) => void;
+  onChange: (value: number) => void;
 }
 
-const LinearScale = ({ data, question, onSelect }: Props) => {
+const LinearScale = ({ value: data, question, onChange }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -79,7 +79,7 @@ const LinearScale = ({ data, question, onSelect }: Props) => {
         return;
     }
 
-    onSelect(newValue);
+    onChange(newValue);
 
     if (sliderRef.current) {
       sliderRef.current.setAttribute('aria-valuenow', String(newValue));
@@ -122,7 +122,7 @@ const LinearScale = ({ data, question, onSelect }: Props) => {
                 visualIndex={visualIndex}
                 data={data}
                 maximum={maximum}
-                onSelect={onSelect}
+                onSelect={onChange}
               />
             );
           })}

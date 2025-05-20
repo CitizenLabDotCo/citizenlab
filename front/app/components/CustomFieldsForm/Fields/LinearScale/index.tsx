@@ -11,7 +11,7 @@ interface Props {
 }
 
 const LinearScaleField = ({ question }: Props) => {
-  const { control, setValue, trigger } = useFormContext();
+  const { control } = useFormContext();
 
   const name = question.key;
 
@@ -20,16 +20,7 @@ const LinearScaleField = ({ question }: Props) => {
       name={name}
       control={control}
       render={({ field: { ref: _ref, ...field } }) => {
-        return (
-          <LinearScale
-            question={question}
-            onSelect={(value) => {
-              field.onChange(value);
-              setValue(name, value);
-              trigger(name);
-            }}
-          />
-        );
+        return <LinearScale question={question} {...field} />;
       }}
     />
   );
