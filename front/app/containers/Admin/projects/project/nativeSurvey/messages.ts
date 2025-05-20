@@ -18,10 +18,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
     defaultMessage: 'Open for responses',
   },
-  viewSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults2',
-    defaultMessage: 'View survey results ({count})',
-  },
   newSubmission: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.newSubmission',
     defaultMessage: 'New submission',
