@@ -1977,7 +1977,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Sidd Dir sécher, datt Dir all Resultater aus der Ëmfro läsche wëllt?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Den Inhalt vun der Ëmfro kann net editéiert ginn, well D’Ëmfroeresultater ufänken eranzekommen.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "All Resultater aus der Ëmfro eroflueden",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Download an Excel template",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Eng Excel-Schabloun eroflueden",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel Templates enthalen keng Mapping Input Froen, well dës sinn net ënnerstëtzt fir Bulk Import zu dësem Zäitpunkt.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Resultater aus der Ëmfro eroflueden",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download Ëmfro als pdf",
