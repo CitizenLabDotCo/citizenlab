@@ -419,14 +419,14 @@ da:
         question: 'Dit spørgsmål er blevet offentliggjort'
         contribution: 'Dit bidrag er blevet offentliggjort'
         project: 'Dit projekt er blevet offentliggjort'
-        issue: 'Dit nummer er blevet udgivet'
+        issue: 'Dit bidrag er blevet offentliggjort'
         option: 'Din mulighed er blevet offentliggjort'
         proposal: 'Dit forslag er blevet offentliggjort'
         petition: 'Din underskriftsindsamling er blevet offentliggjort'
       main_header: 'Du skrev "%{input_title}"'
-      header_message: 'Lad os sørge for, at den bliver læst.'
-      message_get_votes: 'Nå flere personer med dine idéer:'
-      action_published_idea: 'Publiceret idé'
+      header_message: 'Lad os sørge for, at det bliver læst.'
+      message_get_votes: 'Nå ud til flere personer'
+      action_published_idea: 'Offentliggjort'
       action_add_image: '%{addImageLink} for at øge synlighed'
       add_image: 'Tilføj et billede'
       action_share_fb: 'Del med dine venner på %{fbLink}'
@@ -435,7 +435,7 @@ da:
       send_email: e-mail
       action_share_link: 'Del dette via enhver kanal ved at kopiere %{link}'
       link: link
-      preheader: '%{firstName}, tillykke med at du har opslået din idé på %{organizationName}s platform. Nu er det tid til at finde opbakning til din idé.'
+      preheader: '%{firstName}, tillykke med at du har fået offentliggjort dit bidrag på %{organizationName}s platform. Nu er det tid til at finde opbakning til dit bidrag.'
     your_input_in_screening:
       main_header:
         idea: 'Din idé er i "%{prescreening_status_title}"'
