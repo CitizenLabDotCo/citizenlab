@@ -178,7 +178,6 @@
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tip",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Otomatik Kaydetme",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Otomatik kaydetme, form düzenleyiciyi açtığınızda varsayılan olarak etkinleştirilir. \"X\" düğmesini kullanarak alan ayarları panelini her kapattığınızda, otomatik olarak bir kaydetme işlemi tetiklenir.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Pdf olarak indir",
   "app.components.GoBackButton.group.edit.goBack": "Geri gidin",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Önceki sayfaya geri dön",
   "app.components.HookForm.Feedback.errorTitle": "Bir sorun var",

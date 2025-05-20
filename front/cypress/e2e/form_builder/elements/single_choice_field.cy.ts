@@ -43,9 +43,7 @@ describe('Form builder single choice field', () => {
   });
 
   it('adds single select multiple choice field and is displayed when filling survey', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.get('[data-cy="e2e-single-choice"]');
     cy.wait(2000);
     cy.get('[data-cy="e2e-single-choice"]').click();
@@ -64,9 +62,7 @@ describe('Form builder single choice field', () => {
 
   it('allows submitting when there is an other option that is not selected and is not filled out', () => {
     const questionTitle = randomString();
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.acceptCookies();
     cy.get('[data-cy="e2e-single-choice"]');
     cy.wait(2000);
@@ -98,9 +94,7 @@ describe('Form builder single choice field', () => {
     const otherText = 'Other';
     const questionTitle = randomString();
     const otherAnswer = 'Walking';
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.acceptCookies();
     cy.get('[data-cy="e2e-single-choice"]');
     cy.wait(2000);

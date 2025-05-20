@@ -12,6 +12,7 @@
 #  fields_last_updated_at     :datetime         not null
 #  print_start_multiloc       :jsonb            not null
 #  print_end_multiloc         :jsonb            not null
+#  print_personal_data_fields :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -20,6 +21,7 @@
 class CustomForm < ApplicationRecord
   belongs_to :participation_context, polymorphic: true
   has_many :custom_fields, -> { order(:ordering) }, as: :resource, dependent: :destroy, inverse_of: :resource
+  has_many :text_images, as: :imageable, dependent: :destroy
 
   validates :participation_context, presence: true
   validates :participation_context_id, uniqueness: { scope: %i[participation_context_type] } # https://github.com/rails/rails/issues/34312#issuecomment-586870322

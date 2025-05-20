@@ -59,7 +59,10 @@ const CookiePolicy = () => {
           <Container>
             <PageContent>
               <StyledContentContainer>
-                <Fragment name="pages/cookie-policy/content">
+                <Fragment
+                  name="pages/cookie-policy/content"
+                  title={formatMessage(messages.cookiePolicyTitle)}
+                >
                   <PageTitle>
                     {pageAttributes?.title_multiloc ? (
                       <T value={pageAttributes.title_multiloc} />

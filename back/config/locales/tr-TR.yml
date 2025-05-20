@@ -184,6 +184,7 @@ tr:
         description:
       other_input_field:
         title: Cevabınızı yazın
+        print_title: Eğer '%{other_option}' ise, lütfen belirtiniz
       ask_follow_up_field:
         title: Bize nedenini söyleyin
     community_monitor:
@@ -329,6 +330,7 @@ tr:
       write_as_clearly: 'Mümkün olduğunca açık bir şekilde <b></b> yazın - bu formlar taranabilir'
       write_in_language: 'Cevaplarınızı bu formla aynı dilde yazın'
       linear_scale_print_description: 'Lütfen sadece %{min_label} ve %{max_label} arasında bir sayı yazın'
+      unsupported_field: 'Bu alan kağıt üzerinde doldurulamaz. Lütfen bunun yerine bu formun çevrimiçi sürümünü kullanın.'
   project_copy:
     title_suffix: 'Kopya'
   confirmations_mailer:

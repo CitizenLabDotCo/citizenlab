@@ -28,7 +28,7 @@ export type RansackParams = {
   'q[topic_id_in]'?: string[];
   'q[practical_end_at_gteq]'?: string;
   'q[practical_end_at_lt]'?: string;
-  'q[title_en_or_description_en_or_tenant_name_cont]'?: string;
+  'q[title_en_or_description_en_or_tenant_name_or_title_multiloc_text_cont]'?: string;
   'q[pin_country_code_eq]'?: string;
 
   // sorting
@@ -98,7 +98,7 @@ export interface ProjectLibraryProjectData {
       data: { id: string; type: 'project_library_phase' }[];
     };
     topic: {
-      data: { id: string; type: 'project_library_topid' };
+      data: { id: string; type: 'project_library_topic' };
     };
   };
 }

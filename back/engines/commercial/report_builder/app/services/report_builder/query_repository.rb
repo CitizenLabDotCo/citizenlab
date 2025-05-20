@@ -14,7 +14,9 @@ module ReportBuilder
       'RegistrationsWidget' => Queries::Registrations,
       'MethodsUsedWidget' => Queries::MethodsUsed,
       'ParticipationWidget' => Queries::Analytics::Participation,
-      'ProjectsWidget' => Queries::Projects
+      'ProjectsWidget' => Queries::Projects,
+      'DeviceTypesWidget' => Queries::DeviceTypes,
+      'VisitorsLanguagesWidget' => Queries::VisitorsLanguages
     }.freeze
 
     def initialize(current_user)

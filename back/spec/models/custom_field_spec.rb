@@ -527,6 +527,16 @@ RSpec.describe CustomField do
       expect(other_option_text_field.title_multiloc['fr-FR']).to eq 'Tapez votre réponse'
     end
 
+    it 'returns different text field when the field is returned for printing' do
+      create(:custom_field_option, custom_field: field, key: 'other', other: true, title_multiloc: { en: 'Something else', 'fr-FR': 'Quelque chose' })
+      other_option_text_field = field.other_option_text_field(print_version: true)
+      expect(other_option_text_field).not_to be_nil
+      expect(other_option_text_field.key).to eq 'select_field_other'
+      expect(other_option_text_field.input_type).to eq 'text'
+      expect(other_option_text_field.title_multiloc['en']).to eq "If 'Something else', please specify"
+      expect(other_option_text_field.title_multiloc['fr-FR']).to eq "Si 'Quelque chose', veuillez préciser"
+    end
+
     it 'returns nil otherwise' do
       expect(field.other_option_text_field).to be_nil
     end
