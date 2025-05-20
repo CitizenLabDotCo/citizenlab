@@ -303,7 +303,7 @@
   "app.components.admin.ProjectEdit.survey.downloadExcelTemplateTooltip": "Les plantilles d'Excel no inclouran cap pregunta d'entrada de mapatge, ja que actualment no s'admeten per a la importació massiva.",
   "app.components.admin.ProjectEdit.survey.downloadResults2": "Download survey results",
   "app.components.admin.ProjectEdit.survey.downloadSurvey": "Descarrega l'enquesta en format PDF",
-  "app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicate another survey",
+  "app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicar una altra enquesta",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "des de",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "grup",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projecte",
