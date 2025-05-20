@@ -18,8 +18,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
     defaultMessage: 'Open for responses',
   },
-  newSubmission: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.newSubmission',
+  newSubmission1: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.newSubmission1',
     defaultMessage: 'New submission',
   },
   existingSubmissionsWarning: {
