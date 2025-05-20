@@ -228,10 +228,8 @@ module BulkImportIdeas::Exporters
       zoom = map_config&.zoom_level&.to_f || platform_map_config['zoom_level'].to_f
       longitude = map_config&.center&.x || platform_map_config.dig('map_center', 'long')
       latitude = map_config&.center&.y || platform_map_config.dig('map_center', 'lat')
-
       tile_provider = map_config&.tile_provider || platform_map_config['tile_provider']
-      binding.pry
-      return unless tile_provider.include?('api.maptiler.com') # Means we do not currently support the wien.gv.at tile provider
+      return unless tile_provider&.include?('api.maptiler.com') # Means we do not currently support the wien.gv.at tile provider
 
       # Extract the key from the tile provider URL
       key = tile_provider.match(/key=([^&]+)/)[1]
@@ -250,7 +248,7 @@ module BulkImportIdeas::Exporters
         'polygon' => 'form_builder.pdf_export.polygon_print_description'
       }
       message_id = messages[field.input_type]
-      return '' unless message_id
+      return '' unless field_map_url(field) && message_id
 
       "<p><em>#{I18n.with_locale(@locale) { I18n.t(message_id) }}</em></p>"
     end

@@ -62,16 +62,16 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let!(:polygon_field) { create(:custom_field_polygon, resource: custom_form, title_multiloc: { 'en' => 'Polygon field' }) }
   let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
 
-before do
-  settings = AppConfiguration.instance
-  binding.pry
-  settings['maps'] = {
-    "allowed"=>true,
-    "enabled"=>true,
-    "tile_provider"=>"https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=MAP_TILER_KEY",
-    "map_center"=>{ "lat"=>0, "long"=>0 },
-    "zoom_level"=>2
-  }
+  before do
+    settings = AppConfiguration.instance.settings
+    settings['maps'] = {
+      'allowed' => true,
+      'enabled' => true,
+      'tile_provider' => 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=MAP_TILER_KEY',
+      'map_center' => { 'lat' => '0', 'long' => '0' },
+      'zoom_level' => 2
+    }
+    AppConfiguration.instance.update!(settings: settings)
   end
 
   describe 'export' do
@@ -199,27 +199,40 @@ before do
         point = parsed_html.css("div##{point_field.id}")
         expect(point.text).to include 'Please draw an X on the map below to show the location or write the address instead.'
         expect(point.css('img').count).to eq 1
-        expect(point.css('img')[0]['src']).to include 'api.maptiler.com'
+        expect(point.css('img')[0]['src']).to eq 'https://api.maptiler.com/maps/basic/static/0,0,2.0/650x420@2x.png?key=MAP_TILER_KEY&attribution=bottomleft'
       end
 
       it 'shows a map image and instructions for a line field' do
         line = parsed_html.css("div##{line_field.id}")
         expect(line.text).to include 'Please draw a route on the map below.'
         expect(line.css('img').count).to eq 1
-        expect(line.css('img')[0]['src']).to include 'api.maptiler.com'
+        expect(line.css('img')[0]['src']).to eq 'https://api.maptiler.com/maps/basic/static/0,0,2.0/650x420@2x.png?key=MAP_TILER_KEY&attribution=bottomleft'
       end
 
       it 'shows a map image and instructions for a polygon field' do
         polygon = parsed_html.css("div##{polygon_field.id}")
         expect(polygon.text).to include 'Please draw a shape on the map below.'
         expect(polygon.css('img').count).to eq 1
-        expect(polygon.css('img')[0]['src']).to include 'api.maptiler.com'
+        expect(polygon.css('img')[0]['src']).to eq 'https://api.maptiler.com/maps/basic/static/0,0,2.0/650x420@2x.png?key=MAP_TILER_KEY&attribution=bottomleft'
       end
 
       it 'shows a map image for a map page' do
         page = parsed_html.css("div##{map_page.id}")
         expect(page.css('img').count).to eq 1
-        expect(page.css('img')[0]['src']).to include 'api.maptiler.com'
+        expect(page.css('img')[0]['src']).to eq 'https://api.maptiler.com/maps/basic/static/0,0,2.0/650x420@2x.png?key=MAP_TILER_KEY&attribution=bottomleft'
+      end
+
+      it 'shows unsupported if the maptiler is not "maptiler.com"' do
+        settings = AppConfiguration.instance.settings
+        settings['maps']['tile_provider'] = 'https://api.somethingelse.com?key=MAP_TILER_KEY'
+        AppConfiguration.instance.update!(settings: settings)
+
+        new_service = described_class.new phase, 'en', false
+        parsed_html = Nokogiri::HTML(new_service.export)
+        line = parsed_html.css("div##{line_field.id}")
+        expect(line.css('img').count).to eq 0
+        expect(line.text).not_to include 'Please draw a route on the map below.'
+        expect(line.text).to include 'This field cannot be completed on paper.'
       end
     end
   end
