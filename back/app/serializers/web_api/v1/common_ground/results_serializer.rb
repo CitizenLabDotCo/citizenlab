@@ -20,7 +20,7 @@ class WebApi::V1::CommonGround::ResultsSerializer < WebApi::V1::BaseSerializer
         votes: {
           up: idea.likes_count,
           down: idea.dislikes_count,
-          neutral: 0
+          neutral: idea.neutral_reactions_count
         }
       }
     end
