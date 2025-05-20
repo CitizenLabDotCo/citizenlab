@@ -77,13 +77,17 @@ const generateYupValidationSchema = ({
 
       case 'text':
       case 'multiline_text': {
-        schema[key] = required
-          ? string().required(
-              formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
-              })
-            )
-          : string();
+        if (key === 'location_description') {
+          schema[key] = string().nullable();
+        } else {
+          schema[key] = required
+            ? string().required(
+                formatMessage(messages.fieldRequired, {
+                  fieldName: localize(title_multiloc),
+                })
+              )
+            : string();
+        }
         break;
       }
 
