@@ -39,7 +39,7 @@ module ReportBuilder
       sessions = ImpactTracking::Session.where(created_at: start_date..end_date)
       sessions = apply_project_filter_if_needed(sessions, project_id)
       sessions = exclude_roles_if_needed(sessions, exclude_roles)
-      
+
       SSO_REFERRERS.each do |sso_referrer|
         sessions = sessions.where.not("referrer IS NOT NULL AND starts_with(referrer, '#{sso_referrer}')")
       end
