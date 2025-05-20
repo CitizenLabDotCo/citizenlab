@@ -1,18 +1,16 @@
 import React, { useRef } from 'react';
 
-import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import LinearScaleButton from './LinearScaleButton';
 import Labels from './Labels';
 import useLocalize from 'hooks/useLocalize';
 import { Multiloc } from 'typings';
 
 import messages from 'components/Form/Components/Controls/messages';
-import { FormLabel } from 'components/UI/FormComponents';
-import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
 
 interface Props {
   value?: number;
@@ -97,20 +95,6 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
 
   return (
     <>
-      <FormLabel
-        htmlFor={sanitizeForClassname(name)}
-        labelValue={localize(question.title_multiloc)}
-        optional={!question.required}
-        subtextValue={getSubtextElement(
-          localize(question.description_multiloc)
-        )}
-        subtextSupportsHtml
-      />
-      {question.visible_to_public === false && (
-        <Text mb="8px" mt="0px" fontSize="s">
-          <FormattedMessage {...messages.notPublic} />
-        </Text>
-      )}
       <Box
         data-testid="linearScaleControl"
         role="slider"
