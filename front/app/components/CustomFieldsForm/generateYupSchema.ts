@@ -199,6 +199,17 @@ const generateYupValidationSchema = ({
           : array().nullable();
         break;
       }
+
+      case 'linear_scale': {
+        schema[key] = required
+          ? number().required(
+              formatMessage(messages.fieldRequired, {
+                fieldName: localize(title_multiloc),
+              })
+            )
+          : number();
+        break;
+      }
     }
   });
 
