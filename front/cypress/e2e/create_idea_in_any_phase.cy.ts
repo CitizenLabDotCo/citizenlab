@@ -8,8 +8,13 @@ describe('Idea creation', () => {
   let firstPhaseId: string;
   let projectSlug: string;
   const newIdeaContent = randomString(60);
+  const newIdeaTitle = randomString(10);
 
-  before(() => {
+  beforeEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
+
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: description,
@@ -44,16 +49,11 @@ describe('Idea creation', () => {
       })
       .then((phase) => {
         firstPhaseId = phase.body.data.id;
+        cy.setAdminLoginCookie();
       });
   });
 
-  beforeEach(() => {
-    cy.setAdminLoginCookie();
-  });
-
   it('allows the admin to add an idea to an old phase', () => {
-    const newIdeaTitle = randomString(40);
-
     cy.visit(`admin/projects/${projectId}/phases/${firstPhaseId}/ideas`);
     cy.acceptCookies();
     cy.get('#e2e-new-idea').click();
@@ -71,7 +71,10 @@ describe('Idea creation', () => {
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
+    cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent, {
+      delay: 0,
+    });
+    cy.wait(500);
 
     // Go to the next page of the idea form
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();

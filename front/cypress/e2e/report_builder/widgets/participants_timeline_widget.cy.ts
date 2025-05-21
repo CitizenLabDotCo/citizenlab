@@ -7,7 +7,14 @@ describe('Report builder Participants timeline widget', () => {
   let reportId: string;
   let phaseId: string;
 
-  before(() => {
+  beforeEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
+    if (reportId) {
+      cy.apiRemoveReportBuilder(reportId);
+    }
+
     cy.setAdminLoginCookie();
 
     const projectTitle = randomString();
@@ -56,22 +63,19 @@ describe('Report builder Participants timeline widget', () => {
       })
       .then((phase) => {
         phaseId = phase.body.data.id;
+        cy.setAdminLoginCookie();
+
+        cy.apiCreateReportBuilder(phaseId).then((report) => {
+          reportId = report.body.data.id;
+          cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+            'saveReportLayout'
+          );
+          cy.intercept('GET', `/web_api/v1/reports/${reportId}`).as(
+            'getReportLayout'
+          );
+          cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+        });
       });
-  });
-
-  beforeEach(() => {
-    cy.setAdminLoginCookie();
-
-    cy.apiCreateReportBuilder(phaseId).then((report) => {
-      reportId = report.body.data.id;
-      cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-        'saveReportLayout'
-      );
-      cy.intercept('GET', `/web_api/v1/reports/${reportId}`).as(
-        'getReportLayout'
-      );
-      cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
-    });
   });
 
   after(() => {
@@ -130,6 +134,7 @@ describe('Report builder Participants timeline widget', () => {
     cy.wait('@saveReportLayout');
 
     cy.visit(`projects/${projectSlug}`);
+    cy.acceptCookies();
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
