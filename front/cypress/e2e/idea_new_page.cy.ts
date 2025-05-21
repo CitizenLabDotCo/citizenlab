@@ -141,7 +141,7 @@ describe('Idea submission form', () => {
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     // verify that image and file upload components are present
-    cy.get('[data-cy="e2e-idea-image-upload"]');
+    cy.get('#e2e-idea-image-upload');
     cy.get('[data-cy="e2e-idea-file-upload"]');
 
     // Go to the page with topics

@@ -375,7 +375,6 @@ class ImagesDropzone extends PureComponent<
       borderRadius,
       className,
       previewOverlayElement,
-      ...rest
     } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
@@ -394,11 +393,7 @@ class ImagesDropzone extends PureComponent<
     const objectFit = this.props.objectFit || 'cover';
 
     return (
-      <Container
-        className={className || ''}
-        data-testid="images-dropzone"
-        {...rest}
-      >
+      <Container className={className || ''} data-testid="images-dropzone">
         <ContentWrapper>
           {(maxNumberOfImages > 1 ||
             (maxNumberOfImages === 1 && isEmpty(images))) && (

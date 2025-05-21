@@ -14,11 +14,13 @@ import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { FormValues } from 'containers/EmailChange';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -29,8 +31,11 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isPage } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
 
 import CustomFields from './CustomFields';
+import AuthorField from './Fields/AuthorField';
+import BudgetField from './Fields/BudgetField';
 import generateYupValidationSchema from './generateYupSchema';
 import messages from './messages';
 
@@ -67,6 +72,7 @@ const CustomFieldsPage = ({
   defaultValues,
   formCompletionPercentage,
 }: CustomFieldsPage) => {
+  const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
 
   const localize = useLocalize();
@@ -81,8 +87,8 @@ const CustomFieldsPage = ({
   const pagesRef = useRef<HTMLDivElement>(null);
 
   const [searchParams] = useSearchParams();
-  const ideaId = initialIdeaId || searchParams.get('idea_id');
-  const { data: idea } = useIdeaById(ideaId ?? undefined);
+  const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
+  const { data: idea } = useIdeaById(ideaId);
 
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
@@ -102,7 +108,7 @@ const CustomFieldsPage = ({
     defaultValues,
   });
 
-  const onFormSubmit = async (formValues) => {
+  const onFormSubmit = async (formValues: FormValues) => {
     onSubmit(formValues);
     if (currentPageNumber < lastPageNumber) {
       setCurrentPageNumber(currentPageNumber + 1);
@@ -164,7 +170,13 @@ const CustomFieldsPage = ({
         </Box>
       )} */}
 
-          <Box flex={'1 1 auto'} overflowY="auto" h="100%" ref={pagesRef}>
+          <Box
+            flex={'1 1 auto'}
+            overflowY="auto"
+            h="100%"
+            ref={pagesRef}
+            mb="40px"
+          >
             {/* {isMapPage && isMobileOrSmaller && (
           <Box
             aria-hidden={true}
@@ -225,9 +237,22 @@ const CustomFieldsPage = ({
                       </QuillEditedContent>
                     </Box>
 
+                    {currentPageNumber === 0 && isAdmin(authUser) && (
+                      <Box mb="24px">
+                        <AuthorField name="author_id" />
+                      </Box>
+                    )}
+                    {currentPageNumber === lastPageNumber - 1 &&
+                      isAdmin(authUser) &&
+                      phase?.attributes.voting_method === 'budgeting' && (
+                        <Box mb="24px">
+                          <BudgetField name="budget" />
+                        </Box>
+                      )}
                     <CustomFields
                       questions={pageQuestions}
                       projectId={projectId}
+                      ideaId={ideaId}
                     />
 
                     {currentPageNumber === lastPageNumber - 1 &&
@@ -269,7 +294,6 @@ const CustomFieldsPage = ({
             display="flex"
             flexDirection="column"
             alignItems="center"
-            zIndex="1000"
           >
             <Box
               w="100%"
@@ -278,7 +302,6 @@ const CustomFieldsPage = ({
               aria-valuemax={100}
               aria-valuenow={formCompletionPercentage}
               aria-label={formatMessage(messages.progressBarLabel)}
-              zIndex="1000"
             >
               <Box background={colors.background}>
                 <Box
@@ -290,7 +313,7 @@ const CustomFieldsPage = ({
               </Box>
             </Box>
 
-            <Box w="100%" zIndex="1000">
+            <Box w="100%">
               <PageControlButtons
                 handleNextAndSubmit={() => {
                   pagesRef.current?.scrollTo(0, 0);

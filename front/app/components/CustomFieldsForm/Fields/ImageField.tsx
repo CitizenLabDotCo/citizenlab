@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { Label } from '@citizenlab/cl2-component-library';
+import { Box, Label } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 import { UploadFile } from 'typings';
+
+import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
 
 import Error from 'components/UI/Error';
 import ImagesDropzoneComponent, {
@@ -18,9 +21,12 @@ interface Props
   > {
   name: string;
   inputLabel?: string;
+  ideaId?: string;
 }
 
-const ImageField = ({ name, inputLabel, ...rest }: Props) => {
+const ImageField = ({ name, inputLabel, ideaId, ...rest }: Props) => {
+  const { data: ideaImages } = useIdeaImages(ideaId);
+  const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
   const {
     setValue,
     formState: { errors },
@@ -38,10 +44,30 @@ const ImageField = ({ name, inputLabel, ...rest }: Props) => {
     }
   }, [getValues, name]);
 
+  useEffect(() => {
+    if (ideaImages) {
+      let images: UploadFile[] = [];
+      const convertImages = async () => {
+        images = await Promise.all(
+          ideaImages.data.map((image) =>
+            convertUrlToUploadFile(
+              image.attributes.versions.large || '',
+              image.id
+            )
+          )
+        ).then(
+          (images) => images.filter((image) => image !== null) as UploadFile[]
+        );
+        setImages(images);
+      };
+      convertImages();
+    }
+  }, [ideaImages]);
+
   const errorMessage = errors[name]?.message as string | undefined;
 
   return (
-    <>
+    <Box id={'e2e-idea-image-upload'} width="100%">
       {inputLabel && <Label htmlFor={name}>{inputLabel}</Label>}
       <Controller
         name={name}
@@ -52,7 +78,6 @@ const ImageField = ({ name, inputLabel, ...rest }: Props) => {
             <ImagesDropzoneComponent
               {...field}
               {...rest}
-              data-cy={'e2e-idea-image-upload'}
               id={name}
               images={images}
               onAdd={(file) => {
@@ -62,9 +87,13 @@ const ImageField = ({ name, inputLabel, ...rest }: Props) => {
                 });
                 trigger(name);
               }}
-              onRemove={() => {
+              onRemove={(image) => {
+                if (image.id && ideaId) {
+                  deleteIdeaImage({ ideaId, imageId: image.id });
+                }
                 setImages([]);
                 setValue(name, null, { shouldDirty: true });
+                trigger(name);
               }}
             />
           );
@@ -78,7 +107,7 @@ const ImageField = ({ name, inputLabel, ...rest }: Props) => {
           scrollIntoView={false}
         />
       )}
-    </>
+    </Box>
   );
 };
 

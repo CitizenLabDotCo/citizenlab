@@ -77,24 +77,32 @@ const generateYupValidationSchema = ({
 
       case 'text':
       case 'multiline_text': {
-        schema[key] = required
-          ? string().required(
-              formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
-              })
-            )
-          : string();
+        if (key === 'location_description') {
+          schema[key] = string().nullable();
+        } else {
+          schema[key] = required
+            ? string().required(
+                formatMessage(messages.fieldRequired, {
+                  fieldName: localize(title_multiloc),
+                })
+              )
+            : string();
+        }
         break;
       }
 
       case 'number': {
-        schema[key] = required
-          ? number().required(
-              formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
-              })
-            )
-          : number();
+        if (key === 'proposed_budget') {
+          schema[key] = number().nullable();
+        } else {
+          schema[key] = required
+            ? number().required(
+                formatMessage(messages.fieldRequired, {
+                  fieldName: localize(title_multiloc),
+                })
+              )
+            : number();
+        }
         break;
       }
 

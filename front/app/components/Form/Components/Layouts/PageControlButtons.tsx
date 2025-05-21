@@ -108,7 +108,6 @@ const PageControlButtons = ({
       py={'16px'}
     >
       <Box>
-        {' '}
         {/* We wrap it in a Box here to maintain the spacing and keep the next buttons right-aligned when the language selector is empty, preventing the need to move the locale check logic here. */}
         <LanguageSelector
           dropdownClassName={'open-upwards'}
