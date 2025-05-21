@@ -8,7 +8,6 @@ import { Localize } from 'hooks/useLocalize';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
-import { lazy } from 'react';
 
 const generateYupValidationSchema = ({
   pageQuestions,
