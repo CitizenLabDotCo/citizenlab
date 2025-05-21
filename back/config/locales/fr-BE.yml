@@ -330,7 +330,7 @@ fr-BE:
       write_as_clearly: 'Écrivez aussi <b>clairement</b> que possible — ces formulaires pourraient être numérisés avec reconnaissance automatique du texte'
       write_in_language: 'Rédigez vos réponses dans la même langue que ce formulaire'
       linear_scale_print_description: 'Veuillez écrire un nombre entre %{min_label} et %{max_label} uniquement'
-      unsupported_field: 'Ce champ ne peut pas être rempli sur papier. Veuillez utiliser la version en ligne de ce formulaire.'
+      unsupported_field: 'Ce champ ne peut pas être rempli sur papier. Veuillez utiliser la version numérique de ce formulaire.'
   project_copy:
     title_suffix: 'Copie'
   confirmations_mailer:

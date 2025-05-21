@@ -25,7 +25,7 @@ const TabPanel = ({
   projectId: string;
   phaseId: string;
 }) => {
-  const editFormLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`;
+  const editFormLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`;
 
   return (
     <Box maxWidth="700px">
