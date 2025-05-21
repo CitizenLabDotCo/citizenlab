@@ -24,6 +24,7 @@ import MultiSelectField from './Fields/MultiSelectField';
 import SingleSelectField from './Fields/SingleSelectField';
 import messages from './messages';
 import { getInstructionMessage } from './util';
+import RankingField from './Fields/RankingField';
 
 const renderField = (question: IFlatCustomField, projectId?: string) => {
   switch (question.input_type) {
@@ -76,6 +77,8 @@ const renderField = (question: IFlatCustomField, projectId?: string) => {
       return <Topics name={question.key} projectId={projectId} />;
     case 'linear_scale':
       return <LinearScaleField question={question} />;
+    case 'ranking':
+      return <RankingField question={question} />;
     default:
       return null;
   }
