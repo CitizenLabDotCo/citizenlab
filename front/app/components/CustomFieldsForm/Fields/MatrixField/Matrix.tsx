@@ -55,12 +55,12 @@ const StyledTd = styled(Td)`
 `;
 
 interface Props {
-  value?: any; // TODO
+  value?: Record<string, number>;
   question: IFlatCustomField;
-  onChange?: (value: any) => void; // TODO
+  onChange?: (value?: Record<string, number>) => void;
 }
 
-const Matrix = ({ value: data, question }: Props) => {
+const Matrix = ({ value: data, question, onChange }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -69,12 +69,17 @@ const Matrix = ({ value: data, question }: Props) => {
   const tableDivRef = useRef<HTMLDivElement>(null); // Used to apply border styling on scroll
 
   // Determine maximum number of columns in the table
-  const maxColumns = schema.properties?.[statements[0].key].maximum || 11; // Default 11 which is the maximum number of columns
+  const maxColumns = question.maximum ?? 11;
 
   // Put all linear scale labels from the UI Schema in an array so we can easily use them
   const columnsFromSchema = Array.from({ length: maxColumns }, (_, index) => {
     // Use number value (index + 1) if no text label is set
-    return uischema.options?.[`linear_scale_label${index + 1}`] || index + 1;
+    const number = index + 1;
+    const labelMultiloc = question[`linear_scale_label_${number}_multiloc`];
+
+    if (!labelMultiloc) return number;
+
+    return localize(labelMultiloc);
   }).filter((label) => label !== '');
 
   // Add scroll event to check whether the table should have a dashed
@@ -231,7 +236,7 @@ const Matrix = ({ value: data, question }: Props) => {
               </>
             }
             onClick={() => {
-              handleChange(path, undefined);
+              onChange(undefined);
             }}
           />
         </Box>
