@@ -233,6 +233,20 @@ const generateYupValidationSchema = ({
             : array().nullable();
         break;
       }
+
+      case 'rating': {
+        const maxRating = question.maximum;
+
+        // type guard, maxRating should always be defined
+        schema[key] =
+          required && maxRating !== undefined
+            ? number()
+                .required(formatMessage(messages.fieldRequired))
+                .min(1, formatMessage(messages.fieldRequired))
+                .max(maxRating, formatMessage(messages.fieldRequired))
+            : number();
+        break;
+      }
     }
   });
 
