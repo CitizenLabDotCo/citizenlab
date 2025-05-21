@@ -23,11 +23,9 @@
 
     <% unless remove_vendor_branding? %>
       <mj-text color="#84939E">
-        <span style="font-style: italic;
-                      font-weight: bold;
-                      font-size: 12px;
-                      display: inline-block;
-                      margin-bottom: 10px"><%= t('email_campaigns.footer.powered_by') %></span>
+        <span style="font-style: italic; font-weight: bold; font-size: 12px; display: inline-block; margin-bottom: 10px">
+          <%= t('email_campaigns.footer.powered_by') %>
+        </span>
       </mj-text>
       <mj-image align="left" width="155px" padding-top="0" href="https://www.govocal.com/"
         src="<%= gv_gray_logo_url %>" alt="Go Vocal logo" />
