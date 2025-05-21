@@ -169,7 +169,13 @@ const CustomFieldsPage = ({
         </Box>
       )} */}
 
-          <Box flex={'1 1 auto'} overflowY="auto" h="100%" ref={pagesRef}>
+          <Box
+            flex={'1 1 auto'}
+            overflowY="auto"
+            h="100%"
+            ref={pagesRef}
+            mb="60px"
+          >
             {/* {isMapPage && isMobileOrSmaller && (
           <Box
             aria-hidden={true}

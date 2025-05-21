@@ -32,12 +32,7 @@ const AdminIdeaEdit = ({
   if (!idea || !project) return null;
 
   return (
-    <Box
-      border="1px solid white"
-      borderRadius={theme.borderRadius}
-      height="100%"
-      background={theme.colors.background}
-    >
+    <Box border="1px solid white" borderRadius={theme.borderRadius}>
       <Top>
         <Button onClick={goBack}>
           <FormattedMessage {...messages.cancelEdit} />
