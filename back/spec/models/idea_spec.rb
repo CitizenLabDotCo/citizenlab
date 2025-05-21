@@ -653,7 +653,7 @@ RSpec.describe Idea do
         'en' => 'Something <img src=x onerror=alert(1)>'
       })
       pp idea
-      expect(idea.body_multiloc).to eq({ 'en' => "Something <img src=\"x\">" })
+      expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src=\"x\">' })
     end
 
     it 'sanitizes when escaped HTML tags present' do

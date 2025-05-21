@@ -15,24 +15,23 @@ class SanitizationService
   # @param features [Array<Symbol>] A list of allowed features
   # See {IframeScrubber, EDITOR_FEATURES} for the list of allowed tags and attributes.
   def sanitize(text, features)
+    return nil if text.nil?
+
     # The unescaped version converts HTML entities to their original characters
     # (e.g. &lt; becomes <). This is important for the sanitizer to work correctly.
     unescaped = CGI.unescapeHTML(text)
     scrubber = IframeScrubber.new(features)
-    
+
     # First sanitize the unescaped version
     sanitized = SANITIZER.sanitize(unescaped, scrubber: scrubber)
     # Then sanitize again after escaping
-    sanitized = SANITIZER.sanitize(sanitized, scrubber: scrubber)
-    sanitized
+    SANITIZER.sanitize(sanitized, scrubber: scrubber)
   end
 
-  def sanitize_multiloc(multiloc, features) 
-    result = multiloc.transform_values do |text|
+  def sanitize_multiloc(multiloc, features)
+    multiloc.transform_values do |text|
       sanitize(text, features)
     end
-
-    result
   end
 
   def remove_multiloc_empty_trailing_tags(multiloc)
