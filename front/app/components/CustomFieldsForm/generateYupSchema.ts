@@ -8,6 +8,7 @@ import { Localize } from 'hooks/useLocalize';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
+import { lazy } from 'react';
 
 const generateYupValidationSchema = ({
   pageQuestions,
@@ -245,6 +246,32 @@ const generateYupValidationSchema = ({
                 .min(1, formatMessage(messages.fieldRequired))
                 .max(maxRating, formatMessage(messages.fieldRequired))
             : number();
+        break;
+      }
+
+      case 'matrix_linear_scale': {
+        // type guards, numberOfStatements and numberOfColumns should always be defined
+        const numberOfStatements = question.matrix_statements?.length ?? 0;
+        const numberOfColumns = question.maximum ?? 11;
+
+        schema[key] = required
+          ? object().test((object) => {
+              if (!object) return false;
+              const keys = Object.keys(object);
+              const values = Object.values(object);
+              const isValid =
+                keys.length === numberOfStatements &&
+                values.every((value) => {
+                  return (
+                    typeof value === 'number' &&
+                    value >= 1 &&
+                    value <= numberOfColumns
+                  );
+                });
+
+              return isValid;
+            })
+          : object().nullable();
         break;
       }
     }
