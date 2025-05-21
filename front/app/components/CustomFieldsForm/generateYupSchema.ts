@@ -8,6 +8,7 @@ import { Localize } from 'hooks/useLocalize';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
+import legacyMessages from 'components/Form/Components/Controls/messages';
 
 const generateYupValidationSchema = ({
   pageQuestions,
@@ -254,22 +255,25 @@ const generateYupValidationSchema = ({
         const numberOfColumns = question.maximum ?? 11;
 
         schema[key] = required
-          ? object().test((object) => {
-              if (!object) return false;
-              const keys = Object.keys(object);
-              const values = Object.values(object);
-              const isValid =
-                keys.length === numberOfStatements &&
-                values.every((value) => {
-                  return (
-                    typeof value === 'number' &&
-                    value >= 1 &&
-                    value <= numberOfColumns
-                  );
-                });
+          ? object().test(
+              formatMessage(legacyMessages.allStatementsError),
+              (object) => {
+                if (!object) return false;
+                const keys = Object.keys(object);
+                const values = Object.values(object);
+                const isValid =
+                  keys.length === numberOfStatements &&
+                  values.every((value) => {
+                    return (
+                      typeof value === 'number' &&
+                      value >= 1 &&
+                      value <= numberOfColumns
+                    );
+                  });
 
-              return isValid;
-            })
+                return isValid;
+              }
+            )
           : object().nullable();
         break;
       }
