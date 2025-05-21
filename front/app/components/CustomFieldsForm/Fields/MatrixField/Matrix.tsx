@@ -16,6 +16,7 @@ import styled, { useTheme } from 'styled-components';
 import { media, RGBAtoRGB } from 'component-library/utils/styleUtils';
 import { useIntl } from 'utils/cl-intl';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { getLinearScaleLabel } from '../LinearScale/utils';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useLocalize from 'hooks/useLocalize';
@@ -57,7 +58,7 @@ const StyledTd = styled(Td)`
 interface Props {
   value?: Record<string, number>;
   question: IFlatCustomField;
-  onChange?: (value?: Record<string, number>) => void;
+  onChange: (value?: Record<string, number>) => void;
 }
 
 const Matrix = ({ value: data, question, onChange }: Props) => {
@@ -75,9 +76,8 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
   const columnsFromSchema = Array.from({ length: maxColumns }, (_, index) => {
     // Use number value (index + 1) if no text label is set
     const number = index + 1;
-    const labelMultiloc = question[`linear_scale_label_${number}_multiloc`];
-
-    if (!labelMultiloc) return number;
+    const labelMultiloc = getLinearScaleLabel(question, number);
+    if (!labelMultiloc) return number.toString();
 
     return localize(labelMultiloc);
   }).filter((label) => label !== '');
@@ -109,26 +109,30 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
       // If the value has a label, read it out
-      if (uischema.options?.[`linear_scale_label${value}`]) {
+      const label = getLinearScaleLabel(question, value);
+
+      if (label) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
           value,
           total,
-          label: uischema.options[`linear_scale_label${value}`],
+          label: localize(label),
         });
       }
+
       // If we don't have a label but we do have a maximum, read out the current value & maximum label
-      else if (uischema.options?.[`linear_scale_label${maxColumns}`]) {
+      const maxLabel = getLinearScaleLabel(question, maxColumns);
+      if (maxLabel) {
         return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
           value,
           total,
           maxValue: maxColumns,
-          maxLabel: uischema.options[`linear_scale_label${maxColumns}`],
+          maxLabel: localize(maxLabel),
         });
       }
       // Otherwise, just read out the value and the maximum value
       return formatMessage(messages.valueOutOfTotal, { value, total });
     },
-    [maxColumns, uischema.options, formatMessage]
+    [maxColumns, question, formatMessage]
   );
 
   if (!statements) return null;

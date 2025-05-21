@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useLocalize from 'hooks/useLocalize';
-import { Multiloc } from 'typings';
+import { getLinearScaleLabel } from './utils';
 
 interface Props {
   question: IFlatCustomField;
@@ -16,8 +16,7 @@ const Labels = ({ question, maximum }: Props) => {
 
   // Put all labels in an array so we can easily access them
   const labelsFromSchema = Array.from({ length: maximum }, (_, index) => {
-    const label: Multiloc | undefined =
-      question[`linear_scale_label_${index + 1}_multiloc`];
+    const label = getLinearScaleLabel(question, index + 1);
     return label ? localize(label) : undefined;
   });
 
