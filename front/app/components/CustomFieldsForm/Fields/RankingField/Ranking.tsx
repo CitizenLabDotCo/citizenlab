@@ -101,6 +101,7 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
             <Ul aria-labelledby={`ranking-question-label-${question.key}`}>
               {options.map((option: IOption, index: number) => (
                 <RankingOption
+                  key={option.value}
                   data={data}
                   option={option}
                   options={options}
