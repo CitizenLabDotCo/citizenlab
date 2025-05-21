@@ -35,6 +35,7 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import CustomFields from './CustomFields';
 import AuthorField from './Fields/AuthorField';
+import BudgetField from './Fields/BudgetField';
 import generateYupValidationSchema from './generateYupSchema';
 import messages from './messages';
 
@@ -241,7 +242,13 @@ const CustomFieldsPage = ({
                         <AuthorField name="author_id" />
                       </Box>
                     )}
-
+                    {currentPageNumber === lastPageNumber - 1 &&
+                      isAdmin(authUser) &&
+                      phase?.attributes.voting_method === 'budgeting' && (
+                        <Box mb="24px">
+                          <BudgetField name="budget" />
+                        </Box>
+                      )}
                     <CustomFields
                       questions={pageQuestions}
                       projectId={projectId}

@@ -1,26 +1,29 @@
 import React from 'react';
 
-import {
-  Input as InputComponent,
-  InputProps,
-  Box,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
+import Input, { Props as InputProps } from 'components/HookForm/Input';
 import Error, { TFieldName } from 'components/UI/Error';
+import { FormLabel } from 'components/UI/FormComponents';
 
-export interface Props extends InputProps {
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+interface Props extends Omit<InputProps, 'onChange' | 'type'> {
   name: string;
-  fieldName?: TFieldName;
+  id?: string;
 }
 
-const Input = ({ name, fieldName, type = 'text', ...rest }: Props) => {
+const BudgetField = ({ name }: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
   } = useFormContext();
+  const { formatMessage } = useIntl();
 
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
@@ -29,12 +32,27 @@ const Input = ({ name, fieldName, type = 'text', ...rest }: Props) => {
   const apiError = errors?.error && ([errors] as CLError[]);
 
   return (
-    <Box width="100%">
+    <>
+      <FormLabel
+        htmlFor={name}
+        labelValue={
+          <Box display="flex">
+            {formatMessage(messages.budgetFieldLabel)}
+            <IconTooltip
+              iconColor={colors.grey800}
+              marginLeft="4px"
+              icon="shield-checkered"
+              content={<FormattedMessage {...messages.adminFieldTooltip} />}
+            />
+          </Box>
+        }
+        optional
+      />
       <Controller
         name={name}
         control={control}
         render={({ field: { ref: _ref, ...field } }) => (
-          <InputComponent id={name} type={type} {...field} {...rest} />
+          <Input id={name} type={'number'} {...field} />
         )}
       />
       {validationError && (
@@ -47,15 +65,15 @@ const Input = ({ name, fieldName, type = 'text', ...rest }: Props) => {
       )}
       {apiError && (
         <Error
-          fieldName={fieldName || (name as TFieldName)}
+          fieldName={name as TFieldName}
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
           scrollIntoView={false}
         />
       )}
-    </Box>
+    </>
   );
 };
 
-export default Input;
+export default BudgetField;
