@@ -44,6 +44,9 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
   const localize = useLocalize();
   const theme = useTheme();
 
+  console.log('Ranking question', question);
+  console.log('Ranking data', data);
+
   if (!question.options) return null;
 
   // If form data present, get options in that ranking order.
