@@ -174,7 +174,7 @@ const CustomFieldsPage = ({
             overflowY="auto"
             h="100%"
             ref={pagesRef}
-            mb="60px"
+            mb="40px"
           >
             {/* {isMapPage && isMobileOrSmaller && (
           <Box
@@ -287,7 +287,6 @@ const CustomFieldsPage = ({
             display="flex"
             flexDirection="column"
             alignItems="center"
-            zIndex="1000"
           >
             <Box
               w="100%"
@@ -296,7 +295,6 @@ const CustomFieldsPage = ({
               aria-valuemax={100}
               aria-valuenow={formCompletionPercentage}
               aria-label={formatMessage(messages.progressBarLabel)}
-              zIndex="1000"
             >
               <Box background={colors.background}>
                 <Box
@@ -308,7 +306,7 @@ const CustomFieldsPage = ({
               </Box>
             </Box>
 
-            <Box w="100%" zIndex="1000">
+            <Box w="100%">
               <PageControlButtons
                 handleNextAndSubmit={() => {
                   pagesRef.current?.scrollTo(0, 0);
