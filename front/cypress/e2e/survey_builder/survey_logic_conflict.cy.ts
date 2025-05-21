@@ -26,9 +26,7 @@ describe('Survey logic conflict', () => {
 
   it('prioritizes question logic over page logic', () => {
     cy.setAdminLoginCookie();
-    cy.visit(
-      `/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.get('[data-cy="e2e-field-row"]').should('have.length', 3);
 
     // Add a new page

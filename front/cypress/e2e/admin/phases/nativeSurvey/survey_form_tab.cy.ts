@@ -34,7 +34,7 @@ describe('Survey Form Tab Navigation', () => {
     // Verify we're on the survey form builder page
     cy.url().should(
       'include',
-      `/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+      `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
     );
 
     // Verify the form builder content has loaded

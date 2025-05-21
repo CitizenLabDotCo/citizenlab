@@ -113,9 +113,9 @@ export enum projectsRoutes {
   projectPhaseMap = ':phaseId/map',
   projectPhaseNativeSurvey = ':phaseId/native-survey',
   projectPhaseSurveyForm = ':phaseId/survey-form',
+  projectPhaseNativeSurveyFormEdit = ':phaseId/survey-form/edit',
   projectPhaseVolunteeringNewCause = ':phaseId/volunteering/causes/new',
   projectPhaseIdeaFormEdit = ':phaseId/form/edit',
-  projectPhaseNativeSurveyEdit = ':phaseId/native-survey/edit',
   projectPhaseVolunteeringCause = ':phaseId/volunteering/causes/:causeId',
   projectPhaseInputImporter = ':phaseId/input-importer',
   projectPhaseReport = ':phaseId/report',
@@ -159,9 +159,9 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/form/edit`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit?${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit?${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
@@ -536,7 +536,7 @@ const createAdminProjectsRoutes = () => {
                 ),
               },
               {
-                path: projectsRoutes.projectPhaseNativeSurveyEdit,
+                path: projectsRoutes.projectPhaseNativeSurveyFormEdit,
                 element: (
                   <PageLoading>
                     <SurveyFormBuilder />

@@ -38,9 +38,7 @@ describe('Survey page logic', () => {
 
   it('uses custom button link and text on survey end page if customized', () => {
     // Visit the form builder
-    cy.visit(
-      `/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
 
     // For the survey end page, set a custom button link + label
     cy.get('[data-cy="e2e-field-row"]').last().click();
