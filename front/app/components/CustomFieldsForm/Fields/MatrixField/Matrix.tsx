@@ -1,7 +1,243 @@
-import React from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 
-const Matrix = () => {
-  return <></>;
+import {
+  Box,
+  Button,
+  Radio,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
+import { media, RGBAtoRGB } from 'component-library/utils/styleUtils';
+import { useIntl } from 'utils/cl-intl';
+import { ScreenReaderOnly } from 'utils/a11y';
+
+import { IFlatCustomField } from 'api/custom_fields/types';
+import useLocalize from 'hooks/useLocalize';
+import messages from 'components/Form/Components/Controls/messages';
+
+const StickyTh = styled(Th)`
+  background: ${(props) =>
+    RGBAtoRGB(props.theme.colors.tenantPrimaryLighten95, 0.05)};
+
+  position: sticky;
+  inset-inline-start: 0px;
+  z-index: 1;
+  flex-grow: 1;
+
+  ${media.phone`
+    min-width: 120px;
+    `}
+
+  ${media.tablet`
+    min-width: 180px;
+    `}
+
+  ${media.desktop`
+      min-width: 200px;
+    `}
+`;
+
+const StyledTd = styled(Td)`
+  background: ${(props) =>
+    RGBAtoRGB(props.theme.colors.tenantPrimaryLighten95, 0.05)};
+  max-width: 100px;
+
+  .circle {
+    margin-right: 0px;
+    border: 1px solid ${(props) => props.theme.colors.tenantPrimary};
+  }
+`;
+
+interface Props {
+  value?: any; // TODO
+  question: IFlatCustomField;
+  onChange?: (value: any) => void; // TODO
+}
+
+const Matrix = ({ value: data, question }: Props) => {
+  const theme = useTheme();
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+
+  const statements = question.matrix_statements;
+  const tableDivRef = useRef<HTMLDivElement>(null); // Used to apply border styling on scroll
+
+  // Determine maximum number of columns in the table
+  const maxColumns = schema.properties?.[statements[0].key].maximum || 11; // Default 11 which is the maximum number of columns
+
+  // Put all linear scale labels from the UI Schema in an array so we can easily use them
+  const columnsFromSchema = Array.from({ length: maxColumns }, (_, index) => {
+    // Use number value (index + 1) if no text label is set
+    return uischema.options?.[`linear_scale_label${index + 1}`] || index + 1;
+  }).filter((label) => label !== '');
+
+  // Add scroll event to check whether the table should have a dashed
+  // border which indicates it can be horizontally scrolled
+  useEffect(() => {
+    const checkApplyBorder = () => {
+      const tableElement = tableDivRef.current;
+      if (tableElement) {
+        if (
+          tableElement.scrollLeft + 4 >= // 4 is used as a small offset to make sure it "catches" correctly
+          tableElement.scrollWidth - tableElement.clientWidth
+        ) {
+          tableElement.style.borderRight = 'none';
+        } else {
+          tableElement.style.borderRight = `1px dashed ${theme.colors.tenantPrimaryLighten75}`;
+        }
+      }
+    };
+
+    checkApplyBorder();
+
+    tableDivRef.current?.addEventListener('scroll', () => {
+      checkApplyBorder();
+    });
+  }, [theme.colors.tenantPrimaryLighten75]);
+
+  const getAriaValueText = useCallback(
+    (value: number, total: number) => {
+      // If the value has a label, read it out
+      if (uischema.options?.[`linear_scale_label${value}`]) {
+        return formatMessage(messages.valueOutOfTotalWithLabel, {
+          value,
+          total,
+          label: uischema.options[`linear_scale_label${value}`],
+        });
+      }
+      // If we don't have a label but we do have a maximum, read out the current value & maximum label
+      else if (uischema.options?.[`linear_scale_label${maxColumns}`]) {
+        return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
+          value,
+          total,
+          maxValue: maxColumns,
+          maxLabel: uischema.options[`linear_scale_label${maxColumns}`],
+        });
+      }
+      // Otherwise, just read out the value and the maximum value
+      return formatMessage(messages.valueOutOfTotal, { value, total });
+    },
+    [maxColumns, uischema.options, formatMessage]
+  );
+
+  if (!statements) return null;
+
+  return (
+    <>
+      <Box overflowX="auto" ref={tableDivRef} id="e2e-matrix-control">
+        <Table
+          width={'100%'}
+          style={{ borderCollapse: 'separate', borderSpacing: '0px 8px' }}
+          aria-labelledby={`matrix-question-label-${id}`}
+        >
+          <Thead>
+            <Td minWidth="84px" pt="0px" />
+            {columnsFromSchema.map((column, index) => {
+              return (
+                <Th minWidth="84px" key={index} scope="col" pt="0px">
+                  <Box title={column} display="flex" justifyContent="center">
+                    <Text
+                      textAlign="center"
+                      m="0px"
+                      p="0px"
+                      mx="auto"
+                      color={'tenantPrimary'}
+                    >
+                      {column}
+                    </Text>
+                  </Box>
+                </Th>
+              );
+            })}
+          </Thead>
+          <Tbody>
+            {statements.map((statement, index) => {
+              return (
+                <Tr key={index}>
+                  <StickyTh scope="row">
+                    <Text m="4px" color="tenantPrimary">
+                      {localize(statement.title_multiloc)}
+                    </Text>
+                  </StickyTh>
+
+                  {columnsFromSchema.map((_, columnIndex) => {
+                    return (
+                      <StyledTd key={`radio-${columnIndex}-${index}`}>
+                        <Box
+                          min-width="84px"
+                          display="flex"
+                          justifyContent="center"
+                        >
+                          <Radio
+                            mx="auto"
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleChange(path, {
+                                  ...data,
+                                  [statement.key]: columnIndex + 1,
+                                });
+                              }
+                            }}
+                            currentValue={data?.[statement.key] - 1}
+                            value={columnIndex}
+                            label={
+                              <ScreenReaderOnly>
+                                {getAriaValueText(
+                                  columnIndex + 1,
+                                  columnsFromSchema.length
+                                )}
+                                {statements[index]?.label}
+                              </ScreenReaderOnly>
+                            }
+                            name={`radio-group-${statement.key}-${id}`}
+                            id={`${id}-${index}-${columnIndex}-radio`}
+                            onChange={(value) => {
+                              handleChange(path, {
+                                ...data,
+                                [statement.key]: value + 1,
+                              });
+                            }}
+                          />
+                        </Box>
+                      </StyledTd>
+                    );
+                  })}
+                </Tr>
+              );
+            })}
+          </Tbody>
+        </Table>
+      </Box>
+      {data !== undefined && (
+        <Box display="flex">
+          <Button
+            p="0px"
+            buttonStyle="text"
+            textColor={theme.colors.tenantPrimary}
+            textDecoration="underline"
+            text={
+              <>
+                <ScreenReaderOnly>
+                  {formatMessage(messages.clearAllScreenreader)}
+                </ScreenReaderOnly>
+                <Box aria-hidden>{formatMessage(messages.clearAll)}</Box>
+              </>
+            }
+            onClick={() => {
+              handleChange(path, undefined);
+            }}
+          />
+        </Box>
+      )}
+    </>
+  );
 };
 
 export default Matrix;
