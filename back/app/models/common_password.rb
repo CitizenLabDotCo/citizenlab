@@ -18,7 +18,7 @@ class CommonPassword < ApplicationRecord
 
   def self.initialize!
     # Use the small file dev or test environments, to keep db:reset fast.
-    file_path = Rails.env.test? || Rails.env.development ? TEST_PASSWORDS_FILE : COMMON_PASSWORDS_FILE
+    file_path = Rails.env.test? || Rails.env.development? ? TEST_PASSWORDS_FILE : COMMON_PASSWORDS_FILE
 
     CommonPassword.delete_all
     pwds = open(file_path).readlines.map do |password|
