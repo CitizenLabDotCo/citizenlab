@@ -823,6 +823,7 @@
   "app.components.formBuilder.veryGood": "Very good",
   "app.components.ideas.similarIdeas.engageHere": "Engage here",
   "app.components.ideas.similarIdeas.noSimilarSubmissions": "No similar submissions found.",
+  "app.components.ideas.similarIdeas.similarSubmissionsAnnounceResults": "{count, plural, =0 {No similar submissions found.} one {One similar submission found.} other {{count} similar submissions found.}}",
   "app.components.ideas.similarIdeas.similarSubmissionsDescription": "We found similar submisisons - engaging with them can help make them stronger!",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Similar submissions already posted:",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Looking for similar submissions ...",
