@@ -5,10 +5,15 @@ import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { UploadFile } from 'typings';
 
+import useAddIdeaFile from 'api/idea_files/useAddIdeaFile';
+import useDeleteIdeaFile from 'api/idea_files/useDeleteIdeaFile';
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+
 import Error from 'components/UI/Error';
 import FileUploaderComponent, {
   Props as FileUploaderProps,
 } from 'components/UI/FileUploader';
+import { FileType } from 'components/UI/FileUploader/FileDisplay';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
@@ -18,7 +23,7 @@ interface Props
     'onFileAdd' | 'onFileRemove' | 'files' | 'id' | 'apiErrors'
   > {
   name: string;
-  remoteFiles?: UploadFile[] | null;
+  ideaId?: string;
 }
 
 type FileToUploadFormat = {
@@ -29,7 +34,10 @@ type FileToUploadFormat = {
   name: string;
 };
 
-const FileUploaderField = ({ name, remoteFiles, ...rest }: Props) => {
+const FileUploaderField = ({ name, ideaId, ...rest }: Props) => {
+  const { data: ideaFiles } = useIdeaFiles(ideaId);
+  const { mutate: deleteIdeaFile } = useDeleteIdeaFile();
+  const { mutate: addIdeaFile } = useAddIdeaFile();
   const [files, setFiles] = useState<UploadFile[]>([]);
   const {
     setValue,
@@ -39,12 +47,26 @@ const FileUploaderField = ({ name, remoteFiles, ...rest }: Props) => {
     getValues,
   } = useFormContext();
 
-  // Todo: check that this works correctly with remote files
   useEffect(() => {
-    if (remoteFiles) {
-      setValue(name, remoteFiles);
+    if (ideaFiles) {
+      let remoteFiles: UploadFile[] = [];
+      const convertFiles = async () => {
+        remoteFiles = await Promise.all(
+          ideaFiles.data.map((file) =>
+            convertUrlToUploadFile(
+              file.attributes.file.url || '',
+              file.id,
+              file.attributes.name
+            )
+          )
+        ).then(
+          (files) => files.filter((file) => file !== null) as UploadFile[]
+        );
+        setFiles(remoteFiles);
+      };
+      convertFiles();
     }
-  }, [setValue, remoteFiles, name]);
+  }, [setValue, name, ideaFiles]);
 
   useEffect(() => {
     if (getValues(name)?.length !== files.length) {
@@ -62,6 +84,52 @@ const FileUploaderField = ({ name, remoteFiles, ...rest }: Props) => {
 
   const errorMessage = get(errors, name)?.message as string | undefined;
 
+  const onFileRemove = (fileToRemove: FileType, value) => {
+    if (ideaId && fileToRemove.id) {
+      deleteIdeaFile({ ideaId, fileId: fileToRemove.id });
+    } else {
+      setValue(
+        name,
+        value.filter(
+          (file: FileToUploadFormat) =>
+            fileToRemove.base64 !== file.file_by_content.content
+        ),
+        { shouldDirty: true }
+      );
+    }
+    setFiles((prevFiles) =>
+      prevFiles.filter((file) => file.base64 !== fileToRemove.base64)
+    );
+
+    trigger(name);
+  };
+
+  const onFileAdd = (file: UploadFile, value) => {
+    setFiles((prevFiles) => [...prevFiles, file]);
+    if (ideaId) {
+      addIdeaFile({
+        ideaId,
+        file: {
+          name: file.filename,
+          file: file.base64,
+        },
+      });
+    } else {
+      const newFile = {
+        file_by_content: {
+          content: file.base64,
+          name: file.filename,
+        },
+        name: file.filename,
+      };
+
+      setValue(name, value ? [...value, newFile] : [newFile], {
+        shouldDirty: true,
+      });
+    }
+    trigger(name);
+  };
+
   return (
     <Box data-cy="e2e-idea-file-upload" width="100%">
       <Controller
@@ -76,42 +144,10 @@ const FileUploaderField = ({ name, remoteFiles, ...rest }: Props) => {
               data-cy={'e2e-idea-file-upload'}
               id={name}
               files={files}
-              onFileAdd={(file) => {
-                setFiles((prevFiles) => [...prevFiles, file]);
-                const newFile = {
-                  file_by_content: {
-                    content: file.base64,
-                    name: file.filename,
-                  },
-                  name: file.filename,
-                };
-
-                setValue(
-                  name,
-                  field.value ? [...field.value, newFile] : [newFile],
-                  {
-                    shouldDirty: true,
-                  }
-                );
-                trigger(name);
-              }}
-              onFileRemove={(fileToRemove) => {
-                setValue(
-                  name,
-                  field.value.filter(
-                    (file: FileToUploadFormat) =>
-                      fileToRemove.base64 !== file.file_by_content.content
-                  ),
-                  { shouldDirty: true }
-                );
-                setFiles((prevFiles) =>
-                  prevFiles.filter(
-                    (file) => file.base64 !== fileToRemove.base64
-                  )
-                );
-
-                trigger(name);
-              }}
+              onFileAdd={(fileToAdd) => onFileAdd(fileToAdd, field.value)}
+              onFileRemove={(fileToRemove) =>
+                onFileRemove(fileToRemove, field.value)
+              }
             />
           );
         }}

@@ -24,7 +24,15 @@ import SingleSelectField from './Fields/SingleSelectField';
 import messages from './messages';
 import { getInstructionMessage } from './util';
 
-const renderField = (question: IFlatCustomField, projectId?: string) => {
+const renderField = ({
+  question,
+  projectId,
+  ideaId,
+}: {
+  question: IFlatCustomField;
+  projectId?: string;
+  ideaId?: string;
+}) => {
   switch (question.input_type) {
     case 'text_multiloc':
       return (
@@ -67,10 +75,11 @@ const renderField = (question: IFlatCustomField, projectId?: string) => {
           acceptedFileTypes={{
             'image/*': ['.jpg', '.jpeg', '.png'],
           }}
+          ideaId={ideaId}
         />
       );
     case 'files':
-      return <FileUploaderField name={question.key} />;
+      return <FileUploaderField name={question.key} ideaId={ideaId} />;
     case 'topic_ids':
       return <Topics name={question.key} projectId={projectId} />;
     default:
@@ -81,9 +90,11 @@ const renderField = (question: IFlatCustomField, projectId?: string) => {
 const CustomFields = ({
   questions,
   projectId,
+  ideaId,
 }: {
   questions: IFlatCustomField[];
   projectId?: string;
+  ideaId?: string;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -120,7 +131,7 @@ const CustomFields = ({
                   <FormattedMessage {...messages.notPublic} />
                 </Text>
               )}
-              {renderField(question, projectId)}
+              {renderField({ question, projectId, ideaId })}
             </Box>
           );
         })}

@@ -19,6 +19,7 @@ import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { FormValues } from 'containers/EmailChange';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -81,8 +82,8 @@ const CustomFieldsPage = ({
   const pagesRef = useRef<HTMLDivElement>(null);
 
   const [searchParams] = useSearchParams();
-  const ideaId = initialIdeaId || searchParams.get('idea_id');
-  const { data: idea } = useIdeaById(ideaId ?? undefined);
+  const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
+  const { data: idea } = useIdeaById(ideaId);
 
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
@@ -102,7 +103,7 @@ const CustomFieldsPage = ({
     defaultValues,
   });
 
-  const onFormSubmit = async (formValues) => {
+  const onFormSubmit = async (formValues: FormValues) => {
     onSubmit(formValues);
     if (currentPageNumber < lastPageNumber) {
       setCurrentPageNumber(currentPageNumber + 1);
@@ -228,6 +229,7 @@ const CustomFieldsPage = ({
                     <CustomFields
                       questions={pageQuestions}
                       projectId={projectId}
+                      ideaId={ideaId}
                     />
 
                     {currentPageNumber === lastPageNumber - 1 &&
