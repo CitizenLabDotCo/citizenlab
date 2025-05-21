@@ -15,6 +15,8 @@ import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
+
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
@@ -32,7 +34,7 @@ interface FormValues {
   idea_files_attributes?: {
     file_by_content: { content: string };
     name: string;
-  };
+  }[];
   location_description?: string | null;
   location_point_geojson?: GeoJSON.Point | null;
   topic_ids?: string[];
@@ -51,6 +53,7 @@ const CustomFieldsForm = ({
   participationMethod?: ParticipationMethod;
   initialFormData?: FormValues;
 }) => {
+  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { slug, ideaId } = useParams();
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -77,11 +80,23 @@ const CustomFieldsForm = ({
     phase?.data.attributes.allow_anonymous_participation &&
     participationMethod !== 'native_survey';
 
+  console.log(formValues);
+  const disclaimerNeeded =
+    formValues?.idea_files_attributes?.length ||
+    formValues?.idea_images_attributes?.length ||
+    (formValues?.body_multiloc &&
+      Object.values(formValues.body_multiloc).some((value) =>
+        value.includes('<img')
+      ));
+
   const pageButtonLabelMultiloc = customFields?.find(
     (field) => field.id === nestedPagesData[currentPageNumber].page.id
   )?.page_button_label_multiloc;
 
-  const onSubmit = async (formValues: FormValues) => {
+  const onSubmit = async (
+    formValues: FormValues,
+    isDisclamerAccepted?: boolean
+  ) => {
     setFormValues((prevValues) =>
       prevValues
         ? {
@@ -90,8 +105,12 @@ const CustomFieldsForm = ({
           }
         : formValues
     );
-
     if (currentPageNumber === nestedPagesData.length - 2) {
+      if (disclaimerNeeded && !isDisclamerAccepted) {
+        setIsDisclaimerOpened(true);
+        return;
+      }
+
       if (!idea) {
         // If the user is an admin or project moderator, we allow them to post to a specific phase
         const phase_ids =
@@ -116,12 +135,27 @@ const CustomFieldsForm = ({
         updateSearchParams({ idea_id: idea.data.id });
       }
     }
+    // Go to the next page
+    if (currentPageNumber < nestedPagesData.length - 1) {
+      setCurrentPageNumber((pageNumber: number) => pageNumber + 1);
+    }
   };
 
   const formCompletionPercentage = getFormCompletionPercentage(
     customFields || [],
     formValues
   );
+
+  const onAcceptDisclaimer = async () => {
+    setIsDisclaimerOpened(false);
+    if (formValues) {
+      await onSubmit(formValues, true);
+    }
+  };
+
+  const onCancelDisclaimer = () => {
+    setIsDisclaimerOpened(false);
+  };
 
   return (
     <Box overflow="scroll" w="100%">
@@ -144,6 +178,11 @@ const CustomFieldsForm = ({
           formCompletionPercentage={formCompletionPercentage}
         />
       )}
+      <ContentUploadDisclaimer
+        isDisclaimerOpened={isDisclaimerOpened}
+        onAcceptDisclaimer={onAcceptDisclaimer}
+        onCancelDisclaimer={onCancelDisclaimer}
+      />
     </Box>
   );
 };

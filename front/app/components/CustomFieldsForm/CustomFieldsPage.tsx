@@ -42,7 +42,7 @@ type CustomFieldsPage = {
   page: IFlatCustomField;
   pageQuestions: IFlatCustomField[];
   currentPageNumber: number;
-  setCurrentPageNumber: (pageNumber: number) => void;
+  setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
   lastPageNumber: number;
   showTogglePostAnonymously?: boolean;
   participationMethod?: ParticipationMethod;
@@ -109,10 +109,6 @@ const CustomFieldsPage = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     onSubmit(formValues);
-    if (currentPageNumber < lastPageNumber) {
-      setCurrentPageNumber(currentPageNumber + 1);
-      pagesRef.current?.scrollTo(0, 0);
-    }
   };
 
   const handleOnChangeAnonymousPosting = () => {
