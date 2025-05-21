@@ -69,6 +69,8 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
   const statements = question.matrix_statements;
   const tableDivRef = useRef<HTMLDivElement>(null); // Used to apply border styling on scroll
 
+  const id = question.key;
+
   // Determine maximum number of columns in the table
   const maxColumns = question.maximum ?? 11;
 
@@ -188,13 +190,15 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
                             onKeyDown={(e) => {
                               if (e.key === 'Enter') {
                                 e.preventDefault();
-                                handleChange(path, {
+                                onChange({
                                   ...data,
                                   [statement.key]: columnIndex + 1,
                                 });
                               }
                             }}
-                            currentValue={data?.[statement.key] - 1}
+                            currentValue={
+                              data ? data[statement.key] - 1 : undefined
+                            }
                             value={columnIndex}
                             label={
                               <ScreenReaderOnly>
@@ -202,13 +206,13 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
                                   columnIndex + 1,
                                   columnsFromSchema.length
                                 )}
-                                {statements[index]?.label}
+                                {localize(statements[index].title_multiloc)}
                               </ScreenReaderOnly>
                             }
                             name={`radio-group-${statement.key}-${id}`}
                             id={`${id}-${index}-${columnIndex}-radio`}
                             onChange={(value) => {
-                              handleChange(path, {
+                              onChange({
                                 ...data,
                                 [statement.key]: value + 1,
                               });
