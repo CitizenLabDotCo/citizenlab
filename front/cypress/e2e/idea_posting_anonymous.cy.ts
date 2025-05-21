@@ -99,6 +99,8 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     // Go to the next page of the idea form
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
     // set to anonymous
     cy.get('[data-testid="e2e-post-idea-anonymously-checkbox"]').click();
     cy.get('#e2e-continue-anonymous-participation-btn').click();
