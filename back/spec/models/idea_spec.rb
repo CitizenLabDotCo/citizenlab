@@ -652,7 +652,6 @@ RSpec.describe Idea do
       idea = create(:idea, body_multiloc: {
         'en' => 'Something <img src=x onerror=alert(1)>'
       })
-      pp idea
       expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
     end
 
