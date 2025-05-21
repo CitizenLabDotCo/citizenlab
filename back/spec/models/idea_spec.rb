@@ -648,6 +648,21 @@ RSpec.describe Idea do
       expect(idea.body_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
 
+    it 'sanitizes img tags in the body' do
+      idea = create(:idea, body_multiloc: {
+        'en' => 'Something <img src=x onerror=alert(1)>'
+      })
+      pp idea
+      expect(idea.body_multiloc).to eq({ 'en' => "Something <img src=\"x\">" })
+    end
+
+    it 'sanitizes when escaped HTML tags present' do
+      idea = create(:idea, body_multiloc: {
+        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
+      })
+      expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
+    end
+
     it "allows embedded youtube video's in the body" do
       idea = create(:idea, body_multiloc: {
         'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'

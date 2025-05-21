@@ -82,5 +82,22 @@ RSpec.describe IdeaStatus do
       expect(idea_status.description_multiloc['fr-BE']).to eq('Something ')
       expect(idea_status.description_multiloc['nl-BE']).to eq('Plain text with formatting')
     end
+
+    it 'sanitizes when escaped HTML tags present' do
+      idea_status = build(
+        :idea_status,
+        description_multiloc: {
+          'en' => 'Something &lt;script&gt;alert("XSS")&lt;/script&gt; something',
+          'fr-BE' => 'Something &lt;img src=x onerror=alert(1)&gt;',
+          'nl-BE' => 'Plain &lt;b&gt;text&lt;/b&gt; with &lt;i&gt;formatting&lt;/i&gt;'
+        }
+      )
+
+      idea_status.save!
+
+      expect(idea_status.description_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(idea_status.description_multiloc['fr-BE']).to eq('Something ')
+      expect(idea_status.description_multiloc['nl-BE']).to eq('Plain text with formatting')
+    end
   end
 end
