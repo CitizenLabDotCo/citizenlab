@@ -53,7 +53,7 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Fill in the title since it is required
-    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').type(title, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
     // Go to the next page of the input form
@@ -62,6 +62,7 @@ describe('Input form builder', () => {
     // Fill in the description since it is required
     cy.get('#e2e-idea-description-input .ql-editor').type(description);
     cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+    cy.wait(500);
 
     // Go to the next page of the idea form
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
@@ -107,13 +108,14 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Fill in the title and description since these are required
-    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').type(title, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     cy.get('#e2e-idea-description-input .ql-editor').type(description);
     cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+    cy.wait(500);
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
