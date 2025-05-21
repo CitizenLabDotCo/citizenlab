@@ -35,6 +35,7 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import CustomFields from './CustomFields';
 import AuthorField from './Fields/AuthorField';
+import BudgetField from './Fields/BudgetField';
 import generateYupValidationSchema from './generateYupSchema';
 import messages from './messages';
 
@@ -169,7 +170,13 @@ const CustomFieldsPage = ({
         </Box>
       )} */}
 
-          <Box flex={'1 1 auto'} overflowY="auto" h="100%" ref={pagesRef}>
+          <Box
+            flex={'1 1 auto'}
+            overflowY="auto"
+            h="100%"
+            ref={pagesRef}
+            mb="40px"
+          >
             {/* {isMapPage && isMobileOrSmaller && (
           <Box
             aria-hidden={true}
@@ -235,7 +242,13 @@ const CustomFieldsPage = ({
                         <AuthorField name="author_id" />
                       </Box>
                     )}
-
+                    {currentPageNumber === lastPageNumber - 1 &&
+                      isAdmin(authUser) &&
+                      phase?.attributes.voting_method === 'budgeting' && (
+                        <Box mb="24px">
+                          <BudgetField name="budget" />
+                        </Box>
+                      )}
                     <CustomFields
                       questions={pageQuestions}
                       projectId={projectId}
@@ -281,7 +294,6 @@ const CustomFieldsPage = ({
             display="flex"
             flexDirection="column"
             alignItems="center"
-            zIndex="1000"
           >
             <Box
               w="100%"
@@ -290,7 +302,6 @@ const CustomFieldsPage = ({
               aria-valuemax={100}
               aria-valuenow={formCompletionPercentage}
               aria-label={formatMessage(messages.progressBarLabel)}
-              zIndex="1000"
             >
               <Box background={colors.background}>
                 <Box
@@ -302,7 +313,7 @@ const CustomFieldsPage = ({
               </Box>
             </Box>
 
-            <Box w="100%" zIndex="1000">
+            <Box w="100%">
               <PageControlButtons
                 handleNextAndSubmit={() => {
                   pagesRef.current?.scrollTo(0, 0);

@@ -8,6 +8,7 @@ import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import { IdeaPublicationStatus } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import useInputSchema from 'hooks/useInputSchema';
@@ -66,7 +67,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   //   name: 'input_iq',
   // });
   const phaseId = idea?.data.relationships.phases.data[0].id;
-  // const { data: phase } = usePhase(phaseId);
+  const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(projectId);
 
   const {
@@ -340,7 +341,9 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                       <CustomFieldsForm
                         projectId={project.data.id}
                         phaseId={phaseId}
-                        participationMethod={'ideation'}
+                        participationMethod={
+                          phase?.data.attributes.participation_method
+                        }
                         initialFormData={idea.data.attributes}
                       />
                     )}

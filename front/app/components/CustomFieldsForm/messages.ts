@@ -98,4 +98,8 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.authorFieldLabel',
     defaultMessage: 'Author',
   },
+  budgetFieldLabel: {
+    id: 'app.components.CustomFieldsForm.budgetFieldLabel',
+    defaultMessage: 'Budget',
+  },
 });

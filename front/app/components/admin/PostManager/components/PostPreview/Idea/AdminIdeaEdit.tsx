@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
+import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import { Top } from 'components/admin/PostManager/components/PostPreview';
@@ -24,6 +25,7 @@ const AdminIdeaEdit = ({
   const { phaseId } = useParams() as { phaseId: string };
   const theme = useTheme();
   const { data: idea } = useIdeaById(ideaId);
+  const { data: phase } = usePhase(phaseId);
 
   const { data: project } = useProjectById(
     idea?.data.relationships.project.data.id
@@ -32,12 +34,7 @@ const AdminIdeaEdit = ({
   if (!idea || !project) return null;
 
   return (
-    <Box
-      border="1px solid white"
-      borderRadius={theme.borderRadius}
-      height="100%"
-      background={theme.colors.background}
-    >
+    <Box border="1px solid white" borderRadius={theme.borderRadius}>
       <Top>
         <Button onClick={goBack}>
           <FormattedMessage {...messages.cancelEdit} />
@@ -48,7 +45,7 @@ const AdminIdeaEdit = ({
         <CustomFieldsForm
           projectId={project.data.id}
           phaseId={phaseId}
-          participationMethod={'ideation'}
+          participationMethod={phase?.data.attributes.participation_method}
           initialFormData={idea.data.attributes}
         />
       </Box>
