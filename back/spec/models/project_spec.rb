@@ -83,6 +83,13 @@ RSpec.describe Project do
       })
       expect(project.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!<h2>Title</h2><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>' })
     end
+
+    it 'sanitizes when escaped HTML tags present' do
+      project = create(:project, description_multiloc: {
+        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
+      })
+      expect(project.description_multiloc).to eq({ 'en' => 'Something <img src="x">' })
+    end
   end
 
   describe 'sanitization of simple multilocs' do

@@ -398,6 +398,23 @@ RSpec.describe CustomField do
       expect(cf.title_multiloc['fr-BE']).to eq('Something ')
       expect(cf.title_multiloc['nl-BE']).to eq('Plain text with formatting')
     end
+
+    it 'sanitizes when escaped HTML tags present' do
+      cf = build(
+        :custom_field,
+        title_multiloc: {
+          'en' => 'Something &lt;script&gt;alert("XSS")&lt;/script&gt; something',
+          'fr-BE' => 'Something &lt;img src=x onerror=alert(1)&gt;',
+          'nl-BE' => 'Plain &lt;b&gt;text&lt;/b&gt; with &lt;i&gt;formatting&lt;/i&gt;'
+        }
+      )
+
+      cf.save!
+
+      expect(cf.title_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(cf.title_multiloc['fr-BE']).to eq('Something ')
+      expect(cf.title_multiloc['nl-BE']).to eq('Plain text with formatting')
+    end
   end
 
   describe '#accept' do

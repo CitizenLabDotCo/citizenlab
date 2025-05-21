@@ -43,14 +43,28 @@ RSpec.describe ProjectFolders::Folder do
       })
       expect(folder.description_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
     end
+
+    it 'sanitizes when escaped HTML tags present' do
+      folder = create(:project_folder, description_multiloc: {
+        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
+      })
+      expect(folder.description_multiloc).to eq({ 'en' => 'Something <img src="x">' })
+    end
   end
 
   describe '#sanitize_description_preview_multiloc' do
-    it 'sanitizes script tags in the description' do
+    it 'sanitizes script tags in the description_preview_multiloc' do
       folder = create(:project_folder, description_preview_multiloc: {
         'en' => '<p>Test</p><script>These tags should be removed!</script>'
       })
       expect(folder.description_preview_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
+    end
+
+    it 'sanitizes when escaped HTML tags present' do
+      folder = create(:project_folder, description_preview_multiloc: {
+        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
+      })
+      expect(folder.description_preview_multiloc).to eq({ 'en' => 'Something ' })
     end
   end
 

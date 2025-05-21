@@ -24,6 +24,13 @@ RSpec.describe OfficialFeedback do
       expect(official_feedback.body_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
     end
 
+    it 'sanitizes when escaped HTML tags present' do
+      official_feedback = create(:official_feedback, body_multiloc: {
+        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
+      })
+      expect(official_feedback.body_multiloc).to eq({ 'en' => 'Something ' })
+    end
+
     it 'with invalid locales marks the model as invalid' do
       official_feedback = build(:official_feedback, body_multiloc: { 'se-BI' => 'awesome area' })
       expect(official_feedback).to be_invalid
@@ -38,6 +45,23 @@ RSpec.describe OfficialFeedback do
           'en' => 'Something <script>alert("XSS")</script> something',
           'fr-BE' => 'Something <img src=x onerror=alert(1)>',
           'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      )
+
+      official_feedback.save!
+
+      expect(official_feedback.author_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(official_feedback.author_multiloc['fr-BE']).to eq('Something ')
+      expect(official_feedback.author_multiloc['nl-BE']).to eq('Plain text with formatting')
+    end
+
+    it 'sanitizes when escaped HTML tags present' do
+      official_feedback = build(
+        :official_feedback,
+        author_multiloc: {
+          'en' => 'Something &lt;script&gt;alert("XSS")&lt;/script&gt; something',
+          'fr-BE' => 'Something &lt;img src=x onerror=alert(1)&gt;',
+          'nl-BE' => 'Plain &lt;b&gt;text&lt;/b&gt; with &lt;i&gt;formatting&lt;/i&gt;'
         }
       )
 

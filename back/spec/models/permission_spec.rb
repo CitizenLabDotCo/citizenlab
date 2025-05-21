@@ -126,5 +126,22 @@ RSpec.describe Permission do
       expect(permission.access_denied_explanation_multiloc['fr-BE']).to eq('Something ')
       expect(permission.access_denied_explanation_multiloc['nl-BE']).to eq('Plain text with formatting')
     end
+
+    it 'sanitizes when escaped HTML tags present' do
+      permission = build(
+        :permission,
+        access_denied_explanation_multiloc: {
+          'en' => 'Something &lt;script&gt;alert("XSS")&lt;/script&gt; something',
+          'fr-BE' => 'Something &lt;img src=x onerror=alert(1)&gt;',
+          'nl-BE' => 'Plain &lt;b&gt;text&lt;/b&gt; with &lt;i&gt;formatting&lt;/i&gt;'
+        }
+      )
+
+      permission.save!
+
+      expect(permission.access_denied_explanation_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(permission.access_denied_explanation_multiloc['fr-BE']).to eq('Something ')
+      expect(permission.access_denied_explanation_multiloc['nl-BE']).to eq('Plain text with formatting')
+    end
   end
 end

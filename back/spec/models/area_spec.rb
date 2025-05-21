@@ -27,6 +27,13 @@ RSpec.describe Area do
       })
       expect(area.description_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
     end
+
+    it 'sanitizes when escaped HTML tags present' do
+      area = create(:area, description_multiloc: {
+        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
+      })
+      expect(area.description_multiloc).to eq({ 'en' => 'Something <img src="x">' })
+    end
   end
 
   describe 'description sanitizer' do

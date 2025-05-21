@@ -28,6 +28,13 @@ RSpec.describe Event do
       expect(event.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
 
+    it 'sanitizes when escaped HTML tags present' do
+      event = create(:event, description_multiloc: {
+        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
+      })
+      expect(event.description_multiloc).to eq({ 'en' => 'Something <img src="x">' })
+    end
+
     it 'retains paragraphs and line breaks in the description' do
       event = create(:event, description_multiloc: {
         'en' => '<p>Test<br><br>One<br>Two</p><p>Three</p>'

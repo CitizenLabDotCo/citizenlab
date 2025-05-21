@@ -21,6 +21,13 @@ RSpec.describe Phase do
       })
       expect(phase.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
+
+    it 'sanitizes when escaped HTML tags present' do
+      phase = create(:phase, description_multiloc: {
+        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
+      })
+      expect(phase.description_multiloc).to eq({ 'en' => 'Something <img src="x">' })
+    end
   end
 
   describe 'sanitization of simple multilocs' do
