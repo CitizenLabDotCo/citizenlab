@@ -98,7 +98,7 @@
                           escape_html: false
                     ) %>
                     <p style="margin: 15px 0 0;">
-                      <%= localize_for_recipient_and_truncate(top_comment.body_multiloc, 140) %>
+                      <%= strip_tags(localize_for_recipient_and_truncate(top_comment.body_multiloc, 140)) %>
                     </p>
                   </mj-text>
                 </td>
