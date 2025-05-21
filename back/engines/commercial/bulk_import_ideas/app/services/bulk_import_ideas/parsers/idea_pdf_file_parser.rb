@@ -55,7 +55,7 @@ module BulkImportIdeas::Parsers
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the exported PDF template
-        pages_per_idea = import_form_data[:page_count]
+        pages_per_idea = template_data[:page_count]
 
         pdf = begin
           ::CombinePDF.parse source_file.file.read
@@ -105,7 +105,7 @@ module BulkImportIdeas::Parsers
     # @param [Array<Hash>] idea_fields - comes from IdeaBaseFileParser#structure_raw_fields
     def merge_idea_with_form_fields(idea_fields)
       merged_fields = []
-      form_fields = import_form_data[:fields].deep_dup # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
+      form_fields = template_data[:fields].deep_dup # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
       form_fields.each do |form_field|
         idea_fields.each do |idea_field|
           if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]
@@ -227,8 +227,8 @@ module BulkImportIdeas::Parsers
     end
 
     # Return the fields and page count from the form we're importing from
-    def import_form_data
-      @import_form_data ||= BulkImportIdeas::Exporters::IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
+    def template_data
+      @template_data ||= BulkImportIdeas::Exporters::IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
     end
 
     def printable_form_fields

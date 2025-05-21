@@ -394,7 +394,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       let(:idea_row) { service.send(:process_custom_form_fields, idea, {}) }
 
       it 'converts core fields' do
-        expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
+        expect_any_instance_of(described_class).to receive(:template_data).and_return(pdf_form_data)
         expect(idea_row).to include({
           title_multiloc: { en: 'This fine title' },
           body_multiloc: { en: 'A description' },
@@ -403,7 +403,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       end
 
       it 'converts custom fields' do
-        expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
+        expect_any_instance_of(described_class).to receive(:template_data).and_return(pdf_form_data)
         expect(idea_row[:custom_field_values]).to include({
           a_text_field: 'Some text yeah',
           select_field: 'yes',
@@ -413,7 +413,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       end
 
       it 'can cope with multiple checkboxes with same values' do
-        expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
+        expect_any_instance_of(described_class).to receive(:template_data).and_return(pdf_form_data)
         expect(idea_row[:custom_field_values]).to include({
           select_field3: 'yes',
           select_field4: 'yes',
