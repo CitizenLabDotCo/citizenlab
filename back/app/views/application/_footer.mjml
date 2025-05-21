@@ -2,20 +2,14 @@
   <mj-column>
     <mj-text padding-bottom="20px">
       <% if show_terms_link? %>
-        <a
-          href="<%= terms_conditions_url(app_configuration) %>"
-          style="color: #84939E; text-decoration: none; margin: 0 10px;"
-        >
+        <a href="<%= terms_conditions_url(app_configuration) %>" style="color: #84939E; text-decoration: none; margin: 0 10px;">
           <%= I18n.t('email_campaigns.footer.link_terms_conditions') %>
         </a>
         |
       <% end %>
 
       <% if show_privacy_policy_link? %>
-        <a
-          href="<%= privacy_policy_url(app_configuration) %>"
-          style="color: #84939E; text-decoration: none; margin-left: 10px;"
-        >
+        <a href="<%= privacy_policy_url(app_configuration) %>" style="color: #84939E; text-decoration: none; margin-left: 10px;">
           <%= I18n.t('email_campaigns.footer.link_privacy_policy') %>
         </a>
       <% end %>
@@ -27,8 +21,7 @@
           <%= t('email_campaigns.footer.powered_by') %>
         </span>
       </mj-text>
-      <mj-image align="left" width="155px" padding-top="0" href="https://www.govocal.com/"
-        src="<%= gv_gray_logo_url %>" alt="Go Vocal logo" />
+      <mj-image align="left" width="155px" padding-top="0" href="https://www.govocal.com/" src="<%= gv_gray_logo_url %>" alt="Go Vocal logo" />
     <% end %>
   </mj-column>
 </mj-section>

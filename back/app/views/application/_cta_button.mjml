@@ -1,12 +1,6 @@
 <mj-section padding="0 25px 20px">
   <mj-column>
-    <mj-button
-      align="left"
-      background-color="#044D6C"
-      color="#fff"
-      border-radius="5px"
-      href="<%= local_assigns[:href] %>"
-      padding="20px 0">
+    <mj-button align="left" background-color="#044D6C" color="#fff" border-radius="5px" href="<%= local_assigns[:href] %>" padding="20px 0">
       <%= local_assigns[:message] %>
     </mj-button>
   </mj-column>
