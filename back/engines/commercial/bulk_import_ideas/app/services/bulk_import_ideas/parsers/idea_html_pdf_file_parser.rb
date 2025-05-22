@@ -7,8 +7,6 @@ module BulkImportIdeas::Parsers
     def parse_rows(file)
       pdf_file = file.file.read
 
-      # binding.pry
-
       # NOTE: We return both parsed values so we can merge the best values from both
       google_forms_service = Pdf::IdeaGoogleFormParserService.new
       form_parsed_idea = remove_question_numbers_in_keys(google_forms_service.parse_pdf(pdf_file))
@@ -18,7 +16,9 @@ module BulkImportIdeas::Parsers
         Pdf::IdeaHtmlPdfPlainTextParser.new.parse_text(raw_text, template_data)
       rescue BulkImportIdeas::Error
         []
-      end
+                         end
+
+      binding.pry
 
       [merge_parsed_ideas_into_idea_row(form_parsed_idea, text_parsed_idea, file)] # Returns an array for importer - even though only one idea is returned
     end

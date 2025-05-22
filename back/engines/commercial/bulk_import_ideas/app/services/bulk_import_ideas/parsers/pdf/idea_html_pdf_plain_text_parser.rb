@@ -2,9 +2,10 @@
 
 module BulkImportIdeas::Parsers::Pdf
   class IdeaHtmlPdfPlainTextParser
-    NUMBER_FIELD_TYPES = %w[number linear_scale rating]
+    TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
+    NUMBER_FIELD_TYPES = %w[number linear_scale rating sentiment_linear_scale]
+    SELECT_FIELD_TYPES = %w[select multiselect select_image multiselect_image]
     FILLED_OPTION_CHARS = %w[& ☑ ☒ >]
-    EMPTY_OPTION_CHARS = %w[0 O ○ ☐]
 
     def parse_text(pages, template_data)
       return unless pages && template_data
@@ -17,7 +18,6 @@ module BulkImportIdeas::Parsers::Pdf
       all_text = pages.join("\n")
 
       # TODO: What about long titles that wrap onto multiple lines?
-      # TODO: Other field values
       # TODO: Personal data checkbox not working well
       # TODO: Area question not importing
 
@@ -32,11 +32,12 @@ module BulkImportIdeas::Parsers::Pdf
         field[:text] = field_text
 
         # Now process the values
-        value = case field[:print_format]
-        when :single_line_text, :multi_line_text
-          extract_text_value(field)
-        when :single_select, :multi_select, :multi_select_image
-          extract_selected_options(field, option_config)
+        value = if TEXT_FIELD_TYPES.include? field[:input_type]
+                  process_text_value(field)
+                elsif NUMBER_FIELD_TYPES.include? field[:input_type]
+                  process_number_value(field)
+                elsif SELECT_FIELD_TYPES.include? field[:input_type]
+                  process_selected_options(field, option_config)
         end
         parsed_fields[field[:name]] = value if !value.nil?
       end
@@ -52,7 +53,6 @@ module BulkImportIdeas::Parsers::Pdf
     def extract_text_between(text, start_string, end_string)
       return text if start_string.blank?
 
-      # TODO: It has problems if the spacing is off in titles eg '- ' instead of ' - ' eg linear scale field
       split_text = text.split(start_string).last
       end_string ? split_text.split(end_string).first : split_text
     end
@@ -67,16 +67,38 @@ module BulkImportIdeas::Parsers::Pdf
       end
     end
 
-    def extract_text_value(field)
+    def process_text_value(field)
       # First split the text within the field to narrow it down to the actual text we want to use
       start_delimiter = field.dig(:content_delimiters, :start)
       value = extract_text_between(field[:text], start_delimiter, nil)
       value = value.tr("\n", ' ').strip
-      value = format_number_value(value) if field[:is_number]
       value
     end
 
-    def extract_selected_options(field, option_config)
+    def process_number_value(field)
+      value = process_text_value(field)
+      return unless value
+      return if value.length > 8 # Unlikely to be a number if it is this long
+
+      # Convert any characters to numbers
+      chars0 = %w[o O]
+      chars1 = %w[l i I]
+      chars2 = %w[z Z]
+      chars5 = %w[s S]
+
+      number_str = ''
+      value.chars.each do |char|
+        number_str += char if char.to_i.to_s == char
+        number_str += '0' if chars0.include?(char)
+        number_str += '1' if chars1.include?(char)
+        number_str += '2' if chars2.include?(char)
+        number_str += '5' if chars5.include?(char)
+      end
+
+      number_str.to_i
+    end
+
+    def process_selected_options(field, option_config)
       # Get the selected options from the field
       selected_options = []
 
@@ -105,27 +127,6 @@ module BulkImportIdeas::Parsers::Pdf
 
       line = line.gsub(/#{option_text}/, '')
       FILLED_OPTION_CHARS.any? { |char| line.include?(char) }
-    end
-
-    # TODO: Maybe need this?
-    def format_number_value(value)
-      # Convert any characters to numbers
-      chars0 = %w[o O]
-      chars1 = %w[l i I]
-      chars2 = %w[z Z]
-      chars5 = %w[s S]
-
-      number_str = ''
-      value.chars.each do |char|
-        number_str += char if char.to_i.to_s == char
-        number_str += '0' if chars0.include?(char)
-        number_str += '1' if chars1.include?(char)
-        number_str += '2' if chars2.include?(char)
-        number_str += '5' if chars5.include?(char)
-      end
-
-      # TODO: Deal with max values and do not try and convert strings if they don't look like a number
-      number_str.to_i
     end
   end
 end

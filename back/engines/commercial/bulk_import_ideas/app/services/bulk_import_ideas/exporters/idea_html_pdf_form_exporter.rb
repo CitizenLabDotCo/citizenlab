@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Exporters
   class IdeaHtmlPdfFormExporter < IdeaHtmlFormExporter
-    # These methods are made public so they can be used by the importer
+    # These methods are made public so they can be used by the template reader when importing
     public :printable_fields, :field_print_format, :field_has_question_number?, :optional_text
 
     def format

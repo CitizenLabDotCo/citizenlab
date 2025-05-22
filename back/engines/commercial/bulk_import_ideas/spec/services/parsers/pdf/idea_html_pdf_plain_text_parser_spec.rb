@@ -232,7 +232,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfPlainTextParser do
     it 'extracts the data' do
       service = described_class.new
       service.parse_text(raw_text_array, template_data)
-      # binding.pry
+      binding.pry
 
       # TODO: NOW NEED TO GET THE LATEST template_data and check all the options are there
       expect(result[:fields].size).to eq 20

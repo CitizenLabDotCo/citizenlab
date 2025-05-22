@@ -68,30 +68,34 @@ module BulkImportIdeas::Parsers::Pdf
             content_delimiters = field_content_delimiters(field_or_option, next_field, question_number, page_lines, field_line_num)
           end
 
-          # Blank out options once processed - To avoid them being found again when there multiple options on a page with the same value
-          pdf_pages[index][field_line_num] = '' if type == 'option'
+          # Blank out line once processed - Avoid them being found again when there multiple questions/options on a page with the same value
+          pdf_pages[index][field_line_num] = ''
 
           break # No need to check the rest of the pages - causes issues with duplicate options if we do
         end
+      end
+
+      # Domicile options (when user fields in form enabled) need different keys
+      key = field_or_option.key
+      if type == 'option' && field_or_option.area.present?
+        key = field_or_option.area.id
       end
 
       # Create a config for the field or option
       field_config = {
         name: field_title(field_or_option),
         type: type,
-        key: field_or_option.key,
+        key: key,
         page: page_num,
         position: position
       }
 
       if type == 'field'
         # Only needed for custom fields
-        field_config[:input_type] = field_or_option[:input_type]
-        field_config[:is_number] = field_or_option.stores_number?
         field_config[:code] = field_or_option[:code]
+        field_config[:input_type] = field_or_option[:input_type]
         field_config[:description] = ActionView::Base.full_sanitizer.sanitize(field_or_option[:description_multiloc][@locale])
         field_config[:print_title] = print_title
-        field_config[:print_format] = pdf_exporter.field_print_format(field_or_option)
         field_config[:content_delimiters] = content_delimiters
       else
         # Only needed for options
@@ -108,6 +112,7 @@ module BulkImportIdeas::Parsers::Pdf
     # If the field is the last on a page there is no end delimiter
     def field_content_delimiters(_field, next_field, current_question_number, page_lines, _field_line_num)
       page_text = page_lines.reject(&:empty?) # Remove empty lines
+      page_text = page_text.reject { |line| line.match?(/\A[i\(\)\s]*\z/) } # Remove some odd lines that are read from the PDF with just i or ( ) in them
       page_text.pop # Remove the last line which is always the page number
 
       next_line_index = nil
@@ -126,7 +131,7 @@ module BulkImportIdeas::Parsers::Pdf
 
       {
         start: next_line_index ? page_text[next_line_index - 1].strip : page_text.last.strip,
-        end: next_line_index ? page_text[next_line_index].strip : next_question_title.strip # next_question_title will be used if this is the last field on the page
+        end: next_line_index ? page_text[next_line_index].strip : next_question_title.truncate(40).strip # truncated next_question_title will be used if this is the last field on the page
       }
     end
 
@@ -167,7 +172,7 @@ module BulkImportIdeas::Parsers::Pdf
     def full_print_title(field, question_number = nil)
       title = question_number ? "#{question_number}. " : ''
       title += field_title(field)
-      title += " #{pdf_exporter.optional_text}" unless field.required?
+      title += " #{pdf_exporter.optional_text}" unless field.required? || field.page?
       title
     end
 
