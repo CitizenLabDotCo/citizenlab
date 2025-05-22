@@ -7,7 +7,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfPlainTextParser do
   include_context 'pdf_parser_data_setup'
 
   describe 'parse_text' do
-    it 'extracts the data' do
+    it 'parsed the raw text and returns structured fields' do
       service = described_class.new('en')
       result = service.parse_text(google_parsed_raw_text_array, pdf_template_data)
 

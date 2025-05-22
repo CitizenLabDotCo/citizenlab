@@ -3,9 +3,8 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
-  # TODO: Add tests for a native survey too
   describe 'template_data' do
-    # NOTE: When changing these tests ensure that the PDF ideation form matches the form created here
+    # NOTE: When changing these tests ensure that the PDF ideation form below matches the form created here
     context 'ideation form' do
       let(:project) do
         project = create(:single_phase_ideation_project)
@@ -35,7 +34,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
       let(:template_data) { service.send(:template_data) }
 
       before do
-        # Stub the export method to return a PDF file from fixtures
+        # Stub the export method to return an actual PDF file from fixtures
         allow_any_instance_of(BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/ideation_form.pdf'))
       end
 
@@ -43,40 +42,57 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
         # binding.pry
 
         expect(template_data[:page_count]).to eq 2
-        # expect(template_data[:fields].count).to eq 14
-        # expect(template_data[:fields].pluck(:key)).to eq %w[
-        #   title_multiloc
-        #   body_multiloc
-        #   short_answer_1
-        #   singlechoice_1
-        #   option_one_1
-        #   option_two_1
-        #   multichoice_1
-        #   option_one_2
-        #   option_two_2
-        #   multichoice_2
-        #   option_one_3
-        #   option_two_3
-        #   location_description
-        #   shortanswer_2
-        # ]
-        # expect(template_data[:fields].pluck(:name)).to eq [
-        #   '1. Title',
-        #   '2. Description',
-        #   '5. A short answer question',
-        #   '6. A single choice question',
-        #   'Option one',
-        #   'Option two',
-        #   '7. Multiple choice question',
-        #   'Option one', 'Option two',
-        #   '8. Another multiple choice question',
-        #   'Option one',
-        #   'Option two',
-        #   '10. Location',
-        #   '11. Short answer question with a really long title that will wrap onto multiple lines'
-        # ]
-        # expect(template_data[:fields].pluck(:page)).to eq [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2]
-        # expect(template_data[:fields].pluck(:position)).to eq [11, 26, 77, 88, 91, 93, 2, 5, 7, 13, 16, 18, 38, 46]
+        expect(template_data[:fields].count).to eq 14
+        expect(template_data[:fields].pluck(:key)).to eq %w[
+          title_multiloc
+          body_multiloc
+          short_answer_1
+          singlechoice_1
+          option_one_1
+          option_two_1
+          multichoice_1
+          option_one_2
+          option_two_2
+          multichoice_2
+          option_one_3
+          option_two_3
+          location_description
+          shortanswer_2
+        ]
+        expect(template_data[:fields].pluck(:name)).to eq [
+          'Title',
+          'Description',
+          'A short answer question',
+          'A single choice question',
+          'Option one',
+          'Option two',
+          'Multiple choice question',
+          'Option one',
+          'Option two',
+          'Another multiple choice question',
+          'Option one',
+          'Option two',
+          'Location',
+          'Short answer question with a really long title that will wrap onto multiple lines'
+        ]
+        expect(template_data[:fields].pluck(:print_title)).to eq [
+          '1. Title',
+          '2. Description',
+          '5. A short answer question (optional)',
+          '6. A single choice question (optional)',
+          nil,
+          nil,
+          '7. Multiple choice question (optional)',
+          nil,
+          nil,
+          '8. Another multiple choice question (optional)',
+          nil,
+          nil,
+          '10. Location (optional)',
+          '11. Short answer question with a really long title that will wrap onto multiple lines (optional)'
+        ]
+        expect(template_data[:fields].pluck(:page)).to eq [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2]
+        expect(template_data[:fields].pluck(:position)).to eq [11, 26, 77, 88, 91, 93, 2, 5, 7, 13, 16, 18, 38, 46]
       end
 
       it 'returns text strings as delimiters that identify the start and end of where text questions values should be' do
@@ -92,11 +108,11 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
         })
         expect(delimiters['short_answer_1']).to eq({
           start: '*This answer will only be shared with moderators, and not to the public.',
-          end: '6. A single choice question'
+          end: '6. A single choice question (optional)'
         })
         expect(delimiters['location_description']).to eq({
-          start: '10. Location',
-          end: '11. Short answer question with a really long title that will wrap onto'
+          start: '10. Location (optional)',
+          end: '11. Short answer question with a really long title that will wrap onto' # Only finds the text on the next line (not the whole title)
         })
         expect(delimiters['shortanswer_2']).to eq({
           start: '*This answer will only be shared with moderators, and not to the public.',
@@ -104,5 +120,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
         })
       end
     end
+
+    # TODO: Add tests for the native survey created in the shared context too
   end
 end
