@@ -68,7 +68,7 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       })
     end
 
-    it 'filters out SSO redirects' do
+    it 'identifies SSO redirects' do
       create(:session, referrer: 'https://accounts.claveunica.gob.cl/')
       create(:session, referrer: 'https://accounts.google.com/')
       create(:session, referrer: 'https://login.microsoftonline.com/')
@@ -78,7 +78,9 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
       create(:session, referrer: 'https://pvp.wien.gv.at/')
       create(:session, referrer: 'https://app.franceconnect.gouv.fr/')
 
-      expect(query.run_query[:sessions_per_referrer_type]).to eq({})
+      expect(query.run_query[:sessions_per_referrer_type]).to eq({
+        'sso_redirect' => 8
+      })
     end
 
     it 'identifies other traffic' do
