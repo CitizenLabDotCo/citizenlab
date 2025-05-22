@@ -12,15 +12,19 @@ import {
   Thead,
   Tr,
 } from '@citizenlab/cl2-component-library';
-import styled, { useTheme } from 'styled-components';
 import { media, RGBAtoRGB } from 'component-library/utils/styleUtils';
-import { useIntl } from 'utils/cl-intl';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { getLinearScaleLabel } from '../LinearScale/utils';
+import styled, { useTheme } from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
+
 import useLocalize from 'hooks/useLocalize';
+
 import messages from 'components/Form/Components/Controls/messages';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
+
+import { getLinearScaleLabel } from '../LinearScale/utils';
 
 const StickyTh = styled(Th)`
   background: ${(props) =>
@@ -134,7 +138,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
       // Otherwise, just read out the value and the maximum value
       return formatMessage(messages.valueOutOfTotal, { value, total });
     },
-    [maxColumns, question, formatMessage]
+    [maxColumns, question, formatMessage, localize]
   );
 
   if (!statements) return null;

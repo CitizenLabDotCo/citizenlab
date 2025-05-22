@@ -5,10 +5,11 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
 
+import legacyMessages from 'components/Form/Components/Controls/messages';
+
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
-import legacyMessages from 'components/Form/Components/Controls/messages';
 
 const generateYupValidationSchema = ({
   pageQuestions,
@@ -258,7 +259,6 @@ const generateYupValidationSchema = ({
           ? object().test(
               formatMessage(legacyMessages.allStatementsError),
               (object) => {
-                if (!object) return false;
                 const keys = Object.keys(object);
                 const values = Object.values(object);
                 const isValid =
