@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.seeEvents3',
     defaultMessage: 'See events',
   },
+  viewInputs: {
+    id: 'app.components.ParticipationCTABars.viewInputs',
+    defaultMessage: 'View inputs',
+  },
   allocateBudget: {
     id: 'app.components.ParticipationCTABars.allocateBudget',
     defaultMessage: 'Allocate your budget',
