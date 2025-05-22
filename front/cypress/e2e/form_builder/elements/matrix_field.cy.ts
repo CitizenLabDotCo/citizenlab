@@ -43,9 +43,7 @@ describe('Form builder matrix component', () => {
   });
 
   it('adds matrix field and is displayed when filling survey', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
 
     cy.get('[data-cy="e2e-matrix"]');
     cy.wait(2000);

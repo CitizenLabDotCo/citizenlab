@@ -1,11 +1,7 @@
 import { randomString } from '../../../support/commands';
-import moment = require('moment');
 
 describe('Form builder long text field', () => {
-  const projectTitle = randomString();
-  const projectDescription = randomString();
   const questionTitle = randomString();
-  const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
@@ -15,30 +11,11 @@ describe('Form builder long text field', () => {
       cy.apiRemoveProject(projectId);
     }
 
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    })
-      .then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId,
-          title: 'firstPhaseTitle',
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: true,
-          canComment: true,
-          canReact: true,
-        });
-      })
-      .then((phase) => {
-        phaseId = phase.body.data.id;
-      });
+    cy.createProjectWithNativeSurveyPhase().then((result) => {
+      projectId = result.projectId;
+      projectSlug = result.projectSlug;
+      phaseId = result.phaseId;
+    });
 
     cy.setAdminLoginCookie();
   });
@@ -51,9 +28,7 @@ describe('Form builder long text field', () => {
 
   it('adds long text field and user can fill in data in the field', () => {
     const testText = randomString(400);
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.get('[data-cy="e2e-long-answer"]');
     cy.wait(2000);
     cy.get('[data-cy="e2e-long-answer"]').click();

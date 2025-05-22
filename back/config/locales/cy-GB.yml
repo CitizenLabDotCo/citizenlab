@@ -184,6 +184,7 @@ cy:
         description:
       other_input_field:
         title: Teipiwch eich ateb
+        print_title: Os '%{other_option}', nodwch
       ask_follow_up_field:
         title: Dywedwch wrthym pam
     community_monitor:
@@ -333,6 +334,7 @@ cy:
       write_as_clearly: 'Ysgrifennwch fel <b>yn glir</b> ag y gallwch – efallai y bydd y ffurflenni hyn yn cael eu sganio'
       write_in_language: 'Ysgrifennwch eich atebion yn yr un iaith â''r ffurflen hon'
       linear_scale_print_description: 'Ysgrifennwch rif rhwng %{min_label} a %{max_label} yn unig'
+      unsupported_field: 'Ni ellir cwblhau''r maes hwn ar bapur. Defnyddiwch y fersiwn ar-lein o''r ffurflen hon yn lle hynny.'
   project_copy:
     title_suffix: 'Copi'
   confirmations_mailer:

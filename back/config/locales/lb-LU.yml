@@ -184,6 +184,7 @@ lb:
         description:
       other_input_field:
         title: Typ Är Äntwert
+        print_title: Wann '%{other_option}', gitt w.e.g. un
       ask_follow_up_field:
         title: Sot eis firwat
     community_monitor:
@@ -329,6 +330,7 @@ lb:
       write_as_clearly: 'Schreift esou <b>kloer</b> wéi Dir kënnt - dës Forme kënne gescannt ginn'
       write_in_language: 'Schreift Är Äntwerten an der selwechter Sprooch wéi dëse Formulaire'
       linear_scale_print_description: 'Schreift w.e.g. nëmmen eng Zuel tëscht %{min_label} an %{max_label}'
+      unsupported_field: 'Dëst Feld kann net op Pabeier ausgefëllt ginn. Benotzt w.e.g. amplaz déi online Versioun vun dësem Formulaire.'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:

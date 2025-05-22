@@ -178,8 +178,6 @@
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Typ",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Autospara",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Automatisk sparning är aktiverad som standard när du öppnar formulärredigeraren. Varje gång du stänger fältinställningspanelen med hjälp av \"X\"-knappen kommer den automatiskt att utlösa en sparning.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Ladda ner som pdf",
-  "app.components.FormSync.downloadExcelTemplate": "Ladda ner en Excel-mall",
   "app.components.GoBackButton.group.edit.goBack": "Gå tillbaka",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Gå tillbaka till föregående sida",
   "app.components.HookForm.Feedback.errorTitle": "Det finns ett problem",

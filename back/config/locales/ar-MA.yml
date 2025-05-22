@@ -184,6 +184,7 @@ ar-MA:
         description:
       other_input_field:
         title: اكتب إجابتك
+        print_title: إذا كان '%{other_option}'، يرجى التحديد
       ask_follow_up_field:
         title: أخبرنا لماذا
     community_monitor:
@@ -333,6 +334,7 @@ ar-MA:
       write_as_clearly: 'اكتب <b>بوضوح</b> قدر الإمكان - قد يتم مسح هذه النماذج ضوئيًا'
       write_in_language: 'اكتب إجاباتك بنفس لغة هذا النموذج'
       linear_scale_print_description: 'الرجاء كتابة رقم بين %{min_label} و %{max_label} فقط'
+      unsupported_field: 'لا يُمكن تعبئة هذا الحقل ورقيًا. يُرجى استخدام النسخة الإلكترونية من هذا النموذج.'
   project_copy:
     title_suffix: 'نسخة'
   confirmations_mailer:
