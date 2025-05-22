@@ -8,6 +8,7 @@ export interface Translations {
   direct_entry: string;
   social_network: string;
   seach_engine: string;
+  sso_redirect: string;
   other: string;
   campaign: string;
   trafficSources: string;
@@ -25,6 +26,7 @@ export const getTranslations = (
   direct_entry: formatMessage(messages.directEntry),
   social_network: formatMessage(messages.socialNetworks),
   seach_engine: formatMessage(messages.searchEngines),
+  sso_redirect: formatMessage(messages.ssoRedirects),
   other: formatMessage(messages.websites),
   campaign: formatMessage(messages.campaigns),
   trafficSources: formatMessage(cardMessages.visitorsTrafficSources),

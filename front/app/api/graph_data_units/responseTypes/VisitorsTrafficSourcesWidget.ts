@@ -2,6 +2,7 @@ type ReferrerType =
   | 'direct_entry'
   | 'search_engine'
   | 'social_network'
+  | 'sso_redirect'
   | 'other';
 
 export interface VisitorsTrafficSourcesResponse {

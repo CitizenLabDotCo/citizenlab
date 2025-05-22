@@ -2,11 +2,11 @@ import { VisitorsTrafficSourcesResponse } from 'api/graph_data_units/responseTyp
 
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
+import { keys } from 'utils/helperUtils';
 import { roundPercentages } from 'utils/math';
 
 import { Translations } from './translations';
 import { PieRow } from './typings';
-import { keys } from 'utils/helperUtils';
 
 export const parsePieData = (
   {

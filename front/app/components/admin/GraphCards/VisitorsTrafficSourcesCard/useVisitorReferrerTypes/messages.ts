@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.websites',
     defaultMessage: 'Websites',
   },
+  ssoRedirects: {
+    id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.ssoRedirects',
+    defaultMessage: 'SSO redirects',
+  },
   campaigns: {
     id: 'app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.campaigns',
     defaultMessage: 'Campaigns',
