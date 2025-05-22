@@ -11,8 +11,14 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let!(:page_field) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' }) }
   let!(:text_field) { create(:custom_field_text, resource: custom_form, required: true, title_multiloc: { 'en' => 'Text field' }) }
   let!(:multiline_field) { create(:custom_field_multiline_text, resource: custom_form, title_multiloc: { 'en' => 'Multiline field' }) }
+  let!(:select_field) do
+    field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
+    field.options.create!(key: 'single1', title_multiloc: { 'en' => 'Single 1' })
+    field.options.create!(key: 'single2', title_multiloc: { 'en' => 'Single 2' })
+    field
+  end
   let!(:multiselect_field) do
-    field = create(:custom_field_multiselect, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Select field' })
+    field = create(:custom_field_multiselect, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' })
     field.options.create!(key: 'option1', title_multiloc: { 'en' => 'Option 1' })
     field.options.create!(key: 'option2', title_multiloc: { 'en' => 'Option 2' })
     field
@@ -110,14 +116,15 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(titles[0]).to include 'Text field'
         expect(titles[1]).to include 'Multiline field'
         expect(titles[2]).to include 'Select field'
-        expect(titles[3]).to include 'Ranking field'
-        expect(titles[4]).to include 'Select image field'
-        expect(titles[5]).to include 'Matrix field'
-        expect(titles[6]).to include 'Rating field'
-        expect(titles[7]).to include 'Sentiment scale field'
-        expect(titles[8]).to include 'Point field'
-        expect(titles[9]).to include 'Line field'
-        expect(titles[10]).to include 'Polygon field'
+        expect(titles[3]).to include 'Multi select field'
+        expect(titles[4]).to include 'Ranking field'
+        expect(titles[5]).to include 'Select image field'
+        expect(titles[6]).to include 'Matrix field'
+        expect(titles[7]).to include 'Rating field'
+        expect(titles[8]).to include 'Sentiment scale field'
+        expect(titles[9]).to include 'Point field'
+        expect(titles[10]).to include 'Line field'
+        expect(titles[11]).to include 'Polygon field'
       end
 
       it 'shows optional if questions are not required' do
@@ -132,6 +139,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(titles[8]).to include '(optional)'
         expect(titles[9]).to include '(optional)'
         expect(titles[10]).to include '(optional)'
+        expect(titles[11]).to include '(optional)'
       end
 
       it 'returns page titles' do
@@ -148,6 +156,13 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
       it 'shows 7 lines for longer text fields' do
         multiline_text = parsed_html.css("div##{multiline_field.id}")
         expect(multiline_text.css('div.line').count).to eq 7
+      end
+
+      it 'shows select field instructions and options' do
+        select = parsed_html.css("div##{select_field.id}")
+        expect(select.text).to include '*Only choose one option'
+        expect(select.text).to include 'Single 1'
+        expect(select.text).to include 'Single 2'
       end
 
       it 'shows multiselect instructions and options' do

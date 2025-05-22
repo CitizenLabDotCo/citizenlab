@@ -339,6 +339,7 @@ en:
       point_print_description: 'Please draw an X on the map below to show the location or write the address instead.'
       line_print_description: 'Please draw a route on the map below.'
       polygon_print_description: 'Please draw a shape on the map below.'
+      select_print_description: 'Only choose one option.'
   project_copy:
     title_suffix: 'Copy'
   confirmations_mailer:

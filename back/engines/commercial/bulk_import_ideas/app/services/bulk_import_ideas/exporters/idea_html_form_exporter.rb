@@ -208,6 +208,7 @@ module BulkImportIdeas::Exporters
       html += linear_scale_print_instructions(field)
       html += sentiment_linear_scale_print_instructions(field)
       html += rating_print_instructions(field)
+      html += select_print_instructions(field)
       html += multiselect_print_instructions(field)
       html += ranking_print_instructions(field)
       html += matrix_print_instructions(field)
@@ -329,6 +330,12 @@ module BulkImportIdeas::Exporters
 
     def print_visibility_disclaimer(field)
       @phase.pmethod.supports_public_visibility? && !field.visible_to_public? ? "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }}" : ''
+    end
+
+    def select_print_instructions(field)
+      return '' unless field.singleselect?
+
+      "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.select_print_description') }}"
     end
 
     def multiselect_print_instructions(field)
