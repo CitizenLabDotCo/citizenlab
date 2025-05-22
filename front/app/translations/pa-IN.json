@@ -178,7 +178,6 @@
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "ਟਾਈਪ ਕਰੋ",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "ਆਟੋ ਸੇਵ",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "ਜਦੋਂ ਤੁਸੀਂ ਫਾਰਮ ਸੰਪਾਦਕ ਖੋਲ੍ਹਦੇ ਹੋ ਤਾਂ ਸਵੈ-ਸੰਭਾਲ ਮੂਲ ਰੂਪ ਵਿੱਚ ਸਮਰੱਥ ਹੁੰਦਾ ਹੈ। ਜਦੋਂ ਵੀ ਤੁਸੀਂ \"X\" ਬਟਨ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਫੀਲਡ ਸੈਟਿੰਗ ਪੈਨਲ ਨੂੰ ਬੰਦ ਕਰਦੇ ਹੋ, ਤਾਂ ਇਹ ਸਵੈਚਲਿਤ ਤੌਰ 'ਤੇ ਇੱਕ ਸੇਵ ਨੂੰ ਟਰਿੱਗਰ ਕਰੇਗਾ।",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "pdf ਦੇ ਰੂਪ ਵਿੱਚ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.components.GoBackButton.group.edit.goBack": "ਵਾਪਸ ਜਾਓ",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "ਪਿਛਲੇ ਪੰਨੇ 'ਤੇ ਵਾਪਸ ਜਾਓ",
   "app.components.HookForm.Feedback.errorTitle": "ਕੋਈ ਸਮੱਸਿਆ ਹੈ",

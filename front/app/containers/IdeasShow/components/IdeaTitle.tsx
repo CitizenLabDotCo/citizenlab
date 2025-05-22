@@ -39,7 +39,7 @@ const IdeaTitle = ({ idea, projectId, translateButtonClicked }: Props) => {
   const ideaTitle = localize(idea.data.attributes.title_multiloc);
 
   return (
-    <IdeaHeader id="e2e-idea-title">
+    <IdeaHeader>
       <div aria-live="polite">
         {ideaTitle && (
           <Title

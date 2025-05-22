@@ -184,6 +184,7 @@ pa:
         description:
       other_input_field:
         title: ਆਪਣਾ ਜਵਾਬ ਟਾਈਪ ਕਰੋ
+        print_title: ਜੇਕਰ '%{other_option}' ਹੈ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਦੱਸੋ
       ask_follow_up_field:
         title: ਸਾਨੂੰ ਦੱਸੋ ਕਿਉਂ
     community_monitor:
@@ -329,6 +330,7 @@ pa:
       write_as_clearly: 'ਜਿਵੇਂ ਤੁਸੀਂ ਕਰ ਸਕਦੇ ਹੋ <b>ਸਪਸ਼ਟ ਤੌਰ ''ਤੇ</b> ਲਿਖੋ— ਇਹ ਫਾਰਮ ਸਕੈਨ ਕੀਤੇ ਜਾ ਸਕਦੇ ਹਨ'
       write_in_language: 'ਆਪਣੇ ਜਵਾਬ ਉਸੇ ਭਾਸ਼ਾ ਵਿੱਚ ਲਿਖੋ ਜਿਸ ਭਾਸ਼ਾ ਵਿੱਚ ਇਹ ਫਾਰਮ ਹੈ'
       linear_scale_print_description: 'ਕਿਰਪਾ ਕਰਕੇ ਸਿਰਫ਼ %{min_label} ਅਤੇ %{max_label} ਦੇ ਵਿਚਕਾਰ ਇੱਕ ਨੰਬਰ ਲਿਖੋ'
+      unsupported_field: 'ਇਹ ਖੇਤਰ ਕਾਗਜ਼ ''ਤੇ ਪੂਰਾ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ। ਕਿਰਪਾ ਕਰਕੇ ਇਸ ਫਾਰਮ ਦੇ ਔਨਲਾਈਨ ਸੰਸਕਰਣ ਦੀ ਵਰਤੋਂ ਕਰੋ।'
   project_copy:
     title_suffix: 'ਕਾਪੀ ਕਰੋ'
   confirmations_mailer:

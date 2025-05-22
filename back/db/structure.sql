@@ -2215,7 +2215,8 @@ CREATE TABLE public.custom_forms (
     participation_context_type character varying NOT NULL,
     fields_last_updated_at timestamp(6) without time zone DEFAULT now() NOT NULL,
     print_start_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    print_end_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
+    print_end_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    print_personal_data_fields boolean DEFAULT false NOT NULL
 );
 
 
@@ -2820,7 +2821,8 @@ CREATE TABLE public.permissions (
     updated_at timestamp without time zone NOT NULL,
     global_custom_fields boolean DEFAULT false NOT NULL,
     verification_expiry integer,
-    access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
+    access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    everyone_tracking_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -7084,11 +7086,13 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250513160156'),
 ('20250509140651'),
 ('20250509131056'),
 ('20250502112945'),
 ('20250501134516'),
 ('20250416120221'),
+('20250415132943'),
 ('20250415094344'),
 ('20250409111817'),
 ('20250327095857'),

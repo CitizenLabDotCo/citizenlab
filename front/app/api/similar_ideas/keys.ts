@@ -15,8 +15,8 @@ const similarIdeasKeys = {
       operation: 'list',
       parameters: {
         projectId: payload.idea.project_id,
-        title: payload.idea.title_multiloc?.en ?? '',
-        body: payload.idea.body_multiloc?.en ?? '',
+        title: payload.idea.title_multiloc ?? '',
+        body: payload.idea.body_multiloc ?? '',
         phaseIds: payload.idea.phase_ids ?? [],
       },
     },

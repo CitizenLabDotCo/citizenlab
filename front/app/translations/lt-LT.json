@@ -178,7 +178,6 @@
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tipas",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automatinis išsaugojimas",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Automatinis išsaugojimas įjungiamas pagal numatytuosius nustatymus, kai atidarote formos redaktorių. Bet kada, kai uždarysite lauko nustatymų skydelį naudodami mygtuką \"X\", jis bus automatiškai išsaugotas.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Atsisiųsti kaip pdf",
   "app.components.GoBackButton.group.edit.goBack": "Grįžti atgal",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Grįžti į ankstesnį puslapį",
   "app.components.HookForm.Feedback.errorTitle": "Yra problema",

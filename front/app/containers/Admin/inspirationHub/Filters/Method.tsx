@@ -36,6 +36,7 @@ const Method = () => {
   const { formatMessage } = useIntl();
 
   const options = keys(PARTICIPATION_METHOD_LABELS)
+    .filter((key) => key !== 'survey')
     .map((key) => ({
       value: key,
       text: formatMessage(PARTICIPATION_METHOD_LABELS[key]),
