@@ -17,7 +17,7 @@ export default defineMessages({
   },
   followAreas1: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1',
-    defaultMessage: 'Follow {areasTerm}',
+    defaultMessage: 'Follow preferences',
   },
   areasYouFollow1: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areasYouFollow1',
