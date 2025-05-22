@@ -6,6 +6,7 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import Text from 'component-library/components/Text';
 
 import { CommonGroundResultItem } from 'api/common_ground/types';
 import useCommonGroundResults from 'api/common_ground/useCommonGroundResults';
@@ -34,9 +35,53 @@ const CommonGroundResults = ({ phaseId }: Props) => {
   } = results.data.attributes;
   const totalVotes = votes.up + votes.down + votes.neutral;
 
-  const renderList = (title: string, items: CommonGroundResultItem[]) => (
+  const renderStats = () => (
+    <Box display="flex" mb="32px">
+      <Box mr="48px" style={{ textAlign: 'center' }}>
+        <Text fontSize="xxxxl" fontWeight="bold" as="span" my="0px">
+          {num_participants}
+        </Text>
+        <Text fontSize="m" color="textPrimary" as="p" my="0px">
+          {formatMessage(
+            num_participants !== 1
+              ? messages.participants
+              : messages.participant
+          )}
+        </Text>
+      </Box>
+      <Box mr="48px" style={{ textAlign: 'center' }}>
+        <Text fontSize="xxxxl" fontWeight="bold" as="span" my="0px">
+          {num_ideas}
+        </Text>
+        <Text fontSize="m" color="textPrimary" as="p" my="0px">
+          {formatMessage(
+            num_ideas !== 1 ? messages.statements : messages.statement
+          )}
+        </Text>
+      </Box>
+      <Box style={{ textAlign: 'center' }}>
+        <Text fontSize="xxxxl" fontWeight="bold" as="span" my="0px">
+          {totalVotes}
+        </Text>
+        <Text fontSize="m" color="textPrimary" as="p" my="0px">
+          {formatMessage(totalVotes !== 1 ? messages.votes : messages.vote)}
+        </Text>
+      </Box>
+    </Box>
+  );
+
+  const renderList = (
+    title: string,
+    description: string,
+    items: CommonGroundResultItem[]
+  ) => (
     <Box mb="32px">
-      <Title variant="h4">{title}</Title>
+      <Title variant="h4" mb="4px">
+        {title}
+      </Title>
+      <Text fontSize="s" color="grey700" my="0px">
+        {description}
+      </Text>
       {items.map((item) => (
         <React.Fragment key={item.id}>
           <Box py="12px">
@@ -85,21 +130,17 @@ const CommonGroundResults = ({ phaseId }: Props) => {
 
   return (
     <Box mt="8px" bg="white" p="30px 30px 48px 30px">
-      <Box display="flex" mb="24px">
-        <Box mr="24px">
-          <strong>{formatMessage(messages.participants)}</strong>:{' '}
-          {num_participants}
-        </Box>
-        <Box mr="24px">
-          <strong>{formatMessage(messages.statements)}</strong>: {num_ideas}
-        </Box>
-        <Box>
-          <strong>{formatMessage(messages.votes)}</strong>: {totalVotes}
-        </Box>
-      </Box>
-
-      {renderList(formatMessage(messages.majority), top_consensus_ideas)}
-      {renderList(formatMessage(messages.divisive), top_controversial_ideas)}
+      {renderStats()}
+      {renderList(
+        formatMessage(messages.majority),
+        formatMessage(messages.majorityDescription),
+        top_consensus_ideas
+      )}
+      {renderList(
+        formatMessage(messages.divisive),
+        formatMessage(messages.divisiveDescription),
+        top_controversial_ideas
+      )}
     </Box>
   );
 };
