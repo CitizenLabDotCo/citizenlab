@@ -1,34 +1,27 @@
 <!-- Notifications -->
 <mj-wrapper>
   <% if event.notifications_count > 0 %>
-    <mj-section
-      padding="0 25px 40px"
-      background-color="#fff"
-      border-radius="5px"
-      text-align="left"
-    >
-      <mj-column border="1px solid #eaeaea" padding="30px 25px" background-color="#fff" border-radius="5px">
-        <mj-text padding-bottom="20px">
-          <h2>
-            <% if event.notifications_count == 1 %>
-              <%= format_message('one_notification') %>
-            <% elsif event.notifications_count > 1 %>
-              <%= format_message('multiple_notifications', values: { notifCount: event.notifications_count }) %>
-            <% end %>
-          </h2>
-          <p style="margin-top: 10px;">
-            <%= format_message('unread_notifications') %>
-          </p>
-        </mj-text>
-          <mj-button
-            color="#fff"
-            background-color="#044D6C"
-            border-radius="5px"
-            href="<%= url_service.home_url(app_configuration: @app_configuration, locale: @locale) %>"
-            align="left"
-          >
-            <%= format_message('cta_go_to_the_platform') %>
-          </mj-button>
+    <mj-section padding="0 25px 25px">
+      <mj-column>
+        <mj-table>
+          <tr>
+            <td style="border:1px solid #eaeaea; padding:20px 25px; background-color:#fff; border-radius:5px;">
+              <h2>
+                <% if event.notifications_count == 1 %>
+                  <%= format_message('one_notification') %>
+                <% elsif event.notifications_count > 1 %>
+                  <%= format_message('multiple_notifications', values: { notifCount: event.notifications_count }) %>
+                <% end %>
+              </h2>
+              <p style="margin-top: 10px; margin-bottom: 20px;">
+                <%= format_message('unread_notifications') %>
+              </p>
+              <mj-button color="#fff" background-color="#044D6C" border-radius="5px" href="<%= url_service.home_url(app_configuration: @app_configuration, locale: @locale) %>" align="left">
+                <%= format_message('cta_go_to_the_platform') %>
+              </mj-button>
+            </td>
+          </tr>
+        </mj-table>
       </mj-column>
     </mj-section>
   <% end %>

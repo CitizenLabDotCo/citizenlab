@@ -46,7 +46,7 @@
           <%= format_message('powered_by', component: 'footer') %>
         </span>
       </mj-text>
-      <mj-image align="left" width="155px" padding-top="0" href="https://govocal.com/" src="<%= gv_gray_logo_url %>" alt="Go Vocal logo" />
+      <mj-image align="<%= align_direction %>" width="155px" padding-top="0" href="https://govocal.com/" src="<%= gv_gray_logo_url %>" alt="Go Vocal logo" />
     <% end %>
   </mj-column>
 </mj-section>
