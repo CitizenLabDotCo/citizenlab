@@ -13,6 +13,7 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
+      dataCy: typeof dataCy;
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
       goToLandingPage: typeof goToLandingPage;
       login: typeof login;
@@ -1990,6 +1991,18 @@ function createProjectWithNativeSurveyPhase({
     });
 }
 
+/**
+ * Get an element by its data-cy attribute.
+ * This is a utility function to make it easier to find elements by their data-cy attribute.
+ * @param {string} dataCyValue - The value of the data-cy attribute
+ * @returns Cypress chainable object representing the element with the specified data-cy attribute
+ * @example cy.dataCy('e2e-after-submission')
+ */
+function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.get(`[data-cy="${dataCyValue}"]`);
+}
+
+Cypress.Commands.add('dataCy', dataCy);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);

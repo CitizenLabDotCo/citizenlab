@@ -184,6 +184,7 @@ da:
         description:
       other_input_field:
         title: Skriv dit svar
+        print_title: Hvis '%{other_option}', angiv venligst
       ask_follow_up_field:
         title: Fortæl os hvorfor
     community_monitor:
@@ -301,7 +302,7 @@ da:
       option1: 'Mulighed 1'
       option2: 'Mulighed 2'
     form_end_page:
-      title_text_3: 'Tak fordi du deler dit input!'
+      title_text_3: 'Tak fordi du deler dit bidrag!'
       description_text_3: "Dit input er blevet sendt med succes."
     form_user_page:
       title_text: 'Om dig'
@@ -329,6 +330,7 @@ da:
       write_as_clearly: 'Skriv så <b>tydeligt</b> som du kan - disse formularer kan blive scannet.'
       write_in_language: 'Skriv dine svar på samme sprog som denne formular'
       linear_scale_print_description: 'Skriv kun et tal mellem %{min_label} og %{max_label}'
+      unsupported_field: 'Dette felt kan ikke udfyldes på papir. Brug venligst online-versionen af denne formular i stedet.'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:

@@ -184,6 +184,7 @@ ur:
         description:
       other_input_field:
         title: اپنا جواب ٹائپ کریں۔
+        print_title: اگر '%{other_option}'، تو براہ کرم وضاحت کریں۔
       ask_follow_up_field:
         title: ہمیں بتائیں کیوں؟
     community_monitor:
@@ -329,6 +330,7 @@ ur:
       write_as_clearly: '<b>واضح طور پر لکھیں</b> جیسا آپ کر سکتے ہیں— ان فارمز کو سکین کیا جا سکتا ہے'
       write_in_language: 'اپنے جوابات اسی زبان میں لکھیں جس زبان میں یہ فارم ہے۔'
       linear_scale_print_description: 'براہ کرم صرف %{min_label} اور %{max_label} کے درمیان نمبر لکھیں۔'
+      unsupported_field: 'یہ فیلڈ کاغذ پر مکمل نہیں ہو سکتی۔ اس کے بجائے براہ کرم اس فارم کا آن لائن ورژن استعمال کریں۔'
   project_copy:
     title_suffix: 'کاپی'
   confirmations_mailer:

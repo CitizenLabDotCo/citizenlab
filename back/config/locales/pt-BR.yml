@@ -184,6 +184,7 @@ pt:
         description:
       other_input_field:
         title: Digite sua resposta
+        print_title: Se for '%{other_option}', especifique
       ask_follow_up_field:
         title: Diga-nos por quê
     community_monitor:
@@ -329,6 +330,7 @@ pt:
       write_as_clearly: 'Escreva <b>com a</b> clareza possível - esses formulários podem ser digitalizados'
       write_in_language: 'Escreva suas respostas no mesmo idioma deste formulário'
       linear_scale_print_description: 'Por favor, escreva um número entre %{min_label} e %{max_label} apenas'
+      unsupported_field: 'Este campo não pode ser preenchido em papel. Em vez disso, use a versão on-line deste formulário.'
   project_copy:
     title_suffix: 'Cópia'
   confirmations_mailer:
