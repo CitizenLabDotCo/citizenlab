@@ -39,11 +39,7 @@ RSpec.describe 'Footer' do
 
   describe 'when the recipient can give/revoke consent' do
     it 'includes the unsubscribe link' do
-      unsubscribe_url = Frontend::UrlService.new.unsubscribe_url(
-        AppConfiguration.instance,
-        campaign.id,
-        recipient.id
-      ).gsub('&', '&amp;')
+      unsubscribe_url = "http://example.org/email-settings?unsubscription_token=#{recipient.email_campaigns_unsubscription_token&.token}&amp;campaign_id=#{campaign.id}"
 
       allow(campaign.class).to receive(:consentable_for?).with(recipient).and_return(true)
       expect(body.scan(unsubscribe_url).count).to eq(2)
@@ -52,11 +48,7 @@ RSpec.describe 'Footer' do
 
   describe 'when the recipient cannot give/revoke consent' do
     it 'does not include the unsubscribe link' do
-      unsubscribe_url = Frontend::UrlService.new.unsubscribe_url(
-        AppConfiguration.instance,
-        campaign.id,
-        recipient.id
-      ).gsub('&', '&amp;')
+      unsubscribe_url = "http://example.org/email-settings?unsubscription_token=#{recipient.email_campaigns_unsubscription_token&.token}&amp;campaign_id=#{campaign.id}"
 
       allow(campaign.class).to receive(:consentable_for?).with(recipient).and_return(false)
       expect(body.scan(unsubscribe_url).count).to eq(0)
