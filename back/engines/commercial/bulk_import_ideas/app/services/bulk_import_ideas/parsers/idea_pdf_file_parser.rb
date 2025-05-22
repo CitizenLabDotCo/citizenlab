@@ -181,6 +181,7 @@ module BulkImportIdeas::Parsers
         end
         [name, value]
       end
+
       merged_row[:custom_field_values] = custom_field_values
 
       # Get the complete PDF page range - although should always be the same
@@ -188,8 +189,8 @@ module BulkImportIdeas::Parsers
       merged_row
     end
 
-    # @param [Hash] field - comes from IdeaPdfFormExporter#add_to_importer_fields
-    # @param [Array<Hash>] form_fields - comes from IdeaPdfFormExporter#add_to_importer_fields
+    # @param [Hash] field - comes from IdeaPdfFormExporter#add_to_importer_fields OR IdeaHtmlPdfTemplateReader#import_config_for_field
+    # @param [Array<Hash>] form_fields - comes from IdeaPdfFormExporter#add_to_importer_fields OR IdeaHtmlPdfTemplateReader#import_config_for_field
     def process_field_value(field, form_fields)
       processed_field = super
 

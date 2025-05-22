@@ -337,6 +337,10 @@ class CustomField < ApplicationRecord
     !page?
   end
 
+  def stores_number?
+    %w[number linear_scale rating sentiment_linear_scale ranking].include?(input_type)
+  end
+
   def custom_form_type?
     resource_type == 'CustomForm'
   end

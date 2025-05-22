@@ -23,8 +23,8 @@ module BulkImportIdeas::Exporters
 
     private
 
-    def form_fields
-      @form_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).printable_fields
+    def printable_fields
+      @printable_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).printable_fields
     end
 
     def render_config
@@ -114,7 +114,7 @@ module BulkImportIdeas::Exporters
 
     def format_fields
       question_num = 0
-      fields = form_fields.filter_map do |field|
+      fields = printable_fields.filter_map do |field|
         next if field.title_multiloc[@locale].blank?
 
         {

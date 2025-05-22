@@ -1,11 +1,41 @@
 # frozen_string_literal: true
 
+# Document how this works and what calls are made
+
 module BulkImportIdeas::Parsers
   class IdeaHtmlPdfFileParser < IdeaPdfFileParser
+    def parse_rows(file)
+      pdf_file = file.file.read
+
+      # binding.pry
+
+      # NOTE: We return both parsed values so we can merge the best values from both
+      google_forms_service = Pdf::IdeaGoogleFormParserService.new
+      form_parsed_idea = remove_question_numbers_in_keys(google_forms_service.parse_pdf(pdf_file))
+
+      text_parsed_idea = begin
+        raw_text = google_forms_service.raw_text_page_array(pdf_file)
+        Pdf::IdeaHtmlPdfPlainTextParser.new.parse_text(raw_text, template_data)
+      rescue BulkImportIdeas::Error
+        []
+      end
+
+      [merge_parsed_ideas_into_idea_row(form_parsed_idea, text_parsed_idea, file)] # Returns an array for importer - even though only one idea is returned
+    end
+
     private
 
-    def process_text_field_value(field, _all_fields)
-      value = field[:value]
+    # Returns the field titles without question numbers for the google parsed ideas
+    def remove_question_numbers_in_keys(parsed_idea)
+      template_data[:fields].each do |field|
+        parsed_idea[:fields] = parsed_idea[:fields].transform_keys { |key| key == field[:print_title] ? field[:name] : key }
+      end
+      parsed_idea
+    end
+
+    # NOTE: This is already done better in the text parser, but added here to catch anything coming back from the google form parser
+    def process_text_field_value(field, all_fields)
+      value = super
 
       # Strip out greedily scanned text from the start and end of text fields based on text strings in delimiters
       # eg next question title, form end text, end of description
@@ -25,12 +55,9 @@ module BulkImportIdeas::Parsers
       value.strip
     end
 
-    def import_form_data
-      @import_form_data ||= BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
-    end
-
-    def printable_form_fields
-      @printable_form_fields ||= IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields
+    # This data is a combination of the form_fields and the context of where those fields are in the PDF
+    def template_data
+      @template_data ||= BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader.new(@phase, @locale, @personal_data_enabled).template_data
     end
   end
 end
