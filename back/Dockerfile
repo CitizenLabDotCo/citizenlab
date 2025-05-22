@@ -38,11 +38,11 @@ RUN apt-get update                                        \
    optipng                                                \
    pngquant                                               \
    # jemalloc
-   libjemalloc2 \
+   libjemalloc2                                           \
    # tiktoken_ruby
    clang                                                  \
-   && curl -sL https://deb.nodesource.com/setup_18.x  | bash - \
-   && apt-get clean                                            \
+   gnupg                                                  \
+   && apt-get clean                                       \
    && rm -rf /var/lib/apt/lists/*
 
 # Install Postgres client:

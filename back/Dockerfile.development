@@ -17,9 +17,8 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       netcat-openbsd       \
       shared-mime-info     \
       less                 \
-      clang
-
-RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
+      clang                \
+      gnupg
 
 # Install Postgres client:
 # Import the PostgreSQL repository signing key, add the repository, and install the package.
