@@ -237,6 +237,8 @@ DROP INDEX IF EXISTS public.index_memberships_on_group_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_type;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_id;
 DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
 DROP INDEX IF EXISTS public.index_invites_on_invitee_id;
@@ -442,6 +444,7 @@ ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS membersh
 ALTER TABLE IF EXISTS ONLY public.maps_map_configs DROP CONSTRAINT IF EXISTS maps_map_configs_pkey;
 ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS maps_layers_pkey;
 ALTER TABLE IF EXISTS ONLY public.machine_translations_machine_translations DROP CONSTRAINT IF EXISTS machine_translations_machine_translations_pkey;
+ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS jobs_trackers_pkey;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS invites_pkey;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS internal_comments_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_sessions DROP CONSTRAINT IF EXISTS impact_tracking_sessions_pkey;
@@ -553,6 +556,7 @@ DROP TABLE IF EXISTS public.memberships;
 DROP TABLE IF EXISTS public.maps_map_configs;
 DROP TABLE IF EXISTS public.maps_layers;
 DROP TABLE IF EXISTS public.machine_translations_machine_translations;
+DROP TABLE IF EXISTS public.jobs_trackers;
 DROP TABLE IF EXISTS public.internal_comments;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.impact_tracking_pageviews;
@@ -651,10 +655,6 @@ DROP FUNCTION IF EXISTS public.que_job_notify();
 DROP FUNCTION IF EXISTS public.que_determine_job_state(job public.que_jobs);
 DROP TABLE IF EXISTS public.que_jobs;
 DROP FUNCTION IF EXISTS public.que_validate_tags(tags_array jsonb);
-DROP EXTENSION IF EXISTS vector;
-DROP EXTENSION IF EXISTS "uuid-ossp";
-DROP EXTENSION IF EXISTS postgis;
-DROP EXTENSION IF EXISTS pgcrypto;
 DROP SCHEMA IF EXISTS shared_extensions;
 DROP SCHEMA IF EXISTS public;
 --
@@ -676,62 +676,6 @@ COMMENT ON SCHEMA public IS 'standard public schema';
 --
 
 CREATE SCHEMA shared_extensions;
-
-
---
--- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA shared_extensions;
-
-
---
--- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
-
-
---
--- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA shared_extensions;
-
-
---
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
-
-
---
--- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA shared_extensions;
-
-
---
--- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
-
-
---
--- Name: vector; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA shared_extensions;
-
-
---
--- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION vector IS 'Open-source vector similarity search for Postgres';
 
 
 --
@@ -2626,6 +2570,21 @@ CREATE TABLE public.internal_comments (
 
 
 --
+-- Name: jobs_trackers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.jobs_trackers (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    root_job_id bigint NOT NULL,
+    root_job_type character varying NOT NULL,
+    progress integer DEFAULT 0 NOT NULL,
+    total integer DEFAULT 100 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: machine_translations_machine_translations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3866,6 +3825,14 @@ ALTER TABLE ONLY public.internal_comments
 
 ALTER TABLE ONLY public.invites
     ADD CONSTRAINT invites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: jobs_trackers jobs_trackers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jobs_trackers
+    ADD CONSTRAINT jobs_trackers_pkey PRIMARY KEY (id);
 
 
 --
@@ -5350,6 +5317,20 @@ CREATE INDEX index_invites_on_inviter_id ON public.invites USING btree (inviter_
 --
 
 CREATE INDEX index_invites_on_token ON public.invites USING btree (token);
+
+
+--
+-- Name: index_jobs_trackers_on_root_job_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_jobs_trackers_on_root_job_id ON public.jobs_trackers USING btree (root_job_id);
+
+
+--
+-- Name: index_jobs_trackers_on_root_job_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_trackers_on_root_job_type ON public.jobs_trackers USING btree (root_job_type);
 
 
 --
@@ -7083,9 +7064,10 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO public,shared_extensions;
+SET search_path TO "public", "shared_extensions";
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250521085055'),
 ('20250519080057'),
 ('20250513160156'),
 ('20250509140651'),
