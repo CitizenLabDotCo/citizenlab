@@ -6,8 +6,6 @@ module BulkImportIdeas::Parsers
   class IdeaHtmlPdfFileParser < IdeaPdfFileParser
     # Returns an array of idea rows compatible with IdeaImporter
     # Only one row ever returned as only one PDF per idea is parsed by this service
-    # Format should look like:
-    # TODO: Document this
     def parse_rows(file)
       pdf_file = file.file.read
 
@@ -41,7 +39,7 @@ module BulkImportIdeas::Parsers
       parsed_idea
     end
 
-    # NOTE: This is already done better in the text parser, but added here to catch anything coming back from the google form parser
+    # NOTE: This is already done better in the text parser, but overridden here to catch anything coming back from the google form parser
     def process_text_field_value(field, all_fields)
       value = super
 
