@@ -237,6 +237,8 @@ DROP INDEX IF EXISTS public.index_memberships_on_group_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_type;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_id;
 DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
 DROP INDEX IF EXISTS public.index_invites_on_invitee_id;
@@ -442,6 +444,7 @@ ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS membersh
 ALTER TABLE IF EXISTS ONLY public.maps_map_configs DROP CONSTRAINT IF EXISTS maps_map_configs_pkey;
 ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS maps_layers_pkey;
 ALTER TABLE IF EXISTS ONLY public.machine_translations_machine_translations DROP CONSTRAINT IF EXISTS machine_translations_machine_translations_pkey;
+ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS jobs_trackers_pkey;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS invites_pkey;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS internal_comments_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_sessions DROP CONSTRAINT IF EXISTS impact_tracking_sessions_pkey;
@@ -553,6 +556,7 @@ DROP TABLE IF EXISTS public.memberships;
 DROP TABLE IF EXISTS public.maps_map_configs;
 DROP TABLE IF EXISTS public.maps_layers;
 DROP TABLE IF EXISTS public.machine_translations_machine_translations;
+DROP TABLE IF EXISTS public.jobs_trackers;
 DROP TABLE IF EXISTS public.internal_comments;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.impact_tracking_pageviews;
@@ -2626,6 +2630,21 @@ CREATE TABLE public.internal_comments (
 
 
 --
+-- Name: jobs_trackers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.jobs_trackers (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    root_job_id bigint NOT NULL,
+    root_job_type character varying NOT NULL,
+    progress integer DEFAULT 0 NOT NULL,
+    total integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: machine_translations_machine_translations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2822,7 +2841,8 @@ CREATE TABLE public.permissions (
     updated_at timestamp without time zone NOT NULL,
     global_custom_fields boolean DEFAULT false NOT NULL,
     verification_expiry integer,
-    access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
+    access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    everyone_tracking_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -3866,6 +3886,14 @@ ALTER TABLE ONLY public.internal_comments
 
 ALTER TABLE ONLY public.invites
     ADD CONSTRAINT invites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: jobs_trackers jobs_trackers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jobs_trackers
+    ADD CONSTRAINT jobs_trackers_pkey PRIMARY KEY (id);
 
 
 --
@@ -5350,6 +5378,20 @@ CREATE INDEX index_invites_on_inviter_id ON public.invites USING btree (inviter_
 --
 
 CREATE INDEX index_invites_on_token ON public.invites USING btree (token);
+
+
+--
+-- Name: index_jobs_trackers_on_root_job_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_jobs_trackers_on_root_job_id ON public.jobs_trackers USING btree (root_job_id);
+
+
+--
+-- Name: index_jobs_trackers_on_root_job_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_trackers_on_root_job_type ON public.jobs_trackers USING btree (root_job_type);
 
 
 --
@@ -7086,6 +7128,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250521085055'),
 ('20250519080057'),
 ('20250513160156'),
 ('20250509140651'),
@@ -7093,6 +7136,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250502112945'),
 ('20250501134516'),
 ('20250416120221'),
+('20250415132943'),
 ('20250415094344'),
 ('20250409111817'),
 ('20250327095857'),
