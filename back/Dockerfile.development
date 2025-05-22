@@ -22,9 +22,6 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
 RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
 RUN apt-get -y install nodejs
 
-# Install MJML parser required by email engine.
-RUN npm install -g mjml@4.4.1
-
 # Install Postgres client:
 # Import the PostgreSQL repository signing key, add the repository, and install the package.
 RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg \

@@ -43,8 +43,6 @@ RUN apt-get update                                        \
    clang                                                  \
    && curl -sL https://deb.nodesource.com/setup_18.x  | bash - \
    && apt-get -y --no-install-recommends install nodejs        \
-   # Install MJML parser required by email engine.
-   && npm install -g mjml@4.4.1                                \
    && apt-get clean                                            \
    && rm -rf /var/lib/apt/lists/*
 
