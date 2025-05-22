@@ -20,7 +20,6 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       clang
 
 RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
-RUN apt-get -y install nodejs
 
 # Install Postgres client:
 # Import the PostgreSQL repository signing key, add the repository, and install the package.

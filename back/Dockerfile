@@ -42,7 +42,6 @@ RUN apt-get update                                        \
    # tiktoken_ruby
    clang                                                  \
    && curl -sL https://deb.nodesource.com/setup_18.x  | bash - \
-   && apt-get -y --no-install-recommends install nodejs        \
    && apt-get clean                                            \
    && rm -rf /var/lib/apt/lists/*
 
