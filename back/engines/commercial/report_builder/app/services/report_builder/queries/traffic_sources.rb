@@ -40,22 +40,33 @@ module ReportBuilder
       sessions = apply_project_filter_if_needed(sessions, project_id)
       sessions = exclude_roles_if_needed(sessions, exclude_roles)
 
-      SSO_REFERRERS.each do |sso_referrer|
-        sessions = sessions.where.not("referrer IS NOT NULL AND starts_with(referrer, '#{sso_referrer}')")
-      end
-
       cases = DIRECT_ENTRY_CASES
       cases += generate_cases(SEARCH_ENGINE_REFERRERS, SEARCH_ENGINE_DOMAINS, 'search_engine')
       cases += generate_cases(SOCIAL_NETWORK_REFERRERS, SOCIAL_NETWORK_DOMAINS, 'social_network')
+      cases += generate_cases(SSO_REFERRERS, [], 'sso_redirect')
 
-      referrer_types = sessions
+      sessions_per_referrer_type = sessions
         .select(
           'count(*) as count, ' \
           "CASE #{cases.join(' ')} ELSE 'other' END as referrer_type"
         )
         .group(:referrer_type)
+        .each_with_object({}) do |row, obj|
+          referrer_type = row['referrer_type']
+
+          if referrer_type.present?
+            count = row['count'].to_i
+            obj[referrer_type] = count
+          end
+        end
 
       top_50_referrers = sessions
+
+      SSO_REFERRERS.each do |sso_referrer|
+        top_50_referrers = top_50_referrers.where.not("referrer IS NOT NULL AND starts_with(referrer, '#{sso_referrer}')")
+      end
+
+      top_50_referrers = top_50_referrers
         .select(
           'count(*) as visits, ' \
           'count(distinct(monthly_user_hash)) as visitors, ' \
@@ -80,15 +91,7 @@ module ReportBuilder
         end
 
       {
-        sessions_per_referrer_type: referrer_types.each_with_object({}) do |row, obj|
-          referrer_type = row['referrer_type']
-
-          if referrer_type.present?
-            count = row['count'].to_i
-            obj[referrer_type] = count
-          end
-        end,
-
+        sessions_per_referrer_type: sessions_per_referrer_type,
         top_50_referrers: top_50_referrers
       }
     end
