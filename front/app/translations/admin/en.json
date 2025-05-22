@@ -3036,6 +3036,7 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.referrerWebsites": "Referrer websites",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.searchEngines": "Search engines",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.socialNetworks": "Social networks",
+  "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.ssoRedirects": "SSO redirects",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.trafficSource": "Traffic source",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.visits": "Number of visits",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.websites": "Websites",
