@@ -57,7 +57,7 @@
             </h3>
           </a>
         </mj-text>
-        <mj-table width="200px">
+        <mj-table width="200px" align="<%= align_direction %>">
           <tr>
             <td>
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
