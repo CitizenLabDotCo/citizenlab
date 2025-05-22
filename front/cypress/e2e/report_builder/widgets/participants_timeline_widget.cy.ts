@@ -8,13 +8,6 @@ describe('Report builder Participants timeline widget', () => {
   let phaseId: string;
 
   beforeEach(() => {
-    if (projectId) {
-      cy.apiRemoveProject(projectId);
-    }
-    if (reportId) {
-      cy.apiRemoveReportBuilder(reportId);
-    }
-
     cy.setAdminLoginCookie();
 
     const projectTitle = randomString();
@@ -79,11 +72,15 @@ describe('Report builder Participants timeline widget', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
   });
 
   afterEach(() => {
-    cy.apiRemoveReportBuilder(reportId);
+    if (reportId) {
+      cy.apiRemoveReportBuilder(reportId);
+    }
   });
 
   it('handles Participants timeline widget correctly', function () {
