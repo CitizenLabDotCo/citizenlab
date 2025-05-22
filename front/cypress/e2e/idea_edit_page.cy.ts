@@ -179,6 +179,7 @@ describe('Idea edit page', () => {
     cy.setAdminLoginCookie();
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
+    cy.acceptCookies();
     // Search and select an author
     cy.get('[data-cy="e2e-user-select"]')
       .click()
