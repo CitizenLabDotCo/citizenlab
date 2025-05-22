@@ -36,6 +36,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabProposalStatuses1',
     defaultMessage: 'Proposal statuses',
   },
+  statuses: {
+    id: 'app.containers.AdminPage.SettingsPage.statuses',
+    defaultMessage: 'Statuses',
+  },
   tabApproval: {
     id: 'app.containers.AdminPage.SettingsPage.tabProjectApproval',
     defaultMessage: 'Project approval',
@@ -49,8 +53,8 @@ export default defineMessages({
     defaultMessage: 'Registration',
   },
   tabTopics: {
-    id: 'app.containers.AdminPage.SettingsPage.tabTopics',
-    defaultMessage: 'Tag manager',
+    id: 'app.containers.AdminPage.SettingsPage.tabTopics2',
+    defaultMessage: 'Tags',
   },
   organizationName: {
     id: 'app.containers.AdminPage.SettingsPage.organizationName',

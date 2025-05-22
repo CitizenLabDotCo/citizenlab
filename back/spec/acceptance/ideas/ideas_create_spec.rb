@@ -624,7 +624,6 @@ resource 'Ideas' do
     context 'in a common ground phase' do
       define_title_multiloc_param(self)
 
-      # [Adrien] with_permissions necessary?
       let(:phase) { create(:common_ground_phase, :ongoing, with_permissions: true) }
       let(:project) { phase.project }
 

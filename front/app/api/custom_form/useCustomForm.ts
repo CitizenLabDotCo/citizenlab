@@ -1,15 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import { IPhaseData } from 'api/phases/types';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
+import getApiEndpoint from './getApiEndpoint';
 import customFormKeys from './keys';
-import { CustomFormKeys, ICustomForm, ICustomFormParameters } from './types';
+import { CustomFormKeys, ICustomForm } from './types';
 
-const fetchCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
-  const apiEndpoint = phaseId
-    ? `admin/phases/${phaseId}/custom_fields/custom_form`
-    : `admin/projects/${projectId}/custom_fields/custom_form`;
+const fetchCustomForm = (phase: IPhaseData) => {
+  const apiEndpoint = getApiEndpoint(phase);
 
   return fetcher<ICustomForm>({
     path: `/${apiEndpoint}`,
@@ -17,14 +18,13 @@ const fetchCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
   });
 };
 
-const useCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
+const useCustomForm = (phase: IPhaseData) => {
   return useQuery<ICustomForm, CLErrors, ICustomForm, CustomFormKeys>({
-    queryKey: customFormKeys.item({ projectId, phaseId }),
-    queryFn: () =>
-      fetchCustomForm({
-        projectId,
-        phaseId,
-      }),
+    queryKey: customFormKeys.item({
+      projectId: phase.relationships.project.data.id,
+      phaseId: phase.id,
+    }),
+    queryFn: () => fetchCustomForm(phase),
   });
 };
 

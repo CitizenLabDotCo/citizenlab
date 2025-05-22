@@ -152,7 +152,7 @@ class SideFxIdeaService
     return unless idea.phases.any? { |phase| phase.pmethod.add_autoreaction_to_inputs? }
     return if Permissions::IdeaPermissionsService.new(idea, idea.author).denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
 
-    idea.reactions.create!(mode: 'up', user: idea.author) if !idea.reactions.exists?(mode: 'up', user: idea.author)
+    idea.reactions.create!(mode: 'up', user: idea.author) unless idea.reactions.exists?(user: idea.author)
     idea.reload
   end
 
@@ -217,7 +217,7 @@ class SideFxIdeaService
   end
 
   def enqueue_embeddings_job(idea)
-    return if !AppConfiguration.instance.feature_activated?('input_iq') && AppConfiguration.timezone.at(Time.current).to_date > Date.parse('2025-06-30')
+    return if !AppConfiguration.instance.feature_activated?('input_iq')
     return if !idea.participation_method_on_creation.supports_public_visibility?
 
     UpsertEmbeddingJob.perform_later(idea)

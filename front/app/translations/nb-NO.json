@@ -179,6 +179,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automatisk lagring",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Automatisk lagring er aktivert som standard når du åpner skjemaredigeringsprogrammet. Hver gang du lukker feltinnstillingspanelet ved hjelp av \"X\"-knappen, vil det automatisk utløse en lagring.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Last ned som pdf",
+  "app.components.FormSync.downloadExcelTemplate": "Last ned en Excel-mal",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbake",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Gå tilbake til forrige side",
   "app.components.HookForm.Feedback.errorTitle": "Det er et problem",

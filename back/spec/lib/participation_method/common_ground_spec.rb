@@ -31,8 +31,7 @@ RSpec.describe ParticipationMethod::CommonGround do
         'input_type' => 'text_multiloc',
         'required' => true,
         'enabled' => true,
-        'ordering' => 0,
-        'answer_visible_to' => CustomField::VISIBLE_TO_PUBLIC
+        'ordering' => 0
       )
     end
   end

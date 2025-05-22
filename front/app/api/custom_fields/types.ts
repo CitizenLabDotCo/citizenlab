@@ -109,6 +109,7 @@ export interface IAttributes {
   random_option_ordering?: boolean;
   dropdown_layout?: boolean;
   question_category?: string;
+  include_in_printed_form?: boolean;
 }
 
 export interface ICustomFieldResponse {
@@ -179,6 +180,7 @@ export type IFlatCreateCustomField = Optional<
   | 'dropdown_layout'
   | 'question_category'
   | 'ask_follow_up'
+  | 'include_in_printed_form'
 > & {
   isLocalOnly: boolean;
 };

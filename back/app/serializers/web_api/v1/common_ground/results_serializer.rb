@@ -4,6 +4,8 @@ class WebApi::V1::CommonGround::ResultsSerializer < WebApi::V1::BaseSerializer
   set_id :phase_id
   set_type :common_ground_results
 
+  attribute :stats
+
   attributes :top_consensus_ideas do |object|
     serialize_ideas(object.top_consensus_ideas)
   end
@@ -20,7 +22,7 @@ class WebApi::V1::CommonGround::ResultsSerializer < WebApi::V1::BaseSerializer
         votes: {
           up: idea.likes_count,
           down: idea.dislikes_count,
-          neutral: 0
+          neutral: idea.neutral_reactions_count
         }
       }
     end

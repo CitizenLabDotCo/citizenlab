@@ -179,6 +179,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Desat automàtic",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "L'emmagatzematge automàtic està activat per defecte quan obriu l'editor de formularis. Cada vegada que tanqueu el tauler de configuració de camp amb el botó \"X\", activarà automàticament un desament.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Descarregar com a pdf",
+  "app.components.FormSync.downloadExcelTemplate": "Descarregar una plantilla d'Excel",
   "app.components.GoBackButton.group.edit.goBack": "Tornar",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Torna a la pàgina anterior",
   "app.components.HookForm.Feedback.errorTitle": "Hi ha un problema",

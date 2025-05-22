@@ -57,11 +57,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def block?
-    index?
+    user&.active? && user.admin?
   end
 
   def unblock?
-    index?
+    user&.active? && user.admin?
   end
 
   def blocked_count?

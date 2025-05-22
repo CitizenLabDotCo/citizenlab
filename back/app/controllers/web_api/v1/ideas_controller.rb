@@ -280,7 +280,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def similar_ideas
-    require_feature! 'input_iq' if AppConfiguration.timezone.at(Time.current).to_date > Date.parse('2025-06-30')
+    require_feature! 'input_iq'
 
     idea = Idea.new idea_params_for_similarities
     service = SimilarIdeasService.new(idea)

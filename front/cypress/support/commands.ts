@@ -1,5 +1,6 @@
 import 'cypress-file-upload';
 import './dnd';
+import * as moment from 'moment';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
@@ -86,6 +87,8 @@ declare global {
       uploadProjectFolderImage: typeof uploadProjectFolderImage;
       uploadProjectImage: typeof uploadProjectImage;
       apiCreateModeratorForProject: typeof apiCreateModeratorForProject;
+      apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
+      createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
     }
   }
 }
@@ -1866,6 +1869,127 @@ function notIntersectsViewport(subject?: any) {
   expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.false;
 }
 
+function apiCreateNativeSurveyPhase({
+  projectId,
+  title,
+  startAt,
+  endAt,
+  canPost = true,
+  canReact = true,
+  canComment = true,
+  description,
+  nativeSurveyButtonMultiloc = { en: 'Take the survey' },
+  nativeSurveyTitleMultiloc = { en: 'Survey' },
+  allow_anonymous_participation,
+  presentation_mode,
+}: {
+  projectId: string;
+  title: string;
+  startAt: string;
+  endAt?: string;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+  description?: string;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
+  allow_anonymous_participation?: boolean;
+  presentation_mode?: 'card' | 'map';
+}) {
+  return cy.apiCreatePhase({
+    projectId,
+    title,
+    startAt,
+    endAt,
+    participationMethod: 'native_survey',
+    canPost,
+    canReact,
+    canComment,
+    description,
+    nativeSurveyButtonMultiloc,
+    nativeSurveyTitleMultiloc,
+    allow_anonymous_participation,
+    presentation_mode,
+  });
+}
+
+type NativeSurveyPhaseResult = {
+  projectId: string;
+  projectSlug: string;
+  phaseId: string;
+};
+
+function createProjectWithNativeSurveyPhase({
+  projectTitle = randomString(),
+  projectDescriptionPreview = randomString(30),
+  projectDescription = randomString(),
+  publicationStatus = 'published',
+  phaseTitle = randomString(),
+  phaseStartAt = moment().subtract(9, 'month').format('DD/MM/YYYY'),
+  phaseEndAt,
+  canPost = true,
+  canReact = true,
+  canComment = true,
+  description,
+  nativeSurveyButtonMultiloc = { en: 'Take the survey' },
+  nativeSurveyTitleMultiloc = { en: 'Survey' },
+  allow_anonymous_participation,
+  presentation_mode,
+}: {
+  projectTitle?: string;
+  projectDescriptionPreview?: string;
+  projectDescription?: string;
+  publicationStatus?: IProjectAttributes['publication_status'];
+  phaseTitle?: string;
+  phaseStartAt?: string;
+  phaseEndAt?: string;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+  description?: string;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
+  allow_anonymous_participation?: boolean;
+  presentation_mode?: 'card' | 'map';
+} = {}): Cypress.Chainable<NativeSurveyPhaseResult> {
+  return cy
+    .apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus,
+    })
+    .then((project) => {
+      const projectId = project.body.data.id;
+      const projectSlug = project.body.data.attributes.slug;
+
+      return cy
+        .apiCreateNativeSurveyPhase({
+          projectId,
+          title: phaseTitle,
+          startAt: phaseStartAt,
+          endAt: phaseEndAt,
+          canPost,
+          canReact,
+          canComment,
+          description,
+          nativeSurveyButtonMultiloc,
+          nativeSurveyTitleMultiloc,
+          allow_anonymous_participation,
+          presentation_mode,
+        })
+        .then((phase) => {
+          const phaseId = phase.body.data.id;
+
+          return {
+            projectId,
+            projectSlug,
+            phaseId,
+          };
+        });
+    });
+}
+
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
@@ -1971,4 +2095,9 @@ Cypress.Commands.add('uploadProjectImage', uploadProjectImage);
 Cypress.Commands.add(
   'apiCreateModeratorForProject',
   apiCreateModeratorForProject
+);
+Cypress.Commands.add('apiCreateNativeSurveyPhase', apiCreateNativeSurveyPhase);
+Cypress.Commands.add(
+  'createProjectWithNativeSurveyPhase',
+  createProjectWithNativeSurveyPhase
 );

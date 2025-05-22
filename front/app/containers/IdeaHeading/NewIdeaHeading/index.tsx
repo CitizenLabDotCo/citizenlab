@@ -9,7 +9,7 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -48,6 +48,9 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [searchParams] = useSearchParams();
+  const ideaSubmitted = searchParams.get('idea_id') !== null;
+
   const openModal = () => {
     setShowLeaveModal(true);
   };
@@ -120,7 +123,11 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
             iconName="close"
             onClick={(event) => {
               event?.preventDefault();
-              openModal();
+              if (ideaSubmitted) {
+                onClickClose();
+              } else {
+                openModal();
+              }
             }}
             iconColor={colors.textSecondary}
             iconColorOnHover={colors.black}
