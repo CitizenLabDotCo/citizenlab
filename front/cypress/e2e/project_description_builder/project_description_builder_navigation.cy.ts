@@ -19,11 +19,6 @@ describe('Project description builder navigation', () => {
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
-        cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/project-description-builder/projects/${projectId}/settings/description`
-          );
-        });
       });
     });
   });
@@ -39,7 +34,9 @@ describe('Project description builder navigation', () => {
   it('navigates to project description builder when edit project description link clicked', () => {
     cy.visit(`/admin/projects/${projectId}/settings/description`);
     cy.acceptCookies();
-    cy.get('#e2e-project-description-builder-link').click({ force: true });
+    cy.dataCy('e2e-toggle-enable-project-description-builder').click();
+    cy.get('#e2e-project-description-builder-link').should('be.visible');
+    cy.get('#e2e-project-description-builder-link').click();
     cy.url().should(
       'eq',
       `${
