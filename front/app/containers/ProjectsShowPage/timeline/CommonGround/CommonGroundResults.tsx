@@ -37,7 +37,7 @@ const CommonGroundResults = ({ phaseId }: Props) => {
 
   const renderStats = () => (
     <Box display="flex" mb="32px">
-      <Box mr="48px" style={{ textAlign: 'center' }}>
+      <Box mr="48px">
         <Text fontSize="xxxxl" fontWeight="bold" as="span" my="0px">
           {num_participants}
         </Text>
@@ -49,7 +49,7 @@ const CommonGroundResults = ({ phaseId }: Props) => {
           )}
         </Text>
       </Box>
-      <Box mr="48px" style={{ textAlign: 'center' }}>
+      <Box mr="48px">
         <Text fontSize="xxxxl" fontWeight="bold" as="span" my="0px">
           {num_ideas}
         </Text>
@@ -59,7 +59,7 @@ const CommonGroundResults = ({ phaseId }: Props) => {
           )}
         </Text>
       </Box>
-      <Box style={{ textAlign: 'center' }}>
+      <Box>
         <Text fontSize="xxxxl" fontWeight="bold" as="span" my="0px">
           {totalVotes}
         </Text>
