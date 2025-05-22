@@ -84,8 +84,6 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   });
   const phaseId = idea?.data.relationships.phases.data[0].id;
   const { data: phase } = usePhase(phaseId);
-  console.log('ideaId', ideaId);
-  console.log('idea', idea);
 
   const {
     schema,
