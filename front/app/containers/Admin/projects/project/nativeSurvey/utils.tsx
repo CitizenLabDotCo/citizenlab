@@ -2,7 +2,11 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';
+import {
+  ICreateMatrixStatementsType,
+  IFlatCustomField,
+  IOptionsType,
+} from 'api/custom_fields/types';
 
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import Warning from 'components/UI/Warning';
@@ -84,7 +88,7 @@ export const clearOptionAndStatementIds = (
   customFields: IFlatCustomField[]
 ) => {
   return customFields.map((field: IFlatCustomField) => {
-    const newField = { ...field };
+    const newField: IFlatCustomField = { ...field };
 
     if (field.options && field.options.length > 0) {
       newField.options = field.options.map((option: IOptionsType) => {
@@ -94,10 +98,15 @@ export const clearOptionAndStatementIds = (
     }
 
     if (field.matrix_statements && field.matrix_statements.length > 0) {
-      newField.matrix_statements = field.matrix_statements.map((statement) => {
-        const { id: _id, ...statementWithoutId } = statement;
-        return { ...statementWithoutId };
-      });
+      const clearedStatements: ICreateMatrixStatementsType[] =
+        field.matrix_statements.map((statement) => {
+          const { id: _id, ...statementWithoutId } = statement;
+          return { ...statementWithoutId };
+        });
+
+      // Luuc: This type situation is a total mess. We should
+      // refactor this at some point.
+      (newField as any).matrix_statements = clearedStatements;
     }
 
     return newField;
