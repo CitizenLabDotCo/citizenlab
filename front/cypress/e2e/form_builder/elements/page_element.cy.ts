@@ -43,9 +43,7 @@ describe('Form builder page element', () => {
   });
 
   it('adds page element and tests settings', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.acceptCookies();
     cy.get('[data-cy="e2e-page"]');
     cy.wait(2000);
@@ -66,9 +64,7 @@ describe('Form builder page element', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Reload page
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.contains('Page title').click();
 
     // Confirm the settings are loaded correctly
@@ -94,9 +90,7 @@ describe('Form builder page element', () => {
   });
 
   it('does not let the user delete the page if there is only one page', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
 
     // Add a second page
     cy.get('[data-cy="e2e-page"]');

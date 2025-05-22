@@ -49,9 +49,7 @@ describe('Form builder file upload field', () => {
   });
 
   it('adds file upload field and user can attach a file in the field', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.get('[data-cy="e2e-file-upload-field"]');
     cy.wait(2000);
     cy.get('[data-cy="e2e-file-upload-field"]').click({ force: true });

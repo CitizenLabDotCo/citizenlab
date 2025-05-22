@@ -184,6 +184,7 @@ it:
         description:
       other_input_field:
         title: Scrivi la tua risposta
+        print_title: Se '%{other_option}', specificare
       ask_follow_up_field:
         title: Dicci perché
     community_monitor:
@@ -329,6 +330,7 @@ it:
       write_as_clearly: 'Scrivi il più chiaramente possibile <b></b> - questi moduli potrebbero essere scannerizzati.'
       write_in_language: 'Scrivi le tue risposte nella stessa lingua di questo modulo'
       linear_scale_print_description: 'Scrivi solo un numero compreso tra %{min_label} e %{max_label}'
+      unsupported_field: 'Questo campo non può essere compilato su carta. Utilizza invece la versione online di questo modulo.'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:

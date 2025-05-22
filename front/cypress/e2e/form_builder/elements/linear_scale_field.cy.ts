@@ -50,9 +50,7 @@ describe('Form builder linear scale', () => {
   });
 
   it('adds linear scale field and tests validations', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.get('[data-cy="e2e-linear-scale"]');
     cy.wait(2000);
     cy.get('[data-cy="e2e-linear-scale"]').click();

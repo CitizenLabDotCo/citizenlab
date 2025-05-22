@@ -7,6 +7,10 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
     object.verification_enabled?
   end
 
+  attribute :everyone_tracking_enabled do |object|
+    object.everyone_tracking_enabled?
+  end
+
   belongs_to :permission_scope, polymorphic: true
   has_many :groups
   has_many :permissions_custom_fields
