@@ -68,7 +68,7 @@ describe BulkImportIdeas::Parsers::IdeaHtmlPdfFileParser do
         'This is a long answer',
         '• Put whatever you want here',
         'Please write a number between 1 and 5 only',
-        '5. Another linear scale- no description (optional) Please write a number between 1 (Totally worst) and 7 (Absolute best) only',
+        '5. Another linear scale - no description (optional) Please write a number between 1 (Totally worst) and 7 (Absolute best) only',
         'this one_3.3.12',
         'another option you might like more_3.3.14',
         'something else_3.3.16',
