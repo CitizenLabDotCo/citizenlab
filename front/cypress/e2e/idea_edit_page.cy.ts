@@ -177,8 +177,13 @@ describe('Idea edit page', () => {
 
   it('has a working idea edit form for author field', () => {
     cy.setAdminLoginCookie();
+
+    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
+      'ideaSchema'
+    );
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
+    cy.wait('@ideaSchema', { timeout: 10000 });
     cy.acceptCookies();
     // Search and select an author
     cy.get('[data-cy="e2e-user-select"]')
