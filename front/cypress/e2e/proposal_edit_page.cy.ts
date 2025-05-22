@@ -87,7 +87,10 @@ describe('Proposal edit page', () => {
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
     // Add an extra field
     cy.get('[data-cy="e2e-short-answer"]').click();
-    cy.get('#e2e-title-multiloc').type(extraFieldTitle, { force: true });
+    cy.get('#e2e-title-multiloc').type(extraFieldTitle, {
+      force: true,
+      delay: 0,
+    });
     // Save the form
     cy.get('form').submit();
     cy.wait(1000);
@@ -110,7 +113,7 @@ describe('Proposal edit page', () => {
       .clear()
       .should('exist')
       .should('not.be.disabled')
-      .type(newTitle);
+      .type(newTitle, { delay: 0 });
     cy.get('@titleInput').should('exist');
     cy.get('@titleInput').should('contain.value', newTitle);
 
