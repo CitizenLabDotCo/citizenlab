@@ -14,9 +14,10 @@ module BulkImportIdeas
         idea_rows += file_parser.parse_rows file
       end
 
+      # Correct jumbled up text fields with GPT if importing PDF
       format = file_parser_class == BulkImportIdeas::Parsers::IdeaXlsxFileParser ? 'xlsx' : 'pdf'
-
       idea_rows = idea_rows_with_corrected_texts(phase, idea_rows) if format == 'pdf'
+
       ideas = import_service.import(idea_rows)
       users = import_service.imported_users
 

@@ -1,12 +1,56 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require_relative './shared/pdf_parser_data_setup'
+require_relative 'shared/pdf_parser_data_setup'
 
 describe BulkImportIdeas::Parsers::IdeaHtmlPdfFileParser do
   include_context 'pdf_parser_data_setup'
 
   let(:service) { described_class.new create(:admin), 'en', survey_phase.id, false }
+
+  describe 'parse_rows' do
+    before do
+      # Mock all the data with external dependencies
+      allow(service).to receive_messages(template_data: pdf_template_data, google_parsed_idea: google_form_parsed_idea, text_parsed_idea: raw_text_parsed_idea)
+    end
+
+    it 'returns an array of idea rows ready to be imported' do
+      upload_file = create(:file_upload)
+      expect(service.parse_rows(upload_file)).to eq([
+        {
+          id: 0,
+          image_url: nil,
+          latitude: nil,
+          longitude: nil,
+          pdf_pages: [1, 2, 3, 4, 5, 6, 7],
+          phase_id: survey_phase.id,
+          project_id: survey_project.id,
+          published_at: nil,
+          topic_titles: [],
+          user_consent: nil,
+          file: upload_file,
+          custom_field_values: {
+            select_field: 'option_1',
+            short_answer_field: 'I really like Short answers',
+            long_answer_field: "I'm They not so much longer Keen ол answers. Long to take Fill in",
+            linear_scale_field: 1,
+            another_linear_scale_field: 2,
+            multiselect_question: %w[another_option_you_might_like_more other],
+            multiselect_question_other: 'I cannot make up my my mind 7.',
+            image_choice: %w[choose_homer choose_maggie other],
+            image_choice_other: 'Seymour 8.',
+            sentiment_scale_question: 5,
+            number_question: 283,
+            rating_question: 3,
+            u_birthyear: 1976,
+            u_domicile: '2e67f167-8966-4798-b6bf-572278786cb3',
+            u_gender: 'male',
+            u_politician: 'retired_politician'
+          }
+        }
+      ])
+    end
+  end
 
   describe 'remove_question_numbers_in_keys' do
     before do
@@ -14,8 +58,9 @@ describe BulkImportIdeas::Parsers::IdeaHtmlPdfFileParser do
     end
 
     it 'replaces the question keys with the actual title of the question' do
-      output = service.send(:remove_question_numbers_in_keys, google_parsed_form_object)
-      expect(output[:fields].keys).to eq ['First name(s) (optional)',
+      output = service.send(:remove_question_numbers_in_keys, google_form_parsed_idea)
+      expect(output[:fields].keys).to eq [
+        'First name(s) (optional)',
         'Last name (optional)',
         'Email address (optional)',
         'Your question',
@@ -43,7 +88,8 @@ describe BulkImportIdeas::Parsers::IdeaHtmlPdfFileParser do
         'Ixelles--',
         'Year of birth',
         'Active politician_6.7.34',
-        'Retired politician_6.7.36']
+        'Retired politician_6.7.36'
+      ]
     end
   end
 
