@@ -103,7 +103,7 @@ const FileUploaderField = ({ name, ideaId, ...rest }: Props) => {
 
     trigger(name);
   };
-  console.log(name);
+
   const onFileAdd = (file: UploadFile, value) => {
     setFiles((prevFiles) => [...prevFiles, file]);
     if (ideaId) {

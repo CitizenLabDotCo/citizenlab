@@ -80,7 +80,7 @@ const CustomFieldsForm = ({
     phase?.data.attributes.allow_anonymous_participation &&
     participationMethod !== 'native_survey';
 
-  console.log(formValues);
+  // Copyright disclaimer is needed if the user is uploading files or images
   const disclaimerNeeded =
     formValues?.idea_files_attributes?.length ||
     formValues?.idea_images_attributes?.length ||
