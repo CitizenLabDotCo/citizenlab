@@ -259,10 +259,12 @@ describe('Idea new page for timeline project', () => {
     cy.contains('Add new idea').should('exist');
     // add a title and description
     cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
-
-    // verify the title and description
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // Go to the next page of the idea form
@@ -287,7 +289,7 @@ describe('Idea new page for timeline project', () => {
     cy.get('.e2e-idea-form-location-input-field input').type(
       'Boulevard Anspach Brussels'
     );
-    cy.wait(7000);
+    cy.wait(10000);
     cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
 
     // save the form
