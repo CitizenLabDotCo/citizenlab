@@ -7,6 +7,10 @@ module BulkImportIdeas::Parsers::Pdf
     SELECT_FIELD_TYPES = %w[select multiselect select_image multiselect_image]
     FILLED_OPTION_CHARS = %w[& ☑ ☒ >]
 
+    def initialize(locale)
+      @locale = locale
+    end
+
     def parse_text(pages, template_data)
       return unless pages && template_data
 
@@ -22,7 +26,6 @@ module BulkImportIdeas::Parsers::Pdf
       # TODO: Area question not importing
 
       parsed_fields = {}
-
       field_config.each_with_index do |field, _index|
         # First get the text between the field title and the end delimiter as a broad match
         # TODO: If split does not work on title try truncated version?
@@ -33,11 +36,11 @@ module BulkImportIdeas::Parsers::Pdf
 
         # Now process the values
         value = if TEXT_FIELD_TYPES.include? field[:input_type]
-                  process_text_value(field)
-                elsif NUMBER_FIELD_TYPES.include? field[:input_type]
-                  process_number_value(field)
-                elsif SELECT_FIELD_TYPES.include? field[:input_type]
-                  process_selected_options(field, option_config)
+          process_text_value(field)
+        elsif NUMBER_FIELD_TYPES.include? field[:input_type]
+          process_number_value(field)
+        elsif SELECT_FIELD_TYPES.include? field[:input_type]
+          process_selected_options(field, option_config)
         end
         parsed_fields[field[:name]] = value if !value.nil?
       end
@@ -59,8 +62,7 @@ module BulkImportIdeas::Parsers::Pdf
 
     # Remove page numbers
     def remove_page_numbers(pages)
-      # TODO: Need the locale here
-      page_copy = I18n.with_locale('en') { I18n.t('form_builder.pdf_export.page') }
+      page_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.page') }
       page_number_regex = Regexp.new "#{page_copy} \\d+$"
       pages.map do |page|
         page.gsub(page_number_regex, '')&.strip
@@ -71,8 +73,7 @@ module BulkImportIdeas::Parsers::Pdf
       # First split the text within the field to narrow it down to the actual text we want to use
       start_delimiter = field.dig(:content_delimiters, :start)
       value = extract_text_between(field[:text], start_delimiter, nil)
-      value = value.tr("\n", ' ').strip
-      value
+      value.tr("\n", ' ').strip
     end
 
     def process_number_value(field)
@@ -113,15 +114,10 @@ module BulkImportIdeas::Parsers::Pdf
           end
         end
       end
-      if field[:print_format] == :single_select
-        selected_options.first
-      else
-        selected_options
-      end
+
+      field[:input_type] == 'select' ? selected_options.first : selected_options
     end
 
-    # TODO: JS - what about long options??
-    # TODO: Maybe revert to the old way of doing options
     def option_is_selected?(line, option_text)
       return false unless line.include?(option_text)
 

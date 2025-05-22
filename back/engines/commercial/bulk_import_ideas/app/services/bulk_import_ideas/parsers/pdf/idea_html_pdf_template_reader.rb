@@ -15,15 +15,8 @@ module BulkImportIdeas::Parsers::Pdf
     def template_data
       @template_data ||= begin
         file = pdf_exporter.export
-        reader = PDF::Reader.new(file)
+        pages = pdf_pages(PDF::Reader.new(file))
         form_fields = pdf_exporter.printable_fields
-
-        # Get an array of lines for each page of the PDF
-        pages = reader.pages.map do |page|
-          page.text.split("\n").map do |line|
-            line
-          end
-        end
 
         field_import_configs = []
         question_num = 0
@@ -45,6 +38,15 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     private
+
+    # Get an array of lines for each page of the PDF
+    def pdf_pages(reader)
+      reader.pages.map do |page|
+        page.text.split("\n").map do |line|
+          line
+        end
+      end
+    end
 
     def import_config_for_field(field_or_option, pdf_pages, question_number = nil, next_field = nil)
       type = field_or_option.is_a?(CustomField) ? 'field' : 'option'
@@ -112,7 +114,7 @@ module BulkImportIdeas::Parsers::Pdf
     # If the field is the last on a page there is no end delimiter
     def field_content_delimiters(_field, next_field, current_question_number, page_lines, _field_line_num)
       page_text = page_lines.reject(&:empty?) # Remove empty lines
-      page_text = page_text.reject { |line| line.match?(/\A[i\(\)\s]*\z/) } # Remove some odd lines that are read from the PDF with just i or ( ) in them
+      page_text = page_text.grep_v(/\A[i\(\)\s]*\z/) # Remove some odd lines that are read from the PDF with just i or ( ) in them
       page_text.pop # Remove the last line which is always the page number
 
       next_line_index = nil
