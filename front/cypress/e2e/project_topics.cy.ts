@@ -223,6 +223,8 @@ describe('Project topics', () => {
       cy.get('#e2e-idea-description-input .ql-editor').type(description);
       cy.get('#e2e-idea-description-input .ql-editor').contains(description);
 
+      cy.wait(500);
+
       // Go to the next page of the idea form
       cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
@@ -257,6 +259,8 @@ describe('Project topics', () => {
 
       cy.get('#e2e-idea-description-input .ql-editor').type(description);
       cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+
+      cy.wait(500);
 
       // Go to the next page of the idea form
       cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
