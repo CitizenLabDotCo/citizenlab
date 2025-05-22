@@ -5,9 +5,15 @@ export const sampleCommonGroundResults: ICommonGroundResults = {
     id: 'stub-phase-results-1',
     type: 'common_ground_results',
     attributes: {
-      numParticipants: 150,
-      numStatements: 45,
-      numVotes: 320,
+      stats: {
+        num_participants: 150,
+        num_ideas: 45,
+        votes: {
+          up: 320,
+          down: 50,
+          neutral: 30,
+        },
+      },
       top_consensus_ideas: [
         {
           id: '4e525b7c-92b2-4537-b2ac-653196c5507a',

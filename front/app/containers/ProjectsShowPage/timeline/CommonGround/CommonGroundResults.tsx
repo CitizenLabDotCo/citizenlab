@@ -28,12 +28,11 @@ const CommonGroundResults = ({ phaseId }: Props) => {
   if (isLoading || isError) return null;
 
   const {
-    numParticipants,
-    numStatements,
-    numVotes,
+    stats: { num_participants, num_ideas, votes },
     top_consensus_ideas,
     top_controversial_ideas,
   } = results.data.attributes;
+  const totalVotes = votes.up + votes.down + votes.neutral;
 
   const renderList = (title: string, items: CommonGroundResultItem[]) => (
     <Box mb="32px">
@@ -89,13 +88,13 @@ const CommonGroundResults = ({ phaseId }: Props) => {
       <Box display="flex" mb="24px">
         <Box mr="24px">
           <strong>{formatMessage(messages.participants)}</strong>:{' '}
-          {numParticipants}
+          {num_participants}
         </Box>
         <Box mr="24px">
-          <strong>{formatMessage(messages.statements)}</strong>: {numStatements}
+          <strong>{formatMessage(messages.statements)}</strong>: {num_ideas}
         </Box>
         <Box>
-          <strong>{formatMessage(messages.votes)}</strong>: {numVotes}
+          <strong>{formatMessage(messages.votes)}</strong>: {totalVotes}
         </Box>
       </Box>
 
