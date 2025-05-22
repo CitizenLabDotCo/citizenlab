@@ -19,13 +19,21 @@ export interface CommonGroundResultItem {
   };
 }
 
+interface Stats {
+  num_participants: number;
+  num_ideas: number;
+  votes: {
+    up: number;
+    down: number;
+    neutral: number;
+  };
+}
+
 export interface CommonGroundResultsData {
   id: string;
   type: 'common_ground_results';
   attributes: {
-    numParticipants: number;
-    numStatements: number;
-    numVotes: number;
+    stats: Stats;
     top_consensus_ideas: CommonGroundResultItem[];
     top_controversial_ideas: CommonGroundResultItem[];
   };
