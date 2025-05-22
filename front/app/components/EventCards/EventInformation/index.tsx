@@ -72,7 +72,7 @@ const EventInformation = ({ event }: Props) => {
 
   return (
     <EventInformationContainer data-testid="EventInformation">
-      <Box>
+      <Box className="e2e-event-card">
         <Box
           display="flex"
           justifyContent="space-between"
