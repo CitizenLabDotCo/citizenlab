@@ -7,11 +7,6 @@ module BulkImportIdeas::Parsers
     MAX_TOTAL_PAGES = 100
     TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
 
-    def initialize(current_user, locale, phase_id, personal_data_enabled)
-      super
-      @form_fields = IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields
-    end
-
     # Synchronous version not implemented for PDFs
     def parse_file(file_content)
       raise NotImplementedError, 'This method is not implemented for PDFs'
@@ -41,7 +36,7 @@ module BulkImportIdeas::Parsers
       form_parsed_idea = google_forms_service.parse_pdf(pdf_file)
       text_parsed_idea = begin
         Pdf::IdeaPlainTextParserService.new(
-          @form_fields,
+          printable_form_fields,
           @locale
         ).parse_text(google_forms_service.raw_text_page_array(pdf_file))
       rescue BulkImportIdeas::Error
@@ -228,6 +223,10 @@ module BulkImportIdeas::Parsers
     # Return the fields and page count from the form we're importing from
     def import_form_data
       @import_form_data ||= BulkImportIdeas::Exporters::IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
+    end
+
+    def printable_form_fields
+      @printable_form_fields ||= IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields_legacy
     end
   end
 end

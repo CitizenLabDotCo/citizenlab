@@ -47,7 +47,7 @@ const Analyses = ({
   const projectLink: RouteType =
     participationMethod === 'ideation'
       ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
-      : `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
+      : `/admin/projects/${projectId}/phases/${phaseId}/results`;
 
   if (relevantAnalyses?.length === 0 && !isLoading) {
     return (

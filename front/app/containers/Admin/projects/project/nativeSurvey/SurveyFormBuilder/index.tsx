@@ -43,7 +43,7 @@ const SurveyFormBuilder = ({
       builderConfig={{
         ...nativeSurveyConfig,
         formCustomFields: newCustomFields,
-        goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/native-survey`,
+        goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/survey-form`,
       }}
       viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
     />

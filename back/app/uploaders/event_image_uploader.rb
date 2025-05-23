@@ -2,11 +2,11 @@
 
 class EventImageUploader < BaseImageUploader
   version :small do
-    process resize_to_fill: [96, 96]
+    process resize_to_limit: [96, nil]
   end
 
   version :medium do
-    process resize_to_fill: [480, 217]
+    process resize_to_limit: [480, nil]
   end
 
   version :large do
@@ -14,6 +14,6 @@ class EventImageUploader < BaseImageUploader
   end
 
   version :fb do
-    process resize_to_fill: [1200, 630]
+    process resize_to_limit: [1200, nil]
   end
 end

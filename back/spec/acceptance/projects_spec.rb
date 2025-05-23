@@ -1749,5 +1749,56 @@ resource 'Projects' do
         end
       end
     end
+
+    context 'when logged out resident' do
+      context 'hidden community monitor project exists & everyone tracking enabled' do
+        let!(:phase) do
+          phase = create(:community_monitor_survey_phase, with_permissions: true)
+          phase.permissions.first.update!(permitted_by: 'everyone', everyone_tracking_enabled: true)
+          phase
+        end
+
+        example 'Get community monitor project' do
+          do_request
+          assert_status 200
+        end
+
+        context 'Survey has already been submitted' do
+          let!(:response) { create(:native_survey_response, project: phase.project, creation_phase: phase, author: nil, author_hash: author_hash) }
+
+          context 'when no consent given' do
+            let(:author_hash) do
+              # No consent hash based on ip and user agent
+              user_agent = 'User-Agent: Mozilla/5.0'
+              ip = '1.2.3.4'
+              "n_#{Idea.create_author_hash(ip + user_agent, phase.project_id, true)}"
+            end
+
+            example 'Get community monitor project when survey already submitted without consent' do
+              header 'User-Agent', 'User-Agent: Mozilla/5.0'
+              header 'X-Forwarded-For', '1.2.3.4'
+              do_request
+              assert_status 200
+
+              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
+              expect(disabled_reason).to eq 'posting_limited_max_reached'
+            end
+          end
+
+          context 'when consent given - using hash from cookie' do
+            let(:author_hash) { 'COOKIE_AUTHOR_HASH' }
+
+            example 'Get community monitor project when survey already submitted with consent' do
+              header('Cookie', "#{phase.id}={\"lo\": \"#{author_hash}\"};cl2_consent={\"analytics\": true}")
+              do_request
+              assert_status 200
+
+              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
+              expect(disabled_reason).to eq 'posting_limited_max_reached'
+            end
+          end
+        end
+      end
+    end
   end
 end

@@ -8,6 +8,8 @@ import {
   IOptionsType,
 } from 'api/custom_fields/types';
 
+import UserFieldsInFormNotice from 'containers/Admin/projects/project/nativeSurvey/UserFieldsInFormNotice';
+
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import Warning from 'components/UI/Warning';
 
@@ -15,7 +17,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import AccessRightsNotice from './AccessRightsNotice';
 import messages from './messages';
-import UserFieldsInFormNotice from 'containers/Admin/projects/project/nativeSurvey/UserFieldsInFormNotice';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   type: 'survey',

@@ -32,6 +32,11 @@ const generateYupValidationSchema = ({
       title_multiloc,
     } = question;
 
+    const title = localize(title_multiloc);
+    const fieldRequired = formatMessage(messages.fieldRequired, {
+      fieldName: title,
+    });
+
     switch (input_type) {
       case 'text_multiloc': {
         if (key === 'title_multiloc') {
@@ -82,13 +87,7 @@ const generateYupValidationSchema = ({
         if (key === 'location_description') {
           schema[key] = string().nullable();
         } else {
-          schema[key] = required
-            ? string().required(
-                formatMessage(messages.fieldRequired, {
-                  fieldName: localize(title_multiloc),
-                })
-              )
-            : string();
+          schema[key] = required ? string().required(fieldRequired) : string();
         }
         break;
       }
@@ -97,25 +96,13 @@ const generateYupValidationSchema = ({
         if (key === 'proposed_budget') {
           schema[key] = number().nullable();
         } else {
-          schema[key] = required
-            ? number().required(
-                formatMessage(messages.fieldRequired, {
-                  fieldName: localize(title_multiloc),
-                })
-              )
-            : number();
+          schema[key] = required ? number().required(fieldRequired) : number();
         }
         break;
       }
 
       case 'select': {
-        schema[key] = required
-          ? string().required(
-              formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
-              })
-            )
-          : string();
+        schema[key] = required ? string().required(fieldRequired) : string();
 
         // Other option
         const fieldSchemaOther = string().when(key, {
@@ -133,18 +120,12 @@ const generateYupValidationSchema = ({
       case 'multiselect': {
         let fieldSchema = array().of(string());
         if (required) {
-          fieldSchema = fieldSchema
-            .required(
-              formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
-              })
-            )
-            .min(
-              1,
-              formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
-              })
-            );
+          fieldSchema = fieldSchema.required(fieldRequired).min(
+            1,
+            formatMessage(messages.fieldRequired, {
+              fieldName: title,
+            })
+          );
         }
 
         if (minimum_select_count) {
@@ -152,7 +133,7 @@ const generateYupValidationSchema = ({
             minimum_select_count,
             formatMessage(messages.fieldMinimum, {
               minSelections: minimum_select_count,
-              fieldName: localize(title_multiloc),
+              fieldName: title,
             })
           );
         }
@@ -161,7 +142,7 @@ const generateYupValidationSchema = ({
             maximum_select_count,
             formatMessage(messages.fieldMaximum, {
               maxSelections: maximum_select_count,
-              fieldName: localize(title_multiloc),
+              fieldName: title,
             })
           );
         }
@@ -211,13 +192,7 @@ const generateYupValidationSchema = ({
       }
 
       case 'linear_scale': {
-        schema[key] = required
-          ? number().required(
-              formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
-              })
-            )
-          : number();
+        schema[key] = required ? number().required(fieldRequired) : number();
         break;
       }
 
@@ -229,9 +204,9 @@ const generateYupValidationSchema = ({
           required && numberOfOptions !== undefined
             ? array()
                 .of(string())
-                .min(numberOfOptions, formatMessage(messages.fieldRequired))
-                .max(numberOfOptions, formatMessage(messages.fieldRequired))
-                .required(formatMessage(messages.topicRequired))
+                .min(numberOfOptions, fieldRequired)
+                .max(numberOfOptions, fieldRequired)
+                .required(fieldRequired)
             : array().nullable();
         break;
       }
@@ -243,9 +218,9 @@ const generateYupValidationSchema = ({
         schema[key] =
           required && maxRating !== undefined
             ? number()
-                .required(formatMessage(messages.fieldRequired))
-                .min(1, formatMessage(messages.fieldRequired))
-                .max(maxRating, formatMessage(messages.fieldRequired))
+                .required(fieldRequired)
+                .min(1, fieldRequired)
+                .max(maxRating, fieldRequired)
             : number();
         break;
       }
