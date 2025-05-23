@@ -411,7 +411,7 @@ da:
       cta_join_platform: 'Udforsk platformen'
       subject: 'Velkommen til platformen for %{organizationName}'
       main_header: Velkommen!
-      message_welcome: 'Tillykke, du har tilmeldt dig inddragelsesplatform for %{organizationName}. Udforsk platformen og husk, at du også kan tilføje et profilbillede og en kort beskrivelse, hvor du fortæller, hvem du er.'
+      message_welcome: 'Velkommen, du har nu registreret dig på inddragelsesplatformen for %{organizationName}. Udforsk platformen og husk, at du også kan tilføje et profilbillede og en kort beskrivelse, hvor du fortæller, hvem du er.'
       preheader: 'Her er det du kan gøre på %{organizationName} platformen'
     idea_published:
       subject:
