@@ -26,6 +26,7 @@ import messages from './messages';
 import { getInstructionMessage } from './util';
 import RankingField from './Fields/RankingField';
 import RatingField from './Fields/RatingField';
+import MatrixField from './Fields/MatrixField';
 
 const renderField = ({
   question,
@@ -91,6 +92,8 @@ const renderField = ({
       return <RankingField question={question} />;
     case 'rating':
       return <RatingField question={question} />;
+    case 'matrix_linear_scale':
+      return <MatrixField question={question} />;
     default:
       return null;
   }

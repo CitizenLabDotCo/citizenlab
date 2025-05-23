@@ -8,9 +8,9 @@ import { useIntl } from 'utils/cl-intl';
 import LinearScaleButton from './LinearScaleButton';
 import Labels from './Labels';
 import useLocalize from 'hooks/useLocalize';
-import { Multiloc } from 'typings';
 
 import messages from 'components/Form/Components/Controls/messages';
+import { getLinearScaleLabel } from './utils';
 
 interface Props {
   value?: number;
@@ -31,8 +31,7 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
 
   const getAriaValueText = (value: number, total: number) => {
     // If the value has a label, read it out
-    const label: Multiloc | undefined =
-      question[`linear_scale_label_${value}_multiloc`];
+    const label = getLinearScaleLabel(question, value);
 
     if (label) {
       return formatMessage(messages.valueOutOfTotalWithLabel, {
@@ -43,8 +42,7 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
     }
 
     // If we don't have a label but we do have a maximum, read out the current value & maximum label
-    const maxLabel: Multiloc | undefined =
-      question[`linear_scale_label_${maximum}_multiloc`];
+    const maxLabel = getLinearScaleLabel(question, maximum);
 
     if (maxLabel) {
       return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {

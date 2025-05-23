@@ -5,6 +5,8 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
 
+import legacyMessages from 'components/Form/Components/Controls/messages';
+
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
@@ -220,6 +222,34 @@ const generateYupValidationSchema = ({
                 .min(1, fieldRequired)
                 .max(maxRating, fieldRequired)
             : number();
+        break;
+      }
+
+      case 'matrix_linear_scale': {
+        // type guards, numberOfStatements and numberOfColumns should always be defined
+        const numberOfStatements = question.matrix_statements?.length ?? 0;
+        const numberOfColumns = question.maximum ?? 11;
+
+        schema[key] = required
+          ? object().test(
+              formatMessage(legacyMessages.allStatementsError),
+              (object) => {
+                const keys = Object.keys(object);
+                const values = Object.values(object);
+                const isValid =
+                  keys.length === numberOfStatements &&
+                  values.every((value) => {
+                    return (
+                      typeof value === 'number' &&
+                      value >= 1 &&
+                      value <= numberOfColumns
+                    );
+                  });
+
+                return isValid;
+              }
+            )
+          : object().nullable();
         break;
       }
     }
