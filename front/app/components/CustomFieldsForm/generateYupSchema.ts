@@ -30,6 +30,8 @@ const generateYupValidationSchema = ({
       title_multiloc,
     } = question;
 
+    const title = localize(title_multiloc);
+
     switch (input_type) {
       case 'text_multiloc': {
         if (key === 'title_multiloc') {
@@ -83,7 +85,7 @@ const generateYupValidationSchema = ({
           schema[key] = required
             ? string().required(
                 formatMessage(messages.fieldRequired, {
-                  fieldName: localize(title_multiloc),
+                  fieldName: title,
                 })
               )
             : string();
@@ -98,7 +100,7 @@ const generateYupValidationSchema = ({
           schema[key] = required
             ? number().required(
                 formatMessage(messages.fieldRequired, {
-                  fieldName: localize(title_multiloc),
+                  fieldName: title,
                 })
               )
             : number();
@@ -110,7 +112,7 @@ const generateYupValidationSchema = ({
         schema[key] = required
           ? string().required(
               formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
+                fieldName: title,
               })
             )
           : string();
@@ -134,13 +136,13 @@ const generateYupValidationSchema = ({
           fieldSchema = fieldSchema
             .required(
               formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
+                fieldName: title,
               })
             )
             .min(
               1,
               formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
+                fieldName: title,
               })
             );
         }
@@ -150,7 +152,7 @@ const generateYupValidationSchema = ({
             minimum_select_count,
             formatMessage(messages.fieldMinimum, {
               minSelections: minimum_select_count,
-              fieldName: localize(title_multiloc),
+              fieldName: title,
             })
           );
         }
@@ -159,7 +161,7 @@ const generateYupValidationSchema = ({
             maximum_select_count,
             formatMessage(messages.fieldMaximum, {
               maxSelections: maximum_select_count,
-              fieldName: localize(title_multiloc),
+              fieldName: title,
             })
           );
         }
@@ -212,10 +214,29 @@ const generateYupValidationSchema = ({
         schema[key] = required
           ? number().required(
               formatMessage(messages.fieldRequired, {
-                fieldName: localize(title_multiloc),
+                fieldName: title,
               })
             )
           : number();
+        break;
+      }
+
+      case 'ranking': {
+        const numberOfOptions = question.options?.length;
+
+        const fieldRequired = formatMessage(messages.fieldRequired, {
+          fieldName: title,
+        });
+
+        // type guard, numberOfOptions should always be defined
+        schema[key] =
+          required && numberOfOptions !== undefined
+            ? array()
+                .of(string())
+                .min(numberOfOptions, fieldRequired)
+                .max(numberOfOptions, fieldRequired)
+                .required(fieldRequired)
+            : array().nullable();
         break;
       }
     }
