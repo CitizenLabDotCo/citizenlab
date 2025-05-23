@@ -10,7 +10,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
@@ -104,7 +103,6 @@ const ParentCommentForm = ({
     useState(false);
   const { data: idea } = useIdeaById(ideaId);
   const projectId = idea ? idea.data.relationships.project.data.id : null;
-  const { data: project } = useProjectById(projectId);
 
   const processing = addCommentToIdeaIsLoading;
 
@@ -221,8 +219,8 @@ const ParentCommentForm = ({
     ? messages.visibleToUsersPlaceholder
     : messages.ideaCommentBodyPlaceholder;
   const placeholder = formatMessage(placeholderMessage);
-  const userCanModerate = project
-    ? canModerateProject(project.data, authUser)
+  const userCanModerate = projectId
+    ? canModerateProject(projectId, authUser)
     : false;
 
   return (

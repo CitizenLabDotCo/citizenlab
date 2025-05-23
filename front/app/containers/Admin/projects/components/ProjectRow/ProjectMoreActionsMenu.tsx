@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useCopyProject from 'api/projects/useCopyProject';
 import useDeleteProject from 'api/projects/useDeleteProject';
-import useProjectById from 'api/projects/useProjectById';
 
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
@@ -23,6 +23,7 @@ export interface Props {
   folderId?: string;
   setError: (error: string | null) => void;
   setIsRunningAction?: (actionType: ActionType, isRunning: boolean) => void;
+  publication: IAdminPublicationData;
 }
 
 const ProjectMoreActionsMenu = ({
@@ -30,10 +31,10 @@ const ProjectMoreActionsMenu = ({
   folderId,
   setError,
   setIsRunningAction,
+  publication,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
-  const { data: project } = useProjectById(projectId);
 
   const { mutate: deleteProject } = useDeleteProject();
   const { mutate: copyProject } = useCopyProject();
@@ -41,17 +42,17 @@ const ProjectMoreActionsMenu = ({
   const [isCopying, setIsCopying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  if (!authUser || !project) {
+  if (!authUser) {
     return null;
   }
 
   const userCanDeleteProject =
-    isAdmin(authUser) || !project.data.attributes.first_published_at;
+    isAdmin(authUser) || publication.attributes.publication_status === 'draft';
 
   const userCanCopyProject =
     isAdmin(authUser) ||
     // If the user is a moderator of the project
-    canModerateProject(project.data, authUser) ||
+    canModerateProject(projectId, authUser) ||
     // If the user is a moderator of the folder
     (typeof folderId === 'string' && userModeratesFolder(authUser, folderId));
 

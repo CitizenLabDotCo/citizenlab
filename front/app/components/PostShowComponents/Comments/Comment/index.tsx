@@ -4,7 +4,6 @@ import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useComment from 'api/comments/useComment';
-import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -75,7 +74,6 @@ const Comment = ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     comment?.data.relationships?.author?.data?.id
   );
-  const { data: project } = useProjectById(projectId);
 
   const [editing, setEditing] = useState(false);
 
@@ -92,9 +90,7 @@ const Comment = ({
   };
 
   const authorCanModerate = author
-    ? project
-      ? canModerateProject(project.data, author)
-      : false
+    ? typeof projectId === 'string' && canModerateProject(projectId, author)
     : false;
 
   if (comment) {

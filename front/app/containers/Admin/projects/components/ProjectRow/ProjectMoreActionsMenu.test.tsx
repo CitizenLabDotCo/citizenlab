@@ -3,6 +3,7 @@ import React from 'react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
+import { mockAdminPublication } from 'api/admin_publications/__mocks__/data';
 import { IUserData } from 'api/users/types';
 
 import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
@@ -11,6 +12,7 @@ import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
 
 const defaultProps: Props = {
   projectId: 'projectId',
+  publication: mockAdminPublication,
   setError: jest.fn(),
 };
 
@@ -47,10 +49,6 @@ const mockProject = {
 
 jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockUserData } }));
 
-jest.mock('api/projects/useProjectById', () => {
-  return jest.fn(() => ({ data: { data: mockProject } }));
-});
-
 const copyApiPath = '*projects/:projectId/copy';
 const deleteApiPath = '*projects/:id';
 
@@ -71,6 +69,7 @@ describe('ProjectMoreActionsMenu', () => {
     const setErrorFn = jest.fn();
     const props: Props = {
       projectId: 'projectId',
+      publication: mockAdminPublication,
       setError: setErrorFn,
     };
     render(<ProjectMoreActionsMenu {...props} />);

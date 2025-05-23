@@ -22,6 +22,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
 import messages from '../messages';
 
 const StyledTitle = styled(Text)`
@@ -58,7 +59,7 @@ const NewIdeaHeading = ({ phaseId, titleText }: Props) => {
   if (!project) return null;
 
   const showEditFormButton =
-    !isSmallerThanPhone && canModerateProject(project.data, authUser);
+    !isSmallerThanPhone && canModerateProject(project.data.id, authUser);
   const linkToFormBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/form/edit`;
 
   const returnToProject = () => {

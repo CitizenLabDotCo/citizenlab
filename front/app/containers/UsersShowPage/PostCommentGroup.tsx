@@ -136,7 +136,7 @@ const PostCommentGroup = ({ comments, userId, postId }: Props) => {
 
   const { slug, title_multiloc } = idea.data.attributes;
   const userCanModerate = project
-    ? canModerateProject(project.data, user)
+    ? canModerateProject(project.data.id, user)
     : false;
 
   return (

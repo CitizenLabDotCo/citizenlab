@@ -34,6 +34,7 @@ const TopBar = ({ project, event }: Props) => {
   const location = useLocation();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
+  const projectId = project.id;
 
   return (
     <Bar>
@@ -47,7 +48,7 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {canModerateProject(project, authUser) && (
+        {canModerateProject(projectId, authUser) && (
           <Button
             buttonStyle="secondary-outlined"
             m="0px"
@@ -56,9 +57,7 @@ const TopBar = ({ project, event }: Props) => {
             py="4px"
             text={formatMessage(messages.editEvent)}
             onClick={() => {
-              clHistory.push(
-                `/admin/projects/${project.id}/events/${event.id}`
-              );
+              clHistory.push(`/admin/projects/${projectId}/events/${event.id}`);
             }}
           />
         )}
