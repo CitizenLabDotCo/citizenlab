@@ -17,6 +17,18 @@ RSpec.describe Sluggable do
     end
 
     describe 'generate_slug' do
+      let(:test_model) do
+        Class.new(ApplicationRecord) do
+          include Sluggable
+          connection.create_table(:test_models, temporary: true) do |t|
+            t.jsonb :title_multiloc
+            t.string :slug
+          end
+          self.table_name = 'test_models'
+          slug from: proc { |it| it.title_multiloc }
+        end
+      end
+
       it 'does not set a slug when `slug` is not included in the class' do
         sluggable = create(sluggable_factories[:no_slug])
         expect(sluggable[:slug]).to be_blank
@@ -57,37 +69,15 @@ RSpec.describe Sluggable do
       end
 
       it 'generates a fallback slug when the from_value is nil' do
-        sluggable = build(sluggable_factories[:slug_from_first_title], title_multiloc: nil)
-
-        # Annoyingly complex way to get past the validations that would prevent
-        # saving a sluggable with nil title_multiloc.
-        allow(sluggable).to receive(:valid?).and_wrap_original do |method, *args|
-          sluggable.errors.clear # Clear all errors before validation
-          method.call(*args) # Run the validations
-          sluggable.errors.delete(:title_multiloc) # Remove any title_multiloc errors after
-          sluggable.errors.none? # Return validation result
-        end
-
+        sluggable = test_model.new(title_multiloc: nil)
         sluggable.save!
-
         expect(sluggable.slug).to be_present
         expect(sluggable.slug).to match(Sluggable::SLUG_REGEX)
       end
 
       it 'generates a fallback slug when the from_value is empty' do
-        sluggable = build(sluggable_factories[:slug_from_first_title], title_multiloc: {})
-
-        # Annoyingly complex way to get past the validations that would prevent
-        # saving a sluggable with nil title_multiloc.
-        allow(sluggable).to receive(:valid?).and_wrap_original do |method, *args|
-          sluggable.errors.clear # Clear all errors before validation
-          method.call(*args) # Run the validations
-          sluggable.errors.delete(:title_multiloc) # Remove any title_multiloc errors after
-          sluggable.errors.none? # Return validation result
-        end
-
+        sluggable = test_model.new(title_multiloc: {})
         sluggable.save!
-
         expect(sluggable.slug).to be_present
         expect(sluggable.slug).to match(Sluggable::SLUG_REGEX)
       end
