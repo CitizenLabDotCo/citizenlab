@@ -77,9 +77,17 @@ describe('Admin: add project', () => {
 
         // Expect an area to be passed in the project request
         cy.wait('@createProject').then((interception) => {
-          console.log({ interception });
           expect(interception.request?.body.project.area_ids.length).to.equal(
             1
+          );
+
+          cy.getArea(interception.request?.body.project.area_ids[0]).then(
+            (area) => {
+              console.log({ area });
+              expect(area.body.data.attributes.title_multiloc['en']).to.equal(
+                'Carrotgem'
+              );
+            }
           );
         });
       });
