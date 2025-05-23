@@ -21,15 +21,15 @@ describe('Survey Form Tab Navigation', () => {
 
   it('should navigate to survey form tab and verify content loads', () => {
     // Verify the tab panel loaded by checking section title
-    cy.get('[data-cy="e2e-survey-form-title"]').should('be.visible');
+    cy.dataCy('e2e-survey-form-title').should('be.visible');
 
     // Check that the edit button is visible
-    cy.get('[data-cy="e2e-edit-survey-form"]').should('be.visible');
+    cy.dataCy('e2e-edit-survey-form').should('be.visible');
   });
 
   it('should navigate to survey form builder page when clicking the edit button', () => {
     // Click the edit button
-    cy.get('[data-cy="e2e-edit-survey-form"]').click();
+    cy.dataCy('e2e-edit-survey-form').click();
 
     // Verify we're on the survey form builder page
     cy.url().should(
@@ -38,8 +38,8 @@ describe('Survey Form Tab Navigation', () => {
     );
 
     // Verify the form builder content has loaded
-    cy.get('[data-cy="e2e-survey-form-builder"]').should('be.visible');
-    cy.get('[data-cy="e2e-form-builder-toolbox"]').should('be.visible');
-    cy.get('[data-cy="e2e-form-builder-top-bar"]').should('be.visible');
+    cy.dataCy('e2e-survey-form-builder').should('be.visible');
+    cy.dataCy('e2e-form-builder-toolbox').should('be.visible');
+    cy.dataCy('e2e-form-builder-top-bar').should('be.visible');
   });
 });

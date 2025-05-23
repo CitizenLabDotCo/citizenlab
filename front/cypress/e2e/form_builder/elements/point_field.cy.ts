@@ -28,9 +28,9 @@ describe('Form builder point field', () => {
 
   it('adds point field and tests validations', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.get('[data-cy="e2e-point-field"]');
+    cy.dataCy('e2e-point-field');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-point-field"]').click();
+    cy.dataCy('e2e-point-field').click();
 
     // Save the survey
     cy.get('form').submit();
@@ -53,13 +53,13 @@ describe('Form builder point field', () => {
     // Configure the map in the back office
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.contains(questionTitle).click();
-    cy.get('[data-cy="e2e-configure-map-button"]').click();
-    cy.get('[data-cy="e2e-web-map-upload-btn"]').click();
+    cy.dataCy('e2e-configure-map-button').click();
+    cy.dataCy('e2e-web-map-upload-btn').click();
     cy.get('#e2e-portal-id-input')
       .click()
       .clear()
       .type('ce88f9dba8d748a4bf3aa8d6c8027d2e');
-    cy.get('[data-cy="e2e-web-map-import-btn"]').click();
+    cy.dataCy('e2e-web-map-import-btn').click();
     cy.contains('Lava Flow Hazard Zones').should('exist');
     cy.get('form').submit();
 
@@ -70,7 +70,7 @@ describe('Form builder point field', () => {
     cy.contains('Lava Flow Hazard Zones').should('exist');
 
     // Try submitting without entering data for required field
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
@@ -88,18 +88,18 @@ describe('Form builder point field', () => {
     cy.get('#e2e-location-input').type('Brussels');
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);
 
     // Check results in back office
-    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/native-survey`);
+    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/results`);
     cy.contains(questionTitle).should('exist');
     // Open the legend and check the correct data is shown
     cy.get(

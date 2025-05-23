@@ -27,8 +27,9 @@ describe('Admin: add project', () => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects/all');
     cy.acceptCookies();
-    cy.get('[data-cy="e2e-new-project-button"]').click();
-    cy.get('.e2e-project-general-form').should('exist');
+    cy.dataCy('e2e-new-project-button').click();
+    cy.wait(1000);
+    cy.get('.e2e-project-general-form');
   });
 
   context('Type: Timeline', () => {

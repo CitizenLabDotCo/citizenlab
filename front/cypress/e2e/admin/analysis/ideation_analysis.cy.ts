@@ -80,71 +80,62 @@ describe('Admin: ideation analysis', () => {
     cy.get('#e2e-analysis-launch-modal-agree-button').click();
 
     // Shows insights
-    cy.get('[data-cy="e2e-analysis-summary"]').should('exist');
+    cy.dataCy('e2e-analysis-summary').should('exist');
 
     // Searches inputs correctly
-    cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 3);
+    cy.dataCy('e2e-analysis-input-item').should('have.length', 3);
     cy.get('#search-input').type('first');
-    cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 1);
+    cy.dataCy('e2e-analysis-input-item').should('have.length', 1);
     cy.get('#search-input').clear();
-    cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 3);
+    cy.dataCy('e2e-analysis-input-item').should('have.length', 3);
 
     // Preview inputs correctly
-    cy.get('[data-cy="e2e-analysis-input-preview"]').should(
-      'contain',
-      'My first idea'
-    );
+    cy.dataCy('e2e-analysis-input-preview').should('contain', 'My first idea');
     // Shows comments
-    cy.get('[data-cy="e2e-analysis-input-preview"]').should(
+    cy.dataCy('e2e-analysis-input-preview').should(
       'contain',
       'The first comment'
     );
-    cy.get('[data-cy="e2e-analysis-input-item"]').last().click();
-    cy.get('[data-cy="e2e-analysis-input-preview"]').should(
-      'contain',
-      'My third idea'
-    );
+    cy.dataCy('e2e-analysis-input-item').last().click();
+    cy.dataCy('e2e-analysis-input-preview').should('contain', 'My third idea');
 
     // Works with manual tags
     // Has two tags by default e2e-analysis-tag
-    cy.get('[data-cy="e2e-analysis-tag-container"]').should('have.length', 2);
+    cy.dataCy('e2e-analysis-tag-container').should('have.length', 2);
 
     // Add a tag e2e-analysis-add-tag-input
     cy.get('#e2e-analysis-add-tag-input').type('My new tag');
     cy.get('#e2e-analysis-add-tag-button').click();
-    cy.get('[data-cy="e2e-analysis-tag-container"]').should('have.length', 3);
+    cy.dataCy('e2e-analysis-tag-container').should('have.length', 3);
 
     // Adds a tagging to input
-    cy.get('[data-cy="e2e-analysis-input-item"]').first().click();
-    cy.get('[data-cy="e2e-analysis-input-preview"]')
+    cy.dataCy('e2e-analysis-input-item').first().click();
+    cy.dataCy('e2e-analysis-input-preview')
       .find('[data-cy="e2e-analysis-tag"]')
       .contains('My new tag')
       .click();
-    cy.get('[data-cy="e2e-analysis-input-item"]')
+    cy.dataCy('e2e-analysis-input-item')
       .first()
       .should('contain', 'My new tag');
 
     // Filters input on tag selection
-    cy.get('[data-cy="e2e-analysis-tag"]').contains('My new tag').click();
-    cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 1);
+    cy.dataCy('e2e-analysis-tag').contains('My new tag').click();
+    cy.dataCy('e2e-analysis-input-item').should('have.length', 1);
 
     // Filters on input without tags
-    cy.get('[data-cy="e2e-analysis-inputs-without-tags"]').click();
-    cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 2);
+    cy.dataCy('e2e-analysis-inputs-without-tags').click();
+    cy.dataCy('e2e-analysis-input-item').should('have.length', 2);
 
     // All input
-    cy.get('[data-cy="e2e-analysis-all-tags"]').click();
-    cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 3);
+    cy.dataCy('e2e-analysis-all-tags').click();
+    cy.dataCy('e2e-analysis-input-item').should('have.length', 3);
 
     // Delete a tag
-    cy.get('[data-cy="e2e-analysis-tag-action"]').first().click();
+    cy.dataCy('e2e-analysis-tag-action').first().click();
     cy.get('#e2e-analysis-delete-tag-button').click();
     cy.on('window:confirm', () => true);
-    cy.get('[data-cy="e2e-analysis-tag-container"]').should('have.length', 2);
-    cy.get('[data-cy="e2e-analysis-input-preview"]').should(
-      'not.contain',
-      'My new tag'
-    );
+    cy.dataCy('e2e-analysis-tag-container').should('have.length', 2);
+    cy.dataCy('e2e-analysis-input-preview').should('not.contain', 'My new tag');
   });
 
   after(() => {

@@ -154,10 +154,6 @@ class Idea < ApplicationRecord
   validate :not_published_in_non_public_status
   validates :manual_votes_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
 
-  # validates :custom_field_values, json: {
-  #   schema: :schema_for_validation,
-  # }
-
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true
@@ -370,12 +366,6 @@ class Idea < ApplicationRecord
 
   private
 
-  def schema_for_validation
-    fields = participation_method_on_creation.custom_form.custom_fields
-    multiloc_schema = JsonSchemaGeneratorService.new.generate_for fields
-    multiloc_schema.values.first
-  end
-
   def supports_built_in_fields?
     !draft? && participation_method_on_creation.supports_built_in_fields?
   end
@@ -512,6 +502,5 @@ Idea.include(FlagInappropriateContent::Concerns::Flaggable)
 Idea.include(Moderation::Concerns::Moderatable)
 Idea.include(MachineTranslations::Concerns::Translatable)
 Idea.include(IdeaAssignment::Extensions::Idea)
-Idea.include(IdeaCustomFields::Extensions::Idea)
 Idea.include(Analysis::Patches::Idea)
 Idea.include(BulkImportIdeas::Patches::Idea)

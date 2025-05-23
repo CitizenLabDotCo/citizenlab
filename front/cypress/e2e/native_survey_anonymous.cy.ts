@@ -36,11 +36,11 @@ describe('Native survey: no authentication requirements', () => {
     );
 
     // Submit survey
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);
@@ -77,11 +77,11 @@ describe('Native survey: anonymous toggle on', () => {
     );
 
     // Submit survey
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);

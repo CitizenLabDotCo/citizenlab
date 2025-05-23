@@ -51,9 +51,9 @@ describe('Form builder linear scale', () => {
 
   it('adds linear scale field and tests validations', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.get('[data-cy="e2e-linear-scale"]');
+    cy.dataCy('e2e-linear-scale');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-linear-scale"]').click();
+    cy.dataCy('e2e-linear-scale').click();
 
     // Save the survey
     cy.get('form').submit();
@@ -75,7 +75,7 @@ describe('Form builder linear scale', () => {
     cy.wait(1000);
 
     // Try submitting without entering data for required field
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
@@ -91,12 +91,12 @@ describe('Form builder linear scale', () => {
     cy.wait(1000);
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);

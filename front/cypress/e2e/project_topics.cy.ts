@@ -170,16 +170,16 @@ describe('Project topics', () => {
       cy.get('#e2e-idea-title-input input').type(title);
       cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
-      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       cy.get('#e2e-idea-description-input .ql-editor').type(description);
       cy.get('#e2e-idea-description-input .ql-editor').contains(description);
 
       // Go to the next page of the idea form
-      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       // Go to the page with topics
-      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       // Verify the topic is selectable in the topic selector
       cy.get('.e2e-topics-picker');
@@ -218,16 +218,16 @@ describe('Project topics', () => {
       cy.get('#e2e-idea-title-input input').type(title);
       cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
-      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       cy.get('#e2e-idea-description-input .ql-editor').type(description);
       cy.get('#e2e-idea-description-input .ql-editor').contains(description);
 
       // Go to the next page of the idea form
-      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       // Go to the page with topics (Page 3 for now)
-      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       // Verify the topic is selectable in the topic selector
       cy.get('.e2e-topics-picker');
@@ -253,16 +253,16 @@ describe('Project topics', () => {
       cy.get('#e2e-idea-title-input input').type(title);
       cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
-      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       cy.get('#e2e-idea-description-input .ql-editor').type(description);
       cy.get('#e2e-idea-description-input .ql-editor').contains(description);
 
       // Go to the next page of the idea form
-      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       // Go to the page with topics
-      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+      cy.dataCy('e2e-next-page').should('be.visible').click();
 
       // Verify the topic is not available in the topic selector
       cy.get('.e2e-topics-picker');

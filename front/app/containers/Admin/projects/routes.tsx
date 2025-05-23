@@ -103,7 +103,7 @@ export enum projectsRoutes {
   projectPhasesSetup = 'setup',
   projectPhaseSetup = ':phaseId/setup',
   projectPhase = ':phaseId',
-  projectPhaseSurveyResults = ':phaseId/survey-results',
+  projectPhaseExternalSurveyResults = ':phaseId/survey-results',
   projectPhasePolls = ':phaseId/polls',
   projectPhaseAccessRights = ':phaseId/access-rights',
   projectPhaseIdeas = ':phaseId/ideas',
@@ -111,7 +111,7 @@ export enum projectsRoutes {
   projectPhaseIdeaForm = ':phaseId/form',
   projectPhaseVolunteering = ':phaseId/volunteering',
   projectPhaseMap = ':phaseId/map',
-  projectPhaseNativeSurvey = ':phaseId/native-survey',
+  projectPhaseNativeSurveyResults = ':phaseId/results',
   projectPhaseSurveyForm = ':phaseId/survey-form',
   projectPhaseNativeSurveyFormEdit = ':phaseId/survey-form/edit',
   projectPhaseVolunteeringNewCause = ':phaseId/volunteering/causes/new',
@@ -158,7 +158,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/form/edit`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/results`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit?${string}`>
@@ -440,7 +440,7 @@ const createAdminProjectsRoutes = () => {
                 ),
               },
               {
-                path: projectsRoutes.projectPhaseSurveyResults,
+                path: projectsRoutes.projectPhaseExternalSurveyResults,
                 element: (
                   <PageLoading>
                     <AdminProjectSurveyResults />
@@ -512,7 +512,7 @@ const createAdminProjectsRoutes = () => {
                 ),
               },
               {
-                path: projectsRoutes.projectPhaseNativeSurvey,
+                path: projectsRoutes.projectPhaseNativeSurveyResults,
                 element: (
                   <PageLoading>
                     <AdminProjectsSurvey />
