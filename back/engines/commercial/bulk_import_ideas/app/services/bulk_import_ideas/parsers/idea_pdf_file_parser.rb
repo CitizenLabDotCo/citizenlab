@@ -20,7 +20,7 @@ module BulkImportIdeas::Parsers
       job_ids = []
       job_first_idea_index = 1
       files.each_slice(IDEAS_PER_JOB) do |sliced_files|
-        job = BulkImportIdeas::IdeaImportJob.perform_later('pdf', sliced_files, @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
+        job = BulkImportIdeas::IdeaImportJob.perform_later(self.class, sliced_files, @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
         job_ids << job.job_id
         job_first_idea_index += IDEAS_PER_JOB
       end
@@ -55,7 +55,7 @@ module BulkImportIdeas::Parsers
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the exported PDF template
-        pages_per_idea = import_form_data[:page_count]
+        pages_per_idea = template_data[:page_count]
 
         pdf = begin
           ::CombinePDF.parse source_file.file.read
@@ -105,7 +105,7 @@ module BulkImportIdeas::Parsers
     # @param [Array<Hash>] idea_fields - comes from IdeaBaseFileParser#structure_raw_fields
     def merge_idea_with_form_fields(idea_fields)
       merged_fields = []
-      form_fields = import_form_data[:fields].deep_dup # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
+      form_fields = template_data[:fields].deep_dup # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
       form_fields.each do |form_field|
         idea_fields.each do |idea_field|
           if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]
@@ -181,6 +181,7 @@ module BulkImportIdeas::Parsers
         end
         [name, value]
       end
+
       merged_row[:custom_field_values] = custom_field_values
 
       # Get the complete PDF page range - although should always be the same
@@ -188,30 +189,36 @@ module BulkImportIdeas::Parsers
       merged_row
     end
 
-    # @param [Hash] field - comes from IdeaPdfFormExporter#add_to_importer_fields
-    # @param [Array<Hash>] form_fields - comes from IdeaPdfFormExporter#add_to_importer_fields
+    # @param [Hash] field - comes from IdeaPdfFormExporter#add_to_importer_fields OR IdeaHtmlPdfTemplateReader#import_config_for_field
+    # @param [Array<Hash>] form_fields - comes from IdeaPdfFormExporter#add_to_importer_fields OR IdeaHtmlPdfTemplateReader#import_config_for_field
     def process_field_value(field, form_fields)
       processed_field = super
 
       if TEXT_FIELD_TYPES.include?(processed_field[:input_type]) && processed_field[:value]
-        # Strip out text that has leaked from the field description and name into the value
-        processed_field[:value] = processed_field[:value].gsub(/#{processed_field[:description]}/, '')
-        processed_field[:value] = processed_field[:value].gsub(/\A\s*#{processed_field[:name]}/, '')
-
-        # Strip out out any text that has leaked from the next questions title into the value
-        next_question = form_fields[form_fields.find_index(processed_field) + 1]
-        if next_question && next_question[:name].split.count > 4
-          processed_field[:value] = processed_field[:value].gsub(/#{next_question[:name]}*/, '')
-        end
-
-        # Strip out 'this answer may be shared with moderators...' text
-        this_answer_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }
-        processed_field[:value] = processed_field[:value].gsub(/\*#{this_answer_copy}/, '')
-
-        processed_field[:value] = processed_field[:value].strip
+        processed_field[:value] = process_text_field_value(processed_field, form_fields)
       end
 
       processed_field
+    end
+
+    # NOTE: Overridden in sub class
+    def process_text_field_value(field, all_fields)
+      value = field[:value]
+
+      # Strip out text that has leaked from the field description and name into the value
+      value = value.gsub(/#{field[:description]}/, '')
+      value = value.gsub(/\A\s*#{field[:name]}/, '')
+
+      # Strip out out any text that has leaked from the next questions title into the value
+      next_question = all_fields[all_fields.find_index(field) + 1]
+      if next_question && next_question[:name].split.count > 4
+        value = value.gsub(/#{next_question[:name]}*/, '')
+      end
+
+      # Strip out 'this answer may be shared with moderators...' text
+      this_answer_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }
+      value = value.gsub(/\*#{this_answer_copy}/, '')
+      value.strip
     end
 
     def complete_page_range(pages1, pages2)
@@ -221,8 +228,8 @@ module BulkImportIdeas::Parsers
     end
 
     # Return the fields and page count from the form we're importing from
-    def import_form_data
-      @import_form_data ||= BulkImportIdeas::Exporters::IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
+    def template_data
+      @template_data ||= BulkImportIdeas::Exporters::IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
     end
 
     def printable_form_fields
