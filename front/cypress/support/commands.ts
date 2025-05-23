@@ -66,7 +66,7 @@ declare global {
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
-      apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
+      apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
       apiRemoveAllReports: typeof apiRemoveAllReports;
@@ -1347,10 +1347,12 @@ function apiCreateEvent({
   });
 }
 
-function apiEnableProjectDescriptionBuilder({
+function apiToggleProjectDescriptionBuilder({
   projectId,
+  enabled = true,
 }: {
   projectId: string;
+  enabled?: boolean;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1364,7 +1366,7 @@ function apiEnableProjectDescriptionBuilder({
       url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_description/upsert`,
       body: {
         content_builder_layout: {
-          enabled: true,
+          enabled,
         },
       },
     });
@@ -2067,8 +2069,8 @@ Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
 Cypress.Commands.add(
-  'apiEnableProjectDescriptionBuilder',
-  apiEnableProjectDescriptionBuilder
+  'apiToggleProjectDescriptionBuilder',
+  apiToggleProjectDescriptionBuilder
 );
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
