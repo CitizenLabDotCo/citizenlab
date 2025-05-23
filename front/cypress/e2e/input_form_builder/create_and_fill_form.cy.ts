@@ -166,11 +166,13 @@ describe('Input form builder', () => {
 
     cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.wait(500);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+    cy.wait(500);
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -178,6 +180,7 @@ describe('Input form builder', () => {
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload').should('exist');
     cy.get('#e2e-idea-file-upload').should('exist');
+    cy.wait(500);
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
