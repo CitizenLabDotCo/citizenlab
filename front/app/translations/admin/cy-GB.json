@@ -1033,8 +1033,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimenions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "ymweld â'n canolfan gymorth",
   "app.containers.Admin.projects.all.askPersonalData3": "Ychwanegu meysydd ar gyfer enw ac e-bost",
-  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Cwestiynau nad ydynt yn cael eu cefnogi ar hyn o bryd: Delweddau, Tagiau a Lanlwytho Ffeil.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Cwestiynau nad ydynt yn cael eu cefnogi ar hyn o bryd: Cwestiynau mapio (pin gollwng, llwybr tynnu ac ardal dynnu), cwestiynau dewis delwedd, cwestiynau graddio, cwestiynau matrics a chwestiynau uwchlwytho ffeiliau.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Diwedd y ffurflen",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Dechrau'r ffurflen",
   "app.containers.Admin.projects.all.components.archived": "Wedi'i archifo",
