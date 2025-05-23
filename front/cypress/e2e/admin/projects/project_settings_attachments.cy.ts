@@ -54,7 +54,7 @@ describe('Project attachments settings', () => {
       cy.contains('Your form has been saved!').should('be.visible');
 
       // Check that the files are in the correct order
-      cy.get('[data-cy="e2e-file-uploader-container"]')
+      cy.dataCy('e2e-file-uploader-container')
         .find('.files-list')
         .children()
         .children()
@@ -93,7 +93,7 @@ describe('Project attachments settings', () => {
       cy.wait(4000);
       cy.scrollTo('bottom');
 
-      cy.get('[data-cy="e2e-file-uploader-container"]')
+      cy.dataCy('e2e-file-uploader-container')
         .find('.files-list')
         .children()
         .children()
@@ -135,7 +135,7 @@ describe('Project attachments settings', () => {
       cy.reload();
       cy.wait(2000);
 
-      cy.get('[data-cy="e2e-file-uploader-container"]')
+      cy.dataCy('e2e-file-uploader-container')
         .find('.files-list')
         .children()
         .children()

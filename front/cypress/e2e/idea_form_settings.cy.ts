@@ -111,13 +111,13 @@ describe('Idea form settings', () => {
       cy.visit(
         `admin/projects/${timelineWithIdeationProjectId}/phases/${ideationPhaseIdInTimelineProject}/form`
       );
-      cy.get('[data-cy="e2e-edit-input-form"]').should('be.visible');
+      cy.dataCy('e2e-edit-input-form').should('be.visible');
 
       // // Timeline project with budget phase
       cy.visit(
         `admin/projects/${timelineWithBudgetProjectId}/phases/${budgetPhaseInTimelineproject}/form`
       );
-      cy.get('[data-cy="e2e-edit-input-form"]').should('be.visible');
+      cy.dataCy('e2e-edit-input-form').should('be.visible');
     });
   });
 
