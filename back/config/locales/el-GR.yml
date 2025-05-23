@@ -184,6 +184,7 @@ el:
         description:
       other_input_field:
         title: Πληκτρολογήστε την απάντησή σας
+        print_title: Εάν "%{other_option}", διευκρινίστε
       ask_follow_up_field:
         title: Πείτε μας γιατί
     community_monitor:
@@ -329,6 +330,16 @@ el:
       write_as_clearly: 'Γράψτε όσο το δυνατόν πιο καθαρά <b></b> - τα έντυπα αυτά μπορεί να σαρωθούν.'
       write_in_language: 'Γράψτε τις απαντήσεις σας στην ίδια γλώσσα με το παρόν έντυπο.'
       linear_scale_print_description: 'Παρακαλώ γράψτε έναν αριθμό μεταξύ %{min_label} και %{max_label} μόνο'
+      unsupported_field: 'Το πεδίο αυτό δεν μπορεί να συμπληρωθεί σε χαρτί. Παρακαλούμε χρησιμοποιήστε την ηλεκτρονική έκδοση αυτού του εντύπου.'
+      ranking_print_description: 'Παρακαλώ γράψτε έναν αριθμό από το 1 (προτιμότερο) έως το %{max_rank} (λιγότερο προτιμώμενο) σε κάθε πλαίσιο. Χρησιμοποιήστε κάθε αριθμό ακριβώς μία φορά.'
+      matrix_print_description: 'Για κάθε σειρά, σημειώστε έναν κύκλο με σταυρό για να υποδείξετε την προτίμησή σας.'
+      rating_print_description: 'Βαθμολογήστε το γράφοντας έναν αριθμό μεταξύ 1 (χειρότερο) και %{max_stars} (καλύτερο).'
+      sentiment_linear_scale_print_description: 'Παρακαλώ γράψτε έναν αριθμό μεταξύ 1 και 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Παρακαλείστε να σχεδιάσετε ένα Χ στον παρακάτω χάρτη για να δείξετε τη θέση ή να γράψετε τη διεύθυνση.'
+      line_print_description: 'Παρακαλούμε σχεδιάστε μια διαδρομή στον παρακάτω χάρτη.'
+      polygon_print_description: 'Παρακαλώ σχεδιάστε ένα σχήμα στον παρακάτω χάρτη.'
+      select_print_description: 'Επιλέξτε μόνο μία επιλογή.'
   project_copy:
     title_suffix: 'Aντίγραφο'
   confirmations_mailer:
