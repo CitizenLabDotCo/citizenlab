@@ -229,7 +229,7 @@ const generateYupValidationSchema = ({
                 .of(string())
                 .min(numberOfOptions, formatMessage(messages.fieldRequired))
                 .max(numberOfOptions, formatMessage(messages.fieldRequired))
-                .required(formatMessage(messages.topicRequired))
+                .required(formatMessage(messages.fieldRequired))
             : array().nullable();
         break;
       }
