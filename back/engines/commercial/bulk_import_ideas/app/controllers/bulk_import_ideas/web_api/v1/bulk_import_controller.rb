@@ -93,7 +93,7 @@ module BulkImportIdeas
     end
 
     # Show the metadata of a single imported idea
-    # TODO: When other model types (eg comments) are supported, IdeaImport & IdeaImportFile will need to be made polymorphic
+    # NOTE: When other model types (eg comments) are supported, IdeaImport & IdeaImportFile will need to be made polymorphic
     def show_idea_import
       idea_import = IdeaImport.find(params[:id])
       authorize idea_import.idea

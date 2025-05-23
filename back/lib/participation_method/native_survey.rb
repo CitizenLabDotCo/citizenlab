@@ -99,8 +99,8 @@ module ParticipationMethod
       setting.nil? ? true : setting
     end
 
-    def supports_multiple_posts?
-      false
+    def allow_posting_again_after
+      nil # Never allow posting again
     end
 
     def supports_permitted_by_everyone?

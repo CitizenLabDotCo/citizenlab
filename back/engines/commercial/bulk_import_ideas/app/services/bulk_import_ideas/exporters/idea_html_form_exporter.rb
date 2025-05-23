@@ -23,8 +23,8 @@ module BulkImportIdeas::Exporters
 
     private
 
-    def form_fields
-      @form_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).printable_fields
+    def printable_fields
+      @printable_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).printable_fields
     end
 
     def render_config
@@ -69,7 +69,6 @@ module BulkImportIdeas::Exporters
       "#{@project.title_multiloc[@locale]} - #{@phase.title_multiloc[@locale]}"
     end
 
-    # TODO: Get this into the default values of the custom_form model so it can be edited and not just replaced - but this is difficult
     def form_header
       form = @participation_method.custom_form
       return format_urls(default_print_start_multiloc[@locale]) if form.print_start_multiloc == {}
@@ -114,7 +113,7 @@ module BulkImportIdeas::Exporters
 
     def format_fields
       question_num = 0
-      fields = form_fields.filter_map do |field|
+      fields = printable_fields.filter_map do |field|
         next if field.title_multiloc[@locale].blank?
 
         {
@@ -134,7 +133,9 @@ module BulkImportIdeas::Exporters
               image_url: option_image_url(field, option)
             }
           end,
-          matrix: field_matrix_details(field)
+          option_columns: field_option_columns?(field),
+          matrix: field_matrix_details(field),
+          map_url: field_map_url(field)
         }
       end
 
@@ -176,22 +177,18 @@ module BulkImportIdeas::Exporters
         :multi_select_image
       when 'multiline_text', 'html_multiloc'
         :multi_line_text
-      when 'text', 'text_multiloc', 'number', 'linear_scale'
+      when 'text', 'text_multiloc', 'number', 'linear_scale', 'rating', 'sentiment_linear_scale'
         :single_line_text
       when 'ranking'
         :ranking
       when 'matrix_linear_scale'
         :matrix_linear_scale
+      when 'point', 'line', 'polygon'
+        field_map_url(field) ? :mapping : :unsupported
       else
         # CURRENTLY UNSUPPORTED
-        # rating
         # file_upload
         # shapefile_upload
-        # point
-        # line
-        # polygon
-        # matrix_linear_scale
-        # sentiment_linear_scale
         :unsupported
       end
     end
@@ -206,23 +203,58 @@ module BulkImportIdeas::Exporters
     end
 
     def field_print_description(field)
-      if (field.linear_scale? || field.rating?) && field.description_multiloc[@locale].blank?
-        linear_scale_print_instructions(field)
-      else
-        description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
-        html = format_urls(description[@locale]) || ''
-        html += multiselect_print_instructions(field)
-        html += ranking_print_instructions(field)
-        html += matrix_print_instructions(field)
-        html
-      end
+      description = TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
+      html = format_urls(description[@locale]) || ''
+      html += linear_scale_print_instructions(field)
+      html += sentiment_linear_scale_print_instructions(field)
+      html += rating_print_instructions(field)
+      html += select_print_instructions(field)
+      html += multiselect_print_instructions(field)
+      html += ranking_print_instructions(field)
+      html += matrix_print_instructions(field)
+      html += map_print_instructions(field)
+      html
     end
 
     def field_has_question_number?(field)
       !field.page? && !field.additional_text_question?
     end
 
+    def field_map_url(field)
+      return unless %w[point line polygon page].include? field.input_type
+      return if field.input_type == 'page' && field.page_layout != 'map'
+
+      # Use map config from field > project > platform in that order
+      map_config = field.map_config || @project.map_config
+      zoom = map_config&.zoom_level&.to_f || platform_map_config['zoom_level'].to_f
+      longitude = map_config&.center&.x || platform_map_config.dig('map_center', 'long')
+      latitude = map_config&.center&.y || platform_map_config.dig('map_center', 'lat')
+      tile_provider = map_config&.tile_provider || platform_map_config['tile_provider']
+      return unless tile_provider&.include?('api.maptiler.com') # Means we do not currently support the wien.gv.at tile provider
+
+      # Extract the key from the tile provider URL
+      key = tile_provider.match(/key=([^&]+)/)[1]
+      return unless key
+
+      # Use the static map API with basic maps to generate an image (even if the tile provider is not using basic)
+      "https://api.maptiler.com/maps/basic/static/#{longitude},#{latitude},#{zoom}/650x420@2x.png?key=#{key}&attribution=bottomleft"
+    end
+
+    def map_print_instructions(field)
+      messages = {
+        'point' => 'form_builder.pdf_export.point_print_description',
+        'line' => 'form_builder.pdf_export.line_print_description',
+        'polygon' => 'form_builder.pdf_export.polygon_print_description'
+      }
+      message_id = messages[field.input_type]
+      return '' unless field_map_url(field) && message_id
+
+      format_instructions(I18n.with_locale(@locale) { I18n.t(message_id) })
+    end
+
     def linear_scale_print_instructions(field)
+      return '' unless field.input_type == 'linear_scale'
+
       multiloc_service = MultilocService.new
 
       min_text = multiloc_service.t(field.linear_scale_label_1_multiloc, @locale)
@@ -239,7 +271,45 @@ module BulkImportIdeas::Exporters
         )
       end
 
-      "<p>#{description}</p>"
+      format_instructions(description)
+    end
+
+    def sentiment_linear_scale_print_instructions(field)
+      return '' unless field.input_type == 'sentiment_linear_scale'
+
+      description = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.sentiment_linear_scale_print_description') }
+
+      multiloc_service = MultilocService.new
+      min_label = multiloc_service.t(field.linear_scale_label_1_multiloc, @locale)
+      neutral_label = multiloc_service.t(field.linear_scale_label_3_multiloc, @locale)
+      max_label = multiloc_service.t(field.linear_scale_label_5_multiloc, @locale)
+
+      if min_label && neutral_label && max_label
+        label_text = I18n.with_locale(@locale) do
+          I18n.t(
+            'form_builder.pdf_export.sentiment_linear_scale_print_labels',
+            min_label: min_label,
+            neutral_label: neutral_label,
+            max_label: max_label
+          )
+        end
+        description += " <br>#{label_text}"
+      end
+
+      format_instructions(description)
+    end
+
+    def rating_print_instructions(field)
+      return '' unless field.input_type == 'rating'
+
+      description = I18n.with_locale(@locale) do
+        I18n.t(
+          'form_builder.pdf_export.rating_print_description',
+          max_stars: field.maximum
+        )
+      end
+
+      format_instructions(description)
     end
 
     def ranking_print_instructions(field)
@@ -253,11 +323,17 @@ module BulkImportIdeas::Exporters
         )
       end
 
-      "<p>#{description}</p>"
+      format_instructions(description)
     end
 
     def print_visibility_disclaimer(field)
       @phase.pmethod.supports_public_visibility? && !field.visible_to_public? ? "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }}" : ''
+    end
+
+    def select_print_instructions(field)
+      return '' unless field.singleselect?
+
+      format_instructions("*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.select_print_description') }}")
     end
 
     def multiselect_print_instructions(field)
@@ -283,7 +359,15 @@ module BulkImportIdeas::Exporters
           I18n.t('form_builder.pdf_export.choose_as_many')
         end
       end
-      "<p>*#{message}</p>"
+      format_instructions("*#{message}")
+    end
+
+    # Should options be displayed in a grid or a list?
+    def field_option_columns?(field)
+      return false unless field.multiselect? || field.singleselect?
+
+      # Only use columns if there are more than 4 options
+      field.options.length > 4
     end
 
     def field_matrix_details(field)
@@ -305,7 +389,13 @@ module BulkImportIdeas::Exporters
         I18n.t('form_builder.pdf_export.matrix_print_description')
       end
 
-      "<p>#{description}</p>"
+      format_instructions(description)
+    end
+
+    def format_instructions(instructions)
+      return '' if instructions.blank?
+
+      "<p><em>#{instructions}</em></p>"
     end
 
     def font_family
@@ -356,6 +446,10 @@ module BulkImportIdeas::Exporters
 
     def style
       @style ||= AppConfiguration.instance.style
+    end
+
+    def platform_map_config
+      @platform_map_config ||= AppConfiguration.instance.settings('maps')
     end
   end
 end

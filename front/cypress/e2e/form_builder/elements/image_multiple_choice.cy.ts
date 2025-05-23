@@ -43,45 +43,39 @@ describe('Form builder image multiple choice choose multiple component', () => {
   });
 
   it('adds image multiple choice field and is displayed when filling survey', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
-    cy.get('[data-cy="e2e-image-choice"]');
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
+    cy.dataCy('e2e-image-choice');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-image-choice"]').click();
+    cy.dataCy('e2e-image-choice').click();
     cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
     cy.get('#e2e-option-input-0').type('Option 1 question 2', { force: true });
     cy.get('form').submit();
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains('Question title 2').should('exist');
     cy.contains('Option 1 question 2').should('exist');
-    cy.get('[data-cy="e2e-image-multichoice-control"]').click();
+    cy.dataCy('e2e-image-multichoice-control').click();
   });
 
   it('allows using an other option that is mandatory when other is selected when entering data in the form/survey', () => {
     const questionTitle = randomString();
     const otherAnswer = 'Walking';
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.acceptCookies();
-    cy.get('[data-cy="e2e-image-choice"]');
+    cy.dataCy('e2e-image-choice');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-image-choice"]').click();
-    cy.get('[data-cy="e2e-other-option-toggle"]')
-      .find('input')
-      .click({ force: true });
+    cy.dataCy('e2e-image-choice').click();
+    cy.dataCy('e2e-other-option-toggle').find('input').click({ force: true });
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
     cy.contains('Save').click();
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
-    cy.get('[data-cy="e2e-image-multichoice-control-checkbox"]').eq(1).click();
+    cy.dataCy('e2e-image-multichoice-control-checkbox').eq(1).click();
     cy.contains('Survey').should('exist');
     cy.get('#e2e-single-select-control').should('exist');
 
     // Try submitting without entering data for required field
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message').should('exist');
@@ -101,12 +95,12 @@ describe('Form builder image multiple choice choose multiple component', () => {
       .type(otherAnswer, { force: true });
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);

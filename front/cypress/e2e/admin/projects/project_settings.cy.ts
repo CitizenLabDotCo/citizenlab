@@ -33,15 +33,15 @@ describe('Project settings', () => {
   describe('Folder', () => {
     it('The folder preview links to the folder selector', () => {
       cy.visit(`admin/projects/${globalProjectId}`);
-      cy.get('[data-cy="e2e-folder-preview-link-to-settings"').click();
-      cy.get('[data-cy="e2e-project-folder-setting-field"]').should('exist');
+      cy.dataCy('e2e-folder-preview-link-to-settings').click();
+      cy.dataCy('e2e-project-folder-setting-field').should('exist');
     });
   });
 
   describe('Project title', () => {
     it('The title preview links to project title settings', () => {
       cy.visit(`admin/projects/${globalProjectId}`);
-      cy.get('[data-cy="e2e-project-title-preview-link-to-settings"]').click();
+      cy.dataCy('e2e-project-title-preview-link-to-settings').click();
       cy.get('#e2e-project-title-setting-field').should('exist');
     });
   });
@@ -51,8 +51,8 @@ describe('Project settings', () => {
       it('links to project description settings', () => {
         cy.visit(`admin/projects/${globalProjectId}`);
         cy.acceptCookies();
-        cy.get(
-          '[data-cy="e2e-project-description-preview-link-to-multiloc-settings"]'
+        cy.dataCy(
+          'e2e-project-description-preview-link-to-multiloc-settings'
         ).click();
         // Check if the description multiloc field is displayed
         cy.get('#e2e-project-description-multiloc-module-active').should(
@@ -68,8 +68,8 @@ describe('Project settings', () => {
           force: true,
         });
         cy.visit(`admin/projects/${globalProjectId}`);
-        cy.get(
-          '[data-cy="e2e-project-description-preview-link-to-content-builder"]'
+        cy.dataCy(
+          'e2e-project-description-preview-link-to-content-builder'
         ).click();
         cy.get('#e2e-project-description-content-builder-page').should('exist');
       });
