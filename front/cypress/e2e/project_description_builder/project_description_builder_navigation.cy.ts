@@ -69,8 +69,6 @@ describe('Project description builder navigation', () => {
       }/en/admin/project-description-builder/projects/${projectId}/description`
     );
     cy.get('#e2e-go-back-button').should('be.visible').click();
-    cy.get('#e2e-content-builder-frame').should('exist');
-    cy.get('#e2e-go-back-button').click({ force: true });
     cy.url().should(
       'eq',
       `${
