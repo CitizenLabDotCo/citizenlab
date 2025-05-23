@@ -35,9 +35,8 @@ module Analysis
     private
 
     def sentiment_for_text(input_text)
-      llm = LLM::GPT4oMini.new
       prompt = LLM::Prompt.new.fetch('sentiment_analysis', input_text:)
-      llm.chat(prompt).strip
+      gpt4mini.chat(prompt).strip
     end
 
     def sentiment_tags
