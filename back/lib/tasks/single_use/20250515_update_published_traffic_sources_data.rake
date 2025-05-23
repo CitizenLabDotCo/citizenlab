@@ -41,9 +41,11 @@ namespace :single_use do
             .where(report_id: report_id, graph_id: node_id)
             .first
 
-          # Make sure it exists
+          # Skip if data unit does not exist. Should not happen
           if data_unit.nil?
-            raise 'ERROR: data unit not found'
+            puts 'ERROR: data unit not found'
+            puts "report_id: #{report_id}, graph_id: #{graph_id}"
+            next
           end
 
           # Skip unless data is in array format (if not, it is already converted)
