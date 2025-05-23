@@ -1033,8 +1033,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "bekijk onze supportpagina",
   "app.containers.Admin.projects.all.askPersonalData3": "Velden voor naam en e-mail toevoegen",
-  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Vragen die momenteel niet worden ondersteund: Afbeeldingen, Tags en Bestanden uploaden.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Vragen die momenteel niet worden ondersteund: Mapping vragen (drop pin, draw route en draw area), image choice vragen, ranking vragen, matrix vragen en file upload vragen.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Einde van het formulier",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Begin van het formulier",
   "app.containers.Admin.projects.all.components.archived": "Gearchiveerd",

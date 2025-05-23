@@ -1033,8 +1033,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "poseti naš centar za podršku",
   "app.containers.Admin.projects.all.askPersonalData3": "Add fields for name and email",
-  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Questions not currently supported: Images, Tags and File Upload.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Questions not currently supported: Mapping questions (drop pin, draw route and draw area), image choice questions, ranking questions, matrix questions and file upload questions.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "End of the form",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Start of the form",
   "app.containers.Admin.projects.all.components.archived": "Arhivirano",

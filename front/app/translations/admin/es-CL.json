@@ -1033,8 +1033,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/es/articles/1346397-cuales-son-las-dimensiones-y-tamanos-recomendados-para-las-imagenes-de-la-plataforma",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visite nuestra página de soporte",
   "app.containers.Admin.projects.all.askPersonalData3": "Añadir campos para nombre y correo electrónico",
-  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Preguntas no admitidas actualmente: Imágenes, Etiquetas y Carga de archivos.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Preguntas no admitidas actualmente: Preguntas de mapeo (soltar alfiler, dibujar ruta y dibujar área), preguntas de elección de imagen, preguntas de clasificación, preguntas de matriz y preguntas de carga de archivos.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Fin del formulario",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Inicio del formulario",
   "app.containers.Admin.projects.all.components.archived": "Archivado",

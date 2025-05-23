@@ -1033,8 +1033,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "apmeklējiet mūsu atbalsta centru",
   "app.containers.Admin.projects.all.askPersonalData3": "Pievienojiet vārda un e-pasta laukus",
-  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Jautājumi, kas pašlaik netiek atbalstīti: Attēli, birkas un failu augšupielāde.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Jautājumi, kas pašlaik netiek atbalstīti: kartēšanas jautājumi (nolaižot piespraudi, uzzīmēt maršrutu un uzzīmēt apgabalu), attēlu izvēles jautājumi, rangu jautājumi, matricas jautājumi un failu augšupielādes jautājumi.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Veidlapas beigas",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Veidlapas sākums",
   "app.containers.Admin.projects.all.components.archived": "Arhivēts",

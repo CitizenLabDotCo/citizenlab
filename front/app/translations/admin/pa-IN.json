@@ -1033,8 +1033,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "ਸਾਡੇ ਸਹਾਇਤਾ ਕੇਂਦਰ 'ਤੇ ਜਾਓ",
   "app.containers.Admin.projects.all.askPersonalData3": "ਨਾਮ ਅਤੇ ਈਮੇਲ ਲਈ ਖੇਤਰ ਸ਼ਾਮਲ ਕਰੋ",
-  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "ਸਵਾਲ ਇਸ ਵੇਲੇ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ: ਚਿੱਤਰ, ਟੈਗਸ ਅਤੇ ਫਾਈਲ ਅਪਲੋਡ।",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "ਪ੍ਰਸ਼ਨ ਵਰਤਮਾਨ ਵਿੱਚ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ: ਮੈਪਿੰਗ ਪ੍ਰਸ਼ਨ (ਡ੍ਰੌਪ ਪਿੰਨ, ਡਰਾਅ ਰੂਟ ਅਤੇ ਡਰਾਅ ਏਰੀਆ), ਚਿੱਤਰ ਚੋਣ ਪ੍ਰਸ਼ਨ, ਦਰਜਾਬੰਦੀ ਪ੍ਰਸ਼ਨ, ਮੈਟ੍ਰਿਕਸ ਪ੍ਰਸ਼ਨ ਅਤੇ ਫਾਈਲ ਅਪਲੋਡ ਪ੍ਰਸ਼ਨ।",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "ਫਾਰਮ ਦਾ ਅੰਤ",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "ਫਾਰਮ ਦੀ ਸ਼ੁਰੂਆਤ",
   "app.containers.Admin.projects.all.components.archived": "ਪੁਰਾਲੇਖ",
