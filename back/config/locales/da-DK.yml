@@ -256,7 +256,7 @@ da:
     send_reset_password:
       preheader: 'Nulstil din adgangskode til %{organizationName}'
       cta_reset_password: 'Nulstil din adgangskode'
-      message_you_reset_your_password: 'Du anmodede om en nulstilling af din adgangskode på %{organizationName}''s borgerinddragelsesplatform. Klik på nedenstående knap, for at vælge en ny og sikker adgangskode. Linket udløber om 1 time.'
+      message_you_reset_your_password: 'Du anmodede om en nulstilling af din adgangskode på %{organizationName}''s inddragelsesplatform. Klik på nedenstående knap, for at vælge en ny og sikker adgangskode. Linket udløber om 1 time.'
       subject: '%{organizationName}: Nulstil din adgangskode'
       title_reset_your_password: 'Vælg en ny adgangskode'
   xlsx_export:
@@ -335,7 +335,7 @@ da:
     title_suffix: 'Kopi'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Bekræft din e-mail-adresse til %{organizationName}'s borgerinddragelsesplatform"
+      subject: "Bekræft din e-mail-adresse til %{organizationName}'s inddragelsesplatform"
       preheader: 'Bekræft din e-mailadresse til %{organizationName}'
       header: "Din bekræftelseskode"
       header_message: "Hej %{firstName}!"
