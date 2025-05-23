@@ -2,42 +2,63 @@ import { VisitorsTrafficSourcesResponse } from 'api/graph_data_units/responseTyp
 
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
+import { keys } from 'utils/helperUtils';
 import { roundPercentages } from 'utils/math';
 
 import { Translations } from './translations';
 import { PieRow } from './typings';
 
 export const parsePieData = (
-  data: VisitorsTrafficSourcesResponse['data']['attributes'],
+  {
+    sessions_per_referrer_type,
+  }: VisitorsTrafficSourcesResponse['data']['attributes'],
   translations: Translations
-): PieRow[] | null => {
-  if (data.length === 0) return null;
+): PieRow[] | undefined => {
+  const referrerTypes = keys(sessions_per_referrer_type);
+  if (referrerTypes.length === 0) return undefined;
 
-  const counts = data.map(({ count }) => count);
+  const counts = referrerTypes.map((key) => sessions_per_referrer_type[key]);
   const percentages = roundPercentages(counts);
 
-  return data.map((row, i) => ({
-    name: translations[row.first_dimension_referrer_type_name],
-    value: row.count,
+  return referrerTypes.map((key, i) => ({
+    name: translations[key],
+    value: counts[i],
     percentage: percentages[i],
     color: categoricalColorScheme({ rowIndex: i }),
   }));
 };
 
-export const parseExcelData = (
-  pieData: PieRow[] | null,
+export const parseTableData = (
+  { top_50_referrers }: VisitorsTrafficSourcesResponse['data']['attributes'],
   translations: Translations
 ) => {
-  if (pieData === null) return null;
+  return top_50_referrers.map(({ referrer_type, ...rest }) => ({
+    ...rest,
+    referrer_type: translations[referrer_type],
+  }));
+};
 
+export const parseExcelData = (
+  pieData: PieRow[],
+  tableData: VisitorsTrafficSourcesResponse['data']['attributes']['top_50_referrers'],
+  translations: Translations
+) => {
   const trafficSourceData = pieData.map((row) => ({
     [translations.trafficSource]: row.name,
     [translations.numberOfVisits]: row.value,
     [translations.percentageOfVisits]: row.percentage,
   }));
 
+  const referrerData = tableData.map((row) => ({
+    [translations.referrer]: row.referrer,
+    [translations.trafficSource]: translations[row.referrer_type],
+    [translations.numberOfVisits]: row.visits,
+    [translations.numberOfVisitors]: row.visitors,
+  }));
+
   const xlsxData = {
     [translations.trafficSources]: trafficSourceData,
+    [translations.referrerWebsites]: referrerData,
   };
 
   return xlsxData;

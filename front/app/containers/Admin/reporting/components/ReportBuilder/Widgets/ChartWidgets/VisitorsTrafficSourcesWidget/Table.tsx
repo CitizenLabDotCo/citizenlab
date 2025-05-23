@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { VisitorsTrafficSourcesResponse } from 'api/graph_data_units/responseTypes/VisitorsTrafficSourcesWidget';
 
 import {
   Box,
@@ -11,32 +12,16 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-
-import Pagination from 'components/Pagination';
-
+import messages from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from './messages';
-import ReferrerListLink from './RefferListLink';
-import { VisitorsTrafficSourcesResponse } from 'api/graph_data_units/responseTypes/VisitorsTrafficSourcesWidget';
-
-type Props = {
+interface Props {
   tableData: VisitorsTrafficSourcesResponse['data']['attributes']['top_50_referrers'];
-  onOpenModal?: () => void;
-};
+}
 
-const PAGE_SIZE = 10;
-
-const TableComponent = ({ tableData, onOpenModal }: Props) => {
-  const [pageNumber, setPageNumber] = useState<number>(1);
-
-  const paginatedData = tableData.slice(
-    (pageNumber - 1) * PAGE_SIZE,
-    pageNumber * PAGE_SIZE
-  );
-
+const TableView = ({ tableData }: Props) => {
   return (
-    <Box px="20px">
+    <Box>
       <Table
         border={`1px solid ${colors.grey300}`}
         borderRadius={stylingConsts.borderRadius}
@@ -58,7 +43,7 @@ const TableComponent = ({ tableData, onOpenModal }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          {paginatedData.map((row, i) => (
+          {tableData.slice(0, 5).map((row, i) => (
             <Tr key={i}>
               <Td background={colors.grey50}>
                 ({row.referrer_type}) {row.referrer}
@@ -69,25 +54,8 @@ const TableComponent = ({ tableData, onOpenModal }: Props) => {
           ))}
         </Tbody>
       </Table>
-      <Box
-        mt="40px"
-        display="flex"
-        flexDirection="row-reverse"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        {tableData.length > PAGE_SIZE && (
-          <Pagination
-            currentPage={pageNumber}
-            totalPages={Math.ceil(tableData.length / PAGE_SIZE)}
-            loadPage={setPageNumber}
-          />
-        )}
-
-        {onOpenModal && <ReferrerListLink onOpenModal={onOpenModal} />}
-      </Box>
     </Box>
   );
 };
 
-export default TableComponent;
+export default TableView;
