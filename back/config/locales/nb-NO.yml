@@ -184,6 +184,7 @@ nb:
         description:
       other_input_field:
         title: Skriv inn svaret ditt
+        print_title: Hvis '%{other_option}', vennligst spesifiser
       ask_follow_up_field:
         title: Fortell oss hvorfor
     community_monitor:
@@ -329,6 +330,16 @@ nb:
       write_as_clearly: 'Skriv så <b>tydelig</b> du kan - disse skjemaene kan bli skannet'
       write_in_language: 'Skriv svarene dine på samme språk som dette skjemaet'
       linear_scale_print_description: 'Vennligst skriv kun et tall mellom %{min_label} og %{max_label}'
+      unsupported_field: 'Dette feltet kan ikke fylles ut på papir. Bruk i stedet den elektroniske versjonen av dette skjemaet.'
+      ranking_print_description: 'Skriv et tall fra 1 (mest foretrukket) og %{max_rank} (minst foretrukket) i hver boks. Bruk hvert tall nøyaktig én gang.'
+      matrix_print_description: 'Marker en sirkel for hver rad med et kryss for å angi hva du foretrekker.'
+      rating_print_description: 'Vurder dette ved å skrive et tall mellom 1 (dårligst) og %{max_stars} (best).'
+      sentiment_linear_scale_print_description: 'Vennligst skriv et tall mellom 1 og 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Tegn en X på kartet nedenfor for å vise hvor du befinner deg, eller skriv adressen i stedet.'
+      line_print_description: 'Tegn inn en rute på kartet nedenfor.'
+      polygon_print_description: 'Tegn en figur på kartet nedenfor.'
+      select_print_description: 'Velg bare ett alternativ.'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:
