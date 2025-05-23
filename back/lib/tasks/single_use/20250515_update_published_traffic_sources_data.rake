@@ -73,7 +73,7 @@ namespace :single_use do
                 sessions_per_referrer_type['other'] = count
               end
             else
-              puts 'ERROR: unknown first_dimension_referrer_type_name'
+              raise 'ERROR: unknown first_dimension_referrer_type_name'
             end
           end
 
