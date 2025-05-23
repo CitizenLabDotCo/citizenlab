@@ -1,22 +1,20 @@
 <!-- Comment description box -->
-<mj-section padding="0 25px 25px"
-            background-color="#fff"
-            border-radius="5px"
-            text-align="left">
-  <mj-column border="1px solid #eaeaea" padding="20px 25px" background-color="#fff" border-radius="5px">
-    <mj-text>
-      <p style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
-        <%= strip_tags(localize_for_recipient_and_truncate(event.comment_body_multiloc, 140)) %>
-      </p>
-    </mj-text>
+<mj-section padding="0 25px 25px">
+  <mj-column>
+    <mj-table>
+      <tr>
+        <td style="border:1px solid #eaeaea; padding:20px 25px; background-color:#fff; border-radius:5px;">
+          <p style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+            <%= strip_tags(localize_for_recipient_and_truncate(event.comment_body_multiloc, 140)) %>
+          </p>
+        </td>
+      </tr>
+    </mj-table>
   </mj-column>
 </mj-section>
 
 <!-- Reason -->
-<mj-section
-  padding="25px"
-  border-radius="5px"
-  text-align="left">
+<mj-section padding="25px" border-radius="5px" text-align="left">
   <mj-column border-radius="5px" background-color="#F2F6F8" padding="25px" vertical-align="middle" >
     <mj-text font-size="14px">
       <%= format_message('reason') %>

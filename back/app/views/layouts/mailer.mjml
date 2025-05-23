@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <mjml>
   <%= render partial: 'application/head' %>
 

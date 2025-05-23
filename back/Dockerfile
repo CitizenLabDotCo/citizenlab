@@ -38,14 +38,11 @@ RUN apt-get update                                        \
    optipng                                                \
    pngquant                                               \
    # jemalloc
-   libjemalloc2 \
+   libjemalloc2                                           \
    # tiktoken_ruby
    clang                                                  \
-   && curl -sL https://deb.nodesource.com/setup_18.x  | bash - \
-   && apt-get -y --no-install-recommends install nodejs        \
-   # Install MJML parser required by email engine.
-   && npm install -g mjml@4.4.1                                \
-   && apt-get clean                                            \
+   gnupg                                                  \
+   && apt-get clean                                       \
    && rm -rf /var/lib/apt/lists/*
 
 # Install Postgres client:

@@ -35,6 +35,7 @@ RSpec.describe EmailCampaigns::VotingBasketSubmittedMailer do
     end
 
     let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:body) { mail_body(mail) }
 
     before_all do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
@@ -53,24 +54,24 @@ RSpec.describe EmailCampaigns::VotingBasketSubmittedMailer do
     end
 
     it "displays 'says you voted successfully' in the body" do
-      expect(mail.body.encoded).to match 'You voted successfully'
+      expect(body).to match 'You voted successfully'
     end
 
     it "displays 'votes have been recorded' in the body" do
-      expect(mail.body.encoded).to match('Thanks for participating. Your votes have been recorded.')
+      expect(body).to match('Thanks for participating. Your votes have been recorded.')
     end
 
     it 'lists the ideas you voted for in the body' do
-      expect(mail.body.encoded).to match('A voted idea title')
-      expect(mail.body.encoded).to match('ideas/a-voted-idea')
-      expect(mail.body.encoded).to match('uploads/small_image.jpeg')
+      expect(body).to match('A voted idea title')
+      expect(body).to match('ideas/a-voted-idea')
+      expect(body).to match('uploads/small_image.jpeg')
     end
 
     it "displays 'See votes submitted' button with correct link" do
       project_url = Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale))
-      expect(mail.body.encoded).to match(project_url)
-      expect(mail.body.encoded).to match('Click the button below to participate')
-      expect(mail.body.encoded).to match 'See votes submitted'
+      expect(body).to match(project_url)
+      expect(body).to match('Click the button below to participate')
+      expect(body).to match 'See votes submitted'
     end
   end
 end

@@ -848,6 +848,10 @@ GEM
     mini_mime (1.1.5)
     minitest (5.25.5)
     mjml-rails (4.11.0)
+    mrml (1.7.0-aarch64-linux)
+    mrml (1.7.0-arm64-darwin)
+    mrml (1.7.0-x86_64-darwin)
+    mrml (1.7.0-x86_64-linux)
     msgpack (1.7.2)
     multi_json (1.15.0)
     multi_xml (0.7.1)
@@ -1393,6 +1397,7 @@ DEPENDENCIES
   mini_magick (~> 4.13)
   mjml-rails (~> 4.11)
   moderation!
+  mrml
   multi_tenancy!
   mutex_m
   neighbor (~> 0.5.0)
