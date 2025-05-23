@@ -44,7 +44,7 @@ namespace :single_use do
           # Skip if data unit does not exist. Should not happen
           if data_unit.nil?
             puts 'ERROR: data unit not found'
-            puts "report_id: #{report_id}, graph_id: #{graph_id}"
+            puts "report_id: #{report_id}, graph_id: #{node_id}"
             next
           end
 
