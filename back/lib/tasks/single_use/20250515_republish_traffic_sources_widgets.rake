@@ -62,7 +62,7 @@ namespace :single_use do
             case old_name
             when 'Direct Entry'
               sessions_per_referrer_type['direct_entry'] = count
-            when 'Social networks'
+            when 'Social Networks'
               sessions_per_referrer_type['social_network'] = count
             when 'Search Engines'
               sessions_per_referrer_type['search_engine'] = count
@@ -88,7 +88,7 @@ namespace :single_use do
             top_50_referrers: []
           }
 
-          puts "\new data:\n"
+          puts "\nnew data:\n"
           puts new_data
           puts "\n"
 
