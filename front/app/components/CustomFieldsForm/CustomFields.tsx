@@ -25,6 +25,7 @@ import SingleSelectField from './Fields/SingleSelectField';
 import messages from './messages';
 import { getInstructionMessage } from './util';
 import RankingField from './Fields/RankingField';
+import RatingField from './Fields/RatingField';
 
 const renderField = ({
   question,
@@ -88,6 +89,8 @@ const renderField = ({
       return <LinearScaleField question={question} />;
     case 'ranking':
       return <RankingField question={question} />;
+    case 'rating':
+      return <RatingField question={question} />;
     default:
       return null;
   }
