@@ -16,10 +16,7 @@ function verifyHomepageUpdateSuccess() {
 
 function cleanUpWidget() {
   goToHomepageBuilder();
-  cy.get('[data-cy="e2e-areas-widget"]')
-    .first()
-    .parent()
-    .click({ force: true });
+  cy.dataCy('e2e-areas-widget').first().parent().click({ force: true });
   cy.get('#e2e-delete-button').click();
   interceptHomepageUpdate();
   cy.get('#e2e-content-builder-topbar-save').click();
@@ -30,7 +27,7 @@ function cleanUpWidget() {
   cy.goToLandingPage();
   cy.reload();
   cy.wait(1000);
-  cy.get('[data-cy="e2e-areas-widget"]').should('not.exist');
+  cy.dataCy('e2e-areas-widget').should('not.exist');
 }
 
 function addWidget() {
@@ -54,15 +51,13 @@ function toggleFollowArea() {
   cy.reload();
 
   // Opens the modal
-  cy.get('[data-cy="e2e-follow-areas-button"]').click();
+  cy.dataCy('e2e-follow-areas-button').click();
 
   // Area selection
   cy.contains('button', 'Carrotgem').should('be.visible').click();
 
   // Ensure modal closes
-  cy.get('[data-cy="e2e-follow-areas-modal-done-button"]')
-    .should('be.visible')
-    .click();
+  cy.dataCy('e2e-follow-areas-modal-done-button').should('be.visible').click();
 }
 
 describe('"In your area" (areas) widget', () => {
@@ -76,7 +71,7 @@ describe('"In your area" (areas) widget', () => {
     // Unfollow area again
     toggleFollowArea();
     // Does not show project with title "Project linked to Carrotgem area" in widget anymore
-    cy.get('[data-cy="e2e-areas-widget"]')
+    cy.dataCy('e2e-areas-widget')
       .find('[data-cy="e2e-areas-widget-empty-state"]')
       .should('be.visible');
 
@@ -86,7 +81,7 @@ describe('"In your area" (areas) widget', () => {
   it('shows projects of the areas I follow', () => {
     // Create project with area
     cy.visit('/admin/projects/all');
-    cy.get('[data-cy="e2e-new-project-button"]').should('be.visible').click();
+    cy.dataCy('e2e-new-project-button').should('be.visible').click();
     cy.get('.e2e-project-general-form');
 
     cy.get('#e2e-project-title-setting-field').type(projectTitleEN);
@@ -114,7 +109,7 @@ describe('"In your area" (areas) widget', () => {
     toggleFollowArea();
 
     // Shows the project with title "Project linked to Carrotgem area"
-    cy.get('[data-cy="e2e-areas-widget"]')
+    cy.dataCy('e2e-areas-widget')
       .find('[data-cy="e2e-light-project-card"]')
       .should('contain', projectTitleEN);
   });

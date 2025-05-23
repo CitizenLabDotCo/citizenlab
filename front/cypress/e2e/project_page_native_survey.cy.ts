@@ -153,7 +153,7 @@ describe('Native survey CTA bar', () => {
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     cy.visit(`/en/projects/${projectSlug}`);
     cy.get('#project-survey-button').should('not.exist');
