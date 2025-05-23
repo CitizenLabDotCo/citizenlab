@@ -41,6 +41,11 @@ namespace :single_use do
             .where(report_id: report_id, graph_id: node_id)
             .first
 
+          # Make sure it exists
+          if data_unit.nil?
+            raise "ERROR: data unit not found"
+          end
+
           # Skip unless data is in array format (if not, it is already converted)
           next unless data_unit.data.is_a?(Array)
 
@@ -50,7 +55,7 @@ namespace :single_use do
 
           sessions_per_referrer_type = {}
 
-          data_unit.data.each |row| do
+          data_unit.data.each do |row|
             old_name = row['first_dimension_referrer_type_name']
             count = row['count']
 
@@ -75,7 +80,7 @@ namespace :single_use do
               end
             else
               puts "ERROR: unknown first_dimension_referrer_type_name"
-            ends
+            end
           end
 
           new_data = {
