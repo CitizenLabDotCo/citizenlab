@@ -79,7 +79,7 @@ RSpec.describe AppConfiguration do
 
   describe '#closest_locale_to' do
     let(:app_config) do
-      create(:test_tenant, host: 'something.else-than-the-default-test-tenant').configuration
+      create(:tenant, host: 'something.else-than-the-default-test-tenant').configuration
     end
 
     it 'returns the locale itself if it is present' do

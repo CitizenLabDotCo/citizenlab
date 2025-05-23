@@ -17,7 +17,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       template = tenant_serializer.run(deserializer_format: true)
 
       locales = localhost.configuration.settings('core', 'locales')
-      tenant = create(:test_tenant, locales: locales)
+      tenant = create(:tenant, locales: locales)
 
       tenant.switch do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
