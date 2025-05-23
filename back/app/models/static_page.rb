@@ -56,10 +56,10 @@ class StaticPage < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   before_validation :set_code, on: :create
+  before_validation do
+    sanitize_multilocs :title_multiloc, :banner_cta_button_multiloc, :banner_subheader_multiloc
+  end
 
-  before_validation :sanitize_title_multiloc
-  before_validation :sanitize_banner_cta_button_multiloc
-  before_validation :sanitize_banner_subheader_multiloc
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
@@ -193,33 +193,6 @@ class StaticPage < ApplicationRecord
     self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
     self[attribute] = @service.remove_multiloc_empty_trailing_tags(self[attribute])
     self[attribute] = @service.linkify_multiloc(self[attribute])
-  end
-
-  def sanitize_title_multiloc
-    return if title_multiloc.nil?
-
-    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
-      title_multiloc,
-      []
-    )
-  end
-
-  def sanitize_banner_cta_button_multiloc
-    return if banner_cta_button_multiloc.nil?
-
-    self.banner_cta_button_multiloc = SanitizationService.new.sanitize_multiloc(
-      banner_cta_button_multiloc,
-      []
-    )
-  end
-
-  def sanitize_banner_subheader_multiloc
-    return if banner_subheader_multiloc.nil?
-
-    self.banner_subheader_multiloc = SanitizationService.new.sanitize_multiloc(
-      banner_subheader_multiloc,
-      []
-    )
   end
 
   def destroy_obsolete_associations

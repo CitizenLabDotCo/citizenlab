@@ -38,7 +38,7 @@ class Area < ApplicationRecord
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   before_validation :sanitize_description_multiloc
-  before_validation :sanitize_title_multiloc
+  before_validation { sanitize_multilocs :title_multiloc }
   before_validation :strip_title
 
   # If the domicile custom field exists, each area is associated to one of its options.
@@ -84,15 +84,6 @@ class Area < ApplicationRecord
     )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
     self.description_multiloc = service.linkify_multiloc description_multiloc
-  end
-
-  def sanitize_title_multiloc
-    return if title_multiloc.nil?
-
-    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
-      title_multiloc,
-      []
-    )
   end
 
   def strip_title

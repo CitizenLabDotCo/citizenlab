@@ -37,7 +37,7 @@ class CustomFieldOption < ApplicationRecord
   validate :belongs_to_select_field
 
   before_validation :generate_key, on: :create
-  before_validation :sanitize_title_multiloc
+  before_validation { sanitize_multilocs :title_multiloc }
 
   # Options of the domicile custom field are associated with an area.
   # The two associated resources are kept in sync: changes to the
@@ -81,15 +81,6 @@ class CustomFieldOption < ApplicationRecord
     self.key = CustomFieldService.new.generate_key(title, other_option: other) do |key_proposal|
       self.class.find_by(key: key_proposal, custom_field: custom_field)
     end
-  end
-
-  def sanitize_title_multiloc
-    return if title_multiloc.nil?
-
-    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
-      title_multiloc,
-      []
-    )
   end
 end
 

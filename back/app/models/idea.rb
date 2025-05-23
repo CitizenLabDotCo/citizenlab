@@ -163,7 +163,7 @@ class Idea < ApplicationRecord
     validates :project, presence: true
     before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
-    before_validation :sanitize_title_multiloc, if: :title_multiloc
+    before_validation { sanitize_multilocs :title_multiloc }
   end
 
   pg_search_scope :search_by_all,
@@ -389,15 +389,6 @@ class Idea < ApplicationRecord
     )
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
     self.body_multiloc = service.linkify_multiloc(body_multiloc)
-  end
-
-  def sanitize_title_multiloc
-    return if title_multiloc.nil?
-
-    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
-      title_multiloc,
-      []
-    )
   end
 
   def fix_comments_count_on_projects

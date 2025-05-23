@@ -27,16 +27,5 @@ class ProjectImage < ApplicationRecord
   validates :project, presence: true
   validates :ordering, numericality: { only_integer: true }, allow_nil: true
 
-  before_validation :sanitize_alt_text_multiloc
-
-  private
-
-  def sanitize_alt_text_multiloc
-    return if alt_text_multiloc.nil?
-
-    self.alt_text_multiloc = SanitizationService.new.sanitize_multiloc(
-      alt_text_multiloc,
-      []
-    )
-  end
+  before_validation { sanitize_multilocs :alt_text_multiloc }
 end

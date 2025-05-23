@@ -45,8 +45,10 @@ class Topic < ApplicationRecord
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   before_validation :set_code
-  before_validation :sanitize_description_multiloc
-  before_validation :sanitize_title_multiloc
+  before_validation do
+    sanitize_multilocs :title_multiloc, :description_multiloc
+  end
+
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }
@@ -77,24 +79,6 @@ class Topic < ApplicationRecord
 
   def set_code
     self.code ||= CUSTOM_CODE
-  end
-
-  def sanitize_description_multiloc
-    return unless description_multiloc&.any?
-
-    self.description_multiloc = SanitizationService.new.sanitize_multiloc(
-      description_multiloc,
-      []
-    )
-  end
-
-  def sanitize_title_multiloc
-    return if title_multiloc.nil?
-
-    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
-      title_multiloc,
-      []
-    )
   end
 
   def strip_title

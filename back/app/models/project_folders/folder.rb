@@ -43,8 +43,10 @@ module ProjectFolders
 
     before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
-    before_validation :sanitize_header_bg_alt_text_multiloc
-    before_validation :sanitize_title_multiloc
+    before_validation do
+      sanitize_multilocs :title_multiloc, :header_bg_alt_text_multiloc
+    end
+
     before_validation :strip_title
     before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
 
@@ -93,24 +95,6 @@ module ProjectFolders
         %i[decoration link]
       )
       self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags description_preview_multiloc
-    end
-
-    def sanitize_header_bg_alt_text_multiloc
-      return if header_bg_alt_text_multiloc.nil?
-
-      self.header_bg_alt_text_multiloc = SanitizationService.new.sanitize_multiloc(
-        header_bg_alt_text_multiloc,
-        []
-      )
-    end
-
-    def sanitize_title_multiloc
-      return if title_multiloc.nil?
-
-      self.title_multiloc = SanitizationService.new.sanitize_multiloc(
-        title_multiloc,
-        []
-      )
     end
 
     def strip_title

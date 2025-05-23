@@ -91,11 +91,11 @@ class Phase < ApplicationRecord
   belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
 
   before_validation :sanitize_description_multiloc
-  before_validation :sanitize_title_multiloc
-  before_validation :sanitize_voting_term_singular_multiloc
-  before_validation :sanitize_voting_term_plural_multiloc
-  before_validation :sanitize_native_survey_title_multiloc
-  before_validation :sanitize_native_survey_button_multiloc
+  before_validation do
+    sanitize_multilocs :title_multiloc, :voting_term_singular_multiloc, :voting_term_plural_multiloc,
+      :native_survey_title_multiloc, :native_survey_button_multiloc
+  end
+
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_presentation_mode, on: :create
@@ -300,51 +300,6 @@ class Phase < ApplicationRecord
     )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
     self.description_multiloc = service.linkify_multiloc(description_multiloc)
-  end
-
-  def sanitize_title_multiloc
-    return if title_multiloc.nil?
-
-    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
-      title_multiloc,
-      []
-    )
-  end
-
-  def sanitize_voting_term_singular_multiloc
-    return if voting_term_singular_multiloc.nil?
-
-    self.voting_term_singular_multiloc = SanitizationService.new.sanitize_multiloc(
-      voting_term_singular_multiloc,
-      []
-    )
-  end
-
-  def sanitize_voting_term_plural_multiloc
-    return if voting_term_plural_multiloc.nil?
-
-    self.voting_term_plural_multiloc = SanitizationService.new.sanitize_multiloc(
-      voting_term_plural_multiloc,
-      []
-    )
-  end
-
-  def sanitize_native_survey_title_multiloc
-    return if native_survey_title_multiloc.nil?
-
-    self.native_survey_title_multiloc = SanitizationService.new.sanitize_multiloc(
-      native_survey_title_multiloc,
-      []
-    )
-  end
-
-  def sanitize_native_survey_button_multiloc
-    return if native_survey_button_multiloc.nil?
-
-    self.native_survey_button_multiloc = SanitizationService.new.sanitize_multiloc(
-      native_survey_button_multiloc,
-      []
-    )
   end
 
   def validate_end_at
