@@ -44,7 +44,7 @@ class CustomFieldMatrixStatement < ApplicationRecord
   end
 
   def sanitize_title_multiloc
-    return unless title_multiloc&.any?
+    return if title_multiloc.nil?
 
     self.title_multiloc = SanitizationService.new.sanitize_multiloc(
       title_multiloc,

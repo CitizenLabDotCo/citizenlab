@@ -32,7 +32,7 @@ class EventImage < ApplicationRecord
   private
 
   def sanitize_alt_text_multiloc
-    return unless alt_text_multiloc&.any?
+    return if alt_text_multiloc.nil?
 
     self.alt_text_multiloc = SanitizationService.new.sanitize_multiloc(
       alt_text_multiloc,

@@ -42,7 +42,7 @@ class OfficialFeedback < ApplicationRecord
   private
 
   def sanitize_body_multiloc
-    return unless body_multiloc&.any?
+    return if body_multiloc.nil?
 
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc body_multiloc, %i[mention]
@@ -51,7 +51,7 @@ class OfficialFeedback < ApplicationRecord
   end
 
   def sanitize_author_multiloc
-    return unless author_multiloc&.any?
+    return if author_multiloc.nil?
 
     self.author_multiloc = SanitizationService.new.sanitize_multiloc(
       author_multiloc,

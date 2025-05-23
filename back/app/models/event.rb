@@ -76,7 +76,7 @@ class Event < ApplicationRecord
   end
 
   def sanitize_address_2_multiloc
-    return unless address_2_multiloc&.any?
+    return if address_2_multiloc.nil?
 
     self.address_2_multiloc = SanitizationService.new.sanitize_multiloc(
       address_2_multiloc,
@@ -85,7 +85,7 @@ class Event < ApplicationRecord
   end
 
   def sanitize_location_multiloc
-    return unless location_multiloc&.any?
+    return if location_multiloc.nil?
 
     self.location_multiloc = SanitizationService.new.sanitize_multiloc(
       location_multiloc,
@@ -94,7 +94,7 @@ class Event < ApplicationRecord
   end
 
   def sanitize_attend_button_multiloc
-    return unless attend_button_multiloc&.any?
+    return if attend_button_multiloc.nil?
 
     self.attend_button_multiloc = SanitizationService.new.sanitize_multiloc(
       attend_button_multiloc,
@@ -103,7 +103,7 @@ class Event < ApplicationRecord
   end
 
   def sanitize_title_multiloc
-    return unless title_multiloc&.any?
+    return if title_multiloc.nil?
 
     self.title_multiloc = SanitizationService.new.sanitize_multiloc(
       title_multiloc,

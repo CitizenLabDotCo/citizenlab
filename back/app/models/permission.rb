@@ -106,7 +106,7 @@ class Permission < ApplicationRecord
   private
 
   def sanitize_access_denied_explanation_multiloc
-    return unless access_denied_explanation_multiloc&.any?
+    return if access_denied_explanation_multiloc.nil?
 
     self.access_denied_explanation_multiloc = SanitizationService.new.sanitize_multiloc(
       access_denied_explanation_multiloc,
