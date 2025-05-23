@@ -32,7 +32,7 @@ describe('Admin: add project', () => {
   });
 
   context('Type: Timeline', () => {
-    context.skip('Areas: All areas', () => {
+    context('Areas: All areas', () => {
       it('creates a draft project by default', () => {
         const projectTitleEN = randomString();
         const projectTitleNLBE = randomString();
@@ -78,8 +78,8 @@ describe('Admin: add project', () => {
         cy.get('#e2e-project-title-setting-field').type(projectTitleEN);
         cy.get('.e2e-localeswitcher.nl-BE').should('be.visible').click();
         cy.get('#e2e-project-title-setting-field').type(projectTitleNLBE);
-        // cy.get('.e2e-localeswitcher.nl-NL').should('be.visible').click();
-        // cy.get('#e2e-project-title-setting-field').type(projectTitleNLNL);
+        cy.get('.e2e-localeswitcher.nl-NL').should('be.visible').click();
+        cy.get('#e2e-project-title-setting-field').type(projectTitleNLNL);
         cy.get('.e2e-localeswitcher.fr-BE').should('be.visible').click();
         cy.get('#e2e-project-title-setting-field').type(projectTitleFRBE);
 
