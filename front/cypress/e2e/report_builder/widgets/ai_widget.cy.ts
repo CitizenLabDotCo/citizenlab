@@ -134,9 +134,7 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-buider-ai-no-analyses').should('exist');
 
     // Go to the survey page where the analysis is created automatically
-    cy.visit(
-      `/admin/projects/${projectId}/phases/${surveyPhaseId}/native-survey`
-    );
+    cy.visit(`/admin/projects/${projectId}/phases/${surveyPhaseId}/results`);
     cy.wait('@createAnalysis');
 
     // Go back to the report builder

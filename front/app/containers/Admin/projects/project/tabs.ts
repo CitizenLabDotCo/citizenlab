@@ -59,8 +59,8 @@ export const getTabs = (
       ? [
           {
             label: formatMessage(messages.resultsTab),
-            url: 'native-survey',
-            name: 'survey',
+            url: 'results',
+            name: 'results',
           },
           {
             label: formatMessage(messages.surveyFormTab),
