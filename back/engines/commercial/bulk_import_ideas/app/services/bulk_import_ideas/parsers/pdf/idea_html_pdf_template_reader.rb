@@ -43,7 +43,7 @@ module BulkImportIdeas::Parsers::Pdf
     def pdf_pages(reader)
       reader.pages.map do |page|
         page.text.split("\n").map do |line|
-          line
+          line.gsub(/\s+/, ' ') # Remove extra spaces in each line
         end
       end
     end
@@ -67,10 +67,11 @@ module BulkImportIdeas::Parsers::Pdf
           page_num = current_page_num
 
           if type == 'field'
-            content_delimiters = field_content_delimiters(field_or_option, next_field, question_number, page_lines, field_line_num)
+            content_delimiters = field_content_delimiters(next_field, question_number, page_lines)
           end
 
           # Blank out line once processed - Avoid them being found again when there multiple questions/options on a page with the same value
+          # TODO: What about when we delete the option - delete from the line - not the whole
           pdf_pages[index][field_line_num] = ''
 
           break # No need to check the rest of the pages - causes issues with duplicate options if we do
@@ -112,7 +113,7 @@ module BulkImportIdeas::Parsers::Pdf
     # End delimiter is the text line where the next field or element starts
     # Start delimiter is the text line before - end of previous field title / description
     # If the field is the last on a page there is no end delimiter
-    def field_content_delimiters(_field, next_field, current_question_number, page_lines, _field_line_num)
+    def field_content_delimiters(next_field, current_question_number, page_lines)
       page_text = page_lines.reject(&:empty?) # Remove empty lines
       page_text = page_text.grep_v(/\A[i\(\)\s]*\z/) # Remove some odd lines that are read from the PDF with just i or ( ) in them
       page_text.pop # Remove the last line which is always the page number
@@ -137,14 +138,15 @@ module BulkImportIdeas::Parsers::Pdf
       }
     end
 
-    # Find the index of the line in the page that matches the start of the field title
+    # Find the index of the line in the page that matches the start of the field title (in a case insensitive way)
     def find_field_line(page, field_title)
-      page.find_index { |value| value.present? && field_title.start_with?(value) }
+      page.find_index { |page_line| page_line.present? && field_title.downcase.start_with?(page_line.downcase) }
     end
 
     # Find the index of the line in the page that includes the option title (slightly less specific than question titles)
     def find_option_line(page, option_title)
       # TODO: Maybe need to truncate the option title for multi-line titles
+
       page.find_index { |value| value.include?(option_title) }
     end
 

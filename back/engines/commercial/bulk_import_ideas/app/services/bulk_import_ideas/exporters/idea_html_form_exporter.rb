@@ -134,6 +134,7 @@ module BulkImportIdeas::Exporters
               image_url: option_image_url(field, option)
             }
           end,
+          option_columns: field_option_columns?(field),
           matrix: field_matrix_details(field),
           map_url: field_map_url(field)
         }
@@ -362,6 +363,14 @@ module BulkImportIdeas::Exporters
         end
       end
       format_instructions("*#{message}")
+    end
+
+    # Should options be displayed in a grid or a list?
+    def field_option_columns?(field)
+      return false unless field.multiselect? || field.singleselect?
+
+      # Only use columns if there are more than 4 options
+      field.options.length > 4
     end
 
     def field_matrix_details(field)
