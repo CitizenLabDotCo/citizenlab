@@ -1,5 +1,4 @@
 import React from 'react';
-import { VisitorsTrafficSourcesResponse } from 'api/graph_data_units/responseTypes/VisitorsTrafficSourcesWidget';
 
 import {
   Box,
@@ -12,11 +11,14 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+
 import messages from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/messages';
+import { TranslatedReferrers } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
-  tableData: VisitorsTrafficSourcesResponse['data']['attributes']['top_50_referrers'];
+  tableData: TranslatedReferrers;
 }
 
 const TableView = ({ tableData }: Props) => {

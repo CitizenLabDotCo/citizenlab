@@ -8,10 +8,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 import Table from './Table';
-import { VisitorsTrafficSourcesResponse } from 'api/graph_data_units/responseTypes/VisitorsTrafficSourcesWidget';
+import { TranslatedReferrers } from './useVisitorReferrerTypes/parse';
 
 type Props = {
-  tableData: VisitorsTrafficSourcesResponse['data']['attributes']['top_50_referrers'];
+  tableData: TranslatedReferrers;
   open: boolean;
   onClose: () => void;
 };
