@@ -69,7 +69,6 @@ module BulkImportIdeas::Exporters
       "#{@project.title_multiloc[@locale]} - #{@phase.title_multiloc[@locale]}"
     end
 
-    # TODO: Get this into the default values of the custom_form model so it can be edited and not just replaced - but this is difficult
     def form_header
       form = @participation_method.custom_form
       return format_urls(default_print_start_multiloc[@locale]) if form.print_start_multiloc == {}
@@ -236,8 +235,6 @@ module BulkImportIdeas::Exporters
       # Extract the key from the tile provider URL
       key = tile_provider.match(/key=([^&]+)/)[1]
       return unless key
-
-      # TODO: Can we do anything with layers?
 
       # Use the static map API with basic maps to generate an image (even if the tile provider is not using basic)
       "https://api.maptiler.com/maps/basic/static/#{longitude},#{latitude},#{zoom}/650x420@2x.png?key=#{key}&attribution=bottomleft"

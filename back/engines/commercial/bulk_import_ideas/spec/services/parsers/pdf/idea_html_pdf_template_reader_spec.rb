@@ -118,7 +118,5 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
         })
       end
     end
-
-    # TODO: Add tests for the native survey created in the shared context too
   end
 end

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Document how this works and what calls are made
-
 module BulkImportIdeas::Parsers::Pdf
   class IdeaHtmlPdfTemplateReader
     def initialize(phase, locale, personal_data_enabled)
