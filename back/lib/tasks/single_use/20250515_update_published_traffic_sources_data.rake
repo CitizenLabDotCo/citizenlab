@@ -43,7 +43,7 @@ namespace :single_use do
 
           # Make sure it exists
           if data_unit.nil?
-            raise "ERROR: data unit not found"
+            raise 'ERROR: data unit not found'
           end
 
           # Skip unless data is in array format (if not, it is already converted)
@@ -66,20 +66,14 @@ namespace :single_use do
               sessions_per_referrer_type['social_network'] = count
             when 'Search Engines'
               sessions_per_referrer_type['search_engine'] = count
-            when 'Websites'
-              if sessions_per_referrer_type.key?('other')
-                sessions_per_referrer_type['other'] += count
-              else
-                sessions_per_referrer_type['other'] = count
-              end
-            when 'Campaigns'
+            when 'Websites', 'Campaigns'
               if sessions_per_referrer_type.key?('other')
                 sessions_per_referrer_type['other'] += count
               else
                 sessions_per_referrer_type['other'] = count
               end
             else
-              puts "ERROR: unknown first_dimension_referrer_type_name"
+              puts 'ERROR: unknown first_dimension_referrer_type_name'
             end
           end
 
