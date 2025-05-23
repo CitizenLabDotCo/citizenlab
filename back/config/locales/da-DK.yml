@@ -308,12 +308,12 @@ da:
       title_text: 'Om dig'
     pdf_export:
       personal_data: 'Personlige data'
-      personal_data_explanation_public: "Vi sender dit input til %{organizationName}'s online borgerinddragelsesplatform. Hvis du ønsker, at dit navn skal vises som forfatter til dette input og modtage opdateringer, der er relevante for dit input via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Din e-mail vil ikke være offentlig og vil kun blive brugt af %{organizationName}. Hvis du ønsker at forblive anonym eller ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem være tomme."
+      personal_data_explanation_public: "Vi sender dit input til %{organizationName}'s online inddragelsesplatform. Hvis du ønsker, at dit navn skal vises som forfatter til dette input og modtage opdateringer, der er relevante for dit input via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Din e-mail vil ikke være offentlig og vil kun blive brugt af %{organizationName}. Hvis du ønsker at forblive anonym eller ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem være tomme."
       personal_data_explanation_private: "Vi sender dit input til %{organizationName}'s online inddragelsesplatform. Hvis du ønsker at modtage opdateringer, der er relevante for dit input, via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Dine data vil ikke være offentlige og vil kun blive brugt af %{organizationName}. Hvis du ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem stå tomme."
       first_name: 'Fornavn'
       last_name: 'Efternavn'
       email_address: 'E-mail adresse'
-      by_checking_this_box: "Ved at markere dette felt accepterer jeg, at mine data bliver brugt til at oprette en konto på %{organizationName}'s borgerinddragelsesplatform."
+      by_checking_this_box: "Ved at markere dette felt accepterer jeg, at mine data bliver brugt til at oprette en konto på %{organizationName}'s inddragelsesplatform."
       optional: 'valgfrit'
       permission: 'Tilladelse'
       choose_as_many: 'Vælg så mange som du vil'
@@ -340,7 +340,7 @@ da:
       header: "Din bekræftelseskode"
       header_message: "Hej %{firstName}!"
       confirm_email_address: "Bekræft din e-mailadresse"
-      thanks_for_signing_up1: "Tak for din registrering på %{organizationName}'s borgerinddragelsesplatform."
+      thanks_for_signing_up1: "Tak for din registrering på %{organizationName}'s inddragelsesplatform:"
       best_regards: "Med venlig hilsen,"
       ignore_email: "Hvis du ikke har anmodet om en kode, kan du roligt ignorere denne e-mail."
       expire_code: "Denne kode udløber om "
@@ -351,10 +351,10 @@ da:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Din konto er blevet midlertidigt deaktiveret'
-      preheader: 'Din konto på borgerinddragelsesplatformen %{organizationName} er blevet midlertidigt deaktiveret'
+      preheader: 'Din konto på inddragelsesplatform %{organizationName} er blevet midlertidigt deaktiveret'
       title_user_blocked: 'Din konto er blevet midlertidigt deaktiveret'
-      paragraph_1_without_reason: "Din konto på borgerinddragelsesplatformen %{organizationName} er blevet midlertidigt deaktiveret på grund af overtrædelse af fællesskabsretningslinjerne."
-      paragraph_1_with_reason: "Din konto på borgerinddragelsesplatformen %{organizationName} er blevet midlertidigt deaktiveret af følgende grund:"
+      paragraph_1_without_reason: "Din konto på inddragelsesplatform %{organizationName} er blevet midlertidigt deaktiveret på grund af overtrædelse af fællesskabsretningslinjerne."
+      paragraph_1_with_reason: "Din konto på inddragelsesplatform %{organizationName} er blevet midlertidigt deaktiveret af følgende grund:"
       for_more_information: "Du kan finde flere oplysninger om dette på %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Du kan logge ind igen fra %{date}"
   user:
