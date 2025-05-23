@@ -23,7 +23,6 @@ module BulkImportIdeas::Parsers::Pdf
       all_text = pages.join("\n")
 
       # TODO: What about long titles that wrap onto multiple lines?
-      # TODO: Personal data checkbox not working well
 
       parsed_fields = field_config.each_with_object({}) do |field, result|
         # First get the text between the field title and the end delimiter as a broad match

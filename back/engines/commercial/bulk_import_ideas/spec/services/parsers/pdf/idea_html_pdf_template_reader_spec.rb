@@ -39,8 +39,6 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
       end
 
       it 'returns meta data about the fields in the form that can be imported - page count, fields, options and positions' do
-        # binding.pry
-
         expect(template_data[:page_count]).to eq 2
         expect(template_data[:fields].count).to eq 14
         expect(template_data[:fields].pluck(:key)).to eq %w[

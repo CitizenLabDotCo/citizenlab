@@ -26,7 +26,7 @@
     }
 
     body { font-family: <%== font_family %>; }
-    h1, h2, h3 { margin-bottom: 8px; }
+    h1, h2, h3 { margin-bottom: 7px; }
     p { margin-top: 0; margin-bottom: 4px;}
     h1 { font-size: 15pt; }
     h2 { font-size: 13pt; }
@@ -34,29 +34,23 @@
     h4, p, li, td, th { font-size: 11pt; line-height: 1.3; }
 
     div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px; }
-    div.ranking { display: flex; align-items: center; margin-top: -6px; font-size: 11pt; }
 
+    div.options { margin-top: 10px; }
+    div.options.columns { display: grid; grid-template-columns: repeat(2, 1fr); }
     div.select {
       display: grid;
       grid-template-columns: 20px 1fr;
-      align-items: start;
       font-size: 11pt;
       line-height: 1.3;
       margin-bottom: 4px;
-      div { vertical-align: top;}
-      input {
-        width: 14px;
-        height: 14px;
-        border: solid 1px #000;
-        margin: 1px 10px 5px 0;
-      }
+      input { appearance: none; width: 14px;  height: 14px; border: solid 1px #000; margin: 1px 10px 5px 0; }
+      input.radio { appearance: none; border-radius: 7px; }
     }
 
+    div.ranking { display: flex; align-items: center; margin-top: -6px; font-size: 11pt; }
     div.ranking-box { border: solid 1px #000; width: 24px; height: 24px; margin: 8px 10px 8px 2px; display: inline-block; }
-    div.radio { border-radius: 50%; }
     span.optional { font-weight: normal; }
     div.field-group { page-break-inside: avoid; }
-    div.options { margin-top: 10px; }
 
     #header {
       margin: 0 0 30px 0;
@@ -176,7 +170,7 @@
           <%== sanitize field[:description] %>
 
           <% if field[:format] == :single_select %>
-            <div class="options">
+            <div class="options <% if field[:option_columns] %>columns<% end %>">
               <% field[:options].each do |option| %>
                   <div class="select">
                     <div><input type="radio" class="radio"></div>
@@ -186,7 +180,7 @@
             </div>
 
           <% elsif field[:format] == :multi_select %>
-            <div class="options">
+            <div class="options <% if field[:option_columns] %>columns<% end %>">
               <% field[:options].each do |option| %>
                 <div class="select">
                   <div><input type="checkbox" class="checkbox"></div>
@@ -252,7 +246,7 @@
                   <tr>
                     <td class="statement"><%= statement %></td>
                     <% field[:matrix][:labels].each do |_| %>
-                      <td><div class="checkbox radio"></div></td>
+                      <td><input type="radio" class="radio"></td>
                     <% end %>
                   </tr>
                   <% end %>
