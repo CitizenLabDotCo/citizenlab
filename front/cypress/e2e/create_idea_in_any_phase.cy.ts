@@ -69,15 +69,15 @@ describe('Idea creation', () => {
     cy.get('#e2e-idea-title-input input').clear();
     cy.get('#e2e-idea-title-input input').type(`${newIdeaTitle}`);
 
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
 
     // Go to the next page of the idea form
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Go to the third page of the idea form that should have the topics picker
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // add a topic
     cy.get('.e2e-topics-picker').find('button').eq(4).click({ force: true });
@@ -88,11 +88,11 @@ describe('Idea creation', () => {
       .should('have.length', 1);
 
     // save the form
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
     cy.wait(3000);
 
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${newIdeaTitle}`);
