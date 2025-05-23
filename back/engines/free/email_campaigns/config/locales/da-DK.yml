@@ -124,8 +124,8 @@ da:
       x_days_ago_by_author: '%{x} dage siden af %{author}'
     admin_rights_received:
       cta_manage_platform: 'Administrer din platform'
-      message_you_became_administrator: 'Du har fået administratorrettigheder til inddragelsesplatform for %{organizationName}.'
-      preheader: 'Du har fået administratorrettigheder til borgerinddragelsesplatformen for %{organizationName}'
+      message_you_became_administrator: 'Du har fået administratorrettigheder til inddragelsesplatformen for %{organizationName}.'
+      preheader: 'Du har fået administratorrettigheder til inddragelsesplatformen for %{organizationName}'
       subject: 'Du er blevet administrator af %{organizationName}s platform'
       text_create_participatory_process: 'Som administrator kan du oprette og konfigurere nye deltagelsesprojekter. Du kan tilføje nye faser ved hjælp af tidslinjen. Hver af disse faser kan have sin egen adfærd med hensyn til idépostering, kommentering og afstemning.'
       text_moderate_analyse_input: 'Når projekterne er lanceret, kommer de første idéer ind. Du vil modtage ugentlige rapporter med alle kerneaktiviteter, så du hele tiden er på forkant. Idéoversigten hjælper dig med at moderere input og samarbejde om at behandle det.'
