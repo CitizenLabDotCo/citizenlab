@@ -46,11 +46,11 @@ describe('Follow folder', () => {
     cy.get('#e2e-folder-title').contains(folderTitle);
 
     // Follow
-    cy.get('[data-cy="e2e-follow-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-button"]').click();
+    cy.dataCy('e2e-follow-button').should('exist');
+    cy.dataCy('e2e-follow-button').click();
 
     // Check that it shows unfollow after
-    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
+    cy.dataCy('e2e-unfollow-button').should('exist');
+    cy.dataCy('e2e-follow-button').should('not.exist');
   });
 });

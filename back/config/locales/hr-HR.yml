@@ -184,6 +184,7 @@ hr:
         description:
       other_input_field:
         title: Upišite svoj odgovor
+        print_title: Ako je '%{other_option}', molimo navedite
       ask_follow_up_field:
         title: Reci nam zašto
     community_monitor:
@@ -330,6 +331,7 @@ hr:
       write_as_clearly: 'Napišite što jasnije <b></b> ti se obrasci mogu skenirati'
       write_in_language: 'Napišite svoje odgovore na istom jeziku kao i ovaj obrazac'
       linear_scale_print_description: 'Napišite samo broj između %{min_label} i %{max_label}'
+      unsupported_field: 'Ovo polje ne može se ispuniti na papiru. Umjesto toga, koristite online verziju ovog obrasca.'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:

@@ -404,21 +404,18 @@ const ReactionButton = ({
     const projectName = localize(project.data.attributes.title_multiloc);
     const buttonReactionModeIsActive = buttonReactionMode === userReactionMode;
 
-    const describedById = disabledReason ? `tooltip-${ideaId}` : undefined;
+    const describedById = disabledReason
+      ? `describedbyid-${ideaId}`
+      : undefined;
 
     const disabledMessage = disabledReasonMessage && (
-      // We can't put id on FormattedMessage:
-      // - If it's after the message descriptor, it'll overwrite the message descriptor's id.
-      // - It it's before the message descriptor, it'll be overwritten by the message descriptor's id.
-      <span id={describedById}>
-        <FormattedMessage
-          {...disabledReasonMessage}
-          values={{
-            enabledFromDate,
-            projectName,
-          }}
-        />
-      </span>
+      <FormattedMessage
+        {...disabledReasonMessage}
+        values={{
+          enabledFromDate,
+          projectName,
+        }}
+      />
     );
 
     return (
@@ -426,7 +423,15 @@ const ReactionButton = ({
         placement="top"
         theme="dark"
         disabled={disabledReason === null}
-        content={disabledMessage}
+        content={
+          <span
+            // aria-hidden is needed because we already use ScreenReaderOnly for screen readers
+            // and we don't want to duplicate the message
+            aria-hidden
+          >
+            {disabledMessage}
+          </span>
+        }
         trigger="mouseenter"
         width={variant === 'text' ? '100%' : 'fit-content'}
       >
@@ -503,7 +508,7 @@ const ReactionButton = ({
               </ReactionCount>
             </Button>
           )}
-          {disabledReason && (
+          {describedById && disabledMessage && (
             <ScreenReaderOnly id={describedById}>
               {`. `}
               {disabledMessage}

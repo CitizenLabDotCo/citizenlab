@@ -22,20 +22,18 @@ describe('Survey question logic', () => {
 
   it('allows setting logic for select question', () => {
     cy.setAdminLoginCookie();
-    cy.visit(
-      `/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
-    cy.get('[data-cy="e2e-field-row"]').should('have.length', 3);
+    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
+    cy.dataCy('e2e-field-row').should('have.length', 3);
 
     // Add a new page
     cy.wait(1000);
-    cy.get('[data-cy="e2e-page"').click();
-    cy.get('[data-cy="e2e-field-row"]').should('have.length', 4);
+    cy.dataCy('e2e-page').click();
+    cy.dataCy('e2e-field-row').should('have.length', 4);
 
     // Add another page
     cy.wait(1000);
-    cy.get('[data-cy="e2e-page"').click();
-    cy.get('[data-cy="e2e-field-row"]').should('have.length', 5);
+    cy.dataCy('e2e-page').click();
+    cy.dataCy('e2e-field-row').should('have.length', 5);
 
     // Save
     // TODO: this should not be necessary, but it is because of a bug
@@ -46,22 +44,16 @@ describe('Survey question logic', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]');
 
     // Open settings
-    cy.get('[data-cy="e2e-field-row"]').eq(1).click();
-    cy.get('[data-cy="e2e-form-builder-logic-tab"]').click();
+    cy.dataCy('e2e-field-row').eq(1).click();
+    cy.dataCy('e2e-form-builder-logic-tab').click();
 
     // Set first answer to go straight to ending
-    cy.get('[data-cy="e2e-add-rule-button"]').first().click();
-    cy.get('[data-cy="e2e-rule-input-select"]')
-      .first()
-      .find('select')
-      .select('Ending');
+    cy.dataCy('e2e-add-rule-button').first().click();
+    cy.dataCy('e2e-rule-input-select').first().find('select').select('Ending');
 
     // Set no answer to go to page 3
-    cy.get('[data-cy="e2e-add-rule-button"]').eq(2).click();
-    cy.get('[data-cy="e2e-rule-input-select"]')
-      .eq(1)
-      .find('select')
-      .select('Page 3');
+    cy.dataCy('e2e-add-rule-button').eq(2).click();
+    cy.dataCy('e2e-rule-input-select').eq(1).find('select').select('Page 3');
 
     // Save again
     cy.get('form').submit();
@@ -78,7 +70,7 @@ describe('Survey question logic', () => {
       .click();
 
     // Make sure submit button is shown
-    cy.get('[data-cy="e2e-submit-form"]');
+    cy.dataCy('e2e-submit-form');
 
     // Instead select option 2
     cy.get('#e2e-single-select-control')
@@ -88,15 +80,15 @@ describe('Survey question logic', () => {
 
     // Go to next page
     cy.wait(1000);
-    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.dataCy('e2e-next-page').click();
 
     // Make sure we're on page 2
-    cy.get('[data-cy="e2e-page-number-2');
+    cy.dataCy('e2e-page-number-2');
 
     // Go back, deselect option 2
     cy.wait(1000);
-    cy.get('[data-cy="e2e-previous-page"]').click();
-    cy.get('[data-cy="e2e-page-number-1');
+    cy.dataCy('e2e-previous-page').click();
+    cy.dataCy('e2e-page-number-1');
     cy.wait(1000);
     cy.get('#e2e-single-select-control')
       .find('[data-testid="radio-container"]')
@@ -105,8 +97,8 @@ describe('Survey question logic', () => {
 
     // Go to next page, make sure we're on page 3
     cy.wait(1000);
-    cy.get('[data-cy="e2e-next-page"]').click();
-    cy.get('[data-cy="e2e-page-number-3');
+    cy.dataCy('e2e-next-page').click();
+    cy.dataCy('e2e-page-number-3');
   });
 });
 
@@ -355,10 +347,10 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
 
     // Go to next page
     cy.wait(1000);
-    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.dataCy('e2e-next-page').click();
 
     // Expect to be on page 3
-    cy.get('[data-cy="e2e-page-number-3');
+    cy.dataCy('e2e-page-number-3');
   });
 
   it('navigates through the survey correctly (option 1)', () => {
@@ -374,9 +366,9 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
 
     // Go to next page
     cy.wait(1000);
-    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.dataCy('e2e-next-page').click();
 
     // Expect to be on page 3
-    cy.get('[data-cy="e2e-page-number-3');
+    cy.dataCy('e2e-page-number-3');
   });
 });

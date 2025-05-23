@@ -184,6 +184,7 @@ hu:
         description:
       other_input_field:
         title: Írja be a választ
+        print_title: Ha '%{other_option}', kérjük, pontosítsa
       ask_follow_up_field:
         title: Mondd el, miért
     community_monitor:
@@ -329,6 +330,7 @@ hu:
       write_as_clearly: 'Írjon <b>-ként egyértelműen</b> -ként, amennyire csak tudja – ezek az űrlapok beolvashatók'
       write_in_language: 'Válaszait ugyanazon a nyelven írja le, mint ez az űrlap'
       linear_scale_print_description: 'Kérjük, csak %{min_label} és %{max_label} közötti számot írjon be'
+      unsupported_field: 'Ez a mező nem tölthető ki papíron. Kérjük, használja helyette az űrlap online verzióját.'
   project_copy:
     title_suffix: 'Másolat'
   confirmations_mailer:

@@ -184,6 +184,7 @@ lv:
         description:
       other_input_field:
         title: Ierakstiet savu atbildi
+        print_title: Ja "%{other_option}", lūdzu, norādiet
       ask_follow_up_field:
         title: Pastāstiet mums, kāpēc
     community_monitor:
@@ -330,6 +331,7 @@ lv:
       write_as_clearly: 'Rakstiet pēc iespējas skaidrāk <b>skaidri</b> - šīs veidlapas var tikt skenētas.'
       write_in_language: 'Atbildes rakstiet tajā pašā valodā, kurā ir šī veidlapa.'
       linear_scale_print_description: 'Lūdzu, ierakstiet tikai skaitli no %{min_label} līdz %{max_label} .'
+      unsupported_field: 'Šo lauku nevar aizpildīt uz papīra. Lūdzu, izmantojiet šīs veidlapas tiešsaistes versiju.'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:

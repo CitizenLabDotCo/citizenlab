@@ -13,6 +13,7 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
+      dataCy: typeof dataCy;
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
       goToLandingPage: typeof goToLandingPage;
       login: typeof login;
@@ -65,7 +66,7 @@ declare global {
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
-      apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
+      apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
       apiRemoveAllReports: typeof apiRemoveAllReports;
@@ -1346,10 +1347,12 @@ function apiCreateEvent({
   });
 }
 
-function apiEnableProjectDescriptionBuilder({
+function apiToggleProjectDescriptionBuilder({
   projectId,
+  enabled = true,
 }: {
   projectId: string;
+  enabled?: boolean;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1363,7 +1366,7 @@ function apiEnableProjectDescriptionBuilder({
       url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_description/upsert`,
       body: {
         content_builder_layout: {
-          enabled: true,
+          enabled,
         },
       },
     });
@@ -1990,6 +1993,18 @@ function createProjectWithNativeSurveyPhase({
     });
 }
 
+/**
+ * Get an element by its data-cy attribute.
+ * This is a utility function to make it easier to find elements by their data-cy attribute.
+ * @param {string} dataCyValue - The value of the data-cy attribute
+ * @returns Cypress chainable object representing the element with the specified data-cy attribute
+ * @example cy.dataCy('e2e-after-submission')
+ */
+function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.get(`[data-cy="${dataCyValue}"]`);
+}
+
+Cypress.Commands.add('dataCy', dataCy);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
@@ -2053,8 +2068,8 @@ Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
 Cypress.Commands.add(
-  'apiEnableProjectDescriptionBuilder',
-  apiEnableProjectDescriptionBuilder
+  'apiToggleProjectDescriptionBuilder',
+  apiToggleProjectDescriptionBuilder
 );
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);

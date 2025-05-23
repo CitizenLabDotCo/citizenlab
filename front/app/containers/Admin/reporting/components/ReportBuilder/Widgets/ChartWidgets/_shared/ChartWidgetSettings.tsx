@@ -15,16 +15,6 @@ import ProjectFilter from '../../_shared/ProjectFilter';
 import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
 
-const ChartWidgetSettings = () => {
-  return (
-    <Box>
-      <TitleInput />
-      <DateRangeInput />
-      <ProjectInput />
-    </Box>
-  );
-};
-
 export const TitleInput = () => {
   const { formatMessage } = useIntl();
 
@@ -166,5 +156,3 @@ export const ProjectInput = () => {
     </Box>
   );
 };
-
-export default ChartWidgetSettings;
