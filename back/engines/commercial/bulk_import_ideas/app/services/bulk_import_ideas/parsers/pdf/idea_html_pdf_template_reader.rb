@@ -133,7 +133,7 @@ module BulkImportIdeas::Parsers::Pdf
 
       {
         start: next_line_index ? page_text[next_line_index - 1].strip : page_text.last.strip,
-        end: next_line_index ? page_text[next_line_index].strip : next_question_title.truncate(40).strip # truncated next_question_title will be used if this is the last field on the page
+        end: next_line_index ? page_text[next_line_index].strip : next_question_title&.truncate(40)&.strip # truncated next_question_title will be used if this is the last field on the page
       }
     end
 
