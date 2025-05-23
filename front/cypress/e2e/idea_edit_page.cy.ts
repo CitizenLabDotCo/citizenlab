@@ -85,7 +85,7 @@ describe('Idea edit page', () => {
     cy.get('@titleInput').should('contain.value', newIdeaTitle);
 
     // Go to the next page of the idea form
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
 
@@ -110,7 +110,7 @@ describe('Idea edit page', () => {
     cy.get('@descriptionInput').contains(newIdeaContent);
 
     // Go to the next page of the idea form
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
@@ -122,7 +122,7 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-image-upload input').should('have.length', 0);
 
     // Go to the page with topics
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     cy.get('.e2e-topics-picker')
       .find('button.selected')
@@ -146,14 +146,14 @@ describe('Idea edit page', () => {
     cy.intercept('PATCH', `**/ideas/${ideaId}**`).as('patchIdea');
 
     // save the form
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     cy.get('#e2e-accept-disclaimer').click();
 
     cy.wait('@patchIdea');
 
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
@@ -189,7 +189,7 @@ describe('Idea edit page', () => {
     cy.acceptCookies();
     // Search and select an author
     cy.get('[data-cy="e2e-user-select"]').should('be.visible');
-    cy.get('[data-cy="e2e-user-select"]')
+    cy.dataCy('e2e-user-select')
       .click()
       .type(`${lastName}, ${firstName} {enter}`);
     // Save
@@ -205,9 +205,9 @@ describe('Idea edit page', () => {
     // Go to idea edit page
     cy.visit(`/ideas/edit/${ideaId}`);
 
-    cy.get('[data-cy="e2e-leave-edit-idea-button"]').click();
-    cy.get('[data-cy="e2e-confirm-leave-edit-idea-button"]').should('exist');
-    cy.get('[data-cy="e2e-confirm-leave-edit-idea-button"]').click();
+    cy.dataCy('e2e-leave-edit-idea-button').click();
+    cy.dataCy('e2e-confirm-leave-edit-idea-button').should('exist');
+    cy.dataCy('e2e-confirm-leave-edit-idea-button').click();
 
     // Check to see that the user is redirected to the idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);

@@ -29,9 +29,9 @@ describe('Form builder long text field', () => {
   it('adds long text field and user can fill in data in the field', () => {
     const testText = randomString(400);
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.get('[data-cy="e2e-long-answer"]');
+    cy.dataCy('e2e-long-answer');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-long-answer"]').click();
+    cy.dataCy('e2e-long-answer').click();
 
     // Save the survey
     cy.get('form').submit();
@@ -52,7 +52,7 @@ describe('Form builder long text field', () => {
     cy.contains(questionTitle).should('exist');
 
     // Try submitting without entering data for required field
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
@@ -70,12 +70,12 @@ describe('Form builder long text field', () => {
     cy.get('.e2e-error-message').should('have.length', 0);
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);

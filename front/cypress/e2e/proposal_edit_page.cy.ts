@@ -77,13 +77,13 @@ describe('Proposal edit page', () => {
     // Edit input form
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form/edit`);
     // Delete the Details page
-    cy.get('[data-cy="e2e-more-field-actions"]').eq(2).click({ force: true });
+    cy.dataCy('e2e-more-field-actions').eq(2).click({ force: true });
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
     // Delete the Location field
-    cy.get('[data-cy="e2e-more-field-actions"]').eq(3).click({ force: true });
+    cy.dataCy('e2e-more-field-actions').eq(3).click({ force: true });
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
     // Add an extra field
-    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.dataCy('e2e-short-answer').click();
     cy.get('#e2e-title-multiloc').type(extraFieldTitle, {
       force: true,
       delay: 0,
@@ -118,10 +118,10 @@ describe('Proposal edit page', () => {
     cy.get('@titleInput').should('contain.value', newTitle);
 
     // Go to body page
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Go to uploads page and add an image
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.get('#e2e-idea-image-upload input').attachFile('icon.png');
     // Check that the tags field was not removed
     cy.get('#e2e-idea-topics-input').should('exist');
@@ -132,7 +132,7 @@ describe('Proposal edit page', () => {
     });
 
     // Submit
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
     cy.get('#e2e-accept-disclaimer').click();
     cy.wait(1000);
 

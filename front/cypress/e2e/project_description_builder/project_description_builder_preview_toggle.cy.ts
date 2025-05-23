@@ -111,7 +111,7 @@ describe('Project description builder preview', () => {
       .contains('Edited text.Another edited text.')
       .should('be.visible');
 
-    cy.get('[data-cy="mobile-preview-iframe"]').should('exist');
+    cy.dataCy('mobile-preview-iframe').should('exist');
 
     // Switch to desktop preview
     cy.get('#e2e-desktop-preview').click({ force: true });
@@ -119,6 +119,6 @@ describe('Project description builder preview', () => {
     getIframeBody()
       .contains('Edited text.Another edited text.')
       .should('be.visible');
-    cy.get('[data-cy="desktop-preview-iframe"]').should('exist');
+    cy.dataCy('desktop-preview-iframe').should('exist');
   });
 });
