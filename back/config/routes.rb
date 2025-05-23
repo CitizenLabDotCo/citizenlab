@@ -78,6 +78,8 @@ Rails.application.routes.draw do
 
       resources :background_jobs, only: %i[index]
 
+      resources :jobs, only: %i[index show]
+
       resources :idea_statuses do
         patch 'reorder', on: :member
       end
