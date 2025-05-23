@@ -1033,6 +1033,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.cizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "ہمارے سپورٹ سینٹر پر جائیں۔",
   "app.containers.Admin.projects.all.askPersonalData3": "نام اور ای میل کے لیے فیلڈز شامل کریں۔",
+  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "تمام سوالات پی ڈی ایف پر دکھائے گئے ہیں۔ تاہم، درج ذیل کو فی الحال FormSync کے ذریعے درآمد کرنے کے لیے تعاون یافتہ نہیں ہے: امیجز، ٹیگز اور فائل اپ لوڈ۔",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "تمام سوالات پی ڈی ایف پر دکھائے گئے ہیں۔ تاہم، درج ذیل کو فی الحال FormSync کے ذریعے درآمد کرنے کے لیے تعاون یافتہ نہیں ہے: نقشہ سازی کے سوالات (ڈراپ پن، ڈرا روٹ اور ڈرا ایریا)، درجہ بندی کے سوالات، میٹرکس کے سوالات اور فائل اپ لوڈ کے سوالات۔",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "فارم کا اختتام",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "فارم کا آغاز",
   "app.containers.Admin.projects.all.components.archived": "محفوظ شدہ",
