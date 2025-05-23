@@ -174,7 +174,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
 
       it 'shows ranking instructions and options' do
         ranking = parsed_html.css("div##{ranking_field.id}")
-        expect(ranking.text).to include 'Please write a number from 1 (most preferred) and 2 (least preferred) in each box. Use each number only once.'
+        expect(ranking.text).to include 'Please write a number from 1 (most preferred) and 2 (least preferred) in each box. Use each number exactly once.'
         expect(ranking.text).to include 'Ranking one'
         expect(ranking.text).to include 'Ranking two'
       end
