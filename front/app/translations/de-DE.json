@@ -178,8 +178,6 @@
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Typ",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automatisch speichern",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Die automatische Speicherung ist standardmäßig aktiviert, wenn Sie den Formulareditor öffnen. Jedes Mal, wenn Sie das Feldeinstellungsfenster mit der Schaltfläche „X“ schließen, wird automatisch eine Speicherung ausgelöst.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Als PDF herunterladen",
-  "app.components.FormSync.downloadExcelTemplate": "Download einer Excel-Vorlage",
   "app.components.GoBackButton.group.edit.goBack": "Zurück",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Zurück zur vorherigen Seite",
   "app.components.HookForm.Feedback.errorTitle": "Es gibt ein Problem",
