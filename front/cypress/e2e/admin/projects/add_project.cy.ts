@@ -81,6 +81,9 @@ describe('Admin: add project', () => {
         // Wait for the project creation to finish and check the response
         cy.wait('@createProject').then((interception) => {
           const projectId = interception.response?.body.data.id;
+
+          expect(projectId).to.exist;
+
           return cy
             .getProjectById(projectId)
             .then((projectData) => {
