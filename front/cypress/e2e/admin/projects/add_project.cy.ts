@@ -18,21 +18,20 @@ describe('Admin: add project', () => {
         const projectTitleNLNL = randomString();
         const projectTitleFRBE = randomString();
 
-        // Type random project titles for these required fields
+        // Fill in all locales
         cy.get('#e2e-project-title-setting-field').type(projectTitleEN);
-        cy.get('.e2e-localeswitcher.nl-BE').click();
+        cy.get('.e2e-localeswitcher.nl-BE').should('be.visible').click();
         cy.get('#e2e-project-title-setting-field').type(projectTitleNLBE);
-        cy.get('.e2e-localeswitcher.nl-NL').click();
+        cy.get('.e2e-localeswitcher.nl-NL').should('be.visible').click();
         cy.get('#e2e-project-title-setting-field').type(projectTitleNLNL);
-        cy.get('.e2e-localeswitcher.fr-BE').click();
+        cy.get('.e2e-localeswitcher.fr-BE').should('be.visible').click();
         cy.get('#e2e-project-title-setting-field').type(projectTitleFRBE);
 
-        // Submit project
+        // Submit form
         cy.get('.e2e-submit-wrapper-button button').click();
 
-        cy.wait(2000);
-
-        // Project should appear on top of the projects list
+        // Confirm the project is saved and appears as draft
+        cy.url().should('include', '/admin/projects/');
         cy.visit('/admin/projects/all');
         cy.get('#e2e-admin-projects-list-unsortable')
           .children()
@@ -45,61 +44,51 @@ describe('Admin: add project', () => {
       });
     });
 
-    // This test is failing because the project list at the bottom disappears,
-    // and I (Luuc) have absolutely no idea why. So disabling for now.
-    context.skip('Areas: Selection', () => {
+    context('Areas: Selection', () => {
       it('creates a project with the correct area', () => {
+        cy.intercept('POST', '**/web_api/v1/projects').as('createProject');
+
         const projectTitleEN = randomString();
         const projectTitleNLBE = randomString();
         const projectTitleNLNL = randomString();
         const projectTitleFRBE = randomString();
 
-        // Type random project titles for these required fields
+        // Fill in all locales
         cy.get('#e2e-project-title-setting-field').type(projectTitleEN);
-        cy.get('.e2e-localeswitcher.nl-BE').click();
+        cy.get('.e2e-localeswitcher.nl-BE').should('be.visible').click();
         cy.get('#e2e-project-title-setting-field').type(projectTitleNLBE);
-        cy.get('.e2e-localeswitcher.nl-NL').click();
+        cy.get('.e2e-localeswitcher.nl-NL').should('be.visible').click();
         cy.get('#e2e-project-title-setting-field').type(projectTitleNLNL);
-        cy.get('.e2e-localeswitcher.fr-BE').click();
+        cy.get('.e2e-localeswitcher.fr-BE').should('be.visible').click();
         cy.get('#e2e-project-title-setting-field').type(projectTitleFRBE);
 
         // Select 'Selection' as Areas option
         cy.get('.e2e-areas-selection').click();
 
-        // Pick (only) area
+        // Select specific area
         cy.get('#e2e-area-selector')
           .click()
           .find('input')
           .type('Carrotgem')
           .trigger('keydown', { keyCode: 13, which: 13 });
 
-        // Submit project
+        // Submit
         cy.get('.e2e-submit-wrapper-button button').click();
 
-        cy.wait(2000);
+        // Expect an area to be passed in the project request
+        cy.wait('@createProject').then((interception) => {
+          expect(interception.request?.body.project.area_ids.length).to.equal(
+            1
+          );
 
-        // Get projectId, then areaId and look up area to compare
-        cy.get('#e2e-admin-projects-list-unsortable').contains(projectTitleEN);
-        cy.get(`.e2e-admin-edit-project.${projectTitleEN}`)
-          .find('a')
-          .then((manageProjectButtonLinks) => {
-            const manageProjectButtonLink = manageProjectButtonLinks[0];
-            const href = manageProjectButtonLink.href;
-            const hrefSegments = href && href.split('/');
-            const projectId = hrefSegments[hrefSegments.length - 2];
-            return projectId;
-          })
-          .then((projectId) => {
-            return cy.getProjectById(projectId);
-          })
-          .then((projectData) => {
-            const areaId = projectData.body.data.relationships.areas.data[0].id;
-            return cy.getArea(areaId);
-          })
-          .then((areaData) => {
-            const area = areaData.body.data.attributes.title_multiloc['en'];
-            expect(area).to.eq('Carrotgem');
-          });
+          cy.getArea(interception.request?.body.project.area_ids[0]).then(
+            (area) => {
+              expect(area.body.data.attributes.title_multiloc['en']).to.equal(
+                'Carrotgem'
+              );
+            }
+          );
+        });
       });
     });
   });
