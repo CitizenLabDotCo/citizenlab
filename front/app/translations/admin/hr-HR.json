@@ -1033,6 +1033,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "posjetite naš centar za podršku",
   "app.containers.Admin.projects.all.askPersonalData3": "Dodajte polja za ime i e-poštu",
+  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Sva pitanja su prikazana u PDF-u. Međutim, sljedeće trenutno nije podržano za uvoz putem FormSynca: slike, oznake i prijenos datoteka.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Sva pitanja su prikazana u PDF-u. Međutim, sljedeća pitanja trenutno nisu podržana za uvoz putem FormSynca: pitanja o mapiranju (ispuštanje pribadače, crtanje rute i crtanje područja), pitanja o rangiranju, matrična pitanja i pitanja o prijenosu datoteka.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Kraj obrasca",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Početak obrasca",
   "app.containers.Admin.projects.all.components.archived": "Arhivirano",
