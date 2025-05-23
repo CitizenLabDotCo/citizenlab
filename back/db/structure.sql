@@ -655,6 +655,10 @@ DROP FUNCTION IF EXISTS public.que_job_notify();
 DROP FUNCTION IF EXISTS public.que_determine_job_state(job public.que_jobs);
 DROP TABLE IF EXISTS public.que_jobs;
 DROP FUNCTION IF EXISTS public.que_validate_tags(tags_array jsonb);
+DROP EXTENSION IF EXISTS vector;
+DROP EXTENSION IF EXISTS "uuid-ossp";
+DROP EXTENSION IF EXISTS postgis;
+DROP EXTENSION IF EXISTS pgcrypto;
 DROP SCHEMA IF EXISTS shared_extensions;
 DROP SCHEMA IF EXISTS public;
 --
@@ -676,6 +680,62 @@ COMMENT ON SCHEMA public IS 'standard public schema';
 --
 
 CREATE SCHEMA shared_extensions;
+
+
+--
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA shared_extensions;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
+--
+-- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA shared_extensions;
+
+
+--
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
+
+
+--
+-- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA shared_extensions;
+
+
+--
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
+--
+-- Name: vector; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA shared_extensions;
+
+
+--
+-- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION vector IS 'Open-source vector similarity search for Postgres';
 
 
 --
@@ -2781,7 +2841,8 @@ CREATE TABLE public.permissions (
     updated_at timestamp without time zone NOT NULL,
     global_custom_fields boolean DEFAULT false NOT NULL,
     verification_expiry integer,
-    access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
+    access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    everyone_tracking_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -7064,7 +7125,7 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "public", "shared_extensions";
+SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20250521085055'),
@@ -7075,6 +7136,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250502112945'),
 ('20250501134516'),
 ('20250416120221'),
+('20250415132943'),
 ('20250415094344'),
 ('20250409111817'),
 ('20250327095857'),
