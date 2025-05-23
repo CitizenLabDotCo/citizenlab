@@ -115,7 +115,7 @@ describe('Idea show page actions', () => {
 
       it('displays the top bar of the input', () => {
         cy.visit(`/projects/${projectSlug}?view=map&idea_map_id=${ideaId}`);
-        cy.get('[data-cy="e2e-ideashowpage-topbar"]').should('be.visible');
+        cy.dataCy('e2e-ideashowpage-topbar').should('be.visible');
       });
     });
   });

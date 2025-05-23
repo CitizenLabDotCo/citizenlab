@@ -44,9 +44,9 @@ describe('Form builder single choice field', () => {
 
   it('adds single select multiple choice field and is displayed when filling survey', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.get('[data-cy="e2e-single-choice"]');
+    cy.dataCy('e2e-single-choice');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-single-choice"]').click();
+    cy.dataCy('e2e-single-choice').click();
     cy.get('form').submit();
     cy.contains('Provide a question title').should('exist');
     cy.contains('Provide at least 1 answer').should('exist');
@@ -64,12 +64,10 @@ describe('Form builder single choice field', () => {
     const questionTitle = randomString();
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.acceptCookies();
-    cy.get('[data-cy="e2e-single-choice"]');
+    cy.dataCy('e2e-single-choice');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-single-choice"]').click();
-    cy.get('[data-cy="e2e-other-option-toggle"]')
-      .find('input')
-      .click({ force: true });
+    cy.dataCy('e2e-single-choice').click();
+    cy.dataCy('e2e-other-option-toggle').find('input').click({ force: true });
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
     cy.contains('Save').click();
@@ -79,12 +77,12 @@ describe('Form builder single choice field', () => {
     cy.contains(questionTitle).should('exist');
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);
@@ -96,12 +94,10 @@ describe('Form builder single choice field', () => {
     const otherAnswer = 'Walking';
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.acceptCookies();
-    cy.get('[data-cy="e2e-single-choice"]');
+    cy.dataCy('e2e-single-choice');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-single-choice"]').click();
-    cy.get('[data-cy="e2e-other-option-toggle"]')
-      .find('input')
-      .click({ force: true });
+    cy.dataCy('e2e-single-choice').click();
+    cy.dataCy('e2e-other-option-toggle').find('input').click({ force: true });
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
     cy.contains('Save').click();
@@ -114,7 +110,7 @@ describe('Form builder single choice field', () => {
     cy.get('#e2e-single-select-control').should('exist');
 
     // Try submitting without entering data for required field
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message').should('exist');
@@ -134,12 +130,12 @@ describe('Form builder single choice field', () => {
       .type(otherAnswer, { force: true });
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);
