@@ -37,7 +37,6 @@ describe('Admin: add projects to folder', async () => {
           .find('.e2e-localeswitcher')
           .each((button) => {
             cy.wrap(button).click();
-            cy.wait(200);
             cy.get('#project-folder-title').type(folderTitle);
           });
 
@@ -46,7 +45,6 @@ describe('Admin: add projects to folder', async () => {
           .find('.e2e-localeswitcher')
           .each((button) => {
             cy.wrap(button).click();
-            cy.wait(200);
             cy.dataCy('e2e-project-folder-short-description').within(() => {
               cy.get('textarea').type(folderShortDescription);
             });
@@ -57,7 +55,6 @@ describe('Admin: add projects to folder', async () => {
           .find('.e2e-localeswitcher')
           .each((button) => {
             cy.wrap(button).click();
-            cy.wait(200);
             cy.dataCy('e2e-project-folder-description').within(() => {
               cy.get('#description').type(folderShortDescription);
             });
