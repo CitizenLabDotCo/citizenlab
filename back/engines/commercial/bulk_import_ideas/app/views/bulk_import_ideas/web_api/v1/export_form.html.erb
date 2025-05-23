@@ -29,8 +29,8 @@
     h1, h2, h3 { margin-bottom: 7px; }
     p { margin-top: 0; margin-bottom: 4px;}
     h1 { font-size: 15pt; }
-    h2 { font-size: 13pt; }
-    h3 { font-size: 11pt; }
+    h2 { font-size: 13pt; line-height: 1.3; }
+    h3 { font-size: 11pt; line-height: 1.3; display: inline-flex; }
     h4, p, li, td, th { font-size: 11pt; line-height: 1.3; }
 
     div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px; }
@@ -43,6 +43,7 @@
       font-size: 11pt;
       line-height: 1.3;
       margin-bottom: 4px;
+      div.text { padding-right: 10px; }
       input { appearance: none; width: 14px;  height: 14px; border: solid 1px #000; margin: 1px 10px 5px 0; }
       input.radio { appearance: none; border-radius: 7px; }
     }
@@ -55,7 +56,7 @@
     #header {
       margin: 0 0 30px 0;
       img { height: auto; }
-      h1 { margin-top: 0; }
+      h1 { margin-top: 10px; }
     }
 
     #footer {
@@ -69,9 +70,11 @@
     }
 
     #questions {
-      span.number { width: 30px; display: inline-block; }
+      h3 span.number { width: 30px; }
+      h3 span.text { width: fit-content; }
+      h4 { margin-left: 30px; }
       div.content { margin-left: 30px; }
-      div.question, div.page { margin-bottom: 30px; }
+      div.question, div.page { margin-bottom: 10px; }
       div.unsupported p, div.visibility_disclaimer p { color: #666; font-style: italic; }
       div.image-select {
         display: grid;
@@ -157,13 +160,16 @@
     <% else %>
       <div class="question" id="<%= field[:id] %>">
         <% if field[:additional_text_question] %>
-          <h4><span class="number"> </span><%= field[:title] %></h4>
+          <h4><%= field[:title] %></h4>
         <% else %>
           <h3>
-            <span class="number"><%= field[:question_number] %> </span><%= field[:title] %>
-            <% if field[:optional] %>
-              <span class="optional"><%= optional %></span>
-            <% end %>
+            <span class="number"><%= field[:question_number] %> </span>
+            <span class="text">
+              <%= field[:title] %>
+              <% if field[:optional] %>
+                <span class="optional"><%= optional %></span>
+              <% end %>
+            </span>
           </h3>
         <% end %>
         <div class="content">
@@ -174,7 +180,7 @@
               <% field[:options].each do |option| %>
                   <div class="select">
                     <div><input type="radio" class="radio"></div>
-                    <div><%= option[:title] %></div>
+                    <div class="text"><%= option[:title] %></div>
                   </div>
               <% end %>
             </div>
@@ -184,7 +190,7 @@
               <% field[:options].each do |option| %>
                 <div class="select">
                   <div><input type="checkbox" class="checkbox"></div>
-                  <div><%= option[:title] %></div>
+                  <div class="text"><%= option[:title] %></div>
                 </div>
               <% end %>
             </div>
@@ -209,7 +215,7 @@
                   </div>
                   <div class="select">
                     <div><input type="checkbox" class="checkbox"></div>
-                    <div><%= option[:title] %></div>
+                    <div class="text"><%= option[:title] %></div>
                   </div>
                 </div>
               <% end %>
