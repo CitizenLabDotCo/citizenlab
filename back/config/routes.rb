@@ -78,6 +78,8 @@ Rails.application.routes.draw do
 
       resources :background_jobs, only: %i[index]
 
+      resources :jobs, only: %i[index show]
+
       resources :idea_statuses do
         patch 'reorder', on: :member
       end
@@ -170,6 +172,10 @@ Rails.application.routes.draw do
           get 'submission_count'
           get 'progress', action: 'show_progress'
           delete 'inputs', action: 'delete_inputs'
+        end
+
+        resources :inputs, only: [], controller: 'ideas' do
+          post 'copy', on: :collection
         end
 
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
