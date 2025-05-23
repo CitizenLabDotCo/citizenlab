@@ -1,20 +1,22 @@
 import React from 'react';
 
 import { Box, Button, IOption, Text } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from 'components/Form/Components/Controls/messages';
 import {
   DragAndDrop,
   Drop,
 } from 'components/FormBuilder/components/DragAndDrop';
-
-import { IFlatCustomField } from 'api/custom_fields/types';
-import { useIntl } from 'utils/cl-intl';
-import styled, { useTheme } from 'styled-components';
-
-import messages from 'components/Form/Components/Controls/messages';
-import RankingOption from './RankingOption';
-import useLocalize from 'hooks/useLocalize';
 import { DragAndDropResult } from 'components/FormBuilder/edit/utils';
+
+import { useIntl } from 'utils/cl-intl';
+
+import RankingOption from './RankingOption';
 
 const Ul = styled.ul`
   padding: 0;
@@ -28,13 +30,10 @@ interface Props {
   onChange: (value?: string[]) => void;
 }
 
-const getOptionsFromData = (
-  data: string[],
-  optionsFromSchema: IOption[]
-): IOption[] => {
+const getOptionsFromData = (data: string[], options: IOption[]): IOption[] => {
   return data
     .map((optionKey: string) => {
-      return optionsFromSchema.find((option) => option.value === optionKey);
+      return options.find((option) => option.value === optionKey);
     })
     .filter((value): value is IOption => !!value);
 };
