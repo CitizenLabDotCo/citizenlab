@@ -7,7 +7,7 @@ import messages from './messages';
 export interface Translations {
   direct_entry: string;
   social_network: string;
-  seach_engine: string;
+  search_engine: string;
   sso_redirect: string;
   other: string;
   campaign: string;
@@ -25,7 +25,7 @@ export const getTranslations = (
 ): Translations => ({
   direct_entry: formatMessage(messages.directEntry),
   social_network: formatMessage(messages.socialNetworks),
-  seach_engine: formatMessage(messages.searchEngines),
+  search_engine: formatMessage(messages.searchEngines),
   sso_redirect: formatMessage(messages.ssoRedirects),
   other: formatMessage(messages.websites),
   campaign: formatMessage(messages.campaigns),

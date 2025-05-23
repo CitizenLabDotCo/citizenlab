@@ -28,10 +28,17 @@ export const parsePieData = (
   }));
 };
 
+export type TranslatedReferrers = {
+  referrer_type: string;
+  referrer: string;
+  visits: number;
+  visitors: number;
+}[];
+
 export const parseTableData = (
   { top_50_referrers }: VisitorsTrafficSourcesResponse['data']['attributes'],
   translations: Translations
-) => {
+): TranslatedReferrers => {
   return top_50_referrers.map(({ referrer_type, ...rest }) => ({
     ...rest,
     referrer_type: translations[referrer_type],
@@ -40,7 +47,7 @@ export const parseTableData = (
 
 export const parseExcelData = (
   pieData: PieRow[],
-  tableData: VisitorsTrafficSourcesResponse['data']['attributes']['top_50_referrers'],
+  tableData: TranslatedReferrers,
   translations: Translations
 ) => {
   const trafficSourceData = pieData.map((row) => ({
