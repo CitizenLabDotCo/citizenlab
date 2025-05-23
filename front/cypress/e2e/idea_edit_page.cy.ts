@@ -181,11 +181,14 @@ describe('Idea edit page', () => {
     cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
       'ideaSchema'
     );
+    cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
     cy.wait('@ideaSchema', { timeout: 10000 });
+    cy.wait('@getPhases', { timeout: 10000 });
     cy.acceptCookies();
     // Search and select an author
+    cy.get('[data-cy="e2e-user-select"]').should('be.visible');
     cy.get('[data-cy="e2e-user-select"]')
       .click()
       .type(`${lastName}, ${firstName} {enter}`);
