@@ -7,8 +7,6 @@ import { useTheme } from 'styled-components';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
-import useDebouncedValue from 'hooks/useDebouncedValue';
-
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import OptionLabel from './OptionLabel';
@@ -24,7 +22,6 @@ const AdminPublicationSearchInput = ({
   onChange,
 }: Props) => {
   const [search, setSearch] = useState('');
-  const debouncedSearch = useDebouncedValue(search, 200);
   const theme = useTheme();
 
   const {
@@ -33,7 +30,7 @@ const AdminPublicationSearchInput = ({
     hasNextPage,
     isFetchingNextPage,
   } = useAdminPublications({
-    search: debouncedSearch,
+    search,
     publicationStatusFilter: ['published', 'archived'],
     pageSize: 6,
   });
