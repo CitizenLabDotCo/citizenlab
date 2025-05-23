@@ -45,9 +45,7 @@ describe('Admin: add project', () => {
       });
     });
 
-    // This test is failing because the project list at the bottom disappears,
-    // and I (Luuc) have absolutely no idea why. So disabling for now.
-    context.skip('Areas: Selection', () => {
+    context('Areas: Selection', () => {
       it('creates a project with the correct area', () => {
         const projectTitleEN = randomString();
         const projectTitleNLBE = randomString();
@@ -70,36 +68,30 @@ describe('Admin: add project', () => {
         cy.get('#e2e-area-selector')
           .click()
           .find('input')
-          .type('Carrotgem')
+          .type('East Anna')
           .trigger('keydown', { keyCode: 13, which: 13 });
+
+        cy.intercept('POST', '**/web_api/v1/projects').as('createProject');
 
         // Submit project
         cy.get('.e2e-submit-wrapper-button button').click();
 
         cy.wait(2000);
+        cy.wait('@createProject').then((interception) => {
+          const projectId = interception.response?.body.data.id;
 
-        // Get projectId, then areaId and look up area to compare
-        cy.get('#e2e-admin-projects-list-unsortable').contains(projectTitleEN);
-        cy.get(`.e2e-admin-edit-project.${projectTitleEN}`)
-          .find('a')
-          .then((manageProjectButtonLinks) => {
-            const manageProjectButtonLink = manageProjectButtonLinks[0];
-            const href = manageProjectButtonLink.href;
-            const hrefSegments = href && href.split('/');
-            const projectId = hrefSegments[hrefSegments.length - 2];
-            return projectId;
-          })
-          .then((projectId) => {
-            return cy.getProjectById(projectId);
-          })
-          .then((projectData) => {
-            const areaId = projectData.body.data.relationships.areas.data[0].id;
-            return cy.getArea(areaId);
-          })
-          .then((areaData) => {
-            const area = areaData.body.data.attributes.title_multiloc['en'];
-            expect(area).to.eq('Carrotgem');
-          });
+          return cy
+            .getProjectById(projectId)
+            .then((projectData) => {
+              const areaId =
+                projectData.body.data.relationships.areas.data[0].id;
+              return cy.getArea(areaId);
+            })
+            .then((areaData) => {
+              const area = areaData.body.data.attributes.title_multiloc['en'];
+              expect(area).to.eq('East Anna');
+            });
+        });
       });
     });
   });
