@@ -184,6 +184,7 @@ ur:
         description:
       other_input_field:
         title: اپنا جواب ٹائپ کریں۔
+        print_title: اگر '%{other_option}'، تو براہ کرم وضاحت کریں۔
       ask_follow_up_field:
         title: ہمیں بتائیں کیوں؟
     community_monitor:
@@ -329,6 +330,16 @@ ur:
       write_as_clearly: '<b>واضح طور پر لکھیں</b> جیسا آپ کر سکتے ہیں— ان فارمز کو سکین کیا جا سکتا ہے'
       write_in_language: 'اپنے جوابات اسی زبان میں لکھیں جس زبان میں یہ فارم ہے۔'
       linear_scale_print_description: 'براہ کرم صرف %{min_label} اور %{max_label} کے درمیان نمبر لکھیں۔'
+      unsupported_field: 'یہ فیلڈ کاغذ پر مکمل نہیں ہو سکتی۔ اس کے بجائے براہ کرم اس فارم کا آن لائن ورژن استعمال کریں۔'
+      ranking_print_description: 'براہ کرم ہر باکس میں 1 (سب سے زیادہ ترجیحی) اور %{max_rank} (کم سے کم ترجیحی) سے ایک نمبر لکھیں۔ ہر نمبر کو ایک بار استعمال کریں۔'
+      matrix_print_description: 'ہر قطار کے لیے، اپنی ترجیح کی نشاندہی کرنے کے لیے ایک دائرے کو کراس سے نشان زد کریں۔'
+      rating_print_description: '1 (بدترین) اور %{max_stars} (بہترین) کے درمیان نمبر لکھ کر اس کی درجہ بندی کریں۔'
+      sentiment_linear_scale_print_description: 'براہ کرم 1 اور 5 کے درمیان نمبر لکھیں۔'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}۔'
+      point_print_description: 'مقام دکھانے کے لیے براہ کرم نیچے نقشے پر ایک X کھینچیں یا اس کے بجائے پتہ لکھیں۔'
+      line_print_description: 'براہ کرم نیچے نقشے پر ایک راستہ بنائیں۔'
+      polygon_print_description: 'براہ کرم نیچے نقشے پر ایک شکل بنائیں۔'
+      select_print_description: 'صرف ایک آپشن کا انتخاب کریں۔'
   project_copy:
     title_suffix: 'کاپی'
   confirmations_mailer:

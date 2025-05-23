@@ -184,6 +184,7 @@ it:
         description:
       other_input_field:
         title: Scrivi la tua risposta
+        print_title: Se '%{other_option}', specificare
       ask_follow_up_field:
         title: Dicci perché
     community_monitor:
@@ -329,6 +330,16 @@ it:
       write_as_clearly: 'Scrivi il più chiaramente possibile <b></b> - questi moduli potrebbero essere scannerizzati.'
       write_in_language: 'Scrivi le tue risposte nella stessa lingua di questo modulo'
       linear_scale_print_description: 'Scrivi solo un numero compreso tra %{min_label} e %{max_label}'
+      unsupported_field: 'Questo campo non può essere compilato su carta. Utilizza invece la versione online di questo modulo.'
+      ranking_print_description: 'Scrivi un numero da 1 (il più preferito) a %{max_rank} (il meno preferito) in ogni casella. Usa ogni numero esattamente una volta.'
+      matrix_print_description: 'Per ogni riga, segna un cerchio con una croce per indicare la tua preferenza.'
+      rating_print_description: 'Valuta questo aspetto scrivendo un numero compreso tra 1 (peggiore) e %{max_stars} (migliore).'
+      sentiment_linear_scale_print_description: 'Scrivi un numero compreso tra 1 e 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Disegna una X sulla mappa qui sotto per indicare la posizione o scrivi l''indirizzo.'
+      line_print_description: 'Disegna un percorso sulla mappa qui sotto.'
+      polygon_print_description: 'Disegna una forma sulla mappa qui sotto.'
+      select_print_description: 'Scegli solo un''opzione.'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:

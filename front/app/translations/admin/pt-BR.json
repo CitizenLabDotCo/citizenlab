@@ -1033,6 +1033,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visite o nosso centro de apoio",
   "app.containers.Admin.projects.all.askPersonalData3": "Adicionar campos para nome e e-mail",
+  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Todas as perguntas são exibidas no PDF. No entanto, no momento, não há suporte para importação via FormSync para os seguintes itens: Imagens, Tags e Upload de arquivos.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Todas as perguntas são exibidas no PDF. No entanto, as perguntas a seguir não são compatíveis com a importação via FormSync: Perguntas de mapeamento (drop pin, draw route e draw area), perguntas de classificação, perguntas de matriz e perguntas de upload de arquivo.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Fim do formulário",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Início do formulário",
   "app.containers.Admin.projects.all.components.archived": "Arquivado",

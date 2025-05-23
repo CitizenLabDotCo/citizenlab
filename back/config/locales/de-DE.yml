@@ -184,6 +184,7 @@ de:
         description:
       other_input_field:
         title: Antwort eingeben
+        print_title: Wenn '%{other_option}', bitte angeben
       ask_follow_up_field:
         title: Erzähl uns mehr
     community_monitor:
@@ -227,23 +228,23 @@ de:
     categories:
       main_content:
         idea:
-          title: Was ist Ihr Beitrag?
+          title: Was ist deine Idee?
         question:
-          title: Was ist Ihre Frage?
+          title: Was ist deine Frage?
         contribution:
-          title: Was ist Ihr Beitrag?
+          title: Was ist dein Beitrag?
         project:
-          title: Was ist Ihr Projekt?
+          title: Was ist dein Projekt?
         issue:
-          title: Was ist Ihr Vorhaben?
+          title: Was ist dein Vorhaben?
         option:
-          title: Was ist Ihre Option?
+          title: Was ist deine Option?
         proposal:
           title: Was ist dein Vorschlag?
         initiative:
-          title: Was ist Ihre Initiative?
+          title: Was ist deine Initiative?
         petition:
-          title: Was ist Ihre Petition?
+          title: Was ist deine Petition?
   custom_field_options:
     gender:
       male: Männlich
@@ -329,6 +330,16 @@ de:
       write_as_clearly: 'Schreiben Sie so <b>deutlich</b> wie möglich - diese Formulare werden gescannt'
       write_in_language: 'Schreiben Sie Ihre Antworten bitte in der gleichen Sprache wie dieses Formular'
       linear_scale_print_description: 'Bitte schreiben Sie nur eine Zahl zwischen %{min_label} und %{max_label}'
+      unsupported_field: 'Dieses Feld kann nicht auf Papier ausgefüllt werden. Bitte verwenden Sie stattdessen die Online-Version dieses Formulars.'
+      ranking_print_description: 'Bitte schreiben Sie in jedes Feld eine Zahl zwischen 1 (am meisten bevorzugt) und %{max_rank} (am wenigsten bevorzugt). Verwenden Sie jede Zahl genau einmal.'
+      matrix_print_description: 'Markieren Sie für jede Reihe einen Kreis mit einem Kreuz, um Ihre Präferenz anzugeben.'
+      rating_print_description: 'Bewerten Sie dies, indem Sie eine Zahl zwischen 1 (schlechteste) und %{max_stars} (beste) schreiben.'
+      sentiment_linear_scale_print_description: 'Bitte schreiben Sie eine Zahl zwischen 1 und 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Bitte zeichnen Sie ein X auf die Karte unten, um den Standort anzuzeigen, oder schreiben Sie stattdessen die Adresse.'
+      line_print_description: 'Bitte zeichnen Sie eine Route auf der Karte unten ein.'
+      polygon_print_description: 'Bitte zeichnen Sie eine Form auf der Karte unten.'
+      select_print_description: 'Wählen Sie nur eine Option.'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:

@@ -1033,6 +1033,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "زيارة مركز الدعم التابع لنا",
   "app.containers.Admin.projects.all.askPersonalData3": "أضف حقولًا للاسم والبريد الإلكتروني",
+  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "جميع الأسئلة معروضة في ملف PDF. مع ذلك، لا يُدعم استيراد ما يلي حاليًا عبر FormSync: الصور، والوسوم، وتحميل الملفات.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "جميع الأسئلة معروضة في ملف PDF. مع ذلك، لا يُدعم استيراد الأسئلة التالية عبر FormSync حاليًا: أسئلة التعيين (إسقاط الدبوس، مسار الرسم، ومنطقة الرسم)، وأسئلة التصنيف، وأسئلة المصفوفة، وأسئلة تحميل الملفات.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "نهاية النموذج",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "بداية النموذج",
   "app.containers.Admin.projects.all.components.archived": "مؤرشف",
