@@ -65,7 +65,7 @@ const AdminPublicationSearchInput = ({
             fetchNextPage={fetchNextPage}
           />
         )}
-        menuPlacement="auto"
+        menuPlacement="top"
         styles={selectStyles(theme)}
         filterOption={() => true}
         onInputChange={handleInputChange}
