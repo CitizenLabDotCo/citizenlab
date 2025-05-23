@@ -251,7 +251,7 @@ module BulkImportIdeas::Exporters
       message_id = messages[field.input_type]
       return '' unless field_map_url(field) && message_id
 
-      "<p><em>#{I18n.with_locale(@locale) { I18n.t(message_id) }}</em></p>"
+      format_instructions(I18n.with_locale(@locale) { I18n.t(message_id) })
     end
 
     def linear_scale_print_instructions(field)
@@ -335,7 +335,7 @@ module BulkImportIdeas::Exporters
     def select_print_instructions(field)
       return '' unless field.singleselect?
 
-      "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.select_print_description') }}"
+      format_instructions("*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.select_print_description') }}")
     end
 
     def multiselect_print_instructions(field)
