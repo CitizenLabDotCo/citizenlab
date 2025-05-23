@@ -123,12 +123,12 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
 
         service1 = described_class.new project.phases.first, 'en', false
         expect(Rails.cache.read(cache_key)).to be_nil
-        importer_data1 = service1.importer_data
+        importer_data1 = service1.template_data
         expect(Rails.cache.read(cache_key)).to eq importer_data1
 
         allow(PDF::Reader).to receive(:new)
         service2 = described_class.new project.phases.first, 'en', false
-        importer_data2 = service2.importer_data
+        importer_data2 = service2.template_data
         expect(PDF::Reader).not_to have_received(:new)
 
         expect(importer_data2).to eq importer_data1
