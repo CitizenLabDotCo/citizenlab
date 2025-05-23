@@ -21,6 +21,9 @@ describe('Proposal edit page', () => {
   let inputSlug: string;
 
   beforeEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
     cy.setAdminLoginCookie();
 
     // Create proposals project
@@ -61,12 +64,6 @@ describe('Proposal edit page', () => {
     });
   });
 
-  afterEach(() => {
-    if (inputId) {
-      cy.apiRemoveIdea(inputId);
-    }
-  });
-
   it('edit a proposal after form changes while adding an image and cosponsors', () => {
     cy.intercept('GET', `**/ideas/${inputSlug}**`).as('idea');
 
@@ -87,13 +84,21 @@ describe('Proposal edit page', () => {
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
     // Add an extra field
     cy.dataCy('e2e-short-answer').click();
-    cy.get('#e2e-title-multiloc').type(extraFieldTitle, { force: true });
+    cy.get('#e2e-title-multiloc').type(extraFieldTitle, {
+      force: true,
+      delay: 0,
+    });
     // Save the form
     cy.get('form').submit();
     cy.wait(1000);
 
+    cy.intercept('GET', `**/ideas/${inputId}/json_forms_schema`).as(
+      'ideaSchema'
+    );
+
     // Edit proposal
     cy.visit(`/ideas/edit/${inputId}`);
+    cy.wait('@ideaSchema', { timeout: 10000 });
     cy.acceptCookies();
     cy.wait('@idea');
     cy.get('#e2e-idea-edit-page');
@@ -102,15 +107,13 @@ describe('Proposal edit page', () => {
     // Edit title
     cy.get('#e2e-idea-title-input input').as('titleInput');
     cy.get('@titleInput').should('exist');
-    cy.get('@titleInput').should(($input) => {
-      expect($input.val()).to.eq(oldTitle);
-    });
+    cy.get('@titleInput').should('have.value', oldTitle);
     cy.wait(1000); // So typing the title doesn't get interrupted
     cy.get('@titleInput')
       .clear()
       .should('exist')
       .should('not.be.disabled')
-      .type(newTitle);
+      .type(newTitle, { delay: 0 });
     cy.get('@titleInput').should('exist');
     cy.get('@titleInput').should('contain.value', newTitle);
 

@@ -26,7 +26,7 @@ interface Props {
   ml?: string;
   mr?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLAnchorElement> &
-    React.KeyboardEventHandler<HTMLDivElement>;
+    React.KeyboardEventHandler<HTMLElement>;
 }
 
 const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {

@@ -5,7 +5,6 @@ import {
   Condition,
   RuleEffect,
   SchemaBasedCondition,
-  Scopable,
 } from '@jsonforms/core';
 import { ErrorObject } from 'ajv';
 
@@ -51,10 +50,7 @@ export interface PageCategorization extends ExtendedUISchema {
   elements: PageType[];
 }
 
-interface ConditionWithPageId
-  extends Condition,
-    Scopable,
-    SchemaBasedCondition {
+interface ConditionWithPageId extends Condition, SchemaBasedCondition {
   pageId?: string;
 }
 
@@ -77,7 +73,7 @@ export type ExtendedRule = {
 export type ExtendedUISchema = {
   ruleArray?: ExtendedRule[];
   label?: string;
-} & UISchemaElement &
-  Scopable;
+  scope: string;
+} & UISchemaElement;
 
 export type FormValues = Record<string, any>;

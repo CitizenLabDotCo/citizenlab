@@ -97,6 +97,7 @@ describe('Landing page - signed in', () => {
 
   it('shows correct content', () => {
     cy.goToLandingPage();
+    cy.wait(2000);
     // shows the "complete your profile" header by default
     cy.get('.e2e-signed-in-header');
     cy.get(

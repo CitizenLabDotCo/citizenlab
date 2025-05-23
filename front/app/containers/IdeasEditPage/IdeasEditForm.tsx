@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
@@ -88,17 +94,18 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     projectId,
     inputId: ideaId,
   });
-  const [initialFormData, setInitialFormData] = useState(
-    getFormValues(idea, schema, remoteImages, remoteFiles)
-  );
+  const initialFormData = useMemo(() => {
+    if (!idea || !schema) return null;
 
-  useEffect(() => {
-    if (idea && schema) {
-      setInitialFormData(
-        getFormValues(idea, schema, remoteImages, remoteFiles)
-      );
+    const values = getFormValues(idea, schema, remoteImages, remoteFiles);
+
+    if (idea.data.attributes.location_point_geojson) {
+      values['location_point_geojson'] =
+        idea.data.attributes.location_point_geojson;
     }
-  }, [schema, idea, remoteImages, remoteFiles]);
+
+    return values;
+  }, [idea, schema, remoteImages, remoteFiles]);
 
   useEffect(() => {
     const subscription = eventEmitter
@@ -167,15 +174,15 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     !projectId ||
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    !idea
+    !idea ||
+    !initialFormData
   ) {
     return null;
   }
 
   // Set initial location point if exists
-
   if (idea.data.attributes.location_point_geojson) {
-    initialFormData['location_point_geojson'] =
+    initialFormData.location_point_geojson =
       idea.data.attributes.location_point_geojson;
   }
 
@@ -225,7 +232,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       idea_images_attributes !== initialFormData.idea_images_attributes;
 
     // Delete remote images only on submission
-    if (isImageNew && initialFormData.idea_images_attributes.length > 0) {
+    if (isImageNew && initialFormData.idea_images_attributes?.length > 0) {
       initialFormData.idea_images_attributes.forEach((image) => {
         deleteIdeaImage({
           ideaId,
@@ -336,7 +343,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                         schema={schema}
                         uiSchema={uiSchema}
                         onSubmit={handleDisclaimer}
-                        initialFormData={initialFormData}
+                        initialFormData={initialFormData as FormValues}
                         inputId={idea.data.id}
                         getAjvErrorMessage={getAjvErrorMessage}
                         getApiErrorMessage={getApiErrorMessage}

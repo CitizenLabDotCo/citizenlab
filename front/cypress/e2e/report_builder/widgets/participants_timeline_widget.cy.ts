@@ -7,7 +7,7 @@ describe('Report builder Participants timeline widget', () => {
   let reportId: string;
   let phaseId: string;
 
-  before(() => {
+  beforeEach(() => {
     cy.setAdminLoginCookie();
 
     const projectTitle = randomString();
@@ -56,30 +56,31 @@ describe('Report builder Participants timeline widget', () => {
       })
       .then((phase) => {
         phaseId = phase.body.data.id;
+        cy.setAdminLoginCookie();
+
+        cy.apiCreateReportBuilder(phaseId).then((report) => {
+          reportId = report.body.data.id;
+          cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+            'saveReportLayout'
+          );
+          cy.intercept('GET', `/web_api/v1/reports/${reportId}`).as(
+            'getReportLayout'
+          );
+          cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+        });
       });
   });
 
-  beforeEach(() => {
-    cy.setAdminLoginCookie();
-
-    cy.apiCreateReportBuilder(phaseId).then((report) => {
-      reportId = report.body.data.id;
-      cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-        'saveReportLayout'
-      );
-      cy.intercept('GET', `/web_api/v1/reports/${reportId}`).as(
-        'getReportLayout'
-      );
-      cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
-    });
-  });
-
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
   });
 
   afterEach(() => {
-    cy.apiRemoveReportBuilder(reportId);
+    if (reportId) {
+      cy.apiRemoveReportBuilder(reportId);
+    }
   });
 
   it('handles Participants timeline widget correctly', function () {
@@ -130,6 +131,7 @@ describe('Report builder Participants timeline widget', () => {
     cy.wait('@saveReportLayout');
 
     cy.visit(`projects/${projectSlug}`);
+    cy.acceptCookies();
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
@@ -148,21 +150,10 @@ describe('Report builder Participants timeline widget', () => {
     cy.wait(1000);
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
-    // Wait for reportLayout.attributes.craftjs_json update.
-    //
-    // The delete happens so quickly after save, that at the time
-    // `onNodesChange` is called, reportLayout.attributes.craftjs_json
-    // still has the initial value before save (empty).
-    // After the delete, the actual state is also empty.
-    // And so, the `saved` state is not properly updated.
-    // Also, see reactions_by_time_widget.cy.ts
-    cy.wait('@getReportLayout');
-    cy.wait(500);
+    cy.reload();
 
-    cy.get('#e2e-draggable-participants-widget').should('exist');
-    cy.get('#e2e-draggable-participants-widget')
-      .parent()
-      .click({ force: true });
+    cy.get('.e2e-participants-timeline-widget').should('exist');
+    cy.get('.e2e-participants-timeline-widget').parent().click({ force: true });
 
     cy.get('#e2e-delete-button').click();
 

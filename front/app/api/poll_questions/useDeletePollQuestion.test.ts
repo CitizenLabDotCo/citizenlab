@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -19,7 +19,7 @@ describe('useDeletePollQuestion', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeletePollQuestion(), {
+    const { result } = renderHook(() => useDeletePollQuestion(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -40,7 +40,7 @@ describe('useDeletePollQuestion', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeletePollQuestion(), {
+    const { result } = renderHook(() => useDeletePollQuestion(), {
       wrapper: createQueryClientWrapper(),
     });
 

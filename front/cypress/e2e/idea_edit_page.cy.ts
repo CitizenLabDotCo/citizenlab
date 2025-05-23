@@ -78,7 +78,7 @@ describe('Idea edit page', () => {
       .clear()
       .should('exist')
       .should('not.be.disabled')
-      .type(newIdeaTitle);
+      .type(newIdeaTitle, { delay: 0 });
 
     // verify the new values
     cy.get('@titleInput').should('exist');
@@ -177,9 +177,18 @@ describe('Idea edit page', () => {
 
   it('has a working idea edit form for author field', () => {
     cy.setAdminLoginCookie();
+
+    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
+      'ideaSchema'
+    );
+    cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
+    cy.wait('@ideaSchema', { timeout: 10000 });
+    cy.wait('@getPhases', { timeout: 10000 });
+    cy.acceptCookies();
     // Search and select an author
+    cy.get('[data-cy="e2e-user-select"]').should('be.visible');
     cy.dataCy('e2e-user-select')
       .click()
       .type(`${lastName}, ${firstName} {enter}`);

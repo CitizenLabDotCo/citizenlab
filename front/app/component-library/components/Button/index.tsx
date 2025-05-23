@@ -505,7 +505,8 @@ export type ButtonContainerProps = {
   BoxPositionProps &
   BoxWidthProps &
   BoxHeightProps &
-  React.HTMLAttributes<HTMLDivElement>;
+  React.HTMLAttributes<HTMLDivElement> &
+  React.HTMLAttributes<HTMLElement>;
 
 export interface Props extends ButtonContainerProps {
   children?: React.ReactNode;
@@ -532,7 +533,7 @@ export interface Props extends ButtonContainerProps {
 export type Ref = HTMLButtonElement;
 
 const Button = forwardRef<Ref, Props>((props, ref) => {
-  const handleOnClick = (event: MouseEvent<HTMLDivElement>) => {
+  const handleOnClick = (event: MouseEvent<HTMLElement>) => {
     const { onClick, processing, disabled } = props;
 
     if (onClick) {

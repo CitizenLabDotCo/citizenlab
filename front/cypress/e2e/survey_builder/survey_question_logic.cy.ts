@@ -22,7 +22,12 @@ describe('Survey question logic', () => {
 
   it('allows setting logic for select question', () => {
     cy.setAdminLoginCookie();
+    cy.intercept('GET', `/web_api/v1/admin/phases/${phaseId}/custom_fields`).as(
+      'getCustomFields'
+    );
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
+    cy.wait('@getCustomFields', { timeout: 10000 });
+
     cy.dataCy('e2e-field-row').should('have.length', 3);
 
     // Add a new page
@@ -35,13 +40,23 @@ describe('Survey question logic', () => {
     cy.dataCy('e2e-page').click();
     cy.dataCy('e2e-field-row').should('have.length', 5);
 
+    cy.intercept(
+      'PATCH',
+      `/web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`
+    ).as('updateCustomFields');
+    cy.intercept('GET', `/web_api/v1/admin/phases/${phaseId}/custom_fields`).as(
+      'getCustomFieldsAfterSave'
+    );
+
     // Save
     // TODO: this should not be necessary, but it is because of a bug
     // where we can't change survey logic until we save the survey
     // See https://www.notion.so/govocal/Cannot-add-survey-logic-sometimes-1929663b7b268020a8b4c9fb6912269a
     cy.get('form').submit();
-    // Make sure we see "Survey successfully saved" message
-    cy.get('[data-testid="feedbackSuccessMessage"]');
+    cy.wait('@updateCustomFields');
+    cy.wait('@getCustomFieldsAfterSave');
+
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('be.visible');
 
     // Open settings
     cy.dataCy('e2e-field-row').eq(1).click();
@@ -60,20 +75,28 @@ describe('Survey question logic', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]');
 
     // Take survey and make sure it works as expected
+    cy.intercept(
+      'GET',
+      `/web_api/v1/phases/${phaseId}/custom_fields/json_forms_schema`
+    ).as('getJsonFormsSchema');
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.wait('@getJsonFormsSchema');
+
     cy.acceptCookies();
 
     // Select first option
     cy.get('#e2e-single-select-control')
+      .should('exist')
       .find('[data-testid="radio-container"]')
       .first()
-      .click();
+      .click({ force: true });
 
     // Make sure submit button is shown
     cy.dataCy('e2e-submit-form');
 
     // Instead select option 2
     cy.get('#e2e-single-select-control')
+      .should('exist')
       .find('[data-testid="radio-container"]')
       .eq(1)
       .click();

@@ -3,6 +3,7 @@ describe('Published projects and folders widget', () => {
     // Go to the homepage builder
     cy.setAdminLoginCookie();
     cy.visit('en/admin/pages-menu/homepage-builder');
+    cy.get('#e2e-content-builder-frame').should('exist');
 
     // Drag in widget
     cy.get('#e2e-draggable-published').dragAndDrop(
@@ -27,6 +28,7 @@ describe('Published projects and folders widget', () => {
     // Delete widget again
     cy.setAdminLoginCookie();
     cy.visit('en/admin/pages-menu/homepage-builder');
+    cy.get('.e2e-published-projects-and-folders').should('exist');
     cy.get('.e2e-published-projects-and-folders')
       .first()
       .parent()

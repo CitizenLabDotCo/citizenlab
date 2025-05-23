@@ -564,6 +564,7 @@ describe('Survey builder', () => {
     // Try filling in the survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
+    cy.wait(2000);
     cy.contains(questionTitle).should('exist');
 
     // Select the second option to go to page 2

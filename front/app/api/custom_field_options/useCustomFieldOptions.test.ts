@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
 import useCustomFieldOptions from './useCustomFieldOptions';
@@ -20,12 +20,9 @@ describe('useCustomFieldOptions', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useCustomFieldOptions('questionId'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useCustomFieldOptions('questionId'), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
 
@@ -42,12 +39,9 @@ describe('useCustomFieldOptions', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useCustomFieldOptions('questionId'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useCustomFieldOptions('questionId'), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));
