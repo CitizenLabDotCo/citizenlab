@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -58,8 +58,13 @@ const CustomFieldsForm = ({
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const { data: ideaWithSlug } = useIdeaBySlug(slug || null);
+
+  // Depending on the route, we  use either the slug or the ideaId to fetch the idea
+  const { pathname } = useLocation();
+  const isProjectPage = pathname.includes('/projects/');
+  const { data: ideaWithSlug } = useIdeaBySlug(!isProjectPage ? slug : null);
   const { data: ideaWithId } = useIdeaById(ideaId);
+
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: customFields } = useCustomFields({

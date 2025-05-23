@@ -249,6 +249,7 @@ const CustomFieldsPage = ({
                       questions={pageQuestions}
                       projectId={projectId}
                       ideaId={ideaId}
+                      phase={phase}
                     />
 
                     {currentPageNumber === lastPageNumber - 1 &&
