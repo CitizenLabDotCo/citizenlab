@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
@@ -80,7 +79,6 @@ const ChildCommentForm = ({
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const { data: project } = useProjectById(projectId);
 
   const {
     mutate: addCommentToIdeaComment,
@@ -255,8 +253,8 @@ const ChildCommentForm = ({
     }
   };
 
-  const userCanModerate = project
-    ? canModerateProject(project.data, authUser)
+  const userCanModerate = projectId
+    ? canModerateProject(projectId, authUser)
     : false;
 
   if (focused) {

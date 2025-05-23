@@ -80,7 +80,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
       project.data.attributes.header_bg_alt_text_multiloc
     );
     const userCanEditProject =
-      !isNilOrError(authUser) && canModerateProject(project.data, authUser);
+      !isNilOrError(authUser) && canModerateProject(projectId, authUser);
 
     return (
       <Container className={className || ''}>

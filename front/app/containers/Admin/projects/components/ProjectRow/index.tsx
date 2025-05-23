@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -82,7 +81,6 @@ const ProjectRow = ({
   const { data: authUser } = useAuthUser();
   const projectId = publication.relationships.publication.data.id;
   const publicationStatus = publication.attributes.publication_status;
-  const { data: project } = useProjectById(projectId);
 
   const { data: parentPublication } = useAdminPublication(
     // TODO: Fix this the next time the file is edited.
@@ -91,11 +89,11 @@ const ProjectRow = ({
   );
   const localize = useLocalize();
 
-  if (!authUser || !project) {
+  if (!authUser) {
     return null;
   }
 
-  const userCanModerateProject = canModerateProject(project.data, authUser);
+  const userCanModerateProject = canModerateProject(projectId, authUser);
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
@@ -204,6 +202,7 @@ const ProjectRow = ({
               folderId={folderId ? folderId : undefined}
               setError={setError}
               setIsRunningAction={handleActionLoading}
+              publication={publication}
             />
           )}
         </ActionsRowContainer>

@@ -76,7 +76,8 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: authUser } = useAuthUser();
-  const { data: phases } = usePhases(project.data.id);
+  const projectId = project.data.id;
+  const { data: phases } = usePhases(projectId);
   const { data: phaseFromUrl } = usePhase(phaseId);
   const {
     schema,
@@ -84,7 +85,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     inputSchemaError,
     isLoading: isLoadingInputSchema,
   } = useInputSchema({
-    projectId: project.data.id,
+    projectId,
     phaseId,
   });
   const [usingMapView, setUsingMapView] = useState(false);
@@ -208,8 +209,8 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
 
     const requestBody = {
       ...requestBodyConvertedData,
-      project_id: project.data.id,
-      ...(canModerateProject(project.data, authUser)
+      project_id: projectId,
+      ...(canModerateProject(projectId, authUser)
         ? { phase_ids: [phaseId] }
         : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
       publication_status: data.publication_status || 'published',

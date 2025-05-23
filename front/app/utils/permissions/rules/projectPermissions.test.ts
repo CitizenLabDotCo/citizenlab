@@ -5,12 +5,13 @@ import { canModerateProject } from './projectPermissions';
 
 const folderId = '793ee057-3191-53ce-a862-5f97b5c03c8b';
 project1.attributes.folder_id = folderId;
+const projectId = project1.id;
 
 describe('canModerateProject', () => {
   describe('when a user is an admin', () => {
     it('returns true', () => {
       const user = makeUser({ roles: [{ type: 'admin' }] });
-      expect(canModerateProject(project1, user)).toBe(true);
+      expect(canModerateProject(projectId, user)).toBe(true);
     });
   });
 
@@ -21,7 +22,7 @@ describe('canModerateProject', () => {
           { type: 'project_folder_moderator', project_folder_id: folderId },
         ],
       });
-      expect(canModerateProject(project1, user)).toBe(true);
+      expect(canModerateProject(projectId, user)).toBe(true);
     });
 
     it('returns false when the project is in a folder the user does not moderate', () => {
@@ -35,7 +36,7 @@ describe('canModerateProject', () => {
       });
       project1.attributes.folder_id = 'differentFolderId';
 
-      expect(canModerateProject(project1, user)).toBe(false);
+      expect(canModerateProject(projectId, user)).toBe(false);
     });
 
     it('returns false when the project does not have a folder', () => {
@@ -45,7 +46,7 @@ describe('canModerateProject', () => {
         ],
       });
       project1.attributes.folder_id = null;
-      expect(canModerateProject(project1, user)).toBe(false);
+      expect(canModerateProject(projectId, user)).toBe(false);
     });
   });
 
@@ -54,7 +55,7 @@ describe('canModerateProject', () => {
       const user = makeUser({
         roles: [{ type: 'project_moderator', project_id: project1.id }],
       });
-      expect(canModerateProject(project1, user)).toBe(true);
+      expect(canModerateProject(projectId, user)).toBe(true);
     });
 
     it('returns false when the project is not moderated by the user', () => {
@@ -63,14 +64,14 @@ describe('canModerateProject', () => {
           { type: 'project_moderator', project_id: 'differentProjectId' },
         ],
       });
-      expect(canModerateProject(project1, user)).toBe(false);
+      expect(canModerateProject(projectId, user)).toBe(false);
     });
   });
 
   describe('when a user is not an admin, project folder moderator, or project moderator', () => {
     it('returns false', () => {
       const user = makeUser();
-      expect(canModerateProject(project1, user)).toBe(false);
+      expect(canModerateProject(projectId, user)).toBe(false);
     });
   });
 });

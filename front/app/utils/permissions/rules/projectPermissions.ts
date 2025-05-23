@@ -41,23 +41,12 @@ definePermissionRule(
   }
 );
 
-export function canModerateProject(
-  project: IProjectData,
-  user: IUser | undefined
-) {
-  const projectId = project.id;
-  const projectFolderId = project.attributes.folder_id;
-
+export function canModerateProject(projectId: string, user: IUser | undefined) {
   if (!user) return false;
 
-  return (
-    isAdmin(user) ||
-    (typeof projectFolderId === 'string' &&
-      userModeratesFolder(user, projectFolderId)) ||
-    isProjectModerator(user, projectId)
-  );
+  return isAdmin(user) || isProjectModerator(user, projectId);
 }
 
 definePermissionRule('project', 'moderate', (project: IProjectData, user) => {
-  return canModerateProject(project, user);
+  return canModerateProject(project.id, user);
 });

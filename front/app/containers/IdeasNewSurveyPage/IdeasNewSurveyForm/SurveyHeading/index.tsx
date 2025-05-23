@@ -69,7 +69,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   if (!project) return null;
 
   const showEditSurveyButton =
-    !isSmallerThanPhone && canModerateProject(project.data, authUser);
+    !isSmallerThanPhone && canModerateProject(project.data.id, authUser);
   const linkToSurveyBuilder: RouteType =
     phaseParticipationMethod === 'community_monitor_survey'
       ? `/admin/community-monitor/projects/${project.data.id}/phases/${phaseId}/survey/edit`

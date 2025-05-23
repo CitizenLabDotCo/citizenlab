@@ -211,7 +211,9 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
 
     // If the user is an admin or project moderator, we allow them to post to a specific phase
     const phase_ids =
-      phaseId && canModerateProject(project.data, authUser) ? [phaseId] : null;
+      phaseId && canModerateProject(project.data.id, authUser)
+        ? [phaseId]
+        : null;
 
     const idea = await addIdea({
       ...data,
