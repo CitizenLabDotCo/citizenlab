@@ -22,8 +22,6 @@ module BulkImportIdeas::Parsers::Pdf
       pages = remove_page_numbers(pages)
       all_text = pages.join("\n")
 
-      # TODO: What about long titles that wrap onto multiple lines?
-
       parsed_fields = field_config.each_with_object({}) do |field, result|
         # First get the text between the field title and the end delimiter as a broad match
         start_text = field[:print_title]
@@ -31,7 +29,7 @@ module BulkImportIdeas::Parsers::Pdf
         field_text = extract_text_between(all_text, start_text, end_text)
         field[:text] = field_text
 
-        # Now process the values
+        # Now process the text
         value = if TEXT_FIELD_TYPES.include? field[:input_type]
           process_text_value(field, all_text)
         elsif NUMBER_FIELD_TYPES.include? field[:input_type]
