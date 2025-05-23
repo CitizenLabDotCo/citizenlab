@@ -1,41 +1,31 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { omit } from 'lodash-es';
 import { Multiloc } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
-import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
-import { IdeaPublicationStatus, IIdeaUpdate } from 'api/ideas/types';
+import { IdeaPublicationStatus } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
 import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
-import ideaFormMessages from 'containers/IdeasNewPage/messages';
-import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
-import { InputSelectContext } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
-import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import Form from 'components/Form';
+import CustomFieldsForm from 'components/CustomFieldsForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
 import IdeasEditMeta from './IdeasEditMeta';
 import messages from './messages';
-import { getLocationGeojson, getFormValues } from './utils';
+import { getFormValues } from './utils';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -58,26 +48,27 @@ interface Props {
 }
 
 const IdeasEditForm = ({ ideaId }: Props) => {
-  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
-  const [formData, setFormData] = useState<FormValues | null>(null);
-  const [loading, setLoading] = useState(false);
+  // const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
+  // const [formData, setFormData] = useState<FormValues | null>(null);
+  // const [loading, setLoading] = useState(false);
   const { data: idea } = useIdeaById(ideaId);
-  const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
+  // const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const { mutateAsync: updateIdea } = useUpdateIdea();
+  // const [title, setTitle] = useState('');
+  // const [body, setBody] = useState('');
+  // const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: remoteImages } = useIdeaImages(ideaId);
   const { data: remoteFiles } = useIdeaFiles(ideaId);
   const projectId = idea?.data.relationships.project.data.id;
-  const callbackRef = useRef<(() => void) | null>(null);
+  // const callbackRef = useRef<(() => void) | null>(null);
   const [usingMapView, setUsingMapView] = useState(false);
-  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
-  const isInputIQEnabled = useFeatureFlag({
-    name: 'input_iq',
-  });
+  // const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+  // const isInputIQEnabled = useFeatureFlag({
+  //   name: 'input_iq',
+  // });
   const phaseId = idea?.data.relationships.phases.data[0].id;
   const { data: phase } = usePhase(phaseId);
+  const { data: project } = useProjectById(projectId);
 
   const {
     schema,
@@ -112,51 +103,51 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     };
   }, []);
 
-  const getApiErrorMessage: ApiErrorGetter = useCallback(
-    (error) => {
-      return (
-        ideaFormMessages[
-          `api_error_${uiSchema?.options?.inputTerm}_${error}`
-        ] ||
-        ideaFormMessages[`api_error_${error}`] ||
-        ideaFormMessages[`api_error_invalid`]
-      );
-    },
-    [uiSchema]
-  );
+  // const getApiErrorMessage: ApiErrorGetter = useCallback(
+  //   (error) => {
+  //     return (
+  //       ideaFormMessages[
+  //         `api_error_${uiSchema?.options?.inputTerm}_${error}`
+  //       ] ||
+  //       ideaFormMessages[`api_error_${error}`] ||
+  //       ideaFormMessages[`api_error_invalid`]
+  //     );
+  //   },
+  //   [uiSchema]
+  // );
 
-  const getAjvErrorMessage: AjvErrorGetter = useCallback(
-    (error) => {
-      return (
-        messages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${
-            getFieldNameFromPath(error.instancePath) ||
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        messages[
-          `ajv_error_${
-            getFieldNameFromPath(error.instancePath) ||
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        undefined
-      );
-    },
-    [uiSchema]
-  );
+  // const getAjvErrorMessage: AjvErrorGetter = useCallback(
+  //   (error) => {
+  //     return (
+  //       messages[
+  //         `ajv_error_${uiSchema?.options?.inputTerm}_${
+  //           getFieldNameFromPath(error.instancePath) ||
+  //           // TODO: Fix this the next time the file is edited.
+  //           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  //           error?.params?.missingProperty
+  //         }_${error.keyword}`
+  //       ] ||
+  //       messages[
+  //         `ajv_error_${
+  //           getFieldNameFromPath(error.instancePath) ||
+  //           // TODO: Fix this the next time the file is edited.
+  //           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  //           error?.params?.missingProperty
+  //         }_${error.keyword}`
+  //       ] ||
+  //       undefined
+  //     );
+  //   },
+  //   [uiSchema]
+  // );
 
   const { data: appConfiguration } = useAppConfiguration();
   const tenantTimezone =
     appConfiguration?.data.attributes.settings.core.timezone;
   if (!tenantTimezone) return null;
-  const showSimilarInputs = !!(
-    phase?.data.attributes.similarity_enabled && isInputIQEnabled
-  );
+  // const showSimilarInputs = !!(
+  //   phase?.data.attributes.similarity_enabled && isInputIQEnabled
+  // );
 
   if (isLoadingInputSchema) return <FullPageSpinner />;
   if (
@@ -179,85 +170,85 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       idea.data.attributes.location_point_geojson;
   }
 
-  const handleDisclaimer = (
-    data: FormValues,
-    onSubmitCallback?: () => void
-  ) => {
-    const disclaimerNeeded =
-      data.idea_files_attributes ||
-      data.idea_images_attributes ||
-      Object.values(data.body_multiloc).some((value) => value.includes('<img'));
+  // const handleDisclaimer = (
+  //   data: FormValues,
+  //   onSubmitCallback?: () => void
+  // ) => {
+  //   const disclaimerNeeded =
+  //     data.idea_files_attributes ||
+  //     data.idea_images_attributes ||
+  //     Object.values(data.body_multiloc).some((value) => value.includes('<img'));
 
-    setFormData(data);
-    if (data.publication_status === 'published') {
-      if (disclaimerNeeded) {
-        callbackRef.current = onSubmitCallback || null;
-        return setIsDisclaimerOpened(true);
-      }
-      return onSubmit(data, onSubmitCallback);
-    } else {
-      // Add handling draft ideas
-    }
-  };
+  //   setFormData(data);
+  //   if (data.publication_status === 'published') {
+  //     if (disclaimerNeeded) {
+  //       callbackRef.current = onSubmitCallback || null;
+  //       return setIsDisclaimerOpened(true);
+  //     }
+  //     return onSubmit(data, onSubmitCallback);
+  //   } else {
+  //     // Add handling draft ideas
+  //   }
+  // };
 
-  const onAcceptDisclaimer = (data: FormValues | null) => {
-    if (!data) return;
-    onSubmit(data);
-    setIsDisclaimerOpened(false);
-    callbackRef.current?.();
-    callbackRef.current = null;
-  };
+  // const onAcceptDisclaimer = (data: FormValues | null) => {
+  //   if (!data) return;
+  //   onSubmit(data);
+  //   setIsDisclaimerOpened(false);
+  //   callbackRef.current?.();
+  //   callbackRef.current = null;
+  // };
 
-  const onCancelDisclaimer = () => {
-    setIsDisclaimerOpened(false);
-  };
+  // const onCancelDisclaimer = () => {
+  //   setIsDisclaimerOpened(false);
+  // };
 
-  const onSubmit = async (data: FormValues, onSubmitCallback?: () => void) => {
-    setLoading(true);
-    const { idea_images_attributes, ...ideaWithoutImages } = data;
+  // const onSubmit = async (data: FormValues, onSubmitCallback?: () => void) => {
+  //   setLoading(true);
+  //   const { idea_images_attributes, ...ideaWithoutImages } = data;
 
-    const location_point_geojson = await getLocationGeojson(
-      initialFormData,
-      data
-    );
+  //   const location_point_geojson = await getLocationGeojson(
+  //     initialFormData,
+  //     data
+  //   );
 
-    const isImageNew =
-      idea_images_attributes !== initialFormData.idea_images_attributes;
+  //   const isImageNew =
+  //     idea_images_attributes !== initialFormData.idea_images_attributes;
 
-    // Delete remote images only on submission
-    if (isImageNew && initialFormData.idea_images_attributes.length > 0) {
-      initialFormData.idea_images_attributes.forEach((image) => {
-        deleteIdeaImage({
-          ideaId,
-          imageId: image.id,
-        });
-      });
-    }
+  //   // Delete remote images only on submission
+  //   if (isImageNew && initialFormData.idea_images_attributes.length > 0) {
+  //     initialFormData.idea_images_attributes.forEach((image) => {
+  //       deleteIdeaImage({
+  //         ideaId,
+  //         imageId: image.id,
+  //       });
+  //     });
+  //   }
 
-    const payload: IIdeaUpdate = {
-      ...ideaWithoutImages,
-      idea_images_attributes,
-      location_point_geojson,
-      project_id: projectId,
-    };
+  // const payload: IIdeaUpdate = {
+  //   ...ideaWithoutImages,
+  //   idea_images_attributes,
+  //   location_point_geojson,
+  //   project_id: projectId,
+  // };
 
-    // TODO: Change publication status handling when adding draft ideas
-    const idea = await updateIdea({
-      id: ideaId,
-      requestBody: isImageNew
-        ? omit(payload, ['idea_files_attributes', 'publication_status'])
-        : omit(payload, [
-            'idea_images_attributes',
-            'idea_files_attributes',
-            'publication_status',
-          ]),
-    });
+  //   // TODO: Change publication status handling when adding draft ideas
+  //   const idea = await updateIdea({
+  //     id: ideaId,
+  //     requestBody: isImageNew
+  //       ? omit(payload, ['idea_files_attributes', 'publication_status'])
+  //       : omit(payload, [
+  //           'idea_images_attributes',
+  //           'idea_files_attributes',
+  //           'publication_status',
+  //         ]),
+  //   });
 
-    updateSearchParams({ idea_id: idea.data.id });
-    onSubmitCallback?.();
-    setLoading(false);
-    return idea;
-  };
+  //   updateSearchParams({ idea_id: idea.data.id });
+  //   onSubmitCallback?.();
+  //   setLoading(false);
+  //   return idea;
+  // };
 
   const titleText = (
     <FormattedMessage
@@ -320,8 +311,9 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                     // Height is recalculated on window resize via useWindowSize hook
                     h={calculateDynamicHeight(isSmallerThanPhone)}
                     pb={isSmallerThanPhone ? '0' : '80px'}
+                    overflowY="auto"
                   >
-                    <InputSelectContext.Provider
+                    {/* <InputSelectContext.Provider
                       value={{
                         onIdeaSelect: setSelectedIdeaId,
                         title,
@@ -344,17 +336,27 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                         loading={loading}
                         showSubmitButton={false}
                       />
-                    </InputSelectContext.Provider>
+                    </InputSelectContext.Provider> */}
+                    {project && (
+                      <CustomFieldsForm
+                        projectId={project.data.id}
+                        phaseId={phaseId}
+                        participationMethod={
+                          phase?.data.attributes.participation_method
+                        }
+                        initialFormData={idea.data.attributes}
+                      />
+                    )}
                   </Box>
                 </Box>
-                <ContentUploadDisclaimer
+                {/* <ContentUploadDisclaimer
                   isDisclaimerOpened={isDisclaimerOpened}
                   onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
                   onCancelDisclaimer={onCancelDisclaimer}
-                />
+                /> */}
               </main>
             </Box>
-            {selectedIdeaId && (
+            {/* {selectedIdeaId && (
               <Box
                 top={isSmallerThanPhone ? '0' : '40px'}
                 width="375px"
@@ -367,7 +369,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
               >
                 <InputDetailView ideaId={selectedIdeaId} />
               </Box>
-            )}
+            )} */}
           </Box>
         </Box>
       </Box>

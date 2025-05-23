@@ -62,7 +62,7 @@ describe('Idea edit page', () => {
 
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form').should('exist');
-    cy.get('#e2e-idea-title-input input').as('titleInput');
+    cy.get('#e2e-idea-title-input').as('titleInput');
 
     // check initial form values
     cy.get('@titleInput').should('exist');
@@ -114,7 +114,7 @@ describe('Idea edit page', () => {
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
+    cy.get('[data-cy="e2e-idea-file-upload"]');
 
     // add an image
     cy.get('#e2e-idea-image-upload input').attachFile('icon.png');
@@ -137,11 +137,11 @@ describe('Idea edit page', () => {
       .should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type(
+    cy.get('.e2e-idea-form-location-input-field').type(
       'Boulevard Anspach Brussels'
     );
     cy.wait(10000);
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
+    cy.get('.e2e-idea-form-location-input-field').type('{enter}');
 
     cy.intercept('PATCH', `**/ideas/${ideaId}**`).as('patchIdea');
 
