@@ -1,10 +1,10 @@
 # Usage:
 #
-# Dry run: rake single_use:republish_traffic_sources_widgets
-# Execute: rake single_use:republish_traffic_sources_widgets[execute]
+# Dry run: rake single_use:update_published_traffic_sources_data
+# Execute: rake single_use:update_published_traffic_sources_data[execute]
 namespace :single_use do
-  desc 'Republish traffic sources widgets'
-  task :republish_traffic_sources_widgets, %i[execute] => [:environment] do |_t, args|
+  desc 'Update published traffic sources data'
+  task :update_published_traffic_sources_data, %i[execute] => [:environment] do |_t, args|
     execute = args[:execute] == 'execute'
 
     def resolved_name(node)
