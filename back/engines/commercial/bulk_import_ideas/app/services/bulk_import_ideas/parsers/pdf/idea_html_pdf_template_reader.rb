@@ -9,29 +9,33 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     # Extract the text from the template PDF so we understand how each field is laid out in the PDF
-    # TODO: Add caching in here
     def template_data
       @template_data ||= begin
-        file = pdf_exporter.export
-        pages = pdf_pages(PDF::Reader.new(file))
-        form_fields = pdf_exporter.printable_fields
+        # Cached if form has not changed to avoid generating a new PDF just for this data
+        form = @phase.pmethod.custom_form
+        cache_key = "pdf_importer_data/#{form.id}_#{@locale}_#{form.updated_at.to_i}_#{@personal_data_enabled}"
+        Rails.cache.fetch(cache_key, expires_in: 1.day) do
+          file = pdf_exporter.export
+          pages = pdf_pages(PDF::Reader.new(file))
+          form_fields = pdf_exporter.printable_fields
 
-        field_import_configs = []
-        question_num = 0
-        form_fields.each_with_index do |field, index|
-          question_number = pdf_exporter.field_has_question_number?(field) ? question_num += 1 : nil
-          field_import_configs << import_config_for_field(field, pages, question_number, form_fields[index + 1])
-          field.options.each do |option|
-            field_import_configs << import_config_for_field(option, pages)
+          field_import_configs = []
+          question_num = 0
+          form_fields.each_with_index do |field, index|
+            question_number = pdf_exporter.field_has_question_number?(field) ? question_num += 1 : nil
+            field_import_configs << import_config_for_field(field, pages, question_number, form_fields[index + 1])
+            field.options.each do |option|
+              field_import_configs << import_config_for_field(option, pages)
+            end
           end
+
+          field_import_configs = fix_nil_positions(field_import_configs.compact)
+
+          {
+            page_count: pages.count,
+            fields: field_import_configs
+          }
         end
-
-        field_import_configs = fix_nil_positions(field_import_configs.compact)
-
-        {
-          page_count: pages.count,
-          fields: field_import_configs
-        }
       end
     end
 
