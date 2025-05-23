@@ -8,6 +8,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { Multiloc } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -21,11 +22,19 @@ import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { useIdeaSelect } from './InputSelectContext';
 import messages from './messages';
 
-const SimilarIdeasList = () => {
-  const { onIdeaSelect, title, body, selectedIdeaId } = useIdeaSelect();
+const SimilarIdeasList = ({
+  titleMultiloc,
+  bodyMultiloc,
+  selectedIdeaId,
+  setSelectedIdeaId,
+}: {
+  titleMultiloc?: Multiloc;
+  bodyMultiloc?: Multiloc;
+  selectedIdeaId?: string;
+  setSelectedIdeaId: (id?: string) => void;
+}) => {
   const { formatMessage } = useIntl();
   const currentLocale = useLocale();
   const { slug: projectSlug } = useParams() as { slug: string };
@@ -41,14 +50,17 @@ const SimilarIdeasList = () => {
   const projectBySlug = useProjectBySlug(projectId ? undefined : projectSlug);
   const project = projectById.data ?? projectBySlug.data;
 
+  const title = titleMultiloc && titleMultiloc[currentLocale];
+  const body = bodyMultiloc && bodyMultiloc[currentLocale];
+
   const { data: ideas, isLoading } = useSimilarIdeas(
     {
       idea: {
         project_id: project?.data.id,
-        ...(title.trim() && {
+        ...((title || '').trim() && {
           title_multiloc: { [currentLocale]: title },
         }),
-        ...(body.trim() && {
+        ...((body || '').trim() && {
           body_multiloc: { [currentLocale]: body },
         }),
       },
@@ -115,7 +127,9 @@ const SimilarIdeasList = () => {
           <Box
             onClick={() => {
               // If the selected idea is already selected, we deselect it
-              onIdeaSelect(selectedIdeaId === idea.id ? null : idea.id);
+              setSelectedIdeaId(
+                selectedIdeaId === idea.id ? undefined : idea.id
+              );
             }}
             style={{ cursor: 'pointer' }}
             display="flex"
