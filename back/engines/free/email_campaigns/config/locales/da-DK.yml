@@ -127,10 +127,10 @@ da:
       message_you_became_administrator: 'Du har fået administratorrettigheder til inddragelsesplatformen for %{organizationName}.'
       preheader: 'Du har fået administratorrettigheder til inddragelsesplatformen for %{organizationName}'
       subject: 'Du er blevet administrator af %{organizationName}s platform'
-      text_create_participatory_process: 'Som administrator kan du oprette og konfigurere nye deltagelsesprojekter. Du kan tilføje nye faser ved hjælp af tidslinjen. Hver af disse faser kan have sin egen adfærd med hensyn til idépostering, kommentering og afstemning.'
+      text_create_participatory_process: 'Som administrator kan du oprette og konfigurere nye projekter. Du kan tilføje nye faser ved hjælp af tidslinjen. Hver af disse faser kan anvende sin egen metode med hensyn til idépostering, kommentering og afstemning.'
       text_moderate_analyse_input: 'Når projekterne er lanceret, kommer de første idéer ind. Du vil modtage ugentlige rapporter med alle kerneaktiviteter, så du hele tiden er på forkant. Idéoversigten hjælper dig med at moderere input og samarbejde om at behandle det.'
-      text_platform_setup: 'Som administrator kan du oprette din inddragelsesplatform. Vælg logo, billeder og farver, skriv en personlig besked på din hjemmeside, send invitationer og definer, hvad du vil vide om dine brugere, ...'
-      title_create_participatory_process: 'Design deltagelsesprocessen'
+      text_platform_setup: 'Som administrator kan du oprette jeres platform. Vælg logo, billeder og farver. Skriv en personlig besked på jeres hjemmeside, send invitationer ud og definer, hvad du vil vide om dine brugere, ...'
+      title_create_participatory_process: 'Design inddragelsessprocessen'
       title_moderate_analyse_input: 'Moderér og analyser input'
       title_platform_setup: 'Sæt din platform op'
       title_what_can_you_do_administrator: 'Hvad kan du lave som administrator?'
@@ -202,7 +202,7 @@ da:
       invitation_header: 'Du er inviteret!'
       invitation_header_message: '%{organizationName} inviterede dig til deres inddragelsesplatform.'
       invitation_expiry_message: 'Denne invitation udløber om %{expiryDays} dage.'
-      preheader: '%{organizationName} sendte dig en invitation til at deltage i deres inddragelsesplatform.'
+      preheader: '%{organizationName} sendte dig en invitation til at deltage på deres inddragelsesplatform.'
       subject: 'Du er inviteret til at deltage i platformen for %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Svar %{commentAuthor}'
@@ -269,7 +269,7 @@ da:
       yesterday: I går
     comment_on_your_comment:
       cta_reply_to: 'Svar til %{firstName}'
-      event_description: '%{authorNameFull} skrev et svar til din kommentar på "%{post}" på borgerinddragelsesplatformen. Klik på nedenstående knap, for at fortsætte samtalen med %{authorName}.'
+      event_description: '%{authorNameFull} skrev et svar til din kommentar på "%{post}" på inddragelsesplatformen. Klik på nedenstående knap, for at fortsætte samtalen med %{authorName}.'
       subject: 'Du har modtaget et svar på din kommentar på platformen for %{organizationName}'
       main_header: '%{authorName} reagerede på din kommentar'
       preheader: '%{authorName} svarede på din kommentar på %{organizationName}s platform'
@@ -324,7 +324,7 @@ da:
       text_design_participatory_process: 'Som projektmoderator har du mulighed for at konfigurere hvordan brugere interagerer med dit projekt. Du kan tilføje nye faser ved at bruge tidslinjen. Hver af disse faser kan have sin egen adfærd med hensyn til idéopslag, kommentering og afstemning.'
       text_moderate_analyse_input: 'Når projektet er lanceret, vil dine første idéer komme ind. Du vil modtage ugentlige rapporter med alle vigtige aktiviteter, så du kan bevare overblikket over tingene. Idéoversigten i din projektlederoversigt vil hjælpe dig med at forstå hvilke idéer der får flest ja- og nej-stemmer.'
       text_share_project_information: 'For at øge kvaliteten af de idéer du modtager, er det vigtigt at dele tilstrækkeligt med information: tilføj en projektbeskrivelse, vedhæft billeder (inkl. skitser og planer) og fortæl om alle relaterede begivenheder der foregår. Husk: god information kommer forud for god deltagelse!'
-      title_design_participatory_process: 'Design deltagelsesprocessen'
+      title_design_participatory_process: 'Design inddragelsessprocessen'
       title_moderate_analyse_input: 'Moderér og analyser input'
       title_share_project_information: 'Angiv projektinformation'
       title_what_can_you_do_moderator: 'Hvad kan du gøre som projektmoderator'
@@ -339,7 +339,7 @@ da:
       text_manage_folder: 'En mappe er en måde at organisere flere projekter med flere deltagere sammen. Som mappe-administrator kan du redigere mappen, redigere mappebeskrivelsen og oprette nye projekter (hvis du vil slette projekter, skal du kontakte din platformadministrator). Også, du har rettighederne til projektadministration over alle projekter i mappen. Dette giver dig mulighed for at redigere projekterne, administrere input og administrere e-post deltagere.'
       text_moderate_analyse_input: 'Når projekterne er lanceret, begynder du at modtage de første input. Du modtager ugentlige rapporter med de primære aktiviteter. På den måde kan du blive informeret om, hvad der sker. Post-administratoren i din administratorvisning hjælper dig med at se på og administrere input. Deres rolle inkluderer tildeling af status og svar på post og kommentarer.'
       text_design_participatory_process: 'Du kan administrere de forskellige borgerinddragelsesprojekter i din mappe, konfigurere deltagelsesmetoden, tilføje en projektbeskrivelse, tilføje billeder og sende kommunikation om lignende begivenheder. Også, du kan administrere, hvordan deltagerne interagerer med dine projekter, dette inkluderer tildeling af adgangsrettigheder samt konfiguration af indstillingerne for posting, afstemning og kommentar.'
-      title_design_participatory_process: 'Design deltagelsesprocessen'
+      title_design_participatory_process: 'Design inddragelsessprocessen'
       title_moderate_analyse_input: 'Moderér og analyser input'
       title_manage_folder: 'Administrer mappeindstillingerne og opret nye projekter.'
       title_what_can_you_do_folderadmin: 'Hvilke handlinger kan du udføre som en mappe-administrator?'
@@ -383,7 +383,7 @@ da:
       subject: 'Status for "%{input_title}" er ændret'
       preheader: 'Et input, du følger, har fået ny status'
     user_digest:
-      subject: "Ugentlig opdatering af inddragelsesplatform for %{organizationName}"
+      subject: "Ugentlig opdatering om inddragelsesplatform for %{organizationName}"
       commented: "%{authorFirstName} kommenterede:"
       preheader: "Ugentlig oversigt for %{organizationName}"
       title_your_weekly_report: "Find ud af hvad der skete i sidste uge"
@@ -458,7 +458,7 @@ da:
       cta_message: 'Klik på knappen nedenfor for at deltage'
     native_survey_not_submitted:
       subject: '%{organizationName}: Næsten i mål! Indsend dine svar'
-      preheader: 'Du har ikke udfyldt din besvarelse af undersøgelsen på borgerinddragelsesplatformen %{organizationName}'
+      preheader: 'Du har ikke udfyldt din besvarelse af undersøgelsen på inddragelsesplatformen %{organizationName}'
       title_native_survey_not_submitted: 'Så er vi der næsten! Indsend dine svar'
       body_native_survey_not_submitted: 'Du begyndte at dele dine svar på %{phaseTitle} , men har ikke indsendt dem. Indsendelserne lukker på %{phaseEndDate}. Klik på knappen nedenfor for at fortsætte, hvor du slap.'
       body_native_survey_not_submitted_no_date: 'Du er begyndt at dele dine svar på %{phaseTitle} , men har ikke sendt dem. Klik på knappen nedenfor for at fortsætte, hvor du slap.'
