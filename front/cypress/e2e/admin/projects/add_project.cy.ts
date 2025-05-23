@@ -47,6 +47,8 @@ describe('Admin: add project', () => {
 
     context('Areas: Selection', () => {
       it('creates a project with the correct area', () => {
+        cy.intercept('POST', '**/web_api/v1/projects').as('createProject');
+
         const projectTitleEN = randomString();
         const projectTitleNLBE = randomString();
         const projectTitleNLNL = randomString();
@@ -70,8 +72,6 @@ describe('Admin: add project', () => {
           .find('input')
           .type('East Anna')
           .trigger('keydown', { keyCode: 13, which: 13 });
-
-        cy.intercept('POST', '**/web_api/v1/projects').as('createProject');
 
         // Submit project
         cy.get('.e2e-submit-wrapper-button button').click();
