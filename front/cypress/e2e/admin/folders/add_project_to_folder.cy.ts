@@ -1,7 +1,7 @@
 import { randomString } from '../../../support/commands';
 
 // works locally but not on CI. needs to be refactored to be stable on CI
-describe.skip('Admin: add projects to folder', async () => {
+describe('Admin: add projects to folder', async () => {
   it('creates a new folder', () => {
     let projectId1: string;
     let projectId2: string;
