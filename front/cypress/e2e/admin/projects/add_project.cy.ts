@@ -76,10 +76,11 @@ describe('Admin: add project', () => {
         // Submit project
         cy.get('.e2e-submit-wrapper-button button').click();
 
+        cy.wait(2000);
+
         // Wait for the project creation to finish and check the response
         cy.wait('@createProject').then((interception) => {
           const projectId = interception.response?.body.data.id;
-
           return cy
             .getProjectById(projectId)
             .then((projectData) => {
