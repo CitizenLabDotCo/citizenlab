@@ -184,6 +184,7 @@ ca:
         description:
       other_input_field:
         title: Escriu la teva resposta
+        print_title: Si '%{other_option}', especifiqueu-ho
       ask_follow_up_field:
         title: Explica'ns per què
     community_monitor:
@@ -329,6 +330,7 @@ ca:
       write_as_clearly: 'Escriu <b>amb claredat</b> com puguis; aquests formularis es poden escanejar'
       write_in_language: 'Escriu les teves respostes en el mateix idioma que aquest formulari'
       linear_scale_print_description: 'Escriu només un número entre %{min_label} i %{max_label}'
+      unsupported_field: 'Aquest camp no es pot emplenar en paper. Si us plau, utilitzeu la versió en línia d''aquest formulari.'
   project_copy:
     title_suffix: 'Còpia'
   confirmations_mailer:

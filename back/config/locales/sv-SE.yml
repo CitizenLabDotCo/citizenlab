@@ -184,6 +184,7 @@ sv:
         description:
       other_input_field:
         title: Skriv in ditt svar
+        print_title: Om '%{other_option}', vänligen specificera
       ask_follow_up_field:
         title: Berätta för oss varför
     community_monitor:
@@ -329,6 +330,7 @@ sv:
       write_as_clearly: 'Skriv så <b>tydligt</b> som möjligt - dessa formulär kan komma att skannas'
       write_in_language: 'Skriv dina svar på samma språk som detta formulär'
       linear_scale_print_description: 'Ange endast ett nummer mellan %{min_label} och %{max_label}'
+      unsupported_field: 'Detta fält kan inte fyllas i på papper. Använd istället online-versionen av detta formulär.'
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:

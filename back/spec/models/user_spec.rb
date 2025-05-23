@@ -288,7 +288,7 @@ RSpec.describe User do
 
     it 'is invalid if its a common password' do
       CommonPassword.initialize!
-      u = build(:user, password: 'batman')
+      u = build(:user, password: 'password123')
       expect(u).to be_invalid
     end
 

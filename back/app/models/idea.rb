@@ -67,6 +67,8 @@ class Idea < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
   SUBMISSION_STATUSES = %w[submitted published].freeze
 
+  attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService
+
   slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
 
   belongs_to :author, class_name: 'User', optional: true
@@ -151,10 +153,6 @@ class Idea < ApplicationRecord
   validate :validate_creation_phase
   validate :not_published_in_non_public_status
   validates :manual_votes_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
-
-  # validates :custom_field_values, json: {
-  #   schema: :schema_for_validation,
-  # }
 
   with_options unless: :draft? do
     validates :idea_status, presence: true
@@ -273,6 +271,10 @@ class Idea < ApplicationRecord
   scope :published, -> { where publication_status: 'published' }
   scope :submitted_or_published, -> { where publication_status: SUBMISSION_STATUSES }
 
+  scope :published_after, lambda { |date_time| # eg 2.days.ago
+    where(publication_status: 'published', published_at: date_time..)
+  }
+
   def just_submitted?
     # It would be better to foresee separate endpoints for submission,
     # rather than relying on Rails dirty to detect publication.
@@ -363,12 +365,6 @@ class Idea < ApplicationRecord
   end
 
   private
-
-  def schema_for_validation
-    fields = participation_method_on_creation.custom_form.custom_fields
-    multiloc_schema = JsonSchemaGeneratorService.new.generate_for fields
-    multiloc_schema.values.first
-  end
 
   def supports_built_in_fields?
     !draft? && participation_method_on_creation.supports_built_in_fields?
@@ -506,6 +502,5 @@ Idea.include(FlagInappropriateContent::Concerns::Flaggable)
 Idea.include(Moderation::Concerns::Moderatable)
 Idea.include(MachineTranslations::Concerns::Translatable)
 Idea.include(IdeaAssignment::Extensions::Idea)
-Idea.include(IdeaCustomFields::Extensions::Idea)
 Idea.include(Analysis::Patches::Idea)
 Idea.include(BulkImportIdeas::Patches::Idea)
