@@ -75,42 +75,6 @@ class Event < ApplicationRecord
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
   end
 
-  def sanitize_address_2_multiloc
-    return if address_2_multiloc.nil?
-
-    self.address_2_multiloc = SanitizationService.new.sanitize_multiloc(
-      address_2_multiloc,
-      []
-    )
-  end
-
-  def sanitize_location_multiloc
-    return if location_multiloc.nil?
-
-    self.location_multiloc = SanitizationService.new.sanitize_multiloc(
-      location_multiloc,
-      []
-    )
-  end
-
-  def sanitize_attend_button_multiloc
-    return if attend_button_multiloc.nil?
-
-    self.attend_button_multiloc = SanitizationService.new.sanitize_multiloc(
-      attend_button_multiloc,
-      []
-    )
-  end
-
-  def sanitize_title_multiloc
-    return if title_multiloc.nil?
-
-    self.title_multiloc = SanitizationService.new.sanitize_multiloc(
-      title_multiloc,
-      []
-    )
-  end
-
   def validate_start_at_before_end_at
     return unless start_at.present? && end_at.present? && start_at > end_at
 
