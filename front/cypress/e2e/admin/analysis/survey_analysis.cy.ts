@@ -98,14 +98,11 @@ describe('Admin: survey analysis', () => {
     cy.get('#e2e-analysis-launch-modal').should('exist');
     cy.get('#e2e-analysis-launch-modal-agree-button').click();
 
-    cy.get('[data-cy="e2e-analysis-summary"]').should('exist');
-    cy.get('[data-cy="e2e-analysis-question"]').should('exist');
-    cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 12);
-    cy.get('[data-cy="e2e-analysis-custom-field-item"]').should(
-      'have.length',
-      1
-    );
-    cy.get('[data-cy="e2e-analysis-custom-field-item"]').should(
+    cy.dataCy('e2e-analysis-summary').should('exist');
+    cy.dataCy('e2e-analysis-question').should('exist');
+    cy.dataCy('e2e-analysis-input-item').should('have.length', 12);
+    cy.dataCy('e2e-analysis-custom-field-item').should('have.length', 1);
+    cy.dataCy('e2e-analysis-custom-field-item').should(
       'contain',
       'Question: text'
     );
@@ -113,30 +110,22 @@ describe('Admin: survey analysis', () => {
     // Add question to analysis
 
     cy.get('#e2e-analysis-toggle-show-all-questions-button').click();
-    cy.get('[data-cy="e2e-analysis-add-remove-additional-custom-field"]')
+    cy.dataCy('e2e-analysis-add-remove-additional-custom-field')
       .first()
       .click();
     cy.get('#e2e-analysis-toggle-show-all-questions-button').click();
-    cy.get('[data-cy="e2e-analysis-custom-field-item"]').should(
-      'have.length',
-      2
-    );
-    cy.get('[data-cy="e2e-analysis-custom-field-item"]')
+    cy.dataCy('e2e-analysis-custom-field-item').should('have.length', 2);
+    cy.dataCy('e2e-analysis-custom-field-item')
       .first()
       .should('contain', 'Question: text');
-    cy.get('[data-cy="e2e-analysis-custom-field-item"]')
+    cy.dataCy('e2e-analysis-custom-field-item')
       .last()
       .should('contain', 'Question: select');
 
     // Remove question from analysis
 
-    cy.get(
-      '[data-cy="e2e-analysis-add-remove-additional-custom-field"]'
-    ).click();
-    cy.get('[data-cy="e2e-analysis-custom-field-item"]').should(
-      'have.length',
-      1
-    );
+    cy.dataCy('e2e-analysis-add-remove-additional-custom-field').click();
+    cy.dataCy('e2e-analysis-custom-field-item').should('have.length', 1);
   });
 
   after(() => {
