@@ -27,43 +27,76 @@ namespace :single_use do
       )
 
       # 3. Search published reports for VisitorsTrafficSourcesWidget.
-      # If found: 
-      # - add new default value for view prop 
-      # - republish data unit
+      # If found:
+      # - convert data to new format
+      # - add new default value for view prop
       published_layouts.each do |layout|
         report_id = layout.content_buildable_id
 
         layout.craftjs_json.dup.each do |(node_id, node)|
           next unless resolved_name(node) == 'VisitorsTrafficSourcesWidget'
 
-          # Add new 'view' prop
-          node['props']['view'] = 'chart'
-          puts "\nUpdated props in layout: #{layout.id}\n\n"
-
-          # Get report owner
-          report = ReportBuilder::Report.find(report_id)
-          user = report.owner || User.super_admins.first || User.admins.first
-
           # Find published data unit
-          published_unit = ReportBuilder::PublishedGraphDataUnit
+          data_unit = ReportBuilder::PublishedGraphDataUnit
             .where(report_id: report_id, graph_id: node_id)
             .first
 
-          # Create new data
-          data = ReportBuilder::QueryRepository.new(user)
-            .data_by_graph('VisitorsTrafficSourcesWidget', node['props'])
+          # Skip unless data is in array format (if not, it is already converted)
+          next unless data_unit.data.is_a?(Array)
 
-          next unless data
+          puts "\nold data:\n"
+          puts data_unit.data
+          puts "\n"
 
-          # Delete published data unit
-          published_unit.destroy
+          sessions_per_referrer_type = {}
 
-          # Create new data unit
-          ReportBuilder::PublishedGraphDataUnit.create!(
-            report_id: @report.id,
-            graph_id: node_id,
-            data: data
-          )
+          data_unit.data.each |row| do
+            old_name = row['first_dimension_referrer_type_name']
+            count = row['count']
+
+            case old_name
+            when 'Direct Entry'
+              sessions_per_referrer_type['direct_entry'] = count
+            when 'Social networks'
+              sessions_per_referrer_type['social_network'] = count
+            when 'Search Engines'
+              sessions_per_referrer_type['search_engine'] = count
+            when 'Websites'
+              if sessions_per_referrer_type.key?('other')
+                sessions_per_referrer_type['other'] += count
+              else
+                sessions_per_referrer_type['other'] = count
+              end
+            when 'Campaigns'
+              if sessions_per_referrer_type.key?('other')
+                sessions_per_referrer_type['other'] += count
+              else
+                sessions_per_referrer_type['other'] = count
+              end
+            else
+              puts "ERROR: unknown first_dimension_referrer_type_name"
+            ends
+          end
+
+          new_data = {
+            sessions_per_referrer_type: sessions_per_referrer_type,
+            top_50_referrers: []
+          }
+
+          puts "\new data:\n"
+          puts new_data
+          puts "\n"
+
+          if execute
+            data_unit.data = new_data
+            data_unit.save!
+          else
+            puts "Would save data unit: #{node_id}"
+          end
+
+          # Add new 'view' prop
+          node['props']['view'] = 'chart'
+          puts "\nUpdated props in layout: #{layout.id}\n\n"
         end
 
         if layout.changed?
