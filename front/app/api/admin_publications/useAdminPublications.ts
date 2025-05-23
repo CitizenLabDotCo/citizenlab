@@ -1,6 +1,8 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import useDebouncedValue from 'hooks/useDebouncedValue';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -46,15 +48,24 @@ const useAdminPublications = (
   queryParams: IQueryParameters,
   { enabled = true } = {}
 ) => {
+  const debouncedSearch = useDebouncedValue(queryParams.search, 350);
+  const debouncedQueryParams = {
+    ...queryParams,
+    search: debouncedSearch,
+  };
+
   return useInfiniteQuery<
     IAdminPublications,
     CLErrors,
     IAdminPublications,
     AdminPublicationsKeys
   >({
-    queryKey: adminPublicationsKeys.list(queryParams),
+    queryKey: adminPublicationsKeys.list(debouncedQueryParams),
     queryFn: ({ pageParam }) =>
-      fetchAdminPublications({ ...queryParams, pageNumber: pageParam }),
+      fetchAdminPublications({
+        ...debouncedQueryParams,
+        pageNumber: pageParam,
+      }),
     getNextPageParam: (lastPage) => {
       const hasNextPage = lastPage.links.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
