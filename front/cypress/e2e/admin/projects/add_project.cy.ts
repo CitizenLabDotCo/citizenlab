@@ -90,7 +90,7 @@ describe('Admin: add project', () => {
         cy.get('#e2e-area-selector')
           .click()
           .find('input')
-          .type('East Anna')
+          .type('Carrotgem')
           .trigger('keydown', { keyCode: 13, which: 13 });
 
         // Submit
@@ -114,7 +114,7 @@ describe('Admin: add project', () => {
             .then((areaData) => {
               const areaName =
                 areaData.body.data.attributes.title_multiloc['en'];
-              expect(areaName).to.eq('East Anna');
+              expect(areaName).to.eq('Carrotgem');
             });
         });
       });
