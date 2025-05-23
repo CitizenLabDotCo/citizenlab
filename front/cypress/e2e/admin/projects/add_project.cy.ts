@@ -83,7 +83,6 @@ describe('Admin: add project', () => {
 
           cy.getArea(interception.request?.body.project.area_ids[0]).then(
             (area) => {
-              console.log({ area });
               expect(area.body.data.attributes.title_multiloc['en']).to.equal(
                 'Carrotgem'
               );
