@@ -43,9 +43,7 @@ describe('Form builder image multiple choice choose multiple component', () => {
   });
 
   it('adds image multiple choice field and is displayed when filling survey', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.get('[data-cy="e2e-image-choice"]');
     cy.wait(2000);
     cy.get('[data-cy="e2e-image-choice"]').click();
@@ -61,9 +59,7 @@ describe('Form builder image multiple choice choose multiple component', () => {
   it('allows using an other option that is mandatory when other is selected when entering data in the form/survey', () => {
     const questionTitle = randomString();
     const otherAnswer = 'Walking';
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.acceptCookies();
     cy.get('[data-cy="e2e-image-choice"]');
     cy.wait(2000);

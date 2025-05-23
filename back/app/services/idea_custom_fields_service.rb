@@ -46,9 +46,12 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    # TODO: temporarily remove any user fields from the printable fields - currently unsupported
-    fields = enabled_fields_with_other_options.reject { |field| field.key&.start_with?('u_') }
-    fields.select(&:printable?)
+    enabled_fields_with_other_options(print_version: true).select(&:printable?)
+  end
+
+  # This supports the deprecated prawn based PDF export/import that did not support all field types
+  def printable_fields_legacy
+    enabled_fields_with_other_options.select(&:printable_legacy?)
   end
 
   def importable_fields
@@ -60,8 +63,8 @@ class IdeaCustomFieldsService
     add_user_fields(fields)
   end
 
-  def enabled_fields_with_other_options
-    insert_other_option_text_fields(enabled_fields)
+  def enabled_fields_with_other_options(print_version: false)
+    insert_other_option_text_fields(enabled_fields, print_version:)
   end
 
   def enabled_public_fields
@@ -200,11 +203,11 @@ class IdeaCustomFieldsService
 
   private
 
-  def insert_other_option_text_fields(fields)
+  def insert_other_option_text_fields(fields, print_version: false)
     all_fields = []
     fields.each do |field|
       all_fields << field
-      all_fields << field.other_option_text_field if field.other_option_text_field
+      all_fields << field.other_option_text_field(print_version:) if field.other_option_text_field(print_version:)
       all_fields << field.follow_up_text_field if field.follow_up_text_field
     end
     all_fields
