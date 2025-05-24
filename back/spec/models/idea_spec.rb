@@ -7,6 +7,60 @@ RSpec.describe Idea do
     it { is_expected.to have_many(:reactions) }
   end
 
+  describe 'title validation' do
+    it 'requires title_multiloc when supports_built_in_fields? is true' do
+      # Create an idea that will pass the supports_built_in_fields? condition
+      idea = build(:idea, publication_status: 'published')
+
+      allow(idea).to receive(:supports_built_in_fields?).and_return(true)
+
+      idea.title_multiloc = nil
+
+      expect(idea).to be_invalid
+      expect(idea.errors[:title_multiloc]).to include("can't be blank")
+    end
+
+    it 'does not require title_multiloc when supports_built_in_fields? is false' do
+      idea = build(:idea)
+      allow(idea).to receive(:supports_built_in_fields?).and_return(false)
+
+      idea.title_multiloc = nil
+
+      expect(idea).to be_valid
+    end
+  end
+
+  describe 'body validation' do
+    it 'requires title_multiloc when supports_built_in_fields? is true' do
+      # Create an idea that will pass the supports_built_in_fields? condition
+      idea = build(:idea, publication_status: 'published')
+
+      allow(idea).to receive(:supports_built_in_fields?).and_return(true)
+
+      idea.body_multiloc = nil
+
+      expect(idea).to be_invalid
+      expect(idea.errors[:body_multiloc]).to include("can't be blank")
+    end
+
+    it 'does not require body_multiloc when supports_built_in_fields? is false' do
+      idea = build(:idea)
+      allow(idea).to receive(:supports_built_in_fields?).and_return(false)
+
+      idea.body_multiloc = nil
+
+      expect(idea).to be_valid
+    end
+  end
+
+  it 'validates presence of slug' do
+    idea = build(:idea)
+    allow(idea).to receive(:generate_slug) # Stub to do nothing
+    idea.slug = nil
+    expect(idea).to be_invalid
+    expect(idea.errors[:slug]).to include("can't be blank")
+  end
+
   context 'Default factory' do
     it 'is valid' do
       expect(build(:idea)).to be_valid
@@ -594,11 +648,44 @@ RSpec.describe Idea do
       expect(idea.body_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
 
+    it 'sanitizes img tags in the body' do
+      idea = create(:idea, body_multiloc: {
+        'en' => 'Something <img src=x onerror=alert(1)>'
+      })
+      expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
+    end
+
+    it 'sanitizes when escaped HTML tags present' do
+      idea = create(:idea, body_multiloc: {
+        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
+      })
+      expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
+    end
+
     it "allows embedded youtube video's in the body" do
       idea = create(:idea, body_multiloc: {
         'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'
       })
       expect(idea.body_multiloc).to eq({ 'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>' })
+    end
+  end
+
+  describe '#sanitize_title_multiloc' do
+    it 'removes all HTML tags from title_multiloc' do
+      idea = build(
+        :idea,
+        title_multiloc: {
+          'en' => 'Something <script>alert("XSS")</script> something',
+          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
+          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      )
+
+      idea.save!
+
+      expect(idea.title_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(idea.title_multiloc['fr-BE']).to eq('Something ')
+      expect(idea.title_multiloc['nl-BE']).to eq('Plain text with formatting')
     end
   end
 

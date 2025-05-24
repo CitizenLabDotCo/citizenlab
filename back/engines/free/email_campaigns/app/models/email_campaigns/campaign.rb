@@ -42,6 +42,8 @@ module EmailCampaigns
     accepts_nested_attributes_for :text_images
 
     before_validation :set_enabled, on: :create
+    before_validation :sanitize_body_multiloc
+    before_validation :sanitize_subject_multiloc
 
     validates :context_id, absence: true, unless: :skip_context_absence?
     validate :validate_recipients, on: :send
@@ -182,6 +184,25 @@ module EmailCampaigns
       return if apply_recipient_filters.any?
 
       errors.add(:base, :no_recipients, message: "Can't send a campaign without recipients")
+    end
+
+    def sanitize_body_multiloc
+      service = SanitizationService.new
+      self.body_multiloc = service.sanitize_multiloc(
+        body_multiloc,
+        %i[title alignment list decoration link image video]
+      )
+      self.body_multiloc = service.linkify_multiloc body_multiloc
+      self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc
+    end
+
+    def sanitize_subject_multiloc
+      return unless subject_multiloc&.any?
+
+      self.subject_multiloc = SanitizationService.new.sanitize_multiloc(
+        subject_multiloc,
+        []
+      )
     end
   end
 end

@@ -42,9 +42,7 @@ RSpec.describe AppConfiguration do
   end
 
   describe '#sanitize_organization_name' do
-    before do
-      @app_config = described_class.instance
-    end
+    before { @app_config = described_class.instance }
 
     it 'removes all HTML tags from organization_name multiloc' do
       @app_config.settings['core']['organization_name'] = {

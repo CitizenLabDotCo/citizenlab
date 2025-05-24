@@ -216,6 +216,12 @@ describe SanitizationService do
       features = %i[title alignment list decoration link video]
       expect(service.sanitize(input, features)).not_to include "<iframe src=\"javascript:javascript:alert('ThisPlatformWasHacked!');\"></iframe>"
     end
+
+    it 'sanitizes escaped HTML tags properly' do
+      input = 'Something &lt;img src=x onerror=alert(1)&gt;'
+      features = [:image]
+      expect(service.sanitize(input, features)).to eq 'Something <img src="x">'
+    end
   end
 
   describe 'remove_empty_trailing_tags' do

@@ -69,7 +69,7 @@ class Idea < ApplicationRecord
 
   attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService
 
-  slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
+  slug from: proc { |idea| idea&.participation_method_on_creation&.generate_slug(idea) }
 
   belongs_to :author, class_name: 'User', optional: true
   belongs_to :project, touch: true
@@ -159,6 +159,7 @@ class Idea < ApplicationRecord
     validates :project, presence: true
     before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
+    before_validation { sanitize_multilocs :title_multiloc }
   end
 
   pg_search_scope :search_by_all,
@@ -471,6 +472,8 @@ class Idea < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
