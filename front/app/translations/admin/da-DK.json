@@ -1033,7 +1033,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "besøg vores supportcenter",
   "app.containers.Admin.projects.all.askPersonalData3": "Tilføj felter til navn og e-mail",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Alle spørgsmål vises på PDF'en. Følgende understøttes dog ikke i øjeblikket til import via FormSync: Billeder, tags og filupload.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Alle spørgsmål vises på PDF'en. Følgende understøttes dog ikke i øjeblikket til import via FormSync: Mapping-spørgsmål (drop pin, draw route og draw area), rangordningsspørgsmål, matrix-spørgsmål og filupload-spørgsmål.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey6": "Alle spørgsmål vises på PDF'en. Følgende understøttes dog ikke i øjeblikket til import via FormSync: Kort-spørgsmål (drop pin, draw route og draw area), rangordningsspørgsmål, matrix-spørgsmål og filupload-spørgsmål.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Slut på formularen",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Start af formularen",
   "app.containers.Admin.projects.all.components.archived": "Arkiveret",
