@@ -9,16 +9,12 @@
         <p style="margin-bottom: 40px; font-weight: bold;"><%= @user.block_reason %></p>
         <p style="margin-bottom: 40px;">
           <%= t('.for_more_information', termsAndConditionsPage: '') %>
-          <mj-text>
-            <a style="color: rgb(111, 119, 125);" href="<%= terms_conditions_url %>"><%= t('static_pages.terms_and_conditions_title') %></a>
-          </mj-text>
+          <a style="color: rgb(111, 119, 125);" href="<%= terms_conditions_url %>"><%= t('static_pages.terms_and_conditions_title') %></a>
         </p>
       <% else %>
         <p style="margin-bottom: 40px;">
           <%= t('.paragraph_1_without_reason', organizationName: organization_name) %> <%= t('.for_more_information', termsAndConditionsPage: '') %> 
-          <mj-text>
-            <a style="color: rgb(111, 119, 125);" href="<%= terms_conditions_url %>"><%= t('static_pages.terms_and_conditions_title') %></a>
-          </mj-text>
+          <a style="color: rgb(111, 119, 125);" href="<%= terms_conditions_url %>"><%= t('static_pages.terms_and_conditions_title') %></a>
         </p>
       <% end %>
       <p style="margin-bottom: 40px;">
