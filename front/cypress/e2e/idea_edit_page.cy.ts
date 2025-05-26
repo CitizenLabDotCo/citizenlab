@@ -49,6 +49,7 @@ describe('Idea edit page', () => {
 
     // check original values
     cy.visit(`/ideas/${ideaSlug}`);
+    cy.wait('@idea', { timeout: 10000 });
 
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-title').should('exist').contains(ideaTitle);
@@ -58,7 +59,7 @@ describe('Idea edit page', () => {
     cy.visit(`/ideas/edit/${ideaId}`);
     cy.acceptCookies();
 
-    cy.wait('@idea');
+    cy.wait('@idea', { timeout: 10000 });
 
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form').should('exist');
@@ -66,9 +67,7 @@ describe('Idea edit page', () => {
 
     // check initial form values
     cy.get('@titleInput').should('exist');
-    cy.get('@titleInput').should(($input) => {
-      expect($input.val()).to.eq(ideaTitle);
-    });
+    cy.get('@titleInput').should('have.value', ideaTitle);
 
     // So typing the title doesn't get interrupted
     cy.wait(1000);
@@ -155,8 +154,15 @@ describe('Idea edit page', () => {
     cy.dataCy('e2e-after-submission').should('exist');
     cy.dataCy('e2e-after-submission').click();
 
+    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
+      'getIdeaSchema'
+    );
+    cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
+
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
+    cy.wait('@getIdeaSchema', { timeout: 10000 });
+    cy.wait('@getPhases', { timeout: 10000 });
 
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show #e2e-idea-title')

@@ -45,10 +45,13 @@ function addWidget() {
 }
 
 function toggleFollowArea() {
+  cy.intercept('GET', `**/areas/$**`).as('getAreas');
   // Go to the homepage
   cy.goToLandingPage();
   // Necessary to ensure our widget is loaded
   cy.reload();
+
+  cy.wait('@getAreas', { timeout: 10000 });
 
   // Opens the modal
   cy.dataCy('e2e-follow-areas-button').click();
@@ -81,6 +84,7 @@ describe('"In your area" (areas) widget', () => {
   it('shows projects of the areas I follow', () => {
     // Create project with area
     cy.visit('/admin/projects/all');
+    cy.acceptCookies();
     cy.dataCy('e2e-new-project-button').should('be.visible').click();
     cy.get('.e2e-project-general-form');
 
@@ -95,6 +99,8 @@ describe('"In your area" (areas) widget', () => {
     // Select 'Selection' as Areas option
     cy.get('.e2e-areas-selection').click();
 
+    cy.wait(1000);
+
     // Pick area
     cy.get('#e2e-area-selector')
       .click()
@@ -102,9 +108,13 @@ describe('"In your area" (areas) widget', () => {
       .type('Carrotgem')
       .trigger('keydown', { keyCode: 13, which: 13 });
 
+    cy.wait(1000);
+
     // Submit and publish project
     cy.get('.e2e-submit-wrapper-button button').click();
+    cy.wait(1000);
     cy.get('#e2e-publish').click();
+    cy.wait(1000);
 
     toggleFollowArea();
 
