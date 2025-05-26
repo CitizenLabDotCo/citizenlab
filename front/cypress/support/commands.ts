@@ -5,6 +5,8 @@ import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
 import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
+import { IProjectGroup } from '../../app/api/project_groups/types';
+import { IGroup } from '../../app/api/groups/types';
 import { Multiloc } from '../../app/typings';
 
 import jwtDecode from 'jwt-decode';
@@ -19,6 +21,9 @@ declare global {
       login: typeof login;
       signUp: typeof signUp;
       apiLogin: typeof apiLogin;
+      apiCreateManualGroup: typeof apiCreateManualGroup;
+      apiAddProjectGroup: typeof apiAddProjectGroup;
+      apiAddMembership: typeof apiAddMembership;
       setAdminLoginCookie: typeof setAdminLoginCookie;
       setModeratorLoginCookie: typeof setModeratorLoginCookie;
       setConsentCookie: typeof setConsentCookie;
@@ -1495,28 +1500,78 @@ function apiUpdatePermissionCustomField(
   custom_field_id: string
 ) {}
 
-// function apiSetPermissionCustomField(
-//   phaseId: string,
-//   action: IPhasePermissionAction,
-//   custom_field_id: string
-// ) {
-//   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-//     const adminJwt = response.body.jwt;
+function apiCreateManualGroup({ title }: { title: Multiloc }) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
 
-//     return cy.request({
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: `Bearer ${adminJwt}`,
-//       },
-//       method: 'POST',
-//       url: `web_api/v1/phases/${phaseId}/permissions/${action}/permissions_custom_fields`,
-//       body: {
-//         custom_field_id,
-//         required: true,
-//       },
-//     });
-//   });
-// }
+    return cy.request<IGroup>({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/groups',
+      body: {
+        group: {
+          title_multiloc: title,
+          membership_type: 'manual',
+        },
+      },
+    });
+  });
+}
+
+function apiAddProjectGroup({
+  groupId,
+  projectId,
+}: {
+  groupId: string;
+  projectId: string;
+}) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request<{ data: IProjectGroup }>({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/groups_projects`,
+      body: {
+        groups_project: {
+          group_id: groupId,
+        },
+      },
+    });
+  });
+}
+
+function apiAddMembership({
+  userId,
+  groupId,
+}: {
+  userId: string;
+  groupId: string;
+}) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/groups/${groupId}/memberships`,
+      body: {
+        membership: {
+          user_id: userId,
+        },
+      },
+    });
+  });
+}
 
 function apiUpdateAppConfiguration(
   updatedAttributes: IUpdatedAppConfigurationProperties
@@ -2052,6 +2107,7 @@ Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
 Cypress.Commands.add('apiRemovePhase', apiRemovePhase);
 Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
+Cypress.Commands.add('apiAddProjectGroup', apiAddProjectGroup);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
@@ -2116,3 +2172,5 @@ Cypress.Commands.add(
   'createProjectWithNativeSurveyPhase',
   createProjectWithNativeSurveyPhase
 );
+Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
+Cypress.Commands.add('apiAddMembership', apiAddMembership);

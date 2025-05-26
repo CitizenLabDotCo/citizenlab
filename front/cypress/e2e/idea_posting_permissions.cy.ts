@@ -70,11 +70,12 @@ describe('Idea posting permissions', () => {
 });
 
 describe.skip('idea posting that requires smart group', () => {
-  const projectTitle = randomString(10);
+  const emailDomain = '@ideaposting-permission-test.com';
   let projectId = '';
   let projectSlug = '';
+  let groupId = '';
   let permittedUserId = '';
-  let permittedUserEmail = `${randomString(5)}@charlie.co`;
+  let permittedUserEmail = `${randomString(5)}${emailDomain}`;
   let permittedUserPassword = randomString(8);
   let nonPermittedUserId = '';
   let nonPermittedUserEmail = randomEmail();
@@ -82,6 +83,52 @@ describe.skip('idea posting that requires smart group', () => {
 
   // Create project with smart group access posting rights
   before(() => {
+    // Create project with visibility of 'selection'
+    cy.apiCreateProject({
+      title: randomString(10),
+      description: randomString(),
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+
+      cy.apiCreatePhase({
+        projectId,
+        title: 'Ideation phase',
+        startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+        endAt: moment().add(3, 'month').format('DD/MM/YYYY'),
+        participationMethod: 'ideation',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+      }).then((phase) => {
+        const phaseId = phase.body.data.id;
+
+        cy.apiCreateManualGroup({
+          title: {
+            en: 'Idea posting permission test',
+          },
+        }).then((response) => {
+          groupId = response.body.data.id;
+          // Use our new apiAddProjectGroup function to connect the group to the project
+          cy.apiAddProjectGroup({
+            groupId,
+            projectId,
+          });
+        });
+
+        cy.apiSetPhasePermission({
+          phaseId,
+          action: 'posting_idea',
+          permissionBody: {
+            permission: {
+              permitted_by: 'users',
+              group_ids: [groupId],
+            },
+          },
+        });
+      });
+    });
+
     // Create two accounts to test with
     cy.apiSignup(
       randomString(),
@@ -90,6 +137,11 @@ describe.skip('idea posting that requires smart group', () => {
       permittedUserPassword
     ).then((response) => {
       permittedUserId = response.body.data.id;
+      // Add the user to the allowed group
+      cy.apiAddMembership({
+        userId: permittedUserId,
+        groupId,
+      });
     });
     cy.apiSignup(
       randomString(),
@@ -99,39 +151,6 @@ describe.skip('idea posting that requires smart group', () => {
     ).then((response) => {
       nonPermittedUserId = response.body.data.id;
     });
-
-    // Create project with smart group posting permission
-    cy.setAdminLoginCookie();
-    cy.getAuthUser()
-      .then((user) => {
-        return cy.apiCreateProject({
-          title: projectTitle,
-          descriptionPreview: '',
-          description: randomString(),
-          publicationStatus: 'published',
-          assigneeId: user.body.data.id,
-        });
-      })
-      .then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId,
-          title: 'Ideation phase',
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          endAt: moment().add(3, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'ideation',
-          canComment: true,
-          canPost: true,
-          canReact: true,
-        });
-      })
-      .then(() => {
-        cy.visit(`admin/projects/${projectId}/settings/access-rights`);
-        cy.get('#accordion-title').click();
-        cy.get('#e2e-permission-user-groups').click();
-        cy.get('#e2e-select-user-group').click().type('Charlie{enter}');
-      });
   });
 
   it("doesn't redirect users after authentication to form page if they are not permitted", () => {
