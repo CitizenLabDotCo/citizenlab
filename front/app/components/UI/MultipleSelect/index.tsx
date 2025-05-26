@@ -80,7 +80,15 @@ const MultipleSelect = ({
         options={options || []}
         onChange={handleOnChange}
         isDisabled={disabled}
-        styles={selectStyles(theme)}
+        styles={{
+          ...selectStyles(theme),
+          menuPortal: (base) => ({
+            ...base,
+            // zIndex needed so dropdown is not overlapped off by
+            // subsequent dropdown questions (see TAN-4671).
+            zIndex: 1001,
+          }),
+        }}
         menuPosition="fixed"
         menuPlacement="auto"
         hideSelectedOptions
