@@ -303,18 +303,17 @@ class WebApi::V1::IdeasController < ApplicationController
     dest_phase = Phase.find(params[:phase_id])
     authorize(dest_phase, :copy_inputs_to_phase?)
 
-    copied_ideas = Ideas::CopyService.new.copy(
+    job_tracker = Ideas::CopyService.async_copy(
+      :submitted_or_published,
       params.require(:filters),
       dest_phase,
-      current_user,
-      policy_scope(Idea).submitted_or_published
+      current_user
     )
 
-    render json: linked_json(
-      paginate(copied_ideas),
-      WebApi::V1::IdeaSerializer,
-      serialization_options_for(copied_ideas)
-    )
+    render json: WebApi::V1::Jobs::TrackerSerializer.new(
+      job_tracker,
+      params: jsonapi_serializer_params
+    ).serializable_hash
   end
 
   private

@@ -77,6 +77,7 @@ Rails.application.routes.draw do
       end
 
       resources :background_jobs, only: %i[index]
+      resources :tracked_jobs, only: %i[index show]
 
       resources :jobs, only: %i[index show]
 

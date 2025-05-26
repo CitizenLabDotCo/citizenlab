@@ -2,6 +2,22 @@
 
 module Jobs
   module TrackableJob
+    extend ActiveSupport::Concern
+
+    class_methods do
+      def perform_later_with_tracking(...)
+        QueJob.transaction do
+          job = perform_later(...)
+          total = dry_run_total(...)
+          job.send(:start_tracking, total)
+        end
+      end
+
+      def dry_run_total(...)
+        nil
+      end
+    end
+
     private
 
     def start_tracking(total = 100)
