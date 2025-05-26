@@ -853,11 +853,19 @@ describe('Survey builder', () => {
 
     // Submit
     cy.dataCy('e2e-submit-form').should('be.visible').click();
+
     cy.wait('@saveSurvey').then((interception) => {
-      const keys = Object.keys(interception.request.body.idea);
-      const value: string = interception.request.body.idea[keys[0]];
-      expect(value).to.include(chooseOneOption1);
+      const idea = interception.request.body.idea;
+
+      // Extract the answer by filtering keys that match the question title,
+      // since answers are stored as dynamic keys like `${title}_${randomId}`.
+      const answerValues = Object.entries(idea)
+        .filter(([key]) => key.startsWith(`${multipleChoiceChooseOneTitle}_`))
+        .map(([, value]) => value);
+
+      expect(answerValues[0]).to.include(chooseOneOption1);
     });
+
     cy.dataCy('e2e-page-number-5').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
   });
