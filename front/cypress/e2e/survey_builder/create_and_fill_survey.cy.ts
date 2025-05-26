@@ -587,6 +587,8 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-previous-page').click();
     cy.contains(questionTitle).should('exist');
 
+    cy.wait(1000);
+
     // Select the first option to go to page 4
     cy.contains(firstLogicQnOption1).click({ force: true });
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -769,15 +771,18 @@ describe('Survey builder', () => {
       force: true,
       delay: 0,
     });
-    cy.get('#e2e-option-input-0').type(chooseOneOption1, {
-      force: true,
-      delay: 0,
-    });
+    cy.get('#e2e-option-input-0')
+      .type(chooseOneOption1, {
+        force: true,
+      })
+      .should('have.value', chooseOneOption1);
+    console.log('First option added', chooseOneOption1);
     cy.dataCy('e2e-add-answer').click();
-    cy.get('#e2e-option-input-1').type(chooseOneOption2, {
-      force: true,
-      delay: 0,
-    });
+    cy.get('#e2e-option-input-1')
+      .type(chooseOneOption2, {
+        force: true,
+      })
+      .should('have.value', chooseOneOption2);
 
     // Add second page
     cy.dataCy('e2e-page').click();
