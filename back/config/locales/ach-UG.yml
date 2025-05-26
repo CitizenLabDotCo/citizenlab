@@ -184,6 +184,7 @@ ach:
         description: crwdns4630929:0crwdne4630929:0
       other_input_field:
         title: crwdns4630931:0crwdne4630931:0
+        print_title: crwdns4645021:0%{other_option}crwdne4645021:0
       ask_follow_up_field:
         title: crwdns4630933:0crwdne4630933:0
     community_monitor:
@@ -329,6 +330,7 @@ ach:
       write_as_clearly: 'crwdns4631131:0crwdne4631131:0'
       write_in_language: 'crwdns4631133:0crwdne4631133:0'
       linear_scale_print_description: 'crwdns4631135:0%{min_label}crwdnd4631135:0%{max_label}crwdne4631135:0'
+      unsupported_field: 'crwdns4645023:0crwdne4645023:0'
   project_copy:
     title_suffix: 'crwdns4631137:0crwdne4631137:0'
   confirmations_mailer:
