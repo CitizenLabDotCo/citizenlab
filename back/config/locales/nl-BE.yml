@@ -331,7 +331,7 @@ nl-BE:
       write_in_language: 'Schrijf je antwoorden in dezelfde taal als dit formulier'
       linear_scale_print_description: 'Schrijf alleen een getal tussen %{min_label} en %{max_label}'
       unsupported_field: 'Dit veld kan niet op papier worden ingevuld. Gebruik in plaats daarvan de online versie van dit formulier.'
-      ranking_print_description: 'Schrijf een nummer van 1 (meest geprefereerd) en %{max_rank} (minst geprefereerd) in elk vakje. Gebruik elk getal precies één keer.'
+      ranking_print_description: 'Schrijf een nummer van 1 (meest geprefereerd) tot %{max_rank} (minst geprefereerd) in elk vakje. Gebruik elk getal precies één keer.'
       matrix_print_description: 'Markeer voor elke rij een cirkel met een kruis om je voorkeur aan te geven.'
       rating_print_description: 'Geef dit een cijfer tussen 1 (slechtste) en %{max_stars} (beste).'
       sentiment_linear_scale_print_description: 'Schrijf een getal tussen 1 en 5.'
