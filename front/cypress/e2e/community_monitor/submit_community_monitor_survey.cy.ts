@@ -44,7 +44,6 @@ describe('Submit community monitor survey', () => {
     cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
     cy.wait(2000);
     cy.contains('Governance and trust').should('be.visible');
-    cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
     cy.wait(2000);
 
     // save the form
@@ -77,7 +76,6 @@ describe('Submit community monitor survey', () => {
     cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
     cy.wait(2000);
     cy.contains('Governance and trust').should('be.visible');
-    cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
     cy.wait(2000);
 
     // save the form
