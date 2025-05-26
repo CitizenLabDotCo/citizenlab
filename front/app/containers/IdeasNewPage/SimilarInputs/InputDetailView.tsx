@@ -10,6 +10,7 @@ import {
 
 import useIdeaById from 'api/ideas/useIdeaById';
 
+import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -93,15 +94,11 @@ const IdeaDetailView = ({ ideaId }: IdeaDetailViewProps) => {
         mt="0px"
         mb="8px"
       >
-        {title_multiloc.en}
+        <T value={title_multiloc} />
       </Text>
 
       <QuillEditedContent>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: body_multiloc.en || '',
-          }}
-        />
+        <T value={body_multiloc} supportHtml />
       </QuillEditedContent>
       <Box mt="24px" w="100%" display="flex">
         <ButtonWithLink

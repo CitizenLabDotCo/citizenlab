@@ -154,6 +154,7 @@ class Toggle extends PureComponent<Props> {
             htmlFor={id}
             onClick={this.handleOnClick}
             labelTextColor={labelTextColor}
+            data-cy={id}
           >
             {label}
           </Label>

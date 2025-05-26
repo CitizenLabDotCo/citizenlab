@@ -98,8 +98,6 @@ services:
     container_name: cl-gotenberg
     image: gotenberg/gotenberg:8
     restart: always
-    ports:
-      - 7000:3000
 
 volumes:
   postgres:

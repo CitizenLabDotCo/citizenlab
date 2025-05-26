@@ -2,48 +2,27 @@ import moment = require('moment');
 import { randomString } from '../support/commands';
 
 describe('Native survey: no authentication requirements', () => {
-  const projectTitle = randomString();
-  const projectDescription = randomString();
-  const projectDescriptionPreview = randomString(30);
   let projectId: string | undefined;
   let projectSlug: string | undefined;
+  let phaseId: string | undefined;
 
   before(() => {
     // Create active project with one open ended phase
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
+    cy.createProjectWithNativeSurveyPhase().then((result) => {
+      projectId = result.projectId;
+      projectSlug = result.projectSlug;
+      phaseId = result.phaseId;
 
-      if (!projectId) return;
-      return cy
-        .apiCreatePhase({
-          projectId,
-          title: 'firstPhaseTitle',
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: true,
-          canComment: true,
-          canReact: true,
-        })
-        .then((phase) => {
-          const phaseId = phase.body.data.id;
-          cy.apiSetPhasePermission({
-            phaseId,
-            action: 'posting_idea',
-            permissionBody: {
-              permission: {
-                permitted_by: 'everyone',
-              },
-            },
-          });
-        });
+      // Set permission to allow anyone to participate
+      cy.apiSetPhasePermission({
+        phaseId,
+        action: 'posting_idea',
+        permissionBody: {
+          permission: {
+            permitted_by: 'everyone',
+          },
+        },
+      });
     });
   });
 
@@ -57,11 +36,11 @@ describe('Native survey: no authentication requirements', () => {
     );
 
     // Submit survey
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);
@@ -74,36 +53,16 @@ describe('Native survey: no authentication requirements', () => {
 });
 
 describe('Native survey: anonymous toggle on', () => {
-  const projectTitle = randomString();
-  const projectDescription = randomString();
-  const projectDescriptionPreview = randomString(30);
   let projectId: string | undefined;
   let projectSlug: string | undefined;
 
   before(() => {
     // Create active project with one open ended phase
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-
-      if (!projectId) return;
-      return cy.apiCreatePhase({
-        projectId,
-        title: 'firstPhaseTitle',
-        startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-        participationMethod: 'native_survey',
-        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-        nativeSurveyTitleMultiloc: { en: 'Survey' },
-        canPost: true,
-        canComment: true,
-        canReact: true,
-        allow_anonymous_participation: true,
-      });
+    cy.createProjectWithNativeSurveyPhase({
+      allow_anonymous_participation: true,
+    }).then((result) => {
+      projectId = result.projectId;
+      projectSlug = result.projectSlug;
     });
   });
 
@@ -118,11 +77,11 @@ describe('Native survey: anonymous toggle on', () => {
     );
 
     // Submit survey
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);

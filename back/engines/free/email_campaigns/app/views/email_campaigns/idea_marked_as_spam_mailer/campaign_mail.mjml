@@ -1,42 +1,43 @@
-    <!-- Idea description box -->
-    <mj-section padding="25px"
-                text-align="left">
-      <mj-column
-        padding="20px 25px"
-        border="1px solid #eaeaea">
-        <mj-text>
+<!-- Idea description box -->
+<mj-section padding="0 25px 25px">
+  <mj-column>
+    <mj-table>
+      <tr>
+        <td style="border:1px solid #eaeaea; padding:20px 25px; background-color:#fff; border-radius:5px;">
           <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
             <%= localize_for_recipient(event.idea_title_multiloc) %>
           </h2>
           <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
             <%= format_message('by_author', component: 'general', values: { authorName: event.idea_author_name }) %>
           </p>
-        </mj-text>
-      </mj-column>
-    </mj-section>
+        </td>
+      </tr>
+    </mj-table>
+  </mj-column>
+</mj-section>
 
-    <!-- User report box -->
-    <mj-section padding="20px 25px" border-radius="5px" text-align="left">
-      <mj-column padding="0 20px">
-        <mj-text font-size="14px" color="#84939E">
-          <%= format_message('reported_this_because', values: {
-            reporterFirstName: "<span style=\"font-weight:bold; color: #000;\">#{event.initiating_user_first_name}</span>"
-          }, escape_html: false) %>
-        </mj-text>
-        <mj-text>
-          <p style="margin: 15px 0 0;">
-            <% case event.spam_report_reason_code %>
-            <% when 'other' %>
-              <%= event.spam_report_other_reason %>
-            <% when 'inappropriate' %>
-              <%= format_message('report_inappropriate_offensive_content') %>
-            <% when 'wrong_content' %>
-              <%= format_message('report_not_an_idea') %>
-            <% end %>
-          </p>
-        </mj-text>
-      </mj-column>
-    </mj-section>
+<!-- User report box -->
+<mj-section padding="20px 25px" border-radius="5px" text-align="left">
+  <mj-column padding="0 20px">
+    <mj-text font-size="14px" color="#84939E">
+      <%= format_message('reported_this_because', values: {
+        reporterFirstName: "<span style=\"font-weight:bold; color: #000;\">#{event.initiating_user_first_name}</span>"
+      }, escape_html: false) %>
+    </mj-text>
+    <mj-text>
+      <p style="margin: 15px 0 0;">
+        <% case event.spam_report_reason_code %>
+        <% when 'other' %>
+          <%= event.spam_report_other_reason %>
+        <% when 'inappropriate' %>
+          <%= format_message('report_inappropriate_offensive_content') %>
+        <% when 'wrong_content' %>
+          <%= format_message('report_not_an_idea') %>
+        <% end %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
 
 
-    <%= render partial: 'application/cta_button', locals: { href: event.idea_url, message: format_message('cta_review') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.idea_url, message: format_message('cta_review') } %>
