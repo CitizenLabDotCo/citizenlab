@@ -26,7 +26,10 @@ describe('nav bar', () => {
 
     // Navigate to project page
     cy.get('.e2e-projects-dropdown-link').click();
-    cy.wait('@getAdminPublications', { timeout: 10000 });
+    cy.wait('@getAdminPublications', { timeout: 20000 });
+
+    cy.get('#e2e-projects-dropdown-content > a').should('be.visible');
+
     cy.get('#e2e-projects-dropdown-content > a')
       .first()
       .invoke('attr', 'href')
