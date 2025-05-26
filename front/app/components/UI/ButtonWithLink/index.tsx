@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 import {
   Button,
   ButtonProps,
-  ButtonContainerProps as ComponentLibraryButtonContainerProps,
+  ButtonContainerProps,
   ButtonStyles,
 } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
@@ -14,11 +14,6 @@ interface Props extends ButtonProps {
   linkTo?: string | null;
   openLinkInNewTab?: boolean;
   scrollToTop?: boolean;
-}
-
-interface ButtonContainerProps extends ComponentLibraryButtonContainerProps {
-  'data-testid'?: string;
-  'data-cy'?: string;
 }
 
 type Ref = HTMLButtonElement;
