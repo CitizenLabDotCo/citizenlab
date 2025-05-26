@@ -759,33 +759,61 @@ describe('Survey builder', () => {
     waitForCustomFormFields();
 
     cy.dataCy('e2e-short-answer').click();
-    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+    cy.get('#e2e-title-multiloc').type(questionTitle, {
+      force: true,
+      delay: 0,
+    });
 
     cy.dataCy('e2e-single-choice').click();
     cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
       force: true,
+      delay: 0,
     });
-    cy.get('#e2e-option-input-0').type(chooseOneOption1, { force: true });
+    cy.get('#e2e-option-input-0').type(chooseOneOption1, {
+      force: true,
+      delay: 0,
+    });
     cy.dataCy('e2e-add-answer').click();
-    cy.get('#e2e-option-input-1').type(chooseOneOption2, { force: true });
+    cy.get('#e2e-option-input-1').type(chooseOneOption2, {
+      force: true,
+      delay: 0,
+    });
 
     // Add second page
     cy.dataCy('e2e-page').click();
-    cy.get('#e2e-field-group-title-multiloc').type(page2Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page2Title, {
+      force: true,
+      delay: 0,
+    });
     cy.dataCy('e2e-short-answer').click();
-    cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
+    cy.get('#e2e-title-multiloc').type(question2Title, {
+      force: true,
+      delay: 0,
+    });
 
     // Add third page
     cy.dataCy('e2e-page').click();
-    cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page3Title, {
+      force: true,
+      delay: 0,
+    });
     cy.dataCy('e2e-short-answer').click();
-    cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
+    cy.get('#e2e-title-multiloc').type(question3Title, {
+      force: true,
+      delay: 0,
+    });
 
     // Add fourth page
     cy.dataCy('e2e-page').click();
-    cy.get('#e2e-field-group-title-multiloc').type(page4Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page4Title, {
+      force: true,
+      delay: 0,
+    });
     cy.dataCy('e2e-short-answer').click();
-    cy.get('#e2e-title-multiloc').type(question4Title, { force: true });
+    cy.get('#e2e-title-multiloc').type(question4Title, {
+      force: true,
+      delay: 0,
+    });
 
     // Save the survey and reload the page before adding logic (bug with adding logic)
     cy.get('form').submit();
