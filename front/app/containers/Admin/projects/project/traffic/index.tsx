@@ -4,9 +4,9 @@ import { useParams } from 'react-router-dom';
 
 import usePhases from 'api/phases/usePhases';
 
-import TrafficDatesRange from './TrafficDatesRange';
+import { START_DATE_PAGEVIEW_AND_EXPANDED_SESSION_DATA_COLLECTION as LOWER_BOUND } from 'containers/Admin/dashboard/constants';
 
-const START_DATE_DATA_COLLECTION = '2024-11-24';
+import TrafficDatesRange from './TrafficDatesRange';
 
 const ProjectTraffic = () => {
   const { projectId } = useParams() as { projectId: string };
@@ -17,9 +17,9 @@ const ProjectTraffic = () => {
   const endOfLastPhase = phases.data[phases.data.length - 1]?.attributes.end_at;
 
   const startDate =
-    new Date(startOfFirstPhase) > new Date(START_DATE_DATA_COLLECTION)
+    new Date(startOfFirstPhase) > new Date(LOWER_BOUND)
       ? startOfFirstPhase
-      : START_DATE_DATA_COLLECTION;
+      : LOWER_BOUND;
 
   return (
     <TrafficDatesRange

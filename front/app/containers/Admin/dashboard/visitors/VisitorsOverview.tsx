@@ -12,11 +12,13 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { START_DATE_SESSION_DATA_COLLECTION } from '../constants';
+
 import Charts from './Charts';
 import messages from './messages';
 
 interface Props {
-  uniqueVisitorDataDate: Moment | undefined;
+  uniqueVisitorDataDate: Moment;
 }
 
 const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
@@ -42,10 +44,6 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
     setProjectId(value);
   };
 
-  if (!uniqueVisitorDataDate) {
-    return <Text>{formatMessage(messages.noData)}</Text>;
-  }
-
   return (
     <>
       <Box width="100%">
@@ -58,7 +56,7 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
           onProjectFilter={handleProjectFilter}
           onChangeResolution={setResolution}
           showAllTime={false}
-          minDate={uniqueVisitorDataDate}
+          minDate={moment(START_DATE_SESSION_DATA_COLLECTION)}
           // Filtering visitor data by project is not allowed because the data is not available. For more details, refer to: https://www.notion.so/govocal/Gent-is-struggling-to-access-the-data-on-their-visitor-dashboard-cecae17322a24ccdb4bd938a511159cc?d=78857b76019144ee97b6bd8de960ead1
           showProjectFilter={false}
         />
