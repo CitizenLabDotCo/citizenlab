@@ -20,36 +20,19 @@ module ReportBuilder
         pageviews = pageviews.joins(:session).where(impact_tracking_sessions: { highest_role: ['user', nil] })
       end
 
-      # We first remove the 'en' locale from the list of supported locales,
-      # because we want to make sure it is the last case in the SQL query.
-      # If it is not the last case, it will match other locales that start with 'en',
-      # like 'en-US' or 'en-GB'.
-      locales_without_en = CL2_SUPPORTED_LOCALES.reject { |locale| locale.to_s == 'en' }
+      locale_sql = Arel.sql("split_part(path, '/', 2)")
 
-      cases = locales_without_en.map do |locale|
-        "WHEN starts_with(path, '/#{locale}') THEN '#{locale}'"
-      end
+      session_locales = pageviews
+        .distinct.select(:session_id, locale_sql.as('locale'))
+        .where(locale_sql.in(CL2_SUPPORTED_LOCALES))
 
-      # We add the 'en' locale manually as the last case in the SQL query.
-      cases << "WHEN starts_with(path, '/en') THEN 'en'"
-
-      locales = pageviews
-        .select(
-          'count(distinct session_id) as count, ' \
-          "CASE #{cases.join(' ')} ELSE NULL END as locale"
-        )
+      sessions_per_locale = ImpactTracking::Session
+        .with(session_locales: session_locales)
+        .from('session_locales')
         .group(:locale)
+        .count
 
-      {
-        sessions_per_locale: locales.each_with_object({}) do |row, obj|
-          locale = row['locale']
-
-          if locale.present?
-            count = row['count'].to_i
-            obj[locale] = count
-          end
-        end
-      }
+      { sessions_per_locale: }
     end
   end
 end
