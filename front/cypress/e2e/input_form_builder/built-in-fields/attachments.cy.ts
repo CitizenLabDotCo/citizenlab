@@ -57,6 +57,7 @@ describe('Input form builder', () => {
     cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.wait(1000);
 
     cy.get('#e2e-idea-description-input .ql-editor').type(description);
     cy.get('#e2e-idea-description-input .ql-editor').contains(description);
