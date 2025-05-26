@@ -13,9 +13,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.traffic.selectPeriod',
     defaultMessage: 'Select period',
   },
-  cookieBannerUpdatedInfo: {
-    id: 'app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo',
+  visitorDataBanner: {
+    id: 'app.containers.Admin.projects.project.traffic.visitorDataBanner',
     defaultMessage:
-      "Since December 2023 it's easier for users to reject cookies, which has a negative effect on perceived traffic.",
+      'We have changed the way we collect and display traffic data. As a result, traffic data is more accurate and more types of data are available, while still being GDPR compliant. We only started collecting this new data in November 2024, so before that no data is available.',
   },
 });

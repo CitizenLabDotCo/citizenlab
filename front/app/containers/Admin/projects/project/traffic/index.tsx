@@ -6,18 +6,24 @@ import usePhases from 'api/phases/usePhases';
 
 import TrafficDatesRange from './TrafficDatesRange';
 
+const START_DATE_DATA_COLLECTION = '2024-11-24';
+
 const ProjectTraffic = () => {
   const { projectId } = useParams() as { projectId: string };
   const { data: phases } = usePhases(projectId);
-
-  const startOfFirstPhase = phases?.data[0]?.attributes.start_at;
-  const endOfLastPhase =
-    phases?.data[phases.data.length - 1]?.attributes.end_at;
-
   if (!phases) return null;
+
+  const startOfFirstPhase = phases.data[0]?.attributes.start_at;
+  const endOfLastPhase = phases.data[phases.data.length - 1]?.attributes.end_at;
+
+  const startDate =
+    new Date(startOfFirstPhase) > new Date(START_DATE_DATA_COLLECTION)
+      ? startOfFirstPhase
+      : START_DATE_DATA_COLLECTION;
+
   return (
     <TrafficDatesRange
-      defaultStartDate={startOfFirstPhase}
+      defaultStartDate={startDate}
       defaultEndDate={endOfLastPhase ?? undefined}
     />
   );

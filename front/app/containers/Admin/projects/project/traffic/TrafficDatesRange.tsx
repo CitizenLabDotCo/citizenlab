@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 import { useParams } from 'react-router-dom';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
@@ -12,9 +13,8 @@ import Warning from 'components/UI/Warning';
 import { useIntl } from 'utils/cl-intl';
 import { toBackendDateString, parseBackendDateString } from 'utils/dateUtils';
 
-import messages from './messages';
 import Charts from './Charts';
-import moment from 'moment';
+import messages from './messages';
 
 const TrafficDatesRange = ({
   defaultStartDate,
@@ -54,7 +54,7 @@ const TrafficDatesRange = ({
       <Box mx="44px" mb="20px">
         <Warning>
           <Text color="primary" m="0px">
-            {formatMessage(messages.cookieBannerUpdatedInfo)}
+            {formatMessage(messages.visitorDataBanner)}
           </Text>
         </Warning>
       </Box>
