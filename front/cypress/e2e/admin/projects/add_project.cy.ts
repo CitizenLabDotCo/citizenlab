@@ -75,19 +75,17 @@ describe('Admin: add project', () => {
         // Submit
         cy.get('.e2e-submit-wrapper-button button').click();
 
-        // Expect an area to be passed in the project request
+        // Expect the correct area to be set for the newly created project
         cy.wait('@createProject').then((interception) => {
-          expect(interception.request?.body.project.area_ids.length).to.equal(
-            1
-          );
-
-          cy.getArea(interception.request?.body.project.area_ids[0]).then(
-            (area) => {
-              expect(area.body.data.attributes.title_multiloc['en']).to.equal(
+          const projectId = interception.response?.body.data.id;
+          cy.getProjectById(projectId).then((project) => {
+            const areaId = project.body.data.relationships.areas.data?.[0]?.id;
+            cy.getArea(areaId).then((area) => {
+              expect(area.body.data.attributes.title_multiloc.en).to.equal(
                 'Carrotgem'
               );
-            }
-          );
+            });
+          });
         });
       });
     });
