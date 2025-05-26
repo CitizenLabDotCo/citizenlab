@@ -63,6 +63,7 @@ describe('Input form builder', () => {
 
     // Go to the next page of the idea form that has the attachments field
     cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.wait(1000);
 
     cy.get('#e2e-idea-file-upload').should('exist');
 
@@ -112,6 +113,7 @@ describe('Input form builder', () => {
 
     // Go to the page that had the attachments field
     cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.wait(1000);
 
     cy.get('#e2e-idea-file-upload').should('not.exist');
   });

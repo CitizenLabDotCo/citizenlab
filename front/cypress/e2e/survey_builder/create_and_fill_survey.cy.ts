@@ -655,8 +655,11 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-page-number-2').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
 
+    cy.intercept('GET', `**/projects/${projectId}/files`).as('getFiles');
+
     // Try filling in the survey again
     cy.visit(`/projects/${projectSlug}`);
+    cy.wait('@getFiles');
     cy.get('.e2e-idea-button')
       .first()
       .find('button')
