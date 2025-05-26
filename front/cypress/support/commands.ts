@@ -95,6 +95,7 @@ declare global {
       apiCreateModeratorForProject: typeof apiCreateModeratorForProject;
       apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
       createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
+      createProjectWithIdeationPhase: typeof createProjectWithIdeationPhase;
     }
   }
 }
@@ -2048,6 +2049,64 @@ function createProjectWithNativeSurveyPhase({
     });
 }
 
+function createProjectWithIdeationPhase({
+  projectTitle = randomString(),
+  projectDescription = randomString(),
+  projectDescriptionPreview = projectDescription,
+  projectPublicationStatus = 'published',
+  phaseTitle = 'Ideation phase',
+  phaseStartAt = moment().subtract(9, 'month').format('DD/MM/YYYY'),
+  phaseEndAt = moment().add(3, 'month').format('DD/MM/YYYY'),
+  canPost = true,
+  canReact = true,
+  canComment = true,
+}: {
+  projectTitle?: string;
+  projectDescription?: string;
+  projectDescriptionPreview?: string;
+  projectPublicationStatus?: 'draft' | 'published' | 'archived';
+  phaseTitle?: string;
+  phaseStartAt?: string;
+  phaseEndAt?: string;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+} = {}) {
+  return cy
+    .apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: projectPublicationStatus,
+    })
+    .then((project) => {
+      const projectId = project.body.data.id;
+      const projectSlug = project.body.data.attributes.slug;
+
+      return cy
+        .apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: phaseStartAt,
+          endAt: phaseEndAt,
+          participationMethod: 'ideation',
+          canPost,
+          canReact,
+          canComment,
+        })
+        .then((phase) => {
+          const phaseId = phase.body.data.id;
+
+          return {
+            projectId,
+            projectSlug,
+            phaseId,
+            phaseTitle,
+          };
+        });
+    });
+}
+
 /**
  * Get an element by its data-cy attribute.
  * This is a utility function to make it easier to find elements by their data-cy attribute.
@@ -2174,3 +2233,7 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
 Cypress.Commands.add('apiAddMembership', apiAddMembership);
+Cypress.Commands.add(
+  'createProjectWithIdeationPhase',
+  createProjectWithIdeationPhase
+);

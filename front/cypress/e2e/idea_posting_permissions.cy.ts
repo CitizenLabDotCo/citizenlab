@@ -1,4 +1,3 @@
-import moment = require('moment');
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Idea posting permissions', () => {
@@ -83,49 +82,36 @@ describe('idea posting restricted to a group', () => {
 
   // Create project with smart group access posting rights
   before(() => {
-    // Create project with visibility of 'selection'
-    cy.apiCreateProject({
-      title: randomString(10),
-      description: randomString(),
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
+    // Create project with ideation phase using our new utility function
+    cy.createProjectWithIdeationPhase({
+      phaseTitle: 'Ideation phase',
+    }).then((result) => {
+      projectId = result.projectId;
+      projectSlug = result.projectSlug;
+      const phaseId = result.phaseId;
 
-      cy.apiCreatePhase({
-        projectId,
-        title: 'Ideation phase',
-        startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-        endAt: moment().add(3, 'month').format('DD/MM/YYYY'),
-        participationMethod: 'ideation',
-        canComment: true,
-        canPost: true,
-        canReact: true,
-      }).then((phase) => {
-        const phaseId = phase.body.data.id;
-
-        cy.apiCreateManualGroup({
-          title: {
-            en: 'Idea posting permission test',
-          },
-        }).then((response) => {
-          groupId = response.body.data.id;
-          // Use our new apiAddProjectGroup function to connect the group to the project
-          cy.apiAddProjectGroup({
-            groupId,
-            projectId,
-          });
+      cy.apiCreateManualGroup({
+        title: {
+          en: 'Idea posting permission test',
+        },
+      }).then((response) => {
+        groupId = response.body.data.id;
+        // Use our new apiAddProjectGroup function to connect the group to the project
+        cy.apiAddProjectGroup({
+          groupId,
+          projectId,
         });
+      });
 
-        cy.apiSetPhasePermission({
-          phaseId,
-          action: 'posting_idea',
-          permissionBody: {
-            permission: {
-              permitted_by: 'users',
-              group_ids: [groupId],
-            },
+      cy.apiSetPhasePermission({
+        phaseId,
+        action: 'posting_idea',
+        permissionBody: {
+          permission: {
+            permitted_by: 'users',
+            group_ids: [groupId],
           },
-        });
+        },
       });
     });
 
