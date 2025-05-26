@@ -94,7 +94,7 @@
   "app.components.ConsentManager.Banner.accept": "Accepter",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Refuser la politique et fermer bannière",
   "app.components.ConsentManager.Banner.close": "Fermer",
-  "app.components.ConsentManager.Banner.mainText": "En naviguant, vous acceptez notre {policyLink}.",
+  "app.components.ConsentManager.Banner.mainText": "Cette plateforme utilise des cookies conformément à notre {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Gérer",
   "app.components.ConsentManager.Banner.policyLink": "Politique de cookie",
   "app.components.ConsentManager.Banner.reject": "Refuser",
