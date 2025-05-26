@@ -776,7 +776,6 @@ describe('Survey builder', () => {
         force: true,
       })
       .should('have.value', chooseOneOption1);
-    console.log('First option added', chooseOneOption1);
     cy.dataCy('e2e-add-answer').click();
     cy.get('#e2e-option-input-1')
       .type(chooseOneOption2, {
