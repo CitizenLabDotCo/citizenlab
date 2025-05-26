@@ -18,12 +18,12 @@ import Charts from './Charts';
 import messages from './messages';
 
 interface Props {
-  uniqueVisitorDataDate: Moment;
+  defaultStartDate: Moment;
 }
 
-const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
+const VisitorsOverview = ({ defaultStartDate }: Props) => {
   const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(
-    uniqueVisitorDataDate
+    defaultStartDate
   );
   const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
   const [projectId, setProjectId] = useState<string | undefined>();
