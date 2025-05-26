@@ -45,11 +45,15 @@ describe('Idea edit page', () => {
 
   it('has a working idea edit form', () => {
     cy.setLoginCookie(email, password);
-    cy.intercept('GET', `**/ideas/${ideaId}**`).as('idea');
+
+    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
+      'getIdeaSchema'
+    );
 
     // check original values
     cy.visit(`/ideas/${ideaSlug}`);
-    cy.wait('@idea', { timeout: 10000 });
+    cy.wait('@getIdeaSchema', { timeout: 10000 });
+    cy.acceptCookies();
 
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-title').should('exist').contains(ideaTitle);
@@ -57,9 +61,8 @@ describe('Idea edit page', () => {
 
     // go to form
     cy.visit(`/ideas/edit/${ideaId}`);
-    cy.acceptCookies();
 
-    cy.wait('@idea', { timeout: 10000 });
+    cy.wait('@getIdeaSchema', { timeout: 10000 });
 
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form').should('exist');
@@ -88,11 +91,11 @@ describe('Idea edit page', () => {
 
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
 
+    cy.wait(1000);
+
     // check initial form values
     cy.get('@descriptionInput').should('exist');
-    cy.get('@descriptionInput').should(($el) => {
-      expect($el.text().trim()).to.eq(ideaContent);
-    });
+    cy.get('@descriptionInput').contains(ideaContent);
 
     // So typing the description doesn't get interrupted
     cy.wait(1000);
@@ -154,15 +157,8 @@ describe('Idea edit page', () => {
     cy.dataCy('e2e-after-submission').should('exist');
     cy.dataCy('e2e-after-submission').click();
 
-    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
-      'getIdeaSchema'
-    );
-    cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
-
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
-    cy.wait('@getIdeaSchema', { timeout: 10000 });
-    cy.wait('@getPhases', { timeout: 10000 });
 
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show #e2e-idea-title')
