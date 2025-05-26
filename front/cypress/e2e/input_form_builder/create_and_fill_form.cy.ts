@@ -81,6 +81,7 @@ describe('Input form builder', () => {
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.wait(1000);
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload').should('exist');
