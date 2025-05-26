@@ -31,8 +31,8 @@ describe('Admin: add project', () => {
         cy.get('.e2e-submit-wrapper-button button').click();
 
         // Confirm the project is saved and appears as draft
-        cy.url().should('include', '/admin/projects/');
         cy.visit('/admin/projects/all');
+        cy.url().should('include', '/admin/projects/');
         cy.get('#e2e-admin-projects-list-unsortable')
           .children()
           .first()
