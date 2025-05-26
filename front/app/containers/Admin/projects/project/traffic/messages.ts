@@ -16,6 +16,6 @@ export default defineMessages({
   visitorDataBanner: {
     id: 'app.containers.Admin.projects.project.traffic.visitorDataBanner',
     defaultMessage:
-      'We have changed the way we collect and display traffic data. As a result, traffic data is more accurate and more types of data are available, while still being GDPR compliant. We only started collecting this new data in November 2024, so before that no data is available.',
+      'We have changed the way we collect and display visitor data. As a result, visitor data is more accurate and more types of data are available, while still being GDPR compliant. We only started collecting this new data in November 2024, so before that no data is available.',
   },
 });
