@@ -20,13 +20,14 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FileUploaderField from './Fields/FileUploadField';
 import ImageField from './Fields/ImageField';
 import LinearScaleField from './Fields/LinearScale';
+import MatrixField from './Fields/MatrixField';
 import MultiSelectField from './Fields/MultiSelectField';
+import RankingField from './Fields/RankingField';
+import RatingField from './Fields/RatingField';
+import SentimentScaleField from './Fields/SentimentScaleField';
 import SingleSelectField from './Fields/SingleSelectField';
 import messages from './messages';
 import { getInstructionMessage } from './util';
-import RankingField from './Fields/RankingField';
-import RatingField from './Fields/RatingField';
-import MatrixField from './Fields/MatrixField';
 
 const renderField = ({
   question,
@@ -94,6 +95,8 @@ const renderField = ({
       return <RatingField question={question} />;
     case 'matrix_linear_scale':
       return <MatrixField question={question} />;
+    case 'sentiment_linear_scale':
+      return <SentimentScaleField question={question} />;
     default:
       return null;
   }
