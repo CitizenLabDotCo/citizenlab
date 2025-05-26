@@ -187,10 +187,10 @@ describe('Native survey project page actions', () => {
     });
   });
 
-  describe.skip('with project with active survey that has post set to false', () => {
+  describe('with project with active survey that has post set to false', () => {
     let projectIdWithPostingDisabled: string;
     let projectSlugPostingDisabled: string;
-    beforeEach(() => {
+    before(() => {
       if (projectIdWithPostingDisabled) {
         cy.apiRemoveProject(projectIdWithPostingDisabled);
         projectIdWithPostingDisabled = '';
@@ -205,32 +205,22 @@ describe('Native survey project page actions', () => {
       });
     });
 
-    afterEach(() => {
+    after(() => {
+      cy.apiRemoveUser(userId);
+
       if (projectIdWithPostingDisabled) {
         cy.apiRemoveProject(projectIdWithPostingDisabled);
         projectIdWithPostingDisabled = '';
       }
     });
 
-    // TODO: Look into message shown for this scenario
     it('tests actions when survey is not accepting submissions', () => {
       // Login as regular user
       cy.setLoginCookie(userEmail, userPassword);
       // Visit timeline project
       cy.visit(`/projects/${projectSlugPostingDisabled}`);
-      // Check that correct text and actions shown
-      cy.get('.e2e-idea-button')
-        .first()
-        .find('div')
-        .should('be.visible')
-        .trigger('mouseenter');
-      cy.contains('New submissions are not currently being accepted').should(
-        'exist'
-      );
+      // Check that the CTA button is NOT visible in the UI.
+      cy.get('.e2e-idea-button').should('not.exist');
     });
-  });
-
-  after(() => {
-    cy.apiRemoveUser(userId);
   });
 });
