@@ -17,9 +17,7 @@ module ReportBuilder
       end
 
       if exclude_roles == 'exclude_admins_and_moderators'
-        pageviews = pageviews
-          .joins('LEFT JOIN impact_tracking_sessions ON impact_tracking_pageviews.session_id = impact_tracking_sessions.id')
-          .where("impact_tracking_sessions.highest_role IS NULL OR impact_tracking_sessions.highest_role = 'user'")
+        pageviews = pageviews.joins(:session).where(impact_tracking_sessions: { highest_role: ['user', nil] })
       end
 
       # We first remove the 'en' locale from the list of supported locales,
