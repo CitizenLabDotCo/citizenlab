@@ -66,16 +66,9 @@ RSpec.describe Analysis::AutoTaggingTask do
 
       positive_tag = create(:tag, tag_type: 'sentiment', analysis: analysis, name: 'sentiment +')
 
-      # mock_nlp_client = instance_double(NLPCloud::Client)
-      # expect(mock_nlp_client).to receive(:sentiment).and_return({
-      #   'scored_labels' => [
-      #     { 'label' => 'NEGATIVE', 'score' => 0.99 }
-      #   ]
-      # })
-      # expect_any_instance_of(Analysis::AutoTaggingMethod::Sentiment)
-      #   .to receive(:nlp_cloud_client_for)
-      #   .with(anything, 'nl-NL')
-      #   .and_return(mock_nlp_client)
+      expect_any_instance_of(Analysis::AutoTaggingMethod::Sentiment)
+        .to receive(:sentiment_for_text)
+        .and_return('NEGATIVE')
 
       expect { att.execute }
         .to change(Analysis::Tag, :count).from(1).to(2)
