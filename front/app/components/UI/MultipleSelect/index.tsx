@@ -84,7 +84,7 @@ const MultipleSelect = ({
           ...selectStyles(theme),
           menuPortal: (base) => ({
             ...base,
-            // zIndex needed so dropdown is not overlapped off by
+            // zIndex needed so dropdown is not overlapped by
             // subsequent dropdown questions (see TAN-4671).
             zIndex: 1001,
           }),
