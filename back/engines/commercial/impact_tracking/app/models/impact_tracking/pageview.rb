@@ -17,4 +17,6 @@
 class ImpactTracking::Pageview < ApplicationRecord
   validates :session_id, presence: true
   validates :path, presence: true
+
+  belongs_to :session, class_name: 'ImpactTracking::Session'
 end

@@ -21,4 +21,6 @@
 #
 class ImpactTracking::Session < ApplicationRecord
   validates :monthly_user_hash, presence: true
+
+  has_many :pageviews, class_name: 'ImpactTracking::Pageview'
 end
