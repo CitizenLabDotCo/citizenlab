@@ -19,6 +19,6 @@ describe('profile deletion', () => {
     cy.dataCy('e2e-user-deleted-success-modal-content').should('be.visible');
     // Check that the user is logged out
     cy.visit('/profile/edit');
-    cy.dataCy('e2e-unauthorized-must-sign-in').should('exist');
+    cy.dataCy('e2e-unauthorized-must-sign-in').should('be.visible');
   });
 });
