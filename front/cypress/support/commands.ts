@@ -5,6 +5,8 @@ import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
 import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
+import { IProjectGroup } from '../../app/api/project_groups/types';
+import { IGroup } from '../../app/api/groups/types';
 import { Multiloc } from '../../app/typings';
 
 import jwtDecode from 'jwt-decode';
@@ -19,6 +21,8 @@ declare global {
       login: typeof login;
       signUp: typeof signUp;
       apiLogin: typeof apiLogin;
+      apiCreateManualGroup: typeof apiCreateManualGroup;
+      apiAddMembership: typeof apiAddMembership;
       setAdminLoginCookie: typeof setAdminLoginCookie;
       setModeratorLoginCookie: typeof setModeratorLoginCookie;
       setConsentCookie: typeof setConsentCookie;
@@ -90,6 +94,7 @@ declare global {
       apiCreateModeratorForProject: typeof apiCreateModeratorForProject;
       apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
       createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
+      createProjectWithIdeationPhase: typeof createProjectWithIdeationPhase;
     }
   }
 }
@@ -1495,28 +1500,52 @@ function apiUpdatePermissionCustomField(
   custom_field_id: string
 ) {}
 
-// function apiSetPermissionCustomField(
-//   phaseId: string,
-//   action: IPhasePermissionAction,
-//   custom_field_id: string
-// ) {
-//   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-//     const adminJwt = response.body.jwt;
+function apiCreateManualGroup({ title }: { title: Multiloc }) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
 
-//     return cy.request({
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: `Bearer ${adminJwt}`,
-//       },
-//       method: 'POST',
-//       url: `web_api/v1/phases/${phaseId}/permissions/${action}/permissions_custom_fields`,
-//       body: {
-//         custom_field_id,
-//         required: true,
-//       },
-//     });
-//   });
-// }
+    return cy.request<IGroup>({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/groups',
+      body: {
+        group: {
+          title_multiloc: title,
+          membership_type: 'manual',
+        },
+      },
+    });
+  });
+}
+
+function apiAddMembership({
+  userId,
+  groupId,
+}: {
+  userId: string;
+  groupId: string;
+}) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/groups/${groupId}/memberships`,
+      body: {
+        membership: {
+          user_id: userId,
+        },
+      },
+    });
+  });
+}
 
 function apiUpdateAppConfiguration(
   updatedAttributes: IUpdatedAppConfigurationProperties
@@ -1994,6 +2023,64 @@ function createProjectWithNativeSurveyPhase({
     });
 }
 
+function createProjectWithIdeationPhase({
+  projectTitle = randomString(),
+  projectDescription = randomString(),
+  projectDescriptionPreview = projectDescription,
+  projectPublicationStatus = 'published',
+  phaseTitle = 'Ideation phase',
+  phaseStartAt = moment().subtract(9, 'month').format('DD/MM/YYYY'),
+  phaseEndAt = moment().add(3, 'month').format('DD/MM/YYYY'),
+  canPost = true,
+  canReact = true,
+  canComment = true,
+}: {
+  projectTitle?: string;
+  projectDescription?: string;
+  projectDescriptionPreview?: string;
+  projectPublicationStatus?: 'draft' | 'published' | 'archived';
+  phaseTitle?: string;
+  phaseStartAt?: string;
+  phaseEndAt?: string;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+} = {}) {
+  return cy
+    .apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: projectPublicationStatus,
+    })
+    .then((project) => {
+      const projectId = project.body.data.id;
+      const projectSlug = project.body.data.attributes.slug;
+
+      return cy
+        .apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: phaseStartAt,
+          endAt: phaseEndAt,
+          participationMethod: 'ideation',
+          canPost,
+          canReact,
+          canComment,
+        })
+        .then((phase) => {
+          const phaseId = phase.body.data.id;
+
+          return {
+            projectId,
+            projectSlug,
+            phaseId,
+            phaseTitle,
+          };
+        });
+    });
+}
+
 /**
  * Get an element by its data-cy attribute.
  * This is a utility function to make it easier to find elements by their data-cy attribute.
@@ -2116,4 +2203,10 @@ Cypress.Commands.add('apiCreateNativeSurveyPhase', apiCreateNativeSurveyPhase);
 Cypress.Commands.add(
   'createProjectWithNativeSurveyPhase',
   createProjectWithNativeSurveyPhase
+);
+Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
+Cypress.Commands.add('apiAddMembership', apiAddMembership);
+Cypress.Commands.add(
+  'createProjectWithIdeationPhase',
+  createProjectWithIdeationPhase
 );

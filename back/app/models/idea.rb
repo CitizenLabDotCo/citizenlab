@@ -159,7 +159,6 @@ class Idea < ApplicationRecord
     validates :project, presence: true
     before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
-    before_validation { sanitize_multilocs :title_multiloc }
   end
 
   pg_search_scope :search_by_all,

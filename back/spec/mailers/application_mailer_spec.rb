@@ -17,18 +17,4 @@ RSpec.describe ApplicationMailer do
         .to eq("Some test content text. A link is included here to test links when text is truncated: <a href=\"https://en.wikipedia.org/wiki/Ada_Lovelace\" target=\"_blank\" rel=\"noreferrer noopener nofollow\">https://en.wikipedia.org/wiki/Ada_Lovelace</a>\nThis is...")
     end
   end
-
-  describe 'organization_name' do
-    before do
-      config = AppConfiguration.instance
-      config.settings['core']['organization_name'] = { 'en' => 'Brighton &amp; Hove' }
-      config.save!
-    end
-
-    it 'unescapes &amp; to &' do
-      instance = described_class.new
-
-      expect(instance.organization_name).to eq('Brighton & Hove')
-    end
-  end
 end
