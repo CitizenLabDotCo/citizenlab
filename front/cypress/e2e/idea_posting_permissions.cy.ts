@@ -80,7 +80,6 @@ describe('idea posting restricted to a group', () => {
   let nonPermittedUserEmail = randomEmail();
   let nonPermittedUserPassword = randomString(8);
 
-  // Create project with group posting rights
   before(() => {
     cy.createProjectWithIdeationPhase({
       phaseTitle: 'Ideation phase',
@@ -95,7 +94,6 @@ describe('idea posting restricted to a group', () => {
         },
       }).then((response) => {
         groupId = response.body.data.id;
-        // Connect the group to the project
         cy.apiSetPhasePermission({
           phaseId,
           action: 'posting_idea',
