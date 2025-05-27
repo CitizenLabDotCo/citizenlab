@@ -24,6 +24,10 @@ FactoryBot.define do
     location_point_geojson { { 'type' => 'Point', 'coordinates' => [51.11520776293035, 3.921154106874878] } }
     location_description { 'Some road' }
 
+    trait :with_assignee do
+      assignee factory: :admin
+    end
+
     after(:create) do |idea|
       idea.phases = idea.project.phases.select { |phase| phase.participation_method == 'ideation' } if idea.phases.empty?
     end
