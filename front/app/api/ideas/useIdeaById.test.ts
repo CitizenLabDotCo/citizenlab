@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -14,7 +14,7 @@ describe('useIdeaById', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useIdeaById('id'), {
+    const { result } = renderHook(() => useIdeaById('id'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -33,7 +33,7 @@ describe('useIdeaById', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useIdeaById('id'), {
+    const { result } = renderHook(() => useIdeaById('id'), {
       wrapper: createQueryClientWrapper(),
     });
 

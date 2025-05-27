@@ -13,6 +13,8 @@ RSpec.describe IdeaStatus do
     end
   end
 
+  it { is_expected.to validate_presence_of(:title_multiloc) }
+
   context 'when its code is required' do
     subject { create(:idea_status, code: code) }
 
@@ -41,6 +43,61 @@ RSpec.describe IdeaStatus do
     it 'can be destroyed' do
       subject.destroy
       expect(subject.destroyed?).to be true
+    end
+  end
+
+  describe '#sanitize_title_multiloc' do
+    it 'removes all HTML tags from title_multiloc' do
+      idea_status = build(
+        :idea_status,
+        title_multiloc: {
+          'en' => 'Something <script>alert("XSS")</script> something',
+          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
+          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      )
+
+      idea_status.save!
+
+      expect(idea_status.title_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(idea_status.title_multiloc['fr-BE']).to eq('Something')
+      expect(idea_status.title_multiloc['nl-BE']).to eq('Plain text with formatting')
+    end
+  end
+
+  describe '#sanitize_description_multiloc' do
+    it 'removes all HTML tags from description_multiloc' do
+      idea_status = build(
+        :idea_status,
+        description_multiloc: {
+          'en' => 'Something <script>alert("XSS")</script> something',
+          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
+          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      )
+
+      idea_status.save!
+
+      expect(idea_status.description_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(idea_status.description_multiloc['fr-BE']).to eq('Something ')
+      expect(idea_status.description_multiloc['nl-BE']).to eq('Plain text with formatting')
+    end
+
+    it 'sanitizes when escaped HTML tags present' do
+      idea_status = build(
+        :idea_status,
+        description_multiloc: {
+          'en' => 'Something &lt;script&gt;alert("XSS")&lt;/script&gt; something',
+          'fr-BE' => 'Something &lt;img src=x onerror=alert(1)&gt;',
+          'nl-BE' => 'Plain &lt;b&gt;text&lt;/b&gt; with &lt;i&gt;formatting&lt;/i&gt;'
+        }
+      )
+
+      idea_status.save!
+
+      expect(idea_status.description_multiloc['en']).to eq('Something alert("XSS") something')
+      expect(idea_status.description_multiloc['fr-BE']).to eq('Something ')
+      expect(idea_status.description_multiloc['nl-BE']).to eq('Plain text with formatting')
     end
   end
 end

@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -20,12 +20,9 @@ describe('useUpdateMapConfig', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useUpdateMapConfig('projectId'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useUpdateMapConfig('projectId'), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -44,12 +41,9 @@ describe('useUpdateMapConfig', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useUpdateMapConfig('projectId'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useUpdateMapConfig('projectId'), {
+      wrapper: createQueryClientWrapper(),
+    });
     act(() => {
       result.current.mutate({
         mapConfigId: '1',

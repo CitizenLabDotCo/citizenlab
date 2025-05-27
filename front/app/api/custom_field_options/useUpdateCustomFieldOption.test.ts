@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
 import useUpdateCustomFieldOption from './useUpdateCustomFieldOption';
@@ -23,7 +23,7 @@ describe('useUpdateCustomFieldOption', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdateCustomFieldOption(), {
+    const { result } = renderHook(() => useUpdateCustomFieldOption(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -45,7 +45,7 @@ describe('useUpdateCustomFieldOption', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateCustomFieldOption(), {
+    const { result } = renderHook(() => useUpdateCustomFieldOption(), {
       wrapper: createQueryClientWrapper(),
     });
 

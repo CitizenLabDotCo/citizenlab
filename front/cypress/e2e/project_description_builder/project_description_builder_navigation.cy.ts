@@ -35,7 +35,10 @@ describe('Project description builder navigation', () => {
   it('navigates to project description builder when edit project description link clicked', () => {
     cy.dataCy('e2e-toggle-enable-project-description-builder').click();
     // When the toggle is clicked, the project description builder is enabled and the link should appear.
+
     cy.get('#e2e-project-description-builder-link')
+      .wait(1000)
+
       .should('be.visible')
       .click();
     cy.url().should(

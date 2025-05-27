@@ -65,19 +65,23 @@ describe('Input form builder', () => {
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
+    // add a title and description
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
 
-    // Add a title
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    // verify the title and description
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Add a description
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent, {
+      force: true,
+    });
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.wait(1000);
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload').should('exist');
@@ -104,9 +108,8 @@ describe('Input form builder', () => {
     );
     cy.wait('@locationSearch', { timeout: 10000 });
 
-    cy.get('.e2e-idea-form-location-input-field input').type(
-      '{downArrow}{enter}'
-    );
+    cy.get('.e2e-idea-form-location-input-field input').type('{downArrow}');
+    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
 
     // save the form
     cy.dataCy('e2e-submit-form').click();
@@ -162,13 +165,15 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
 
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.wait(500);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+    cy.wait(500);
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -176,6 +181,7 @@ describe('Input form builder', () => {
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload').should('exist');
     cy.get('#e2e-idea-file-upload').should('exist');
+    cy.wait(500);
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
