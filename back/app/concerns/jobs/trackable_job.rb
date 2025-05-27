@@ -15,8 +15,8 @@ module Jobs
     end
 
     class_methods do
-      def with_tracking
-        JobWithTracking.new(self)
+      def with_tracking(owner: nil)
+        JobWithTracking.new(self, owner)
       end
     end
 
@@ -54,8 +54,9 @@ module Jobs
     end
 
     class JobWithTracking
-      def initialize(job_class)
+      def initialize(job_class, owner = nil)
         @job_class = job_class
+        @owner = owner
       end
 
       delegate :perform_now, to: :@job_class
@@ -66,7 +67,8 @@ module Jobs
           ::Jobs::Tracker.create!(
             root_job_id: job.send(:root_job_id),
             root_job_type: job.class.name,
-            total: job.send(:estimate_tracker_total, ...)
+            total: job.send(:estimate_tracker_total, ...),
+            owner: @owner
           )
 
           job

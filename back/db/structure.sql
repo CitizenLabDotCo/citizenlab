@@ -48,6 +48,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT
 ALTER TABLE IF EXISTS ONLY public.idea_images DROP CONSTRAINT IF EXISTS fk_rails_c349bb4ac3;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_c32c787647;
 ALTER TABLE IF EXISTS ONLY public.project_files DROP CONSTRAINT IF EXISTS fk_rails_c26fbba4b3;
+ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_bede8fb214;
 ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF EXISTS fk_rails_bde9116e72;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_bd36415a82;
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS fk_rails_bb813b4549;
@@ -239,6 +240,7 @@ DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_type;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_id;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_owner_id;
 DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
 DROP INDEX IF EXISTS public.index_invites_on_invitee_id;
@@ -2640,7 +2642,8 @@ CREATE TABLE public.jobs_trackers (
     progress integer DEFAULT 0 NOT NULL,
     total integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    owner_id uuid
 );
 
 
@@ -5381,6 +5384,13 @@ CREATE INDEX index_invites_on_token ON public.invites USING btree (token);
 
 
 --
+-- Name: index_jobs_trackers_on_owner_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_trackers_on_owner_id ON public.jobs_trackers USING btree (owner_id);
+
+
+--
 -- Name: index_jobs_trackers_on_root_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6810,6 +6820,14 @@ ALTER TABLE ONLY public.analysis_background_tasks
 
 
 --
+-- Name: jobs_trackers fk_rails_bede8fb214; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jobs_trackers
+    ADD CONSTRAINT fk_rails_bede8fb214 FOREIGN KEY (owner_id) REFERENCES public.users(id);
+
+
+--
 -- Name: project_files fk_rails_c26fbba4b3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7128,6 +7146,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250527084054'),
 ('20250521085055'),
 ('20250519080057'),
 ('20250513160156'),

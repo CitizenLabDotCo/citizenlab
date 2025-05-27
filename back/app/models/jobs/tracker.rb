@@ -11,17 +11,24 @@
 #  total         :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  owner_id      :uuid
 #
 # Indexes
 #
+#  index_jobs_trackers_on_owner_id       (owner_id)
 #  index_jobs_trackers_on_root_job_id    (root_job_id) UNIQUE
 #  index_jobs_trackers_on_root_job_type  (root_job_type)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (owner_id => users.id)
 #
 module Jobs
   class Tracker < ApplicationRecord
     # The `root_job` is optional because Que removes the jobs that are completed. So,
     # eventually the `root_job` will be null.
     belongs_to :root_job, class_name: 'QueJob', optional: true
+    belongs_to :owner, polymorphic: true, optional: true
 
     validates :root_job_type, presence: true
     validates :progress, numericality: { greater_than_or_equal_to: 0 }

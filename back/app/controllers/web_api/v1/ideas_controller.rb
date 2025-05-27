@@ -303,7 +303,7 @@ class WebApi::V1::IdeasController < ApplicationController
     dest_phase = Phase.find(params[:phase_id])
     authorize(dest_phase, :copy_inputs_to_phase?)
 
-    job = Ideas::CopyJob.with_tracking.perform_later(
+    job = Ideas::CopyJob.with_tracking(owner: current_user).perform_later(
       :submitted_or_published,
       copy_filters,
       dest_phase,

@@ -14,6 +14,7 @@
 #  global_custom_fields               :boolean          default(FALSE), not null
 #  verification_expiry                :integer
 #  access_denied_explanation_multiloc :jsonb            not null
+#  everyone_tracking_enabled          :boolean          default(FALSE), not null
 #
 # Indexes
 #
