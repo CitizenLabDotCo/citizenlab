@@ -47,8 +47,12 @@ describe('nav bar', () => {
   });
 
   it('navigates to projects overview page from All projects dropdown and back', () => {
+    cy.intercept('GET', '**/web_api/v1/admin_publications**').as(
+      'getAdminPublications'
+    );
     // Navigate to projects overview page
     cy.get('.e2e-projects-dropdown-link').should('be.visible').click();
+    cy.wait('@getAdminPublications');
     cy.get('#e2e-all-projects-link', { timeout: 20000 })
       .should('be.visible')
       .click();
