@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
 
@@ -8,7 +8,6 @@ import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
-import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { toBackendDateString, parseBackendDateString } from 'utils/dateUtils';
@@ -38,27 +37,25 @@ const TrafficDatesRange = ({
           {formatMessage(messages.selectPeriod)}
         </Text>
         <Box w="100%" display="flex" justifyContent="space-between">
-          <DateRangePicker
-            selectedRange={{
-              from: parseBackendDateString(startAt),
-              to: parseBackendDateString(endAt),
-            }}
-            onUpdateRange={({ from, to }) => {
-              setStartAt(toBackendDateString(from));
-              setEndAt(toBackendDateString(to));
-            }}
-          />
+          <Box display="flex" alignItems="center">
+            <DateRangePicker
+              selectedRange={{
+                from: parseBackendDateString(startAt),
+                to: parseBackendDateString(endAt),
+              }}
+              onUpdateRange={({ from, to }) => {
+                setStartAt(toBackendDateString(from));
+                setEndAt(toBackendDateString(to));
+              }}
+            />
+            <IconTooltip
+              ml="12px"
+              content={formatMessage(messages.visitorDataBanner)}
+            />
+          </Box>
           <ResolutionControl value={resolution} onChange={setResolution} />
         </Box>
       </Box>
-      <Box mx="44px" mb="20px">
-        <Warning>
-          <Text color="primary" m="0px">
-            {formatMessage(messages.visitorDataBanner)}
-          </Text>
-        </Warning>
-      </Box>
-
       <Box mx="36px">
         <Charts
           projectId={projectId}

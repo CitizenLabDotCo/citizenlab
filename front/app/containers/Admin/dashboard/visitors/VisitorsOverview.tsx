@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
 import { IOption } from 'typings';
 
@@ -8,7 +8,6 @@ import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
 import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
 
 import { IResolution } from 'components/admin/ResolutionControl';
-import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -59,16 +58,9 @@ const VisitorsOverview = ({ defaultStartDate }: Props) => {
           minDate={moment(START_DATE_SESSION_DATA_COLLECTION)}
           // Filtering visitor data by project is not allowed because the data is not available. For more details, refer to: https://www.notion.so/govocal/Gent-is-struggling-to-access-the-data-on-their-visitor-dashboard-cecae17322a24ccdb4bd938a511159cc?d=78857b76019144ee97b6bd8de960ead1
           showProjectFilter={false}
+          timeControlTooltip={formatMessage(messages.visitorDataBanner)}
         />
       </Box>
-      <Box p="10px">
-        <Warning>
-          <Text color="primary" m="0px">
-            {formatMessage(messages.visitorDataBanner)}
-          </Text>
-        </Warning>
-      </Box>
-
       <Charts
         projectId={projectId}
         startAtMoment={startAtMoment}
