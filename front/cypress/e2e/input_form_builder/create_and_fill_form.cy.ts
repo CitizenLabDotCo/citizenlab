@@ -66,10 +66,10 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
+    cy.get('#e2e-idea-title-input ').click().type(ideaTitle, { delay: 0 });
 
     // verify the title and description
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-title-input ').should('contain.value', ideaTitle);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
@@ -165,8 +165,8 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
 
-    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-title-input ').click().type(ideaTitle, { delay: 0 });
+    cy.get('#e2e-idea-title-input ').should('contain.value', ideaTitle);
     cy.wait(500);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();

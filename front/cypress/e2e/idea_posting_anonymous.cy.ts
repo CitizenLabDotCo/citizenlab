@@ -46,7 +46,7 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.acceptCookies();
 
     // add a title and description
-    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
+    cy.get('#e2e-idea-title-input ').click().type(ideaTitle, { delay: 0 });
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
@@ -89,7 +89,7 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.acceptCookies();
 
     // Add a title
-    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
+    cy.get('#e2e-idea-title-input ').click().type(ideaTitle, { delay: 0 });
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 

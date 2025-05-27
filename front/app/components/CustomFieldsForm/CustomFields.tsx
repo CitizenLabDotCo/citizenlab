@@ -21,14 +21,14 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FileUploaderField from './Fields/FileUploadField';
 import ImageField from './Fields/ImageField';
 import LinearScaleField from './Fields/LinearScale';
+import MatrixField from './Fields/MatrixField';
 import MultiSelectField from './Fields/MultiSelectField';
+import RankingField from './Fields/RankingField';
+import RatingField from './Fields/RatingField';
 import SingleSelectField from './Fields/SingleSelectField';
 import InputIQ from './InputIQ';
 import messages from './messages';
 import { getInstructionMessage } from './util';
-import RankingField from './Fields/RankingField';
-import RatingField from './Fields/RatingField';
-import MatrixField from './Fields/MatrixField';
 
 const renderField = ({
   question,

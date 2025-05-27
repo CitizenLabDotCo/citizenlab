@@ -28,7 +28,7 @@ import {
 
 interface FormValues {
   title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
+  body_multiloc?: Multiloc;
   author_id?: string;
   idea_images_attributes?: { image: string }[];
   idea_files_attributes?: {
@@ -85,15 +85,6 @@ const CustomFieldsForm = ({
     phase?.data.attributes.allow_anonymous_participation &&
     participationMethod !== 'native_survey';
 
-  // Copyright disclaimer is needed if the user is uploading files or images
-  const disclaimerNeeded =
-    formValues?.idea_files_attributes?.length ||
-    formValues?.idea_images_attributes?.length ||
-    (formValues?.body_multiloc &&
-      Object.values(formValues.body_multiloc).some((value) =>
-        value.includes('<img')
-      ));
-
   const pageButtonLabelMultiloc = customFields?.find(
     (field) => field.id === nestedPagesData[currentPageNumber].page.id
   )?.page_button_label_multiloc;
@@ -102,6 +93,15 @@ const CustomFieldsForm = ({
     formValues: FormValues,
     isDisclamerAccepted?: boolean
   ) => {
+    // Copyright disclaimer is needed if the user is uploading files or images
+    const disclaimerNeeded = !!(
+      formValues.idea_files_attributes?.length ||
+      formValues.idea_images_attributes?.length ||
+      (formValues.body_multiloc &&
+        Object.values(formValues.body_multiloc).some((value) =>
+          value.includes('<img')
+        ))
+    );
     setFormValues((prevValues) =>
       prevValues
         ? {
@@ -111,6 +111,8 @@ const CustomFieldsForm = ({
         : formValues
     );
     if (currentPageNumber === nestedPagesData.length - 2) {
+      console.log('Submitting form values:', formValues);
+      console.log(disclaimerNeeded, isDisclamerAccepted);
       if (disclaimerNeeded && !isDisclamerAccepted) {
         setIsDisclaimerOpened(true);
         return;

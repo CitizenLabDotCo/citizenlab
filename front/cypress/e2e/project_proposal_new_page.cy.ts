@@ -64,13 +64,8 @@ describe('Project proposal new page', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist'); // Change to proposal later
     // Add a title
-    cy.get('#e2e-idea-title-input input')
-      .click()
-      .type(proposalTitle, { delay: 0 });
-    cy.get('#e2e-idea-title-input input').should(
-      'contain.value',
-      proposalTitle
-    );
+    cy.get('#e2e-idea-title-input ').click().type(proposalTitle, { delay: 0 });
+    cy.get('#e2e-idea-title-input ').should('contain.value', proposalTitle);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
