@@ -3,13 +3,16 @@ import React, { useRef } from 'react';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
-import { sanitizeForClassname } from 'utils/JSONFormUtils';
-import { useIntl } from 'utils/cl-intl';
-import LinearScaleButton from './LinearScaleButton';
-import Labels from './Labels';
+
 import useLocalize from 'hooks/useLocalize';
 
 import messages from 'components/Form/Components/Controls/messages';
+
+import { useIntl } from 'utils/cl-intl';
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import Labels from './Labels';
+import LinearScaleButton from './LinearScaleButton';
 import { getLinearScaleLabel } from './utils';
 
 interface Props {
@@ -93,12 +96,13 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
 
   return (
     <>
-      <Box
+      <div
         data-testid="linearScaleControl"
         role="slider"
         ref={sliderRef}
         aria-valuemin={minimum}
         aria-valuemax={maximum}
+        aria-valuenow={data || minimum}
         aria-labelledby={sanitizeForClassname(name)}
         tabIndex={0}
         onKeyDown={handleKeyDown}
@@ -124,7 +128,7 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
           })}
         </Box>
         <Labels question={question} maximum={maximum} />
-      </Box>
+      </div>
     </>
   );
 };
