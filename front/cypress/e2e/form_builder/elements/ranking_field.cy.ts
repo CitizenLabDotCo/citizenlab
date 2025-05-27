@@ -44,9 +44,9 @@ describe('Form builder ranking component', () => {
 
   it('adds ranking field and is displayed when filling survey', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.get('[data-cy="e2e-ranking"]');
+    cy.dataCy('e2e-ranking');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-ranking"]').click();
+    cy.dataCy('e2e-ranking').click();
     cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
     cy.get('#e2e-option-input-0').type('Option 1 question 2', { force: true });
 
@@ -65,7 +65,7 @@ describe('Form builder ranking component', () => {
     cy.get('#e2e-ranking-control').should('exist');
 
     // Try going to the next page without filling in the survey
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message').should('exist');

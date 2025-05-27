@@ -32,9 +32,9 @@ describe('Edit community monitor survey', () => {
     cy.visit(communityMonitorEditSurveyUrl);
 
     // Add a sentiment question
-    cy.get('[data-cy="e2e-sentiment"]');
+    cy.dataCy('e2e-sentiment');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-sentiment"]').click();
+    cy.dataCy('e2e-sentiment').click();
 
     cy.get('#e2e-title-multiloc').type('New custom question', { force: true });
 
@@ -63,14 +63,14 @@ describe('Edit community monitor survey', () => {
     cy.visit(communityMonitorEditSurveyUrl);
 
     // Add a new page
-    cy.get('[data-cy="e2e-page"]');
+    cy.dataCy('e2e-page');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-page"]').click();
+    cy.dataCy('e2e-page').click();
 
     // Add a sentiment question
-    cy.get('[data-cy="e2e-sentiment"]');
+    cy.dataCy('e2e-sentiment');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-sentiment"]').click();
+    cy.dataCy('e2e-sentiment').click();
 
     cy.get('#e2e-title-multiloc').type('New custom question', { force: true });
 

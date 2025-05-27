@@ -119,6 +119,26 @@ describe ProjectCopyService do
       )
     end
 
+    it 'successfully exports matrix custom fields' do
+      field = create(:custom_field_matrix_linear_scale, :for_custom_form)
+      template = service.export field.resource.participation_context
+
+      expect(template.dig('models', 'custom_field', 0, 'input_type')).to eq 'matrix_linear_scale'
+      expect(template['models']['custom_field_matrix_statement'].size).to eq 2
+      expect(template['models']['custom_field_matrix_statement']).to match_array [
+        hash_including(
+          'title_multiloc' => { 'en' => 'We should send more animals into space' },
+          'key' => 'send_more_animals_to_space',
+          'ordering' => 0
+        ),
+        hash_including(
+          'title_multiloc' => { 'en' => 'We should ride our bicycles more often' },
+          'key' => 'ride_bicycles_more_often',
+          'ordering' => 1
+        )
+      ]
+    end
+
     it 'skips custom field values with ID references' do
       create(:idea_status_proposed)
       project = create(:single_phase_native_survey_project)

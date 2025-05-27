@@ -50,7 +50,7 @@ describe('Submit community monitor survey', () => {
     cy.wait(2000);
 
     // Confirm submissions was successful
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.dataCy('e2e-after-submission').should('exist');
   });
 
   it('can be submitted by a logged out user by default', () => {
@@ -81,7 +81,7 @@ describe('Submit community monitor survey', () => {
     cy.wait(2000);
 
     // Confirm submissions was successful
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.dataCy('e2e-after-submission').should('exist');
   });
 
   it('cannot be submitted by a logged out user if permissions require registration', () => {

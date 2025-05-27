@@ -30,13 +30,13 @@ describe('Idea submission form', () => {
 
   it('shows a back button to navigate to the projects page', () => {
     const ideaTitle = randomString(9);
-    cy.get('#e2e-idea-title-input').type(ideaTitle);
-    cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('[data-cy="e2e-leave-new-idea-button"]').click();
-    cy.get('[data-cy="e2e-confirm-leave-new-idea-button"]').should('exist');
-    cy.get('[data-cy="e2e-confirm-leave-new-idea-button"]').click();
+    cy.dataCy('e2e-leave-new-idea-button').click();
+    cy.dataCy('e2e-confirm-leave-new-idea-button').should('exist');
+    cy.dataCy('e2e-confirm-leave-new-idea-button').click();
     cy.location('pathname').should(
       'eq',
       '/en/projects/an-idea-bring-it-to-your-council'
@@ -45,34 +45,48 @@ describe('Idea submission form', () => {
     cy.contains(ideaTitle).should('not.exist');
   });
 
-  it('shows an error when no description is provided', () => {
-    const value = randomString(9);
-    cy.get('#idea-form');
-    cy.get('#e2e-idea-title-input').type(value);
-    cy.get('#e2e-idea-title-input').should('contain.value', value);
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+  it('shows an error when no title is provided', () => {
     // Try to go to the next page
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.get(' .e2e-error-message').should('exist');
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.get('#e2e-idea-title-input .e2e-error-message');
+  });
+
+  it('shows an error when no description is provided', () => {
+    const ideaTitle = randomString(9);
+    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+
+    // Go to the description page
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    // Try to go to the next page
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.get('#e2e-idea-description-input .e2e-error-message');
   });
 
   it('shows an error when the title is less than 3 characters long', () => {
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input').type(randomString(2));
     // Try to go to the next page
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.get('.e2e-error-message').should('exist');
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.get('#e2e-idea-title-input .e2e-error-message');
   });
 
-  it('shows an error when the description is less than 3 characters long', () => {
-    const title = randomString(10);
-    cy.get('#idea-form');
-    cy.get('#e2e-idea-title-input').type(title);
-    cy.get('#e2e-idea-title-input').should('contain.value', title);
+  it('shows no error when the description is less than 3 characters long', () => {
+    const ideaTitle = randomString(10);
+    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
 
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.get('.e2e-error-message').should('exist');
+    const ideaContent = randomString(2);
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
+    cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.dataCy('e2e-submit-form').click();
+    cy.dataCy('e2e-after-submission').should('exist').click();
+    cy.contains(ideaTitle).should('exist');
   });
 
   it('saves correct location point when provided in URL', () => {
@@ -97,20 +111,20 @@ describe('Idea submission form', () => {
     cy.get('#e2e-idea-title-input').type(ideaTitle);
     cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
 
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Add a description
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // Go to the next page of the idea form
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Check that the geocoder has autofilled the location
     cy.get('.e2e-idea-form-location-input-field').contains(geocodedLocation);
     // save the idea
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
     cy.wait(3000);
 
     // Intercept the payload, and make sure the original lat/long values are saved as the point
@@ -132,20 +146,20 @@ describe('Idea submission form', () => {
     cy.get('#e2e-idea-title-input').type(ideaTitle);
     cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
 
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // Go to the next page of the idea form
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
     cy.get('[data-cy="e2e-idea-file-upload"]');
 
     // Go to the page with topics
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // add a topic
     cy.get('.e2e-topics-picker').find('button').eq(4).click();
@@ -166,11 +180,11 @@ describe('Idea submission form', () => {
       .type('{enter}');
 
     // save the form
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
     cy.wait(3000);
 
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);

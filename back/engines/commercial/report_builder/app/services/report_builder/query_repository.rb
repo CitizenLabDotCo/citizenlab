@@ -6,7 +6,7 @@ module ReportBuilder
       'ReactionsByTimeWidget' => Queries::Analytics::ReactionsByTime,
       'VisitorsWidget' => Queries::Visitors,
       'ParticipantsWidget' => Queries::Participants,
-      'VisitorsTrafficSourcesWidget' => Queries::Analytics::TrafficSources,
+      'VisitorsTrafficSourcesWidget' => Queries::TrafficSources,
       'SurveyQuestionResultWidget' => Queries::SurveyQuestionResult,
       'MostReactedIdeasWidget' => Queries::MostReactedIdeas,
       'SingleIdeaWidget' => Queries::SingleIdea,

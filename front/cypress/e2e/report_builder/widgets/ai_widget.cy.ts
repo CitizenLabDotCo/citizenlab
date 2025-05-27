@@ -152,8 +152,8 @@ describe('Report builder: AI widget', () => {
 
     // Expect the insights to be shown
     cy.get('#e2e-report-buider-ai-no-analyses').should('not.exist');
-    cy.get('[data-cy="e2e-report-builder-analysis-summary"]').should('exist');
-    cy.get('[data-cy="e2e-report-builder-analysis-question"]').should('exist');
+    cy.dataCy('e2e-report-builder-analysis-summary').should('exist');
+    cy.dataCy('e2e-report-builder-analysis-question').should('exist');
 
     // Drag and drop the insights to the report
     cy.get('#e2e-draggable-insight')
@@ -208,7 +208,7 @@ describe('Report builder: AI widget', () => {
 
     // Expect the insights to be shown
     cy.get('#e2e-report-buider-ai-no-analyses').should('not.exist');
-    cy.get('[data-cy="e2e-report-builder-analysis-summary"]').should('exist');
+    cy.dataCy('e2e-report-builder-analysis-summary').should('exist');
 
     // Drag and drop the insights to the report
     cy.get('#e2e-draggable-insight').dragAndDrop('#e2e-content-builder-frame', {
