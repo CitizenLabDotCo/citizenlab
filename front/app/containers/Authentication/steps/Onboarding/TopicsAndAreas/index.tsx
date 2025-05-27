@@ -9,7 +9,7 @@ import { OnboardingType } from 'api/users/types';
 
 import Areas from 'components/Areas';
 import Topics from 'components/Topics';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -71,12 +71,12 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
       )}
       <Box display="flex" justifyContent="flex-end">
         <Box my="20px" w="auto" display="flex" alignSelf="flex-end" gap="8px">
-          <Button onClick={onSkip} buttonStyle="primary-outlined">
+          <ButtonWithLink onClick={onSkip} buttonStyle="primary-outlined">
             {formatMessage(messages.skipForNow)}
-          </Button>
-          <Button onClick={handleSubmit}>
+          </ButtonWithLink>
+          <ButtonWithLink onClick={handleSubmit}>
             {formatMessage(messages.savePreferences)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       </Box>
     </>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -19,7 +19,7 @@ const RemoveFlagButton = ({
 }: Props) => {
   if (selectedActiveFlagsCount > 0) {
     return (
-      <Button
+      <ButtonWithLink
         icon="alert-octagon-off"
         buttonStyle="admin-dark"
         processing={processing}
@@ -31,7 +31,7 @@ const RemoveFlagButton = ({
             numberOfItems: selectedActiveFlagsCount,
           }}
         />
-      </Button>
+      </ButtonWithLink>
     );
   }
 

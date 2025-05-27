@@ -19,7 +19,7 @@ import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useAnalysisSummaries from 'api/analysis_summaries/useAnalysisSummaries';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -180,14 +180,14 @@ const Analysis = ({
     <Box position="relative">
       {noInsights && (
         <Box display="flex">
-          <Button
+          <ButtonWithLink
             processing={isAddAnalysisLoading}
             onClick={goToAnalysis}
             buttonStyle="secondary-outlined"
             icon="stars"
           >
             {formatMessage(messages.createAIAnalysis)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       )}
       {showAnalysisInsights && (
@@ -252,7 +252,7 @@ const Analysis = ({
       )}
       {hideAnalysisInsights && (
         <Box display="flex">
-          <Button
+          <ButtonWithLink
             id="e2e-show-summaries"
             processing={isLoading}
             onClick={() =>
@@ -265,7 +265,7 @@ const Analysis = ({
             icon="stars"
           >
             {formatMessage(messages.showSummaries)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       )}
     </Box>

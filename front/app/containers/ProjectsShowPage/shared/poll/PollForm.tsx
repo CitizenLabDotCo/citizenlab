@@ -14,7 +14,7 @@ import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -196,7 +196,7 @@ const PollForm = ({
           content={disabledMessage && formatMessage(disabledMessage)}
         >
           <div>
-            <Button
+            <ButtonWithLink
               onClick={sendAnswer}
               size="m"
               fullWidth={true}
@@ -204,7 +204,7 @@ const PollForm = ({
               className="e2e-send-poll"
             >
               <FormattedMessage {...messages.sendAnswer} />
-            </Button>
+            </ButtonWithLink>
           </div>
         </Tooltip>
       </>

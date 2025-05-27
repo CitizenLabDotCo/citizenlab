@@ -8,7 +8,7 @@ import { string, object } from 'yup';
 import { SetError } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import {
@@ -86,7 +86,7 @@ const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
             />
           </Box>
           <Box w="100%" display="flex" mt="32px">
-            <Button
+            <ButtonWithLink
               id="e2e-change-email-submit"
               type="submit"
               width="auto"
@@ -94,7 +94,7 @@ const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
               disabled={loading}
             >
               {formatMessage(messages.sendEmailWithCode)}
-            </Button>
+            </ButtonWithLink>
           </Box>
         </form>
       </FormProvider>
