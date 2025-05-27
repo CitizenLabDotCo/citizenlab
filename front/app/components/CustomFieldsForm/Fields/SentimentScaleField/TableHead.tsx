@@ -4,56 +4,86 @@ import {
   Box,
   Button,
   Icon,
-  Table,
-  Tbody,
   Td,
-  Text,
-  Th,
   Thead,
   Tr,
 } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { useTheme } from 'styled-components';
 
-const TableHead = () => {
+import { MAXIMUM } from './constants';
+import { getSentimentEmoji } from './utils';
+
+export const StyledImg = styled.img`
+  padding: 8px;
+  border: 1px solid white;
+  border-radius: 8px;
+  width: 48px;
+
+  &.isSelected {
+    border: 1px solid ${({ theme }) => theme.colors.tenantPrimary};
+    background-color: ${({ theme }) => theme.colors.tenantPrimaryLighten90};
+  }
+
+  &:not(.isSelected):hover {
+    background-color: ${({ theme }) => theme.colors.grey100};
+    border: 1px solid ${({ theme }) => theme.colors.grey500};
+  }
+`;
+
+interface Props {
+  data?: number;
+  id: string;
+  getAriaLabel: (value: number, total: number) => string;
+  onChange: (data?: number) => void;
+  onResetFollowUp: () => void;
+  onFocusSliderRef: () => void;
+}
+
+const TableHead = ({
+  data,
+  id,
+  getAriaLabel,
+  onChange,
+  onResetFollowUp,
+  onFocusSliderRef,
+}: Props) => {
   const theme = useTheme();
 
   return (
     <Thead>
       <Tr>
-        {[...Array(maximum).keys()].map((i) => {
+        {[...Array(MAXIMUM).keys()].map((i) => {
           // The currentAnswer is 1-indexed, so it's easier here to add 1 to the mapped
           // index for when we want to compare it to the currently selected value;
           const visualIndex = i + 1;
-          const isSelected = currentAnswer === visualIndex;
+          const isSelected = data === visualIndex;
 
           return (
-            <Td py="4px" key={`${path}-radio-${visualIndex}`}>
+            <Td py="4px" key={`${id}-radio-${visualIndex}`}>
               <Box display="flex" flexDirection="column" alignItems="center">
                 <Button
                   p="0px"
                   m="0px"
-                  id={`${path}-linear-scale-option-${visualIndex}`}
+                  id={`${id}-linear-scale-option-${visualIndex}`}
                   aria-pressed={isSelected}
                   width="100%"
                   tabIndex={-1}
                   onClick={() => {
                     if (isSelected) {
                       // Clear data from this question and any follow-up question
-                      handleChange(path, undefined);
-                      handleChange(`${path}_follow_up`, undefined);
+                      onChange(undefined);
+                      onResetFollowUp();
                     } else {
-                      handleChange(path, visualIndex);
+                      onChange(visualIndex);
                     }
                   }}
-                  onFocus={() => {
-                    sliderRef.current?.focus();
-                  }}
+                  onFocus={onFocusSliderRef}
                   buttonStyle="text"
                 >
                   <ScreenReaderOnly>
-                    {getAriaLabel(visualIndex, maximum)}
+                    {getAriaLabel(visualIndex, MAXIMUM)}
                   </ScreenReaderOnly>
                   <Box>
                     {isSelected && (

@@ -8,6 +8,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { MINIMUM, MAXIMUM } from './constants';
 import TableBody from './TableBody';
 import TableHead from './TableHead';
 import { getAriaValueText, handleKeyboardKeyChange } from './utils';
@@ -17,9 +18,6 @@ interface Props {
   question: IFlatCustomField;
   onChange: (value: number) => void;
 }
-
-const minimum = 1;
-const maximum = 5;
 
 const SentimentScale = ({ value: data, question, onChange }: Props) => {
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -45,17 +43,17 @@ const SentimentScale = ({ value: data, question, onChange }: Props) => {
   // Set the aria-valuenow and aria-valuetext attributes on the slider when the data changes
   useEffect(() => {
     if (sliderRef.current) {
-      sliderRef.current.setAttribute('aria-valuenow', String(data || minimum));
+      sliderRef.current.setAttribute('aria-valuenow', String(data || MINIMUM));
       sliderRef.current.setAttribute(
         'aria-valuetext',
-        getAriaLabel(data || minimum, maximum)
+        getAriaLabel(data || MINIMUM, MAXIMUM)
       );
     }
   }, [data, getAriaLabel]);
 
   // Handle keyboard input for the slider
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const value = data || minimum;
+    const value = data || MINIMUM;
     let newValue = value;
     newValue = handleKeyboardKeyChange(event, value);
 
@@ -75,8 +73,8 @@ const SentimentScale = ({ value: data, question, onChange }: Props) => {
       data-testid="sentimentLinearScaleControl"
       role="slider"
       ref={sliderRef}
-      aria-valuemin={minimum}
-      aria-valuemax={maximum}
+      aria-valuemin={MINIMUM}
+      aria-valuemax={MAXIMUM}
       aria-labelledby={id}
       onKeyDown={(event) => {
         if (event.key !== 'Tab' && !event.metaKey) {
@@ -88,7 +86,16 @@ const SentimentScale = ({ value: data, question, onChange }: Props) => {
     >
       <Box>
         <Table style={{ tableLayout: 'fixed' }}>
-          <TableHead />
+          <TableHead
+            data={data}
+            id={id}
+            getAriaLabel={getAriaLabel}
+            onChange={onChange}
+            onResetFollowUp={() => {}} // TODO
+            onFocusSliderRef={() => {
+              sliderRef.current?.focus();
+            }}
+          />
           <TableBody />
         </Table>
       </Box>
