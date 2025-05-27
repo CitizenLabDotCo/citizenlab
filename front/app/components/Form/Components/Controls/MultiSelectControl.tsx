@@ -25,7 +25,6 @@ import { getInstructionMessage } from './utils';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
-  z-index: 1001;
 `;
 
 const MultiSelectControl = ({
