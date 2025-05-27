@@ -187,6 +187,25 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
+  describe '#everyone_tracking_enabled?' do
+    let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
+
+    it 'returns true when enabled on phase and everyone permissions' do
+      phase.permissions.first.update!(permitted_by: 'everyone', everyone_tracking_enabled: true)
+      expect(participation_method.everyone_tracking_enabled?).to be true
+    end
+
+    it 'returns false when not enabled on phase' do
+      phase.permissions.first.update!(permitted_by: 'everyone', everyone_tracking_enabled: false)
+      expect(participation_method.everyone_tracking_enabled?).to be false
+    end
+
+    it 'returns false when phase does not have "everyone" permissions' do
+      phase.permissions.first.update!(permitted_by: 'users', everyone_tracking_enabled: true)
+      expect(participation_method.everyone_tracking_enabled?).to be false
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:return_disabled_actions?) { is_expected.to be true }
@@ -198,7 +217,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be false }
   its(:supports_inputs_without_author?) { is_expected.to be true }
-  its(:supports_multiple_posts?) { is_expected.to be false }
+  its(:allow_posting_again_after) { is_expected.to eq 3.months }
   its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }

@@ -184,6 +184,7 @@ de:
         description:
       other_input_field:
         title: Antwort eingeben
+        print_title: Wenn '%{other_option}', bitte angeben
       ask_follow_up_field:
         title: Erzähl uns mehr
     community_monitor:
@@ -227,23 +228,23 @@ de:
     categories:
       main_content:
         idea:
-          title: Was ist Ihr Beitrag?
+          title: Was ist deine Idee?
         question:
-          title: Was ist Ihre Frage?
+          title: Was ist deine Frage?
         contribution:
-          title: Was ist Ihr Beitrag?
+          title: Was ist dein Beitrag?
         project:
-          title: Was ist Ihr Projekt?
+          title: Was ist dein Projekt?
         issue:
-          title: Was ist Ihr Vorhaben?
+          title: Was ist dein Vorhaben?
         option:
-          title: Was ist Ihre Option?
+          title: Was ist deine Option?
         proposal:
           title: Was ist dein Vorschlag?
         initiative:
-          title: Was ist Ihre Initiative?
+          title: Was ist deine Initiative?
         petition:
-          title: Was ist Ihre Petition?
+          title: Was ist deine Petition?
   custom_field_options:
     gender:
       male: Männlich
@@ -329,6 +330,7 @@ de:
       write_as_clearly: 'Schreiben Sie so <b>deutlich</b> wie möglich - diese Formulare werden gescannt'
       write_in_language: 'Schreiben Sie Ihre Antworten bitte in der gleichen Sprache wie dieses Formular'
       linear_scale_print_description: 'Bitte schreiben Sie nur eine Zahl zwischen %{min_label} und %{max_label}'
+      unsupported_field: 'Dieses Feld kann nicht auf Papier ausgefüllt werden. Bitte verwenden Sie stattdessen die Online-Version dieses Formulars.'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:

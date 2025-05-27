@@ -4,7 +4,7 @@ import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__m
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { mockAuthUserData } from 'api/me/__mocks__/_mockServer';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, act } from 'utils/testUtils/rtl';
 
 import NonSortableFolderRow, { Props } from './NonSortableFolderRow';
 const folderId = 'folderId';
@@ -76,9 +76,10 @@ const props: Props = {
 describe('NonSortableFolderRow', () => {
   it('renders the project row inside', () => {
     render(<NonSortableFolderRow {...props} />);
-    screen.getByTestId('folder-row').click();
+    act(() => {
+      screen.getByTestId('folder-row').click();
+    });
     const projectRows = screen.getAllByTestId('projectRow');
-
     expect(projectRows.length).toEqual(2);
   });
 });

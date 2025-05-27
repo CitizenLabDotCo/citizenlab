@@ -68,7 +68,9 @@ class Idea < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
   SUBMISSION_STATUSES = %w[submitted published].freeze
 
-  slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
+  attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService
+
+  slug from: proc { |idea| idea&.participation_method_on_creation&.generate_slug(idea) }
 
   belongs_to :author, class_name: 'User', optional: true
   belongs_to :project, touch: true
@@ -151,15 +153,12 @@ class Idea < ApplicationRecord
   validate :not_published_in_non_public_status
   validates :manual_votes_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
 
-  # validates :custom_field_values, json: {
-  #   schema: :schema_for_validation,
-  # }
-
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true
     before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
+    before_validation { sanitize_multilocs :title_multiloc }
   end
 
   pg_search_scope :search_by_all,
@@ -275,6 +274,10 @@ class Idea < ApplicationRecord
   scope :published, -> { where publication_status: 'published' }
   scope :submitted_or_published, -> { where publication_status: SUBMISSION_STATUSES }
 
+  scope :published_after, lambda { |date_time| # eg 2.days.ago
+    where(publication_status: 'published', published_at: date_time..)
+  }
+
   def just_submitted?
     # It would be better to foresee separate endpoints for submission,
     # rather than relying on Rails dirty to detect publication.
@@ -366,12 +369,6 @@ class Idea < ApplicationRecord
 
   private
 
-  def schema_for_validation
-    fields = participation_method_on_creation.custom_form.custom_fields
-    multiloc_schema = JsonSchemaGeneratorService.new.generate_for fields
-    multiloc_schema.values.first
-  end
-
   def title_multiloc_required?
     !draft? && participation_method_on_creation.built_in_title_required?
   end
@@ -379,7 +376,6 @@ class Idea < ApplicationRecord
   def body_multiloc_required?
     !draft? && participation_method_on_creation.built_in_body_required?
   end
-
   def sanitize_body_multiloc
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc(
@@ -481,6 +477,8 @@ class Idea < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
@@ -512,6 +510,5 @@ Idea.include(FlagInappropriateContent::Concerns::Flaggable)
 Idea.include(Moderation::Concerns::Moderatable)
 Idea.include(MachineTranslations::Concerns::Translatable)
 Idea.include(IdeaAssignment::Extensions::Idea)
-Idea.include(IdeaCustomFields::Extensions::Idea)
 Idea.include(Analysis::Patches::Idea)
 Idea.include(BulkImportIdeas::Patches::Idea)

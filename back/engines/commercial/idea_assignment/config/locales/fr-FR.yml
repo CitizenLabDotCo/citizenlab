@@ -8,6 +8,6 @@ fr:
       by_author: 'par %{authorName}'
       cta_reply_to: 'Faites votre retour à %{authorName}'
       event_description_idea: 'Une idée vous a été attribuée. Envoyer une mise à jour en écrivant un commentaire officiel ou en changeant son statut.'
-      main_header: '%{firstName}, vous avez une nouvelle attribution'
+      main_header: '%{firstName}, une contribution vous a été assignée'
       subject: 'Vous avez une nouvelle attribution sur la plateforme de %{organizationName}'
       preheader_idea: 'L’idée de %{authorName} vous a été attribuée'

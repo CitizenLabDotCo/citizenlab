@@ -40,7 +40,7 @@ class Project < ApplicationRecord
 
   VISIBLE_TOS = %w[public groups admins].freeze
 
-  slug from: proc { |project| project.title_multiloc.values.find(&:present?) }
+  slug from: proc { |project| project.title_multiloc&.values&.find(&:present?) }
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
@@ -70,6 +70,10 @@ class Project < ApplicationRecord
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
+  before_validation do
+    sanitize_multilocs :title_multiloc, :description_preview_multiloc, :header_bg_alt_text_multiloc
+  end
+
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
   before_validation :strip_title
@@ -257,6 +261,8 @@ class Project < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

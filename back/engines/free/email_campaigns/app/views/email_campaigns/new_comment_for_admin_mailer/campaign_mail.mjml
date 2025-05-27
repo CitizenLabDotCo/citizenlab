@@ -1,17 +1,19 @@
 <!-- Idea description box -->
-<mj-section padding="0 25px 25px"
-            background-color="#fff"
-            text-align="left">
-  <mj-column border="1px solid #eaeaea" padding="20px 25px" background-color="#fff" border-radius="5px">
-    <mj-text>
-      <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
-        <%= localize_for_recipient(event.idea_title_multiloc) %>
-      </h2>
-      <p style="margin-top: 10px; color: #84939E;">
-        <%= time_ago(event.idea_published_at) %>
-        <%= format_message('by_author', component: 'general', values: {authorName: event.idea_author_name}) %>
-      </p>
-    </mj-text>
+<mj-section padding="0 25px 25px">
+  <mj-column>
+    <mj-table>
+      <tr>
+        <td style="border:1px solid #eaeaea; padding:20px 25px; background-color:#fff; border-radius:5px;">
+          <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+            <%= localize_for_recipient(event.idea_title_multiloc) %>
+          </h2>
+          <p style="margin-top: 10px; color: #84939E;">
+            <%= time_ago(event.idea_published_at) %>
+            <%= format_message('by_author', component: 'general', values: {authorName: event.idea_author_name}) %>
+          </p>
+        </td>
+      </tr>
+    </mj-table>
   </mj-column>
 </mj-section>
 

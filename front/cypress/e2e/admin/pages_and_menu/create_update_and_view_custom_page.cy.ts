@@ -29,7 +29,7 @@ describe('Admin: can', () => {
       cy.clickLocaleSwitcherAndType(page1);
 
       // submit
-      cy.get('[data-cy="e2e-submit-custom-page"]').click();
+      cy.dataCy('e2e-submit-custom-page').click();
 
       cy.wait('@createCustomPage').then((interception) => {
         customPageId1 = interception.response?.body.data.id;
@@ -79,20 +79,20 @@ describe('Admin: can', () => {
       cy.visit(`/en/admin/pages-menu/pages/${customPageId2}/content`);
 
       // toggle banner section
-      cy.get('[data-cy="e2e-admin-section-toggle-banner_enabled"]').click();
+      cy.dataCy('e2e-admin-section-toggle-banner_enabled').click();
       // wait for the call to complete
       cy.wait('@updateCustomPage');
       // wait for the toggle to become enabled in the UI
-      cy.get('[data-cy="e2e-admin-section-toggle-banner_enabled"]')
+      cy.dataCy('e2e-admin-section-toggle-banner_enabled')
         .find('i')
         .should('have.class', 'enabled');
 
       // go to the hero banner edit
-      cy.get('[data-cy="e2e-admin-edit-button-banner_enabled"]').click();
+      cy.dataCy('e2e-admin-edit-button-banner_enabled').click();
 
       // check for section enabled banner and check that enable button is not present
       cy.contains('Shown on page').should('exist');
-      cy.get('[data-cy="e2e-submit-wrapper-secondary-submit-button"]').should(
+      cy.dataCy('e2e-submit-wrapper-secondary-submit-button').should(
         'not.exist'
       );
 
@@ -102,32 +102,32 @@ describe('Admin: can', () => {
       });
 
       // update the header text
-      cy.get('[data-cy="e2e-signed-out-header-section"]').scrollIntoView();
-      cy.get('[data-cy="e2e-signed-out-header-section"]')
+      cy.dataCy('e2e-signed-out-header-section').scrollIntoView();
+      cy.dataCy('e2e-signed-out-header-section')
         .find('.e2e-localeswitcher')
         .each((button) => {
           cy.wrap(button).click();
-          cy.get('[data-cy="e2e-signed-out-header-section"]')
+          cy.dataCy('e2e-signed-out-header-section')
             .find('input')
             .type(headerContent);
         });
 
       // update the subheader text
-      cy.get('[data-cy="e2e-signed-out-subheader-section"]').scrollIntoView();
-      cy.get('[data-cy="e2e-signed-out-subheader-section"]')
+      cy.dataCy('e2e-signed-out-subheader-section').scrollIntoView();
+      cy.dataCy('e2e-signed-out-subheader-section')
         .find('.e2e-localeswitcher')
         .each((button) => {
           cy.wrap(button).click();
-          cy.get('[data-cy="e2e-signed-out-subheader-section"]')
+          cy.dataCy('e2e-signed-out-subheader-section')
             .find('input')
             .type(subheaderContent);
         });
 
       // enable custom button
-      cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]').click();
+      cy.dataCy('e2e-cta-settings-custom-customized_button').click();
 
       // enter button multiloc content
-      cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]')
+      cy.dataCy('e2e-cta-settings-custom-customized_button')
         .find('.e2e-localeswitcher')
         .each((button) => {
           cy.wrap(button).click();
@@ -144,7 +144,7 @@ describe('Admin: can', () => {
 
       cy.visit(`/en/pages/${page2}`);
 
-      cy.get('[data-cy="e2e-header-image-background"]')
+      cy.dataCy('e2e-header-image-background')
         .should('have.attr', 'src')
         .should('include', '.png');
       cy.contains(headerContent);
@@ -158,25 +158,21 @@ describe('Admin: can', () => {
       cy.visit(`/en/admin/pages-menu/pages/${customPageId3}/content`);
 
       // toggle top info section
-      cy.get(
-        '[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]'
-      ).click();
+      cy.dataCy('e2e-admin-section-toggle-top_info_section_enabled').click();
       // wait for the call to complete
       cy.wait('@updateCustomPage');
       // wait for the toggle to become enabled in the UI
-      cy.get('[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]')
+      cy.dataCy('e2e-admin-section-toggle-top_info_section_enabled')
         .find('i')
         .should('have.class', 'enabled');
 
       // go to top info section edit page
-      cy.get(
-        '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
-      ).click();
+      cy.dataCy('e2e-admin-edit-button-top_info_section_enabled').click();
 
       cy.contains('Shown on page').should('exist');
 
       // fill out top info section
-      cy.get('[data-cy="e2e-top-info-form"]')
+      cy.dataCy('e2e-top-info-form')
         .find('.e2e-localeswitcher')
         .each((button) => {
           cy.wrap(button).click();
@@ -185,7 +181,7 @@ describe('Admin: can', () => {
         });
 
       // submit
-      cy.get('[data-cy="e2e-top-info-section-submit"]').click();
+      cy.dataCy('e2e-top-info-section-submit').click();
 
       // scroll to breadcrumbs, go back to main page to test enabling it differently
       cy.visit(`/en/admin/pages-menu/pages/${customPageId3}/content`);
@@ -197,15 +193,13 @@ describe('Admin: can', () => {
       cy.wait('@updateCustomPage');
 
       // go to top info section edit page
-      cy.get(
-        '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
-      ).click();
+      cy.dataCy('e2e-admin-edit-button-top_info_section_enabled').click();
 
       // check that the section is now disabled
       cy.contains('Not shown on page').should('exist');
 
       // enable it via the save + enable button
-      cy.get('[data-cy="e2e-top-info-section-secondary-submit"]').click();
+      cy.dataCy('e2e-top-info-section-secondary-submit').click();
 
       // wait for the badge showing that it was enabled
       cy.contains('Shown on page').should('exist');
@@ -228,7 +222,7 @@ describe('Admin: can', () => {
       cy.visit(`/en/admin/pages-menu/pages/${customPageId4}/content`);
 
       // wait for toggle to be visible
-      cy.get('[data-cy="e2e-admin-section-toggle-files_section_enabled"]');
+      cy.dataCy('e2e-admin-section-toggle-files_section_enabled');
       cy.wait(1000);
 
       // toggle attachments section
@@ -240,13 +234,13 @@ describe('Admin: can', () => {
       cy.wait('@updateCustomPage');
 
       // wait for the toggle to become enabled in the UI
-      cy.get('[data-cy="e2e-admin-section-toggle-files_section_enabled"]')
+      cy.dataCy('e2e-admin-section-toggle-files_section_enabled')
         .find('i')
         .should('have.class', 'enabled');
 
       // go to attachments section edit page
       cy.wait(1000);
-      cy.get('[data-cy="e2e-admin-edit-button-files_section_enabled"]').click();
+      cy.dataCy('e2e-admin-edit-button-files_section_enabled').click();
 
       cy.contains('Shown on page').should('exist');
 
@@ -259,11 +253,11 @@ describe('Admin: can', () => {
       });
 
       cy.wait(2000);
-      cy.get('[data-cy="e2e-file-uploader-container"]').should('exist');
-      cy.get('[data-cy="e2e-file-uploader-container"]').contains('example.pdf');
+      cy.dataCy('e2e-file-uploader-container').should('exist');
+      cy.dataCy('e2e-file-uploader-container').contains('example.pdf');
 
       // submit
-      cy.get('[data-cy="e2e-attachments-section-submit"]').click();
+      cy.dataCy('e2e-attachments-section-submit').click();
 
       cy.wait('@addFiles');
       cy.get('[data-testid="feedbackSuccessMessage"');
