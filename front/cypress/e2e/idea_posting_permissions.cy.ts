@@ -80,9 +80,8 @@ describe('idea posting restricted to a group', () => {
   let nonPermittedUserEmail = randomEmail();
   let nonPermittedUserPassword = randomString(8);
 
-  // Create project with smart group access posting rights
+  // Create project with group posting rights
   before(() => {
-    // Create project with ideation phase using our new utility function
     cy.createProjectWithIdeationPhase({
       phaseTitle: 'Ideation phase',
     }).then((result) => {
@@ -96,22 +95,17 @@ describe('idea posting restricted to a group', () => {
         },
       }).then((response) => {
         groupId = response.body.data.id;
-        // Use our new apiAddProjectGroup function to connect the group to the project
-        cy.apiAddProjectGroup({
-          groupId,
-          projectId,
-        });
-      });
-
-      cy.apiSetPhasePermission({
-        phaseId,
-        action: 'posting_idea',
-        permissionBody: {
-          permission: {
-            permitted_by: 'users',
-            group_ids: [groupId],
+        // Connect the group to the project
+        cy.apiSetPhasePermission({
+          phaseId,
+          action: 'posting_idea',
+          permissionBody: {
+            permission: {
+              permitted_by: 'users',
+              group_ids: [groupId],
+            },
           },
-        },
+        });
       });
     });
 

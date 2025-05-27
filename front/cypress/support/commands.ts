@@ -22,7 +22,6 @@ declare global {
       signUp: typeof signUp;
       apiLogin: typeof apiLogin;
       apiCreateManualGroup: typeof apiCreateManualGroup;
-      apiAddProjectGroup: typeof apiAddProjectGroup;
       apiAddMembership: typeof apiAddMembership;
       setAdminLoginCookie: typeof setAdminLoginCookie;
       setModeratorLoginCookie: typeof setModeratorLoginCookie;
@@ -1522,32 +1521,6 @@ function apiCreateManualGroup({ title }: { title: Multiloc }) {
   });
 }
 
-function apiAddProjectGroup({
-  groupId,
-  projectId,
-}: {
-  groupId: string;
-  projectId: string;
-}) {
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request<{ data: IProjectGroup }>({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: `web_api/v1/projects/${projectId}/groups_projects`,
-      body: {
-        groups_project: {
-          group_id: groupId,
-        },
-      },
-    });
-  });
-}
-
 function apiAddMembership({
   userId,
   groupId,
@@ -2166,7 +2139,6 @@ Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
 Cypress.Commands.add('apiRemovePhase', apiRemovePhase);
 Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
-Cypress.Commands.add('apiAddProjectGroup', apiAddProjectGroup);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
