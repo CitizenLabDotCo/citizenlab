@@ -3,7 +3,6 @@ import React, { forwardRef } from 'react';
 import {
   Button,
   ButtonProps,
-  ButtonContainerProps,
   ButtonStyles,
 } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
@@ -65,4 +64,4 @@ const ButtonWithLink = forwardRef<Ref, Props>(
 
 export default ButtonWithLink;
 
-export type { Props, ButtonContainerProps, ButtonStyles, ButtonProps };
+export type { Props, ButtonStyles, ButtonProps };
