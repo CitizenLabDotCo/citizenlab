@@ -29,7 +29,6 @@ class OfficialFeedback < ApplicationRecord
   belongs_to :user, optional: true
 
   before_validation :sanitize_body_multiloc
-  before_validation { sanitize_multilocs :author_multiloc }
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
