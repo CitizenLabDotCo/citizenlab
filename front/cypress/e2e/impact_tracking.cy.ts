@@ -24,7 +24,7 @@ describe('Impact tracking: Session tracking', () => {
     });
   });
 
-  it.skip('Upgrades the current session after a user signed in', () => {
+  it('Upgrades the current session after a user signed in', () => {
     cy.intercept('PATCH', '**/web_api/v1/sessions/current/upgrade').as(
       'upgradeSession'
     );
@@ -49,7 +49,7 @@ describe('Impact tracking: Session tracking', () => {
   });
 
   // Same as test above
-  it.skip('Does a POST request to /sessions/:id/track_pageview when user navigates', () => {
+  it('Does a POST request to /sessions/:id/track_pageview when user navigates', () => {
     cy.intercept('POST', '**/web_api/v1/sessions').as('createSession');
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
@@ -61,7 +61,8 @@ describe('Impact tracking: Session tracking', () => {
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
     );
-    cy.get('.e2e-admin-publication-card').first().click();
+    cy.acceptCookies();
+    cy.get('#site-map-link').click();
     cy.wait('@trackPageview').then((interception) => {
       expect(interception.response?.statusCode).to.be.oneOf([201, 204]);
     });
