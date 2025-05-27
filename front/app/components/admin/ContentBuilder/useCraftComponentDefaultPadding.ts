@@ -9,6 +9,8 @@ const useCraftComponentDefaultPadding = () => {
   }));
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { query } = useEditor();
+
+  if (!parent) return DEFAULT_PADDING;
   const parentNode = query.node(parent);
 
   return isSmallerThanTablet &&

@@ -108,10 +108,18 @@ export const multiSelectControlTester = (
 ) => {
   if (
     uiSchema.options?.input_type === 'multiselect' &&
-    dropdownLayoutTester(uiSchema, jsonSchema)
+    dropdownLayoutTester(uiSchema, jsonSchema, {
+      rootSchema: jsonSchema,
+      config: {},
+    })
   ) {
     return 1000;
-  } else if (isPrimitiveArrayControl(uiSchema, jsonSchema)) {
+  } else if (
+    isPrimitiveArrayControl(uiSchema, jsonSchema, {
+      rootSchema: jsonSchema,
+      config: {},
+    })
+  ) {
     return 4;
   }
   return -1;

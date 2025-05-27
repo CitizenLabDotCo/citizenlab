@@ -8,8 +8,13 @@ describe('Idea creation', () => {
   let firstPhaseId: string;
   let projectSlug: string;
   const newIdeaContent = randomString(60);
+  const newIdeaTitle = randomString(10);
 
-  before(() => {
+  beforeEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
+
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: description,
@@ -44,16 +49,11 @@ describe('Idea creation', () => {
       })
       .then((phase) => {
         firstPhaseId = phase.body.data.id;
+        cy.setAdminLoginCookie();
       });
   });
 
-  beforeEach(() => {
-    cy.setAdminLoginCookie();
-  });
-
   it('allows the admin to add an idea to an old phase', () => {
-    const newIdeaTitle = randomString(40);
-
     cy.visit(`admin/projects/${projectId}/phases/${firstPhaseId}/ideas`);
     cy.acceptCookies();
     cy.get('#e2e-new-idea').click();
@@ -65,13 +65,16 @@ describe('Idea creation', () => {
     // The next line was flaky on CI where the "type" command resulted in skipped letters
     // Seems to be a known problem, and one solution is to type then clear to "warm up" Cypress
     // Related: https://github.com/cypress-io/cypress/issues/3817
-    cy.get('#e2e-idea-title-input input').type('x');
+    cy.get('#e2e-idea-title-input input').type('x', { delay: 0 });
     cy.get('#e2e-idea-title-input input').clear();
-    cy.get('#e2e-idea-title-input input').type(`${newIdeaTitle}`);
+    cy.get('#e2e-idea-title-input input').type(`${newIdeaTitle}`, { delay: 0 });
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
+    cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent, {
+      delay: 0,
+    });
+    cy.wait(500);
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
