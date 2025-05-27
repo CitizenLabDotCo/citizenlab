@@ -37,7 +37,6 @@ interface Props {
   id: string;
   getAriaLabel: (value: number, total: number) => string;
   onChange: (data?: number) => void;
-  onResetFollowUp: () => void;
   onFocusSliderRef: () => void;
 }
 
@@ -46,7 +45,6 @@ const TableHead = ({
   id,
   getAriaLabel,
   onChange,
-  onResetFollowUp,
   onFocusSliderRef,
 }: Props) => {
   const theme = useTheme();
@@ -72,9 +70,7 @@ const TableHead = ({
                   tabIndex={-1}
                   onClick={() => {
                     if (isSelected) {
-                      // Clear data from this question and any follow-up question
                       onChange(undefined);
-                      onResetFollowUp();
                     } else {
                       onChange(visualIndex);
                     }

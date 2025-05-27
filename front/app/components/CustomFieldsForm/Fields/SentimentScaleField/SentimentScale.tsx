@@ -16,7 +16,7 @@ import { getAriaValueText, handleKeyboardKeyChange } from './utils';
 interface Props {
   value?: number;
   question: IFlatCustomField;
-  onChange: (value: number) => void;
+  onChange: (value?: number) => void;
 }
 
 const SentimentScale = ({ value: data, question, onChange }: Props) => {
@@ -91,7 +91,6 @@ const SentimentScale = ({ value: data, question, onChange }: Props) => {
             id={id}
             getAriaLabel={getAriaLabel}
             onChange={onChange}
-            onResetFollowUp={() => {}} // TODO
             onFocusSliderRef={() => {
               sliderRef.current?.focus();
             }}
