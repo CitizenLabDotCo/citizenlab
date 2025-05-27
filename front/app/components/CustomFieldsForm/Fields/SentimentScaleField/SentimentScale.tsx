@@ -4,6 +4,8 @@ import { Box, Table } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { useIntl } from 'utils/cl-intl';
 
 import TableBody from './TableBody';
@@ -22,6 +24,7 @@ const maximum = 5;
 const SentimentScale = ({ value: data, question, onChange }: Props) => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const id = question.key;
 
@@ -33,9 +36,10 @@ const SentimentScale = ({ value: data, question, onChange }: Props) => {
         total,
         question,
         formatMessage,
+        localize,
       });
     },
-    [question, formatMessage]
+    [question, formatMessage, localize]
   );
 
   // Set the aria-valuenow and aria-valuetext attributes on the slider when the data changes

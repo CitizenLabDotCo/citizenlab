@@ -1,4 +1,5 @@
 import { IFlatCustomField } from 'api/custom_fields/types';
+
 import { get } from 'utils/helperUtils';
 
 type ValidLabelNumbers = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
