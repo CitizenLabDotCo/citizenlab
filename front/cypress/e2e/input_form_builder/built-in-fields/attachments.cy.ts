@@ -69,7 +69,9 @@ describe('Input form builder', () => {
     cy.wait(1000);
 
     cy.dataCy('e2e-page-number-3').should('exist');
-    cy.get('#e2e-idea-file-upload', { timeout: 10000 }).should('exist');
+    cy.get('[data-cy="e2e-idea-file-upload"]', { timeout: 10000 }).should(
+      'exist'
+    );
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.dataCy('e2e-edit-input-form').click();
