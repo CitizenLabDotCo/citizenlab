@@ -68,7 +68,7 @@ describe('Input form builder', () => {
     // Page 3 should have the proposed budget field but does not
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('#propertiesproposed_budget').should('not.exist');
+    cy.get('#proposed_budget').should('not.exist');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.dataCy('e2e-edit-input-form').click();
@@ -120,6 +120,6 @@ describe('Input form builder', () => {
     // Page 3 should have the proposed budget field
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('#propertiesproposed_budget').should('exist');
+    cy.get('#proposed_budget').should('exist');
   });
 });
