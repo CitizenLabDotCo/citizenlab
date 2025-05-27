@@ -119,6 +119,6 @@ describe('Input form builder', () => {
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.wait(1000);
 
-    cy.get('#e2e-idea-file-upload').should('not.exist');
+    cy.get('[data-cy="e2e-idea-file-upload"]').should('not.exist');
   });
 });
