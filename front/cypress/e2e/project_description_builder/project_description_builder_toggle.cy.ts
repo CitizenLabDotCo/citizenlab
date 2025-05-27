@@ -93,7 +93,7 @@ describe('Project description builder toggle', () => {
     cy.contains('Original project description.').should('be.visible');
   });
 
-  it.only('shows attachments added to the project after description added using project description builder', () => {
+  it('shows attachments added to the project after description added using project description builder', () => {
     cy.intercept(`**/projects/${projectId}`).as('saveProject');
     cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
