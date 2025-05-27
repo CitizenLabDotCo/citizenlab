@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
+import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -22,6 +23,7 @@ import ImageField from './Fields/ImageField';
 import LinearScaleField from './Fields/LinearScale';
 import MultiSelectField from './Fields/MultiSelectField';
 import SingleSelectField from './Fields/SingleSelectField';
+import InputIQ from './InputIQ';
 import messages from './messages';
 import { getInstructionMessage } from './util';
 import RankingField from './Fields/RankingField';
@@ -103,10 +105,12 @@ const CustomFields = ({
   questions,
   projectId,
   ideaId,
+  phase,
 }: {
   questions: IFlatCustomField[];
   projectId?: string;
   ideaId?: string;
+  phase?: IPhaseData;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -144,6 +148,8 @@ const CustomFields = ({
                 </Text>
               )}
               {renderField({ question, projectId, ideaId })}
+              {(question.key === 'title_multiloc' ||
+                question.key === 'body_multiloc') && <InputIQ phase={phase} />}
             </Box>
           );
         })}

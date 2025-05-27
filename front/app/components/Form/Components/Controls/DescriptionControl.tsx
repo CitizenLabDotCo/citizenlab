@@ -7,7 +7,6 @@ import { debounce } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 
 import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
-import SimilarIdeasList from 'containers/IdeasNewPage/SimilarInputs/SimilarInputsList';
 
 import { FormLabel } from 'components/UI/FormComponents';
 import QuillEditor from 'components/UI/QuillEditor';
@@ -78,7 +77,7 @@ const DescriptionControl = ({
         fieldPath={path}
         didBlur={didBlur}
       />
-      {showSimilarInputs && <SimilarIdeasList />}
+      {/* {showSimilarInputs && <SimilarIdeasList />} */}
     </Box>
   );
 };
