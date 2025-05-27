@@ -111,8 +111,6 @@ const CustomFieldsForm = ({
         : formValues
     );
     if (currentPageNumber === nestedPagesData.length - 2) {
-      console.log('Submitting form values:', formValues);
-      console.log(disclaimerNeeded, isDisclamerAccepted);
       if (disclaimerNeeded && !isDisclamerAccepted) {
         setIsDisclaimerOpened(true);
         return;
