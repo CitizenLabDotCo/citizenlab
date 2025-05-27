@@ -36,7 +36,7 @@ describe('Impact tracking: Session tracking', () => {
 
   // This passes locally but fails in CI, because there
   // cypress is seen as a bot and therefore no session is created
-  it.skip('Does a POST request to /sessions/:id/track_pageview when enters platform', () => {
+  it('Does a POST request to /sessions/:id/track_pageview when enters platform', () => {
     cy.intercept('POST', '**/web_api/v1/sessions').as('createSession');
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
