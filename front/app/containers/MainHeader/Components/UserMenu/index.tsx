@@ -46,7 +46,6 @@ const UserMenu = () => {
     return (
       <Container
         id="e2e-user-menu-container"
-        data-cy="e2e-user-menu-container"
         className={
           authUser.data.attributes.verified
             ? 'e2e-verified'
