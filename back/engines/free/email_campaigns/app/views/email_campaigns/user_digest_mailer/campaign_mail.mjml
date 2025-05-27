@@ -1,34 +1,27 @@
 <!-- Notifications -->
 <mj-wrapper>
   <% if event.notifications_count > 0 %>
-    <mj-section
-      padding="0 25px 40px"
-      background-color="#fff"
-      border-radius="5px"
-      text-align="left"
-    >
-      <mj-column border="1px solid #eaeaea" padding="30px 25px" background-color="#fff" border-radius="5px">
-        <mj-text padding-bottom="20px">
-          <h2>
-            <% if event.notifications_count == 1 %>
-              <%= format_message('one_notification') %>
-            <% elsif event.notifications_count > 1 %>
-              <%= format_message('multiple_notifications', values: { notifCount: event.notifications_count }) %>
-            <% end %>
-          </h2>
-          <p style="margin-top: 10px;">
-            <%= format_message('unread_notifications') %>
-          </p>
-        </mj-text>
-          <mj-button
-            color="#fff"
-            background-color="#044D6C"
-            border-radius="5px"
-            href="<%= url_service.home_url(app_configuration: @app_configuration, locale: @locale) %>"
-            align="left"
-          >
-            <%= format_message('cta_go_to_the_platform') %>
-          </mj-button>
+    <mj-section padding="0 25px 25px">
+      <mj-column>
+        <mj-table>
+          <tr>
+            <td style="border:1px solid #eaeaea; padding:20px 25px; background-color:#fff; border-radius:5px;">
+              <h2>
+                <% if event.notifications_count == 1 %>
+                  <%= format_message('one_notification') %>
+                <% elsif event.notifications_count > 1 %>
+                  <%= format_message('multiple_notifications', values: { notifCount: event.notifications_count }) %>
+                <% end %>
+              </h2>
+              <p style="margin-top: 10px; margin-bottom: 20px;">
+                <%= format_message('unread_notifications') %>
+              </p>
+              <mj-button color="#fff" background-color="#044D6C" border-radius="5px" href="<%= url_service.home_url(app_configuration: @app_configuration, locale: @locale) %>" align="left">
+                <%= format_message('cta_go_to_the_platform') %>
+              </mj-button>
+            </td>
+          </tr>
+        </mj-table>
       </mj-column>
     </mj-section>
   <% end %>
@@ -64,7 +57,7 @@
             </h3>
           </a>
         </mj-text>
-        <mj-table width="200px">
+        <mj-table width="200px" align="<%= align_direction %>">
           <tr>
             <td>
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
@@ -98,7 +91,7 @@
                           escape_html: false
                     ) %>
                     <p style="margin: 15px 0 0;">
-                      <%= localize_for_recipient_and_truncate(top_comment.body_multiloc, 140) %>
+                      <%= strip_tags(localize_for_recipient_and_truncate(top_comment.body_multiloc, 140)) %>
                     </p>
                   </mj-text>
                 </td>

@@ -45,6 +45,10 @@ class Topic < ApplicationRecord
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   before_validation :set_code
+  before_validation do
+    sanitize_multilocs :title_multiloc, :description_multiloc
+  end
+
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }
@@ -78,6 +82,8 @@ class Topic < ApplicationRecord
   end
 
   def strip_title
+    return unless description_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

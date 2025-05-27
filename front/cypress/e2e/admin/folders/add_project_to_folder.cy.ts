@@ -28,12 +28,12 @@ describe.skip('Admin: add projects to folder', async () => {
         cy.visit('/admin/projects/all');
         cy.acceptCookies();
 
-        cy.get('[data-cy="e2e-new-project-folder-button"]').click();
+        cy.dataCy('e2e-new-project-folder-button').click();
         const folderTitle = randomString();
         const folderShortDescription = randomString();
 
         // Add folder title
-        cy.get('[data-cy="e2e-project-folder-title"]')
+        cy.dataCy('e2e-project-folder-title')
           .find('.e2e-localeswitcher')
           .each((button) => {
             cy.wrap(button).click();
@@ -41,23 +41,21 @@ describe.skip('Admin: add projects to folder', async () => {
           });
 
         // Add folder short description
-        cy.get('[data-cy="e2e-project-folder-short-description"]')
+        cy.dataCy('e2e-project-folder-short-description')
           .find('.e2e-localeswitcher')
           .each((button) => {
             cy.wrap(button).click();
-            cy.get('[data-cy="e2e-project-folder-short-description"]').within(
-              () => {
-                cy.get('textarea').type(folderShortDescription);
-              }
-            );
+            cy.dataCy('e2e-project-folder-short-description').within(() => {
+              cy.get('textarea').type(folderShortDescription);
+            });
           });
 
         // Add folder description
-        cy.get('[data-cy="e2e-project-folder-description"]')
+        cy.dataCy('e2e-project-folder-description')
           .find('.e2e-localeswitcher')
           .each((button) => {
             cy.wrap(button).click();
-            cy.get('[data-cy="e2e-project-folder-description"]').within(() => {
+            cy.dataCy('e2e-project-folder-description').within(() => {
               cy.get('#description').type(folderShortDescription);
             });
           });

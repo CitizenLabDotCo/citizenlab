@@ -44,13 +44,15 @@ describe('Submit community monitor survey', () => {
     cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
     cy.wait(2000);
     cy.contains('Governance and trust').should('be.visible');
+    cy.wait(2000);
 
     // save the form
+    cy.dataCy('e2e-submit-form').should('be.visible');
     cy.dataCy('e2e-submit-form').click({ force: true });
     cy.wait(2000);
 
     // Confirm submissions was successful
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.dataCy('e2e-after-submission').should('exist');
   });
 
   it('can be submitted by a logged out user by default', () => {
@@ -74,6 +76,7 @@ describe('Submit community monitor survey', () => {
     cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
     cy.wait(2000);
     cy.contains('Governance and trust').should('be.visible');
+    cy.wait(2000);
 
     // save the form
     cy.dataCy('e2e-submit-form').should('be.visible');
@@ -81,7 +84,7 @@ describe('Submit community monitor survey', () => {
     cy.wait(2000);
 
     // Confirm submissions was successful
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.dataCy('e2e-after-submission').should('exist');
   });
 
   it('cannot be submitted by a logged out user if permissions require registration', () => {

@@ -6,16 +6,15 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { ProjectId, Dates } from '../typings';
-
 import messages from './messages';
 import Table from './Table';
+import { TranslatedReferrers } from './useVisitorReferrerTypes/parse';
 
-type Props = ProjectId &
-  Dates & {
-    open: boolean;
-    onClose: () => void;
-  };
+type Props = {
+  tableData: TranslatedReferrers;
+  open: boolean;
+  onClose: () => void;
+};
 
 const TableModal = ({ open, onClose, ...tableProps }: Props) => (
   <Modal

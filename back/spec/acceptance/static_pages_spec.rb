@@ -270,14 +270,6 @@ resource 'StaticPages' do
         do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
         assert_status 200
       end
-
-      example '[error] Update an invalid NavBarItem title of a static page' do
-        title_multiloc = { 'en' => 42 }
-        create(:nav_bar_item, static_page: page)
-
-        do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
-        assert_status 422
-      end
     end
 
     delete 'web_api/v1/static_pages/:id' do

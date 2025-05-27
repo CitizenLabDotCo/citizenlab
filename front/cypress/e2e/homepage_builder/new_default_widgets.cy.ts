@@ -47,8 +47,8 @@ describe('New default widgets', () => {
     cy.get('#e2e-project-page').should('exist');
 
     // Follow the project
-    cy.get('[data-cy="e2e-follow-button"]').click();
-    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
+    cy.dataCy('e2e-follow-button').click();
+    cy.dataCy('e2e-unfollow-button').should('exist');
 
     // Go back to landing page
     cy.goToLandingPage();

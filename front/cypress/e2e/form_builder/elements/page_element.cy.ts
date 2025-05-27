@@ -45,18 +45,18 @@ describe('Form builder page element', () => {
   it('adds page element and tests settings', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.acceptCookies();
-    cy.get('[data-cy="e2e-page"]');
+    cy.dataCy('e2e-page');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-page"]').click();
+    cy.dataCy('e2e-page').click();
     cy.get('#e2e-field-group-title-multiloc').type('Page title', {
       force: true,
     });
-    cy.get('[data-cy="e2e-field-group-description-multiloc"]')
+    cy.dataCy('e2e-field-group-description-multiloc')
       .click()
       .type('Page description');
 
     // Add number field to the next page
-    cy.get('[data-cy="e2e-number-field"]').click();
+    cy.dataCy('e2e-number-field').click();
     cy.get('#e2e-title-multiloc').type('Number', { force: true });
 
     // Should show success message on saving
@@ -75,15 +75,15 @@ describe('Form builder page element', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Go to the next page
-    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.dataCy('e2e-next-page').click();
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);
@@ -93,33 +93,33 @@ describe('Form builder page element', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
 
     // Add a second page
-    cy.get('[data-cy="e2e-page"]');
+    cy.dataCy('e2e-page');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-page"]').click();
+    cy.dataCy('e2e-page').click();
     cy.get('#e2e-field-group-title-multiloc').type('Page title', {
       force: true,
     });
-    cy.get('[data-cy="e2e-field-group-description-multiloc"]')
+    cy.dataCy('e2e-field-group-description-multiloc')
       .click()
       .type('Page description');
-    cy.get('[data-cy="e2e-form-builder-close-settings"]').click({
+    cy.dataCy('e2e-form-builder-close-settings').click({
       force: true,
     });
 
     // Check that we have options to delete the first page since we have two pages
-    cy.get('[data-cy="e2e-field-row"]')
+    cy.dataCy('e2e-field-row')
       .first()
       .find('[data-cy="e2e-more-field-actions"]')
       .should('exist');
-    cy.get('[data-cy="e2e-more-field-actions"]').eq(0).click({ force: true });
+    cy.dataCy('e2e-more-field-actions').eq(0).click({ force: true });
     cy.get('.e2e-more-actions-list button').contains('Delete');
 
     // Delete the second page
-    cy.get('[data-cy="e2e-more-field-actions"]').eq(2).click({ force: true });
+    cy.dataCy('e2e-more-field-actions').eq(2).click({ force: true });
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
 
     // Check that we don't have options to delete the first page since we only have one page
-    cy.get('[data-cy="e2e-field-row"]')
+    cy.dataCy('e2e-field-row')
       .first()
       .find('[data-cy="e2e-more-field-actions"]')
       .should('not.exist');

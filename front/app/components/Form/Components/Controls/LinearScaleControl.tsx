@@ -88,7 +88,7 @@ const LinearScaleControl = ({
     return `calc(100% / ${maximum} - 8px)`; // Fit all buttons on one row for larger screens
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
     const value = data || minimum;
     let newValue = value;
 
