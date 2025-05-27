@@ -8,7 +8,7 @@ nl:
       "comment_marked_as_spam": Reactie spammelding
       "comment_on_your_comment": Een antwoord op mijn reactie
       "comment_on_idea_you_follow": Een reactie op een idee dat je volgt
-      "community_monitor_report": Verslag van de gemeenschapsmonitor
+      "community_monitor_report": Verslag van de tevredenheidsmonitor
       "cosponsor_of_your_idea": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
       "event_registration_confirmation": Bevestiging registratie activiteit
       "idea_marked_as_spam": Idee spammelding
@@ -150,11 +150,11 @@ nl:
       wrong_content: 'De reactie is niet relevant.'
       yesterday: Gisteren
     community_monitor_report:
-      subject: 'Er is een nieuw rapport van de gemeenschapsmonitor beschikbaar'
-      title: 'Er is een nieuw rapport van de gemeenschapsmonitor beschikbaar'
-      text_introduction: 'Er is een rapport van de gemeenschapsmonitor gemaakt voor het vorige kwartaal. Je kunt het bekijken door op de knop hieronder te klikken en in te loggen.'
+      subject: 'Er is een nieuw rapport van de tevredenheidsmonitor beschikbaar'
+      title: 'Er is een nieuw rapport van de tevredenheidsmonitor beschikbaar'
+      text_introduction: 'Er is een rapport van de tevredenheidsmonitor gemaakt voor het vorige kwartaal. Je kunt het bekijken door op de knop hieronder te klikken en in te loggen.'
       cta_report_button: 'Bekijk rapport'
-      report_name: 'Rapport van de gemeenschapsmonitor'
+      report_name: 'Rapport van de tevredenheidsmonitor'
     cosponsor_of_your_idea:
       cta_reply_to: 'Bekijk je voorstel'
       event_description: 'Gefeliciteerd! %{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd.'
