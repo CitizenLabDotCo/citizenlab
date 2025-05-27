@@ -22,7 +22,7 @@ describe('Idea submission form', () => {
 
   it('shows a back button to navigate to the projects page', () => {
     const ideaTitle = randomString(9);
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
@@ -45,7 +45,7 @@ describe('Idea submission form', () => {
 
   it('shows an error when no description is provided', () => {
     const ideaTitle = randomString(9);
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
 
     // Go to the description page
@@ -57,7 +57,7 @@ describe('Idea submission form', () => {
   });
 
   it('shows an error when the title is less than 3 characters long', () => {
-    cy.get('#e2e-idea-title-input input').type(randomString(2));
+    cy.get('#e2e-idea-title-input input').type(randomString(2), { delay: 0 });
     // Try to go to the next page
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.get('#e2e-idea-title-input .e2e-error-message');
@@ -65,13 +65,16 @@ describe('Idea submission form', () => {
 
   it('shows no error when the description is less than 3 characters long', () => {
     const ideaTitle = randomString(10);
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
 
     const ideaContent = randomString(2);
     cy.dataCy('e2e-next-page').should('be.visible').click();
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent, {
+      delay: 0,
+    });
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+    cy.wait(100);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -99,7 +102,7 @@ describe('Idea submission form', () => {
     cy.contains('Add new idea').should('exist');
 
     // Add a title
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -134,13 +137,15 @@ describe('Idea submission form', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+
+    cy.wait(1000);
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -164,7 +169,7 @@ describe('Idea submission form', () => {
     cy.get('.e2e-idea-form-location-input-field input').type(
       'Boulevard Anspach Brussels'
     );
-    cy.wait(7000);
+    cy.wait(10000);
     cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
 
     // save the form

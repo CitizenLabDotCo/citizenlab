@@ -57,7 +57,7 @@ const AdminPublicationSearchInput = ({
         placeholder={''}
         options={options}
         getOptionValue={getOptionId}
-        getOptionLabel={(option) => (
+        formatOptionLabel={(option) => (
           <OptionLabel
             option={option}
             hasNextPage={hasNextPage}

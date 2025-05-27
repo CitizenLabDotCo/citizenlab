@@ -78,6 +78,7 @@ describe('Survey logic conflict', () => {
 
     // Select first option
     cy.get('#e2e-single-select-control')
+      .should('exist')
       .find('[data-testid="radio-container"]')
       .first()
       .click();
