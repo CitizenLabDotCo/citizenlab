@@ -27,6 +27,10 @@ class PhasePolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def common_ground_results?
+    policy_for(record.project).show?
+  end
+
   def sentiment_by_quarter?
     active_moderator?
   end
@@ -49,5 +53,11 @@ class PhasePolicy < ApplicationPolicy
 
   def active_moderator?
     policy_for(record.project).active_moderator?
+  end
+
+  def show_progress?
+    return false unless active?
+
+    policy_for(record.project).show?
   end
 end
