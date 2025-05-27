@@ -28,6 +28,8 @@ const SentimentScaleField = ({ question }: Props) => {
   } = useFormContext();
 
   const name = question.key;
+  const followUpName = `${name}_follow_up`;
+
   const value: number | undefined = watch(name);
 
   const errors = formContextErrors[name] as RHFErrors;
@@ -47,7 +49,7 @@ const SentimentScaleField = ({ question }: Props) => {
               onChange={(value) => {
                 // On reset value, also reset follow up value
                 if (value === undefined) {
-                  setValue(`${name}_follow_up`, undefined);
+                  setValue(followUpName, undefined);
                 }
                 onChange(value);
               }}
@@ -74,7 +76,7 @@ const SentimentScaleField = ({ question }: Props) => {
       )}
       {value !== undefined && (
         <Input
-          name={`${name}_follow_up`}
+          name={followUpName}
           type="text"
           placeholder={formatMessage(messages.tellUsWhy)}
         />
