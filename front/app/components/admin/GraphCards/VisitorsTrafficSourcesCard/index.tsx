@@ -6,13 +6,11 @@ import GraphCard from 'components/admin/GraphCard';
 import { View } from 'components/admin/GraphCard/ViewToggle';
 
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import EmptyPieChart from '../EmptyPieChart';
 import { ProjectId, Dates } from '../typings';
 
 import Chart from './Chart';
-import getXlsxData from './getXlsxData';
 import messages from './messages';
 import ReferrerListLink from './RefferListLink';
 import Table from './Table';
@@ -28,7 +26,7 @@ const VisitorsTrafficSourcesCard = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
-  const { pieData, xlsxData } = useVisitorReferrerTypes({
+  const { pieData, tableData, xlsxData } = useVisitorReferrerTypes({
     projectId,
     startAtMoment,
     endAtMoment,
@@ -41,7 +39,7 @@ const VisitorsTrafficSourcesCard = ({
 
   const cardTitle = formatMessage(messages.visitorsTrafficSources);
 
-  if (isNilOrError(pieData) || isNilOrError(xlsxData)) {
+  if (!pieData || !tableData || !xlsxData) {
     return (
       <GraphCard title={cardTitle}>
         <EmptyPieChart />
@@ -59,16 +57,7 @@ const VisitorsTrafficSourcesCard = ({
         name: cardTitle,
         svgNode: currentView === 'chart' ? graphRef : undefined,
         xlsx: {
-          onDownload: () =>
-            getXlsxData(
-              {
-                projectId,
-                startAtMoment,
-                endAtMoment,
-              },
-              xlsxData,
-              formatMessage
-            ),
+          data: xlsxData,
         },
         startAt,
         endAt,
@@ -91,21 +80,10 @@ const VisitorsTrafficSourcesCard = ({
       )}
 
       {currentView === 'table' && (
-        <Table
-          projectId={projectId}
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          onOpenModal={openModal}
-        />
+        <Table tableData={tableData.slice(0, 10)} onOpenModal={openModal} />
       )}
 
-      <TableModal
-        projectId={projectId}
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
-        open={modalOpen}
-        onClose={closeModal}
-      />
+      <TableModal tableData={tableData} open={modalOpen} onClose={closeModal} />
     </GraphCard>
   );
 };

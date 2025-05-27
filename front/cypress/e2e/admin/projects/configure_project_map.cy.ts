@@ -66,24 +66,24 @@ describe('Configure a project-level map', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/map`);
 
     // ESRI WEB MAP UPLOAD
-    cy.get('[data-cy="e2e-web-map-upload-btn"]').click();
+    cy.dataCy('e2e-web-map-upload-btn').click();
     // Test invalid portal ID (error should show)
     cy.get('#e2e-portal-id-input').click().clear().type('invalidID');
-    cy.get('[data-cy="e2e-web-map-import-btn"]').click();
+    cy.dataCy('e2e-web-map-import-btn').click();
     cy.get('#e2e-web-map-error').should('exist');
     // Test valid portal id
     cy.get('#e2e-portal-id-input')
       .click()
       .clear()
       .type('ce88f9dba8d748a4bf3aa8d6c8027d2e');
-    cy.get('[data-cy="e2e-web-map-import-btn"]').click();
+    cy.dataCy('e2e-web-map-import-btn').click();
     cy.contains('Lava Flow Hazard Zones').should('exist');
 
     // ESRI FEATURE LAYER UPLOAD
-    cy.get('[data-cy="e2e-feature-layer-upload-btn"]').click();
+    cy.dataCy('e2e-feature-layer-upload-btn').click();
     // Test invalid URL (error should show)
     cy.get('#e2e-feature-layer-url-input').click().clear().type('invalidURL');
-    cy.get('[data-cy="e2e-feature-layer-import-btn"]').click();
+    cy.dataCy('e2e-feature-layer-import-btn').click();
     cy.get('#e2e-feature-layer-error').should('exist');
     // Test valid URL
     cy.get('#e2e-feature-layer-url-input')
@@ -92,20 +92,20 @@ describe('Configure a project-level map', () => {
       .type(
         'https://services2.arcgis.com/j80Jz20at6Bi0thr/arcgis/rest/services/Hawaii_Emergency_Shelters/FeatureServer'
       );
-    cy.get('[data-cy="e2e-feature-layer-import-btn"]').click();
+    cy.dataCy('e2e-feature-layer-import-btn').click();
     cy.get('#e2e-feature-layer-error').should('not.exist');
     // Confirm the layer shows up on the map (I.e. Shows on the map legend)
     cy.contains('Hawaii Emergency Shelters').should('exist');
     // Confirm the layer can be removed
-    cy.get('[data-cy="e2e-admin-layer-remove-btn"]').click();
-    cy.get('[data-cy="e2e-admin-layer-remove-btn"]').should('not.exist');
+    cy.dataCy('e2e-admin-layer-remove-btn').click();
+    cy.dataCy('e2e-admin-layer-remove-btn').should('not.exist');
     cy.contains('Hawaii Emergency Shelters').should('not.exist');
 
     // Change the map extent using the text inputs
     cy.get('#e2e-lat-input').click().clear().type('19.57052687930846');
     cy.get('#e2e-long-input').click().clear().type('-155.43749915024694');
     cy.get('#e2e-zoom-input').click().clear().type('9');
-    cy.get('[data-cy="e2e-map-extent-save-btn"]').click();
+    cy.dataCy('e2e-map-extent-save-btn').click();
     cy.wait(2000);
     cy.get('#e2e-map-config-error').should('not.exist');
   });

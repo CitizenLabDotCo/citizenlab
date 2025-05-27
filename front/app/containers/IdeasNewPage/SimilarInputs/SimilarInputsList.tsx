@@ -17,6 +17,8 @@ import useSimilarIdeas from 'api/similar_ideas/useSimilarIdeas';
 
 import useLocale from 'hooks/useLocale';
 
+import T from 'components/T';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { useIdeaSelect } from './InputSelectContext';
@@ -127,7 +129,7 @@ const SimilarIdeasList = () => {
                 color="textPrimary"
                 my="0px"
               >
-                {idea.attributes.title_multiloc.en}
+                <T value={idea.attributes.title_multiloc} />
               </Text>
 
               <Box

@@ -52,6 +52,10 @@ class Event < ApplicationRecord
   validate :validate_start_at_before_end_at
 
   before_validation :sanitize_description_multiloc
+  before_validation do
+    sanitize_multilocs :title_multiloc, :location_multiloc, :attend_button_multiloc, :address_2_multiloc
+  end
+
   before_validation :strip_title
 
   scope :with_project_publication_statuses, (proc do |publication_statuses|
@@ -78,6 +82,8 @@ class Event < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

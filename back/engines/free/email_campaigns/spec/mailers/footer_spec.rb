@@ -19,9 +19,10 @@ RSpec.describe 'Footer' do
   end
 
   let(:mail) { EmailCampaigns::CommentOnIdeaYouFollowMailer.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+  let(:body) { mail_body(mail) }
 
   it 'includes Go Vocal logo' do
-    expect(mail.body.encoded).to have_tag('a', with: { href: 'https://govocal.com/' }) do
+    expect(body).to have_tag('a', with: { href: 'https://govocal.com/' }) do
       with_tag 'img', with: { alt: 'Go Vocal logo', src: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/formerly-logo/formerly_gray_en.png' }
     end
   end
@@ -30,7 +31,7 @@ RSpec.describe 'Footer' do
     let(:locale) { 'nl-NL' }
 
     it 'includes the corresponding Go Vocal logo' do
-      expect(mail.body.encoded).to have_tag('a', with: { href: 'https://govocal.com/' }) do
+      expect(body).to have_tag('a', with: { href: 'https://govocal.com/' }) do
         with_tag 'img', with: { alt: 'Go Vocal logo', src: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/formerly-logo/formerly_gray_nl.png' }
       end
     end
@@ -38,27 +39,19 @@ RSpec.describe 'Footer' do
 
   describe 'when the recipient can give/revoke consent' do
     it 'includes the unsubscribe link' do
-      unsubscribe_url = Frontend::UrlService.new.unsubscribe_url(
-        AppConfiguration.instance,
-        campaign.id,
-        recipient.id
-      )
+      unsubscribe_url = "http://example.org/email-settings?unsubscription_token=#{recipient.email_campaigns_unsubscription_token&.token}&amp;campaign_id=#{campaign.id}"
 
       allow(campaign.class).to receive(:consentable_for?).with(recipient).and_return(true)
-      expect(mail.body.encoded.scan(unsubscribe_url).count).to eq(2)
+      expect(body.scan(unsubscribe_url).count).to eq(2)
     end
   end
 
   describe 'when the recipient cannot give/revoke consent' do
     it 'does not include the unsubscribe link' do
-      unsubscribe_url = Frontend::UrlService.new.unsubscribe_url(
-        AppConfiguration.instance,
-        campaign.id,
-        recipient.id
-      )
+      unsubscribe_url = "http://example.org/email-settings?unsubscription_token=#{recipient.email_campaigns_unsubscription_token&.token}&amp;campaign_id=#{campaign.id}"
 
       allow(campaign.class).to receive(:consentable_for?).with(recipient).and_return(false)
-      expect(mail.body.encoded.scan(unsubscribe_url).count).to eq(0)
+      expect(body.scan(unsubscribe_url).count).to eq(0)
     end
   end
 end

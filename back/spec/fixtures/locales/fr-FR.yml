@@ -67,6 +67,7 @@ fr:
         description:
       other_input_field:
         title: Tapez votre réponse
+        print_title: Si '%{other_option}', veuillez préciser
     community_monitor:
       question_categories:
         quality_of_life: Qualité de vie

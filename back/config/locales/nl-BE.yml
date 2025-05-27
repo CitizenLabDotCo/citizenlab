@@ -129,7 +129,7 @@ nl-BE:
     open_idea_phase_title: Huidige fase
     native_survey_title: Vragenlijst
     native_survey_button: Vul de vragenlijst in
-    community_monitor_title: Gemeenschapsmonitor
+    community_monitor_title: Tevredenheidsmonitor
   events:
     council_meeting_title: Gemeenteraad
     council_meeting_description: >
@@ -184,6 +184,7 @@ nl-BE:
         description:
       other_input_field:
         title: Typ je antwoord
+        print_title: Indien '%{other_option}', gelieve te specificeren
       ask_follow_up_field:
         title: Vertel ons waarom
     community_monitor:
@@ -329,6 +330,7 @@ nl-BE:
       write_as_clearly: 'Schrijf zo <b>duidelijk</b> als je kunt - deze formulieren kunnen worden gescand.'
       write_in_language: 'Schrijf je antwoorden in dezelfde taal als dit formulier'
       linear_scale_print_description: 'Schrijf alleen een getal tussen %{min_label} en %{max_label}'
+      unsupported_field: 'Dit veld kan niet op papier worden ingevuld. Gebruik in plaats daarvan de online versie van dit formulier.'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:

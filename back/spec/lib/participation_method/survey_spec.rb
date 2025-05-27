@@ -97,7 +97,7 @@ RSpec.describe ParticipationMethod::Survey do
   its(:supports_exports?) { is_expected.to be false }
   its(:supports_input_term?) { is_expected.to be false }
   its(:supports_inputs_without_author?) { is_expected.to be true }
-  its(:supports_multiple_posts?) { is_expected.to be true }
+  its(:allow_posting_again_after) { is_expected.to eq 0.seconds }
   its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
@@ -114,6 +114,7 @@ RSpec.describe ParticipationMethod::Survey do
   its(:user_fields_in_form?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
+  its(:everyone_tracking_enabled?) { is_expected.to be false }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do

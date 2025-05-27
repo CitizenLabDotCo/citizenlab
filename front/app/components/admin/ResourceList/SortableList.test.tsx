@@ -2,7 +2,7 @@ import React from 'react';
 
 import { cloneDeep } from 'lodash-es';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import { act, render, screen } from 'utils/testUtils/rtl';
 
 import SortableList, { RenderProps } from './SortableList';
 
@@ -36,11 +36,13 @@ describe('<SortableList />', () => {
       }
     );
 
-    render(
-      <SortableList items={items} onReorder={onReorder}>
-        {renderProp}
-      </SortableList>
-    );
+    act(() => {
+      render(
+        <SortableList items={items} onReorder={onReorder}>
+          {renderProp}
+        </SortableList>
+      );
+    });
 
     expect(renderProp).toHaveBeenCalledWith({
       itemsList: items,
@@ -81,9 +83,10 @@ describe('<SortableList />', () => {
         {renderProp}
       </SortableList>
     );
-
-    _handleDragRow(1, 0);
-    _handleDropRow('_2', 0);
+    act(() => {
+      _handleDragRow(1, 0);
+      _handleDropRow('_2', 0);
+    });
 
     expect(onReorder).toHaveBeenCalledWith('_2', 0);
     expect(_itemsList).toEqual([
@@ -123,10 +126,11 @@ describe('<SortableList />', () => {
         {renderProp}
       </SortableList>
     );
-
-    _handleDragRow(1, 0);
-    _handleDragRow(0, 1);
-    _handleDropRow('_2', 1);
+    act(() => {
+      _handleDragRow(1, 0);
+      _handleDragRow(0, 1);
+      _handleDropRow('_2', 1);
+    });
 
     expect(onReorder).not.toHaveBeenCalled();
     expect(_itemsList).toEqual([
@@ -179,9 +183,10 @@ describe('<SortableList />', () => {
         {renderProp}
       </SortableList>
     );
-
-    _handleDragRow(0, 2);
-    _handleDropRow('_1', 2);
+    act(() => {
+      _handleDragRow(0, 2);
+      _handleDropRow('_1', 2);
+    });
 
     expect(onReorder).toHaveBeenCalledWith('_1', 2);
 
@@ -239,8 +244,10 @@ describe('<SortableList />', () => {
       </SortableList>
     );
 
-    _handleDragRow(0, 2);
-    _handleDropRow('_1', 2);
+    act(() => {
+      _handleDragRow(0, 2);
+      _handleDropRow('_1', 2);
+    });
 
     expect(onReorder).toHaveBeenCalledWith('_1', 2);
 
@@ -253,8 +260,10 @@ describe('<SortableList />', () => {
     expect(modifiableItems).toEqual(expectedItems);
     expect(_itemsList).toEqual(expectedItems);
 
-    _handleDragRow(1, 2);
-    _handleDropRow('_3', 2);
+    act(() => {
+      _handleDragRow(1, 2);
+      _handleDropRow('_3', 2);
+    });
 
     expect(onReorder).toHaveBeenCalledWith('_3', 2);
 
@@ -319,8 +328,10 @@ describe('<SortableList />', () => {
       </SortableList>
     );
 
-    _handleDragRow(1, 0); // actually (2, 1), since the first item is locked
-    _handleDropRow('_3', 0); // actually ('_3'), 1), since first item is locked
+    act(() => {
+      _handleDragRow(1, 0); // actually (2, 1), since the first item is locked
+      _handleDropRow('_3', 0); // actually ('_3'), 1), since first item is locked
+    });
 
     expect(onReorder).toHaveBeenCalledWith('_3', 1);
 
@@ -400,8 +411,10 @@ describe('<SortableList />', () => {
       </SortableList>
     );
 
-    _handleDragRow(0, 2);
-    _handleDropRow('_3', 2);
+    act(() => {
+      _handleDragRow(0, 2);
+      _handleDropRow('_3', 2);
+    });
 
     expect(onReorder).toHaveBeenCalledWith('_3', 4);
 
@@ -429,9 +442,10 @@ describe('<SortableList />', () => {
     expect(modifiableItems).toEqual(expectedModifiableItems);
     expect(_lockedItemsList).toEqual(expectedLockedItemsList);
     expect(_itemsList).toEqual(expectedItemsList);
-
-    _handleDragRow(3, 0);
-    _handleDropRow('_6', 0);
+    act(() => {
+      _handleDragRow(3, 0);
+      _handleDropRow('_6', 0);
+    });
 
     expect(onReorder).toHaveBeenCalledWith('_6', 2);
 
