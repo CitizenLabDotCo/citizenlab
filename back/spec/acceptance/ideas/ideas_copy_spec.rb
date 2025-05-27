@@ -28,18 +28,21 @@ resource 'Ideas', :active_job_que_adapter do
     end
 
     context 'when admin' do
-      before { admin_header_token }
+      before { header_token_for(current_user) }
+
+      let(:current_user) { create(:admin) }
 
       example_request 'Copy ideas into the target phase' do
         expect(status).to eq(200)
 
-        expect(response_data).to match(
+        expect(response_data).to include(
           id: be_a(String),
           type: 'job',
           attributes: {
             job_type: 'Ideas::CopyJob',
             progress: 0,
             total: 3,
+            owner_id: current_user.id,
             created_at: be_a(String),
             updated_at: be_a(String)
           }
