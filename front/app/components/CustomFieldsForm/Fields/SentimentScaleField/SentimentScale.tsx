@@ -96,7 +96,7 @@ const SentimentScale = ({ value: data, question, onChange }: Props) => {
               sliderRef.current?.focus();
             }}
           />
-          <TableBody />
+          <TableBody question={question} getAriaLabel={getAriaLabel} />
         </Table>
       </Box>
     </Box>
