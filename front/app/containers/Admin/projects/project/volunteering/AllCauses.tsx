@@ -15,7 +15,7 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List, TextCell } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -108,13 +108,13 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
   return (
     <Container>
       <ButtonWrapper>
-        <Button
+        <ButtonWithLink
           buttonStyle="admin-dark"
           icon="plus-circle"
           linkTo={newCauseLink}
         >
           <FormattedMessage {...messages.addCauseButton} />
-        </Button>
+        </ButtonWithLink>
       </ButtonWrapper>
       <List key={causes.data.length}>
         {items.map((cause, index) => {
@@ -137,20 +137,20 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
                 />
               </div>
               <Buttons>
-                <Button
+                <ButtonWithLink
                   onClick={handleOnClickDelete(cause.id)}
                   icon="delete"
                   buttonStyle="text"
                 >
                   <FormattedMessage {...messages.deleteButtonLabel} />
-                </Button>
-                <Button
+                </ButtonWithLink>
+                <ButtonWithLink
                   linkTo={`/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/${cause.id}`}
                   icon="edit"
                   buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
-                </Button>
+                </ButtonWithLink>
               </Buttons>
             </SortableRow>
           );

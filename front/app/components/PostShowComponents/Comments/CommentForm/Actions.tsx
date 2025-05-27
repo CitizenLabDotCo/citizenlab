@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';
@@ -85,7 +85,7 @@ const Actions = ({
 
   const cancelAndSubmit = (
     <Box display="flex">
-      <Button
+      <ButtonWithLink
         disabled={processing}
         buttonStyle="secondary-outlined"
         padding={smallerThanTablet ? '6px 12px' : undefined}
@@ -93,8 +93,8 @@ const Actions = ({
         onClick={onCancel}
       >
         <FormattedMessage {...messages.cancel} />
-      </Button>
-      <Button
+      </ButtonWithLink>
+      <ButtonWithLink
         className={submitButtonClassName}
         id="e2e-submit-comment-btn"
         processing={processing}
@@ -104,7 +104,7 @@ const Actions = ({
         onClick={onSubmit}
       >
         <FormattedMessage {...buttonText} />
-      </Button>
+      </ButtonWithLink>
     </Box>
   );
 

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import tracks from 'containers/Admin/users/tracks';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { trackEventByName } from 'utils/analytics';
@@ -25,7 +25,7 @@ const RulesList = styled.div`
   margin: 0 -5px;
 `;
 
-const AddButton = styled(Button)`
+const AddButton = styled(ButtonWithLink)`
   display: inline-flex;
   align-items: center;
   margin: 0;

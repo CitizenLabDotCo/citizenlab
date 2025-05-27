@@ -15,7 +15,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 
@@ -125,12 +125,12 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
               </Box>
               <Warning>{formatMessage(messages.warning)}</Warning>
               <Box display="flex">
-                <Button
+                <ButtonWithLink
                   type="submit"
                   processing={methods.formState.isSubmitting}
                 >
                   {formatMessage(messages.savePage)}
-                </Button>
+                </ButtonWithLink>
               </Box>
             </Box>
           </form>

@@ -18,7 +18,7 @@ import {
 
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
 import { trackEventByName } from 'utils/analytics';
@@ -163,7 +163,7 @@ const BuiltInFields = ({
             </Box>
           )}
           <Box w="100%" display="flex" mt="24px">
-            <Button
+            <ButtonWithLink
               type="submit"
               width="auto"
               disabled={loading}
@@ -171,7 +171,7 @@ const BuiltInFields = ({
               id="e2e-built-in-fields-submit-button"
             >
               {formatMessage(sharedMessages.continue)}
-            </Button>
+            </ButtonWithLink>
           </Box>
         </form>
       </FormProvider>

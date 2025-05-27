@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -57,7 +57,7 @@ const UsersHeader = memo(({ title, subtitle }: Props) => {
           <FormattedMessage tagName="h1" {...title} />
         </TextAndButtons>
         <Spacer />
-        <Button
+        <ButtonWithLink
           linkTo="/admin/dashboard/users"
           text={<FormattedMessage {...messages.userInsights} />}
           icon="chart-bar"

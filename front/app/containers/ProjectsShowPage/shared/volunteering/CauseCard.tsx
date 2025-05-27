@@ -23,7 +23,7 @@ import { IProject } from 'api/projects/types';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Image from 'components/UI/Image';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -281,7 +281,7 @@ const CauseCard = ({ cause, className, project }: Props) => {
             )}
           >
             <div>
-              <Button
+              <ButtonWithLink
                 onClick={handleOnVolunteerButtonClick}
                 icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
                 buttonStyle={!isVolunteer ? 'primary' : 'secondary-outlined'}
@@ -293,7 +293,7 @@ const CauseCard = ({ cause, className, project }: Props) => {
                 ) : (
                   <FormattedMessage {...messages.becomeVolunteerButton} />
                 )}
-              </Button>
+              </ButtonWithLink>
             </div>
           </Tooltip>
         </ActionWrapper>

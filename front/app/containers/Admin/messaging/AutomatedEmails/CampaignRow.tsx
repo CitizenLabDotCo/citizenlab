@@ -5,7 +5,7 @@ import { isUndefined } from 'lodash-es';
 
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -64,13 +64,13 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
           <CampaignDescription campaign={campaign} />
           {onClickViewExample && (
             <Box display="flex" justifyContent="flex-end" flexGrow={1}>
-              <Button
+              <ButtonWithLink
                 icon="eye"
                 onClick={onClickViewExample}
                 buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...messages.viewExample} />
-              </Button>
+              </ButtonWithLink>
             </Box>
           )}
         </Box>

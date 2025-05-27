@@ -9,7 +9,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
 import FormattedAnchor from 'components/FormattedAnchor';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -122,7 +122,7 @@ const DeletionDialog = ({
           </li>
         </ul>
         <ButtonsContainer>
-          <Button
+          <ButtonWithLink
             buttonStyle="delete"
             id="deletion"
             onClick={deleteProfile}
@@ -131,15 +131,15 @@ const DeletionDialog = ({
             data-cy="e2e-delete-profile-confirmation"
           >
             <FormattedMessage {...messages.deleteMyAccount} />
-          </Button>
-          <Button
+          </ButtonWithLink>
+          <ButtonWithLink
             buttonStyle="text"
             onClick={closeDialog}
             width="auto"
             justifyWrapper="left"
           >
             <FormattedMessage {...messages.cancel} />
-          </Button>
+          </ButtonWithLink>
         </ButtonsContainer>
       </Container>
     );

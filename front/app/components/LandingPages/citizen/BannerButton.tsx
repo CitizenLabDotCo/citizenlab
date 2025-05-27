@@ -2,7 +2,7 @@ import React, { MouseEvent, KeyboardEvent } from 'react';
 
 import { RouteType } from 'routes';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 export type BannerButtonStyle = 'primary-inverse' | 'primary';
 
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const BannerButton = ({ buttonStyle, ...props }: Props) => (
-  <Button
+  <ButtonWithLink
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     buttonStyle={buttonStyle || 'primary-inverse'}

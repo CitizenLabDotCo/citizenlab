@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -16,7 +16,7 @@ const TranslateButton = (props: Props) => {
   const { translateButtonClicked, className, onClick } = props;
 
   return (
-    <Button
+    <ButtonWithLink
       buttonStyle="secondary-outlined"
       icon="translate"
       onClick={onClick}
@@ -27,7 +27,7 @@ const TranslateButton = (props: Props) => {
       ) : (
         <FormattedMessage {...messages.translate} />
       )}
-    </Button>
+    </ButtonWithLink>
   );
 };
 

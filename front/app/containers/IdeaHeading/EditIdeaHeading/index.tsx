@@ -16,7 +16,7 @@ import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -127,14 +127,14 @@ const EditIdeaHeading = ({ titleText, idea, projectId }: Props) => {
             alignItems="center"
             gap="20px"
           >
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
             >
               <FormattedMessage {...messages.cancelLeaveIdeaButtonText} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               icon={authUser ? 'arrow-left-circle' : 'delete'}
               buttonStyle={authUser ? 'primary' : 'delete'}
               width="100%"
@@ -143,7 +143,7 @@ const EditIdeaHeading = ({ titleText, idea, projectId }: Props) => {
               data-cy="e2e-confirm-leave-edit-idea-button"
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Box>
       </Modal>

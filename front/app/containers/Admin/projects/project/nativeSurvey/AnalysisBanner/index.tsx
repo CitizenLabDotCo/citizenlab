@@ -16,7 +16,7 @@ import useAnalyses from 'api/analyses/useAnalyses';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -135,7 +135,7 @@ const AnalysisBanner = () => {
         disabled={customFieldArePersisted}
         content={formatMessage(messages.customFieldsNotPersisted)}
       >
-        <Button
+        <ButtonWithLink
           buttonStyle="text"
           textColor={colors.teal500}
           fontWeight="bold"
@@ -147,7 +147,7 @@ const AnalysisBanner = () => {
           disabled={!customFieldArePersisted}
         >
           {formatMessage(messages.aiAnalysis)}
-        </Button>
+        </ButtonWithLink>
       </Tooltip>
     </Box>
   );

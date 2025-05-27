@@ -6,7 +6,7 @@ import { IEventData } from 'api/events/types';
 
 import useLocale from 'hooks/useLocale';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -41,7 +41,7 @@ const Location = ({ event }: Props) => {
         <Content>
           {position ? (
             <Box display="flex">
-              <Button
+              <ButtonWithLink
                 m="0px"
                 p="0px"
                 fontSize="m"
@@ -59,7 +59,7 @@ const Location = ({ event }: Props) => {
                 <Text mt="4px" color="coolGrey600" m="0px" p="0px" fontSize="s">
                   {address1.slice(0, address1.indexOf(','))}
                 </Text>
-              </Button>
+              </ButtonWithLink>
             </Box>
           ) : (
             <Text

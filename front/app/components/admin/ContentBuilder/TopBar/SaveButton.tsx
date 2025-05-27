@@ -2,7 +2,7 @@ import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -22,7 +22,7 @@ const SaveButton = ({
   onSave: handleSave,
 }: Props) => {
   return (
-    <Button
+    <ButtonWithLink
       id="e2e-content-builder-topbar-save"
       data-testid="contentBuilderTopBarSaveButton"
       buttonStyle="primary"
@@ -38,7 +38,7 @@ const SaveButton = ({
       onClick={handleSave}
     >
       <FormattedMessage {...messages.contentBuilderSave} />
-    </Button>
+    </ButtonWithLink>
   );
 };
 
