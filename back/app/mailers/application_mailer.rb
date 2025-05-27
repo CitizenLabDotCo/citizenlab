@@ -170,8 +170,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def organization_name
-    # We unescape '&amp;' to '&' to ensure the organization name is displayed correctly in emails.
-    @organization_name ||= localize_for_recipient(app_settings.core.organization_name).gsub('&amp;', '&')
+    @organization_name ||= localize_for_recipient(app_settings.core.organization_name)
   end
 
   def app_configuration

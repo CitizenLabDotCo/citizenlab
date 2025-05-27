@@ -91,11 +91,6 @@ class Phase < ApplicationRecord
   belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
 
   before_validation :sanitize_description_multiloc
-  before_validation do
-    sanitize_multilocs :title_multiloc, :voting_term_singular_multiloc, :voting_term_plural_multiloc,
-      :native_survey_title_multiloc, :native_survey_button_multiloc
-  end
-
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_presentation_mode, on: :create

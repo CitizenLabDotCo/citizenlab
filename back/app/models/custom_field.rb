@@ -109,7 +109,6 @@ class CustomField < ApplicationRecord
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
-  before_validation { sanitize_multilocs :title_multiloc }
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
 
   scope :registration, -> { where(resource_type: 'User') }
