@@ -69,7 +69,7 @@ module Ideas
       end
     end
 
-    def self.dry_run_total(idea_scope, idea_filters, _dest_phase, current_user, **_args)
+    def estimate_tracker_total(idea_scope, idea_filters, _dest_phase, current_user, **_args)
       IdeasFinder.new(
         idea_filters,
         scope: IdeaPolicy::Scope.new(current_user, Idea.public_send(idea_scope)).resolve,

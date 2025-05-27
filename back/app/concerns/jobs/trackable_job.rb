@@ -4,36 +4,8 @@ module Jobs
   module TrackableJob
     extend ActiveSupport::Concern
 
-    class_methods do
-      def perform_later_with_tracking(...)
-        QueJob.transaction do
-          job = perform_later(...)
-          total = dry_run_total(...)
-          job.send(:start_tracking, total)
-        end
-      end
-
-      def dry_run_total(...)
-        nil
-      end
-    end
-
-    private
-
-    def start_tracking(total = 100)
-      @tracker = Jobs::Tracker.create!(
-        root_job_id: root_job_id,
-        root_job_type: self.class.name,
-        total: total
-      )
-    end
-
-    def track_progress(increment = 1)
-      tracker.increment_progress(increment)
-    end
-
     def tracker
-      @tracker ||= Jobs::Tracker.find_sole_by(root_job_id: root_job_id)
+      ::Jobs::Tracker.find_sole_by(root_job_id: root_job_id)
     end
 
     def tracked?
@@ -42,18 +14,64 @@ module Jobs
       false
     end
 
+    class_methods do
+      def with_tracking
+        JobWithTracking.new(self)
+      end
+    end
+
+    private
+
+    def track_progress(increment = 1)
+      tracker.increment_progress(increment) if tracked?
+    end
+
+    def update_tracker_total(total)
+      tracker.update!(total: total) if tracked?
+    end
+
+    def ensure_tracker_total(total)
+      tracker.update!(total: total) if tracked? && tracker.total.nil?
+    end
+
+    def estimate_tracker_total(...)
+      nil
+    end
+
     def enqueue_child_job(job_class, ...)
-      raise 'Job is not being tracked' unless tracked?
+      return job_class.perform_later(...) unless tracked?
 
       QueJob.transaction do
         related_job = job_class.perform_later(...)
         related_job.que_job.update!(data: { root_job_id: root_job_id })
+
         related_job
       end
     end
 
     def root_job_id
       que_job.data['root_job_id'] || que_job.id
+    end
+
+    class JobWithTracking
+      def initialize(job_class)
+        @job_class = job_class
+      end
+
+      delegate :perform_now, to: :@job_class
+
+      def perform_later(...)
+        QueJob.transaction do
+          job = @job_class.perform_later(...)
+          ::Jobs::Tracker.create!(
+            root_job_id: job.send(:root_job_id),
+            root_job_type: job.class.name,
+            total: job.send(:estimate_tracker_total, ...)
+          )
+
+          job
+        end
+      end
     end
   end
 end
