@@ -54,6 +54,7 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
         enabled ? (
           <Box width="100%">
             <IdeaButton
+              dataCy="e2e-ideation-start-idea-button"
               id="e2e-ideation-cta-button"
               projectId={project.id}
               fontWeight="500"
