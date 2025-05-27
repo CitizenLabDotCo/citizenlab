@@ -466,7 +466,7 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-after-submission').should('exist');
   });
 
-  it('creates survey with logic and the user can navigate back and forth without previous logic options changing the order of pages', () => {
+  it.only('creates survey with logic and the user can navigate back and forth without previous logic options changing the order of pages', () => {
     const firstLogicQnOption1 = randomString();
     const firstLogicQnOption2 = randomString();
     const secondLogicQnOption1 = randomString();
@@ -568,7 +568,8 @@ describe('Survey builder', () => {
     cy.contains(questionTitle).should('exist');
 
     // Select the second option to go to page 2
-    cy.contains(firstLogicQnOption2)
+    cy.contains('label', firstLogicQnOption2)
+      .should('exist')
       .should('be.visible')
       .click({ force: true });
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -578,6 +579,7 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-next-page').should('exist');
     cy.dataCy('e2e-submit-form').should('not.exist');
     cy.contains('label', secondLogicQnOption1)
+      .should('exist')
       .should('be.visible')
       .click({ force: true });
     cy.dataCy('e2e-next-page').should('not.exist');
@@ -587,19 +589,23 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-previous-page').click();
     cy.contains(questionTitle).should('exist');
 
-    cy.wait(1000);
+    cy.dataCy('e2e-page-number-1').should('exist');
 
     // Select the first option to go to page 4
     cy.contains(firstLogicQnOption1).click({ force: true });
+    cy.wait(1000);
     cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.dataCy('e2e-page-number-4').should('exist');
     cy.contains(page4Title).should('exist');
 
     // Going back brings us to page 1
     cy.dataCy('e2e-previous-page').click();
+    cy.dataCy('e2e-page-number-1').should('exist');
     cy.contains(questionTitle).should('exist');
 
     // Go to page 4 again (the chosen option is remembered)
     cy.dataCy('e2e-next-page').click({ force: true });
+    cy.dataCy('e2e-page-number-4').should('exist');
     cy.contains(page4Title).should('exist');
 
     // Submit

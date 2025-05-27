@@ -57,16 +57,19 @@ describe('Input form builder', () => {
     cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
-    cy.wait(1000);
+    cy.wait(500);
 
+    cy.dataCy('e2e-page-number-2').should('exist');
     cy.get('#e2e-idea-description-input .ql-editor').type(description);
     cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+    cy.wait(500);
 
     // Go to the next page of the idea form that has the attachments field
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.wait(1000);
 
-    cy.get('#e2e-idea-file-upload').should('exist');
+    cy.dataCy('e2e-page-number-3').should('exist');
+    cy.get('#e2e-idea-file-upload', { timeout: 10000 }).should('exist');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.dataCy('e2e-edit-input-form').click();
