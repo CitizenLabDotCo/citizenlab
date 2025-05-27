@@ -6,7 +6,6 @@ import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 
 import surveyResultMessages from 'components/admin/FormResults/messages';
-
 import PolygonMap from 'components/admin/Graphs/PolygonMap';
 
 import { useIntl } from 'utils/cl-intl';

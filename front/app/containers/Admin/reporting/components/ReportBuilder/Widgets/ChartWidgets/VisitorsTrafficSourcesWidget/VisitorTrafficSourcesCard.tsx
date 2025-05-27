@@ -13,8 +13,8 @@ import messages from '../messages';
 
 import Chart from './Chart';
 import Table from './Table';
-import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 import { View } from './typings';
+import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 
 type Props = ProjectId &
   DatesStrings & {

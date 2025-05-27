@@ -1,12 +1,13 @@
+import { VisitorsLanguagesResponse } from 'api/graph_data_units/responseTypes/VisitorsLanguagesWidget';
+
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 
+import { keys } from 'utils/helperUtils';
 import { roundPercentages } from 'utils/math';
 
 import { Translations } from './translations';
 import { PieRow } from './typings';
-import { VisitorsLanguagesResponse } from 'api/graph_data_units/responseTypes/VisitorsLanguagesWidget';
-import { keys } from 'utils/helperUtils';
 
 export const parsePieData = ({
   sessions_per_locale,

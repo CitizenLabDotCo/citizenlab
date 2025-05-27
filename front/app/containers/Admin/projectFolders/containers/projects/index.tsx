@@ -7,9 +7,9 @@ import useAuthUser from 'api/me/useAuthUser';
 import { HeaderTitle } from 'containers/Admin/projects/all/StyledComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { usePermission } from 'utils/permissions';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
 
 // localisation
 

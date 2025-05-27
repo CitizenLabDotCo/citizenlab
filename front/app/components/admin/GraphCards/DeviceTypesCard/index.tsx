@@ -13,8 +13,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import renderTooltip from './renderTooltip';
-import useDeviceTypes from './useDeviceTypes';
 import { getTranslations } from './translations';
+import useDeviceTypes from './useDeviceTypes';
 
 type Props = ProjectId & Dates;
 

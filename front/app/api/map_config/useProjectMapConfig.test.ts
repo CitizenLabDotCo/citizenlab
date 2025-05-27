@@ -1,8 +1,8 @@
-import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { mapConfigData } from './__mocks__/useMapConfig';
 import useProjectMapConfig from './useProjectMapConfig';
