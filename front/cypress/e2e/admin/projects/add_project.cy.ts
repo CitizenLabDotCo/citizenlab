@@ -79,7 +79,7 @@ describe('Admin: add project', () => {
         cy.wait('@createProject').then((interception) => {
           const projectId = interception.response?.body.data.id;
 
-          // Make a separate request to he project endpoint, as the createProject
+          // Make a separate request to the project endpoint, as the createProject
           // intercept might not include the area relationship yet (results in flakiness)
           cy.getProjectById(projectId).then((project) => {
             const areaId = project.body.data.relationships.areas.data?.[0]?.id;
