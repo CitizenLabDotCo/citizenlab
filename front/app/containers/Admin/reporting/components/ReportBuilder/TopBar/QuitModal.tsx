@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 // i18n
@@ -35,15 +35,15 @@ const QuitModal = ({ open, onCloseModal, onGoBack }: Props) => {
           width="100%"
           alignItems="center"
         >
-          <Button
+          <ButtonWithLink
             buttonStyle="secondary-outlined"
             width="auto"
             mr="16px"
             onClick={onCloseModal}
           >
             <FormattedMessage {...messages.cancelQuitButtonText} />
-          </Button>
-          <Button
+          </ButtonWithLink>
+          <ButtonWithLink
             icon="delete"
             data-cy="e2e-confirm-delete-survey-results"
             buttonStyle="delete"
@@ -51,7 +51,7 @@ const QuitModal = ({ open, onCloseModal, onGoBack }: Props) => {
             onClick={onGoBack}
           >
             <FormattedMessage {...messages.confirmQuitButtonText} />
-          </Button>
+          </ButtonWithLink>
         </Box>
       </Box>
     </Modal>

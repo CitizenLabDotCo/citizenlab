@@ -12,7 +12,7 @@ import styled from 'styled-components';
 
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -61,7 +61,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
             disabled={isReportBuilderAllowed}
           >
             <div>
-              <Button
+              <ButtonWithLink
                 onClick={onOpenModal}
                 icon="plus-circle"
                 buttonStyle="admin-dark"
@@ -69,7 +69,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
                 id="e2e-create-report-button"
               >
                 <FormattedMessage {...messages.emptyStateButtonText} />
-              </Button>
+              </ButtonWithLink>
             </div>
           </Tooltip>
         </Box>

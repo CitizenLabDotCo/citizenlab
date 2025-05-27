@@ -17,7 +17,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 import useUserBySlug from 'api/users/useUserBySlug';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -148,7 +148,7 @@ export const UserComments = () => {
 
         {hasNextPage && (
           <Footer>
-            <Button
+            <ButtonWithLink
               onClick={() => fetchNextPage()}
               processing={isFetchingNextPage}
               icon="refresh"
@@ -159,7 +159,7 @@ export const UserComments = () => {
               height="50px"
             >
               <FormattedMessage {...messages.loadMoreComments} />
-            </Button>
+            </ButtonWithLink>
           </Footer>
         )}
       </Container>

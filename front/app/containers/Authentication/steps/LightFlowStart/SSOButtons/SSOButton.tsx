@@ -8,7 +8,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import oldMessages from 'containers/Authentication/steps/AuthProviders/messages';
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -66,7 +66,7 @@ const SSOButton = ({ ssoProvider, marginTop = '12px', onClickSSO }: Props) => {
   if (ssoProvider === 'franceconnect') {
     return (
       <Container marginTop={marginTop}>
-        <Button
+        <ButtonWithLink
           buttonStyle="white"
           iconSize="22px"
           fullWidth={true}
@@ -77,7 +77,7 @@ const SSOButton = ({ ssoProvider, marginTop = '12px', onClickSSO }: Props) => {
         >
           <Image src={FranceConnectImage} alt="" height="28px" mr="8px" />
           {formatMessage(messages.continueWithFranceConnect)}
-        </Button>
+        </ButtonWithLink>
       </Container>
     );
   }
@@ -107,7 +107,7 @@ const SSOButton = ({ ssoProvider, marginTop = '12px', onClickSSO }: Props) => {
 
   return (
     <Container marginTop={marginTop}>
-      <Button
+      <ButtonWithLink
         icon={ICON_MAP[ssoProvider]}
         iconColor={COLOR_MAP[ssoProvider]}
         iconHoverColor={COLOR_MAP[ssoProvider]}
@@ -120,7 +120,7 @@ const SSOButton = ({ ssoProvider, marginTop = '12px', onClickSSO }: Props) => {
         onClick={handleClickSSO}
       >
         {getButtonText()}
-      </Button>
+      </ButtonWithLink>
     </Container>
   );
 };

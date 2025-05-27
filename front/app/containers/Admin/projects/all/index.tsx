@@ -24,7 +24,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import SearchInput from 'components/UI/SearchInput';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -249,7 +249,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
                 disabled={userIsAdmin}
               >
                 <Box>
-                  <Button
+                  <ButtonWithLink
                     data-cy="e2e-new-project-folder-button"
                     linkTo={'/admin/projects/folders/new'}
                     buttonStyle="secondary-outlined"
@@ -257,13 +257,13 @@ const AdminProjectsList = memo(({ className }: Props) => {
                     disabled={!userIsAdmin}
                   >
                     <FormattedMessage {...messages.createProjectFolder} />
-                  </Button>
+                  </ButtonWithLink>
                 </Box>
               </Tooltip>
             )}
 
             <Box>
-              <Button
+              <ButtonWithLink
                 data-cy="e2e-new-project-button"
                 className="intercom-admin-projects-new-project-button"
                 linkTo={'/admin/projects/new'}
@@ -271,7 +271,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
                 buttonStyle="admin-dark"
               >
                 <FormattedMessage {...messages.newProject} />
-              </Button>
+              </ButtonWithLink>
             </Box>
           </Box>
         </Box>

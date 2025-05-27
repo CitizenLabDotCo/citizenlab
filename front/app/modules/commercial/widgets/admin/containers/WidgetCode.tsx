@@ -6,7 +6,7 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -90,7 +90,7 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
           onFocus={this.handleFocus}
           ref={this.snippetRef}
         />
-        <Button
+        <ButtonWithLink
           onClick={this.copy(this.snippetRef)}
           buttonStyle={'admin-dark'}
           bgColor={this.state.copied ? colors.success : colors.primary}
@@ -100,7 +100,7 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
           ) : (
             <FormattedMessage {...messages.copyToClipboard} />
           )}
-        </Button>
+        </ButtonWithLink>
       </>
     );
   }

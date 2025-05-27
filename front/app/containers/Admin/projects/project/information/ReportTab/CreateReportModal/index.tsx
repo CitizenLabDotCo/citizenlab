@@ -16,7 +16,7 @@ import useAddReport from 'api/reports/useAddReport';
 
 import otherModalMessages from 'containers/Admin/reporting/components/ReportBuilderPage/messages';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 import PhaseFilter from 'components/UI/PhaseFilter';
@@ -155,7 +155,7 @@ const CreateReportModal = ({
             <Error text={errorMessage} />
           </Box>
         )}
-        <Button
+        <ButtonWithLink
           bgColor={colors.primary}
           width="auto"
           mt="40px"
@@ -166,7 +166,7 @@ const CreateReportModal = ({
           onClick={onCreateReport}
         >
           {formatMessage(otherModalMessages.emptyStateButtonText)}
-        </Button>
+        </ButtonWithLink>
       </Box>
     </Modal>
   );

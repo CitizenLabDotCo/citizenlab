@@ -3,7 +3,7 @@ import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { RouteType } from 'routes';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 
@@ -18,7 +18,7 @@ const ViewCustomPageButton = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   return (
-    <Button
+    <ButtonWithLink
       buttonStyle="secondary-outlined"
       icon="eye"
       id="to-custom-page"
@@ -26,7 +26,7 @@ const ViewCustomPageButton = ({
       linkTo={linkTo}
     >
       {formatMessage(messages.viewCustomPage)}
-    </Button>
+    </ButtonWithLink>
   );
 };
 

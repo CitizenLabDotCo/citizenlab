@@ -1,7 +1,7 @@
 import React from 'react';
 
 // should we always use Button from this folder? when do we use the one from the component library? */
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -16,7 +16,7 @@ interface Props {
 
 const AdminEditButton = ({ onClick, testId }: Props) => {
   return (
-    <Button
+    <ButtonWithLink
       buttonStyle="secondary-outlined"
       icon="edit"
       onClick={onClick}
@@ -26,7 +26,7 @@ const AdminEditButton = ({ onClick, testId }: Props) => {
       className="intercom-admin-pages-menu-edit-section-button"
     >
       <FormattedMessage {...messages.edit} />
-    </Button>
+    </ButtonWithLink>
   );
 };
 

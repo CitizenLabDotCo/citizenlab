@@ -25,7 +25,7 @@ import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -262,7 +262,7 @@ const ContentBuilderTopBar = ({
             }
           >
             <div>
-              <Button
+              <ButtonWithLink
                 icon="print"
                 buttonStyle="secondary-outlined"
                 iconColor={colors.textPrimary}

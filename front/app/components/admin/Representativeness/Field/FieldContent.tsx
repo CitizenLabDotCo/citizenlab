@@ -5,7 +5,7 @@ import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
 import { Bins } from 'api/reference_distribution/types';
 import useReferenceDistributionData from 'api/reference_distribution/useReferenceDistributionData';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -115,7 +115,7 @@ const FieldContent = ({
           theme="dark"
         >
           <div>
-            <Button
+            <ButtonWithLink
               disabled={!allowSubmit}
               processing={submitting}
               text={<FormattedMessage {...messages.save} />}

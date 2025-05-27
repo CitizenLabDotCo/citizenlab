@@ -3,13 +3,13 @@ import React from 'react';
 import { media, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(ButtonWithLink)`
   margin-right: 10px;
 
   ${media.tablet`

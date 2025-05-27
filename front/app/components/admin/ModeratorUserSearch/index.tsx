@@ -8,7 +8,7 @@ import { IUserData } from 'api/users/types';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UserSelect from 'components/UI/UserSelect';
 
 import { useIntl } from 'utils/cl-intl';
@@ -20,7 +20,7 @@ const AddModeratorsModal = lazy(
   () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
 );
 
-const AddButton = styled(Button)`
+const AddButton = styled(ButtonWithLink)`
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 20px;

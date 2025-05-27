@@ -10,7 +10,7 @@ import useProjectById from 'api/projects/useProjectById';
 import InputManager, {
   TFilterMenu,
 } from 'components/admin/PostManager/InputManager';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -56,14 +56,14 @@ const AdminProjectIdeas = () => {
             <FormattedMessage {...messages.titleInputManager} />
           </Title>
           <Box display="flex" gap="8px">
-            <Button
+            <ButtonWithLink
               width="auto"
               linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
               icon="page"
               buttonStyle="secondary-outlined"
             >
               <FormattedMessage {...ownMessages.importInputs} />
-            </Button>
+            </ButtonWithLink>
             {phase && (
               <NewIdeaButton
                 inputTerm={phase.data.attributes.input_term}

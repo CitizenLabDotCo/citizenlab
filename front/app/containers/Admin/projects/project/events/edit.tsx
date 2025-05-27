@@ -38,7 +38,7 @@ import projectMessages from 'containers/Admin/projects/project/general/messages'
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import ErrorComponent from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -764,7 +764,7 @@ const AdminProjectEventEdit = () => {
                       <Box width="100%">
                         <Label>{formatMessage(messages.preview)}</Label>
                       </Box>
-                      <Button
+                      <ButtonWithLink
                         minWidth="160px"
                         iconPos={'right'}
                         icon={
@@ -784,7 +784,7 @@ const AdminProjectEventEdit = () => {
                             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                             eventAttrs?.attend_button_multiloc[locale]
                           : formatMessage(messages.attend)}
-                      </Button>
+                      </ButtonWithLink>
                     </Box>
                   )}
                 </>

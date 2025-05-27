@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import * as XLSX from 'xlsx';
 
 import { IResolution } from 'components/admin/ResolutionControl';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -26,7 +26,7 @@ const Container = styled.div`
   cursor: pointer;
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(ButtonWithLink)`
   button {
     display: flex !important;
     justify-content: flex-start !important;
@@ -270,7 +270,7 @@ const ReportExportMenu = ({
 
   return (
     <Container className={`${className} intercom-admin-export-button`}>
-      <Button
+      <ButtonWithLink
         buttonStyle="admin-dark-text"
         onClick={toggleDropdown()}
         icon="download"

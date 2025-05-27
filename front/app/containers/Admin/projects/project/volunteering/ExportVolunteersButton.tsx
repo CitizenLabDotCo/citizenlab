@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import useCauses from 'api/causes/useCauses';
 import { exportVolunteers } from 'api/causes/util';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -29,7 +29,7 @@ const ExportVolunteersButton = ({ phaseId, className }: Props) => {
   };
 
   return (
-    <Button
+    <ButtonWithLink
       buttonStyle="secondary-outlined"
       icon="download"
       onClick={handleExportVolunteers}
@@ -38,7 +38,7 @@ const ExportVolunteersButton = ({ phaseId, className }: Props) => {
       className={className}
     >
       <FormattedMessage {...messages.exportVolunteers} />
-    </Button>
+    </ButtonWithLink>
   );
 };
 

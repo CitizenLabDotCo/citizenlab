@@ -10,7 +10,7 @@ import { rgba } from 'polished';
 import styled from 'styled-components';
 
 import ContentContainer from 'components/ContentContainer';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -131,7 +131,7 @@ const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
             />
           </Left>
           <ButtonContainer>
-            <Button
+            <ButtonWithLink
               className="e2e-accept-cookies-btn"
               buttonStyle="primary-inverse"
               textColor={colors.primary}
@@ -139,16 +139,16 @@ const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
               onClick={onAccept}
             >
               <FormattedMessage {...messages.accept} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               buttonStyle="primary-inverse"
               textColor={colors.primary}
               textHoverColor={colors.primary}
               onClick={onClose}
             >
               <FormattedMessage {...messages.reject} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               className="integration-open-modal"
               padding="0px"
               buttonStyle="text"
@@ -157,7 +157,7 @@ const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
               onClick={onChangePreferences}
             >
               <FormattedMessage {...messages.manage} />
-            </Button>
+            </ButtonWithLink>
           </ButtonContainer>
         </ContentContainerInner>
       </ContentContainer>

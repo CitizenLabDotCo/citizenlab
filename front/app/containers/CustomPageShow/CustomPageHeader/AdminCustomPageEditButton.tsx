@@ -6,7 +6,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -27,7 +27,7 @@ const AdminCustomPageEditButton = ({
   const userCanEditPage = !isNilOrError(authUser) && isAdmin(authUser);
 
   return userCanEditPage ? (
-    <Button
+    <ButtonWithLink
       icon="edit"
       linkTo={adminCustomPageContentPath(pageId)}
       buttonStyle="secondary-outlined"
@@ -37,7 +37,7 @@ const AdminCustomPageEditButton = ({
       right="30px"
     >
       {formatMessage(messages.editPage)}
-    </Button>
+    </ButtonWithLink>
   ) : null;
 };
 

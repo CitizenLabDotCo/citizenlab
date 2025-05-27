@@ -7,7 +7,7 @@ import { Multiloc } from 'typings';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { SectionField } from 'components/admin/Section';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Collapse from 'components/UI/Collapse';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -110,14 +110,14 @@ const TerminologyConfig = ({
         </SectionField>
 
         <ButtonWrapper>
-          <Button
+          <ButtonWithLink
             processing={isLoading}
             onClick={save}
             buttonStyle="admin-dark"
             type="submit"
           >
             {formatMessage(messages.saveButton)}
-          </Button>
+          </ButtonWithLink>
         </ButtonWrapper>
       </Container>
     </Collapse>

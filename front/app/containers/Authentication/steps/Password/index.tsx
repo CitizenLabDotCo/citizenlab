@@ -9,7 +9,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import PasswordInput from 'components/HookForm/PasswordInput';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import {
@@ -128,7 +128,7 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">
-          <Button
+          <ButtonWithLink
             id="e2e-light-flow-password-submit"
             type="submit"
             width="auto"
@@ -136,7 +136,7 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
             processing={loading}
           >
             {formatMessage(containerMessages.logIn)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       </form>
       <Box mt="32px">

@@ -7,7 +7,7 @@ import { object, boolean } from 'yup';
 
 import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -58,7 +58,7 @@ const PoliciesForm = ({ loading, showByContinuingText, onSubmit }: Props) => {
           {formatMessage(messages.reviewTheTerms)}
         </Text>
         <PoliciesMarkup showByContinuingText={showByContinuingText} />
-        <Button
+        <ButtonWithLink
           id="e2e-policies-continue"
           mt="32px"
           type="submit"
@@ -67,7 +67,7 @@ const PoliciesForm = ({ loading, showByContinuingText, onSubmit }: Props) => {
           processing={loading}
         >
           {formatMessage(sharedMessages.continue)}
-        </Button>
+        </ButtonWithLink>
       </form>
     </FormProvider>
   );

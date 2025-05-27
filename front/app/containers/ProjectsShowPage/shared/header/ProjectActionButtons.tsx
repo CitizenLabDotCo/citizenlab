@@ -16,7 +16,7 @@ import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrol
 import messages from 'containers/ProjectsShowPage/messages';
 
 import IdeaButton from 'components/IdeaButton';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -212,31 +212,31 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         />
       )}
       {showTakeSurveyButton && (
-        <Button
+        <ButtonWithLink
           onClick={handleTakeSurveyClick}
           fontWeight="500"
           data-testid="take-survey-button"
         >
           <FormattedMessage {...messages.takeTheSurvey} />
-        </Button>
+        </ButtonWithLink>
       )}
       {showTakePollButton && (
-        <Button
+        <ButtonWithLink
           onClick={() => {
             scrollToElementWithId('project-poll');
           }}
           fontWeight="500"
         >
           <FormattedMessage {...messages.takeThePoll} />
-        </Button>
+        </ButtonWithLink>
       )}
       {showDocumentAnnotationCTAButton && (
-        <Button onClick={handleReviewDocumentClick} fontWeight="500">
+        <ButtonWithLink onClick={handleReviewDocumentClick} fontWeight="500">
           <FormattedMessage {...messages.reviewDocument} />
-        </Button>
+        </ButtonWithLink>
       )}
       {showSeeIdeasButton ? (
-        <Button
+        <ButtonWithLink
           id="e2e-project-see-ideas-button"
           buttonStyle="secondary-outlined"
           onClick={() => {
@@ -257,9 +257,9 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               petition: messages.seeThePetitions,
             })}
           />
-        </Button>
+        </ButtonWithLink>
       ) : showEventsCTAButton ? (
-        <Button
+        <ButtonWithLink
           id="e2e-project-see-events-button"
           buttonStyle="secondary-outlined"
           onClick={() => {
@@ -269,7 +269,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           mb="8px"
         >
           <FormattedMessage {...messages.seeUpcomingEvents} />
-        </Button>
+        </ButtonWithLink>
       ) : null}
     </Box>
   );

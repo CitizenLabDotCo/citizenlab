@@ -16,7 +16,7 @@ import Feedback from 'components/HookForm/Feedback';
 import RadioGroup from 'components/HookForm/RadioGroup';
 import Radio from 'components/HookForm/RadioGroup/Radio';
 import TextArea from 'components/HookForm/TextArea';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -149,19 +149,19 @@ const CommentsAdminDeletionForm = ({
           </TransitionGroup>
 
           <ButtonsWrapper>
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               onClick={onCloseDeleteModal}
             >
               {formatMessage(messages.adminCommentDeletionCancelButton)}
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               type="submit"
               buttonStyle="primary"
               processing={methods.formState.isSubmitting}
             >
               {formatMessage(messages.adminCommentDeletionConfirmButton)}
-            </Button>
+            </ButtonWithLink>
           </ButtonsWrapper>
         </form>
       </FormProvider>

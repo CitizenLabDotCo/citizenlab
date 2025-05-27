@@ -7,7 +7,7 @@ import { Multiloc } from 'typings';
 
 import { TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -96,7 +96,7 @@ const NavbarItemRow = ({
 
       <Box display="flex" alignItems="flex-end">
         {showEditButton && (
-          <Button
+          <ButtonWithLink
             buttonStyle="secondary-outlined"
             icon="edit"
             onClick={handleOnClickEditButton}
@@ -106,24 +106,24 @@ const NavbarItemRow = ({
             className="intercom-admin-pages-menu-edit-button"
           >
             <FormattedMessage {...messages.editButton} />
-          </Button>
+          </ButtonWithLink>
         )}
 
         {viewButtonLink && (
           <Link to={viewButtonLink} target="_blank">
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               icon="eye"
               ml="10px"
               className="intercom-admin-pages-menu-view-button"
             >
               <FormattedMessage {...messages.viewButton} />
-            </Button>
+            </ButtonWithLink>
           </Link>
         )}
 
         {!isDefaultPage && onClickDeleteButton && (
-          <Button
+          <ButtonWithLink
             buttonStyle="secondary-outlined"
             icon="delete"
             onClick={handleOnClickDeleteButton}
@@ -131,7 +131,7 @@ const NavbarItemRow = ({
             className="intercom-admin-pages-menu-delete-button"
           >
             <FormattedMessage {...messages.deleteButton} />
-          </Button>
+          </ButtonWithLink>
         )}
 
         {showAddButton && (
@@ -140,7 +140,7 @@ const NavbarItemRow = ({
             disabled={!addButtonDisabled}
           >
             <Box>
-              <Button
+              <ButtonWithLink
                 // no icon on add and remove buttons, so specify height to match the others
                 height="44px"
                 buttonStyle="secondary-outlined"
@@ -150,13 +150,13 @@ const NavbarItemRow = ({
                 className="intercom-admin-pages-menu-add-to-navbar-button"
               >
                 <FormattedMessage {...messages.addButton} />
-              </Button>
+              </ButtonWithLink>
             </Box>
           </Tooltip>
         )}
 
         {showRemoveButton && (
-          <Button
+          <ButtonWithLink
             height="44px"
             buttonStyle="secondary-outlined"
             onClick={handleOnClickRemoveButton}
@@ -164,7 +164,7 @@ const NavbarItemRow = ({
             className="intercom-admin-pages-menu-remove-from-navbar-button"
           >
             <FormattedMessage {...messages.removeButton} />
-          </Button>
+          </ButtonWithLink>
         )}
       </Box>
     </Container>

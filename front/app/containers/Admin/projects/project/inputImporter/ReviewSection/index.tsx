@@ -18,7 +18,7 @@ import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -145,7 +145,7 @@ const ReviewSection = ({
           {approvals.not_approved === 0 ? (
             <>
               <Box px="15px" py="10px">
-                <Button
+                <ButtonWithLink
                   bgColor={colors.primary}
                   icon="check"
                   processing={isApproving}
@@ -153,7 +153,7 @@ const ReviewSection = ({
                   onClick={handleApproveAll}
                 >
                   <FormattedMessage {...messages.approveAllInputs} />
-                </Button>
+                </ButtonWithLink>
               </Box>
               <Box>
                 <Text>
