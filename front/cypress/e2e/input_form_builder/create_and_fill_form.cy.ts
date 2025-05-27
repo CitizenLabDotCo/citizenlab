@@ -214,7 +214,7 @@ describe('Input form builder', () => {
 
     // Fill in required custom field
     cy.contains(questionTitle).should('exist');
-    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
 
     // save the form
     cy.dataCy('e2e-submit-form').click();
