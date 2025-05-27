@@ -57,7 +57,7 @@ module ImpactTracking
       def ignore_crawlers
         disable_crawler_detection = ENV.fetch('DISABLE_CRAWLER_DETECTION', 'false')
 
-        if disable_crawler_detection != 'true'
+        unless disable_crawler_detection == 'true'
           detector = CrawlerDetect.new(request.user_agent)
           head :no_content if detector.is_crawler?
         end
