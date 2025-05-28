@@ -3010,7 +3010,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Visits",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Totale partecipanti",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "There is no visitor data yet.",
-  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner2": "Since May 2024, visitor and visit counts are higher and more accurate. This is because we now include all visitors, and not just those who accepted cookies. We do not store personally identifiable information of visitors who did not accept cookies, so this method complies with GDPR.",
+  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner2": "Da maggio 2024, il conteggio dei visitatori e delle visite è più alto e più accurato. Questo perché ora includiamo tutti i visitatori e non solo quelli che hanno accettato i cookie. Non memorizziamo le informazioni di identificazione personale dei visitatori che non hanno accettato i cookie, pertanto questo metodo è conforme al GDPR.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Email deliveries over time",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Partecipanti nel tempo",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Registrations over time",
