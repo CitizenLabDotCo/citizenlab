@@ -55,9 +55,6 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    // // Go to the next page of the idea form
-    // cy.dataCy('e2e-next-page').should('be.visible').click();
-
     // Go to the next page of the idea form
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
@@ -98,9 +95,6 @@ describe('Timeline ideation with anonymous participation allowed', () => {
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
-
-    // // Go to the next page of the idea form
-    // cy.dataCy('e2e-next-page').should('be.visible').click();
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
