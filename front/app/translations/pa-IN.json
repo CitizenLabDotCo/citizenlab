@@ -155,6 +155,7 @@
   "app.components.FileUploader.a11y_removeFile": "ਇਸ ਫਾਈਲ ਨੂੰ ਹਟਾਓ",
   "app.components.FileUploader.fileInputDescription": "ਇੱਕ ਫਾਈਲ ਚੁਣਨ ਲਈ ਕਲਿੱਕ ਕਰੋ",
   "app.components.FileUploader.fileUploadLabel": "ਅਟੈਚਮੈਂਟ (ਅਧਿਕਤਮ 50MB)",
+  "app.components.FileUploader.file_too_large2": "{maxSizeMb}MB ਤੋਂ ਵੱਡੀਆਂ ਫਾਈਲਾਂ ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਹੈ।",
   "app.components.FileUploader.incorrect_extension": "{fileName} ਸਾਡੇ ਸਿਸਟਮ ਦੁਆਰਾ ਸਮਰਥਿਤ ਨਹੀਂ ਹੈ, ਇਸਨੂੰ ਅਪਲੋਡ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ।",
   "app.components.FilterBoxes.a11y_allFilterSelected": "ਚੁਣਿਆ ਗਿਆ ਸਥਿਤੀ ਫਿਲਟਰ: ਸਾਰੇ",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# ਅਧੀਨਗੀ} other {# ਬੇਨਤੀਆਂ}}",
