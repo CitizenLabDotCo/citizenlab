@@ -117,6 +117,7 @@ const CustomFieldsPage = ({
     }
 
     setPostAnonymously((postAnonymously) => !postAnonymously);
+    methods.setValue('anonymous', !postAnonymously);
   };
 
   // If the idea (survey submission) has no author relationship,
