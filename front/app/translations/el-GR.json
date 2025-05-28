@@ -155,6 +155,7 @@
   "app.components.FileUploader.a11y_removeFile": "Κατάργηση αυτού του αρχείου",
   "app.components.FileUploader.fileInputDescription": "Κάντε κλικ για να επιλέξετε ένα αρχείο",
   "app.components.FileUploader.fileUploadLabel": "Συνημμένα αρχεία (μέγιστο 50MB)",
+  "app.components.FileUploader.file_too_large2": "Αρχεία μεγαλύτερα από {maxSizeMb}MB δεν επιτρέπονται.",
   "app.components.FileUploader.incorrect_extension": "Το {fileName} δεν υποστηρίζεται από το σύστημά μας, δεν θα μεταφορτωθεί.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Επιλεγμένο φίλτρο κατάστασης: όλα",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# υποβολή} other {# υποβολές}}",
