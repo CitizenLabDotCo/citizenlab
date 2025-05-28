@@ -155,6 +155,7 @@
   "app.components.FileUploader.a11y_removeFile": "Remover este arquivo",
   "app.components.FileUploader.fileInputDescription": "Clique para selecionar um arquivo",
   "app.components.FileUploader.fileUploadLabel": "Anexos (max. 50MB)",
+  "app.components.FileUploader.file_too_large2": "Não são permitidos arquivos maiores que {maxSizeMb}MB.",
   "app.components.FileUploader.incorrect_extension": "{fileName} não é suportado pelo nosso sistema, ele não será carregado.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Filtro de status selecionado: todos",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, no {# entradas} one {# entrada} other {# entradas}}",
