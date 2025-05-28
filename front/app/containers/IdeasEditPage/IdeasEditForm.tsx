@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
-import { Multiloc } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IdeaPublicationStatus } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -23,22 +21,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 import IdeasEditMeta from './IdeasEditMeta';
 import messages from './messages';
-
-export interface FormValues {
-  title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  author_id?: string;
-  idea_images_attributes?: { image: string }[];
-  idea_files_attributes?: {
-    file_by_content: { content: string };
-    name: string;
-  };
-  location_description?: string;
-  location_point_geojson?: GeoJSON.Point;
-  topic_ids?: string[];
-  cosponsor_ids?: string[];
-  publication_status?: IdeaPublicationStatus;
-}
 
 interface Props {
   ideaId: string;
