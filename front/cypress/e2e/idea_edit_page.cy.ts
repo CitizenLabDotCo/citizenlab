@@ -143,7 +143,10 @@ describe('Idea edit page', () => {
       'Boulevard Anspach Brussels'
     );
     cy.wait(10000);
-    cy.get('.e2e-idea-form-location-input-field').type('{enter}');
+    cy.get('.e2e-idea-form-location-input-field input')
+      .first()
+      .focus()
+      .type('{enter}');
 
     cy.intercept('PATCH', `**/ideas/${ideaId}**`).as('patchIdea');
 
