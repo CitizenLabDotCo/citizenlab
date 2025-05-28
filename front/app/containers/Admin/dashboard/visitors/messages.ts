@@ -1,10 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  visitorCountHigherBanner: {
-    id: 'app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner2',
+  visitorDataBanner: {
+    id: 'app.modules.commercial.analytics.admin.containers.visitors.visitorDataBanner',
     defaultMessage:
-      'Since May 2024, visitor and visit counts are higher and more accurate. This is because we now include all visitors, and not just those who accepted cookies. We do not store personally identifiable information of visitors who did not accept cookies, so this method complies with GDPR.',
+      'We have changed the way we collect and display visitor data. As a result, visitor data is more accurate and more types of data are available, while still being GDPR compliant. While the data used for the visitors timeline goes back longer, we only started collecting the data for the "Visit duration", "Pageviews per visit" and the other graphs in November 2024, so before that no data is available. Therefore, if you select data before November 2024, be aware that some graphs might be empty or look odd.',
   },
   noData: {
     id: 'app.modules.commercial.analytics.admin.containers.visitors.noData',
