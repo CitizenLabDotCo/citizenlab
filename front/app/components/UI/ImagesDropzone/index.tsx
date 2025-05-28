@@ -7,7 +7,7 @@ import {
   defaultOutline,
 } from '@citizenlab/cl2-component-library';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
-import Dropzone, { Accept } from 'react-dropzone';
+import Dropzone, { Accept, FileRejection } from 'react-dropzone';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
@@ -334,18 +334,23 @@ class ImagesDropzone extends PureComponent<
     }
   };
 
-  onDropRejected = (images: UploadFile[]) => {
+  onDropRejected = (fileRejections: FileRejection[]) => {
     const { formatMessage } = this.props.intl;
     const maxImageSizeInMb = this.getMaxImageSizeInMb();
 
-    if (images.some((image) => image.size / 1000000 > maxImageSizeInMb)) {
-      const maxSizeExceededErrorMessage =
-        images.length === 1 || this.props.maxNumberOfImages === 1
-          ? messages.errorImageMaxSizeExceeded
-          : messages.errorImagesMaxSizeExceeded;
-      const errorMessage = formatMessage(maxSizeExceededErrorMessage, {
-        maxFileSize: maxImageSizeInMb,
-      });
+    if (
+      fileRejections.some((file) =>
+        file.errors.some((e) => e.code === 'file-too-large')
+      )
+    ) {
+      const errorMessage = formatMessage(
+        this.props.images?.length && this.props.images.length > 1
+          ? messages.errorImagesMaxSizeExceeded
+          : messages.errorImageMaxSizeExceeded,
+        {
+          maxFileSize: maxImageSizeInMb,
+        }
+      );
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
     }
