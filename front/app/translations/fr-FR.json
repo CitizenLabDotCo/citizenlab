@@ -178,8 +178,6 @@
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Type",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Sauvegarde automatique",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "La sauvegarde automatique est activée par défaut lorsque vous ouvrez l'éditeur de formulaire. Chaque fois que vous fermez le panneau de configuration d'un champ en utilisant le bouton « X », cela déclenchera automatiquement une sauvegarde.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Télécharger au format PDF",
-  "app.components.FormSync.downloadExcelTemplate": "Télécharger un modèle Excel",
   "app.components.GoBackButton.group.edit.goBack": "Retour",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Retour à la page précédente",
   "app.components.HookForm.Feedback.errorTitle": "Il y a un problème",

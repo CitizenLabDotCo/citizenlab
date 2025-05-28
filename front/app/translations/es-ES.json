@@ -178,8 +178,6 @@
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tipo",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Autoguardado",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "El guardado automático está activado por defecto cuando abres el editor de formularios. Cada vez que cierres el panel de configuración de campos con el botón \"X\", se activará automáticamente el guardado.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Descargar como pdf",
-  "app.components.FormSync.downloadExcelTemplate": "Descargar una plantilla Excel",
   "app.components.GoBackButton.group.edit.goBack": "Volver",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Volver a la página anterior",
   "app.components.HookForm.Feedback.errorTitle": "Hay un problema",

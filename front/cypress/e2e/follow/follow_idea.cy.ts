@@ -93,14 +93,14 @@ describe('Follow idea', () => {
     cy.get('#e2e-idea-title').contains(ideaTitle1);
 
     // Shows an unfollow button because the user follows the idea automatically since they created it
-    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
+    cy.dataCy('e2e-unfollow-button').should('exist');
+    cy.dataCy('e2e-follow-button').should('not.exist');
 
     // unfollow
-    cy.get('[data-cy="e2e-unfollow-button"]').click();
+    cy.dataCy('e2e-unfollow-button').click();
 
-    cy.get('[data-cy="e2e-unfollow-button"]').should('not.exist');
-    cy.get('[data-cy="e2e-follow-button"]').should('exist');
+    cy.dataCy('e2e-unfollow-button').should('not.exist');
+    cy.dataCy('e2e-follow-button').should('exist');
   });
 
   it('shows a follow option and an unfollow option after following', () => {
@@ -111,12 +111,12 @@ describe('Follow idea', () => {
     cy.get('#e2e-idea-title').contains(ideaTitle2);
 
     // Follow
-    cy.get('[data-cy="e2e-follow-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-button"]').click();
+    cy.dataCy('e2e-follow-button').should('exist');
+    cy.dataCy('e2e-follow-button').click();
 
     // Check that it shows unfollow after
-    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
+    cy.dataCy('e2e-unfollow-button').should('exist');
+    cy.dataCy('e2e-follow-button').should('not.exist');
   });
 
   it('uses a light login flow when a user is not looged in and follows after', () => {
@@ -125,8 +125,8 @@ describe('Follow idea', () => {
     cy.get('#e2e-idea-title').contains(ideaTitle1);
 
     // Follow
-    cy.get('[data-cy="e2e-follow-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-button"]').click();
+    cy.dataCy('e2e-follow-button').should('exist');
+    cy.dataCy('e2e-follow-button').click();
 
     cy.get('input#email').focus().type(randomEmail());
     cy.get('#e2e-light-flow-email-submit').click();
@@ -141,7 +141,7 @@ describe('Follow idea', () => {
     cy.get('#e2e-success-continue-button').click();
 
     // Check that it shows unfollow after logging in
-    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
+    cy.dataCy('e2e-unfollow-button').should('exist');
+    cy.dataCy('e2e-follow-button').should('not.exist');
   });
 });

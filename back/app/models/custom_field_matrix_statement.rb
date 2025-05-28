@@ -26,6 +26,7 @@ class CustomFieldMatrixStatement < ApplicationRecord
   belongs_to :custom_field
 
   before_validation :generate_key, on: :create
+  before_validation { sanitize_multilocs :title_multiloc }
   acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
@@ -36,6 +37,8 @@ class CustomFieldMatrixStatement < ApplicationRecord
   private
 
   def generate_key
+    return unless title_multiloc&.any?
+
     title = title_multiloc.values.first
     self.key ||= title && CustomFieldService.new.generate_key(title)
   end

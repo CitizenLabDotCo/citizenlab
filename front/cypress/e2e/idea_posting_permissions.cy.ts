@@ -1,4 +1,3 @@
-import moment = require('moment');
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Idea posting permissions', () => {
@@ -69,19 +68,45 @@ describe('Idea posting permissions', () => {
   });
 });
 
-describe.skip('idea posting that requires smart group', () => {
-  const projectTitle = randomString(10);
+describe('idea posting restricted to a group', () => {
+  const emailDomain = '@ideaposting-permission-test.com';
   let projectId = '';
   let projectSlug = '';
+  let groupId = '';
   let permittedUserId = '';
-  let permittedUserEmail = `${randomString(5)}@charlie.co`;
+  let permittedUserEmail = `${randomString(5)}${emailDomain}`;
   let permittedUserPassword = randomString(8);
   let nonPermittedUserId = '';
   let nonPermittedUserEmail = randomEmail();
   let nonPermittedUserPassword = randomString(8);
 
-  // Create project with smart group access posting rights
   before(() => {
+    cy.createProjectWithIdeationPhase({
+      phaseTitle: 'Ideation phase',
+    }).then((result) => {
+      projectId = result.projectId;
+      projectSlug = result.projectSlug;
+      const phaseId = result.phaseId;
+
+      cy.apiCreateManualGroup({
+        title: {
+          en: 'Idea posting permission test',
+        },
+      }).then((response) => {
+        groupId = response.body.data.id;
+        cy.apiSetPhasePermission({
+          phaseId,
+          action: 'posting_idea',
+          permissionBody: {
+            permission: {
+              permitted_by: 'users',
+              group_ids: [groupId],
+            },
+          },
+        });
+      });
+    });
+
     // Create two accounts to test with
     cy.apiSignup(
       randomString(),
@@ -90,6 +115,11 @@ describe.skip('idea posting that requires smart group', () => {
       permittedUserPassword
     ).then((response) => {
       permittedUserId = response.body.data.id;
+      // Add the user to the allowed group
+      cy.apiAddMembership({
+        userId: permittedUserId,
+        groupId,
+      });
     });
     cy.apiSignup(
       randomString(),
@@ -99,47 +129,11 @@ describe.skip('idea posting that requires smart group', () => {
     ).then((response) => {
       nonPermittedUserId = response.body.data.id;
     });
-
-    // Create project with smart group posting permission
-    cy.setAdminLoginCookie();
-    cy.getAuthUser()
-      .then((user) => {
-        return cy.apiCreateProject({
-          title: projectTitle,
-          descriptionPreview: '',
-          description: randomString(),
-          publicationStatus: 'published',
-          assigneeId: user.body.data.id,
-        });
-      })
-      .then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId,
-          title: 'Ideation phase',
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          endAt: moment().add(3, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'ideation',
-          canComment: true,
-          canPost: true,
-          canReact: true,
-        });
-      })
-      .then(() => {
-        cy.visit(`admin/projects/${projectId}/settings/access-rights`);
-        cy.get('#accordion-title').click();
-        cy.get('#e2e-permission-user-groups').click();
-        cy.get('#e2e-select-user-group').click().type('Charlie{enter}');
-      });
   });
 
   it("doesn't redirect users after authentication to form page if they are not permitted", () => {
-    cy.clearCookies();
     cy.visit(`projects/${projectSlug}`);
-    cy.get('.e2e-idea-button').first().find('button').should('exist');
-    cy.get('.e2e-idea-button').first().find('button').click();
-    cy.get('#e2e-goto-signup').click();
+    cy.dataCy('e2e-ideation-start-idea-button').should('be.visible').click();
     cy.get('#email').type(nonPermittedUserEmail);
     cy.get('#password').type(nonPermittedUserPassword);
     cy.get('#e2e-signin-password-submit-button').click();
@@ -147,14 +141,8 @@ describe.skip('idea posting that requires smart group', () => {
   });
 
   it('redirects users after authentication to form page if they are permitted', () => {
-    cy.clearCookies();
     cy.visit(`projects/${projectSlug}`);
-    cy.get('.e2e-idea-button').first().find('button').should('exist');
-    cy.wait(2000);
-    cy.get('.e2e-idea-button').first().find('button').click();
-    cy.wait(2000);
-    cy.get('#e2e-goto-signup').click();
-    cy.wait(2000);
+    cy.dataCy('e2e-ideation-start-idea-button').should('be.visible').click();
     cy.get('#email').type(permittedUserEmail);
     cy.get('#password').type(permittedUserPassword);
     cy.get('#e2e-signin-password-submit-button').click();
@@ -162,27 +150,21 @@ describe.skip('idea posting that requires smart group', () => {
   });
 
   it('shows prompt for authentication on form page if logged out user visits and shows form when authenticated', () => {
-    cy.clearCookies();
     cy.visit(`projects/${projectSlug}/ideas/new`);
-    cy.get('#e2e-not-authorized').should('exist');
-    cy.get('[data-cy="e2e-unauthorized-must-sign-in"]').should('exist');
-    cy.wait(2000);
-    cy.get('[data-cy="e2e-trigger-authentication"]').click();
-    cy.get('#e2e-goto-signup').click();
+    cy.get('#e2e-not-authorized').should('be.visible');
+    cy.dataCy('e2e-unauthorized-must-sign-in').should('be.visible');
+    cy.dataCy('e2e-trigger-authentication').click();
     cy.get('#email').type(permittedUserEmail);
     cy.get('#password').type(permittedUserPassword);
     cy.get('#e2e-signin-password-submit-button').click();
-    cy.get('#idea-form').should('exist');
+    cy.get('#idea-form').should('be.visible');
   });
 
   it('shows prompt for authentication on form page if logged out user visits and does not show form when not permitted', () => {
-    cy.clearCookies();
     cy.visit(`projects/${projectSlug}/ideas/new`);
-    cy.get('#e2e-not-authorized').should('exist');
-    cy.get('[data-cy="e2e-unauthorized-must-sign-in"]').should('exist');
-    cy.wait(2000);
-    cy.get('[data-cy="e2e-trigger-authentication"]').click();
-    cy.get('#e2e-goto-signup').click();
+    cy.get('#e2e-not-authorized').should('be.visible');
+    cy.dataCy('e2e-unauthorized-must-sign-in').should('be.visible');
+    cy.dataCy('e2e-trigger-authentication').click();
     cy.get('#email').type(nonPermittedUserEmail);
     cy.get('#password').type(nonPermittedUserPassword);
     cy.get('#e2e-signin-password-submit-button').click();
