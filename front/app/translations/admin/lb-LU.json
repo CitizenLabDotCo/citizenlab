@@ -3010,7 +3010,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Visits",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Ganzen Participanten",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "There is no visitor data yet.",
-  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner2": "Since May 2024, visitor and visit counts are higher and more accurate. This is because we now include all visitors, and not just those who accepted cookies. We do not store personally identifiable information of visitors who did not accept cookies, so this method complies with GDPR.",
+  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner2": "Zënter Mee 2024 sinn d'Zuele vun de Visiteuren an de Visite méi héich a méi genee. Dëst läit dorun, datt mir elo all Visiteuren abegräifen, an net nëmmen déi, déi Cookien akzeptéiert hunn. Mir späichere keng perséinlech identifizéierbar Informatioune vu Visiteuren, déi keng Cookien akzeptéiert hunn, dofir entsprécht dës Method der DSGVO.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Email deliveries over time",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Participanten iwwer Zäit",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Registrations over time",
