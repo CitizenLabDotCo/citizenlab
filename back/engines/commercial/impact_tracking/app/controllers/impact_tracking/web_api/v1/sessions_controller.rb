@@ -55,8 +55,12 @@ module ImpactTracking
       private
 
       def ignore_crawlers
-        detector = CrawlerDetect.new(request.user_agent)
-        head :no_content if detector.is_crawler?
+        disable_crawler_detection = ENV.fetch('DISABLE_CRAWLER_DETECTION', 'false')
+
+        unless disable_crawler_detection == 'true'
+          detector = CrawlerDetect.new(request.user_agent)
+          head :no_content if detector.is_crawler?
+        end
       end
 
       def session_params
