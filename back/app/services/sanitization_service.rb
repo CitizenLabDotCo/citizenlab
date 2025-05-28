@@ -17,15 +17,14 @@ class SanitizationService
   def sanitize(text, features)
     return nil if text.nil?
 
-    # The unescaped version converts HTML entities to their original characters
-    # (e.g. &lt; becomes <). This is important for the sanitizer to work correctly.
-    unescaped = CGI.unescapeHTML(text)
     scrubber = IframeScrubber.new(features)
+    sanitized = SANITIZER.sanitize(text, scrubber: scrubber)
 
-    # First sanitize the unescaped version
-    sanitized = SANITIZER.sanitize(unescaped, scrubber: scrubber)
-    # Then sanitize again after escaping
-    SANITIZER.sanitize(sanitized, scrubber: scrubber)
+    if sanitized == text
+      sanitized
+    else
+      sanitize(sanitized, features)
+    end
   end
 
   def sanitize_multiloc(multiloc, features)

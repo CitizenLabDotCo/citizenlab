@@ -37,7 +37,6 @@ class CustomFieldOption < ApplicationRecord
   validate :belongs_to_select_field
 
   before_validation :generate_key, on: :create
-  before_validation { sanitize_multilocs :title_multiloc }
 
   # Options of the domicile custom field are associated with an area.
   # The two associated resources are kept in sync: changes to the
