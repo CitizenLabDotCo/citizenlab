@@ -192,12 +192,10 @@ const FileInput = ({
           setError('incorrect_extension');
         }
 
-        if (maxSizeMb) {
-          if (file.size / 1000000 > maxSizeMb) {
-            // File is larger than maxSize
-            file.error = ['file_too_large'];
-            setError('file_too_large');
-          }
+        if (maxSizeMb && file.size / 1000000 > maxSizeMb) {
+          // File is larger than maxSize
+          file.error = ['file_too_large'];
+          setError('file_too_large');
         }
 
         if (!file.error) {
