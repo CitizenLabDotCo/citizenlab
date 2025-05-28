@@ -57,6 +57,7 @@ describe('Idea creation', () => {
     cy.visit(`admin/projects/${projectId}/phases/${firstPhaseId}/ideas`);
     cy.acceptCookies();
     cy.get('#e2e-new-idea').click();
+    cy.wait(1000);
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');

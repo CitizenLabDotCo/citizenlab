@@ -66,7 +66,6 @@ const CustomFieldsForm = ({
   const { data: ideaWithSlug } = useIdeaBySlug(
     !isProjectPage || !isIdeaEditPage ? slug : null
   );
-  console.log(ideaId);
   const { data: ideaWithId } = useIdeaById(ideaId);
 
   const { mutateAsync: addIdea } = useAddIdea();
