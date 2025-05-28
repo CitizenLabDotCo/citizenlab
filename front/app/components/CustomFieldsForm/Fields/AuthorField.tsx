@@ -51,12 +51,13 @@ const AuthorField = ({ name, id, defaultValue }: Props) => {
       <Controller
         name={name}
         control={control}
+        defaultValue={defaultValue || null}
         render={({ field: { ref: _ref, ...field } }) => {
           return (
             <UserSelect
               id={id}
               inputId={name}
-              selectedUserId={field.value || defaultValue || null}
+              selectedUserId={field.value}
               onChange={(userOption) => {
                 setValue(name, userOption?.id || null);
               }}
