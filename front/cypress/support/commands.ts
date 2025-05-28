@@ -852,9 +852,11 @@ function apiCreateProject({
 function apiEditPhase({
   phaseId,
   submission_enabled,
+  user_fields_in_form,
 }: {
   phaseId: string;
   submission_enabled?: boolean;
+  user_fields_in_form?: boolean;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -869,6 +871,7 @@ function apiEditPhase({
       body: {
         phase: {
           submission_enabled,
+          user_fields_in_form,
         },
       },
     });
