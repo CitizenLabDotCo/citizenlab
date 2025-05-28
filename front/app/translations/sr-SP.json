@@ -155,6 +155,7 @@
   "app.components.FileUploader.a11y_removeFile": "Уклоните ову датотеку",
   "app.components.FileUploader.fileInputDescription": "Кликните да бисте изабрали датотеку",
   "app.components.FileUploader.fileUploadLabel": "Прилози (макс. 50МБ)",
+  "app.components.FileUploader.file_too_large2": "Files larger than {maxSizeMb}MB are not permitted.",
   "app.components.FileUploader.incorrect_extension": "{fileName} није подржан од стране нашег система, неће бити постављен.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Изабрани статусни филтер: све",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# подношење} other {# поднесака}}",
