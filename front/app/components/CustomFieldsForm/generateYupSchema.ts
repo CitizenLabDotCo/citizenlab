@@ -252,6 +252,12 @@ const generateYupValidationSchema = ({
           : object().nullable();
         break;
       }
+
+      case 'cosponsor_ids': {
+        schema[key] = required
+          ? array().of(string()).required(fieldRequired).min(1, fieldRequired)
+          : array().nullable();
+      }
     }
   });
 
