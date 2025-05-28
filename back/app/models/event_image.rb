@@ -26,6 +26,4 @@ class EventImage < ApplicationRecord
 
   validates :event, presence: true
   validates :ordering, numericality: { only_integer: true }, allow_nil: true
-
-  before_validation { sanitize_multilocs :alt_text_multiloc }
 end

@@ -85,6 +85,7 @@ describe('Survey logic conflict', () => {
 
     // Go to next page
     cy.wait(1000);
+    cy.dataCy('e2e-next-page').should('be.visible');
     cy.dataCy('e2e-next-page').click();
 
     // Make sure we're on page 2
