@@ -155,6 +155,7 @@
   "app.components.FileUploader.a11y_removeFile": "Ukloni ovaj fajl",
   "app.components.FileUploader.fileInputDescription": "Kliknite da biste odabrali fajl",
   "app.components.FileUploader.fileUploadLabel": "Prilozi (max. 50MB)",
+  "app.components.FileUploader.file_too_large2": "Files larger than {maxSizeMb}MB are not permitted.",
   "app.components.FileUploader.incorrect_extension": "{fileName} nije podržan od strane našeg sistema i neće biti podignut.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Odabrani status filter: svi",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# unos} other {# unosa}}",
