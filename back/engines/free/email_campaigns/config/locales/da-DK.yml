@@ -387,7 +387,7 @@ da:
       commented: "%{authorFirstName} kommenterede:"
       preheader: "Ugentlig oversigt for %{organizationName}"
       title_your_weekly_report: "Find ud af hvad der skete i sidste uge"
-      intro_text: "Her er et resumé af, hvad der er sket på borgerinddragelsesplatformen for %{organizationName}."
+      intro_text: "Her er et resumé af, hvad der er sket på inddragelsesplatformen for %{organizationName}."
       cta_go_to_the_platform: "Besøg platformen"
       title_no_activity_past_week: "Ingen aktivitet i den seneste uge"
       successful_proposals_title: "Nåede tærsklen"

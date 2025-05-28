@@ -53,20 +53,31 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Fill in the title and description since these are required
-    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').type(title, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').type(description);
+    cy.dataCy('e2e-page-number-2').should('exist');
+
+    cy.get('#e2e-idea-description-input .ql-editor').type(description, {
+      delay: 0,
+    });
     cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+    cy.wait(1000);
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    // Location field is on page three
+    cy.dataCy('e2e-page-number-3').should('exist');
+
+    // Location field is on next page
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
+    cy.dataCy('e2e-page-number-4').should('exist');
+    cy.get('.e2e-idea-form-location-input-field', { timeout: 10000 }).should(
+      'exist'
+    );
     cy.get('.e2e-idea-form-location-input-field input').should('exist');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
@@ -105,7 +116,7 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Fill in the title and description since these are required
-    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').type(title, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
