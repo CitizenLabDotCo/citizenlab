@@ -1,9 +1,10 @@
 import createRoutes from 'routes';
 
-import { API_PATH, locales } from 'containers/App/constants';
-import authenticationTracks from 'containers/Authentication/tracks';
+import authUserStream from 'api/me/authUserStream';
 
-import { events$, pageChanges$ } from 'utils/analytics';
+import { API_PATH, locales } from 'containers/App/constants';
+
+import { pageChanges$ } from 'utils/analytics';
 import { getJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import matchPath, { getAllPathsFromRoutes } from 'utils/matchPath';
@@ -124,11 +125,8 @@ const configuration: ModuleConfiguration = {
       }
     });
 
-    events$.subscribe((event) => {
-      if (
-        event.name === authenticationTracks.signInEmailPasswordCompleted ||
-        event.name === authenticationTracks.signUpFlowCompleted
-      ) {
+    authUserStream.subscribe((authUserStreamValue) => {
+      if (authUserStreamValue) {
         upgradeSession();
       }
     });
