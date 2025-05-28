@@ -13,6 +13,7 @@ describe('Submit community monitor survey', () => {
         cy.apiEditPhase({
           phaseId: communityMonitorPhaseId,
           submission_enabled: true,
+          user_fields_in_form: false,
         });
       });
     });
@@ -44,7 +45,7 @@ describe('Submit community monitor survey', () => {
     cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
     cy.wait(2000);
     cy.contains('Governance and trust').should('be.visible');
-    cy.wait(2000);
+    cy.wait(4000);
 
     // save the form
     cy.dataCy('e2e-submit-form').should('be.visible');
@@ -76,7 +77,7 @@ describe('Submit community monitor survey', () => {
     cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
     cy.wait(2000);
     cy.contains('Governance and trust').should('be.visible');
-    cy.wait(2000);
+    cy.wait(4000);
 
     // save the form
     cy.dataCy('e2e-submit-form').should('be.visible');
