@@ -64,7 +64,7 @@ const CustomFieldsForm = ({
   const isProjectPage = pathname.includes('/projects/');
   const isIdeaEditPage = pathname.includes('/ideas/edit/');
   const { data: ideaWithSlug } = useIdeaBySlug(
-    !isProjectPage || !isIdeaEditPage ? slug : null
+    !isProjectPage && !isIdeaEditPage ? slug : null
   );
   const { data: ideaWithId } = useIdeaById(ideaId);
 
