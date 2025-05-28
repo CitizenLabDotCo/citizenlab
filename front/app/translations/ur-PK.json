@@ -155,6 +155,7 @@
   "app.components.FileUploader.a11y_removeFile": "اس فائل کو ہٹا دیں۔",
   "app.components.FileUploader.fileInputDescription": "فائل منتخب کرنے کے لیے کلک کریں۔",
   "app.components.FileUploader.fileUploadLabel": "منسلکات (زیادہ سے زیادہ 50MB)",
+  "app.components.FileUploader.file_too_large2": "{maxSizeMb}MB سے بڑی فائلوں کی اجازت نہیں ہے۔",
   "app.components.FileUploader.incorrect_extension": "{fileName} ہمارے سسٹم سے تعاون یافتہ نہیں ہے، اسے اپ لوڈ نہیں کیا جائے گا۔",
   "app.components.FilterBoxes.a11y_allFilterSelected": "منتخب اسٹیٹس فلٹر: تمام",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# جمع کرانا} other {# گذارشات}}",
