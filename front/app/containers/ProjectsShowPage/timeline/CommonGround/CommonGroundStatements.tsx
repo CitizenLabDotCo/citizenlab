@@ -153,7 +153,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
     );
   }
 
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerDown = (e: React.PointerEvent<HTMLElement>) => {
     // If user clicked a button, let the button handle it instead of starting a swipe
     if ((e.target as HTMLElement).closest('button')) {
       return;
@@ -165,7 +165,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
     setIsDragging(true);
   };
 
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerMove = (e: React.PointerEvent<HTMLElement>) => {
     if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
     const dx = e.clientX - startRef.current.x;
     const dy = e.clientY - startRef.current.y;
@@ -199,7 +199,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
     }, ANIMATION_DURATION);
   };
 
-  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerUp = (e: React.PointerEvent<HTMLElement>) => {
     if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
     e.currentTarget.releasePointerCapture(e.pointerId);
 
