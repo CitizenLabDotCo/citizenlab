@@ -43,13 +43,17 @@ describe('Idea edit page', () => {
     }
   });
 
-  // Temporary skip flaky test. Edwin
-  it.skip('has a working idea edit form', () => {
+  it('has a working idea edit form', () => {
     cy.setLoginCookie(email, password);
-    cy.intercept('GET', `**/ideas/${ideaId}**`).as('idea');
+
+    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
+      'getIdeaSchema'
+    );
 
     // check original values
     cy.visit(`/ideas/${ideaSlug}`);
+    cy.wait('@getIdeaSchema', { timeout: 10000 });
+    cy.acceptCookies();
 
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-title').should('exist').contains(ideaTitle);
@@ -57,47 +61,58 @@ describe('Idea edit page', () => {
 
     // go to form
     cy.visit(`/ideas/edit/${ideaId}`);
-    cy.acceptCookies();
 
-    cy.wait('@idea');
+    cy.wait('@getIdeaSchema', { timeout: 10000 });
 
     cy.get('#e2e-idea-edit-page');
-    cy.get('#idea-form', { timeout: 100000 }).should('exist');
-    // cy.get('#idea-form').should('exist');
+    cy.get('#idea-form').should('exist');
     cy.get('#e2e-idea-title-input input').as('titleInput');
-    cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
 
     // check initial form values
     cy.get('@titleInput').should('exist');
-    cy.get('@descriptionInput').should('exist');
-    cy.get('@titleInput').should(($input) => {
-      expect($input.val()).to.eq(ideaTitle);
-    });
-    cy.get('@descriptionInput').should(($el) => {
-      expect($el.text().trim()).to.eq(ideaContent);
-    });
+    cy.get('@titleInput').should('have.value', ideaTitle);
+
+    // So typing the title doesn't get interrupted
+    cy.wait(1000);
 
     // Edit title and description
     cy.get('@titleInput')
       .clear()
       .should('exist')
       .should('not.be.disabled')
-      .type(newIdeaTitle);
+      .type(newIdeaTitle, { delay: 0 });
+
+    // verify the new values
+    cy.get('@titleInput').should('exist');
+    cy.get('@titleInput').should('contain.value', newIdeaTitle);
+
+    // Go to the next page of the idea form
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
+
+    cy.wait(1000);
+
+    // check initial form values
+    cy.get('@descriptionInput').should('exist');
+    cy.get('@descriptionInput').contains(ideaContent);
+
+    // So typing the description doesn't get interrupted
+    cy.wait(1000);
+
+    // Edit title and description
     cy.get('@descriptionInput')
       .clear()
       .should('exist')
       .should('not.be.disabled')
       .type(newIdeaContent);
 
-    cy.wait(1000);
-
     // verify the new values
-    cy.get('@titleInput').should('exist');
-    cy.get('@titleInput').should('contain.value', newIdeaTitle);
+    cy.get('@descriptionInput').should('exist');
     cy.get('@descriptionInput').contains(newIdeaContent);
 
     // Go to the next page of the idea form
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
@@ -109,7 +124,7 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-image-upload input').should('have.length', 0);
 
     // Go to the page with topics
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     cy.get('.e2e-topics-picker')
       .find('button.selected')
@@ -133,14 +148,14 @@ describe('Idea edit page', () => {
     cy.intercept('PATCH', `**/ideas/${ideaId}**`).as('patchIdea');
 
     // save the form
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     cy.get('#e2e-accept-disclaimer').click();
 
     cy.wait('@patchIdea');
 
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
@@ -164,10 +179,19 @@ describe('Idea edit page', () => {
 
   it('has a working idea edit form for author field', () => {
     cy.setAdminLoginCookie();
+
+    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
+      'ideaSchema'
+    );
+    cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
+    cy.wait('@ideaSchema', { timeout: 10000 });
+    cy.wait('@getPhases', { timeout: 10000 });
+    cy.acceptCookies();
     // Search and select an author
-    cy.get('[data-cy="e2e-user-select"]')
+    cy.get('[data-cy="e2e-user-select"]').should('be.visible');
+    cy.dataCy('e2e-user-select')
       .click()
       .type(`${lastName}, ${firstName} {enter}`);
     // Save
@@ -178,14 +202,14 @@ describe('Idea edit page', () => {
     cy.contains(`${lastName}, ${firstName}`).should('exist');
   });
 
-  it('has a go close button that redirects the user to the edit page when clicked', () => {
+  it('has a close button that redirects the user to the edit page when clicked', () => {
     cy.setAdminLoginCookie();
     // Go to idea edit page
     cy.visit(`/ideas/edit/${ideaId}`);
 
-    cy.get('[data-cy="e2e-leave-edit-idea-button"]').click();
-    cy.get('[data-cy="e2e-confirm-leave-edit-idea-button"]').should('exist');
-    cy.get('[data-cy="e2e-confirm-leave-edit-idea-button"]').click();
+    cy.dataCy('e2e-leave-edit-idea-button').click();
+    cy.dataCy('e2e-confirm-leave-edit-idea-button').should('exist');
+    cy.dataCy('e2e-confirm-leave-edit-idea-button').click();
 
     // Check to see that the user is redirected to the idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);

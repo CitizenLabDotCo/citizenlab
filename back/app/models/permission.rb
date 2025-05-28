@@ -14,6 +14,7 @@
 #  global_custom_fields               :boolean          default(FALSE), not null
 #  verification_expiry                :integer
 #  access_denied_explanation_multiloc :jsonb            not null
+#  everyone_tracking_enabled          :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -57,6 +58,7 @@ class Permission < ApplicationRecord
   validate :validate_verification_expiry
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
+  before_validation { sanitize_multilocs :access_denied_explanation_multiloc }
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
@@ -95,6 +97,10 @@ class Permission < ApplicationRecord
     return true if %w[users verified].include? permitted_by
 
     false
+  end
+
+  def everyone_tracking_enabled?
+    permitted_by == 'everyone' && everyone_tracking_enabled
   end
 
   private

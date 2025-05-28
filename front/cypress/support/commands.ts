@@ -1,5 +1,6 @@
 import 'cypress-file-upload';
 import './dnd';
+import * as moment from 'moment';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
@@ -12,6 +13,7 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
+      dataCy: typeof dataCy;
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
       goToLandingPage: typeof goToLandingPage;
       login: typeof login;
@@ -64,7 +66,7 @@ declare global {
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
-      apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
+      apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
       apiRemoveAllReports: typeof apiRemoveAllReports;
@@ -86,6 +88,8 @@ declare global {
       uploadProjectFolderImage: typeof uploadProjectFolderImage;
       uploadProjectImage: typeof uploadProjectImage;
       apiCreateModeratorForProject: typeof apiCreateModeratorForProject;
+      apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
+      createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
     }
   }
 }
@@ -1343,10 +1347,12 @@ function apiCreateEvent({
   });
 }
 
-function apiEnableProjectDescriptionBuilder({
+function apiToggleProjectDescriptionBuilder({
   projectId,
+  enabled = true,
 }: {
   projectId: string;
+  enabled?: boolean;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1360,7 +1366,7 @@ function apiEnableProjectDescriptionBuilder({
       url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_description/upsert`,
       body: {
         content_builder_layout: {
-          enabled: true,
+          enabled,
         },
       },
     });
@@ -1533,6 +1539,7 @@ function apiUpdateAppConfiguration(
 }
 
 function clickLocaleSwitcherAndType(title: string) {
+  cy.wait(1000);
   cy.get('.e2e-localeswitcher').each((button) => {
     cy.wrap(button).click();
     cy.get('#title_multiloc').clear().type(title);
@@ -1866,6 +1873,139 @@ function notIntersectsViewport(subject?: any) {
   expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.false;
 }
 
+function apiCreateNativeSurveyPhase({
+  projectId,
+  title,
+  startAt,
+  endAt,
+  canPost = true,
+  canReact = true,
+  canComment = true,
+  description,
+  nativeSurveyButtonMultiloc = { en: 'Take the survey' },
+  nativeSurveyTitleMultiloc = { en: 'Survey' },
+  allow_anonymous_participation,
+  presentation_mode,
+}: {
+  projectId: string;
+  title: string;
+  startAt: string;
+  endAt?: string;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+  description?: string;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
+  allow_anonymous_participation?: boolean;
+  presentation_mode?: 'card' | 'map';
+}) {
+  return cy.apiCreatePhase({
+    projectId,
+    title,
+    startAt,
+    endAt,
+    participationMethod: 'native_survey',
+    canPost,
+    canReact,
+    canComment,
+    description,
+    nativeSurveyButtonMultiloc,
+    nativeSurveyTitleMultiloc,
+    allow_anonymous_participation,
+    presentation_mode,
+  });
+}
+
+type NativeSurveyPhaseResult = {
+  projectId: string;
+  projectSlug: string;
+  phaseId: string;
+};
+
+function createProjectWithNativeSurveyPhase({
+  projectTitle = randomString(),
+  projectDescriptionPreview = randomString(30),
+  projectDescription = randomString(),
+  publicationStatus = 'published',
+  phaseTitle = randomString(),
+  phaseStartAt = moment().subtract(9, 'month').format('DD/MM/YYYY'),
+  phaseEndAt,
+  canPost = true,
+  canReact = true,
+  canComment = true,
+  description,
+  nativeSurveyButtonMultiloc = { en: 'Take the survey' },
+  nativeSurveyTitleMultiloc = { en: 'Survey' },
+  allow_anonymous_participation,
+  presentation_mode,
+}: {
+  projectTitle?: string;
+  projectDescriptionPreview?: string;
+  projectDescription?: string;
+  publicationStatus?: IProjectAttributes['publication_status'];
+  phaseTitle?: string;
+  phaseStartAt?: string;
+  phaseEndAt?: string;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+  description?: string;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
+  allow_anonymous_participation?: boolean;
+  presentation_mode?: 'card' | 'map';
+} = {}): Cypress.Chainable<NativeSurveyPhaseResult> {
+  return cy
+    .apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus,
+    })
+    .then((project) => {
+      const projectId = project.body.data.id;
+      const projectSlug = project.body.data.attributes.slug;
+
+      return cy
+        .apiCreateNativeSurveyPhase({
+          projectId,
+          title: phaseTitle,
+          startAt: phaseStartAt,
+          endAt: phaseEndAt,
+          canPost,
+          canReact,
+          canComment,
+          description,
+          nativeSurveyButtonMultiloc,
+          nativeSurveyTitleMultiloc,
+          allow_anonymous_participation,
+          presentation_mode,
+        })
+        .then((phase) => {
+          const phaseId = phase.body.data.id;
+
+          return {
+            projectId,
+            projectSlug,
+            phaseId,
+          };
+        });
+    });
+}
+
+/**
+ * Get an element by its data-cy attribute.
+ * This is a utility function to make it easier to find elements by their data-cy attribute.
+ * @param {string} dataCyValue - The value of the data-cy attribute
+ * @returns Cypress chainable object representing the element with the specified data-cy attribute
+ * @example cy.dataCy('e2e-after-submission')
+ */
+function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.get(`[data-cy="${dataCyValue}"]`);
+}
+
+Cypress.Commands.add('dataCy', dataCy);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
@@ -1929,8 +2069,8 @@ Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
 Cypress.Commands.add(
-  'apiEnableProjectDescriptionBuilder',
-  apiEnableProjectDescriptionBuilder
+  'apiToggleProjectDescriptionBuilder',
+  apiToggleProjectDescriptionBuilder
 );
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
@@ -1971,4 +2111,9 @@ Cypress.Commands.add('uploadProjectImage', uploadProjectImage);
 Cypress.Commands.add(
   'apiCreateModeratorForProject',
   apiCreateModeratorForProject
+);
+Cypress.Commands.add('apiCreateNativeSurveyPhase', apiCreateNativeSurveyPhase);
+Cypress.Commands.add(
+  'createProjectWithNativeSurveyPhase',
+  createProjectWithNativeSurveyPhase
 );

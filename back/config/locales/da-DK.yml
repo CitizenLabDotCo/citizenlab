@@ -184,6 +184,7 @@ da:
         description:
       other_input_field:
         title: Skriv dit svar
+        print_title: Hvis '%{other_option}', angiv venligst
       ask_follow_up_field:
         title: Fortæl os hvorfor
     community_monitor:
@@ -255,7 +256,7 @@ da:
     send_reset_password:
       preheader: 'Nulstil din adgangskode til %{organizationName}'
       cta_reset_password: 'Nulstil din adgangskode'
-      message_you_reset_your_password: 'Du anmodede om en nulstilling af din adgangskode på %{organizationName}''s borgerinddragelsesplatform. Klik på nedenstående knap, for at vælge en ny og sikker adgangskode. Linket udløber om 1 time.'
+      message_you_reset_your_password: 'Du anmodede om en nulstilling af din adgangskode på %{organizationName}''s inddragelsesplatform. Klik på nedenstående knap, for at vælge en ny og sikker adgangskode. Linket udløber om 1 time.'
       subject: '%{organizationName}: Nulstil din adgangskode'
       title_reset_your_password: 'Vælg en ny adgangskode'
   xlsx_export:
@@ -301,18 +302,18 @@ da:
       option1: 'Mulighed 1'
       option2: 'Mulighed 2'
     form_end_page:
-      title_text_3: 'Tak fordi du deler dit input!'
+      title_text_3: 'Tak fordi du deler dit bidrag!'
       description_text_3: "Dit input er blevet sendt med succes."
     form_user_page:
       title_text: 'Om dig'
     pdf_export:
       personal_data: 'Personlige data'
-      personal_data_explanation_public: "Vi sender dit input til %{organizationName}'s online borgerinddragelsesplatform. Hvis du ønsker, at dit navn skal vises som forfatter til dette input og modtage opdateringer, der er relevante for dit input via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Din e-mail vil ikke være offentlig og vil kun blive brugt af %{organizationName}. Hvis du ønsker at forblive anonym eller ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem være tomme."
-      personal_data_explanation_private: "Vi sender dit input til %{organizationName}'s online deltagelsesplatform. Hvis du ønsker at modtage opdateringer, der er relevante for dit input, via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Dine data vil ikke være offentlige og vil kun blive brugt af %{organizationName}. Hvis du ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem stå tomme."
+      personal_data_explanation_public: "Vi sender dit input til %{organizationName}'s online inddragelsesplatform. Hvis du ønsker, at dit navn skal vises som forfatter til dette input og modtage opdateringer, der er relevante for dit input via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Din e-mail vil ikke være offentlig og vil kun blive brugt af %{organizationName}. Hvis du ønsker at forblive anonym eller ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem være tomme."
+      personal_data_explanation_private: "Vi sender dit input til %{organizationName}'s online inddragelsesplatform. Hvis du ønsker at modtage opdateringer, der er relevante for dit input, via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Dine data vil ikke være offentlige og vil kun blive brugt af %{organizationName}. Hvis du ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem stå tomme."
       first_name: 'Fornavn'
       last_name: 'Efternavn'
       email_address: 'E-mail adresse'
-      by_checking_this_box: "Ved at markere dette felt accepterer jeg, at mine data bliver brugt til at oprette en konto på %{organizationName}'s borgerinddragelsesplatform."
+      by_checking_this_box: "Ved at markere dette felt accepterer jeg, at mine data bliver brugt til at oprette en konto på %{organizationName}'s inddragelsesplatform."
       optional: 'valgfrit'
       permission: 'Tilladelse'
       choose_as_many: 'Vælg så mange som du vil'
@@ -329,16 +330,17 @@ da:
       write_as_clearly: 'Skriv så <b>tydeligt</b> som du kan - disse formularer kan blive scannet.'
       write_in_language: 'Skriv dine svar på samme sprog som denne formular'
       linear_scale_print_description: 'Skriv kun et tal mellem %{min_label} og %{max_label}'
+      unsupported_field: 'Dette felt kan ikke udfyldes på papir. Brug venligst online-versionen af denne formular i stedet.'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Bekræft din e-mail-adresse til %{organizationName}'s borgerinddragelsesplatform"
+      subject: "Bekræft din e-mail-adresse til %{organizationName}'s inddragelsesplatform"
       preheader: 'Bekræft din e-mailadresse til %{organizationName}'
       header: "Din bekræftelseskode"
       header_message: "Hej %{firstName}!"
       confirm_email_address: "Bekræft din e-mailadresse"
-      thanks_for_signing_up1: "Tak for din registrering på %{organizationName}'s borgerinddragelsesplatform."
+      thanks_for_signing_up1: "Tak for din registrering på %{organizationName}'s inddragelsesplatform:"
       best_regards: "Med venlig hilsen,"
       ignore_email: "Hvis du ikke har anmodet om en kode, kan du roligt ignorere denne e-mail."
       expire_code: "Denne kode udløber om "
@@ -349,10 +351,10 @@ da:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Din konto er blevet midlertidigt deaktiveret'
-      preheader: 'Din konto på borgerinddragelsesplatformen %{organizationName} er blevet midlertidigt deaktiveret'
+      preheader: 'Din konto på inddragelsesplatform %{organizationName} er blevet midlertidigt deaktiveret'
       title_user_blocked: 'Din konto er blevet midlertidigt deaktiveret'
-      paragraph_1_without_reason: "Din konto på borgerinddragelsesplatformen %{organizationName} er blevet midlertidigt deaktiveret på grund af overtrædelse af fællesskabsretningslinjerne."
-      paragraph_1_with_reason: "Din konto på borgerinddragelsesplatformen %{organizationName} er blevet midlertidigt deaktiveret af følgende grund:"
+      paragraph_1_without_reason: "Din konto på inddragelsesplatform %{organizationName} er blevet midlertidigt deaktiveret på grund af overtrædelse af fællesskabsretningslinjerne."
+      paragraph_1_with_reason: "Din konto på inddragelsesplatform %{organizationName} er blevet midlertidigt deaktiveret af følgende grund:"
       for_more_information: "Du kan finde flere oplysninger om dette på %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Du kan logge ind igen fra %{date}"
   user:

@@ -2,6 +2,11 @@
 
 module ParticipationMethod
   class Ideation < Base
+    ALLOWED_EXTRA_FIELD_TYPES = %w[
+      page number linear_scale rating text multiline_text select multiselect multiselect_image
+      ranking sentiment_linear_scale matrix_linear_scale
+    ]
+
     def self.method_str
       'ideation'
     end
@@ -11,7 +16,7 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[page number linear_scale rating text multiline_text select multiselect multiselect_image ranking sentiment_linear_scale matrix_linear_scale]
+      ALLOWED_EXTRA_FIELD_TYPES
     end
 
     def allowed_ideas_orders

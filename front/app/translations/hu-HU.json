@@ -178,7 +178,6 @@
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Írja be",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automatikus mentés",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Az űrlapszerkesztő megnyitásakor az automatikus mentés alapértelmezés szerint engedélyezve van. Amikor az \"X\" gombbal bezárja a mezőbeállítások panelt, az automatikusan mentést indít el.",
-  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Letöltés pdf formátumban",
   "app.components.GoBackButton.group.edit.goBack": "Menj vissza",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Vissza az előző oldalra",
   "app.components.HookForm.Feedback.errorTitle": "Van egy probléma",

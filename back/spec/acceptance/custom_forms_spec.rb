@@ -24,6 +24,7 @@ resource 'Custom Forms' do
             fields_last_updated_at
             print_start_multiloc
             print_end_multiloc
+            print_personal_data_fields
           ]
         end
       end
@@ -32,10 +33,12 @@ resource 'Custom Forms' do
         with_options scope: :custom_form do
           parameter :print_start_multiloc, 'Configurable text for the start of the printed PDF form', required: false
           parameter :print_end_multiloc, 'Configurable text for the end of the printed PDF form', required: false
+          parameter :print_personal_data_fields, 'Whether the personal data section should be shown in the printed PDF form', required: false
         end
 
         let(:print_start_multiloc) { { 'en' => 'Start text' } }
         let(:print_end_multiloc) { { 'en' => 'End text' } }
+        let(:print_personal_data_fields) { true }
 
         example 'Updates the print start and end text for a custom form & does not update fields_last_updated_at' do
           fields_last_updated_at_before = form.fields_last_updated_at
@@ -45,6 +48,7 @@ resource 'Custom Forms' do
           expect(response_data[:type]).to eq 'custom_form'
           expect(response_data.dig(:attributes, :print_start_multiloc)).to eq({ en: 'Start text' })
           expect(response_data.dig(:attributes, :print_end_multiloc)).to eq({ en: 'End text' })
+          expect(response_data.dig(:attributes, :print_personal_data_fields)).to be true
           expect(form.reload.fields_last_updated_at).to eq fields_last_updated_at_before
         end
       end
@@ -65,6 +69,7 @@ resource 'Custom Forms' do
             fields_last_updated_at
             print_start_multiloc
             print_end_multiloc
+            print_personal_data_fields
           ]
         end
       end
@@ -73,10 +78,12 @@ resource 'Custom Forms' do
         with_options scope: :custom_form do
           parameter :print_start_multiloc, 'Configurable text for the start of the printed PDF form', required: false
           parameter :print_end_multiloc, 'Configurable text for the end of the printed PDF form', required: false
+          parameter :print_personal_data_fields, 'Whether the personal data section should be shown in the printed PDF form', required: false
         end
 
         let(:print_start_multiloc) { { 'en' => 'Start text' } }
         let(:print_end_multiloc) { { 'en' => 'End text' } }
+        let(:print_personal_data_fields) { false }
 
         example 'Updates the print start and end text for a custom form & does not update fields_last_updated_at' do
           fields_last_updated_at_before = form.fields_last_updated_at
@@ -86,6 +93,7 @@ resource 'Custom Forms' do
           expect(response_data[:type]).to eq 'custom_form'
           expect(response_data.dig(:attributes, :print_start_multiloc)).to eq({ en: 'Start text' })
           expect(response_data.dig(:attributes, :print_end_multiloc)).to eq({ en: 'End text' })
+          expect(response_data.dig(:attributes, :print_personal_data_fields)).to be false
           expect(form.reload.fields_last_updated_at).to eq fields_last_updated_at_before
         end
       end

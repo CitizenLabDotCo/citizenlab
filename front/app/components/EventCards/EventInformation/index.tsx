@@ -10,7 +10,6 @@ import {
 import moment from 'moment';
 import styled, { useTheme } from 'styled-components';
 
-import useEventImage from 'api/event_images/useEventImage';
 import { IEventData } from 'api/events/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -19,7 +18,6 @@ import EventAttendanceButton from 'components/EventAttendanceButton';
 import ScreenReadableEventDate from 'components/ScreenReadableEventDate';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import Image from 'components/UI/Image';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -29,17 +27,12 @@ import DateBlocks from '../DateBlocks';
 import messages from '../messages';
 
 const EventInformationContainer = styled.div`
+  padding: 16px;
   flex: 1;
   display: flex;
   flex-direction: column;
-`;
-
-const EventCardImage = styled(Image)`
-  width: 100%;
+  justify-content: space-between; // pushes button to bottom
   height: 100%;
-  flex: 1;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
 `;
 
 const PrimaryLink = styled(Link)`
@@ -50,13 +43,14 @@ const PrimaryLink = styled(Link)`
     // Use a pseudo-element to expand the hitbox of the link over the whole card.
     content: ''; /* 1 */
 
-    // Expand the hitbox over the whole card.
-    position: absolute; /* 2 */
-    inset: 0; /* 2 */
+  position: relative;
 
-    // Place the pseudo-element on top of the whole card.
-    z-index: 1; /* 3 */
-  }
+  // Expand the hitbox over the whole card.
+  position: absolute; /* 2 */
+  inset: 0; /* 2 */
+
+  // Place the pseudo-element on top of the whole card.
+  z-index: 1; /* 3 */
 `;
 
 interface Props {
@@ -67,13 +61,6 @@ const EventInformation = ({ event }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const localize = useLocalize();
-
-  // event image
-  const { data: eventImage } = useEventImage(event);
-  const mediumImage = eventImage?.data.attributes.versions.medium;
-  const eventImageAltText = localize(
-    eventImage?.data.attributes.alt_text_multiloc
-  );
 
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
@@ -86,20 +73,10 @@ const EventInformation = ({ event }: Props) => {
   return (
     <EventInformationContainer data-testid="EventInformation">
       <Box className="e2e-event-card">
-        {mediumImage && (
-          <Box height="140px" m="-16px">
-            <EventCardImage
-              src={mediumImage}
-              cover={true}
-              alt={eventImageAltText}
-            />
-          </Box>
-        )}
         <Box
           display="flex"
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
-          mt={eventImage ? '32px' : 'auto'}
         >
           <PrimaryLink to={`/events/${event.id}`}>
             <Title
@@ -114,6 +91,7 @@ const EventInformation = ({ event }: Props) => {
               <T value={event.attributes.title_multiloc} />
             </Title>
           </PrimaryLink>
+
           <DateBlocks
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
@@ -121,8 +99,7 @@ const EventInformation = ({ event }: Props) => {
             showOnlyStartDate={true}
           />
         </Box>
-      </Box>
-      <Box height="100%">
+
         <Box my="16px" pt="12px" pb="4px" background={colors.grey100} px="16px">
           <Box
             display="flex"
@@ -151,6 +128,7 @@ const EventInformation = ({ event }: Props) => {
               {eventDateTime}
             </Text>
           </Box>
+
           {address1 && (
             <Box
               display="flex"
@@ -175,6 +153,7 @@ const EventInformation = ({ event }: Props) => {
               </Text>
             </Box>
           )}
+
           {onlineLink && (
             // The zIndex and position relative are needed to make sure
             // the link is clickable by moving it to the top of the card.
@@ -193,9 +172,7 @@ const EventInformation = ({ event }: Props) => {
                 href={onlineLink}
                 target="_blank"
                 rel="noreferrer"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent the event from bubbling up to the parent Container
-                }}
+                onClick={(e) => e.stopPropagation()} // Prevent the event from bubbling up to the parent Container
               >
                 <Text
                   m="0px"
@@ -209,6 +186,7 @@ const EventInformation = ({ event }: Props) => {
               </a>
             </Box>
           )}
+
           {event.attributes.attendees_count > 0 && (
             <Box
               display="flex"

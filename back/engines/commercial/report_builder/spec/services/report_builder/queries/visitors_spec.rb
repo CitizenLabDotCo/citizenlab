@@ -272,5 +272,24 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       expect(result[:avg_seconds_per_session_whole_period]).to eq(180)
       expect(result[:avg_pages_visited_whole_period]).to eq(2)
     end
+
+    it 'for avg seconds and pages per session: it ignores sessions without pageviews' do
+      # Create sessions with no pageviews
+      10.times do
+        create(:session, created_at: Date.new(2022, 7, 2), monthly_user_hash: 'some_hash')
+      end
+
+      params = {
+        start_at: Date.new(2022, 7, 1),
+        end_at: Date.new(2023, 1, 1)
+      }
+
+      result = query.run_query(**params)
+
+      expect(result[:visits_whole_period]).to eq(18) # should increase
+      expect(result[:visitors_whole_period]).to eq(5) # should increase
+      expect(result[:avg_seconds_per_session_whole_period]).to eq(135) # should not be affected
+      expect(result[:avg_pages_visited_whole_period]).to eq(1.5) # should not be affected
+    end
   end
 end
