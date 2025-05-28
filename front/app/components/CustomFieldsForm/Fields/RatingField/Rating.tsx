@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { IFlatCustomField } from 'api/custom_fields/types';
 
 import {
   Box,
@@ -8,6 +7,9 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+
+import { IFlatCustomField } from 'api/custom_fields/types';
+
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 interface Props {
@@ -38,7 +40,6 @@ const Rating = ({ value: data, question, onChange }: Props) => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const value = data || minimum;
     let newValue = value;
-
     switch (event.key) {
       case 'ArrowLeft':
       case 'ArrowDown':
@@ -71,7 +72,7 @@ const Rating = ({ value: data, question, onChange }: Props) => {
       {/* Hidden input to make the label valid */}
       <input type="hidden" id={inputId} value={data || minimum} readOnly />
 
-      <Box
+      <div
         data-testid="ratingControl"
         role="slider"
         ref={sliderRef}
@@ -131,7 +132,7 @@ const Rating = ({ value: data, question, onChange }: Props) => {
             );
           })}
         </Box>
-      </Box>
+      </div>
     </>
   );
 };

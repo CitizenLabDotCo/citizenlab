@@ -28,6 +28,7 @@ services:
       OVERRIDE_HOST: "e2e.front"
       ASSET_HOST_URI: "http://e2e.front:3000" # it's proxied to `API_HOST: e2e-web` by webpack server
       WEB_CONCURRENCY: 2
+      DISABLE_CRAWLER_DETECTION: true
 
   rabbitmq:
     container_name: e2e-rabbit

@@ -35,6 +35,7 @@ const AttachmentsDropzone = ({
     </SubSectionTitle>
     <StyledFileUploader
       id="e2e-project-file-uploader"
+      dataCy={'e2e-project-file-uploader'}
       onFileAdd={handleProjectFileOnAdd}
       onFileRemove={handleProjectFileOnRemove}
       files={projectFiles}

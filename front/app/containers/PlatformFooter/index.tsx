@@ -337,7 +337,7 @@ const PlatformFooter = ({ className }: Props) => {
               </StyledButton>
             </PagesNavListItem>
             <PagesNavListItem>
-              <StyledLink to="/site-map">
+              <StyledLink to="/site-map" id="site-map-link">
                 <FormattedMessage {...messages.siteMap} />
               </StyledLink>
             </PagesNavListItem>

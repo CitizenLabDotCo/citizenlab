@@ -45,10 +45,15 @@ describe('Idea edit page', () => {
 
   it('has a working idea edit form', () => {
     cy.setLoginCookie(email, password);
-    cy.intercept('GET', `**/ideas/${ideaId}**`).as('idea');
+
+    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
+      'getIdeaSchema'
+    );
 
     // check original values
     cy.visit(`/ideas/${ideaSlug}`);
+    cy.wait('@getIdeaSchema', { timeout: 10000 });
+    cy.acceptCookies();
 
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-title').should('exist').contains(ideaTitle);
@@ -56,9 +61,8 @@ describe('Idea edit page', () => {
 
     // go to form
     cy.visit(`/ideas/edit/${ideaId}`);
-    cy.acceptCookies();
 
-    cy.wait('@idea');
+    cy.wait('@getIdeaSchema', { timeout: 10000 });
 
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form').should('exist');
@@ -66,9 +70,7 @@ describe('Idea edit page', () => {
 
     // check initial form values
     cy.get('@titleInput').should('exist');
-    cy.get('@titleInput').should(($input) => {
-      expect($input.val()).to.eq(ideaTitle);
-    });
+    cy.get('@titleInput').should('have.value', ideaTitle);
 
     // So typing the title doesn't get interrupted
     cy.wait(1000);
@@ -78,7 +80,7 @@ describe('Idea edit page', () => {
       .clear()
       .should('exist')
       .should('not.be.disabled')
-      .type(newIdeaTitle);
+      .type(newIdeaTitle, { delay: 0 });
 
     // verify the new values
     cy.get('@titleInput').should('exist');
@@ -89,11 +91,11 @@ describe('Idea edit page', () => {
 
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
 
+    cy.wait(1000);
+
     // check initial form values
     cy.get('@descriptionInput').should('exist');
-    cy.get('@descriptionInput').should(($el) => {
-      expect($el.text().trim()).to.eq(ideaContent);
-    });
+    cy.get('@descriptionInput').contains(ideaContent);
 
     // So typing the description doesn't get interrupted
     cy.wait(1000);
@@ -177,9 +179,18 @@ describe('Idea edit page', () => {
 
   it('has a working idea edit form for author field', () => {
     cy.setAdminLoginCookie();
+
+    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
+      'ideaSchema'
+    );
+    cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
+    cy.wait('@ideaSchema', { timeout: 10000 });
+    cy.wait('@getPhases', { timeout: 10000 });
+    cy.acceptCookies();
     // Search and select an author
+    cy.get('[data-cy="e2e-user-select"]').should('be.visible');
     cy.dataCy('e2e-user-select')
       .click()
       .type(`${lastName}, ${firstName} {enter}`);

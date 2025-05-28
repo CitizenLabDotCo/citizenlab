@@ -219,7 +219,8 @@ export type BoxProps = BoxColorProps &
   BoxCursorProps &
   BoxAspectRatioProps &
   BoxTransformProps &
-  React.HTMLAttributes<HTMLDivElement>;
+  React.HTMLAttributes<HTMLDivElement> &
+  React.HTMLAttributes<HTMLQuoteElement>;
 
 const Box = styled.div<BoxProps>`
   // colors and background
