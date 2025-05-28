@@ -155,6 +155,7 @@
   "app.components.FileUploader.a11y_removeFile": "Tynnwch y ffeil hon",
   "app.components.FileUploader.fileInputDescription": "Cliciwch i ddewis ffeil",
   "app.components.FileUploader.fileUploadLabel": "Atodiadau (uchafswm. 50MB)",
+  "app.components.FileUploader.file_too_large2": "Ni chaniateir ffeiliau sy'n fwy na {maxSizeMb}MB.",
   "app.components.FileUploader.incorrect_extension": "Nid yw {fileName} yn cael ei gefnogi gan ein system, ni fydd yn cael ei uwchlwytho.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Hidlydd statws a ddewiswyd: i gyd",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# cyflwyniad} other {# cyflwyniad}}",
