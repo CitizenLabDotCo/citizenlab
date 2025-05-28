@@ -43,10 +43,6 @@ module ProjectFolders
 
     before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
-    before_validation do
-      sanitize_multilocs :title_multiloc, :header_bg_alt_text_multiloc
-    end
-
     before_validation :strip_title
     before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
 

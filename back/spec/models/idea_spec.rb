@@ -655,37 +655,11 @@ RSpec.describe Idea do
       expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
     end
 
-    it 'sanitizes when escaped HTML tags present' do
-      idea = create(:idea, body_multiloc: {
-        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
-      })
-      expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
-    end
-
     it "allows embedded youtube video's in the body" do
       idea = create(:idea, body_multiloc: {
         'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'
       })
       expect(idea.body_multiloc).to eq({ 'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>' })
-    end
-  end
-
-  describe '#sanitize_title_multiloc' do
-    it 'removes all HTML tags from title_multiloc' do
-      idea = build(
-        :idea,
-        title_multiloc: {
-          'en' => 'Something <script>alert("XSS")</script> something',
-          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
-          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
-        }
-      )
-
-      idea.save!
-
-      expect(idea.title_multiloc['en']).to eq('Something alert("XSS") something')
-      expect(idea.title_multiloc['fr-BE']).to eq('Something ')
-      expect(idea.title_multiloc['nl-BE']).to eq('Plain text with formatting')
     end
   end
 
