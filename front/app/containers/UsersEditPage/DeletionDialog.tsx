@@ -128,7 +128,7 @@ const DeletionDialog = ({
             onClick={deleteProfile}
             width="auto"
             justifyWrapper="left"
-            className="e2e-delete-profile-confirm"
+            data-cy="e2e-delete-profile-confirmation"
           >
             <FormattedMessage {...messages.deleteMyAccount} />
           </Button>
