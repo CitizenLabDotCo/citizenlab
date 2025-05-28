@@ -92,13 +92,8 @@ describe('Proposal edit page', () => {
     cy.get('form').submit();
     cy.wait(1000);
 
-    cy.intercept('GET', `**/ideas/${inputId}/json_forms_schema`).as(
-      'ideaSchema'
-    );
-
     // Edit proposal
     cy.visit(`/ideas/edit/${inputId}`);
-    cy.wait('@ideaSchema', { timeout: 10000 });
     cy.acceptCookies();
     cy.wait('@idea');
     cy.get('#e2e-idea-edit-page');

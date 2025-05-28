@@ -46,13 +46,8 @@ describe('Idea edit page', () => {
   it('has a working idea edit form', () => {
     cy.setLoginCookie(email, password);
 
-    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
-      'getIdeaSchema'
-    );
-
     // check original values
     cy.visit(`/ideas/${ideaSlug}`);
-    cy.wait('@getIdeaSchema', { timeout: 10000 });
     cy.acceptCookies();
 
     cy.get('#e2e-idea-show');
@@ -61,8 +56,6 @@ describe('Idea edit page', () => {
 
     // go to form
     cy.visit(`/ideas/edit/${ideaId}`);
-
-    cy.wait('@getIdeaSchema', { timeout: 10000 });
 
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form').should('exist');
@@ -183,13 +176,9 @@ describe('Idea edit page', () => {
   it('has a working idea edit form for author field', () => {
     cy.setAdminLoginCookie();
 
-    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
-      'ideaSchema'
-    );
     cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
-    cy.wait('@ideaSchema', { timeout: 10000 });
     cy.wait('@getPhases', { timeout: 10000 });
     cy.acceptCookies();
     // Search and select an author
