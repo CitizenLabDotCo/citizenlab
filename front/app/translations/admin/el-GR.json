@@ -3010,7 +3010,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Visits",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Σύνολο συμμετεχόντων",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "There is no visitor data yet.",
-  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner2": "Since May 2024, visitor and visit counts are higher and more accurate. This is because we now include all visitors, and not just those who accepted cookies. We do not store personally identifiable information of visitors who did not accept cookies, so this method complies with GDPR.",
+  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner2": "Από τον Μάιο του 2024, οι μετρήσεις επισκεπτών και επισκέψεων είναι υψηλότερες και ακριβέστερες. Αυτό οφείλεται στο γεγονός ότι πλέον συμπεριλαμβάνουμε όλους τους επισκέπτες και όχι μόνο εκείνους που αποδέχθηκαν τα cookies. Δεν αποθηκεύουμε προσωπικά αναγνωρίσιμες πληροφορίες των επισκεπτών που δεν αποδέχθηκαν τα cookies, οπότε η μέθοδος αυτή συμμορφώνεται με τον ΓΚΠΔ.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Παραδόσεις email διαχρονικά",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Συμμετέχοντες με την πάροδο του χρόνου",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Εγγραφές διαχρονικά",
