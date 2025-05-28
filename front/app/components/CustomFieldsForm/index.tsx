@@ -62,7 +62,11 @@ const CustomFieldsForm = ({
   // Depending on the route, we  use either the slug or the ideaId to fetch the idea
   const { pathname } = useLocation();
   const isProjectPage = pathname.includes('/projects/');
-  const { data: ideaWithSlug } = useIdeaBySlug(!isProjectPage ? slug : null);
+  const isIdeaEditPage = pathname.includes('/ideas/edit/');
+  const { data: ideaWithSlug } = useIdeaBySlug(
+    !isProjectPage || !isIdeaEditPage ? slug : null
+  );
+  console.log(ideaId);
   const { data: ideaWithId } = useIdeaById(ideaId);
 
   const { mutateAsync: addIdea } = useAddIdea();
