@@ -21,19 +21,16 @@ import useLocale from 'hooks/useLocale';
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from './messages';
 
 const SimilarIdeasList = ({
   titleMultiloc,
   bodyMultiloc,
-  selectedIdeaId,
-  setSelectedIdeaId,
 }: {
   titleMultiloc?: Multiloc;
   bodyMultiloc?: Multiloc;
-  selectedIdeaId?: string;
-  setSelectedIdeaId: (id?: string) => void;
 }) => {
   const { formatMessage } = useIntl();
   const currentLocale = useLocale();
@@ -43,6 +40,7 @@ const SimilarIdeasList = ({
     ideaId?: string;
   }>();
   const ideaId = searchParams.get('idea_id') || idea_id;
+  const selectedIdeaId = searchParams.get('selected_idea_id');
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const projectId = idea?.data.relationships.project.data.id;
   const projectById = useProjectById(projectId);
@@ -126,10 +124,12 @@ const SimilarIdeasList = ({
         >
           <Box
             onClick={() => {
-              // If the selected idea is already selected, we deselect it
-              setSelectedIdeaId(
-                selectedIdeaId === idea.id ? undefined : idea.id
-              );
+              updateSearchParams({
+                selected_idea_id:
+                  searchParams.get('selected_idea_id') === idea.id
+                    ? undefined
+                    : idea.id,
+              });
             }}
             style={{ cursor: 'pointer' }}
             display="flex"

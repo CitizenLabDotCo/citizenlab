@@ -114,6 +114,7 @@ const CustomFields = ({
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+
   return (
     <>
       {questions

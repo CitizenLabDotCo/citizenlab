@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -17,6 +18,7 @@ import CustomFieldsForm from 'components/CustomFieldsForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 
 import IdeasEditMeta from './IdeasEditMeta';
@@ -45,9 +47,8 @@ interface Props {
 const IdeasEditForm = ({ ideaId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [selectedIdeaId, setSelectedIdeaId] = useState<string | undefined>(
-    undefined
-  );
+  const [searchParams] = useSearchParams();
+  const selectedIdeaId = searchParams.get('selected_idea_id');
 
   const projectId = idea?.data.relationships.project.data.id;
   const [usingMapView, setUsingMapView] = useState(false);
@@ -89,6 +90,10 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     />
   );
   const maxWidth = usingMapView ? '1100px' : '700px';
+
+  const handleCloseDetail = () => {
+    updateSearchParams({ selected_idea_id: null });
+  };
 
   return (
     <>
@@ -146,27 +151,58 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                           phase?.data.attributes.participation_method
                         }
                         initialFormData={idea?.data.attributes}
-                        setSelectedIdeaId={setSelectedIdeaId}
                       />
                     )}
                   </Box>
                 </Box>
               </main>
             </Box>
-            {selectedIdeaId && (
-              <Box
-                top={isSmallerThanPhone ? '0' : '40px'}
-                width="375px"
-                minWidth="375px"
-                borderLeft={`1px solid ${colors.grey300}`}
-                overflowY="auto"
-                bgColor={colors.white}
-                position="relative"
-                mb="80px"
-              >
-                <InputDetailView ideaId={selectedIdeaId} />
-              </Box>
-            )}
+            {selectedIdeaId &&
+              (isSmallerThanPhone ? (
+                <Box
+                  position="fixed"
+                  top="0"
+                  left="0"
+                  width="100%"
+                  height="100%"
+                  bg="rgba(0,0,0,0.4)"
+                  zIndex="2000"
+                  onClick={handleCloseDetail}
+                >
+                  <Box
+                    position="absolute"
+                    bottom="0"
+                    width="100%"
+                    height="75%"
+                    bgColor={colors.white}
+                    borderRadius="16px 16px 0 0"
+                    overflowY="auto"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Box
+                      width="40px"
+                      height="4px"
+                      bgColor={colors.grey300}
+                      borderRadius="2px"
+                      m="8px auto"
+                    />
+                    <InputDetailView ideaId={selectedIdeaId} />
+                  </Box>
+                </Box>
+              ) : (
+                <Box
+                  top="40px"
+                  width="375px"
+                  minWidth="375px"
+                  borderLeft={`1px solid ${colors.grey300}`}
+                  overflowY="auto"
+                  bgColor={colors.white}
+                  position="relative"
+                  mb="80px"
+                >
+                  <InputDetailView ideaId={selectedIdeaId} />
+                </Box>
+              ))}
           </Box>
         </Box>
       </Box>
