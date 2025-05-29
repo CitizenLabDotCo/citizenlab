@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
@@ -16,6 +16,7 @@ import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
+import Button from 'components/UI/ButtonWithLink';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -38,10 +39,12 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
     }
   }, [divId]);
 
-  const { enabled, disabled_reason } =
+  const { enabled: reactingEnabled, disabled_reason: reactingDisabledReason } =
     project.attributes.action_descriptors.reacting_idea;
-
-  const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
+  const { enabled: postingEnabled } =
+    project.attributes.action_descriptors.posting_idea;
+  const showSignIn =
+    reactingEnabled || isFixableByAuthentication(reactingDisabledReason);
 
   if (!currentPhase || hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
@@ -55,12 +58,12 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
       currentPhase,
     };
 
-    if (enabled) {
+    if (reactingEnabled) {
       scrollTo(scrollToParams)();
       return;
     }
 
-    if (isFixableByAuthentication(disabled_reason)) {
+    if (isFixableByAuthentication(reactingDisabledReason)) {
       const successAction: SuccessAction = {
         name: 'scrollTo',
         params: scrollToParams,
@@ -82,17 +85,32 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
       currentPhase={currentPhase}
       CTAButton={
         showSignIn ? (
-          <Button
-            onClick={handleReactToInputs}
-            fontWeight="500"
-            bgColor={theme.colors.white}
-            textColor={theme.colors.tenantText}
-            textHoverColor={theme.colors.black}
-            padding="6px 12px"
-            fontSize="14px"
-          >
-            <FormattedMessage {...messages.viewInputs} />
-          </Button>
+          <Box display="flex" gap="8px">
+            {postingEnabled && (
+              <Button
+                fontWeight="500"
+                bgColor={theme.colors.white}
+                textColor={theme.colors.tenantText}
+                textHoverColor={theme.colors.black}
+                padding="6px 12px"
+                fontSize="14px"
+                linkTo={`/projects/${project.attributes.slug}/ideas/new?phase_id=${currentPhase.id}`}
+              >
+                <FormattedMessage {...messages.addInput} />
+              </Button>
+            )}
+            <Button
+              onClick={handleReactToInputs}
+              fontWeight="500"
+              bgColor={theme.colors.white}
+              textColor={theme.colors.tenantText}
+              textHoverColor={theme.colors.black}
+              padding="6px 12px"
+              fontSize="14px"
+            >
+              <FormattedMessage {...messages.viewInputs} />
+            </Button>
+          </Box>
         ) : null
       }
     />
