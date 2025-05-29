@@ -56,12 +56,12 @@ export interface ProgressData {
   };
   relationships: {
     next_idea: {
-      data: IRelationship[];
+      data: IRelationship;
     };
   };
 }
 
-export type CommonGroundReactionMode = 'agree' | 'unsure' | 'disagree';
+export type CommonGroundReactionMode = 'up' | 'neutral' | 'down';
 
 export interface ICommonGroundResults {
   data: CommonGroundResultsData;
@@ -72,7 +72,6 @@ export interface ICommonGroundProgress {
 }
 
 export interface ReactToIdeaObject {
-  phaseId?: string | undefined;
   ideaId: string;
   mode: CommonGroundReactionMode;
 }
