@@ -257,6 +257,21 @@ const generateYupValidationSchema = ({
         schema[key] = required
           ? array().of(string()).required(fieldRequired).min(1, fieldRequired)
           : array().nullable();
+        break;
+      }
+
+      case 'sentiment_linear_scale': {
+        schema[key] = required
+          ? number()
+              .min(1, fieldRequired)
+              .max(5, fieldRequired)
+              .required(fieldRequired)
+          : number();
+
+        // follow up field (never required)
+        schema[`${key}_follow_up`] = string();
+
+        break;
       }
     }
   });
