@@ -45,7 +45,7 @@ const ImageField = ({ name, inputLabel, ideaId, ...rest }: Props) => {
   }, [getValues, name]);
 
   useEffect(() => {
-    if (ideaImages) {
+    if (ideaImages && ideaImages.data.length > 0) {
       let images: UploadFile[] = [];
       const convertImages = async () => {
         images = await Promise.all(
