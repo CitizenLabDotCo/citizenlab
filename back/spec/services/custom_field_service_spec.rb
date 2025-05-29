@@ -293,8 +293,10 @@ describe CustomFieldService do
       expect(values['key_not_matching_field']).to eq(nil)
     end
 
-    # it 'does not remove keys of "other" or "follow_up" fields'
-      # TODO
-    # end
+    it 'does not remove keys of "other" or "follow_up" fields' do
+      values = CustomFieldService.remove_not_visible_fields(idea, author)
+      expect(values["#{select_key}_other"]).to eq('other value')
+      expect(values["#{sentiment_key}_follow_up"]).to eq('follow up value')
+    end
   end
 end
