@@ -32,6 +32,7 @@ import { anyIsDefined } from 'utils/helperUtils';
 
 import { ValidationErrors } from '../../typings';
 
+import UserActions from './components/inputs/_shared/UserActions';
 import IdeationInputs from './components/inputs/IdeationInputs';
 import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
 import PollInputs from './components/inputs/PollInputs';
@@ -476,6 +477,24 @@ const PhaseParticipationConfig = ({
               />
             </Warning>
           </Box>
+        )}
+        {participation_method === 'common_ground' && (
+          <UserActions
+            submission_enabled={submission_enabled || false}
+            commenting_enabled={commenting_enabled || false}
+            reacting_enabled={reacting_enabled || false}
+            togglePostingEnabled={togglePostingEnabled}
+            toggleCommentingEnabled={toggleCommentingEnabled}
+            toggleReactingEnabled={toggleReactingEnabled}
+            apiErrors={apiErrors}
+            reacting_like_method={reacting_like_method}
+            reacting_like_limited_max={reacting_like_limited_max}
+            noLikingLimitError={validationErrors.noLikingLimitError}
+            handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+            handleLikingLimitOnChange={handleLikingLimitOnChange}
+            showCommentingToggle={false}
+            showReactingToggle={false}
+          />
         )}
 
         {participation_method === 'voting' && (
