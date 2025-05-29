@@ -9,9 +9,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import SimilarIdeasList from 'containers/IdeasNewPage/SimilarInputs/SimilarInputsList';
 
 const InputIQ = ({ phase }: { phase: IPhaseData | undefined }) => {
-  const [selectedIdeaId, setSelectedIdeaId] = useState<string | undefined>(
-    undefined
-  );
   const { watch } = useFormContext();
   const isInputIQEnabled = useFeatureFlag({
     name: 'input_iq',
@@ -47,8 +44,6 @@ const InputIQ = ({ phase }: { phase: IPhaseData | undefined }) => {
       <SimilarIdeasList
         titleMultiloc={debouncedTitleMultiloc}
         bodyMultiloc={debouncedBodyMultiloc}
-        selectedIdeaId={selectedIdeaId}
-        setSelectedIdeaId={setSelectedIdeaId}
       />
     </div>
   );

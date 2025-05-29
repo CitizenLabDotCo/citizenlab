@@ -16,22 +16,21 @@ import messages from '../messages';
 interface Props extends Omit<UserSelectProps, 'onChange' | 'selectedUserId'> {
   name: string;
   id?: string;
+  defaultValue?: string;
 }
 
-const AuthorField = ({ name, id }: Props) => {
+const AuthorField = ({ name, id, defaultValue }: Props) => {
   const {
     setValue,
     formState: { errors: formContextErrors },
     control,
   } = useFormContext();
   const { formatMessage } = useIntl();
-
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
-
   return (
     <>
       <FormLabel
@@ -52,6 +51,7 @@ const AuthorField = ({ name, id }: Props) => {
       <Controller
         name={name}
         control={control}
+        defaultValue={defaultValue || null}
         render={({ field: { ref: _ref, ...field } }) => {
           return (
             <UserSelect

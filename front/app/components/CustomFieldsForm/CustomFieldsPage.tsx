@@ -89,7 +89,6 @@ const CustomFieldsPage = ({
   const [searchParams] = useSearchParams();
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
   const { data: idea } = useIdeaById(ideaId);
-
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const [postAnonymously, setPostAnonymously] = useState(
@@ -118,6 +117,7 @@ const CustomFieldsPage = ({
     }
 
     setPostAnonymously((postAnonymously) => !postAnonymously);
+    methods.setValue('anonymous', !postAnonymously);
   };
 
   // If the idea (survey submission) has no author relationship,
@@ -235,7 +235,12 @@ const CustomFieldsPage = ({
 
                     {currentPageNumber === 0 && isAdmin(authUser) && (
                       <Box mb="24px">
-                        <AuthorField name="author_id" />
+                        <AuthorField
+                          name="author_id"
+                          defaultValue={
+                            idea?.data.relationships.author?.data?.id
+                          }
+                        />
                       </Box>
                     )}
                     {currentPageNumber === lastPageNumber - 1 &&

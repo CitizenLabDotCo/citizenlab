@@ -92,20 +92,15 @@ describe('Proposal edit page', () => {
     cy.get('form').submit();
     cy.wait(1000);
 
-    cy.intercept('GET', `**/ideas/${inputId}/json_forms_schema`).as(
-      'ideaSchema'
-    );
-
     // Edit proposal
     cy.visit(`/ideas/edit/${inputId}`);
-    cy.wait('@ideaSchema', { timeout: 10000 });
     cy.acceptCookies();
     cy.wait('@idea');
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form').should('exist');
 
     // Edit title
-    cy.get('#e2e-idea-title-input input').as('titleInput');
+    cy.get('#e2e-idea-title-input ').as('titleInput');
     cy.get('@titleInput').should('exist');
     cy.get('@titleInput').should('have.value', oldTitle);
     cy.wait(1000); // So typing the title doesn't get interrupted
@@ -124,10 +119,10 @@ describe('Proposal edit page', () => {
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.get('#e2e-idea-image-upload input').attachFile('icon.png');
     // Check that the tags field was not removed
-    cy.get('#e2e-idea-topics-input').should('exist');
+    cy.get('.e2e-topics-picker').should('exist');
     // Answer the extra field
     cy.contains(extraFieldTitle).should('exist');
-    cy.get(`*[id^="properties${extraFieldTitle}"]`).type(extraFieldAnswer, {
+    cy.get(`*[id^="${extraFieldTitle}"]`).type(extraFieldAnswer, {
       force: true,
     });
 
