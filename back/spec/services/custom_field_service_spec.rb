@@ -236,4 +236,65 @@ describe CustomFieldService do
       expect(service.handle_description(field, 'nl-NL')).to eq 'carrot'
     end
   end
+
+  describe 'remove_not_visible_fields' do
+    let(:project) { create(:project_with_active_ideation_phase) }
+    let(:custom_form) { create(:custom_form, participation_context: project) }
+
+    let(:select_custom_field_with_other) do
+      cf = create(:custom_field_select, resource: custom_form)
+      create(:custom_field_option, custom_field: cf, key: 'option1')
+      create(:custom_field_option, custom_field: cf, key: 'option2')
+      create(:custom_field_option, custom_field: cf, key: 'other')
+      cf
+    end
+    let(:select_key) { select_custom_field_with_other.key }
+
+    let(:sentiment_custom_field_with_follow_up) do
+      create(
+        :custom_field_sentiment_linear_scale, 
+        ask_follow_up: true,
+        resource: custom_form
+      )
+    end
+
+    let(:sentiment_key) { sentiment_custom_field_with_follow_up.key }
+    let(:author) { create(:user) }
+
+    let(:idea) do 
+      create(
+        :idea,
+        project: project,
+        author: author,
+        custom_field_values: {
+          select_key => 'other',
+          "#{select_key}_other": 'other value',
+          sentiment_key => 3,
+          "#{sentiment_key}_follow_up": 'follow up value',
+          'key_not_matching_field': 'foo'
+        }
+      ) 
+    end
+
+    it 'does not show custom fields if user is not author or moderator' do
+      values = CustomFieldService.remove_not_visible_fields(idea, create(:user))
+      expect(values[select_key]).to eq(nil)
+      expect(values[sentiment_key]).to eq(nil)
+    end
+
+    it 'shows custom fields if user is author' do
+      values = CustomFieldService.remove_not_visible_fields(idea, author)
+      expect(values[select_key]).to eq('other')
+      expect(values[sentiment_key]).to eq(3)
+    end
+
+    it 'removes keys of non-existent custom fields' do
+      values = CustomFieldService.remove_not_visible_fields(idea, author)
+      expect(values['key_not_matching_field']).to eq(nil)
+    end
+
+    # it 'does not remove keys of "other" or "follow_up" fields'
+      # TODO
+    # end
+  end
 end
