@@ -20,16 +20,17 @@ import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { FormValues } from 'containers/EmailChange';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import PageControlButtons from 'components/Form/Components/Layouts/PageControlButtons';
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
+import Feedback from 'components/HookForm/Feedback';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
@@ -38,6 +39,8 @@ import AuthorField from './Fields/AuthorField';
 import BudgetField from './Fields/BudgetField';
 import generateYupValidationSchema from './generateYupSchema';
 import messages from './messages';
+
+import { FormValues } from './';
 
 type CustomFieldsPage = {
   page: IFlatCustomField;
@@ -49,7 +52,7 @@ type CustomFieldsPage = {
   participationMethod?: ParticipationMethod;
   ideaId?: string;
   projectId: string;
-  onSubmit: (formValues: any) => void;
+  onSubmit: (formValues: FormValues) => Promise<void>;
   pageButtonLabelMultiloc?: Multiloc;
   phase?: IPhaseData;
   defaultValues?: any;
@@ -108,7 +111,11 @@ const CustomFieldsPage = ({
   });
 
   const onFormSubmit = async (formValues: FormValues) => {
-    onSubmit(formValues);
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
   };
 
   const handleOnChangeAnonymousPosting = () => {
@@ -316,6 +323,7 @@ const CustomFieldsPage = ({
             </Box>
 
             <Box w="100%">
+              <Feedback />
               <PageControlButtons
                 handleNextAndSubmit={() => {
                   pagesRef.current?.scrollTo(0, 0);

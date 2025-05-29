@@ -26,7 +26,7 @@ import {
   getFormCompletionPercentage,
 } from './util';
 
-interface FormValues {
+export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc?: Multiloc;
   author_id?: string;
@@ -63,6 +63,7 @@ const CustomFieldsForm = ({
   const { pathname } = useLocation();
   const isProjectPage = pathname.includes('/projects/');
   const isIdeaEditPage = pathname.includes('/ideas/edit/');
+  console.log({ isIdeaEditPage, pathname, slug, ideaId });
   const { data: ideaWithSlug } = useIdeaBySlug(
     !isProjectPage && !isIdeaEditPage ? slug : null
   );
@@ -128,6 +129,7 @@ const CustomFieldsForm = ({
 
         const idea = await addIdea({
           ...formValues,
+          title_multiloc: {},
           project_id: projectId,
           phase_ids,
           publication_status: undefined, // TODO: Change this logic when handling draft ideas
@@ -138,6 +140,7 @@ const CustomFieldsForm = ({
           id: idea.data.id,
           requestBody: {
             ...formValues,
+            title_multiloc: {},
           },
         });
         updateSearchParams({ idea_id: idea.data.id });
