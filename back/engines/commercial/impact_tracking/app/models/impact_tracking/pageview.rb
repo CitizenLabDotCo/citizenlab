@@ -15,8 +15,7 @@
 #  fk_rails_...  (session_id => impact_tracking_sessions.id)
 #
 class ImpactTracking::Pageview < ApplicationRecord
-  validates :session_id, presence: true
   validates :path, presence: true
 
-  belongs_to :session, class_name: 'ImpactTracking::Session'
+  belongs_to :session
 end
