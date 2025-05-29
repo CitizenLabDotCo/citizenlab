@@ -153,9 +153,16 @@ interface Props {
   className?: string;
   id: string;
   multiple?: boolean;
+  dataCy?: string;
 }
 
-const FileInput = ({ className, id, onAdd, multiple = false }: Props) => {
+const FileInput = ({
+  className,
+  id,
+  onAdd,
+  dataCy,
+  multiple = false,
+}: Props) => {
   const onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
     // so we can upload the same file again after deleting it
@@ -186,6 +193,7 @@ const FileInput = ({ className, id, onAdd, multiple = false }: Props) => {
     <Container className={className}>
       <Input
         id={id}
+        data-cy={dataCy}
         onChange={onChange}
         onClick={onClick}
         type="file"
