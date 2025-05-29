@@ -56,7 +56,7 @@ export interface ProgressData {
   };
   relationships: {
     next_idea: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
   };
 }
