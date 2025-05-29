@@ -56,7 +56,7 @@ const DescriptionControl = ({
   }
 
   return (
-    <Box id="e2e-idea-description-input">
+    <Box id="body_multiloc">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
