@@ -21,9 +21,14 @@ interface Props
     'locales' | 'valueMultiloc' | 'type'
   > {
   name: string;
+  scrollErrorIntoView?: boolean;
 }
 
-const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
+const InputMultilocWithLocaleSwitcher = ({
+  name,
+  scrollErrorIntoView,
+  ...rest
+}: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -75,7 +80,7 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -84,7 +89,7 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </>

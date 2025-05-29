@@ -93,7 +93,7 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
     (getAllErrorMessages().length > 0 || formContextErrors.submissionError) &&
     !isSubmitSuccessful;
   const successMessageIsShown = isSubmitSuccessful && successMessageIsVisible;
-  console.log(getAllErrorMessages());
+
   return (
     <>
       {isSubmitted && (

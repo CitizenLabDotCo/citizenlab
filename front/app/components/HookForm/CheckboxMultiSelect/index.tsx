@@ -17,6 +17,7 @@ import Error, { TFieldName } from 'components/UI/Error';
 interface Props extends Omit<SelectProps, 'onChange'> {
   name: string;
   options: IOption[];
+  scrollErrorIntoView?: boolean;
 }
 
 const StyledBox = styled(Box)`
@@ -27,7 +28,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-const CheckboxMultiSelect = ({ name, options }: Props) => {
+const CheckboxMultiSelect = ({ name, options, scrollErrorIntoView }: Props) => {
   const {
     trigger,
     watch,
@@ -100,7 +101,7 @@ const CheckboxMultiSelect = ({ name, options }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -109,7 +110,7 @@ const CheckboxMultiSelect = ({ name, options }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </>

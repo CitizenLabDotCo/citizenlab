@@ -135,6 +135,8 @@ const CustomFieldsPage = ({
 
   return (
     <FormProvider {...methods}>
+      {currentPageNumber === lastPageNumber - 1 && <Feedback />}
+
       <form id="idea-form">
         <Box
           id="container"
@@ -323,7 +325,6 @@ const CustomFieldsPage = ({
             </Box>
 
             <Box w="100%">
-              <Feedback />
               <PageControlButtons
                 handleNextAndSubmit={() => {
                   pagesRef.current?.scrollTo(0, 0);

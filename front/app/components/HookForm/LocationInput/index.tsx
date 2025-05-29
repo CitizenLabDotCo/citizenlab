@@ -20,9 +20,15 @@ import { geocode, Point, reverseGeocode } from 'utils/locationTools';
 interface Props extends LocationInputProps {
   name: string;
   fieldName?: TFieldName;
+  scrollErrorIntoView?: boolean;
 }
 
-const LocationInput = ({ name, fieldName, ...rest }: Props) => {
+const LocationInput = ({
+  name,
+  fieldName,
+  scrollErrorIntoView,
+  ...rest
+}: Props) => {
   const {
     formState: { errors: formContextErrors, touchedFields },
     control,
@@ -130,7 +136,7 @@ const LocationInput = ({ name, fieldName, ...rest }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -139,7 +145,7 @@ const LocationInput = ({ name, fieldName, ...rest }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </Box>
