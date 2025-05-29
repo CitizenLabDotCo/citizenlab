@@ -110,7 +110,7 @@ const LocationInput = ({
         render={({ field: { ref: _ref, ...field } }) => (
           <LocationInputComponent
             className="e2e-idea-form-location-input-field"
-            id={name}
+            inputId={name}
             {...field}
             {...rest}
             form={'_none'}

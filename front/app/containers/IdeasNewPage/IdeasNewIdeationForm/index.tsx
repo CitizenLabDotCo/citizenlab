@@ -82,34 +82,34 @@ const IdeasNewIdeationForm = ({
 
   return (
     <>
-      <IdeasNewMeta />
-      <Box
-        w="100%"
-        bgColor={colors.grey100}
-        h="100vh"
-        position="fixed"
-        zIndex="1010"
-        overflow="hidden"
-      >
-        <Box display="flex" flexDirection="row" h="100%" w="100%">
-          <Box
-            flex="1"
-            display="flex"
-            mx="auto"
-            justifyContent="center"
-            w="100%"
-          >
-            <Box w="100%" maxWidth={maxWidth}>
-              <Box
-                w="100%"
-                position="relative"
-                top={isSmallerThanPhone ? '0' : '40px'}
-              >
-                {phaseId && (
-                  <NewIdeaHeading phaseId={phaseId} titleText={titleText} />
-                )}
-              </Box>
-              <main id="e2e-idea-new-page">
+      <main id="e2e-idea-new-page">
+        <IdeasNewMeta />
+        <Box
+          w="100%"
+          bgColor={colors.grey100}
+          h="100vh"
+          position="fixed"
+          zIndex="1010"
+          overflow="hidden"
+        >
+          <Box display="flex" flexDirection="row" h="100%" w="100%">
+            <Box
+              flex="1"
+              display="flex"
+              mx="auto"
+              justifyContent="center"
+              w="100%"
+            >
+              <Box w="100%" maxWidth={maxWidth}>
+                <Box
+                  w="100%"
+                  position="relative"
+                  top={isSmallerThanPhone ? '0' : '40px'}
+                >
+                  {phaseId && (
+                    <NewIdeaHeading phaseId={phaseId} titleText={titleText} />
+                  )}
+                </Box>
                 <Box
                   display="flex"
                   justifyContent="center"
@@ -131,58 +131,58 @@ const IdeasNewIdeationForm = ({
                     />
                   </Box>
                 </Box>
-              </main>
-            </Box>
+              </Box>
 
-            {selectedIdeaId &&
-              (isSmallerThanPhone ? (
-                <Box
-                  position="fixed"
-                  top="0"
-                  left="0"
-                  width="100%"
-                  height="100%"
-                  bg="rgba(0,0,0,0.4)"
-                  zIndex="2000"
-                  onClick={handleCloseDetail}
-                >
+              {selectedIdeaId &&
+                (isSmallerThanPhone ? (
                   <Box
-                    position="absolute"
-                    bottom="0"
+                    position="fixed"
+                    top="0"
+                    left="0"
                     width="100%"
-                    height="75%"
-                    bgColor={colors.white}
-                    borderRadius="16px 16px 0 0"
-                    overflowY="auto"
-                    onClick={(e) => e.stopPropagation()}
+                    height="100%"
+                    bg="rgba(0,0,0,0.4)"
+                    zIndex="2000"
+                    onClick={handleCloseDetail}
                   >
                     <Box
-                      width="40px"
-                      height="4px"
-                      bgColor={colors.grey300}
-                      borderRadius="2px"
-                      m="8px auto"
-                    />
+                      position="absolute"
+                      bottom="0"
+                      width="100%"
+                      height="75%"
+                      bgColor={colors.white}
+                      borderRadius="16px 16px 0 0"
+                      overflowY="auto"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Box
+                        width="40px"
+                        height="4px"
+                        bgColor={colors.grey300}
+                        borderRadius="2px"
+                        m="8px auto"
+                      />
+                      <InputDetailView ideaId={selectedIdeaId} />
+                    </Box>
+                  </Box>
+                ) : (
+                  <Box
+                    top="40px"
+                    width="375px"
+                    minWidth="375px"
+                    borderLeft={`1px solid ${colors.grey300}`}
+                    overflowY="auto"
+                    bgColor={colors.white}
+                    position="relative"
+                    mb="80px"
+                  >
                     <InputDetailView ideaId={selectedIdeaId} />
                   </Box>
-                </Box>
-              ) : (
-                <Box
-                  top="40px"
-                  width="375px"
-                  minWidth="375px"
-                  borderLeft={`1px solid ${colors.grey300}`}
-                  overflowY="auto"
-                  bgColor={colors.white}
-                  position="relative"
-                  mb="80px"
-                >
-                  <InputDetailView ideaId={selectedIdeaId} />
-                </Box>
-              ))}
+                ))}
+            </Box>
           </Box>
         </Box>
-      </Box>
+      </main>
     </>
   );
 };

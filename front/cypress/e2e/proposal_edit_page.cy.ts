@@ -100,7 +100,7 @@ describe('Proposal edit page', () => {
     cy.get('#idea-form').should('exist');
 
     // Edit title
-    cy.get('#e2e-idea-title-input ').as('titleInput');
+    cy.get('#title_multiloc ').as('titleInput');
     cy.get('@titleInput').should('exist');
     cy.get('@titleInput').should('have.value', oldTitle);
     cy.wait(1000); // So typing the title doesn't get interrupted

@@ -59,7 +59,7 @@ describe('Idea edit page', () => {
 
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form').should('exist');
-    cy.get('#e2e-idea-title-input').as('titleInput');
+    cy.get('#title_multiloc').as('titleInput');
 
     // check initial form values
     cy.get('@titleInput').should('exist');
@@ -82,7 +82,7 @@ describe('Idea edit page', () => {
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
+    cy.get('#body_multiloc .ql-editor').as('descriptionInput');
 
     cy.wait(1000);
 

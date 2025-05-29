@@ -186,23 +186,22 @@ const FollowUnfollow = ({
       maxWidth={280}
       placement="bottom"
       content={getTooltipContent()}
+      useContentWrapper={false}
     >
-      <div>
-        <Button
-          buttonStyle={buttonStyle}
-          icon="notification"
-          onClick={handleButtonClick}
-          iconSize={iconSize}
-          px="12px"
-          processing={isLoading}
-          {...otherButtonProps}
-          data-cy={isFollowing ? 'e2e-unfollow-button' : 'e2e-follow-button'}
-        >
-          {followersCount
-            ? `${followUnfollowText} (${followersCount})`
-            : followUnfollowText}
-        </Button>
-      </div>
+      <Button
+        buttonStyle={buttonStyle}
+        icon="notification"
+        onClick={handleButtonClick}
+        iconSize={iconSize}
+        px="12px"
+        processing={isLoading}
+        {...otherButtonProps}
+        data-cy={isFollowing ? 'e2e-unfollow-button' : 'e2e-follow-button'}
+      >
+        {followersCount
+          ? `${followUnfollowText} (${followersCount})`
+          : followUnfollowText}
+      </Button>
     </Tooltip>
   );
 };

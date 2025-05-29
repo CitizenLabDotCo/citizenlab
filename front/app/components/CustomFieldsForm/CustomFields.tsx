@@ -46,7 +46,6 @@ const renderField = ({
           name={question.key}
           hideLocaleSwitcher
           maxCharCount={question.key === 'title_multiloc' ? 120 : undefined}
-          id="e2e-idea-title-input"
           scrollErrorIntoView={true}
         />
       );
@@ -55,8 +54,8 @@ const renderField = ({
         <QuillMultilocWithLocaleSwitcher
           name={question.key}
           hideLocaleSwitcher
-          id="e2e-idea-description-input"
           scrollErrorIntoView={true}
+          id={question.key}
         />
       );
     case 'text':

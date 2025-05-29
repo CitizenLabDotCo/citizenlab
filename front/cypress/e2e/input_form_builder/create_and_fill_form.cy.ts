@@ -66,18 +66,18 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input ').click().type(ideaTitle, { delay: 0 });
+    cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
 
     // verify the title and description
-    cy.get('#e2e-idea-title-input ').should('contain.value', ideaTitle);
+    cy.get('#title_multiloc ').should('contain.value', ideaTitle);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Add a description
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent, {
+    cy.get('#body_multiloc .ql-editor').type(ideaContent, {
       force: true,
     });
-    cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+    cy.get('#body_multiloc .ql-editor').contains(ideaContent);
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -167,14 +167,14 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
 
-    cy.get('#e2e-idea-title-input ').click().type(ideaTitle, { delay: 0 });
-    cy.get('#e2e-idea-title-input ').should('contain.value', ideaTitle);
+    cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
+    cy.get('#title_multiloc ').should('contain.value', ideaTitle);
     cy.wait(500);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
-    cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+    cy.get('#body_multiloc .ql-editor').type(ideaContent);
+    cy.get('#body_multiloc .ql-editor').contains(ideaContent);
     cy.wait(500);
 
     // Go to the next page of the idea form
