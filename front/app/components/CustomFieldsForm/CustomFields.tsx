@@ -26,6 +26,7 @@ import MatrixField from './Fields/MatrixField';
 import MultiSelectField from './Fields/MultiSelectField';
 import RankingField from './Fields/RankingField';
 import RatingField from './Fields/RatingField';
+import SentimentScaleField from './Fields/SentimentScaleField';
 import SingleSelectField from './Fields/SingleSelectField';
 import InputIQ from './InputIQ';
 import messages from './messages';
@@ -97,8 +98,12 @@ const renderField = ({
       return <RatingField question={question} />;
     case 'matrix_linear_scale':
       return <MatrixField question={question} />;
+    case 'sentiment_linear_scale':
+      return (
+        <SentimentScaleField question={question} scrollErrorIntoView={true} />
+      );
     case 'cosponsor_ids':
-      return <CosponsorsField question={question} />;
+      return <CosponsorsField question={question} scrollErrorIntoView={true} />;
     default:
       return null;
   }
