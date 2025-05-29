@@ -628,4 +628,13 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.missingEndDateError',
     defaultMessage: 'Missing end date',
   },
+  beta: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.beta',
+    defaultMessage: 'Beta',
+  },
+  betaTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.betaTooltip',
+    defaultMessage:
+      "This participation method is in beta. We're gradually rolling it out to gather feedback and improve the experience.",
+  },
 });

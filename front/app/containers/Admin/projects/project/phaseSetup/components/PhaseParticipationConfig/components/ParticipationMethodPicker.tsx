@@ -174,15 +174,41 @@ const ParticipationMethodPicker = ({
               participation_method="proposals"
             />
 
-            <ParticipationMethodChoice
-              key="common_ground"
-              title={formatMessage(messages2.commonGroundTitle)}
-              subtitle={formatMessage(messages2.commonGroundDescription)}
-              onClick={(event) => handleMethodSelect(event, 'common_ground')}
-              image={commonGroundImage}
-              selected={selectedMethod === 'common_ground'}
-              participation_method="common_ground"
-            />
+            <Box position="relative">
+              <ParticipationMethodChoice
+                key="common_ground"
+                title={formatMessage(messages2.commonGroundTitle)}
+                subtitle={formatMessage(messages2.commonGroundDescription)}
+                onClick={(event) => handleMethodSelect(event, 'common_ground')}
+                image={commonGroundImage}
+                selected={selectedMethod === 'common_ground'}
+                participation_method="common_ground"
+              />
+              <Box
+                style={{ transform: 'translateX(-50%)' }}
+                position="absolute"
+                top="10%"
+                left="50%"
+              >
+                <Tooltip
+                  maxWidth="500px"
+                  placement="bottom"
+                  content={formatMessage(messages.betaTooltip)}
+                  hideOnClick={false}
+                >
+                  <Badge color={colors.coolGrey600} className="inverse">
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      gap="6px"
+                    >
+                      {formatMessage(messages.beta)}
+                    </Box>
+                  </Badge>
+                </Tooltip>
+              </Box>
+            </Box>
 
             <ParticipationMethodChoice
               key="survey"
