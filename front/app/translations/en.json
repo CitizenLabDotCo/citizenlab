@@ -273,6 +273,7 @@
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# votes} one {# vote} other {# votes}} cast",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "You cast {votesCast} votes, which exceeds the limit of {votesLimit}. Please remove some votes and try again.",
   "app.components.ParticipationCTABars.VotingCTABar.votesLeft2": "{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} left",
+  "app.components.ParticipationCTABars.addInput": "Add input",
   "app.components.ParticipationCTABars.allocateBudget": "Allocate your budget",
   "app.components.ParticipationCTABars.budgetSubmitSuccess": "Your budget has been submitted successfully.",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Open for participation",
