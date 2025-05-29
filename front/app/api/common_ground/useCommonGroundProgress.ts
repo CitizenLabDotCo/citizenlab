@@ -3,9 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { USE_STUB_COMMON_GROUND } from './config';
 import commonGroundProgressKeys from './keys/commonGroundProgressKeys';
-import { fetchCommonGroundProgressStub } from './stubs/progress';
 import { CommonGroundProgressKeys, ICommonGroundProgress } from './types';
 
 export const fetchCommonGroundProgress = ({
@@ -26,10 +24,7 @@ const useCommonGroundProgress = (phaseId: string | undefined) => {
     CommonGroundProgressKeys
   >({
     queryKey: commonGroundProgressKeys.list({ phaseId }),
-    queryFn: () =>
-      USE_STUB_COMMON_GROUND
-        ? fetchCommonGroundProgressStub(phaseId)
-        : fetchCommonGroundProgress({ phaseId }),
+    queryFn: () => fetchCommonGroundProgress({ phaseId }),
     enabled: !!phaseId,
   });
 };

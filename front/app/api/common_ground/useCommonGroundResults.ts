@@ -3,9 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { USE_STUB_COMMON_GROUND } from './config';
 import commonGroundResultsKeys from './keys/commonGroundResultsKeys';
-import { sampleCommonGroundResults } from './stubs/results';
 import { ICommonGroundResults, CommonGroundResultsKeys } from './types';
 
 export const fetchCommonGroundResults = ({
@@ -26,10 +24,7 @@ const useCommonGroundResults = (phaseId: string | undefined) => {
     CommonGroundResultsKeys
   >({
     queryKey: commonGroundResultsKeys.list({ phaseId }),
-    queryFn: () =>
-      USE_STUB_COMMON_GROUND
-        ? Promise.resolve(sampleCommonGroundResults)
-        : fetchCommonGroundResults({ phaseId }),
+    queryFn: () => fetchCommonGroundResults({ phaseId }),
     enabled: !!phaseId,
   });
 };
