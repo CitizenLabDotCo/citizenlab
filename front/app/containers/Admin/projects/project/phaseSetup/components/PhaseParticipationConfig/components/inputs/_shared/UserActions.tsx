@@ -29,7 +29,11 @@ const UserActions = ({
   noLikingLimitError,
   handleReactingLikeMethodOnChange,
   handleLikingLimitOnChange,
+  showCommentingToggle = true,
+  showReactingToggle = true,
 }: {
+  showCommentingToggle?: boolean;
+  showReactingToggle?: boolean;
   submission_enabled: boolean;
   commenting_enabled: boolean;
   reacting_enabled: boolean;
@@ -65,23 +69,27 @@ const UserActions = ({
           <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
         </ToggleRow>
 
-        <ToggleRow>
-          <Toggle
-            checked={commenting_enabled || false}
-            onChange={toggleCommentingEnabled}
-            label={formatMessage(messages.inputCommentingEnabled)}
-          />
-          <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
-        </ToggleRow>
+        {showCommentingToggle && (
+          <ToggleRow>
+            <Toggle
+              checked={commenting_enabled || false}
+              onChange={toggleCommentingEnabled}
+              label={formatMessage(messages.inputCommentingEnabled)}
+            />
+            <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
+          </ToggleRow>
+        )}
 
-        <ToggleRow className="last">
-          <Toggle
-            checked={reacting_enabled || false}
-            onChange={toggleReactingEnabled}
-            label={formatMessage(messages.inputReactingEnabled)}
-          />
-          <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
-        </ToggleRow>
+        {showReactingToggle && (
+          <ToggleRow className="last">
+            <Toggle
+              checked={reacting_enabled || false}
+              onChange={toggleReactingEnabled}
+              label={formatMessage(messages.inputReactingEnabled)}
+            />
+            <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
+          </ToggleRow>
+        )}
       </StyledSectionField>
       {reacting_enabled && (
         <>

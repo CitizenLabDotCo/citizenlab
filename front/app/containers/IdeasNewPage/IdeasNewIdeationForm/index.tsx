@@ -60,7 +60,7 @@ const getConfig = (
 
 interface FormValues {
   title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
+  body_multiloc?: Multiloc; // Can be empty for the common_ground participation method
   author_id?: string;
   idea_images_attributes?: { image: string }[];
   idea_files_attributes?: {
@@ -175,7 +175,9 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     const disclaimerNeeded =
       data.idea_files_attributes ||
       data.idea_images_attributes ||
-      Object.values(data.body_multiloc).some((value) => value.includes('<img'));
+      Object.values(data.body_multiloc || {}).some((value) =>
+        value.includes('<img')
+      );
 
     setFormData(data);
 
@@ -218,7 +220,6 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       location_point_geojson,
       project_id: project.data.id,
       phase_ids,
-      publication_status: undefined, // TODO: Change this logic when handling draft ideas
     });
     updateSearchParams({ idea_id: idea.data.id });
     onSubmitCallback?.();
@@ -273,7 +274,8 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     !phaseId ||
     !schema ||
     !uiSchema ||
-    processingLocation
+    processingLocation ||
+    !phaseFromUrl
   ) {
     return null;
   }
@@ -281,7 +283,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   const titleText = participationMethodConfig.getFormTitle?.({
     project: project.data,
     phases: phases?.data,
-    phaseFromUrl: phaseFromUrl?.data,
+    phaseFromUrl: phaseFromUrl.data,
   });
   const maxWidth = usingMapView ? '1100px' : '700px';
 
@@ -310,7 +312,10 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                 position="relative"
                 top={isSmallerThanPhone ? '0' : '40px'}
               >
-                <NewIdeaHeading phaseId={phaseId} titleText={titleText} />
+                <NewIdeaHeading
+                  phase={phaseFromUrl.data}
+                  titleText={titleText}
+                />
               </Box>
               <main id="e2e-idea-new-page">
                 <Box

@@ -43,6 +43,18 @@ const BUTTON_MESSAGES: Record<PageVariant, MessageDescriptor> = {
   'after-submission': messages.backToProject,
 };
 
+const inputTermMessages: Record<string, MessageDescriptor> = {
+  idea: messages.viewYourIdea,
+  option: messages.viewYourOption,
+  project: messages.viewYourProject,
+  question: messages.viewYourQuestion,
+  issue: messages.viewYourIssue,
+  contribution: messages.viewYourContribution,
+  proposal: messages.viewYourProposal,
+  petition: messages.viewYourPetition,
+  initiative: messages.viewYourInitiative,
+};
+
 interface Props {
   handleNextAndSubmit: () => void;
   handlePrevious: () => void;
@@ -72,30 +84,27 @@ const PageControlButtons = ({
   const getButtonMessage = () => {
     if (pageVariant !== 'after-submission') {
       return formatMessage(BUTTON_MESSAGES[pageVariant]);
-    } else {
-      if (localize(currentPage.options.page_button_label_multiloc)) {
-        // Page is using a custom button label
-        return localize(currentPage.options.page_button_label_multiloc);
-      }
+    }
+
+    const customLabel = localize(
+      currentPage.options.page_button_label_multiloc
+    );
+    if (customLabel) {
+      return customLabel;
+    }
+
+    const participationMethod = currentPhase?.attributes.participation_method;
+
+    if (participationMethod === 'common_ground') {
+      return formatMessage(messages.backToInputManager);
+    }
+
+    if (participationMethod === 'native_survey') {
+      return formatMessage(messages.backToProject);
     }
 
     const inputTerm = getInputTerm(phases, currentPhase);
-
-    const inputTermMessages: Record<string, MessageDescriptor> = {
-      idea: messages.viewYourIdea,
-      option: messages.viewYourOption,
-      project: messages.viewYourProject,
-      question: messages.viewYourQuestion,
-      issue: messages.viewYourIssue,
-      contribution: messages.viewYourContribution,
-      proposal: messages.viewYourProposal,
-      petition: messages.viewYourPetition,
-      initiative: messages.viewYourInitiative,
-    };
-
-    return currentPhase?.attributes.participation_method === 'native_survey'
-      ? formatMessage(messages.backToProject)
-      : formatMessage(inputTermMessages[inputTerm]);
+    return formatMessage(inputTermMessages[inputTerm]);
   };
 
   return (
