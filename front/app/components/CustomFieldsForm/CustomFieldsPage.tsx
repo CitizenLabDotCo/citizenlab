@@ -244,12 +244,7 @@ const CustomFieldsPage = ({
 
                     {currentPageNumber === 0 && isAdmin(authUser) && (
                       <Box mb="24px">
-                        <AuthorField
-                          name="author_id"
-                          defaultValue={
-                            idea?.data.relationships.author?.data?.id
-                          }
-                        />
+                        <AuthorField name="author_id" />
                       </Box>
                     )}
                     {currentPageNumber === lastPageNumber - 1 &&

@@ -132,7 +132,12 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                         participationMethod={
                           phase?.data.attributes.participation_method
                         }
-                        initialFormData={idea?.data.attributes}
+                        initialFormData={
+                          idea && {
+                            ...idea.data.attributes,
+                            author_id: idea.data.relationships.author?.data?.id,
+                          }
+                        }
                       />
                     )}
                   </Box>
