@@ -252,7 +252,7 @@ describe CustomFieldService do
 
     let(:sentiment_custom_field_with_follow_up) do
       create(
-        :custom_field_sentiment_linear_scale, 
+        :custom_field_sentiment_linear_scale,
         ask_follow_up: true,
         resource: custom_form
       )
@@ -261,7 +261,7 @@ describe CustomFieldService do
     let(:sentiment_key) { sentiment_custom_field_with_follow_up.key }
     let(:author) { create(:user) }
 
-    let(:idea) do 
+    let(:idea) do
       create(
         :idea,
         project: project,
@@ -271,30 +271,30 @@ describe CustomFieldService do
           "#{select_key}_other": 'other value',
           sentiment_key => 3,
           "#{sentiment_key}_follow_up": 'follow up value',
-          'key_not_matching_field': 'foo'
+          key_not_matching_field: 'foo'
         }
-      ) 
+      )
     end
 
     it 'does not show custom fields if user is not author or moderator' do
-      values = CustomFieldService.remove_not_visible_fields(idea, create(:user))
-      expect(values[select_key]).to eq(nil)
-      expect(values[sentiment_key]).to eq(nil)
+      values = described_class.remove_not_visible_fields(idea, create(:user))
+      expect(values[select_key]).to be_nil
+      expect(values[sentiment_key]).to be_nil
     end
 
     it 'shows custom fields if user is author' do
-      values = CustomFieldService.remove_not_visible_fields(idea, author)
+      values = described_class.remove_not_visible_fields(idea, author)
       expect(values[select_key]).to eq('other')
       expect(values[sentiment_key]).to eq(3)
     end
 
     it 'removes keys of non-existent custom fields' do
-      values = CustomFieldService.remove_not_visible_fields(idea, author)
-      expect(values['key_not_matching_field']).to eq(nil)
+      values = described_class.remove_not_visible_fields(idea, author)
+      expect(values['key_not_matching_field']).to be_nil
     end
 
     it 'does not remove keys of "other" or "follow_up" fields' do
-      values = CustomFieldService.remove_not_visible_fields(idea, author)
+      values = described_class.remove_not_visible_fields(idea, author)
       expect(values["#{select_key}_other"]).to eq('other value')
       expect(values["#{sentiment_key}_follow_up"]).to eq('follow up value')
     end
