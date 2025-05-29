@@ -11,9 +11,10 @@ import Cosponsors from './Cosponsors';
 
 interface Props {
   question: IFlatCustomField;
+  scrollErrorIntoView: boolean;
 }
 
-const CosponsorsField = ({ question }: Props) => {
+const CosponsorsField = ({ question, scrollErrorIntoView }: Props) => {
   const {
     control,
     formState: { errors: formContextErrors },
@@ -39,7 +40,7 @@ const CosponsorsField = ({ question }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -48,7 +49,7 @@ const CosponsorsField = ({ question }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </>

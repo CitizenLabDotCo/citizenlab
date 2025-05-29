@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
@@ -15,9 +16,10 @@ import SentimentScale from './SentimentScale';
 
 interface Props {
   question: IFlatCustomField;
+  scrollErrorIntoView: boolean;
 }
 
-const SentimentScaleField = ({ question }: Props) => {
+const SentimentScaleField = ({ question, scrollErrorIntoView }: Props) => {
   const { formatMessage } = useIntl();
 
   const {
@@ -62,7 +64,7 @@ const SentimentScaleField = ({ question }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -71,15 +73,17 @@ const SentimentScaleField = ({ question }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {value !== undefined && (
-        <Input
-          name={followUpName}
-          type="text"
-          placeholder={formatMessage(messages.tellUsWhy)}
-        />
+        <Box mt="12px">
+          <Input
+            name={followUpName}
+            type="text"
+            placeholder={formatMessage(messages.tellUsWhy)}
+          />
+        </Box>
       )}
     </>
   );

@@ -99,9 +99,11 @@ const renderField = ({
     case 'matrix_linear_scale':
       return <MatrixField question={question} />;
     case 'sentiment_linear_scale':
-      return <SentimentScaleField question={question} />;
+      return (
+        <SentimentScaleField question={question} scrollErrorIntoView={true} />
+      );
     case 'cosponsor_ids':
-      return <CosponsorsField question={question} />;
+      return <CosponsorsField question={question} scrollErrorIntoView={true} />;
     default:
       return null;
   }
