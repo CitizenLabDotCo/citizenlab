@@ -18,6 +18,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import CosponsorsField from './Fields/CosponsorsField';
 import FileUploaderField from './Fields/FileUploadField';
 import ImageField from './Fields/ImageField';
 import LinearScaleField from './Fields/LinearScale';
@@ -99,6 +100,8 @@ const renderField = ({
       return <MatrixField question={question} />;
     case 'sentiment_linear_scale':
       return <SentimentScaleField question={question} />;
+    case 'cosponsor_ids':
+      return <CosponsorsField question={question} />;
     default:
       return null;
   }
@@ -117,6 +120,7 @@ const CustomFields = ({
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+
   return (
     <>
       {questions

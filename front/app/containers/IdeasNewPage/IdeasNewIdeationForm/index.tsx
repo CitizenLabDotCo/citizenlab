@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
 import { IPhases, IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -15,6 +16,7 @@ import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSu
 import CustomFieldsForm from 'components/CustomFieldsForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -47,12 +49,12 @@ const IdeasNewIdeationForm = ({
   const { data: phaseFromUrl } = usePhase(phaseId);
   const isSmallerThanPhone = useBreakpoint('phone');
   const [usingMapView, setUsingMapView] = useState(false);
-
+  const [searchParams] = useSearchParams();
+  const selectedIdeaId = searchParams.get('selected_idea_id');
   const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
-  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
 
   const handleCloseDetail = () => {
-    setSelectedIdeaId(null);
+    updateSearchParams({ selected_idea_id: null });
   };
 
   useEffect(() => {

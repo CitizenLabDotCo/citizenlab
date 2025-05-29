@@ -28,7 +28,7 @@ import {
 
 interface FormValues {
   title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
+  body_multiloc?: Multiloc;
   author_id?: string;
   idea_images_attributes?: { image: string }[];
   idea_files_attributes?: {
@@ -62,7 +62,10 @@ const CustomFieldsForm = ({
   // Depending on the route, we  use either the slug or the ideaId to fetch the idea
   const { pathname } = useLocation();
   const isProjectPage = pathname.includes('/projects/');
-  const { data: ideaWithSlug } = useIdeaBySlug(!isProjectPage ? slug : null);
+  const isIdeaEditPage = pathname.includes('/ideas/edit/');
+  const { data: ideaWithSlug } = useIdeaBySlug(
+    !isProjectPage && !isIdeaEditPage ? slug : null
+  );
   const { data: ideaWithId } = useIdeaById(ideaId);
 
   const { mutateAsync: addIdea } = useAddIdea();
@@ -85,15 +88,6 @@ const CustomFieldsForm = ({
     phase?.data.attributes.allow_anonymous_participation &&
     participationMethod !== 'native_survey';
 
-  // Copyright disclaimer is needed if the user is uploading files or images
-  const disclaimerNeeded =
-    formValues?.idea_files_attributes?.length ||
-    formValues?.idea_images_attributes?.length ||
-    (formValues?.body_multiloc &&
-      Object.values(formValues.body_multiloc).some((value) =>
-        value.includes('<img')
-      ));
-
   const pageButtonLabelMultiloc = customFields?.find(
     (field) => field.id === nestedPagesData[currentPageNumber].page.id
   )?.page_button_label_multiloc;
@@ -102,6 +96,15 @@ const CustomFieldsForm = ({
     formValues: FormValues,
     isDisclamerAccepted?: boolean
   ) => {
+    // Copyright disclaimer is needed if the user is uploading files or images
+    const disclaimerNeeded = !!(
+      formValues.idea_files_attributes?.length ||
+      formValues.idea_images_attributes?.length ||
+      (formValues.body_multiloc &&
+        Object.values(formValues.body_multiloc).some((value) =>
+          value.includes('<img')
+        ))
+    );
     setFormValues((prevValues) =>
       prevValues
         ? {
