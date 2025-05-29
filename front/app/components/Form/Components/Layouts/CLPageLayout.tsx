@@ -28,6 +28,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import { IMapConfig } from 'api/map_config/types';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
+import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
@@ -62,6 +63,7 @@ import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 import { isPage } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
 
 import { useIdeaSelect } from '../../../../containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import getPageSchema from '../../utils/getPageSchema';
@@ -96,6 +98,7 @@ const CLPageLayout = memo(
     const isAdminPage = isPage('admin', pathname);
     const { onIdeaSelect } = useIdeaSelect();
     const isIdeaEditPage = isPage('idea_edit', location.pathname);
+    const { data: authUser } = useAuthUser();
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization).elements;
@@ -273,9 +276,11 @@ const CLPageLayout = memo(
         participationMethod === 'common_ground' &&
         pageVariant === 'submission'
       ) {
-        clHistory.push(
-          `/admin/projects/${project?.data.id}/phases/${phaseId}/ideas`
-        );
+        const isUserAdmin = authUser && isAdmin(authUser);
+        const path = isUserAdmin
+          ? `/admin/projects/${project?.data.id}/phases/${phaseId}/ideas`
+          : `/projects/${project?.data.attributes.slug}`;
+        clHistory.push({ pathname: path });
       }
 
       if (pageVariant === 'after-submission') {
