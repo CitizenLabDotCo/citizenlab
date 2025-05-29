@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
+
 import useLocalize from 'hooks/useLocalize';
 
 import Input from 'components/HookForm/Input';
@@ -14,7 +16,13 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { extractOptions } from '../util';
 
-const SingleSelectField = ({ question }) => {
+const SingleSelectField = ({
+  question,
+  scrollErrorIntoView,
+}: {
+  question: IFlatCustomField;
+  scrollErrorIntoView?: boolean;
+}) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { watch } = useFormContext();
@@ -28,7 +36,11 @@ const SingleSelectField = ({ question }) => {
   return (
     <>
       {question.dropdown_layout ? (
-        <Select name={question.key} options={options} />
+        <Select
+          name={question.key}
+          options={options}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
       ) : (
         <RadioGroup name={question.key}>
           {options.map((option) => (

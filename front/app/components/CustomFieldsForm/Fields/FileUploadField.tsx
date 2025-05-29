@@ -24,6 +24,7 @@ interface Props
   > {
   name: string;
   ideaId?: string;
+  scrollErrorIntoView?: boolean;
 }
 
 type FileToUploadFormat = {
@@ -34,7 +35,12 @@ type FileToUploadFormat = {
   name: string;
 };
 
-const FileUploaderField = ({ name, ideaId, ...rest }: Props) => {
+const FileUploaderField = ({
+  name,
+  ideaId,
+  scrollErrorIntoView,
+  ...rest
+}: Props) => {
   const { data: ideaFiles } = useIdeaFiles(ideaId);
   const { mutate: deleteIdeaFile } = useDeleteIdeaFile();
   const { mutate: addIdeaFile } = useAddIdeaFile();
@@ -157,7 +163,7 @@ const FileUploaderField = ({ name, ideaId, ...rest }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={errorMessage}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </Box>

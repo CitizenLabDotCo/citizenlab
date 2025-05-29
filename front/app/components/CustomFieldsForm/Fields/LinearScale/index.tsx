@@ -1,18 +1,20 @@
 import React from 'react';
 
 import { Controller, useFormContext } from 'react-hook-form';
+import { CLError, RHFErrors } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import LinearScale from './LinearScale';
 import Error, { TFieldName } from 'components/UI/Error';
-import { CLError, RHFErrors } from 'typings';
+
+import LinearScale from './LinearScale';
 
 interface Props {
   question: IFlatCustomField;
+  scrollErrorIntoView?: boolean;
 }
 
-const LinearScaleField = ({ question }: Props) => {
+const LinearScaleField = ({ question, scrollErrorIntoView }: Props) => {
   const {
     control,
     formState: { errors: formContextErrors },
@@ -38,7 +40,7 @@ const LinearScaleField = ({ question }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -47,7 +49,7 @@ const LinearScaleField = ({ question }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </>

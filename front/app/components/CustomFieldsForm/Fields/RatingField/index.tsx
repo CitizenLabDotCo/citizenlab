@@ -1,18 +1,20 @@
 import React from 'react';
 
 import { Controller, useFormContext } from 'react-hook-form';
+import { CLError, RHFErrors } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import Rating from './Rating';
 import Error, { TFieldName } from 'components/UI/Error';
-import { CLError, RHFErrors } from 'typings';
+
+import Rating from './Rating';
 
 interface Props {
   question: IFlatCustomField;
+  scrollErrorIntoView?: boolean;
 }
 
-const RatingField = ({ question }: Props) => {
+const RatingField = ({ question, scrollErrorIntoView }: Props) => {
   const {
     control,
     formState: { errors: formContextErrors },
@@ -38,7 +40,7 @@ const RatingField = ({ question }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -47,7 +49,7 @@ const RatingField = ({ question }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </>

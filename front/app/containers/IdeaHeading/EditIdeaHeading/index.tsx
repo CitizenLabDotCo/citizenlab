@@ -9,6 +9,7 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -22,7 +23,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
-import { useSearchParams } from 'react-router-dom';
 
 const StyledTitle = styled(Text)`
   text-overflow: ellipsis;
