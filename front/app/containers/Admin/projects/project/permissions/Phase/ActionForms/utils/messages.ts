@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle',
     defaultMessage: 'Who can take the survey?',
   },
-  permissionAction_react_on_input_subtitle: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_react_on_input_subtitle',
-    defaultMessage: 'Who can react on an input?',
-  },
   permissionAction_submit_input_subtitle: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_input_subtitle',
     defaultMessage: 'Who can submit inputs?',

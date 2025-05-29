@@ -39,11 +39,7 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
   }, [divId]);
 
   const { enabled, disabled_reason } =
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    project.attributes.action_descriptors.react_on_inputs || {
-      enabled: true,
-      disabled_reason: null,
-    }; // Remove this after it is addec on the BE
+    project.attributes.action_descriptors.reacting_idea;
 
   const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
 

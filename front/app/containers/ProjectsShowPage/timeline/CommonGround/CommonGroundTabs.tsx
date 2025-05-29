@@ -33,13 +33,9 @@ const CommonGroundTabs = ({ phaseId, project }: Props) => {
     ? currentTabParam
     : 'statements';
   const { enabled, disabled_reason } =
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    project.attributes.action_descriptors.react_on_inputs || {
-      enabled: true,
-      disabled_reason: null,
-    }; // Remove this after it is added on the BE
+    project.attributes.action_descriptors.reacting_idea;
   const disabledMessage =
-    getPermissionsDisabledMessage('react_on_inputs', disabled_reason) || null;
+    getPermissionsDisabledMessage('reacting_idea', disabled_reason) || null;
   const { data: progressData } = useCommonGroundProgress(phaseId);
   const remainingStatementsCount = progressData
     ? progressData.data.attributes.num_ideas -

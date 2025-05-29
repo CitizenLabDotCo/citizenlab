@@ -106,17 +106,6 @@ const actionDisabledMessages: {
     user_not_permitted: messages.surveyDisabledNotPermitted,
     user_blocked: messages.surveyDisabledNotPermitted,
   },
-  react_on_inputs: {
-    project_inactive: messages.commonGroundDisabledProjectInactive,
-    project_not_visible: messages.commonGroundDisabledNotPermitted,
-    user_not_active: messages.commonGroundNotActiveUser,
-    user_not_verified: messages.commonGroundDisabledNotVerified,
-    user_missing_requirements: messages.surveyDisabledNotActiveUser,
-    user_not_signed_in: messages.commonGroundDisabledMaybeNotPermitted,
-    user_not_permitted: messages.commonGroundDisabledNotPermitted,
-    user_blocked: messages.commonGroundDisabledNotPermitted,
-    user_not_in_group: messages.commonGroundNotInGroup,
-  },
   taking_poll: {
     project_inactive: messages.pollDisabledProjectInactive,
     project_not_visible: messages.pollDisabledNotPermitted,

@@ -82,10 +82,6 @@ export const project1: IProjectData = {
         enabled: true,
         disabled_reason: null,
       },
-      react_on_inputs: {
-        enabled: true,
-        disabled_reason: null,
-      },
       volunteering: {
         enabled: false,
         disabled_reason: 'not_volunteering',
@@ -234,10 +230,6 @@ export const project2: IProjectData = {
         enabled: false,
         disabled_reason: 'not_volunteering',
       },
-      react_on_inputs: {
-        enabled: true,
-        disabled_reason: null,
-      },
     },
     avatars_count: 6,
     participants_count: 6,
@@ -384,10 +376,6 @@ const votingProject: IProject = {
         volunteering: {
           enabled: false,
           disabled_reason: 'not_volunteering',
-        },
-        react_on_inputs: {
-          enabled: true,
-          disabled_reason: null,
         },
       },
       avatars_count: 2,

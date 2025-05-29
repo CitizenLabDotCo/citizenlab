@@ -16,7 +16,7 @@ export type IPhasePermissionAction =
   | 'annotating_document'
   | 'attending_event'
   | 'volunteering'
-  | 'react_on_inputs';
+  | 'reacting_idea';
 
 export interface IPhasePermissionData {
   id: string;

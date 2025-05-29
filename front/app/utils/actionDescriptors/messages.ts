@@ -214,36 +214,6 @@ export default defineMessages({
       'Taking this survey requires verification of your account. {verificationLink}',
   },
 
-  // 'react_on_inputs'
-  commonGroundDisabledProjectInactive: {
-    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundDisabledProjectInactive',
-    defaultMessage:
-      'Reacting on the inputs is no longer available, since this project is no longer active.',
-  },
-  commonGroundDisabledNotPermitted: {
-    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundDisabledNotPermitted',
-    defaultMessage:
-      "Unfortunately, you don't have the rights to react to the inputs.",
-  },
-  commonGroundDisabledMaybeNotPermitted: {
-    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundDisabledMaybeNotPermitted',
-    defaultMessage:
-      'Only certain users can add their reactions to the inputs. Please {signUpLink} or {logInLink} first to see whether you comply.',
-  },
-  commonGroundNotActiveUser: {
-    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundNotActiveUser',
-    defaultMessage: 'Please {completeRegistrationLink} to react to the inputs.',
-  },
-  commonGroundDisabledNotVerified: {
-    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundDisabledNotVerified',
-    defaultMessage:
-      'Reacting to the inputs requires verification of your account. {verificationLink}',
-  },
-  commonGroundNotInGroup: {
-    id: 'app.containers.ProjectsShowPage.process.commonGround.commonGroundNotInGroup',
-    defaultMessage: 'You do not meet the requirements to react to the inputs.',
-  },
-
   // 'taking_poll'
   pollDisabledProjectInactive: {
     id: 'app.containers.Projects.PollForm.pollDisabledProjectInactive',

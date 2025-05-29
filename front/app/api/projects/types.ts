@@ -110,7 +110,6 @@ export type ActionDescriptors = {
   voting: ActionDescriptor<ProjectVotingDisabledReason>;
   attending_event: ActionDescriptor<ProjectDisabledReason>;
   volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
-  react_on_inputs: ActionDescriptor<ProjectDisabledReason>;
 };
 
 export interface IProjectData {

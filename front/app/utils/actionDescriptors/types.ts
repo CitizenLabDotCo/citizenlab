@@ -104,7 +104,7 @@ export type ActionDescriptorAction =
   | 'taking_poll'
   | 'attending_event'
   | 'volunteering'
-  | 'react_on_inputs';
+  | 'reacting_idea';
 
 // All disabled reasons
 export type DisabledReason =
