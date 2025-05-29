@@ -723,5 +723,40 @@ resource 'Ideas' do
         end
       end
     end
+
+    context 'in a common ground phase' do
+      let(:phase) { create(:common_ground_phase, :ongoing) }
+      let(:author) { create(:user) }
+      let(:input) { create(:idea, author: author, project: phase.project, phases: [phase]) }
+
+      let(:title_multiloc) { { 'en' => 'Changed title' } }
+
+      context 'when author' do
+        before { header_token_for(author) }
+
+        example 'Unauthorized (401)', document: false do
+          do_request(title_multiloc: title_multiloc)
+          assert_status 401
+          expect(json_response_body).to include_response_error(:base, 'posting_not_supported')
+        end
+      end
+
+      context 'when admin' do
+        before { header_token_for(admin) }
+
+        let(:admin) { create(:admin) }
+
+        example 'Update an idea', document: false do
+          old_title = input.title_multiloc
+
+          expect { do_request(title_multiloc: title_multiloc) }
+            .to change { input.reload.title_multiloc }
+            .from(old_title)
+            .to(title_multiloc)
+
+          assert_status 200
+        end
+      end
+    end
   end
 end

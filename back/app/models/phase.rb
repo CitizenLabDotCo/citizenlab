@@ -261,6 +261,7 @@ class Phase < ApplicationRecord
     participation_method == 'voting'
   end
 
+  # @return [ParticipationMethod::Base]
   def pmethod
     reload_participation_method if !@pmethod
     @pmethod
@@ -385,6 +386,8 @@ class Phase < ApplicationRecord
       ParticipationMethod::Poll.new(self)
     when 'volunteering'
       ParticipationMethod::Volunteering.new(self)
+    when 'common_ground'
+      ParticipationMethod::CommonGround.new(self)
     else
       ParticipationMethod::None.new
     end

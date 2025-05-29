@@ -383,7 +383,11 @@ module ParticipationMethod
       true
     end
 
-    def supports_built_in_fields?
+    def built_in_title_required?
+      true
+    end
+
+    def built_in_body_required?
       true
     end
 
@@ -436,6 +440,10 @@ module ParticipationMethod
     end
 
     def automatically_assign_idea?
+      true
+    end
+
+    def add_autoreaction_to_inputs?
       true
     end
 

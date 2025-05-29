@@ -31,6 +31,10 @@ module ParticipationMethod
       false
     end
 
+    def add_autoreaction_to_inputs?
+      supports_submission?
+    end
+
     def voting_method
       Factory.instance.voting_method_for(phase)
     end

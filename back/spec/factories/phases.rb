@@ -149,5 +149,14 @@ FactoryBot.define do
       participation_method { 'document_annotation' }
       document_annotation_embed_url { 'https://citizenlab.konveio.com/document-title' }
     end
+
+    factory :common_ground_phase do
+      participation_method { 'common_ground' }
+    end
+
+    trait :ongoing do
+      start_at { Time.zone.today - 7.days }
+      end_at { Time.zone.today + 7.days }
+    end
   end
 end

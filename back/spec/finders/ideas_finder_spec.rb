@@ -5,11 +5,12 @@ require 'rails_helper'
 describe IdeasFinder do
   subject(:finder) { described_class.new(params, **options) }
 
+  let_it_be(:timeline_project) { create(:project_with_phases) }
+  let_it_be(:ideas) { create_list(:idea_with_topics, 5, project: timeline_project) }
+
   let(:params) { {} }
   let(:options) { {} }
   let(:result_record_ids) { finder.find_records.pluck(:id) }
-  let(:timeline_project) { create(:project_with_phases) }
-  let!(:ideas) { create_list(:idea_with_topics, 5, project: timeline_project) }
 
   before_all { create(:idea_status_proposed) }
 
@@ -43,13 +44,21 @@ describe IdeasFinder do
   end
 
   describe '#transitive_condition' do
-    before do
+    let!(:non_transitive_ids) { create_pair(:proposal).pluck(:id) }
+
+    it 'returns transitive ideas' do
       params[:transitive] = true
-      create(:proposal)
+      expect(result_record_ids).to match_array ideas.map(&:id)
     end
 
-    it 'returns the correct records' do
-      expect(result_record_ids).to match_array ideas.map(&:id)
+    it 'returns non-transitive ideas' do
+      params[:transitive] = 'false'
+      expect(result_record_ids).to match_array non_transitive_ids
+    end
+
+    it 'does not filter records' do
+      params.delete(:transitive)
+      expect(result_record_ids).to match_array ideas.map(&:id) + non_transitive_ids
     end
   end
 

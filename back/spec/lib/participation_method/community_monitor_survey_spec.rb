@@ -210,7 +210,8 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:return_disabled_actions?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be false }
-  its(:supports_built_in_fields?) { is_expected.to be false }
+  its(:built_in_title_required?) { is_expected.to be(false) }
+  its(:built_in_body_required?) { is_expected.to be(false) }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_edits_after_publication?) { is_expected.to be false }
   its(:supports_exports?) { is_expected.to be true }
@@ -229,6 +230,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:supports_custom_field_categories?) { is_expected.to be true }
   its(:supports_multiple_phase_reports?) { is_expected.to be true }
+  its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do
