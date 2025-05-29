@@ -132,7 +132,17 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                         participationMethod={
                           phase?.data.attributes.participation_method
                         }
-                        initialFormData={idea?.data.attributes}
+                        initialFormData={
+                          idea
+                            ? {
+                                ...idea.data.attributes,
+                                cosponsor_ids:
+                                  idea.data.relationships.cosponsors?.data?.map(
+                                    (cosponsor) => cosponsor.id
+                                  ),
+                              }
+                            : undefined
+                        }
                       />
                     )}
                   </Box>

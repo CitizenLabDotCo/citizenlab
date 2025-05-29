@@ -18,6 +18,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import CosponsorsField from './Fields/CosponsorsField';
 import FileUploaderField from './Fields/FileUploadField';
 import ImageField from './Fields/ImageField';
 import LinearScaleField from './Fields/LinearScale';
@@ -96,6 +97,8 @@ const renderField = ({
       return <RatingField question={question} />;
     case 'matrix_linear_scale':
       return <MatrixField question={question} />;
+    case 'cosponsor_ids':
+      return <CosponsorsField question={question} />;
     default:
       return null;
   }
