@@ -7,11 +7,13 @@ import {
   defaultCardStyle,
   colors,
   useBreakpoint,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useCommonGroundProgress from 'api/common_ground/useCommonGroundProgress';
 import useReactToStatement from 'api/common_ground/useReactToStatement';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 import T from 'components/T';
 
@@ -114,19 +116,31 @@ interface Props {
 }
 
 const CommonGroundStatements = ({ phaseId }: Props) => {
-  const { data: progressData } = useCommonGroundProgress(phaseId);
+  const { data: progressData, isLoading: isProgressDataLoading } =
+    useCommonGroundProgress(phaseId);
   const { mutate: reactToIdea } = useReactToStatement(phaseId);
-  const current = progressData?.data.attributes.nextIdea;
   const { formatMessage } = useIntl();
   const isPhone = useBreakpoint('phone');
+  const nextIdeaId = progressData?.data.relationships.next_idea.data?.id;
+  const { data: current, isLoading: isIdeaLoading } = useIdeaById(nextIdeaId);
 
-  // swipe state
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isAnimating, setIsAnimating] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const startRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  if (!current) {
+  // Wait until both progressData is loaded AND (if there's a nextIdeaId, the corresponding idea is also loaded).
+  // Note: isIdeaLoading will still be true even if the next idea query is disabled (due to undefined ID),
+  // so we explicitly check for the presence of nextIdeaId to avoid blocking render unnecessarily.
+  if ((nextIdeaId && isIdeaLoading) || isProgressDataLoading) {
+    return (
+      <Box display="flex" justifyContent="center" p="20px">
+        <Spinner />
+      </Box>
+    );
+  }
+
+  if (!current || !nextIdeaId) {
     return (
       <Box mt="8px" width="100%" minHeight="260px">
         <StatementCard
@@ -145,7 +159,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
             minHeight="100px"
           >
             <Text fontSize="l" color="grey800">
-              {formatMessage(messages.noMoreInputs)}
+              {formatMessage(messages.noMoreStatements)}
             </Text>
           </Box>
         </StatementCard>
@@ -178,20 +192,20 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
     setTimeout(() => setIsAnimating(false), ANIMATION_DURATION);
   };
 
-  const snapOffAndReact = (mode: 'agree' | 'disagree' | 'unsure') => {
+  const snapOffAndReact = (mode: 'up' | 'down' | 'neutral') => {
     const endX =
-      mode === 'agree'
+      mode === 'up'
         ? -window.innerWidth
-        : mode === 'disagree'
+        : mode === 'down'
         ? window.innerWidth
         : 0;
-    const endY = mode === 'unsure' ? -window.innerHeight : dragOffset.y;
+    const endY = mode === 'neutral' ? -window.innerHeight : dragOffset.y;
 
     setIsAnimating(true);
     setDragOffset({ x: endX, y: endY });
 
     setTimeout(() => {
-      reactToIdea({ ideaId: current.id, mode });
+      reactToIdea({ ideaId: current.data.id, mode });
       // reset
       setIsAnimating(false);
       setIsDragging(false);
@@ -210,9 +224,9 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
     setIsDragging(false);
 
     if (absX > absY && absX > SWIPE_THRESHOLD) {
-      snapOffAndReact(x < 0 ? 'agree' : 'disagree');
+      snapOffAndReact(x < 0 ? 'up' : 'down');
     } else if (absY > absX && -y > SWIPE_THRESHOLD) {
-      snapOffAndReact('unsure');
+      snapOffAndReact('neutral');
     } else {
       snapBack();
     }
@@ -249,9 +263,9 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
         onPointerUp={handlePointerUp}
         border={`1px solid ${colors.grey400}`}
       >
-        <Box mb="12px" id={`statement-body-${current.id}`}>
+        <Box mb="12px" id={`statement-body-${current.data.id}`}>
           <Text fontSize="l">
-            <T value={current.body} supportHtml />
+            <T value={current.data.attributes.title_multiloc} supportHtml />
           </Text>
         </Box>
 
@@ -278,7 +292,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
             iconColor={colors.green500}
             justify={isPhone ? 'left' : 'center'}
             textColor={colors.textPrimary}
-            onClick={() => reactToIdea({ ideaId: current.id, mode: 'agree' })}
+            onClick={() => reactToIdea({ ideaId: current.data.id, mode: 'up' })}
             whiteSpace="normal"
             fullWidth
           >
@@ -291,7 +305,9 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
             justify={isPhone ? 'left' : 'center'}
             textColor={colors.textPrimary}
             whiteSpace="normal"
-            onClick={() => reactToIdea({ ideaId: current.id, mode: 'unsure' })}
+            onClick={() =>
+              reactToIdea({ ideaId: current.data.id, mode: 'neutral' })
+            }
             fullWidth
           >
             {formatMessage(messages.unsureLabel)}
@@ -304,7 +320,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
             textColor={colors.textPrimary}
             whiteSpace="normal"
             onClick={() =>
-              reactToIdea({ ideaId: current.id, mode: 'disagree' })
+              reactToIdea({ ideaId: current.data.id, mode: 'down' })
             }
             fullWidth
           >

@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Box,
   Divider,
+  Spinner,
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
@@ -25,8 +26,23 @@ interface Props {
 const CommonGroundResults = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const isPhone = useBreakpoint('phone');
-  const { data: results, isLoading, isError } = useCommonGroundResults(phaseId);
-  if (isLoading || isError) return null;
+  const { data: results, isLoading } = useCommonGroundResults(phaseId);
+
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" p="20px">
+        <Spinner />
+      </Box>
+    );
+  }
+
+  if (!results) {
+    return (
+      <Box display="flex" justifyContent="center" p="20px">
+        <Text color="textSecondary">{formatMessage(messages.noResults)}</Text>
+      </Box>
+    );
+  }
 
   const {
     stats: { num_participants, num_ideas, votes },

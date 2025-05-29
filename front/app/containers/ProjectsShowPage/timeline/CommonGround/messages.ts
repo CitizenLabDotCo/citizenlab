@@ -21,10 +21,14 @@ export default defineMessages({
     id: 'app.components.CommonGroundStatements.disagreeLabel',
     defaultMessage: 'Disagree',
   },
-  noMoreInputs: {
-    id: 'app.components.CommonGroundStatements.noMoreInputs',
+  noMoreStatements: {
+    id: 'app.components.CommonGroundStatements.noMoreStatements',
+    defaultMessage: 'There are no statements to respond to right now',
+  },
+  noResults: {
+    id: 'app.components.CommonGroundStatements.noResults',
     defaultMessage:
-      "There are no statements to respond to right now. You'll get notified as soon as new ones are available.",
+      'There are no results to show yet. Please make sure you have participated in the Common Ground phase and check back here after.',
   },
   participants: {
     id: 'app.components.CommonGroundResults.participantsLabel1',
