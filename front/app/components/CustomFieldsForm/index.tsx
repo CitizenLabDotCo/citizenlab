@@ -172,7 +172,6 @@ const CustomFieldsForm = ({
     <Box overflow="scroll" w="100%">
       {nestedPagesData[currentPageNumber] && (
         <CustomFieldsPage
-          key={nestedPagesData[currentPageNumber].page.id}
           page={nestedPagesData[currentPageNumber].page}
           pageQuestions={nestedPagesData[currentPageNumber].pageQuestions}
           currentPageNumber={currentPageNumber}
