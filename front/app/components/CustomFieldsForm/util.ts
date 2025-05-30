@@ -6,7 +6,7 @@ import { Localize } from 'hooks/useLocalize';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -35,6 +35,16 @@ export const convertCustomFieldsToNestedPages = (
   return nestedPagesData;
 };
 
+const isNillish = (value: any) => {
+  if (!value) return true;
+  if (Array.isArray(value) && value.length === 0) return true;
+  if (value.constructor === Object) {
+    if (Object.keys(value).length === 0) return true;
+    if (isEmptyMultiloc(value)) return true;
+  }
+  return false;
+};
+
 export function getFormCompletionPercentage(
   customFields: IFlatCustomField[],
   formValues: Record<string, any> = {},
@@ -47,7 +57,7 @@ export function getFormCompletionPercentage(
   let indexOfLastFilledOutQuestion = -1;
 
   customFields.forEach((field, index) => {
-    if (formValues[field.key]) {
+    if (!isNillish(formValues[field.key])) {
       indexOfLastFilledOutQuestion = index;
     }
   });
