@@ -113,7 +113,7 @@ describe('Form builder single choice field', () => {
     cy.dataCy('e2e-submit-form').click();
 
     // verify that an error is shown and that we stay on the page
-    cy.get('.e2e-error-message').should('exist');
+    cy.get('.e2e-error-message').should('be.visible');
     cy.url().should(
       'eq',
       `${

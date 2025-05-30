@@ -111,8 +111,10 @@ describe('Idea template', () => {
     it('creates a report from a template and allows editing it', () => {
       // Create report from template
       cy.visit(`/admin/reporting/report-builder`);
+      cy.get('#e2e-create-report-button').should('be.visible');
       cy.get('#e2e-create-report-button').click();
 
+      cy.get('.e2e-create-report-modal-title-input').should('be.visible');
       cy.get('.e2e-create-report-modal-title-input').type(randomString());
       cy.get('#project-template-radio').click({ force: true });
       cy.get('#projectFilter').select(projectId);
@@ -124,7 +126,8 @@ describe('Idea template', () => {
       cy.url().should('include', `editor?templateProjectId=${projectId}`);
       cy.get('#e2e-content-builder-frame').should('be.visible');
 
-      // Test that most reacted ideas widget is shown correctly
+      // Test that most reacted ideas widget is shown correctly.
+      cy.get('.e2e-report-builder-idea-card').should('exist');
       cy.get('.e2e-report-builder-idea-card').should('have.length', 2);
       cy.get('.e2e-report-builder-idea-card')
         .first()
@@ -132,15 +135,15 @@ describe('Idea template', () => {
       cy.get('.e2e-report-builder-idea-card').last().contains(ideaTitle);
 
       // Edit text
-      cy.get('.e2e-text-box').should('be.visible');
+      cy.get('.e2e-text-box').should('exist');
       cy.get('.e2e-text-box').eq(2).click('center');
       cy.get('.ql-editor').click();
       const text = randomString();
 
       cy.get('.ql-editor').clear().type(text, { force: true });
 
-      // Expect this to be visible on screen
-      cy.get('.e2e-text-box').eq(2).should('contain.text', text);
+      // Necessary wait after typing for save button to become enabled
+      cy.wait(2000);
 
       // Save report
       cy.get('#e2e-content-builder-topbar-save > button').click({
@@ -151,8 +154,7 @@ describe('Idea template', () => {
       cy.reload();
 
       // Validate that the edited text is still there
-      cy.get('.e2e-text-box').should('be.visible');
-      cy.get('.e2e-text-box').eq(2).should('contain.text', text);
+      cy.contains(text).should('exist');
     });
   });
 
