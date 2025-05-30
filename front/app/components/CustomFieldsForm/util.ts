@@ -6,7 +6,7 @@ import { Localize } from 'hooks/useLocalize';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -35,28 +35,50 @@ export const convertCustomFieldsToNestedPages = (
   return nestedPagesData;
 };
 
-export function getFormCompletionPercentage(
-  customFields: IFlatCustomField[],
-  formValues: Record<string, any> = {}
-) {
-  // Count total required fields and answered required fields
-  let totalFields = 0;
-  let answeredFields = 0;
+const isNillish = (value: any) => {
+  if (!value) return true;
+  if (Array.isArray(value) && value.length === 0) return true;
+  if (value.constructor === Object) {
+    if (Object.keys(value).length === 0) return true;
+    if (isEmptyMultiloc(value)) return true;
+  }
+  return false;
+};
 
-  customFields.forEach((field) => {
-    totalFields += 1;
-    if (formValues[field.key]) {
-      answeredFields += 1;
-    }
-  });
+type GetFormCompletionPercentageParams = {
+  customFields: IFlatCustomField[];
+  formValues: Record<string, any>;
+  userIsOnLastPage: boolean;
+  userIsEditing: boolean;
+};
 
-  // If no required fields, consider it 100% complete
-  if (totalFields === 0) {
+export function getFormCompletionPercentage({
+  customFields,
+  formValues,
+  userIsOnLastPage,
+  userIsEditing,
+}: GetFormCompletionPercentageParams) {
+  if (userIsOnLastPage || userIsEditing) {
     return 100;
   }
 
-  // Calculate and return percentage
-  return Math.round((answeredFields / totalFields) * 100);
+  let indexOfLastFilledOutQuestion = -1;
+
+  customFields.forEach((field, index) => {
+    if (!isNillish(formValues[field.key])) {
+      indexOfLastFilledOutQuestion = index;
+    }
+  });
+
+  return Math.round(
+    // We add 1 to the index, otherwise it doesn't look like it
+    // was filled out.
+    // e.g. if you have two questions, and you filled out the first one,
+    // the index will be 0. If you were to divide that by the length,
+    // you would get 0 percent. So instead we add 1- this way, the
+    // result is 1 / 2 = 50%.
+    ((indexOfLastFilledOutQuestion + 1) / customFields.length) * 100
+  );
 }
 
 export const extractOptions = (
