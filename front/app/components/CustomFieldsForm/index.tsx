@@ -92,6 +92,8 @@ const CustomFieldsForm = ({
     (field) => field.id === nestedPagesData[currentPageNumber].page.id
   )?.page_button_label_multiloc;
 
+  const lastPageNumber = nestedPagesData.length - 1;
+
   const onSubmit = async (
     formValues: FormValues,
     isDisclamerAccepted?: boolean
@@ -144,14 +146,15 @@ const CustomFieldsForm = ({
       }
     }
     // Go to the next page
-    if (currentPageNumber < nestedPagesData.length - 1) {
+    if (currentPageNumber < lastPageNumber) {
       setCurrentPageNumber((pageNumber: number) => pageNumber + 1);
     }
   };
 
   const formCompletionPercentage = getFormCompletionPercentage(
     customFields || [],
-    formValues
+    formValues,
+    currentPageNumber === lastPageNumber
   );
 
   const onAcceptDisclaimer = async () => {
@@ -173,7 +176,7 @@ const CustomFieldsForm = ({
           page={nestedPagesData[currentPageNumber].page}
           pageQuestions={nestedPagesData[currentPageNumber].pageQuestions}
           currentPageNumber={currentPageNumber}
-          lastPageNumber={nestedPagesData.length - 1}
+          lastPageNumber={lastPageNumber}
           setCurrentPageNumber={setCurrentPageNumber}
           showTogglePostAnonymously={showTogglePostAnonymously}
           participationMethod={participationMethod}

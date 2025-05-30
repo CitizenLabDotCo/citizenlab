@@ -37,26 +37,30 @@ export const convertCustomFieldsToNestedPages = (
 
 export function getFormCompletionPercentage(
   customFields: IFlatCustomField[],
-  formValues: Record<string, any> = {}
+  formValues: Record<string, any> = {},
+  userIsOnLastPage: boolean
 ) {
-  // Count total required fields and answered required fields
-  let totalFields = 0;
-  let answeredFields = 0;
-
-  customFields.forEach((field) => {
-    totalFields += 1;
-    if (formValues[field.key]) {
-      answeredFields += 1;
-    }
-  });
-
-  // If no required fields, consider it 100% complete
-  if (totalFields === 0) {
+  if (userIsOnLastPage) {
     return 100;
   }
 
-  // Calculate and return percentage
-  return Math.round((answeredFields / totalFields) * 100);
+  let indexOfLastFilledOutQuestion = -1;
+
+  customFields.forEach((field, index) => {
+    if (formValues[field.key]) {
+      indexOfLastFilledOutQuestion = index;
+    }
+  });
+
+  return Math.round(
+    // We add 1 to the index, otherwise it doesn't look like it
+    // was filled out.
+    // e.g. if you have two questions, and you filled out the first one,
+    // the index will be 0. If you were to divide that by the length,
+    // you would get 0 percent. So instead we add 1- this way, the
+    // result is 1 / 2 = 50%.
+    ((indexOfLastFilledOutQuestion + 1) / customFields.length) * 100
+  );
 }
 
 export const extractOptions = (
