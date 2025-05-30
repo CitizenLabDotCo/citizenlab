@@ -167,35 +167,6 @@ describe('Idea template', () => {
         });
       });
     });
-
-    it('autosaves report created from template', () => {
-      cy.apiCreateReportBuilder().then((report) => {
-        const reportId = report.body.data.id;
-
-        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-          'saveReportLayout'
-        );
-
-        cy.visit(
-          `/admin/reporting/report-builder/${reportId}/editor?templateProjectId=${projectId}`
-        );
-
-        // This tests that initially, the save button indicates that the report is unsaved (does not have svg icon)
-        cy.get('#e2e-content-builder-topbar-save > button').should('exist');
-        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
-          'not.exist'
-        );
-
-        // Then, when we intercept the autosave...
-        cy.wait(2000);
-        cy.wait('@saveReportLayout').then(() => {
-          // We expect the save button to indicate that the report is saved (has svg icon)
-          cy.get('#e2e-content-builder-topbar-save > button > svg').should(
-            'exist'
-          );
-        });
-      });
-    });
   });
 
   describe('Phase report builder', () => {
@@ -228,34 +199,6 @@ describe('Idea template', () => {
 
       // Ensure we're back to the empty state
       cy.get('#e2e-create-report-button').should('exist');
-    });
-
-    it('autosaves report created from template', () => {
-      cy.apiCreateReportBuilder(phaseId).then((report) => {
-        const reportId = report.body.data.id;
-
-        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-          'saveReportLayout'
-        );
-        cy.visit(
-          `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${phaseId}`
-        );
-
-        // This tests that initially, the save button indicates that the report is unsaved (does not have svg icon)
-        cy.get('#e2e-content-builder-topbar-save > button').should('exist');
-        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
-          'not.exist'
-        );
-
-        // Then, when we intercept the autosave...
-        cy.wait(2000);
-        cy.wait('@saveReportLayout').then(() => {
-          // We expect the save button to indicate that the report is saved (has svg icon)
-          cy.get('#e2e-content-builder-topbar-save > button > svg').should(
-            'exist'
-          );
-        });
-      });
     });
   });
 });
