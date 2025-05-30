@@ -122,6 +122,7 @@ describe('Idea template', () => {
         cy.wait(2000);
 
         // Edit text
+        cy.get('.e2e-text-box').should('be.visible');
         cy.get('.e2e-text-box').eq(2).click('center');
         cy.get('.ql-editor').click();
         const text = randomString();
@@ -160,6 +161,7 @@ describe('Idea template', () => {
           cy.reload();
 
           // Validate that the edited text is still there
+          cy.get('.e2e-text-box').should('be.visible');
           cy.get('.e2e-text-box').eq(2).should('contain.text', text);
 
           // Remove report
