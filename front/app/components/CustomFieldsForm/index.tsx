@@ -151,11 +151,12 @@ const CustomFieldsForm = ({
     }
   };
 
-  const formCompletionPercentage = getFormCompletionPercentage(
-    customFields || [],
-    formValues,
-    currentPageNumber === lastPageNumber
-  );
+  const formCompletionPercentage = getFormCompletionPercentage({
+    customFields: customFields ?? [],
+    formValues: formValues ?? {},
+    userIsEditing: isIdeaEditPage,
+    userIsOnLastPage: currentPageNumber === lastPageNumber,
+  });
 
   const onAcceptDisclaimer = async () => {
     setIsDisclaimerOpened(false);
@@ -182,6 +183,7 @@ const CustomFieldsForm = ({
           ideaId={idea?.data.id}
           projectId={projectId}
           onSubmit={onSubmit}
+          updateFormValues={setFormValues}
           pageButtonLabelMultiloc={pageButtonLabelMultiloc}
           phase={phase?.data}
           defaultValues={formValues}

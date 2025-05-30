@@ -45,6 +45,7 @@ type CustomFieldsPage = {
   ideaId?: string;
   projectId: string;
   onSubmit: (formValues: any) => void;
+  updateFormValues: (formValues: any) => void;
   pageButtonLabelMultiloc?: Multiloc;
   phase?: IPhaseData;
   defaultValues?: any;
@@ -60,6 +61,7 @@ const CustomFieldsPage = ({
   ideaId: initialIdeaId,
   projectId,
   onSubmit,
+  updateFormValues,
   currentPageNumber,
   setCurrentPageNumber,
   pageButtonLabelMultiloc,
@@ -307,6 +309,7 @@ const CustomFieldsPage = ({
                 }}
                 handlePrevious={() => {
                   pagesRef.current?.scrollTo(0, 0);
+                  updateFormValues(methods.getValues());
                   setCurrentPageNumber(currentPageNumber - 1);
                 }}
                 hasPreviousPage={currentPageNumber > 0}

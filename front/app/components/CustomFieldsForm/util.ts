@@ -45,12 +45,20 @@ const isNillish = (value: any) => {
   return false;
 };
 
-export function getFormCompletionPercentage(
-  customFields: IFlatCustomField[],
-  formValues: Record<string, any> = {},
-  userIsOnLastPage: boolean
-) {
-  if (userIsOnLastPage) {
+type GetFormCompletionPercentageParams = {
+  customFields: IFlatCustomField[];
+  formValues: Record<string, any>;
+  userIsOnLastPage: boolean;
+  userIsEditing: boolean;
+};
+
+export function getFormCompletionPercentage({
+  customFields,
+  formValues,
+  userIsOnLastPage,
+  userIsEditing,
+}: GetFormCompletionPercentageParams) {
+  if (userIsOnLastPage || userIsEditing) {
     return 100;
   }
 
