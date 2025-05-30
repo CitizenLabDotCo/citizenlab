@@ -33,11 +33,14 @@ describe('Admin: add projects to folder', async () => {
         const folderShortDescription = randomString();
 
         // Add folder title
+        cy.dataCy('e2e-project-folder-title').should('be.visible');
+
         cy.dataCy('e2e-project-folder-title')
           .find('.e2e-localeswitcher')
           .each((button) => {
             cy.wrap(button).click();
             cy.get('#project-folder-title').type(folderTitle);
+            cy.wait(2000);
           });
 
         // Add folder short description
@@ -47,6 +50,7 @@ describe('Admin: add projects to folder', async () => {
             cy.wrap(button).click();
             cy.dataCy('e2e-project-folder-short-description').within(() => {
               cy.get('textarea').type(folderShortDescription);
+              cy.wait(2000);
             });
           });
 
@@ -57,13 +61,15 @@ describe('Admin: add projects to folder', async () => {
             cy.wrap(button).click();
             cy.dataCy('e2e-project-folder-description').within(() => {
               cy.get('#description').type(folderShortDescription);
+              cy.wait(2000);
             });
           });
 
         // Submit project
-        cy.get('.e2e-submit-wrapper-button button').click();
+        cy.get('.e2e-submit-wrapper-button button').click({ force: true });
 
         // Wait for folder page to load
+        cy.get('.e2e-resource-header').should('be.visible');
         cy.get('.e2e-resource-header').contains(folderTitle);
 
         // Check that our projects are in the list and add them to the folder
