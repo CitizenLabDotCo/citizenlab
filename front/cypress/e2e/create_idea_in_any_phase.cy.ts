@@ -57,6 +57,7 @@ describe('Idea creation', () => {
     cy.visit(`admin/projects/${projectId}/phases/${firstPhaseId}/ideas`);
     cy.acceptCookies();
     cy.get('#e2e-new-idea').click();
+    cy.wait(1000);
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
@@ -65,9 +66,9 @@ describe('Idea creation', () => {
     // The next line was flaky on CI where the "type" command resulted in skipped letters
     // Seems to be a known problem, and one solution is to type then clear to "warm up" Cypress
     // Related: https://github.com/cypress-io/cypress/issues/3817
-    cy.get('#e2e-idea-title-input input').type('x', { delay: 0 });
-    cy.get('#e2e-idea-title-input input').clear();
-    cy.get('#e2e-idea-title-input input').type(`${newIdeaTitle}`, { delay: 0 });
+    cy.get('#e2e-idea-title-input').type('x', { delay: 0 });
+    cy.get('#e2e-idea-title-input').clear();
+    cy.get('#e2e-idea-title-input').type(`${newIdeaTitle}`, { delay: 0 });
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 

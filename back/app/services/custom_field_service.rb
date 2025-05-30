@@ -129,7 +129,20 @@ class CustomFieldService
     if can_see_admin_answers?(idea, current_user)
       fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_fields
     end
-    visible_keys = fields.pluck(:key)
+
+    visible_keys = []
+    fields.each do |field|
+      visible_keys << field.key
+
+      if field.support_other_option?
+        visible_keys << "#{field.key}_other"
+      end
+
+      if field.support_follow_up?
+        visible_keys << "#{field.key}_follow_up"
+      end
+    end
+
     idea.custom_field_values.slice(*visible_keys)
   end
 

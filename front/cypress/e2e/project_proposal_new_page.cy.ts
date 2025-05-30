@@ -64,13 +64,8 @@ describe('Project proposal new page', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist'); // Change to proposal later
     // Add a title
-    cy.get('#e2e-idea-title-input input')
-      .click()
-      .type(proposalTitle, { delay: 0 });
-    cy.get('#e2e-idea-title-input input').should(
-      'contain.value',
-      proposalTitle
-    );
+    cy.get('#e2e-idea-title-input ').click().type(proposalTitle, { delay: 0 });
+    cy.get('#e2e-idea-title-input ').should('contain.value', proposalTitle);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
@@ -83,7 +78,7 @@ describe('Project proposal new page', () => {
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
+    cy.get('[data-cy="e2e-idea-file-upload"]');
 
     // Go to the next page of the form
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -97,11 +92,11 @@ describe('Project proposal new page', () => {
       .should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type(
-      'Boulevard Anspach Brussels'
-    );
+    cy.get('.e2e-idea-form-location-input-field input')
+      .first()
+      .type('Boulevard Anspach Brussels');
     cy.wait(7000);
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
+    cy.get('.e2e-idea-form-location-input-field input').first().type('{enter}');
 
     // save the form
     cy.dataCy('e2e-submit-form').click();

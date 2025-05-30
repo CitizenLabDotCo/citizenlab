@@ -47,12 +47,14 @@ describe('clearOptionIds', () => {
       matrix_statements: [
         {
           id: '96e275e5b8194c7b85ac615665930d22',
+          key: 'key1',
           title_multiloc: {
             en: 'Statement 1',
           },
         },
         {
           id: '1f911f35352d4e2082b30b8afb92d081',
+          key: 'key2',
           title_multiloc: {
             en: 'Statement 2',
           },

@@ -11,7 +11,7 @@ import { CLError, RHFErrors } from 'typings';
 
 import Error, { TFieldName } from 'components/UI/Error';
 
-interface Props extends InputProps {
+export interface Props extends InputProps {
   name: string;
   fieldName?: TFieldName;
 }

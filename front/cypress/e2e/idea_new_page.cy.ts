@@ -1,4 +1,3 @@
-import moment = require('moment');
 import { randomString, randomEmail } from '../support/commands';
 
 const round = (x: number) => Math.round(x * 1000) / 1000;
@@ -20,11 +19,20 @@ describe('Idea submission form', () => {
     cy.acceptCookies();
   });
 
+  it('shows an error when no title is provided', () => {
+    const value = randomString(9);
+    cy.get('#idea-form');
+    cy.wait(1000);
+    // Try to go to the next page
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.get('.e2e-error-message').should('exist');
+  });
+
   it('shows a back button to navigate to the projects page', () => {
     const ideaTitle = randomString(9);
-    cy.get('#e2e-idea-title-input input').type(ideaTitle, { delay: 0 });
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
-    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.get('#e2e-idea-title-input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     cy.dataCy('e2e-leave-new-idea-button').click();
     cy.dataCy('e2e-confirm-leave-new-idea-button').should('exist');
@@ -40,33 +48,33 @@ describe('Idea submission form', () => {
   it('shows an error when no title is provided', () => {
     // Try to go to the next page
     cy.dataCy('e2e-next-page').should('be.visible').click();
-    cy.get('#e2e-idea-title-input .e2e-error-message');
+    cy.get('.e2e-error-message');
   });
 
   it('shows an error when no description is provided', () => {
     const ideaTitle = randomString(9);
-    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-title-input').click().type(ideaTitle, { delay: 0 });
+    cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
 
     // Go to the description page
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Try to go to the next page
     cy.dataCy('e2e-next-page').should('be.visible').click();
-    cy.get('#e2e-idea-description-input .e2e-error-message');
+    cy.get('.e2e-error-message');
   });
 
   it('shows an error when the title is less than 3 characters long', () => {
-    cy.get('#e2e-idea-title-input input').type(randomString(2), { delay: 0 });
+    cy.get('#e2e-idea-title-input').type(randomString(2), { delay: 0 });
     // Try to go to the next page
     cy.dataCy('e2e-next-page').should('be.visible').click();
-    cy.get('#e2e-idea-title-input .e2e-error-message');
+    cy.get('.e2e-error-message');
   });
 
   it('shows no error when the description is less than 3 characters long', () => {
     const ideaTitle = randomString(10);
-    cy.get('#e2e-idea-title-input input').type(ideaTitle, { delay: 0 });
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-title-input').type(ideaTitle, { delay: 0 });
+    cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
 
     const ideaContent = randomString(2);
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -102,8 +110,8 @@ describe('Idea submission form', () => {
     cy.contains('Add new idea').should('exist');
 
     // Add a title
-    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-title-input').click().type(ideaTitle, { delay: 0 });
+    cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
@@ -137,8 +145,8 @@ describe('Idea submission form', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input input').type(ideaTitle, { delay: 0 });
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-title-input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input').should('contain.value', ideaTitle);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
@@ -152,7 +160,7 @@ describe('Idea submission form', () => {
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
+    cy.get('[data-cy="e2e-idea-file-upload"]');
 
     // Go to the page with topics
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -166,11 +174,14 @@ describe('Idea submission form', () => {
       .should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type(
+    cy.get('.e2e-idea-form-location-input-field').type(
       'Boulevard Anspach Brussels'
     );
-    cy.wait(10000);
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
+    cy.wait(7000);
+    cy.get('.e2e-idea-form-location-input-field input')
+      .first()
+      .focus()
+      .type('{enter}');
 
     // save the form
     cy.dataCy('e2e-submit-form').click();

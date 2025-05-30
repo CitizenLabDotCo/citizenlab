@@ -14,16 +14,18 @@ import QuillMultilocWithLocaleSwitcherComponent, {
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
+  id?: string;
   name: string;
   labelTooltipText?: string | JSX.Element | null;
   label?: string | JSX.Element | null;
   withCTAButton?: boolean;
+  hideLocaleSwitcher?: boolean;
 } & Omit<
   QuillMultilocWithLocaleSwitcherComponentProps,
   'onChange' | 'valueMultiloc' | 'id'
 >;
 
-const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
+const QuillMultilocWithLocaleSwitcher = ({ id, name, ...rest }: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -58,7 +60,7 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           <QuillMultilocWithLocaleSwitcherComponent
             {...field}
             {...rest}
-            id={name.replace(/\./g, '_')}
+            id={id || name.replace(/\./g, '_')}
             valueMultiloc={{ ...defaultValue, ...field.value }}
           />
         )}

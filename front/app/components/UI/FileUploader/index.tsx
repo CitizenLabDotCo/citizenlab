@@ -86,7 +86,6 @@ const FileUploader = ({
   };
 
   const fileNames = files.map((file) => file.name).join(', ');
-
   const content = (
     <Box
       className={className}
