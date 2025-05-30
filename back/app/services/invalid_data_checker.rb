@@ -71,7 +71,6 @@ class InvalidDataChecker
     # Skip checking for less crucial classes that require
     # a lot of processing.
     return true if SKIP_CLASSES.include? claz.name
-    return true if claz.name.nil?
     return true if claz.name.starts_with? 'Notifications::'
 
     false
