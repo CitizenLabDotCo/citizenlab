@@ -124,6 +124,13 @@ describe('Idea template', () => {
       cy.url().should('include', `editor?templateProjectId=${projectId}`);
       cy.get('#e2e-content-builder-frame').should('be.visible');
 
+      // Test that most reacted ideas widget is shown correctly
+      cy.get('.e2e-report-builder-idea-card').should('have.length', 2);
+      cy.get('.e2e-report-builder-idea-card')
+        .first()
+        .contains(higherLikedIdeaTitle);
+      cy.get('.e2e-report-builder-idea-card').last().contains(ideaTitle);
+
       // Edit text
       cy.get('.e2e-text-box').should('be.visible');
       cy.get('.e2e-text-box').eq(2).click('center');
