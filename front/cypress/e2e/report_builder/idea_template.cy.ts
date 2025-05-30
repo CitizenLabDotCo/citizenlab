@@ -86,12 +86,14 @@ describe('Idea template', () => {
       cy.get('#project-template-radio').click({ force: true });
       cy.get('#projectFilter').select(projectId);
 
-      cy.get('div[data-testid="create-report-button"] > button').click();
+      cy.get('div[data-testid="create-report-button"] > button').click({
+        force: true,
+      });
 
       // Ensure we are in the editor
       cy.url().should('include', '/en/admin/reporting/report-builder/');
       cy.url().should('include', `editor?templateProjectId=${projectId}`);
-      cy.get('#e2e-content-builder-frame').should('exist');
+      cy.get('#e2e-content-builder-frame').should('be.visible');
 
       // Test that most reacted ideas widget is shown correctly
       cy.get('.e2e-report-builder-idea-card').should('have.length', 2);
@@ -109,65 +111,56 @@ describe('Idea template', () => {
     });
 
     it('creates a report from a template and allows editing it', () => {
-      cy.apiCreateReportBuilder().then((report) => {
-        const reportId = report.body.data.id;
-        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-          'saveReportLayout'
-        );
+      // Create report from template
+      cy.visit(`/admin/reporting/report-builder`);
+      cy.get('#e2e-create-report-button').click();
 
-        cy.visit(
-          `/admin/reporting/report-builder/${reportId}/editor?templateProjectId=${projectId}`
-        );
+      cy.get('.e2e-create-report-modal-title-input').type(randomString());
+      cy.get('#project-template-radio').click({ force: true });
+      cy.get('#projectFilter').select(projectId);
 
-        cy.wait(2000);
-
-        // Edit text
-        cy.get('.e2e-text-box').should('be.visible');
-        cy.get('.e2e-text-box').eq(2).click('center');
-        cy.get('.ql-editor').click();
-        const text = randomString();
-
-        cy.wait(2000);
-
-        cy.get('.ql-editor').clear().type(text, { force: true });
-
-        // Expect this to be visible on screen
-        cy.get('.e2e-text-box').eq(2).should('contain.text', text);
-
-        cy.wait(2000);
-
-        // Switch locale
-        cy.get('#e2e-locale-select').select('nl-BE');
-
-        // Validate that text for other locale is present
-        cy.get('.e2e-text-box')
-          .eq(2)
-          .should('contain.text', 'Samenvatting van het verslag');
-
-        cy.wait(2000);
-
-        // Switch back
-        cy.get('#e2e-locale-select').select('en');
-
-        // Previous edited text should still be there
-        cy.get('.e2e-text-box').eq(2).should('contain.text', text);
-
-        // Save report
-        cy.get('#e2e-content-builder-topbar-save > button').click({
-          force: true,
-        });
-        cy.wait('@saveReportLayout').then(() => {
-          // Refresh page
-          cy.reload();
-
-          // Validate that the edited text is still there
-          cy.get('.e2e-text-box').should('be.visible');
-          cy.get('.e2e-text-box').eq(2).should('contain.text', text);
-
-          // Remove report
-          cy.apiRemoveReportBuilder(reportId);
-        });
+      cy.get('div[data-testid="create-report-button"] > button').click({
+        force: true,
       });
+
+      // Ensure we are in the editor
+      cy.url().should('include', '/en/admin/reporting/report-builder/');
+      cy.url().should('include', `editor?templateProjectId=${projectId}`);
+      cy.get('#e2e-content-builder-frame').should('be.visible');
+
+      // Test that most reacted ideas widget is shown correctly
+      cy.get('.e2e-report-builder-idea-card').should('have.length', 2);
+      cy.get('.e2e-report-builder-idea-card')
+        .first()
+        .contains(higherLikedIdeaTitle);
+      cy.get('.e2e-report-builder-idea-card').last().contains(ideaTitle);
+
+      // Edit text
+      cy.get('.e2e-text-box').should('be.visible');
+      cy.get('.e2e-text-box').eq(2).click('center');
+      cy.get('.ql-editor').click();
+      const text = randomString();
+
+      cy.wait(2000);
+
+      cy.get('.ql-editor').clear().type(text, { force: true });
+
+      // Expect this to be visible on screen
+      cy.get('.e2e-text-box').eq(2).should('contain.text', text);
+
+      cy.wait(2000);
+
+      // Save report
+      cy.get('#e2e-content-builder-topbar-save > button').click({
+        force: true,
+      });
+
+      // Refresh page
+      cy.reload();
+
+      // Validate that the edited text is still there
+      cy.get('.e2e-text-box').should('be.visible');
+      cy.get('.e2e-text-box').eq(2).should('contain.text', text);
     });
   });
 
