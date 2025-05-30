@@ -33,6 +33,7 @@ import AuthorField from './Fields/AuthorField';
 import BudgetField from './Fields/BudgetField';
 import generateYupValidationSchema from './generateYupSchema';
 import ProgressBar from './ProgressBar';
+import { getFormCompletionPercentage } from './util';
 
 type CustomFieldsPage = {
   page: IFlatCustomField;
@@ -45,11 +46,10 @@ type CustomFieldsPage = {
   ideaId?: string;
   projectId: string;
   onSubmit: (formValues: any) => void;
-  updateFormValues: (formValues: any) => void;
   pageButtonLabelMultiloc?: Multiloc;
   phase?: IPhaseData;
   defaultValues?: any;
-  formCompletionPercentage?: number;
+  customFields: IFlatCustomField[];
 };
 
 const CustomFieldsPage = ({
@@ -61,13 +61,12 @@ const CustomFieldsPage = ({
   ideaId: initialIdeaId,
   projectId,
   onSubmit,
-  updateFormValues,
   currentPageNumber,
   setCurrentPageNumber,
   pageButtonLabelMultiloc,
   phase,
   defaultValues,
-  formCompletionPercentage,
+  customFields,
 }: CustomFieldsPage) => {
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
@@ -122,6 +121,13 @@ const CustomFieldsPage = ({
   // the anonymous toggle on. In these cases, we show the idea id
   // on the success page.
   const showIdeaId = idea ? !idea.data.relationships.author?.data : false;
+
+  const formCompletionPercentage = getFormCompletionPercentage({
+    customFields,
+    formValues: methods.getValues() ?? {},
+    userIsEditing: isIdeaEditPage,
+    userIsOnLastPage: currentPageNumber === lastPageNumber,
+  });
 
   return (
     <FormProvider {...methods}>
@@ -309,7 +315,6 @@ const CustomFieldsPage = ({
                 }}
                 handlePrevious={() => {
                   pagesRef.current?.scrollTo(0, 0);
-                  updateFormValues(methods.getValues());
                   setCurrentPageNumber(currentPageNumber - 1);
                 }}
                 hasPreviousPage={currentPageNumber > 0}
