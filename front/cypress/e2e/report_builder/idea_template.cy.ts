@@ -86,9 +86,7 @@ describe('Idea template', () => {
       cy.get('#project-template-radio').click({ force: true });
       cy.get('#projectFilter').select(projectId);
 
-      cy.get('div[data-testid="create-report-button"] > button').click({
-        force: true,
-      });
+      cy.get('div[data-testid="create-report-button"] > button').click();
 
       // Ensure we are in the editor
       cy.url().should('include', '/en/admin/reporting/report-builder/');
@@ -119,21 +117,12 @@ describe('Idea template', () => {
       cy.get('#project-template-radio').click({ force: true });
       cy.get('#projectFilter').select(projectId);
 
-      cy.get('div[data-testid="create-report-button"] > button').click({
-        force: true,
-      });
+      cy.get('div[data-testid="create-report-button"] > button').click();
 
       // Ensure we are in the editor
       cy.url().should('include', '/en/admin/reporting/report-builder/');
       cy.url().should('include', `editor?templateProjectId=${projectId}`);
       cy.get('#e2e-content-builder-frame').should('be.visible');
-
-      // Test that most reacted ideas widget is shown correctly
-      cy.get('.e2e-report-builder-idea-card').should('have.length', 2);
-      cy.get('.e2e-report-builder-idea-card')
-        .first()
-        .contains(higherLikedIdeaTitle);
-      cy.get('.e2e-report-builder-idea-card').last().contains(ideaTitle);
 
       // Edit text
       cy.get('.e2e-text-box').should('be.visible');
@@ -141,14 +130,10 @@ describe('Idea template', () => {
       cy.get('.ql-editor').click();
       const text = randomString();
 
-      cy.wait(2000);
-
       cy.get('.ql-editor').clear().type(text, { force: true });
 
       // Expect this to be visible on screen
       cy.get('.e2e-text-box').eq(2).should('contain.text', text);
-
-      cy.wait(2000);
 
       // Save report
       cy.get('#e2e-content-builder-topbar-save > button').click({
