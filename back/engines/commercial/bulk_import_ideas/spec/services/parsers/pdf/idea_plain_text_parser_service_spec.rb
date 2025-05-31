@@ -246,6 +246,4 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
       expect(service.parse_text(raw_text_array)).to eq expected_result
     end
   end
-
-  # TODO: JS - Add an additional test for a survey form - with personal data
 end

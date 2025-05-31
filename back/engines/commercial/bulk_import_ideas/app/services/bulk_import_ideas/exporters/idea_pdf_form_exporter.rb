@@ -5,7 +5,7 @@ require 'prawn'
 require 'prawn/measurement_extensions'
 module BulkImportIdeas::Exporters
   class IdeaPdfFormExporter < BaseFormExporter
-    attr_reader :participation_context, :form_fields, :previous_cursor
+    attr_reader :participation_context, :previous_cursor
 
     delegate :generate_multiselect_instructions, to: :class
     private :generate_multiselect_instructions
@@ -15,7 +15,6 @@ module BulkImportIdeas::Exporters
 
     def initialize(phase, locale, personal_data_enabled)
       super
-      @form_fields = IdeaCustomFieldsService.new(phase.pmethod.custom_form).printable_fields_legacy
       @personal_data_enabled = personal_data_enabled
       @previous_cursor = nil
       @app_configuration = AppConfiguration.instance
@@ -46,6 +45,10 @@ module BulkImportIdeas::Exporters
     end
 
     private
+
+    def form_fields
+      @form_fields ||= IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields_legacy
+    end
 
     def generate_pdf
       pdf = Prawn::Document.new(page_size: 'A4')

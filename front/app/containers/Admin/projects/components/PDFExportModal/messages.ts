@@ -14,14 +14,14 @@ export default defineMessages({
     defaultMessage: 'Add fields for name and email',
   },
   clickExportToPDFIdeaForm: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFIdeaForm',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFIdeaForm2',
     defaultMessage:
-      'Questions not currently supported: Images, Tags and File Upload.',
+      'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Images, Tags and File Upload.',
   },
   clickExportToPDFSurvey: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey5',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey6',
     defaultMessage:
-      'Questions not currently supported: Mapping questions (drop pin, draw route and draw area), image choice questions, ranking questions, matrix questions and file upload questions.',
+      'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Mapping questions (drop pin, draw route and draw area), ranking questions, matrix questions and file upload questions.',
   },
   itIsAlsoPossibleIdeation: {
     id: 'app.containers.Admin.projects.all.itIsAlsoPossible1',

@@ -1032,8 +1032,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visitez notre centre d'assistance",
   "app.containers.Admin.projects.all.askPersonalData3": "Inclure les champs pour le nom et l'adresse e-mail",
-  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Types de questions non pris en charge actuellement : Images, Étiquettes et Téléchargement de fichiers.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Questions non prises en charge actuellement : questions cartographiques (placer un repère, dessiner un tracé et délimiter une zone), questions de choix d'image, questions de classement, questions matricielles et questions de téléchargement de fichiers.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Fin du formulaire",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Début du formulaire",
   "app.containers.Admin.projects.all.components.archived": "Archivé",
