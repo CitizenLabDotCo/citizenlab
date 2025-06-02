@@ -15,6 +15,10 @@ module ParticipationMethod
       true
     end
 
+    def assign_defaults_for_phase
+      phase.reacting_dislike_enabled = true
+    end
+
     def assign_defaults(input)
       # The common ground participation method does not use the idea status, but all
       # inputs must have one. We are using the same default as for ideation.
