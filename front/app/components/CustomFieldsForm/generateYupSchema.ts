@@ -96,7 +96,11 @@ const generateYupValidationSchema = ({
 
       case 'number': {
         if (key === 'proposed_budget') {
-          schema[key] = number().nullable();
+          schema[key] = number()
+            .transform((value, originalValue) =>
+              typeof originalValue !== 'number' ? null : value
+            )
+            .nullable();
         } else {
           schema[key] = required ? number().required(fieldRequired) : number();
         }
