@@ -5,7 +5,10 @@ import { useSearchParams } from 'react-router-dom';
 
 import Header from '../_shared/Header';
 
+import Folders from './Folders';
+import Projects from './Projects';
 import Tabs from './Tabs';
+import Timeline from './Timeline';
 
 const AdminProjectsListNew = () => {
   const [searchParams] = useSearchParams();
@@ -15,6 +18,17 @@ const AdminProjectsListNew = () => {
     <Box>
       <Header />
       <Tabs />
+      <Box mt="32px">
+        <Box display={tab === null ? 'block' : 'none'}>
+          <Projects />
+        </Box>
+        <Box display={tab === 'folders' ? 'block' : 'none'}>
+          <Folders />
+        </Box>
+        <Box display={tab === 'timeline' ? 'block' : 'none'}>
+          <Timeline />
+        </Box>
+      </Box>
     </Box>
   );
 };

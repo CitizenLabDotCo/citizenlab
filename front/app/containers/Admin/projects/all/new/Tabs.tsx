@@ -63,9 +63,9 @@ const Tabs = () => {
       <Tab
         message={messages.folders}
         icon="folder-outline"
-        active={tab === 'folder'}
+        active={tab === 'folders'}
         onClick={() => {
-          updateSearchParams({ tab: 'folder' });
+          updateSearchParams({ tab: 'folders' });
         }}
       />
       <Tab
