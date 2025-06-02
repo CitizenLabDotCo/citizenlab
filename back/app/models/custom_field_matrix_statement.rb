@@ -36,6 +36,8 @@ class CustomFieldMatrixStatement < ApplicationRecord
   private
 
   def generate_key
+    return unless title_multiloc&.any?
+
     title = title_multiloc.values.first
     self.key ||= title && CustomFieldService.new.generate_key(title)
   end

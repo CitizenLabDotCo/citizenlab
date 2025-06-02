@@ -24,7 +24,7 @@ module ProjectFolders
     self.table_name = 'project_folders_folders'
     include PgSearch::Model
 
-    slug from: proc { |project| project.title_multiloc.values.find(&:present?) }
+    slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
     has_one :admin_publication, as: :publication, dependent: :destroy
     accepts_nested_attributes_for :admin_publication, update_only: true
@@ -94,9 +94,17 @@ module ProjectFolders
     end
 
     def strip_title
+      return unless title_multiloc&.any?
+
       title_multiloc.each do |key, value|
         title_multiloc[key] = value.strip
       end
+    end
+
+    def set_slug
+      return unless title_multiloc&.any?
+
+      self.slug = title_multiloc.values.find(&:present?)
     end
 
     def set_admin_publication

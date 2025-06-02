@@ -55,6 +55,8 @@ class IdeaStatus < ApplicationRecord
   private
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each { |key, value| title_multiloc[key] = value.strip }
   end
 

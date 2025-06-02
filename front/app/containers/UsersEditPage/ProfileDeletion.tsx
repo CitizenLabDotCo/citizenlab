@@ -63,7 +63,7 @@ class ProfileDeletion extends PureComponent<
               onClick={this.openDialog}
               width="auto"
               justifyWrapper="left"
-              className="e2e-delete-profile"
+              data-cy="e2e-delete-profile-button"
             >
               <FormattedMessage {...messages.deleteMyAccount} />
             </Button>

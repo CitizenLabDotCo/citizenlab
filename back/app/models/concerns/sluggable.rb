@@ -41,8 +41,8 @@ module Sluggable
   def slug_enabled?
     self.class.slug? && (!self.class.slug_if || self.class.slug_if&.call(self))
   end
-end
 
-def generate_fallback_slug
-  SecureRandom.uuid
+  def generate_fallback_slug
+    SecureRandom.uuid
+  end
 end

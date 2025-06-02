@@ -20,8 +20,16 @@ describe('nav bar', () => {
   }
 
   it('navigates to project from All projects dropdown and back', () => {
+    cy.intercept('GET', '**/web_api/v1/admin_publications**').as(
+      'getAdminPublications'
+    );
+
     // Navigate to project page
     cy.get('.e2e-projects-dropdown-link').click();
+    cy.wait('@getAdminPublications', { timeout: 20000 });
+
+    cy.get('#e2e-projects-dropdown-content > a').should('be.visible');
+
     cy.get('#e2e-projects-dropdown-content > a')
       .first()
       .invoke('attr', 'href')
@@ -39,9 +47,15 @@ describe('nav bar', () => {
   });
 
   it('navigates to projects overview page from All projects dropdown and back', () => {
+    cy.intercept('GET', '**/web_api/v1/admin_publications**').as(
+      'getAdminPublications'
+    );
     // Navigate to projects overview page
-    cy.get('.e2e-projects-dropdown-link').click();
-    cy.get('#e2e-all-projects-link').click();
+    cy.get('.e2e-projects-dropdown-link').should('be.visible').click();
+    cy.wait('@getAdminPublications');
+    cy.get('#e2e-all-projects-link', { timeout: 20000 })
+      .should('be.visible')
+      .click();
 
     // Assert we're on projects overview page
     cy.location('pathname').should('eq', '/en/projects');
