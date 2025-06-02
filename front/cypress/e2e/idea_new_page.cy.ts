@@ -137,7 +137,7 @@ describe('Idea submission form', () => {
     });
   });
 
-  it.only('has a working idea form', () => {
+  it('has a working idea form', () => {
     const ideaTitle = randomString(40);
     const ideaContent = randomString(60);
 
