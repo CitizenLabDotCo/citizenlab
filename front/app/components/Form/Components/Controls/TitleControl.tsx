@@ -58,7 +58,7 @@ export const TitleControl = ({
   }
 
   return (
-    <Box id="e2e-idea-title-input">
+    <Box id="title_multiloc">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={label}

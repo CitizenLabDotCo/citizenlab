@@ -35,7 +35,7 @@ const Email = ({
   return (
     <Button
       onClick={handleClick(href)}
-      aria-label={formatMessage(messages.shareByEmail)}
+      ariaLabel={formatMessage(messages.shareByEmail)}
       icon="email"
       iconSize="20px"
       width="40px"

@@ -87,50 +87,44 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
     []
   );
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (selectedLocale) {
-    const id = `${props.id}-${selectedLocale}`;
+  const id = hideLocaleSwitcher ? props.id : `${props.id}-${selectedLocale}`;
 
-    return (
-      <Container id={props.id}>
-        <LabelContainer>
-          {label && (
-            <StyledLabel htmlFor={id}>
-              <span>{label}</span>
-              {labelTooltipText && (
-                <StyledIconTooltip
-                  // Added to ensure the content is visible when the multiloc is inside a modal.
-                  placement="auto"
-                  content={labelTooltipText}
-                />
-              )}
-            </StyledLabel>
-          )}
+  return (
+    <Container id={props.id}>
+      <LabelContainer>
+        {label && (
+          <StyledLabel htmlFor={id}>
+            <span>{label}</span>
+            {labelTooltipText && (
+              <StyledIconTooltip
+                // Added to ensure the content is visible when the multiloc is inside a modal.
+                placement="auto"
+                content={labelTooltipText}
+              />
+            )}
+          </StyledLabel>
+        )}
 
-          {!label && <Spacer />}
+        {!label && <Spacer />}
 
-          {!hideLocaleSwitcher && (
-            <StyledLocaleSwitcher
-              onSelectedLocaleChange={handleOnSelectedLocaleChange}
-              locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
-              selectedLocale={selectedLocale}
-              values={{ valueMultiloc }}
-            />
-          )}
-        </LabelContainer>
+        {!hideLocaleSwitcher && (
+          <StyledLocaleSwitcher
+            onSelectedLocaleChange={handleOnSelectedLocaleChange}
+            locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
+            selectedLocale={selectedLocale}
+            values={{ valueMultiloc }}
+          />
+        )}
+      </LabelContainer>
 
-        <QuillEditor
-          {...quillProps}
-          id={id}
-          value={valueMultiloc?.[selectedLocale]}
-          onChange={handleValueOnChange}
-        />
-      </Container>
-    );
-  }
-
-  return null;
+      <QuillEditor
+        {...quillProps}
+        id={id}
+        value={valueMultiloc?.[selectedLocale]}
+        onChange={handleValueOnChange}
+      />
+    </Container>
+  );
 });
 
 export default QuillMutilocWithLocaleSwitcher;
