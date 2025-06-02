@@ -65,7 +65,6 @@ const ImageField = ({
         ).then(
           (images) => images.filter((image) => image !== null) as UploadFile[]
         );
-        console.log(images);
         setImages(images);
         setValue(
           name,
