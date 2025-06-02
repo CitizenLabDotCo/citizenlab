@@ -65,11 +65,19 @@ const ImageField = ({
         ).then(
           (images) => images.filter((image) => image !== null) as UploadFile[]
         );
+        console.log(images);
         setImages(images);
+        setValue(
+          name,
+          images.map((image) => ({ image: image.base64 })),
+          {
+            shouldDirty: true,
+          }
+        );
       };
       convertImages();
     }
-  }, [ideaImages]);
+  }, [ideaImages, setValue, name]);
 
   const errorMessage = errors[name]?.message as string | undefined;
 
