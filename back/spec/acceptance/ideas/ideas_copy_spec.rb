@@ -42,11 +42,11 @@ resource 'Ideas', :active_job_que_adapter do
             job_type: 'Ideas::CopyJob',
             progress: 0,
             total: 3,
-            owner_id: current_user.id,
             created_at: be_a(String),
             updated_at: be_a(String)
           },
           relationships: {
+            owner: { data: { id: current_user.id, type: 'user' } },
             project: { data: { id: to_phase.project_id, type: 'project' } },
             context: { data: { id: to_phase_id, type: 'phase' } }
           }
