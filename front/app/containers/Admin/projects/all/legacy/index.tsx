@@ -5,8 +5,6 @@ import {
   colors,
   Spinner,
   stylingConsts,
-  Title,
-  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { InfiniteData } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
@@ -24,12 +22,13 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
-import Button from 'components/UI/ButtonWithLink';
 import SearchInput from 'components/UI/SearchInput';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin } from 'utils/permissions/roles';
+
+import Header from '../_shared/Header';
 
 import NonSortableProjectList from './Lists/NonSortableProjectList';
 import SortableProjectList from './Lists/SortableProjectList';
@@ -88,7 +87,6 @@ const AdminProjectsListLegacy = memo(({ className }: Props) => {
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string>('');
   const { data: authUser } = useAuthUser();
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
   const activeTab = getActiveTab(pathname);
   const userIsAdmin = isAdmin(authUser);
@@ -228,52 +226,8 @@ const AdminProjectsListLegacy = memo(({ className }: Props) => {
   return (
     <Container className={className}>
       <Box>
-        <Box display="flex" justifyContent="space-between" mb="24px">
-          <Box>
-            <Title color="primary">
-              <FormattedMessage {...messages.overviewPageTitle} />
-            </Title>
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            gap="12px"
-            alignItems="center"
-            className="intercom-admin-projects-new-project-folder-buttons"
-          >
-            {isProjectFoldersEnabled && (
-              <Tooltip
-                content={
-                  <FormattedMessage {...messages.onlyAdminsCanCreateFolders} />
-                }
-                disabled={userIsAdmin}
-              >
-                <Box>
-                  <Button
-                    data-cy="e2e-new-project-folder-button"
-                    linkTo={'/admin/projects/folders/new'}
-                    buttonStyle="secondary-outlined"
-                    icon="folder-add"
-                    disabled={!userIsAdmin}
-                  >
-                    <FormattedMessage {...messages.createProjectFolder} />
-                  </Button>
-                </Box>
-              </Tooltip>
-            )}
-
-            <Box>
-              <Button
-                data-cy="e2e-new-project-button"
-                className="intercom-admin-projects-new-project-button"
-                linkTo={'/admin/projects/new'}
-                icon="plus-circle"
-                buttonStyle="admin-dark"
-              >
-                <FormattedMessage {...messages.newProject} />
-              </Button>
-            </Box>
-          </Box>
+        <Box mb="24px">
+          <Header />
         </Box>
         <Box my="24px" w="fit-content">
           <SearchInput
