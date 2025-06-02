@@ -20,12 +20,18 @@ type Props = {
   label?: string | JSX.Element | null;
   withCTAButton?: boolean;
   hideLocaleSwitcher?: boolean;
+  scrollErrorIntoView?: boolean;
 } & Omit<
   QuillMultilocWithLocaleSwitcherComponentProps,
   'onChange' | 'valueMultiloc' | 'id'
 >;
 
-const QuillMultilocWithLocaleSwitcher = ({ id, name, ...rest }: Props) => {
+const QuillMultilocWithLocaleSwitcher = ({
+  id,
+  name,
+  scrollErrorIntoView,
+  ...rest
+}: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -49,7 +55,6 @@ const QuillMultilocWithLocaleSwitcher = ({ id, name, ...rest }: Props) => {
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
-
   return (
     <>
       <Controller
@@ -70,7 +75,7 @@ const QuillMultilocWithLocaleSwitcher = ({ id, name, ...rest }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -79,7 +84,7 @@ const QuillMultilocWithLocaleSwitcher = ({ id, name, ...rest }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </>

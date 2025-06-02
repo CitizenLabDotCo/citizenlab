@@ -2010,6 +2010,7 @@
   "app.errors.banner_cta_signed_out_text_multiloc_blank": "Enter a button text.",
   "app.errors.banner_cta_signed_out_url_blank": "Enter a link.",
   "app.errors.banner_cta_signed_out_url_url": "Enter a valid link. Make sure the link starts with 'https://'.",
+  "app.errors.base_includes_banned_words": "You may have used one or more words that are considered profanity. Please alter your text to remove any profanities that might be present.",
   "app.errors.body_multiloc_includes_banned_words": "The description contains words that are considered inappropriate.",
   "app.errors.bulk_import_idea_not_valid": "The resulting idea is not valid: {value}.",
   "app.errors.bulk_import_image_url_not_valid": "No image could be downloaded from {value}. Make sure the URL is valid and ends with a file extension such as .png or .jpg. This issue occurs in the row with ID {row}.",

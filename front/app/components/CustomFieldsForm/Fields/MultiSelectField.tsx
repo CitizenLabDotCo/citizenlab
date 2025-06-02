@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
+
 import useLocalize from 'hooks/useLocalize';
 
 import CheckboxMultiSelect from 'components/HookForm/CheckboxMultiSelect';
@@ -13,7 +15,13 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { extractOptions } from '../util';
 
-const MultiSelectField = ({ question }) => {
+const MultiSelectField = ({
+  question,
+  scrollErrorIntoView,
+}: {
+  question: IFlatCustomField;
+  scrollErrorIntoView?: boolean;
+}) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
@@ -27,9 +35,17 @@ const MultiSelectField = ({ question }) => {
   return (
     <>
       {question.dropdown_layout ? (
-        <MultipleSelect name={question.key} options={options} />
+        <MultipleSelect
+          name={question.key}
+          options={options}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
       ) : (
-        <CheckboxMultiSelect name={question.key} options={options} />
+        <CheckboxMultiSelect
+          name={question.key}
+          options={options}
+          scrollErrorIntoView={scrollErrorIntoView}
+        />
       )}
       {value?.includes('other') && (
         <Input

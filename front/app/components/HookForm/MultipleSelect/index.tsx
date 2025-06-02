@@ -11,9 +11,10 @@ import MultipleSelectComponent, {
 interface Props
   extends Omit<MultipleSelectComponentProps, 'onChange' | 'value'> {
   name: string;
+  scrollErrorIntoView?: boolean;
 }
 
-const MultipleSelect = ({ name, ...rest }: Props) => {
+const MultipleSelect = ({ name, scrollErrorIntoView, ...rest }: Props) => {
   const {
     trigger,
     setValue,
@@ -53,7 +54,7 @@ const MultipleSelect = ({ name, ...rest }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -62,7 +63,7 @@ const MultipleSelect = ({ name, ...rest }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </>

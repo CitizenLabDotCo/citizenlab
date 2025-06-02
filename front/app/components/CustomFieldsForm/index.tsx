@@ -23,7 +23,7 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import CustomFieldsPage from './CustomFieldsPage';
 import { convertCustomFieldsToNestedPages } from './util';
 
-interface FormValues {
+export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc?: Multiloc;
   author_id?: string;

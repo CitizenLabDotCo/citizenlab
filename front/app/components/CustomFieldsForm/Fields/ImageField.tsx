@@ -22,9 +22,16 @@ interface Props
   name: string;
   inputLabel?: string;
   ideaId?: string;
+  scrollErrorIntoView?: boolean;
 }
 
-const ImageField = ({ name, inputLabel, ideaId, ...rest }: Props) => {
+const ImageField = ({
+  name,
+  inputLabel,
+  ideaId,
+  scrollErrorIntoView,
+  ...rest
+}: Props) => {
   const { data: ideaImages } = useIdeaImages(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
   const {
@@ -104,7 +111,7 @@ const ImageField = ({ name, inputLabel, ideaId, ...rest }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={errorMessage}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </Box>

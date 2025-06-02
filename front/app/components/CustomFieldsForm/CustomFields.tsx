@@ -48,7 +48,7 @@ const renderField = ({
           name={question.key}
           hideLocaleSwitcher
           maxCharCount={question.key === 'title_multiloc' ? 120 : undefined}
-          id="e2e-idea-title-input"
+          scrollErrorIntoView={true}
         />
       );
     case 'html_multiloc':
@@ -56,25 +56,31 @@ const renderField = ({
         <QuillMultilocWithLocaleSwitcher
           name={question.key}
           hideLocaleSwitcher
-          id="e2e-idea-description-input"
+          scrollErrorIntoView={true}
+          id={question.key}
         />
       );
     case 'text':
     case 'number':
       return question.key === 'location_description' ? (
-        <LocationInput name={question.key} />
+        <LocationInput name={question.key} scrollErrorIntoView={true} />
       ) : (
         <Input
           type={question.input_type === 'number' ? 'number' : 'text'}
           name={question.key}
+          scrollErrorIntoView={true}
         />
       );
     case 'multiline_text':
-      return <TextArea name={question.key} />;
+      return <TextArea name={question.key} scrollErrorIntoView={true} />;
     case 'select':
-      return <SingleSelectField question={question} />;
+      return (
+        <SingleSelectField question={question} scrollErrorIntoView={true} />
+      );
     case 'multiselect':
-      return <MultiSelectField question={question} />;
+      return (
+        <MultiSelectField question={question} scrollErrorIntoView={true} />
+      );
     case 'image_files':
       return (
         <ImageField
@@ -84,20 +90,35 @@ const renderField = ({
             'image/*': ['.jpg', '.jpeg', '.png'],
           }}
           ideaId={ideaId}
+          scrollErrorIntoView={true}
         />
       );
     case 'files':
-      return <FileUploaderField name={question.key} ideaId={ideaId} />;
+      return (
+        <FileUploaderField
+          name={question.key}
+          ideaId={ideaId}
+          scrollErrorIntoView={true}
+        />
+      );
     case 'topic_ids':
-      return <Topics name={question.key} projectId={projectId} />;
+      return (
+        <Topics
+          name={question.key}
+          projectId={projectId}
+          scrollErrorIntoView={true}
+        />
+      );
     case 'linear_scale':
-      return <LinearScaleField question={question} />;
+      return (
+        <LinearScaleField question={question} scrollErrorIntoView={true} />
+      );
     case 'ranking':
-      return <RankingField question={question} />;
+      return <RankingField question={question} scrollErrorIntoView={true} />;
     case 'rating':
-      return <RatingField question={question} />;
+      return <RatingField question={question} scrollErrorIntoView={true} />;
     case 'matrix_linear_scale':
-      return <MatrixField question={question} />;
+      return <MatrixField question={question} scrollErrorIntoView={true} />;
     case 'sentiment_linear_scale':
       return (
         <SentimentScaleField question={question} scrollErrorIntoView={true} />

@@ -16,10 +16,9 @@ import messages from '../messages';
 interface Props extends Omit<UserSelectProps, 'onChange' | 'selectedUserId'> {
   name: string;
   id?: string;
-  defaultValue?: string;
 }
 
-const AuthorField = ({ name, id, defaultValue }: Props) => {
+const AuthorField = ({ name, id }: Props) => {
   const {
     setValue,
     formState: { errors: formContextErrors },
@@ -51,7 +50,6 @@ const AuthorField = ({ name, id, defaultValue }: Props) => {
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue || null}
         render={({ field: { ref: _ref, ...field } }) => {
           return (
             <UserSelect

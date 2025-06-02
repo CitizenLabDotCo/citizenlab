@@ -19,9 +19,10 @@ interface Props
   > {
   name: string;
   projectId?: string;
+  scrollErrorIntoView?: boolean;
 }
 
-const Topics = ({ name, projectId, ...rest }: Props) => {
+const Topics = ({ name, projectId, scrollErrorIntoView, ...rest }: Props) => {
   const {
     setValue,
     formState: { errors: formContextErrors },
@@ -71,7 +72,7 @@ const Topics = ({ name, projectId, ...rest }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -80,7 +81,7 @@ const Topics = ({ name, projectId, ...rest }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </>

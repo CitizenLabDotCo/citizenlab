@@ -136,6 +136,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                           idea
                             ? {
                                 ...idea.data.attributes,
+                                author_id:
+                                  idea.data.relationships.author?.data?.id,
                                 cosponsor_ids:
                                   idea.data.relationships.cosponsors?.data?.map(
                                     (cosponsor) => cosponsor.id

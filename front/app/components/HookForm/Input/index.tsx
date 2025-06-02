@@ -14,9 +14,16 @@ import Error, { TFieldName } from 'components/UI/Error';
 export interface Props extends InputProps {
   name: string;
   fieldName?: TFieldName;
+  scrollErrorIntoView?: boolean;
 }
 
-const Input = ({ name, fieldName, type = 'text', ...rest }: Props) => {
+const Input = ({
+  name,
+  fieldName,
+  type = 'text',
+  scrollErrorIntoView,
+  ...rest
+}: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -42,7 +49,7 @@ const Input = ({ name, fieldName, type = 'text', ...rest }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -51,7 +58,7 @@ const Input = ({ name, fieldName, type = 'text', ...rest }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </Box>

@@ -15,16 +15,17 @@ import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { FormValues } from 'containers/EmailChange';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import PageControlButtons from 'components/Form/Components/Layouts/PageControlButtons';
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
+import Feedback from 'components/HookForm/Feedback';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
@@ -34,6 +35,8 @@ import BudgetField from './Fields/BudgetField';
 import generateYupValidationSchema from './generateYupSchema';
 import ProgressBar from './ProgressBar';
 import { getFormCompletionPercentage } from './util';
+
+import { FormValues } from './';
 
 type CustomFieldsPage = {
   page: IFlatCustomField;
@@ -45,7 +48,7 @@ type CustomFieldsPage = {
   participationMethod?: ParticipationMethod;
   ideaId?: string;
   projectId: string;
-  onSubmit: (formValues: any) => void;
+  onSubmit: (formValues: FormValues) => Promise<void>;
   pageButtonLabelMultiloc?: Multiloc;
   phase?: IPhaseData;
   defaultValues?: any;
@@ -104,7 +107,11 @@ const CustomFieldsPage = ({
   });
 
   const onFormSubmit = async (formValues: FormValues) => {
-    onSubmit(formValues);
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
   };
 
   const handleOnChangeAnonymousPosting = () => {
@@ -131,6 +138,8 @@ const CustomFieldsPage = ({
 
   return (
     <FormProvider {...methods}>
+      {currentPageNumber === lastPageNumber - 1 && <Feedback />}
+
       <form id="idea-form">
         <Box
           id="container"
@@ -238,12 +247,7 @@ const CustomFieldsPage = ({
 
                     {currentPageNumber === 0 && isAdmin(authUser) && (
                       <Box mb="24px">
-                        <AuthorField
-                          name="author_id"
-                          defaultValue={
-                            idea?.data.relationships.author?.data?.id
-                          }
-                        />
+                        <AuthorField name="author_id" />
                       </Box>
                     )}
                     {currentPageNumber === lastPageNumber - 1 &&

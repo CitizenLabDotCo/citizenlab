@@ -64,14 +64,14 @@ describe('Project proposal new page', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist'); // Change to proposal later
     // Add a title
-    cy.get('#e2e-idea-title-input ').click().type(proposalTitle, { delay: 0 });
-    cy.get('#e2e-idea-title-input ').should('contain.value', proposalTitle);
+    cy.get('#title_multiloc ').click().type(proposalTitle, { delay: 0 });
+    cy.get('#title_multiloc ').should('contain.value', proposalTitle);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Add a description
-    cy.get('#e2e-idea-description-input .ql-editor').type(proposalContent);
-    cy.get('#e2e-idea-description-input .ql-editor').contains(proposalContent);
+    cy.get('#body_multiloc .ql-editor').type(proposalContent);
+    cy.get('#body_multiloc .ql-editor').contains(proposalContent);
 
     // Go to the next page of the form
     cy.dataCy('e2e-next-page').should('be.visible').click();
