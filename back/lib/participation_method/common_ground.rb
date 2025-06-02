@@ -36,6 +36,9 @@ module ParticipationMethod
       multiloc_service = MultilocService.new
 
       [
+        # Inputs in common ground phases are essentially short statements, so we have no
+        # use for a body at the moment. We'll probably reconsider this depending on what
+        # comes out of user feedback and usage.
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
