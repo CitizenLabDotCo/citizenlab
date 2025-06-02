@@ -811,7 +811,7 @@
   "app.components.formBuilder.shortAnswer": "Kort antwoord",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Toon antwoord aan gebruikers",
   "app.components.formBuilder.singleChoice": "Eén keuze",
-  "app.components.formBuilder.staleDataErrorMessage2": "Er is een probleem opgetreden. Dit invoerformulier is onlangs ergens anders opgeslagen. Dit kan komen doordat jij of een andere gebruiker het in een ander browservenster geopend heeft om te bewerken. Vernieuw de pagina om het meest recente formulier te krijgen en maak dan je wijzigingen opnieuw.",
+  "app.components.formBuilder.staleDataErrorMessage2": "Er is een probleem opgetreden. Dit formulier is onlangs ergens anders opgeslagen. Dit kan komen doordat jij of een andere gebruiker het in een ander browservenster geopend heeft om te bewerken. Vernieuw de pagina om het meest recente formulier te krijgen en maak dan je wijzigingen opnieuw.",
   "app.components.formBuilder.stronglyAgree": "Zeer mee eens",
   "app.components.formBuilder.stronglyDisagree": "Zeer mee oneens",
   "app.components.formBuilder.supportArticleLinkText": "deze pagina",
