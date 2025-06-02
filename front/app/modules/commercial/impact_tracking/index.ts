@@ -108,6 +108,8 @@ const hasLocale = (path: string) => {
   return false;
 };
 
+let userWasAuthenticated = !!getJwt();
+
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     pageChanges$.subscribe((e) => {
@@ -125,10 +127,15 @@ const configuration: ModuleConfiguration = {
       }
     });
 
-    authUserStream.subscribe((authUserStreamValue) => {
-      if (authUserStreamValue) {
+    authUserStream.subscribe(() => {
+      const userIsAuthenticated = !!getJwt();
+
+      // If the user was not authenticated, but now they are, trigger upgrade
+      if (!userWasAuthenticated && userIsAuthenticated) {
         upgradeSession();
       }
+
+      userWasAuthenticated = userIsAuthenticated;
     });
   },
 };

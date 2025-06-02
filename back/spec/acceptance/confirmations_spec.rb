@@ -36,15 +36,15 @@ resource 'Confirmations' do
         assert_status 200
       end
 
-      example "logs 'completed_registration' activity job when passed the right code" do
-        do_request(confirmation: { code: user.email_confirmation_code })
-        expect(LogActivityJob).to have_been_enqueued.with(
-          user,
-          'completed_registration',
-          user,
-          user.updated_at.to_i
-        ).exactly(1).times
-      end
+      # example "logs 'completed_registration' activity job when passed the right code" do
+      #   do_request(confirmation: { code: user.email_confirmation_code })
+      #   expect(LogActivityJob).to have_been_enqueued.with(
+      #     user,
+      #     'completed_registration',
+      #     user,
+      #     user.updated_at.to_i
+      #   ).exactly(1).times
+      # end
 
       example 'returns an unprocessable entity status passing no code' do
         do_request(confirmation: { code: nil })

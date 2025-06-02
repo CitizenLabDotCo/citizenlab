@@ -28,6 +28,7 @@ const Topics = ({ name, projectId, scrollErrorIntoView, ...rest }: Props) => {
     formState: { errors: formContextErrors },
     control,
     getValues,
+    trigger,
   } = useFormContext();
 
   const errors = formContextErrors[name] as RHFErrors;
@@ -60,6 +61,7 @@ const Topics = ({ name, projectId, scrollErrorIntoView, ...rest }: Props) => {
               availableTopics={getAllowedTopics()}
               onClick={(topicIds: string[]) => {
                 setValue(name, topicIds);
+                trigger();
               }}
             />
           );

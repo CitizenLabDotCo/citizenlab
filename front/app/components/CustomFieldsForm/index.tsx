@@ -21,10 +21,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import CustomFieldsPage from './CustomFieldsPage';
-import {
-  convertCustomFieldsToNestedPages,
-  getFormCompletionPercentage,
-} from './util';
+import { convertCustomFieldsToNestedPages } from './util';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -54,6 +51,10 @@ const CustomFieldsForm = ({
   initialFormData?: FormValues;
 }) => {
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
+  const [formValuesForDisclaimer, setFormValuesForDisclaimer] =
+    useState<FormValues>();
+  const [currentPageNumber, setCurrentPageNumber] = useState(0);
+
   const { slug, ideaId } = useParams();
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -77,11 +78,6 @@ const CustomFieldsForm = ({
 
   const idea = ideaWithSlug || ideaWithId;
 
-  const [formValues, setFormValues] = useState<FormValues | undefined>(
-    initialFormData
-  );
-  const [currentPageNumber, setCurrentPageNumber] = useState(0);
-
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
   const showTogglePostAnonymously =
@@ -91,6 +87,8 @@ const CustomFieldsForm = ({
   const pageButtonLabelMultiloc = customFields?.find(
     (field) => field.id === nestedPagesData[currentPageNumber].page.id
   )?.page_button_label_multiloc;
+
+  const lastPageNumber = nestedPagesData.length - 1;
 
   const onSubmit = async (
     formValues: FormValues,
@@ -105,16 +103,10 @@ const CustomFieldsForm = ({
           value.includes('<img')
         ))
     );
-    setFormValues((prevValues) =>
-      prevValues
-        ? {
-            ...prevValues,
-            ...formValues,
-          }
-        : formValues
-    );
+
     if (currentPageNumber === nestedPagesData.length - 2) {
       if (disclaimerNeeded && !isDisclamerAccepted) {
+        setFormValuesForDisclaimer(formValues);
         setIsDisclaimerOpened(true);
         return;
       }
@@ -144,20 +136,15 @@ const CustomFieldsForm = ({
       }
     }
     // Go to the next page
-    if (currentPageNumber < nestedPagesData.length - 1) {
+    if (currentPageNumber < lastPageNumber) {
       setCurrentPageNumber((pageNumber: number) => pageNumber + 1);
     }
   };
 
-  const formCompletionPercentage = getFormCompletionPercentage(
-    customFields || [],
-    formValues
-  );
-
   const onAcceptDisclaimer = async () => {
     setIsDisclaimerOpened(false);
-    if (formValues) {
-      await onSubmit(formValues, true);
+    if (formValuesForDisclaimer) {
+      await onSubmit(formValuesForDisclaimer, true);
     }
   };
 
@@ -169,11 +156,10 @@ const CustomFieldsForm = ({
     <Box overflow="scroll" w="100%">
       {nestedPagesData[currentPageNumber] && (
         <CustomFieldsPage
-          key={nestedPagesData[currentPageNumber].page.id}
           page={nestedPagesData[currentPageNumber].page}
           pageQuestions={nestedPagesData[currentPageNumber].pageQuestions}
           currentPageNumber={currentPageNumber}
-          lastPageNumber={nestedPagesData.length - 1}
+          lastPageNumber={lastPageNumber}
           setCurrentPageNumber={setCurrentPageNumber}
           showTogglePostAnonymously={showTogglePostAnonymously}
           participationMethod={participationMethod}
@@ -182,8 +168,8 @@ const CustomFieldsForm = ({
           onSubmit={onSubmit}
           pageButtonLabelMultiloc={pageButtonLabelMultiloc}
           phase={phase?.data}
-          defaultValues={formValues}
-          formCompletionPercentage={formCompletionPercentage}
+          defaultValues={initialFormData}
+          customFields={customFields ?? []}
         />
       )}
       <ContentUploadDisclaimer
