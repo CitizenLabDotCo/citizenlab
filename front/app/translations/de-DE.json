@@ -2010,7 +2010,7 @@
   "app.errors.banner_cta_signed_out_text_multiloc_blank": "Geben Sie einen Text für den Button ein.",
   "app.errors.banner_cta_signed_out_url_blank": "Geben Sie einen Link ein.",
   "app.errors.banner_cta_signed_out_url_url": "Geben Sie einen gültigen Link ein. Achten Sie darauf, dass der Link mit \"https://\" beginnt.",
-  "app.errors.base_includes_banned_words": "Sie könnten ein oder mehrere Wörter verwendet haben, die von  als Obszönität betrachtet werden. Bitte ändern Sie Ihren Text, um eventuell vorhandene Obszönitäten zu entfernen.",
+  "app.errors.base_includes_banned_words": "Möglicherweise haben Sie ein oder mehrere Wörter verwendet, die als obszön gelten. Bitte ändern Sie Ihren Text, um etwaige obszöne Ausdrücke zu entfernen.",
   "app.errors.body_multiloc_includes_banned_words": "Die Beschreibung enthält Wörter, die als unangemessen angesehen werden.",
   "app.errors.bulk_import_idea_not_valid": "Die daraus resultierende Idee ist nicht gültig: {value}.",
   "app.errors.bulk_import_image_url_not_valid": "Es konnte kein Bild von {value} heruntergeladen werden. Stellen Sie sicher, dass die URL gültig ist und mit einer Dateierweiterung wie .png oder .jpg endet. Dieses Problem tritt in Zeile {row} auf.",
