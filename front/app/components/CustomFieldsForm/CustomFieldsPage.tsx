@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { isEmpty } from 'lodash-es';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
@@ -18,6 +19,7 @@ import useLocalize from 'hooks/useLocalize';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import PageControlButtons from 'components/Form/Components/Layouts/PageControlButtons';
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
@@ -71,6 +73,7 @@ const CustomFieldsPage = ({
   defaultValues,
   customFields,
 }: CustomFieldsPage) => {
+  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
 
@@ -106,7 +109,27 @@ const CustomFieldsPage = ({
     defaultValues,
   });
 
-  const onFormSubmit = async (formValues: FormValues) => {
+  const onFormSubmit = async (
+    formValues: FormValues,
+    isDisclaimerAccepted?: boolean
+  ) => {
+    // Copyright disclaimer is needed if the user is uploading files or images
+    const disclaimerNeeded = !!(
+      formValues.idea_files_attributes?.length ||
+      formValues.idea_images_attributes?.length ||
+      (formValues.body_multiloc &&
+        Object.values(formValues.body_multiloc).some((value) =>
+          value.includes('<img')
+        ))
+    );
+
+    if (currentPageNumber === lastPageNumber - 1) {
+      if (disclaimerNeeded && !isDisclaimerAccepted) {
+        setIsDisclaimerOpened(true);
+        return;
+      }
+    }
+
     try {
       await onSubmit(formValues);
     } catch (error) {
@@ -136,9 +159,23 @@ const CustomFieldsPage = ({
     userIsOnLastPage: currentPageNumber === lastPageNumber,
   });
 
+  const onAcceptDisclaimer = async () => {
+    try {
+      await methods.handleSubmit((e) => onFormSubmit(e, true))();
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+    setIsDisclaimerOpened(false);
+  };
+
+  const onCancelDisclaimer = () => {
+    setIsDisclaimerOpened(false);
+  };
+
   return (
     <FormProvider {...methods}>
-      {currentPageNumber === lastPageNumber - 1 && <Feedback />}
+      {currentPageNumber === lastPageNumber - 1 &&
+        !isEmpty(methods.formState.errors) && <Feedback />}
 
       <form id="idea-form">
         <Box
@@ -315,7 +352,7 @@ const CustomFieldsPage = ({
                       pathname: `/ideas/${idea?.data.attributes.slug}`,
                     });
                   }
-                  methods.handleSubmit(onFormSubmit)();
+                  methods.handleSubmit((e) => onFormSubmit(e))();
                 }}
                 handlePrevious={() => {
                   pagesRef.current?.scrollTo(0, 0);
@@ -337,6 +374,11 @@ const CustomFieldsPage = ({
             </Box>
           </Box>
         </Box>
+        <ContentUploadDisclaimer
+          isDisclaimerOpened={isDisclaimerOpened}
+          onAcceptDisclaimer={onAcceptDisclaimer}
+          onCancelDisclaimer={onCancelDisclaimer}
+        />
       </form>
     </FormProvider>
   );

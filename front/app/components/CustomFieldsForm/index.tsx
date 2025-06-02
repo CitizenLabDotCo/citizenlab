@@ -15,8 +15,6 @@ import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
@@ -50,9 +48,6 @@ const CustomFieldsForm = ({
   participationMethod?: ParticipationMethod;
   initialFormData?: FormValues;
 }) => {
-  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
-  const [formValuesForDisclaimer, setFormValuesForDisclaimer] =
-    useState<FormValues>();
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
   const { slug, ideaId } = useParams();
@@ -90,27 +85,8 @@ const CustomFieldsForm = ({
 
   const lastPageNumber = nestedPagesData.length - 1;
 
-  const onSubmit = async (
-    formValues: FormValues,
-    isDisclamerAccepted?: boolean
-  ) => {
-    // Copyright disclaimer is needed if the user is uploading files or images
-    const disclaimerNeeded = !!(
-      formValues.idea_files_attributes?.length ||
-      formValues.idea_images_attributes?.length ||
-      (formValues.body_multiloc &&
-        Object.values(formValues.body_multiloc).some((value) =>
-          value.includes('<img')
-        ))
-    );
-
+  const onSubmit = async (formValues: FormValues) => {
     if (currentPageNumber === nestedPagesData.length - 2) {
-      if (disclaimerNeeded && !isDisclamerAccepted) {
-        setFormValuesForDisclaimer(formValues);
-        setIsDisclaimerOpened(true);
-        return;
-      }
-
       if (!idea) {
         // If the user is an admin or project moderator, we allow them to post to a specific phase
         const phase_ids =
@@ -141,17 +117,6 @@ const CustomFieldsForm = ({
     }
   };
 
-  const onAcceptDisclaimer = async () => {
-    setIsDisclaimerOpened(false);
-    if (formValuesForDisclaimer) {
-      await onSubmit(formValuesForDisclaimer, true);
-    }
-  };
-
-  const onCancelDisclaimer = () => {
-    setIsDisclaimerOpened(false);
-  };
-
   return (
     <Box overflow="scroll" w="100%">
       {nestedPagesData[currentPageNumber] && (
@@ -172,11 +137,6 @@ const CustomFieldsForm = ({
           customFields={customFields ?? []}
         />
       )}
-      <ContentUploadDisclaimer
-        isDisclaimerOpened={isDisclaimerOpened}
-        onAcceptDisclaimer={onAcceptDisclaimer}
-        onCancelDisclaimer={onCancelDisclaimer}
-      />
     </Box>
   );
 };
