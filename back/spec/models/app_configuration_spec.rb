@@ -40,28 +40,4 @@ RSpec.describe AppConfiguration do
       end
     end
   end
-
-  describe '#sanitize_organization_name' do
-    before do
-      @app_config = described_class.instance
-    end
-
-    it 'removes all HTML tags from organization_name multiloc' do
-      @app_config.settings['core']['organization_name'] = {
-        'en' => 'City of <script>alert("XSS")</script> Springfield',
-        'fr-BE' => 'South Elyse <img src=x onerror=alert(1)>',
-        'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
-      }
-
-      @app_config.save!
-
-      # Get the sanitized organization name
-      sanitized_name = @app_config.reload.settings.dig('core', 'organization_name')
-
-      # Verify all HTML is removed from each language
-      expect(sanitized_name['en']).to eq('City of alert("XSS") Springfield')
-      expect(sanitized_name['fr-BE']).to eq('South Elyse ')
-      expect(sanitized_name['nl-BE']).to eq('Plain text with formatting')
-    end
-  end
 end

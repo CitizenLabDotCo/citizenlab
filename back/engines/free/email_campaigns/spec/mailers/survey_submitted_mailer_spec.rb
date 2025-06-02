@@ -23,6 +23,7 @@ RSpec.describe EmailCampaigns::SurveySubmittedMailer do
       ).first.merge({ recipient: recipient })
     end
     let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:body) { mail_body(mail) }
 
     it 'renders the subject' do
       expect(mail.subject).to eq('Vaudeville: Thank you for your response! 🎉')
@@ -37,7 +38,7 @@ RSpec.describe EmailCampaigns::SurveySubmittedMailer do
     end
 
     it 'includes the header' do
-      expect(mail.body.encoded).to have_tag('div') do
+      expect(body).to have_tag('div') do
         with_tag 'h1' do
           with_text(/Thank you for sharing your thoughts/)
         end
@@ -45,13 +46,13 @@ RSpec.describe EmailCampaigns::SurveySubmittedMailer do
     end
 
     it 'includes the idea id' do
-      expect(mail.body.encoded).to have_tag('p') do
+      expect(body).to have_tag('p') do
         with_text(input.id)
       end
     end
 
     it 'includes the download button' do
-      expect(mail.body.encoded).to have_tag('a') do
+      expect(body).to have_tag('a') do
         with_text(/Download your responses/)
       end
     end

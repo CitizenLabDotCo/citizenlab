@@ -155,6 +155,7 @@ gem 'intercom', '~> 4.2'
 # through the emails engine and is therefore specified
 # in the main app.
 gem 'mjml-rails', '~> 4.11'
+gem 'mrml'
 gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai', '~> 1.4'
 gem 'combine_pdf', '~> 1.0.26'

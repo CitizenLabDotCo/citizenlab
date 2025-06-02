@@ -1,10 +1,10 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 const data = {
   id: 'customFieldId1',
@@ -42,7 +42,7 @@ describe('useUpdatePermissionsCustomField', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useUpdatePermissionsCustomField({
           action: 'taking_poll',
@@ -68,7 +68,7 @@ describe('useUpdatePermissionsCustomField', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useUpdatePermissionsCustomField({
           action: 'taking_poll',

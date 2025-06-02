@@ -40,7 +40,7 @@ class Project < ApplicationRecord
 
   VISIBLE_TOS = %w[public groups admins].freeze
 
-  slug from: proc { |project| project.title_multiloc.values.find(&:present?) }
+  slug from: proc { |project| project.title_multiloc&.values&.find(&:present?) }
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
@@ -256,6 +256,8 @@ class Project < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

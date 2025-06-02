@@ -8,7 +8,7 @@ nl:
       "comment_marked_as_spam": Reactie spammelding
       "comment_on_your_comment": Een antwoord op mijn reactie
       "comment_on_idea_you_follow": Een reactie op een idee dat je volgt
-      "community_monitor_report": Verslag van de gemeenschapsmonitor
+      "community_monitor_report": Verslag van de tevredenheidsmonitor
       "cosponsor_of_your_idea": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
       "event_registration_confirmation": Bevestiging registratie activiteit
       "idea_marked_as_spam": Idee spammelding
@@ -53,7 +53,7 @@ nl:
       by_author: 'door %{authorName}'
       author_wrote: '%{authorName} schreef:'
       cta_goto_idea: 'Ga naar dit idee'
-      cta_goto_input: 'Ga naar deze invoer'
+      cta_goto_input: 'Ga naar deze bijdrage'
       cta_goto:
         idea: 'Ga naar dit idee'
         question: 'Ga naar deze vraag'
@@ -114,7 +114,7 @@ nl:
       text_introduction: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder vind je het overzicht!'
       cta_visit_the_platform: 'Ga naar het platform'
       new_users: 'Nieuwe gebruikers'
-      new_inputs: 'Nieuwe invoer'
+      new_inputs: 'Nieuwe bijdrage'
       new_comments: 'Nieuwe reacties'
       title_activity_past_week: 'Activiteit van de afgelopen week'
       title_no_activity_past_week: 'Er was geen activiteit in de afgelopen week'
@@ -150,11 +150,11 @@ nl:
       wrong_content: 'De reactie is niet relevant.'
       yesterday: Gisteren
     community_monitor_report:
-      subject: 'Er is een nieuw rapport van de gemeenschapsmonitor beschikbaar'
-      title: 'Er is een nieuw rapport van de gemeenschapsmonitor beschikbaar'
-      text_introduction: 'Er is een rapport van de gemeenschapsmonitor gemaakt voor het vorige kwartaal. Je kunt het bekijken door op de knop hieronder te klikken en in te loggen.'
+      subject: 'Er is een nieuw rapport van de tevredenheidsmonitor beschikbaar'
+      title: 'Er is een nieuw rapport van de tevredenheidsmonitor beschikbaar'
+      text_introduction: 'Er is een rapport van de tevredenheidsmonitor gemaakt voor het vorige kwartaal. Je kunt het bekijken door op de knop hieronder te klikken en in te loggen.'
       cta_report_button: 'Bekijk rapport'
-      report_name: 'Rapport van de gemeenschapsmonitor'
+      report_name: 'Rapport van de tevredenheidsmonitor'
     cosponsor_of_your_idea:
       cta_reply_to: 'Bekijk je voorstel'
       event_description: 'Gefeliciteerd! %{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd.'
@@ -166,7 +166,7 @@ nl:
       preheader: 'Overzicht van %{organizationName}'
       title_your_weekly_report: '%{firstName}, de input van de burgers wacht op je feedback'
       cta_manage_your_input: 'Beheer je input'
-      x_inputs_need_your_feedback: 'invoeren hebben je feedback nodig'
+      x_inputs_need_your_feedback: 'bijdragen hebben je feedback nodig'
       title_assignment_past_week: 'Bijdrages die recent aan jou werden toegewezen'
       title_no_assignment_past_week: 'De afgelopen week werden geen nieuwe bijdrages aan jou toegewezen'
       yesterday_by_author: 'Gisteren door %{author}'
@@ -256,13 +256,13 @@ nl:
       subject: 'Er is een nieuwe reactie op "%{input_title}"'
       preheader: '%{authorName} heeft een reactie achtergelaten op een idee voor %{organizationName}'
     new_idea_for_admin:
-      main_header_publication: 'Er is een nieuwe invoer gepubliceerd op je platform'
+      main_header_publication: 'Er is een nieuwe bijdrage gepubliceerd op je platform'
       event_description_publication: '%{authorName} heeft een nieuwe bijdrage ingediend op jouw platform. Ontdek het nu, geef feedback of verander de status!'
       cta_publication: 'Geef %{authorName} feedback'
-      main_header_prescreening: 'Een invoer vereist je beoordeling'
-      event_description_prescreening: '%{authorName} heeft een nieuwe invoer op je platform ingediend.'
-      input_not_visible_prescreening: '<b>De invoer is pas zichtbaar</b> als je de status aanpast.'
-      cta_prescreening: 'Bekijk de invoer'
+      main_header_prescreening: 'Een bijdrage vereist je beoordeling'
+      event_description_prescreening: '%{authorName} heeft een nieuwe bijdrage op je platform ingediend.'
+      input_not_visible_prescreening: '<b>De bijdrage is pas zichtbaar</b> als je de status aanpast.'
+      cta_prescreening: 'Bekijk de bijdrage'
       days_ago: '%{numberOfDays} dagen geleden'
       preheader: '%{authorName} heeft een nieuw idee geplaatst op jouw platform'
       today: Vandaag
@@ -509,7 +509,7 @@ nl:
       subject: '%{organizationName}: Bedankt voor je reactie! 🎉'
       preheader: 'Hier zijn de details van je inzending.'
       main_header: 'Bedankt voor het delen van je mening over "%{projectName}"!'
-      your_input_submitted: 'Je invoer voor "%{projectName}" is succesvol ingediend.'
+      your_input_submitted: 'Je bijdrage voor "%{projectName}" is succesvol ingediend.'
       if_you_would_like_to_review: 'Als je je inzending nog eens wilt bekijken, kun je je reacties hieronder downloaden.'
       your_submission_has_id: 'Je inzending heeft de volgende unieke identificatiecode:'
       you_can_use_this_id: 'Je kunt deze identificatiecode gebruiken om contact op te nemen met de beheerders van het platform als je wilt dat je inzending wordt verwijderd.'
@@ -543,7 +543,7 @@ nl:
         user_who_published_the_input: 'Gebruiker die de bijdrage heeft gepubliceerd'
         user_who_published_the_proposal: 'Gebruiker die het voorstel heeft gepubliceerd'
         user_who_registers: 'Gebruiker die zich registreert'
-        user_who_submitted_the_input: 'Gebruiker die de invoer heeft ingestuurd'
+        user_who_submitted_the_input: 'Gebruiker die de bijdrage heeft ingestuurd'
         user_who_voted: 'Gebruiker die heeft gestemd'
         user_who_was_invited: 'Gebruiker die werd uitgenodigd'
         user_with_unsubmitted_survey: 'Gebruiker die zijn vragenlijst is begonnen, maar nog niet heeft ingediend'
@@ -585,7 +585,7 @@ nl:
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interne reactie is geplaatst op niet-toegewezen bijdrage in onbeheerd project'
         project_review_request: 'Moderator heeft een projectbeoordeling aangevraagd'
         project_review_state_change: 'Reviewer heeft het project goedgekeurd'
-        new_input_awaits_screening: 'Nieuwe invoer wacht op screening'
+        new_input_awaits_screening: 'Nieuwe bijdrage wacht op screening'
         new_input_is_published: 'Nieuwe bijdrage is gepubliceerd'
         new_proposal_is_posted: 'Nieuw voorstel is geplaatst'
         project_phase_changes: 'Wijzigingen in projectfase'
