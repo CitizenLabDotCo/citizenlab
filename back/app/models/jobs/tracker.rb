@@ -37,7 +37,7 @@ module Jobs
     # The `root_job` is optional because Que removes the jobs that are completed. So,
     # eventually the `root_job` will be null.
     belongs_to :root_job, class_name: 'QueJob', optional: true
-    belongs_to :owner, polymorphic: true, optional: true
+    belongs_to :owner, class_name: 'User', optional: true
     belongs_to :context, polymorphic: true, optional: true
     belongs_to :project, optional: true
 

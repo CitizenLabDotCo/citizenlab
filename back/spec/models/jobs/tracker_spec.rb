@@ -5,6 +5,20 @@ require 'rails_helper'
 RSpec.describe Jobs::Tracker do
   let(:tracker) { create(:jobs_tracker) }
 
+  describe 'associations' do
+    it { is_expected.to belong_to(:root_job).class_name('QueJob').optional }
+    it { is_expected.to belong_to(:owner).class_name('User').optional }
+    it { is_expected.to belong_to(:context).optional }
+    it { is_expected.to belong_to(:project).optional }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:root_job_type) }
+    it { is_expected.to validate_numericality_of(:progress).is_greater_than_or_equal_to(0) }
+    it { is_expected.to validate_numericality_of(:error_count).is_greater_than_or_equal_to(0) }
+    it { is_expected.to validate_numericality_of(:total).is_greater_than(0).allow_nil }
+  end
+
   describe '#increment_progress' do
     it 'atomically increments the progress' do
       same_tracker = described_class.find(tracker.id)
