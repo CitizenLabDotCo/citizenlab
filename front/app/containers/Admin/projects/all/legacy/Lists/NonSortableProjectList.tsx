@@ -11,7 +11,7 @@ import { List, Row } from 'components/admin/ResourceList';
 import { useIntl } from 'utils/cl-intl';
 
 import { ActiveTab } from '..';
-import ProjectRow from '../../components/ProjectRow';
+import ProjectRow from '../../../components/ProjectRow';
 import messages from '../messages';
 
 import NonSortableFolderRow from './NonSortableFolderRow';
