@@ -514,6 +514,10 @@ module MultiTenancy
             common_ground: {
               enabled: true,
               allowed: true
+            },
+            project_planning: {
+              enabled: true,
+              allowed: true
             }
           })
         )
