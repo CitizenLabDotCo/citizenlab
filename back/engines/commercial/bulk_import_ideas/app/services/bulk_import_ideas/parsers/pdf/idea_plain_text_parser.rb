@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BulkImportIdeas::Parsers::Pdf
-  class IdeaHtmlPdfPlainTextParser
+  class IdeaPlainTextParser
     TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
     NUMBER_FIELD_TYPES = %w[number linear_scale rating sentiment_linear_scale]
     SELECT_FIELD_TYPES = %w[select multiselect select_image multiselect_image]

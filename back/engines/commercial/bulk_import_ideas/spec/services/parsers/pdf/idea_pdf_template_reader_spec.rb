@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
+describe BulkImportIdeas::Parsers::Pdf::IdeaPdfTemplateReader do
   describe 'template_data' do
     # NOTE: When changing these tests ensure that the PDF ideation form below matches the form created here
     context 'ideation form' do
@@ -35,7 +35,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
 
       before do
         # Stub the export method to return an actual PDF file from fixtures
-        allow_any_instance_of(BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/ideation_form.pdf'))
+        allow_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/ideation_form.pdf'))
       end
 
       it 'returns meta data about the fields in the form that can be imported - page count, fields, options and positions' do

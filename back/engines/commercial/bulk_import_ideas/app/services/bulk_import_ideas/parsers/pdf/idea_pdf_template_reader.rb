@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BulkImportIdeas::Parsers::Pdf
-  class IdeaHtmlPdfTemplateReader
+  class IdeaPdfTemplateReader
     def initialize(phase, locale, personal_data_enabled)
       @phase = phase
       @locale = locale
@@ -187,7 +187,7 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def pdf_exporter
-      @pdf_exporter ||= BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter.new(@phase, @locale, @personal_data_enabled)
+      @pdf_exporter ||= BulkImportIdeas::Exporters::IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled)
     end
   end
 end
