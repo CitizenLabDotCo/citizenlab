@@ -85,7 +85,9 @@ const generateYupValidationSchema = ({
       case 'text':
       case 'multiline_text': {
         if (key === 'location_description') {
-          schema[key] = string().nullable();
+          schema[key] = required
+            ? string().required(fieldRequired).nullable()
+            : string().nullable();
         } else {
           schema[key] = required ? string().required(fieldRequired) : string();
         }

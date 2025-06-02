@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { isEmpty } from 'lodash-es';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
@@ -73,6 +72,7 @@ const CustomFieldsPage = ({
   defaultValues,
   customFields,
 }: CustomFieldsPage) => {
+  const [showFormFeedback, setShowFormFeedback] = useState(false);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
@@ -131,8 +131,12 @@ const CustomFieldsPage = ({
     }
 
     try {
+      setShowFormFeedback(false);
       await onSubmit(formValues);
     } catch (error) {
+      // Only show feedback if the form submission failed
+      // otherwise we rely on the field validation errors
+      setShowFormFeedback(true);
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
@@ -160,12 +164,8 @@ const CustomFieldsPage = ({
   });
 
   const onAcceptDisclaimer = async () => {
-    try {
-      await methods.handleSubmit((e) => onFormSubmit(e, true))();
-    } catch (error) {
-      handleHookFormSubmissionError(error, methods.setError);
-    }
     setIsDisclaimerOpened(false);
+    return await methods.handleSubmit((e) => onFormSubmit(e, true))();
   };
 
   const onCancelDisclaimer = () => {
@@ -174,8 +174,7 @@ const CustomFieldsPage = ({
 
   return (
     <FormProvider {...methods}>
-      {currentPageNumber === lastPageNumber - 1 &&
-        !isEmpty(methods.formState.errors) && <Feedback />}
+      {showFormFeedback && <Feedback />}
 
       <form id="idea-form">
         <Box

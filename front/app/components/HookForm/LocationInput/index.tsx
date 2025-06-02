@@ -34,6 +34,7 @@ const LocationInput = ({
     control,
     setValue,
     watch,
+    trigger,
   } = useFormContext();
   const locale = useLocale();
   const [searchParams] = useSearchParams();
@@ -127,6 +128,7 @@ const LocationInput = ({
               setValue(name, option?.value || null, {
                 shouldTouch: true,
               });
+              trigger(name);
             }}
           />
         )}
