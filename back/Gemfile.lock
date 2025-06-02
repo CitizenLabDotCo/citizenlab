@@ -594,7 +594,8 @@ GEM
       thread_safe
     erubi (1.13.1)
     event_stream_parser (1.0.0)
-    excon (0.111.0)
+    excon (1.2.7)
+      logger
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.4.4)
@@ -625,19 +626,20 @@ GEM
       ffi (>= 1.15.5)
       rake
     fiber-storage (1.0.0)
-    fog-aws (3.24.0)
-      fog-core (~> 2.1)
+    fog-aws (3.32.0)
+      base64 (~> 0.2.0)
+      fog-core (~> 2.6)
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
-    fog-core (2.4.0)
+    fog-core (2.6.0)
       builder
-      excon (~> 0.71)
+      excon (~> 1.0)
       formatador (>= 0.2, < 2.0)
       mime-types
     fog-json (1.2.0)
       fog-core
       multi_json (~> 1.10)
-    fog-xml (0.1.4)
+    fog-xml (0.1.5)
       fog-core
       nokogiri (>= 1.5.11, < 2.0.0)
     formatador (1.1.0)
@@ -836,10 +838,10 @@ GEM
     marcel (1.0.4)
     matrix (0.4.2)
     method_source (1.1.0)
-    mime-types (3.6.2)
+    mime-types (3.7.0)
       logger
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2025.0429)
+      mime-types-data (~> 3.2025, >= 3.2025.0507)
+    mime-types-data (3.2025.0527)
     mimemagic (0.4.3)
       nokogiri (~> 1)
       rake
@@ -1351,7 +1353,7 @@ DEPENDENCIES
   faraday-jwt (~> 0.1.0)
   faraday-multipart
   flag_inappropriate_content!
-  fog-aws (~> 3.24)
+  fog-aws (~> 3.32)
   frontend!
   google-cloud-document_ai (~> 1.4)
   google_tag_manager!

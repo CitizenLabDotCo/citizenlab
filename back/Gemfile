@@ -86,7 +86,7 @@ gem 'activerecord-postgis-adapter', '~> 9.0.2'
 
 gem 'carrierwave', '~> 3.0.7'
 gem 'carrierwave-base64', '~> 2.11'
-gem 'fog-aws', '~> 3.24'
+gem 'fog-aws', '~> 3.32'
 
 gem 'api-pagination', '~> 5.0.0'
 gem 'kaminari', '~> 1.2'
