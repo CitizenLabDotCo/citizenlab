@@ -336,8 +336,8 @@ namespace :cl2_back do
           allowed: true
         },
         project_planning: {
-          enabled: true,
-          allowed: true
+          enabled: false,
+          allowed: false
         }
       }
     )
