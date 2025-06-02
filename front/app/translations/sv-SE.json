@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} användare",
   "app.components.AvatarBubbles.participant": "deltagare",
   "app.components.AvatarBubbles.participants1": "deltagare",
-  "app.components.CityLogoSection.iframeTitle": "Mer information om {orgName}",
   "app.components.Comments.cancel": "Avbryt",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Kommentarer är inte möjliga i den aktuella fasen.",
   "app.components.Comments.commentingDisabledInactiveProject": "Kommentarer är inte möjliga eftersom projektet för närvarande inte är aktivt.",
