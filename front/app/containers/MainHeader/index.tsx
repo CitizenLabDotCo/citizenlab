@@ -60,7 +60,16 @@ const Left = styled.div`
 `;
 
 const RightContainer = styled.div`
-  max-width: 200px;
+  // Remove the max-width restriction which was likely causing issues
+  // max-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: ${({ theme }) => theme.menuHeight}px;
+
+  ${isRtl`
+    justify-content: flex-start;
+  `}
 `;
 
 const MainHeader = () => {
