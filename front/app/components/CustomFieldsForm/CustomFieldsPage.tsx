@@ -358,7 +358,7 @@ const CustomFieldsPage = ({
                   setCurrentPageNumber(currentPageNumber - 1);
                 }}
                 hasPreviousPage={currentPageNumber > 0}
-                isLoading={false}
+                isLoading={methods.formState.isSubmitting}
                 pageVariant={
                   currentPageNumber === lastPageNumber
                     ? 'after-submission'
