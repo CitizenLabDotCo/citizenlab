@@ -8,27 +8,131 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
 
   let(:project) { create(:single_phase_ideation_project) }
   let(:service) { described_class.new create(:admin), 'en', project.phases.first&.id, false }
-  let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
-  before do
-    # Topics for project
-    project.allowed_input_topics << create(:topic_economy)
-    project.allowed_input_topics << create(:topic_waste)
-
-    # Custom fields - will produce a PDF form with 2 pages
-    create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, description_multiloc: { 'en' => 'A text field description' }, enabled: true)
-    create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
-    create(:custom_field_point, resource: custom_form, key: 'a_point_field', title_multiloc: { 'en' => 'Point field' }, enabled: true)
-    select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
-    create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-    create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
-    multiselect_field = create(:custom_field, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' }, input_type: 'multiselect', enabled: true)
-    create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
-    create(:custom_field_option, custom_field: multiselect_field, key: 'that', title_multiloc: { 'en' => 'That' })
-    another_select_field = create(:custom_field, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field' }, input_type: 'select', enabled: true)
-    create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-    create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+  # Mock data to avoid Gutenberg dependency that renders PDF to get this data
+  let(:template_data) do
+    {
+      page_count: 2,
+      fields: [
+        {
+          name: 'Title',
+          type: 'field',
+          key: 'title_multiloc',
+          page: 1,
+          position: 24,
+          code: 'title_multiloc',
+          input_type: 'text_multiloc',
+          description: nil,
+          print_title: '1. Title',
+          content_delimiters: { start: '1. Title', end: 'Tell us more' }
+        },
+        {
+          name: 'Description',
+          type: 'field',
+          key: 'body_multiloc',
+          page: 1,
+          position: 37,
+          code: 'body_multiloc',
+          input_type: 'html_multiloc',
+          description: nil,
+          print_title: '2. Description',
+          content_delimiters: { start: '2. Description', end: 'Images and attachments' }
+        },
+        {
+          name: 'Location',
+          type: 'field',
+          key: 'location_description',
+          page: 2,
+          position: 2,
+          code: 'location_description',
+          input_type: 'text',
+          description: nil,
+          print_title: '6. Location (optional)',
+          content_delimiters: { start: '6. Location (optional)', end: '7. A text field (optional)' }
+        },
+        {
+          name: 'A text field',
+          type: 'field',
+          key: 'a_text_field',
+          page: 2,
+          position: 9,
+          code: nil,
+          input_type: 'text',
+          description: 'A text field description',
+          print_title: '7. A text field (optional)',
+          content_delimiters: { start: '*This answer will only be shared with moderators, and not to the public.', end: '8. Number field (optional)' }
+        },
+        {
+          name: 'Number field',
+          type: 'field',
+          key: 'number_field',
+          page: 2,
+          position: 23,
+          code: nil,
+          input_type: 'number',
+          description: 'Which councils are you attending in our city?',
+          print_title: '8. Number field (optional)',
+          content_delimiters: { start: '*This answer will only be shared with moderators, and not to the public.', end: '9. Point field (optional)' }
+        },
+        {
+          name: 'Select field',
+          type: 'field',
+          key: 'select_field',
+          page: 2,
+          position: 48,
+          code: nil,
+          input_type: 'select',
+          description: 'Which councils are you attending in our city?',
+          print_title: '10. Select field (optional)',
+          content_delimiters: { start: '*This answer will only be shared with moderators, and not to the public.', end: '11. Multi select field (optional)' }
+        },
+        {
+          name: 'Yes', type: 'option', key: 'yes', page: 2, position: 56, parent_key: 'select_field'
+        },
+        {
+          name: 'No', type: 'option', key: 'no', page: 2, position: 58, parent_key: 'select_field'
+        },
+        {
+          name: 'Multi select field',
+          type: 'field',
+          key: 'multiselect_field',
+          page: 2,
+          position: 65,
+          code: nil,
+          input_type: 'multiselect',
+          description: 'Which councils are you attending in our city?',
+          print_title: '11. Multi select field (optional)',
+          content_delimiters: { start: '*This answer will only be shared with moderators, and not to the public.', end: '12. Another select field (optional)' }
+        },
+        {
+          name: 'This', type: 'option', key: 'this', page: 1, position: 73, parent_key: 'multiselect_field'
+        },
+        {
+          name: 'That', type: 'option', key: 'that', page: 2, position: 74, parent_key: 'multiselect_field'
+        },
+        {
+          name: 'Another select field',
+          type: 'field',
+          key: 'another_select_field',
+          page: 2,
+          position: 82,
+          code: nil,
+          input_type: 'select',
+          description: 'Which councils are you attending in our city?',
+          print_title: '12. Another select field (optional)',
+          content_delimiters: { start: '*This answer will only be shared with moderators, and not to the public.', end: nil }
+        },
+        {
+          name: 'Yes', type: 'option', key: 'yes', page: 2, position: 89, parent_key: 'another_select_field'
+        },
+        {
+          name: 'No', type: 'option', key: 'no', page: 2, position: 91, parent_key: 'another_select_field'
+        }
+      ]
+    }
   end
+
+  before { allow(service).to receive(:template_data).and_return(template_data) }
 
   describe 'parse_file_async' do
     it 'creates jobs to process 5 ideas at a time' do
@@ -386,7 +490,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
 
   describe 'process_custom_form_fields' do
     context 'maps parsed values onto actual form fields' do
-      let(:pdf_form_data) do
+      let(:template_data) do
         {
           page_count: 3,
           fields: [
@@ -436,7 +540,6 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       let(:idea_row) { service.send(:process_custom_form_fields, idea, {}) }
 
       it 'converts core fields' do
-        expect_any_instance_of(described_class).to receive(:template_data).and_return(pdf_form_data)
         expect(idea_row).to include({
           title_multiloc: { en: 'This fine title' },
           body_multiloc: { en: 'A description' },
@@ -445,7 +548,6 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       end
 
       it 'converts custom fields' do
-        expect_any_instance_of(described_class).to receive(:template_data).and_return(pdf_form_data)
         expect(idea_row[:custom_field_values]).to include({
           a_text_field: 'Some text yeah',
           select_field: 'yes',
@@ -455,7 +557,6 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       end
 
       it 'can cope with multiple checkboxes with same values' do
-        expect_any_instance_of(described_class).to receive(:template_data).and_return(pdf_form_data)
         expect(idea_row[:custom_field_values]).to include({
           select_field3: 'yes',
           select_field4: 'yes',
@@ -465,7 +566,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     end
 
     context 'maps multiselect values correctly' do
-      let(:pdf_form_data) do
+      let(:template_data) do
         {
           page_count: 3,
           fields: [
@@ -486,7 +587,6 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       end
 
       it 'converts multiselect fields - independently for each idea' do
-        expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaPdfTemplateReader).to receive(:template_data).and_return(pdf_form_data)
         idea1 = [
           { name: 'Monkeys', value: 'filled_checkbox', type: 'option', page: 2, position: 68 },
           { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 2, position: 70 },
@@ -594,9 +694,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
   end
 
   describe 'remove_question_numbers_in_keys' do
-    before do
-      allow(service).to receive(:template_data).and_return(pdf_template_data)
-    end
+    let(:template_data) { pdf_template_data } # Use the shared template data for this test
 
     it 'replaces the question keys with the actual title of the question' do
       output = service.send(:remove_question_numbers_in_keys, google_form_parsed_idea)
