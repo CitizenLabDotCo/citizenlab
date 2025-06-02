@@ -78,12 +78,14 @@ describe('Survey logic conflict', () => {
 
     // Select first option
     cy.get('#e2e-single-select-control')
+      .should('exist')
       .find('[data-testid="radio-container"]')
       .first()
       .click();
 
     // Go to next page
     cy.wait(1000);
+    cy.dataCy('e2e-next-page').should('be.visible');
     cy.dataCy('e2e-next-page').click();
 
     // Make sure we're on page 2

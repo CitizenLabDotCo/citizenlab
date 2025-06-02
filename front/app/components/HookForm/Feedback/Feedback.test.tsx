@@ -93,10 +93,10 @@ describe('Feedback', () => {
     fireEvent.click(screen.getByText(/submit/i));
     await waitFor(() => {
       expect(
-        screen.queryByText(
+        screen.queryAllByText(
           'This URL already exists. Please change the slug to something else.'
         )
-      ).toBeInTheDocument();
+      ).toHaveLength(2);
     });
   });
   it('shows API validation error message not linked to a field', async () => {

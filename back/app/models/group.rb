@@ -20,7 +20,7 @@
 class Group < ApplicationRecord
   include EmailCampaigns::GroupDecorator
 
-  slug from: proc { |group| group.title_multiloc.values.find(&:present?) }
+  slug from: proc { |group| group.title_multiloc&.values&.find(&:present?) }
 
   has_many :groups_projects, dependent: :destroy
   has_many :projects, through: :groups_projects
@@ -90,6 +90,8 @@ class Group < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

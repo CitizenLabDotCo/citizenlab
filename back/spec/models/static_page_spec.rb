@@ -10,6 +10,16 @@ RSpec.describe StaticPage do
   end
 
   describe 'validations' do
+    it { is_expected.to validate_presence_of(:title_multiloc) }
+
+    it 'validates presence of slug' do
+      page = build(:static_page)
+      allow(page).to receive(:generate_slug) # Stub to do nothing
+      page.slug = nil
+      expect(page).to be_invalid
+      expect(page.errors[:slug]).to include("can't be blank")
+    end
+
     context 'when code is not \'custom\'' do
       subject { described_class.new(code: 'faq') }
 

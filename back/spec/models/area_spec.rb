@@ -11,6 +11,7 @@ RSpec.describe Area do
 
   it { is_expected.not_to validate_presence_of(:ordering) }
   it { is_expected.to validate_numericality_of(:ordering) }
+  it { is_expected.to validate_presence_of(:title_multiloc) }
   it { is_expected.to belong_to(:custom_field_option).optional }
 
   describe 'default_scope' do
@@ -22,9 +23,9 @@ RSpec.describe Area do
   describe 'description_multiloc' do
     it 'sanitizes script tags in the description' do
       area = create(:area, description_multiloc: {
-        'en' => '<p>Test</p><script>This should be removed!</script>'
+        'en' => '<p>Test</p><script>These tags should be removed!</script>'
       })
-      expect(area.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
+      expect(area.description_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
     end
   end
 

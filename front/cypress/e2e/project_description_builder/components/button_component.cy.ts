@@ -91,7 +91,7 @@ describe('Project description builder Button component', () => {
     );
 
     cy.get('.e2e-button').should('exist');
-    cy.get('.e2e-button').parent().click({ force: true });
+    cy.get('.e2e-button').wait(1000).parent().click({ force: true });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');

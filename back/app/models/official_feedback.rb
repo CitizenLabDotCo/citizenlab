@@ -41,6 +41,8 @@ class OfficialFeedback < ApplicationRecord
   private
 
   def sanitize_body_multiloc
+    return if body_multiloc.nil?
+
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc body_multiloc, %i[mention]
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc

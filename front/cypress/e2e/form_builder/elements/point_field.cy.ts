@@ -37,7 +37,10 @@ describe('Form builder point field', () => {
     // Should show error if no title is entered
     cy.get('[data-testid="error-message"]').should('exist');
 
-    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+    cy.get('#e2e-title-multiloc').type(questionTitle, {
+      force: true,
+      delay: 0,
+    });
     // Set the field to required
     cy.get('#e2e-required-toggle').find('input').click({ force: true });
 
@@ -85,7 +88,7 @@ describe('Form builder point field', () => {
     checkMapInputWorks();
 
     // Enter an address by typing an address
-    cy.get('#e2e-location-input').type('Brussels');
+    cy.get('#e2e-location-input').type('Brussels', { delay: 0 });
 
     // Save survey response
     cy.dataCy('e2e-submit-form').should('exist');
