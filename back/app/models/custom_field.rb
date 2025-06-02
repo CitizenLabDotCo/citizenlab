@@ -145,6 +145,10 @@ class CustomField < ApplicationRecord
     ask_follow_up
   end
 
+  def support_other_option?
+    %(select multiselect select_image multiselect_image).include?(input_type)
+  end
+
   def support_follow_up?
     %w[sentiment_linear_scale].include?(input_type)
   end
