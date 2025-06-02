@@ -37,6 +37,7 @@ ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT 
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_d6353758d5;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1892257e3;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_d0209b82ff;
+ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_cfd1ddfa6b;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_cd2a592e7b;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_cc8b68bfb4;
 ALTER TABLE IF EXISTS ONLY public.analysis_insights DROP CONSTRAINT IF EXISTS fk_rails_cc6c7b26fc;
@@ -240,7 +241,10 @@ DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_type;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_id;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_project_id;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_owner_id;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_context;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_completed_at;
 DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
 DROP INDEX IF EXISTS public.index_invites_on_invitee_id;
@@ -2643,7 +2647,12 @@ CREATE TABLE public.jobs_trackers (
     total integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    owner_id uuid
+    owner_id uuid,
+    completed_at timestamp(6) without time zone,
+    context_type character varying,
+    context_id uuid,
+    project_id uuid,
+    error_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -5384,10 +5393,31 @@ CREATE INDEX index_invites_on_token ON public.invites USING btree (token);
 
 
 --
+-- Name: index_jobs_trackers_on_completed_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_trackers_on_completed_at ON public.jobs_trackers USING btree (completed_at);
+
+
+--
+-- Name: index_jobs_trackers_on_context; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_trackers_on_context ON public.jobs_trackers USING btree (context_type, context_id);
+
+
+--
 -- Name: index_jobs_trackers_on_owner_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_jobs_trackers_on_owner_id ON public.jobs_trackers USING btree (owner_id);
+
+
+--
+-- Name: index_jobs_trackers_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_trackers_on_project_id ON public.jobs_trackers USING btree (project_id);
 
 
 --
@@ -6916,6 +6946,14 @@ ALTER TABLE ONLY public.analytics_dimension_locales_fact_visits
 
 
 --
+-- Name: jobs_trackers fk_rails_cfd1ddfa6b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jobs_trackers
+    ADD CONSTRAINT fk_rails_cfd1ddfa6b FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: static_page_files fk_rails_d0209b82ff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7146,6 +7184,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250528153448'),
 ('20250527084054'),
 ('20250521085055'),
 ('20250519080057'),

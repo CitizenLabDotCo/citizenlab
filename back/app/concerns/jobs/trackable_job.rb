@@ -39,6 +39,10 @@ module Jobs
       nil
     end
 
+    def job_tracking_context
+      raise NotImplementedError
+    end
+
     def enqueue_child_job(job_class, ...)
       return job_class.perform_later(...) unless tracked?
 
@@ -65,12 +69,15 @@ module Jobs
       def perform_later(...)
         QueJob.transaction do
           job = @job_class.perform_later(...)
+          context = job.send(:job_tracking_context)
 
           ::Jobs::Tracker.create!(
             root_job_id: job.send(:root_job_id),
             root_job_type: job.class.name,
             total: job.send(:estimate_tracker_total, ...),
-            owner_id: @owner&.id
+            owner_id: @owner&.id,
+            context: context,
+            project_id: context.try(:project_id)
           )
 
           job

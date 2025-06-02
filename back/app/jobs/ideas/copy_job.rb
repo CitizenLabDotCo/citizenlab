@@ -79,6 +79,10 @@ module Ideas
 
     private
 
+    def job_tracking_context
+      arguments[2] # dest_phase
+    end
+
     def ensure_until_created_at(until_created_at)
       [until_created_at, Time.zone.now].compact.min
     end
