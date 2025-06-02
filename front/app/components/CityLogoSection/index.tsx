@@ -8,12 +8,8 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-import Fragment from 'components/Fragment';
-
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -59,20 +55,15 @@ const CityLogoSection = () => {
       );
 
       return (
-        <Fragment
-          title={formatMessage(messages.iframeTitle)}
-          name={footerLocale}
-        >
-          <Container id="hook-footer-logo">
-            {tenantSite ? (
-              <LogoLink href={tenantSite} target="_blank">
-                {tenantImage}
-              </LogoLink>
-            ) : (
-              <>{tenantImage}</>
-            )}
-          </Container>
-        </Fragment>
+        <Container id="hook-footer-logo">
+          {tenantSite ? (
+            <LogoLink href={tenantSite} target="_blank">
+              {tenantImage}
+            </LogoLink>
+          ) : (
+            <>{tenantImage}</>
+          )}
+        </Container>
       );
     }
   }
