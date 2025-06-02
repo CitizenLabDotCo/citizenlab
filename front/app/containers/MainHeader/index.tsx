@@ -60,8 +60,7 @@ const Left = styled.div`
 `;
 
 const RightContainer = styled.div`
-  // Remove the max-width restriction which was likely causing issues
-  // max-width: 200px;
+  max-width: 200px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
