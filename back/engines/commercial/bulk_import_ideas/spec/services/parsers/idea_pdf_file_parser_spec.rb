@@ -301,8 +301,51 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
           'Description' => "Je suis un chien. J'aime les chats."
         }
       }]
-      rows = service.send(:ideas_to_idea_rows, ideas, import_file)
 
+      template_data = {
+        page_count: 2,
+        fields: [
+          {
+            name: 'Titre',
+            type: 'field',
+            key: 'title_multiloc',
+            page: 2,
+            position: 6,
+            code: 'title_multiloc',
+            input_type: 'text_multiloc',
+            description: nil,
+            print_title: '1. Titre',
+            content_delimiters: { start: '1. Titre', end: 'Dites-nous plus' }
+          },
+          {
+            name: 'Description',
+            type: 'field',
+            key: 'body_multiloc',
+            page: 2,
+            position: 18,
+            code: 'body_multiloc',
+            input_type: 'html_multiloc',
+            description: nil,
+            print_title: '2. Description',
+            content_delimiters: { start: '2. Description', end: 'Images et pièces jointes' }
+          },
+          {
+            name: 'Adresse',
+            type: 'field',
+            key: 'location_description',
+            page: 2,
+            position: 83,
+            code: 'location_description',
+            input_type: 'text',
+            description: nil,
+            print_title: '6. Adresse (optionnel)',
+            content_delimiters: { start: '6. Adresse (optionnel)', end: nil }
+          }
+        ]
+      }
+      allow(service).to receive(:template_data).and_return(template_data)
+
+      rows = service.send(:ideas_to_idea_rows, ideas, import_file)
       expect(rows[0][:title_multiloc]).to eq({ 'fr-FR': 'Bonjour' })
       expect(rows[0][:body_multiloc]).to eq({ 'fr-FR': "Je suis un chien. J'aime les chats." })
       expect(rows[0][:user_email]).to eq 'jean@france.com'
