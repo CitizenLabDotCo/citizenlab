@@ -72,8 +72,8 @@ resource 'Jobs' do
       )
     end
 
-    context 'when resident' do
-      before { resident_header_token }
+    context 'when admin' do
+      before { admin_header_token }
 
       example_request 'Get one job by id' do
         expect(status).to eq(200)
