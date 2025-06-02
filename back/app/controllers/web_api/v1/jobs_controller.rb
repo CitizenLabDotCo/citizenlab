@@ -2,10 +2,14 @@
 
 class WebApi::V1::JobsController < ApplicationController
   def index
-    job_trackers = paginate(Jobs::Tracker.all.order(created_at: :desc))
+    job_trackers = Jobs::Tracker
+      .where(index_params)
+      .order(created_at: :desc)
+      .then { paginate(_1) }
+      .then { policy_scope(_1) }
 
     render json: linked_json(
-      policy_scope(job_trackers),
+      job_trackers,
       WebApi::V1::Jobs::TrackerSerializer,
       params: jsonapi_serializer_params
     )
@@ -19,5 +23,15 @@ class WebApi::V1::JobsController < ApplicationController
       job_tracker,
       params: jsonapi_serializer_params
     ).serializable_hash
+  end
+
+  private
+
+  def index_params
+    params.permit(
+      :context_id, :context_type,
+      :project_id,
+      :owner_id
+    )
   end
 end
