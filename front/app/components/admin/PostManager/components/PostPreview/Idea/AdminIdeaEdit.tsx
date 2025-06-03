@@ -47,6 +47,7 @@ const AdminIdeaEdit = ({
           phaseId={phaseId}
           participationMethod={phase?.data.attributes.participation_method}
           idea={idea.data}
+          goBack={goBack}
         />
       </Box>
     </Box>

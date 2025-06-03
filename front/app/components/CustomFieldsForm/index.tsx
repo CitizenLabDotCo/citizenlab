@@ -38,14 +38,15 @@ const CustomFieldsForm = ({
   projectId,
   phaseId,
   participationMethod,
-
   idea,
+  goBack,
 }: {
   projectId: string;
   phaseId?: string;
   participationMethod?: ParticipationMethod;
-
   idea?: IIdeaData;
+  // For the admin idea edit page only
+  goBack?: () => void;
 }) => {
   const pagesRef = useRef<HTMLDivElement | null>(null);
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
@@ -98,6 +99,8 @@ const CustomFieldsForm = ({
         });
         updateSearchParams({ idea_id: idea.id });
       }
+      // This is used for the admin idea edit page only
+      goBack?.();
     }
     // Go to the next page
     if (currentPageNumber < lastPageNumber) {
