@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -54,6 +54,7 @@ type CustomFieldsPage = {
   phase?: IPhaseData;
   defaultValues?: any;
   customFields: IFlatCustomField[];
+  pagesRef: React.RefObject<HTMLDivElement>;
 };
 
 const CustomFieldsPage = ({
@@ -71,6 +72,7 @@ const CustomFieldsPage = ({
   phase,
   defaultValues,
   customFields,
+  pagesRef,
 }: CustomFieldsPage) => {
   const [showFormFeedback, setShowFormFeedback] = useState(false);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
@@ -86,7 +88,6 @@ const CustomFieldsPage = ({
   const isIdeaEditPage = isPage('idea_edit', pathname);
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
-  const pagesRef = useRef<HTMLDivElement>(null);
 
   const [searchParams] = useSearchParams();
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
@@ -214,13 +215,7 @@ const CustomFieldsPage = ({
         </Box>
       )} */}
 
-          <Box
-            flex={'1 1 auto'}
-            overflowY="auto"
-            h="100%"
-            ref={pagesRef}
-            mb="40px"
-          >
+          <Box flex={'1 1 auto'} h="100%" mb="40px">
             {/* {isMapPage && isMobileOrSmaller && (
           <Box
             aria-hidden={true}

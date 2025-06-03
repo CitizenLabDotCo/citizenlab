@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -47,6 +47,7 @@ const CustomFieldsForm = ({
 
   idea?: IIdeaData;
 }) => {
+  const pagesRef = useRef<HTMLDivElement | null>(null);
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
   const { data: authUser } = useAuthUser();
@@ -115,7 +116,7 @@ const CustomFieldsForm = ({
     : undefined;
 
   return (
-    <Box overflow="scroll" w="100%">
+    <Box overflow="scroll" w="100%" ref={pagesRef}>
       {nestedPagesData[currentPageNumber] && (
         <CustomFieldsPage
           page={nestedPagesData[currentPageNumber].page}
@@ -132,6 +133,7 @@ const CustomFieldsForm = ({
           phase={phase?.data}
           defaultValues={initialFormData}
           customFields={customFields ?? []}
+          pagesRef={pagesRef}
         />
       )}
     </Box>
