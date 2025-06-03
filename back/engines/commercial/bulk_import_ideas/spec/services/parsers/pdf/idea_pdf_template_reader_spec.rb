@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
+describe BulkImportIdeas::Parsers::Pdf::IdeaPdfTemplateReader do
   describe 'template_data' do
     # NOTE: When changing these tests ensure that the PDF ideation form below matches the form created here
     context 'ideation form' do
@@ -34,7 +34,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
 
       before do
         # Stub the export method to return an actual PDF file from fixtures
-        allow_any_instance_of(BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/ideation_form.pdf'))
+        allow_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/ideation_form.pdf'))
       end
 
       it 'returns meta data about the fields in the form that can be imported - page count, fields, options and positions' do
@@ -104,16 +104,16 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfTemplateReader do
           end: 'Images and attachments'
         })
         expect(delimiters['short_answer_1']).to eq({
-          start: '*This answer will only be shared with moderators, and not to the public.',
-          end: '6. A single choice question (optional)'
+          start: '5. A short answer question',
+          end: '*This answer will only be shared with moderators, and not to the public.'
         })
         expect(delimiters['location_description']).to eq({
           start: '10. Location (optional)',
           end: '11. Short answer question with a really long title that will wrap onto' # Only finds the text on the next line (not the whole title)
         })
         expect(delimiters['shortanswer_2']).to eq({
-          start: '*This answer will only be shared with moderators, and not to the public.',
-          end: 'Thank you for submitting the form'
+          start: 'output into the PDF file.',
+          end: '*This answer will only be shared with moderators, and not to the public.'
         })
       end
 

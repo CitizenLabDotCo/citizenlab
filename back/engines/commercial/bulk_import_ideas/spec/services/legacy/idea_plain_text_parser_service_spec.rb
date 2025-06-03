@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
+describe BulkImportIdeas::Legacy::IdeaPlainTextParserService do
   describe 'Ideation project' do
     let(:project) { create(:single_phase_ideation_project) }
     let(:service) { described_class.new custom_form.custom_fields, 'en' }

@@ -17,13 +17,13 @@ module BulkImportIdeas
           parser_class: nil # Not implemented for importing
         },
         'pdf' => {
-          exporter_class: Exporters::IdeaHtmlPdfFormExporter,
-          parser_class: Parsers::IdeaHtmlPdfFileParser
+          exporter_class: Exporters::IdeaPdfFormExporter,
+          parser_class: Parsers::IdeaPdfFileParser
         },
         # The following classes are now for legacy support of the prawn based pdf import/export
         'legacy_pdf' => {
-          exporter_class: Exporters::IdeaPdfFormExporter,
-          parser_class: Parsers::IdeaPdfFileParser
+          exporter_class: Legacy::IdeaPdfFormExporter,
+          parser_class: Legacy::IdeaPdfFileParser
         }
       }
     }

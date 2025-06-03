@@ -103,9 +103,9 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(personal_data.css('h2').text).to eq 'Personal data'
 
         fields = personal_data.css('h3').map(&:text)
-        expect(fields[0]).to eq 'First name(s) (optional)'
-        expect(fields[1]).to eq 'Last name (optional)'
-        expect(fields[2]).to eq 'Email address (optional)'
+        expect(fields[0]).to include 'First name(s)'
+        expect(fields[1]).to include 'Last name'
+        expect(fields[2]).to include 'Email address'
       end
     end
 

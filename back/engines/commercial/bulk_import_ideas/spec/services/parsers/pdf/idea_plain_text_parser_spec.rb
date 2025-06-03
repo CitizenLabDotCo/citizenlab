@@ -3,7 +3,7 @@
 require 'rails_helper'
 require_relative '../shared/pdf_parser_data_setup'
 
-describe BulkImportIdeas::Parsers::Pdf::IdeaHtmlPdfPlainTextParser do
+describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParser do
   include_context 'pdf_parser_data_setup'
 
   let(:service) { described_class.new('en') }
