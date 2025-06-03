@@ -48,9 +48,12 @@
       input.radio { appearance: none; border-radius: 7px; }
     }
 
+    h3 span.text { width: fit-content; }
+    h3 span.number { width: 30px; }
+    h3 span.optional { font-weight: normal; }
+
     div.ranking { display: flex; align-items: center; margin-top: -6px; font-size: 11pt; }
     div.ranking-box { border: solid 1px #000; width: 24px; height: 24px; margin: 8px 10px 8px 2px; display: inline-block; }
-    span.optional { font-weight: normal; }
     div.field-group { page-break-inside: avoid; }
 
     #header {
@@ -70,8 +73,6 @@
     }
 
     #questions {
-      h3 span.number { width: 30px; }
-      h3 span.text { width: fit-content; }
       h4 { margin-left: 30px; }
       div.content { margin-left: 30px; }
       div.question, div.page { margin-bottom: 10px; }
@@ -130,11 +131,26 @@
   <div id="personal-data">
     <h2><%= personal_data[:heading] %></h2>
     <p><%= personal_data[:intro] %></p>
-    <h3><%= personal_data[:first_name] %> <span class="optional"><%= optional %></span></h3>
+    <h3>
+      <span class="text">
+        <%= personal_data[:first_name] %>
+        <span class="optional"><%= optional %></span>
+      </span>
+    </h3>
     <div class="line"></div>
-    <h3><%= personal_data[:last_name] %> <span class="optional"><%= optional %></span></h3>
+    <h3>
+      <span class="text">
+        <%= personal_data[:last_name] %>
+        <span class="optional"><%= optional %></span>
+      </span>
+    </h3>
     <div class="line"></div>
-    <h3><%= personal_data[:email_address] %> <span class="optional"><%= optional %></span></h3>
+    <h3>
+      <span class="text">
+        <%= personal_data[:email_address] %>
+        <span class="optional"><%= optional %></span>
+      </span>
+    </h3>
     <div class="line"></div>
     <div class="select">
       <div><input type="checkbox" class="checkbox"></div>
