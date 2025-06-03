@@ -1221,7 +1221,7 @@
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
   "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} Befragte} one {{respondentCount} Befragte*r} other {{respondentCount} Befragte}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Details anzeigen",
-  "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} Wahlmöglichkeiten} one {{numberChoices} Wahlmöglichkeit} other {{numberChoices} Wahlmöglichkeiten}}",
+  "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} Mal gewählt} one {{numberChoices} Mal gewählt} other {{numberChoices} Mal gewählt}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Heatmap",
   "app.containers.Admin.projects.project.survey.heatmapToggleEsriLink": "https://storymaps.arcgis.com/collections/9dd9f03ac2554da4af78b42020fb40c1?item=13",
   "app.containers.Admin.projects.project.survey.heatmapToggleEsriLinkText": "Erfahren Sie mehr über Heatmaps, die mit Esri Smart Mapping erstellt wurden.",
