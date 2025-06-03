@@ -11,6 +11,27 @@ describe Ideas::CopyService do
     create(:idea_status_proposed)
   end
 
+  context 'when the destination phase participation_method is transitive' do
+    let(:dest_phase) { create(:ideation_phase) }
+
+    it 'removes the creation_phase_id' do
+      source_phase = create(:common_ground_phase)
+      idea = create(:idea, creation_phase_id: source_phase.id, phases: [source_phase], project: source_phase.project)
+      service.copy([idea], dest_phase, nil)
+      expect(dest_phase.ideas.sole.creation_phase_id).to be_nil
+    end
+  end
+
+  context 'when the destination phase participation_method is not transitive' do
+    let(:dest_phase) { create(:common_ground_phase) }
+
+    it 'sets the creation_phase_id to the destination phase' do
+      idea = create(:idea)
+      service.copy([idea], dest_phase, nil)
+      expect(dest_phase.ideas.sole.creation_phase_id).to eq(dest_phase.id)
+    end
+  end
+
   it 'copies ideas' do
     ideas = [
       create(:idea, publication_status: 'submitted'),

@@ -6,6 +6,7 @@ module Ideas
       check_ideas!(ideas)
 
       proposed_idea_status = IdeaStatus.find_by(code: 'proposed')
+      transitive_pmethod = dest_phase.pmethod.transitive?
 
       new_ids = ideas.map do |idea|
         copy = idea.dup.tap do |i|
@@ -13,6 +14,7 @@ module Ideas
           i.phases = [dest_phase]
           i.publication_status = 'published'
           i.idea_status = proposed_idea_status
+          i.creation_phase = transitive_pmethod ? nil : dest_phase
 
           # We discard the custom field values because they are tied to the custom form
           # model, which is specific to the source participation context. In the future,

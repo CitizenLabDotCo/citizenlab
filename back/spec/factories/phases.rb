@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :phase do
+  factory :phase, aliases: [:ideation_phase] do
     project
     ideas_order { nil }
     input_term { nil }
