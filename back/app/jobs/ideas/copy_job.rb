@@ -68,6 +68,8 @@ module Ideas
           batch_size: batch_size,
           until_created_at: until_created_at
         )
+      else
+        complete!
       end
     end
 
