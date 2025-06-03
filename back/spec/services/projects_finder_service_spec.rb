@@ -515,4 +515,8 @@ describe ProjectsFinderService do
       expect(result).not_to include(project_for_all_areas)
     end
   end
+
+  describe 'projects_back_office' do
+    # TODO
+  end
 end

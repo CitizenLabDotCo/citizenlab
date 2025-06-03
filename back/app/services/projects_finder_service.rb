@@ -176,6 +176,10 @@ class ProjectsFinderService
     order_by_created_at_and_id_with_distinct_on(archived_scope)
   end
 
+  def projects_back_office
+    # TODO
+  end
+
   private
 
   def projects_with_active_phase(projects)
