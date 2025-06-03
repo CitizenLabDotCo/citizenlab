@@ -172,6 +172,7 @@ const generateYupValidationSchema = ({
           ? array()
               .min(1, formatMessage(messages.imageRequired))
               .required(formatMessage(messages.imageRequired))
+              .nullable()
           : array().nullable();
 
         break;

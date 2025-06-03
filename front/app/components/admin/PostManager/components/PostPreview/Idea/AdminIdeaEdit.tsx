@@ -46,7 +46,7 @@ const AdminIdeaEdit = ({
           projectId={project.data.id}
           phaseId={phaseId}
           participationMethod={phase?.data.attributes.participation_method}
-          initialFormData={idea.data.attributes}
+          idea={idea.data}
         />
       </Box>
     </Box>

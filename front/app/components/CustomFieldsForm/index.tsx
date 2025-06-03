@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useLocation, useParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
-import { IdeaPublicationStatus } from 'api/ideas/types';
+import { IdeaPublicationStatus, IIdeaData } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
 import { ParticipationMethod } from 'api/phases/types';
@@ -41,28 +38,20 @@ const CustomFieldsForm = ({
   projectId,
   phaseId,
   participationMethod,
-  initialFormData,
+
+  idea,
 }: {
   projectId: string;
   phaseId?: string;
   participationMethod?: ParticipationMethod;
-  initialFormData?: FormValues;
+
+  idea?: IIdeaData;
 }) => {
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
-  const { slug, ideaId } = useParams();
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-
-  // Depending on the route, we  use either the slug or the ideaId to fetch the idea
-  const { pathname } = useLocation();
-  const isProjectPage = pathname.includes('/projects/');
-  const isIdeaEditPage = pathname.includes('/ideas/edit/');
-  const { data: ideaWithSlug } = useIdeaBySlug(
-    !isProjectPage && !isIdeaEditPage ? slug : null
-  );
-  const { data: ideaWithId } = useIdeaById(ideaId);
 
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
@@ -70,8 +59,6 @@ const CustomFieldsForm = ({
     projectId,
     phaseId: participationMethod !== 'ideation' ? phaseId : undefined,
   });
-
-  const idea = ideaWithSlug || ideaWithId;
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
@@ -103,12 +90,12 @@ const CustomFieldsForm = ({
         updateSearchParams({ idea_id: idea.data.id });
       } else {
         await updateIdea({
-          id: idea.data.id,
+          id: idea.id,
           requestBody: {
             ...formValues,
           },
         });
-        updateSearchParams({ idea_id: idea.data.id });
+        updateSearchParams({ idea_id: idea.id });
       }
     }
     // Go to the next page
@@ -116,6 +103,16 @@ const CustomFieldsForm = ({
       setCurrentPageNumber((pageNumber: number) => pageNumber + 1);
     }
   };
+
+  const initialFormData = idea
+    ? {
+        ...idea.attributes,
+        author_id: idea.relationships.author?.data?.id,
+        cosponsor_ids: idea.relationships.cosponsors?.data?.map(
+          (cosponsor) => cosponsor.id
+        ),
+      }
+    : undefined;
 
   return (
     <Box overflow="scroll" w="100%">
@@ -128,7 +125,7 @@ const CustomFieldsForm = ({
           setCurrentPageNumber={setCurrentPageNumber}
           showTogglePostAnonymously={showTogglePostAnonymously}
           participationMethod={participationMethod}
-          ideaId={idea?.data.id}
+          ideaId={idea?.id}
           projectId={projectId}
           onSubmit={onSubmit}
           pageButtonLabelMultiloc={pageButtonLabelMultiloc}
