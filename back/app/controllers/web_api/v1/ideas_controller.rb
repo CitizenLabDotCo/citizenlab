@@ -303,15 +303,16 @@ class WebApi::V1::IdeasController < ApplicationController
     dest_phase = Phase.find(params[:phase_id])
     authorize(dest_phase, :copy_inputs_to_phase?)
 
-    job = Ideas::CopyJob.with_tracking(owner: current_user).perform_later(
-      :submitted_or_published,
-      copy_filters,
-      dest_phase,
-      current_user
-    )
+    job_args = [:submitted_or_published, copy_filters, dest_phase, current_user]
+
+    tracker = if dry_run?
+      Ideas::CopyJob.dry_run(*job_args)
+    else
+      Ideas::CopyJob.with_tracking(owner: current_user).perform_later(*job_args).tracker
+    end
 
     render json: WebApi::V1::Jobs::TrackerSerializer.new(
-      job.tracker,
+      tracker,
       params: jsonapi_serializer_params
     ).serializable_hash
   end
@@ -540,6 +541,10 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def copy_filters
     params.require(:filters).permit(:phase)
+  end
+
+  def dry_run?
+    @dry_run ||= params[:dry_run]&.downcase.in? %w[true 1]
   end
 end
 

@@ -3,6 +3,8 @@
 module Ideas
   class CopyJob < ApplicationJob
     include Jobs::TrackableJob
+
+    delegate :estimate_tracker_total, to: :class
     ##
     # Copies a batch of ideas to a specified destination phase.
     #
@@ -73,12 +75,24 @@ module Ideas
       end
     end
 
-    def estimate_tracker_total(idea_scope, idea_filters, _dest_phase, current_user, **_args)
+    def self.estimate_tracker_total(idea_scope, idea_filters, _dest_phase, current_user, **_args)
       IdeasFinder.new(
         idea_filters,
         scope: IdeaPolicy::Scope.new(current_user, Idea.public_send(idea_scope)).resolve,
         current_user: current_user
       ).find_records.count
+    end
+
+    def self.dry_run(idea_scope, idea_filters, dest_phase, current_user, **args)
+      Jobs::Tracker.new(
+        id: SecureRandom.uuid,
+        root_job_id: nil,
+        root_job_type: name,
+        owner: current_user,
+        context: dest_phase,
+        project_id: dest_phase.project_id,
+        total: estimate_tracker_total(idea_scope, idea_filters, dest_phase, current_user, **args)
+      )
     end
 
     private
