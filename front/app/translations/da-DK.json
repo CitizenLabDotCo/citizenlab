@@ -125,7 +125,7 @@
   "app.components.CustomFieldsForm.attachmentRequired": "Mindst én vedhæftet fil er påkrævet",
   "app.components.CustomFieldsForm.authorFieldLabel": "Forfatter",
   "app.components.CustomFieldsForm.authorFieldPlaceholder": "Begynd at skrive for at søge efter brugerens e-mail eller navn...",
-  "app.components.CustomFieldsForm.budgetFieldLabel": "Budsjett",
+  "app.components.CustomFieldsForm.budgetFieldLabel": "Budget",
   "app.components.CustomFieldsForm.descriptionMinLength": "Beskrivelsen skal være mindst {min} tegn lang",
   "app.components.CustomFieldsForm.descriptionRequired": "Beskrivelsen er påkrævet",
   "app.components.CustomFieldsForm.fieldMaximum": "Der kan højst vælges {maxSelections} indstillinger for feltet \"{fieldName}\"",
