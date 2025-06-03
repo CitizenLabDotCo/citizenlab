@@ -22,8 +22,15 @@ module BulkImportIdeas::Parsers::Pdf
           field_import_configs = []
           question_num = 0
           form_fields.each_with_index do |field, index|
-            question_number = pdf_exporter.field_has_question_number?(field) ? question_num += 1 : nil
-            field_import_configs << import_config_for_field(field, pages, question_number, form_fields[index + 1])
+            question_number_incremented = pdf_exporter.field_has_question_number?(field)
+            question_number = question_number_incremented ? question_num += 1 : question_num
+            field_import_configs << import_config_for_field(
+              field,
+              pages,
+              latest_question_number: question_number,
+              question_number_printed: question_number_incremented,
+              next_field: form_fields[index + 1]
+            )
             field.options.each do |option|
               field_import_configs << import_config_for_field(option, pages)
             end
@@ -50,12 +57,16 @@ module BulkImportIdeas::Parsers::Pdf
       end
     end
 
-    def import_config_for_field(field_or_option, pdf_pages, question_number = nil, next_field = nil)
+    def import_config_for_field(field_or_option, pdf_pages, latest_question_number: nil, question_number_printed: false, next_field: nil)
       type = field_or_option.is_a?(CustomField) ? 'field' : 'option'
       return if type == 'field' && !field_or_option.pdf_importable? # Skip fields that are not importable
-      return if type == 'option' && !field_or_option.custom_field.pdf_importable? # Skip fields that are not importable
+      return if type == 'option' && !field_or_option.custom_field.pdf_importable? # Skip options whose fields are not importable
 
-      print_title = type == 'field' ? full_print_title(field_or_option, question_number) : field_title(field_or_option)
+      print_title = if type == 'field'
+        full_print_title(field_or_option, question_number_printed ? latest_question_number : nil)
+      else
+        field_title(field_or_option)
+      end
 
       # Try and find the position of the field and any content delimiters in the PDF
       page_num = nil
@@ -70,7 +81,8 @@ module BulkImportIdeas::Parsers::Pdf
           page_num = current_page_num
 
           if type == 'field'
-            content_delimiters = field_content_delimiters(next_field, question_number, page_lines)
+            current_line = page_lines[field_line_num]
+            content_delimiters = field_content_delimiters(field_or_option, next_field, latest_question_number, page_lines, current_line)
           end
 
           # Blank out once processed - Avoid them being found again when there multiple questions/options on a page with the same values
@@ -90,7 +102,7 @@ module BulkImportIdeas::Parsers::Pdf
       # Domicile options (when user fields in form enabled) need different keys
       key = field_or_option.key
       if type == 'option' && field_or_option.custom_field.key == 'u_domicile'
-        key = field_or_option.area.id
+        key = field_or_option.area&.id || 'outside'
       end
 
       # Create a config for the field or option
@@ -122,7 +134,7 @@ module BulkImportIdeas::Parsers::Pdf
     # End delimiter is the text line where the next field or element starts
     # Start delimiter is the text line before - end of previous field title / description
     # If the field is the last on a page there is no end delimiter
-    def field_content_delimiters(next_field, current_question_number, page_lines)
+    def field_content_delimiters(field, next_field, latest_question_number, page_lines, current_line)
       page_text = page_lines.reject(&:empty?) # Remove empty lines
       page_text = page_text.grep_v(/\A[i\(\)\s]*\z/) # Remove some odd lines that are read from the PDF with just i or ( ) in them
       page_text.pop # Remove the last line which is always the page number
@@ -132,7 +144,7 @@ module BulkImportIdeas::Parsers::Pdf
 
       if next_field
         # Get delimiter by using the next field
-        next_question_number = current_question_number && pdf_exporter.field_has_question_number?(next_field) ? current_question_number + 1 : nil
+        next_question_number = latest_question_number && pdf_exporter.field_has_question_number?(next_field) ? latest_question_number + 1 : nil
         next_question_title = full_print_title(next_field, next_question_number)
         next_line_index = find_field_line(page_text, next_question_title)
       elsif next_field.nil? && custom_form.print_end_multiloc[@locale].present?
@@ -151,7 +163,7 @@ module BulkImportIdeas::Parsers::Pdf
       end
 
       {
-        start: page_text[start_line_index],
+        start: field.support_options? ? current_line : page_text[start_line_index], # Select fields use just the current line as start is less important
         end: page_text[next_line_index] ? page_text[next_line_index].strip : next_question_title&.slice(0, 50)&.strip # truncated next_question_title will be used if this is the last field on the page
       }
     end
