@@ -115,6 +115,7 @@ const CustomFieldsForm = ({
         cosponsor_ids: idea.relationships.cosponsors?.data?.map(
           (cosponsor) => cosponsor.id
         ),
+        topic_ids: idea.relationships.topics?.data.map((topic) => topic.id),
       }
     : undefined;
 
