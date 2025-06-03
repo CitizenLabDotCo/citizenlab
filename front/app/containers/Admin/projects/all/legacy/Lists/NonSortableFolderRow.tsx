@@ -6,7 +6,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { Row } from 'components/admin/ResourceList';
 
-import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
+import ProjectFolderRow from '../../../projectFolders/components/ProjectFolderRow';
 
 import FolderChildProjects from './FolderChildProjects';
 

@@ -1,18 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  overviewPageTitle: {
-    id: 'app.containers.AdminPage.ProjectDashboard.overviewPageTitle',
-    defaultMessage: 'Projects',
-  },
   overviewPageSubtitle: {
     id: 'app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle',
     defaultMessage:
       'Create as many projects as you want and edit them at any time. Drag and drop them to change the order in which you want to see them on your homepage.',
-  },
-  newProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.createProject',
-    defaultMessage: 'New project',
   },
   published: {
     id: 'app.containers.AdminPage.ProjectDashboard.published',
@@ -45,14 +37,6 @@ export default defineMessages({
   projectsAndFolders: {
     id: 'app.containers.AdminPage.projects.all.projectsAndFolders',
     defaultMessage: 'Projects and folders',
-  },
-  createProjectFolder: {
-    id: 'app.containers.AdminPage.projects.all.createProjectFolder',
-    defaultMessage: 'New folder',
-  },
-  onlyAdminsCanCreateFolders: {
-    id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders',
-    defaultMessage: 'Only admins can create project folders.',
   },
   all: {
     id: 'app.containers.AdminPage.projects.all.all',
