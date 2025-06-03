@@ -71,10 +71,22 @@ const FileUploaderField = ({
           (files) => files.filter((file) => file !== null) as UploadFile[]
         );
         setFiles(remoteFiles);
+        setValue(
+          name,
+          remoteFiles.map((file) => ({
+            file_by_content: {
+              content: file.base64,
+              name: file.filename,
+            },
+            name: file.filename,
+          })),
+          { shouldDirty: true }
+        );
+        trigger(name);
       };
       convertFiles();
     }
-  }, [setValue, name, ideaFiles]);
+  }, [setValue, name, ideaFiles, trigger]);
 
   useEffect(() => {
     const formFiles = getValues(name) || [];
