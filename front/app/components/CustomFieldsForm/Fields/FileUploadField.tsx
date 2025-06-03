@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
@@ -45,6 +45,8 @@ const FileUploaderField = ({
   const { mutate: deleteIdeaFile } = useDeleteIdeaFile();
   const { mutate: addIdeaFile } = useAddIdeaFile();
   const [files, setFiles] = useState<UploadFile[]>([]);
+  const processedFilesRef = useRef(new Set());
+
   const {
     setValue,
     formState: { errors },
@@ -54,7 +56,7 @@ const FileUploaderField = ({
   } = useFormContext();
 
   useEffect(() => {
-    if (ideaFiles) {
+    if (ideaFiles && ideaFiles.data.length > 0) {
       let remoteFiles: UploadFile[] = [];
       const convertFiles = async () => {
         remoteFiles = await Promise.all(
@@ -75,18 +77,29 @@ const FileUploaderField = ({
   }, [setValue, name, ideaFiles]);
 
   useEffect(() => {
-    if (getValues(name)?.length !== files.length) {
-      getValues(name)?.forEach((file: FileToUploadFormat) => {
+    const formFiles = getValues(name) || [];
+
+    // Only process files we haven't seen before
+    const newFiles = formFiles.filter(
+      (file) => !processedFilesRef.current.has(file.file_by_content.content)
+    );
+
+    if (newFiles.length > 0) {
+      newFiles.forEach((file) => {
+        processedFilesRef.current.add(file.file_by_content.content);
+
         convertUrlToUploadFile(
           file.file_by_content.content,
           null,
           file.name
-        ).then((file) => {
-          setFiles((prevFiles) => (file ? [...prevFiles, file] : prevFiles));
+        ).then((uploadFile) => {
+          if (uploadFile) {
+            setFiles((prevFiles) => [...prevFiles, uploadFile]);
+          }
         });
       });
     }
-  }, [getValues, name, files.length]);
+  }, [getValues, name, ideaId]);
 
   const errorMessage = get(errors, name)?.message as string | undefined;
 
