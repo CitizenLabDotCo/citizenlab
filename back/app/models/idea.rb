@@ -132,8 +132,8 @@ class Idea < ApplicationRecord
   has_many :embeddings_similarities, as: :embeddable, dependent: :destroy
   has_many :authoring_assistance_responses, dependent: :destroy
 
-  has_many :related_ideas, through: :related_idea_associations
   has_many :related_idea_associations, class_name: 'RelatedIdea', dependent: :destroy
+  has_many :related_ideas, through: :related_idea_associations
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 

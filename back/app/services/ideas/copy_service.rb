@@ -46,16 +46,12 @@ module Ideas
           i.comments_count = 0
           i.internal_comments_count = 0
           i.official_feedbacks_count = 0
-
-          i.save!
         end
 
-        # Preserving the original timestamps. This isn’t strictly necessary, but it seems
-        # like the right thing to do. This could be reconsidered in the future.
-        copy.update_columns(
-          updated_at: idea.updated_at,
-          created_at: idea.created_at
-        )
+        Idea.transaction do
+          copy.save!(touch: false)
+          copy.related_ideas << idea
+        end
       rescue StandardError => e
         summary.errors[idea.id] = e # rubocop:disable Rails/DeprecatedActiveModelErrorsMethods
       ensure

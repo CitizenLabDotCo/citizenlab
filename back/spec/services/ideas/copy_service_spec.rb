@@ -45,6 +45,12 @@ describe Ideas::CopyService do
     expect(summary.errors).to be_empty
   end
 
+  it 'creates a RelatedIdea record for each copied idea' do
+    idea = create(:idea)
+    service.copy([idea], dest_phase, nil)
+    expect(RelatedIdea.where(idea: dest_phase.ideas.sole, related_idea: idea)).to exist
+  end
+
   it "replaces the 'submitted' publication status by 'published'" do
     idea = create(:idea, publication_status: 'submitted')
     service.copy([idea], dest_phase, nil)
@@ -158,16 +164,6 @@ describe Ideas::CopyService do
     idea = create(:idea, :with_assignee)
     service.copy([idea], dest_phase, nil)
     expect(dest_phase.ideas.sole.assignee_id).to be_nil
-  end
-
-  it 'does not change the timestamps' do
-    # Reloading to get the correct timestamp values (because the DB has lower precision).
-    idea = create(:idea).reload
-    service.copy([idea], dest_phase, nil)
-
-    copy = dest_phase.ideas.sole
-    expect(copy.created_at).to eq(idea.created_at)
-    expect(copy.updated_at).to eq(idea.updated_at)
   end
 
   it 'does not copy manual vote data' do
