@@ -16,7 +16,6 @@ module BulkImportIdeas::Parsers
     # Sends 5 files containing 1 idea to each job
     def parse_file_async(file_content)
       files = create_files file_content
-
       job_ids = []
       job_first_idea_index = 1
       files.each_slice(IDEAS_PER_JOB) do |sliced_files|

@@ -104,16 +104,16 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPdfTemplateReader do
           end: 'Images and attachments'
         })
         expect(delimiters['short_answer_1']).to eq({
-          start: '*This answer will only be shared with moderators, and not to the public.',
-          end: '6. A single choice question (optional)'
+          start: '5. A short answer question',
+          end: '*This answer will only be shared with moderators, and not to the public.'
         })
         expect(delimiters['location_description']).to eq({
           start: '10. Location (optional)',
           end: '11. Short answer question with a really long title that will wrap onto' # Only finds the text on the next line (not the whole title)
         })
         expect(delimiters['shortanswer_2']).to eq({
-          start: '*This answer will only be shared with moderators, and not to the public.',
-          end: 'Thank you for submitting the form'
+          start: 'output into the PDF file.',
+          end: '*This answer will only be shared with moderators, and not to the public.'
         })
       end
 

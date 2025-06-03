@@ -45,7 +45,7 @@ module BulkImportIdeas::Parsers::Pdf
     def pdf_pages(reader)
       reader.pages.map do |page|
         page.text.split("\n").map do |line|
-          line.gsub(/\s+/, ' ') # Remove extra spaces in each line
+          line.gsub(/\s+/, ' ').strip # Remove extra spaces in each line
         end
       end
     end
@@ -53,6 +53,7 @@ module BulkImportIdeas::Parsers::Pdf
     def import_config_for_field(field_or_option, pdf_pages, question_number = nil, next_field = nil)
       type = field_or_option.is_a?(CustomField) ? 'field' : 'option'
       return if type == 'field' && !field_or_option.pdf_importable? # Skip fields that are not importable
+      return if type == 'option' && !field_or_option.custom_field.pdf_importable? # Skip fields that are not importable
 
       print_title = type == 'field' ? full_print_title(field_or_option, question_number) : field_title(field_or_option)
 
@@ -72,9 +73,15 @@ module BulkImportIdeas::Parsers::Pdf
             content_delimiters = field_content_delimiters(next_field, question_number, page_lines)
           end
 
-          # Blank out line once processed - Avoid them being found again when there multiple questions/options on a page with the same value
-          # TODO: What about when we delete the option - delete from the line - not the whole
-          pdf_pages[index][field_line_num] = ''
+          # Blank out once processed - Avoid them being found again when there multiple questions/options on a page with the same values
+          if type == 'option' && field_or_option.custom_field.options.length > 4
+            # For options in columns we just remove the option title from the line as there are multiple options on the same line
+            truncated_title = print_title.slice(0, 35) # Truncate title to avoid issues with long titles
+            pdf_pages[index][field_line_num].gsub!(truncated_title, '')
+          else
+            # For everything else we remove the whole line
+            pdf_pages[index][field_line_num] = ''
+          end
 
           break # No need to check the rest of the pages - causes issues with duplicate options if we do
         end
@@ -82,7 +89,7 @@ module BulkImportIdeas::Parsers::Pdf
 
       # Domicile options (when user fields in form enabled) need different keys
       key = field_or_option.key
-      if type == 'option' && field_or_option.area.present?
+      if type == 'option' && field_or_option.custom_field.key == 'u_domicile'
         key = field_or_option.area.id
       end
 
@@ -134,15 +141,24 @@ module BulkImportIdeas::Parsers::Pdf
         next_line_index = find_field_line(page_text, end_text)
       end
 
+      # If we have the 'this answer will be shared with...' copy (after the question) then we must move both delimiters up one line
+      next_line_index ||= page_text.length # If no next line found then use the end of the page
+      start_line_index = next_line_index - 1
+      this_answer_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }.slice(0, 50)
+      if page_text[start_line_index].include?(this_answer_copy)
+        start_line_index -= 1
+        next_line_index -= 1
+      end
+
       {
-        start: next_line_index ? page_text[next_line_index - 1].strip : page_text.last.strip,
-        end: next_line_index ? page_text[next_line_index].strip : next_question_title&.truncate(40)&.strip # truncated next_question_title will be used if this is the last field on the page
+        start: page_text[start_line_index],
+        end: page_text[next_line_index] ? page_text[next_line_index].strip : next_question_title&.slice(0, 50)&.strip # truncated next_question_title will be used if this is the last field on the page
       }
     end
 
     # Find the index of the line in the page that matches the start of the field title (in a case insensitive way)
     def find_field_line(page, field_title)
-      page.find_index { |page_line| page_line.present? && field_title.downcase.start_with?(page_line.downcase) }
+      page.find_index { |page_line| page_line.present? && field_title.strip.downcase.start_with?(page_line.strip.downcase) }
     end
 
     # Find the index of the line in the page that includes the option title (slightly less specific than question titles)
