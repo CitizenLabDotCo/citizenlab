@@ -48,7 +48,9 @@ resource 'Ideas' do
           attributes: {
             job_type: 'Ideas::CopyJob',
             progress: 0,
+            error_count: 0,
             total: 3,
+            completed_at: nil,
             created_at: be_a(String),
             updated_at: be_a(String)
           },

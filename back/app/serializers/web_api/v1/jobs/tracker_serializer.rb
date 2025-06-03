@@ -5,7 +5,9 @@ class WebApi::V1::Jobs::TrackerSerializer < WebApi::V1::BaseSerializer
 
   attributes(
     :progress,
+    :error_count,
     :total,
+    :completed_at,
     :created_at,
     :updated_at
   )

@@ -83,7 +83,9 @@ resource 'Jobs' do
           attributes: {
             job_type: job.root_job_type,
             progress: 75,
+            error_count: 0,
             total: 150,
+            completed_at: nil,
             created_at: job.created_at.iso8601(3),
             updated_at: job.updated_at.iso8601(3)
           },
