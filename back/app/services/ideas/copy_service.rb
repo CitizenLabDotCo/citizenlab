@@ -7,8 +7,9 @@ module Ideas
 
       proposed_idea_status = IdeaStatus.find_by(code: 'proposed')
       transitive_pmethod = dest_phase.pmethod.transitive?
+      summary = CopySummary.new
 
-      new_ids = ideas.map do |idea|
+      ideas.each do |idea|
         copy = idea.dup.tap do |i|
           i.project = dest_phase.project
           i.phases = [dest_phase]
@@ -55,9 +56,13 @@ module Ideas
           updated_at: idea.updated_at,
           created_at: idea.created_at
         )
+      rescue StandardError => e
+        summary.errors[idea.id] = e # rubocop:disable Rails/DeprecatedActiveModelErrorsMethods
+      ensure
+        summary.count += 1
       end
 
-      Idea.where(id: new_ids)
+      summary
     end
 
     private
@@ -71,6 +76,15 @@ module Ideas
 
       if ideas.native_survey.exists?
         raise IdeaCopyNotAllowedError, :cannot_copy_native_survey_responses
+      end
+    end
+
+    class CopySummary
+      attr_accessor :count, :errors
+
+      def initialize(count: 0, errors: {})
+        @count = count
+        @errors = errors
       end
     end
 

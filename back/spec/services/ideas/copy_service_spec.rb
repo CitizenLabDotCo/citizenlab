@@ -38,8 +38,11 @@ describe Ideas::CopyService do
       create(:idea, publication_status: 'published')
     ]
 
-    service.copy(ideas, dest_phase, nil)
+    summary = service.copy(ideas, dest_phase, nil)
+
     expect(dest_phase.ideas.count).to eq(2)
+    expect(summary.count).to eq(2)
+    expect(summary.errors).to be_empty
   end
 
   it "replaces the 'submitted' publication status by 'published'" do
@@ -180,5 +183,20 @@ describe Ideas::CopyService do
     expect(copy.manual_votes_amount).to eq(0)
     expect(copy.manual_votes_last_updated_at).to be_nil
     expect(copy.manual_votes_last_updated_by_id).to be_nil
+  end
+
+  describe 'error handling' do
+    it 'continues processing other ideas when one fails' do
+      good_idea, bad_idea = create_pair(:idea)
+      allow(bad_idea).to receive(:dup).and_raise(StandardError.new('Test error'))
+
+      summary = service.copy([good_idea, bad_idea], dest_phase, nil)
+
+      expect(dest_phase.ideas.count).to eq(1)
+      expect(summary.count).to eq(2)
+      expect(summary.errors).to match(
+        bad_idea.id => be_a(StandardError).and(have_attributes(message: 'Test error'))
+      )
+    end
   end
 end

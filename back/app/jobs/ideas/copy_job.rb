@@ -52,8 +52,10 @@ module Ideas
         .where(created_at: ..until_created_at)
 
       batch = remaining_ideas.limit(batch_size)
-      Ideas::CopyService.new.copy(batch, dest_phase, current_user)
-      track_progress(batch.size)
+      summary = Ideas::CopyService.new.copy(batch, dest_phase, current_user)
+
+      error_count = summary.errors.size
+      track_progress(summary.count - error_count, error_count)
 
       if remaining_ideas.count > batch_size
         enqueue_child_job(
@@ -62,7 +64,7 @@ module Ideas
           idea_filters,
           dest_phase,
           current_user,
-          offset: offset + batch.size,
+          offset: offset + summary.count,
           batch_size: batch_size,
           until_created_at: until_created_at
         )

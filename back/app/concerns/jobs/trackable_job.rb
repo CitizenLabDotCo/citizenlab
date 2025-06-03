@@ -22,8 +22,8 @@ module Jobs
 
     private
 
-    def track_progress(increment = 1)
-      tracker.increment_progress(increment) if tracked?
+    def track_progress(progress = 1, error_count = 0)
+      tracker.increment_progress(progress, error_count) if tracked?
     end
 
     def update_tracker_total(total)
