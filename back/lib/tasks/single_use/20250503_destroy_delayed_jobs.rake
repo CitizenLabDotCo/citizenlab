@@ -149,9 +149,13 @@ namespace :single_use do
         time_diff_seconds = run_at_time - enqueued_at_time
 
         if time_diff_seconds > 1.month.to_i
-          puts "#{destroyed + 1}: Destroying job ID: #{job.id}, run_at: #{run_at_time}, enqueued_at: #{enqueued_at_time}, Time Diff: #{ActiveSupport::Duration.build(time_diff_seconds).inspect}"
-          job.destroy if execute
-          destroyed += 1
+          begin
+            puts "#{destroyed + 1}: Destroying job ID: #{job.id}, run_at: #{run_at_time}, enqueued_at: #{enqueued_at_time}, Time Diff: #{ActiveSupport::Duration.build(time_diff_seconds).inspect}"
+            job.destroy if execute
+            destroyed += 1
+          rescue StandardError => e
+            puts "Error destroying job ID: #{job.id}. Error: #{e.message}"
+          end
         end
       end
     end
