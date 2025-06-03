@@ -373,7 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.canParticipateTooltip": "{participants} kan deltage i denne fase.",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.cancelDeleteButtonText": "Afbryd",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.comment": "<b>Kommentar:</b> {participants}",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.commonGroundPhase": "Fælles jordfase",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.commonGroundPhase": "Fælles grundlag",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhase": "Slet fase",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseButtonText": "Ja, slet denne fase",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseConfirmationQuestion": "Er du sikker på, at du ønsker at slette denne fase?",
