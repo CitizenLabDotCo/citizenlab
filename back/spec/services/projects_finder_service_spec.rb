@@ -535,7 +535,7 @@ describe ProjectsFinderService do
         project
       end
 
-      # p1 - p7 indicates the order by start_at date.
+      # p1 - p8 indicates the order by start_at date.
       # Since we want to test the ordering, we start with p5 and p6,
       # otherwise the projects would already be in the right order.
 
@@ -557,14 +557,17 @@ describe ProjectsFinderService do
       # Project started before period and ends after period
       p4 = create_project(Date.new(2020, 4, 1), Date.new(2025, 1, 1))
 
+      # Project started during period and has open ended phase
+      p7 = create_project(Date.new(2023, 8, 1), nil)
+
       # Project started after period and ends after period
-      p7 = create_project(Date.new(2025, 1, 1), Date.new(2026, 1, 1))
+      p8 = create_project(Date.new(2025, 1, 1), Date.new(2026, 1, 1))
 
       result = service.new(
         Project.all, user, { start_at: start_period, end_at: end_period }
       ).projects_back_office
 
-      expect(result.pluck(:id)).to eq([p2, p3, p4, p5, p6].pluck(:id))
+      expect(result.pluck(:id)).to eq([p2, p3, p4, p5, p6, p7].pluck(:id))
     end
   end
 end

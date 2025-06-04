@@ -180,7 +180,13 @@ class ProjectsFinderService
 
   def projects_back_office
     @projects
-    # TODO
+      .joins("LEFT JOIN phases AS phases ON phases.project_id = projects.id")
+      .where(
+        "(phases.start_at, coalesce(phases.end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", 
+        @start_at, @end_at
+      )
+      .order('phases.start_at ASC')
+
   end
 
   private
