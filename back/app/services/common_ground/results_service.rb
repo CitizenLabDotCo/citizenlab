@@ -1,7 +1,8 @@
 module CommonGround
   class ResultsService
     def initialize(phase)
-      # TODO: check the phase type
+      CommonGround::Utils.check_common_ground!(phase)
+
       @phase = phase
     end
 

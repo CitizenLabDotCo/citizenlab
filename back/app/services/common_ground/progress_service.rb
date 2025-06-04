@@ -2,7 +2,7 @@ module CommonGround
   class ProgressService
     # @param [Phase] phase
     def initialize(phase)
-      check_common_ground!(phase)
+      CommonGround::Utils.check_common_ground!(phase)
 
       @phase = phase
     end
@@ -19,12 +19,6 @@ module CommonGround
     private
 
     attr_reader :phase
-
-    def check_common_ground!(phase)
-      unless phase.participation_method == ::ParticipationMethod::CommonGround.method_str
-        raise UnsupportedPhaseError
-      end
-    end
 
     def ideas
       # Currently, we don’t see a use for the other publication statuses in Common Ground.
@@ -55,7 +49,5 @@ module CommonGround
     ) do
       def next_idea_id = next_idea&.id
     end
-
-    class UnsupportedPhaseError < ArgumentError; end
   end
 end

@@ -7,6 +7,17 @@ describe CommonGround::ResultsService do
 
   let_it_be(:phase) { create(:common_ground_phase) }
 
+  describe '#initialize' do
+    context 'when phase is not a common ground phase' do
+      let(:phase) { create(:information_phase) }
+
+      it 'raises error when phase is not a common ground phase' do
+        expect { service }
+          .to raise_error(CommonGround::Errors::UnsupportedPhaseError)
+      end
+    end
+  end
+
   describe '#results' do
     subject(:results) { service.results(n) }
 

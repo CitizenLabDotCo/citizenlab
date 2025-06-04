@@ -11,7 +11,7 @@ describe CommonGround::ProgressService do
 
       it 'raises error when phase is not a common ground phase' do
         expect { service }
-          .to raise_error(CommonGround::ProgressService::UnsupportedPhaseError)
+          .to raise_error(CommonGround::Errors::UnsupportedPhaseError)
       end
     end
   end
