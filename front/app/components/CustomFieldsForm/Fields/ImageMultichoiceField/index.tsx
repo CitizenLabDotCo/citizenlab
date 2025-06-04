@@ -34,6 +34,18 @@ const HoverBox = styled(Box)<{ hoverColor: string }>`
   }
 `;
 
+const StyledGrid = styled(Box)<{ isSmallerThanPhone: boolean }>`
+  display: grid;
+  grid-template-columns: ${({ isSmallerThanPhone }) =>
+    isSmallerThanPhone ? '1fr' : 'repeat(2, 50%)'};
+  gap: 16px;
+  width: 100%;
+  justify-content: center;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-bottom: 16px;
+`;
+
 const ImageMultichoiceField = ({
   question,
   scrollErrorIntoView,
@@ -110,17 +122,7 @@ const ImageMultichoiceField = ({
         control={control}
         render={() => {
           return (
-            <Box
-              style={{
-                display: 'grid',
-                gridTemplateColumns: isSmallerThanPhone
-                  ? '1fr'
-                  : 'repeat(2, 50%)',
-                gap: '16px',
-                width: '100%',
-                justifyContent: 'center',
-              }}
-            >
+            <StyledGrid isSmallerThanPhone={isSmallerThanPhone}>
               {options.map((option, index: number) => {
                 return (
                   <HoverBox
@@ -174,7 +176,7 @@ const ImageMultichoiceField = ({
                   </HoverBox>
                 );
               })}
-            </Box>
+            </StyledGrid>
           );
         }}
       />
