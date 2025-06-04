@@ -42,7 +42,7 @@ RSpec.describe ParticipationMethod::CommonGround do
   its(:transitive?) { is_expected.to be(false) }
   its(:supports_status?) { is_expected.to be(false) }
   its(:supports_inputs_without_author?) { is_expected.to be(true) }
-  its(:supports_multiple_posts?) { is_expected.to be(true) }
+  its(:allow_posting_again_after) { is_expected.to eq(0.seconds) }
   its(:supports_edits_after_publication?) { is_expected.to be(true) }
   its(:supports_permitted_by_everyone?) { is_expected.to be(false) }
   its(:supports_multiple_phase_reports?) { is_expected.to be(false) }
