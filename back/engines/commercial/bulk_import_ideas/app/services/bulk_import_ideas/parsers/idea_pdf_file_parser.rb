@@ -179,6 +179,7 @@ module BulkImportIdeas::Parsers
       form_parsed_idea_row = idea_to_idea_row(form_parsed_idea, file)
       text_parsed_idea_row = idea_to_idea_row(text_parsed_idea, file)
       return form_parsed_idea_row if text_parsed_idea_row.blank?
+      return text_parsed_idea_row if form_parsed_idea_row.blank?
 
       # Merge the core fields and prefer the form parsed values
       merged_row = text_parsed_idea_row.merge(form_parsed_idea_row)
