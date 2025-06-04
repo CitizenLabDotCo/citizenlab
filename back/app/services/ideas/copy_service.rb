@@ -5,7 +5,7 @@ module Ideas
     def copy(ideas, dest_phase, _current_user)
       check_ideas!(ideas)
 
-      proposed_idea_status = IdeaStatus.find_by(code: 'proposed')
+      proposed_idea_status = IdeaStatus.find_by!(code: 'proposed', participation_method: 'ideation')
       transitive_pmethod = dest_phase.pmethod.transitive?
       summary = CopySummary.new
 

@@ -304,11 +304,15 @@ class WebApi::V1::IdeasController < ApplicationController
     authorize(dest_phase, :copy_inputs_to_phase?)
 
     job_args = [:submitted_or_published, copy_filters, dest_phase, current_user]
+    job_kwargs = { allow_duplicates: allow_duplicates? }
 
     tracker = if dry_run?
-      Ideas::CopyJob.dry_run(*job_args)
+      Ideas::CopyJob.dry_run(*job_args, **job_kwargs)
     else
-      Ideas::CopyJob.with_tracking(owner: current_user).perform_later(*job_args).tracker
+      Ideas::CopyJob
+        .with_tracking(owner: current_user)
+        .perform_later(*job_args, **job_kwargs)
+        .tracker
     end
 
     render json: WebApi::V1::Jobs::TrackerSerializer.new(
@@ -545,6 +549,10 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def dry_run?
     @dry_run ||= params[:dry_run]&.downcase.in? %w[true 1]
+  end
+
+  def allow_duplicates?
+    @allow_duplicates ||= params[:allow_duplicates]&.downcase.in? %w[true 1]
   end
 end
 
