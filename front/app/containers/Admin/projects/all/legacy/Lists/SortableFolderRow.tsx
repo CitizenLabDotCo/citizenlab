@@ -11,7 +11,7 @@ import SortableRow from 'components/admin/ResourceList/SortableRow';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
+import ProjectFolderRow from '../../../projectFolders/components/ProjectFolderRow';
 
 import FolderChildProjects from './FolderChildProjects';
 

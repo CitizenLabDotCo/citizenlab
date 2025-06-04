@@ -54,8 +54,8 @@ class IdeaCustomFieldsService
     enabled_fields_with_other_options.select(&:printable_legacy?)
   end
 
-  def importable_fields
-    enabled_fields_with_other_options.select(&:importable?)
+  def xlsx_importable_fields
+    enabled_fields_with_other_options.select(&:xlsx_importable?)
   end
 
   def enabled_fields
@@ -208,7 +208,7 @@ class IdeaCustomFieldsService
     fields.each do |field|
       all_fields << field
       all_fields << field.other_option_text_field(print_version:) if field.other_option_text_field(print_version:)
-      all_fields << field.follow_up_text_field if field.follow_up_text_field
+      all_fields << field.follow_up_text_field if field.follow_up_text_field && !print_version # NOTE: Currently not supported in print version
     end
     all_fields
   end

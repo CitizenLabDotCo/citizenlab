@@ -12,7 +12,7 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
-import ProjectRow from '../../components/ProjectRow';
+import ProjectRow from '../../../components/ProjectRow';
 import messages from '../messages';
 
 import SortableFolderRow from './SortableFolderRow';
