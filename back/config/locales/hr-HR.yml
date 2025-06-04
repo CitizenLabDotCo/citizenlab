@@ -332,6 +332,15 @@ hr:
       write_in_language: 'Napišite svoje odgovore na istom jeziku kao i ovaj obrazac'
       linear_scale_print_description: 'Napišite samo broj između %{min_label} i %{max_label}'
       unsupported_field: 'Ovo polje ne može se ispuniti na papiru. Umjesto toga, koristite online verziju ovog obrasca.'
+      ranking_print_description: 'Molimo vas da u svaki okvir upišete broj od 1 (najviše preferirano) do %{max_rank} (najmanje preferirano). Svaki broj upotrijebite točno jednom.'
+      matrix_print_description: 'Za svaki red označite jedan krug križićem kako biste naznačili svoju preferenciju.'
+      rating_print_description: 'Ocijenite ovo upisivanjem broja između 1 (najgore) i %{max_stars} (najbolje).'
+      sentiment_linear_scale_print_description: 'Molimo vas da napišete broj između 1 i 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Molimo vas da na karti ispod nacrtate X kako biste prikazali lokaciju ili umjesto toga napišete adresu.'
+      line_print_description: 'Molimo vas da nacrtate rutu na karti ispod.'
+      polygon_print_description: 'Molimo vas da nacrtate oblik na karti ispod.'
+      select_print_description: 'Odaberite samo jednu opciju.'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
