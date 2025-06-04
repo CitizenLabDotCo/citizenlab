@@ -155,6 +155,7 @@
   "app.components.FileUploader.a11y_removeFile": "Poista tämä tiedosto",
   "app.components.FileUploader.fileInputDescription": "Valitse tiedosto napsauttamalla",
   "app.components.FileUploader.fileUploadLabel": "Liitteet (enintään 50 Mt)",
+  "app.components.FileUploader.file_too_large2": "Yli {maxSizeMb}Mt:n kokoisia tiedostoja ei sallita.",
   "app.components.FileUploader.incorrect_extension": "Järjestelmämme ei tue {fileName} , sitä ei ladata.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Valittu tilasuodatin: kaikki",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# lähetys} other {# palautetta}}",

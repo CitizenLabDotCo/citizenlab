@@ -155,6 +155,7 @@
   "app.components.FileUploader.a11y_removeFile": "Ta bort den här filen",
   "app.components.FileUploader.fileInputDescription": "Klicka för att välja en fil",
   "app.components.FileUploader.fileUploadLabel": "Bilagor (max. 50 MB)",
+  "app.components.FileUploader.file_too_large2": "Filer som är större än {maxSizeMb}MB tillåts inte.",
   "app.components.FileUploader.incorrect_extension": "{fileName} stöds inte av vårt system, den kommer inte att laddas upp.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Valt statusfilter: alla",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# bidrag} other {# bidrag}}",
