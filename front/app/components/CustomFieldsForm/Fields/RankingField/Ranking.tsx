@@ -7,6 +7,7 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { extractOptions } from 'components/CustomFieldsForm/util';
 import messages from 'components/Form/Components/Controls/messages';
 import {
   DragAndDrop,
@@ -47,10 +48,11 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
 
   // If form data present, get options in that ranking order.
   // Otherwise, get option order from the question.
-  const questionOptions: IOption[] = question.options.map((option) => ({
-    value: option.key,
-    label: localize(option.title_multiloc),
-  }));
+  const questionOptions: IOption[] = extractOptions(
+    question,
+    localize,
+    question.random_option_ordering
+  );
 
   const options = data
     ? getOptionsFromData(data, questionOptions)

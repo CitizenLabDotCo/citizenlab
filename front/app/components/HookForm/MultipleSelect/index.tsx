@@ -43,7 +43,7 @@ const MultipleSelect = ({ name, scrollErrorIntoView, ...rest }: Props) => {
                   name,
                   newOption.map((o) => o.value)
                 );
-                trigger();
+                trigger(name);
               }}
             />
           );

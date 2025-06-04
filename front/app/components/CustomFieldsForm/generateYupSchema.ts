@@ -85,7 +85,9 @@ const generateYupValidationSchema = ({
       case 'text':
       case 'multiline_text': {
         if (key === 'location_description') {
-          schema[key] = string().nullable();
+          schema[key] = required
+            ? string().required(fieldRequired).nullable()
+            : string().nullable();
         } else {
           schema[key] = required ? string().required(fieldRequired) : string();
         }
@@ -93,11 +95,13 @@ const generateYupValidationSchema = ({
       }
 
       case 'number': {
-        if (key === 'proposed_budget') {
-          schema[key] = number().nullable();
-        } else {
-          schema[key] = required ? number().required(fieldRequired) : number();
-        }
+        schema[key] = required
+          ? number().required(fieldRequired)
+          : number()
+              .transform((value, originalValue) =>
+                typeof originalValue !== 'number' ? null : value
+              )
+              .nullable();
         break;
       }
 
@@ -166,6 +170,7 @@ const generateYupValidationSchema = ({
           ? array()
               .min(1, formatMessage(messages.imageRequired))
               .required(formatMessage(messages.imageRequired))
+              .nullable()
           : array().nullable();
 
         break;
@@ -231,9 +236,12 @@ const generateYupValidationSchema = ({
         const numberOfColumns = question.maximum ?? 11;
 
         schema[key] = required
-          ? object().test(
-              formatMessage(legacyMessages.allStatementsError),
-              (object) => {
+          ? object().test({
+              message: formatMessage(legacyMessages.allStatementsError),
+              test: (object) => {
+                if (typeof object !== 'object') {
+                  return false;
+                }
                 const keys = Object.keys(object);
                 const values = Object.values(object);
                 const isValid =
@@ -247,8 +255,8 @@ const generateYupValidationSchema = ({
                   });
 
                 return isValid;
-              }
-            )
+              },
+            })
           : object().nullable();
         break;
       }

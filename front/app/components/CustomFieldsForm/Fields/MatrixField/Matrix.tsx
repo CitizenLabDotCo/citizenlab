@@ -32,7 +32,7 @@ const StickyTh = styled(Th)`
 
   position: sticky;
   inset-inline-start: 0px;
-  z-index: 1;
+  z-index: 0;
   flex-grow: 1;
 
   ${media.phone`

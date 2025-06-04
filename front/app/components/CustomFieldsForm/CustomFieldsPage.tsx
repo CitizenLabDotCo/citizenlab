@@ -1,8 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { isEmpty } from 'lodash-es';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
@@ -55,6 +54,7 @@ type CustomFieldsPage = {
   phase?: IPhaseData;
   defaultValues?: any;
   customFields: IFlatCustomField[];
+  pagesRef: React.RefObject<HTMLDivElement>;
 };
 
 const CustomFieldsPage = ({
@@ -72,7 +72,9 @@ const CustomFieldsPage = ({
   phase,
   defaultValues,
   customFields,
+  pagesRef,
 }: CustomFieldsPage) => {
+  const [showFormFeedback, setShowFormFeedback] = useState(false);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
@@ -86,7 +88,6 @@ const CustomFieldsPage = ({
   const isIdeaEditPage = isPage('idea_edit', pathname);
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
-  const pagesRef = useRef<HTMLDivElement>(null);
 
   const [searchParams] = useSearchParams();
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
@@ -131,8 +132,12 @@ const CustomFieldsPage = ({
     }
 
     try {
+      setShowFormFeedback(false);
       await onSubmit(formValues);
     } catch (error) {
+      // Only show feedback if the form submission failed
+      // otherwise we rely on the field validation errors
+      setShowFormFeedback(true);
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
@@ -160,12 +165,8 @@ const CustomFieldsPage = ({
   });
 
   const onAcceptDisclaimer = async () => {
-    try {
-      await methods.handleSubmit((e) => onFormSubmit(e, true))();
-    } catch (error) {
-      handleHookFormSubmissionError(error, methods.setError);
-    }
     setIsDisclaimerOpened(false);
+    return await methods.handleSubmit((e) => onFormSubmit(e, true))();
   };
 
   const onCancelDisclaimer = () => {
@@ -174,8 +175,7 @@ const CustomFieldsPage = ({
 
   return (
     <FormProvider {...methods}>
-      {currentPageNumber === lastPageNumber - 1 &&
-        !isEmpty(methods.formState.errors) && <Feedback />}
+      {showFormFeedback && <Feedback />}
 
       <form id="idea-form">
         <Box
@@ -215,13 +215,7 @@ const CustomFieldsPage = ({
         </Box>
       )} */}
 
-          <Box
-            flex={'1 1 auto'}
-            overflowY="auto"
-            h="100%"
-            ref={pagesRef}
-            mb="40px"
-          >
+          <Box flex={'1 1 auto'} h="100%" mb="40px">
             {/* {isMapPage && isMobileOrSmaller && (
           <Box
             aria-hidden={true}
@@ -359,7 +353,7 @@ const CustomFieldsPage = ({
                   setCurrentPageNumber(currentPageNumber - 1);
                 }}
                 hasPreviousPage={currentPageNumber > 0}
-                isLoading={false}
+                isLoading={methods.formState.isSubmitting}
                 pageVariant={
                   currentPageNumber === lastPageNumber
                     ? 'after-submission'

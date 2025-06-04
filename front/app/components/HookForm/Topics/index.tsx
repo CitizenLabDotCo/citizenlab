@@ -61,7 +61,7 @@ const Topics = ({ name, projectId, scrollErrorIntoView, ...rest }: Props) => {
               availableTopics={getAllowedTopics()}
               onClick={(topicIds: string[]) => {
                 setValue(name, topicIds);
-                trigger();
+                trigger(name);
               }}
             />
           );
