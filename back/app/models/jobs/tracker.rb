@@ -106,7 +106,11 @@ module Jobs
     def complete!
       Tracker
         .where(id: id, completed_at: nil)
-        .update_all(completed_at: Time.current)
+        .update_all(
+          completed_at: Time.current,
+          # Using +Arel+ expressions to avoid race conditions.
+          total: Arel.sql('progress')
+        )
 
       reload
     end
@@ -117,6 +121,7 @@ module Jobs
       end
 
       Tracker.where(id: id, completed_at: nil).update_all(
+        # Using +Arel+ expressions to avoid race conditions.
         progress: Arel.sql('progress + ?', progress),
         error_count: Arel.sql('error_count + ?', error_count),
         total: Arel.sql('GREATEST(total, progress + ?)', progress)

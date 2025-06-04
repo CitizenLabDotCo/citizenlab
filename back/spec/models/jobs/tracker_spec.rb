@@ -98,5 +98,15 @@ RSpec.describe Jobs::Tracker do
       # `tracker` is stale now.
       expect { tracker.complete! }.not_to change { same_tracker.reload.completed_at }
     end
+
+    it 'updates the total if necessary' do
+      described_class.find(tracker.id).update!(progress: 3, error_count: 1, total: 5)
+      # `tracker` is stale now.
+      expect(tracker.total).to be_nil
+
+      tracker.complete!
+
+      expect(tracker.total).to eq(3)
+    end
   end
 end
