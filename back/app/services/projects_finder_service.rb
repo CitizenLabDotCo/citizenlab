@@ -6,6 +6,8 @@ class ProjectsFinderService
     @page_number = (params.dig(:page, :number) || 1).to_i
     @filter_by = params[:filter_by]
     @areas = params[:areas]
+    @start_at = params[:start_at]
+    @end_at = params[:end_at]
   end
 
   # Returns an ActiveRecord collection of published projects that are
@@ -177,6 +179,7 @@ class ProjectsFinderService
   end
 
   def projects_back_office
+    @projects
     # TODO
   end
 
