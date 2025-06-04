@@ -22,7 +22,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).submitted_or_published.with_content,
+      scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
 
@@ -50,7 +50,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_mini
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).submitted_or_published.with_content,
+      scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
 
@@ -73,6 +73,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_xlsx
+    puts 'here!!'
     ideas = IdeasFinder.new(
       params.merge(filter_can_moderate: true),
       scope: policy_scope(Idea).submitted_or_published,
@@ -113,7 +114,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def filter_counts
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).with_content,
+      scope: policy_scope(Idea),
       current_user: current_user
     ).find_records
 

@@ -55,7 +55,7 @@ module Export
       end
 
       def generate_phase_sheet(workbook, phase)
-        inputs = eager_load_inputs(phase.ideas.submitted_or_published)
+        inputs = eager_load_inputs(phase.ideas.submitted_or_published.with_content)
         generate_sheet(workbook, inputs, phase)
       end
 
