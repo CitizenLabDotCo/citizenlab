@@ -16,7 +16,7 @@ RSpec.describe Jobs::Tracker do
     it { is_expected.to validate_presence_of(:root_job_type) }
     it { is_expected.to validate_numericality_of(:progress).is_greater_than_or_equal_to(0) }
     it { is_expected.to validate_numericality_of(:error_count).is_greater_than_or_equal_to(0) }
-    it { is_expected.to validate_numericality_of(:total).is_greater_than(0).allow_nil }
+    it { is_expected.to validate_numericality_of(:total).is_greater_than_or_equal_to(0).allow_nil }
   end
 
   describe '#increment_progress' do

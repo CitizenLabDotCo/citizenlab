@@ -44,7 +44,7 @@ module Jobs
     validates :root_job_type, presence: true
     validates :progress, numericality: { greater_than_or_equal_to: 0 }
     validates :error_count, numericality: { greater_than_or_equal_to: 0 }
-    validates :total, numericality: { greater_than: 0 }, allow_nil: true
+    validates :total, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 
     def completed?
       completed_at.present?
