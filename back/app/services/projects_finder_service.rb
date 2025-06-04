@@ -186,7 +186,6 @@ class ProjectsFinderService
         @start_at, @end_at
       )
       .order('phases.start_at ASC')
-
   end
 
   private
