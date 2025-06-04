@@ -39,7 +39,7 @@
 #
 # A job tree consists of a root job and the jobs it enqueues recursively via +enqueue_child_job+.
 #
-# == Progress Tracking Fields
+# == Progress Tracking
 #
 # * +total+: Expected number of work units
 # * +progress+: Completed work units
@@ -50,6 +50,10 @@
 # guarantees it provides regarding the accuracy of progress are also the responsibility
 # of the job. Depending on the context, it might not always be possible to provide an
 # accurate estimate, and the estimate may change during execution due to external factors.
+#
+# The job must be explicitly marked as completed by calling +complete!+ on the tracker.
+# Again, that is because we do not want to make any assumptions about the accuracy of
+# the progress and total estimates.
 #
 # == Metadata
 #
