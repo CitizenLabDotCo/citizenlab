@@ -894,6 +894,15 @@ resource 'Phases' do
             votes: { down: 1, neutral: 1, up: 0 }
           )
         end
+
+        context 'when the phase is not "common ground"' do
+          let(:id) { create(:phase).id }
+
+          example 'Not found (404)', document: false do
+            do_request
+            assert_status 400
+          end
+        end
       end
     end
 

@@ -88,6 +88,8 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: WebApi::V1::CommonGround::ResultsSerializer
       .new(results, params: jsonapi_serializer_params)
       .serializable_hash
+  rescue CommonGround::Errors::UnsupportedPhaseError
+    head :bad_request
   end
 
   # Used for community_monitor_survey dashboard
