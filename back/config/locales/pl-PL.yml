@@ -333,6 +333,15 @@ pl:
       write_in_language: 'Napisz odpowiedzi w tym samym języku, co niniejszy formularz'
       linear_scale_print_description: 'Wpisz tylko numer z przedziału od %{min_label} do %{max_label} .'
       unsupported_field: 'Tego pola nie można wypełnić na papierze. Zamiast tego skorzystaj z internetowej wersji formularza.'
+      ranking_print_description: 'W każdym polu wpisz numer od 1 (najbardziej preferowany) do %{max_rank} (najmniej preferowany). Użyj każdej liczby dokładnie raz.'
+      matrix_print_description: 'Dla każdego rzędu zaznacz jedno kółko krzyżykiem, aby wskazać swoje preferencje.'
+      rating_print_description: 'Oceń to, wpisując liczbę od 1 (najgorszy) do %{max_stars} (najlepszy).'
+      sentiment_linear_scale_print_description: 'Wpisz liczbę od 1 do 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Narysuj X na poniższej mapie, aby wskazać lokalizację lub wpisz adres.'
+      line_print_description: 'Narysuj trasę na poniższej mapie.'
+      polygon_print_description: 'Narysuj kształt na poniższej mapie.'
+      select_print_description: 'Wybierz tylko jedną opcję.'
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:
