@@ -31,7 +31,38 @@
 #
 #  fk_rails_...  (owner_id => users.id)
 #  fk_rails_...  (project_id => projects.id)
+
+# +Jobs::Tracker+ provides progress tracking for ActiveJob job trees. It is meant to be used
+# in conjunction with the +Jobs::TrackableJob+ concern. Ideally, the methods of
+# +Jobs::TrackableJob+ should be used to update the tracker, rather than updating
+# it directly.
 #
+# A job tree consists of a root job and the jobs it enqueues recursively via +enqueue_child_job+.
+#
+# == Progress Tracking Fields
+#
+# * +total+: Expected number of work units
+# * +progress+: Completed work units
+# * +error_count+: Failed work units
+#
+# The definition of a work unit is left to the job. It can be anything that makes sense
+# for that job (e.g., number of items processed, number of API calls made, etc.). The
+# guarantees it provides regarding the accuracy of progress are also the responsibility
+# of the job. Depending on the context, it might not always be possible to provide an
+# accurate estimate, and the estimate may change during execution due to external factors.
+#
+# == Metadata
+#
+# The +context+, +project+, +owner+, and +root_job_type+ fields are used for filtering
+# and authorization. They provide information about the context in which the job is
+# executed.
+#
+# == Lifecycle
+#
+# 1. Created when the job is enqueued with tracking
+# 2. Updated as the job progresses
+# 3. Marked complete when the job finishes
+# 4. Retained for audit purposes
 module Jobs
   class Tracker < ApplicationRecord
     # The `root_job` is optional because Que removes the jobs that are completed. So,
