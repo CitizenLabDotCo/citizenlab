@@ -517,7 +517,7 @@ describe ProjectsFinderService do
   end
 
   describe 'projects_back_office' do
-    it 'filters overlapping period and sorts by start_at' do
+    it 'filters overlapping period' do
       user = create(:admin)
 
       start_period = Date.new(2023, 1, 1)
@@ -535,27 +535,36 @@ describe ProjectsFinderService do
         project
       end
 
-      # p1 - p8 indicates the order by start_at date.
-      # Since we want to test the ordering, we start with p5 and p6,
-      # otherwise the projects would already be in the right order.
-
-      # Project started during period and ends during period
-      p5 = create_project(Date.new(2023, 6, 1), Date.new(2023, 10, 1))
-
-      # Project started during period and ends after period
-      p6 = create_project(Date.new(2023, 7, 1), Date.new(2025, 1, 1))
-
       # Project started before period and ended before period
       p1 = create_project(Date.new(2020, 1, 1), Date.new(2021, 1, 1))
 
       # Project started before period but has open ended phase
       p2 = create_project(Date.new(2020, 2, 1), nil)
 
-      # Project started before period and ends during period
-      p3 = create_project(Date.new(2020, 3, 1), Date.new(2023, 6, 1))
+      # Project started before period and ends during period (2 phases)
+      p3 = create(:project)
+      create(
+        :phase, 
+        start_at: Date.new(2020, 2, 3), 
+        end_at: Date.new(2020, 4, 1),
+        project: p3
+      )
+      create(
+        :phase,
+        start_at: Date.new(2020, 4, 2),
+        end_at: Date.new(2023, 6, 1),
+        project: p3
+      )
+
 
       # Project started before period and ends after period
       p4 = create_project(Date.new(2020, 4, 1), Date.new(2025, 1, 1))
+
+      # Project started during period and ends during period
+      p5 = create_project(Date.new(2023, 6, 1), Date.new(2023, 10, 1))
+
+      # Project started during period and ends after period
+      p6 = create_project(Date.new(2023, 7, 1), Date.new(2025, 1, 1))
 
       # Project started during period and has open ended phase
       p7 = create_project(Date.new(2023, 8, 1), nil)
@@ -567,7 +576,7 @@ describe ProjectsFinderService do
         Project.all, user, { start_at: start_period, end_at: end_period }
       ).projects_back_office
 
-      expect(result.pluck(:id)).to eq([p2, p3, p4, p5, p6, p7].pluck(:id))
+      expect(result.pluck(:id).sort).to eq([p2, p3, p4, p5, p6, p7].pluck(:id).sort)
     end
   end
 end

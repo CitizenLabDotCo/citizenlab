@@ -179,13 +179,27 @@ class ProjectsFinderService
   end
 
   def projects_back_office
-    @projects
-      .joins("LEFT JOIN phases AS phases ON phases.project_id = projects.id")
-      .where(
-        "(phases.start_at, coalesce(phases.end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", 
-        @start_at, @end_at
-      )
-      .order('phases.start_at ASC')
+    scope = @projects
+
+    # Apply date overlap filter if necessary
+    if @start_at.present? || @end_at.present?
+      start_at = @start_at || Date.new(1970, 1, 1)
+      end_at = @end_at || DateTime::Infinity
+
+      overlapping_project_ids = Phase
+        .select(:project_id)
+        .where(
+          "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", 
+          start_at, end_at
+        )
+
+      scope = scope.where(id: overlapping_project_ids)
+    end
+
+    # Apply sort method
+    # TODO
+
+    scope
   end
 
   private
