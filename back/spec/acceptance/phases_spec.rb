@@ -172,6 +172,62 @@ resource 'Phases' do
     end
   end
 
+  get 'web_api/v1/phases/:id/progress' do
+    explanation 'Get progress of the current user in a Common Ground phase'
+
+    let_it_be(:phase) { create(:common_ground_phase) }
+    let(:id) { phase.id }
+
+    context 'when visitor' do
+      example 'Unauthorized (401)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when logged in' do
+      before do
+        current_user = create(:user)
+        header_token_for(current_user)
+
+        i1, @i2 = create_pair(:idea, project: phase.project, phases: [phase])
+        create(:reaction, reactable: i1, user: current_user)
+      end
+
+      # The next idea is necessarily the one that doesn't have a reaction
+      let(:next_idea) { @i2 }
+
+      example_request 'Get user progress' do
+        assert_status 200
+
+        expect(response_data).to match(
+          id: phase.id,
+          type: 'common_ground_progress',
+          attributes: {
+            num_ideas: 2,
+            num_reacted_ideas: 1
+          },
+          relationships: {
+            next_idea: { data: { id: next_idea.id, type: 'idea' } }
+          }
+        )
+
+        expect(json_response_body[:included]).to include(
+          hash_including(id: next_idea.id, type: 'idea')
+        )
+      end
+
+      context 'when the phase is not "common ground"' do
+        let(:id) { create(:phase).id }
+
+        example 'Not found (404)', document: false do
+          do_request
+          assert_status 404
+        end
+      end
+    end
+  end
+
   delete 'web_api/v1/phases/:id/inputs' do
     let(:project) { create(:project_with_active_native_survey_phase) }
     let(:active_phase) { project.phases.first }
@@ -779,6 +835,74 @@ resource 'Phases' do
             }
           }
         )
+      end
+    end
+
+    get 'web_api/v1/phases/:id/common_ground_results' do
+      let(:phase) { create(:common_ground_phase) }
+      let(:id) { phase.id }
+
+      context 'when not logged in' do
+        def create_idea(phase, downvotes, neutral, upvotes)
+          idea = create(:idea, project: phase.project, phases: [phase])
+          create_list(:reaction, downvotes, reactable: idea, mode: 'down')
+          create_list(:reaction, neutral, reactable: idea, mode: 'neutral')
+          create_list(:reaction, upvotes, reactable: idea, mode: 'up')
+          idea
+        end
+
+        let!(:i1) { create_idea(phase, 1, 0, 2) }
+        let!(:i2) { create_idea(phase, 1, 1, 0) }
+        let!(:i3) { create_idea(phase, 1, 1, 1) }
+
+        before do
+          # idea with only neutral reactions that should not be included in results
+          create_idea(phase, 0, 1, 0)
+        end
+
+        example_request 'Get common ground results' do
+          assert_status 200
+
+          expect(response_data).to match(
+            id: phase.id,
+            type: 'common_ground_results',
+            attributes: {
+              top_consensus_ideas: be_an(Array),
+              top_controversial_ideas: be_an(Array),
+              stats: {
+                num_participants: 9, # each reaction is from a different user
+                num_ideas: 4,
+                votes: { up: 3, down: 3, neutral: 3 }
+              }
+            }
+          )
+
+          expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id, i1.id, i3.id]
+          expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id, i1.id, i2.id]
+
+          top_controversial_idea = response_data.dig(:attributes, :top_controversial_ideas, 0)
+          expect(top_controversial_idea.with_indifferent_access).to match(
+            id: i3.id,
+            title_multiloc: i3.title_multiloc,
+            votes: { down: 1, neutral: 1, up: 1 }
+          )
+
+          top_consensus_idea = response_data.dig(:attributes, :top_consensus_ideas, 0)
+          expect(top_consensus_idea.with_indifferent_access).to match(
+            id: i2.id,
+            title_multiloc: i2.title_multiloc,
+            votes: { down: 1, neutral: 1, up: 0 }
+          )
+        end
+
+        context 'when the phase is not "common ground"' do
+          let(:id) { create(:phase).id }
+
+          example 'Not found (404)', document: false do
+            do_request
+            assert_status 400
+          end
+        end
       end
     end
 
