@@ -92,6 +92,7 @@ export const extractOptions = (
       return {
         value: selectOption.key,
         label: localize(selectOption.title_multiloc),
+        imageId: selectOption.image_id,
       } as IOption;
     });
 

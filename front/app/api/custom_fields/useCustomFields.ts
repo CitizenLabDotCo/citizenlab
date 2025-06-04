@@ -1,10 +1,10 @@
 import useCustomFieldOptionsBulk from 'api/custom_field_options/useCustomFieldOptionsBulk';
+import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
 import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
+import { IMatrixStatementsType } from 'api/custom_fields/types';
 
 import { ICustomFieldsParameters, IFlatCustomField } from './types';
 import useRawCustomFields from './useRawCustomFields';
-import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
-import { IMatrixStatementsType } from 'api/custom_fields/types';
 
 const useCustomFields = ({
   projectId,
@@ -17,7 +17,6 @@ const useCustomFields = ({
   const options = useCustomFieldOptionsBulk({
     customFields: result.data,
   });
-
   const statements = useCustomFieldStatements({
     projectId,
     phaseId,
@@ -36,10 +35,9 @@ const useCustomFields = ({
     (acc, customField) => {
       if (!customField.relationships.matrix_statements) return acc;
 
-      const statementIds =
-        customField.relationships.matrix_statements?.data.map(
-          (statement) => statement.id
-        );
+      const statementIds = customField.relationships.matrix_statements.data.map(
+        (statement) => statement.id
+      );
 
       acc[customField.id] = statementIds.map((id) => statementsById[id]);
       return acc;

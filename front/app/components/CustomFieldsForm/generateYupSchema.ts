@@ -121,7 +121,8 @@ const generateYupValidationSchema = ({
         break;
       }
 
-      case 'multiselect': {
+      case 'multiselect':
+      case 'multiselect_image': {
         let fieldSchema = array().of(string());
         if (required) {
           fieldSchema = fieldSchema.required(fieldRequired).min(
