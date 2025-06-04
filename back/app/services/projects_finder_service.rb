@@ -6,8 +6,6 @@ class ProjectsFinderService
     @page_number = (params.dig(:page, :number) || 1).to_i
     @filter_by = params[:filter_by]
     @areas = params[:areas]
-    @start_at = params[:start_at]
-    @end_at = params[:end_at]
   end
 
   # Returns an ActiveRecord collection of published projects that are
@@ -176,30 +174,6 @@ class ProjectsFinderService
     return order_by_created_at_and_id_with_distinct_on(finished_scope) if include_finished
 
     order_by_created_at_and_id_with_distinct_on(archived_scope)
-  end
-
-  def projects_back_office
-    scope = @projects
-
-    # Apply date overlap filter if necessary
-    if @start_at.present? || @end_at.present?
-      start_at = @start_at || Date.new(1970, 1, 1)
-      end_at = @end_at || DateTime::Infinity
-
-      overlapping_project_ids = Phase
-        .select(:project_id)
-        .where(
-          "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", 
-          start_at, end_at
-        )
-
-      scope = scope.where(id: overlapping_project_ids)
-    end
-
-    # Apply sort method
-    # TODO
-
-    scope
   end
 
   private
