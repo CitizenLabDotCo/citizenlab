@@ -30,7 +30,7 @@ module CommonGround
       {
         num_participants: num_participants,
         num_ideas: ideas.count,
-        votes: { up: 0, down: 0, neutral: 0 }.merge(reactions.group(:mode).count)
+        votes: { up: 0, down: 0, neutral: 0 }.merge(reactions.group(:mode).count.symbolize_keys)
       }
     end
 
