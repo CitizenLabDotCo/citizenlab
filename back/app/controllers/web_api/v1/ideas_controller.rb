@@ -118,6 +118,8 @@ class WebApi::V1::IdeasController < ApplicationController
       scope: policy_scope(Idea),
       current_user: current_user
     ).find_records
+
+    ideas = ideas.with_content
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:idea_trending_info)
 
