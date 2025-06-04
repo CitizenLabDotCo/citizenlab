@@ -302,8 +302,8 @@ nl-BE:
       option1: 'Optie 1'
       option2: 'Optie 2'
     form_end_page:
-      title_text_3: 'Bedankt voor het delen van je invoer!'
-      description_text_3: "Je invoer is succesvol ingediend."
+      title_text_3: 'Bedankt voor het delen van je bijdrage!'
+      description_text_3: "Je bijdrage is succesvol ingediend."
     form_user_page:
       title_text: 'Over jou'
     pdf_export:
