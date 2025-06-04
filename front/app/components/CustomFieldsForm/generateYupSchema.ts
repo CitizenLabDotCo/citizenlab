@@ -236,9 +236,12 @@ const generateYupValidationSchema = ({
         const numberOfColumns = question.maximum ?? 11;
 
         schema[key] = required
-          ? object().test(
-              formatMessage(legacyMessages.allStatementsError),
-              (object) => {
+          ? object().test({
+              message: formatMessage(legacyMessages.allStatementsError),
+              test: (object) => {
+                if (typeof object !== 'object') {
+                  return false;
+                }
                 const keys = Object.keys(object);
                 const values = Object.values(object);
                 const isValid =
@@ -252,8 +255,8 @@ const generateYupValidationSchema = ({
                   });
 
                 return isValid;
-              }
-            )
+              },
+            })
           : object().nullable();
         break;
       }
