@@ -248,16 +248,16 @@ describe 'Rack::Attack' do
   it 'limits search requests from same IP to 15 in 20 seconds' do
     freeze_time do
       15.times do
-        get '/web_api/v1/ideas?search=some-random-search-term'
+        get '/web_api/v1/admin_publications?search=something'
       end
       expect(status).to eq(200) # OK
 
-      get '/web_api/v1/ideas?search=some-random-search-term'
+      get '/web_api/v1/admin_publications?search=something'
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(20.seconds.from_now) do
-      get '/web_api/v1/ideas?search=some-random-search-term'
+      get '/web_api/v1/admin_publications?search=something'
       expect(status).to eq(200) # OK
     end
   end

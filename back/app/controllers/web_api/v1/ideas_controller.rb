@@ -22,11 +22,10 @@ class WebApi::V1::IdeasController < ApplicationController
   def index
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).submitted_or_published,
+      scope: policy_scope(Idea).submitted_or_published.with_content,
       current_user: current_user
     ).find_records
 
-    ideas = ideas.with_content
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
     # Only include after pagination - so we only get associations we need
@@ -51,11 +50,10 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_mini
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).submitted_or_published,
+      scope: policy_scope(Idea).submitted_or_published.with_content,
       current_user: current_user
     ).find_records
 
-    ideas = ideas.with_content
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:idea_trending_info)
 
@@ -115,11 +113,10 @@ class WebApi::V1::IdeasController < ApplicationController
   def filter_counts
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea),
+      scope: policy_scope(Idea).with_content,
       current_user: current_user
     ).find_records
 
-    ideas = ideas.with_content
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:idea_trending_info)
 
