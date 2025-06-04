@@ -11,14 +11,14 @@ resource 'Ideas' do
 
   post 'web_api/v1/phases/:to_phase_id/inputs/copy' do
     parameter :dry_run, <<~DESC.squish, type: :boolean, required: false, default: false
-      If true, returns the number of ideas that would be copied without executing the job
-      (default: false).
+      If true, returns the number of ideas that would be copied without executing the job.
+      (Default: false.)
     DESC
 
     parameter :allow_duplicates, <<~DESC.squish, type: :boolean, required: false, default: false
       If true, allows copying ideas that have already been copied to the target phase.
-      If false, skips ideas that have already been copied to the target phase.
-      (default: false).
+      If false, skips ideas that are already in the target phase or have previously been
+      copied to it. (Default: false.)
     DESC
 
     with_options scope: :filters do
