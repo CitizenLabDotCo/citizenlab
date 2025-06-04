@@ -69,6 +69,7 @@ const ImageMultichoiceField = ({
     formState: { errors: formContextErrors },
     watch,
     setValue,
+    trigger,
   } = useFormContext();
 
   const name = question.key;
@@ -121,6 +122,7 @@ const ImageMultichoiceField = ({
         shouldTouch: true,
       });
     }
+    trigger(name);
   };
 
   return (
