@@ -4,15 +4,28 @@ describe ProjectsFinderAdminService do
   let(:service) { described_class }
 
   describe 'recently_updated' do
-    # it 'sorts by recently updated' do
+    it 'sorts by recently updated' do
       # Project updated 1 year ago
       # TODO
 
-      # Project updated 1 month ago
+      # Project updated 10 months ago
       # TODO
 
-      # Project updated 1 year ago, but phase 2 months ago
-    # end
+      # Phase updated 9 months ago
+      # TODO
+
+      # Ideation form updated 8 months ago
+      # TODO
+
+      # Survey form updated 7 months ago
+      # TODO
+
+      # Project topics
+      # TODO
+
+      # Project allowed input topics
+      # TODO
+    end
 
     it 'filters overlapping period' do
       user = create(:admin)
