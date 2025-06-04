@@ -335,6 +335,15 @@ ar-MA:
       write_in_language: 'اكتب إجاباتك بنفس لغة هذا النموذج'
       linear_scale_print_description: 'الرجاء كتابة رقم بين %{min_label} و %{max_label} فقط'
       unsupported_field: 'لا يُمكن تعبئة هذا الحقل ورقيًا. يُرجى استخدام النسخة الإلكترونية من هذا النموذج.'
+      ranking_print_description: 'Please write a number from 1 (most preferred) and %{max_rank} (least preferred) in each box. Use each number exactly once.'
+      matrix_print_description: 'بالنسبة لكل صف، قم بوضع علامة على دائرة بعلامة X للإشارة إلى تفضيلاتك.'
+      rating_print_description: 'قم بتقييم هذا من خلال كتابة رقم بين 1 (الأسوأ) و %{max_stars} (الأفضل).'
+      sentiment_linear_scale_print_description: 'الرجاء كتابة رقم بين 1 و 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}، 3 = %{neutral_label}، 5 = %{max_label}.'
+      point_print_description: 'يرجى رسم علامة X على الخريطة أدناه لإظهار الموقع أو كتابة العنوان بدلاً من ذلك.'
+      line_print_description: 'يرجى رسم الطريق على الخريطة أدناه.'
+      polygon_print_description: 'يرجى رسم الشكل على الخريطة أدناه.'
+      select_print_description: 'اختر خيار واحد فقط'
   project_copy:
     title_suffix: 'نسخة'
   confirmations_mailer:

@@ -1,15 +1,19 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-def public_input_params(spec)
-  spec.parameter :title_multiloc, 'Multi-locale field with the idea title', scope: :idea, required: true, extra: 'Maximum 100 characters'
-  spec.parameter :body_multiloc, 'Multi-locale field with the idea body', scope: :idea, extra: 'Required if not draft'
-  spec.parameter :topic_ids, 'Array of ids of the associated topics', scope: :idea
-  spec.parameter :cosponsor_ids, 'Array of ids of the desired cosponsors', scope: :idea
-  spec.parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to', scope: :idea
-  spec.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
-  spec.parameter :idea_images_attributes, 'an array of base64 images to create', scope: :idea
-  spec.parameter :idea_files_attributes, 'an array of base64 files to create', scope: :idea
+def define_title_multiloc_param(context)
+  context.parameter :title_multiloc, 'Multi-locale field with the idea title', scope: :idea, required: true
+end
+
+def public_input_params(context)
+  define_title_multiloc_param(context)
+  context.parameter :body_multiloc, 'Multi-locale field with the idea body', scope: :idea, extra: 'Required if not draft'
+  context.parameter :topic_ids, 'Array of ids of the associated topics', scope: :idea
+  context.parameter :cosponsor_ids, 'Array of ids of the desired cosponsors', scope: :idea
+  context.parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to', scope: :idea
+  context.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
+  context.parameter :idea_images_attributes, 'an array of base64 images to create', scope: :idea
+  context.parameter :idea_files_attributes, 'an array of base64 files to create', scope: :idea
 end
 
 resource 'Ideas' do
@@ -723,6 +727,58 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :author_name)).not_to be_nil
             expect(response_data.dig(:relationships, :author, :data)).not_to be_nil
           end
+        end
+      end
+    end
+
+    context 'in a common ground phase' do
+      define_title_multiloc_param(self)
+
+      let(:phase) { create(:common_ground_phase, :ongoing, with_permissions: true) }
+      let(:project) { phase.project }
+
+      let(:idea_attrs) { attributes_for(:idea) }
+      let(:title_multiloc) { idea_attrs[:title_multiloc] }
+      let(:body_multiloc) { idea_attrs[:body_multiloc] }
+      let(:publication_status) { 'published' }
+
+      context 'when visitor' do
+        example_request '[Unauthorized] Cannot create a common-ground input' do
+          assert_status 401
+          expect(json_response_body)
+            .to match(errors: { base: [{ error: 'posting_not_supported' }] })
+        end
+      end
+
+      context 'when regular user' do
+        before { header_token_for(user) }
+
+        let(:user) { create(:user) }
+
+        example_request '[Unauthorized] Cannot create a common-ground input' do
+          assert_status 401
+          expect(json_response_body)
+            .to match(errors: { base: [{ error: 'posting_not_supported' }] })
+        end
+      end
+
+      context 'when admin-like' do
+        before { admin_header_token }
+
+        let(:phase_ids) { [phase.id] }
+
+        example 'Create a common-ground input' do
+          expect { do_request }
+            .to change(Idea, :count).by(1)
+            .and not_change(Reaction, :count)
+
+          assert_status 201
+
+          expect(response_data[:attributes].with_indifferent_access).to include(
+            title_multiloc: title_multiloc,
+            body_multiloc: {},
+            publication_status: 'published'
+          )
         end
       end
     end

@@ -8,11 +8,9 @@ RSpec.describe Idea do
   end
 
   describe 'title validation' do
-    it 'requires title_multiloc when supports_built_in_fields? is true' do
-      # Create an idea that will pass the supports_built_in_fields? condition
+    it 'requires title_multiloc when title_multiloc_required? is true' do
       idea = build(:idea, publication_status: 'published')
-
-      allow(idea).to receive(:supports_built_in_fields?).and_return(true)
+      allow(idea).to receive(:title_multiloc_required?).and_return(true)
 
       idea.title_multiloc = nil
 
@@ -20,9 +18,9 @@ RSpec.describe Idea do
       expect(idea.errors[:title_multiloc]).to include("can't be blank")
     end
 
-    it 'does not require title_multiloc when supports_built_in_fields? is false' do
+    it 'does not require title_multiloc when title_multiloc_required? is false' do
       idea = build(:idea)
-      allow(idea).to receive(:supports_built_in_fields?).and_return(false)
+      allow(idea).to receive(:title_multiloc_required?).and_return(false)
 
       idea.title_multiloc = nil
 
@@ -31,11 +29,9 @@ RSpec.describe Idea do
   end
 
   describe 'body validation' do
-    it 'requires title_multiloc when supports_built_in_fields? is true' do
-      # Create an idea that will pass the supports_built_in_fields? condition
+    it 'requires title_multiloc when body_multiloc_required? is true' do
       idea = build(:idea, publication_status: 'published')
-
-      allow(idea).to receive(:supports_built_in_fields?).and_return(true)
+      allow(idea).to receive(:body_multiloc_required?).and_return(true)
 
       idea.body_multiloc = nil
 
@@ -43,9 +39,9 @@ RSpec.describe Idea do
       expect(idea.errors[:body_multiloc]).to include("can't be blank")
     end
 
-    it 'does not require body_multiloc when supports_built_in_fields? is false' do
+    it 'does not require body_multiloc when body_multiloc_required? is false' do
       idea = build(:idea)
-      allow(idea).to receive(:supports_built_in_fields?).and_return(false)
+      allow(idea).to receive(:body_multiloc_required?).and_return(false)
 
       idea.body_multiloc = nil
 

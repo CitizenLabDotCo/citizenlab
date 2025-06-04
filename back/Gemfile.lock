@@ -1467,7 +1467,6 @@ DEPENDENCIES
   spring-commands-rspec
   spring-watcher-listen (~> 2.1)
   stackprof (~> 0.2.26)
-  stringio
   surveys!
   test-prof (~> 1.3)
   user_custom_fields!
