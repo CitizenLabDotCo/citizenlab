@@ -22,8 +22,8 @@ module Jobs
 
     private
 
-    def track_progress(increment = 1)
-      tracker.increment_progress(increment) if tracked?
+    def track_progress(progress = 1, error_count = 0)
+      tracker.increment_progress(progress, error_count) if tracked?
     end
 
     def update_tracker_total(total)
@@ -34,8 +34,13 @@ module Jobs
       tracker.update!(total: total) if tracked? && tracker.total.nil?
     end
 
+    # Has the same signature as the job's +perform+ method.
     def estimate_tracker_total(...)
       nil
+    end
+
+    def job_tracking_context
+      raise NotImplementedError
     end
 
     def enqueue_child_job(job_class, ...)
@@ -64,12 +69,15 @@ module Jobs
       def perform_later(...)
         QueJob.transaction do
           job = @job_class.perform_later(...)
+          context = job.send(:job_tracking_context)
 
           ::Jobs::Tracker.create!(
             root_job_id: job.send(:root_job_id),
             root_job_type: job.class.name,
             total: job.send(:estimate_tracker_total, ...),
-            owner_id: @owner&.id
+            owner_id: @owner&.id,
+            context: context,
+            project_id: context.try(:project_id)
           )
 
           job

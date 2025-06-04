@@ -3,6 +3,9 @@
 module Ideas
   class CopyJob < ApplicationJob
     include Jobs::TrackableJob
+
+    delegate :estimate_tracker_total, :idea_scope, to: :class
+
     ##
     # Copies a batch of ideas to a specified destination phase.
     #
@@ -33,18 +36,19 @@ module Ideas
     # @param [Time, nil] until_created_at
     #   Copy only ideas created up to this timestamp. If nil, defaults to current time.
     #   This is a safeguard against infinite loops.
+    #
+    # @param [Boolean] allow_duplicates
+    #   Whether to allow copying ideas that have already been copied to the destination phase.
+    #   Default is false.
+    #
     def perform(
-      idea_scope, idea_filters, dest_phase, current_user,
+      idea_scope, idea_filters, dest_phase, current_user, allow_duplicates: false,
       # The following params are for batch processing
       offset: 0, batch_size: 100, until_created_at: nil
     )
       until_created_at = ensure_until_created_at(until_created_at)
 
-      ideas = IdeasFinder.new(
-        idea_filters,
-        scope: IdeaPolicy::Scope.new(current_user, Idea.public_send(idea_scope)).resolve,
-        current_user: current_user
-      ).find_records
+      ideas = self.idea_scope(idea_scope, idea_filters, dest_phase, current_user, allow_duplicates:)
 
       remaining_ideas = ideas
         .order(:created_at, :id)
@@ -52,8 +56,8 @@ module Ideas
         .where(created_at: ..until_created_at)
 
       batch = remaining_ideas.limit(batch_size)
-      Ideas::CopyService.new.copy(batch, dest_phase, current_user)
-      track_progress(batch.size)
+      summary = Ideas::CopyService.new.copy(batch, dest_phase, current_user)
+      track_progress(summary.count, summary.error_count)
 
       if remaining_ideas.count > batch_size
         enqueue_child_job(
@@ -62,24 +66,56 @@ module Ideas
           idea_filters,
           dest_phase,
           current_user,
-          offset: offset + batch.size,
+          offset: offset + summary.count,
           batch_size: batch_size,
           until_created_at: until_created_at
         )
+      else
+        complete!
       end
     end
 
-    def estimate_tracker_total(idea_scope, idea_filters, _dest_phase, current_user, **_args)
-      IdeasFinder.new(
+    def self.dry_run(idea_scope, idea_filters, dest_phase, current_user, **args)
+      Jobs::Tracker.new(
+        id: SecureRandom.uuid,
+        root_job_id: nil,
+        root_job_type: name,
+        owner: current_user,
+        context: dest_phase,
+        project_id: dest_phase.project_id,
+        total: estimate_tracker_total(idea_scope, idea_filters, dest_phase, current_user, **args)
+      )
+    end
+
+    def self.estimate_tracker_total(idea_scope, idea_filters, dest_phase, current_user, allow_duplicates: false, **_args)
+      idea_scope(idea_scope, idea_filters, dest_phase, current_user, allow_duplicates:).count
+    end
+
+    def self.idea_scope(idea_scope, idea_filters, dest_phase, current_user, allow_duplicates: false)
+      ideas = IdeasFinder.new(
         idea_filters,
         scope: IdeaPolicy::Scope.new(current_user, Idea.public_send(idea_scope)).resolve,
         current_user: current_user
-      ).find_records.count
+      ).find_records
+
+      unless allow_duplicates
+        already_copied = RelatedIdea.where(idea: dest_phase.ideas).select(:related_idea_id)
+        ideas = ideas.where.not(id: already_copied).where.not(id: dest_phase.ideas)
+      end
+
+      ideas
     end
 
     private
 
+    def job_tracking_context
+      arguments[2] # dest_phase
+    end
+
     def ensure_until_created_at(until_created_at)
+      # We do not allow copying ideas created in the future. Aside from being questionable
+      # on its own, this could lead to an infinite loop if the source and destination phases
+      # are the same (not the typical use case, but better safe than sorry).
       [until_created_at, Time.zone.now].compact.min
     end
   end

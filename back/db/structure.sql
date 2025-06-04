@@ -35,8 +35,10 @@ ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_d6353758d5;
+ALTER TABLE IF EXISTS ONLY public.related_ideas DROP CONSTRAINT IF EXISTS fk_rails_d1e5b6deaa;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1892257e3;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_d0209b82ff;
+ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_cfd1ddfa6b;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_cd2a592e7b;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_cc8b68bfb4;
 ALTER TABLE IF EXISTS ONLY public.analysis_insights DROP CONSTRAINT IF EXISTS fk_rails_cc6c7b26fc;
@@ -112,6 +114,7 @@ ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_5471f55cd6;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS fk_rails_5373344100;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_50335fc43f;
+ALTER TABLE IF EXISTS ONLY public.related_ideas DROP CONSTRAINT IF EXISTS fk_rails_4fb3411b90;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_projects_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_4ecebb6e8a;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_4aea6afa11;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_47abdd0847;
@@ -181,6 +184,9 @@ DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name_tsvector;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
+DROP INDEX IF EXISTS public.index_related_ideas_on_related_idea_id;
+DROP INDEX IF EXISTS public.index_related_ideas_on_idea_id_and_related_idea_id;
+DROP INDEX IF EXISTS public.index_related_ideas_on_idea_id;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
@@ -240,7 +246,10 @@ DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_type;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_id;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_project_id;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_owner_id;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_context;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_completed_at;
 DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
 DROP INDEX IF EXISTS public.index_invites_on_invitee_id;
@@ -413,6 +422,7 @@ ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS spam_re
 ALTER TABLE IF EXISTS ONLY public.schema_migrations DROP CONSTRAINT IF EXISTS schema_migrations_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS report_builder_published_graph_data_units_pkey;
+ALTER TABLE IF EXISTS ONLY public.related_ideas DROP CONSTRAINT IF EXISTS related_ideas_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_values_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_lockers DROP CONSTRAINT IF EXISTS que_lockers_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_jobs DROP CONSTRAINT IF EXISTS que_jobs_pkey;
@@ -531,6 +541,7 @@ DROP TABLE IF EXISTS public.spam_reports;
 DROP TABLE IF EXISTS public.schema_migrations;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
+DROP TABLE IF EXISTS public.related_ideas;
 DROP TABLE IF EXISTS public.que_values;
 DROP TABLE IF EXISTS public.que_lockers;
 DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
@@ -2643,7 +2654,12 @@ CREATE TABLE public.jobs_trackers (
     total integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    owner_id uuid
+    owner_id uuid,
+    completed_at timestamp(6) without time zone,
+    context_type character varying,
+    context_id uuid,
+    project_id uuid,
+    error_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -3104,6 +3120,19 @@ CREATE TABLE public.que_values (
     CONSTRAINT valid_value CHECK ((jsonb_typeof(value) = 'object'::text))
 )
 WITH (fillfactor='90');
+
+
+--
+-- Name: related_ideas; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.related_ideas (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    idea_id uuid NOT NULL,
+    related_idea_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
 
 
 --
@@ -4161,6 +4190,14 @@ ALTER TABLE ONLY public.que_lockers
 
 ALTER TABLE ONLY public.que_values
     ADD CONSTRAINT que_values_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: related_ideas related_ideas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.related_ideas
+    ADD CONSTRAINT related_ideas_pkey PRIMARY KEY (id);
 
 
 --
@@ -5384,10 +5421,31 @@ CREATE INDEX index_invites_on_token ON public.invites USING btree (token);
 
 
 --
+-- Name: index_jobs_trackers_on_completed_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_trackers_on_completed_at ON public.jobs_trackers USING btree (completed_at);
+
+
+--
+-- Name: index_jobs_trackers_on_context; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_trackers_on_context ON public.jobs_trackers USING btree (context_type, context_id);
+
+
+--
 -- Name: index_jobs_trackers_on_owner_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_jobs_trackers_on_owner_id ON public.jobs_trackers USING btree (owner_id);
+
+
+--
+-- Name: index_jobs_trackers_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_trackers_on_project_id ON public.jobs_trackers USING btree (project_id);
 
 
 --
@@ -5801,6 +5859,27 @@ CREATE UNIQUE INDEX index_reactions_on_reactable_type_and_reactable_id_and_user_
 --
 
 CREATE INDEX index_reactions_on_user_id ON public.reactions USING btree (user_id);
+
+
+--
+-- Name: index_related_ideas_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_related_ideas_on_idea_id ON public.related_ideas USING btree (idea_id);
+
+
+--
+-- Name: index_related_ideas_on_idea_id_and_related_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_related_ideas_on_idea_id_and_related_idea_id ON public.related_ideas USING btree (idea_id, related_idea_id);
+
+
+--
+-- Name: index_related_ideas_on_related_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_related_ideas_on_related_idea_id ON public.related_ideas USING btree (related_idea_id);
 
 
 --
@@ -6313,6 +6392,14 @@ ALTER TABLE ONLY public.notifications
 
 ALTER TABLE ONLY public.analytics_dimension_projects_fact_visits
     ADD CONSTRAINT fk_rails_4ecebb6e8a FOREIGN KEY (fact_visit_id) REFERENCES public.analytics_fact_visits(id);
+
+
+--
+-- Name: related_ideas fk_rails_4fb3411b90; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.related_ideas
+    ADD CONSTRAINT fk_rails_4fb3411b90 FOREIGN KEY (related_idea_id) REFERENCES public.ideas(id);
 
 
 --
@@ -6916,6 +7003,14 @@ ALTER TABLE ONLY public.analytics_dimension_locales_fact_visits
 
 
 --
+-- Name: jobs_trackers fk_rails_cfd1ddfa6b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jobs_trackers
+    ADD CONSTRAINT fk_rails_cfd1ddfa6b FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: static_page_files fk_rails_d0209b82ff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6929,6 +7024,14 @@ ALTER TABLE ONLY public.static_page_files
 
 ALTER TABLE ONLY public.projects
     ADD CONSTRAINT fk_rails_d1892257e3 FOREIGN KEY (default_assignee_id) REFERENCES public.users(id);
+
+
+--
+-- Name: related_ideas fk_rails_d1e5b6deaa; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.related_ideas
+    ADD CONSTRAINT fk_rails_d1e5b6deaa FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
 
 
 --
@@ -7146,6 +7249,8 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250603161856'),
+('20250528153448'),
 ('20250527084054'),
 ('20250521085055'),
 ('20250519080057'),

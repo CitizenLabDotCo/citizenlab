@@ -5,41 +5,108 @@ require 'rails_helper'
 RSpec.describe Jobs::Tracker do
   let(:tracker) { create(:jobs_tracker) }
 
+  describe 'associations' do
+    it { is_expected.to belong_to(:root_job).class_name('QueJob').optional }
+    it { is_expected.to belong_to(:owner).class_name('User').optional }
+    it { is_expected.to belong_to(:context).optional }
+    it { is_expected.to belong_to(:project).optional }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:root_job_type) }
+    it { is_expected.to validate_numericality_of(:total).is_greater_than_or_equal_to(:progress).allow_nil }
+    it { is_expected.to validate_numericality_of(:progress).is_greater_than_or_equal_to(:error_count) }
+    it { is_expected.to validate_numericality_of(:error_count).is_greater_than_or_equal_to(0) }
+
+    it 'validates that error_count is less than or equal to progress' do
+      tracker.progress = 5
+      tracker.error_count = 3
+      expect(tracker).to be_valid
+
+      tracker.error_count = 5
+      expect(tracker).to be_valid
+
+      tracker.error_count = 6
+      expect(tracker).not_to be_valid
+      expect(tracker.errors[:progress]).to be_present
+    end
+
+    it 'validates that progress is less than or equal to total' do
+      tracker.total = 5
+      tracker.progress = 3
+      expect(tracker).to be_valid
+
+      tracker.progress = 5
+      expect(tracker).to be_valid
+
+      tracker.progress = 6
+      expect(tracker).not_to be_valid
+      expect(tracker.errors[:total]).to be_present
+    end
+  end
+
   describe '#increment_progress' do
     it 'atomically increments the progress' do
       same_tracker = described_class.find(tracker.id)
       expect(tracker.progress).to eq(0)
       expect(same_tracker.progress).to eq(0)
 
-      tracker.increment_progress
-      same_tracker.increment_progress(10)
+      tracker.increment_progress(20, 10)
+      same_tracker.increment_progress(2, 1)
 
-      expect(tracker.reload.progress).to eq(11)
-      expect(same_tracker.reload.progress).to eq(11)
+      tracker.reload
+      same_tracker.reload
+
+      expect(tracker.progress).to eq(22)
+      expect(same_tracker.progress).to eq(22)
+      expect(tracker.error_count).to eq(11)
+      expect(same_tracker.error_count).to eq(11)
+    end
+
+    it 'atomically adjusts the total if necessary' do
+      described_class.find(tracker.id).update!(progress: 3, error_count: 2, total: 5)
+      # `tracker` is stale now.
+
+      tracker.increment_progress(4, 1)
+
+      expect(tracker.total).to eq(7)
+    end
+
+    it 'raises an error when error_count exceeds progress in increment_progress' do
+      expect { tracker.increment_progress(5, 6) }.to raise_error(
+        ArgumentError, 'error_count must be less than or equal to progress'
+      )
+    end
+
+    it 'allows error_count equal to progress in increment_progress' do
+      expect { tracker.increment_progress(5, 5) }.not_to raise_error
+      expect(tracker.progress).to eq(5)
+      expect(tracker.error_count).to eq(5)
     end
   end
 
-  describe '#complete' do
-    it 'sets progress to total' do
-      tracker.update!(total: 200)
-      tracker.complete
+  describe '#complete!' do
+    it 'atomically sets the completed_at field' do
+      same_tracker = described_class.find(tracker.id)
+      expect(tracker.completed_at).to be_nil
+      expect(same_tracker.completed_at).to be_nil
 
-      expect(tracker.reload.progress).to eq(200)
-    end
-  end
+      completed_at = 3.minutes.ago
+      travel_to(completed_at) { same_tracker.complete! }
+      expect(same_tracker.completed_at).to be_within(1.second).of(completed_at)
 
-  describe '#percentage' do
-    it 'returns the percentage of progress' do
-      tracker.update!(total: 150, progress: 75)
-
-      expect(tracker.percentage).to eq(50)
+      # `tracker` is stale now.
+      expect { tracker.complete! }.not_to change { same_tracker.reload.completed_at }
     end
 
-    it 'returns 100 when progress is greater than or equal to total' do
-      tracker.update!(progress: 150)
+    it 'updates the total if necessary' do
+      described_class.find(tracker.id).update!(progress: 3, error_count: 1, total: 5)
+      # `tracker` is stale now.
+      expect(tracker.total).to be_nil
 
-      expect(tracker.total).to eq(100)
-      expect(tracker.percentage).to eq(100)
+      tracker.complete!
+
+      expect(tracker.total).to eq(3)
     end
   end
 end

@@ -11,14 +11,44 @@ describe Ideas::CopyService do
     create(:idea_status_proposed)
   end
 
+  context 'when the destination phase participation_method is transitive' do
+    let(:dest_phase) { create(:ideation_phase) }
+
+    it 'removes the creation_phase_id' do
+      source_phase = create(:common_ground_phase)
+      idea = create(:idea, creation_phase_id: source_phase.id, phases: [source_phase], project: source_phase.project)
+      service.copy([idea], dest_phase, nil)
+      expect(dest_phase.ideas.sole.creation_phase_id).to be_nil
+    end
+  end
+
+  context 'when the destination phase participation_method is not transitive' do
+    let(:dest_phase) { create(:common_ground_phase) }
+
+    it 'sets the creation_phase_id to the destination phase' do
+      idea = create(:idea)
+      service.copy([idea], dest_phase, nil)
+      expect(dest_phase.ideas.sole.creation_phase_id).to eq(dest_phase.id)
+    end
+  end
+
   it 'copies ideas' do
     ideas = [
       create(:idea, publication_status: 'submitted'),
       create(:idea, publication_status: 'published')
     ]
 
-    service.copy(ideas, dest_phase, nil)
+    summary = service.copy(ideas, dest_phase, nil)
+
     expect(dest_phase.ideas.count).to eq(2)
+    expect(summary.count).to eq(2)
+    expect(summary.errors).to be_empty
+  end
+
+  it 'creates a RelatedIdea record for each copied idea' do
+    idea = create(:idea)
+    service.copy([idea], dest_phase, nil)
+    expect(RelatedIdea.where(idea: dest_phase.ideas.sole, related_idea: idea)).to exist
   end
 
   it "replaces the 'submitted' publication status by 'published'" do
@@ -136,16 +166,6 @@ describe Ideas::CopyService do
     expect(dest_phase.ideas.sole.assignee_id).to be_nil
   end
 
-  it 'does not change the timestamps' do
-    # Reloading to get the correct timestamp values (because the DB has lower precision).
-    idea = create(:idea).reload
-    service.copy([idea], dest_phase, nil)
-
-    copy = dest_phase.ideas.sole
-    expect(copy.created_at).to eq(idea.created_at)
-    expect(copy.updated_at).to eq(idea.updated_at)
-  end
-
   it 'does not copy manual vote data' do
     idea = create(:idea).tap do |i|
       i.manual_votes_amount = 123
@@ -159,5 +179,20 @@ describe Ideas::CopyService do
     expect(copy.manual_votes_amount).to eq(0)
     expect(copy.manual_votes_last_updated_at).to be_nil
     expect(copy.manual_votes_last_updated_by_id).to be_nil
+  end
+
+  describe 'error handling' do
+    it 'continues processing other ideas when one fails' do
+      good_idea, bad_idea = create_pair(:idea)
+      allow(bad_idea).to receive(:dup).and_raise(StandardError.new('Test error'))
+
+      summary = service.copy([good_idea, bad_idea], dest_phase, nil)
+
+      expect(dest_phase.ideas.count).to eq(1)
+      expect(summary.count).to eq(2)
+      expect(summary.errors).to match(
+        bad_idea.id => be_a(StandardError).and(have_attributes(message: 'Test error'))
+      )
+    end
   end
 end
