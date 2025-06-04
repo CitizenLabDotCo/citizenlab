@@ -1032,8 +1032,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "besøk supportsenteret vårt",
   "app.containers.Admin.projects.all.askPersonalData3": "Legg til felt for navn og e-post",
-  "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Spørsmål som ikke støttes for øyeblikket: Bilder, tagger og filopplasting.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Spørsmål som ikke støttes for øyeblikket: Kartleggingsspørsmål (slipp nål, tegn rute og tegn område), bildevalgspørsmål, rangeringsspørsmål, matrisespørsmål og filopplastingsspørsmål.",
   "app.containers.Admin.projects.all.collapsibleInstructionsEndTitle": "Slutten av skjemaet",
   "app.containers.Admin.projects.all.collapsibleInstructionsStartTitle": "Begynnelsen av skjemaet",
   "app.containers.Admin.projects.all.components.archived": "Gjennomført",
