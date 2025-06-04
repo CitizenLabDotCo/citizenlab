@@ -8,6 +8,7 @@ RSpec.describe Project do
 
     it { is_expected.to be_valid }
     it { is_expected.to have_one(:review).class_name('ProjectReview').dependent(:destroy) }
+    it { is_expected.to have_many(:jobs_trackers).class_name('Jobs::Tracker').dependent(:destroy) }
 
     it 'has a preview token' do
       expect(project.preview_token).to be_present
