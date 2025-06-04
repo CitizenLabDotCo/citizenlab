@@ -228,6 +228,7 @@ class Idea < ApplicationRecord
     where_pmethod(&:supports_public_visibility?)
   }
   scope :transitive, -> { where creation_phase: nil }
+  scope :with_content, -> { where.not(title_multiloc: {}, body_multiloc: {}) }
 
   scope :native_survey, -> { where(creation_phase: Phase.where(participation_method: 'native_survey')) } # TODO: Delete
   scope :draft_surveys, lambda { # TODO: Delete

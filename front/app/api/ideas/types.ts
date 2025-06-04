@@ -242,6 +242,7 @@ export interface IIdeaQueryParameters {
   filter_can_moderate?: boolean;
   basket_id?: string;
   transitive?: boolean;
+  with_content?: boolean;
 }
 
 export interface IIdeaApprovals {

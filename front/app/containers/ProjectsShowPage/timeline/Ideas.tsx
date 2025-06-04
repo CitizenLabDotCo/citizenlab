@@ -56,7 +56,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       search: searchParam ?? undefined,
       topics: topicsParam ? JSON.parse(topicsParam) : undefined,
       idea_status: ideaStatusParam ?? undefined,
-      transitive: true, // Filter out unsuitable ideas (e.g. survey responses)
+      with_content: true,
     }),
     [
       config,

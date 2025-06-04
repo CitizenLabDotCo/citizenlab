@@ -57,6 +57,10 @@ class IdeasFinder < ApplicationFinder
     scope(:feedback_needed) if feedback_needed
   end
 
+  def with_content_condition(with_content)
+    with_content ? records.with_content : records
+  end
+
   def search_condition(search)
     _search_restricted? ? scope(:search_by_all, search) : scope(:restricted_search, search)
   end
