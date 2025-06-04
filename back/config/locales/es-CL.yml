@@ -331,6 +331,15 @@ es-CL:
       write_in_language: 'Escribe tus respuestas en la misma lengua que este formulario'
       linear_scale_print_description: 'Por favor escribe sólo un número entre %{min_label} y %{max_label}'
       unsupported_field: 'Este campo no puede rellenarse en papel. Utiliza en su lugar la versión online de este formulario.'
+      ranking_print_description: 'Escribe un número del 1 (más preferido) y %{max_rank} (menos preferido) en cada casilla. Utiliza cada número exactamente una vez.'
+      matrix_print_description: 'Para cada fila, marca un círculo con una cruz para indicar tu preferencia.'
+      rating_print_description: 'Valóralo escribiendo un número entre 1 (peor) y %{max_stars} (mejor).'
+      sentiment_linear_scale_print_description: 'Escribe un número entre 1 y 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Por favor, dibuja una X en el mapa de abajo para mostrar la ubicación o escribe la dirección en su lugar.'
+      line_print_description: 'Dibuja una ruta en el mapa de abajo.'
+      polygon_print_description: 'Dibuja una forma en el mapa de abajo.'
+      select_print_description: 'Elige sólo una opción.'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:
