@@ -227,7 +227,7 @@ class Idea < ApplicationRecord
     where_pmethod(&:supports_public_visibility?)
   }
 
-  scope :with_content, -> { where("title_multiloc != '{}' AND body_multiloc != '{}'") }
+  scope :with_content, -> { where("ideas.title_multiloc != '{}' AND ideas.body_multiloc != '{}'") }
 
   scope :transitive, lambda { |transitive = true|
     transitive ? where(creation_phase: nil) : where.not(creation_phase: nil)
