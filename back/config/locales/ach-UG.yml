@@ -331,6 +331,15 @@ ach:
       write_in_language: 'crwdns1160124:0crwdne1160124:0'
       linear_scale_print_description: 'crwdns2158536:0%{min_label}crwdnd2158536:0%{max_label}crwdne2158536:0'
       unsupported_field: 'crwdns4607207:0crwdne4607207:0'
+      ranking_print_description: 'crwdns4708651:0%{max_rank}crwdne4708651:0'
+      matrix_print_description: 'crwdns4708653:0crwdne4708653:0'
+      rating_print_description: 'crwdns4708655:0%{max_stars}crwdne4708655:0'
+      sentiment_linear_scale_print_description: 'crwdns4708657:0crwdne4708657:0'
+      sentiment_linear_scale_print_labels: 'crwdns4708659:0%{min_label}crwdnd4708659:0%{neutral_label}crwdnd4708659:0%{max_label}crwdne4708659:0'
+      point_print_description: 'crwdns4708661:0crwdne4708661:0'
+      line_print_description: 'crwdns4708663:0crwdne4708663:0'
+      polygon_print_description: 'crwdns4708665:0crwdne4708665:0'
+      select_print_description: 'crwdns4708667:0crwdne4708667:0'
   project_copy:
     title_suffix: 'crwdns208004:0crwdne208004:0'
   confirmations_mailer:
