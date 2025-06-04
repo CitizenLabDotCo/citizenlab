@@ -25,7 +25,6 @@ class WebApi::V1::IdeasController < ApplicationController
       scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
-
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
     # Only include after pagination - so we only get associations we need
@@ -53,7 +52,6 @@ class WebApi::V1::IdeasController < ApplicationController
       scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
-
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:idea_trending_info)
 
