@@ -462,6 +462,9 @@ resource 'Phases' do
 
           phase = Phase.find(response_data[:id])
           expect(phase.participation_method).to eq('common_ground')
+
+          expect(phase.reacting_enabled).to be(true)
+          expect(phase.reacting_dislike_enabled).to be(true)
         end
       end
 

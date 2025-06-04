@@ -376,6 +376,7 @@ class Idea < ApplicationRecord
   def body_multiloc_required?
     !draft? && participation_method_on_creation.built_in_body_required?
   end
+
   def sanitize_body_multiloc
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc(

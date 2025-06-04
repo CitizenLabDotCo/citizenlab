@@ -15,6 +15,10 @@ module ParticipationMethod
       true
     end
 
+    def assign_defaults_for_phase
+      phase.reacting_dislike_enabled = true
+    end
+
     def assign_defaults(input)
       # The common ground participation method does not use the idea status, but all
       # inputs must have one. We are using the same default as for ideation.
@@ -36,6 +40,9 @@ module ParticipationMethod
       multiloc_service = MultilocService.new
 
       [
+        # Inputs in common ground phases are essentially short statements, so we have no
+        # use for a body at the moment. We'll probably reconsider this depending on what
+        # comes out of user feedback and usage.
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
