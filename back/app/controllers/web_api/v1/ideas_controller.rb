@@ -73,7 +73,6 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_xlsx
-    puts 'here!!'
     ideas = IdeasFinder.new(
       params.merge(filter_can_moderate: true),
       scope: policy_scope(Idea).submitted_or_published,
