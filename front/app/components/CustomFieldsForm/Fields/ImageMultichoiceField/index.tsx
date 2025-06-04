@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import {
   Box,
@@ -59,6 +59,7 @@ const ImageMultichoiceField = ({
       .filter((imageId): imageId is string => typeof imageId === 'string') ||
     [];
   const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
+
   const isSmallerThanPhone = useBreakpoint('phone');
   const theme = useTheme();
   const localize = useLocalize();
@@ -74,6 +75,13 @@ const ImageMultichoiceField = ({
 
   const value = watch(name);
 
+  // Store customFieldOptionImages in a ref to avoid dependency
+  const customFieldOptionImagesRef = useRef(customFieldOptionImages);
+  // Update the ref whenever customFieldOptionImages changes
+  useEffect(() => {
+    customFieldOptionImagesRef.current = customFieldOptionImages;
+  }, [customFieldOptionImages]);
+
   const options = useMemo(() => {
     return extractOptions(
       question,
@@ -83,7 +91,7 @@ const ImageMultichoiceField = ({
       return {
         ...option,
         imageId:
-          customFieldOptionImages.find(
+          customFieldOptionImagesRef.current.find(
             (query) =>
               query.data?.data.id ===
               question.options?.find((opt) => opt.key === option.value)
@@ -91,7 +99,7 @@ const ImageMultichoiceField = ({
           )?.data?.data.attributes.versions.large || imageFile,
       };
     });
-  }, [question, localize, customFieldOptionImages]);
+  }, [question, localize]);
 
   const errors = formContextErrors[name] as RHFErrors;
   const validationError = errors?.message;
