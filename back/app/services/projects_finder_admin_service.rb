@@ -2,7 +2,6 @@ class ProjectsFinderAdminService
   def initialize(projects, user = nil, params = {})
     @projects = projects
     @user = user
-    @params = params
     @start_at = params[:start_at]
     @end_at = params[:end_at]
   end
@@ -13,6 +12,29 @@ class ProjectsFinderAdminService
     # TODO sort by recently updated
 
     scope
+  end
+
+  def phase_starting_or_ending_soon
+    scope = apply_date_filter(@projects)
+
+    phases_ending_soon_subquery = Phase
+      .where('end_at >= current_date')
+      .group(:project_id)
+      .select('project_id, min(end_at) AS min_end_at')
+
+    phases_starting_soon_subquery = Phase
+      .where('start_at >= current_date')
+      .group(:project_id)
+      .select('project_id, min(start_at) AS min_start_at')
+
+    projects_subquery = scope
+      .joins("LEFT JOIN (#{phases_ending_soon_subquery.to_sql}) AS phases_ending_soon ON phases_ending_soon.project_id = projects.id")
+      .joins("LEFT JOIN (#{phases_starting_soon_subquery.to_sql}) AS phases_starting_soon ON phases_starting_soon.project_id = projects.id") 
+      .select('least(phases_ending_soon.min_end_at, phases_starting_soon.min_start_at) AS soon_date, projects.*')
+    
+    Project
+      .from(projects_subquery, :projects)
+      .order('soon_date ASC NULLS LAST')
   end
 
   private

@@ -3,8 +3,20 @@ require 'rails_helper'
 describe ProjectsFinderAdminService do
   let(:service) { described_class }
 
-  describe 'recently_updated' do
-    it 'sorts by recently updated' do
+  def create_project(start_at, end_at)
+    project = create(:project)
+    create(
+      :phase, 
+      start_at: start_at, 
+      end_at: end_at,
+      project: project
+    )
+
+    project
+  end
+
+  # describe 'recently_updated' do
+    # it 'sorts by recently updated' do
       # Project updated 1 year ago
       # TODO
 
@@ -25,25 +37,50 @@ describe ProjectsFinderAdminService do
 
       # Project allowed input topics
       # TODO
+
+      # TODO: what else?
+    # end
+  # end
+
+  describe 'phase_starting_or_ending_soon' do
+    it 'sorts projects by phases starting or ending soon' do
+      user = create(:admin)
+
+      # Project completely in the past
+      p1 = create_project(Date.new(2020, 1, 1), Date.new(2021, 1, 1))
+
+      # Project with first phase starting in 10 days
+      p2 = create_project(Date.today + 10.days, nil)
+
+      # Project with phase ending in 15 days (2 phases)
+      p3 = create(:project)
+      create(
+        :phase, 
+        start_at: Date.today - 2.days, 
+        end_at: Date.today + 15.days,
+        project: p3
+      )
+      create(
+        :phase,
+        start_at: Date.today + 16.days,
+        end_at: Date.today + 50.days,
+        project: p3
+      )
+
+      # Project with phase ending in 5 days
+      p4 = create_project(Date.today - 10.days, Date.today + 5.days)
+
+      result = service.new(
+        Project.all, user, {}
+      ).phase_starting_or_ending_soon
+
+      expect(result.pluck(:id)).to eq([p4, p2, p3, p1].pluck(:id))
     end
 
     it 'filters overlapping period' do
       user = create(:admin)
-
       start_period = Date.new(2023, 1, 1)
       end_period = Date.new(2024, 1, 1)
-
-      def create_project(start_at, end_at)
-        project = create(:project)
-        create(
-          :phase, 
-          start_at: start_at, 
-          end_at: end_at,
-          project: project
-        )
-
-        project
-      end
 
       # Project started before period and ended before period
       p1 = create_project(Date.new(2020, 1, 1), Date.new(2021, 1, 1))
@@ -84,7 +121,7 @@ describe ProjectsFinderAdminService do
 
       result = service.new(
         Project.all, user, { start_at: start_period, end_at: end_period }
-      ).recently_updated
+      ).phase_starting_or_ending_soon
 
       expect(result.pluck(:id).sort).to eq([p2, p3, p4, p5, p6, p7].pluck(:id).sort)
     end
