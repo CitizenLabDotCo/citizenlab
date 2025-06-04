@@ -57,8 +57,7 @@ module Ideas
 
       batch = remaining_ideas.limit(batch_size)
       summary = Ideas::CopyService.new.copy(batch, dest_phase, current_user)
-      error_count = summary.errors.size
-      track_progress(summary.count - error_count, error_count)
+      track_progress(summary.count, summary.error_count)
 
       if remaining_ideas.count > batch_size
         enqueue_child_job(

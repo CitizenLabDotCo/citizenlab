@@ -73,20 +73,20 @@ module Jobs
     belongs_to :project, optional: true
 
     validates :root_job_type, presence: true
-    validates :progress, numericality: { greater_than_or_equal_to: 0 }
+    validates :total, numericality: { greater_than_or_equal_to: :progress }, allow_nil: true
+    validates :progress, numericality: { greater_than_or_equal_to: :error_count }
     validates :error_count, numericality: { greater_than_or_equal_to: 0 }
-    validates :total, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 
     def completed?
       completed_at.present?
     end
 
     def in_progress?
-      progress + error_count > 0
+      progress > 0
     end
 
     def pending?
-      progress + error_count == 0
+      progress == 0
     end
 
     def status
@@ -108,10 +108,14 @@ module Jobs
     end
 
     def increment_progress(progress = 1, error_count = 0)
+      if error_count > progress
+        raise ArgumentError, 'error_count must be less than or equal to progress'
+      end
+
       Tracker.where(id: id, completed_at: nil).update_all(
         progress: Arel.sql('progress + ?', progress),
         error_count: Arel.sql('error_count + ?', error_count),
-        total: Arel.sql('GREATEST(total, progress + error_count + ?)', progress + error_count)
+        total: Arel.sql('GREATEST(total, progress + ?)', progress)
       )
 
       reload
