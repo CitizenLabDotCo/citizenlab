@@ -18,7 +18,10 @@ class IdeasFinder < ApplicationFinder
   end
 
   def transitive_condition(transitive)
-    transitive ? records.transitive : records
+    return records if transitive.nil?
+
+    transitive = Utils.to_bool(transitive)
+    records.transitive(transitive)
   end
 
   def projects_condition(project_ids)

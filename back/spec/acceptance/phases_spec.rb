@@ -397,6 +397,21 @@ resource 'Phases' do
         end
       end
 
+      describe 'common ground' do
+        let(:participation_method) { 'common_ground' }
+
+        example_request 'Create a common ground phase', document: false do
+          assert_status 201
+          expect(response_data.dig(:attributes, :participation_method)).to eq('common_ground')
+
+          phase = Phase.find(response_data[:id])
+          expect(phase.participation_method).to eq('common_ground')
+
+          expect(phase.reacting_enabled).to be(true)
+          expect(phase.reacting_dislike_enabled).to be(true)
+        end
+      end
+
       describe do
         let(:start_at) { nil }
 
