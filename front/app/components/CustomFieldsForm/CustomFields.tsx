@@ -21,6 +21,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import CosponsorsField from './Fields/CosponsorsField';
 import FileUploaderField from './Fields/FileUploadField';
 import ImageField from './Fields/ImageField';
+import ImageMultichoiceField from './Fields/ImageMultichoiceField';
 import LinearScaleField from './Fields/LinearScale';
 import MatrixField from './Fields/MatrixField';
 import MultiSelectField from './Fields/MultiSelectField';
@@ -125,6 +126,10 @@ const renderField = ({
       );
     case 'cosponsor_ids':
       return <CosponsorsField question={question} scrollErrorIntoView={true} />;
+    case 'multiselect_image':
+      return (
+        <ImageMultichoiceField question={question} scrollErrorIntoView={true} />
+      );
     default:
       return null;
   }
@@ -162,7 +167,7 @@ const CustomFields = ({
           const answerNotPublic = !question.visible_to_public;
 
           return (
-            <Box key={question.id} mb="24px">
+            <Box key={question.id} mb="24px" position="relative">
               <FormLabel {...labelProps} />
               <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
                 {getInstructionMessage({
