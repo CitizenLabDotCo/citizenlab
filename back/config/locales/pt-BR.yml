@@ -331,6 +331,15 @@ pt:
       write_in_language: 'Escreva suas respostas no mesmo idioma deste formulário'
       linear_scale_print_description: 'Por favor, escreva um número entre %{min_label} e %{max_label} apenas'
       unsupported_field: 'Este campo não pode ser preenchido em papel. Em vez disso, use a versão on-line deste formulário.'
+      ranking_print_description: 'Escreva um número de 1 (mais preferido) a %{max_rank} (menos preferido) em cada caixa. Use cada número exatamente uma vez.'
+      matrix_print_description: 'Para cada linha, marque um círculo com uma cruz para indicar sua preferência.'
+      rating_print_description: 'Avalie isso escrevendo um número entre 1 (pior) e %{max_stars} (melhor).'
+      sentiment_linear_scale_print_description: 'Escreva um número entre 1 e 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Desenhe um X no mapa abaixo para mostrar a localização ou escreva o endereço.'
+      line_print_description: 'Por favor, desenhe uma rota no mapa abaixo.'
+      polygon_print_description: 'Por favor, desenhe uma forma no mapa abaixo.'
+      select_print_description: 'Escolha apenas uma opção.'
   project_copy:
     title_suffix: 'Cópia'
   confirmations_mailer:
