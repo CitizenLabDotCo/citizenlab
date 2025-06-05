@@ -139,17 +139,19 @@ const CategoryCard = ({
   return (
     <Container className="e2e-category">
       <TextContainer>
-        <Title variant="h4" as="h2">
-          <FormattedMessage
-            {...{
-              functional: messages.functional,
-              advertising: messages.advertising,
-              analytics: messages.analytics,
-              required: messages.required,
-            }[category]}
-          />
-        </Title>
         <StyledFieldset>
+          <legend>
+            <Title variant="h4" as="h2">
+              <FormattedMessage
+                {...{
+                  functional: messages.functional,
+                  advertising: messages.advertising,
+                  analytics: messages.analytics,
+                  required: messages.required,
+                }[category]}
+              />
+            </Title>
+          </legend>
           <Radio
             onChange={
               category === 'required' ? undefined : handleChange(category, true)
