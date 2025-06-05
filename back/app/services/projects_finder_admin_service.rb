@@ -1,4 +1,6 @@
 class ProjectsFinderAdminService
+  UUID_REGEX = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+
   def initialize(projects, params = {})
     @projects = projects
     @start_at = params[:start_at]
@@ -7,9 +9,7 @@ class ProjectsFinderAdminService
 
   def recently_viewed
     scope = apply_date_filter(@projects)
-
-    uuid_regex = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
-    substring_statement = "substring(path, 'admin/projects/(#{uuid_regex})')"
+    substring_statement = "substring(path, 'admin/projects/(#{UUID_REGEX})')"
 
     recent_pageviews_subquery = ImpactTracking::Pageview
       .where("path LIKE '%admin/projects/%'")
