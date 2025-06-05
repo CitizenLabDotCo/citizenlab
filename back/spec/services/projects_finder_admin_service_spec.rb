@@ -3,7 +3,10 @@ require 'rails_helper'
 describe ProjectsFinderAdminService do
   let(:service) { described_class }
 
-  def create_project(start_at, end_at)
+  def create_project(
+    start_at, end_at,
+    start_at_2: nil, end_at_2: nil
+  )
     project = create(:project)
     create(
       :phase, 
@@ -11,6 +14,15 @@ describe ProjectsFinderAdminService do
       end_at: end_at,
       project: project
     )
+
+    if start_at_2 && end_at_2
+      create(
+        :phase,
+        start_at: start_at_2,
+        end_at: end_at_2,
+        project: project
+      )
+    end
 
     project
   end
@@ -68,18 +80,9 @@ describe ProjectsFinderAdminService do
       p2 = create_project(Date.today + 10.days, nil)
 
       # Project with phase ending in 15 days (2 phases)
-      p3 = create(:project)
-      create(
-        :phase, 
-        start_at: Date.today - 2.days, 
-        end_at: Date.today + 15.days,
-        project: p3
-      )
-      create(
-        :phase,
-        start_at: Date.today + 16.days,
-        end_at: Date.today + 50.days,
-        project: p3
+      p3 = create_project(
+        Date.today - 2.days, Date.today + 15.days, 
+        start_at_2: Date.today + 16.days, end_at_2: Date.today + 50.days
       )
 
       # Project with phase ending in 5 days
@@ -101,18 +104,9 @@ describe ProjectsFinderAdminService do
       p2 = create_project(Date.new(2020, 2, 1), nil)
 
       # Project started before period and ends during period (2 phases)
-      p3 = create(:project)
-      create(
-        :phase, 
-        start_at: Date.new(2020, 2, 3), 
-        end_at: Date.new(2020, 4, 1),
-        project: p3
-      )
-      create(
-        :phase,
-        start_at: Date.new(2020, 4, 2),
-        end_at: Date.new(2023, 6, 1),
-        project: p3
+      p3 = create_project(
+        Date.new(2020, 2, 3), Date.new(2023, 4, 1),
+        start_at_2: Date.new(2023, 4, 2), end_at_2: Date.new(2023, 6, 1)
       )
 
 
