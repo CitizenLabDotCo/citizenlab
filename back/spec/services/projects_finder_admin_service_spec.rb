@@ -4,8 +4,10 @@ describe ProjectsFinderAdminService do
   let(:service) { described_class }
 
   def create_project(
-    start_at, end_at,
-    start_at_2: nil, end_at_2: nil,
+    start_at, 
+    end_at,
+    start_at_2: nil,
+    end_at_2: nil,
     created_at: nil
   )
     project = if created_at 
