@@ -15,37 +15,39 @@ describe ProjectsFinderAdminService do
     project
   end
 
-  # describe 'recently_updated' do
-    # it 'sorts by recently updated' do
-      # Project updated 1 year ago
-      # TODO
+  describe 'recently_viewed' do
+    it 'sorts by recently viewed' do
+      # Project visited once, 20 days ago
+      p1 = create_project(Date.today - 30.days, Date.today + 30.days)
+      s1 = create(:session, monthly_user_hash: 'hash1', created_at: Date.today - 20.days)
+      # TODO pageviews
 
-      # Project updated 10 months ago
-      # TODO
+      # Project visited twice, 30 days and 10 days ago
+      p2 = create_project(Date.today - 30.days, Date.today + 30.days)
+      s2_1 = create(:session, monthly_user_hash: 'hash2', created_at: Date.today - 30.days)
+      # TODO pageviews
+      s2_2 = create(:session, monthly_user_hash: 'hash3', created_at: Date.today - 10.days)
+      # TODO pageviews
 
-      # Phase updated 9 months ago
-      # TODO
+      # Project visited once, 5 days ago
+      p3 = create_project(Date.today - 30.days, Date.today + 30.days)
+      s3 = create(:session, monthly_user_hash: 'hash4', created_at: Date.today - 5.days)
+      # TODO pageviews
 
-      # Ideation form updated 8 months ago
-      # TODO
+      # Project never visited
+      p4 = create_project(Date.today - 30.days, Date.today + 30.days)
 
-      # Survey form updated 7 months ago
-      # TODO
+      result = service.new(Project.all, {}).recently_viewed
+      expect(result.pluck(:id)).to eq([p3, p2, p1, p4].pluck(:id))
+    end
 
-      # Project topics
+    # it 'filters overlapping period' do
       # TODO
-
-      # Project allowed input topics
-      # TODO
-
-      # TODO: what else?
     # end
-  # end
+  end
 
   describe 'phase_starting_or_ending_soon' do
     it 'sorts projects by phases starting or ending soon' do
-      user = create(:admin)
-
       # Project completely in the past
       p1 = create_project(Date.new(2020, 1, 1), Date.new(2021, 1, 1))
 
@@ -70,15 +72,12 @@ describe ProjectsFinderAdminService do
       # Project with phase ending in 5 days
       p4 = create_project(Date.today - 10.days, Date.today + 5.days)
 
-      result = service.new(
-        Project.all, user, {}
-      ).phase_starting_or_ending_soon
+      result = service.new(Project.all, {}).phase_starting_or_ending_soon
 
       expect(result.pluck(:id)).to eq([p4, p2, p3, p1].pluck(:id))
     end
 
     it 'filters overlapping period' do
-      user = create(:admin)
       start_period = Date.new(2023, 1, 1)
       end_period = Date.new(2024, 1, 1)
 
@@ -120,7 +119,7 @@ describe ProjectsFinderAdminService do
       p8 = create_project(Date.new(2025, 1, 1), Date.new(2026, 1, 1))
 
       result = service.new(
-        Project.all, user, { start_at: start_period, end_at: end_period }
+        Project.all, { start_at: start_period, end_at: end_period }
       ).phase_starting_or_ending_soon
 
       expect(result.pluck(:id).sort).to eq([p2, p3, p4, p5, p6, p7].pluck(:id).sort)

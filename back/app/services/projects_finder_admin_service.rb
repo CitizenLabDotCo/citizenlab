@@ -1,12 +1,11 @@
 class ProjectsFinderAdminService
-  def initialize(projects, user = nil, params = {})
+  def initialize(projects, params = {})
     @projects = projects
-    @user = user
     @start_at = params[:start_at]
     @end_at = params[:end_at]
   end
 
-  def recently_updated
+  def recently_viewed
     scope = apply_date_filter(@projects)
 
     # TODO sort by recently updated
