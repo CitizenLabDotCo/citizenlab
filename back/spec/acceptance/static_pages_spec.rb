@@ -99,7 +99,7 @@ resource 'StaticPages' do
         expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
       end
 
-      # Althought the info section WYSIWYG for static pages does not support HTML tables,
+      # Although the info section WYSIWYG for static pages does not support HTML tables,
       # we sometimes use a static_page for custom content that can include tables.
       # In such cases we save the HTML to the multiloc field directly.
       example 'Update a static page with table elements in info section' do
