@@ -11,13 +11,24 @@ class ProjectsFinderAdminService
     scope = apply_date_filter(@projects)
     substring_statement = "substring(path, 'admin/projects/(#{UUID_REGEX})')"
 
-    recent_pageviews_subquery = ImpactTracking::Pageview
-      .where("path LIKE '%admin/projects/%'")
-      .group(substring_statement)
-      .select("#{substring_statement}::UUID as admin_project_id, max(created_at) AS last_viewed_at")
+    # I first did this with a group by and max, but Copilot suggested
+    # using a window function instead, which is more efficient
+    recent_pageviews_sql = <<-SQL.squish
+      SELECT
+        #{substring_statement}::UUID AS admin_project_id,
+        created_at AS last_viewed_at,
+        ROW_NUMBER() OVER (
+          PARTITION BY #{substring_statement}
+          ORDER BY created_at DESC
+        ) AS rn
+      FROM impact_tracking_pageviews
+      WHERE path LIKE '%admin/projects/%'
+    SQL
+
+    recent_pageviews_subquery = "(#{recent_pageviews_sql}) AS recent_pageviews"
 
     projects_subquery = scope
-      .joins("LEFT JOIN (#{recent_pageviews_subquery.to_sql}) AS recent_pageviews ON recent_pageviews.admin_project_id = projects.id")
+      .joins("LEFT JOIN #{recent_pageviews_subquery} ON recent_pageviews.admin_project_id = projects.id AND recent_pageviews.rn = 1")
       .select('recent_pageviews.last_viewed_at AS last_viewed_at, projects.*')
 
     Project
