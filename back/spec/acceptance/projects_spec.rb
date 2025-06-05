@@ -932,7 +932,7 @@ resource 'Projects' do
           assert_status 200
           xlsx = xlsx_contents response_body
           expect(xlsx.size).to eq 3
-          
+
           all_values = xlsx.flat_map { |sheet| sheet[:rows].flatten }
           expect(all_values).not_to include(survey_response.id)
         end
