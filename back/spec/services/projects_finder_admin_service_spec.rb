@@ -93,11 +93,11 @@ describe ProjectsFinderAdminService do
     end
 
     it 'paginates' do
-      result = service.new(Project.all, { page: { size: 2, number: 1 } }).recently_viewed
-      expect(result.pluck(:id)).to eq([p3, p2].pluck(:id))
+      result1 = service.new(Project.all, { page: { size: 2, number: 1 } }).recently_viewed
+      expect(result1.pluck(:id)).to eq([p3, p2].pluck(:id))
 
-      result = service.new(Project.all, { page: { size: 2, number: 2 }}).recently_viewed
-      expect(result.pluck(:id)).to eq([p1, p4].pluck(:id))
+      result2 = service.new(Project.all, { page: { size: 2, number: 2 }}).recently_viewed
+      expect(result2.pluck(:id)).to eq([p1, p4].pluck(:id))
     end
   end
 
@@ -135,6 +135,28 @@ describe ProjectsFinderAdminService do
       ).phase_starting_or_ending_soon
 
       expect(result.pluck(:id)).to eq([p6, p5, p7, p3, p4, p2].pluck(:id))
+    end
+
+    it 'paginates' do
+      result1 = service.new(Project.all, {
+        page: { size: 4, number: 1 }
+      }).phase_starting_or_ending_soon
+
+      expect(result1.pluck(:id)).to eq([
+        # p2 should come before p1, even though its creation
+        # date is after, because p2 has an open-ended phase
+        p6, p5, p7, p3
+      ].pluck(:id))
+
+      result2 = service.new(Project.all, {
+        page: { size: 4, number: 2 }
+      }).phase_starting_or_ending_soon
+
+      expect(result2.pluck(:id)).to eq([
+        # p2 should come before p1, even though its creation
+        # date is after, because p2 has an open-ended phase
+        p8, p4, p2, p1
+      ].pluck(:id))
     end
   end
 end
