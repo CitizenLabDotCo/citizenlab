@@ -103,22 +103,22 @@ resource 'StaticPages' do
       # we sometimes use a static_page for custom content that can include tables.
       # In such cases we save the HTML to the multiloc field directly.
       example 'Update a static page with table elements in info section' do
-        table_HTML = <<~HTML
-            <table style="width:100%;border-collapse:collapse;display:table !important;border:1px solid #ddd;">
-              <tr style="display:table-row !important;">
-                <th style="width:80px;border:1px solid #ddd;padding:5px;text-align:left;display:table-cell !important;">Verktøy</th>
-              </tr>
-              <tr style="display:table-row !important;">
-                <td style="border:1px solid #ddd;padding:5px;text-align:left;display:table-cell !important;">Matomo</td>
-              </tr>
-            </table>
-          HTML
+        table_html = <<~HTML
+          <table style="width:100%;border-collapse:collapse;display:table !important;border:1px solid #ddd;">
+            <tr style="display:table-row !important;">
+              <th style="width:80px;border:1px solid #ddd;padding:5px;text-align:left;display:table-cell !important;">Verktøy</th>
+            </tr>
+            <tr style="display:table-row !important;">
+              <td style="border:1px solid #ddd;padding:5px;text-align:left;display:table-cell !important;">Matomo</td>
+            </tr>
+          </table>
+        HTML
 
-        top_info_section_multiloc = { en: table_HTML.strip }
-        
+        top_info_section_multiloc = { en: table_html.strip }
+
         do_request(static_page: { top_info_section_multiloc: top_info_section_multiloc })
         assert_status 200
-        
+
         expect(json_response.dig(:data, :attributes, :top_info_section_multiloc, :en).strip).to eq(top_info_section_multiloc[:en])
       end
 
