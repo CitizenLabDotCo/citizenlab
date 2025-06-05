@@ -720,4 +720,123 @@ describe IdeaPolicy do
       end
     end
   end
+
+  context 'on a common ground input in a public project' do
+    let(:phase) { create(:common_ground_phase, :ongoing) }
+    let(:project) { phase.project }
+    let!(:idea) { create(:common_ground_input, :with_author, phase: phase) }
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.not_to permit(:create)
+        is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to eq('not_author')
+        is_expected.not_to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a resident who is not the input author' do
+      let(:user) { create(:user) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.not_to permit(:create)
+        is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to eq('not_author')
+        is_expected.not_to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a user who is the input author' do
+      let(:user) { idea.author }
+
+      context 'when the input has no reactions' do
+        it { is_expected.to permit(:update) }
+        it { expect(editing_idea_disabled_reason).to be_nil }
+      end
+
+      context 'when the input has reactions' do
+        before { create(:reaction, reactable: idea, mode: 'up') }
+
+        it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
+        it { expect(editing_idea_disabled_reason).to eq('votes_exist') }
+      end
+
+      context 'when the inputs has only self-reactions' do
+        before { create(:reaction, reactable: idea, mode: 'up', user: idea.author) }
+
+        it { is_expected.to permit(:update) }
+        it { expect(editing_idea_disabled_reason).to be_nil }
+      end
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.to permit(:create)
+        is_expected.to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.to permit(:create)
+        is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
+        is_expected.to permit(:destroy)
+        is_expected.to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a moderator that moderates the project' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.to permit(:create)
+        is_expected.to permit(:update)
+        expect(editing_idea_disabled_reason).to be_nil
+        is_expected.to permit(:destroy)
+        is_expected.to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a moderator that does not moderate the project' do
+      let(:user) { create(:project_moderator, projects: [create(:project)]) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.not_to permit(:create)
+        is_expected.not_to permit(:update)
+        expect(editing_idea_disabled_reason).to eq('not_author')
+        is_expected.not_to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+  end
 end
