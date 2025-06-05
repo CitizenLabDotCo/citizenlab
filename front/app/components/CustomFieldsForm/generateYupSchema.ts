@@ -99,7 +99,7 @@ const generateYupValidationSchema = ({
           ? number().required(fieldRequired)
           : number()
               .transform((value, originalValue) =>
-                typeof originalValue !== 'number' ? null : value
+                originalValue === '' ? null : value
               )
               .nullable();
         break;
