@@ -31,9 +31,11 @@ class ProjectsFinderAdminService
       .joins("LEFT JOIN #{recent_pageviews_subquery} ON recent_pageviews.admin_project_id = projects.id AND recent_pageviews.rn = 1")
       .select('recent_pageviews.last_viewed_at AS last_viewed_at, projects.*')
 
+    # We order by last_viewed_at, but tie-break with created_at and id for a stable sort,
+    # which is important for pagination
     Project
       .from(projects_subquery, :projects)
-      .order('last_viewed_at DESC NULLS LAST')
+      .order('last_viewed_at DESC NULLS LAST, projects.created_at ASC, projects.id ASC')
   end
 
   def phase_starting_or_ending_soon
@@ -54,9 +56,11 @@ class ProjectsFinderAdminService
       .joins("LEFT JOIN (#{phases_starting_soon_subquery.to_sql}) AS phases_starting_soon ON phases_starting_soon.project_id = projects.id") 
       .select('least(phases_ending_soon.min_end_at, phases_starting_soon.min_start_at) AS soon_date, projects.*')
     
+    # We order by soon_date, but tie-break with created_at and id for a stable sort,
+    # which is important for pagination
     Project
       .from(projects_subquery, :projects)
-      .order('soon_date ASC NULLS LAST')
+      .order('soon_date ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
   end
 
   private
