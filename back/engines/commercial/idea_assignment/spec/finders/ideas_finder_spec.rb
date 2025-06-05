@@ -28,4 +28,30 @@ describe IdeasFinder do
       end
     end
   end
+
+  describe 'base filtering' do
+    let(:params) { {} }
+
+    before do
+      @idea_without_content = create(:idea)
+      @idea_without_content.update_columns(
+        title_multiloc: {}, 
+        body_multiloc: {}  # Note: should be body_multiloc, not description_multiloc
+      )
+    end
+
+    it 'does not return ideas with no content' do
+      expect(result_record_ids).to match_array (unassigned_ideas + assigned_ideas).map(&:id)
+      expect(result_record_ids).not_to include @idea_without_content.id
+    end
+
+    it 'only returns publicly visible ideas' do
+      project = create(:project, phases: [create(:active_native_survey_phase)])
+      _status = create(:idea_status_proposed)
+      response = create(:native_survey_response, project: project)
+
+      expect(result_record_ids).to match_array (unassigned_ideas + assigned_ideas).map(&:id)
+      expect(result_record_ids).not_to include response.id
+    end
+  end
 end
