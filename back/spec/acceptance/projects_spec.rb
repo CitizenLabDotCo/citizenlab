@@ -920,9 +920,12 @@ resource 'Projects' do
       describe 'when a survey phase is changed to an ideation phase' do
         before do
           native_survey_phase.update!(participation_method: 'ideation')
+
           # Simulating a survey response with no content, which already
           # existed before the phase participation_method was changed.
-          survey_response.update_columns(title_multiloc: {}, body_multiloc: {})
+          survey_response.title_multiloc = {}
+          survey_response.body_multiloc = {}
+          survey_response.save!(validate: false)
         end
 
         example_request 'Downloaded inputs do not include ideas with no content' do

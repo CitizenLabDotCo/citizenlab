@@ -34,7 +34,9 @@ describe IdeasFinder do
 
     before do
       @idea_without_content = create(:idea)
-      @idea_without_content.update_columns(title_multiloc: {}, body_multiloc: {})
+      @idea_without_content.title_multiloc = {}
+      @idea_without_content.body_multiloc = {}
+      @idea_without_content.save!(validate: false)
     end
 
     # NOTE: If a phase is changed from native survey to ideation,
