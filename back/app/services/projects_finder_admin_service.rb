@@ -8,12 +8,16 @@ class ProjectsFinderAdminService
   def recently_viewed
     scope = apply_date_filter(@projects)
 
+    uuid_regex = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+    substring_statement = "substring(path, 'admin/projects/(#{uuid_regex})')"
+
     recent_pageviews_subquery = ImpactTracking::Pageview
-      .group(:project_id)
-      .select('project_id, max(created_at) AS last_viewed_at')
+      .where("path LIKE '%admin/projects/%'")
+      .group(substring_statement)
+      .select("#{substring_statement}::UUID as admin_project_id, max(created_at) AS last_viewed_at")
 
     projects_subquery = scope
-      .joins("LEFT JOIN (#{recent_pageviews_subquery.to_sql}) AS recent_pageviews ON recent_pageviews.project_id = projects.id")
+      .joins("LEFT JOIN (#{recent_pageviews_subquery.to_sql}) AS recent_pageviews ON recent_pageviews.admin_project_id = projects.id")
       .select('recent_pageviews.last_viewed_at AS last_viewed_at, projects.*')
 
     Project

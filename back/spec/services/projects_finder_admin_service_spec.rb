@@ -21,8 +21,7 @@ describe ProjectsFinderAdminService do
       create(
         :pageview, 
         session_id: session.id,
-        path: "/en/projects/#{project.slug}",
-        project_id: project.id,
+        path: "/en/admin/projects/#{project.id}/phases/741874e2-994f-4cfc-adf9-9b83e7f62ae0",
         created_at: created_at
       )
     end
@@ -43,6 +42,13 @@ describe ProjectsFinderAdminService do
 
       # Project never visited
       p4 = create_project(Date.today - 30.days, Date.today + 30.days)
+      s4 = create(:session, created_at: Date.today - 4.days)
+      create(
+        :pageview, 
+        session_id: s4.id,
+        path: "/en/",
+        created_at: Date.today - 4.days
+      )
 
       result = service.new(Project.all, {}).recently_viewed
       expect(result.pluck(:id)).to eq([p3, p2, p1, p4].pluck(:id))
