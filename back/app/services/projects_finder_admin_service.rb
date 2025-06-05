@@ -7,6 +7,7 @@ class ProjectsFinderAdminService
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
     @managers = params[:managers] || []
+    @search = params[:search] || ''
 
     projects_scope = apply_date_filter(projects)
     projects_scope = apply_manager_filter(projects_scope)
@@ -74,6 +75,14 @@ class ProjectsFinderAdminService
   # def apply_manager_filter(scope)
     # TODO
   # end
+
+  def apply_search(scope)
+    if @search.present?
+      scope.search_by_title(@search)
+    else
+      scope
+    end
+  end
 
   private
 
