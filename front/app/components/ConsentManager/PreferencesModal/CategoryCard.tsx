@@ -7,7 +7,6 @@ import {
   fontSizes,
   media,
 } from '@citizenlab/cl2-component-library';
-import { transparentize } from 'polished';
 import styled from 'styled-components';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
@@ -23,7 +22,6 @@ const Container = styled.div`
   display: flex;
   padding: 20px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background-color: ${transparentize(0.95, colors.primary)};
   border: 1px solid ${colors.divider};
   margin-bottom: 10px;
 
