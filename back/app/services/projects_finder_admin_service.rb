@@ -38,6 +38,8 @@ class ProjectsFinderAdminService
     Project
       .from(projects_subquery, :projects)
       .order('last_viewed_at DESC NULLS LAST, projects.created_at ASC, projects.id ASC')
+      .limit(@page_size)
+      .offset(@page_size * (@page_number - 1))
   end
 
   def phase_starting_or_ending_soon
@@ -63,6 +65,8 @@ class ProjectsFinderAdminService
     Project
       .from(projects_subquery, :projects)
       .order('soon_date ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
+      .limit(@page_size)
+      .offset(@page_size * (@page_number - 1))
   end
 
   private
