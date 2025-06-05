@@ -16,23 +16,30 @@ describe ProjectsFinderAdminService do
   end
 
   describe 'recently_viewed' do
+    def create_session(project, created_at)
+      session = create(:session, created_at: created_at)
+      create(
+        :pageview, 
+        session_id: session.id,
+        path: "/en/projects/#{project.slug}",
+        project_id: project.id,
+        created_at: created_at
+      )
+    end
+
     it 'sorts by recently viewed' do
       # Project visited once, 20 days ago
       p1 = create_project(Date.today - 30.days, Date.today + 30.days)
-      s1 = create(:session, monthly_user_hash: 'hash1', created_at: Date.today - 20.days)
-      # TODO pageviews
+      create_session(p1, Date.today - 20.days)
 
       # Project visited twice, 30 days and 10 days ago
       p2 = create_project(Date.today - 30.days, Date.today + 30.days)
-      s2_1 = create(:session, monthly_user_hash: 'hash2', created_at: Date.today - 30.days)
-      # TODO pageviews
-      s2_2 = create(:session, monthly_user_hash: 'hash3', created_at: Date.today - 10.days)
-      # TODO pageviews
+      create_session(p2, Date.today - 30.days)
+      create_session(p2, Date.today - 10.days)
 
       # Project visited once, 5 days ago
       p3 = create_project(Date.today - 30.days, Date.today + 30.days)
-      s3 = create(:session, monthly_user_hash: 'hash4', created_at: Date.today - 5.days)
-      # TODO pageviews
+      create_session(p3, Date.today - 5.days)
 
       # Project never visited
       p4 = create_project(Date.today - 30.days, Date.today + 30.days)
