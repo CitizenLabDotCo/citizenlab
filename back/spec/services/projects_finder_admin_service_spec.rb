@@ -5,14 +5,20 @@ describe ProjectsFinderAdminService do
 
   def create_project(
     start_at, end_at,
-    start_at_2: nil, end_at_2: nil
+    start_at_2: nil, end_at_2: nil,
+    created_at: nil
   )
-    project = create(:project)
+    project = if created_at 
+      create(:project, created_at: created_at) 
+    else 
+      create(:project) 
+    end
+
     create(
       :phase, 
       start_at: start_at, 
       end_at: end_at,
-      project: project
+      project: project,
     )
 
     if start_at_2 && end_at_2
@@ -96,57 +102,33 @@ describe ProjectsFinderAdminService do
   end
 
   describe 'phase_starting_or_ending_soon' do
+    let!(:p1) { create_project(Date.new(2020, 1, 1), Date.new(2021, 1, 1), created_at: Date.new(2019, 1, 1)) }
+    let!(:p2) { create_project(Date.new(2020, 2, 1), nil, created_at: Date.new(2019, 2, 1)) }
+
+    let!(:p3) do create_project(
+      Date.new(2020, 2, 3), Date.new(2023, 4, 1),
+      start_at_2: Date.new(2023, 4, 2), end_at_2: Date.today + 20.days
+    ) end
+
+    let!(:p4) { create_project(Date.new(2020, 4, 1), Date.today + 100.days) }
+    let!(:p5) { create_project(Date.today + 5.days, Date.today + 25.days) }
+    let!(:p6) { create_project(Date.today + 4.days, Date.today + 50.days) }
+    let!(:p7) { create_project(Date.today + 8.days, nil) }
+    let!(:p8) { create_project(Date.today + 60.days, Date.today + 90.days) }
+
     it 'sorts projects by phases starting or ending soon' do
-      # Project completely in the past
-      p1 = create_project(Date.new(2020, 1, 1), Date.new(2021, 1, 1))
-
-      # Project with first phase starting in 10 days
-      p2 = create_project(Date.today + 10.days, nil)
-
-      # Project with phase ending in 15 days (2 phases)
-      p3 = create_project(
-        Date.today - 2.days, Date.today + 15.days, 
-        start_at_2: Date.today + 16.days, end_at_2: Date.today + 50.days
-      )
-
-      # Project with phase ending in 5 days
-      p4 = create_project(Date.today - 10.days, Date.today + 5.days)
-
       result = service.new(Project.all, {}).phase_starting_or_ending_soon
 
-      expect(result.pluck(:id)).to eq([p4, p2, p3, p1].pluck(:id))
+      expect(result.pluck(:id)).to eq([
+        # p2 should come before p1, even though its creation
+        # date is after, because p2 has an open-ended phase
+        p6, p5, p7, p3, p8, p4, p2, p1
+      ].pluck(:id))
     end
 
     it 'filters overlapping period' do
       start_period = Date.today
       end_period = Date.today + 30.days
-
-      # Project started before period and ended before period (will be excluded)
-      p1 = create_project(Date.new(2020, 1, 1), Date.new(2021, 1, 1))
-
-      # Project started before period but has open ended phase
-      p2 = create_project(Date.new(2020, 2, 1), nil)
-
-      # Project started before period and ends during period (2 phases)
-      p3 = create_project(
-        Date.new(2020, 2, 3), Date.new(2023, 4, 1),
-        start_at_2: Date.new(2023, 4, 2), end_at_2: Date.today() + 20.days
-      )
-
-      # Project started before period and ends after period
-      p4 = create_project(Date.new(2020, 4, 1), Date.today + 100.days)
-
-      # Project starting during period and ends during period
-      p5 = create_project(Date.today + 5.days, Date.today + 25.days)
-
-      # Project starting during period and ends after period
-      p6 = create_project(Date.today + 4.days, Date.today + 50.days)
-
-      # Project starting during period and has open ended phase
-      p7 = create_project(Date.today + 8.days, nil)
-
-      # Project starting after period and ends after period (will be excluded)
-      p8 = create_project(Date.today + 60.days, Date.today + 90.days)
 
       result = service.new(
         Project.all, { start_at: start_period, end_at: end_period }

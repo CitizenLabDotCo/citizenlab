@@ -46,9 +46,9 @@ class ProjectsFinderAdminService
     scope = apply_date_filter(@projects)
 
     phases_ending_soon_subquery = Phase
-      .where('end_at >= current_date')
+      .where("coalesce(end_at, 'infinity'::DATE) >= current_date")
       .group(:project_id)
-      .select('project_id, min(end_at) AS min_end_at')
+      .select("project_id, min(coalesce(end_at, 'infinity'::DATE)) AS min_end_at")
 
     phases_starting_soon_subquery = Phase
       .where('start_at >= current_date')
