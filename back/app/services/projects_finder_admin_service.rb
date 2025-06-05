@@ -72,9 +72,10 @@ class ProjectsFinderAdminService
       .offset(@page_size * (@page_number - 1))
   end
 
-  # def apply_manager_filter(scope)
+  def apply_manager_filter(scope)
     # TODO
-  # end
+    scope
+  end
 
   def apply_search(scope)
     if @search.present?
