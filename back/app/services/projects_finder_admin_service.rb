@@ -8,9 +8,17 @@ class ProjectsFinderAdminService
   def recently_viewed
     scope = apply_date_filter(@projects)
 
-    # TODO sort by recently updated
+    recent_pageviews_subquery = ImpactTracking::Pageview
+      .group(:project_id)
+      .select('project_id, max(created_at) AS last_viewed_at')
 
-    scope
+    projects_subquery = scope
+      .joins("LEFT JOIN (#{recent_pageviews_subquery.to_sql}) AS recent_pageviews ON recent_pageviews.project_id = projects.id")
+      .select('recent_pageviews.last_viewed_at AS last_viewed_at, projects.*')
+
+    Project
+      .from(projects_subquery, :projects)
+      .order('last_viewed_at DESC NULLS LAST')
   end
 
   def phase_starting_or_ending_soon
