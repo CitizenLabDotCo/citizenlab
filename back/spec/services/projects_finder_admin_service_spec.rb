@@ -66,9 +66,40 @@ describe ProjectsFinderAdminService do
       expect(result.pluck(:id)).to eq([p3, p2, p1, p4].pluck(:id))
     end
 
-    # it 'filters overlapping period' do
-      # TODO
-    # end
+    it 'filters overlapping period' do
+      start_period = Date.today
+      end_period = Date.today + 30.days
+
+      # Project visited once, 20 days ago (outside of period)
+      p1 = create_project(Date.today - 30.days, Date.today - 5.days)
+      create_session(p1, Date.today - 20.days)
+
+      # Project visited twice, 30 days and 10 days ago
+      p2 = create_project(Date.today - 30.days, Date.today + 30.days)
+      create_session(p2, Date.today - 30.days)
+      create_session(p2, Date.today - 10.days)
+
+      # Project visited once, 5 days ago
+      p3 = create_project(Date.today - 30.days, Date.today + 30.days)
+      create_session(p3, Date.today - 5.days)
+
+      # Project never visited
+      p4 = create_project(Date.today - 30.days, Date.today + 30.days)
+      s4 = create(:session, created_at: Date.today - 4.days)
+      create(
+        :pageview, 
+        session_id: s4.id,
+        path: "/en/",
+        created_at: Date.today - 4.days
+      )
+
+      result = service.new(Project.all, {
+        start_at: start_period,
+        end_at: end_period
+      }).recently_viewed
+
+      expect(result.pluck(:id)).to eq([p3, p2, p4].pluck(:id))
+    end
   end
 
   describe 'phase_starting_or_ending_soon' do
