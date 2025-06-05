@@ -5,6 +5,8 @@ class ProjectsFinderAdminService
     @projects = projects
     @start_at = params[:start_at]
     @end_at = params[:end_at]
+    @page_size = (params.dig(:page, :size) || 500).to_i
+    @page_number = (params.dig(:page, :number) || 1).to_i
   end
 
   def recently_viewed

@@ -110,10 +110,10 @@ describe ProjectsFinderAdminService do
     end
 
     it 'filters overlapping period' do
-      start_period = Date.new(2023, 1, 1)
-      end_period = Date.new(2024, 1, 1)
+      start_period = Date.today
+      end_period = Date.today + 30.days
 
-      # Project started before period and ended before period
+      # Project started before period and ended before period (will be excluded)
       p1 = create_project(Date.new(2020, 1, 1), Date.new(2021, 1, 1))
 
       # Project started before period but has open ended phase
@@ -122,30 +122,29 @@ describe ProjectsFinderAdminService do
       # Project started before period and ends during period (2 phases)
       p3 = create_project(
         Date.new(2020, 2, 3), Date.new(2023, 4, 1),
-        start_at_2: Date.new(2023, 4, 2), end_at_2: Date.new(2023, 6, 1)
+        start_at_2: Date.new(2023, 4, 2), end_at_2: Date.today() + 20.days
       )
 
-
       # Project started before period and ends after period
-      p4 = create_project(Date.new(2020, 4, 1), Date.new(2025, 1, 1))
+      p4 = create_project(Date.new(2020, 4, 1), Date.today + 100.days)
 
-      # Project started during period and ends during period
-      p5 = create_project(Date.new(2023, 6, 1), Date.new(2023, 10, 1))
+      # Project starting during period and ends during period
+      p5 = create_project(Date.today + 5.days, Date.today + 25.days)
 
-      # Project started during period and ends after period
-      p6 = create_project(Date.new(2023, 7, 1), Date.new(2025, 1, 1))
+      # Project starting during period and ends after period
+      p6 = create_project(Date.today + 4.days, Date.today + 50.days)
 
-      # Project started during period and has open ended phase
-      p7 = create_project(Date.new(2023, 8, 1), nil)
+      # Project starting during period and has open ended phase
+      p7 = create_project(Date.today + 8.days, nil)
 
-      # Project started after period and ends after period
-      p8 = create_project(Date.new(2025, 1, 1), Date.new(2026, 1, 1))
+      # Project starting after period and ends after period (will be excluded)
+      p8 = create_project(Date.today + 60.days, Date.today + 90.days)
 
       result = service.new(
         Project.all, { start_at: start_period, end_at: end_period }
       ).phase_starting_or_ending_soon
 
-      expect(result.pluck(:id).sort).to eq([p2, p3, p4, p5, p6, p7].pluck(:id).sort)
+      expect(result.pluck(:id)).to eq([p6, p5, p7, p3, p4, p2].pluck(:id))
     end
   end
 end
