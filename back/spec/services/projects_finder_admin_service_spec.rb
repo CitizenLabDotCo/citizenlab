@@ -38,22 +38,27 @@ describe ProjectsFinderAdminService do
       )
     end
 
-    it 'sorts by recently viewed' do
-      # Project visited once, 20 days ago
-      p1 = create_project(Date.today - 30.days, Date.today + 30.days)
-      create_session(p1, Date.today - 20.days)
+    let!(:p1) do
+      project = create_project(Date.today - 30.days, Date.today - 5.days)
+      create_session(project, Date.today - 20.days)
+      project
+    end
 
-      # Project visited twice, 30 days and 10 days ago
-      p2 = create_project(Date.today - 30.days, Date.today + 30.days)
-      create_session(p2, Date.today - 30.days)
-      create_session(p2, Date.today - 10.days)
+    let!(:p2) do
+      project = create_project(Date.today - 30.days, Date.today + 30.days)
+      create_session(project, Date.today - 30.days)
+      create_session(project, Date.today - 10.days)
+      project
+    end
 
-      # Project visited once, 5 days ago
-      p3 = create_project(Date.today - 30.days, Date.today + 30.days)
-      create_session(p3, Date.today - 5.days)
+    let!(:p3) do
+      project = create_project(Date.today - 30.days, Date.today + 30.days)
+      create_session(project, Date.today - 5.days)
+      project
+    end
 
-      # Project never visited
-      p4 = create_project(Date.today - 30.days, Date.today + 30.days)
+    let!(:p4) do
+      project = create_project(Date.today - 30.days, Date.today + 30.days)
       s4 = create(:session, created_at: Date.today - 4.days)
       create(
         :pageview, 
@@ -61,7 +66,10 @@ describe ProjectsFinderAdminService do
         path: "/en/",
         created_at: Date.today - 4.days
       )
+      project
+    end
 
+    it 'sorts by recently viewed' do
       result = service.new(Project.all, {}).recently_viewed
       expect(result.pluck(:id)).to eq([p3, p2, p1, p4].pluck(:id))
     end
@@ -69,29 +77,6 @@ describe ProjectsFinderAdminService do
     it 'filters overlapping period' do
       start_period = Date.today
       end_period = Date.today + 30.days
-
-      # Project visited once, 20 days ago (outside of period)
-      p1 = create_project(Date.today - 30.days, Date.today - 5.days)
-      create_session(p1, Date.today - 20.days)
-
-      # Project visited twice, 30 days and 10 days ago
-      p2 = create_project(Date.today - 30.days, Date.today + 30.days)
-      create_session(p2, Date.today - 30.days)
-      create_session(p2, Date.today - 10.days)
-
-      # Project visited once, 5 days ago
-      p3 = create_project(Date.today - 30.days, Date.today + 30.days)
-      create_session(p3, Date.today - 5.days)
-
-      # Project never visited
-      p4 = create_project(Date.today - 30.days, Date.today + 30.days)
-      s4 = create(:session, created_at: Date.today - 4.days)
-      create(
-        :pageview, 
-        session_id: s4.id,
-        path: "/en/",
-        created_at: Date.today - 4.days
-      )
 
       result = service.new(Project.all, {
         start_at: start_period,
