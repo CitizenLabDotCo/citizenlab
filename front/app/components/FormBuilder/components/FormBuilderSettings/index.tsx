@@ -34,7 +34,7 @@ import { getFieldNumbers } from '../utils';
 
 import ContentSettings from './ContentSettings';
 import LogicSettings from './LogicSettings';
-import PrintSupportTooltip from 'components/FormBuilder/components/FormBuilderSettings/PrintSupportTooltip';
+import PrintSupportTooltip from './PrintSupportTooltip';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;

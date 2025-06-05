@@ -1,7 +1,10 @@
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import React from 'react';
-import messages from './messages';
+
+import { IconTooltip } from '@citizenlab/cl2-component-library';
+
 import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 type Props = { fieldType: string };
 const PageButtonSettings = ({ fieldType }: Props) => {
