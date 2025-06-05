@@ -142,7 +142,7 @@ class SanitizationService
         attributes: %w[class data-user-id data-user-slug]
       },
       table: {
-        tags: %w[table thead tbody tr th td],
+        tags: %w[table thead tbody tr th td tfoot],
         attributes: %w[class style width border border-collapse display border-color padding text-align]
       }
     }.freeze
