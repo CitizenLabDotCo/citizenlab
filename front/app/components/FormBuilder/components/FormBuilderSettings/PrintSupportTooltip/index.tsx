@@ -30,6 +30,7 @@ const PageButtonSettings = ({ fieldType }: Props) => {
       content={formatMessage(messageDescriptor)}
       icon="info-solid"
       theme="light"
+      placement="bottom"
     />
   );
 };
