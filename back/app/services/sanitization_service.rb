@@ -140,6 +140,10 @@ class SanitizationService
       mention: {
         tags: %w[span],
         attributes: %w[class data-user-id data-user-slug]
+      },
+      table: {
+        tags: %w[table thead tbody tr th td],
+        attributes: %w[class style width border border-collapse display border-color padding text-align]
       }
     }.freeze
 
