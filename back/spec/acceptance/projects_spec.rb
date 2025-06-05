@@ -916,6 +916,27 @@ resource 'Projects' do
           }
         ])
       end
+
+      describe 'when a survey phase is changed to an ideation phase' do
+        before do
+          native_survey_phase.update!(participation_method: 'ideation')
+          # Simulating a survey response with no content, which already
+          # existed before the phase participation_method was changed.
+          survey_response.update_columns(
+            title_multiloc: {}, 
+            body_multiloc: {}
+          )
+        end
+
+        example_request 'Downloaded inputs do not include ideas with no content' do
+          assert_status 200
+          xlsx = xlsx_contents response_body
+          expect(xlsx.size).to eq 3
+          
+          all_values = xlsx.flat_map { |sheet| sheet[:rows].flatten }
+          expect(all_values).not_to include(survey_response.id)
+        end
+      end
     end
   end
 

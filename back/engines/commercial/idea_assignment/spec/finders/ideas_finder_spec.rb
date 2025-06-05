@@ -36,10 +36,12 @@ describe IdeasFinder do
       @idea_without_content = create(:idea)
       @idea_without_content.update_columns(
         title_multiloc: {}, 
-        body_multiloc: {}  # Note: should be body_multiloc, not description_multiloc
+        body_multiloc: {}
       )
     end
 
+    # Note: If a phase is changed from native survey to ideation,
+    # this can mean that ideas with no displayable content exist for the phase.
     it 'does not return ideas with no content' do
       expect(result_record_ids).to match_array (unassigned_ideas + assigned_ideas).map(&:id)
       expect(result_record_ids).not_to include @idea_without_content.id
