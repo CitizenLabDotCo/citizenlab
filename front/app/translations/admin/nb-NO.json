@@ -869,7 +869,6 @@
   "app.containers.Admin.emails.sentToUsers": "Dette er e-poster som sendes til brukere",
   "app.containers.Admin.emails.subject": "Emne:",
   "app.containers.Admin.emails.supportButtonLabel": "Se eksempler på supportsiden vår",
-  "app.containers.Admin.emails.supportButtonLink": "https://support.govocal.com/en/articles/2762939-what-are-automated-emails",
   "app.containers.Admin.emails.to": "Til..:",
   "app.containers.Admin.emails.toAllUsers": "Ønsker du å sende denne e-posten til alle registrerte brukere?",
   "app.containers.Admin.emails.viewExample": "Vis",

@@ -869,7 +869,6 @@
   "app.containers.Admin.emails.sentToUsers": "ਇਹ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਭੇਜੀਆਂ ਗਈਆਂ ਈਮੇਲਾਂ ਹਨ",
   "app.containers.Admin.emails.subject": "ਵਿਸ਼ਾ:",
   "app.containers.Admin.emails.supportButtonLabel": "ਸਾਡੇ ਸਹਾਇਤਾ ਪੰਨੇ 'ਤੇ ਉਦਾਹਰਨਾਂ ਦੇਖੋ",
-  "app.containers.Admin.emails.supportButtonLink": "https://support.govocal.com/en/articles/2762939-what-are-automated-emails",
   "app.containers.Admin.emails.to": "ਨੂੰ:",
   "app.containers.Admin.emails.toAllUsers": "ਕੀ ਤੁਸੀਂ ਸਾਰੇ ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਇਹ ਈਮੇਲ ਭੇਜਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.containers.Admin.emails.viewExample": "ਦੇਖੋ",
