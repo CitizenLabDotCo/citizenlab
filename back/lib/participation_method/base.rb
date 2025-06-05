@@ -2,6 +2,8 @@
 
 module ParticipationMethod
   class Base
+    SUPPORTED_REACTING_MODES = [].freeze
+
     def self.all_methods
       [
         CommonGround,
@@ -146,8 +148,14 @@ module ParticipationMethod
       false
     end
 
-    def supports_reacting?
-      false
+    # @param mode [String, nil] One of the values in Reaction::MODES. If nil, checks
+    #   whether any reaction modes are supported.
+    def supports_reacting?(mode = nil)
+      if mode
+        self.class::SUPPORTED_REACTING_MODES.include?(mode)
+      else
+        self.class::SUPPORTED_REACTING_MODES.present?
+      end
     end
 
     def supports_serializing?(_attribute)

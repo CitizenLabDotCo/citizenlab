@@ -222,7 +222,6 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:allow_posting_again_after) { is_expected.to eq 0.seconds }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be true }
-  its(:supports_reacting?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_submission?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
@@ -237,6 +236,11 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(true) }
   its(:everyone_tracking_enabled?) { is_expected.to be false }
+
+  its(:supports_reacting?) { is_expected.to be(true) }
+  its(:supports_reacting?, 'up') { is_expected.to be(true) }
+  its(:supports_reacting?, 'down') { is_expected.to be(true) }
+  its(:supports_reacting?, 'neutral') { is_expected.to be(false) }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be true' do
