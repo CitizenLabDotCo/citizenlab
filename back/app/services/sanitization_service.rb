@@ -143,7 +143,7 @@ class SanitizationService
       },
       table: {
         tags: %w[table thead tbody tr th td],
-        attributes: %w[class style width border border-collapse visibility display border-color padding text-align]
+        attributes: %w[class style width border border-collapse display border-color padding text-align]
       }
     }.freeze
 
