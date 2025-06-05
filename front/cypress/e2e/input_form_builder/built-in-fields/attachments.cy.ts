@@ -53,15 +53,15 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Fill in the title and description since these are required
-    cy.get('#e2e-idea-title-input input').type(title, { delay: 0 });
-    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+    cy.get('#title_multiloc ').type(title, { delay: 0 });
+    cy.get('#title_multiloc ').should('contain.value', title);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.wait(500);
 
     cy.dataCy('e2e-page-number-2').should('exist');
-    cy.get('#e2e-idea-description-input .ql-editor').type(description);
-    cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+    cy.get('#body_multiloc .ql-editor').type(description);
+    cy.get('#body_multiloc .ql-editor').contains(description);
     cy.wait(500);
 
     // Go to the next page of the idea form that has the attachments field
@@ -69,7 +69,9 @@ describe('Input form builder', () => {
     cy.wait(1000);
 
     cy.dataCy('e2e-page-number-3').should('exist');
-    cy.get('#e2e-idea-file-upload', { timeout: 10000 }).should('exist');
+    cy.get('[data-cy="e2e-idea-file-upload"]', { timeout: 10000 }).should(
+      'exist'
+    );
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.dataCy('e2e-edit-input-form').click();
@@ -107,18 +109,18 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Fill in the title and description since these are required
-    cy.get('#e2e-idea-title-input input').type(title, { delay: 0 });
-    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+    cy.get('#title_multiloc ').type(title, { delay: 0 });
+    cy.get('#title_multiloc ').should('contain.value', title);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').type(description);
-    cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+    cy.get('#body_multiloc .ql-editor').type(description);
+    cy.get('#body_multiloc .ql-editor').contains(description);
 
     // Go to the page that had the attachments field
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.wait(1000);
 
-    cy.get('#e2e-idea-file-upload').should('not.exist');
+    cy.get('[data-cy="e2e-idea-file-upload"]').should('not.exist');
   });
 });

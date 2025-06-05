@@ -66,18 +66,18 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
+    cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
 
     // verify the title and description
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#title_multiloc ').should('contain.value', ideaTitle);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Add a description
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent, {
+    cy.get('#body_multiloc .ql-editor').type(ideaContent, {
       force: true,
     });
-    cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+    cy.get('#body_multiloc .ql-editor').contains(ideaContent);
 
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -85,7 +85,7 @@ describe('Input form builder', () => {
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload').should('exist');
-    cy.get('#e2e-idea-file-upload').should('exist');
+    cy.get('[data-cy="e2e-idea-file-upload"]').should('exist');
 
     // Tags are on page three
     cy.dataCy('e2e-next-page').should('be.visible').click();
@@ -103,13 +103,15 @@ describe('Input form builder', () => {
     ).as('locationSearch');
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type(
-      'Boulevard Anspach Brussels'
-    );
+    cy.get('.e2e-idea-form-location-input-field input')
+      .first()
+      .type('Boulevard Anspach Brussels');
     cy.wait('@locationSearch', { timeout: 10000 });
 
-    cy.get('.e2e-idea-form-location-input-field input').type('{downArrow}');
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
+    cy.get('.e2e-idea-form-location-input-field input')
+      .first()
+      .type('{downArrow}');
+    cy.get('.e2e-idea-form-location-input-field input').first().type('{enter}');
 
     // save the form
     cy.dataCy('e2e-submit-form').click();
@@ -165,14 +167,14 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
 
-    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
-    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
+    cy.get('#title_multiloc ').should('contain.value', ideaTitle);
     cy.wait(500);
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
-    cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+    cy.get('#body_multiloc .ql-editor').type(ideaContent);
+    cy.get('#body_multiloc .ql-editor').contains(ideaContent);
     cy.wait(500);
 
     // Go to the next page of the idea form
@@ -180,7 +182,7 @@ describe('Input form builder', () => {
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload').should('exist');
-    cy.get('#e2e-idea-file-upload').should('exist');
+    cy.get('[data-cy="e2e-idea-file-upload"]').should('exist');
     cy.wait(500);
 
     // Go to the next page of the idea form
@@ -191,15 +193,15 @@ describe('Input form builder', () => {
     ).as('locationSearch');
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type(
-      'Boulevard Anspach Brussels'
-    );
+    cy.get('.e2e-idea-form-location-input-field input')
+      .first()
+      .type('Boulevard Anspach Brussels');
 
     cy.wait('@locationSearch', { timeout: 10000 });
 
-    cy.get('.e2e-idea-form-location-input-field input').type(
-      '{downArrow}{enter}'
-    );
+    cy.get('.e2e-idea-form-location-input-field input')
+      .first()
+      .type('{downArrow}{enter}');
 
     // Cannot proceed to the next page without filling in the required custom field
     cy.dataCy('e2e-submit-form').click();
@@ -212,7 +214,7 @@ describe('Input form builder', () => {
 
     // Fill in required custom field
     cy.contains(questionTitle).should('exist');
-    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
 
     // save the form
     cy.dataCy('e2e-submit-form').click();

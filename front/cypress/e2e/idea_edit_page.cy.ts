@@ -46,13 +46,8 @@ describe('Idea edit page', () => {
   it('has a working idea edit form', () => {
     cy.setLoginCookie(email, password);
 
-    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
-      'getIdeaSchema'
-    );
-
     // check original values
     cy.visit(`/ideas/${ideaSlug}`);
-    cy.wait('@getIdeaSchema', { timeout: 10000 });
     cy.acceptCookies();
 
     cy.get('#e2e-idea-show');
@@ -62,11 +57,9 @@ describe('Idea edit page', () => {
     // go to form
     cy.visit(`/ideas/edit/${ideaId}`);
 
-    cy.wait('@getIdeaSchema', { timeout: 10000 });
-
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form').should('exist');
-    cy.get('#e2e-idea-title-input input').as('titleInput');
+    cy.get('#title_multiloc').as('titleInput');
 
     // check initial form values
     cy.get('@titleInput').should('exist');
@@ -89,7 +82,7 @@ describe('Idea edit page', () => {
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
+    cy.get('#body_multiloc .ql-editor').as('descriptionInput');
 
     cy.wait(1000);
 
@@ -116,10 +109,11 @@ describe('Idea edit page', () => {
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
+    cy.get('[data-cy="e2e-idea-file-upload"]');
 
     // add an image
     cy.get('#e2e-idea-image-upload input').attachFile('icon.png');
+    cy.wait(1000);
     // check that the base64 image was added to the dropzone component
     cy.get('#e2e-idea-image-upload input').should('have.length', 0);
 
@@ -139,11 +133,14 @@ describe('Idea edit page', () => {
       .should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type(
+    cy.get('.e2e-idea-form-location-input-field').type(
       'Boulevard Anspach Brussels'
     );
     cy.wait(10000);
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
+    cy.get('.e2e-idea-form-location-input-field input')
+      .first()
+      .focus()
+      .type('{enter}');
 
     cy.intercept('PATCH', `**/ideas/${ideaId}**`).as('patchIdea');
 
@@ -180,13 +177,9 @@ describe('Idea edit page', () => {
   it('has a working idea edit form for author field', () => {
     cy.setAdminLoginCookie();
 
-    cy.intercept('GET', `**/ideas/${ideaId}/json_forms_schema`).as(
-      'ideaSchema'
-    );
     cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
-    cy.wait('@ideaSchema', { timeout: 10000 });
     cy.wait('@getPhases', { timeout: 10000 });
     cy.acceptCookies();
     // Search and select an author

@@ -11,9 +11,10 @@ import { CLError, RHFErrors } from 'typings';
 import Error, { TFieldName } from 'components/UI/Error';
 interface Props extends Omit<SelectProps, 'onChange'> {
   name: string;
+  scrollErrorIntoView?: boolean;
 }
 
-const Select = ({ name, ...rest }: Props) => {
+const Select = ({ name, scrollErrorIntoView, ...rest }: Props) => {
   const {
     trigger,
     setValue,
@@ -51,7 +52,7 @@ const Select = ({ name, ...rest }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -60,7 +61,7 @@ const Select = ({ name, ...rest }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </>

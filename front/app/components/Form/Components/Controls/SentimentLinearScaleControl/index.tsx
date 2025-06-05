@@ -23,17 +23,17 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
+import {
+  getSentimentEmoji,
+  handleKeyboardKeyChange,
+} from '../../../../CustomFieldsForm/Fields/SentimentScaleField/utils';
 import ErrorDisplay from '../../ErrorDisplay';
 import VerificationIcon from '../../VerificationIcon';
 import { getSubtextElement } from '../controlUtils';
 import messages from '../messages';
 
 import { StyledImg } from './components';
-import {
-  getAriaValueText,
-  getSentimentEmoji,
-  handleKeyboardKeyChange,
-} from './utils';
+import { getAriaValueText } from './utils';
 
 const SentimentLinearScaleControl = ({
   data,

@@ -202,6 +202,7 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
               })}
             </List>
           }
+          useContentWrapper={false}
         >
           <MoreOptionsButton
             ref={moreActionsButtonRef}

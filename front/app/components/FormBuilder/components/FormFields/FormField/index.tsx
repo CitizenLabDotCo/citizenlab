@@ -15,10 +15,10 @@ import { useFormContext, useFieldArray } from 'react-hook-form';
 import styled from 'styled-components';
 
 import {
+  ICreateMatrixStatementsType,
   ICustomFieldSettingsTab,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
-  IMatrixStatementsType,
   IOptionsType,
 } from 'api/custom_fields/types';
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
@@ -157,10 +157,10 @@ export const FormField = ({
       );
     }
 
-    let duplicatedStatements: IMatrixStatementsType[] = [];
+    let duplicatedStatements: ICreateMatrixStatementsType[] = [];
     if (matrix_statements) {
       duplicatedStatements = matrix_statements.map(
-        ({ id: _statementId, temp_id: _optionalTempId, ...rest }) => ({
+        ({ id: _statementId, ...rest }) => ({
           temp_id: generateTempId(),
           ...rest,
         })

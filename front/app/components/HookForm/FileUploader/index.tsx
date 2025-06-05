@@ -18,7 +18,7 @@ interface Props
   remoteFiles?: UploadFile[] | null;
 }
 
-const FileUploader = ({ name, remoteFiles, ...rest }: Props) => {
+const FileUploader = ({ name, remoteFiles }: Props) => {
   const {
     setValue,
     formState: { errors },
@@ -44,7 +44,6 @@ const FileUploader = ({ name, remoteFiles, ...rest }: Props) => {
           return (
             <FileUploaderComponent
               {...field}
-              {...rest}
               id={name}
               files={field.value}
               onFileAdd={(file) => {

@@ -38,6 +38,7 @@ export interface Props extends Omit<InputProps, 'value' | 'onChange'> {
   onSelectedLocaleChange?: (locale: Locale) => void;
   errorMultiloc?: Multiloc | null;
   initiallySelectedLocale?: Locale;
+  hideLocaleSwitcher?: boolean;
 }
 
 const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -50,6 +51,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
     labelTooltipText,
     errorMultiloc,
     initiallySelectedLocale,
+    hideLocaleSwitcher,
     ...inputProps
   } = props;
   const { id, className } = props;
@@ -118,14 +120,16 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
             ) : (
               <Spacer />
             )}
-            <StyledLocaleSwitcher
-              onSelectedLocaleChange={handleOnSelectedLocaleChange}
-              locales={!isNilOrError(locales) ? locales : []}
-              selectedLocale={selectedLocale}
-              values={{
-                input_field: valueMultiloc as Multiloc,
-              }}
-            />
+            {!hideLocaleSwitcher && (
+              <StyledLocaleSwitcher
+                onSelectedLocaleChange={handleOnSelectedLocaleChange}
+                locales={!isNilOrError(locales) ? locales : []}
+                selectedLocale={selectedLocale}
+                values={{
+                  input_field: valueMultiloc as Multiloc,
+                }}
+              />
+            )}
           </LabelContainer>
         </Box>
         <Input

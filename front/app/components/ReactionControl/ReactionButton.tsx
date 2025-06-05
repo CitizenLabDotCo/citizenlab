@@ -9,7 +9,6 @@ import {
   IconNames,
   Tooltip,
   Button as ButtonComponent,
-  Box,
 } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
 import { FormattedDate } from 'react-intl';
@@ -434,8 +433,9 @@ const ReactionButton = ({
         }
         trigger="mouseenter"
         width={variant === 'text' ? '100%' : 'fit-content'}
+        useContentWrapper={false}
       >
-        <Box>
+        <>
           {variant === 'text' && (
             <ButtonComponent
               onClick={onClick}
@@ -514,7 +514,7 @@ const ReactionButton = ({
               {disabledMessage}
             </ScreenReaderOnly>
           )}
-        </Box>
+        </>
       </Tooltip>
     );
   }

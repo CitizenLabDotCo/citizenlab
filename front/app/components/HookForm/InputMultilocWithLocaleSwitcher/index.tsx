@@ -9,6 +9,7 @@ import { Controller, useFormContext, FieldError } from 'react-hook-form';
 import { CLError, SupportedLocale, RHFErrors } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
 import Error, { TFieldName } from 'components/UI/Error';
 
@@ -20,14 +21,20 @@ interface Props
     'locales' | 'valueMultiloc' | 'type'
   > {
   name: string;
+  scrollErrorIntoView?: boolean;
 }
 
-const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
+const InputMultilocWithLocaleSwitcher = ({
+  name,
+  scrollErrorIntoView,
+  ...rest
+}: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
   } = useFormContext();
   const locales = useAppConfigurationLocales();
+  const locale = useLocale();
 
   if (isNilOrError(locales)) {
     return null;
@@ -63,6 +70,7 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
               locales={locales}
               type="text"
               valueMultiloc={{ ...defaultValue, ...field.value }}
+              initiallySelectedLocale={locale}
             />
           );
         }}
@@ -72,7 +80,7 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -81,7 +89,7 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </>
