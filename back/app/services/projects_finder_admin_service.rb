@@ -2,15 +2,19 @@ class ProjectsFinderAdminService
   UUID_REGEX = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
 
   def initialize(projects, params = {})
-    @projects = projects
     @start_at = params[:start_at]
     @end_at = params[:end_at]
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
+    @managers = params[:managers] || []
+
+    projects_scope = apply_date_filter(projects)
+    projects_scope = apply_manager_filter(projects_scope)
+
+    @projects = projects_scope
   end
 
   def recently_viewed
-    scope = apply_date_filter(@projects)
     substring_statement = "substring(path, 'admin/projects/(#{UUID_REGEX})')"
 
     # I first did this with a group by and max, but Copilot suggested
@@ -29,7 +33,7 @@ class ProjectsFinderAdminService
 
     recent_pageviews_subquery = "(#{recent_pageviews_sql}) AS recent_pageviews"
 
-    projects_subquery = scope
+    projects_subquery = @projects
       .joins("LEFT JOIN #{recent_pageviews_subquery} ON recent_pageviews.admin_project_id = projects.id AND recent_pageviews.rn = 1")
       .select('recent_pageviews.last_viewed_at AS last_viewed_at, projects.*')
 
@@ -43,8 +47,6 @@ class ProjectsFinderAdminService
   end
 
   def phase_starting_or_ending_soon
-    scope = apply_date_filter(@projects)
-
     phases_ending_soon_subquery = Phase
       .where("coalesce(end_at, 'infinity'::DATE) >= current_date")
       .group(:project_id)
@@ -55,7 +57,7 @@ class ProjectsFinderAdminService
       .group(:project_id)
       .select('project_id, min(start_at) AS min_start_at')
 
-    projects_subquery = scope
+    projects_subquery = @projects
       .joins("LEFT JOIN (#{phases_ending_soon_subquery.to_sql}) AS phases_ending_soon ON phases_ending_soon.project_id = projects.id")
       .joins("LEFT JOIN (#{phases_starting_soon_subquery.to_sql}) AS phases_starting_soon ON phases_starting_soon.project_id = projects.id") 
       .select('least(phases_ending_soon.min_end_at, phases_starting_soon.min_start_at) AS soon_date, projects.*')
@@ -68,6 +70,10 @@ class ProjectsFinderAdminService
       .limit(@page_size)
       .offset(@page_size * (@page_number - 1))
   end
+
+  # def apply_manager_filter(scope)
+    # TODO
+  # end
 
   private
 
