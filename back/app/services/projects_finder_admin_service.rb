@@ -121,16 +121,6 @@ class ProjectsFinderAdminService
     scope
   end
 
-  # PAGINATION
-  def self.paginate(scope, params = {})
-    page_size = params.dig(:page, :size) || 500
-    page_number = params.dig(:page, :number) || 1
-
-    scope
-      .limit(page_size)
-      .offset(page_size * (page_number - 1))
-  end
-
   # EXECUTION
   def self.execute(scope, params = {})
     # Apply filters
@@ -148,6 +138,6 @@ class ProjectsFinderAdminService
       projects = projects.order(created_at: :desc)
     end
 
-    paginate(projects, params)
+    projects
   end
 end

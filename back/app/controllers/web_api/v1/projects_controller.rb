@@ -148,9 +148,10 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = policy_scope(Project)
     projects = ProjectsFinderAdminService.execute(projects, params)
 
-    projects = projects.includes(:project_images, :phases)
+    @projects = paginate projects
+    @projects = @projects.includes(:project_images, :phases)
 
-    authorize projects, :index_for_admin?
+    authorize @projects, :index_for_admin?
 
     render json: linked_json(
       @projects,

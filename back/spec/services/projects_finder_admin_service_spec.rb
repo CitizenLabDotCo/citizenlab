@@ -161,14 +161,6 @@ describe ProjectsFinderAdminService do
 
         expect(result.pluck(:id)).to eq([p3, p2, p4].pluck(:id))
       end
-
-      it 'paginates' do
-        result1 = described_class.execute(Project.all, { sort: 'recently_viewed', page: { size: 2, number: 1 } })
-        expect(result1.pluck(:id)).to eq([p3, p2].pluck(:id))
-
-        result2 = described_class.execute(Project.all, { sort: 'recently_viewed', page: { size: 2, number: 2 } })
-        expect(result2.pluck(:id)).to eq([p1, p4].pluck(:id))
-      end
     end
 
     describe 'sort: phase_starting_or_ending_soon' do
@@ -209,28 +201,6 @@ describe ProjectsFinderAdminService do
         )
 
         expect(result.pluck(:id)).to eq([p6, p5, p7, p3, p4, p2].pluck(:id))
-      end
-
-      it 'paginates' do
-        result1 = described_class.execute(Project.all, { 
-          sort: 'phase_starting_or_ending_soon', page: { size: 4, number: 1 } 
-        })
-
-        expect(result1.pluck(:id)).to eq([
-          # p2 should come before p1, even though its creation
-          # date is after, because p2 has an open-ended phase
-          p6, p5, p7, p3
-        ].pluck(:id))
-
-        result2 = described_class.execute(Project.all, { 
-          sort: 'phase_starting_or_ending_soon', page: { size: 4, number: 2 } 
-        })
-
-        expect(result2.pluck(:id)).to eq([
-          # p2 should come before p1, even though its creation
-          # date is after, because p2 has an open-ended phase
-          p8, p4, p2, p1
-        ].pluck(:id))
       end
     end
   end
