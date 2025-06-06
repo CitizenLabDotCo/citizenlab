@@ -58,8 +58,14 @@ export const parseQuestionResult = (
     });
   }
 
-  const { multilocs, answers, logic, totalPickCount, totalResponseCount } =
-    result;
+  const {
+    multilocs,
+    answers,
+    logic,
+    inputType,
+    totalPickCount,
+    totalResponseCount,
+  } = result;
   if (!multilocs) throw new Error('Multilocs are missing');
 
   // Don't return 'No answer' if everyone answered
@@ -76,7 +82,7 @@ export const parseQuestionResult = (
 
       const image = answer ? multilocs.answer[answer].image : undefined;
       const percentage =
-        result.inputType === 'multiselect'
+        inputType === 'multiselect'
           ? roundPercentage(count, totalResponseCount, 1)
           : roundPercentage(count, totalPickCount, 1);
 
