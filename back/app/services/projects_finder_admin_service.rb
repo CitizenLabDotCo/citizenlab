@@ -2,7 +2,7 @@ class ProjectsFinderAdminService
   UUID_REGEX = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
 
   # SORTING METHODS
-  def self.sort_recently_viewed(scope, params = {})
+  def self.sort_recently_viewed(scope)
     substring_statement = "substring(path, 'admin/projects/(#{UUID_REGEX})')"
 
     # I first did this with a group by and max, but Copilot suggested
@@ -27,17 +27,12 @@ class ProjectsFinderAdminService
 
     # We order by last_viewed_at, but tie-break with created_at and id for a stable sort,
     # which is important for pagination
-    page_size = params[:page_size] || 500
-    page_number = params[:page_number] || 1
-
     Project
       .from(projects_subquery, :projects)
       .order('last_viewed_at DESC NULLS LAST, projects.created_at ASC, projects.id ASC')
-      .limit(page_size)
-      .offset(page_size * (page_number - 1))
   end
 
-  def self.sort_phase_starting_or_ending_soon(scope, params = {})
+  def self.sort_phase_starting_or_ending_soon(scope)
     phases_ending_soon_subquery = Phase
       .where("coalesce(end_at, 'infinity'::DATE) >= current_date")
       .group(:project_id)
@@ -55,18 +50,13 @@ class ProjectsFinderAdminService
     
     # We order by soon_date, but tie-break with created_at and id for a stable sort,
     # which is important for pagination
-    page_size = params[:page_size] || 500
-    page_number = params[:page_number] || 1
-
     Project
       .from(projects_subquery, :projects)
       .order('soon_date ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
-      .limit(page_size)
-      .offset(page_size * (page_number - 1))
   end
 
   # FILTERING METHODS
-  def self.filter_status(scope, params)
+  def self.filter_status(scope, params = {})
     status = params[:status] || []
 
     if status.present?
@@ -78,7 +68,7 @@ class ProjectsFinderAdminService
     end
   end
 
-  def self.filter_project_manager(scope, params)
+  def self.filter_project_manager(scope, params = {})
     manager_ids = params[:managers] || []
 
     if manager_ids.present?
@@ -100,7 +90,7 @@ class ProjectsFinderAdminService
     end
   end
 
-  def self.search(scope, params)
+  def self.search(scope, params = {})
     search = params[:search] || ''
 
     if search.present?
@@ -110,7 +100,7 @@ class ProjectsFinderAdminService
     end
   end
 
-  def self.filter_date(scope, params)
+  def self.filter_date(scope, params = {})
     start_at = params[:start_at]
     end_at = params[:end_at]
 
@@ -131,6 +121,16 @@ class ProjectsFinderAdminService
     scope
   end
 
+  # PAGINATION
+  def self.paginate(scope, params = {})
+    page_size = params.dig(:page, :size) || 500
+    page_number = params.dig(:page, :number) || 1
+
+    scope
+      .limit(page_size)
+      .offset(page_size * (page_number - 1))
+  end
+
   # EXECUTION
   def self.execute(scope, params = {})
     # Apply filters
@@ -141,13 +141,13 @@ class ProjectsFinderAdminService
 
     # Apply sorting
     if params[:sort] == 'recently_viewed'
-      projects = sort_recently_viewed(projects, params)
+      projects = sort_recently_viewed(projects)
     elsif params[:sort] == 'phase_starting_or_ending_soon'
-      projects = sort_phase_starting_or_ending_soon(projects, params)
+      projects = sort_phase_starting_or_ending_soon(projects)
     else
       projects = projects.order(created_at: :desc)
     end
 
-    projects
+    paginate(projects, params)
   end
 end
