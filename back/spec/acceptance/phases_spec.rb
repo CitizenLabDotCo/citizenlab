@@ -1002,6 +1002,19 @@ resource 'Phases' do
             xlsx = xlsx_contents(response_body)
             expect(xlsx.first[:rows].size).to eq 2
           end
+
+          # NOTE: Typically, survey responses have no displayable content.
+          example 'Responses with no displayable content are included' do
+            survey_response1.title_multiloc = {}
+            survey_response1.body_multiloc = {}
+            survey_response1.save!(validate: false)
+
+            do_request
+            assert_status 200
+            xlsx = xlsx_contents(response_body)
+            all_values = xlsx.flat_map { |sheet| sheet[:rows].flatten }
+            expect(all_values).to include(survey_response1.id)
+          end
         end
       end
     end

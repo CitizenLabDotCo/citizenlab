@@ -28,4 +28,31 @@ describe IdeasFinder do
       end
     end
   end
+
+  describe 'base filtering' do
+    let(:params) { {} }
+
+    # NOTE: If a phase is changed from native survey to ideation,
+    # this can mean that ideas with no displayable content exist for the phase.
+    it 'does not return ideas with no content' do
+      idea_without_content = create(:idea)
+
+      # NOTE: Typically, survey responses have no displayable content.
+      idea_without_content.title_multiloc = {}
+      idea_without_content.body_multiloc = {}
+      idea_without_content.save!(validate: false)
+
+      expect(result_record_ids).to match_array (unassigned_ideas + assigned_ideas).map(&:id)
+      expect(result_record_ids).not_to include idea_without_content.id
+    end
+
+    it 'only returns publicly visible ideas' do
+      project = create(:project, phases: [create(:active_native_survey_phase)])
+      _status = create(:idea_status_proposed)
+      response = create(:native_survey_response, project: project)
+
+      expect(result_record_ids).to match_array (unassigned_ideas + assigned_ideas).map(&:id)
+      expect(result_record_ids).not_to include response.id
+    end
+  end
 end
