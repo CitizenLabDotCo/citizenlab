@@ -1,6 +1,6 @@
 import { Multiloc, ILinks } from 'typings';
 
-import { ActionDescriptors } from 'api/projects/types';
+import { ActionDescriptors, PublicationStatus } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -29,11 +29,25 @@ type Areas = {
   areas?: string[];
 } & PageNumbers;
 
+type ForAdmin = {
+  endpoint: 'for_admin';
+  status?: PublicationStatus[];
+  managers?: string[];
+  search?: string;
+  start_at?: string;
+  end_at?: string;
+  sort:
+    | 'recently_viewed'
+    | 'phase_starting_or_ending_soon'
+    | 'recently_created';
+} & PageNumbers;
+
 export type Parameters =
   | ActiveParticipatoryPhase
   | FollowedItem
   | FinishedOrArchived
-  | Areas;
+  | Areas
+  | ForAdmin;
 
 export type MiniProjectsKeys = Keys<typeof miniProjectsKeys>;
 
