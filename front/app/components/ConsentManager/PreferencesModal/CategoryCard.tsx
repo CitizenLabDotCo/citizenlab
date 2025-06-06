@@ -7,7 +7,6 @@ import {
   fontSizes,
   media,
 } from '@citizenlab/cl2-component-library';
-import { transparentize } from 'polished';
 import styled from 'styled-components';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
@@ -23,7 +22,6 @@ const Container = styled.div`
   display: flex;
   padding: 20px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background-color: ${transparentize(0.95, colors.primary)};
   border: 1px solid ${colors.divider};
   margin-bottom: 10px;
 
@@ -139,17 +137,19 @@ const CategoryCard = ({
   return (
     <Container className="e2e-category">
       <TextContainer>
-        <Title variant="h4" as="h2">
-          <FormattedMessage
-            {...{
-              functional: messages.functional,
-              advertising: messages.advertising,
-              analytics: messages.analytics,
-              required: messages.required,
-            }[category]}
-          />
-        </Title>
         <StyledFieldset>
+          <legend>
+            <Title variant="h4" as="h2">
+              <FormattedMessage
+                {...{
+                  functional: messages.functional,
+                  advertising: messages.advertising,
+                  analytics: messages.analytics,
+                  required: messages.required,
+                }[category]}
+              />
+            </Title>
+          </legend>
           <Radio
             onChange={
               category === 'required' ? undefined : handleChange(category, true)

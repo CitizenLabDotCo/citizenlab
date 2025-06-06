@@ -37,6 +37,7 @@
 #  manual_votes_amount             :integer
 #  manual_votes_last_updated_by_id :uuid
 #  manual_votes_last_updated_at    :datetime
+#  neutral_reactions_count         :integer          default(0), not null
 #
 # Indexes
 #
@@ -144,10 +145,8 @@ class Idea < ApplicationRecord
 
   validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
-  with_options if: :supports_built_in_fields? do
-    validates :title_multiloc, presence: true, multiloc: { presence: true }
-    validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
-  end
+  validates :title_multiloc, presence: true, multiloc: { presence: true }, if: :title_multiloc_required?
+  validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }, if: :body_multiloc_required?
   validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
 
   validate :validate_creation_phase
@@ -227,7 +226,10 @@ class Idea < ApplicationRecord
   scope :publicly_visible, lambda {
     where_pmethod(&:supports_public_visibility?)
   }
-  scope :transitive, -> { where creation_phase: nil }
+
+  scope :transitive, lambda { |transitive = true|
+    transitive ? where(creation_phase: nil) : where.not(creation_phase: nil)
+  }
 
   scope :native_survey, -> { where(creation_phase: Phase.where(participation_method: 'native_survey')) } # TODO: Delete
   scope :draft_surveys, lambda { # TODO: Delete
@@ -366,8 +368,12 @@ class Idea < ApplicationRecord
 
   private
 
-  def supports_built_in_fields?
-    !draft? && participation_method_on_creation.supports_built_in_fields?
+  def title_multiloc_required?
+    !draft? && participation_method_on_creation.built_in_title_required?
+  end
+
+  def body_multiloc_required?
+    !draft? && participation_method_on_creation.built_in_body_required?
   end
 
   def sanitize_body_multiloc

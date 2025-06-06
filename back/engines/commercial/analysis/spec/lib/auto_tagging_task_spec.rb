@@ -219,7 +219,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       tags = create_list(:tag, 3, analysis: analysis)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id], filters: { search: 'world' })
-      idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
+      idea1 = create(:idea, project: project, title_multiloc: { en: 'Football is the greatest sport in the world' })
       idea2 = create(:idea, project: project, title_multiloc: { en: 'This does contain world, but is already tagged so should not be auto-tagged' })
       create(:tagging, input: idea2, tag: tags[0])
       _idea3 = create(:idea, project: project, title_multiloc: { en: 'This does not contain w o r l d, so it should not be auto-tagged' })
@@ -282,7 +282,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       tags = create_list(:tag, 3, analysis: analysis)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'few_shot_classification', tags_ids: [tags[0].id, tags[1].id])
-      idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
+      idea1 = create(:idea, project: project, title_multiloc: { en: 'Football is the greatest sport in the world' })
       idea2 = create(:idea, project: project, title_multiloc: { en: 'We should have a dancing stage in the parc' })
       idea3 = create(:idea, project: project, title_multiloc: { en: 'We need more houses' })
       create(:tagging, input: idea3, tag: tags[0])
@@ -293,8 +293,12 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(mock_llm).to receive(:chat) do |prompt|
         expect(prompt).to include(tags[0].name, tags[1].name, 'other')
         expect(prompt).to include('other')
-        expect(prompt).to include('Footbal is the greatest sport in the world').once
+        expect(prompt).to include('Football is the greatest sport in the world').once
         expect(prompt).to include('We need more houses').once
+
+        # There's no guarantee on the order of ideas in the prompt, so we reorder them to
+        # be able to write consistent expectations in the rest of the test.
+        idea1, idea2 = [idea1, idea2].sort_by { |i| prompt.index(i.title_multiloc['en']) }
       end.and_return("#{tags[0].name}\n   #{tags[1].name.upcase}")
 
       expect { att.execute }

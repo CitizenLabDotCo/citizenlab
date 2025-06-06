@@ -203,6 +203,8 @@ class IdeaCustomFieldsService
 
   private
 
+  # @param fields [Enumerable<CustomField>]
+  # @return [Array<CustomField>]
   def insert_other_option_text_fields(fields, print_version: false)
     all_fields = []
     fields.each do |field|
