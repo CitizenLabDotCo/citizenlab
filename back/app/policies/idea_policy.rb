@@ -41,7 +41,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    active? && (admin? || user&.project_moderator?)
+    active? && (admin? || (user && UserRoleService.new.can_moderate_project?(record.project, user)))
   end
 
   def index_mini?
@@ -93,7 +93,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    return false if !record.participation_method_on_creation.supports_edits_after_publication? && record.published? && !record.will_be_published?
+    return false if !record.participation_method_on_creation.supports_edits_after_publication? && record.published?
     return true if (record.draft? && owner?) || (user && UserRoleService.new.can_moderate_project?(record.project, user))
     return false if !active? || !owner?
 
