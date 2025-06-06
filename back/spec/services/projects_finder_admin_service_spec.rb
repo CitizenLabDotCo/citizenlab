@@ -222,7 +222,7 @@ describe ProjectsFinderAdminService do
           p6, p5, p7, p3
         ].pluck(:id))
 
-        result1 = described_class.execute(Project.all, { 
+        result2 = described_class.execute(Project.all, { 
           sort: 'phase_starting_or_ending_soon', page: { size: 4, number: 2 } 
         })
 
