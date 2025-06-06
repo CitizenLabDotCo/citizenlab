@@ -2,7 +2,7 @@
 
 module ParticipationMethod
   class Base
-    SUPPORTED_REACTING_MODES = [].freeze
+    SUPPORTED_REACTION_MODES = [].freeze
 
     def self.all_methods
       [
@@ -152,9 +152,9 @@ module ParticipationMethod
     #   whether any reaction modes are supported.
     def supports_reacting?(mode = nil)
       if mode
-        self.class::SUPPORTED_REACTING_MODES.include?(mode)
+        self.class::SUPPORTED_REACTION_MODES.include?(mode)
       else
-        self.class::SUPPORTED_REACTING_MODES.present?
+        self.class::SUPPORTED_REACTION_MODES.present?
       end
     end
 

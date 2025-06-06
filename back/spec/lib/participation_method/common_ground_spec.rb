@@ -70,7 +70,7 @@ RSpec.describe ParticipationMethod::CommonGround do
   its(:supports_commenting?) { is_expected.to be(false) }
 
   its(:supports_reacting?) { is_expected.to be(true) }
-  its(:supports_reacting?, 'up') { is_expected.to be(true) }
-  its(:supports_reacting?, 'down') { is_expected.to be(true) }
-  its(:supports_reacting?, 'neutral') { is_expected.to be(true) }
+  it { expect(participation_method.supports_reacting?('up')).to be(true) }
+  it { expect(participation_method.supports_reacting?('down')).to be(true) }
+  it { expect(participation_method.supports_reacting?('neutral')).to be(true) }
 end

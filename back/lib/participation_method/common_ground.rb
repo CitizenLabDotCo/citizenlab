@@ -2,7 +2,7 @@
 
 module ParticipationMethod
   class CommonGround < Base
-    SUPPORTED_REACTING_MODES = %w[up down neutral].freeze
+    SUPPORTED_REACTION_MODES = %w[up down neutral].freeze
 
     def self.method_str
       'common_ground'

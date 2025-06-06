@@ -2,7 +2,7 @@
 
 module ParticipationMethod
   class Ideation < Base
-    SUPPORTED_REACTING_MODES = %w[up down].freeze
+    SUPPORTED_REACTION_MODES = %w[up down].freeze
     ALLOWED_EXTRA_FIELD_TYPES = %w[
       page number linear_scale rating text multiline_text select multiselect multiselect_image
       ranking sentiment_linear_scale matrix_linear_scale
