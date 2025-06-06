@@ -229,6 +229,7 @@ class Idea < ApplicationRecord
     where_pmethod(&:supports_public_visibility?)
   }
 
+  # Filter out empty content when switching participation methods (e.g. from survey to ideation)
   scope :with_content, -> { where("ideas.title_multiloc != '{}' AND ideas.body_multiloc != '{}'") }
 
   scope :transitive, lambda { |transitive = true|
