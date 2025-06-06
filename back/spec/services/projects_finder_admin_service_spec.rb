@@ -163,10 +163,10 @@ describe ProjectsFinderAdminService do
       end
 
       it 'paginates' do
-        result1 = described_class.execute(Project.all, { sort: 'recently_viewed' page: { size: 2, number: 1 } })
+        result1 = described_class.execute(Project.all, { sort: 'recently_viewed', page: { size: 2, number: 1 } })
         expect(result1.pluck(:id)).to eq([p3, p2].pluck(:id))
 
-        result2 = described_class.execute(Project.all, { sort: 'recently_viewed' page: { size: 2, number: 2 } })
+        result2 = described_class.execute(Project.all, { sort: 'recently_viewed', page: { size: 2, number: 2 } })
         expect(result2.pluck(:id)).to eq([p1, p4].pluck(:id))
       end
     end
@@ -213,7 +213,7 @@ describe ProjectsFinderAdminService do
 
       it 'paginates' do
         result1 = described_class.execute(Project.all, { 
-          sort: 'phase_starting_or_ending_soon' page: { size: 4, number: 1 } 
+          sort: 'phase_starting_or_ending_soon', page: { size: 4, number: 1 } 
         })
 
         expect(result1.pluck(:id)).to eq([
@@ -223,7 +223,7 @@ describe ProjectsFinderAdminService do
         ].pluck(:id))
 
         result1 = described_class.execute(Project.all, { 
-          sort: 'phase_starting_or_ending_soon' page: { size: 4, number: 2 } 
+          sort: 'phase_starting_or_ending_soon', page: { size: 4, number: 2 } 
         })
 
         expect(result2.pluck(:id)).to eq([
