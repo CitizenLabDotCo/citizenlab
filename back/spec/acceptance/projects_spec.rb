@@ -918,13 +918,13 @@ resource 'Projects' do
       end
 
       example 'Downloaded inputs do not include ideas with no content' do
-        native_survey_phase.update!(participation_method: 'ideation')
-
         # Simulating a survey response with no content, which already
         # existed before the phase participation_method was changed.
         survey_response.title_multiloc = {}
         survey_response.body_multiloc = {}
         survey_response.save!(validate: false)
+
+        native_survey_phase.update!(participation_method: 'ideation')
 
         do_request
         assert_status 200
