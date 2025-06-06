@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} χρήστες",
   "app.components.AvatarBubbles.participant": "συμμετέχων",
   "app.components.AvatarBubbles.participants1": "συμμετέχοντες",
-  "app.components.CityLogoSection.iframeTitle": "Περισσότερες πληροφορίες σχετικά με το {orgName}",
   "app.components.Comments.cancel": "Ακύρωση",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Ο σχολιασμός δεν είναι δυνατός στην τρέχουσα φάση.",
   "app.components.Comments.commentingDisabledInactiveProject": "Ο σχολιασμός δεν είναι δυνατός επειδή αυτό το έργο δεν είναι επί του παρόντος ενεργό.",

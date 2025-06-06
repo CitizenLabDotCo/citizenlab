@@ -31,7 +31,6 @@ import {
   IMAGE_UPLOADING_EVENT,
 } from 'components/admin/ContentBuilder/constants';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import Fragment from 'components/Fragment';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -150,18 +149,16 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
           isContentBuilderDisplay={!isHomepage}
         />
       ) : (
-        <Fragment name="signed-out-header">
-          <SignedOutHeader
-            homepageSettings={{
-              ...homepageSettings,
-              header_bg: {
-                large: image?.imageUrl || null,
-                medium: image?.imageUrl || null,
-                small: image?.imageUrl || null,
-              },
-            }}
-          />
-        </Fragment>
+        <SignedOutHeader
+          homepageSettings={{
+            ...homepageSettings,
+            header_bg: {
+              large: image?.imageUrl || null,
+              medium: image?.imageUrl || null,
+              small: image?.imageUrl || null,
+            },
+          }}
+        />
       )}
     </Box>
   );

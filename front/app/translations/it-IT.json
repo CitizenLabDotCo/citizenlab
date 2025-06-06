@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} utenti",
   "app.components.AvatarBubbles.participant": "partecipante",
   "app.components.AvatarBubbles.participants1": "partecipanti",
-  "app.components.CityLogoSection.iframeTitle": "Altre informazioni su {orgName}",
   "app.components.Comments.cancel": "Annulla",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Non è possibile commentare nella fase attuale.",
   "app.components.Comments.commentingDisabledInactiveProject": "Non è possibile commentare perché questo progetto non è attualmente attivo.",

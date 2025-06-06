@@ -5,7 +5,6 @@
   "UI.FormComponents.optional": "optional",
   "app.components.AssignBudgetControl.a11y_price": "Price:",
   "app.components.AssignBudgetControl.add": "Add",
-  "app.components.CityLogoSection.iframeTitle": "More information about {orgName}",
   "app.components.Comments.cancel": "Cancel",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Commenting is not possible in the current phase.",
   "app.components.Comments.commentingDisabledInactiveProject": "Commenting is not possible because this project is currently not active.",

@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} käyttäjää",
   "app.components.AvatarBubbles.participant": "osallistuja",
   "app.components.AvatarBubbles.participants1": "osallistujia",
-  "app.components.CityLogoSection.iframeTitle": "Lisätietoja {orgName}",
   "app.components.Comments.cancel": "Peruuta",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Kommentointi ei ole mahdollista nykyisessä vaiheessa.",
   "app.components.Comments.commentingDisabledInactiveProject": "Kommentointi ei ole mahdollista, koska tämä projekti ei ole tällä hetkellä aktiivinen.",

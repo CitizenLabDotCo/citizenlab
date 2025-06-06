@@ -18,7 +18,6 @@
   "app.components.AuthProviders.signUp2": "Înscrie-te",
   "app.components.AuthProviders.signUpButtonAltText": "Înregistrează-te cu {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Înscrie-te cu e-mailul",
-  "app.components.CityLogoSection.iframeTitle": "Mai multe informații despre {orgName}",
   "app.components.Comments.cancel": "Anulare",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Nu este posibilă lăsarea comentariilor în această fază.",
   "app.components.Comments.commentingDisabledInactiveProject": "Nu puteți comenta, deoarece acest proiect nu este încă activ.",

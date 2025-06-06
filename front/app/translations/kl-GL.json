@@ -33,7 +33,6 @@
   "app.components.AuthProviders.signUp2": "Sign up",
   "app.components.AuthProviders.signUpButtonAltText": "{loginMechanismName} atorlugu nalunaarit",
   "app.components.AuthProviders.signUpWithEmail": "Sign up with Email",
-  "app.components.CityLogoSection.iframeTitle": "{orgName} pillugu paasissutissat amerlanerit",
   "app.components.Comments.cancel": "Atorunnaarsiguk",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Immikkoortumi massakkut atuuttumi oqaasertaliineq ajornarallarpoq.",
   "app.components.Comments.commentingDisabledInactiveProject": "Suliap ammannginnera pissutaalluni oqaasertaliisoqarsinnanngilaq.",

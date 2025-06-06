@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} المستخدمين",
   "app.components.AvatarBubbles.participant": "مشارك",
   "app.components.AvatarBubbles.participants1": "مشاركون",
-  "app.components.CityLogoSection.iframeTitle": "المزيد من المعلومات حول {orgName}",
   "app.components.Comments.cancel": "إلغاء المحاولة",
   "app.components.Comments.commentingDisabledInCurrentPhase": "التعليق غير ممكن في المرحلة الحالية.",
   "app.components.Comments.commentingDisabledInactiveProject": "التعليق غير ممكن لأن هذا المشروع غير نشط حالياً.",

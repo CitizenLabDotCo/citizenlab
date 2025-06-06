@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} lietotāji",
   "app.components.AvatarBubbles.participant": "dalībnieks",
   "app.components.AvatarBubbles.participants1": "dalībnieki",
-  "app.components.CityLogoSection.iframeTitle": "Vairāk informācijas par {orgName}",
   "app.components.Comments.cancel": "Atcelt",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Pašreizējā posmā komentāri nav iespējami.",
   "app.components.Comments.commentingDisabledInactiveProject": "Komentāri nav iespējami, jo šis projekts pašlaik nav aktīvs.",

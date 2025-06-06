@@ -11,7 +11,6 @@ import {
   PageTitle,
 } from 'containers/PagesShowPage';
 
-import Fragment from 'components/Fragment';
 import T from 'components/T';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -59,28 +58,23 @@ const CookiePolicy = () => {
           <Container>
             <PageContent>
               <StyledContentContainer>
-                <Fragment
-                  name="pages/cookie-policy/content"
-                  title={formatMessage(messages.cookiePolicyTitle)}
-                >
-                  <PageTitle>
-                    {pageAttributes?.title_multiloc ? (
-                      <T value={pageAttributes.title_multiloc} />
-                    ) : (
-                      formatMessage(messages.cookiePolicyTitle)
-                    )}
-                  </PageTitle>
-                  <QuillEditedContent>
-                    {pageAttributes?.top_info_section_multiloc ? (
-                      <T
-                        value={pageAttributes.top_info_section_multiloc}
-                        supportHtml
-                      />
-                    ) : (
-                      <DefaultText />
-                    )}
-                  </QuillEditedContent>
-                </Fragment>
+                <PageTitle>
+                  {pageAttributes?.title_multiloc ? (
+                    <T value={pageAttributes.title_multiloc} />
+                  ) : (
+                    formatMessage(messages.cookiePolicyTitle)
+                  )}
+                </PageTitle>
+                <QuillEditedContent>
+                  {pageAttributes?.top_info_section_multiloc ? (
+                    <T
+                      value={pageAttributes.top_info_section_multiloc}
+                      supportHtml
+                    />
+                  ) : (
+                    <DefaultText />
+                  )}
+                </QuillEditedContent>
               </StyledContentContainer>
             </PageContent>
           </Container>
