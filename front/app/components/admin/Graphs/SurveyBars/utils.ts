@@ -58,7 +58,8 @@ export const parseQuestionResult = (
     });
   }
 
-  const { multilocs, answers, logic, totalPickCount } = result;
+  const { multilocs, answers, logic, totalPickCount, totalResponseCount } =
+    result;
   if (!multilocs) throw new Error('Multilocs are missing');
 
   // Don't return 'No answer' if everyone answered
@@ -72,8 +73,12 @@ export const parseQuestionResult = (
         answer === null
           ? noAnswerCopy
           : localize(multilocs.answer[answer].title_multiloc);
+
       const image = answer ? multilocs.answer[answer].image : undefined;
-      const percentage = roundPercentage(count, totalPickCount, 1);
+      const percentage =
+        result.inputType === 'multiselect'
+          ? roundPercentage(count, totalResponseCount, 1)
+          : roundPercentage(count, totalPickCount, 1);
 
       const logicAnswerKey = answer === null ? 'no_answer' : answer;
       const logicForAnswer = logic?.answer?.[logicAnswerKey];
