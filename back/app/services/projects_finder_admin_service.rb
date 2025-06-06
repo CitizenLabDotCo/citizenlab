@@ -2,7 +2,7 @@ class ProjectsFinderAdminService
   UUID_REGEX = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
 
   # SORTING METHODS
-  def self.sort_recently_viewed(scope)
+  def self.sort_recently_viewed(scope, current_user)
     substring_statement = "substring(path, 'admin/projects/(#{UUID_REGEX})')"
 
     # I first did this with a group by and max, but Copilot suggested
@@ -16,7 +16,10 @@ class ProjectsFinderAdminService
           ORDER BY created_at DESC
         ) AS rn
       FROM impact_tracking_pageviews
+      INNER JOIN impact_tracking_sessions
+        ON impact_tracking_pageviews.session_id = impact_tracking_sessions.id
       WHERE path LIKE '%admin/projects/%'
+        AND impact_tracking_sessions.user_id = #{current_user.id}
     SQL
 
     recent_pageviews_subquery = "(#{recent_pageviews_sql}) AS recent_pageviews"
@@ -122,7 +125,7 @@ class ProjectsFinderAdminService
   end
 
   # EXECUTION
-  def self.execute(scope, params = {})
+  def self.execute(scope, params = {}, current_user: nil)
     # Apply filters
     projects = filter_status(scope, params)
     projects = filter_project_manager(projects, params)
@@ -131,7 +134,7 @@ class ProjectsFinderAdminService
 
     # Apply sorting
     if params[:sort] == 'recently_viewed'
-      projects = sort_recently_viewed(projects)
+      projects = sort_recently_viewed(projects, current_user)
     elsif params[:sort] == 'phase_starting_or_ending_soon'
       projects = sort_phase_starting_or_ending_soon(projects)
     else

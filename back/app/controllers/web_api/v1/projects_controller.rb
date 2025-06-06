@@ -146,7 +146,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_for_admin
     projects = policy_scope(Project)
-    projects = ProjectsFinderAdminService.execute(projects, params)
+    projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     @projects = paginate projects
     @projects = @projects.includes(:project_images, :phases)

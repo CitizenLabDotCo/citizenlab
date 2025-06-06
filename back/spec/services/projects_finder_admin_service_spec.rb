@@ -101,8 +101,10 @@ describe ProjectsFinderAdminService do
 
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
+      let!(:user) { create(:user) }
+
       def create_session(project, created_at)
-        session = create(:session, created_at: created_at)
+        session = create(:session, created_at: created_at, user_id: user.id)
         create(
           :pageview, 
           session_id: session.id,
@@ -145,7 +147,8 @@ describe ProjectsFinderAdminService do
       it 'sorts by recently viewed' do
         result = described_class.execute(
           Project.all,
-          { sort: 'recently_viewed' }
+          { sort: 'recently_viewed' },
+          user
         )
         expect(result.pluck(:id)).to eq([p3, p2, p1, p4].pluck(:id))
       end
@@ -156,7 +159,8 @@ describe ProjectsFinderAdminService do
 
         result = described_class.execute(
           Project.all,
-          { sort: 'recently_viewed', start_at: start_period, end_at: end_period }
+          { sort: 'recently_viewed', start_at: start_period, end_at: end_period },
+          user
         )
 
         expect(result.pluck(:id)).to eq([p3, p2, p4].pluck(:id))
