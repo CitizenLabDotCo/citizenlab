@@ -148,9 +148,18 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = policy_scope(Project)
     projects = ProjectsFinderAdminService.execute(projects, params)
 
+    projects = projects.includes(:project_images, :phases)
+
     authorize projects, :index_for_admin?
 
-    # TODO serialize
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniSerializer,
+      params: jsonapi_serializer_params({
+        project_descriptor_pairs: {}
+      }),
+      include: %i[project_images current_phase]
+    )    
   end
 
   def show
