@@ -10,7 +10,7 @@ class ProjectsFinderAdminService
     @search = params[:search] || ''
 
     projects_scope = apply_date_filter(projects)
-    projects_scope = apply_manager_filter(projects_scope)
+    projects_scope = apply_project_manager_filter(projects_scope)
 
     @projects = projects_scope
   end
@@ -72,9 +72,24 @@ class ProjectsFinderAdminService
       .offset(@page_size * (@page_number - 1))
   end
 
-  def apply_manager_filter(scope)
-    # TODO
-    scope
+  def apply_project_manager_filter(scope)
+    if @managers.present?
+      managers = User.where(id: @managers)
+
+      moderated_projects = []
+
+      managers.each do |manager|
+        manager.roles.each do |role|
+          if role['type'] == 'project_moderator'
+            moderated_projects << role['project_id']
+          end
+        end
+      end
+
+      scope.where(id: moderated_projects)
+    else
+      scope
+    end
   end
 
   def apply_search(scope)
