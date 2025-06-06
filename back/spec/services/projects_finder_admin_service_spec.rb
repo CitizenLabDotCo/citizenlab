@@ -193,7 +193,7 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'apply_project_manager_filter' do
+  describe 'filter_project_manager' do
     let!(:p1) { create(:project) }
     let!(:p2) { create(:project) }
     let!(:p3) { create(:project) }
@@ -202,12 +202,12 @@ describe ProjectsFinderAdminService do
     let!(:user2) { create(:user, roles: [{ 'type'=> 'project_moderator', 'project_id': p2.id }] ) }
 
     it 'returns projects managed by specified users' do
-      result = service.new(Project.all, { managers: [user1.id] }).apply_project_manager_filter(Project.all)
+      result = described_class.filter_project_manager(Project.all, { managers: [user1.id] })
       expect(result.pluck(:id)).to eq([p1.id])
     end
 
     it 'returns all projects when no managers specified' do
-      result = service.new(Project.all, {}).apply_project_manager_filter(Project.all)
+      result = described_class.filter_project_manager(Project.all, {})
       expect(result.pluck(:id)).to match_array([p1.id, p2.id, p3.id])
     end
   end
