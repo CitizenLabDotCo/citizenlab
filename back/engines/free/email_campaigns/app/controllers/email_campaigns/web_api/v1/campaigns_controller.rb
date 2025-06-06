@@ -146,7 +146,8 @@ module EmailCampaigns
         :context_id,
         group_ids: [],
         subject_multiloc: I18n.available_locales,
-        body_multiloc: I18n.available_locales
+        body_multiloc: I18n.available_locales,
+        custom_text_multiloc: I18n.available_locales
       )
     end
   end

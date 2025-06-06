@@ -40,6 +40,19 @@ module EmailCampaigns
 
     def format_message(key, component: nil, escape_html: true, values: {})
       group = component || @campaign.class.name.demodulize.underscore
+
+      # TODO: Will probably need to generate the default text for the campaign and then use this for all?
+      # TODO: What about HTML escaping? Should we always escape?
+
+      # Are there any overrides for this key in the campaign record?
+      override = @campaign.custom_text_multiloc&.dig(locale.locale_sym.to_s, key)
+      if override.present?
+        template = Liquid::Template.parse(override)
+        values = values.transform_keys(&:to_s)
+        return template.render(values)
+      end
+
+      # Default message
       msg = t("email_campaigns.#{group}.#{key}", **values)
       escape_html ? msg : msg.html_safe
     end

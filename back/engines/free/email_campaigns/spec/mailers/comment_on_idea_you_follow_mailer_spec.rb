@@ -18,36 +18,48 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
       ).first.merge({ recipient: recipient })
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
-    it 'renders the subject' do
-      expect(mail.subject).to be_present
+    context 'default mail' do
+      let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      it 'renders the subject' do
+        expect(mail.subject).to be_present
+      end
+
+      it 'renders the receiver email' do
+        expect(mail.to).to eq([recipient.email])
+      end
+
+      it 'renders the sender email' do
+        expect(mail.from).to all(end_with('@citizenlab.co'))
+      end
+
+      it 'assigns organisation name' do
+        expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
+      end
+
+      it 'includes the comment author name' do
+        expect(mail.body.encoded).to include('Marion')
+      end
+
+      it 'includes the comment body' do
+        expect(mail.body.encoded).to include('I agree')
+      end
+
+      it 'includes the unfollow url' do
+        expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
+      end
     end
 
-    it 'renders the receiver email' do
-      expect(mail.to).to eq([recipient.email])
-    end
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    it 'renders the sender email' do
-      expect(mail.from).to all(end_with('@citizenlab.co'))
-    end
+      it 'can customise the subject' do
+        campaign.update!(custom_text_multiloc: { 'en' => { 'subject' => 'Custom Subject - {{ input_title }}' } })
 
-    it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
-    end
-
-    it 'includes the comment author name' do
-      expect(mail.body.encoded).to include('Marion')
-    end
-
-    it 'includes the comment body' do
-      expect(mail.body.encoded).to include('I agree')
-    end
-
-    it 'includes the unfollow url' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
+        expect(mail.subject).to eq 'Custom Subject - Plant more trees'
+      end
     end
   end
 end
