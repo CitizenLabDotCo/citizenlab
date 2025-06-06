@@ -748,4 +748,14 @@ RSpec.describe Idea do
       expect(described_class.where_pmethod { |pmethod| %w[ideation proposals].include? pmethod.class.method_str }).to match_array [proposal, idea]
     end
   end
+
+  describe 'with_content scope' do
+    it 'filters out ideas with empty title and body multiloc hashes' do
+      create(:idea_status_proposed)
+      _response = create(:native_survey_response, title_multiloc: {}, body_multiloc: {})
+      idea = create(:idea)
+
+      expect(described_class.with_content).to match_array [idea]
+    end
+  end
 end
