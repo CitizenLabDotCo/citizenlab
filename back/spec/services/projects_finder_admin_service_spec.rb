@@ -35,7 +35,7 @@ describe ProjectsFinderAdminService do
     project
   end
 
-  describe 'recently_viewed' do
+  describe 'self.recently_viewed' do
     def create_session(project, created_at)
       session = create(:session, created_at: created_at)
       create(
@@ -103,7 +103,7 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'phase_starting_or_ending_soon' do
+  describe 'self.phase_starting_or_ending_soon' do
     let!(:p1) { create_project(Date.new(2020, 1, 1), Date.new(2021, 1, 1), created_at: Date.new(2019, 1, 1)) }
     let!(:p2) { create_project(Date.new(2020, 2, 1), nil, created_at: Date.new(2019, 2, 1)) }
 
@@ -162,7 +162,7 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'filter_status' do
+  describe 'self.filter_status' do
     let!(:draft_project) do
       project = create(:project)
       admin_publication = AdminPublication.find_by(publication_id: project.id)
@@ -193,7 +193,7 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'filter_project_manager' do
+  describe 'self.filter_project_manager' do
     let!(:p1) { create(:project) }
     let!(:p2) { create(:project) }
     let!(:p3) { create(:project) }
@@ -212,7 +212,7 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'search' do
+  describe 'self.search' do
     let!(:p1) { create(:project, title_multiloc: { 'en' => 'Test Project 1'} ) }
     let!(:p2) { create(:project, title_multiloc: { 'en' => 'Another Project'} ) }
     let!(:p3) { create(:project, title_multiloc: { 'en' => 'Test Project 2'} ) }
@@ -226,5 +226,9 @@ describe ProjectsFinderAdminService do
       result = described_class.search(Project.all, {})
       expect(result.pluck(:id)).to match_array([p1, p2, p3].pluck(:id))
     end
+  end
+
+  describe 'execute' do
+    # TODO
   end
 end
