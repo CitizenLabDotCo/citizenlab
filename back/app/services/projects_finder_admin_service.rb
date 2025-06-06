@@ -1,22 +1,8 @@
 class ProjectsFinderAdminService
   UUID_REGEX = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
 
-  def initialize(projects, params = {})
-    @start_at = params[:start_at]
-    @end_at = params[:end_at]
-    @page_size = (params.dig(:page, :size) || 500).to_i
-    @page_number = (params.dig(:page, :number) || 1).to_i
-    @managers = params[:managers] || []
-    @search = params[:search] || ''
-    @status = params[:status] || []
-
-    projects_scope = apply_date_filter(projects)
-    projects_scope = apply_project_manager_filter(projects_scope)
-
-    @projects = projects_scope
-  end
-
-  def recently_viewed
+  # SORTING METHODS
+  def self.sort_recently_viewed(scope, params = {})
     substring_statement = "substring(path, 'admin/projects/(#{UUID_REGEX})')"
 
     # I first did this with a group by and max, but Copilot suggested
@@ -35,20 +21,23 @@ class ProjectsFinderAdminService
 
     recent_pageviews_subquery = "(#{recent_pageviews_sql}) AS recent_pageviews"
 
-    projects_subquery = @projects
+    projects_subquery = scope
       .joins("LEFT JOIN #{recent_pageviews_subquery} ON recent_pageviews.admin_project_id = projects.id AND recent_pageviews.rn = 1")
       .select('recent_pageviews.last_viewed_at AS last_viewed_at, projects.*')
 
     # We order by last_viewed_at, but tie-break with created_at and id for a stable sort,
     # which is important for pagination
+    page_size = params[:page_size] || 500
+    page_number = params[:page_number] || 1
+
     Project
       .from(projects_subquery, :projects)
       .order('last_viewed_at DESC NULLS LAST, projects.created_at ASC, projects.id ASC')
-      .limit(@page_size)
-      .offset(@page_size * (@page_number - 1))
+      .limit(page_size)
+      .offset(page_size * (page_number - 1))
   end
 
-  def phase_starting_or_ending_soon
+  def self.sort_phase_starting_or_ending_soon(scope, params = {})
     phases_ending_soon_subquery = Phase
       .where("coalesce(end_at, 'infinity'::DATE) >= current_date")
       .group(:project_id)
@@ -59,33 +48,41 @@ class ProjectsFinderAdminService
       .group(:project_id)
       .select('project_id, min(start_at) AS min_start_at')
 
-    projects_subquery = @projects
+    projects_subquery = scope
       .joins("LEFT JOIN (#{phases_ending_soon_subquery.to_sql}) AS phases_ending_soon ON phases_ending_soon.project_id = projects.id")
       .joins("LEFT JOIN (#{phases_starting_soon_subquery.to_sql}) AS phases_starting_soon ON phases_starting_soon.project_id = projects.id") 
       .select('least(phases_ending_soon.min_end_at, phases_starting_soon.min_start_at) AS soon_date, projects.*')
     
     # We order by soon_date, but tie-break with created_at and id for a stable sort,
     # which is important for pagination
+    page_size = params[:page_size] || 500
+    page_number = params[:page_number] || 1
+
     Project
       .from(projects_subquery, :projects)
       .order('soon_date ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
-      .limit(@page_size)
-      .offset(@page_size * (@page_number - 1))
+      .limit(page_size)
+      .offset(page_size * (page_number - 1))
   end
 
-  def apply_status_filter(scope)
-    if @status.present?
+  # FILTERING METHODS
+  def self.filter_status(scope, params)
+    status = params[:status] || []
+
+    if status.present?
       scope
         .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
-        .where(admin_publications: { publication_status: @status })
+        .where(admin_publications: { publication_status: status })
     else
       scope
     end
   end
 
-  def apply_project_manager_filter(scope)
-    if @managers.present?
-      managers = User.where(id: @managers)
+  def self.filter_project_manager(scope, params)
+    manager_ids = params[:managers] || []
+
+    if manager_ids.present?
+      managers = User.where(id: manager_ids)
 
       moderated_projects = []
 
@@ -103,20 +100,23 @@ class ProjectsFinderAdminService
     end
   end
 
-  def apply_search(scope)
-    if @search.present?
-      scope.search_by_title(@search)
+  def self.search(scope, params)
+    search = params[:search] || ''
+
+    if search.present?
+      scope.search_by_title(search)
     else
       scope
     end
   end
 
-  private
+  def self.filter_date(scope, params)
+    start_at = params[:start_at]
+    end_at = params[:end_at]
 
-  def apply_date_filter(scope)
-    if @start_at.present? || @end_at.present?
-      start_at = @start_at || Date.new(1970, 1, 1)
-      end_at = @end_at || DateTime::Infinity
+    if start_at.present? || end_at.present?
+      start_at = start_at || Date.new(1970, 1, 1)
+      end_at = end_at || DateTime::Infinity
 
       overlapping_project_ids = Phase
         .select(:project_id)
