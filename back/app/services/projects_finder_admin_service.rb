@@ -10,16 +10,16 @@ class ProjectsFinderAdminService
     recent_pageviews_sql = <<-SQL.squish
       SELECT
         #{substring_statement}::UUID AS admin_project_id,
-        created_at AS last_viewed_at,
+        impact_tracking_pageviews.created_at AS last_viewed_at,
         ROW_NUMBER() OVER (
           PARTITION BY #{substring_statement}
-          ORDER BY created_at DESC
+          ORDER BY impact_tracking_pageviews.created_at DESC
         ) AS rn
       FROM impact_tracking_pageviews
       INNER JOIN impact_tracking_sessions
         ON impact_tracking_pageviews.session_id = impact_tracking_sessions.id
       WHERE path LIKE '%admin/projects/%'
-        AND impact_tracking_sessions.user_id = #{current_user.id}
+        AND impact_tracking_sessions.user_id = '#{current_user.id}'
     SQL
 
     recent_pageviews_subquery = "(#{recent_pageviews_sql}) AS recent_pageviews"

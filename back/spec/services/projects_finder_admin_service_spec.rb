@@ -134,7 +134,7 @@ describe ProjectsFinderAdminService do
 
       let!(:p4) do
         project = create_project(Date.today - 30.days, Date.today + 30.days)
-        s4 = create(:session, created_at: Date.today - 4.days)
+        s4 = create(:session, created_at: Date.today - 4.days, user_id: create(:user).id)
         create(
           :pageview, 
           session_id: s4.id,
@@ -144,11 +144,11 @@ describe ProjectsFinderAdminService do
         project
       end
 
-      it 'sorts by recently viewed' do
+      it 'sorts by recently viewed by you' do
         result = described_class.execute(
           Project.all,
           { sort: 'recently_viewed' },
-          user
+          current_user: user
         )
         expect(result.pluck(:id)).to eq([p3, p2, p1, p4].pluck(:id))
       end
@@ -160,7 +160,7 @@ describe ProjectsFinderAdminService do
         result = described_class.execute(
           Project.all,
           { sort: 'recently_viewed', start_at: start_period, end_at: end_period },
-          user
+          current_user: user
         )
 
         expect(result.pluck(:id)).to eq([p3, p2, p4].pluck(:id))
