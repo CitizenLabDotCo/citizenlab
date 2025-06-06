@@ -162,6 +162,37 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'apply_status_filter' do
+    let!(:draft_project) do
+      project = create(:project)
+      admin_publication = AdminPublication.find_by(publication_id: project.id)
+      admin_publication.update!(publication_status: 'draft')
+      project
+    end
+    let!(:published_project) do
+      project = create(:project)
+      admin_publication = AdminPublication.find_by(publication_id: project.id)
+      admin_publication.update!(publication_status: 'published')
+      project
+    end
+    let!(:archived_project) do
+      project = create(:project)
+      admin_publication = AdminPublication.find_by(publication_id: project.id)
+      admin_publication.update!(publication_status: 'archived')
+      project
+    end
+
+    it 'filters by status' do
+      result = service.new(Project.all, { status: ['published', 'archived'] }).apply_status_filter(Project.all)
+      expect(result.pluck(:id).sort).to eq([published_project.id, archived_project.id].sort)
+    end
+
+    it 'returns all projects when no status specified' do
+      result = service.new(Project.all, {}).apply_status_filter(Project.all)
+      expect(result.pluck(:id).sort).to match_array([draft_project.id, published_project.id, archived_project.id].sort)
+    end
+  end
+
   describe 'apply_project_manager_filter' do
     let!(:p1) { create(:project) }
     let!(:p2) { create(:project) }

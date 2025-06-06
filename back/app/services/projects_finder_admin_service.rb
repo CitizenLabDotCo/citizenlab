@@ -8,6 +8,7 @@ class ProjectsFinderAdminService
     @page_number = (params.dig(:page, :number) || 1).to_i
     @managers = params[:managers] || []
     @search = params[:search] || ''
+    @status = params[:status] || []
 
     projects_scope = apply_date_filter(projects)
     projects_scope = apply_project_manager_filter(projects_scope)
@@ -70,6 +71,16 @@ class ProjectsFinderAdminService
       .order('soon_date ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
       .limit(@page_size)
       .offset(@page_size * (@page_number - 1))
+  end
+
+  def apply_status_filter(scope)
+    if @status.present?
+      scope
+        .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
+        .where(admin_publications: { publication_status: @status })
+    else
+      scope
+    end
   end
 
   def apply_project_manager_filter(scope)
