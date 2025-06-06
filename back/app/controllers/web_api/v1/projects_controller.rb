@@ -160,7 +160,7 @@ class WebApi::V1::ProjectsController < ApplicationController
         project_descriptor_pairs: {}
       }),
       include: %i[project_images current_phase]
-    )    
+    )
   end
 
   def show

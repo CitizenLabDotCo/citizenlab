@@ -2,23 +2,23 @@ require 'rails_helper'
 
 describe ProjectsFinderAdminService do
   def create_project(
-    start_at, 
+    start_at,
     end_at,
     start_at_2: nil,
     end_at_2: nil,
     created_at: nil
   )
-    project = if created_at 
-      create(:project, created_at: created_at) 
-    else 
-      create(:project) 
+    project = if created_at
+      create(:project, created_at: created_at)
+    else
+      create(:project)
     end
 
     create(
-      :phase, 
-      start_at: start_at, 
+      :phase,
+      start_at: start_at,
       end_at: end_at,
-      project: project,
+      project: project
     )
 
     if start_at_2 && end_at_2
@@ -54,7 +54,7 @@ describe ProjectsFinderAdminService do
     end
 
     it 'filters by status' do
-      result = described_class.filter_status(Project.all, { status: ['published', 'archived'] })
+      result = described_class.filter_status(Project.all, { status: %w[published archived] })
       expect(result.pluck(:id).sort).to eq([published_project.id, archived_project.id].sort)
     end
 
@@ -69,8 +69,8 @@ describe ProjectsFinderAdminService do
     let!(:p2) { create(:project) }
     let!(:p3) { create(:project) }
 
-    let!(:user1) { create(:user, roles: [{ 'type' => 'project_moderator', 'project_id': p1.id }] ) }
-    let!(:user2) { create(:user, roles: [{ 'type'=> 'project_moderator', 'project_id': p2.id }] ) }
+    let!(:user1) { create(:user, roles: [{ 'type' => 'project_moderator', project_id: p1.id }]) }
+    let!(:user2) { create(:user, roles: [{ 'type' => 'project_moderator', project_id: p2.id }]) }
 
     it 'returns projects managed by specified users' do
       result = described_class.filter_project_manager(Project.all, { managers: [user1.id] })
@@ -84,9 +84,9 @@ describe ProjectsFinderAdminService do
   end
 
   describe 'self.search' do
-    let!(:p1) { create(:project, title_multiloc: { 'en' => 'Test Project 1'} ) }
-    let!(:p2) { create(:project, title_multiloc: { 'en' => 'Another Project'} ) }
-    let!(:p3) { create(:project, title_multiloc: { 'en' => 'Test Project 2'} ) }
+    let!(:p1) { create(:project, title_multiloc: { 'en' => 'Test Project 1' }) }
+    let!(:p2) { create(:project, title_multiloc: { 'en' => 'Another Project' }) }
+    let!(:p3) { create(:project, title_multiloc: { 'en' => 'Test Project 2' }) }
 
     it 'filters projects by search term' do
       result = described_class.search(Project.all, { search: 'Test' })
@@ -102,46 +102,42 @@ describe ProjectsFinderAdminService do
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }
+      let!(:p1) do
+        project = create_project(Time.zone.today - 30.days, Time.zone.today - 5.days)
+        create_session(project, Time.zone.today - 20.days)
+        project
+      end
+      let!(:p2) do
+        project = create_project(Time.zone.today - 30.days, Time.zone.today + 30.days)
+        create_session(project, Time.zone.today - 30.days)
+        create_session(project, Time.zone.today - 10.days)
+        project
+      end
+      let!(:p3) do
+        project = create_project(Time.zone.today - 30.days, Time.zone.today + 30.days)
+        create_session(project, Time.zone.today - 5.days)
+        project
+      end
+      let!(:p4) do
+        project = create_project(Time.zone.today - 30.days, Time.zone.today + 30.days)
+        s4 = create(:session, created_at: Time.zone.today - 4.days, user_id: create(:user).id)
+        create(
+          :pageview,
+          session_id: s4.id,
+          path: '/en/',
+          created_at: Time.zone.today - 4.days
+        )
+        project
+      end
 
       def create_session(project, created_at)
         session = create(:session, created_at: created_at, user_id: user.id)
         create(
-          :pageview, 
+          :pageview,
           session_id: session.id,
           path: "/en/admin/projects/#{project.id}/phases/741874e2-994f-4cfc-adf9-9b83e7f62ae0",
           created_at: created_at
         )
-      end
-
-      let!(:p1) do
-        project = create_project(Date.today - 30.days, Date.today - 5.days)
-        create_session(project, Date.today - 20.days)
-        project
-      end
-
-      let!(:p2) do
-        project = create_project(Date.today - 30.days, Date.today + 30.days)
-        create_session(project, Date.today - 30.days)
-        create_session(project, Date.today - 10.days)
-        project
-      end
-
-      let!(:p3) do
-        project = create_project(Date.today - 30.days, Date.today + 30.days)
-        create_session(project, Date.today - 5.days)
-        project
-      end
-
-      let!(:p4) do
-        project = create_project(Date.today - 30.days, Date.today + 30.days)
-        s4 = create(:session, created_at: Date.today - 4.days, user_id: create(:user).id)
-        create(
-          :pageview, 
-          session_id: s4.id,
-          path: "/en/",
-          created_at: Date.today - 4.days
-        )
-        project
       end
 
       it 'sorts by recently viewed by you' do
@@ -154,8 +150,8 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        start_period = Date.today
-        end_period = Date.today + 30.days
+        start_period = Time.zone.today
+        end_period = Time.zone.today + 30.days
 
         result = described_class.execute(
           Project.all,
@@ -171,16 +167,18 @@ describe ProjectsFinderAdminService do
       let!(:p1) { create_project(Date.new(2020, 1, 1), Date.new(2021, 1, 1), created_at: Date.new(2019, 1, 1)) }
       let!(:p2) { create_project(Date.new(2020, 2, 1), nil, created_at: Date.new(2019, 2, 1)) }
 
-      let!(:p3) do create_project(
-        Date.new(2020, 2, 3), Date.new(2023, 4, 1),
-        start_at_2: Date.new(2023, 4, 2), end_at_2: Date.today + 20.days
-      ) end
+      let!(:p3) do
+        create_project(
+          Date.new(2020, 2, 3), Date.new(2023, 4, 1),
+          start_at_2: Date.new(2023, 4, 2), end_at_2: Time.zone.today + 20.days
+        )
+      end
 
-      let!(:p4) { create_project(Date.new(2020, 4, 1), Date.today + 100.days) }
-      let!(:p5) { create_project(Date.today + 5.days, Date.today + 25.days) }
-      let!(:p6) { create_project(Date.today + 4.days, Date.today + 50.days) }
-      let!(:p7) { create_project(Date.today + 8.days, nil) }
-      let!(:p8) { create_project(Date.today + 60.days, Date.today + 90.days) }
+      let!(:p4) { create_project(Date.new(2020, 4, 1), Time.zone.today + 100.days) }
+      let!(:p5) { create_project(Time.zone.today + 5.days, Time.zone.today + 25.days) }
+      let!(:p6) { create_project(Time.zone.today + 4.days, Time.zone.today + 50.days) }
+      let!(:p7) { create_project(Time.zone.today + 8.days, nil) }
+      let!(:p8) { create_project(Time.zone.today + 60.days, Time.zone.today + 90.days) }
 
       it 'sorts projects by phases starting or ending soon' do
         result = described_class.execute(
@@ -196,8 +194,8 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        start_period = Date.today
-        end_period = Date.today + 30.days
+        start_period = Time.zone.today
+        end_period = Time.zone.today + 30.days
 
         result = described_class.execute(
           Project.all,

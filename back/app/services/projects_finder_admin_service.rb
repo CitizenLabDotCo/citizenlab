@@ -48,9 +48,9 @@ class ProjectsFinderAdminService
 
     projects_subquery = scope
       .joins("LEFT JOIN (#{phases_ending_soon_subquery.to_sql}) AS phases_ending_soon ON phases_ending_soon.project_id = projects.id")
-      .joins("LEFT JOIN (#{phases_starting_soon_subquery.to_sql}) AS phases_starting_soon ON phases_starting_soon.project_id = projects.id") 
+      .joins("LEFT JOIN (#{phases_starting_soon_subquery.to_sql}) AS phases_starting_soon ON phases_starting_soon.project_id = projects.id")
       .select('least(phases_ending_soon.min_end_at, phases_starting_soon.min_start_at) AS soon_date, projects.*')
-    
+
     # We order by soon_date, but tie-break with created_at and id for a stable sort,
     # which is important for pagination
     Project
@@ -108,13 +108,13 @@ class ProjectsFinderAdminService
     end_at = params[:end_at]
 
     if start_at.present? || end_at.present?
-      start_at = start_at || Date.new(1970, 1, 1)
-      end_at = end_at || DateTime::Infinity
+      start_at ||= Date.new(1970, 1, 1)
+      end_at ||= DateTime::Infinity
 
       overlapping_project_ids = Phase
         .select(:project_id)
         .where(
-          "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", 
+          "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)",
           start_at, end_at
         )
 
@@ -134,13 +134,11 @@ class ProjectsFinderAdminService
 
     # Apply sorting
     if params[:sort] == 'recently_viewed'
-      projects = sort_recently_viewed(projects, current_user)
+      sort_recently_viewed(projects, current_user)
     elsif params[:sort] == 'phase_starting_or_ending_soon'
-      projects = sort_phase_starting_or_ending_soon(projects)
+      sort_phase_starting_or_ending_soon(projects)
     else
-      projects = projects.order(created_at: :desc)
+      projects.order(created_at: :desc)
     end
-
-    projects
   end
 end
