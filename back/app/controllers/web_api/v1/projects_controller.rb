@@ -144,6 +144,15 @@ class WebApi::V1::ProjectsController < ApplicationController
     base_render_mini_index
   end
 
+  def index_for_admin
+    projects = policy_scope(Project)
+    projects = ProjectsFinderAdminService.execute(projects, params)
+
+    authorize projects, :index_for_admin?
+
+    # TODO serialize
+  end
+
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
