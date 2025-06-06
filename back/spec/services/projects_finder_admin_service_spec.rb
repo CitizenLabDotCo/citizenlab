@@ -212,18 +212,18 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'apply_search' do
+  describe 'search' do
     let!(:p1) { create(:project, title_multiloc: { 'en' => 'Test Project 1'} ) }
     let!(:p2) { create(:project, title_multiloc: { 'en' => 'Another Project'} ) }
     let!(:p3) { create(:project, title_multiloc: { 'en' => 'Test Project 2'} ) }
 
     it 'filters projects by search term' do
-      result = service.new(Project.all, { search: 'Test' }).apply_search(Project.all)
+      result = described_class.search(Project.all, { search: 'Test' })
       expect(result.pluck(:id)).to match_array([p1, p3].pluck(:id))
     end
 
     it 'returns all projects when search term is empty' do
-      result = service.new(Project.all, {}).apply_search(Project.all)
+      result = described_class.search(Project.all, {})
       expect(result.pluck(:id)).to match_array([p1, p2, p3].pluck(:id))
     end
   end
