@@ -4,8 +4,8 @@ describe ProjectsFinderAdminService do
   def create_project(
     start_at,
     end_at,
-    start_at_2: nil,
-    end_at_2: nil,
+    start_at2: nil,
+    end_at2: nil,
     created_at: nil
   )
     project = if created_at
@@ -21,11 +21,11 @@ describe ProjectsFinderAdminService do
       project: project
     )
 
-    if start_at_2 && end_at_2
+    if start_at2 && end_at2
       create(
         :phase,
-        start_at: start_at_2,
-        end_at: end_at_2,
+        start_at: start_at2,
+        end_at: end_at2,
         project: project
       )
     end
@@ -170,7 +170,7 @@ describe ProjectsFinderAdminService do
       let!(:p3) do
         create_project(
           Date.new(2020, 2, 3), Date.new(2023, 4, 1),
-          start_at_2: Date.new(2023, 4, 2), end_at_2: Time.zone.today + 20.days
+          start_at2: Date.new(2023, 4, 2), end_at2: Time.zone.today + 20.days
         )
       end
 
