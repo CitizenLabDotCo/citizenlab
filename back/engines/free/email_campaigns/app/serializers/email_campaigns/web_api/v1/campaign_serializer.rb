@@ -94,6 +94,14 @@ module EmailCampaigns
       trackable? object
     }
 
+    # For customisation of regions of the automated emails
+    attribute :custom_text_multiloc do |object|
+      object.custom_text_multiloc
+    end
+    attribute :editable_regions do |object|
+      object.mailer_class.editable_regions
+    end
+
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
 
     has_many :groups, serializer: ::WebApi::V1::GroupSerializer, if: proc { |object|

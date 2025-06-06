@@ -24,6 +24,11 @@ module EmailCampaigns
 
     helper_method :command, :campaign, :event
 
+    # Each mailer can define its own editable regions.
+    def self.editable_regions
+      []
+    end
+
     private
 
     def show_unsubscribe_link?
@@ -53,6 +58,8 @@ module EmailCampaigns
       end
 
       # Default message
+      # TODO: Getting the defaults into the template to be edited by the user is tricky
+      # as the default string sometimes depends on the content of the campaign. eg it used idea term sometimes.
       msg = t("email_campaigns.#{group}.#{key}", **values)
       escape_html ? msg : msg.html_safe
     end

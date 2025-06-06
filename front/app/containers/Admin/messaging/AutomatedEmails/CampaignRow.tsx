@@ -18,9 +18,10 @@ import { CampaignData } from './types';
 type Props = {
   campaign: CampaignData;
   onClickViewExample?: () => void;
+  onClickEdit?: () => void;
 };
 
-const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
+const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
   const [isNewPhaseModalOpen, setIsNewPhaseModalOpen] = useState(false);
   const { mutate: updateCampaign } = useUpdateCampaign();
   const toggleEnabled = () => {
@@ -70,6 +71,17 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
                 buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...messages.viewExample} />
+              </Button>
+            </Box>
+          )}
+          {onClickEdit && (
+            <Box display="flex" justifyContent="flex-end" flexGrow={1}>
+              <Button
+                icon="edit"
+                onClick={onClickEdit}
+                buttonStyle="secondary-outlined"
+              >
+                Edit
               </Button>
             </Box>
           )}

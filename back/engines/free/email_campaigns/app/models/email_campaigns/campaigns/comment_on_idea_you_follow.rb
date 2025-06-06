@@ -49,14 +49,6 @@ module EmailCampaigns
       users_scope.where(id: activity.item.recipient.id)
     end
 
-    def editable_regions
-      {
-        subject: {
-          params: ['input_title']
-        }
-      }
-    end
-
     def mailer_class
       CommentOnIdeaYouFollowMailer
     end

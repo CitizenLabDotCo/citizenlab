@@ -159,11 +159,6 @@ module EmailCampaigns
       false
     end
 
-    # Which parts of the mail can be edited in the admin interface?
-    def editable_regions
-      {}
-    end
-
     protected
 
     def set_enabled

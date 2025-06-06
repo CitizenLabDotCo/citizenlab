@@ -2,6 +2,14 @@
 
 module EmailCampaigns
   class CommentOnIdeaYouFollowMailer < ApplicationMailer
+
+    def self.editable_regions
+      [
+        { key: 'subject', variables: ['input_title'] },
+        { key: 'title', variables: ['authorName'] }
+      ]
+    end
+
     protected
 
     def subject
