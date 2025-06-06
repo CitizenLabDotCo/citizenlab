@@ -130,4 +130,24 @@ class ProjectsFinderAdminService
 
     scope
   end
+
+  # EXECUTION
+  def self.execute(scope, params = {})
+    # Apply filters
+    projects = filter_status(scope, params)
+    projects = filter_project_manager(projects, params)
+    projects = search(projects, params)
+    projects = filter_date(projects, params)
+
+    # Apply sorting
+    if params[:sort] == 'recently_viewed'
+      projects = sort_recently_viewed(projects, params)
+    elsif params[:sort] == 'phase_starting_or_ending_soon'
+      projects = sort_phase_starting_or_ending_soon(projects, params)
+    else
+      projects = projects.order(created_at: :desc)
+    end
+
+    projects
+  end
 end
