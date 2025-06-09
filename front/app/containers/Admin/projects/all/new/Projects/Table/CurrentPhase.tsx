@@ -12,6 +12,13 @@ interface Props {
   project: ProjectMiniAdminData;
 }
 
+const parseNumberOfDays = (days: number) => {
+  if (days < 62) return { unit: 'day', value: days } as const;
+  if (days < 365)
+    return { unit: 'month', value: Math.round(days / 31) } as const;
+  return { unit: 'year', value: Math.round(days / 365) } as const;
+};
+
 const CurrentPhase = ({ project }: Props) => {
   const { data: phase } = usePhaseMini(
     project.relationships.current_phase?.data?.id
@@ -32,29 +39,59 @@ const CurrentPhase = ({ project }: Props) => {
   };
 
   const getSubText = () => {
-    if (!phase && !projectStartingInFuture) return undefined;
+    if (!phase && !projectStartingInFuture) return;
 
     if (phase) {
       const phaseEndDate = phase.data.attributes.end_at;
       const parsedPhaseEndDate = parseBackendDateString(
         phaseEndDate ?? undefined
       );
-      if (!parsedPhaseEndDate) return undefined;
+      if (!parsedPhaseEndDate) return;
 
       const daysUntilPhaseEnds = differenceInDays(
         parsedPhaseEndDate,
         new Date()
       );
-      if (daysUntilPhaseEnds < 0) return undefined; // should not happen, but just in case
+      if (daysUntilPhaseEnds < 0) return; // should not happen, but just in case
 
       if (daysUntilPhaseEnds === 0) {
         return 'Ends today';
       } else {
-        return `${daysUntilPhaseEnds}d left`;
+        const { unit, value } = parseNumberOfDays(daysUntilPhaseEnds);
+
+        switch (unit) {
+          case 'day':
+            return `${value}d left`;
+          case 'month':
+            return `${value}mo left`;
+          case 'year':
+            return `${value}y left`;
+        }
       }
     }
 
-    return undefined;
+    const parsedProjectStartDate = parseBackendDateString(
+      first_phase_start_date ?? undefined
+    );
+    if (!parsedProjectStartDate) return;
+
+    const daysUntilProjectStarts = differenceInDays(
+      parsedProjectStartDate,
+      new Date()
+    );
+
+    if (daysUntilProjectStarts < 0) return; // should not happen, but just in case
+
+    const { unit, value } = parseNumberOfDays(daysUntilProjectStarts);
+
+    switch (unit) {
+      case 'day':
+        return `${value}d to start`;
+      case 'month':
+        return `${value}mo to start`;
+      case 'year':
+        return `${value}y to start`;
+    }
   };
 
   const subText = getSubText();
