@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
-  attributes(:title_multiloc)
+  attributes(:title_multiloc, :visible_to)
 
   attribute :publication_status do |object|
     object.admin_publication.publication_status
