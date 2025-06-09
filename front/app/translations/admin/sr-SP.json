@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download as pdf",
   "app.components.FormSync.downloadExcelTemplate": "Download an Excel template",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Excel templates will not include any mapping input questions as these are not supported for bulk importing at this time.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel templates will not include Ranking questions, Matrix questions, File upload questions and any mapping input questions (Drop Pin, Draw Route, Draw Area, ESRI file upload) as these are not supported for bulk importing at this time.",
   "app.components.ProjectTemplatePreview.close": "Близу",
   "app.components.ProjectTemplatePreview.createProject": "Креирајте пројекат",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Креирајте пројекат на основу шаблона '{templateTitle}'",
