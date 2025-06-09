@@ -17,6 +17,10 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
     last_phase&.end_at
   end
 
+  attribute :participants_count do |object, params|
+    participants_service.project_participants_count(object)
+  end
+
   has_one :current_phase, serializer: WebApi::V1::PhaseMiniSerializer, record_type: :phase do |object|
     TimelineService.new.current_phase(object)
   end
