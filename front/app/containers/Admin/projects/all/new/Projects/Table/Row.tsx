@@ -17,7 +17,20 @@ const Row = ({ project }: Props) => {
     project.relationships.current_phase?.data?.id
   );
 
-  const { title_multiloc, folder_title_multiloc } = project.attributes;
+  const { title_multiloc, folder_title_multiloc, first_phase_start_date } =
+    project.attributes;
+
+  const getCurrentPhaseText = () => {
+    if (phase) {
+      return phase.data.attributes.participation_method;
+    }
+
+    const projectStartingInFuture =
+      first_phase_start_date === null ||
+      new Date(first_phase_start_date) > new Date();
+
+    return projectStartingInFuture ? 'Pre-launch' : 'Ended';
+  };
 
   return (
     <Tr>
@@ -33,11 +46,7 @@ const Row = ({ project }: Props) => {
       </Td>
       <Td background={colors.grey50}>
         <Text m="0" fontSize="s" color="primary">
-          {phase ? (
-            <>{phase.data.attributes.participation_method}</>
-          ) : (
-            <>Pre-launch</>
-          )}
+          {getCurrentPhaseText()}
         </Text>
       </Td>
       <Td background={colors.grey50}>
