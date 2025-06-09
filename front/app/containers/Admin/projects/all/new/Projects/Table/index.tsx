@@ -36,6 +36,7 @@ const Table = () => {
           <Th py="16px">Start</Th>
           <Th py="16px">End</Th>
           <Th py="16px">Status</Th>
+          <Th py="16px">Visibility</Th>
         </Tr>
       </Thead>
       <Tbody>

@@ -30,6 +30,7 @@ const Row = ({ project }: Props) => {
     last_phase_end_date,
     publication_status,
     title_multiloc,
+    visible_to,
   } = project.attributes;
 
   const getCurrentPhaseText = () => {
@@ -80,6 +81,11 @@ const Row = ({ project }: Props) => {
       <Td background={colors.grey50}>
         <Text m="0" fontSize="s" color="primary">
           {publication_status}
+        </Text>
+      </Td>
+      <Td background={colors.grey50}>
+        <Text m="0" fontSize="s" color="primary">
+          {visible_to}
         </Text>
       </Td>
     </Tr>
