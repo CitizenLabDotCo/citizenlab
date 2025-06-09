@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Užtrunka <1 minutę} one {Užtrunka 1 minutę} other {Užtrunka # minučių}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Atsisiųsti kaip pdf",
   "app.components.FormSync.downloadExcelTemplate": "Atsisiųsti \"Excel\" šabloną",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Į \"Excel\" šablonus nebus įtraukti jokie žemėlapių įvesties klausimai, nes šiuo metu jie nepalaikomi masiniam importui.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Į \"Excel\" šablonus nebus įtraukti reitingavimo klausimai, matricos klausimai, failų įkėlimo klausimai ir bet kokie žemėlapių įvesties klausimai (\"Drop Pin\", \"Draw Route\", \"Draw Area\", ESRI failų įkėlimas), nes šiuo metu jie nepalaikomi masiniam importui.",
   "app.components.ProjectTemplatePreview.close": "Uždaryti",
   "app.components.ProjectTemplatePreview.createProject": "Sukurti projektą",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Sukurti projektą pagal šabloną '{templateTitle}'",
