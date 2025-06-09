@@ -33,7 +33,8 @@ const Table = () => {
         <Tr background={colors.grey50}>
           <Th py="16px">Project</Th>
           <Th py="16px">Current phase</Th>
-          <Th py="16px">Last col</Th>
+          <Th py="16px">Start</Th>
+          <Th py="16px">End</Th>
         </Tr>
       </Thead>
       <Tbody>

@@ -1,11 +1,15 @@
 import React from 'react';
 
 import { Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
+import { format } from 'date-fns';
 
 import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+
+import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
 interface Props {
   project: ProjectMiniAdminData;
@@ -13,12 +17,17 @@ interface Props {
 
 const Row = ({ project }: Props) => {
   const localize = useLocalize();
+  const locale = useLocale();
   const { data: phase } = usePhaseMini(
     project.relationships.current_phase?.data?.id
   );
 
-  const { title_multiloc, folder_title_multiloc, first_phase_start_date } =
-    project.attributes;
+  const {
+    title_multiloc,
+    folder_title_multiloc,
+    first_phase_start_date,
+    last_phase_end_date,
+  } = project.attributes;
 
   const getCurrentPhaseText = () => {
     if (phase) {
@@ -30,6 +39,12 @@ const Row = ({ project }: Props) => {
       new Date(first_phase_start_date) > new Date();
 
     return projectStartingInFuture ? 'Pre-launch' : 'Ended';
+  };
+
+  const formatDate = (date: string | null) => {
+    if (!date) return '';
+    const parsedDate = new Date(date);
+    return format(parsedDate, 'P', { locale: getLocale(locale) });
   };
 
   return (
@@ -51,7 +66,12 @@ const Row = ({ project }: Props) => {
       </Td>
       <Td background={colors.grey50}>
         <Text m="0" fontSize="s" color="primary">
-          Bla
+          {formatDate(first_phase_start_date)}
+        </Text>
+      </Td>
+      <Td background={colors.grey50}>
+        <Text m="0" fontSize="s" color="primary">
+          {formatDate(last_phase_end_date)}
         </Text>
       </Td>
     </Tr>
