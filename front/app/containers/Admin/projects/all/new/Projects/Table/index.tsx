@@ -12,13 +12,9 @@ import {
 
 import useProjectsMiniAdmin from 'api/projects_mini_admin/useProjectsMiniAdmin';
 
-import useLocalize from 'hooks/useLocalize';
-
 import Row from './Row';
 
 const Table = () => {
-  const localize = useLocalize();
-
   const { data } = useProjectsMiniAdmin({
     sort: 'phase_starting_or_ending_soon',
   });
