@@ -17,6 +17,10 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
     last_phase&.end_at
   end
 
+  attribute :folder_title_multiloc do |object|
+    object.folder&.title_multiloc
+  end
+
   has_one :current_phase, serializer: WebApi::V1::PhaseMiniSerializer, record_type: :phase do |object|
     TimelineService.new.current_phase(object)
   end
