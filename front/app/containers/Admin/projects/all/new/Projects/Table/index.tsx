@@ -12,9 +12,14 @@ import {
 
 import useProjectsMiniAdmin from 'api/projects_mini_admin/useProjectsMiniAdmin';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 import Row from './Row';
 
 const Table = () => {
+  const { formatMessage } = useIntl();
+
   const { data } = useProjectsMiniAdmin({
     sort: 'phase_starting_or_ending_soon',
   });
@@ -31,12 +36,12 @@ const Table = () => {
     >
       <Thead>
         <Tr background={colors.grey50}>
-          <Th py="16px">Project</Th>
-          <Th py="16px">Current phase</Th>
-          <Th py="16px">Proj. start</Th>
-          <Th py="16px">Proj. end</Th>
-          <Th py="16px">Status</Th>
-          <Th py="16px">Visibility</Th>
+          <Th py="16px">{formatMessage(messages.project)}</Th>
+          <Th py="16px">{formatMessage(messages.currentPhase)}</Th>
+          <Th py="16px">{formatMessage(messages.projectStart)}</Th>
+          <Th py="16px">{formatMessage(messages.projectEnd)}</Th>
+          <Th py="16px">{formatMessage(messages.status)}</Th>
+          <Th py="16px">{formatMessage(messages.visibility)}</Th>
         </Tr>
       </Thead>
       <Tbody>
