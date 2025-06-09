@@ -8,12 +8,12 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :first_phase_start_date do |object|
-    first_phase = object.phases.order(start_at: :asc).first
+    first_phase = object.phases.order(:start_at).first
     first_phase&.start_at
   end
 
   attribute :last_phase_end_date do |object|
-    last_phase = object.phases.order(start_at: :desc).first
+    last_phase = object.phases.order(:start_at).last
     last_phase&.end_at
   end
 
