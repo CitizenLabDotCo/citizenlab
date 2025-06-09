@@ -72,6 +72,7 @@ module EmailCampaigns
 
     # Seems to get called three times
     # TODO: Maybe add a CampaignClass to mailer so we can avoid hardcoding strings?
+    # TODO: How does the manual mailer handle {{ variable }}?
     def self.editable_region(key, type: 'text', default_value_key: nil, variables: [])
       {
         key: key,
