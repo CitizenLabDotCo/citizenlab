@@ -128,6 +128,8 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "بجٹ",
   "app.components.CustomFieldsForm.descriptionMinLength": "تفصیل کم از کم {min} حروف کی ہونی چاہیے۔",
   "app.components.CustomFieldsForm.descriptionRequired": "تفصیل درکار ہے۔",
+  "app.components.CustomFieldsForm.fieldMaximumItems": "زیادہ سے زیادہ {maxSelections, plural, one {# آپشن} other {# آپشنز}} فیلڈ کے لیے منتخب کیا جا سکتا ہے \"{fieldName}\"",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "کم از کم {minSelections, plural, one {# آپشن} other {# آپشنز}} فیلڈ کے لیے منتخب کیا جا سکتا ہے \"{fieldName}\"",
   "app.components.CustomFieldsForm.fieldRequired": "فیلڈ \"{fieldName}\" درکار ہے۔",
   "app.components.CustomFieldsForm.imageRequired": "تصویر درکار ہے۔",
   "app.components.CustomFieldsForm.notPublic1": "*اس جواب کا اشتراک صرف پروجیکٹ مینیجرز کے ساتھ کیا جائے گا، عوام کے ساتھ نہیں۔",
