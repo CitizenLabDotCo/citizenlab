@@ -128,8 +128,6 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budžets",
   "app.components.CustomFieldsForm.descriptionMinLength": "Aprakstam jābūt vismaz {min} rakstzīmju garam.",
   "app.components.CustomFieldsForm.descriptionRequired": "Apraksts ir obligāts",
-  "app.components.CustomFieldsForm.fieldMaximum": "Laukā \"{fieldName}\" var izvēlēties ne vairāk kā {maxSelections} opcijas.",
-  "app.components.CustomFieldsForm.fieldMinimum": "Laukā \"{fieldName}\" var atlasīt vismaz {minSelections} iespējas.",
   "app.components.CustomFieldsForm.fieldRequired": "Lauks \"{fieldName}\" ir obligāts",
   "app.components.CustomFieldsForm.imageRequired": "Attēls ir nepieciešams",
   "app.components.CustomFieldsForm.notPublic1": "*Šī atbilde tiks izpausta tikai projektu vadītājiem, bet ne sabiedrībai.",

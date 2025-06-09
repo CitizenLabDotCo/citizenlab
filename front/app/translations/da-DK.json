@@ -128,8 +128,6 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budget",
   "app.components.CustomFieldsForm.descriptionMinLength": "Beskrivelsen skal være mindst {min} tegn lang",
   "app.components.CustomFieldsForm.descriptionRequired": "Beskrivelsen er påkrævet",
-  "app.components.CustomFieldsForm.fieldMaximum": "Der kan højst vælges {maxSelections} indstillinger for feltet \"{fieldName}\"",
-  "app.components.CustomFieldsForm.fieldMinimum": "Der kan vælges mindst {minSelections} indstillinger for feltet \"{fieldName}\"",
   "app.components.CustomFieldsForm.fieldRequired": "Feltet \"{fieldName}\" er påkrævet.",
   "app.components.CustomFieldsForm.imageRequired": "Billedet er påkrævet",
   "app.components.CustomFieldsForm.notPublic1": "*Dette svar vil kun blive delt med projektledere og ikke med offentligheden.",

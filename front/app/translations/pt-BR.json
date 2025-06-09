@@ -128,8 +128,6 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Orçamento",
   "app.components.CustomFieldsForm.descriptionMinLength": "A descrição deve ter no mínimo {min} caracteres",
   "app.components.CustomFieldsForm.descriptionRequired": "A descrição é obrigatória",
-  "app.components.CustomFieldsForm.fieldMaximum": "No máximo {maxSelections} opções podem ser selecionadas para o campo \"{fieldName}\"",
-  "app.components.CustomFieldsForm.fieldMinimum": "Pelo menos {minSelections} opções podem ser selecionadas para o campo \"{fieldName}\"",
   "app.components.CustomFieldsForm.fieldRequired": "O campo \"{fieldName}\" é obrigatório",
   "app.components.CustomFieldsForm.imageRequired": "A imagem é necessária",
   "app.components.CustomFieldsForm.notPublic1": "*Essa resposta será compartilhada apenas com os gerentes de projeto, e não com o público.",

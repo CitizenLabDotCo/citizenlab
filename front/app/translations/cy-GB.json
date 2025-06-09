@@ -128,8 +128,6 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Cyllideb",
   "app.components.CustomFieldsForm.descriptionMinLength": "Rhaid i'r disgrifiad fod o leiaf {min} nod o hyd",
   "app.components.CustomFieldsForm.descriptionRequired": "Mae angen y disgrifiad",
-  "app.components.CustomFieldsForm.fieldMaximum": "Ar y mwyaf gellir dewis {maxSelections} opsiynau ar gyfer y maes \"{fieldName}\"",
-  "app.components.CustomFieldsForm.fieldMinimum": "Gellir dewis o leiaf {minSelections} opsiynau ar gyfer y maes \"{fieldName}\"",
   "app.components.CustomFieldsForm.fieldRequired": "Mae'r maes \"{fieldName}\" yn ofynnol",
   "app.components.CustomFieldsForm.imageRequired": "Mae angen y ddelwedd",
   "app.components.CustomFieldsForm.notPublic1": "*Dim ond gyda rheolwyr prosiectau y bydd yr ateb hwn yn cael ei rannu, ac nid gyda'r cyhoedd.",

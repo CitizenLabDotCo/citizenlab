@@ -128,8 +128,6 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budget",
   "app.components.CustomFieldsForm.descriptionMinLength": "D'Beschreiwung muss mindestens {min} Zeechen laang sinn",
   "app.components.CustomFieldsForm.descriptionRequired": "D'Beschreiwung ass obligatoresch",
-  "app.components.CustomFieldsForm.fieldMaximum": "Maximal kënnen Optioune fir d'Feld \"{fieldName}\" {maxSelections} ausgewielt ginn.",
-  "app.components.CustomFieldsForm.fieldMinimum": "Fir d'Feld \"{fieldName}\" kënnen op d'mannst {minSelections} Optioune gewielt ginn.",
   "app.components.CustomFieldsForm.fieldRequired": "D'Feld \"{fieldName}\" ass obligatoresch",
   "app.components.CustomFieldsForm.imageRequired": "D'Bild ass obligatoresch",
   "app.components.CustomFieldsForm.notPublic1": "*Dës Äntwert gëtt nëmme mat de Projetmanager gedeelt, an net mat der Ëffentlechkeet.",

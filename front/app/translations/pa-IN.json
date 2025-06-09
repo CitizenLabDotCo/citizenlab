@@ -128,8 +128,6 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "ਬਜਟ",
   "app.components.CustomFieldsForm.descriptionMinLength": "ਵਰਣਨ ਘੱਟੋ-ਘੱਟ {min} ਅੱਖਰ ਲੰਬਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
   "app.components.CustomFieldsForm.descriptionRequired": "ਵੇਰਵਾ ਲੋੜੀਂਦਾ ਹੈ",
-  "app.components.CustomFieldsForm.fieldMaximum": "\"{fieldName}\" ਖੇਤਰ ਲਈ ਵੱਧ ਤੋਂ ਵੱਧ {maxSelections} ਵਿਕਲਪ ਚੁਣੇ ਜਾ ਸਕਦੇ ਹਨ।",
-  "app.components.CustomFieldsForm.fieldMinimum": "\"{fieldName}\" ਖੇਤਰ ਲਈ ਘੱਟੋ-ਘੱਟ {minSelections} ਵਿਕਲਪ ਚੁਣੇ ਜਾ ਸਕਦੇ ਹਨ।",
   "app.components.CustomFieldsForm.fieldRequired": "\"{fieldName}\" ਖੇਤਰ ਲੋੜੀਂਦਾ ਹੈ।",
   "app.components.CustomFieldsForm.imageRequired": "ਚਿੱਤਰ ਲੋੜੀਂਦਾ ਹੈ",
   "app.components.CustomFieldsForm.notPublic1": "*ਇਹ ਜਵਾਬ ਸਿਰਫ਼ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰਾਂ ਨਾਲ ਸਾਂਝਾ ਕੀਤਾ ਜਾਵੇਗਾ, ਜਨਤਾ ਨਾਲ ਨਹੀਂ।",

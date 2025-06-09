@@ -128,8 +128,6 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budsjett",
   "app.components.CustomFieldsForm.descriptionMinLength": "Beskrivelsen må være på minst {min} tegn",
   "app.components.CustomFieldsForm.descriptionRequired": "Beskrivelsen er påkrevd",
-  "app.components.CustomFieldsForm.fieldMaximum": "Det kan maksimalt velges {maxSelections} alternativer for feltet \"{fieldName}\"",
-  "app.components.CustomFieldsForm.fieldMinimum": "Minst {minSelections} alternativer kan velges for feltet \"{fieldName}\"",
   "app.components.CustomFieldsForm.fieldRequired": "Feltet \"{fieldName}\" er obligatorisk",
   "app.components.CustomFieldsForm.imageRequired": "Bildet er påkrevd",
   "app.components.CustomFieldsForm.notPublic1": "*Dette svaret vil kun bli delt med prosjektledere, og ikke med offentligheten.",

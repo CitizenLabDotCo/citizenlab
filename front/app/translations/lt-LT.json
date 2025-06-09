@@ -128,8 +128,6 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Biudžetas",
   "app.components.CustomFieldsForm.descriptionMinLength": "Aprašas turi būti ne trumpesnis kaip {min} simbolių.",
   "app.components.CustomFieldsForm.descriptionRequired": "Būtina pateikti aprašymą",
-  "app.components.CustomFieldsForm.fieldMaximum": "Laukelyje \"{fieldName}\" galima pasirinkti ne daugiau kaip {maxSelections} parinkčių.",
-  "app.components.CustomFieldsForm.fieldMinimum": "Laukelyje \"{fieldName}\" galima pasirinkti bent {minSelections} parinktis.",
   "app.components.CustomFieldsForm.fieldRequired": "Laukas \"{fieldName}\" yra privalomas",
   "app.components.CustomFieldsForm.imageRequired": "Vaizdas yra būtinas",
   "app.components.CustomFieldsForm.notPublic1": "*Šiuo atsakymu bus dalijamasi tik su projektų vadovais, o ne viešai.",

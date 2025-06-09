@@ -128,8 +128,6 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Bütçe",
   "app.components.CustomFieldsForm.descriptionMinLength": "Açıklama en az {min} karakter uzunluğunda olmalıdır",
   "app.components.CustomFieldsForm.descriptionRequired": "Açıklama gereklidir",
-  "app.components.CustomFieldsForm.fieldMaximum": "\"{fieldName}\" alanı için en fazla {maxSelections} seçeneği seçilebilir.",
-  "app.components.CustomFieldsForm.fieldMinimum": "\"{fieldName}\" alanı için en az {minSelections} seçeneği seçilebilir.",
   "app.components.CustomFieldsForm.fieldRequired": "\"{fieldName}\" alanı gereklidir",
   "app.components.CustomFieldsForm.imageRequired": "Görüntü gereklidir",
   "app.components.CustomFieldsForm.notPublic1": "*Bu cevap sadece proje yöneticileriyle paylaşılacak, kamuoyuyla paylaşılmayacaktır.",
