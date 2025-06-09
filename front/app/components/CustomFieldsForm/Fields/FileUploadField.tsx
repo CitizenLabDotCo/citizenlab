@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
@@ -33,6 +33,7 @@ type FileToUploadFormat = {
     name: string;
   };
   name: string;
+  id?: string | null;
 };
 
 const FileUploaderField = ({
@@ -44,7 +45,6 @@ const FileUploaderField = ({
   const { data: ideaFiles } = useIdeaFiles(ideaId);
   const { mutate: deleteIdeaFile } = useDeleteIdeaFile();
   const { mutate: addIdeaFile } = useAddIdeaFile();
-  const [files, setFiles] = useState<UploadFile[]>([]);
   const processedFilesRef = useRef(new Set());
 
   const {
@@ -70,7 +70,6 @@ const FileUploaderField = ({
         ).then(
           (files) => files.filter((file) => file !== null) as UploadFile[]
         );
-        setFiles(remoteFiles);
         setValue(
           name,
           remoteFiles.map((file) => ({
@@ -79,6 +78,7 @@ const FileUploaderField = ({
               name: file.filename,
             },
             name: file.filename,
+            id: file.id || null,
           })),
           { shouldDirty: true }
         );
@@ -100,15 +100,7 @@ const FileUploaderField = ({
       newFiles.forEach((file) => {
         processedFilesRef.current.add(file.file_by_content.content);
 
-        convertUrlToUploadFile(
-          file.file_by_content.content,
-          null,
-          file.name
-        ).then((uploadFile) => {
-          if (uploadFile) {
-            setFiles((prevFiles) => [...prevFiles, uploadFile]);
-          }
-        });
+        convertUrlToUploadFile(file.file_by_content.content, null, file.name);
       });
     }
   }, [getValues, name, ideaId]);
@@ -118,6 +110,11 @@ const FileUploaderField = ({
   const onFileRemove = (fileToRemove: FileType, value) => {
     if (ideaId && fileToRemove.id) {
       deleteIdeaFile({ ideaId, fileId: fileToRemove.id });
+      setValue(
+        name,
+        value.filter((file: FileToUploadFormat) => fileToRemove.id !== file.id),
+        { shouldDirty: true }
+      );
     } else {
       setValue(
         name,
@@ -128,15 +125,11 @@ const FileUploaderField = ({
         { shouldDirty: true }
       );
     }
-    setFiles((prevFiles) =>
-      prevFiles.filter((file) => file.base64 !== fileToRemove.base64)
-    );
 
     trigger(name);
   };
 
   const onFileAdd = (file: UploadFile, value) => {
-    setFiles((prevFiles) => [...prevFiles, file]);
     if (ideaId) {
       addIdeaFile({
         ideaId,
@@ -152,6 +145,7 @@ const FileUploaderField = ({
           name: file.filename,
         },
         name: file.filename,
+        id: file.id || null,
       };
 
       setValue(name, value ? [...value, newFile] : [newFile], {
@@ -166,7 +160,6 @@ const FileUploaderField = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={files}
         render={({ field: { ref: _ref, ...field } }) => {
           return (
             <FileUploaderComponent
@@ -174,7 +167,7 @@ const FileUploaderField = ({
               {...rest}
               data-cy={'e2e-idea-file-upload'}
               id={name}
-              files={files}
+              files={field.value || []}
               onFileAdd={(fileToAdd) => onFileAdd(fileToAdd, field.value)}
               onFileRemove={(fileToRemove) =>
                 onFileRemove(fileToRemove, field.value)
