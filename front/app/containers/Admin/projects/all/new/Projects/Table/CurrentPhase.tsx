@@ -14,8 +14,9 @@ interface Props {
 
 const parseNumberOfDays = (days: number) => {
   if (days < 62) return { unit: 'day', value: days } as const;
-  if (days < 365)
+  if (days < 365) {
     return { unit: 'month', value: Math.round(days / 31) } as const;
+  }
   return { unit: 'year', value: Math.round(days / 365) } as const;
 };
 
