@@ -66,7 +66,6 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Kestää <1 minuutin} one {Kestää 1 minuutin} other {Kestää # minuuttia}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lataa pdf-tiedostona",
   "app.components.FormSync.downloadExcelTemplate": "Lataa Excel-malli",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Excel-malleissa ei ole kartoituskysymyksiä, koska niitä ei tällä hetkellä tueta joukkotuonnissa.",
   "app.components.ProjectTemplatePreview.close": "kiinni",
   "app.components.ProjectTemplatePreview.createProject": "Luo projekti",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Luo projekti mallin{templateTitle}perusteella",
