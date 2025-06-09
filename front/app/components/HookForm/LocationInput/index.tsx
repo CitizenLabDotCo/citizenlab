@@ -116,6 +116,7 @@ const LocationInput = ({
             {...rest}
             form={'_none'}
             value={value}
+            placeholder=" "
             onChange={async (option: Option | null) => {
               if (locationDescription) {
                 const location_point_geojson = await getLocationGeojson(
