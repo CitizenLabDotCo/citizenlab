@@ -8,16 +8,77 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let(:project) { create(:project, title_multiloc: { en: 'PROJECT' }) }
   let(:phase) { create(:native_survey_phase, project: project, title_multiloc: { en: 'PHASE' }) }
   let(:custom_form) { create(:custom_form, participation_context: phase) }
-  let!(:page_field) { create(:custom_field_page, resource: custom_form) }
+  let!(:page_field) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' }) }
   let!(:text_field) { create(:custom_field_text, resource: custom_form, required: true, title_multiloc: { 'en' => 'Text field' }) }
   let!(:multiline_field) { create(:custom_field_multiline_text, resource: custom_form, title_multiloc: { 'en' => 'Multiline field' }) }
   let!(:select_field) do
     field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
+    field.options.create!(key: 'single1', title_multiloc: { 'en' => 'Single 1' })
+    field.options.create!(key: 'single2', title_multiloc: { 'en' => 'Single 2' })
+    field
+  end
+  let!(:multiselect_field) do
+    field = create(:custom_field_multiselect, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' })
     field.options.create!(key: 'option1', title_multiloc: { 'en' => 'Option 1' })
     field.options.create!(key: 'option2', title_multiloc: { 'en' => 'Option 2' })
     field
   end
+  let!(:ranking_field) do
+    field = create(:custom_field_ranking, resource: custom_form, key: 'ranking_field', title_multiloc: { 'en' => 'Ranking field' })
+    field.options.create!(key: 'ranking_one', title_multiloc: { 'en' => 'Ranking one' })
+    field.options.create!(key: 'ranking_two', title_multiloc: { 'en' => 'Ranking two' })
+    field
+  end
+  let!(:multiselect_image_field) do
+    field = create(
+      :custom_field_multiselect_image,
+      resource: custom_form,
+      title_multiloc: { 'en' => 'Select image field' },
+      select_count_enabled: true,
+      minimum_select_count: 1,
+      maximum_select_count: 2
+    )
+    field.options.create!(title_multiloc: { 'en' => 'Image one' }, image: create(:custom_field_option_image))
+    field.options.create!(title_multiloc: { 'en' => 'Image two' }, image: create(:custom_field_option_image))
+    field.options.create!(title_multiloc: { 'en' => 'Image three' }, image: create(:custom_field_option_image))
+    field
+  end
+  let!(:matrix_field) do
+    field = create(
+      :custom_field_matrix_linear_scale,
+      resource: custom_form,
+      key: 'matrix_field',
+      title_multiloc: { 'en' => 'Matrix field' },
+      linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+      linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+      linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+      linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+      linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+      maximum: 5
+    )
+    field.matrix_statements.create!(title_multiloc: { 'en' => 'Matrix statement one' })
+    field.matrix_statements.create!(title_multiloc: { 'en' => 'Matrix statement two' })
+    field
+  end
+  let!(:rating_field) { create(:custom_field_rating, resource: custom_form, key: 'rating_field', title_multiloc: { 'en' => 'Rating field' }) }
+  let!(:sentiment_linear_scale_field) { create(:custom_field_sentiment_linear_scale, resource: custom_form, key: 'sentiment_field', title_multiloc: { 'en' => 'Sentiment scale field' }) }
+  let!(:map_page) { create(:custom_field_page, page_layout: 'map', resource: custom_form, title_multiloc: { 'en' => 'Map page' }) }
+  let!(:point_field) { create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' }) }
+  let!(:line_field) { create(:custom_field_line, resource: custom_form, title_multiloc: { 'en' => 'Line field' }) }
+  let!(:polygon_field) { create(:custom_field_polygon, resource: custom_form, title_multiloc: { 'en' => 'Polygon field' }) }
   let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
+
+  before do
+    settings = AppConfiguration.instance.settings
+    settings['maps'] = {
+      'allowed' => true,
+      'enabled' => true,
+      'tile_provider' => 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=MAP_TILER_KEY',
+      'map_center' => { 'lat' => '0', 'long' => '0' },
+      'zoom_level' => 2
+    }
+    AppConfiguration.instance.update!(settings: settings)
+  end
 
   describe 'export' do
     let!(:parsed_html) { Nokogiri::HTML(service.export) }
@@ -42,35 +103,151 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(personal_data.css('h2').text).to eq 'Personal data'
 
         fields = personal_data.css('h3').map(&:text)
-        expect(fields[0]).to eq 'First name(s) (optional)'
-        expect(fields[1]).to eq 'Last name (optional)'
-        expect(fields[2]).to eq 'Email address (optional)'
+        expect(fields[0]).to include 'First name(s)'
+        expect(fields[1]).to include 'Last name'
+        expect(fields[2]).to include 'Email address'
       end
     end
 
     context 'questions' do
       let!(:titles) { parsed_html.css('div#questions div.question h3').map(&:text) }
 
-      it 'returns title, description of all questions' do
+      it 'returns title of all questions' do
         expect(titles[0]).to include 'Text field'
         expect(titles[1]).to include 'Multiline field'
         expect(titles[2]).to include 'Select field'
+        expect(titles[3]).to include 'Multi select field'
+        expect(titles[4]).to include 'Ranking field'
+        expect(titles[5]).to include 'Select image field'
+        expect(titles[6]).to include 'Matrix field'
+        expect(titles[7]).to include 'Rating field'
+        expect(titles[8]).to include 'Sentiment scale field'
+        expect(titles[9]).to include 'Point field'
+        expect(titles[10]).to include 'Line field'
+        expect(titles[11]).to include 'Polygon field'
       end
 
       it 'shows optional if questions are not required' do
         expect(titles[0]).not_to include '(optional)'
         expect(titles[1]).to include '(optional)'
         expect(titles[2]).to include '(optional)'
+        expect(titles[3]).to include '(optional)'
+        expect(titles[4]).to include '(optional)'
+        expect(titles[5]).to include '(optional)'
+        expect(titles[6]).to include '(optional)'
+        expect(titles[7]).to include '(optional)'
+        expect(titles[8]).to include '(optional)'
+        expect(titles[9]).to include '(optional)'
+        expect(titles[10]).to include '(optional)'
+        expect(titles[11]).to include '(optional)'
+      end
+
+      it 'returns page titles' do
+        pages = parsed_html.css('div#questions div.page h2').map(&:text)
+        expect(pages[0]).to include 'First page'
+        expect(pages[1]).to include 'Map page'
       end
 
       it 'shows 1 line for short text fields' do
-        single_line_text = parsed_html.css('div#questions div.question')[0]
+        single_line_text = parsed_html.css("div##{text_field.id}")
         expect(single_line_text.css('div.line').count).to eq 1
       end
 
       it 'shows 7 lines for longer text fields' do
-        multi_line_text = parsed_html.css('div#questions div.question')[1]
-        expect(multi_line_text.css('div.line').count).to eq 7
+        multiline_text = parsed_html.css("div##{multiline_field.id}")
+        expect(multiline_text.css('div.line').count).to eq 7
+      end
+
+      it 'shows select field instructions and options' do
+        select = parsed_html.css("div##{select_field.id}")
+        expect(select.text).to include '*Only choose one option'
+        expect(select.text).to include 'Single 1'
+        expect(select.text).to include 'Single 2'
+      end
+
+      it 'shows multiselect instructions and options' do
+        multiselect = parsed_html.css("div##{multiselect_field.id}")
+        expect(multiselect.text).to include '*Choose as many as you like'
+        expect(multiselect.text).to include 'Option 1'
+        expect(multiselect.text).to include 'Option 2'
+      end
+
+      it 'shows ranking instructions and options' do
+        ranking = parsed_html.css("div##{ranking_field.id}")
+        expect(ranking.text).to include 'Please write a number from 1 (most preferred) and 2 (least preferred) in each box. Use each number exactly once.'
+        expect(ranking.text).to include 'Ranking one'
+        expect(ranking.text).to include 'Ranking two'
+      end
+
+      it 'shows multiselect image instructions and options' do
+        multiselect_image = parsed_html.css("div##{multiselect_image_field.id}")
+        expect(multiselect_image.text).to include '*Choose between 1 and 2 options'
+        expect(multiselect_image.text).to include 'Image one'
+        expect(multiselect_image.text).to include 'Image two'
+        expect(multiselect_image.text).to include 'Image three'
+      end
+
+      it 'shows matrix statements and instructions' do
+        matrix = parsed_html.css("div##{matrix_field.id}")
+        expect(matrix.text).to include 'For each row, mark one circle with a cross to indicate your preference.'
+        expect(matrix.text).to include 'Matrix statement one'
+        expect(matrix.text).to include 'Matrix statement two'
+        expect(matrix.text).to include 'Strongly disagree'
+        expect(matrix.text).to include 'Disagree'
+        expect(matrix.text).to include 'Neutral'
+        expect(matrix.text).to include 'Agree'
+        expect(matrix.text).to include 'Strongly agree'
+      end
+
+      it 'shows rating field instructions' do
+        rating = parsed_html.css("div##{rating_field.id}")
+        expect(rating.text).to include 'Rate this by writing a number between 1 (worst) and 5 (best).'
+      end
+
+      it 'shows sentiment scale field instructions' do
+        sentiment_scale = parsed_html.css("div##{sentiment_linear_scale_field.id}")
+        expect(sentiment_scale.text).to include 'Please write a number between 1 and 5.'
+        expect(sentiment_scale.text).to include '1 = Strongly disagree, 3 = Neutral, 5 = Strongly agree.'
+      end
+
+      it 'shows a map image and instructions for a point field' do
+        point = parsed_html.css("div##{point_field.id}")
+        expect(point.text).to include 'Please draw an X on the map below to show the location or write the address instead.'
+        expect(point.css('img').count).to eq 1
+        expect(point.css('img')[0]['src']).to eq 'https://api.maptiler.com/maps/basic/static/0,0,2.0/650x420@2x.png?key=MAP_TILER_KEY&attribution=bottomleft'
+      end
+
+      it 'shows a map image and instructions for a line field' do
+        line = parsed_html.css("div##{line_field.id}")
+        expect(line.text).to include 'Please draw a route on the map below.'
+        expect(line.css('img').count).to eq 1
+        expect(line.css('img')[0]['src']).to eq 'https://api.maptiler.com/maps/basic/static/0,0,2.0/650x420@2x.png?key=MAP_TILER_KEY&attribution=bottomleft'
+      end
+
+      it 'shows a map image and instructions for a polygon field' do
+        polygon = parsed_html.css("div##{polygon_field.id}")
+        expect(polygon.text).to include 'Please draw a shape on the map below.'
+        expect(polygon.css('img').count).to eq 1
+        expect(polygon.css('img')[0]['src']).to eq 'https://api.maptiler.com/maps/basic/static/0,0,2.0/650x420@2x.png?key=MAP_TILER_KEY&attribution=bottomleft'
+      end
+
+      it 'shows a map image for a map page' do
+        page = parsed_html.css("div##{map_page.id}")
+        expect(page.css('img').count).to eq 1
+        expect(page.css('img')[0]['src']).to eq 'https://api.maptiler.com/maps/basic/static/0,0,2.0/650x420@2x.png?key=MAP_TILER_KEY&attribution=bottomleft'
+      end
+
+      it 'shows unsupported if the maptiler is not "maptiler.com"' do
+        settings = AppConfiguration.instance.settings
+        settings['maps']['tile_provider'] = 'https://api.somethingelse.com?key=MAP_TILER_KEY'
+        AppConfiguration.instance.update!(settings: settings)
+
+        new_service = described_class.new phase, 'en', false
+        parsed_html = Nokogiri::HTML(new_service.export)
+        line = parsed_html.css("div##{line_field.id}")
+        expect(line.css('img').count).to eq 0
+        expect(line.text).not_to include 'Please draw a route on the map below.'
+        expect(line.text).to include 'This field cannot be completed on paper.'
       end
     end
   end

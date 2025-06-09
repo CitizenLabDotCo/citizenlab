@@ -1,6 +1,28 @@
 class ProjectsFinderAdminService
   UUID_REGEX = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
 
+  # EXECUTION
+  def self.execute(scope, params = {}, current_user: nil)
+    # Apply filters
+    projects = filter_status(scope, params)
+    projects = filter_project_manager(projects, params)
+    projects = search(projects, params)
+    projects = filter_date(projects, params)
+
+    # Apply sorting
+    if params[:sort] == 'recently_viewed'
+      sort_recently_viewed(projects, current_user)
+    elsif params[:sort] == 'phase_starting_or_ending_soon'
+      sort_phase_starting_or_ending_soon(projects)
+    else
+      projects.order(created_at: :desc)
+    end
+  end
+
+  # The methods below are private class methods.
+  # They are currently only used by the execute method,
+  # but could be used in other places as well.
+
   # SORTING METHODS
   def self.sort_recently_viewed(scope, current_user)
     substring_statement = "substring(path, 'admin/projects/(#{UUID_REGEX})')"
@@ -61,14 +83,11 @@ class ProjectsFinderAdminService
   # FILTERING METHODS
   def self.filter_status(scope, params = {})
     status = params[:status] || []
+    return scope if status.blank?
 
-    if status.present?
-      scope
-        .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
-        .where(admin_publications: { publication_status: status })
-    else
-      scope
-    end
+    scope
+      .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
+      .where(admin_publications: { publication_status: status })
   end
 
   def self.filter_project_manager(scope, params = {})
@@ -122,23 +141,5 @@ class ProjectsFinderAdminService
     end
 
     scope
-  end
-
-  # EXECUTION
-  def self.execute(scope, params = {}, current_user: nil)
-    # Apply filters
-    projects = filter_status(scope, params)
-    projects = filter_project_manager(projects, params)
-    projects = search(projects, params)
-    projects = filter_date(projects, params)
-
-    # Apply sorting
-    if params[:sort] == 'recently_viewed'
-      sort_recently_viewed(projects, current_user)
-    elsif params[:sort] == 'phase_starting_or_ending_soon'
-      sort_phase_starting_or_ending_soon(projects)
-    else
-      projects.order(created_at: :desc)
-    end
   end
 end

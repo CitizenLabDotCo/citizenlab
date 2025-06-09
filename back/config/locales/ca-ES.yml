@@ -331,6 +331,15 @@ ca:
       write_in_language: 'Escriu les teves respostes en el mateix idioma que aquest formulari'
       linear_scale_print_description: 'Escriu només un número entre %{min_label} i %{max_label}'
       unsupported_field: 'Aquest camp no es pot emplenar en paper. Si us plau, utilitzeu la versió en línia d''aquest formulari.'
+      ranking_print_description: 'Si us plau, escriviu un número de l''1 (el més preferit) a %{max_rank} (el menys preferit) a cada casella. Feu servir cada número exactament una vegada.'
+      matrix_print_description: 'Per a cada fila, marqueu un cercle amb una creu per indicar la vostra preferència.'
+      rating_print_description: 'Valora-ho escrivint un número entre 1 (pitjor) i %{max_stars} (millor).'
+      sentiment_linear_scale_print_description: 'Si us plau, escriviu un número entre l''1 i el 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Dibuixa una X al mapa següent per indicar la ubicació o escriu-hi l''adreça.'
+      line_print_description: 'Si us plau, dibuixa una ruta al mapa següent.'
+      polygon_print_description: 'Si us plau, dibuixa una forma al mapa següent.'
+      select_print_description: 'Només tria una opció.'
   project_copy:
     title_suffix: 'Còpia'
   confirmations_mailer:

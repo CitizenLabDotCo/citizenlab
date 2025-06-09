@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::Exporters::IdeaPdfFormExporter do
+describe BulkImportIdeas::Legacy::IdeaPdfFormExporter do
   let(:project) { create(:single_phase_ideation_project) }
   let(:custom_form) { create(:custom_form, participation_context: project) }
   let(:service) { described_class.new project, 'en', false }

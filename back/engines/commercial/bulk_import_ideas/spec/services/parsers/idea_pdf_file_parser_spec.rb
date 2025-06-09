@@ -1,31 +1,138 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'shared/pdf_parser_data_setup'
 
 describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
+  include_context 'pdf_parser_data_setup' # Used only in some of the tests
+
   let(:project) { create(:single_phase_ideation_project) }
   let(:service) { described_class.new create(:admin), 'en', project.phases.first&.id, false }
-  let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
-  before do
-    # Topics for project
-    project.allowed_input_topics << create(:topic_economy)
-    project.allowed_input_topics << create(:topic_waste)
-
-    # Custom fields - will produce a PDF form with 2 pages
-    create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, description_multiloc: { 'en' => 'A text field description' }, enabled: true)
-    create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
-    create(:custom_field_point, resource: custom_form, key: 'a_point_field', title_multiloc: { 'en' => 'Point field' }, enabled: true)
-    select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
-    create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-    create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
-    multiselect_field = create(:custom_field, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' }, input_type: 'multiselect', enabled: true)
-    create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
-    create(:custom_field_option, custom_field: multiselect_field, key: 'that', title_multiloc: { 'en' => 'That' })
-    another_select_field = create(:custom_field, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field' }, input_type: 'select', enabled: true)
-    create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-    create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+  # Mock data to avoid Gutenberg dependency that renders PDF to get this data
+  let(:template_data) do
+    {
+      page_count: 2,
+      fields: [
+        {
+          name: 'Title',
+          type: 'field',
+          key: 'title_multiloc',
+          page: 1,
+          position: 24,
+          code: 'title_multiloc',
+          input_type: 'text_multiloc',
+          description: nil,
+          print_title: '1. Title',
+          content_delimiters: { start: '1. Title', end: 'Tell us more' }
+        },
+        {
+          name: 'Description',
+          type: 'field',
+          key: 'body_multiloc',
+          page: 1,
+          position: 37,
+          code: 'body_multiloc',
+          input_type: 'html_multiloc',
+          description: nil,
+          print_title: '2. Description',
+          content_delimiters: { start: '2. Description', end: 'Images and attachments' }
+        },
+        {
+          name: 'Location',
+          type: 'field',
+          key: 'location_description',
+          page: 2,
+          position: 2,
+          code: 'location_description',
+          input_type: 'text',
+          description: nil,
+          print_title: '6. Location (optional)',
+          content_delimiters: { start: '6. Location (optional)', end: '7. A text field (optional)' }
+        },
+        {
+          name: 'A text field',
+          type: 'field',
+          key: 'a_text_field',
+          page: 2,
+          position: 9,
+          code: nil,
+          input_type: 'text',
+          description: 'A text field description',
+          print_title: '7. A text field (optional)',
+          content_delimiters: { start: '*This answer will only be shared with moderators, and not to the public.', end: '8. Number field (optional)' }
+        },
+        {
+          name: 'Number field',
+          type: 'field',
+          key: 'number_field',
+          page: 2,
+          position: 23,
+          code: nil,
+          input_type: 'number',
+          description: 'Which councils are you attending in our city?',
+          print_title: '8. Number field (optional)',
+          content_delimiters: { start: '*This answer will only be shared with moderators, and not to the public.', end: '9. Point field (optional)' }
+        },
+        {
+          name: 'Select field',
+          type: 'field',
+          key: 'select_field',
+          page: 2,
+          position: 48,
+          code: nil,
+          input_type: 'select',
+          description: 'Which councils are you attending in our city?',
+          print_title: '10. Select field (optional)',
+          content_delimiters: { start: '*This answer will only be shared with moderators, and not to the public.', end: '11. Multi select field (optional)' }
+        },
+        {
+          name: 'Yes', type: 'option', key: 'yes', page: 2, position: 56, parent_key: 'select_field'
+        },
+        {
+          name: 'No', type: 'option', key: 'no', page: 2, position: 58, parent_key: 'select_field'
+        },
+        {
+          name: 'Multi select field',
+          type: 'field',
+          key: 'multiselect_field',
+          page: 2,
+          position: 65,
+          code: nil,
+          input_type: 'multiselect',
+          description: 'Which councils are you attending in our city?',
+          print_title: '11. Multi select field (optional)',
+          content_delimiters: { start: '*This answer will only be shared with moderators, and not to the public.', end: '12. Another select field (optional)' }
+        },
+        {
+          name: 'This', type: 'option', key: 'this', page: 1, position: 73, parent_key: 'multiselect_field'
+        },
+        {
+          name: 'That', type: 'option', key: 'that', page: 2, position: 74, parent_key: 'multiselect_field'
+        },
+        {
+          name: 'Another select field',
+          type: 'field',
+          key: 'another_select_field',
+          page: 2,
+          position: 82,
+          code: nil,
+          input_type: 'select',
+          description: 'Which councils are you attending in our city?',
+          print_title: '12. Another select field (optional)',
+          content_delimiters: { start: '*This answer will only be shared with moderators, and not to the public.', end: nil }
+        },
+        {
+          name: 'Yes', type: 'option', key: 'yes', page: 2, position: 89, parent_key: 'another_select_field'
+        },
+        {
+          name: 'No', type: 'option', key: 'no', page: 2, position: 91, parent_key: 'another_select_field'
+        }
+      ]
+    }
   end
+
+  before { allow(service).to receive(:template_data).and_return(template_data) }
 
   describe 'parse_file_async' do
     it 'creates jobs to process 5 ideas at a time' do
@@ -194,8 +301,51 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
           'Description' => "Je suis un chien. J'aime les chats."
         }
       }]
-      rows = service.send(:ideas_to_idea_rows, ideas, import_file)
 
+      template_data = {
+        page_count: 2,
+        fields: [
+          {
+            name: 'Titre',
+            type: 'field',
+            key: 'title_multiloc',
+            page: 2,
+            position: 6,
+            code: 'title_multiloc',
+            input_type: 'text_multiloc',
+            description: nil,
+            print_title: '1. Titre',
+            content_delimiters: { start: '1. Titre', end: 'Dites-nous plus' }
+          },
+          {
+            name: 'Description',
+            type: 'field',
+            key: 'body_multiloc',
+            page: 2,
+            position: 18,
+            code: 'body_multiloc',
+            input_type: 'html_multiloc',
+            description: nil,
+            print_title: '2. Description',
+            content_delimiters: { start: '2. Description', end: 'Images et pièces jointes' }
+          },
+          {
+            name: 'Adresse',
+            type: 'field',
+            key: 'location_description',
+            page: 2,
+            position: 83,
+            code: 'location_description',
+            input_type: 'text',
+            description: nil,
+            print_title: '6. Adresse (optionnel)',
+            content_delimiters: { start: '6. Adresse (optionnel)', end: nil }
+          }
+        ]
+      }
+      allow(service).to receive(:template_data).and_return(template_data)
+
+      rows = service.send(:ideas_to_idea_rows, ideas, import_file)
       expect(rows[0][:title_multiloc]).to eq({ 'fr-FR': 'Bonjour' })
       expect(rows[0][:body_multiloc]).to eq({ 'fr-FR': "Je suis un chien. J'aime les chats." })
       expect(rows[0][:user_email]).to eq 'jean@france.com'
@@ -306,19 +456,58 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
   end
 
   describe 'parse_rows' do
+    it 'returns an array of idea rows ready to be imported' do
+      service = described_class.new create(:admin), 'en', survey_phase.id, false
+      allow(service).to receive_messages(template_data: pdf_template_data, google_parsed_idea: google_form_parsed_idea, text_parsed_idea: raw_text_parsed_idea)
+      upload_file = create(:file_upload)
+      expect(service.parse_rows(upload_file)).to eq([
+        {
+          id: 0,
+          image_url: nil,
+          latitude: nil,
+          longitude: nil,
+          pdf_pages: [1, 2, 3, 4, 5, 6, 7],
+          phase_id: survey_phase.id,
+          project_id: survey_project.id,
+          published_at: nil,
+          topic_titles: [],
+          user_consent: nil,
+          file: upload_file,
+          custom_field_values: {
+            select_field: 'option_1',
+            short_answer_field: 'I really like Short answers',
+            long_answer_field: "I'm They not so much longer Keen ол answers. Long to take Fill in",
+            linear_scale_field: 1,
+            another_linear_scale_field: 2,
+            multiselect_question: %w[another_option_you_might_like_more other],
+            multiselect_question_other: 'I cannot make up my my mind 7.',
+            image_choice: %w[choose_homer choose_maggie other],
+            image_choice_other: 'Seymour 8.',
+            sentiment_scale_question: 5,
+            number_question: 283,
+            rating_question: 3,
+            u_birthyear: 1976,
+            u_domicile: '2e67f167-8966-4798-b6bf-572278786cb3',
+            u_gender: 'male',
+            u_politician: 'retired_politician'
+          }
+        }
+      ])
+    end
+
     it 'ignores errors from the plain text service' do
-      form_parser_output = [{
+      form_parser_output = {
         pdf_pages: [1],
         fields: {
           'Title' => 'My very good idea',
           'Description' => 'And this is the very good body'
         }
-      }]
+      }
       file = create(:idea_import_file)
 
       expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(form_parser_output)
       expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_raise(BulkImportIdeas::Error.new('something'))
-      expect(service).to receive(:merge_parsed_ideas_into_idea_row).with(form_parser_output, [], file)
+      expect(service).to receive(:merge_parsed_ideas_into_idea_row).with(form_parser_output, {}, file)
 
       service.send(:parse_rows, file)
     end
@@ -344,7 +533,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
 
   describe 'process_custom_form_fields' do
     context 'maps parsed values onto actual form fields' do
-      let(:pdf_form_data) do
+      let(:template_data) do
         {
           page_count: 3,
           fields: [
@@ -394,7 +583,6 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       let(:idea_row) { service.send(:process_custom_form_fields, idea, {}) }
 
       it 'converts core fields' do
-        expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
         expect(idea_row).to include({
           title_multiloc: { en: 'This fine title' },
           body_multiloc: { en: 'A description' },
@@ -403,7 +591,6 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       end
 
       it 'converts custom fields' do
-        expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
         expect(idea_row[:custom_field_values]).to include({
           a_text_field: 'Some text yeah',
           select_field: 'yes',
@@ -413,7 +600,6 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       end
 
       it 'can cope with multiple checkboxes with same values' do
-        expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
         expect(idea_row[:custom_field_values]).to include({
           select_field3: 'yes',
           select_field4: 'yes',
@@ -423,7 +609,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     end
 
     context 'maps multiselect values correctly' do
-      let(:pdf_form_data) do
+      let(:template_data) do
         {
           page_count: 3,
           fields: [
@@ -444,7 +630,6 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       end
 
       it 'converts multiselect fields - independently for each idea' do
-        expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:importer_data).and_return(pdf_form_data)
         idea1 = [
           { name: 'Monkeys', value: 'filled_checkbox', type: 'option', page: 2, position: 68 },
           { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 2, position: 70 },
@@ -498,48 +683,34 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     end
   end
 
-  describe 'process_field_value' do
-    let(:form_fields) do
-      [
-        {
-          name: 'Title',
-          description: nil,
-          type: 'field',
-          input_type: 'text_multiloc',
-          value: 'A modern childrens playground'
-        },
-        {
-          name: 'Description',
-          description: 'This is a description of the field that may be detected in the scanned text.',
-          type: 'field',
-          input_type: 'html_multiloc',
-          value: 'This is a description of the field that may be detected in the scanned text. This is the text that we really want. This is the next field title'
-        },
-        {
-          name: 'This is the next field title',
-          description: nil,
-          type: 'field',
-          input_type: 'text'
+  describe 'process_text_field_value' do
+    let(:field) do
+      {
+        value: 'Something here first. This is a description of the field. This is the text that we really want. This is the next field title. There is other stuff too.',
+        content_delimiters: {
+          start: nil,
+          end: nil
         }
-      ]
+      }
     end
 
-    it 'removes text that is either in from description of the field or the title of the next field' do
-      field = service.send(:process_field_value, form_fields[1], form_fields)
-      expect(field[:value]).to eq 'This is the text that we really want.'
+    it 'removes text that is after the end text delimiter' do
+      field[:content_delimiters][:end] = 'This is the next field title'
+      processed_field_value = service.send(:process_text_field_value, field)
+      expect(processed_field_value).to eq 'Something here first. This is a description of the field. This is the text that we really want.'
     end
 
-    it 'removes moderator disclaimer text' do
-      form_fields[1][:value] = '*This answer will only be shared with moderators, and not to the public. This is the text that we really want.'
-      field = service.send(:process_field_value, form_fields[1], form_fields)
-      expect(field[:value]).to eq 'This is the text that we really want.'
+    it 'removes text that is before the start text delimiter' do
+      field[:content_delimiters][:start] = 'This is a description of the field.'
+      processed_field_value = service.send(:process_text_field_value, field)
+      expect(processed_field_value).to eq 'This is the text that we really want. This is the next field title. There is other stuff too.'
     end
 
-    it 'does not remove text if the next field title has fewer than five words in it' do
-      form_fields[1][:value] = 'This is the text that we really want. Four word field title'
-      form_fields[2][:name] = 'Four word field title'
-      field = service.send(:process_field_value, form_fields[1], form_fields)
-      expect(field[:value]).to eq 'This is the text that we really want. Four word field title'
+    it 'removes text that is before the start text delimiter AND after the end delimiter' do
+      field[:content_delimiters][:start] = 'This is a description of the field.'
+      field[:content_delimiters][:end] = 'This is the next field title'
+      processed_field_value = service.send(:process_text_field_value, field)
+      expect(processed_field_value).to eq 'This is the text that we really want.'
     end
   end
 
@@ -562,6 +733,45 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
 
     it 'returns nil if it cannot correct the email address' do
       expect(service.send(:fix_email_address, 'john_rambo.com')).to be_nil
+    end
+  end
+
+  describe 'remove_question_numbers_in_keys' do
+    let(:template_data) { pdf_template_data } # Use the shared template data for this test
+
+    it 'replaces the question keys with the actual title of the question' do
+      output = service.send(:remove_question_numbers_in_keys, google_form_parsed_idea)
+      expect(output[:fields].keys).to eq [
+        'First name(s) (optional)',
+        'Last name (optional)',
+        'Email address (optional)',
+        'Your question',
+        'This is a short answer',
+        'This is a long answer',
+        '• Put whatever you want here',
+        'Please write a number between 1 and 5 only',
+        '5. Another linear scale - no description (optional) Please write a number between 1 (Totally worst) and 7 (Absolute best) only',
+        'this one_3.3.12',
+        'another option you might like more_3.3.14',
+        'something else_3.3.16',
+        "If 'something else', please specify",
+        'Choose Marge_3.3.46',
+        'Choose bart_3.3.46',
+        'Choose homer_3.3.46',
+        'All the Simpsons_3.3.62',
+        'Choose Lisa_3.3.62',
+        'Choose Maggie_3.3.62',
+        'Other_3.3.78',
+        "If 'Other', please specify",
+        'Rate this by writing a number between 1 (worst) and 5 (best).',
+        'Sentiment scale question',
+        'Number field',
+        'Schaerbeek--',
+        'Ixelles--',
+        'Year of birth',
+        'Active politician_6.7.34',
+        'Retired politician_6.7.36'
+      ]
     end
   end
 end
