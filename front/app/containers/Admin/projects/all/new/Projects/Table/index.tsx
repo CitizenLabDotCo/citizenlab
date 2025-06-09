@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Table as TableComponent,
   Thead,
+  Text,
   Tr,
   Th,
   Tbody,
@@ -40,15 +41,32 @@ const Table = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {projects?.map((row, i) => (
-          <Tr key={i}>
-            <Td background={colors.grey50}>
-              {localize(row.attributes.title_multiloc)}
-            </Td>
-            <Td background={colors.grey50}>Bla</Td>
-            <Td background={colors.grey50}>Bla</Td>
-          </Tr>
-        ))}
+        {projects?.map(
+          ({ attributes: { title_multiloc, folder_title_multiloc } }, i) => (
+            <Tr key={i}>
+              <Td background={colors.grey50}>
+                <Text m="0" fontSize="s" color="primary">
+                  {localize(title_multiloc)}
+                </Text>
+                {folder_title_multiloc && (
+                  <Text m="0" fontSize="xs" color="textSecondary">
+                    {localize(folder_title_multiloc)}
+                  </Text>
+                )}
+              </Td>
+              <Td background={colors.grey50}>
+                <Text m="0" fontSize="s" color="primary">
+                  Bla
+                </Text>
+              </Td>
+              <Td background={colors.grey50}>
+                <Text m="0" fontSize="s" color="primary">
+                  Bla
+                </Text>
+              </Td>
+            </Tr>
+          )
+        )}
       </Tbody>
     </TableComponent>
   );
