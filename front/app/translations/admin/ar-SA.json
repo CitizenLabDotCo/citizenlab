@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {يستغرق أقل من دقيقة واحدة} one {يستغرق دقيقة واحدة} other {يستغرق # دقائق}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "تحميل بصيغة pdf",
   "app.components.FormSync.downloadExcelTemplate": "تنزيل قالب Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "لن تتضمن قوالب Excel أي أسئلة إدخال تعيينية حيث لا يتم دعمها للاستيراد بالجملة في هذا الوقت.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "لن تتضمن قوالب Excel أسئلة التصنيف، وأسئلة المصفوفة، وأسئلة تحميل الملفات وأي أسئلة إدخال تعيين (دبوس الإسقاط، مسار الرسم، منطقة الرسم، تحميل ملف ESRI) حيث لا يتم دعم هذه الأسئلة للاستيراد بالجملة في هذا الوقت.",
   "app.components.ProjectTemplatePreview.close": "إغلاق",
   "app.components.ProjectTemplatePreview.createProject": "أنشئ مشروعًا",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "أنشئ مشروعًا بناءً على القالب '{templateTitle}'",
