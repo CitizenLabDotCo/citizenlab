@@ -33,8 +33,8 @@ const LocationInput = ({
     formState: { errors: formContextErrors, touchedFields },
     control,
     setValue,
-    watch,
     trigger,
+    watch,
   } = useFormContext();
   const locale = useLocale();
   const [searchParams] = useSearchParams();
@@ -78,6 +78,7 @@ const LocationInput = ({
           setValue(name, location_description);
 
           setValue('location_point_geojson', {
+            type: 'Point',
             coordinates: [longitude, latitude],
           });
         }
@@ -95,6 +96,18 @@ const LocationInput = ({
     getLocationDescription,
     touchedFields,
   ]);
+
+  useEffect(() => {
+    if (locationDescription) {
+      getLocationGeojson(locationDescription).then((location_point_geojson) => {
+        setValue('location_point_geojson', {
+          ...location_point_geojson,
+        });
+      });
+    } else {
+      setValue('location_point_geojson', null);
+    }
+  }, [locationDescription, setValue]);
 
   const value = locationDescription
     ? {
@@ -118,14 +131,6 @@ const LocationInput = ({
             value={value}
             placeholder=" "
             onChange={async (option: Option | null) => {
-              if (locationDescription) {
-                const location_point_geojson = await getLocationGeojson(
-                  locationDescription
-                );
-                setValue('location_point_geojson', {
-                  coordinates: [location_point_geojson],
-                });
-              }
               setValue(name, option?.value || null, {
                 shouldTouch: true,
               });
