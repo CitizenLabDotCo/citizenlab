@@ -11,15 +11,14 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import useProjectsMini from 'api/projects_mini/useProjectsMini';
+import useProjectsMiniAdmin from 'api/projects_mini_admin/useProjectsMiniAdmin';
 
 import useLocalize from 'hooks/useLocalize';
 
 const Table = () => {
   const localize = useLocalize();
 
-  const { data } = useProjectsMini({
-    endpoint: 'for_admin',
+  const { data } = useProjectsMiniAdmin({
     sort: 'phase_starting_or_ending_soon',
   });
 
