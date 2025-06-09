@@ -164,17 +164,17 @@ describe ProjectsFinderAdminService do
     end
 
     describe 'sort: phase_starting_or_ending_soon' do
-      let!(:p1) do 
+      let!(:p1) do
         create_project(
-          start_at: Date.new(2020, 1, 1), 
-          end_at: Date.new(2021, 1, 1), 
+          start_at: Date.new(2020, 1, 1),
+          end_at: Date.new(2021, 1, 1),
           created_at: Date.new(2019, 1, 1)
-        ) 
+        )
       end
-      let!(:p2) do 
+      let!(:p2) do
         create_project(
-          start_at: Date.new(2020, 2, 1), 
-          end_at: nil, 
+          start_at: Date.new(2020, 2, 1),
+          end_at: nil,
           created_at: Date.new(2019, 2, 1)
         )
       end

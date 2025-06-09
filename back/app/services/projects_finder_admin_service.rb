@@ -83,7 +83,8 @@ class ProjectsFinderAdminService
   # FILTERING METHODS
   def self.filter_status(scope, params = {})
     status = params[:status] || []
-    return scope unless status.present?
+    return scope if status.blank?
+
     scope
       .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
       .where(admin_publications: { publication_status: status })
