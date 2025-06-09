@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {<1 منٹ لیتا ہے} one {1 منٹ لیتا ہے} other {# منٹ لیتا ہے}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "پی ڈی ایف کے طور پر ڈاؤن لوڈ کریں۔",
   "app.components.FormSync.downloadExcelTemplate": "ایکسل ٹیمپلیٹ ڈاؤن لوڈ کریں۔",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "ایکسل ٹیمپلیٹس میں کوئی میپنگ ان پٹ سوالات شامل نہیں ہوں گے کیونکہ یہ اس وقت بلک امپورٹنگ کے لیے تعاون یافتہ نہیں ہیں۔",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "ایکسل ٹیمپلیٹس میں درجہ بندی کے سوالات، میٹرکس کے سوالات، فائل اپ لوڈ کے سوالات اور کوئی بھی میپنگ ان پٹ سوالات (ڈراپ پن، ڈرا روٹ، ڈرا ایریا، ESRI فائل اپ لوڈ) شامل نہیں ہوں گے کیونکہ یہ اس وقت بلک امپورٹنگ کے لیے تعاون یافتہ نہیں ہیں۔",
   "app.components.ProjectTemplatePreview.close": "بند",
   "app.components.ProjectTemplatePreview.createProject": "پروجیکٹ بنائیں",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "ٹیمپلیٹ کی بنیاد پر ایک پروجیکٹ بنائیں '{templateTitle}'",
