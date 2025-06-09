@@ -50,6 +50,7 @@ const CustomFieldsForm = ({
 }) => {
   const pagesRef = useRef<HTMLDivElement | null>(null);
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
+
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
@@ -119,7 +120,7 @@ const CustomFieldsForm = ({
     : undefined;
 
   return (
-    <Box overflow="scroll" w="100%" ref={pagesRef} key={currentPageNumber}>
+    <Box overflow="scroll" w="100%" ref={pagesRef}>
       {nestedPagesData[currentPageNumber] && (
         <CustomFieldsPage
           page={nestedPagesData[currentPageNumber].page}
