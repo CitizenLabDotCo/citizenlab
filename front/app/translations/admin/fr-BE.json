@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Prend <1 minute} one {Prend 1 minute} other {Prend # minutes}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Télécharger au format PDF",
   "app.components.FormSync.downloadExcelTemplate": "Télécharger un modèle Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Les modèles Excel n'incluent pas les questions de type cartographie, car leur importation n'est pas encore prise en charge.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Les modèles Excel n'incluront pas les questions de classement, les questions matricielles, les questions de téléchargement de fichiers et les questions de saisie cartographique (Drop Pin, Draw Route, Draw Area, ESRI file upload) car elles ne sont pas prises en charge pour l'importation en vrac à l'heure actuelle.",
   "app.components.ProjectTemplatePreview.close": "Fermer",
   "app.components.ProjectTemplatePreview.createProject": "Créer un projet",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Créer un projet basé sur le modèle '{templateTitle}'.",
