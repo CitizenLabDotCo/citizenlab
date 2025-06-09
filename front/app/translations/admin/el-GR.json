@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Λήψη ως pdf",
   "app.components.FormSync.downloadExcelTemplate": "Κατεβάστε ένα πρότυπο Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Τα πρότυπα του Excel δεν θα περιλαμβάνουν ερωτήσεις εισαγωγής χαρτογράφησης, καθώς δεν υποστηρίζονται για μαζική εισαγωγή προς το παρόν.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Τα πρότυπα του Excel δεν θα περιλαμβάνουν ερωτήσεις κατάταξης, ερωτήσεις μήτρας, ερωτήσεις μεταφόρτωσης αρχείων και οποιεσδήποτε ερωτήσεις εισαγωγής χαρτογραφίας (Drop Pin, Draw Route, Draw Area, ESRI file upload), καθώς δεν υποστηρίζονται προς το παρόν για μαζική εισαγωγή.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Δημιουργία έργου",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Δημιουργήστε ένα έργο με βάση το πρότυπο '{templateTitle}'",
