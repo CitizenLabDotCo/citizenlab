@@ -22,11 +22,9 @@ class ProjectsFinderAdminService
   # The methods below are private class methods.
   # They are currently only used by the execute method,
   # but could be used in other places as well.
-  # If you want to use any of them outside of this class,
-  # remove the `private_class_method` modifier.
 
   # SORTING METHODS
-  private_class_method def self.sort_recently_viewed(scope, current_user)
+  def self.sort_recently_viewed(scope, current_user)
     substring_statement = "substring(path, 'admin/projects/(#{UUID_REGEX})')"
 
     # I first did this with a group by and max, but Copilot suggested
@@ -59,7 +57,7 @@ class ProjectsFinderAdminService
       .order('last_viewed_at DESC NULLS LAST, projects.created_at ASC, projects.id ASC')
   end
 
-  private_class_method def self.sort_phase_starting_or_ending_soon(scope)
+  def self.sort_phase_starting_or_ending_soon(scope)
     phases_ending_soon_subquery = Phase
       .where("coalesce(end_at, 'infinity'::DATE) >= current_date")
       .group(:project_id)
@@ -83,7 +81,7 @@ class ProjectsFinderAdminService
   end
 
   # FILTERING METHODS
-  private_class_method def self.filter_status(scope, params = {})
+  def self.filter_status(scope, params = {})
     status = params[:status] || []
     return scope unless status.present?
     scope
@@ -91,7 +89,7 @@ class ProjectsFinderAdminService
       .where(admin_publications: { publication_status: status })
   end
 
-  private_class_method def self.filter_project_manager(scope, params = {})
+  def self.filter_project_manager(scope, params = {})
     manager_ids = params[:managers] || []
 
     if manager_ids.present?
@@ -113,7 +111,7 @@ class ProjectsFinderAdminService
     end
   end
 
-  private_class_method def self.search(scope, params = {})
+  def self.search(scope, params = {})
     search = params[:search] || ''
 
     if search.present?
@@ -123,7 +121,7 @@ class ProjectsFinderAdminService
     end
   end
 
-  private_class_method def self.filter_date(scope, params = {})
+  def self.filter_date(scope, params = {})
     start_at = params[:start_at]
     end_at = params[:end_at]
 
