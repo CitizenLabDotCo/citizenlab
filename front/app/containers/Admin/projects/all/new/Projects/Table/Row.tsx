@@ -63,27 +63,27 @@ const Row = ({ project }: Props) => {
           </Text>
         )}
       </Td>
-      <Td background={colors.grey50}>
+      <Td background={colors.grey50} width="140px">
         <Text m="0" fontSize="s" color="primary">
           {getCurrentPhaseText()}
         </Text>
       </Td>
-      <Td background={colors.grey50}>
+      <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s" color="primary">
           {formatDate(first_phase_start_date)}
         </Text>
       </Td>
-      <Td background={colors.grey50}>
+      <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s" color="primary">
           {formatDate(last_phase_end_date)}
         </Text>
       </Td>
-      <Td background={colors.grey50}>
+      <Td background={colors.grey50} width="140px">
         <Text m="0" fontSize="s" color="primary">
           {publication_status}
         </Text>
       </Td>
-      <Td background={colors.grey50}>
+      <Td background={colors.grey50} width="140px">
         <Text m="0" fontSize="s" color="primary">
           {visible_to}
         </Text>
