@@ -11,6 +11,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
+import { parseBackendDateString } from 'utils/dateUtils';
+
 interface Props {
   project: ProjectMiniAdminData;
 }
@@ -42,8 +44,8 @@ const Row = ({ project }: Props) => {
   };
 
   const formatDate = (date: string | null) => {
-    if (!date) return '';
-    const parsedDate = new Date(date);
+    const parsedDate = parseBackendDateString(date ?? undefined);
+    if (!parsedDate) return '';
     return format(parsedDate, 'P', { locale: getLocale(locale) });
   };
 
