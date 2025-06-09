@@ -3,6 +3,10 @@
 class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
   attributes(:title_multiloc)
 
+  attribute :publication_status do |object|
+    object.admin_publication.publication_status
+  end
+
   attribute :first_phase_start_date do |object|
     first_phase = object.phases.order(start_at: :asc).first
     first_phase&.start_at
