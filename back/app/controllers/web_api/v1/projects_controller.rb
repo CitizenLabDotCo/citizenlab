@@ -149,17 +149,15 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     @projects = paginate projects
-    @projects = @projects.includes(:project_images, :phases)
+    @projects = @projects.includes(:phases, :admin_publication)
 
     authorize @projects, :index_for_admin?
 
     render json: linked_json(
       @projects,
-      WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params({
-        project_descriptor_pairs: {}
-      }),
-      include: %i[project_images current_phase]
+      WebApi::V1::ProjectMiniAdminSerializer,
+      params: jsonapi_serializer_params,
+      include: %i[current_phase]
     )
   end
 
