@@ -86,6 +86,15 @@ const EditCampaignForm = ({
   const editableRegions = campaign.data.attributes.editable_regions || [];
   console.log('Editable regions:', editableRegions);
 
+  if (editableRegions.length === 0) {
+    return (
+      <Box>
+        <h3>Coming soon. </h3>
+        <p>No editable regions are currently available for this campaign.</p>
+      </Box>
+    );
+  }
+
   const onFormSubmit = async (formValues) => {
     // Convert the form values into a single value for the API
     console.log('Submitting form values:', formValues);
@@ -99,6 +108,21 @@ const EditCampaignForm = ({
     }
   };
 
+  const tooltipText = (region) => (
+    <>
+      <p>You can use the following variables in your text:</p>
+      <ul>
+        {region.variables.map((variable) => (
+          <li>
+            {'{{'}
+            {variable}
+            {'}}'}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
@@ -111,7 +135,7 @@ const EditCampaignForm = ({
                 <InputMultilocWithLocaleSwitcher
                   name={region.key}
                   label={region.key}
-                  labelTooltipText={region.key}
+                  labelTooltipText={tooltipText(region)}
                 />
               </SectionField>
             </>
