@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Dauert <1 Minute} one {Dauert 1 Minute} other {Dauert # Minuten}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Als PDF herunterladen",
   "app.components.FormSync.downloadExcelTemplate": "Download einer Excel-Vorlage",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Excel-Vorlagen enthalten keine Kartenfragen, da diese derzeit für den Massenimport nicht unterstützt werden.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Die Excel-Vorlagen enthalten keine Ranking-Fragen, Matrix-Fragen, Dateiupload-Fragen und keine Kartierungseingabe-Fragen (Drop Pin, Draw Route, Draw Area, ESRI-Dateiupload), da diese derzeit für den Massenimport nicht unterstützt werden.",
   "app.components.ProjectTemplatePreview.close": "Schließen",
   "app.components.ProjectTemplatePreview.createProject": "Projekt erstellen",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Erstellen Sie ein Projekt basierend auf der Vorlage '{templateTitle}'",
