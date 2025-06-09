@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
 import { format } from 'date-fns';
+import styled from 'styled-components';
 
 import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
@@ -11,7 +12,17 @@ import useLocalize from 'hooks/useLocalize';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
+import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
+
+const StyledTd = styled(Td)`
+  &:hover {
+    cursor: pointer;
+    .project-table-row-title {
+      text-decoration: underline;
+    }
+  }
+`;
 
 interface Props {
   project: ProjectMiniAdminData;
@@ -53,8 +64,18 @@ const Row = ({ project }: Props) => {
 
   return (
     <Tr>
-      <Td background={colors.grey50}>
-        <Text m="0" fontSize="s" color="primary">
+      <StyledTd
+        background={colors.grey50}
+        onClick={() => {
+          clHistory.push(`/admin/projects/${project.id}`);
+        }}
+      >
+        <Text
+          m="0"
+          fontSize="s"
+          color="primary"
+          className="project-table-row-title"
+        >
           {localize(title_multiloc)}
         </Text>
         {folder_title_multiloc && (
@@ -62,7 +83,7 @@ const Row = ({ project }: Props) => {
             {localize(folder_title_multiloc)}
           </Text>
         )}
-      </Td>
+      </StyledTd>
       <Td background={colors.grey50} width="140px">
         <Text m="0" fontSize="s" color="primary">
           {getCurrentPhaseText()}
