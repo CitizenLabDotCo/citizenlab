@@ -78,7 +78,6 @@ const EditCampaignForm = ({
   const defaultValues = switchKeys(
     campaign.data.attributes.custom_text_multiloc
   );
-  console.log('Default values:', defaultValues);
 
   const methods = useForm({
     mode: 'onBlur',
@@ -91,7 +90,6 @@ const EditCampaignForm = ({
   }
 
   const editableRegions = campaign.data.attributes.editable_regions || [];
-  console.log('Editable regions:', editableRegions);
 
   if (editableRegions.length === 0) {
     return (
@@ -104,7 +102,6 @@ const EditCampaignForm = ({
 
   const onFormSubmit = async (formValues) => {
     // Convert the form values into a single value for the API
-    console.log('Submitting form values:', formValues);
     const campaignFormValues = {
       custom_text_multiloc: switchKeys(formValues),
     };
@@ -139,7 +136,10 @@ const EditCampaignForm = ({
           {editableRegions.map((region) => (
             <>
               {region.type === 'html' && (
-                <SectionField className="e2e-campaign_subject_multiloc">
+                <SectionField
+                  key={region.key}
+                  className="e2e-campaign_subject_multiloc"
+                >
                   <QuillMultilocWithLocaleSwitcher
                     name={region.key}
                     label={region.title_multiloc[currentLocale]}

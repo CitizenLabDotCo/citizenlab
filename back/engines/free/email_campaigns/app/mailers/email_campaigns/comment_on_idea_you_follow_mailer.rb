@@ -2,7 +2,6 @@
 
 module EmailCampaigns
   class CommentOnIdeaYouFollowMailer < ApplicationMailer
-
     # TODO: Test that variables match the variables in the default text
     # TODO: What about the difference based on idea term?
     def self.editable_regions
@@ -23,7 +22,7 @@ module EmailCampaigns
           type: 'html',
           default_value_key: "#{translation_group}.event_description",
           variables: %w[authorName authorNameFull inputTitle]
-        ),
+        )
       ]
     end
 
@@ -34,7 +33,7 @@ module EmailCampaigns
     end
 
     def header_title
-      format_custom_text("header", values: { authorName: event.comment_author_name })
+      format_custom_text('header', values: { authorName: event.comment_author_name })
     end
 
     def header_message

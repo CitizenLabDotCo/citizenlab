@@ -19,8 +19,6 @@ const EditModal = ({
   if (!campaign) return null;
 
   const handleSubmit = async (values: CampaignFormValues) => {
-    console.log('Submitting campaign values:', values);
-
     await updateCampaign({ id: campaign.data.id, campaign: values });
   };
 

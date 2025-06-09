@@ -48,7 +48,6 @@ module EmailCampaigns
       true
     end
 
-
     def format_message(key, component: nil, escape_html: true, values: {})
       group = component || @campaign.class.name.demodulize.underscore
       msg = t("email_campaigns.#{group}.#{key}", **values)
@@ -73,7 +72,7 @@ module EmailCampaigns
     # Seems to get called three times
     # TODO: Maybe add a CampaignClass to mailer so we can avoid hardcoding strings?
     # TODO: How does the manual mailer handle {{ variable }}?
-    def self.editable_region(key, type: 'text', default_value_key: nil, variables: [])
+    private_class_method def self.editable_region(key, type: 'text', default_value_key: nil, variables: [])
       {
         key: key,
         title_multiloc: MultilocService.new.i18n_to_multiloc("email_campaigns.edit_region_names.#{key}"),
