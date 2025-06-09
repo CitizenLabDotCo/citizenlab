@@ -1,6 +1,6 @@
 import { Multiloc, Pagination, ILinks } from 'typings';
 
-import { PublicationStatus } from 'api/projects/types';
+import { PublicationStatus, Visibility } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -29,8 +29,12 @@ type ProjectMiniAdminData = {
   id: string;
   type: 'project_mini_admin';
   attributes: {
-    title_multiloc: Multiloc;
+    first_phase_start_date: string | null;
+    folder_title_multiloc: Multiloc | null;
+    last_phase_end_date: string | null;
     publication_status: PublicationStatus;
+    title_multiloc: Multiloc;
+    visible_to: Visibility;
   };
   links: {
     self: string;
