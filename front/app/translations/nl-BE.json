@@ -128,6 +128,8 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budget",
   "app.components.CustomFieldsForm.descriptionMinLength": "De beschrijving moet minstens {min} tekens lang zijn",
   "app.components.CustomFieldsForm.descriptionRequired": "De beschrijving is vereist",
+  "app.components.CustomFieldsForm.fieldMaximumItems": "Maximaal {maxSelections, plural, one {# optie} other {# opties}} kunnen worden geselecteerd voor het veld \"{fieldName}\".",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "Ten minste {minSelections, plural, one {# optie} other {# opties}} kunnen worden geselecteerd voor het veld \"{fieldName}\".",
   "app.components.CustomFieldsForm.fieldRequired": "Het veld \"{fieldName}\" is vereist",
   "app.components.CustomFieldsForm.imageRequired": "De afbeelding is vereist",
   "app.components.CustomFieldsForm.notPublic1": "*Dit antwoord wordt alleen gedeeld met projectbeheerders en niet met het publiek.",
