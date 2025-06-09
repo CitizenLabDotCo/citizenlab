@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module BulkImportIdeas::Parsers::Pdf
+module BulkImportIdeas::Legacy
   class IdeaPlainTextParserService
     NUMBER_FIELD_TYPES = %w[number linear_scale rating]
     SELECT_FIELD_TYPES = %w[select multiselect multiselect_image]
@@ -56,7 +56,7 @@ module BulkImportIdeas::Parsers::Pdf
 
     def process_field_value(field, value)
       # Remove static instructions
-      instructions_copy = BulkImportIdeas::Exporters::IdeaPdfFormExporter.generate_multiselect_instructions(field, @locale)
+      instructions_copy = BulkImportIdeas::Legacy::IdeaPdfFormExporter.generate_multiselect_instructions(field, @locale)
       value = value.gsub("*#{instructions_copy}", '') if instructions_copy
 
       # Strip out unneeded generic text

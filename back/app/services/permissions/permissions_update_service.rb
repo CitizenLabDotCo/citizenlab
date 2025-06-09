@@ -19,8 +19,7 @@ class Permissions::PermissionsUpdateService
     Permission::SCOPE_TYPES.compact.each do |model_class|
       model_class.constantize.all.each { |scope| update_permissions_for_scope(scope) }
     end
-
-    Permission.select(&:invalid?).each(&:destroy!)
+    Permission.includes(:permission_scope).select(&:invalid?).each(&:destroy!)
   end
 
   def permission_scope_from_permissions_params(params)

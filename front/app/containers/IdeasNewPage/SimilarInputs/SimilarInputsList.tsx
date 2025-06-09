@@ -8,6 +8,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { Multiloc } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -20,12 +21,17 @@ import useLocale from 'hooks/useLocale';
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-import { useIdeaSelect } from './InputSelectContext';
 import messages from './messages';
 
-const SimilarIdeasList = () => {
-  const { onIdeaSelect, title, body, selectedIdeaId } = useIdeaSelect();
+const SimilarIdeasList = ({
+  titleMultiloc,
+  bodyMultiloc,
+}: {
+  titleMultiloc?: Multiloc;
+  bodyMultiloc?: Multiloc;
+}) => {
   const { formatMessage } = useIntl();
   const currentLocale = useLocale();
   const { slug: projectSlug } = useParams() as { slug: string };
@@ -34,6 +40,7 @@ const SimilarIdeasList = () => {
     ideaId?: string;
   }>();
   const ideaId = searchParams.get('idea_id') || idea_id;
+  const selectedIdeaId = searchParams.get('selected_idea_id');
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const projectId = idea?.data.relationships.project.data.id;
   const projectById = useProjectById(projectId);
@@ -41,14 +48,17 @@ const SimilarIdeasList = () => {
   const projectBySlug = useProjectBySlug(projectId ? undefined : projectSlug);
   const project = projectById.data ?? projectBySlug.data;
 
+  const title = titleMultiloc && titleMultiloc[currentLocale];
+  const body = bodyMultiloc && bodyMultiloc[currentLocale];
+
   const { data: ideas, isLoading } = useSimilarIdeas(
     {
       idea: {
         project_id: project?.data.id,
-        ...(title.trim() && {
+        ...((title || '').trim() && {
           title_multiloc: { [currentLocale]: title },
         }),
-        ...(body.trim() && {
+        ...((body || '').trim() && {
           body_multiloc: { [currentLocale]: body },
         }),
       },
@@ -114,8 +124,12 @@ const SimilarIdeasList = () => {
         >
           <Box
             onClick={() => {
-              // If the selected idea is already selected, we deselect it
-              onIdeaSelect(selectedIdeaId === idea.id ? null : idea.id);
+              updateSearchParams({
+                selected_idea_id:
+                  searchParams.get('selected_idea_id') === idea.id
+                    ? undefined
+                    : idea.id,
+              });
             }}
             style={{ cursor: 'pointer' }}
             display="flex"
