@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Scarica come pdf",
   "app.components.FormSync.downloadExcelTemplate": "Scarica un modello Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "I modelli Excel non includeranno domande di inserimento della mappatura perché al momento non sono supportati per l'importazione in blocco.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "I modelli Excel non includeranno le domande di classificazione, le domande di matrice, le domande di caricamento di file e tutte le domande di input di mappatura (Drop Pin, Draw Route, Draw Area, ESRI file upload) poiché al momento non sono supportate per l'importazione massiva.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Creare un progetto",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Creare un progetto basato sul modello '{templateTitle}'",
