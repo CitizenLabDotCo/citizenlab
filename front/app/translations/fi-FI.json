@@ -128,6 +128,8 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budjetti",
   "app.components.CustomFieldsForm.descriptionMinLength": "Kuvauksen on oltava vähintään {min} merkkiä pitkä",
   "app.components.CustomFieldsForm.descriptionRequired": "Kuvaus on pakollinen",
+  "app.components.CustomFieldsForm.fieldMaximumItems": "Kenttään \"{fieldName}\" voidaan valita enintään {maxSelections, plural, one {# vaihtoehto} other {# vaihtoehtoa}}",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "Kenttään \"{fieldName}\" voidaan valita vähintään {minSelections, plural, one {# vaihtoehto} other {# vaihtoehtoa}}",
   "app.components.CustomFieldsForm.fieldRequired": "Kenttä \"{fieldName}\" on pakollinen",
   "app.components.CustomFieldsForm.imageRequired": "Kuva on pakollinen",
   "app.components.CustomFieldsForm.notPublic1": "*Tämä vastaus jaetaan vain projektipäälliköiden kanssa, eikä sitä jaeta julkisesti.",
