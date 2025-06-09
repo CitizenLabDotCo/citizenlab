@@ -1,9 +1,12 @@
-import { ControlElement } from '@jsonforms/core';
-import { MessageDescriptor } from 'react-intl';
+import { FormatMessage } from 'typings';
 
-import { FormatMessageValues } from 'utils/cl-intl/useIntl';
+import { IFlatCustomField } from 'api/custom_fields/types';
 
-import messages from '../messages';
+import { Localize } from 'hooks/useLocalize';
+
+import messages from 'components/Form/Components/Controls/messages';
+
+import { getLinearScaleLabel } from '../LinearScale/utils';
 
 import Sentiment1Png from './assets/sentiment_1.png';
 import Sentiment2Png from './assets/sentiment_2.png';
@@ -43,37 +46,40 @@ const sentimentEmojis: Record<1 | 2 | 3 | 4 | 5, string> = {
 export const getSentimentEmoji = (index: number) =>
   sentimentEmojis[index as keyof typeof sentimentEmojis];
 
-type GetAriaValueTextProps = {
-  uischema: ControlElement;
-  formatMessage: (
-    messageDescriptor: MessageDescriptor,
-    values?: FormatMessageValues
-  ) => string;
+type GetAriaValueTextParams = {
   value: number;
   total: number;
+  formatMessage: FormatMessage;
+  localize: Localize;
+  question: IFlatCustomField;
 };
 
 export const getAriaValueText = ({
-  uischema,
-  formatMessage,
   value,
   total,
-}: GetAriaValueTextProps) => {
+  formatMessage,
+  localize,
+  question,
+}: GetAriaValueTextParams) => {
   // If the value has a label, read it out
-  if (uischema.options?.[`linear_scale_label${value}`]) {
+  const labelMultiloc = getLinearScaleLabel(question, value);
+
+  if (labelMultiloc) {
     return formatMessage(messages.valueOutOfTotalWithLabel, {
       value,
       total,
-      label: uischema.options[`linear_scale_label${value}`],
+      label: localize(labelMultiloc),
     });
   }
   // If we don't have a label but we do have a maximum, read out the current value & maximum label
-  else if (uischema.options?.[`linear_scale_label${5}`]) {
+  const maximumLabelMultiloc = getLinearScaleLabel(question, 5);
+
+  if (maximumLabelMultiloc) {
     return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
       value,
       total,
       maxValue: 5,
-      maxLabel: uischema.options[`linear_scale_label${5}`],
+      maxLabel: localize(maximumLabelMultiloc),
     });
   }
   // Otherwise, just read out the value and the maximum value
