@@ -14,7 +14,13 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 // import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
-import { CampaignFormValues, ICampaign } from 'api/campaigns/types';
+import {
+  CampaignFormValues,
+  EditableRegion,
+  ICampaign,
+} from 'api/campaigns/types';
+import useLocale from 'hooks/useLocale';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -46,6 +52,7 @@ const EditCampaignForm = ({
 }: CampaignFormProps) => {
   const { data: authUser } = useAuthUser();
   const { data: appConfig } = useAppConfiguration();
+  const currentLocale = useLocale();
   // const schema = object({
   //   subject_multiloc: validateMultilocForEveryLocale(
   //     formatMessage(messages.fieldSubjectError)
@@ -108,7 +115,7 @@ const EditCampaignForm = ({
     }
   };
 
-  const tooltipText = (region) => (
+  const tooltipText = (region: EditableRegion) => (
     <>
       <p>You can use the following variables in your text:</p>
       <ul>
@@ -131,17 +138,30 @@ const EditCampaignForm = ({
 
           {editableRegions.map((region) => (
             <>
-              <SectionField className="e2e-campaign_subject_multiloc">
-                <InputMultilocWithLocaleSwitcher
-                  name={region.key}
-                  label={region.key}
-                  labelTooltipText={tooltipText(region)}
-                />
-              </SectionField>
+              {region.type === 'html' && (
+                <SectionField className="e2e-campaign_subject_multiloc">
+                  <QuillMultilocWithLocaleSwitcher
+                    name={region.key}
+                    label={region.title_multiloc[currentLocale]}
+                    labelTooltipText={tooltipText(region)}
+                    noVideos
+                    noAlign
+                  />
+                </SectionField>
+              )}
+              {region.type === 'text' && (
+                <SectionField className="e2e-campaign_subject_multiloc">
+                  <InputMultilocWithLocaleSwitcher
+                    name={region.key}
+                    label={region.title_multiloc[currentLocale]}
+                    labelTooltipText={tooltipText(region)}
+                  />
+                </SectionField>
+              )}
             </>
           ))}
         </StyledSection>
-        <Box display="flex">
+        <Box display="flex" mb="24px">
           <Button
             id="e2e-campaign-form-save-button"
             type="submit"

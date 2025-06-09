@@ -29,6 +29,11 @@ module EmailCampaigns
       []
     end
 
+    # If there are editable regions
+    def self.default_custom_text_multiloc
+      {}
+    end
+
     private
 
     def show_unsubscribe_link?
@@ -43,10 +48,14 @@ module EmailCampaigns
       true
     end
 
+
     def format_message(key, component: nil, escape_html: true, values: {})
       group = component || @campaign.class.name.demodulize.underscore
+      msg = t("email_campaigns.#{group}.#{key}", **values)
+      escape_html ? msg : msg.html_safe
+    end
 
-      # TODO: Will probably need to generate the default text for the campaign and then use this for all?
+    def format_custom_text(key, values: {})
       # TODO: What about HTML escaping? Should we always escape?
 
       # Are there any overrides for this key in the campaign record?
@@ -57,11 +66,20 @@ module EmailCampaigns
         return template.render(values)
       end
 
-      # Default message
-      # TODO: Getting the defaults into the template to be edited by the user is tricky
-      # as the default string sometimes depends on the content of the campaign. eg it used idea term sometimes.
-      msg = t("email_campaigns.#{group}.#{key}", **values)
-      escape_html ? msg : msg.html_safe
+      # Fallback to the default text
+      format_message(key, values:)
+    end
+
+    # Seems to get called three times
+    # TODO: Maybe add a CampaignClass to mailer so we can avoid hardcoding strings?
+    def self.editable_region(key, type: 'text', default_value_key: nil, variables: [])
+      {
+        key: key,
+        title_multiloc: MultilocService.new.i18n_to_multiloc("email_campaigns.edit_region_names.#{key}"),
+        type: type,
+        variables: variables,
+        default_value_multiloc: default_value_key ? MultilocService.new.i18n_to_multiloc_liquid_version(default_value_key) : {}
+      }
     end
 
     def reply_to_email

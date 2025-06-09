@@ -72,7 +72,10 @@ export interface CampaignFormValues {
 
 export interface EditableRegion {
   key: string;
+  title_multiloc: Multiloc;
+  type: 'html' | 'text';
   variables: string[];
+  default_value_multiloc?: Multiloc;
 }
 
 type CampaignUpdate =

@@ -38,6 +38,13 @@ class MultilocService
     end
   end
 
+  # Converts the embedded variables to a liquid template format.
+  def i18n_to_multiloc_liquid_version(key)
+    i18n_to_multiloc(key).transform_values do |value|
+      value.gsub(/%\{(.*?)}/, '{{\1}}')
+    end
+  end
+
   def block_to_multiloc
     app_configuration.settings('core', 'locales').each_with_object({}) do |locale, result|
       I18n.with_locale(locale) do

@@ -84,6 +84,10 @@ en:
         "5": "Weekly, on Fridays at %{hourOfDay}"
         "6": "Weekly, on Saturdays at %{hourOfDay}"
       quarterly: "Quarterly, on the first day of the quarter"
+    edit_region_names:
+      subject: "Subject"
+      header: "Header"
+      body: "Header"
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
