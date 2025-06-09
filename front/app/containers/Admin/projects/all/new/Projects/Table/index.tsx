@@ -32,7 +32,7 @@ const Table = () => {
       <Thead>
         <Tr background={colors.grey50}>
           <Th py="16px">Project</Th>
-          <Th py="16px">Another col</Th>
+          <Th py="16px">Current phase</Th>
           <Th py="16px">Last col</Th>
         </Tr>
       </Thead>

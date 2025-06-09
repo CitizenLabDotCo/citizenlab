@@ -36,7 +36,11 @@ export type ProjectMiniAdminData = {
     title_multiloc: Multiloc;
     visible_to: Visibility;
   };
-  links: {
-    self: string;
+  relationships: {
+    current_phase?: {
+      data: {
+        id: string;
+      } | null;
+    };
   };
 };

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
 
+import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -12,6 +13,9 @@ interface Props {
 
 const Row = ({ project }: Props) => {
   const localize = useLocalize();
+  const { data: phase } = usePhaseMini(
+    project.relationships.current_phase?.data?.id
+  );
 
   const { title_multiloc, folder_title_multiloc } = project.attributes;
 
@@ -29,7 +33,11 @@ const Row = ({ project }: Props) => {
       </Td>
       <Td background={colors.grey50}>
         <Text m="0" fontSize="s" color="primary">
-          Bla
+          {phase ? (
+            <>{phase.data.attributes.participation_method}</>
+          ) : (
+            <>Pre-launch</>
+          )}
         </Text>
       </Td>
       <Td background={colors.grey50}>
