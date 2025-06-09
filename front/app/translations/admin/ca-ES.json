@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Descarrega com a pdf",
   "app.components.FormSync.downloadExcelTemplate": "Descarregar una plantilla d'Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Les plantilles d'Excel no inclouran cap pregunta d'entrada de mapatge, ja que actualment no s'admeten per a la importació massiva.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Les plantilles d'Excel no inclouen preguntes de classificació, preguntes de matriu, preguntes de càrrega de fitxers ni cap pregunta d'entrada de mapatge (col·locació de marcadors, dibuix de ruta, dibuix d'àrea, càrrega de fitxers ESRI), ja que actualment no són compatibles amb la importació massiva.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Crear projecte",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Crear un projecte basat en la plantilla '{templateTitle}'",
