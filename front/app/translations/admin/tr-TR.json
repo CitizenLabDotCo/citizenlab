@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {<1 dakika sürer} one {1 dakika sürer} other {# dakika sürer}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Pdf olarak indir",
   "app.components.FormSync.downloadExcelTemplate": "Bir Excel şablonu indirin",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Şu anda toplu içe aktarma için desteklenmediğinden, Excel şablonları herhangi bir eşleme giriş sorusu içermeyecektir.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel şablonları Sıralama sorularını, Matris sorularını, Dosya yükleme sorularını ve herhangi bir harita giriş sorusunu (Drop Pin, Draw Route, Draw Area, ESRI dosya yükleme) içermeyecektir, çünkü bunlar şu anda toplu içe aktarma için desteklenmemektedir.",
   "app.components.ProjectTemplatePreview.close": "Kapat",
   "app.components.ProjectTemplatePreview.createProject": "Proje oluştur",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "'{templateTitle}' şablonunu temel alan bir proje oluşturun",
