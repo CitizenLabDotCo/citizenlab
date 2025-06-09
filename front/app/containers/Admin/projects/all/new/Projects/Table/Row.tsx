@@ -4,7 +4,6 @@ import { Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 
-import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import useLocale from 'hooks/useLocale';
@@ -14,6 +13,8 @@ import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
 import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
+
+import CurrentPhase from './CurrentPhase';
 
 const StyledTd = styled(Td)`
   &:hover {
@@ -31,9 +32,6 @@ interface Props {
 const Row = ({ project }: Props) => {
   const localize = useLocalize();
   const locale = useLocale();
-  const { data: phase } = usePhaseMini(
-    project.relationships.current_phase?.data?.id
-  );
 
   const {
     first_phase_start_date,
@@ -43,18 +41,6 @@ const Row = ({ project }: Props) => {
     title_multiloc,
     visible_to,
   } = project.attributes;
-
-  const getCurrentPhaseText = () => {
-    if (phase) {
-      return phase.data.attributes.participation_method;
-    }
-
-    const projectStartingInFuture =
-      first_phase_start_date === null ||
-      new Date(first_phase_start_date) > new Date();
-
-    return projectStartingInFuture ? 'Pre-launch' : 'Ended';
-  };
 
   const formatDate = (date: string | null) => {
     const parsedDate = parseBackendDateString(date ?? undefined);
@@ -85,9 +71,7 @@ const Row = ({ project }: Props) => {
         )}
       </StyledTd>
       <Td background={colors.grey50} width="140px">
-        <Text m="0" fontSize="s" color="primary">
-          {getCurrentPhaseText()}
-        </Text>
+        <CurrentPhase project={project} />
       </Td>
       <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s" color="primary">
