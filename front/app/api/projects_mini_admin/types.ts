@@ -25,7 +25,7 @@ export type ProjectsMiniAdmin = {
   links: ILinks;
 };
 
-type ProjectMiniAdminData = {
+export type ProjectMiniAdminData = {
   id: string;
   type: 'project_mini_admin';
   attributes: {

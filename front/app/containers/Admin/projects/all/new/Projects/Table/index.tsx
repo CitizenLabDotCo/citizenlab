@@ -3,11 +3,9 @@ import React from 'react';
 import {
   Table as TableComponent,
   Thead,
-  Text,
   Tr,
   Th,
   Tbody,
-  Td,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
@@ -15,6 +13,8 @@ import {
 import useProjectsMiniAdmin from 'api/projects_mini_admin/useProjectsMiniAdmin';
 
 import useLocalize from 'hooks/useLocalize';
+
+import Row from './Row';
 
 const Table = () => {
   const localize = useLocalize();
@@ -41,32 +41,9 @@ const Table = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {projects?.map(
-          ({ attributes: { title_multiloc, folder_title_multiloc } }, i) => (
-            <Tr key={i}>
-              <Td background={colors.grey50}>
-                <Text m="0" fontSize="s" color="primary">
-                  {localize(title_multiloc)}
-                </Text>
-                {folder_title_multiloc && (
-                  <Text m="0" fontSize="xs" color="textSecondary">
-                    {localize(folder_title_multiloc)}
-                  </Text>
-                )}
-              </Td>
-              <Td background={colors.grey50}>
-                <Text m="0" fontSize="s" color="primary">
-                  Bla
-                </Text>
-              </Td>
-              <Td background={colors.grey50}>
-                <Text m="0" fontSize="s" color="primary">
-                  Bla
-                </Text>
-              </Td>
-            </Tr>
-          )
-        )}
+        {projects?.map((project) => (
+          <Row project={project} key={project.id} />
+        ))}
       </Tbody>
     </TableComponent>
   );
