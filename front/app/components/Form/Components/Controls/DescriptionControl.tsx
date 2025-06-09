@@ -7,7 +7,6 @@ import { debounce } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 
 import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
-import SimilarIdeasList from 'containers/IdeasNewPage/SimilarInputs/SimilarInputsList';
 
 import { FormLabel } from 'components/UI/FormComponents';
 import QuillEditor from 'components/UI/QuillEditor';
@@ -57,7 +56,7 @@ const DescriptionControl = ({
   }
 
   return (
-    <Box id="e2e-idea-description-input">
+    <Box id="body_multiloc">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
@@ -78,7 +77,7 @@ const DescriptionControl = ({
         fieldPath={path}
         didBlur={didBlur}
       />
-      {showSimilarInputs && <SimilarIdeasList />}
+      {/* {showSimilarInputs && <SimilarIdeasList />} */}
     </Box>
   );
 };

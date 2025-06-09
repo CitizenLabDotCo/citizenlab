@@ -10,9 +10,10 @@ import TextareaComponent, {
 
 interface Props extends TextAreaProps {
   name: string;
+  scrollErrorIntoView?: boolean;
 }
 
-const TextArea = ({ name, ...rest }: Props) => {
+const TextArea = ({ name, scrollErrorIntoView, ...rest }: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -49,7 +50,7 @@ const TextArea = ({ name, ...rest }: Props) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -58,7 +59,7 @@ const TextArea = ({ name, ...rest }: Props) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </>
