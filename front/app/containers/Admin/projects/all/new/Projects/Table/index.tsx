@@ -35,6 +35,7 @@ const Table = () => {
           <Th py="16px">Current phase</Th>
           <Th py="16px">Start</Th>
           <Th py="16px">End</Th>
+          <Th py="16px">Status</Th>
         </Tr>
       </Thead>
       <Tbody>

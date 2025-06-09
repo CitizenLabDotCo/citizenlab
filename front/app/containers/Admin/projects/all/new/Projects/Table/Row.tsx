@@ -25,10 +25,11 @@ const Row = ({ project }: Props) => {
   );
 
   const {
-    title_multiloc,
-    folder_title_multiloc,
     first_phase_start_date,
+    folder_title_multiloc,
     last_phase_end_date,
+    publication_status,
+    title_multiloc,
   } = project.attributes;
 
   const getCurrentPhaseText = () => {
@@ -74,6 +75,11 @@ const Row = ({ project }: Props) => {
       <Td background={colors.grey50}>
         <Text m="0" fontSize="s" color="primary">
           {formatDate(last_phase_end_date)}
+        </Text>
+      </Td>
+      <Td background={colors.grey50}>
+        <Text m="0" fontSize="s" color="primary">
+          {publication_status}
         </Text>
       </Td>
     </Tr>
