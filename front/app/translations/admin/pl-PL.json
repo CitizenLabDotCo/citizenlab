@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Zajmuje <1 minutę} one {Zajmuje 1 minutę} other {Zajmuje # minut}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Pobierz jako pdf",
   "app.components.FormSync.downloadExcelTemplate": "Pobierz szablon Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Szablony Excel nie będą zawierać żadnych pytań dotyczących mapowania, ponieważ nie są one obecnie obsługiwane w przypadku importu zbiorczego.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Szablony Excel nie będą zawierać pytań rankingowych, pytań dotyczących macierzy, pytań dotyczących przesyłania plików ani żadnych pytań dotyczących mapowania (Drop Pin, Draw Route, Draw Area, ESRI file upload), ponieważ nie są one obecnie obsługiwane w przypadku importu zbiorczego.",
   "app.components.ProjectTemplatePreview.close": "Zamknij",
   "app.components.ProjectTemplatePreview.createProject": "Stwórz projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Stwórz projekt w oparciu o szablon \"{templateTitle}\"",
