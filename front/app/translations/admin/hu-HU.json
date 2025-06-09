@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Letöltés PDF-ként",
   "app.components.FormSync.downloadExcelTemplate": "Excel-sablon letöltése",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Az Excel-sablonok nem tartalmaznak majd leképezési beviteli kérdéseket, mivel ezek tömeges importálása jelenleg nem támogatott.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Az Excel-sablonok nem tartalmazzák a rangsorolási kérdéseket, a mátrixkérdéseket, a fájlfeltöltési kérdéseket és a térképezési beviteli kérdéseket (pont elhelyezése, útvonal rajzolása, terület rajzolása, ESRI fájlfeltöltés), mivel ezek tömeges importálása jelenleg nem támogatott.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Create project",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Create a project based on the template '{templateTitle}'",
