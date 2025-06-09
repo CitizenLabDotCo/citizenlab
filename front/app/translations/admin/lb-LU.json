@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Als PDF eroflueden",
   "app.components.FormSync.downloadExcelTemplate": "Eng Excel-Schabloun eroflueden",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Excel-Virlagen enthalen keng Froen zur Mapping-Input, well dës am Moment net fir de Masseimport ënnerstëtzt ginn.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-Virlagen enthalen keng Rankingfroen, Matrixfroen, Froen zum Eroplueden vun Dateien a Froen zum Mapping-Input (Drop Pin, Draw Route, Draw Area, ESRI Datei Upload), well dës am Moment net fir Masseimport ënnerstëtzt ginn.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Create project",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Create a project based on the template '{templateTitle}'",
