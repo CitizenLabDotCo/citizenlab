@@ -13,7 +13,6 @@ import Error from 'components/UI/Error';
 import FileUploaderComponent, {
   Props as FileUploaderProps,
 } from 'components/UI/FileUploader';
-import { FileType } from 'components/UI/FileUploader/FileDisplay';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
@@ -107,7 +106,7 @@ const FileUploaderField = ({
 
   const errorMessage = get(errors, name)?.message as string | undefined;
 
-  const onFileRemove = (fileToRemove: FileType, value) => {
+  const onFileRemove = (fileToRemove: FileToUploadFormat, value) => {
     if (ideaId && fileToRemove.id) {
       deleteIdeaFile({ ideaId, fileId: fileToRemove.id });
       setValue(
@@ -120,7 +119,8 @@ const FileUploaderField = ({
         name,
         value.filter(
           (file: FileToUploadFormat) =>
-            fileToRemove.base64 !== file.file_by_content.content
+            fileToRemove.file_by_content.content !==
+            file.file_by_content.content
         ),
         { shouldDirty: true }
       );
@@ -170,7 +170,7 @@ const FileUploaderField = ({
               files={field.value || []}
               onFileAdd={(fileToAdd) => onFileAdd(fileToAdd, field.value)}
               onFileRemove={(fileToRemove) =>
-                onFileRemove(fileToRemove, field.value)
+                onFileRemove(fileToRemove as any, field.value)
               }
             />
           );
