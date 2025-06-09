@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Te toma <1 minuto} one {Te toma 1 minuto} other {Te toma # minutos}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Descargar como pdf",
   "app.components.FormSync.downloadExcelTemplate": "Descargar una plantilla Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Las plantillas de Excel no incluirán ninguna pregunta de mapas, ya que por el momento no se admiten para la importación masiva.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Las plantillas de Excel no incluirán preguntas de clasificación, preguntas de matriz, preguntas de carga de archivos ni preguntas de introducción de datos cartográficos (Drop Pin, Draw Route, Draw Area, carga de archivos ESRI), ya que en este momento no son compatibles con la importación masiva.",
   "app.components.ProjectTemplatePreview.close": "Cerrar",
   "app.components.ProjectTemplatePreview.createProject": "Crear proyecto",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Cree un proyecto basado en la plantilla '{templateTitle}'",
