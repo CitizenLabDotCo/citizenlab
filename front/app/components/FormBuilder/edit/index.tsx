@@ -225,8 +225,6 @@ const FormEdit = ({
     setSuccessMessageIsVisible(false);
     try {
       setIsSubmitting(true);
-
-      console.log('Submitting form with custom fields:', customFields);
       const finalResponseArray = customFields.map((field) => ({
         ...(!field.isLocalOnly && { id: field.id }),
         input_type: field.input_type,
@@ -327,8 +325,6 @@ const FormEdit = ({
           maximum: field.maximum?.toString() || '5',
         }),
       }));
-
-      console.log('Final response array:', finalResponseArray);
 
       await updateFormCustomFields(
         {
