@@ -82,6 +82,9 @@ export const parseQuestionResult = (
 
       const image = answer ? multilocs.answer[answer].image : undefined;
       const percentage =
+        // When we show results of a multi-select question,
+        // we use the percentage of total responses (totalResponseCount) per option
+        // rather than percentage of total options selected (totalPickCount).
         inputType === 'multiselect'
           ? roundPercentage(count, totalResponseCount, 1)
           : roundPercentage(count, totalPickCount, 1);
