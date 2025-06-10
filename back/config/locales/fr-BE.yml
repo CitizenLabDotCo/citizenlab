@@ -285,6 +285,7 @@ fr-BE:
       likes_count: 'Nombre de « likes »'
       location: 'Localisation'
       longitude: 'Longitude'
+      neutral_reactions_count: 'Incertain'
       participants: 'Participants'
       picks: 'Choix'
       project: 'Projet'
@@ -331,6 +332,15 @@ fr-BE:
       write_in_language: 'Rédigez vos réponses dans la même langue que ce formulaire'
       linear_scale_print_description: 'Veuillez écrire un nombre entre %{min_label} et %{max_label} uniquement'
       unsupported_field: 'Ce champ ne peut pas être rempli sur papier. Veuillez utiliser la version numérique de ce formulaire.'
+      ranking_print_description: 'Veuillez inscrire dans chaque case un chiffre compris entre 1 (le plus préféré) et %{max_rank} (le moins préféré). N''utilisez chaque chiffre qu''une seule fois.'
+      matrix_print_description: 'Pour chaque rangée, marquez un cercle d''une croix pour indiquer votre préférence.'
+      rating_print_description: 'Notez-le en écrivant un chiffre entre 1 (le plus mauvais) et %{max_stars} (le meilleur).'
+      sentiment_linear_scale_print_description: 'Veuillez écrire un nombre entre 1 et 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Veuillez dessiner un X sur la carte ci-dessous pour indiquer l''emplacement ou écrivez l''adresse à la place.'
+      line_print_description: 'Veuillez tracer un itinéraire sur la carte ci-dessous.'
+      polygon_print_description: 'Veuillez dessiner une forme sur la carte ci-dessous.'
+      select_print_description: 'Ne choisissez qu''une seule option.'
   project_copy:
     title_suffix: 'Copie'
   confirmations_mailer:
