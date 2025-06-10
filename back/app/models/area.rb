@@ -38,7 +38,6 @@ class Area < ApplicationRecord
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   before_validation :sanitize_description_multiloc
-  before_validation { sanitize_multilocs :title_multiloc }
   before_validation :strip_title
 
   # If the domicile custom field exists, each area is associated to one of its options.

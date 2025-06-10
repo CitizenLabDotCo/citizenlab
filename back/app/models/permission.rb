@@ -59,7 +59,6 @@ class Permission < ApplicationRecord
   validate :validate_verification_expiry
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
-  before_validation { sanitize_multilocs :access_denied_explanation_multiloc }
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)

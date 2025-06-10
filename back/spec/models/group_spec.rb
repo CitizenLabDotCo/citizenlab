@@ -88,40 +88,4 @@ RSpec.describe Group do
       expect(group.slug).to eq 'titel'
     end
   end
-
-  describe '#sanitize_title_multiloc' do
-    it 'removes all HTML tags from title_multiloc' do
-      group = build(
-        :group,
-        title_multiloc: {
-          'en' => 'Something <script>alert("XSS")</script> something',
-          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
-          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
-        }
-      )
-
-      group.save!
-
-      expect(group.title_multiloc['en']).to eq('Something alert("XSS") something')
-      expect(group.title_multiloc['fr-BE']).to eq('Something')
-      expect(group.title_multiloc['nl-BE']).to eq('Plain text with formatting')
-    end
-
-    it 'sanitizes when escaped HTML tags present' do
-      group = build(
-        :group,
-        title_multiloc: {
-          'en' => 'Something &lt;script&gt;alert("XSS")&lt;/script&gt; something',
-          'fr-BE' => 'Something &lt;img src=x onerror=alert(1)&gt;',
-          'nl-BE' => 'Plain &lt;b&gt;text&lt;/b&gt; with &lt;i&gt;formatting&lt;/i&gt;'
-        }
-      )
-
-      group.save!
-
-      expect(group.title_multiloc['en']).to eq('Something alert("XSS") something')
-      expect(group.title_multiloc['fr-BE']).to eq('Something')
-      expect(group.title_multiloc['nl-BE']).to eq('Plain text with formatting')
-    end
-  end
 end

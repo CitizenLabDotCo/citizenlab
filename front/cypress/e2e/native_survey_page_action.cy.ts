@@ -187,7 +187,7 @@ describe('Native survey project page actions', () => {
     });
   });
 
-  describe.skip('with project with active survey that has post set to false', () => {
+  describe('with project with active survey that has post set to false', () => {
     let projectIdWithPostingDisabled: string;
     let projectSlugPostingDisabled: string;
     beforeEach(() => {

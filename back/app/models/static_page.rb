@@ -56,10 +56,6 @@ class StaticPage < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   before_validation :set_code, on: :create
-  before_validation do
-    sanitize_multilocs :title_multiloc, :banner_cta_button_multiloc, :banner_subheader_multiloc
-  end
-
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
@@ -190,7 +186,7 @@ class StaticPage < ApplicationRecord
 
     @service ||= SanitizationService.new
 
-    self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
+    self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video table])
     self[attribute] = @service.remove_multiloc_empty_trailing_tags(self[attribute])
     self[attribute] = @service.linkify_multiloc(self[attribute])
   end

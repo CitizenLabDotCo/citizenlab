@@ -4,12 +4,10 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import { HeaderTitle } from 'containers/Admin/projects/all/StyledComponents';
-
 import { FormattedMessage } from 'utils/cl-intl';
-import { usePermission } from 'utils/permissions';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
 
 // localisation
 
@@ -17,6 +15,7 @@ import messages from '../messages';
 
 import ItemsInFolder from './ItemsInFolder';
 import ItemsNotInFolder from './ItemsNotInFolder';
+import { HeaderTitle } from './StyledComponents';
 
 const Container = styled.div`
   min-height: 60vh;
