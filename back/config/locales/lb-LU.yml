@@ -285,6 +285,7 @@ lb:
       likes_count: 'Gefällt'
       location: 'Location'
       longitude: 'Längt'
+      neutral_reactions_count: 'Onsécher'
       participants: 'Participanten'
       picks: 'Wielt'
       project: 'Projet'
@@ -331,6 +332,15 @@ lb:
       write_in_language: 'Schreift Är Äntwerten an der selwechter Sprooch wéi dëse Formulaire'
       linear_scale_print_description: 'Schreift w.e.g. nëmmen eng Zuel tëscht %{min_label} an %{max_label}'
       unsupported_field: 'Dëst Feld kann net op Pabeier ausgefëllt ginn. Benotzt w.e.g. amplaz déi online Versioun vun dësem Formulaire.'
+      ranking_print_description: 'Schreift w.e.g. eng Zuel vun 1 (am léifsten) an %{max_rank} (am mannsten bevorzugt) an all Këscht. Benotzt all Zuel exakt eemol.'
+      matrix_print_description: 'Fir all Zeil, markéiert ee Krees mat engem Kräiz fir Är Preferenz unzeweisen.'
+      rating_print_description: 'Bewäert dëst andeems Dir eng Zuel tëscht 1 (schlechtst) an %{max_stars} (bescht) schreift.'
+      sentiment_linear_scale_print_description: 'Schreift w.e.g. eng Zuel tëscht 1 a 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Zeechent w.e.g. en X op der Kaart hei ënnendrënner fir d''Plaz unzeweisen oder schreift amplaz d''Adress.'
+      line_print_description: 'Zeechent w.e.g. eng Streck op der Kaart hei ënnendrënner.'
+      polygon_print_description: 'Zeechent w.e.g. eng Form op der Kaart hei ënnendrënner.'
+      select_print_description: 'Wielt nëmmen eng Optioun.'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:
