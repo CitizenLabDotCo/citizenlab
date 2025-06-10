@@ -118,12 +118,13 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                 >
                   <Box
                     background={colors.white}
-                    maxWidth={usingMapView ? '1100px' : '700px'}
+                    maxWidth={maxWidth}
                     w="100%"
                     // Height is recalculated on window resize via useWindowSize hook
                     h={calculateDynamicHeight(isSmallerThanPhone)}
                     pb={isSmallerThanPhone ? '0' : '80px'}
                     overflowY="auto"
+                    display="flex"
                   >
                     {project && (
                       <CustomFieldsForm
