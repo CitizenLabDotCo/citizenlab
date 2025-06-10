@@ -285,6 +285,7 @@ fi:
       likes_count: 'Tykkää'
       location: 'Sijainti'
       longitude: 'Pituusaste'
+      neutral_reactions_count: 'Epävarma'
       participants: 'Osallistujat'
       picks: 'Poimintoja'
       project: 'Projekti'
@@ -331,6 +332,15 @@ fi:
       write_in_language: 'Kirjoita vastauksesi samalla kielellä kuin tämä lomake'
       linear_scale_print_description: 'Kirjoita vain numero väliltä %{min_label} ja %{max_label}'
       unsupported_field: 'Tätä kenttää ei voi täyttää paperilla. Käytä sen sijaan lomakkeen verkkoversiota.'
+      ranking_print_description: 'Kirjoita jokaiseen ruutuun numero asteikolla 1 (suosituin) ja %{max_rank} (vähiten toivottu). Käytä kutakin numeroa täsmälleen kerran.'
+      matrix_print_description: 'Merkitse jokaiselle riville yksi ympyrä ristillä osoittaaksesi mieltymyksesi.'
+      rating_print_description: 'Rate this by writing a number between 1 (worst) and %{max_stars} (best).'
+      sentiment_linear_scale_print_description: 'Kirjoita numero väliltä 1 ja 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Merkitse alla olevaan karttaan X osoittaaksesi sijainnin tai kirjoita osoite.'
+      line_print_description: 'Ole hyvä ja piirrä reitti alla olevaan karttaan.'
+      polygon_print_description: 'Piirrä muoto alla olevaan karttaan.'
+      select_print_description: 'Valitse vain yksi vaihtoehto.'
   project_copy:
     title_suffix: 'Kopio'
   confirmations_mailer:
