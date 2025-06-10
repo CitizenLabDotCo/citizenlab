@@ -285,6 +285,7 @@ lt:
       likes_count: 'Patinka'
       location: 'Vieta'
       longitude: 'Ilguma'
+      neutral_reactions_count: 'Nežinoma'
       participants: 'Dalyviai'
       picks: 'Parinkimai'
       project: 'Projektas'
@@ -333,6 +334,15 @@ lt:
       write_in_language: 'Atsakymus rašykite ta pačia kalba, kaip ir šioje formoje'
       linear_scale_print_description: 'Parašykite tik skaičių nuo %{min_label} iki %{max_label}'
       unsupported_field: 'Šis laukelis negali būti pildomas popieriuje. Vietoj to naudokite internetinę šios formos versiją.'
+      ranking_print_description: 'Kiekviename langelyje įrašykite skaičių nuo 1 (labiausiai pageidaujamas) iki %{max_rank} (mažiausiai pageidaujamas). Kiekvieną skaičių įrašykite lygiai vieną kartą.'
+      matrix_print_description: 'Kiekvienoje eilutėje kryželiu pažymėkite po vieną apskritimą ir taip išreikškite savo pageidavimą.'
+      rating_print_description: 'Įvertinkite tai įrašydami skaičių nuo 1 (blogiausia) iki %{max_stars} (geriausia).'
+      sentiment_linear_scale_print_description: 'Parašykite skaičių nuo 1 iki 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Žemiau esančiame žemėlapyje nubrėžkite X, kad parodytumėte vietą, arba vietoj jo įrašykite adresą.'
+      line_print_description: 'Žemiau pateiktame žemėlapyje nubraižykite maršrutą.'
+      polygon_print_description: 'Žemiau esančiame žemėlapyje nubrėžkite figūrą.'
+      select_print_description: 'Pasirinkite tik vieną parinktį.'
   project_copy:
     title_suffix: 'Kopijuoti'
   confirmations_mailer:
