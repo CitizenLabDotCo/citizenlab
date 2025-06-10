@@ -1,7 +1,7 @@
-import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import endpoints, {
   phaseResponse,

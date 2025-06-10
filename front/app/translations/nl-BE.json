@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} gebruikers",
   "app.components.AvatarBubbles.participant": "deelnemer",
   "app.components.AvatarBubbles.participants1": "deelnemers",
-  "app.components.CityLogoSection.iframeTitle": "Meer informatie over {orgName}",
   "app.components.Comments.cancel": "Annuleer",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Reageren is in de huidige fase niet mogelijk.",
   "app.components.Comments.commentingDisabledInactiveProject": "Reageren is niet mogelijk omdat dit project momenteel niet actief is.",

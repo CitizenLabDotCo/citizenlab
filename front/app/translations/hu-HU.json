@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} felhasználók",
   "app.components.AvatarBubbles.participant": "résztvevő",
   "app.components.AvatarBubbles.participants1": "résztvevők",
-  "app.components.CityLogoSection.iframeTitle": "További információ a {orgName}-ról",
   "app.components.Comments.cancel": "Mégsem",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Hozzászólás a jelenlegi szakaszban nem lehetséges.",
   "app.components.Comments.commentingDisabledInactiveProject": "Hozzászólás nem lehetséges, mert ez a projekt jelenleg nem aktív.",
