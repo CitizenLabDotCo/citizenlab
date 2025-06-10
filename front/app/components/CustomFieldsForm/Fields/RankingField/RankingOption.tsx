@@ -8,13 +8,12 @@ import {
   Text,
   Select,
 } from '@citizenlab/cl2-component-library';
-import styled, { useTheme } from 'styled-components';
 
-import messages from 'components/Form/Components/Controls/messages';
 import { Drag } from 'components/FormBuilder/components/DragAndDrop';
-
-import { ScreenReaderOnly } from 'utils/a11y';
+import styled, { useTheme } from 'styled-components';
 import { useIntl } from 'utils/cl-intl';
+import { ScreenReaderOnly } from 'utils/a11y';
+import messages from 'components/Form/Components/Controls/messages';
 
 const StyledSelect = styled(Select)`
   min-width: 52px;
