@@ -285,6 +285,7 @@ lv:
       likes_count: 'Patīk'
       location: 'Atrašanās vieta'
       longitude: 'Ģeogrāfiskais garums'
+      neutral_reactions_count: 'Nav zināms'
       participants: 'Dalībnieki'
       picks: 'Picks'
       project: 'Projekts'
@@ -332,6 +333,15 @@ lv:
       write_in_language: 'Atbildes rakstiet tajā pašā valodā, kurā ir šī veidlapa.'
       linear_scale_print_description: 'Lūdzu, ierakstiet tikai skaitli no %{min_label} līdz %{max_label} .'
       unsupported_field: 'Šo lauku nevar aizpildīt uz papīra. Lūdzu, izmantojiet šīs veidlapas tiešsaistes versiju.'
+      ranking_print_description: 'Lūdzu, katrā lodziņā ierakstiet skaitli no 1 (visvēlamākais) līdz %{max_rank} (vismazāk vēlamais). Katru skaitli izmantojiet tieši vienu reizi.'
+      matrix_print_description: 'Katrā rindā ar krustiņu atzīmējiet vienu apli, lai norādītu savu izvēli.'
+      rating_print_description: 'Novērtējiet to, ierakstot skaitli no 1 (sliktākais) līdz %{max_stars} (labākais).'
+      sentiment_linear_scale_print_description: 'Lūdzu, ierakstiet skaitli no 1 līdz 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Lūdzu, uzzīmējiet X zemāk esošajā kartē, lai norādītu atrašanās vietu, vai arī ierakstiet adresi.'
+      line_print_description: 'Lūdzu, uzzīmējiet maršrutu zemāk redzamajā kartē.'
+      polygon_print_description: 'Lūdzu, uzzīmējiet figūru zemāk redzamajā kartē.'
+      select_print_description: 'Izvēlieties tikai vienu iespēju.'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
