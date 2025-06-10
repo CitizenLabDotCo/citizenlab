@@ -10,11 +10,6 @@ interface Props {
   maximum: number;
 }
 
-interface Props {
-  question: IFlatCustomField;
-  maximum: number;
-}
-
 const Labels = ({ question, maximum }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const localize = useLocalize();
