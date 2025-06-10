@@ -255,11 +255,13 @@ DROP INDEX IF EXISTS public.index_ideas_search;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_phase_id;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_idea_id_and_phase_id;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_idea_id;
+DROP INDEX IF EXISTS public.index_ideas_on_title_multiloc;
 DROP INDEX IF EXISTS public.index_ideas_on_slug;
 DROP INDEX IF EXISTS public.index_ideas_on_project_id;
 DROP INDEX IF EXISTS public.index_ideas_on_manual_votes_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_ideas_on_location_point;
 DROP INDEX IF EXISTS public.index_ideas_on_idea_status_id;
+DROP INDEX IF EXISTS public.index_ideas_on_body_multiloc;
 DROP INDEX IF EXISTS public.index_ideas_on_author_id;
 DROP INDEX IF EXISTS public.index_ideas_on_author_hash;
 DROP INDEX IF EXISTS public.index_idea_imports_on_import_user_id;
@@ -5193,6 +5195,13 @@ CREATE INDEX index_ideas_on_author_id ON public.ideas USING btree (author_id);
 
 
 --
+-- Name: index_ideas_on_body_multiloc; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_on_body_multiloc ON public.ideas USING gin (body_multiloc);
+
+
+--
 -- Name: index_ideas_on_idea_status_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5225,6 +5234,13 @@ CREATE INDEX index_ideas_on_project_id ON public.ideas USING btree (project_id);
 --
 
 CREATE UNIQUE INDEX index_ideas_on_slug ON public.ideas USING btree (slug);
+
+
+--
+-- Name: index_ideas_on_title_multiloc; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_on_title_multiloc ON public.ideas USING gin (title_multiloc);
 
 
 --
@@ -7087,6 +7103,8 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250610112901'),
+('20250605090517'),
 ('20250519080057'),
 ('20250513160156'),
 ('20250509140651'),

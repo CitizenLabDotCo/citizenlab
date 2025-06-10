@@ -82,6 +82,12 @@ resource 'BulkImportIdeasImportIdeas' do
           let(:format) { 'pdf' }
           let(:file) { create_project_bulk_import_ideas_pdf 1 }
 
+          before do
+            # Enable HTML PDFs & stub the external export and import APIs
+            SettingsService.new.activate_feature! 'html_pdfs'
+            stub_external_apis
+          end
+
           # We use :active_job_que_adapter to properly check the response
           example 'Bulk import ideas to phase from .pdf via asynchronous jobs', :active_job_que_adapter do
             do_request
@@ -328,10 +334,10 @@ resource 'BulkImportIdeasImportIdeas' do
     }
   end
 
-  def stub_external_api
+  def stub_external_apis
     allow_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return('[{}]')
-
-    expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
-    expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
+    allow_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf'))
+    allow_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
+    allow_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
   end
 end

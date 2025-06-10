@@ -45,10 +45,6 @@ class Topic < ApplicationRecord
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   before_validation :set_code
-  before_validation do
-    sanitize_multilocs :title_multiloc, :description_multiloc
-  end
-
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }

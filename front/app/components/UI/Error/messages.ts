@@ -358,4 +358,9 @@ export default defineMessages({
     id: 'app.errors.number_invalid',
     defaultMessage: 'Please enter a valid number.',
   },
+  base_includes_banned_words: {
+    id: 'app.errors.base_includes_banned_words',
+    defaultMessage:
+      'You may have used one or more words that are considered profanity. Please alter your text to remove any profanities that might be present.',
+  },
 });

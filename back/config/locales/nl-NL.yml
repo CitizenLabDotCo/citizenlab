@@ -302,8 +302,8 @@ nl:
       option1: 'Optie 1'
       option2: 'Optie 2'
     form_end_page:
-      title_text_3: 'Bedankt voor het delen van je invoer!'
-      description_text_3: "Je invoer is succesvol ingediend."
+      title_text_3: 'Bedankt voor het delen van je bijdrage!'
+      description_text_3: "Je bijdrage is succesvol ingediend."
     form_user_page:
       title_text: 'Over jou'
     pdf_export:
@@ -331,6 +331,15 @@ nl:
       write_in_language: 'Schrijf je antwoorden in dezelfde taal als dit formulier'
       linear_scale_print_description: 'Schrijf alleen een getal tussen %{min_label} en %{max_label}'
       unsupported_field: 'Dit veld kan niet op papier worden ingevuld. Gebruik in plaats daarvan de online versie van dit formulier.'
+      ranking_print_description: 'Schrijf een nummer van 1 (meest geprefereerd) tot %{max_rank} (minst geprefereerd) in elk vakje. Gebruik elk getal precies één keer.'
+      matrix_print_description: 'Kruis in elke rij een cirkel aan om je voorkeur aan te geven.'
+      rating_print_description: 'Geef dit een cijfer tussen 1 (slechtste) en %{max_stars} (beste).'
+      sentiment_linear_scale_print_description: 'Schrijf een getal tussen 1 en 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Teken een X op de kaart hieronder om de locatie aan te geven of schrijf het adres op.'
+      line_print_description: 'Teken een route op de kaart hieronder.'
+      polygon_print_description: 'Teken een gebied op de kaart hieronder.'
+      select_print_description: 'Kies slechts één optie.'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:

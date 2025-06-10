@@ -5,7 +5,7 @@ class IdeasFinder < ApplicationFinder
     scope ||= _base_scope
     super(
       params,
-      scope: scope.publicly_visible,
+      scope: scope.publicly_visible.with_content,
       includes: includes,
       current_user: current_user
     )

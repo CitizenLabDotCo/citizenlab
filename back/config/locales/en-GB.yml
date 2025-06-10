@@ -331,6 +331,15 @@ en-GB:
       write_in_language: 'Write your answers in the same language as this form'
       linear_scale_print_description: 'Please write a number between %{min_label} and %{max_label} only'
       unsupported_field: 'This field cannot be completed on paper. Please use the online version of this form instead.'
+      ranking_print_description: 'Please write a number from 1 (most preferred) and %{max_rank} (least preferred) in each box. Use each number exactly once.'
+      matrix_print_description: 'For each row, mark one circle with a cross to indicate your preference.'
+      rating_print_description: 'Rate this by writing a number between 1 (worst) and %{max_stars} (best).'
+      sentiment_linear_scale_print_description: 'Please write a number between 1 and 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Please draw an X on the map below to show the location or write the address instead.'
+      line_print_description: 'Please draw a route on the map below.'
+      polygon_print_description: 'Please draw a shape on the map below.'
+      select_print_description: 'Only choose one option.'
   project_copy:
     title_suffix: 'Copy'
   confirmations_mailer:
