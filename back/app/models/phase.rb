@@ -88,14 +88,10 @@ class Phase < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
+  has_many :jobs_trackers, -> { where(context_type: 'Phase') }, class_name: 'Jobs::Tracker', as: :context, dependent: :destroy
   belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
 
   before_validation :sanitize_description_multiloc
-  before_validation do
-    sanitize_multilocs :title_multiloc, :voting_term_singular_multiloc, :voting_term_plural_multiloc,
-      :native_survey_title_multiloc, :native_survey_button_multiloc
-  end
-
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_presentation_mode, on: :create

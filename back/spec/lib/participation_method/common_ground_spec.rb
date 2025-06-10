@@ -36,13 +36,13 @@ RSpec.describe ParticipationMethod::CommonGround do
     end
   end
 
-  its(:supports_reacting?) { is_expected.to be(true) }
-  its(:use_reactions_as_votes?) { is_expected.to be(false) }
-
+  its(:use_reactions_as_votes?) { is_expected.to be(true) }
   its(:transitive?) { is_expected.to be(false) }
   its(:supports_status?) { is_expected.to be(false) }
-  its(:supports_inputs_without_author?) { is_expected.to be(true) }
-  its(:supports_multiple_posts?) { is_expected.to be(true) }
+  its(:supports_inputs_without_author?) { is_expected.to be(false) }
+  its(:supports_submission?) { is_expected.to be(true) }
+  its(:allow_posting_again_after) { is_expected.to eq(0.seconds) }
+  its(:follow_idea_on_idea_submission?) { is_expected.to be(false) }
   its(:supports_edits_after_publication?) { is_expected.to be(true) }
   its(:supports_permitted_by_everyone?) { is_expected.to be(false) }
   its(:supports_multiple_phase_reports?) { is_expected.to be(false) }
@@ -63,11 +63,11 @@ RSpec.describe ParticipationMethod::CommonGround do
   its(:supports_exports?) { is_expected.to be(false) }
   its(:supports_private_attributes_in_export?) { is_expected.to be(false) }
 
-  # We might reconsider this in the future, but for now we don't want to allow users
-  # to post new inputs.
-  its(:supports_submission?) { is_expected.to be(false) }
-  its(:follow_idea_on_idea_submission?) { is_expected.to be(false) }
-
   # We might reconsider this in the future.
   its(:supports_commenting?) { is_expected.to be(false) }
+
+  its(:supports_reacting?) { is_expected.to be(true) }
+  it { expect(participation_method.supports_reacting?('up')).to be(true) }
+  it { expect(participation_method.supports_reacting?('down')).to be(true) }
+  it { expect(participation_method.supports_reacting?('neutral')).to be(true) }
 end

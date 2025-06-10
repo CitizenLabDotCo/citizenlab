@@ -2,17 +2,18 @@
 
 module ParticipationMethod
   class CommonGround < Base
+    SUPPORTED_REACTION_MODES = %w[up down neutral].freeze
+
     def self.method_str
       'common_ground'
     end
 
-    # Reactions are used for voting.
-    def supports_reacting?
+    def built_in_title_required?
       true
     end
 
-    def built_in_title_required?
-      true
+    def assign_defaults_for_phase
+      phase.reacting_dislike_enabled = true
     end
 
     def assign_defaults(input)
@@ -32,10 +33,29 @@ module ParticipationMethod
       true
     end
 
+    def supports_submission?
+      true
+    end
+
+    def supports_edits_after_publication?
+      true
+    end
+
+    def supports_inputs_without_author?
+      false
+    end
+
+    def use_reactions_as_votes?
+      true
+    end
+
     def default_fields(custom_form)
       multiloc_service = MultilocService.new
 
       [
+        # Inputs in common ground phases are essentially short statements, so we have no
+        # use for a body at the moment. We'll probably reconsider this depending on what
+        # comes out of user feedback and usage.
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,

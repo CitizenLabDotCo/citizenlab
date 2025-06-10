@@ -148,6 +148,7 @@ class XlsxService
       { header: 'comments',             f: ->(i) { i.comments_count },                                                     skip_sanitization: true },
       { header: 'likes',                f: ->(i) { i.likes_count }, skip_sanitization: true },
       { header: 'dislikes',             f: ->(i) { i.dislikes_count }, skip_sanitization: true },
+      { header: 'unsure',               f: ->(i) { i.neutral_reactions_count }, skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) }, skip_sanitization: true, hyperlink: true },
       { header: 'project',              f: ->(i) { multiloc_service.t(i&.project&.title_multiloc) } },
       { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
@@ -159,11 +160,13 @@ class XlsxService
       { header: 'location_description', f: ->(i) { i.location_description } },
       { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
+
     if with_cosponsors
       columns.push(
         { header: 'cosponsors', f: ->(i) { i.cosponsors.map(&:full_name).join(', ') }, skip_sanitization: true }
       )
     end
+
     columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_name author_email assignee assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     columns

@@ -746,7 +746,27 @@ resource 'Ideas' do
         example_request '[Unauthorized] Cannot create a common-ground input' do
           assert_status 401
           expect(json_response_body)
-            .to match(errors: { base: [{ error: 'posting_not_supported' }] })
+            .to match(errors: { base: [{ error: 'Unauthorized!' }] })
+        end
+      end
+
+      shared_examples 'create_common_ground_input' do
+        it 'creates a common-ground input' do
+          expect { do_request }
+            .to change(Idea, :count).by(1)
+            .and not_change(Reaction, :count) # No auto-reaction
+
+          assert_status 201
+
+          expect(response_data[:attributes].with_indifferent_access).to include(
+            title_multiloc: title_multiloc,
+            body_multiloc: {}, # The body is not used
+            publication_status: 'published'
+          )
+
+          input = Idea.find(response_data[:id])
+          # It's essential for idea permissions that the creation phase is set correctly.
+          expect(input.creation_phase_id).to eq(phase.id)
         end
       end
 
@@ -755,11 +775,7 @@ resource 'Ideas' do
 
         let(:user) { create(:user) }
 
-        example_request '[Unauthorized] Cannot create a common-ground input' do
-          assert_status 401
-          expect(json_response_body)
-            .to match(errors: { base: [{ error: 'posting_not_supported' }] })
-        end
+        include_examples 'create_common_ground_input'
       end
 
       context 'when admin-like' do
@@ -767,19 +783,7 @@ resource 'Ideas' do
 
         let(:phase_ids) { [phase.id] }
 
-        example 'Create a common-ground input' do
-          expect { do_request }
-            .to change(Idea, :count).by(1)
-            .and not_change(Reaction, :count)
-
-          assert_status 201
-
-          expect(response_data[:attributes].with_indifferent_access).to include(
-            title_multiloc: title_multiloc,
-            body_multiloc: {},
-            publication_status: 'published'
-          )
-        end
+        include_examples 'create_common_ground_input'
       end
     end
   end

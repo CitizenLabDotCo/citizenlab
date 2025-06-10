@@ -639,7 +639,9 @@ const CLPageLayout = memo(
               pageVariant={pageVariant}
               phases={phases?.data}
               currentPhase={phase?.data}
-              currentPage={currentPage}
+              pageButtonLabelMultiloc={
+                currentPage.options.page_button_label_multiloc
+              }
             />
           </Box>
         </Box>

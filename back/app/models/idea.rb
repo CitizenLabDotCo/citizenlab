@@ -43,11 +43,13 @@
 #
 #  index_ideas_on_author_hash                      (author_hash)
 #  index_ideas_on_author_id                        (author_id)
+#  index_ideas_on_body_multiloc                    (body_multiloc) USING gin
 #  index_ideas_on_idea_status_id                   (idea_status_id)
 #  index_ideas_on_location_point                   (location_point) USING gist
 #  index_ideas_on_manual_votes_last_updated_by_id  (manual_votes_last_updated_by_id)
 #  index_ideas_on_project_id                       (project_id)
 #  index_ideas_on_slug                             (slug) UNIQUE
+#  index_ideas_on_title_multiloc                   (title_multiloc) USING gin
 #  index_ideas_search                              (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))) USING gin
 #
 # Foreign Keys
@@ -134,6 +136,9 @@ class Idea < ApplicationRecord
   has_many :embeddings_similarities, as: :embeddable, dependent: :destroy
   has_many :authoring_assistance_responses, dependent: :destroy
 
+  has_many :related_idea_associations, class_name: 'RelatedIdea', dependent: :destroy
+  has_many :related_ideas, through: :related_idea_associations
+
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
   with_options unless: :draft? do |post|
@@ -158,7 +163,6 @@ class Idea < ApplicationRecord
     validates :project, presence: true
     before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
-    before_validation { sanitize_multilocs :title_multiloc }
   end
 
   pg_search_scope :search_by_all,
@@ -227,6 +231,9 @@ class Idea < ApplicationRecord
   scope :publicly_visible, lambda {
     where_pmethod(&:supports_public_visibility?)
   }
+
+  # Filter out empty content when switching participation methods (e.g. from survey to ideation)
+  scope :with_content, -> { where("ideas.title_multiloc != '{}' AND ideas.body_multiloc != '{}'") }
 
   scope :transitive, lambda { |transitive = true|
     transitive ? where(creation_phase: nil) : where.not(creation_phase: nil)
@@ -376,6 +383,7 @@ class Idea < ApplicationRecord
   def body_multiloc_required?
     !draft? && participation_method_on_creation.built_in_body_required?
   end
+
   def sanitize_body_multiloc
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc(

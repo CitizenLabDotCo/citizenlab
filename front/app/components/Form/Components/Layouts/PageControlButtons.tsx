@@ -9,6 +9,7 @@ import {
   IconNames,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 
 import { IPhaseData } from 'api/phases/types';
 import { getInputTerm } from 'api/phases/utils';
@@ -16,8 +17,6 @@ import { getInputTerm } from 'api/phases/utils';
 import useLocalize from 'hooks/useLocalize';
 
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
-
-import { PageType } from 'components/Form/typings';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -63,7 +62,7 @@ interface Props {
   pageVariant: PageVariant;
   phases: IPhaseData[] | undefined;
   currentPhase: IPhaseData | undefined;
-  currentPage: PageType;
+  pageButtonLabelMultiloc?: Multiloc;
 }
 
 const PageControlButtons = ({
@@ -73,7 +72,7 @@ const PageControlButtons = ({
   isLoading,
   pageVariant,
   phases,
-  currentPage,
+  pageButtonLabelMultiloc,
   currentPhase,
 }: Props) => {
   const theme = useTheme();
@@ -86,9 +85,7 @@ const PageControlButtons = ({
       return formatMessage(BUTTON_MESSAGES[pageVariant]);
     }
 
-    const customLabel = localize(
-      currentPage.options.page_button_label_multiloc
-    );
+    const customLabel = localize(pageButtonLabelMultiloc);
     if (customLabel) {
       return customLabel;
     }
@@ -118,7 +115,6 @@ const PageControlButtons = ({
       py={'16px'}
     >
       <Box>
-        {' '}
         {/* We wrap it in a Box here to maintain the spacing and keep the next buttons right-aligned when the language selector is empty, preventing the need to move the locale check logic here. */}
         <LanguageSelector
           dropdownClassName={'open-upwards'}

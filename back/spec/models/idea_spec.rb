@@ -5,14 +5,31 @@ require 'rails_helper'
 RSpec.describe Idea do
   context 'associations' do
     it { is_expected.to have_many(:reactions) }
+    it { is_expected.to have_many(:related_idea_associations).class_name('RelatedIdea').dependent(:destroy) }
+    it { is_expected.to have_many(:related_ideas).through(:related_idea_associations) }
+
+    describe 'related ideas' do
+      let(:idea1) { create(:idea) }
+      let(:idea2) { create(:idea) }
+
+      before do
+        create(:related_idea, idea: idea1, related_idea: idea2)
+      end
+
+      it 'related_idea_associations returns RelatedIdea objects' do
+        expect(idea1.related_idea_associations.first).to be_a(RelatedIdea)
+      end
+
+      it 'related_ideas returns Idea objects' do
+        expect(idea1.related_ideas.first).to eq(idea2)
+      end
+    end
   end
 
   describe 'title validation' do
-    it 'requires title_multiloc when supports_built_in_fields? is true' do
-      # Create an idea that will pass the supports_built_in_fields? condition
+    it 'requires title_multiloc when title_multiloc_required? is true' do
       idea = build(:idea, publication_status: 'published')
-
-      allow(idea).to receive(:supports_built_in_fields?).and_return(true)
+      allow(idea).to receive(:title_multiloc_required?).and_return(true)
 
       idea.title_multiloc = nil
 
@@ -20,9 +37,9 @@ RSpec.describe Idea do
       expect(idea.errors[:title_multiloc]).to include("can't be blank")
     end
 
-    it 'does not require title_multiloc when supports_built_in_fields? is false' do
+    it 'does not require title_multiloc when title_multiloc_required? is false' do
       idea = build(:idea)
-      allow(idea).to receive(:supports_built_in_fields?).and_return(false)
+      allow(idea).to receive(:title_multiloc_required?).and_return(false)
 
       idea.title_multiloc = nil
 
@@ -31,11 +48,9 @@ RSpec.describe Idea do
   end
 
   describe 'body validation' do
-    it 'requires title_multiloc when supports_built_in_fields? is true' do
-      # Create an idea that will pass the supports_built_in_fields? condition
+    it 'requires title_multiloc when body_multiloc_required? is true' do
       idea = build(:idea, publication_status: 'published')
-
-      allow(idea).to receive(:supports_built_in_fields?).and_return(true)
+      allow(idea).to receive(:body_multiloc_required?).and_return(true)
 
       idea.body_multiloc = nil
 
@@ -43,9 +58,9 @@ RSpec.describe Idea do
       expect(idea.errors[:body_multiloc]).to include("can't be blank")
     end
 
-    it 'does not require body_multiloc when supports_built_in_fields? is false' do
+    it 'does not require body_multiloc when body_multiloc_required? is false' do
       idea = build(:idea)
-      allow(idea).to receive(:supports_built_in_fields?).and_return(false)
+      allow(idea).to receive(:body_multiloc_required?).and_return(false)
 
       idea.body_multiloc = nil
 
@@ -655,37 +670,11 @@ RSpec.describe Idea do
       expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
     end
 
-    it 'sanitizes when escaped HTML tags present' do
-      idea = create(:idea, body_multiloc: {
-        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
-      })
-      expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
-    end
-
     it "allows embedded youtube video's in the body" do
       idea = create(:idea, body_multiloc: {
         'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'
       })
       expect(idea.body_multiloc).to eq({ 'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>' })
-    end
-  end
-
-  describe '#sanitize_title_multiloc' do
-    it 'removes all HTML tags from title_multiloc' do
-      idea = build(
-        :idea,
-        title_multiloc: {
-          'en' => 'Something <script>alert("XSS")</script> something',
-          'fr-BE' => 'Something <img src=x onerror=alert(1)>',
-          'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
-        }
-      )
-
-      idea.save!
-
-      expect(idea.title_multiloc['en']).to eq('Something alert("XSS") something')
-      expect(idea.title_multiloc['fr-BE']).to eq('Something ')
-      expect(idea.title_multiloc['nl-BE']).to eq('Plain text with formatting')
     end
   end
 
@@ -776,6 +765,16 @@ RSpec.describe Idea do
       _response = create(:native_survey_response)
 
       expect(described_class.where_pmethod { |pmethod| %w[ideation proposals].include? pmethod.class.method_str }).to match_array [proposal, idea]
+    end
+  end
+
+  describe 'with_content scope' do
+    it 'filters out ideas with empty title and body multiloc hashes' do
+      create(:idea_status_proposed)
+      _response = create(:native_survey_response, title_multiloc: {}, body_multiloc: {})
+      idea = create(:idea)
+
+      expect(described_class.with_content).to match_array [idea]
     end
   end
 end

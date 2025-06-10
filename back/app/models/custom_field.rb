@@ -109,7 +109,6 @@ class CustomField < ApplicationRecord
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
-  before_validation { sanitize_multilocs :title_multiloc }
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
 
   scope :registration, -> { where(resource_type: 'User') }
@@ -146,12 +145,20 @@ class CustomField < ApplicationRecord
     ask_follow_up
   end
 
+  def support_other_option?
+    %(select multiselect select_image multiselect_image).include?(input_type)
+  end
+
   def support_follow_up?
     %w[sentiment_linear_scale].include?(input_type)
   end
 
   def support_free_text_value?
-    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?) || support_follow_up?
+    support_text? || (support_options? && includes_other_option?) || support_follow_up?
+  end
+
+  def support_text?
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
   end
 
   def support_option_images?
@@ -261,7 +268,7 @@ class CustomField < ApplicationRecord
   end
 
   def printable?
-    return false unless include_in_printed_form
+    return false unless enabled? && include_in_printed_form
 
     # Support all field types that are supported in the form editor - TBC
     build_in_types = %w[text_multiloc html_multiloc image_files files topic_ids]
@@ -280,7 +287,12 @@ class CustomField < ApplicationRecord
     ignore_field_types.exclude? input_type
   end
 
-  def importable?
+  def pdf_importable?
+    ignore_field_types = %w[page date files topic_ids image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
+    printable? && ignore_field_types.exclude?(input_type)
+  end
+
+  def xlsx_importable?
     ignore_field_types = %w[page date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
     ignore_field_types.exclude? input_type
   end
@@ -303,6 +315,10 @@ class CustomField < ApplicationRecord
 
   def multiselect?
     %w[multiselect multiselect_image].include?(input_type)
+  end
+
+  def singleselect?
+    %w[select select_image].include?(input_type)
   end
 
   def linear_scale?

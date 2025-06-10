@@ -16,11 +16,10 @@ module BulkImportIdeas::Parsers
     # Sends 5 files containing 1 idea to each job
     def parse_file_async(file_content)
       files = create_files file_content
-
       job_ids = []
       job_first_idea_index = 1
       files.each_slice(IDEAS_PER_JOB) do |sliced_files|
-        job = BulkImportIdeas::IdeaImportJob.perform_later('pdf', sliced_files, @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
+        job = BulkImportIdeas::IdeaImportJob.perform_later(self.class, sliced_files, @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
         job_ids << job.job_id
         job_first_idea_index += IDEAS_PER_JOB
       end
@@ -28,22 +27,18 @@ module BulkImportIdeas::Parsers
       job_ids
     end
 
+    # Returns an array of idea rows compatible with IdeaImporter
+    # Only one row ever returned as only one PDF per idea is parsed by this service
     def parse_rows(file)
       pdf_file = file.file.read
 
-      # NOTE: We return both parsed values so we can merge the best values from both
+      # We get both parsed values so we can merge the best values from both
       google_forms_service = Pdf::IdeaGoogleFormParserService.new
-      form_parsed_idea = google_forms_service.parse_pdf(pdf_file)
-      text_parsed_idea = begin
-        Pdf::IdeaPlainTextParserService.new(
-          printable_form_fields,
-          @locale
-        ).parse_text(google_forms_service.raw_text_page_array(pdf_file))
-      rescue BulkImportIdeas::Error
-        []
-      end
+      google_parsed_idea = google_parsed_idea(google_forms_service, pdf_file)
+      text_parsed_idea = text_parsed_idea(google_forms_service, pdf_file)
 
-      [merge_parsed_ideas_into_idea_row(form_parsed_idea, text_parsed_idea, file)]
+      # Merge the two types of parsed idea into one idea row
+      [merge_parsed_ideas_into_idea_row(google_parsed_idea, text_parsed_idea, file)]
     end
 
     private
@@ -55,7 +50,7 @@ module BulkImportIdeas::Parsers
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the exported PDF template
-        pages_per_idea = import_form_data[:page_count]
+        pages_per_idea = template_data[:page_count]
 
         pdf = begin
           ::CombinePDF.parse source_file.file.read
@@ -100,12 +95,31 @@ module BulkImportIdeas::Parsers
       split_pdf_files
     end
 
+    def google_parsed_idea(google_forms_service, pdf_file)
+      remove_question_numbers_in_keys(google_forms_service.parse_pdf(pdf_file))
+    end
+
+    def text_parsed_idea(google_forms_service, pdf_file)
+      raw_text = google_forms_service.raw_text_page_array(pdf_file)
+      Pdf::IdeaPlainTextParser.new(@locale).parse_text(raw_text, template_data)
+    rescue BulkImportIdeas::Error
+      {}
+    end
+
+    # Returns the field titles without question numbers for the google parsed ideas
+    def remove_question_numbers_in_keys(parsed_idea)
+      template_data[:fields].each do |field|
+        parsed_idea[:fields] = parsed_idea[:fields].transform_keys { |key| key == field[:print_title] ? field[:name] : key }
+      end
+      parsed_idea
+    end
+
     # Overridden from base class to handle the way checkboxes are filled in the PDF
     # and detect fields from description as well as title
     # @param [Array<Hash>] idea_fields - comes from IdeaBaseFileParser#structure_raw_fields
     def merge_idea_with_form_fields(idea_fields)
       merged_fields = []
-      form_fields = import_form_data[:fields].deep_dup # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
+      form_fields = template_data[:fields].deep_dup # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
       form_fields.each do |form_field|
         idea_fields.each do |idea_field|
           if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]
@@ -165,6 +179,7 @@ module BulkImportIdeas::Parsers
       form_parsed_idea_row = idea_to_idea_row(form_parsed_idea, file)
       text_parsed_idea_row = idea_to_idea_row(text_parsed_idea, file)
       return form_parsed_idea_row if text_parsed_idea_row.blank?
+      return text_parsed_idea_row if form_parsed_idea_row.blank?
 
       # Merge the core fields and prefer the form parsed values
       merged_row = text_parsed_idea_row.merge(form_parsed_idea_row)
@@ -181,6 +196,7 @@ module BulkImportIdeas::Parsers
         end
         [name, value]
       end
+
       merged_row[:custom_field_values] = custom_field_values
 
       # Get the complete PDF page range - although should always be the same
@@ -188,30 +204,38 @@ module BulkImportIdeas::Parsers
       merged_row
     end
 
-    # @param [Hash] field - comes from IdeaPdfFormExporter#add_to_importer_fields
-    # @param [Array<Hash>] form_fields - comes from IdeaPdfFormExporter#add_to_importer_fields
+    # @param [Hash] field - comes from IdeaPdfFormExporter#add_to_importer_fields OR IdeaHtmlPdfTemplateReader#import_config_for_field
+    # @param [Array<Hash>] form_fields - comes from IdeaPdfFormExporter#add_to_importer_fields OR IdeaHtmlPdfTemplateReader#import_config_for_field
     def process_field_value(field, form_fields)
       processed_field = super
 
       if TEXT_FIELD_TYPES.include?(processed_field[:input_type]) && processed_field[:value]
-        # Strip out text that has leaked from the field description and name into the value
-        processed_field[:value] = processed_field[:value].gsub(/#{processed_field[:description]}/, '')
-        processed_field[:value] = processed_field[:value].gsub(/\A\s*#{processed_field[:name]}/, '')
-
-        # Strip out out any text that has leaked from the next questions title into the value
-        next_question = form_fields[form_fields.find_index(processed_field) + 1]
-        if next_question && next_question[:name].split.count > 4
-          processed_field[:value] = processed_field[:value].gsub(/#{next_question[:name]}*/, '')
-        end
-
-        # Strip out 'this answer may be shared with moderators...' text
-        this_answer_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }
-        processed_field[:value] = processed_field[:value].gsub(/\*#{this_answer_copy}/, '')
-
-        processed_field[:value] = processed_field[:value].strip
+        processed_field[:value] = process_text_field_value(processed_field)
       end
 
       processed_field
+    end
+
+    # NOTE: This is already done better in the text parser, but done again here to catch anything coming back from the google form parser
+    def process_text_field_value(field)
+      value = field[:value]
+
+      # Strip out greedily scanned text from the start and end of text fields based on text strings in delimiters
+      # eg next question title, form end text, end of description
+      start_delimiter = field.dig(:content_delimiters, :start)
+      end_delimiter = field.dig(:content_delimiters, :end)
+
+      if start_delimiter
+        split_string = value.split(start_delimiter)
+        value = split_string[1] if split_string.count > 1
+      end
+
+      if end_delimiter
+        split_string = value.split(end_delimiter)
+        value = split_string[0] if split_string.count > 1
+      end
+
+      value.strip
     end
 
     def complete_page_range(pages1, pages2)
@@ -220,13 +244,9 @@ module BulkImportIdeas::Parsers
       (min..max).to_a
     end
 
-    # Return the fields and page count from the form we're importing from
-    def import_form_data
-      @import_form_data ||= BulkImportIdeas::Exporters::IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
-    end
-
-    def printable_form_fields
-      @printable_form_fields ||= IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields_legacy
+    # This data is a combination of the form_fields and the context of where those fields are in the PDF
+    def template_data
+      @template_data ||= BulkImportIdeas::Parsers::Pdf::IdeaPdfTemplateReader.new(@phase, @locale, @personal_data_enabled).template_data
     end
   end
 end
