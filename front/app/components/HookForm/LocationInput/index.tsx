@@ -105,7 +105,7 @@ const LocationInput = ({
         });
       });
     } else {
-      setValue('location_point_geojson', null);
+      setValue('location_point_geojson', {});
     }
   }, [locationDescription, setValue]);
 
