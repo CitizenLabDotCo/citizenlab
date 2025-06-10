@@ -111,12 +111,11 @@
         }
       }
       div.mapping {
-        img { margin-top: 10px; width: 480px; height: auto; }
+        img { width: 480px; }
         div.line { width: 480px; }
       }
       div.page {
         margin-right: 30px;
-        img { margin-top: 10px; max-width: 480px; height: auto; }
       }
     }
   </style>
@@ -162,20 +161,6 @@
 <% end %>
 
 <div id="questions">
-
-  <div class="question">
-    <img src="https://www.edmullen.net/test/rc.jpg">
-  </div>
-
-  <div class="page">
-    <img src="https://www.edmullen.net/test/rc.jpg">
-  </div>
-
-  <div class="page">
-    <img src="https://upload.wikimedia.org/wikipedia/en/a/aa/Bart_Simpson_200px.png">
-  </div>
-
-
   <% fields.each do |field| %>
   <% if field[:field_group][:start] %><div class="field-group"><% end %>
     <% if field[:input_type] == 'page' %>
