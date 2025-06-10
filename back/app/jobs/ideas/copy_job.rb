@@ -55,23 +55,29 @@ module Ideas
         .offset(offset)
         .where(created_at: ..until_created_at)
 
+      num_remaining_ideas = remaining_ideas.count # The count must be done before the copy.
       batch = remaining_ideas.limit(batch_size)
       summary = Ideas::CopyService.new.copy(batch, dest_phase, current_user)
-      track_progress(summary.count, summary.error_count)
+      track_progress(summary.count, summary.errors.size)
 
-      if remaining_ideas.count > batch_size
+      if num_remaining_ideas > batch_size
+        # If duplicates are not allowed, we only need to adjust the offset by the number
+        # of errors, because the ideas that were successfully copied will be ignored by
+        # the next job.
+        offset += allow_duplicates ? summary.count : summary.errors.size
+
         enqueue_child_job(
           Ideas::CopyJob,
           idea_scope,
           idea_filters,
           dest_phase,
           current_user,
-          offset: offset + summary.count,
+          offset: offset,
           batch_size: batch_size,
           until_created_at: until_created_at
         )
       else
-        complete!
+        mark_as_complete!
       end
     end
 

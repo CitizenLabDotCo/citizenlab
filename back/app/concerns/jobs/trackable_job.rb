@@ -34,6 +34,10 @@ module Jobs
       tracker.update!(total: total) if tracked? && tracker.total.nil?
     end
 
+    def mark_as_complete!
+      tracker.complete! if tracked?
+    end
+
     # Has the same signature as the job's +perform+ method.
     def estimate_tracker_total(...)
       nil
