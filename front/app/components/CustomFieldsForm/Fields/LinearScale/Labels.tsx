@@ -1,8 +1,11 @@
 import React from 'react';
 
 import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
+
 import { IFlatCustomField } from 'api/custom_fields/types';
+
 import useLocalize from 'hooks/useLocalize';
+
 import { getLinearScaleLabel } from './utils';
 
 interface Props {
