@@ -285,6 +285,7 @@ ach:
       likes_count: 'crwdns4707321:0crwdne4707321:0'
       location: 'crwdns4707323:0crwdne4707323:0'
       longitude: 'crwdns4707325:0crwdne4707325:0'
+      neutral_reactions_count: 'crwdns4734551:0crwdne4734551:0'
       participants: 'crwdns4707327:0crwdne4707327:0'
       picks: 'crwdns4707329:0crwdne4707329:0'
       project: 'crwdns4707331:0crwdne4707331:0'
@@ -331,6 +332,15 @@ ach:
       write_in_language: 'crwdns4707399:0crwdne4707399:0'
       linear_scale_print_description: 'crwdns4707401:0%{min_label}crwdnd4707401:0%{max_label}crwdne4707401:0'
       unsupported_field: 'crwdns4707403:0crwdne4707403:0'
+      ranking_print_description: 'crwdns4734553:0%{max_rank}crwdne4734553:0'
+      matrix_print_description: 'crwdns4734555:0crwdne4734555:0'
+      rating_print_description: 'crwdns4734557:0%{max_stars}crwdne4734557:0'
+      sentiment_linear_scale_print_description: 'crwdns4734559:0crwdne4734559:0'
+      sentiment_linear_scale_print_labels: 'crwdns4734561:0%{min_label}crwdnd4734561:0%{neutral_label}crwdnd4734561:0%{max_label}crwdne4734561:0'
+      point_print_description: 'crwdns4734563:0crwdne4734563:0'
+      line_print_description: 'crwdns4734565:0crwdne4734565:0'
+      polygon_print_description: 'crwdns4734567:0crwdne4734567:0'
+      select_print_description: 'crwdns4734569:0crwdne4734569:0'
   project_copy:
     title_suffix: 'crwdns4707405:0crwdne4707405:0'
   confirmations_mailer:
