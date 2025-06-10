@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} صارفین",
   "app.components.AvatarBubbles.participant": "شریک",
   "app.components.AvatarBubbles.participants1": "شرکاء",
-  "app.components.CityLogoSection.iframeTitle": "{orgName}کے بارے میں مزید معلومات",
   "app.components.Comments.cancel": "منسوخ کریں۔",
   "app.components.Comments.commentingDisabledInCurrentPhase": "موجودہ مرحلے میں تبصرہ ممکن نہیں۔",
   "app.components.Comments.commentingDisabledInactiveProject": "تبصرہ ممکن نہیں ہے کیونکہ یہ پروجیکٹ فی الحال فعال نہیں ہے۔",

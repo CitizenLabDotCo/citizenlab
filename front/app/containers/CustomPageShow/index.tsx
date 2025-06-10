@@ -17,7 +17,6 @@ import usePageFiles from 'api/page_files/usePageFiles';
 import useLocalize from 'hooks/useLocalize';
 
 import ContentContainer from 'components/ContentContainer';
-import Fragment from 'components/Fragment';
 import { Container, Content } from 'components/LandingPages/citizen';
 import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import PageNotFound from 'components/PageNotFound';
@@ -125,7 +124,6 @@ const CustomPageShow = () => {
             </NoBannerContainer>
           )}
           <Content>
-            <Fragment name={`pages/${page.data.id}/content`} />
             {pageAttributes.top_info_section_enabled && (
               <InfoSection
                 multilocContent={pageAttributes.top_info_section_multiloc}

@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} users",
   "app.components.AvatarBubbles.participant": "participant",
   "app.components.AvatarBubbles.participants1": "учесника",
-  "app.components.CityLogoSection.iframeTitle": "Више информација о {orgName}",
   "app.components.Comments.cancel": "Поништити, отказати",
   "app.components.Comments.commentingDisabledInCurrentPhase": "У тренутној фази коментарисање није могуће.",
   "app.components.Comments.commentingDisabledInactiveProject": "Коментарисање није могуће јер овај пројекат тренутно није активан.",
