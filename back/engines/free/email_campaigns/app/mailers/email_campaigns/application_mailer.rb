@@ -29,11 +29,6 @@ module EmailCampaigns
       []
     end
 
-    # If there are editable regions
-    def self.default_custom_text_multiloc
-      {}
-    end
-
     private
 
     def show_unsubscribe_link?
