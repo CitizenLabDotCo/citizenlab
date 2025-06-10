@@ -37,7 +37,14 @@ const Meta = () => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const headerBg = homepageLayout.data.attributes.craftjs_json
       ? Object.values(homepageLayout.data.attributes.craftjs_json).find(
-          (node) => node.displayName === 'HomepageBanner'
+          (node) => {
+            return (
+              typeof node.type === 'object' &&
+              node.type !== null &&
+              'resolvedName' in node.type &&
+              node.type.resolvedName === 'HomepageBanner'
+            );
+          }
         )?.props.image?.imageUrl
       : '';
 
