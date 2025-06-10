@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :idea do
+  factory :base_idea, class: 'Idea' do
     title_multiloc do
-      {
-        'en' => 'Plant more trees',
-        'nl-BE' => 'Plant meer bomen'
-      }
+      { 'en' => 'Plant more trees', 'nl-BE' => 'Plant meer bomen' }
     end
     body_multiloc do
       {
@@ -14,8 +11,16 @@ FactoryBot.define do
         'nl-BE' => '<p>De luchtkwaliteit zou er gevoelig op vooruitgaan!</p>'
       }
     end
-    sequence(:slug) { |n| "plant-more-trees-#{n}" }
+
     publication_status { 'published' }
+    idea_status { IdeaStatus.find_by(code: 'proposed') || association(:idea_status_proposed) }
+    association :project, factory: :single_phase_ideation_project
+  end
+
+  factory :idea, parent: :base_idea do
+    author
+    sequence(:slug) { |n| "plant-more-trees-#{n}" }
+
     budget { 750 }
     proposed_budget { 500 }
     project { phases.present? ? phases.first.project : association(:single_phase_ideation_project) }
@@ -27,6 +32,7 @@ FactoryBot.define do
     trait :with_assignee do
       assignee factory: :admin
     end
+
 
     after(:create) do |idea|
       idea.phases = idea.project.phases.select { |phase| phase.participation_method == 'ideation' } if idea.phases.empty?
@@ -61,5 +67,22 @@ FactoryBot.define do
         idea.phases = [idea.creation_phase] if idea.phases.empty?
       end
     end
+  end
+
+  factory :common_ground_input, parent: :base_idea do
+    body_multiloc { {} }
+
+    transient do
+      # Common Ground is not transitive, so inputs are associated with only one phase
+      phase { association(:common_ground_phase, :ongoing) }
+    end
+
+    creation_phase { phase }
+    phases { [phase] }
+    project { phase.project }
+  end
+
+  trait :with_author do
+    author
   end
 end
