@@ -33,20 +33,21 @@ const Meta = () => {
     const settings = tenant.data.attributes.settings;
     const tenantLocales = settings.core.locales;
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const headerBg = homepageLayout.data.attributes.craftjs_json
-      ? Object.values(homepageLayout.data.attributes.craftjs_json).find(
-          (node) => {
-            return (
-              typeof node.type === 'object' &&
-              node.type !== null &&
-              'resolvedName' in node.type &&
-              node.type.resolvedName === 'HomepageBanner'
-            );
-          }
-        )?.props.image?.imageUrl
-      : '';
+    const headerBg = (() => {
+      const layoutData = homepageLayout.data.attributes.craftjs_json;
+
+      const bannerNode = Object.values(layoutData).find((node: any) => {
+        return (
+          node &&
+          node.type &&
+          typeof node.type === 'object' &&
+          'resolvedName' in node.type &&
+          node.type.resolvedName === 'HomepageBanner'
+        );
+      });
+
+      return bannerNode?.props?.image?.imageUrl || '';
+    })();
 
     const organizationNameMultiLoc = settings.core.organization_name;
     const organizationName = localize(organizationNameMultiLoc);
