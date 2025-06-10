@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { areasData } from './__mocks__/useAreas';
 import useAddArea from './useAddArea';
@@ -20,7 +20,7 @@ describe('useAddArea', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddArea(), {
+    const { result } = renderHook(() => useAddArea(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -43,7 +43,7 @@ describe('useAddArea', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddArea(), {
+    const { result } = renderHook(() => useAddArea(), {
       wrapper: createQueryClientWrapper(),
     });
 

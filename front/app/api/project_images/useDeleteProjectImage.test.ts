@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import endpoints, { projectImagePath } from './__mocks__/_mockServer';
 import useDeleteProjectImage from './useDeleteProjectImage';
@@ -16,7 +16,7 @@ describe('useDeleteProjectImage', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteProjectImage(), {
+    const { result } = renderHook(() => useDeleteProjectImage(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -37,7 +37,7 @@ describe('useDeleteProjectImage', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteProjectImage(), {
+    const { result } = renderHook(() => useDeleteProjectImage(), {
       wrapper: createQueryClientWrapper(),
     });
 

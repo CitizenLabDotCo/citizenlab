@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { homepageBuilderLayoutData } from './__mocks__/homepageLayout';
 import useAddHomepageLayout from './useAddHomepageLayout';
@@ -23,7 +23,7 @@ describe('useAddHomepageBuilderLayout', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddHomepageLayout(), {
+    const { result } = renderHook(() => useAddHomepageLayout(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -44,7 +44,7 @@ describe('useAddHomepageBuilderLayout', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddHomepageLayout(), {
+    const { result } = renderHook(() => useAddHomepageLayout(), {
       wrapper: createQueryClientWrapper(),
     });
 

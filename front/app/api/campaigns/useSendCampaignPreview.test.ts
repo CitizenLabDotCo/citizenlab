@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { campaignsData } from './__mocks__/useCampaigns';
 import useSendCampaignPreview from './useSendCampaignPreview';
@@ -20,7 +20,7 @@ describe('useSendCampaignPreview', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useSendCampaignPreview(), {
+    const { result } = renderHook(() => useSendCampaignPreview(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useSendCampaignPreview', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useSendCampaignPreview(), {
+    const { result } = renderHook(() => useSendCampaignPreview(), {
       wrapper: createQueryClientWrapper(),
     });
 

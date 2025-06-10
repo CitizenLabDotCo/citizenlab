@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { projectFolderData } from './__mocks__/useProjectFolder';
 import useProjectFolders from './useProjectFolders';
@@ -20,7 +20,7 @@ describe('useProjectFolders', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useProjectFolders({}), {
+    const { result } = renderHook(() => useProjectFolders({}), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useProjectFolders', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useProjectFolders({}), {
+    const { result } = renderHook(() => useProjectFolders({}), {
       wrapper: createQueryClientWrapper(),
     });
 

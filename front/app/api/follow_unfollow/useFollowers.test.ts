@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { followersData, links } from './__mocks__/useFollowers';
 import useFollowers from './useFollowers';
@@ -20,7 +20,7 @@ describe('useFollowers', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useFollowers({}), {
+    const { result } = renderHook(() => useFollowers({}), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useFollowers', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useFollowers({}), {
+    const { result } = renderHook(() => useFollowers({}), {
       wrapper: createQueryClientWrapper(),
     });
 

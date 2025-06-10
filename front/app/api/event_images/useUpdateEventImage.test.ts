@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { eventImageData } from './__mocks__/useAddEventImage';
 import useUpdateEventImage from './useUpdateEventImage';
@@ -20,7 +20,7 @@ describe('useUpdateEventImage', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdateEventImage(), {
+    const { result } = renderHook(() => useUpdateEventImage(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -45,7 +45,7 @@ describe('useUpdateEventImage', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateEventImage(), {
+    const { result } = renderHook(() => useUpdateEventImage(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

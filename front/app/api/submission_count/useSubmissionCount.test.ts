@@ -1,10 +1,10 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { IFormSubmissionCount } from 'api/submission_count/types';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import useSubmissionCount from './useSubmissionCount';
 
@@ -29,7 +29,7 @@ describe('useSubmissionCount', () => {
   afterAll(() => server.close());
 
   it('returns data correctly for phase', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useSubmissionCount({ phaseId: 'phaseId' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -51,7 +51,7 @@ describe('useSubmissionCount', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useSubmissionCount({ phaseId: 'phaseId' }),
       {
         wrapper: createQueryClientWrapper(),

@@ -462,6 +462,9 @@ resource 'Phases' do
 
           phase = Phase.find(response_data[:id])
           expect(phase.participation_method).to eq('common_ground')
+
+          expect(phase.reacting_enabled).to be(true)
+          expect(phase.reacting_dislike_enabled).to be(true)
         end
       end
 
@@ -891,6 +894,15 @@ resource 'Phases' do
             votes: { down: 1, neutral: 1, up: 0 }
           )
         end
+
+        context 'when the phase is not "common ground"' do
+          let(:id) { create(:phase).id }
+
+          example 'Not found (404)', document: false do
+            do_request
+            assert_status 400
+          end
+        end
       end
     end
 
@@ -1113,6 +1125,19 @@ resource 'Phases' do
             assert_status 200
             xlsx = xlsx_contents(response_body)
             expect(xlsx.first[:rows].size).to eq 2
+          end
+
+          # NOTE: Typically, survey responses have no displayable content.
+          example 'Responses with no displayable content are included' do
+            survey_response1.title_multiloc = {}
+            survey_response1.body_multiloc = {}
+            survey_response1.save!(validate: false)
+
+            do_request
+            assert_status 200
+            xlsx = xlsx_contents(response_body)
+            all_values = xlsx.flat_map { |sheet| sheet[:rows].flatten }
+            expect(all_values).to include(survey_response1.id)
           end
         end
       end

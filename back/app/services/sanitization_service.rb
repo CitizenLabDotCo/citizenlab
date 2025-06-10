@@ -15,6 +15,8 @@ class SanitizationService
   # @param features [Array<Symbol>] A list of allowed features
   # See {IframeScrubber, EDITOR_FEATURES} for the list of allowed tags and attributes.
   def sanitize(text, features)
+    return nil if text.nil?
+
     scrubber = IframeScrubber.new(features)
     sanitized = SANITIZER.sanitize(text, scrubber: scrubber)
 
@@ -27,7 +29,7 @@ class SanitizationService
 
   def sanitize_multiloc(multiloc, features)
     multiloc.transform_values do |text|
-      sanitize text, features
+      sanitize(text, features)
     end
   end
 
@@ -138,6 +140,10 @@ class SanitizationService
       mention: {
         tags: %w[span],
         attributes: %w[class data-user-id data-user-slug]
+      },
+      table: {
+        tags: %w[table thead tbody tr th td tfoot],
+        attributes: %w[class style width border border-collapse display border-color padding text-align]
       }
     }.freeze
 

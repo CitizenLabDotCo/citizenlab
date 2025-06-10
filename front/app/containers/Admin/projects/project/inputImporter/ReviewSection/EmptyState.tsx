@@ -11,8 +11,8 @@ import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
 
-import DownloadPDFButtonWithModal from 'components/FormBuilder/components/FormBuilderTopBar/DownloadPDFButtonWithModal';
-import ExcelDownloadButton from 'components/FormSync/ExcelDownloadButton';
+import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
+import ExcelDownloadButton from 'components/admin/FormSync/ExcelDownloadButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

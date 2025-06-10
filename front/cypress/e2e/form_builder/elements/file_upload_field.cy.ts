@@ -49,12 +49,10 @@ describe('Form builder file upload field', () => {
   });
 
   it('adds file upload field and user can attach a file in the field', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
-    cy.get('[data-cy="e2e-file-upload-field"]');
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
+    cy.dataCy('e2e-file-upload-field');
     cy.wait(2000);
-    cy.get('[data-cy="e2e-file-upload-field"]').click({ force: true });
+    cy.dataCy('e2e-file-upload-field').click({ force: true });
 
     // Save the survey
     cy.get('form').submit();
@@ -75,7 +73,7 @@ describe('Form builder file upload field', () => {
     cy.contains(questionTitle).should('exist');
 
     // Try submitting form without entering data for required field
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
@@ -93,12 +91,12 @@ describe('Form builder file upload field', () => {
     cy.wait(4000);
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').should('exist');
+    cy.dataCy('e2e-submit-form').click();
 
     // Check that we're on final page and return to project
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // Make sure we're back at the project
     cy.url().should('include', `projects/${projectSlug}`);

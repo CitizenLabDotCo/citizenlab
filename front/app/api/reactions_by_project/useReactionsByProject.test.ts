@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { IReactionsByProject } from './types';
 import useReactionsByProject from './useReactionsByProject';
@@ -42,7 +42,7 @@ describe('useReactionsByProject', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useReactionsByProject({
           project: 'project',
@@ -68,7 +68,7 @@ describe('useReactionsByProject', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useReactionsByProject({
           project: 'project',

@@ -15,7 +15,7 @@ interface Props {
 const PersonalDataCheckbox = ({ mb = '24px' }: Props) => {
   return (
     <CheckboxWithLabel
-      name="personal_data"
+      name="print_personal_data_fields"
       label={
         <Text as="span" m="0">
           <FormattedMessage {...messages.askPersonalData3} />

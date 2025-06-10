@@ -43,11 +43,13 @@
 #
 #  index_ideas_on_author_hash                      (author_hash)
 #  index_ideas_on_author_id                        (author_id)
+#  index_ideas_on_body_multiloc                    (body_multiloc) USING gin
 #  index_ideas_on_idea_status_id                   (idea_status_id)
 #  index_ideas_on_location_point                   (location_point) USING gist
 #  index_ideas_on_manual_votes_last_updated_by_id  (manual_votes_last_updated_by_id)
 #  index_ideas_on_project_id                       (project_id)
 #  index_ideas_on_slug                             (slug) UNIQUE
+#  index_ideas_on_title_multiloc                   (title_multiloc) USING gin
 #  index_ideas_search                              (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))) USING gin
 #
 # Foreign Keys
@@ -68,7 +70,9 @@ class Idea < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
   SUBMISSION_STATUSES = %w[submitted published].freeze
 
-  slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
+  attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService
+
+  slug from: proc { |idea| idea&.participation_method_on_creation&.generate_slug(idea) }
 
   belongs_to :author, class_name: 'User', optional: true
   belongs_to :project, touch: true
@@ -154,10 +158,6 @@ class Idea < ApplicationRecord
   validate :not_published_in_non_public_status
   validates :manual_votes_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
 
-  # validates :custom_field_values, json: {
-  #   schema: :schema_for_validation,
-  # }
-
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true
@@ -232,6 +232,9 @@ class Idea < ApplicationRecord
     where_pmethod(&:supports_public_visibility?)
   }
 
+  # Filter out empty content when switching participation methods (e.g. from survey to ideation)
+  scope :with_content, -> { where("ideas.title_multiloc != '{}' AND ideas.body_multiloc != '{}'") }
+
   scope :transitive, lambda { |transitive = true|
     transitive ? where(creation_phase: nil) : where.not(creation_phase: nil)
   }
@@ -277,6 +280,10 @@ class Idea < ApplicationRecord
   scope :draft, -> { where(publication_status: 'draft') }
   scope :published, -> { where publication_status: 'published' }
   scope :submitted_or_published, -> { where publication_status: SUBMISSION_STATUSES }
+
+  scope :published_after, lambda { |date_time| # eg 2.days.ago
+    where(publication_status: 'published', published_at: date_time..)
+  }
 
   def just_submitted?
     # It would be better to foresee separate endpoints for submission,
@@ -368,12 +375,6 @@ class Idea < ApplicationRecord
   end
 
   private
-
-  def schema_for_validation
-    fields = participation_method_on_creation.custom_form.custom_fields
-    multiloc_schema = JsonSchemaGeneratorService.new.generate_for fields
-    multiloc_schema.values.first
-  end
 
   def title_multiloc_required?
     !draft? && participation_method_on_creation.built_in_title_required?
@@ -484,6 +485,8 @@ class Idea < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
@@ -515,6 +518,5 @@ Idea.include(FlagInappropriateContent::Concerns::Flaggable)
 Idea.include(Moderation::Concerns::Moderatable)
 Idea.include(MachineTranslations::Concerns::Translatable)
 Idea.include(IdeaAssignment::Extensions::Idea)
-Idea.include(IdeaCustomFields::Extensions::Idea)
 Idea.include(Analysis::Patches::Idea)
 Idea.include(BulkImportIdeas::Patches::Idea)

@@ -20,6 +20,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import {
   FormBuilderConfig,
   getIsPostingEnabled,
@@ -35,7 +36,6 @@ import clHistory from 'utils/cl-router/history';
 import messages from '../messages';
 import tracks from '../tracks';
 
-import DownloadPDFButtonWithModal from './DownloadPDFButtonWithModal';
 import ownMessages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
@@ -103,6 +103,7 @@ const FormBuilderTopBar = ({
       background={`${colors.white}`}
       borderBottom={`1px solid ${colors.borderLight}`}
       top="0px"
+      data-cy="e2e-form-builder-top-bar"
     >
       <Box
         p="16px"

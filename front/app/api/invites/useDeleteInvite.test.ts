@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteInvite from './useDeleteInvite';
 const apiPath = '*invites/:inviteId';
@@ -18,7 +18,7 @@ describe('useDeleteInvite', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteInvite(), {
+    const { result } = renderHook(() => useDeleteInvite(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -36,7 +36,7 @@ describe('useDeleteInvite', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteInvite(), {
+    const { result } = renderHook(() => useDeleteInvite(), {
       wrapper: createQueryClientWrapper(),
     });
 

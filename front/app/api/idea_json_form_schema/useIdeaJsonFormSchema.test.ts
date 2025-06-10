@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import useIdeaJsonFormSchema from './useIdeaJsonFormSchema';
 
@@ -100,7 +100,7 @@ describe('useIdeaJsonFormSchema', () => {
         return HttpResponse.json({ data: schemaData }, { status: 200 });
       })
     );
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useIdeaJsonFormSchema({ projectId: 'projectId' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -121,7 +121,7 @@ describe('useIdeaJsonFormSchema', () => {
         return HttpResponse.json({ data: schemaData }, { status: 200 });
       })
     );
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useIdeaJsonFormSchema({ phaseId: 'phaseId' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -142,7 +142,7 @@ describe('useIdeaJsonFormSchema', () => {
         return HttpResponse.json({ data: schemaData }, { status: 200 });
       })
     );
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useIdeaJsonFormSchema({ inputId: 'inputId' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -164,7 +164,7 @@ describe('useIdeaJsonFormSchema', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useIdeaJsonFormSchema({ projectId: 'projectId' }),
       {
         wrapper: createQueryClientWrapper(),

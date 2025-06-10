@@ -99,6 +99,10 @@ class Permission < ApplicationRecord
     false
   end
 
+  def everyone_tracking_enabled?
+    permitted_by == 'everyone' && everyone_tracking_enabled
+  end
+
   private
 
   def set_permitted_by_and_global_custom_fields

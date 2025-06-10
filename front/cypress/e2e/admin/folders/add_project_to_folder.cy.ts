@@ -1,7 +1,7 @@
 import { randomString } from '../../../support/commands';
 
 // works locally but not on CI. needs to be refactored to be stable on CI
-describe.skip('Admin: add projects to folder', async () => {
+describe('Admin: add projects to folder', async () => {
   it('creates a new folder', () => {
     let projectId1: string;
     let projectId2: string;
@@ -28,44 +28,48 @@ describe.skip('Admin: add projects to folder', async () => {
         cy.visit('/admin/projects/all');
         cy.acceptCookies();
 
-        cy.get('[data-cy="e2e-new-project-folder-button"]').click();
+        cy.dataCy('e2e-new-project-folder-button').click();
         const folderTitle = randomString();
         const folderShortDescription = randomString();
 
         // Add folder title
-        cy.get('[data-cy="e2e-project-folder-title"]')
+        cy.dataCy('e2e-project-folder-title').should('be.visible');
+
+        cy.dataCy('e2e-project-folder-title')
           .find('.e2e-localeswitcher')
           .each((button) => {
             cy.wrap(button).click();
             cy.get('#project-folder-title').type(folderTitle);
+            cy.wait(2000);
           });
 
         // Add folder short description
-        cy.get('[data-cy="e2e-project-folder-short-description"]')
+        cy.dataCy('e2e-project-folder-short-description')
           .find('.e2e-localeswitcher')
           .each((button) => {
             cy.wrap(button).click();
-            cy.get('[data-cy="e2e-project-folder-short-description"]').within(
-              () => {
-                cy.get('textarea').type(folderShortDescription);
-              }
-            );
+            cy.dataCy('e2e-project-folder-short-description').within(() => {
+              cy.get('textarea').type(folderShortDescription);
+              cy.wait(2000);
+            });
           });
 
         // Add folder description
-        cy.get('[data-cy="e2e-project-folder-description"]')
+        cy.dataCy('e2e-project-folder-description')
           .find('.e2e-localeswitcher')
           .each((button) => {
             cy.wrap(button).click();
-            cy.get('[data-cy="e2e-project-folder-description"]').within(() => {
+            cy.dataCy('e2e-project-folder-description').within(() => {
               cy.get('#description').type(folderShortDescription);
+              cy.wait(2000);
             });
           });
 
         // Submit project
-        cy.get('.e2e-submit-wrapper-button button').click();
+        cy.get('.e2e-submit-wrapper-button button').click({ force: true });
 
         // Wait for folder page to load
+        cy.get('.e2e-resource-header').should('be.visible');
         cy.get('.e2e-resource-header').contains(folderTitle);
 
         // Check that our projects are in the list and add them to the folder

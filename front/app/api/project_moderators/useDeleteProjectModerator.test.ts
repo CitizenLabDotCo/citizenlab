@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteProjectModerator from './useDeleteProjectModerator';
 const apiPath = '*projects/:projectId/moderators/:id';
@@ -18,7 +18,7 @@ describe('useDeleteProjectModerator', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteProjectModerator(), {
+    const { result } = renderHook(() => useDeleteProjectModerator(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -36,7 +36,7 @@ describe('useDeleteProjectModerator', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteProjectModerator(), {
+    const { result } = renderHook(() => useDeleteProjectModerator(), {
       wrapper: createQueryClientWrapper(),
     });
 

@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { customFieldOptionImageData } from './__mocks__/customFieldOptionImage';
 import useCustomFieldOptionImage from './useCustomFieldOptionImage';
@@ -23,7 +23,7 @@ describe('useCustomFieldOptionImage', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useCustomFieldOptionImage({ imageId: 'test_id ' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -45,7 +45,7 @@ describe('useCustomFieldOptionImage', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useCustomFieldOptionImage({ imageId: 'test_id ' }),
       {
         wrapper: createQueryClientWrapper(),

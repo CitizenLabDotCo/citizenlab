@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { IPhasePermissionData } from './types';
 import useUpdateProjectPermission from './useUpdateProjectPermission';
@@ -42,7 +42,7 @@ describe('useUpdateProjectPermission', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useUpdateProjectPermission('fc251de04cb7'),
       {
         wrapper: createQueryClientWrapper(),
@@ -72,7 +72,7 @@ describe('useUpdateProjectPermission', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useUpdateProjectPermission('fc251de04cb7'),
       {
         wrapper: createQueryClientWrapper(),

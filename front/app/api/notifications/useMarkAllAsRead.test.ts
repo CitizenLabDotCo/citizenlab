@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useMarkAllAsRead from './useMarkAllAsRead';
 
@@ -19,7 +19,7 @@ describe('useMarkAllAsRead', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useMarkAllAsRead(), {
+    const { result } = renderHook(() => useMarkAllAsRead(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -37,7 +37,7 @@ describe('useMarkAllAsRead', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useMarkAllAsRead(), {
+    const { result } = renderHook(() => useMarkAllAsRead(), {
       wrapper: createQueryClientWrapper(),
     });
 

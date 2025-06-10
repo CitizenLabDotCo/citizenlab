@@ -1059,7 +1059,7 @@
       "form_mapping": {
         "type": "object",
         "title": "Mapping features used in in-platform surveys",
-        "description":  "Alpha version - do not enable for active platform(s) unless agreed with Product. Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
+        "description":  "Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1455,6 +1455,18 @@
         "type": "object",
         "title": "Common ground",
         "description": "New participation method that is currently under development. [DO NOT ENABLE]",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_planning": {
+        "type": "object",
+        "title": "Project planning",
+        "description": "New back office projects overview [DO NOT ENABLE]",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

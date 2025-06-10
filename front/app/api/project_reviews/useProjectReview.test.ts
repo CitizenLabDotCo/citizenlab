@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { ProjectReviewData } from './types';
 import useProjectReview from './useProjectReview';
@@ -50,7 +50,7 @@ describe('useProjectReview', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useProjectReview('id'), {
+    const { result } = renderHook(() => useProjectReview('id'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -69,7 +69,7 @@ describe('useProjectReview', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useProjectReview('id'), {
+    const { result } = renderHook(() => useProjectReview('id'), {
       wrapper: createQueryClientWrapper(),
     });
 

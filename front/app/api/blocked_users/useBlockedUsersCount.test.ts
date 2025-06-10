@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import useBlockedUsersCount from './useBlockedUsersCount';
 
@@ -27,7 +27,7 @@ describe('useBlockedUsersCount', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useBlockedUsersCount(), {
+    const { result } = renderHook(() => useBlockedUsersCount(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -46,7 +46,7 @@ describe('useBlockedUsersCount', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useBlockedUsersCount(), {
+    const { result } = renderHook(() => useBlockedUsersCount(), {
       wrapper: createQueryClientWrapper(),
     });
 

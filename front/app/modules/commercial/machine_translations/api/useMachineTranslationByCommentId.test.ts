@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { machineTranslationData } from './__mocks__/useMachineTranslationByCommentId';
 import useMachineTranslationByCommentId from './useMachineTranslationByCommentId';
@@ -20,7 +20,7 @@ describe('useMachineTranslationByCommentId', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useMachineTranslationByCommentId({
           commentId: 'id',
@@ -50,7 +50,7 @@ describe('useMachineTranslationByCommentId', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useMachineTranslationByCommentId({
           commentId: 'id',

@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { eventFilesData } from './__mocks__/useEventFiles';
 import useEventFiles from './useEventFiles';
@@ -20,7 +20,7 @@ describe('useEventFiles', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useEventFiles('1'), {
+    const { result } = renderHook(() => useEventFiles('1'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useEventFiles', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useEventFiles('1'), {
+    const { result } = renderHook(() => useEventFiles('1'), {
       wrapper: createQueryClientWrapper(),
     });
 

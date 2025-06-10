@@ -9,6 +9,8 @@ RSpec.describe Topic do
     end
   end
 
+  it { is_expected.to validate_presence_of(:title_multiloc) }
+
   describe 'order_ideas_count' do
     # topic 0: ideas 1, 3, 6 (3)
     # topic 1: / (0)

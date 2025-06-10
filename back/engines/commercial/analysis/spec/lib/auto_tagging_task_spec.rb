@@ -66,16 +66,9 @@ RSpec.describe Analysis::AutoTaggingTask do
 
       positive_tag = create(:tag, tag_type: 'sentiment', analysis: analysis, name: 'sentiment +')
 
-      mock_nlp_client = instance_double(NLPCloud::Client)
-      expect(mock_nlp_client).to receive(:sentiment).and_return({
-        'scored_labels' => [
-          { 'label' => 'NEGATIVE', 'score' => 0.99 }
-        ]
-      })
       expect_any_instance_of(Analysis::AutoTaggingMethod::Sentiment)
-        .to receive(:nlp_cloud_client_for)
-        .with(anything, 'nl-NL')
-        .and_return(mock_nlp_client)
+        .to receive(:sentiment_for_text)
+        .and_return('NEGATIVE')
 
       expect { att.execute }
         .to change(Analysis::Tag, :count).from(1).to(2)
@@ -101,28 +94,11 @@ RSpec.describe Analysis::AutoTaggingTask do
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'language')
       idea = create(:idea, project: project, title_multiloc: { en: 'Dit is niet echt in het Engels, mais en Nederlands' })
-      fr_tag = create(:tag, name: 'fr', tag_type: 'language', analysis: analysis)
+      create(:tag, name: 'fr', tag_type: 'language', analysis: analysis)
 
-      mock_nlp_client = instance_double(NLPCloud::Client)
-
-      expect(mock_nlp_client).to receive(:langdetection).and_return({
-        'languages' => [
-          {
-            'nl' => 0.9142834369645996
-          },
-          {
-            'pl' => 0.1142834369645996
-          },
-          {
-            'fr' => 0.828571521669868466
-          }
-        ]
-      })
       expect_any_instance_of(Analysis::AutoTaggingMethod::Language)
-        .to receive(:nlp_cloud_client_for)
-        .and_return(
-          mock_nlp_client
-        )
+        .to receive(:language_for_text)
+        .and_return('nl')
 
       expect { att.execute }
         .to change(Analysis::Tag, :count).from(1).to(2)
@@ -135,7 +111,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       nl_tag = Analysis::Tag.find_by(analysis: analysis, name: 'nl')
       expect(nl_tag).to be_present
 
-      expect(idea.tags).to match_array([nl_tag, fr_tag])
+      expect(idea.tags).to eq [nl_tag]
       expect(idea.taggings.first.background_task).to eq att
     end
   end

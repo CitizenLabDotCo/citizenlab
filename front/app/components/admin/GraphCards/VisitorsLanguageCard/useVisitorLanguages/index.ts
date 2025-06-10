@@ -1,10 +1,10 @@
+import { useVisitorsLanguagesLive } from 'api/graph_data_units';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { parsePieData, parseExcelData } from './parse';
 import { getTranslations } from './translations';
 import { QueryParameters } from './typings';
-
-import { useVisitorsLanguagesLive } from 'api/graph_data_units';
 
 export default function useVisitorsData({
   projectId,

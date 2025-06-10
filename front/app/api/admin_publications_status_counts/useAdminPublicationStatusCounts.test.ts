@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import useAdminPublicationsStatusCounts from './useAdminPublicationsStatusCounts';
 
@@ -27,12 +27,9 @@ describe('useAdminPublicationsStatusCounts', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useAdminPublicationsStatusCounts({}),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAdminPublicationsStatusCounts({}), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
 
@@ -49,12 +46,9 @@ describe('useAdminPublicationsStatusCounts', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useAdminPublicationsStatusCounts({}),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAdminPublicationsStatusCounts({}), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));

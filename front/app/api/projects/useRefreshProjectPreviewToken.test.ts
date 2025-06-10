@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { project1 } from './__mocks__/_mockServer';
 import useRefreshProjectPreviewToken from './useRefreshProjectPreviewToken';
@@ -19,12 +19,9 @@ describe('useRefreshProjectPreviewToken', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useRefreshProjectPreviewToken(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useRefreshProjectPreviewToken(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -43,12 +40,9 @@ describe('useRefreshProjectPreviewToken', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useRefreshProjectPreviewToken(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useRefreshProjectPreviewToken(), {
+      wrapper: createQueryClientWrapper(),
+    });
     act(() => {
       result.current.mutate({
         projectId: 'id',

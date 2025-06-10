@@ -5,9 +5,9 @@ import {
   Condition,
   RuleEffect,
   SchemaBasedCondition,
-  Scopable,
 } from '@jsonforms/core';
 import { ErrorObject } from 'ajv';
+import { Multiloc } from 'component-library/utils/typings';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
@@ -30,7 +30,7 @@ export interface PageType extends Layout {
     map_config_id?: string;
     page_layout?: 'map' | 'default' | null;
     page_button_link?: string;
-    page_button_label_multiloc?: Record<string, string>;
+    page_button_label_multiloc?: Multiloc;
   };
   label?: string;
   scope?: string;
@@ -51,10 +51,7 @@ export interface PageCategorization extends ExtendedUISchema {
   elements: PageType[];
 }
 
-interface ConditionWithPageId
-  extends Condition,
-    Scopable,
-    SchemaBasedCondition {
+interface ConditionWithPageId extends Condition, SchemaBasedCondition {
   pageId?: string;
 }
 
@@ -77,7 +74,7 @@ export type ExtendedRule = {
 export type ExtendedUISchema = {
   ruleArray?: ExtendedRule[];
   label?: string;
-} & UISchemaElement &
-  Scopable;
+  scope: string;
+} & UISchemaElement;
 
 export type FormValues = Record<string, any>;

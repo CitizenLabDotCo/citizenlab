@@ -2,6 +2,9 @@ import moment = require('moment');
 import { randomString } from '../support/commands';
 import { skipOn } from '@cypress/skip-test';
 
+let projectId: string;
+let projectSlug: string;
+
 describe('Existing project with survey', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
@@ -37,8 +40,7 @@ describe('New project with survey', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
-  let projectId: string;
-  let projectSlug: string;
+
   const phaseTitle = randomString();
 
   before(() => {
@@ -107,7 +109,10 @@ describe('New project with survey', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -116,8 +121,6 @@ describe('Timeline project with survey phase', () => {
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   const phaseTitle = randomString();
-  let projectId: string;
-  let projectSlug: string;
 
   before(() => {
     cy.apiCreateProject({
@@ -164,7 +167,10 @@ describe('Timeline project with survey phase', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -173,8 +179,6 @@ describe('Timeline project with survey phase but not active', () => {
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   const phaseTitle = randomString();
-  let projectId: string;
-  let projectSlug: string;
 
   before(() => {
     cy.apiCreateProject({
@@ -212,7 +216,10 @@ describe('Timeline project with survey phase but not active', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -220,8 +227,6 @@ describe('Archived single phase project with survey', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
-  let projectId: string;
-  let projectSlug: string;
 
   before(() => {
     cy.apiCreateProject({
@@ -256,7 +261,10 @@ describe('Archived single phase project with survey', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -264,8 +272,6 @@ describe('Embedded survey CTA', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
-  let projectId: string;
-  let projectSlug: string;
 
   before(() => {
     cy.setAdminLoginCookie();
@@ -298,6 +304,9 @@ describe('Embedded survey CTA', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });

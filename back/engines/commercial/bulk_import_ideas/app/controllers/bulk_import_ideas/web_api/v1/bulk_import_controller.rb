@@ -12,17 +12,18 @@ module BulkImportIdeas
           exporter_class: Exporters::IdeaXlsxFormExporter,
           parser_class: Parsers::IdeaXlsxFileParser
         },
+        'html' => {
+          exporter_class: Exporters::IdeaHtmlFormExporter,
+          parser_class: nil # Not implemented for importing
+        },
         'pdf' => {
           exporter_class: Exporters::IdeaPdfFormExporter,
           parser_class: Parsers::IdeaPdfFileParser
         },
-        'htmlpdf' => {
-          exporter_class: Exporters::IdeaHtmlPdfFormExporter,
-          parser_class: Parsers::IdeaHtmlPdfFileParser
-        },
-        'html' => {
-          exporter_class: Exporters::IdeaHtmlFormExporter,
-          parser_class: nil # Not implemented for importing
+        # The following classes are now for legacy support of the prawn based pdf import/export
+        'legacy_pdf' => {
+          exporter_class: Legacy::IdeaPdfFormExporter,
+          parser_class: Legacy::IdeaPdfFileParser
         }
       }
     }
@@ -92,7 +93,7 @@ module BulkImportIdeas
     end
 
     # Show the metadata of a single imported idea
-    # TODO: When other model types (eg comments) are supported, IdeaImport & IdeaImportFile will need to be made polymorphic
+    # NOTE: When other model types (eg comments) are supported, IdeaImport & IdeaImportFile will need to be made polymorphic
     def show_idea_import
       idea_import = IdeaImport.find(params[:id])
       authorize idea_import.idea
@@ -115,7 +116,7 @@ module BulkImportIdeas
     def bulk_create_params
       params
         .require(:import)
-        .permit(%i[file locale personal_data])
+        .permit(%i[file locale personal_data legacy_pdf])
     end
 
     def authorize_bulk_import_ideas
@@ -152,10 +153,15 @@ module BulkImportIdeas
 
       return CONSTANTIZER.fetch(model)[class_type] if class_type == :serializer_class
 
-      # TEMP: If new pdf format feature flag is on then change format from pdf to htmlpdf is used
-      format = 'htmlpdf' if format == 'pdf' && AppConfiguration.instance.settings.dig('html_pdfs', 'enabled')
+      format = 'legacy_pdf' if format == 'pdf' && use_legacy_pdf?
 
       CONSTANTIZER.fetch(model).fetch(format)[class_type]
+    end
+
+    # Use legacy pdf if the html_pdfs feature flag is off or ?legacy=true in importer url
+    def use_legacy_pdf?
+      legacy = params[:import] ? !!bulk_create_params[:legacy_pdf] : false # Allows backdoor access to the old pdf format whilst feature flag is on
+      !AppConfiguration.instance.settings.dig('html_pdfs', 'enabled') || legacy
     end
 
     def serializer

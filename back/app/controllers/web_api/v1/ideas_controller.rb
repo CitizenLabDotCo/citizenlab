@@ -171,6 +171,9 @@ class WebApi::V1::IdeasController < ApplicationController
     input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
     input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
 
+    # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
+    input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
+
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
     if phase_for_input.pmethod.supports_survey_form? && phase_for_input.allow_anonymous_participation?
       input.anonymous = true
@@ -197,6 +200,7 @@ class WebApi::V1::IdeasController < ApplicationController
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
         sidefx.after_create(input, current_user)
+        write_everyone_tracking_cookie input
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
@@ -553,6 +557,14 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def allow_duplicates?
     @allow_duplicates ||= params[:allow_duplicates]&.downcase.in? %w[true 1]
+  end
+
+  def write_everyone_tracking_cookie(input)
+    Permissions::EveryoneTrackingService.new(
+      input.author,
+      input.creation_phase,
+      input.request
+    ).write_everyone_tracking_cookie(cookies, input.author_hash)
   end
 end
 

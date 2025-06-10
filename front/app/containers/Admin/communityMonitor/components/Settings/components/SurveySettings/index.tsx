@@ -12,6 +12,8 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
 
+import UserFieldsToggle from 'containers/Admin/communityMonitor/components/Settings/components/UserFieldsToggle';
+
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
 import EditWarningModal from 'components/admin/SurveyEditWarningModal';
@@ -24,7 +26,6 @@ import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 import ViewSurveyButton from '../../../ViewSurveyButton';
 import messages from '../../messages';
 import AnonymousToggle from '../AnonymousToggle';
-import UserFieldsToggle from 'containers/Admin/communityMonitor/components/Settings/components/UserFieldsToggle';
 
 const SurveySettings = () => {
   const locale = useLocale();
@@ -59,12 +60,8 @@ const SurveySettings = () => {
     submissionCount.data.attributes.totalSubmissions > 0;
 
   // Variables from form config
-  const {
-    downloadExcelLink,
-    postingEnabled,
-    togglePostingEnabled,
-    inputImporterLink,
-  } = getFormActionsConfig(project.data, updatePhase, phase.data);
+  const { postingEnabled, togglePostingEnabled, inputImporterLink } =
+    getFormActionsConfig(project.data, updatePhase, phase.data);
   const editFormLink: RouteType = `/admin/community-monitor/projects/${project.data.id}/phases/${phase.data.id}/survey/edit`;
 
   // Functions to handle modal states
@@ -156,7 +153,6 @@ const SurveySettings = () => {
               handleDownloadResults={handleDownloadResults}
               setDropdownOpened={setDropdownOpened}
               isDropdownOpened={isDropdownOpened}
-              downloadExcelLink={downloadExcelLink}
               setShowDeleteModal={setShowDeleteModal}
             />
           </Box>

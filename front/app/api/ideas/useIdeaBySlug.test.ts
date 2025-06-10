@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import endpoints, { ideaData, apiPathBySlug } from './__mocks__/_mockServer';
 import useIdeaBySlug from './useIdeaBySlug';
@@ -14,7 +14,7 @@ describe('useIdeaBySlug', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useIdeaBySlug('slug'), {
+    const { result } = renderHook(() => useIdeaBySlug('slug'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -33,7 +33,7 @@ describe('useIdeaBySlug', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useIdeaBySlug('slug'), {
+    const { result } = renderHook(() => useIdeaBySlug('slug'), {
       wrapper: createQueryClientWrapper(),
     });
 

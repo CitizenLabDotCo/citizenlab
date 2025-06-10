@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { projectFilesData } from './__mocks__/useProjectFiles';
 import useProjectFiles from './useProjectFiles';
@@ -20,7 +20,7 @@ describe('useProjectFiles', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useProjectFiles('projectId'), {
+    const { result } = renderHook(() => useProjectFiles('projectId'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useProjectFiles', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useProjectFiles('projectId'), {
+    const { result } = renderHook(() => useProjectFiles('projectId'), {
       wrapper: createQueryClientWrapper(),
     });
 

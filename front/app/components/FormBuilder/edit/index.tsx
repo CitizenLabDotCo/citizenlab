@@ -136,6 +136,7 @@ const FormEdit = ({
         linear_scale_label_11_multiloc: object(),
         required: boolean(),
         ask_follow_up: boolean(),
+        include_in_printed_form: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
@@ -258,7 +259,10 @@ const FormEdit = ({
               page_button_label_multiloc:
                 field.page_button_label_multiloc || {},
               page_button_link: field.page_button_link || '',
-              include_in_printed_form: field.include_in_printed_form || false,
+              include_in_printed_form:
+                field.include_in_printed_form === undefined
+                  ? true
+                  : field.include_in_printed_form,
             }
           : {}),
         ...(field.map_config_id && {
@@ -412,6 +416,7 @@ const FormEdit = ({
       position="fixed"
       bgColor={colors.background}
       h="100vh"
+      data-cy="e2e-survey-form-builder"
     >
       <HelmetIntl title={messages.helmetTitle} />
       <FocusOn>

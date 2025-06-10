@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { groupsData } from './__mocks__/useGroups';
 import { GroupsQueryParameters } from './types';
@@ -26,7 +26,7 @@ describe('useGroups', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useGroups(params), {
+    const { result } = renderHook(() => useGroups(params), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -45,7 +45,7 @@ describe('useGroups', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useGroups(params), {
+    const { result } = renderHook(() => useGroups(params), {
       wrapper: createQueryClientWrapper(),
     });
 
