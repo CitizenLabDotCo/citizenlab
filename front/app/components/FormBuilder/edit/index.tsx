@@ -136,6 +136,7 @@ const FormEdit = ({
         linear_scale_label_11_multiloc: object(),
         required: boolean(),
         ask_follow_up: boolean(),
+        include_in_printed_form: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
@@ -224,6 +225,8 @@ const FormEdit = ({
     setSuccessMessageIsVisible(false);
     try {
       setIsSubmitting(true);
+
+      console.log('Submitting form with custom fields:', customFields);
       const finalResponseArray = customFields.map((field) => ({
         ...(!field.isLocalOnly && { id: field.id }),
         input_type: field.input_type,
@@ -258,7 +261,10 @@ const FormEdit = ({
               page_button_label_multiloc:
                 field.page_button_label_multiloc || {},
               page_button_link: field.page_button_link || '',
-              include_in_printed_form: field.include_in_printed_form || false,
+              include_in_printed_form:
+                field.include_in_printed_form === undefined
+                  ? true
+                  : field.include_in_printed_form,
             }
           : {}),
         ...(field.map_config_id && {
@@ -321,6 +327,8 @@ const FormEdit = ({
           maximum: field.maximum?.toString() || '5',
         }),
       }));
+
+      console.log('Final response array:', finalResponseArray);
 
       await updateFormCustomFields(
         {
