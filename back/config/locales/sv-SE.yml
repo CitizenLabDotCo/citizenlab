@@ -285,6 +285,7 @@ sv:
       likes_count: 'Gillar'
       location: 'Plats'
       longitude: 'Longitud'
+      neutral_reactions_count: 'Osäker'
       participants: 'Deltagare'
       picks: 'Val'
       project: 'Projekt'
@@ -331,6 +332,15 @@ sv:
       write_in_language: 'Skriv dina svar på samma språk som detta formulär'
       linear_scale_print_description: 'Ange endast ett nummer mellan %{min_label} och %{max_label}'
       unsupported_field: 'Detta fält kan inte fyllas i på papper. Använd istället online-versionen av detta formulär.'
+      ranking_print_description: 'Skriv en siffra från 1 (mest önskad) till %{max_rank} (minst önskad) i varje ruta. Använd varje siffra exakt en gång.'
+      matrix_print_description: 'För varje rad markerar du en cirkel med ett kryss för att ange din preferens.'
+      rating_print_description: 'Betygsätt detta genom att skriva en siffra mellan 1 (sämst) och %{max_stars} (bäst).'
+      sentiment_linear_scale_print_description: 'Vänligen skriv ett nummer mellan 1 och 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Rita ett X på kartan nedan för att visa platsen eller skriv adressen istället.'
+      line_print_description: 'Rita en rutt på kartan nedan.'
+      polygon_print_description: 'Rita en form på kartan nedan.'
+      select_print_description: 'Välj endast ett alternativ.'
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:
