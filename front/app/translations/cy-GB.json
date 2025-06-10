@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} defnyddwyr",
   "app.components.AvatarBubbles.participant": "cyfranogwr",
   "app.components.AvatarBubbles.participants1": "cyfranogwyr",
-  "app.components.CityLogoSection.iframeTitle": "Mwy o wybodaeth am {orgName}",
   "app.components.Comments.cancel": "Canslo",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Nid yw'n bosibl gwneud sylwadau yn y cyfnod presennol.",
   "app.components.Comments.commentingDisabledInactiveProject": "Nid yw'n bosibl gwneud sylwadau oherwydd nid yw'r prosiect hwn yn weithredol ar hyn o bryd.",
