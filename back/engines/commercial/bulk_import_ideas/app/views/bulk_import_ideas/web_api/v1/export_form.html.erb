@@ -32,7 +32,7 @@
     h2 { font-size: 13pt; line-height: 1.3; }
     h3 { font-size: 11pt; line-height: 1.3; display: inline-flex; }
     h4, p, li, td, th { font-size: 11pt; line-height: 1.3; }
-    img { max-width: 100%; height: auto; }
+    img { max-width: 480px; height: auto; }
 
     div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px; }
 
@@ -75,6 +75,7 @@
 
     #questions {
       h4 { margin-left: 30px; }
+      img { margin-top: 10px; max-width: 480px; height: auto; }
       div.content { margin-left: 30px; }
       div.question, div.page { margin-bottom: 10px; }
       div.unsupported p, div.visibility_disclaimer p { color: #666; font-style: italic; }
@@ -115,7 +116,7 @@
       }
       div.page {
         margin-right: 30px;
-        img { margin-top: 10px; width: 510px; height: auto; }
+        img { margin-top: 10px; max-width: 480px; height: auto; }
       }
     }
   </style>
@@ -161,7 +162,21 @@
 <% end %>
 
 <div id="questions">
-<% fields.each do |field| %>
+
+  <div class="question">
+    <img src="https://www.edmullen.net/test/rc.jpg">
+  </div>
+
+  <div class="page">
+    <img src="https://www.edmullen.net/test/rc.jpg">
+  </div>
+
+  <div class="page">
+    <img src="https://upload.wikimedia.org/wikipedia/en/a/aa/Bart_Simpson_200px.png">
+  </div>
+
+
+  <% fields.each do |field| %>
   <% if field[:field_group][:start] %><div class="field-group"><% end %>
     <% if field[:input_type] == 'page' %>
       <div class="page" id="<%= field[:id] %>">
