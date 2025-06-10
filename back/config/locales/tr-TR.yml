@@ -285,6 +285,7 @@ tr:
       likes_count: 'Beğeniler'
       location: 'Konum'
       longitude: 'Boylam'
+      neutral_reactions_count: 'Emin değilim'
       participants: 'Katılımcılar'
       picks: 'Seçimler'
       project: 'Proje'
@@ -331,6 +332,15 @@ tr:
       write_in_language: 'Cevaplarınızı bu formla aynı dilde yazın'
       linear_scale_print_description: 'Lütfen sadece %{min_label} ve %{max_label} arasında bir sayı yazın'
       unsupported_field: 'Bu alan kağıt üzerinde doldurulamaz. Lütfen bunun yerine bu formun çevrimiçi sürümünü kullanın.'
+      ranking_print_description: 'Lütfen her kutuya 1 (en çok tercih edilen) ve %{max_rank} (en az tercih edilen) arasında bir sayı yazın. Her numarayı tam olarak bir kez kullanın.'
+      matrix_print_description: 'Her sıra için, tercihinizi belirtmek üzere bir daireyi çarpı ile işaretleyin.'
+      rating_print_description: 'Bunu 1 (en kötü) ile %{max_stars} (en iyi) arasında bir sayı yazarak değerlendirin.'
+      sentiment_linear_scale_print_description: 'Lütfen 1 ile 5 arasında bir sayı yazınız.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Lütfen konumu göstermek için aşağıdaki haritaya bir X işareti çizin veya bunun yerine adresi yazın.'
+      line_print_description: 'Lütfen aşağıdaki harita üzerinde bir rota çizin.'
+      polygon_print_description: 'Lütfen aşağıdaki harita üzerinde bir şekil çizin.'
+      select_print_description: 'Sadece bir seçenek seçin.'
   project_copy:
     title_suffix: 'Kopya'
   confirmations_mailer:
