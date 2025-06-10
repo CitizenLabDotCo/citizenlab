@@ -89,7 +89,7 @@
   "app.components.CommonGroundStatements.agreeLabel": "Enig",
   "app.components.CommonGroundStatements.disagreeLabel": "Uenig",
   "app.components.CommonGroundStatements.noMoreStatements": "Der er ingen udsagn at reagere på lige nu",
-  "app.components.CommonGroundStatements.noResults": "Der er ingen resultater at vise endnu. Sørg for, at du har deltaget i Common Ground-fasen, og kom tilbage her bagefter.",
+  "app.components.CommonGroundStatements.noResults": "Der er ingen resultater at vise endnu. Sørg for, at du har deltaget i Fælles Grundlag-fasen, og kom tilbage her bagefter.",
   "app.components.CommonGroundStatements.unsureLabel": "Usikker",
   "app.components.CommonGroundTabs.resultsTabLabel": "Resultater",
   "app.components.CommonGroundTabs.statementsTabLabel": "Udtalelser",
