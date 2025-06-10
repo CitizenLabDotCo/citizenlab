@@ -4,7 +4,6 @@ import { Image } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
 import useLocalize from 'hooks/useLocalize';
 
 import { isNilOrError } from 'utils/helperUtils';
