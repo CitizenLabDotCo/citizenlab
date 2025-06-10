@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 
+import DeviceTypesCard from 'components/admin/GraphCards/DeviceTypesCard';
 import ParticipantsCard from 'components/admin/GraphCards/ParticipantsCard';
 import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
 import {
@@ -10,9 +11,8 @@ import {
   Resolution,
 } from 'components/admin/GraphCards/typings';
 import VisitorsCard from 'components/admin/GraphCards/VisitorsCard';
-import VisitorsTrafficSourcesCard from 'components/admin/GraphCards/VisitorsTrafficSourcesCard';
 import VisitorsLanguageCard from 'components/admin/GraphCards/VisitorsLanguageCard';
-import DeviceTypesCard from 'components/admin/GraphCards/DeviceTypesCard';
+import VisitorsTrafficSourcesCard from 'components/admin/GraphCards/VisitorsTrafficSourcesCard';
 
 type Props = ProjectId & Dates & Resolution;
 
