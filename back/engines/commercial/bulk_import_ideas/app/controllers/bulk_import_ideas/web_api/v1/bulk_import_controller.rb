@@ -17,13 +17,13 @@ module BulkImportIdeas
           parser_class: nil # Not implemented for importing
         },
         'pdf' => {
-          exporter_class: Exporters::IdeaHtmlPdfFormExporter,
-          parser_class: Parsers::IdeaHtmlPdfFileParser
+          exporter_class: Exporters::IdeaPdfFormExporter,
+          parser_class: Parsers::IdeaPdfFileParser
         },
         # The following classes are now for legacy support of the prawn based pdf import/export
         'legacy_pdf' => {
-          exporter_class: Exporters::IdeaPdfFormExporter,
-          parser_class: Parsers::IdeaPdfFileParser
+          exporter_class: Legacy::IdeaPdfFormExporter,
+          parser_class: Legacy::IdeaPdfFileParser
         }
       }
     }
@@ -93,7 +93,7 @@ module BulkImportIdeas
     end
 
     # Show the metadata of a single imported idea
-    # TODO: When other model types (eg comments) are supported, IdeaImport & IdeaImportFile will need to be made polymorphic
+    # NOTE: When other model types (eg comments) are supported, IdeaImport & IdeaImportFile will need to be made polymorphic
     def show_idea_import
       idea_import = IdeaImport.find(params[:id])
       authorize idea_import.idea

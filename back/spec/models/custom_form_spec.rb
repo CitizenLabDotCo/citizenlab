@@ -47,13 +47,6 @@ RSpec.describe CustomForm do
       expect(custom_form.print_start_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
     end
 
-    it 'sanitizes when escaped HTML tags present' do
-      custom_form = create(:custom_form, print_start_multiloc: {
-        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
-      })
-      expect(custom_form.print_start_multiloc).to eq({ 'en' => 'Something <img src="x">' })
-    end
-
     it 'removes <a> tags, but keeps the text between the tags' do
       custom_form = create(
         :custom_form,

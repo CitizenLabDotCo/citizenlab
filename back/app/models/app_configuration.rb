@@ -34,7 +34,6 @@ class AppConfiguration < ApplicationRecord
 
   before_validation :validate_missing_feature_dependencies
   before_validation :add_missing_features_and_settings, on: :create
-  before_validation :sanitize_organization_name
 
   module Settings
     extend CitizenLab::Mixins::SettingsSpecification
@@ -135,16 +134,6 @@ class AppConfiguration < ApplicationRecord
     schema = Settings.json_schema
     self.settings = ss.add_missing_features(settings, schema)
     self.settings = ss.add_missing_settings(settings, schema)
-  end
-
-  def sanitize_organization_name
-    organization_name = settings.dig('core', 'organization_name')
-    return if organization_name.nil?
-
-    settings['core']['organization_name'] = SanitizationService.new.sanitize_multiloc(
-      organization_name,
-      []
-    )
   end
 
   def feature_activated?(setting_name)

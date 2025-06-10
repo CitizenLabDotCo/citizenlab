@@ -1,10 +1,10 @@
-import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { eventData } from 'api/event_images/__mocks__/useEventImage';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { eventImageData } from './__mocks__/useEventImage';
 import useEventImage from './useEventImage';

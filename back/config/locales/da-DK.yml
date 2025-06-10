@@ -331,6 +331,15 @@ da:
       write_in_language: 'Skriv dine svar på samme sprog som denne formular'
       linear_scale_print_description: 'Skriv kun et tal mellem %{min_label} og %{max_label}'
       unsupported_field: 'Dette felt kan ikke udfyldes på papir. Brug venligst online-versionen af denne formular i stedet.'
+      ranking_print_description: 'Skriv et tal fra 1 (mest foretrukket) og %{max_rank} (mindst foretrukket) i hver boks. Brug hvert tal præcis én gang.'
+      matrix_print_description: 'Marker en cirkel for hver række med et kryds for at angive din præference.'
+      rating_print_description: 'Vurder dette ved at skrive et tal mellem 1 (værst) og %{max_stars} (bedst).'
+      sentiment_linear_scale_print_description: 'Skriv venligst et tal mellem 1 og 5.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Tegn et X på kortet nedenfor for at vise placeringen, eller skriv adressen i stedet.'
+      line_print_description: 'Tegn venligst en rute på kortet nedenfor.'
+      polygon_print_description: 'Tegn venligst en form på kortet nedenfor.'
+      select_print_description: 'Vælg kun én mulighed.'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:

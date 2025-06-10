@@ -2,10 +2,10 @@ import React from 'react';
 
 import Card from '../../_shared/Card';
 import messages from '../messages';
-import { Props } from './typings';
 
-import VisitorsTrafficSourcesCard from './VisitorTrafficSourcesCard';
 import Settings from './Settings';
+import { Props } from './typings';
+import VisitorsTrafficSourcesCard from './VisitorTrafficSourcesCard';
 
 const VisitorsTrafficSourcesWidget = ({ title, ...props }: Props) => {
   return (
