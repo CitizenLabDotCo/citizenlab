@@ -256,7 +256,7 @@
   "app.components.ParticipationCTABars.VotingCTABar.stillHaveVotesLeftDescription": "Voit silti jakaa enemmän {votesTerm} eri vaihtoehtojen kesken. Haluatko varmasti lähettää?",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# ääntä} one {# äänestä} other {# ääntä}} annettu",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "Annoit {votesCast} ääntä, mikä ylittää {votesLimit}rajan. Poista joitakin ääniä ja yritä uudelleen.",
-  "app.components.ParticipationCTABars.VotingCTABar.votesLeft2": "Jäljellä {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}",
+  "app.components.ParticipationCTABars.VotingCTABar.votesLeft2": "{totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} jäljellä {votesLeft} / {totalNumberOfVotes}",
   "app.components.ParticipationCTABars.allocateBudget": "Kohdista budjettisi",
   "app.components.ParticipationCTABars.budgetSubmitSuccess": "Budjettisi on lähetetty onnistuneesti.",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Avoinna osallistumiselle",
