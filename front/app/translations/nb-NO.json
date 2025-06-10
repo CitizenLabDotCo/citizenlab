@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} brukere",
   "app.components.AvatarBubbles.participant": "deltaker",
   "app.components.AvatarBubbles.participants1": "deltakere",
-  "app.components.CityLogoSection.iframeTitle": "Mer informasjon om {orgName}",
   "app.components.Comments.cancel": "Avbryt",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Det er ikke mulig å kommentere i den nåværende fasen.",
   "app.components.Comments.commentingDisabledInactiveProject": "Det er ikke mulig å kommentere fordi dette prosjektet ikke er aktivt for øyeblikket.",
