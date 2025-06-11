@@ -52,6 +52,7 @@ class Event < ApplicationRecord
   validates :attend_button_multiloc, multiloc: { presence: false }
   validates :using_url, url: true, allow_blank: true
   validates :maximum_attendees, numericality: { only_integer: true, greater_than: 0, allow_nil: true }
+  validate :maximum_attendees_greater_than_attendees_count
   validate :validate_start_at_before_end_at
 
   before_validation :sanitize_description_multiloc
@@ -85,6 +86,14 @@ class Event < ApplicationRecord
 
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
+    end
+  end
+
+  def maximum_attendees_greater_than_attendees_count
+    return if maximum_attendees.blank? || attendees_count.blank?
+
+    if maximum_attendees < attendees_count
+      errors.add(:maximum_attendees, :greater_than_attendees_count, message: 'must be greater than or equal to the current number of attendees')
     end
   end
 end
