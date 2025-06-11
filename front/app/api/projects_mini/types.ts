@@ -41,7 +41,7 @@ export interface MiniProjectData {
   id: string;
   type: 'project_mini';
   attributes: {
-    action_descriptors: ActionDescriptors | null;
+    action_descriptors: ActionDescriptors;
     slug: string;
     starts_days_from_now: number | null;
     ended_days_ago: number | null;
