@@ -92,54 +92,44 @@ class ProjectsFinderAdminService
 
   def self.filter_project_manager(scope, params = {})
     manager_ids = params[:managers] || []
+    return scope if manager_ids.blank?
 
-    if manager_ids.present?
-      managers = User.where(id: manager_ids)
+    managers = User.where(id: manager_ids)
+    moderated_projects = []
 
-      moderated_projects = []
-
-      managers.each do |manager|
-        manager.roles.each do |role|
-          if role['type'] == 'project_moderator'
-            moderated_projects << role['project_id']
-          end
+    managers.each do |manager|
+      manager.roles.each do |role|
+        if role['type'] == 'project_moderator'
+          moderated_projects << role['project_id']
         end
       end
-
-      scope.where(id: moderated_projects)
-    else
-      scope
     end
+
+    scope.where(id: moderated_projects)
   end
 
   def self.search(scope, params = {})
     search = params[:search] || ''
+    return scope if search.blank?
 
-    if search.present?
-      scope.search_by_title(search)
-    else
-      scope
-    end
+    scope.search_by_title(search)
   end
 
   def self.filter_date(scope, params = {})
     start_at = params[:start_at]
     end_at = params[:end_at]
+    return scope if start_at.blank? && end_at.blank?
 
-    if start_at.present? || end_at.present?
-      start_at ||= Date.new(1970, 1, 1)
-      end_at ||= DateTime::Infinity
+    start_at ||= Date.new(1970, 1, 1)
+    end_at ||= DateTime::Infinity
 
-      overlapping_project_ids = Phase
-        .select(:project_id)
-        .where(
-          "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)",
-          start_at, end_at
-        )
+    overlapping_project_ids = Phase
+      .select(:project_id)
+      .where(
+        "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)",
+        start_at, end_at
+      )
 
-      return scope.where(id: overlapping_project_ids)
-    end
-
-    scope
+    scope.where(id: overlapping_project_ids)
   end
 end
