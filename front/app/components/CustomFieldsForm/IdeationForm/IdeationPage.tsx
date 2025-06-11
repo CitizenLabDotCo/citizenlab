@@ -8,6 +8,7 @@ import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
+import { IdeaPublicationStatus } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
@@ -30,16 +31,30 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
-import CustomFields from './CustomFields';
-import AuthorField from './Fields/AuthorField';
-import BudgetField from './Fields/BudgetField';
-import generateYupValidationSchema from './generateYupSchema';
-import ProgressBar from './ProgressBar';
-import { getFormCompletionPercentage } from './util';
+import CustomFields from '../CustomFields';
+import AuthorField from '../Fields/AuthorField';
+import BudgetField from '../Fields/BudgetField';
+import generateYupValidationSchema from '../generateYupSchema';
+import ProgressBar from '../ProgressBar';
+import { getFormCompletionPercentage } from '../util';
 
-import { FormValues } from './';
+export interface FormValues {
+  title_multiloc: Multiloc;
+  body_multiloc?: Multiloc;
+  author_id?: string;
+  idea_images_attributes?: { image: string }[];
+  idea_files_attributes?: {
+    file_by_content: { content: string };
+    name: string;
+  }[];
+  location_description?: string | null;
+  location_point_geojson?: GeoJSON.Point | null;
+  topic_ids?: string[];
+  cosponsor_ids?: string[];
+  publication_status?: IdeaPublicationStatus;
+}
 
-type CustomFieldsPage = {
+type IdeationPage = {
   page: IFlatCustomField;
   pageQuestions: IFlatCustomField[];
   currentPageNumber: number;
@@ -57,7 +72,7 @@ type CustomFieldsPage = {
   pagesRef: React.RefObject<HTMLDivElement>;
 };
 
-const CustomFieldsPage = ({
+const IdeationPage = ({
   page,
   pageQuestions,
   lastPageNumber,
@@ -73,7 +88,7 @@ const CustomFieldsPage = ({
   defaultValues,
   customFields,
   pagesRef,
-}: CustomFieldsPage) => {
+}: IdeationPage) => {
   const [showFormFeedback, setShowFormFeedback] = useState(false);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
@@ -378,4 +393,4 @@ const CustomFieldsPage = ({
   );
 };
 
-export default CustomFieldsPage;
+export default IdeationPage;

@@ -15,7 +15,7 @@ import { IProject } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import CustomFieldsForm from 'components/CustomFieldsForm';
+import SurveyForm from 'components/CustomFieldsForm/SurveyForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -303,7 +303,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
               pb={isSmallerThanPhone ? '0' : '80px'}
               display="flex"
             >
-              <CustomFieldsForm
+              <SurveyForm
                 projectId={project.data.id}
                 phaseId={phaseId}
                 participationMethod={'native_survey'}
