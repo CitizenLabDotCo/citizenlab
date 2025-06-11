@@ -48,6 +48,9 @@ const FullscreenPreview = React.lazy(
   () => import('containers/ProjectDescriptionBuilder/FullscreenPreview')
 );
 
+// TODO remove this when project planning is fully rolled out
+const NewProjectsPage = React.lazy(() => import('./projects/all/new'));
+
 export type AdminRoute<T extends string = string> = `/admin/${T}`;
 
 export type AdminRouteTypes =
@@ -64,7 +67,8 @@ export type AdminRouteTypes =
   | pagesAndMenuRouteTypes
   | projectsRouteTypes
   | settingRouteTypes
-  | inspirationHubRouteTypes;
+  | inspirationHubRouteTypes
+  | AdminRoute<'projects-redesign-early-access'>;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&
@@ -179,6 +183,12 @@ const createAdminRoutes = () => {
         element: <FullscreenPreview />,
       },
       ...moduleConfiguration.routes.admin,
+
+      // TODO remove this route when project planning is fully rolled out
+      {
+        path: 'projects-redesign-early-access',
+        element: <NewProjectsPage />,
+      },
     ],
   };
 };
