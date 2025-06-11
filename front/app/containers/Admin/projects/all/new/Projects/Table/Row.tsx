@@ -15,7 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import { VISIBILITY_LABELS, PUBLICATION_STATUS_LABELS } from './constants';
+import { VISIBILITY_LABELS, PUBLICATION_STATUS_LABELS } from '../constants';
 import CurrentPhase from './CurrentPhase';
 
 const StyledTd = styled(Td)`

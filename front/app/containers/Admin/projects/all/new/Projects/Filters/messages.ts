@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager',
     defaultMessage: 'Manager',
   },
+  status: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.status',
+    defaultMessage: 'Status',
+  },
 });
