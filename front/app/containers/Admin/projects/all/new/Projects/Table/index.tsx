@@ -9,6 +9,7 @@ import {
   Tbody,
   colors,
   stylingConsts,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 
 import useProjectsMiniAdmin from 'api/projects_mini_admin/useProjectsMiniAdmin';
@@ -29,7 +30,7 @@ const Table = () => {
 
   const { sort, ...params } = useParams();
 
-  const { data: projects } = useProjectsMiniAdmin({
+  const { data: projects, isFetching } = useProjectsMiniAdmin({
     ...params,
     sort: sort ?? 'phase_starting_or_ending_soon',
     'page[size]': 10,
@@ -40,7 +41,7 @@ const Table = () => {
   const lastPage = lastPageLink ? getPageNumberFromUrl(lastPageLink) ?? 1 : 1;
 
   return (
-    <Box>
+    <Box position="relative" w="100%" h="100%">
       <TableComponent
         border={`1px solid ${colors.grey300}`}
         borderRadius={stylingConsts.borderRadius}
@@ -71,6 +72,23 @@ const Table = () => {
             totalPages={lastPage}
             loadPage={setCurrentPage}
           />
+        </Box>
+      )}
+      {isFetching && (
+        <Box
+          position="absolute"
+          w="100%"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          bgColor="white"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          opacity={0.7}
+        >
+          <Spinner />
         </Box>
       )}
     </Box>
