@@ -22,7 +22,7 @@ const Search = () => {
       }}
       a11y_numberOfSearchResults={0}
       placeholder={formatMessage(messages.search)}
-      labelColor={colors.black}
+      labelColor={colors.grey600}
     />
   );
 };
