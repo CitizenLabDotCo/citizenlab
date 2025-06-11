@@ -6,10 +6,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-type Props = { fieldType: string };
-const PageButtonSettings = ({ fieldType }: Props) => {
-  const { formatMessage } = useIntl();
-
+const getMessageKey = (fieldType: string): string => {
   const fileUploadTypes = [
     'files',
     'image_files',
@@ -18,11 +15,24 @@ const PageButtonSettings = ({ fieldType }: Props) => {
   ];
   const mappingTypes = ['point', 'line', 'polygon'];
 
-  let messageKey = fieldType;
-  if (fileUploadTypes.includes(fieldType)) messageKey = 'fileupload';
-  if (mappingTypes.includes(fieldType)) messageKey = 'mapping';
+  switch (true) {
+    case fileUploadTypes.includes(fieldType):
+      return 'fileupload';
+    case mappingTypes.includes(fieldType):
+      return 'mapping';
+    default:
+      return fieldType;
+  }
+};
 
+type Props = { fieldType: string };
+
+const PageButtonSettings = ({ fieldType }: Props) => {
+  const { formatMessage } = useIntl();
+
+  const messageKey = getMessageKey(fieldType);
   const messageDescriptor = messages[messageKey];
+
   if (!messageDescriptor) return null;
 
   return (
