@@ -4,11 +4,13 @@ import { format } from 'date-fns';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 
+import { parseBackendDateString } from 'utils/dateUtils';
+
 import { useParam, setParam } from '../utils';
 
 const toDate = (str?: string) => {
   if (!str) return;
-  return new Date(str);
+  return parseBackendDateString(str);
 };
 
 const toString = (date?: Date) => {
