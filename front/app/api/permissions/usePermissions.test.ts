@@ -1,8 +1,8 @@
-import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { permissionsData } from './__mocks__/usePermissions';
 import usePermissions from './usePermissions';

@@ -1,9 +1,12 @@
 import { useDeviceTypesLive } from 'api/graph_data_units';
-import { categoricalColorScheme } from 'components/admin/Graphs/styling';
+
 import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
+import { categoricalColorScheme } from 'components/admin/Graphs/styling';
+
 import { useIntl } from 'utils/cl-intl';
 import { keys } from 'utils/helperUtils';
 import { roundPercentages } from 'utils/math';
+
 import { getTranslations, Translations } from './translations';
 
 export type QueryParameters = ProjectId & Dates;
