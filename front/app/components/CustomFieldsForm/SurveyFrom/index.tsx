@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useAddIdea from 'api/ideas/useAddIdea';
@@ -33,8 +33,7 @@ const SurveyForm = ({
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const { data: draftIdea, status: draftIdeaStatus } =
-    useDraftIdeaByPhaseId(phaseId);
+  const { data: draftIdea, isLoading } = useDraftIdeaByPhaseId(phaseId);
 
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
@@ -56,30 +55,30 @@ const SurveyForm = ({
   const lastPageNumber = nestedPagesData.length - 1;
 
   const onSubmit = async (formValues: FormValues) => {
-    if (currentPageNumber === nestedPagesData.length - 2) {
-      if (!draftIdea) {
-        // If the user is an admin or project moderator, we allow them to post to a specific phase
-        const phase_ids =
-          project && phaseId && canModerateProject(project.data, authUser)
-            ? [phaseId]
-            : null;
+    const isSubmitPage = currentPageNumber === nestedPagesData.length - 2;
+    if (!draftIdea) {
+      // If the user is an admin or project moderator, we allow them to post to a specific phase
+      const phase_ids =
+        project && phaseId && canModerateProject(project.data, authUser)
+          ? [phaseId]
+          : null;
 
-        const idea = await addIdea({
+      const idea = await addIdea({
+        ...formValues,
+        project_id: projectId,
+        phase_ids,
+        publication_status: isSubmitPage ? 'published' : 'draft',
+      });
+      updateSearchParams({ idea_id: idea.data.id });
+    } else {
+      await updateIdea({
+        id: draftIdea.data.id,
+        requestBody: {
           ...formValues,
-          project_id: projectId,
-          phase_ids,
-          publication_status: undefined, // TODO: Change this logic when handling draft ideas
-        });
-        updateSearchParams({ idea_id: idea.data.id });
-      } else {
-        await updateIdea({
-          id: draftIdea.data.id,
-          requestBody: {
-            ...formValues,
-          },
-        });
-        updateSearchParams({ idea_id: draftIdea.data.id });
-      }
+          publication_status: isSubmitPage ? 'published' : 'draft',
+        },
+      });
+      updateSearchParams({ idea_id: draftIdea.data.id });
     }
     // Go to the next page
     if (currentPageNumber < lastPageNumber) {
@@ -100,6 +99,10 @@ const SurveyForm = ({
       }
     : undefined;
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <Box overflow="scroll" w="100%" ref={pagesRef}>
       {nestedPagesData[currentPageNumber] && (
@@ -111,7 +114,6 @@ const SurveyForm = ({
           setCurrentPageNumber={setCurrentPageNumber}
           showTogglePostAnonymously={showTogglePostAnonymously}
           participationMethod={participationMethod}
-          ideaId={draftIdea?.data.id}
           projectId={projectId}
           onSubmit={onSubmit}
           pageButtonLabelMultiloc={pageButtonLabelMultiloc}

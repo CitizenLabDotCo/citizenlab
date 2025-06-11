@@ -12,6 +12,7 @@ import { IdeaPublicationStatus } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -86,6 +87,7 @@ const SurveyPage = ({
 }: SurveyPage) => {
   const [showFormFeedback, setShowFormFeedback] = useState(false);
   const { data: phases } = usePhases(projectId);
+  const { data: project } = useProjectById(projectId);
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -310,7 +312,7 @@ const SurveyPage = ({
                   pagesRef.current?.scrollTo(0, 0);
                   if (currentPageNumber === lastPageNumber) {
                     clHistory.push({
-                      pathname: `/projects/${projectId}/phases/${phase?.id}`,
+                      pathname: `/projects/${project?.data.attributes.slug}`,
                     });
                   }
                   methods.handleSubmit((e) => onFormSubmit(e))();

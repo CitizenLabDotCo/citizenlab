@@ -260,14 +260,6 @@ const IdeationPage = ({
               <Box h="100%" display="flex" flexDirection="column">
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
-                    {/* {allowsAnonymousPostingInNativeSurvey && (
-                  <Box w="100%" mb="12px">
-                    <Warning icon="shield-checkered">
-                      {formatMessage(messages.anonymousSurveyMessage)}
-                    </Warning>
-                  </Box>
-                )} */}
-
                     <Title
                       as="h1"
                       variant={isMobileOrSmaller ? 'h2' : 'h1'}
