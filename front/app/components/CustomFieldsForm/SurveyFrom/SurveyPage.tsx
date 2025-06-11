@@ -10,7 +10,6 @@ import { Multiloc } from 'typings';
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IdeaPublicationStatus } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
@@ -19,7 +18,6 @@ import useLocalize from 'hooks/useLocalize';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
-import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import PageControlButtons from 'components/Form/Components/Layouts/PageControlButtons';
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
@@ -29,11 +27,8 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
-import { isAdmin } from 'utils/permissions/roles';
 
 import CustomFields from '../CustomFields';
-import AuthorField from '../Fields/AuthorField';
-import BudgetField from '../Fields/BudgetField';
 import generateYupValidationSchema from '../generateYupSchema';
 import ProgressBar from '../ProgressBar';
 import { getFormCompletionPercentage } from '../util';
@@ -90,8 +85,6 @@ const SurveyPage = ({
   pagesRef,
 }: SurveyPage) => {
   const [showFormFeedback, setShowFormFeedback] = useState(false);
-  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
-  const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
 
   const localize = useLocalize();
@@ -125,27 +118,7 @@ const SurveyPage = ({
     defaultValues,
   });
 
-  const onFormSubmit = async (
-    formValues: FormValues,
-    isDisclaimerAccepted?: boolean
-  ) => {
-    // Copyright disclaimer is needed if the user is uploading files or images
-    const disclaimerNeeded = !!(
-      formValues.idea_files_attributes?.length ||
-      formValues.idea_images_attributes?.length ||
-      (formValues.body_multiloc &&
-        Object.values(formValues.body_multiloc).some((value) =>
-          value.includes('<img')
-        ))
-    );
-
-    if (currentPageNumber === lastPageNumber - 1) {
-      if (disclaimerNeeded && !isDisclaimerAccepted) {
-        setIsDisclaimerOpened(true);
-        return;
-      }
-    }
-
+  const onFormSubmit = async (formValues: FormValues) => {
     try {
       setShowFormFeedback(false);
       await onSubmit(formValues);
@@ -178,15 +151,6 @@ const SurveyPage = ({
     userIsEditing: isIdeaEditPage,
     userIsOnLastPage: currentPageNumber === lastPageNumber,
   });
-
-  const onAcceptDisclaimer = async () => {
-    setIsDisclaimerOpened(false);
-    return await methods.handleSubmit((e) => onFormSubmit(e, true))();
-  };
-
-  const onCancelDisclaimer = () => {
-    setIsDisclaimerOpened(false);
-  };
 
   return (
     <FormProvider {...methods}>
@@ -291,18 +255,6 @@ const SurveyPage = ({
                       </QuillEditedContent>
                     </Box>
 
-                    {currentPageNumber === 0 && isAdmin(authUser) && (
-                      <Box mb="24px">
-                        <AuthorField name="author_id" />
-                      </Box>
-                    )}
-                    {currentPageNumber === lastPageNumber - 1 &&
-                      isAdmin(authUser) &&
-                      phase?.attributes.voting_method === 'budgeting' && (
-                        <Box mb="24px">
-                          <BudgetField name="budget" />
-                        </Box>
-                      )}
                     <CustomFields
                       questions={pageQuestions}
                       projectId={projectId}
@@ -358,7 +310,7 @@ const SurveyPage = ({
                   pagesRef.current?.scrollTo(0, 0);
                   if (currentPageNumber === lastPageNumber) {
                     clHistory.push({
-                      pathname: `/ideas/${idea?.data.attributes.slug}`,
+                      pathname: `/projects/${projectId}/phases/${phase?.id}`,
                     });
                   }
                   methods.handleSubmit((e) => onFormSubmit(e))();
@@ -383,11 +335,6 @@ const SurveyPage = ({
             </Box>
           </Box>
         </Box>
-        <ContentUploadDisclaimer
-          isDisclaimerOpened={isDisclaimerOpened}
-          onAcceptDisclaimer={onAcceptDisclaimer}
-          onCancelDisclaimer={onCancelDisclaimer}
-        />
       </form>
     </FormProvider>
   );

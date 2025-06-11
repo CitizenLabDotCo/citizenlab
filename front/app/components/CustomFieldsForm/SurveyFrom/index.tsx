@@ -14,10 +14,9 @@ import useProjectById from 'api/projects/useProjectById';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import { FormValues } from '../CustomFieldsPage';
 import { convertCustomFieldsToNestedPages } from '../util';
 
-import SurveyPage from './SurveyPage';
+import SurveyPage, { FormValues } from './SurveyPage';
 
 const SurveyForm = ({
   projectId,
