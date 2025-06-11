@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import Dates from './Dates';
 import Manager from './Manager';
 import Search from './Search';
 import Sort from './Sort';
@@ -19,6 +20,7 @@ const Filters = () => {
         <Sort />
         <Manager />
         <Status />
+        <Dates />
       </Box>
       <Search />
     </Box>

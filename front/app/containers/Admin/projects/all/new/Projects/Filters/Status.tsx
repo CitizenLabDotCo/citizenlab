@@ -36,7 +36,7 @@ const Status = () => {
       multipleSelectionAllowed
       selected={values}
       values={options}
-      mr="0px"
+      mr="8px"
       onChange={(value: PublicationStatus[]) => {
         setParam('status', value);
       }}
