@@ -338,8 +338,19 @@ export const GanttChart = ({
               const startOffset = start
                 ? daysBetween(startDate, start)
                 : undefined;
-              const duration =
-                start && end ? daysBetween(start, end) : undefined;
+
+              // Calculate end date for projects without end date (10 years from today)
+              const tenYearsFromToday = new Date();
+              tenYearsFromToday.setFullYear(
+                tenYearsFromToday.getFullYear() + 10
+              );
+
+              let duration: number | undefined;
+              if (start && end) {
+                duration = daysBetween(start, end);
+              } else if (start) {
+                duration = daysBetween(start, tenYearsFromToday); // If no end date, extend to 10 years from today for visual representation because it won't be possible for now for them to see 10 years from now
+              }
 
               return (
                 <Box
