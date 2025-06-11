@@ -28,8 +28,8 @@ import { getFullName } from 'utils/textUtils';
 import LinkToFolderSettings from './LinkToFolderSettings';
 import messages from './messages';
 import ProjectDescriptionPreview from './ProjectDescriptionPreview';
-import PublicationStatus from './PublicationStatus';
 import PublicationButtons from './PublicationButtons';
+import PublicationStatus from './PublicationStatus';
 import ShareLink from './ShareLink';
 
 const StyledTitle = styled(Title)`

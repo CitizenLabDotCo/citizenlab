@@ -1,13 +1,10 @@
 import { UseQueryOptions, useQueries } from '@tanstack/react-query';
 
-import { ICustomFields } from 'api/custom_fields/types';
-
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import customFieldStatementKeys from './keys';
 import {
   ICustomFieldStatementParameters,
-  IdeaCustomFields,
   IFormCustomFieldStatement,
 } from './types';
 
@@ -27,18 +24,10 @@ const fetchCustomFieldStatement = ({
   });
 };
 
-type CustomFieldStatements = Omit<ICustomFieldStatementParameters, 'id'> & {
-  customFields?: ICustomFields | IdeaCustomFields;
-};
-
 type CustomFieldsStatementsReturnType =
   UseQueryOptions<IFormCustomFieldStatement>[];
 
-const useCustomFieldStatements = ({
-  projectId,
-  phaseId,
-  customFields,
-}: CustomFieldStatements) => {
+const useCustomFieldStatements = ({ projectId, phaseId, customFields }) => {
   const customFieldsStatementIds =
     customFields?.data.flatMap((customField) =>
       customField.relationships.matrix_statements?.data.map(
