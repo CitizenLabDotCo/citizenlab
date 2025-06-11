@@ -335,30 +335,43 @@ export const GanttChart = ({
             {items.map((item, index) => {
               const start = item.start ? new Date(item.start) : undefined;
               const end = item.end ? new Date(item.end) : undefined;
-              const startOffset = start
-                ? daysBetween(startDate, start)
-                : undefined;
 
-              // Calculate end date for projects without end date (10 years from today)
-              const tenYearsFromToday = new Date();
-              tenYearsFromToday.setFullYear(
-                tenYearsFromToday.getFullYear() + 10
+              // Determine the effective start and end dates for display
+              const effectiveStart = start
+                ? Math.max(start.getTime(), startDate.getTime())
+                : startDate.getTime();
+              const effectiveEnd = end
+                ? Math.min(end.getTime(), endDate.getTime())
+                : endDate.getTime();
+
+              // If the item starts after the chart ends, or ends before the chart starts, don't render
+              if (
+                effectiveStart > endDate.getTime() ||
+                effectiveEnd < startDate.getTime()
+              ) {
+                return null;
+              }
+
+              // Calculate the offset from the chart's start date to the item's effective start date
+              const startOffset = daysBetween(
+                startDate,
+                new Date(effectiveStart)
+              );
+              // Calculate the duration based on the effective start and end dates
+              const duration = daysBetween(
+                new Date(effectiveStart),
+                new Date(effectiveEnd)
               );
 
-              let duration: number | undefined;
-              if (start && end) {
-                duration = daysBetween(start, end);
-              } else if (start) {
-                duration = daysBetween(start, tenYearsFromToday); // If no end date, extend to 10 years from today for visual representation because it won't be possible for now for them to see 10 years from now
-              }
+              if (duration <= 0) return null; // Don't render items with zero or negative duration
 
               return (
                 <Box
                   key={item.id}
                   position="absolute"
                   top={`${index * rowHeight}px`}
-                  left={startOffset ? `${startOffset * dayWidth}px` : '0'}
-                  width={duration ? `${duration * dayWidth}px` : '0'}
+                  left={`${startOffset * dayWidth}px`}
+                  width={`${duration * dayWidth}px`}
                   height={`${rowHeight - 8}px`}
                   margin="2px 0"
                   background={getItemColor(item)}
