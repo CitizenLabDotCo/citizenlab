@@ -28,7 +28,7 @@ const MULTISELECT_PARAMS = new Set<string>([
 
 export const useParam = <ParamName extends keyof Parameters>(
   paramName: ParamName
-): Parameters[ParamName] | null => {
+): Parameters[ParamName] | undefined => {
   const [searchParams] = useSearchParams();
 
   const paramValue = searchParams.get(paramName);
@@ -39,7 +39,7 @@ export const useParam = <ParamName extends keyof Parameters>(
     ) as Parameters[typeof paramName];
   }
 
-  return paramValue as Parameters[typeof paramName] | null;
+  return (paramValue ?? undefined) as Parameters[typeof paramName] | undefined;
 };
 
 const PARAMS: (keyof Parameters)[] = [
