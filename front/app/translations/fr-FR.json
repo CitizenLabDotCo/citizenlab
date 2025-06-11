@@ -129,7 +129,7 @@
   "app.components.CustomFieldsForm.descriptionMinLength": "La description doit comporter au minimum {min} caractères",
   "app.components.CustomFieldsForm.descriptionRequired": "La description est obligatoire",
   "app.components.CustomFieldsForm.fieldMaximumItems": "Au maximum {maxSelections, plural, one {# option} other {# options}} peuvent être sélectionnées pour le champ \"{fieldName}\"",
-  "app.components.CustomFieldsForm.fieldMinimumItems": "Au moins {minSelections, plural, one {# option} other {# options}} peuvent être sélectionnées pour le champ \"{fieldName}\"",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "Au moins {minSelections, plural, one {# option doit être sélectionnée} other {# options doivent être sélectionnées}} pour le champ « {fieldName} »",
   "app.components.CustomFieldsForm.fieldRequired": "Le champ « {fieldName} » est obligatoire",
   "app.components.CustomFieldsForm.imageRequired": "L'image est obligatoire",
   "app.components.CustomFieldsForm.notPublic1": "*Cette réponse sera partagée uniquement avec les gestionnaires de projet, et non avec le public.",
