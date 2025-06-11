@@ -6,7 +6,10 @@ import { differenceInDays } from 'date-fns';
 import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
+import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
+
+import messages from './messages';
 
 interface Props {
   project: ProjectMiniAdminData;
@@ -21,6 +24,7 @@ const parseNumberOfDays = (days: number) => {
 };
 
 const CurrentPhase = ({ project }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: phase } = usePhaseMini(
     project.relationships.current_phase?.data?.id
   );
@@ -36,7 +40,9 @@ const CurrentPhase = ({ project }: Props) => {
       return phase.data.attributes.participation_method;
     }
 
-    return projectStartingInFuture ? 'Pre-launch' : 'Ended';
+    return projectStartingInFuture
+      ? formatMessage(messages.preLaunch)
+      : formatMessage(messages.ended);
   };
 
   const getSubText = () => {
@@ -56,17 +62,17 @@ const CurrentPhase = ({ project }: Props) => {
       if (daysUntilPhaseEnds < 0) return; // should not happen, but just in case
 
       if (daysUntilPhaseEnds === 0) {
-        return 'Ends today';
+        return formatMessage(messages.endsToday);
       } else {
         const { unit, value } = parseNumberOfDays(daysUntilPhaseEnds);
 
         switch (unit) {
           case 'day':
-            return `${value}d left`;
+            return formatMessage(messages.daysLeft, { days: value });
           case 'month':
-            return `${value}mo left`;
+            return formatMessage(messages.monthsLeft, { months: value });
           case 'year':
-            return `${value}y left`;
+            return formatMessage(messages.yearsLeft, { years: value });
         }
       }
     }
@@ -87,11 +93,11 @@ const CurrentPhase = ({ project }: Props) => {
 
     switch (unit) {
       case 'day':
-        return `${value}d to start`;
+        return formatMessage(messages.daysToStart, { days: value });
       case 'month':
-        return `${value}mo to start`;
+        return formatMessage(messages.monthsToStart, { months: value });
       case 'year':
-        return `${value}y to start`;
+        return formatMessage(messages.yearsToStart, { years: value });
     }
   };
 
