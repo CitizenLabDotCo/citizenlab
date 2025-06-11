@@ -22,17 +22,44 @@ RSpec.describe ParticipationMethod::CommonGround do
     it 'returns the correct default fields' do
       transient_form = create(:custom_form, participation_context: phase)
       fields = participation_method.default_fields(transient_form)
-      expect(fields.size).to eq(1)
-      expect(fields.first.attributes).to include(
-        'resource_id' => transient_form.id,
-        'resource_type' => 'CustomForm',
-        'key' => 'title_multiloc',
-        'code' => 'title_multiloc',
-        'input_type' => 'text_multiloc',
-        'required' => true,
-        'enabled' => true,
-        'ordering' => 0
-      )
+      expect(fields.size).to eq(3)
+
+      fields_attrs = fields.map(&:attributes)
+
+      expect(fields_attrs).to match [
+        hash_including(
+          'resource_id' => transient_form.id,
+          'resource_type' => 'CustomForm',
+          'key' => 'page1',
+          'code' => 'title_page',
+          'input_type' => 'page',
+          'required' => false,
+          'enabled' => true,
+          'ordering' => 0
+        ),
+
+        hash_including(
+          'resource_id' => transient_form.id,
+          'resource_type' => 'CustomForm',
+          'key' => 'title_multiloc',
+          'code' => 'title_multiloc',
+          'input_type' => 'text_multiloc',
+          'required' => true,
+          'enabled' => true,
+          'ordering' => 1
+        ),
+
+        hash_including(
+          'resource_id' => transient_form.id,
+          'resource_type' => 'CustomForm',
+          'key' => 'form_end',
+          'code' => nil,
+          'input_type' => 'page',
+          'required' => false,
+          'enabled' => true,
+          'ordering' => 2
+        )
+      ]
     end
   end
 
