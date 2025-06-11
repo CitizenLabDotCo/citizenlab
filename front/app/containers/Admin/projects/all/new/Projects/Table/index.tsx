@@ -28,6 +28,9 @@ const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { sort, ...params } = useParams();
+
+  console.log(params);
+
   const { data: projects } = useProjectsMiniAdmin({
     ...params,
     sort: sort ?? 'phase_starting_or_ending_soon',
