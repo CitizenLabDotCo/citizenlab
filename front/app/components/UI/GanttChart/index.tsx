@@ -1,6 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
+
+import { TimeRangeSelector } from './TimeRangeSelector';
+import { getTimeRangeDates, scrollToToday, TimeRangeOption } from './utils';
 
 export type GanttItem = {
   id: string;
@@ -63,8 +66,8 @@ function getMonthMeta(start: Date, end: Date) {
 export const GanttChart = ({
   items,
   chartTitle,
-  startDate = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
-  endDate = new Date(new Date().getFullYear(), new Date().getMonth() + 2, 0),
+  startDate: initialStartDate,
+  endDate: initialEndDate,
   leftColumnWidth = 260,
   dayWidth = 40,
   rowHeight = 40,
@@ -78,6 +81,14 @@ export const GanttChart = ({
   showMonths = true,
 }: GanttChartProps) => {
   const today = new Date();
+  const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('month');
+  const [startDate, setStartDate] = useState<Date>(
+    initialStartDate || getTimeRangeDates('month', today).startDate
+  );
+  const [endDate, setEndDate] = useState<Date>(
+    initialEndDate || getTimeRangeDates('month', today).endDate
+  );
+
   const months = getMonthMeta(startDate, endDate);
 
   const daysBetween = (a: Date, b: Date) =>
@@ -94,6 +105,20 @@ export const GanttChart = ({
     }
   };
 
+  const handleRangeChange = (range: TimeRangeOption) => {
+    setSelectedRange(range);
+    const { startDate: newStartDate, endDate: newEndDate } = getTimeRangeDates(
+      range,
+      today
+    );
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+  };
+
+  const handleTodayClick = () => {
+    scrollToToday(timelineBodyRef, todayOffset, dayWidth);
+  };
+
   return (
     <Box
       bg="#fff"
@@ -108,6 +133,7 @@ export const GanttChart = ({
         position="relative"
         zIndex="2"
         boxShadow="0 1px 0 #e0e0e0"
+        mb="16px"
       >
         {/* Left column header */}
         <Box
@@ -130,8 +156,23 @@ export const GanttChart = ({
         </Box>
 
         {/* Timeline header */}
-        <Box flex="1" overflow="hidden">
+        <Box flex="1" overflow="hidden" position="relative">
           <Box ref={timelineHeaderRef} style={{ overflow: 'hidden' }}>
+            {/* Time range selector */}
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              mb="8px"
+              position="relative"
+              zIndex="4"
+            >
+              <TimeRangeSelector
+                selectedRange={selectedRange}
+                onRangeChange={handleRangeChange}
+                onTodayClick={handleTodayClick}
+              />
+            </Box>
+
             {/* Months row */}
             {showMonths && (
               <Box
