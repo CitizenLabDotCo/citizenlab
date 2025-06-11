@@ -5,6 +5,8 @@ import EditCampaignForm from '../EditCampaignForm';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import useCampaign from 'api/campaigns/useCampaign';
 import { CampaignFormValues } from 'api/campaigns/types';
+import messages from 'containers/Admin/messaging/messages';
+import { useIntl } from 'utils/cl-intl';
 
 const EditModal = ({
   campaignId,
@@ -13,6 +15,7 @@ const EditModal = ({
   campaignId: string;
   onClose: () => void;
 }) => {
+  const { formatMessage } = useIntl();
   const { data: campaign } = useCampaign(campaignId);
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
 
@@ -23,7 +26,11 @@ const EditModal = ({
   };
 
   return (
-    <Modal opened={true} close={() => onClose()} header="Edit campaign">
+    <Modal
+      opened={true}
+      close={() => onClose()}
+      header={formatMessage(messages.editModalTitle)}
+    >
       <Box mx="30px" mt="30px">
         <EditCampaignForm
           isLoading={isLoading}

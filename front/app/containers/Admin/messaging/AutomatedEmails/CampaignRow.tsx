@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 
-import { Toggle, Box, ListItem } from '@citizenlab/cl2-component-library';
+import {
+  Toggle,
+  Box,
+  ListItem,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { isUndefined } from 'lodash-es';
 
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
 import Button from 'components/UI/ButtonWithLink';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
@@ -22,6 +27,7 @@ type Props = {
 };
 
 const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
+  const { formatMessage } = useIntl();
   const [isNewPhaseModalOpen, setIsNewPhaseModalOpen] = useState(false);
   const { mutate: updateCampaign } = useUpdateCampaign();
   const toggleEnabled = () => {
@@ -44,6 +50,8 @@ const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
     }
   };
 
+  const isEditable = (campaign.attributes.editable_regions || []).length > 0;
+
   return (
     <>
       <PhaseEmailSettingsModal
@@ -63,28 +71,36 @@ const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
             onChange={handleOnEnabledToggle}
           />
           <CampaignDescription campaign={campaign} />
-          {onClickViewExample && (
-            <Box display="flex" justifyContent="flex-end" flexGrow={1}>
-              <Button
-                icon="eye"
-                onClick={onClickViewExample}
-                buttonStyle="secondary-outlined"
-              >
-                <FormattedMessage {...messages.viewExample} />
-              </Button>
-            </Box>
-          )}
-          {onClickEdit && (
-            <Box display="flex" justifyContent="flex-end" flexGrow={1}>
-              <Button
-                icon="edit"
-                onClick={onClickEdit}
-                buttonStyle="secondary-outlined"
-              >
-                Edit
-              </Button>
-            </Box>
-          )}
+          <Box display="flex" justifyContent="flex-end" flexGrow={1}>
+            {onClickViewExample && (
+              <Box>
+                <Button
+                  icon="eye"
+                  onClick={onClickViewExample}
+                  buttonStyle="secondary-outlined"
+                >
+                  <FormattedMessage {...messages.viewExample} />
+                </Button>
+              </Box>
+            )}
+            {onClickEdit && (
+              <Box ml="12px">
+                <Tooltip
+                  disabled={isEditable}
+                  content={formatMessage(messages.editDisabledTooltip)}
+                >
+                  <Button
+                    icon="edit"
+                    onClick={onClickEdit}
+                    disabled={!isEditable}
+                    buttonStyle="secondary-outlined"
+                  >
+                    <FormattedMessage {...messages.editButtonLabel} />
+                  </Button>
+                </Tooltip>
+              </Box>
+            )}
+          </Box>
         </Box>
       </ListItem>
     </>

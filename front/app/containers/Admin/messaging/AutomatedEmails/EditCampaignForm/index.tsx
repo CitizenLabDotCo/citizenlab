@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Box, Button, fontSizes } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
@@ -9,7 +9,7 @@ import { object } from 'yup';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-import { Section, SectionField, SectionTitle } from 'components/admin/Section';
+import { Section, SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 // import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
@@ -21,21 +21,11 @@ import {
 } from 'api/campaigns/types';
 import useLocale from 'hooks/useLocale';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import messages from 'containers/Admin/messaging/messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
-`;
-
-const StyledSectionTitle = styled(SectionTitle)`
-  margin-bottom: 1rem;
-  font-size: ${fontSizes.xl}px;
-`;
-
-export const PageTitle = styled.h1`
-  width: 100%;
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 2rem 0 1rem;
 `;
 
 type CampaignFormProps = {
@@ -85,19 +75,10 @@ const EditCampaignForm = ({
     resolver: yupResolver(schema),
   });
 
-  if (!authUser || !appConfig) {
-    return null;
-  }
-
   const editableRegions = campaign.data.attributes.editable_regions || [];
 
-  if (editableRegions.length === 0) {
-    return (
-      <Box>
-        <h3>Coming soon. </h3>
-        <p>No editable regions are currently available for this campaign.</p>
-      </Box>
-    );
+  if (!authUser || !appConfig || editableRegions.length === 0) {
+    return null;
   }
 
   const onFormSubmit = async (formValues) => {
@@ -114,7 +95,9 @@ const EditCampaignForm = ({
 
   const tooltipText = (region: EditableRegion) => (
     <>
-      <p>You can use the following variables in your text:</p>
+      <p>
+        <FormattedMessage {...messages.variablesToolTip} />
+      </p>
       <ul>
         {region.variables.map((variable) => (
           <li>
@@ -131,39 +114,33 @@ const EditCampaignForm = ({
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <StyledSection>
-          <StyledSectionTitle>Fields you can edit</StyledSectionTitle>
-
           {editableRegions.map((region) => (
-            <>
+            <SectionField
+              className={`e2e-automated-campaign-edit-region-${region.key}`}
+              key={region.key}
+            >
               {region.type === 'html' && (
-                <SectionField
-                  key={region.key}
-                  className="e2e-campaign_subject_multiloc"
-                >
-                  <QuillMultilocWithLocaleSwitcher
-                    name={region.key}
-                    label={region.title_multiloc[currentLocale]}
-                    labelTooltipText={tooltipText(region)}
-                    noVideos
-                    noAlign
-                  />
-                </SectionField>
+                <QuillMultilocWithLocaleSwitcher
+                  name={region.key}
+                  label={region.title_multiloc[currentLocale]}
+                  labelTooltipText={tooltipText(region)}
+                  noVideos
+                  noAlign
+                />
               )}
               {region.type === 'text' && (
-                <SectionField className="e2e-campaign_subject_multiloc">
-                  <InputMultilocWithLocaleSwitcher
-                    name={region.key}
-                    label={region.title_multiloc[currentLocale]}
-                    labelTooltipText={tooltipText(region)}
-                  />
-                </SectionField>
+                <InputMultilocWithLocaleSwitcher
+                  name={region.key}
+                  label={region.title_multiloc[currentLocale]}
+                  labelTooltipText={tooltipText(region)}
+                />
               )}
-            </>
+            </SectionField>
           ))}
         </StyledSection>
         <Box display="flex" mb="24px">
           <Button
-            id="e2e-campaign-form-save-button"
+            id="e2e-automated-campaign-edit-save-button"
             type="submit"
             processing={isLoading}
           >
