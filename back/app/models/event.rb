@@ -17,14 +17,16 @@
 #  address_1              :string
 #  attendees_count        :integer          default(0), not null
 #  address_2_multiloc     :jsonb            not null
-#  using_url              :string
-#  attend_button_multiloc :jsonb            not null
 #  online_link            :string
+#  attend_button_multiloc :jsonb            not null
+#  using_url              :string
+#  maximum_attendees      :integer
 #
 # Indexes
 #
-#  index_events_on_location_point  (location_point) USING gist
-#  index_events_on_project_id      (project_id)
+#  index_events_on_location_point     (location_point) USING gist
+#  index_events_on_maximum_attendees  (maximum_attendees)
+#  index_events_on_project_id         (project_id)
 #
 # Foreign Keys
 #
