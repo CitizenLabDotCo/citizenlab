@@ -18,6 +18,8 @@ import { PaginationWithoutPositioning } from 'components/Pagination';
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
+import { useParams } from '../utils';
+
 import messages from './messages';
 import Row from './Row';
 
@@ -25,8 +27,10 @@ const Table = () => {
   const { formatMessage } = useIntl();
   const [currentPage, setCurrentPage] = useState(1);
 
+  const { sort, ...params } = useParams();
   const { data: projects } = useProjectsMiniAdmin({
-    sort: 'phase_starting_or_ending_soon',
+    ...params,
+    sort: sort ?? 'phase_starting_or_ending_soon',
     'page[size]': 10,
     'page[number]': currentPage,
   });

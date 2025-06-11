@@ -71,7 +71,7 @@ export const useParams = () => {
           ...acc,
           [paramName]: value as Parameters[typeof paramName],
         };
-      }, {} as Parameters),
+      }, {} as Partial<Parameters>),
     [searchParams]
   );
 };
