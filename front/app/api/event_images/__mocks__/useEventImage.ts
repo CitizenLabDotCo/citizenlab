@@ -31,6 +31,7 @@ export const eventData = {
     address_2_multiloc: {},
     location_point_geojson: null,
     attendees_count: 0,
+    maximum_attendees: null,
     start_at: '2023-09-20T08:29:00.016Z',
     end_at: '2023-09-20T08:29:00.020Z',
     created_at: '2023-09-20T08:30:06.930Z',
