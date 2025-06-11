@@ -93,19 +93,19 @@ RSpec.describe Event do
     it 'does not allow negative integers' do
       event = build(:event, maximum_attendees: -5)
       expect(event).to be_invalid
-      expect(event.errors[:maximum_attendees]).to include("must be greater than 0")
+      expect(event.errors[:maximum_attendees]).to include('must be greater than 0')
     end
 
     it 'does not allow zero' do
       event = build(:event, maximum_attendees: 0)
       expect(event).to be_invalid
-      expect(event.errors[:maximum_attendees]).to include("must be greater than 0")
+      expect(event.errors[:maximum_attendees]).to include('must be greater than 0')
     end
 
     it 'does not allow non-integer values' do
       event = build(:event, maximum_attendees: 10.5)
       expect(event).to be_invalid
-      expect(event.errors[:maximum_attendees]).to include("must be an integer")
+      expect(event.errors[:maximum_attendees]).to include('must be an integer')
     end
   end
 end
