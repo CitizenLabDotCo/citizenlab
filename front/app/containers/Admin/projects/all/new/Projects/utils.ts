@@ -63,7 +63,7 @@ export const useParams = () => {
           return acc;
         }
 
-        if (paramName.endsWith('in]')) {
+        if (MULTISELECT_PARAMS.has(paramName)) {
           value = JSON.parse(value);
         }
 
