@@ -3,7 +3,12 @@ import React, { useRef, useState } from 'react';
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 
 import { TimeRangeSelector } from './TimeRangeSelector';
-import { getTimeRangeDates, scrollToToday, TimeRangeOption } from './utils';
+import {
+  daysBetween,
+  getTimeRangeDates,
+  scrollToToday,
+  TimeRangeOption,
+} from './utils';
 
 export type GanttItem = {
   id: string;
@@ -28,6 +33,7 @@ export type GanttChartProps = {
   showTodayLine?: boolean;
   showDays?: boolean;
   showMonths?: boolean;
+  height?: string;
 };
 
 function getMonthMeta(start: Date, end: Date) {
@@ -91,8 +97,6 @@ export const GanttChart = ({
 
   const months = getMonthMeta(startDate, endDate);
 
-  const daysBetween = (a: Date, b: Date) =>
-    Math.round((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24));
   const totalDays = daysBetween(startDate, endDate);
   const todayOffset = daysBetween(startDate, today);
 
@@ -295,38 +299,40 @@ export const GanttChart = ({
           ref={timelineBodyRef}
           onScroll={onTimelineScroll}
           bgColor={colors.background}
+          position="relative"
         >
+          {/* Today line */}
+          {showTodayLine && todayOffset >= 0 && todayOffset <= totalDays && (
+            <Box
+              position="absolute"
+              top="0"
+              left={`${todayOffset * dayWidth - dayWidth / 2}px`}
+              width="2px"
+              height="100%"
+              bg={colors.primary}
+              style={{
+                zIndex: 2,
+                pointerEvents: 'none',
+              }}
+            >
+              <Box
+                position="absolute"
+                top="0"
+                left="-4px"
+                width="10px"
+                height="10px"
+                borderRadius="50%"
+                bg={colors.primary}
+              />
+            </Box>
+          )}
+
+          {/* Inner box for content and background */}
           <Box
             minWidth={`${totalDays * dayWidth}px`}
             position="relative"
             height={`${items.length * rowHeight}px`}
           >
-            {/* Today line */}
-            {showTodayLine && todayOffset >= 0 && todayOffset <= totalDays && (
-              <Box
-                position="absolute"
-                top="0"
-                left={`${todayOffset * dayWidth}px`}
-                width="2px"
-                height="100%"
-                bg={colors.primary}
-                style={{
-                  zIndex: 2,
-                  pointerEvents: 'none',
-                }}
-              >
-                <Box
-                  position="absolute"
-                  top="0"
-                  left="-4px"
-                  width="10px"
-                  height="10px"
-                  borderRadius="50%"
-                  bg={colors.primary}
-                />
-              </Box>
-            )}
-
             {/* Items */}
             {items.map((item, index) => {
               const start = item.start ? new Date(item.start) : undefined;

@@ -5,6 +5,7 @@ import {
   endOfWeek,
   startOfQuarter,
   endOfQuarter,
+  startOfDay,
 } from 'date-fns';
 
 export type TimeRangeOption = 'month' | 'week' | 'quarter' | 'year' | '5years';
@@ -61,3 +62,6 @@ export const scrollToToday = (
     });
   }
 };
+
+export const daysBetween = (a: Date, b: Date) =>
+  Math.round((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24));
