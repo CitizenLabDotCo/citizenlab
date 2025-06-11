@@ -299,16 +299,35 @@ export const GanttChart = ({
           <Box
             minWidth={`${totalDays * dayWidth}px`}
             position="relative"
-            style={{
-              background: `repeating-linear-gradient(
-                 to bottom,
-                 #fff,
-                 #fff ${rowHeight - 1}px,
-                 #e0e0e0 ${rowHeight - 1}px,
-                 #e0e0e0 ${rowHeight}px
-               )`,
-            }}
+            height={`${items.length * rowHeight}px`}
           >
+            {/* Today line */}
+            {showTodayLine && todayOffset >= 0 && todayOffset <= totalDays && (
+              <Box
+                position="absolute"
+                top="0"
+                left={`${todayOffset * dayWidth}px`}
+                width="2px"
+                height="100%"
+                bg={colors.primary}
+                style={{
+                  zIndex: 2,
+                  pointerEvents: 'none',
+                }}
+              >
+                <Box
+                  position="absolute"
+                  top="0"
+                  left="-4px"
+                  width="10px"
+                  height="10px"
+                  borderRadius="50%"
+                  bg={colors.primary}
+                />
+              </Box>
+            )}
+
+            {/* Items */}
             {items.map((item, index) => {
               const start = item.start ? new Date(item.start) : undefined;
               const end = item.end ? new Date(item.end) : undefined;
@@ -333,6 +352,7 @@ export const GanttChart = ({
                   borderRadius="4px"
                   style={{
                     cursor: onItemClick ? 'pointer' : 'default',
+                    zIndex: 1,
                   }}
                   onClick={() => onItemClick?.(item)}
                 >
@@ -344,19 +364,6 @@ export const GanttChart = ({
                 </Box>
               );
             })}
-
-            {/* Today line */}
-            {showTodayLine && (
-              <Box
-                position="absolute"
-                top="0"
-                left={`${todayOffset * dayWidth}px`}
-                width="2px"
-                height="100%"
-                bg="red"
-                style={{ zIndex: 1 }}
-              />
-            )}
           </Box>
         </Box>
       </Box>
