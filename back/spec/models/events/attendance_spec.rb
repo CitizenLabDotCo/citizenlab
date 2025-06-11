@@ -14,7 +14,7 @@ RSpec.describe Events::Attendance do
   describe 'associations and standard validations' do
     before do
       # Stub the validation for both association and uniqueness tests
-      allow_any_instance_of(Events::Attendance).to receive(:maximum_attendees_not_reached)
+      allow_any_instance_of(described_class).to receive(:maximum_attendees_not_reached)
     end
 
     it { is_expected.to belong_to(:event) }
@@ -31,7 +31,7 @@ RSpec.describe Events::Attendance do
   describe 'maximum_attendees_not_reached validation' do
     let!(:event) { create(:event, maximum_attendees: 5) }
     let(:attendance) { build(:event_attendance, event: event) }
-  
+
     it 'is valid when maximum_attendees is nil' do
       allow(event).to receive(:maximum_attendees).and_return(nil)
       expect(attendance).to be_valid
