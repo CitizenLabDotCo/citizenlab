@@ -51,6 +51,7 @@ class Event < ApplicationRecord
   validates :address_2_multiloc, multiloc: { presence: false }
   validates :attend_button_multiloc, multiloc: { presence: false }
   validates :using_url, url: true, allow_blank: true
+  validates :maximum_attendees, numericality: { only_integer: true, greater_than: 0, allow_nil: true }
   validate :validate_start_at_before_end_at
 
   before_validation :sanitize_description_multiloc

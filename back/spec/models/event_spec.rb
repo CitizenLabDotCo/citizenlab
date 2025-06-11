@@ -78,4 +78,34 @@ RSpec.describe Event do
         .to change { event.reload.attendees_count }.by(-1)
     end
   end
+
+  describe 'maximum_attendees validation' do
+    it 'allows nil value' do
+      event = build(:event, maximum_attendees: nil)
+      expect(event).to be_valid
+    end
+
+    it 'allows positive integers' do
+      event = build(:event, maximum_attendees: 10)
+      expect(event).to be_valid
+    end
+
+    it 'does not allow negative integers' do
+      event = build(:event, maximum_attendees: -5)
+      expect(event).to be_invalid
+      expect(event.errors[:maximum_attendees]).to include("must be greater than 0")
+    end
+
+    it 'does not allow zero' do
+      event = build(:event, maximum_attendees: 0)
+      expect(event).to be_invalid
+      expect(event.errors[:maximum_attendees]).to include("must be greater than 0")
+    end
+
+    it 'does not allow non-integer values' do
+      event = build(:event, maximum_attendees: 10.5)
+      expect(event).to be_invalid
+      expect(event.errors[:maximum_attendees]).to include("must be an integer")
+    end
+  end
 end
