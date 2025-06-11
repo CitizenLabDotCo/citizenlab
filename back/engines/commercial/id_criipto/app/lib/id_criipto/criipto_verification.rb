@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module IdCriipto
-  module CriiptoVerification
+  module CriiptoVerification # rubocop:disable Metrics/ModuleLength
     include Verification::VerificationMethod
 
     DK_MIT_ID = 'DK MitID'
@@ -33,6 +33,7 @@ module IdCriipto
         birthday_custom_field_key
         birthyear_custom_field_key
         municipality_code_custom_field_key
+        postal_code_custom_field_key
         domain
         client_id
         client_secret
@@ -71,6 +72,11 @@ module IdCriipto
           private: true,
           type: 'string',
           description: 'Only for MitID: The `key` attribute of the custom field where the municipality_key should be stored. Leave empty to not store the municipality_key. We don\'t lock this field, assuming it is a hidden field.'
+        },
+        postal_code_custom_field_key: {
+          private: true,
+          type: 'string',
+          description: 'Only for MitID: The `key` attribute of the custom field where the postal code should be stored. Leave empty to not store the postal code. We don\'t lock this field, assuming it is a hidden field.'
         },
         uid_field_pattern: {
           private: true,
