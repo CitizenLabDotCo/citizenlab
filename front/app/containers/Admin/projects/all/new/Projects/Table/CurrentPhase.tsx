@@ -6,6 +6,8 @@ import { differenceInDays } from 'date-fns';
 import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
+import { PARTICIPATION_METHOD_LABELS } from 'containers/Admin/inspirationHub/constants';
+
 import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
@@ -37,7 +39,9 @@ const CurrentPhase = ({ project }: Props) => {
 
   const getCurrentPhaseText = () => {
     if (phase) {
-      return phase.data.attributes.participation_method;
+      return formatMessage(
+        PARTICIPATION_METHOD_LABELS[phase.data.attributes.participation_method]
+      );
     }
 
     return projectStartingInFuture

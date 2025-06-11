@@ -9,15 +9,13 @@ import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-import { PARTICIPATION_METHOD_LABELS } from 'containers/Admin/inspirationHub/constants';
-
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import { VISIBILITY_LABELS } from './constants';
+import { VISIBILITY_LABELS, PUBLICATION_STATUS_LABELS } from './constants';
 import CurrentPhase from './CurrentPhase';
 
 const StyledTd = styled(Td)`
@@ -90,7 +88,7 @@ const Row = ({ project }: Props) => {
       </Td>
       <Td background={colors.grey50} width="140px">
         <Text m="0" fontSize="s" color="primary">
-          {formatMessage(PARTICIPATION_METHOD_LABELS[publication_status])}
+          {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
         </Text>
       </Td>
       <Td background={colors.grey50} width="140px">
