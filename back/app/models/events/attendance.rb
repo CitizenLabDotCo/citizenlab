@@ -37,9 +37,9 @@ module Events
 
     counter_culture :event, column_name: 'attendees_count'
 
-    def maximum_attendees_not_reached
-      return if event.nil?
+    private
 
+    def maximum_attendees_not_reached
       if event.maximum_attendees.present? && event.attendees_count >= event.maximum_attendees
         errors.add(:base, 'Maximum number of attendees reached')
       end
