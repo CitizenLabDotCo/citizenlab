@@ -114,7 +114,6 @@ export const GanttChart = ({
           width={`${leftColumnWidth}px`}
           minWidth={`${leftColumnWidth}px`}
           maxWidth={`${leftColumnWidth}px`}
-          bg="#fff"
           style={{
             position: 'sticky',
             left: 0,
@@ -254,6 +253,7 @@ export const GanttChart = ({
           overflow="auto"
           ref={timelineBodyRef}
           onScroll={onTimelineScroll}
+          bgColor={colors.background}
         >
           <Box
             minWidth={`${totalDays * dayWidth}px`}
