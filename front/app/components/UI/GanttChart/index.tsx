@@ -131,13 +131,26 @@ export const GanttChart = ({
       border="1px solid #e0e0e0"
       p="24px"
     >
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        mb="8px"
+        position="relative"
+        zIndex="4"
+      >
+        <TimeRangeSelector
+          selectedRange={selectedRange}
+          onRangeChange={handleRangeChange}
+          onTodayClick={handleTodayClick}
+        />
+      </Box>
+
       {/* Header row */}
       <Box
         display="flex"
         position="relative"
         zIndex="2"
         boxShadow="0 1px 0 #e0e0e0"
-        mb="16px"
       >
         {/* Left column header */}
         <Box
@@ -149,7 +162,6 @@ export const GanttChart = ({
             left: 0,
             zIndex: 3,
             borderRight: '1px solid #e0e0e0',
-            fontWeight: 700,
           }}
           display="flex"
           alignItems="center"
@@ -162,21 +174,6 @@ export const GanttChart = ({
         {/* Timeline header */}
         <Box flex="1" overflow="hidden" position="relative">
           <Box ref={timelineHeaderRef} style={{ overflow: 'hidden' }}>
-            {/* Time range selector */}
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              mb="8px"
-              position="relative"
-              zIndex="4"
-            >
-              <TimeRangeSelector
-                selectedRange={selectedRange}
-                onRangeChange={handleRangeChange}
-                onTodayClick={handleTodayClick}
-              />
-            </Box>
-
             {/* Months row */}
             {showMonths && (
               <Box
@@ -270,7 +267,7 @@ export const GanttChart = ({
             borderRight: '1px solid #e0e0e0',
           }}
         >
-          {items.map((item) => (
+          {items.map((item, index) => (
             <Box
               key={item.id}
               height={`${rowHeight}px`}
@@ -278,13 +275,14 @@ export const GanttChart = ({
               alignItems="center"
               pl="16px"
               pr="8px"
+              borderBottom="1px solid #e0e0e0"
+              borderTop={index === 0 ? '1px solid #e0e0e0' : undefined}
               style={{
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 color: '#222',
                 fontWeight: 500,
-                borderBottom: '1px solid #e0e0e0',
               }}
             >
               {renderItemLabel ? renderItemLabel(item) : item.title}
