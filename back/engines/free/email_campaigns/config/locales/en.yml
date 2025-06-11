@@ -86,8 +86,9 @@ en:
       quarterly: "Quarterly, on the first day of the quarter"
     edit_region_names:
       subject: "Subject"
-      header: "Header"
-      body: "Header"
+      header_title: "Title"
+      header_message: "Message"
+      cta_button_text: "Button text"
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"

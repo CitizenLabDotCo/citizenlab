@@ -9,7 +9,7 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
     let_it_be(:idea) { create(:idea) }
     let_it_be(:initiator) { create(:user, first_name: 'Marion') }
     let_it_be(:comment) { create(:comment, idea: idea, body_multiloc: { 'en' => 'I agree' }, author: initiator) }
-    let_it_be(:notification) { create(:comment_on_idea_you_follow, recipient: recipient, idea: idea, comment: comment) }
+    let_it_be(:notification) { create(:comment_on_idea_you_follow, recipient: recipient, idea: idea, comment: comment, initiating_user: initiator) }
     let_it_be(:command) do
       activity = create(:activity, item: notification, action: 'created')
       create(:comment_on_idea_you_follow_campaign).generate_commands(
@@ -55,10 +55,33 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
     context 'with custom text' do
       let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-      it 'can customise the subject' do
-        campaign.update!(custom_text_multiloc: { 'en' => { 'subject' => 'Custom Subject - {{ input_title }}' } })
+      before do
+        campaign.update!(
+          custom_text_multiloc: {
+            'en' => {
+              'subject' => 'Custom Subject - {{ input_title }}',
+              'header_title' => 'NEW TITLE',
+              'header_message' => 'BODY TEXT new comment by {{ authorName }}',
+              'cta_button_text' => 'CLICK ME to go to "{{ inputTitle }}"'
+            }
+          }
+        )
+      end
 
+      it 'can customise the subject' do
         expect(mail.subject).to eq 'Custom Subject - Plant more trees'
+      end
+
+      it 'can customise the title' do
+        expect(mail.body.encoded).to include('NEW TITLE')
+      end
+
+      it 'can customise the body' do
+        expect(mail.body.encoded).to include('BODY TEXT new comment by Marion')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail.body.encoded).to include('CLICK ME to go to "Plant more trees"')
       end
     end
   end
