@@ -34,7 +34,7 @@ const Sort = () => {
   }));
 
   return (
-    <Box>
+    <Box mr="12px">
       <Select
         value={value}
         options={options}
