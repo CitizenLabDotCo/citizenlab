@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.timeline.project',
     defaultMessage: 'Project',
   },
-  daysLeft: {
-    id: 'app.containers.Admin.projects.all.new.timeline.daysLeft',
-    defaultMessage: '{count, plural, one {# day left} other {# days left}}',
+  noEndDay: {
+    id: 'app.containers.Admin.projects.all.new.timeline.noEndDay',
+    defaultMessage: 'Project has no end date',
   },
   failedToLoadTimelineError: {
     id: 'app.containers.Admin.projects.all.new.timeline.failedToLoadTimelineError',
