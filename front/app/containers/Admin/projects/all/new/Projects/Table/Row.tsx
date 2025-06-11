@@ -17,6 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
 
+import { VISIBILITY_LABELS } from './constants';
 import CurrentPhase from './CurrentPhase';
 
 const StyledTd = styled(Td)`
@@ -94,7 +95,7 @@ const Row = ({ project }: Props) => {
       </Td>
       <Td background={colors.grey50} width="140px">
         <Text m="0" fontSize="s" color="primary">
-          {visible_to}
+          {formatMessage(VISIBILITY_LABELS[visible_to])}
         </Text>
       </Td>
     </Tr>
