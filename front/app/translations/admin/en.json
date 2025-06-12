@@ -44,6 +44,7 @@
   "app.components.Admin.Campaigns.recipientsTitle": "Recipients",
   "app.components.Admin.Campaigns.sent": "Sent",
   "app.components.Admin.Campaigns.statsButton": "Statistics",
+  "app.components.Admin.Campaigns.subject": "Subject",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
