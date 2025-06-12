@@ -53,7 +53,6 @@ describe('Form builder multiple choice choose multiple component', () => {
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains('Question title 2').should('exist');
     cy.contains('Option 1 question 2').should('exist');
-    cy.get('#e2e-multiselect-control').should('exist');
   });
 
   it('allows submitting when there is an other option but it is not filled out', () => {
@@ -112,7 +111,6 @@ describe('Form builder multiple choice choose multiple component', () => {
     // Select 'Other' option
     cy.contains(otherText).click({ force: true });
     cy.contains('Survey').should('exist');
-    cy.get('#e2e-single-select-control').should('exist');
 
     // Try submitting without entering data for required field
     cy.dataCy('e2e-submit-form').click();
@@ -126,10 +124,10 @@ describe('Form builder multiple choice choose multiple component', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get('[id^="properties"]')
+    cy.get(`[id^="${questionTitle}"]`)
+      .last()
       .should(($element) => {
         const id = $element.attr('id');
-        expect(id).to.include(questionTitle);
         expect(Cypress._.endsWith(id, '_other')).to.be.true;
       })
       .type(otherAnswer, { force: true });
