@@ -17,6 +17,7 @@ module ParticipationMethod
 
     def assign_defaults_for_phase
       phase.reacting_dislike_enabled = true
+      phase.input_term = 'contribution'
     end
 
     def assign_defaults(input)
