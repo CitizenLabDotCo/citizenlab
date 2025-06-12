@@ -135,6 +135,7 @@ class WebApi::V1::EventsController < ApplicationController
       :online_link,
       :address_1,
       :using_url,
+      :maximum_attendees,
       address_2_multiloc: CL2_SUPPORTED_LOCALES,
       location_multiloc: CL2_SUPPORTED_LOCALES,
       title_multiloc: CL2_SUPPORTED_LOCALES,
