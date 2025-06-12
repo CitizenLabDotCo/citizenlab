@@ -50,9 +50,25 @@ module ParticipationMethod
     end
 
     def default_fields(custom_form)
-      multiloc_service = MultilocService.new
-
       [
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
+          input_type: 'page',
+          page_layout: 'default',
+          code: 'title_page',
+          key: 'page1',
+          title_multiloc: {},
+          description_multiloc: i18n_to_multiloc(
+            'custom_fields.ideas.title_page.description',
+            locales: CL2_SUPPORTED_LOCALES,
+            raise_on_missing: false
+          ),
+          required: false,
+          enabled: true,
+          ordering: 0
+        ),
+
         # Inputs in common ground phases are essentially short statements, so we have no
         # use for a body at the moment. We'll probably reconsider this depending on what
         # comes out of user feedback and usage.
@@ -69,9 +85,37 @@ module ParticipationMethod
           description_multiloc: {},
           required: true,
           enabled: true,
-          ordering: 0
+          ordering: 1
+        ),
+
+        CustomField.new(
+          id: SecureRandom.uuid,
+          key: 'form_end',
+          resource: custom_form,
+          input_type: 'page',
+          page_layout: 'default',
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'form_builder.form_end_page.title_text_3',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: multiloc_service.i18n_to_multiloc(
+            'form_builder.form_end_page.description_text_3',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          include_in_printed_form: false,
+          enabled: true,
+          required: false,
+          ordering: 2
         )
       ]
+    end
+
+    private
+
+    delegate :i18n_to_multiloc, to: :multiloc_service
+
+    def multiloc_service
+      @multiloc_service ||= MultilocService.new
     end
   end
 end
