@@ -1,12 +1,18 @@
 import React from 'react';
-import Modal from 'components/UI/Modal';
+
 import { Box } from '@citizenlab/cl2-component-library';
-import EditCampaignForm from '../EditCampaignForm';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
-import useCampaign from 'api/campaigns/useCampaign';
+
 import { CampaignFormValues } from 'api/campaigns/types';
+import useCampaign from 'api/campaigns/useCampaign';
+import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+
 import messages from 'containers/Admin/messaging/messages';
+
+import Modal from 'components/UI/Modal';
+
 import { useIntl } from 'utils/cl-intl';
+
+import EditCampaignForm from '../EditCampaignForm';
 
 const EditModal = ({
   campaignId,

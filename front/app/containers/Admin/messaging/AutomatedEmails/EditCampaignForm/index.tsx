@@ -7,22 +7,23 @@ import styled from 'styled-components';
 import { object } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
-
-import { Section, SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-// import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-
 import {
   CampaignFormValues,
   EditableRegion,
   ICampaign,
 } from 'api/campaigns/types';
+import useAuthUser from 'api/me/useAuthUser';
+
 import useLocale from 'hooks/useLocale';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+
 import messages from 'containers/Admin/messaging/messages';
+
+import { Section, SectionField } from 'components/admin/Section';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -43,18 +44,11 @@ const EditCampaignForm = ({
   const { data: authUser } = useAuthUser();
   const { data: appConfig } = useAppConfiguration();
   const currentLocale = useLocale();
-  // const schema = object({
-  //   subject_multiloc: validateMultilocForEveryLocale(
-  //     formatMessage(messages.fieldSubjectError)
-  //   ),
-  //   body_multiloc: validateMultilocForEveryLocale(
-  //     formatMessage(messages.fieldBodyError)
-  //   ),
-  // });
   const schema = object({});
 
   // Helper function to convert single multiloc object to multiples object with locale keys and vice versa
   // TODO: Needs to be made more generic (ie locale agnostic)
+  // TODO: Do we need to validate the multiloc values? In theory there should always be values (need to make sure of this)
   const switchKeys = (input) => {
     return Object.keys(input).reduce((acc, locale) => {
       Object.entries(input[locale]).forEach(([key, value]) => {
@@ -100,7 +94,7 @@ const EditCampaignForm = ({
       </p>
       <ul>
         {region.variables.map((variable) => (
-          <li>
+          <li key={variable}>
             {'{{'}
             {variable}
             {'}}'}

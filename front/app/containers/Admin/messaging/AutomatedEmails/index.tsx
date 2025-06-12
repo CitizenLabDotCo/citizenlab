@@ -8,6 +8,8 @@ import useCampaigns from 'api/campaigns/useCampaigns';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import EditModal from 'containers/Admin/messaging/AutomatedEmails/EditModal';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -20,7 +22,6 @@ import {
   SubGroupedCampaignsEntry,
 } from './types';
 import { groupBy, sortBy, stringifyCampaignFields } from './utils';
-import EditModal from 'containers/Admin/messaging/AutomatedEmails/EditModal';
 
 const AutomatedEmails = () => {
   const isInternalCommentingEnabled = useFeatureFlag({
