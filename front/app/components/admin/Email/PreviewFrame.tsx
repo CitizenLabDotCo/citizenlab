@@ -51,7 +51,6 @@ const PreviewFrame = ({
 
   if (!previewHtml) return null;
 
-  // TODO: JS - subject translation
   return (
     <Box>
       {showSubject && previewSubject && (
