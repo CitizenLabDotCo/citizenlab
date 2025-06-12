@@ -39,6 +39,24 @@ class WebApi::V1::FoldersController < ApplicationController
     )
   end
 
+  def index_for_admin
+    @project_folders = policy_scope(ProjectFolders::Folder)
+    authorize @project_folders
+    
+    # TODO
+
+    @project_folders = paginate @project_folders
+
+    render json: linked_json(
+      @project_folders,
+      WebApi::V1::FolderSerializer,
+      params: jsonapi_serializer_params(
+        visible_children_count_by_parent_id: {},
+        user_followers: {}
+      )
+    )
+  end
+
   def show
     render json: WebApi::V1::FolderSerializer.new(
       @project_folder,

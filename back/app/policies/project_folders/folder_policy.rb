@@ -16,6 +16,10 @@ module ProjectFolders
       end
     end
 
+    def index_for_admin?
+      return true if user && UserRoleService.new.can_moderate?(record, user)
+    end
+
     def show?
       return true if user && UserRoleService.new.can_moderate?(record, user)
       return false if record.admin_publication.publication_status == 'draft'
