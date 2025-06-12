@@ -66,7 +66,7 @@ const ExampleModal = ({
           <EmptyState />
         )}
         {!isLoading && hasPreview && (
-          <PreviewFrame campaignId={campaign.data.id} />
+          <PreviewFrame campaignId={campaign.data.id} showSubject={true} />
         )}
         {!isLoading &&
           !hasPreview &&

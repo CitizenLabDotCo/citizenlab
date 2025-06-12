@@ -104,7 +104,7 @@ module EmailCampaigns
 
     # TODO: Probably temporary, only whilst we migrate campaigns to have decent previews
     attribute :has_preview do |object|
-      object.has_preview?
+      object.preview_class.present?
     end
 
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer

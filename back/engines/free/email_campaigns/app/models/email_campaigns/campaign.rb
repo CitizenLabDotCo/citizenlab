@@ -156,10 +156,6 @@ module EmailCampaigns
       nil
     end
 
-    def has_preview?
-      preview_class.present?
-    end
-
     def manageable_by_project_moderator?
       false
     end

@@ -109,8 +109,8 @@ module EmailCampaigns
     end
 
     def preview
-      html = EmailCampaigns::DeliveryService.new.preview_html(@campaign, current_user)
-      render json: { html: html }
+      preview = EmailCampaigns::DeliveryService.new.preview_html(@campaign, current_user)
+      render json: preview
     end
 
     def deliveries
