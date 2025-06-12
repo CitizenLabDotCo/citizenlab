@@ -87,7 +87,8 @@ const CustomFieldsForm = ({
           ...formValues,
           project_id: projectId,
           phase_ids,
-          publication_status: undefined, // TODO: Change this logic when handling draft ideas
+          publication_status:
+            participationMethod === 'common_ground' ? 'published' : undefined, // TODO: Handling this on the FE for now, but should be handled on the BE
         });
         updateSearchParams({ idea_id: idea.data.id });
       } else {

@@ -12,6 +12,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -78,6 +79,7 @@ const CustomFieldsPage = ({
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
+  const { data: project } = useProjectById(projectId);
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -342,9 +344,12 @@ const CustomFieldsPage = ({
                 handleNextAndSubmit={() => {
                   pagesRef.current?.scrollTo(0, 0);
                   if (currentPageNumber === lastPageNumber) {
-                    clHistory.push({
-                      pathname: `/ideas/${idea?.data.attributes.slug}`,
-                    });
+                    const isUserAdmin = authUser && isAdmin(authUser);
+                    const path =
+                      isUserAdmin && participationMethod === 'common_ground'
+                        ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
+                        : `/ideas/${idea?.data.attributes.slug}`;
+                    clHistory.push({ pathname: path });
                   }
                   methods.handleSubmit((e) => onFormSubmit(e))();
                 }}
