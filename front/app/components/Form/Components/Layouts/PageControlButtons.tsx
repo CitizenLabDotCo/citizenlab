@@ -11,6 +11,7 @@ import {
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
+import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { getInputTerm } from 'api/phases/utils';
 
@@ -19,6 +20,7 @@ import useLocalize from 'hooks/useLocalize';
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../messages';
 
@@ -79,6 +81,8 @@ const PageControlButtons = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const { data: authUser } = useAuthUser();
+  const isUserAdmin = authUser && isAdmin(authUser);
 
   const getButtonMessage = () => {
     if (pageVariant !== 'after-submission') {
@@ -93,7 +97,12 @@ const PageControlButtons = ({
     const participationMethod = currentPhase?.attributes.participation_method;
 
     if (participationMethod === 'common_ground') {
-      return formatMessage(messages.backToInputManager);
+      // We redirect admins to the input manager to easily manage inputs
+      // and users to their own input.
+      if (isUserAdmin) {
+        return formatMessage(messages.backToInputManager);
+      }
+      return formatMessage(messages.viewYourInput);
     }
 
     if (participationMethod === 'native_survey') {
