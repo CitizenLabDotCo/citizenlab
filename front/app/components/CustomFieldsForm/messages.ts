@@ -38,14 +38,14 @@ export default defineMessages({
     defaultMessage: 'The field "{fieldName}" is required',
   },
   fieldMaximum: {
-    id: 'app.components.CustomFieldsForm.fieldMaximum',
+    id: 'app.components.CustomFieldsForm.fieldMaximumItems',
     defaultMessage:
-      'At most {maxSelections} options can be selected for the field "{fieldName}"',
+      'At most {maxSelections, plural, one {# option} other {# options}} can be selected for the field "{fieldName}"',
   },
   fieldMinimum: {
-    id: 'app.components.CustomFieldsForm.fieldMinimum',
+    id: 'app.components.CustomFieldsForm.fieldMinimumItems',
     defaultMessage:
-      'At least {minSelections} options can be selected for the field "{fieldName}"',
+      'At least {minSelections, plural, one {# option} other {# options}} can be selected for the field "{fieldName}"',
   },
   progressBarLabel: {
     id: 'app.components.CustomFieldsForm.progressBarLabel',
