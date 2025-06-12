@@ -19,7 +19,12 @@ import {
 import { IIdeaData, IIdeaQueryParameters } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
 
-import { ManagerType, PreviewMode } from 'components/admin/PostManager';
+import {
+  ManagerType,
+  PreviewMode,
+  StyledExportMenu,
+  TopActionBar,
+} from 'components/admin/PostManager';
 import ActionBar from 'components/admin/PostManager/components/ActionBar';
 import PostPreview from 'components/admin/PostManager/components/PostPreview';
 import {
@@ -134,6 +139,13 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
 
   return (
     <>
+      <TopActionBar>
+        <StyledExportMenu
+          type={'ProjectProposals'}
+          selection={selection}
+          selectedProject={projectId}
+        />
+      </TopActionBar>
       {selection.size > 0 && (
         <Box mb="16px">
           <ActionBar
