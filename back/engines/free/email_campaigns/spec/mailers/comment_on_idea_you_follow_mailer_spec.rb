@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
       ).first.merge({ recipient: recipient })
     end
 
-    let(:mail_body) { mail.body.encoded.gsub(/(=?)\r\n/, "") } # Remove encoded newlines to ensure matching
+    let(:mail_body) { mail.body.encoded.gsub(/(=?)\r\n/, '') } # Remove encoded newlines to ensure matching
 
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
