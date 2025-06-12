@@ -771,10 +771,16 @@ RSpec.describe Idea do
   describe 'with_content scope' do
     it 'filters out ideas with empty title and body multiloc hashes' do
       create(:idea_status_proposed)
-      _response = create(:native_survey_response, title_multiloc: {}, body_multiloc: {})
-      idea = create(:idea)
 
-      expect(described_class.with_content).to match_array [idea]
+      # Skipping validations because, in theory, inputs in ideation phases should always
+      # have a title and body—but this can happen if the participation method of the
+      # phase is changed.
+      idea_with_only_title = build(:idea, body_multiloc: {}).tap { _1.save(validate: false) }
+      idea_with_only_body = build(:idea, title_multiloc: {}).tap { _1.save(validate: false) }
+      _idea_without_content = build(:idea, title_multiloc: {}, body_multiloc: {}).tap { _1.save(validate: false) }
+      idea_with_both = create(:idea)
+
+      expect(described_class.with_content).to match_array [idea_with_only_title, idea_with_only_body, idea_with_both]
     end
   end
 end
