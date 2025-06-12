@@ -47,6 +47,7 @@ const StatementCard = styled(Box)<{
   isDragging: boolean;
 }>`
   ${defaultCardStyle};
+  min-height: 165px;
   position: relative;
   padding: 16px;
   background: ${({ bgColor }) => bgColor};
