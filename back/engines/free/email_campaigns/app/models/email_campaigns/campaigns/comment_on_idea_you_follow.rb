@@ -53,6 +53,10 @@ module EmailCampaigns
       CommentOnIdeaYouFollowMailer
     end
 
+    def preview_class
+      CommentOnIdeaYouFollowMailerPreview
+    end
+
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end

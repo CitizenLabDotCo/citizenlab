@@ -102,6 +102,11 @@ module EmailCampaigns
       object.mailer_class.editable_regions
     end
 
+    # TODO: Probably temporary, only whilst we migrate campaigns to have decent previews
+    attribute :has_preview do |object|
+      object.has_preview?
+    end
+
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
 
     has_many :groups, serializer: ::WebApi::V1::GroupSerializer, if: proc { |object|
