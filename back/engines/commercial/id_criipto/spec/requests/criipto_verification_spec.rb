@@ -104,6 +104,7 @@ context 'criipto verification' do
         birthday_custom_field_key: 'birthdate',
         birthyear_custom_field_key: 'birthyear',
         municipality_code_custom_field_key: 'municipality_code',
+        postal_code_custom_field_key: 'postal_code',
         ui_method_name: 'MitID'
       }]
     }
@@ -119,7 +120,8 @@ context 'criipto verification' do
       custom_field_values: {
         'birthdate' => '1977-12-31',
         'birthyear' => 1977,
-        'municipality_code' => '0173'
+        'municipality_code' => '0173',
+        'postal_code' => '3400'
       }
     })
     expect(user.verifications.first).to have_attributes({
@@ -169,8 +171,9 @@ context 'criipto verification' do
     before do
       auth_hash['extra']['raw_info']['birthdate'] = '1978-01-01'
       auth_hash['extra']['raw_info']['address_details']['municipality_code'] = '0666'
+      auth_hash['extra']['raw_info']['address']['postal_code'] = '3500'
       OmniAuth.config.mock_auth[:criipto] = OmniAuth::AuthHash.new(auth_hash)
-      @user.update!(verified: true, custom_field_values: { 'birthdate' => '1902-12-25', 'birthyear' => 1902, 'municipality_code' => '0123' })
+      @user.update!(verified: true, custom_field_values: { 'birthdate' => '1902-12-25', 'birthyear' => 1902, 'municipality_code' => '0123', 'postal_code' => '1234' })
     end
 
     it 'updates custom fields when reverifying' do
@@ -180,7 +183,7 @@ context 'criipto verification' do
       expect(User.count).to eq(1)
       expect(@user.reload.identities.count).to eq(0)
       expect(@user.reload.verified).to be true
-      expect(@user.reload.custom_field_values).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666' })
+      expect(@user.reload.custom_field_values).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666', 'postal_code' => '3500' })
     end
 
     it 'updates custom fields when authenticating as an existing user' do
@@ -192,7 +195,7 @@ context 'criipto verification' do
       expect(User.count).to eq(1)
       expect(@user.reload.verified).to be true
       expect(@user.reload.identities.count).to eq(1)
-      expect(@user.reload.custom_field_values).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666' })
+      expect(@user.reload.custom_field_values).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666', 'postal_code' => '3500' })
     end
   end
 
