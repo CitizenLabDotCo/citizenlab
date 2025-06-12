@@ -66,7 +66,6 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Tar <1 minut} one {Tar 1 minut} other {Tar # minuter}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Ladda ner som pdf",
   "app.components.FormSync.downloadExcelTemplate": "Ladda ner en Excel-mall",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Excel-mallarna kommer inte att innehålla några frågor om mappning eftersom dessa inte stöds för bulkimport för närvarande.",
   "app.components.ProjectTemplatePreview.close": "Stäng",
   "app.components.ProjectTemplatePreview.createProject": "Skapa projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Skapa ett projekt baserat på mallen {templateTitle}",

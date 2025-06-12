@@ -66,7 +66,6 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Leva <1 minuto} one {Leva 1 minuto} other {Leva # minutos}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Baixar como pdf",
   "app.components.FormSync.downloadExcelTemplate": "Faça o download de um modelo do Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Os modelos do Excel não incluirão nenhuma pergunta de entrada de mapeamento, pois elas não são compatíveis com a importação em massa no momento.",
   "app.components.ProjectTemplatePreview.close": "Fechar",
   "app.components.ProjectTemplatePreview.createProject": "Criar um projeto",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Crie um projeto baseado no modelo '{templateTitle}'",
