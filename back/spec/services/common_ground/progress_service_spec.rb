@@ -23,12 +23,13 @@ describe CommonGround::ProgressService do
     let_it_be(:user) { create(:user) }
 
     before_all do
-      # Ideas and reaction that should not be taken into account.
+      # Idea and reaction that should not be taken into account
+      # (because they are not in this phase).
       create(:idea)
       create(:reaction)
     end
 
-    context 'when there is no inputs' do
+    context 'when there are no inputs' do
       it 'returns progress for the given user' do
         expect(progress.phase_id).to eq(phase.id)
         expect(progress.num_ideas).to eq(0)
