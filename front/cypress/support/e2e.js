@@ -13,11 +13,9 @@ Cypress.on('uncaught:exception', (error) => {
 
 beforeEach(() => {
   cy.intercept('**track_pageview**', {
-    response: {
-      statusCode: 200,
-      body: {
-        success: true,
-      },
+    statusCode: 201,
+    body: {
+      success: true,
     },
   });
 });
