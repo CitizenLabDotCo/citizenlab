@@ -56,7 +56,8 @@ const SurveyForm = ({
 
   const onSubmit = async (formValues: FormValues) => {
     const isSubmitPage = currentPageNumber === nestedPagesData.length - 2;
-    if (!draftIdea) {
+    // Something strage is happening here where the back-end is returning a draft idea without an ID
+    if (!draftIdea?.data.id) {
       // If the user is an admin or project moderator, we allow them to post to a specific phase
       const phase_ids =
         project && phaseId && canModerateProject(project.data, authUser)
