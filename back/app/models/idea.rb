@@ -233,7 +233,9 @@ class Idea < ApplicationRecord
   }
 
   # Filter out empty content when switching participation methods (e.g. from survey to ideation)
-  scope :with_content, -> { where("ideas.title_multiloc != '{}' AND ideas.body_multiloc != '{}'") }
+  scope :with_content, lambda {
+    where("ideas.title_multiloc <> '{}'::jsonb OR ideas.body_multiloc <> '{}'::jsonb")
+  }
 
   scope :transitive, lambda { |transitive = true|
     transitive ? where(creation_phase: nil) : where.not(creation_phase: nil)
