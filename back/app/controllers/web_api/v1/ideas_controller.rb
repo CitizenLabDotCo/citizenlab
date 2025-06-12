@@ -552,11 +552,11 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def dry_run?
-    @dry_run ||= params[:dry_run]&.downcase.in? %w[true 1]
+    @dry_run ||= ActiveModel::Type::Boolean.new.cast(params[:dry_run])
   end
 
   def allow_duplicates?
-    @allow_duplicates ||= params[:allow_duplicates]&.downcase.in? %w[true 1]
+    @allow_duplicates ||= ActiveModel::Type::Boolean.new.cast(params[:allow_duplicates])
   end
 
   def write_everyone_tracking_cookie(input)
