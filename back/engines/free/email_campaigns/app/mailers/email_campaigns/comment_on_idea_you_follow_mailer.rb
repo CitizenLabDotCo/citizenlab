@@ -56,6 +56,7 @@ module EmailCampaigns
       )
     end
 
+    # TODO: This is a HTML region, changed the template to use <%== %> but we need to ensure it's always sanitised before output.
     def header_message
       format_editable_region(
         region_key: 'header_message',

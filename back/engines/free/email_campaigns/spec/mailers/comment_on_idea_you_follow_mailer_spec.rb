@@ -18,6 +18,8 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
       ).first.merge({ recipient: recipient })
     end
 
+    let(:mail_body) { mail.body.encoded.gsub(/(=?)\r\n/, "") } # Remove encoded newlines to ensure matching
+
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     context 'default mail' do
@@ -36,19 +38,19 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
       end
 
       it 'assigns organisation name' do
-        expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
+        expect(mail_body).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
       end
 
       it 'includes the comment author name' do
-        expect(mail.body.encoded).to include('Marion')
+        expect(mail_body).to include('Marion')
       end
 
       it 'includes the comment body' do
-        expect(mail.body.encoded).to include('I agree')
+        expect(mail_body).to include('I agree')
       end
 
       it 'includes the unfollow url' do
-        expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
+        expect(mail_body).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
       end
     end
 
@@ -61,7 +63,7 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
             'en' => {
               'subject' => 'Custom Subject - {{ input_title }}',
               'header_title' => 'NEW TITLE',
-              'header_message' => 'BODY TEXT new comment by {{ authorName }}',
+              'header_message' => '<b>BODY TEXT</b> new comment by {{ authorName }}',
               'cta_button_text' => 'CLICK ME to go to "{{ inputTitle }}"'
             }
           }
@@ -73,15 +75,15 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
       end
 
       it 'can customise the title' do
-        expect(mail.body.encoded).to include('NEW TITLE')
+        expect(mail_body).to include('NEW TITLE')
       end
 
-      it 'can customise the body' do
-        expect(mail.body.encoded).to include('BODY TEXT new comment by Marion')
+      it 'can customise the body including HTML' do
+        expect(mail_body).to include('<b>BODY TEXT</b> new comment by Marion')
       end
 
       it 'can customise the cta button' do
-        expect(mail.body.encoded).to include('CLICK ME to go to "Plant more trees"')
+        expect(mail_body).to include('CLICK ME to go to "Plant more trees"')
       end
     end
   end
