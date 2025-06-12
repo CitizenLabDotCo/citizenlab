@@ -3,10 +3,10 @@ import React from 'react';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from '../messages';
-import { useRansackParam } from '../utils';
+import { useRansackParam, clearRansackParams } from '../utils';
 
 import Sort from './Sort';
 
@@ -21,14 +21,11 @@ const SortAndReset = () => {
         pl="0"
         ml="8px"
         onClick={() => {
-          const search = countryCode
-            ? `?q[tenant_country_code_in]=${JSON.stringify([countryCode])}`
-            : '';
+          clearRansackParams();
 
-          clHistory.replace({
-            pathname: window.location.pathname,
-            search,
-          });
+          if (countryCode) {
+            updateSearchParams({ 'q[tenant_country_code_in]': countryCode });
+          }
         }}
       >
         <FormattedMessage {...messages.resetFilters} />
