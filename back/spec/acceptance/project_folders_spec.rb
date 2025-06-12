@@ -128,6 +128,19 @@ resource 'ProjectFolder' do
       end
     end
 
+    get 'web_api/v1/project_folders/for_admin' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of folders per page'
+      end
+
+      example_request 'List all folders for admin' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+      end
+    end
+
     post 'web_api/v1/project_folders' do
       with_options scope: :project_folder do
         parameter :title_multiloc, 'The title of the folder', required: true
