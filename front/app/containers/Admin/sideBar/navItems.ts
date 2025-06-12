@@ -6,6 +6,7 @@ import {
   TAppConfigurationSetting,
 } from 'api/app_configuration/types';
 import { coreSettings } from 'api/app_configuration/utils';
+import { ProjectLibraryCountries } from 'api/project_library_countries/types';
 
 import messages from './messages';
 
@@ -20,7 +21,7 @@ export type NavItem = {
   showAtBottom?: boolean;
 };
 
-const getInspirationHubLink = (country_code: string | null) => {
+const getInspirationHubLink = (country_code: string) => {
   if (!country_code) {
     return '/admin/inspiration-hub';
   }
@@ -33,8 +34,20 @@ const getInspirationHubLink = (country_code: string | null) => {
   return `/admin/inspiration-hub?${pinnedProjectsCountryFilter}&${allProjectsCountryFilter}` as RouteType;
 };
 
-const getDefaultNavItems = ({ data }: IAppConfiguration): NavItem[] => {
+const getDefaultNavItems = (
+  { data }: IAppConfiguration,
+  projectLibraryCountries: ProjectLibraryCountries
+): NavItem[] => {
   const country_code = coreSettings(data).country_code;
+
+  const countryCodeSupported = (() => {
+    if (country_code === null) return false;
+
+    const countriesSupportedByLibrary =
+      projectLibraryCountries.data.attributes.map((country) => country.code);
+
+    return countriesSupportedByLibrary.includes(country_code);
+  })();
 
   return [
     {
@@ -82,7 +95,10 @@ const getDefaultNavItems = ({ data }: IAppConfiguration): NavItem[] => {
     },
     {
       name: 'inspirationHub',
-      link: getInspirationHubLink(country_code),
+      link:
+        countryCodeSupported && country_code
+          ? getInspirationHubLink(country_code)
+          : '/admin/inspiration-hub',
       iconName: 'globe',
       message: 'inspirationHub',
     },
