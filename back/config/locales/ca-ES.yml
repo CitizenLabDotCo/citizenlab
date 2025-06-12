@@ -285,6 +285,7 @@ ca:
       likes_count: 'M''agrada'
       location: 'Ubicació'
       longitude: 'Longitud'
+      neutral_reactions_count: 'Insegur'
       participants: 'Participants'
       picks: 'Seleccions'
       project: 'Projecte'
