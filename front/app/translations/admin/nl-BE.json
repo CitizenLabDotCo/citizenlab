@@ -869,6 +869,7 @@
   "app.containers.Admin.emails.sentToUsers": "Dit zijn e-mails die naar gebruikers worden gestuurd",
   "app.containers.Admin.emails.subject": "Onderwerp:",
   "app.containers.Admin.emails.supportButtonLabel": "Zie voorbeelden op onze support pagina",
+  "app.containers.Admin.emails.supportButtonLink2": "https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications",
   "app.containers.Admin.emails.to": "Aan:",
   "app.containers.Admin.emails.toAllUsers": "Wil je deze e-mail naar alle gebruikers sturen?",
   "app.containers.Admin.emails.viewExample": "Bekijk",

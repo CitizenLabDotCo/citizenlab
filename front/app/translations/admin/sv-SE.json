@@ -869,6 +869,7 @@
   "app.containers.Admin.emails.sentToUsers": "Detta är e-postmeddelanden som skickas till användare",
   "app.containers.Admin.emails.subject": "Ämne:",
   "app.containers.Admin.emails.supportButtonLabel": "Se exempel på vår supportsida",
+  "app.containers.Admin.emails.supportButtonLink2": "https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications",
   "app.containers.Admin.emails.to": "Till:",
   "app.containers.Admin.emails.toAllUsers": "Vill du skicka det här e-postmeddelandet till alla registrerade användare?",
   "app.containers.Admin.emails.viewExample": "Visa",
