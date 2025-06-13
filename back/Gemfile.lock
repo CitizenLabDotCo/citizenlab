@@ -1086,6 +1086,7 @@ GEM
     rgeo-geojson (2.2.0)
       multi_json (~> 1.15)
       rgeo (>= 1.0.0)
+    ricecream (0.2.1)
     rinku (2.0.6)
     ros-apartment (3.1.0)
       activerecord (>= 6.1.0, < 7.2)
@@ -1304,6 +1305,7 @@ GEM
 PLATFORMS
   aarch64-linux
   arm64-darwin-21
+  arm64-darwin-24
   x86_64-darwin-21
   x86_64-darwin-23
   x86_64-linux
@@ -1436,6 +1438,7 @@ DEPENDENCIES
   report_builder!
   rest-client
   rgeo-geojson
+  ricecream (~> 0.2.1)
   rinku (~> 2)
   ros-apartment (~> 3.1.0)
   rspec-html-matchers (~> 0.10)

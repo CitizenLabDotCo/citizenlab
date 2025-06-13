@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe QueJob, :active_job_que_adapter do
+  describe 'Default factory' do
+    it 'is valid' do
+      expect(build(:que_job)).to be_valid
+    end
+  end
+
   describe '.find' do
     it 'retrieves the jobs by job_id (uuid) instead of the sequential id (primary key)' do
       job = TestJob.perform_later

@@ -11,6 +11,10 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'associations' do
+    it { is_expected.to have_many(:jobs_trackers).class_name('Jobs::Tracker').dependent(:destroy) }
+  end
+
   describe 'common_ground_phase factory' do
     it 'is valid' do
       expect(build(:common_ground_phase)).to be_valid

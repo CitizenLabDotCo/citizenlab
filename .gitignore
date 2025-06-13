@@ -11,5 +11,11 @@ back/config/tenant_templates/private/*.yml
 node_modules
 
 *.DS_Store
-.vscode/*
-*/.vscode/*
+
+# JetBrains settings files
+.idea/
+
+# VSCode settings files
+.vscode/
+.devcontainer/
+
