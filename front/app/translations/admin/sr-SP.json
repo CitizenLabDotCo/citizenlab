@@ -869,6 +869,7 @@
   "app.containers.Admin.emails.sentToUsers": "Ово су е-поруке које се шаљу корисницима",
   "app.containers.Admin.emails.subject": "Предмет:",
   "app.containers.Admin.emails.supportButtonLabel": "Погледајте примере на нашој страници за подршку",
+  "app.containers.Admin.emails.supportButtonLink2": "https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications",
   "app.containers.Admin.emails.to": "До:",
   "app.containers.Admin.emails.toAllUsers": "Да ли желите да пошаљете ову е-пошту свим регистрованим корисницима?",
   "app.containers.Admin.emails.viewExample": "Поглед",
