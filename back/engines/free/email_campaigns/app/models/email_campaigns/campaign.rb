@@ -4,19 +4,20 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  custom_text_multiloc :jsonb
 #
 # Indexes
 #
@@ -156,6 +157,25 @@ module EmailCampaigns
 
     def manual?
       false
+    end
+
+    def custom_text_multiloc
+      return super if super.present?
+
+      # TODO: Make sure that any empty locales return the default text
+
+      # TODO: Seems to be a query for groups going on too much in the campaigns query
+      # Default values are configured in the editable regions of the mailer class where customisable text is supported in the email.
+      return {} if mailer_class.editable_regions.empty?
+
+      # TODO: Make sure that any empty locales return the default
+
+      mailer_class.editable_regions.each_with_object({}) do |region, result|
+        region[:default_value_multiloc].each do |locale, value|
+          result[locale] ||= {}
+          result[locale][region[:key]] = value
+        end
+      end
     end
 
     protected

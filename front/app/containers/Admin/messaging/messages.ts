@@ -28,6 +28,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  editDisabledTooltip: {
+    id: 'app.containers.Admin.emails.editDisabledTooltip',
+    defaultMessage: 'This email cannot currently be edited.',
+  },
   fieldSender: {
     id: 'app.containers.Admin.emails.fieldSender',
     defaultMessage: 'From',
@@ -266,5 +270,13 @@ export default defineMessages({
   allParticipantsInProject: {
     id: 'app.containers.Admin.emails.allParticipantsInProject',
     defaultMessage: 'All participants in project',
+  },
+  editModalTitle: {
+    id: 'app.containers.Admin.messaging.automated.editModalTitle',
+    defaultMessage: 'Edit campaign fields',
+  },
+  variablesToolTip: {
+    id: 'app.containers.Admin.messaging.automated.variablesToolTip',
+    defaultMessage: 'You can use the following variables in your message:',
   },
 });
