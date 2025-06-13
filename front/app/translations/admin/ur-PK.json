@@ -869,6 +869,7 @@
   "app.containers.Admin.emails.sentToUsers": "یہ صارفین کو بھیجی گئی ای میلز ہیں۔",
   "app.containers.Admin.emails.subject": "موضوع:",
   "app.containers.Admin.emails.supportButtonLabel": "ہمارے سپورٹ پیج پر مثالیں دیکھیں",
+  "app.containers.Admin.emails.supportButtonLink2": "https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications",
   "app.containers.Admin.emails.to": "کو:",
   "app.containers.Admin.emails.toAllUsers": "کیا آپ یہ ای میل تمام رجسٹرڈ صارفین کو بھیجنا چاہتے ہیں؟",
   "app.containers.Admin.emails.viewExample": "دیکھیں",
