@@ -2,13 +2,10 @@
 
 module ParticipationMethod
   class CommonGround < Base
+    SUPPORTED_REACTION_MODES = %w[up down neutral].freeze
+
     def self.method_str
       'common_ground'
-    end
-
-    # Reactions are used for voting.
-    def supports_reacting?
-      true
     end
 
     def built_in_title_required?

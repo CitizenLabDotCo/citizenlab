@@ -285,6 +285,7 @@ es:
       likes_count: 'Me gusta'
       location: 'Ubicación'
       longitude: 'Longitud'
+      neutral_reactions_count: 'Pasar'
       participants: 'Participantes'
       picks: 'Recoge'
       project: 'Proyecto'

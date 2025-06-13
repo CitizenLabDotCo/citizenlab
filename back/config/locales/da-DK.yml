@@ -285,6 +285,7 @@ da:
       likes_count: 'Likes'
       location: 'Placering'
       longitude: 'Længdegrad'
+      neutral_reactions_count: 'Usikker'
       participants: 'Deltagere'
       picks: 'Udvalgt'
       project: '{tenantName, select, DeloitteDK {Verdensmål} other {Projekt}}'
