@@ -47,7 +47,7 @@ class PhasePolicy < ApplicationPolicy
   end
 
   def submission_count?
-    show?
+    return policy_for(record.project).show?
   end
 
   def index_xlsx?
