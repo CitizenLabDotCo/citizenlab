@@ -7,7 +7,9 @@ module IdeaCustomFields
     end
 
     def show?
-      super && can_access_custom_fields?(record)
+      super && can_access_custom_fields?(record) if user && !user.normal_user?
+
+      false # Empty list if no project, as in case of unsaved native survey form (TODO: Maybe make this not authorized?)
     end
 
     def update_all?
