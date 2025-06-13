@@ -144,6 +144,23 @@ class WebApi::V1::ProjectsController < ApplicationController
     base_render_mini_index
   end
 
+  def index_for_admin
+    projects = policy_scope(Project).not_hidden
+    projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
+
+    @projects = paginate projects
+    @projects = @projects.includes(:phases, :admin_publication)
+
+    authorize @projects, :index_for_admin?
+
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniAdminSerializer,
+      params: jsonapi_serializer_params,
+      include: %i[current_phase]
+    )
+  end
+
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,

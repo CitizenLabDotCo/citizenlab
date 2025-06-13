@@ -869,7 +869,6 @@
   "app.containers.Admin.emails.sentToUsers": "Nämä ovat käyttäjille lähetettyjä sähköposteja",
   "app.containers.Admin.emails.subject": "Aihe:",
   "app.containers.Admin.emails.supportButtonLabel": "Katso esimerkkejä tukisivultamme",
-  "app.containers.Admin.emails.supportButtonLink": "https://support.govocal.com/en/articles/2762939-what-are-automated-emails",
   "app.containers.Admin.emails.to": "Vastaanottaja:",
   "app.containers.Admin.emails.toAllUsers": "Haluatko lähettää tämän sähköpostin kaikille rekisteröityneille käyttäjille?",
   "app.containers.Admin.emails.viewExample": "Näytä",

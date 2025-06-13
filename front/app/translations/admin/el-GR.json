@@ -490,7 +490,6 @@
   "app.containers.Admin.emails.sentToUsers": "Πρόκειται για μηνύματα ηλεκτρονικού ταχυδρομείου που αποστέλλονται στους χρήστες",
   "app.containers.Admin.emails.subject": "Θέμα:",
   "app.containers.Admin.emails.supportButtonLabel": "Δείτε παραδείγματα στη σελίδα υποστήριξης",
-  "app.containers.Admin.emails.supportButtonLink": "https://support.govocal.com/en/articles/2762939-what-are-automated-emails",
   "app.containers.Admin.emails.to": "Προς:",
   "app.containers.Admin.emails.toAllUsers": "Θέλετε να στείλετε αυτό το μήνυμα ηλεκτρονικού ταχυδρομείου σε όλους τους εγγεγραμμένους χρήστες;",
   "app.containers.Admin.emails.viewExample": "Προβολή",
