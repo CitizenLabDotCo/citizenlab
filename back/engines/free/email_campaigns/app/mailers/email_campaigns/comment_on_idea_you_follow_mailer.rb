@@ -38,7 +38,6 @@ module EmailCampaigns
 
     def self.preview_email(campaign: nil, recipient: nil)
       # TODO: Test this method does not persist any new data
-      # TODO: Feels like we should move this to the app too instead of the spec folder
       comment = Comment.first || Comment.create(idea: Idea.where(creation_phase: nil).first, author: recipient, body_multiloc: { 'en' => 'I agree' })
       notification = Notifications::CommentOnIdeaYouFollow.new(
         recipient_id: recipient.id,
