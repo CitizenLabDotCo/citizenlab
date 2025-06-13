@@ -869,7 +869,6 @@
   "app.containers.Admin.emails.sentToUsers": "Ово су е-поруке које се шаљу корисницима",
   "app.containers.Admin.emails.subject": "Тема:",
   "app.containers.Admin.emails.supportButtonLabel": "Погледајте примере на нашој страници за подршку",
-  "app.containers.Admin.emails.supportButtonLink": "https://support.govocal.com/en/articles/2762939-what-are-automated-emails",
   "app.containers.Admin.emails.to": "До:",
   "app.containers.Admin.emails.toAllUsers": "Da li želite da pošaljete ovaj email svim korisnicima?",
   "app.containers.Admin.emails.viewExample": "Поглед",

@@ -869,7 +869,6 @@
   "app.containers.Admin.emails.sentToUsers": "Są to wiadomości e-mail wysyłane do użytkowników",
   "app.containers.Admin.emails.subject": "Temat:",
   "app.containers.Admin.emails.supportButtonLabel": "Zobacz przykłady na naszej stronie wsparcia",
-  "app.containers.Admin.emails.supportButtonLink": "https://support.govocal.com/en/articles/2762939-what-are-automated-emails",
   "app.containers.Admin.emails.to": "Do:",
   "app.containers.Admin.emails.toAllUsers": "Czy chcesz wysłać tę wiadomość do wszystkich użytkowników?",
   "app.containers.Admin.emails.viewExample": "Zobacz",

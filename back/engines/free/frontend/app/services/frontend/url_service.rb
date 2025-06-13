@@ -131,13 +131,7 @@ module Frontend
     end
 
     def admin_project_url(project_id, configuration = app_config_instance)
-      project = Project.find(project_id)
-      last_phase_id = project ? TimelineService.new.current_or_backup_transitive_phase(project)&.id : nil
-      if last_phase_id
-        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/phases/#{last_phase_id}/ideas"
-      else
-        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/settings"
-      end
+      "#{configuration.base_frontend_uri}/admin/projects/#{project_id}"
     end
 
     def idea_edit_url(configuration, idea_id)
