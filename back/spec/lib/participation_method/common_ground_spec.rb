@@ -36,9 +36,7 @@ RSpec.describe ParticipationMethod::CommonGround do
     end
   end
 
-  its(:supports_reacting?) { is_expected.to be(true) }
   its(:use_reactions_as_votes?) { is_expected.to be(false) }
-
   its(:transitive?) { is_expected.to be(false) }
   its(:supports_status?) { is_expected.to be(false) }
   its(:supports_inputs_without_author?) { is_expected.to be(true) }
@@ -70,4 +68,9 @@ RSpec.describe ParticipationMethod::CommonGround do
 
   # We might reconsider this in the future.
   its(:supports_commenting?) { is_expected.to be(false) }
+
+  its(:supports_reacting?) { is_expected.to be(true) }
+  it { expect(participation_method.supports_reacting?('up')).to be(true) }
+  it { expect(participation_method.supports_reacting?('down')).to be(true) }
+  it { expect(participation_method.supports_reacting?('neutral')).to be(true) }
 end

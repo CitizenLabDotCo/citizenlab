@@ -222,9 +222,9 @@ export default defineMessages({
     defaultMessage: 'See examples on our support page',
   },
   supportButtonLink: {
-    id: 'app.containers.Admin.emails.supportButtonLink',
+    id: 'app.containers.Admin.emails.supportButtonLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/2762939-what-are-automated-emails',
+      'https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications',
   },
   sentToUsers: {
     id: 'app.containers.Admin.emails.sentToUsers',

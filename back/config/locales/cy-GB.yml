@@ -285,6 +285,7 @@ cy:
       likes_count: 'Hoffi'
       location: 'Lleoliad'
       longitude: 'Hydred'
+      neutral_reactions_count: 'Ansicr'
       participants: 'Cyfranogwyr'
       picks: 'Picks'
       project: 'Prosiect'

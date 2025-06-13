@@ -870,7 +870,7 @@
   "app.containers.Admin.emails.sentToUsers": "These are emails sent to users",
   "app.containers.Admin.emails.subject": "Subject:",
   "app.containers.Admin.emails.supportButtonLabel": "See examples on our support page",
-  "app.containers.Admin.emails.supportButtonLink": "https://support.govocal.com/en/articles/2762939-what-are-automated-emails",
+  "app.containers.Admin.emails.supportButtonLink2": "https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications",
   "app.containers.Admin.emails.to": "To:",
   "app.containers.Admin.emails.toAllUsers": "Do you want to send this email to all registered users?",
   "app.containers.Admin.emails.viewExample": "View",

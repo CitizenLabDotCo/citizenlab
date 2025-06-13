@@ -161,13 +161,18 @@ Rails.application.routes.draw do
       resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
       resources :phases, only: %i[show show_mini edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
+        member do
+          get 'survey_results'
+          get 'common_ground_results'
+          get 'sentiment_by_quarter'
+          get :as_xlsx, action: 'index_xlsx'
+          get :mini, action: 'show_mini'
+          get 'submission_count'
+          get 'progress', action: 'show_progress'
+          delete 'inputs', action: 'delete_inputs'
+        end
+
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
-        get 'survey_results', on: :member
-        get 'sentiment_by_quarter', on: :member
-        get :as_xlsx, on: :member, action: 'index_xlsx'
-        get :mini, on: :member, action: 'show_mini'
-        get 'submission_count', on: :member
-        delete 'inputs', on: :member, action: 'delete_inputs'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'json_forms_schema', on: :collection
         end
@@ -197,6 +202,7 @@ Rails.application.routes.draw do
           get 'for_followed_item', action: 'index_for_followed_item'
           get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
           get 'community_monitor', action: 'community_monitor'
+          get 'for_admin', action: 'index_for_admin'
         end
 
         resource :review, controller: 'project_reviews'
