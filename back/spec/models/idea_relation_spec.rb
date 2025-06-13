@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe RelatedIdea do
-  subject(:related_idea) { create(:related_idea) }
+RSpec.describe IdeaRelation do
+  subject(:idea_relation) { create(:idea_relation) }
 
   it { is_expected.to be_valid }
 
@@ -20,14 +20,14 @@ RSpec.describe RelatedIdea do
     it { is_expected.to validate_presence_of(:related_idea) }
 
     it 'validates uniqueness of related_idea_id scoped to idea_id' do
-      create(:related_idea, idea: idea1, related_idea: idea2)
-      expect(build(:related_idea, idea: idea1, related_idea: idea2)).not_to be_valid
+      create(:idea_relation, idea: idea1, related_idea: idea2)
+      expect(build(:idea_relation, idea: idea1, related_idea: idea2)).not_to be_valid
     end
 
     it 'prevents an idea from being related to itself' do
-      related_idea = build(:related_idea, idea: idea1, related_idea: idea1)
-      expect(related_idea).not_to be_valid
-      expect(related_idea.errors[:related_idea]).to include('An idea cannot be related to itself')
+      idea_relation = build(:idea_relation, idea: idea1, related_idea: idea1)
+      expect(idea_relation).not_to be_valid
+      expect(idea_relation.errors[:related_idea]).to include('An idea cannot be related to itself')
     end
   end
 end

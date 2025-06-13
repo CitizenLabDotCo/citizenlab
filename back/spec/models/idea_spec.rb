@@ -5,25 +5,8 @@ require 'rails_helper'
 RSpec.describe Idea do
   context 'associations' do
     it { is_expected.to have_many(:reactions) }
-    it { is_expected.to have_many(:related_idea_associations).class_name('RelatedIdea').dependent(:destroy) }
-    it { is_expected.to have_many(:related_ideas).through(:related_idea_associations) }
-
-    describe 'related ideas' do
-      let(:idea1) { create(:idea) }
-      let(:idea2) { create(:idea) }
-
-      before do
-        create(:related_idea, idea: idea1, related_idea: idea2)
-      end
-
-      it 'related_idea_associations returns RelatedIdea objects' do
-        expect(idea1.related_idea_associations.first).to be_a(RelatedIdea)
-      end
-
-      it 'related_ideas returns Idea objects' do
-        expect(idea1.related_ideas.first).to eq(idea2)
-      end
-    end
+    it { is_expected.to have_many(:idea_relations).dependent(:destroy) }
+    it { is_expected.to have_many(:related_ideas).through(:idea_relations) }
   end
 
   describe 'title validation' do
