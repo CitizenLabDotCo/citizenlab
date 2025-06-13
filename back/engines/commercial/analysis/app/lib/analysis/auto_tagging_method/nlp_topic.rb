@@ -41,7 +41,7 @@ module Analysis
 
     def inputs_prompt(inputs, project_title)
       inputs_text = input_to_text.format_all(inputs)
-      LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size), language: Locale.monolingual&.language_copy)
+      LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size), language: response_language)
     end
 
     def parse_topic_modeling_response(response)
@@ -67,6 +67,15 @@ module Analysis
       inputs_excess = (exceeded_tokens / tokens_per_input.to_f).ceil
       inputs_excess = [inputs_excess, 1].max # Avoid infinite loop
       fit_inputs_in_context_window(inputs.shuffle.drop(inputs_excess), project_title)
+    end
+
+    def response_language
+      locale = Locale.monolingual&.to_s ||
+               task.activities.where(action: 'created').order(created_at: :desc).first&.user&.locale ||
+               AppConfiguration.instance.settings('core', 'locales').first ||
+               I18n.default_locale
+
+      Locale.new(locale).language_copy
     end
   end
 end

@@ -53,4 +53,11 @@ class Activity < ApplicationRecord
 
     result
   }
+
+  # In case the item is an object that is using STI,
+  # we want to store the base class name in item_type.
+  # See https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#label-Polymorphic+Associations and search for "(STI)"
+  def item_type=(class_name)
+    super(class_name.constantize.base_class.to_s)
+  end
 end

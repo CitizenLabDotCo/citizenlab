@@ -37,6 +37,7 @@ module Analysis
 
           if @summary.save
             side_fx_service.after_create(@summary, current_user)
+            SideFxBackgroundTaskService.new.after_create(@summary.background_task, current_user)
             SummarizationJob.perform_later(@summary)
             render json: SummarySerializer.new(
               @summary,
