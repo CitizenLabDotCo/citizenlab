@@ -6,12 +6,12 @@ module CommonGround
       @phase = phase
     end
 
-    # @param [Integer] n Number of ideas to return for each category
-    def results(n = 5)
+    # @param [Integer] num_ideas Number of ideas to return for each category
+    def results(num_ideas = 5)
       Results.new(
         phase_id: @phase.id,
-        top_consensus_ideas: top_consensus_ideas(n),
-        top_controversial_ideas: top_consensus_ideas(n, reverse: true),
+        top_consensus_ideas: top_consensus_ideas(num_ideas),
+        top_controversial_ideas: top_consensus_ideas(num_ideas, reverse: true),
         stats: stats
       )
     end
