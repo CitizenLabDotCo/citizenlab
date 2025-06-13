@@ -869,6 +869,7 @@
   "app.containers.Admin.emails.sentToUsers": "Son correos electrónicos enviados a los usuarios",
   "app.containers.Admin.emails.subject": "Asunto:",
   "app.containers.Admin.emails.supportButtonLabel": "Ver ejemplos en nuestra página de ayuda",
+  "app.containers.Admin.emails.supportButtonLink2": "https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notificationshttps://support.citizenlab.co/es/articles/7025887-crear-un-proyecto-de-encuesta-externa",
   "app.containers.Admin.emails.to": "Para:",
   "app.containers.Admin.emails.toAllUsers": "¿Quieres enviar este correo electrónico a todos los usuarios?",
   "app.containers.Admin.emails.viewExample": "Ver",
