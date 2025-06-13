@@ -31,6 +31,7 @@ export const campaignsData: ICampaignData[] = [
       recipient_role_ordering: 1,
       recipient_segment_multiloc: {},
       trigger_multiloc: {},
+      has_preview: false,
     },
     relationships: {
       author: {
@@ -71,6 +72,7 @@ export const campaignsData: ICampaignData[] = [
       recipient_role_ordering: 1,
       recipient_segment_multiloc: {},
       trigger_multiloc: {},
+      has_preview: false,
     },
     relationships: {
       author: {

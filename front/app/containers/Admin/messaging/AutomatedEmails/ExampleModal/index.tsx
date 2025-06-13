@@ -5,6 +5,7 @@ import { Button, Box, Text } from '@citizenlab/cl2-component-library';
 import useCampaignExamples from 'api/campaign_examples/useCampaignExamples';
 import useCampaign from 'api/campaigns/useCampaign';
 
+import PreviewFrame from 'components/admin/Email/PreviewFrame';
 import T from 'components/T';
 import Modal from 'components/UI/Modal';
 
@@ -15,6 +16,7 @@ import messages from '../../messages';
 
 import EmptyState from './EmptyState';
 import ExampleFrame from './ExampleFrame';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 /** Modulo function, since JS's native `%` remainder function works differently for negative numbers */
 const mod = (n: number, m: number) => ((n % m) + m) % m;
@@ -31,11 +33,13 @@ const ExampleModal = ({
   const [selectedExampleIdx, setSelectedExampleIdx] = useState<number | null>(
     null
   );
+  const isEditingEnabled = useFeatureFlag({
+    name: 'customised_automated_emails',
+  });
 
   useEffect(() => {
     // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (examples?.data?.length) {
+    if (examples?.data.length) {
       setSelectedExampleIdx(0);
     }
   }, [examples]);
@@ -46,28 +50,35 @@ const ExampleModal = ({
     );
   };
 
-  if (isNilOrError(examples)) return null;
+  if (isNilOrError(examples) || !campaign) return null;
 
   const selectedExample =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    selectedExampleIdx === null ? null : examples?.data[selectedExampleIdx];
+    selectedExampleIdx === null ? null : examples.data[selectedExampleIdx];
+
+  // New preview only works with editing enabled & where the BE has a preview class
+  const hasPreview = isEditingEnabled && campaign.data.attributes.has_preview;
 
   return (
     <Modal
       opened={true}
       close={() => onClose()}
       header={
-        <T value={campaign?.data.attributes.campaign_description_multiloc} />
+        <T value={campaign.data.attributes.campaign_description_multiloc} />
       }
     >
       <Box mx="30px" mt="30px">
-        {!isLoading && examples.data.length === 0 && <EmptyState />}
+        {!isLoading && examples.data.length === 0 && !hasPreview && (
+          <EmptyState />
+        )}
+        {!isLoading && hasPreview && (
+          <PreviewFrame campaignId={campaign.data.id} showSubject={true} />
+        )}
         {!isLoading &&
+          !hasPreview &&
           examples.data.length !== 0 &&
           selectedExampleIdx !== null && (
             <Box>
-              {selectedExample && campaign && (
+              {selectedExample && (
                 <ExampleFrame example={selectedExample} campaign={campaign} />
               )}
               <Box display="flex" justifyContent="center" alignItems="center">

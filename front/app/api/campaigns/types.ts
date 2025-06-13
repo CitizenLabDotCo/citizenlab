@@ -40,6 +40,7 @@ export interface ICampaignData {
     schedule: any;
     // Undefined for campaigns that are not scheduled
     schedule_multiloc?: Multiloc;
+    has_preview: boolean;
     delivery_stats?: {
       sent: number;
       bounced: number;

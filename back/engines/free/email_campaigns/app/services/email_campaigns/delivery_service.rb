@@ -99,16 +99,26 @@ module EmailCampaigns
       end
     end
 
-    # This only works for emails that are sent out internally
-    def preview_html(campaign, recipient)
-      command = campaign.generate_commands(
-        recipient: recipient,
-        time: Time.zone.now
-      ).first&.merge(recipient: recipient)
-      return unless command
+    # TODO: No tests for this method (never were) - need to add some
+    def preview_email(campaign, recipient)
+      mail = if campaign.manual?
+        command = campaign.generate_commands(
+          recipient: recipient,
+          time: Time.zone.now
+        ).first&.merge(recipient: recipient)
+        return {} unless command
 
-      mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
-      mail.body.to_s
+        campaign.mailer_class.with(campaign:, command:).campaign_mail
+      else
+        campaign.mailer_class.preview_email(campaign:, recipient:)
+      end
+
+      return {} unless mail
+
+      {
+        subject: mail.subject,
+        html: mail.body.to_s
+      }
     end
 
     private
