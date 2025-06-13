@@ -285,6 +285,7 @@ ar-MA:
       likes_count: 'الإعجابات'
       location: 'موقع'
       longitude: 'خط الطول'
+      neutral_reactions_count: 'غير متأكد'
       participants: 'مشاركون'
       picks: 'مختارات'
       project: 'المشروع'

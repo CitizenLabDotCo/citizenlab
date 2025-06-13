@@ -162,7 +162,7 @@ describe XlsxService do
         headers = worksheet[0].cells.map(&:value)
         row = worksheet[1].cells.map(&:value)
         expect(headers).to match_array(
-          %w[id title description proposed_budget published_at submitted_at comments likes dislikes url project topics status latitude longitude location_description attachments imported]
+          %w[id title description proposed_budget published_at submitted_at comments likes dislikes unsure url project topics status latitude longitude location_description attachments imported]
         )
         expect(row.size).to eq headers.size
       end

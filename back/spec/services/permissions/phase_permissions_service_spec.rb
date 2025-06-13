@@ -130,6 +130,18 @@ describe Permissions::PhasePermissionsService do
             end
           end
         end
+
+        context 'with malformed cookie' do
+          let(:request) do
+            instance_double(ActionDispatch::Request, {
+              cookies: { phase.id => '{malformed_cookie_value' }
+            })
+          end
+
+          it 'returns "posting_limited_max_reached" if the cookie is malformed but has not expired' do
+            expect(service.denied_reason_for_action('posting_idea')).to eq 'posting_limited_max_reached'
+          end
+        end
       end
     end
   end

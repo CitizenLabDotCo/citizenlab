@@ -285,6 +285,7 @@ nb:
       likes_count: 'Liker'
       location: 'Beliggenhet'
       longitude: 'Lengdegrad'
+      neutral_reactions_count: 'Usikker'
       participants: 'Deltakere'
       picks: 'Valg'
       project: 'Prosjekt'

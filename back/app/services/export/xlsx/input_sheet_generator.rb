@@ -100,6 +100,10 @@ module Export
         ComputedFieldForReport.new(column_header_for('dislikes_count'), ->(input) { input.dislikes_count })
       end
 
+      def neutral_reactions_count_report_field
+        ComputedFieldForReport.new(column_header_for('neutral_reactions_count'), ->(input) { input.neutral_reactions_count })
+      end
+
       def baskets_count_report_field(column_header_key)
         ComputedFieldForReport.new(column_header_for(column_header_key), ->(input) { voting_context(input, phase).baskets_count })
       end
@@ -183,10 +187,9 @@ module Export
           meta_fields << created_at_report_field
           meta_fields << published_at_report_field if participation_method.supports_public_visibility?
           meta_fields << comments_count_report_field if participation_method.supports_commenting?
-          if participation_method.supports_reacting?
-            meta_fields << likes_count_report_field
-            meta_fields << dislikes_count_report_field
-          end
+          meta_fields << likes_count_report_field if participation_method.supports_reacting?('up')
+          meta_fields << dislikes_count_report_field if participation_method.supports_reacting?('down')
+          meta_fields << neutral_reactions_count_report_field if participation_method.supports_reacting?('neutral')
           meta_fields << baskets_count_report_field('picks') if participation_method.additional_export_columns.include? 'picks'
           meta_fields << baskets_count_report_field('participants') if participation_method.additional_export_columns.include? 'participants'
           meta_fields << votes_count_report_field if participation_method.additional_export_columns.include? 'votes'

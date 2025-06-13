@@ -285,6 +285,7 @@ pl:
       likes_count: 'Lubi'
       location: 'Lokalizacja'
       longitude: 'Długość geograficzna'
+      neutral_reactions_count: 'Nie jestem pewien'
       participants: 'Uczestnicy'
       picks: 'Wybieraki'
       project: 'Projekt'

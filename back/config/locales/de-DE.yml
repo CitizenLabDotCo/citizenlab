@@ -285,6 +285,7 @@ de:
       likes_count: 'Likes'
       location: 'Ort'
       longitude: 'Längengrad'
+      neutral_reactions_count: 'Unsicher'
       participants: 'Teilnehmende'
       picks: 'Auswahl'
       project: '{orgName, select, München {Bezirke} other {Projekte}}'

@@ -285,6 +285,7 @@ hu:
       likes_count: 'Tetszik'
       location: 'Elhelyezkedés'
       longitude: 'Hosszúság'
+      neutral_reactions_count: 'Bizonytalan'
       participants: 'Résztvevők'
       picks: 'Pick'
       project: 'Projekt'

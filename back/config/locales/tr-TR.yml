@@ -285,6 +285,7 @@ tr:
       likes_count: 'Beğeniler'
       location: 'Konum'
       longitude: 'Boylam'
+      neutral_reactions_count: 'Emin değilim'
       participants: 'Katılımcılar'
       picks: 'Seçimler'
       project: 'Proje'

@@ -285,6 +285,7 @@ lv:
       likes_count: 'Patīk'
       location: 'Atrašanās vieta'
       longitude: 'Ģeogrāfiskais garums'
+      neutral_reactions_count: 'Nav zināms'
       participants: 'Dalībnieki'
       picks: 'Picks'
       project: 'Projekts'

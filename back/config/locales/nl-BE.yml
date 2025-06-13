@@ -285,6 +285,7 @@ nl-BE:
       likes_count: 'Likes'
       location: 'Locatie'
       longitude: 'Lengtegraad'
+      neutral_reactions_count: 'Onzeker'
       participants: 'Deelnemers'
       picks: 'Keuzes'
       project: 'Project'

@@ -70,6 +70,8 @@ class Permissions::EveryoneTrackingService
 
   def tracking_cookie
     JSON.parse(@request.cookies[@phase.id] || 'null')
+  rescue JSON::ParserError
+    {}
   end
 
   def enabled?

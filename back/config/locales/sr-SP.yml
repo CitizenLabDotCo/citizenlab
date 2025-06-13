@@ -285,6 +285,7 @@ sr-Cyrl:
       likes_count: 'Свиђа'
       location: 'Локација'
       longitude: 'Географска дужина'
+      neutral_reactions_count: 'Unsure'
       participants: 'Учесници'
       picks: 'Пицкс'
       project: 'Пројекат'

@@ -869,7 +869,7 @@
   "app.containers.Admin.emails.sentToUsers": "Tai naudotojams siunčiami el. laiškai",
   "app.containers.Admin.emails.subject": "Tema:",
   "app.containers.Admin.emails.supportButtonLabel": "Žr. pavyzdžius mūsų pagalbos puslapyje",
-  "app.containers.Admin.emails.supportButtonLink": "https://support.govocal.com/en/articles/2762939-what-are-automated-emails",
+  "app.containers.Admin.emails.supportButtonLink2": "https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications",
   "app.containers.Admin.emails.to": "Kam:",
   "app.containers.Admin.emails.toAllUsers": "Ar norite siųsti šį el. laišką visiems registruotiems naudotojams?",
   "app.containers.Admin.emails.viewExample": "Peržiūrėti",

@@ -869,7 +869,7 @@
   "app.containers.Admin.emails.sentToUsers": "Mae'r rhain yn negeseuon e-bost a anfonir at ddefnyddwyr",
   "app.containers.Admin.emails.subject": "Testun:",
   "app.containers.Admin.emails.supportButtonLabel": "Gweler enghreifftiau ar ein tudalen cymorth",
-  "app.containers.Admin.emails.supportButtonLink": "https://support.govocal.com/en/articles/2762939-what-are-automated-emails",
+  "app.containers.Admin.emails.supportButtonLink2": "https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications",
   "app.containers.Admin.emails.to": "I:",
   "app.containers.Admin.emails.toAllUsers": "Ydych chi am anfon yr e-bost hwn at bob defnyddiwr cofrestredig?",
   "app.containers.Admin.emails.viewExample": "Golwg",
