@@ -1451,6 +1451,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "customised_automated_emails": {
+        "type": "object",
+        "title": "Customised automated emails",
+        "description": "Override text of the default emails and preview [DO NOT ENABLE]",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {

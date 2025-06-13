@@ -19,6 +19,7 @@ import messages from '../messages';
 import CampaignDescription from './CampaignDescription';
 import PhaseEmailSettingsModal from './PhaseEmailSettingsModal';
 import { CampaignData } from './types';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type Props = {
   campaign: CampaignData;
@@ -50,6 +51,9 @@ const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
     }
   };
 
+  const isEditingEnabled = useFeatureFlag({
+    name: 'customised_automated_emails',
+  });
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
 
   return (
@@ -83,7 +87,7 @@ const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
                 </Button>
               </Box>
             )}
-            {onClickEdit && (
+            {onClickEdit && isEditingEnabled && (
               <Box ml="12px">
                 <Tooltip
                   disabled={isEditable}
