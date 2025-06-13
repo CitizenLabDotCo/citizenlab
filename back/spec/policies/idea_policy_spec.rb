@@ -722,17 +722,26 @@ describe IdeaPolicy do
   end
 
   context 'on a common ground input in a public project' do
-    let(:phase) { create(:common_ground_phase, :ongoing) }
+    let(:phase) { create(:common_ground_phase, :ongoing, with_permissions: true) }
     let(:project) { phase.project }
     let!(:idea) { create(:common_ground_input, :with_author, phase: phase) }
 
     context 'for a visitor' do
       let(:user) { nil }
 
+      context 'when posting is permitted to everyone' do
+        before do
+          phase.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
+        end
+
+        # Even when posting is permitted, common ground inputs cannot be created by
+        # visitors because the participation method do not allow inputs without an author.
+        it { is_expected.not_to permit(:create) }
+      end
+
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:by_slug)
-        is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to eq('not_author')
         is_expected.not_to permit(:destroy)
