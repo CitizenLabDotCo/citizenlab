@@ -16,6 +16,7 @@ import messages from '../../messages';
 
 import EmptyState from './EmptyState';
 import ExampleFrame from './ExampleFrame';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 /** Modulo function, since JS's native `%` remainder function works differently for negative numbers */
 const mod = (n: number, m: number) => ((n % m) + m) % m;
@@ -32,6 +33,9 @@ const ExampleModal = ({
   const [selectedExampleIdx, setSelectedExampleIdx] = useState<number | null>(
     null
   );
+  const isEditingEnabled = useFeatureFlag({
+    name: 'customised_automated_emails',
+  });
 
   useEffect(() => {
     // TODO: Fix this the next time the file is edited.
@@ -51,7 +55,8 @@ const ExampleModal = ({
   const selectedExample =
     selectedExampleIdx === null ? null : examples.data[selectedExampleIdx];
 
-  const hasPreview = campaign.data.attributes.has_preview;
+  // New preview only works with editing enabled & where the BE has a preview class
+  const hasPreview = isEditingEnabled && campaign.data.attributes.has_preview;
 
   return (
     <Modal
