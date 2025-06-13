@@ -4,7 +4,7 @@ import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -55,7 +55,7 @@ const FilterSidebarProjects = ({
         </>
       )}
       <Box display="inline-flex">
-        <Button
+        <ButtonWithLink
           buttonStyle="text"
           icon="edit"
           pl="12px"
@@ -66,7 +66,7 @@ const FilterSidebarProjects = ({
           <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
             <FormattedMessage {...messages.editProjects} />
           </Text>
-        </Button>
+        </ButtonWithLink>
       </Box>
       {projects &&
         projects.map((project) => (

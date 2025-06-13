@@ -9,7 +9,7 @@ import {
   Dates,
   Resolution,
 } from 'components/admin/GraphCards/typings';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -116,7 +116,7 @@ const InputStatusCard = ({
         <StackedBars data={data} innerRef={stackedBarsRef} />
       </Box>
 
-      <Button
+      <ButtonWithLink
         icon="arrow-right"
         iconPos="right"
         buttonStyle="text"

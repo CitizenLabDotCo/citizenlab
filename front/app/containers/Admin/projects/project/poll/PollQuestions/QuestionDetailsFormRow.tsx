@@ -8,7 +8,7 @@ import { IPollQuestionData } from 'api/poll_questions/types';
 import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
 
 import { Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -121,7 +121,7 @@ const QuestionDetailsFormRow = ({ question, onCancelOptionEditing }: Props) => {
           questionId={question.id}
           maxAnswers={maxAnswers}
         />
-        <Button
+        <ButtonWithLink
           className="e2e-form-question-settings-save"
           buttonStyle="admin-dark"
           onClick={onSave}
@@ -129,14 +129,14 @@ const QuestionDetailsFormRow = ({ question, onCancelOptionEditing }: Props) => {
           mr="8px"
         >
           <FormattedMessage {...messages.saveQuestionSettings} />
-        </Button>
-        <Button
+        </ButtonWithLink>
+        <ButtonWithLink
           className="e2e-collapse-option-form"
           onClick={onCancelOptionEditing}
           buttonStyle="secondary-outlined"
         >
           <FormattedMessage {...messages.cancelEditAnswerOptions} />
-        </Button>
+        </ButtonWithLink>
       </FormContainer>
     </Row>
   );

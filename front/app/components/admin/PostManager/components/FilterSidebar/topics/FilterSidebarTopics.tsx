@@ -6,7 +6,7 @@ import { RouteType } from 'routes';
 
 import { ITopicData } from 'api/topics/types';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -64,7 +64,7 @@ const FilterSidebarTopics = ({
       <Divider />
       {typeof linkToTagManager === 'string' && (
         <Box display="inline-flex">
-          <Button
+          <ButtonWithLink
             data-cy="e2e-post-manager-topic-filters-edit-tags"
             buttonStyle="text"
             icon="edit"
@@ -76,7 +76,7 @@ const FilterSidebarTopics = ({
             <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
               <FormattedMessage {...messages.editTags} />
             </Text>
-          </Button>
+          </ButtonWithLink>
         </Box>
       )}
       {selectableTopics.map((topic) => (

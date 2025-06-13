@@ -11,7 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import UserFieldsInSurveyToggle from 'components/admin/UserFieldsInSurveyToggle/UserFieldsInSurveyToggle';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -126,7 +126,7 @@ const NativeSurveyInputs = ({
         <SubSectionTitle>
           <FormattedMessage {...parentMessages.previewSurveyCTALabel} />
         </SubSectionTitle>
-        <Button
+        <ButtonWithLink
           width="fit-content"
           onClick={(event) => {
             if (phase) {
@@ -139,7 +139,7 @@ const NativeSurveyInputs = ({
           }}
         >
           {localize(formData.native_survey_button_multiloc)}
-        </Button>
+        </ButtonWithLink>
       </SectionField>
     </>
   );

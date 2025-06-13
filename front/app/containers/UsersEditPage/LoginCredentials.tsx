@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,7 +29,7 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
         subtitleMessage={messages.loginCredentialsSubtitle}
       />
       <Box display="flex" flexWrap="wrap" gap="16px">
-        <Button
+        <ButtonWithLink
           linkTo="/profile/change-email"
           scrollToTop
           width="auto"
@@ -38,8 +38,8 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
           icon="email"
         >
           <FormattedMessage {...messages.changeEmail} />
-        </Button>
-        <Button
+        </ButtonWithLink>
+        <ButtonWithLink
           linkTo="/profile/change-password"
           scrollToTop
           width="auto"
@@ -48,7 +48,7 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
           icon="lock"
         >
           <FormattedMessage {...passwordChangeButtonText} />
-        </Button>
+        </ButtonWithLink>
       </Box>
     </FormSection>
   );

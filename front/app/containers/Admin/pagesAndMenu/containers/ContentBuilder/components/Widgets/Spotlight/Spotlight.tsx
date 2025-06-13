@@ -16,7 +16,7 @@ import { CARD_IMAGE_ASPECT_RATIO_STR } from 'api/project_images/useProjectImages
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import AvatarBubbles from 'components/AvatarBubbles';
 import Skeleton from 'components/AvatarBubbles/Skeleton';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { DEFAULT_Y_PADDING } from '../constants';
@@ -79,12 +79,12 @@ const Spotlight = ({
           )}
           {buttonText && buttonText !== '' && (
             <Box w="100%" display="flex" mt="20px">
-              <Button
+              <ButtonWithLink
                 w={isSmallerThanPhone ? '100%' : 'auto'}
                 linkTo={buttonLink}
               >
                 {buttonText}
-              </Button>
+              </ButtonWithLink>
             </Box>
           )}
 

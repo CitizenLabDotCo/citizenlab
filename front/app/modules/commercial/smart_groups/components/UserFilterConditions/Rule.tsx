@@ -4,7 +4,7 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { pick, clone, omit } from 'lodash-es';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -38,7 +38,7 @@ const SelectorCell = styled.div`
   flex-direction: column;
 `;
 
-const StyledRemoveButton = styled(Button)``;
+const StyledRemoveButton = styled(ButtonWithLink)``;
 
 type Props = {
   rule: TRule;

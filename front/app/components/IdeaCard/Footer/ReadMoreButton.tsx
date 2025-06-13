@@ -2,7 +2,7 @@ import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -16,7 +16,7 @@ const ReadMoreButton = ({ onClick }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Button
+    <ButtonWithLink
       size="s"
       textColor={colors.coolGrey700}
       mr="8px"
@@ -26,7 +26,7 @@ const ReadMoreButton = ({ onClick }: Props) => {
       onClick={onClick}
     >
       <u>{formatMessage(messages.readMore)}</u>
-    </Button>
+    </ButtonWithLink>
   );
 };
 

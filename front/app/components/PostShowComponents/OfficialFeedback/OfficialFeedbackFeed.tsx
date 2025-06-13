@@ -12,7 +12,7 @@ import styled from 'styled-components';
 
 import useIdeaOfficialFeedback from 'api/idea_official_feedback/useIdeaOfficialFeedback';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -68,7 +68,7 @@ const StyledSpan = styled.span`
   font-weight: 400;
 `;
 
-const LoadMoreButton = styled(Button)`
+const LoadMoreButton = styled(ButtonWithLink)`
   margin-top: 10px;
 `;
 

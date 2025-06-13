@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Centerer from 'components/UI/Centerer';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -71,7 +71,7 @@ const LoadMoreButtonWrapper = styled.div`
   margin-top: 25px;
 `;
 
-const LoadMoreButton = styled(Button)``;
+const LoadMoreButton = styled(ButtonWithLink)``;
 
 const NoTemplates = styled.div`
   width: 100%;

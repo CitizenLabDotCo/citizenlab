@@ -7,7 +7,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Centerer from 'components/UI/Centerer';
 
 import { useIntl } from 'utils/cl-intl';
@@ -60,7 +60,7 @@ const Unauthorized = ({
                 {formatMessage(messages.additionalInformationRequired)}
               </Text>
               <Box mb="16px">
-                <Button
+                <ButtonWithLink
                   onClick={() => {
                     triggerAuthFlow?.();
                   }}
@@ -75,7 +75,7 @@ const Unauthorized = ({
               <Text fontSize="l" color="textSecondary" mb="30px">
                 {formatMessage(messages.notAuthorized)}
               </Text>
-              <Button
+              <ButtonWithLink
                 linkTo="/"
                 text={formatMessage(pageNotFoundMessages.goBackToHomePage)}
                 icon="arrow-left"
@@ -89,7 +89,7 @@ const Unauthorized = ({
               {formatMessage(messages.sorryNoAccess)}
             </Text>
             <Box mb="16px" data-cy="e2e-unauthorized-must-sign-in">
-              <Button
+              <ButtonWithLink
                 onClick={() => {
                   triggerAuthFlow ? triggerAuthFlow() : signIn();
                 }}

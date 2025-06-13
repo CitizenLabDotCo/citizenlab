@@ -15,7 +15,7 @@ import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
 import { getTitleFromPageId } from 'components/FormBuilder/components/FormFields/FormField/Logic/utils';
 import { getFieldNumbers } from 'components/FormBuilder/components/utils';
 import { findNextPageAfterCurrentPage } from 'components/FormBuilder/utils';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -121,7 +121,7 @@ export const PageRuleInput = ({
                         />
                       </Box>
                       <Box ml="auto" flexGrow={0} flexShrink={0}>
-                        <Button
+                        <ButtonWithLink
                           onClick={removeRule}
                           mt="36px"
                           buttonStyle="text"
@@ -133,7 +133,7 @@ export const PageRuleInput = ({
                             fill={`${colors.coolGrey600}`}
                             name="delete"
                           />
-                        </Button>
+                        </ButtonWithLink>
                       </Box>
                     </Box>
                     {validationError && isRuleInvalid && (
@@ -167,7 +167,7 @@ export const PageRuleInput = ({
                       flexGrow={0}
                       flexShrink={0}
                     >
-                      <Button
+                      <ButtonWithLink
                         onClick={() => {
                           setShowRuleInput(true);
                         }}
@@ -181,7 +181,7 @@ export const PageRuleInput = ({
                           fill={`${colors.coolGrey600}`}
                           name="edit"
                         />
-                      </Button>
+                      </ButtonWithLink>
                     </Box>
                   </Box>
                 )}

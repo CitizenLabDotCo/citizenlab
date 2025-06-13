@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
@@ -23,7 +23,7 @@ const ReferenceDataInterface = () => {
   return (
     <>
       <Box display="flex" justifyContent="flex-start" mb="32px">
-        <Button
+        <ButtonWithLink
           linkTo="/admin/dashboard/representation"
           buttonStyle="text"
           icon="arrow-left"
