@@ -6,7 +6,6 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
-import usePhase from 'api/phases/usePhase';
 
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/ButtonWithLink';
@@ -23,13 +22,12 @@ import CustomFields from './components/CustomFields';
 import messages from './messages';
 
 const InputListItem = () => {
+  const { projectId } = useParams() as { projectId: string };
   const [showAllQuestions, setShowAllQuestions] = useState(false);
   const [searchParams] = useSearchParams();
 
   const phaseId = searchParams.get('phase_id');
-  const { data: phase } = usePhase(
-    phaseId === 'undefined' ? undefined : phaseId
-  );
+
   const { formatMessage } = useIntl();
   const { selectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
@@ -59,13 +57,12 @@ const InputListItem = () => {
     analysis.data.relationships.main_custom_field?.data?.id;
 
   const allCustomFields = analysis.data.relationships.all_custom_fields.data;
-
   return (
     <Box data-cy="e2e-analysis-input-preview">
       {showManageInputButton && (
         <Box display="flex" justifyContent="flex-end">
           <Button
-            linkTo={`/admin/projects/${phase?.data.relationships.project.data.id}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
+            linkTo={`/admin/projects/${projectId}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
             openLinkInNewTab
             buttonStyle="secondary-outlined"
             icon="settings"
