@@ -98,6 +98,9 @@ describe('Form builder single choice field', () => {
     cy.wait(2000);
     cy.dataCy('e2e-single-choice').click();
     cy.dataCy('e2e-other-option-toggle').find('input').click({ force: true });
+    cy.get('#e2e-required-toggle').find('input').click({
+      force: true,
+    });
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
     cy.contains('Save').click();
@@ -105,6 +108,7 @@ describe('Form builder single choice field', () => {
     // Go to survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
+    cy.wait(2000);
     cy.contains(otherText).click({ force: true });
     cy.contains('Survey').should('exist');
     cy.get('#e2e-single-select-control').should('exist');

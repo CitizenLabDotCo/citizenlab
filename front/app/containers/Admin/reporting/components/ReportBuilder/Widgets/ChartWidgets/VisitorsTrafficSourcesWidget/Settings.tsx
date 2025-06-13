@@ -1,15 +1,18 @@
 import React from 'react';
 
 import { Box, Select } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
+
+import { useIntl } from 'utils/cl-intl';
+
 import {
   TitleInput,
   DateRangeInput,
   ProjectInput,
 } from '../_shared/ChartWidgetSettings';
-import { useNode } from '@craftjs/core';
-import { Props, View } from './typings';
-import { useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
+import { Props, View } from './typings';
 
 const Settings = () => {
   return (

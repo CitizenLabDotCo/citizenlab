@@ -58,7 +58,7 @@ resource 'Idea form exports' do
 
             example 'Get an PDF version of the idea form', document: false do
               # Expect the HTML PDF generator to be invoked
-              expect_any_instance_of(BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter).to receive(:export).and_return(
+              expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
                 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
               )
               do_request
@@ -67,7 +67,7 @@ resource 'Idea form exports' do
 
             example 'Get the legacy PDF version of the idea form when ?legacy=true', document: false do
               # Expect the Legacy PDF generator to be invoked
-              expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
+              expect_any_instance_of(BulkImportIdeas::Legacy::IdeaPdfFormExporter).to receive(:export).and_return(
                 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
               )
               do_request({ import: { legacy_pdf: true } })
@@ -78,7 +78,7 @@ resource 'Idea form exports' do
           context 'feature flag is not enabled' do
             example 'Get the legacy PDF version of the idea form', document: false do
               # Expect the Legacy PDF generator to be invoked
-              expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
+              expect_any_instance_of(BulkImportIdeas::Legacy::IdeaPdfFormExporter).to receive(:export).and_return(
                 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
               )
               do_request

@@ -212,7 +212,8 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new comments_count] }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
-  its(:supports_built_in_fields?) { is_expected.to be true }
+  its(:built_in_title_required?) { is_expected.to be(true) }
+  its(:built_in_body_required?) { is_expected.to be(true) }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
@@ -221,7 +222,6 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:allow_posting_again_after) { is_expected.to eq 0.seconds }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be true }
-  its(:supports_reacting?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_submission?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
@@ -234,7 +234,13 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:user_fields_in_form?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
+  its(:add_autoreaction_to_inputs?) { is_expected.to be(true) }
   its(:everyone_tracking_enabled?) { is_expected.to be false }
+
+  its(:supports_reacting?) { is_expected.to be(true) }
+  it { expect(participation_method.supports_reacting?('up')).to be(true) }
+  it { expect(participation_method.supports_reacting?('down')).to be(true) }
+  it { expect(participation_method.supports_reacting?('neutral')).to be(false) }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be true' do

@@ -14,7 +14,30 @@ RSpec.describe Reaction do
     end
   end
 
-  context 'uniquness' do
+  context 'Neutral Reaction' do
+    describe 'Creating a Reaction' do
+      it 'is valid for an Idea' do
+        idea = create(:idea)
+        expect { create(:reaction, mode: 'neutral', reactable: idea) }
+          .to change(described_class, :count).by(1)
+      end
+
+      it 'is invalid for a Comment' do
+        comment = create(:comment)
+        reaction = build(:reaction, mode: 'neutral', reactable: comment)
+        expect(reaction).not_to be_valid
+        expect(reaction.errors[:mode]).to include('neutral mode is only valid for ideas')
+      end
+
+      it 'increments the idea neutral reaction count' do
+        idea = create(:idea)
+        expect { create(:reaction, mode: 'neutral', reactable: idea) }
+          .to change { idea.reload.neutral_reactions_count }.by(1)
+      end
+    end
+  end
+
+  context 'uniqueness' do
     it "can't create 2 reactions for the same reactable and user" do
       idea = create(:idea)
       user = create(:user)

@@ -285,6 +285,7 @@ hu:
       likes_count: 'Tetszik'
       location: 'Elhelyezkedés'
       longitude: 'Hosszúság'
+      neutral_reactions_count: 'Bizonytalan'
       participants: 'Résztvevők'
       picks: 'Pick'
       project: 'Projekt'
@@ -331,6 +332,15 @@ hu:
       write_in_language: 'Válaszait ugyanazon a nyelven írja le, mint ez az űrlap'
       linear_scale_print_description: 'Kérjük, csak %{min_label} és %{max_label} közötti számot írjon be'
       unsupported_field: 'Ez a mező nem tölthető ki papíron. Kérjük, használja helyette az űrlap online verzióját.'
+      ranking_print_description: 'Kérlek, írj egy számot 1-től (leginkább ajánlott) egészen a %{max_rank} -ig (legkevésbé ajánlott) minden négyzetbe. Minden számot pontosan egyszer használd fel.'
+      matrix_print_description: 'Minden sorban jelöljön meg egy kört egy kereszttel a preferenciája jelzésére.'
+      rating_print_description: 'Értékeld ezt egy számmal 1 (legrosszabb) és %{max_stars} (legjobb) között.'
+      sentiment_linear_scale_print_description: 'Kérlek írj egy számot 1 és 5 között.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Kérjük, rajzoljon X-et az alábbi térképre a helyszín jelöléséhez, vagy írja be helyette a címet.'
+      line_print_description: 'Kérlek, rajzolj egy útvonalat az alábbi térképen.'
+      polygon_print_description: 'Kérlek, rajzolj egy alakzatot az alábbi térképre.'
+      select_print_description: 'Csak egy lehetőséget válasszon.'
   project_copy:
     title_suffix: 'Másolat'
   confirmations_mailer:

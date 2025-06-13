@@ -285,6 +285,7 @@ pa:
       likes_count: 'ਪਸੰਦ ਹੈ'
       location: 'ਟਿਕਾਣਾ'
       longitude: 'ਲੰਬਕਾਰ'
+      neutral_reactions_count: 'ਅਨਿਸ਼ਚਿਤ'
       participants: 'ਭਾਗ ਲੈਣ ਵਾਲੇ'
       picks: 'ਪਿਕਸ'
       project: 'ਪ੍ਰੋਜੈਕਟ'
@@ -331,6 +332,15 @@ pa:
       write_in_language: 'ਆਪਣੇ ਜਵਾਬ ਉਸੇ ਭਾਸ਼ਾ ਵਿੱਚ ਲਿਖੋ ਜਿਸ ਭਾਸ਼ਾ ਵਿੱਚ ਇਹ ਫਾਰਮ ਹੈ'
       linear_scale_print_description: 'ਕਿਰਪਾ ਕਰਕੇ ਸਿਰਫ਼ %{min_label} ਅਤੇ %{max_label} ਦੇ ਵਿਚਕਾਰ ਇੱਕ ਨੰਬਰ ਲਿਖੋ'
       unsupported_field: 'ਇਹ ਖੇਤਰ ਕਾਗਜ਼ ''ਤੇ ਪੂਰਾ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ। ਕਿਰਪਾ ਕਰਕੇ ਇਸ ਫਾਰਮ ਦੇ ਔਨਲਾਈਨ ਸੰਸਕਰਣ ਦੀ ਵਰਤੋਂ ਕਰੋ।'
+      ranking_print_description: 'ਕਿਰਪਾ ਕਰਕੇ ਹਰੇਕ ਡੱਬੇ ਵਿੱਚ 1 (ਸਭ ਤੋਂ ਵੱਧ ਪਸੰਦੀਦਾ) ਅਤੇ %{max_rank} (ਸਭ ਤੋਂ ਘੱਟ ਪਸੰਦੀਦਾ) ਵਿੱਚੋਂ ਇੱਕ ਨੰਬਰ ਲਿਖੋ। ਹਰੇਕ ਨੰਬਰ ਦੀ ਵਰਤੋਂ ਬਿਲਕੁਲ ਇੱਕ ਵਾਰ ਕਰੋ।'
+      matrix_print_description: 'ਹਰੇਕ ਕਤਾਰ ਲਈ, ਆਪਣੀ ਪਸੰਦ ਨੂੰ ਦਰਸਾਉਣ ਲਈ ਇੱਕ ਚੱਕਰ ਨੂੰ ਕਰਾਸ ਨਾਲ ਚਿੰਨ੍ਹਿਤ ਕਰੋ।'
+      rating_print_description: 'ਇਸਨੂੰ 1 (ਸਭ ਤੋਂ ਮਾੜਾ) ਅਤੇ %{max_stars} (ਸਭ ਤੋਂ ਵਧੀਆ) ਦੇ ਵਿਚਕਾਰ ਇੱਕ ਨੰਬਰ ਲਿਖ ਕੇ ਦਰਜਾ ਦਿਓ।'
+      sentiment_linear_scale_print_description: 'ਕਿਰਪਾ ਕਰਕੇ 1 ਅਤੇ 5 ਦੇ ਵਿਚਕਾਰ ਇੱਕ ਨੰਬਰ ਲਿਖੋ।'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}।'
+      point_print_description: 'ਕਿਰਪਾ ਕਰਕੇ ਸਥਾਨ ਦਿਖਾਉਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਨਕਸ਼ੇ ''ਤੇ ਇੱਕ X ਬਣਾਓ ਜਾਂ ਇਸਦੀ ਬਜਾਏ ਪਤਾ ਲਿਖੋ।'
+      line_print_description: 'ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਦਿੱਤੇ ਨਕਸ਼ੇ ''ਤੇ ਇੱਕ ਰਸਤਾ ਬਣਾਓ।'
+      polygon_print_description: 'ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਦਿੱਤੇ ਨਕਸ਼ੇ ''ਤੇ ਇੱਕ ਆਕਾਰ ਬਣਾਓ।'
+      select_print_description: 'ਸਿਰਫ਼ ਇੱਕ ਵਿਕਲਪ ਚੁਣੋ।'
   project_copy:
     title_suffix: 'ਕਾਪੀ ਕਰੋ'
   confirmations_mailer:
