@@ -128,6 +128,8 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Bilancio",
   "app.components.CustomFieldsForm.descriptionMinLength": "La descrizione deve avere una lunghezza minima di {min} caratteri.",
   "app.components.CustomFieldsForm.descriptionRequired": "La descrizione è necessaria",
+  "app.components.CustomFieldsForm.fieldMaximumItems": "Al massimo {maxSelections, plural, one {# opzione} other {# opzioni}} possono essere selezionate per il campo \"{fieldName}\".",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "Almeno {minSelections, plural, one {# opzione} other {# opzioni}} possono essere selezionate per il campo \"{fieldName}\".",
   "app.components.CustomFieldsForm.fieldRequired": "Il campo \"{fieldName}\" è obbligatorio",
   "app.components.CustomFieldsForm.imageRequired": "L'immagine è necessaria",
   "app.components.CustomFieldsForm.notPublic1": "*Questa risposta sarà condivisa solo con i responsabili del progetto e non con il pubblico.",

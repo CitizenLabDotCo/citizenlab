@@ -128,6 +128,8 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Proračun",
   "app.components.CustomFieldsForm.descriptionMinLength": "Opis mora imati najmanje {min} znakova",
   "app.components.CustomFieldsForm.descriptionRequired": "Opis je obavezan",
+  "app.components.CustomFieldsForm.fieldMaximumItems": "Za polje \"{fieldName}\" može se odabrati najviše {maxSelections, plural, one {# opcija} other {# opcija}}",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "Za polje \"{fieldName}\" može se odabrati barem {minSelections, plural, one {# opcija} other {# opcija}}",
   "app.components.CustomFieldsForm.fieldRequired": "Polje \"{fieldName}\" je obavezno",
   "app.components.CustomFieldsForm.imageRequired": "Slika je obavezna",
   "app.components.CustomFieldsForm.notPublic1": "*Ovaj odgovor bit će podijeljen samo s voditeljima projekata, a ne s javnošću.",

@@ -128,6 +128,8 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Προϋπολογισμός",
   "app.components.CustomFieldsForm.descriptionMinLength": "Η περιγραφή πρέπει να έχει μήκος τουλάχιστον {min} χαρακτήρες.",
   "app.components.CustomFieldsForm.descriptionRequired": "Η περιγραφή είναι υποχρεωτική",
+  "app.components.CustomFieldsForm.fieldMaximumItems": "Το πολύ {maxSelections, plural, one {# επιλογή} other {# επιλογές}} μπορούν να επιλεγούν για το πεδίο \"{fieldName}\"",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "Τουλάχιστον {minSelections, plural, one {# επιλογή} other {# επιλογές}} μπορούν να επιλεγούν για το πεδίο \"{fieldName}\"",
   "app.components.CustomFieldsForm.fieldRequired": "Το πεδίο \"{fieldName}\" είναι υποχρεωτικό",
   "app.components.CustomFieldsForm.imageRequired": "Η εικόνα απαιτείται",
   "app.components.CustomFieldsForm.notPublic1": "*Η απάντηση αυτή θα κοινοποιηθεί μόνο στους διαχειριστές του έργου και όχι στο κοινό.",

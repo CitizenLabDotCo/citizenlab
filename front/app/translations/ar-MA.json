@@ -128,6 +128,8 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "ميزانية",
   "app.components.CustomFieldsForm.descriptionMinLength": "يجب أن يكون الوصف على الأقل {min} حرفًا",
   "app.components.CustomFieldsForm.descriptionRequired": "الوصف مطلوب",
+  "app.components.CustomFieldsForm.fieldMaximumItems": "على الأكثر {maxSelections, plural, one {# خيار} other {# خيارات}} يمكن تحديدها للحقل \"{fieldName}\"",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "على الأقل {minSelections, plural, one {# خيار} other {# خيارات}} يمكن تحديدها للحقل \"{fieldName}\"",
   "app.components.CustomFieldsForm.fieldRequired": "الحقل \"{fieldName}\" مطلوب",
   "app.components.CustomFieldsForm.imageRequired": "الصورة مطلوبة",
   "app.components.CustomFieldsForm.notPublic1": "*سيتم مشاركة هذه الإجابة فقط مع مديري المشاريع، وليس مع الجمهور.",
