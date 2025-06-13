@@ -41,7 +41,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    active? && (admin? || (user && UserRoleService.new.can_moderate_project?(record.project, user)))
+    active? && (admin? || user&.project_moderator?)
   end
 
   def index_mini?

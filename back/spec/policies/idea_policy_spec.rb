@@ -833,7 +833,10 @@ describe IdeaPolicy do
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to eq('not_author')
         is_expected.not_to permit(:destroy)
-        is_expected.not_to permit(:index_xlsx)
+
+        # The `index_xlsx` action is allowed, but the ideas will be filtered by the
+        # policy scope.
+        is_expected.to permit(:index_xlsx)
 
         expect(scope.resolve.size).to eq 1
       end
