@@ -31,6 +31,7 @@ module Analysis
     STATES = %w[queued in_progress succeeded failed]
 
     belongs_to :analysis
+    has_many :activities, as: :item
 
     validates :type, inclusion: { in: TYPES }
     validates :state, presence: true, inclusion: { in: STATES }
