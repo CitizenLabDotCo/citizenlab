@@ -26,6 +26,10 @@ module EmailCampaigns
       []
     end
 
+    def self.preview_email(campaign: nil, user: nil)
+      nil
+    end
+
     private
 
     def show_unsubscribe_link?
