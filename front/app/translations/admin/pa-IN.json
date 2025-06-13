@@ -869,6 +869,7 @@
   "app.containers.Admin.emails.sentToUsers": "ਇਹ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਭੇਜੀਆਂ ਗਈਆਂ ਈਮੇਲਾਂ ਹਨ",
   "app.containers.Admin.emails.subject": "ਵਿਸ਼ਾ:",
   "app.containers.Admin.emails.supportButtonLabel": "ਸਾਡੇ ਸਹਾਇਤਾ ਪੰਨੇ 'ਤੇ ਉਦਾਹਰਨਾਂ ਦੇਖੋ",
+  "app.containers.Admin.emails.supportButtonLink2": "https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications",
   "app.containers.Admin.emails.to": "ਨੂੰ:",
   "app.containers.Admin.emails.toAllUsers": "ਕੀ ਤੁਸੀਂ ਸਾਰੇ ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਇਹ ਈਮੇਲ ਭੇਜਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.containers.Admin.emails.viewExample": "ਦੇਖੋ",
