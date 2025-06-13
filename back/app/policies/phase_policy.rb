@@ -14,12 +14,16 @@ class PhasePolicy < ApplicationPolicy
   def show?
     participation_method = record.participation_method
 
-    return policy_for(record.project).show? unless participation_method == 'native_survey'
+    return policy_for(record.project).show? unless participation_method == 'native_survey' && (user.nil? || user.normal_user?)
+
+    puts 'HERE!!'
 
     reason = Permissions::ProjectPermissionsService.new(
       record.project,
       user
     ).denied_reason_for_action 'posting_idea'
+
+    puts "Reason for not authorized: #{reason}" if reason
 
     raise_not_authorized(reason) if reason
 

@@ -104,9 +104,10 @@ resource 'Custom Forms' do
     before { header_token_for create(:user) }
 
     context 'phase level forms' do
-      let(:context) { create(:native_survey_phase) }
+      let(:context) { create(:native_survey_phase, start_at: 1.month.ago, end_at: 1.month.from_now) }
       let!(:form) { create(:custom_form, participation_context: context) }
       let(:phase_id) { context.id }
+      let(:_permission) { create(:permission, action: 'posting_idea', permission_scope: context) }
 
       get 'web_api/v1/phases/:phase_id/custom_form' do
         example_request 'Returns the custom form for a phase' do
