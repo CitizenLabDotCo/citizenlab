@@ -6,14 +6,19 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
   subject(:policy) { described_class.new(user, idea_custom_field) }
 
   let(:custom_form) { create(:custom_form) }
-  let!(:project) { create(:project, custom_form: custom_form) }
+  let!(:phase) { create(:phase, start_at: 1.month.ago, end_at: 1.month.from_now) }
+  let!(:_permission) { create(:permission, action: 'posting_idea', permission_scope: phase) }
+  let!(:project) { create(:project, custom_form: custom_form, phases: [phase]) }
   let!(:idea_custom_field) { create(:custom_field, resource: custom_form) }
 
   context 'for a normal user who can access the project' do
     let(:user) { create(:user) }
 
     it { is_expected.to permit(:index) }
-    it { is_expected.to permit(:show) }
+    it do
+      pp project.phases
+      is_expected.to permit(:show)
+    end
     it { is_expected.not_to permit(:update_all) }
   end
 

@@ -7,8 +7,7 @@ module IdeaCustomFields
     end
 
     def show?
-      puts 'HERE 1'
-      return super && can_access_custom_fields?(record) if user && !user.normal_user?
+      return super && can_access_custom_fields?(record) if (user && !user.normal_user?) || record&.resource&.participation_context_type == 'Project'
 
       false # Empty list if no project, as in case of unsaved native survey form (TODO: Maybe make this not authorized?)
     end
