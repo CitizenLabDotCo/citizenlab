@@ -34,6 +34,14 @@ module ParticipationMethod
       true
     end
 
+    def supports_exports?
+      true
+    end
+
+    def supports_private_attributes_in_export?
+      true
+    end
+
     def default_fields(custom_form)
       [
         CustomField.new(
