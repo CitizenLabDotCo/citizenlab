@@ -20,6 +20,7 @@ export type Props = {
   to: Path | RouteType | { pathname: string };
   onlyActiveOnIndex?: boolean;
   scrollToTop?: boolean;
+  active?: boolean;
   onClick?: (event: React.MouseEvent) => void;
 } & Omit<NavLinkProps, 'onClick'>;
 
@@ -31,6 +32,7 @@ const Link = ({
   onlyActiveOnIndex,
   scrollToTop,
   onClick,
+  active: _active,
   ...otherProps
 }: Props) => {
   const locale = useLocale();
