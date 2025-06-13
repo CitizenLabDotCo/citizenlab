@@ -869,6 +869,7 @@
   "app.containers.Admin.emails.sentToUsers": "Dette er e-mails, der sendes til brugerne",
   "app.containers.Admin.emails.subject": "Emne:",
   "app.containers.Admin.emails.supportButtonLabel": "Se eksempler på vores supportside",
+  "app.containers.Admin.emails.supportButtonLink2": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications}}",
   "app.containers.Admin.emails.to": "Til:",
   "app.containers.Admin.emails.toAllUsers": "Ønsker du at sende denne e-mail til alle registrerede brugere?",
   "app.containers.Admin.emails.viewExample": "Se",
