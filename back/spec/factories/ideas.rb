@@ -13,7 +13,7 @@ FactoryBot.define do
     end
 
     publication_status { 'published' }
-    idea_status { IdeaStatus.find_by(code: 'proposed') || association(:idea_status_proposed) }
+    idea_status
     association :project, factory: :single_phase_ideation_project
   end
 
@@ -62,6 +62,7 @@ FactoryBot.define do
   end
 
   factory :common_ground_input, parent: :base_idea do
+    proposed
     body_multiloc { {} }
 
     transient do
@@ -76,5 +77,9 @@ FactoryBot.define do
 
   trait :with_author do
     author
+  end
+
+  trait :proposed do
+    idea_status { IdeaStatus.find_by(code: 'proposed') || association(:idea_status_proposed) }
   end
 end
