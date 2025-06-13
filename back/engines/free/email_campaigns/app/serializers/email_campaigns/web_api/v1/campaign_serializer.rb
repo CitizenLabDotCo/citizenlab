@@ -94,17 +94,15 @@ module EmailCampaigns
       trackable? object
     }
 
-    # For customisation of regions of the automated emails
+    # For customisation & preview of regions of the automated emails
     attribute :custom_text_multiloc do |object|
       object.custom_text_multiloc
     end
     attribute :editable_regions do |object|
       object.mailer_class.editable_regions
     end
-
-    # TODO: Probably temporary, only whilst we migrate campaigns to have decent previews
     attribute :has_preview do |object|
-      object.preview_class.present?
+      object.mailer_class.respond_to?(:preview_email)
     end
 
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
