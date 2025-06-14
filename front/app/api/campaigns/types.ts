@@ -24,6 +24,8 @@ export interface ICampaignData {
     body_multiloc: Multiloc;
     sender: 'author' | 'organization';
     reply_to: 'author' | 'organization';
+    custom_text_multiloc?: Multiloc;
+    editable_regions?: EditableRegion[];
     created_at: string;
     updated_at: string;
     deliveries_count: number;
@@ -64,7 +66,16 @@ export interface CampaignFormValues {
   reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
+  custom_text_multiloc?: Multiloc;
   group_ids?: string[];
+}
+
+export interface EditableRegion {
+  key: string;
+  title_multiloc: Multiloc;
+  type: 'html' | 'text';
+  variables: string[];
+  default_value_multiloc?: Multiloc;
 }
 
 type CampaignUpdate =
