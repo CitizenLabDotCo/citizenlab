@@ -23,7 +23,7 @@ class PhasePolicy < ApplicationPolicy
 
     raise_not_authorized(reason) if reason
 
-    true
+    false
   end
 
   def update?
