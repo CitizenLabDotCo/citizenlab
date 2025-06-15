@@ -21,8 +21,6 @@ class PhasePolicy < ApplicationPolicy
       user
     ).denied_reason_for_action 'posting_idea'
 
-    puts "PhasePolicy#show? - reason: #{reason}" if reason
-
     raise_not_authorized(reason) if reason
 
     true
