@@ -33,10 +33,10 @@ const Meta = () => {
     const settings = tenant.data.attributes.settings;
     const tenantLocales = settings.core.locales;
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const bannerNode = homepageLayout?.data?.attributes?.craftjs_json
-      ? Object.values(homepageLayout.data.attributes.craftjs_json || {}).find(
+      ? // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        Object.values(homepageLayout.data.attributes.craftjs_json || {}).find(
           (node: any) => {
             return (
               node &&
