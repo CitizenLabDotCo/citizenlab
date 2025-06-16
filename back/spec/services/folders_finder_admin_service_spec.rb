@@ -3,7 +3,7 @@ require 'rails_helper'
 describe FoldersFinderAdminService do
   describe 'self.execute' do
     let!(:f1) { create(:project_folder) }
-    let!(:f2) do 
+    let!(:f2) do
       folder = create(:project_folder)
       publication = AdminPublication.find_by(publication_id: folder.id, publication_type: 'ProjectFolders::Folder')
       publication.update!(publication_status: 'draft')

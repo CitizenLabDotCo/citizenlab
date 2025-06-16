@@ -42,7 +42,7 @@ class WebApi::V1::FoldersController < ApplicationController
   def index_for_admin
     @project_folders = policy_scope(ProjectFolders::Folder)
     authorize @project_folders
-    
+
     @project_folders = FoldersFinderAdminService.execute(@project_folders, params)
     @project_folders = paginate @project_folders
 
