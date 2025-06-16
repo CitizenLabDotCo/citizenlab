@@ -285,6 +285,7 @@ pt:
       likes_count: 'Curtidas'
       location: 'Localização'
       longitude: 'Longitude'
+      neutral_reactions_count: 'Não tenho certeza'
       participants: 'Participantes'
       picks: 'Escolhas'
       project: 'Projeto'

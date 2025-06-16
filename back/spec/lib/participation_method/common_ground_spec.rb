@@ -86,9 +86,8 @@ RSpec.describe ParticipationMethod::CommonGround do
   its(:built_in_title_required?) { is_expected.to be(true) }
   its(:built_in_body_required?) { is_expected.to be(false) }
 
-  # Support for results export will be added later.
-  its(:supports_exports?) { is_expected.to be(false) }
-  its(:supports_private_attributes_in_export?) { is_expected.to be(false) }
+  its(:supports_exports?) { is_expected.to be(true) }
+  its(:supports_private_attributes_in_export?) { is_expected.to be(true) }
 
   # We might reconsider this in the future.
   its(:supports_commenting?) { is_expected.to be(false) }

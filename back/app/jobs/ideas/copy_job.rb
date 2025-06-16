@@ -105,7 +105,7 @@ module Ideas
       ).find_records
 
       unless allow_duplicates
-        already_copied = RelatedIdea.where(idea: dest_phase.ideas).select(:related_idea_id)
+        already_copied = IdeaRelation.where(idea: dest_phase.ideas).select(:related_idea_id)
         ideas = ideas.where.not(id: already_copied).where.not(id: dest_phase.ideas)
       end
 

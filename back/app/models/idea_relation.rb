@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: related_ideas
+# Table name: idea_relations
 #
 #  id              :uuid             not null, primary key
 #  idea_id         :uuid             not null
@@ -12,9 +12,9 @@
 #
 # Indexes
 #
-#  index_related_ideas_on_idea_id                      (idea_id)
-#  index_related_ideas_on_idea_id_and_related_idea_id  (idea_id,related_idea_id) UNIQUE
-#  index_related_ideas_on_related_idea_id              (related_idea_id)
+#  index_idea_relations_on_idea_id                      (idea_id)
+#  index_idea_relations_on_idea_id_and_related_idea_id  (idea_id,related_idea_id) UNIQUE
+#  index_idea_relations_on_related_idea_id              (related_idea_id)
 #
 # Foreign Keys
 #
@@ -22,7 +22,7 @@
 #  fk_rails_...  (related_idea_id => ideas.id)
 #
 
-# RelatedIdea represents a relationship between two ideas.
+# IdeaRelation represents a relationship between two ideas.
 #
 # Currently, being "related" implicitly means that the +idea+ is a *copy* or
 # *clone* of the +related_idea+.
@@ -30,7 +30,7 @@
 # In the future, we may add an explicit +relationship+ attribute (or similar) to this
 # model to support different types of relationships between ideas, such as:
 # "copy", "clone", "duplicate", "generated_from" (e.g., AI-generated), etc.
-class RelatedIdea < ApplicationRecord
+class IdeaRelation < ApplicationRecord
   belongs_to :idea
   belongs_to :related_idea, class_name: 'Idea'
 

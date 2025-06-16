@@ -14,6 +14,7 @@ module ParticipationMethod
 
     def assign_defaults_for_phase
       phase.reacting_dislike_enabled = true
+      phase.input_term = 'contribution'
     end
 
     def assign_defaults(input)
@@ -30,6 +31,14 @@ module ParticipationMethod
     # participation method and access the ideas directly.
     # [TODO] The behaviour of the +IdeasFinder+ class could potentially be reworked.
     def supports_public_visibility?
+      true
+    end
+
+    def supports_exports?
+      true
+    end
+
+    def supports_private_attributes_in_export?
       true
     end
 

@@ -308,7 +308,7 @@ class WebApi::V1::IdeasController < ApplicationController
     authorize(dest_phase, :copy_inputs_to_phase?)
 
     job_args = [:submitted_or_published, copy_filters, dest_phase, current_user]
-    job_kwargs = { allow_duplicates: allow_duplicates? }
+    job_kwargs = { allow_duplicates: allow_duplicates? }.compact
 
     tracker = if dry_run?
       Ideas::CopyJob.dry_run(*job_args, **job_kwargs)
@@ -552,11 +552,11 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def dry_run?
-    @dry_run ||= params[:dry_run]&.downcase.in? %w[true 1]
+    @dry_run ||= Utils.to_bool(params.fetch(:dry_run, false))
   end
 
   def allow_duplicates?
-    @allow_duplicates ||= params[:allow_duplicates]&.downcase.in? %w[true 1]
+    Utils.to_bool(params[:allow_duplicates]) if params[:allow_duplicates]
   end
 
   def write_everyone_tracking_cookie(input)
