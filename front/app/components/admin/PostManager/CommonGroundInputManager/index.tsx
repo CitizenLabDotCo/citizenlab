@@ -11,13 +11,13 @@ import {
   Spinner,
   colors,
   stylingConsts,
-  Button,
   Icon,
   Checkbox,
 } from '@citizenlab/cl2-component-library';
 
 import { IIdeaData, IIdeaQueryParameters } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
+import useProjectById from 'api/projects/useProjectById';
 
 import {
   ManagerType,
@@ -35,6 +35,7 @@ import {
 import { TitleLink } from 'components/admin/PostManager/components/PostTable/Row';
 import Pagination from 'components/Pagination';
 import T from 'components/T';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -48,6 +49,7 @@ interface Props {
 }
 
 const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
+  const { data: project } = useProjectById(projectId);
   const [queryParameters, setQueryParameters] = useState<IIdeaQueryParameters>({
     'page[size]': 10,
     'page[number]': 1,
@@ -116,7 +118,11 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
           <FormattedMessage {...messages.noInputsDescription} />
         </NoPostDescription>
         <Box display="flex" gap="8px">
-          <Button buttonStyle="secondary-outlined" width="auto">
+          <Button
+            buttonStyle="secondary-outlined"
+            width="auto"
+            linkTo={`/projects/${project?.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
+          >
             <FormattedMessage {...messages.createInput} />
           </Button>
           <Button
