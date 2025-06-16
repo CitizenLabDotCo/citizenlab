@@ -102,7 +102,7 @@ const SurveyForm = ({
       {nestedPagesData[currentPageNumber] && (
         <SurveyPage
           page={nestedPagesData[currentPageNumber].page}
-          pages={nestedPagesData.map((p) => p.page)}
+          pages={nestedPagesData}
           pageQuestions={nestedPagesData[currentPageNumber].pageQuestions}
           currentPageNumber={currentPageNumber}
           lastPageNumber={lastPageNumber}
