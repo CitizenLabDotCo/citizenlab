@@ -26,7 +26,7 @@ export function isEmptyMultiloc(multiloc: Multiloc) {
 
   for (const lang in multiloc) {
     if (Object.prototype.hasOwnProperty.call(multiloc, lang)) {
-      if (multiloc[lang].length > 0) {
+      if (multiloc[lang] && multiloc[lang].length > 0) {
         validTranslation = true;
       }
     }

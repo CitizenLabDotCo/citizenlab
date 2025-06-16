@@ -76,6 +76,7 @@ const SurveyForm = ({
         id: draftIdea.data.id,
         requestBody: {
           ...formValues,
+          project_id: projectId,
           publication_status: isSubmitPage ? 'published' : 'draft',
         },
       });

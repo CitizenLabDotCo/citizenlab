@@ -19,15 +19,16 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import CosponsorsField from './Fields/CosponsorsField';
-import FileUploaderField from './Fields/FileUploadField';
 import ImageField from './Fields/ImageField';
 import ImageMultichoiceField from './Fields/ImageMultichoiceField';
 import LinearScaleField from './Fields/LinearScale';
 import MatrixField from './Fields/MatrixField';
+import MultiFileUploaderField from './Fields/MultiFileUploadField';
 import MultiSelectField from './Fields/MultiSelectField';
 import RankingField from './Fields/RankingField';
 import RatingField from './Fields/RatingField';
 import SentimentScaleField from './Fields/SentimentScaleField';
+import SingleFileUploadField from './Fields/SingleFileUploadField';
 import SingleSelectField from './Fields/SingleSelectField';
 import InputIQ from './InputIQ';
 import messages from './messages';
@@ -96,7 +97,7 @@ const renderField = ({
       );
     case 'files':
       return (
-        <FileUploaderField
+        <MultiFileUploaderField
           name={question.key}
           ideaId={ideaId}
           scrollErrorIntoView={true}
@@ -129,6 +130,14 @@ const renderField = ({
     case 'multiselect_image':
       return (
         <ImageMultichoiceField question={question} scrollErrorIntoView={true} />
+      );
+    case 'file_upload':
+      return (
+        <SingleFileUploadField
+          name={question.key}
+          ideaId={ideaId}
+          scrollErrorIntoView={true}
+        />
       );
     default:
       return null;
