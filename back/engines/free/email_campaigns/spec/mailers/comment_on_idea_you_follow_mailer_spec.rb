@@ -59,14 +59,10 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
 
       before do
         campaign.update!(
-          custom_text_multiloc: {
-            'en' => {
-              'subject' => 'Custom Subject - {{ input_title }}',
-              'header_title' => 'NEW TITLE',
-              'header_message' => '<b>BODY TEXT</b> new comment by {{ authorName }}',
-              'cta_button_text' => 'CLICK ME to go to "{{ inputTitle }}"'
-            }
-          }
+          subject_multiloc: { 'en' => 'Custom Subject - {{ input_title }}' },
+          title_multiloc: { 'en' => 'NEW TITLE' },
+          intro_multiloc: { 'en' => '<b>BODY TEXT</b> new comment by {{ authorName }}' },
+          button_text_multiloc: { 'en' => 'CLICK ME to go to "{{ inputTitle }}"' }
         )
       end
 
@@ -84,6 +80,15 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
 
       it 'can customise the cta button' do
         expect(mail_body).to include('CLICK ME to go to "Plant more trees"')
+      end
+    end
+
+    # TODO: Make this generic for all campaigns
+    describe 'editable regions' do
+      it 'has editable regions that match defined multilocs' do
+        described_class.editable_regions.each do |region|
+          expect { campaign.send(:"#{region[:key]}_multiloc") }.not_to raise_error
+        end
       end
     end
   end

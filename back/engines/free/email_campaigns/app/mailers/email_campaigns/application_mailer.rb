@@ -50,23 +50,23 @@ module EmailCampaigns
     # To format an editable message, use `format_editable_region`.
     # The `region_key` must exist in editable regions.
     def format_editable_region(region_key: nil, values: {})
-      return unless region_key
-      return Error unless self.class.editable_regions.any? { |r| r[:key] == region_key }
+      region = self.class.editable_regions.find { |r| r[:key] == region_key }
+      return unless region
 
-      # NOTE: custom_text_multiloc returns default values if not overridden
-      custom_text = MultilocService.new.t(@campaign.custom_text_multiloc, locale.to_s)
-      region_text = custom_text.dig(region_key)
+      # NOTE: Default values for regions are merged in the campaign class so that both this and the campaign serializer can use.
+      multiloc_service = MultilocService.new
+      region_text = multiloc_service.t(@campaign.send(:"#{region_key}_multiloc"), locale.to_s)
       values = values.transform_keys(&:to_s)
 
       # TODO: Need to santitize here
-      render_liquid_template(text: region_text, values: values)
+      render_liquid_template(text: region_text, values: values, html: region[:type] == 'html')
     end
 
     private_class_method def self.editable_region(key, type: 'text', message_key: key, variables: [])
       message_group = "email_campaigns.#{campaign_class.name.demodulize.underscore}"
       {
         key: key,
-        title_multiloc: MultilocService.new.i18n_to_multiloc("email_campaigns.edit_region_names.#{key}"),
+        title_multiloc: MultilocService.new.i18n_to_multiloc("email_campaigns.editable_region_names.#{key}"),
         type: type,
         variables: variables,
         default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{message_key}") || {}
@@ -74,7 +74,7 @@ module EmailCampaigns
     end
 
     def render_liquid_template(text: nil, values: {}, html: false)
-      template_text =  html ? fix_image_widths(text) : text
+      template_text = html ? fix_image_widths(text) : text
       template = Liquid::Template.parse(template_text)
       template.render(values)
     end

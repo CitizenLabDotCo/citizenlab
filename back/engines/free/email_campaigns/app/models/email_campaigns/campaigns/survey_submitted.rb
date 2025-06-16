@@ -15,7 +15,9 @@
 #  updated_at           :datetime         not null
 #  deliveries_count     :integer          default(0), not null
 #  context_id           :uuid
-#  custom_text_multiloc :jsonb
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
 #
 # Indexes
 #

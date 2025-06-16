@@ -17,7 +17,9 @@
 #  updated_at           :datetime         not null
 #  deliveries_count     :integer          default(0), not null
 #  context_id           :uuid
-#  custom_text_multiloc :jsonb
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
 #
 # Indexes
 #
@@ -159,23 +161,21 @@ module EmailCampaigns
       false
     end
 
-    def custom_text_multiloc
-      return super if super.present?
+    # For customisable regions we merge in defaults for the following multilocs.
+    def subject_multiloc
+      merge_default_region_values('subject', super)
+    end
 
-      # TODO: Make sure that any empty locales return the default text
+    def title_multiloc
+      merge_default_region_values('title', super)
+    end
 
-      # TODO: Seems to be a query for groups going on too much in the campaigns query
-      # Default values are configured in the editable regions of the mailer class where customisable text is supported in the email.
-      return {} if mailer_class.editable_regions.empty?
+    def intro_multiloc
+      merge_default_region_values('intro', super)
+    end
 
-      # TODO: Make sure that any empty locales return the default
-
-      mailer_class.editable_regions.each_with_object({}) do |region, result|
-        region[:default_value_multiloc].each do |locale, value|
-          result[locale] ||= {}
-          result[locale][region[:key]] = value
-        end
-      end
+    def button_text_multiloc
+      merge_default_region_values('intro', super)
     end
 
     protected
@@ -202,6 +202,13 @@ module EmailCampaigns
       return if apply_recipient_filters.any?
 
       errors.add(:base, :no_recipients, message: "Can't send a campaign without recipients")
+    end
+
+    def merge_default_region_values(region_key, values)
+      region = mailer_class.editable_regions.find { |r| r[:key] == region_key }
+      return values if region.nil?
+
+      region[:default_value_multiloc].merge(values)
     end
   end
 end

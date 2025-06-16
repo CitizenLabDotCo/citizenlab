@@ -18,18 +18,18 @@ module EmailCampaigns
           variables: ['input_title']
         ),
         editable_region(
-          'header_title',
+          'title',
           message_key: 'main_header.idea',
           variables: ['authorName']
         ),
         editable_region(
-          'header_message',
+          'intro',
           type: 'html',
           message_key: 'event_description',
           variables: %w[authorName authorNameFull inputTitle]
         ),
         editable_region(
-          'cta_button_text',
+          'button_text',
           message_key: 'cta_reply_to',
           variables: %w[commentAuthor inputTitle]
         )
@@ -49,7 +49,7 @@ module EmailCampaigns
 
     def header_title
       format_editable_region(
-        region_key: 'header_title',
+        region_key: 'title',
         values: {
           authorName: event.comment_author_name
         }
@@ -59,7 +59,7 @@ module EmailCampaigns
     # TODO: This is a HTML region, changed the template to use <%== %> but we need to ensure it's always sanitised before output.
     def header_message
       format_editable_region(
-        region_key: 'header_message',
+        region_key: 'intro',
         values: {
           authorNameFull: event.comment_author_name,
           authorName: event.initiating_user_first_name,
@@ -70,7 +70,7 @@ module EmailCampaigns
 
     def cta_button_text
       format_editable_region(
-        region_key: 'cta_button_text',
+        region_key: 'button_text',
         values: {
           commentAuthor: event.initiating_user_first_name&.capitalize,
           inputTitle: localize_for_recipient(event.idea_title_multiloc)
