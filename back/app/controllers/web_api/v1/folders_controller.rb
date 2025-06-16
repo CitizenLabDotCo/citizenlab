@@ -43,8 +43,7 @@ class WebApi::V1::FoldersController < ApplicationController
     @project_folders = policy_scope(ProjectFolders::Folder)
     authorize @project_folders
     
-    # TODO
-
+    @project_folders = FoldersFinderAdminService.execute(@project_folders, params)
     @project_folders = paginate @project_folders
 
     render json: linked_json(
