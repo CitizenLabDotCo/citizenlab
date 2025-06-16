@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 
@@ -91,23 +91,25 @@ const Row = ({ project }: Props) => {
           {formatDate(last_phase_end_date)}
         </Text>
       </Td>
-      <Td background={colors.grey50} width="140px">
+      <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s" color="primary">
           {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
         </Text>
       </Td>
-      <Td background={colors.grey50} width="140px">
+      <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s" color="primary">
           {formatMessage(VISIBILITY_LABELS[visible_to])}
         </Text>
       </Td>
-      <Td background={colors.grey50} width="60px">
-        <ProjectMoreActionsMenu
-          projectId={project.id}
-          folderId={folderId}
-          setError={() => {}}
-          setIsRunningAction={() => {}}
-        />
+      <Td background={colors.grey50} width="50px">
+        <Box mr="12px">
+          <ProjectMoreActionsMenu
+            projectId={project.id}
+            folderId={folderId}
+            setError={() => {}}
+            setIsRunningAction={() => {}}
+          />
+        </Box>
       </Td>
     </Tr>
   );
