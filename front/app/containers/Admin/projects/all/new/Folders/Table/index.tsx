@@ -12,7 +12,7 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 
-import useProjectFoldersAdmin from 'api/project_folders/useProjectFoldersAdmin';
+import useProjectFoldersAdmin from 'api/project_folders_mini/useProjectFoldersAdmin';
 
 import { PaginationWithoutPositioning } from 'components/Pagination';
 
