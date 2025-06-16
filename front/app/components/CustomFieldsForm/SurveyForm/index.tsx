@@ -78,10 +78,6 @@ const SurveyForm = ({
       });
       updateSearchParams({ idea_id: draftIdea.data.id });
     }
-    // Go to the next page
-    if (currentPageNumber < lastPageNumber) {
-      setCurrentPageNumber((pageNumber: number) => pageNumber + 1);
-    }
   };
 
   const initialFormData = draftIdea
@@ -106,6 +102,7 @@ const SurveyForm = ({
       {nestedPagesData[currentPageNumber] && (
         <SurveyPage
           page={nestedPagesData[currentPageNumber].page}
+          pages={nestedPagesData.map((p) => p.page)}
           pageQuestions={nestedPagesData[currentPageNumber].pageQuestions}
           currentPageNumber={currentPageNumber}
           lastPageNumber={lastPageNumber}

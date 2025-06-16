@@ -50,6 +50,7 @@ export interface FormValues {
 
 type SurveyPage = {
   page: IFlatCustomField;
+  pages: IFlatCustomField[];
   pageQuestions: IFlatCustomField[];
   currentPageNumber: number;
   setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
@@ -65,8 +66,57 @@ type SurveyPage = {
   pagesRef: React.RefObject<HTMLDivElement>;
 };
 
+const determineNextPageNumber = ({
+  pages,
+  currentPage,
+  formData,
+}: {
+  pages: IFlatCustomField[];
+  currentPage: IFlatCustomField;
+  formData?: Record<string, any>;
+}) => {
+  let nextPageIndex: number | undefined;
+  if (currentPage.logic.next_page_id) {
+    pages.find((page) => page.id === currentPage.logic.next_page_id);
+    nextPageIndex = pages.findIndex(
+      (page) => page.id === currentPage.logic.next_page_id
+    );
+  } else {
+    const currentPageIndex = pages.findIndex(
+      (page) => page.id === currentPage.id
+    );
+    nextPageIndex = currentPageIndex + 1;
+  }
+  return nextPageIndex;
+};
+
+const determinePreviousPageNumber = ({
+  pages,
+  currentPage,
+  formData,
+}: {
+  pages: IFlatCustomField[];
+  currentPage: IFlatCustomField;
+  formData?: Record<string, any>;
+}) => {
+  let previousPageIndex: number | undefined;
+  const previousPage = pages.find(
+    (page) => currentPage.id === page.logic.next_page_id
+  );
+  if (previousPage) {
+    previousPageIndex = pages.findIndex((page) => page.id === previousPage.id);
+  } else {
+    const currentPageIndex = pages.findIndex(
+      (page) => page.id === currentPage.id
+    );
+    previousPageIndex = currentPageIndex - 1;
+  }
+  return previousPageIndex;
+};
+
 const SurveyPage = ({
   page,
+  pages,
   pageQuestions,
   lastPageNumber,
   participationMethod,
@@ -112,6 +162,18 @@ const SurveyPage = ({
     defaultValues,
   });
 
+  const previousPageNumber = determinePreviousPageNumber({
+    pages,
+    currentPage: page,
+    formData: methods.getValues(),
+  });
+
+  const nextPageNumber = determineNextPageNumber({
+    pages,
+    currentPage: page,
+    formData: methods.getValues(),
+  });
+
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       setShowFormFeedback(false);
@@ -136,6 +198,32 @@ const SurveyPage = ({
     userIsEditing: false,
     userIsOnLastPage: currentPageNumber === lastPageNumber,
   });
+
+  const handleNextAndSubmit = () => {
+    pagesRef.current?.scrollTo(0, 0);
+
+    methods.handleSubmit((e) => onFormSubmit(e))();
+
+    // Go to the next page
+    if (currentPageNumber < lastPageNumber) {
+      setCurrentPageNumber(nextPageNumber);
+    }
+
+    // Go to the project page if this is the last page
+    if (currentPageNumber === lastPageNumber) {
+      clHistory.push({
+        pathname: `/projects/${project?.data.attributes.slug}`,
+      });
+    }
+  };
+
+  const handlePrevious = () => {
+    pagesRef.current?.scrollTo(0, 0);
+    setCurrentPageNumber(previousPageNumber);
+  };
+
+  console.log(currentPageNumber, lastPageNumber, nextPageNumber);
+  console.log(pages);
 
   return (
     <FormProvider {...methods}>
@@ -282,25 +370,14 @@ const SurveyPage = ({
 
             <Box w="100%">
               <PageControlButtons
-                handleNextAndSubmit={() => {
-                  pagesRef.current?.scrollTo(0, 0);
-                  if (currentPageNumber === lastPageNumber) {
-                    clHistory.push({
-                      pathname: `/projects/${project?.data.attributes.slug}`,
-                    });
-                  }
-                  methods.handleSubmit((e) => onFormSubmit(e))();
-                }}
-                handlePrevious={() => {
-                  pagesRef.current?.scrollTo(0, 0);
-                  setCurrentPageNumber(currentPageNumber - 1);
-                }}
+                handleNextAndSubmit={handleNextAndSubmit}
+                handlePrevious={handlePrevious}
                 hasPreviousPage={currentPageNumber > 0}
                 isLoading={methods.formState.isSubmitting}
                 pageVariant={
                   currentPageNumber === lastPageNumber
                     ? 'after-submission'
-                    : currentPageNumber === lastPageNumber - 1
+                    : nextPageNumber === lastPageNumber
                     ? 'submission'
                     : 'other'
                 }
