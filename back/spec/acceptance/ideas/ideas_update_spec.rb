@@ -725,36 +725,60 @@ resource 'Ideas' do
     end
 
     context 'in a common ground phase' do
+      parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters', scope: :idea
+
       let(:phase) { create(:common_ground_phase, :ongoing) }
       let(:author) { create(:user) }
-      let(:input) { create(:idea, author: author, project: phase.project, phases: [phase]) }
-
+      let(:input) { create(:common_ground_input, author: author, phase: phase) }
       let(:title_multiloc) { { 'en' => 'Changed title' } }
 
-      context 'when author' do
-        before { header_token_for(author) }
-
-        example 'Unauthorized (401)', document: false do
-          do_request(title_multiloc: title_multiloc)
-          assert_status 401
-          expect(json_response_body).to include_response_error(:base, 'posting_not_supported')
-        end
-      end
-
-      context 'when admin' do
-        before { header_token_for(admin) }
-
-        let(:admin) { create(:admin) }
-
+      shared_examples 'update_common_ground_input' do
         example 'Update an idea', document: false do
           old_title = input.title_multiloc
+          expect(old_title).not_to eq(title_multiloc)
 
-          expect { do_request(title_multiloc: title_multiloc) }
+          expect { do_request }
             .to change { input.reload.title_multiloc }
             .from(old_title)
             .to(title_multiloc)
 
           assert_status 200
+        end
+      end
+
+      context 'when author' do
+        before { header_token_for(author) }
+
+        context 'when the input has reactions' do
+          before { create(:reaction, reactable: input, mode: 'up') }
+
+          example '[error] Unauthorized', document: false do
+            do_request
+            assert_status 401
+            expect(json_response_body).to include_response_error(:base, 'votes_exist')
+          end
+        end
+
+        context 'when the input has no reactions' do
+          include_examples 'update_common_ground_input'
+        end
+
+        context 'when the input has only self-reactions' do
+          before { create(:reaction, reactable: input, user: author, mode: 'up') }
+
+          include_examples 'update_common_ground_input'
+        end
+      end
+
+      context 'when admin' do
+        let(:admin) { create(:admin) }
+
+        before { header_token_for(admin) }
+
+        context 'when the input has reactions' do
+          before { create(:reaction, reactable: input, mode: 'up') }
+
+          include_examples 'update_common_ground_input'
         end
       end
     end
