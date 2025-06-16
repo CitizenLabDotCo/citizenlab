@@ -282,6 +282,12 @@ const generateYupValidationSchema = ({
 
         break;
       }
+      case 'file_upload': {
+        schema[key] = required
+          ? object().required(fieldRequired).nullable()
+          : object().nullable();
+        break;
+      }
     }
   });
 
