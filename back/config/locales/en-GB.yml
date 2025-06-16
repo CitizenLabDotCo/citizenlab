@@ -285,6 +285,7 @@ en-GB:
       likes_count: 'Likes'
       location: 'Location'
       longitude: 'Longitude'
+      neutral_reactions_count: 'Unsure'
       participants: 'Participants'
       picks: 'Picks'
       project: 'Project'
