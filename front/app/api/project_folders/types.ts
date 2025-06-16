@@ -1,4 +1,4 @@
-import { Multiloc, ImageSizes, IRelationship } from 'typings';
+import { Multiloc, ImageSizes, IRelationship, Pagination } from 'typings';
 
 import { PublicationStatus } from 'api/projects/types';
 
@@ -11,6 +11,12 @@ export interface IQueryParameters {
   pageNumber?: number;
   pageSize?: number;
 }
+export type AdminParameters = {
+  status?: PublicationStatus[];
+  managers?: string[];
+  search?: string;
+} & Pagination;
+
 export interface IProjectFolders {
   data: IProjectFolderData[];
 }
