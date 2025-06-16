@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Tr,
+  Td,
+  Text,
+  Spinner,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 
@@ -9,7 +16,9 @@ import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-import ProjectMoreActionsMenu from 'containers/Admin/projects/components/ProjectRow/ProjectMoreActionsMenu';
+import ProjectMoreActionsMenu, {
+  ActionType,
+} from 'containers/Admin/projects/components/ProjectRow/ProjectMoreActionsMenu';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
@@ -38,6 +47,8 @@ const Row = ({ project }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const locale = useLocale();
+  const [isBeingDeleted, setIsBeingDeleted] = useState(false);
+  const [isBeingCopyied, setIsBeingCopyied] = useState(false);
 
   const {
     first_phase_start_date,
@@ -56,6 +67,14 @@ const Row = ({ project }: Props) => {
 
   const folderId = project.relationships.folder?.data?.id;
 
+  const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
+    if (actionType === 'copying') {
+      setIsBeingCopyied(isRunning);
+    } else {
+      setIsBeingDeleted(isRunning);
+    }
+  };
+
   return (
     <Tr>
       <StyledTd
@@ -64,19 +83,28 @@ const Row = ({ project }: Props) => {
           clHistory.push(`/admin/projects/${project.id}`);
         }}
       >
-        <Text
-          m="0"
-          fontSize="s"
-          color="primary"
-          className="project-table-row-title"
-        >
-          {localize(title_multiloc)}
-        </Text>
-        {folder_title_multiloc && (
-          <Text m="0" fontSize="xs" color="textSecondary">
-            {localize(folder_title_multiloc)}
-          </Text>
-        )}
+        <Box display="flex" alignItems="center">
+          <Box>
+            <Text
+              m="0"
+              fontSize="s"
+              color="primary"
+              className="project-table-row-title"
+            >
+              {localize(title_multiloc)}
+            </Text>
+            {folder_title_multiloc && (
+              <Text m="0" fontSize="xs" color="textSecondary">
+                {localize(folder_title_multiloc)}
+              </Text>
+            )}
+          </Box>
+          {(isBeingCopyied || isBeingDeleted) && (
+            <Box ml="12px">
+              <Spinner size="20px" color={colors.grey400} />
+            </Box>
+          )}
+        </Box>
       </StyledTd>
       <Td background={colors.grey50} width="140px">
         <CurrentPhase project={project} />
@@ -108,7 +136,7 @@ const Row = ({ project }: Props) => {
             firstPublishedAt={project.attributes.first_published_at}
             folderId={folderId}
             setError={() => {}}
-            setIsRunningAction={() => {}}
+            setIsRunningAction={handleActionLoading}
           />
         </Box>
       </Td>

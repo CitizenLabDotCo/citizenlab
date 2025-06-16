@@ -7,7 +7,7 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
     object.admin_publication.publication_status
   end
 
-  attribute :first_published_at do |object|
+  attribute :first_published_at  do |object|
     object.admin_publication.first_published_at
   end
 
