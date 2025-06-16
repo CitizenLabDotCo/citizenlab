@@ -3,7 +3,7 @@ import React from 'react';
 import { Tr, Td, Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IProjectFolderData } from 'api/project_folders/types';
+import { MiniProjectFolder } from 'api/project_folders_mini/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -17,7 +17,7 @@ const StyledTd = styled(Td)`
 `;
 
 interface Props {
-  folder: IProjectFolderData;
+  folder: MiniProjectFolder;
 }
 
 const Row = ({ folder }: Props) => {
