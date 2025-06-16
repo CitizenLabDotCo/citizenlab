@@ -15,6 +15,7 @@ import {
   Checkbox,
 } from '@citizenlab/cl2-component-library';
 
+import useJobProgressByPhase from 'api/copy_inputs/useJobProgressByPhase';
 import { IIdeaData, IIdeaQueryParameters } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
 import useProjectById from 'api/projects/useProjectById';
@@ -36,6 +37,7 @@ import { TitleLink } from 'components/admin/PostManager/components/PostTable/Row
 import Pagination from 'components/Pagination';
 import T from 'components/T';
 import Button from 'components/UI/ButtonWithLink';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -63,6 +65,10 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
   const [selection, setSelection] = useState<Set<string>>(new Set());
   const [showPastInputsModal, setShowPastInputsModal] = useState(false);
+  const { data: jobProgressData } = useJobProgressByPhase(phaseId);
+  const jobProgress = jobProgressData?.data[0];
+  const importedCount = jobProgress?.attributes.progress;
+  const totalInputsToBeImported = jobProgress?.attributes.total;
 
   const resetSelection = () => setSelection(new Set());
   const openPreviewEdit = () => {
@@ -99,7 +105,7 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
     });
   };
 
-  if (isLoading || !ideas) {
+  if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" p="20px">
         <Spinner />
@@ -107,12 +113,23 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
     );
   }
 
+  if (!ideas) {
+    return null;
+  }
+
   if (ideas.data.length === 0) {
     return (
       <NoPostPage>
         <Icon name="sidebar-pages-menu" />
         <NoPostHeader>
-          <FormattedMessage {...messages.noInputs} />
+          {jobProgress ? (
+            <FormattedMessage
+              {...messages.inputImportProgress}
+              values={{ importedCount, totalCount: totalInputsToBeImported }}
+            />
+          ) : (
+            <FormattedMessage {...messages.noInputs} />
+          )}
         </NoPostHeader>
         <NoPostDescription>
           <FormattedMessage {...messages.noInputsDescription} />
@@ -128,6 +145,7 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
           <Button
             buttonStyle="admin-dark"
             onClick={() => setShowPastInputsModal(true)}
+            disabled={!!jobProgress}
           >
             <FormattedMessage {...messages.startFromPastInputs} />
           </Button>
@@ -135,6 +153,7 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
         <ImportInputsModal
           showPastInputsModal={showPastInputsModal}
           setShowPastInputsModal={setShowPastInputsModal}
+          currentPhaseid={phaseId}
         />
       </NoPostPage>
     );
@@ -145,6 +164,16 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
 
   return (
     <>
+      {jobProgress && (
+        <Warning>
+          <Box display="flex">
+            <FormattedMessage
+              {...messages.inputImportProgress}
+              values={{ importedCount, totalCount: totalInputsToBeImported }}
+            />
+          </Box>
+        </Warning>
+      )}
       <TopActionBar>
         <StyledExportMenu
           type={'ProjectProposals'}
