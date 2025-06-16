@@ -4,12 +4,9 @@ import { format } from 'date-fns';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 
-import { trackEventByName } from 'utils/analytics';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import { useRansackParam, setRansackParam } from '../utils';
-
-import tracks from './tracks';
+import { useParam, setParam } from '../utils';
 
 const toDate = (str?: string) => {
   if (!str) return;
@@ -22,8 +19,8 @@ const toString = (date?: Date) => {
 };
 
 const Dates = () => {
-  const fromStr = useRansackParam('q[practical_end_at_gteq]');
-  const toStr = useRansackParam('q[practical_end_at_lt]');
+  const fromStr = useParam('start_at');
+  const toStr = useParam('end_at');
 
   return (
     <DateRangePicker
@@ -32,9 +29,8 @@ const Dates = () => {
         const from = toString(fromDate);
         const to = toString(toDate);
 
-        setRansackParam('q[practical_end_at_gteq]', from);
-        setRansackParam('q[practical_end_at_lt]', to);
-        trackEventByName(tracks.setDates, { from, to });
+        setParam('start_at', from);
+        setParam('end_at', to);
       }}
     />
   );

@@ -18,7 +18,7 @@ const AdminProjectsListNew = () => {
     <Box>
       <Header />
       <Tabs />
-      <Box mt="32px">
+      <Box mt="20px">
         <Box display={tab === null ? 'block' : 'none'}>
           <Projects />
         </Box>
