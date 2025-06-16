@@ -45,10 +45,10 @@ describe Ideas::CopyService do
     expect(summary.errors).to be_empty
   end
 
-  it 'creates a RelatedIdea record for each copied idea' do
+  it 'creates an IdeaRelation record for each copied idea' do
     idea = create(:idea)
     service.copy([idea], dest_phase, nil)
-    expect(RelatedIdea.where(idea: dest_phase.ideas.sole, related_idea: idea)).to exist
+    expect(IdeaRelation.where(idea: dest_phase.ideas.sole, related_idea: idea)).to exist
   end
 
   it "replaces the 'submitted' publication status by 'published'" do

@@ -5,25 +5,8 @@ require 'rails_helper'
 RSpec.describe Idea do
   context 'associations' do
     it { is_expected.to have_many(:reactions) }
-    it { is_expected.to have_many(:related_idea_associations).class_name('RelatedIdea').dependent(:destroy) }
-    it { is_expected.to have_many(:related_ideas).through(:related_idea_associations) }
-
-    describe 'related ideas' do
-      let(:idea1) { create(:idea) }
-      let(:idea2) { create(:idea) }
-
-      before do
-        create(:related_idea, idea: idea1, related_idea: idea2)
-      end
-
-      it 'related_idea_associations returns RelatedIdea objects' do
-        expect(idea1.related_idea_associations.first).to be_a(RelatedIdea)
-      end
-
-      it 'related_ideas returns Idea objects' do
-        expect(idea1.related_ideas.first).to eq(idea2)
-      end
-    end
+    it { is_expected.to have_many(:idea_relations).dependent(:destroy) }
+    it { is_expected.to have_many(:related_ideas).through(:idea_relations) }
   end
 
   describe 'title validation' do
@@ -771,10 +754,16 @@ RSpec.describe Idea do
   describe 'with_content scope' do
     it 'filters out ideas with empty title and body multiloc hashes' do
       create(:idea_status_proposed)
-      _response = create(:native_survey_response, title_multiloc: {}, body_multiloc: {})
-      idea = create(:idea)
 
-      expect(described_class.with_content).to match_array [idea]
+      # Skipping validations because, in theory, inputs in ideation phases should always
+      # have a title and body—but this can happen if the participation method of the
+      # phase is changed.
+      idea_with_only_title = build(:idea, body_multiloc: {}).tap { _1.save(validate: false) }
+      idea_with_only_body = build(:idea, title_multiloc: {}).tap { _1.save(validate: false) }
+      _idea_without_content = build(:idea, title_multiloc: {}, body_multiloc: {}).tap { _1.save(validate: false) }
+      idea_with_both = create(:idea)
+
+      expect(described_class.with_content).to match_array [idea_with_only_title, idea_with_only_body, idea_with_both]
     end
   end
 end

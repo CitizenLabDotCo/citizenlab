@@ -180,7 +180,7 @@ describe('Survey template', () => {
         .contains('100% (1 choice)');
       cy.get('.e2e-survey-question-ungrouped-bars')
         .eq(1)
-        .contains('50% (1 choice)');
+        .contains('100% (1 choice)');
 
       // Remove report
       cy.visit('/admin/reporting/report-builder');
@@ -232,7 +232,7 @@ describe('Survey template', () => {
         .contains('100% (1 choice)');
       cy.get('.e2e-survey-question-ungrouped-bars')
         .eq(1)
-        .contains('50% (1 choice)');
+        .contains('100% (1 choice)');
 
       // Remove report
       cy.visit(`/en/admin/projects/${projectId}/phases/${phaseId}/report`);

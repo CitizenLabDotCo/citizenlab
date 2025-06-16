@@ -69,7 +69,7 @@ resource 'Ideas' do
       end
 
       example 'Copy ideas into the target phase (dry run)' do
-        expect { do_request(dry_run: 'true') }.not_to enqueue_job(Ideas::CopyJob)
+        expect { do_request(dry_run: true) }.not_to enqueue_job(Ideas::CopyJob)
 
         expect(status).to eq(200)
 
