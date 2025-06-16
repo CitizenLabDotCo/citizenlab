@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, intervalToDuration } from 'date-fns';
 
 import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
@@ -17,12 +17,25 @@ interface Props {
   project: ProjectMiniAdminData;
 }
 
-const parseNumberOfDays = (days: number) => {
-  if (days < 62) return { unit: 'day', value: days } as const;
-  if (days < 365) {
-    return { unit: 'month', value: Math.round(days / 31) } as const;
+/**
+ * Calculates the duration between two dates and returns the most significant
+ * time unit (year, month, or day) and its value.
+ */
+const getSignificantDuration = (start: Date, end: Date) => {
+  const duration = intervalToDuration({ start, end });
+
+  if (duration.years && duration.years > 0) {
+    return { unit: 'year', value: duration.years } as const;
   }
-  return { unit: 'year', value: Math.round(days / 365) } as const;
+  if (duration.months && duration.months > 0) {
+    return { unit: 'month', value: duration.months } as const;
+  }
+  // Fallback to days, ensuring to return 0 if the duration is in the past.
+  if (duration.days !== undefined) {
+    return { unit: 'day', value: Math.max(0, duration.days) } as const;
+  }
+  // Default case if no duration
+  return { unit: 'day', value: 0 } as const;
 };
 
 const CurrentPhase = ({ project }: Props) => {
@@ -67,7 +80,7 @@ const CurrentPhase = ({ project }: Props) => {
         return formatMessage(messages.endsToday);
       }
 
-      const { unit, value } = parseNumberOfDays(daysUntilPhaseEnds);
+      const { unit, value } = getSignificantDuration(now, parsedPhaseEndDate);
 
       switch (unit) {
         case 'day':
@@ -91,7 +104,7 @@ const CurrentPhase = ({ project }: Props) => {
 
     if (daysUntilProjectStarts < 0) return; // should not happen, but just in case
 
-    const { unit, value } = parseNumberOfDays(daysUntilProjectStarts);
+    const { unit, value } = getSignificantDuration(now, parsedProjectStartDate);
 
     switch (unit) {
       case 'day':
