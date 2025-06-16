@@ -285,6 +285,7 @@ cy:
       likes_count: 'Hoffi'
       location: 'Lleoliad'
       longitude: 'Hydred'
+      neutral_reactions_count: 'Ansicr'
       participants: 'Cyfranogwyr'
       picks: 'Picks'
       project: 'Prosiect'
@@ -335,6 +336,15 @@ cy:
       write_in_language: 'Ysgrifennwch eich atebion yn yr un iaith â''r ffurflen hon'
       linear_scale_print_description: 'Ysgrifennwch rif rhwng %{min_label} a %{max_label} yn unig'
       unsupported_field: 'Ni ellir cwblhau''r maes hwn ar bapur. Defnyddiwch y fersiwn ar-lein o''r ffurflen hon yn lle hynny.'
+      ranking_print_description: 'Ysgrifennwch rif o 1 (y mwyaf poblogaidd) a %{max_rank} (y lleiaf poblogaidd) ym mhob blwch. Defnyddiwch bob rhif unwaith yn union.'
+      matrix_print_description: 'Ar gyfer pob rhes, marciwch un cylch gyda chroes i nodi eich dewis.'
+      rating_print_description: 'Graddiwch hyn trwy ysgrifennu rhif rhwng 1 (gwaethaf) a %{max_stars} (gorau).'
+      sentiment_linear_scale_print_description: 'Ysgrifennwch rif rhwng 1 a 5 os gwelwch yn dda.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Tynnwch X ar y map isod i ddangos y lleoliad neu ysgrifennwch y cyfeiriad yn lle.'
+      line_print_description: 'Lluniwch lwybr ar y map isod.'
+      polygon_print_description: 'Lluniwch siâp ar y map isod.'
+      select_print_description: 'Dewiswch un opsiwn yn unig.'
   project_copy:
     title_suffix: 'Copi'
   confirmations_mailer:
