@@ -1,13 +1,19 @@
 import React from 'react';
 
-import useProjectFoldersAdmin from 'api/project_folders/useProjectFoldersAdmin';
+import { Box } from '@citizenlab/cl2-component-library';
+
+import Filters from './Filters';
+import Table from './Table';
 
 const Folders = () => {
-  const { data } = useProjectFoldersAdmin({});
-
-  console.log({ data });
-
-  return <>Folders!</>;
+  return (
+    <Box>
+      <Filters />
+      <Box mt="16px">
+        <Table />
+      </Box>
+    </Box>
+  );
 };
 
 export default Folders;
