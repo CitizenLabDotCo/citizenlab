@@ -36,15 +36,16 @@ const Meta = () => {
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const bannerNode = homepageLayout?.data?.attributes?.craftjs_json
-      ? Object.keys(homepageLayout.data.attributes.craftjs_json).reduce(
-          (result, nodeId) => {
-            const node = homepageLayout.data.attributes.craftjs_json[nodeId];
-            if (node.displayName === 'HomepageBanner') {
-              return node;
-            }
-            return result;
-          },
-          null
+      ? Object.values(homepageLayout.data.attributes.craftjs_json || {}).find(
+          (node: any) => {
+            return (
+              node &&
+              node.type &&
+              typeof node.type === 'object' &&
+              'resolvedName' in node.type &&
+              node.type.resolvedName === 'HomepageBanner'
+            );
+          }
         )
       : null;
 
