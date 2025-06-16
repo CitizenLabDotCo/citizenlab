@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PhasesController < ApplicationController
-  before_action :set_phase, only: %i[show show_mini update destroy survey_results sentiment_by_quarter submission_count index_xlsx delete_inputs]
-  around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   skip_before_action :authenticate_user
+  around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
+  before_action :set_phase, only: %i[
+    show show_mini update destroy survey_results sentiment_by_quarter
+    submission_count index_xlsx delete_inputs show_progress common_ground_results
+  ]
 
   def index
     @phases = policy_scope(Phase)
@@ -79,6 +82,16 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: raw_json(results)
   end
 
+  def common_ground_results
+    results = CommonGround::ResultsService.new(@phase).results
+
+    render json: WebApi::V1::CommonGround::ResultsSerializer
+      .new(results, params: jsonapi_serializer_params)
+      .serializable_hash
+  rescue CommonGround::Errors::UnsupportedPhaseError
+    head :bad_request
+  end
+
   # Used for community_monitor_survey dashboard
   def sentiment_by_quarter
     average_generator = Surveys::AverageGenerator.new(@phase, input_type: 'sentiment_linear_scale')
@@ -109,6 +122,18 @@ class WebApi::V1::PhasesController < ApplicationController
     end
     sidefx.after_delete_inputs @phase, current_user
     head :ok
+  end
+
+  def show_progress
+    progress = CommonGround::ProgressService
+      .new(@phase)
+      .user_progress(current_user)
+
+    render json: WebApi::V1::CommonGround::ProgressSerializer
+      .new(progress, include: [:next_idea], params: jsonapi_serializer_params)
+      .serializable_hash
+  rescue CommonGround::Errors::UnsupportedPhaseError
+    send_not_found
   end
 
   private

@@ -202,6 +202,7 @@ DROP INDEX IF EXISTS public.index_polls_response_options_on_response_id;
 DROP INDEX IF EXISTS public.index_polls_response_options_on_option_id;
 DROP INDEX IF EXISTS public.index_polls_questions_on_phase_id;
 DROP INDEX IF EXISTS public.index_polls_options_on_question_id;
+DROP INDEX IF EXISTS public.index_phases_on_start_at_and_end_at;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
 DROP INDEX IF EXISTS public.index_phases_on_manual_voters_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_phase_id;
@@ -255,11 +256,13 @@ DROP INDEX IF EXISTS public.index_ideas_search;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_phase_id;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_idea_id_and_phase_id;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_idea_id;
+DROP INDEX IF EXISTS public.index_ideas_on_title_multiloc;
 DROP INDEX IF EXISTS public.index_ideas_on_slug;
 DROP INDEX IF EXISTS public.index_ideas_on_project_id;
 DROP INDEX IF EXISTS public.index_ideas_on_manual_votes_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_ideas_on_location_point;
 DROP INDEX IF EXISTS public.index_ideas_on_idea_status_id;
+DROP INDEX IF EXISTS public.index_ideas_on_body_multiloc;
 DROP INDEX IF EXISTS public.index_ideas_on_author_id;
 DROP INDEX IF EXISTS public.index_ideas_on_author_hash;
 DROP INDEX IF EXISTS public.index_idea_imports_on_import_user_id;
@@ -1574,7 +1577,8 @@ CREATE TABLE public.ideas (
     submitted_at timestamp(6) without time zone,
     manual_votes_amount integer,
     manual_votes_last_updated_by_id uuid,
-    manual_votes_last_updated_at timestamp(6) without time zone
+    manual_votes_last_updated_at timestamp(6) without time zone,
+    neutral_reactions_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -5192,6 +5196,13 @@ CREATE INDEX index_ideas_on_author_id ON public.ideas USING btree (author_id);
 
 
 --
+-- Name: index_ideas_on_body_multiloc; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_on_body_multiloc ON public.ideas USING gin (body_multiloc);
+
+
+--
 -- Name: index_ideas_on_idea_status_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5224,6 +5235,13 @@ CREATE INDEX index_ideas_on_project_id ON public.ideas USING btree (project_id);
 --
 
 CREATE UNIQUE INDEX index_ideas_on_slug ON public.ideas USING btree (slug);
+
+
+--
+-- Name: index_ideas_on_title_multiloc; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_on_title_multiloc ON public.ideas USING gin (title_multiloc);
 
 
 --
@@ -5595,6 +5613,13 @@ CREATE INDEX index_phases_on_manual_voters_last_updated_by_id ON public.phases U
 --
 
 CREATE INDEX index_phases_on_project_id ON public.phases USING btree (project_id);
+
+
+--
+-- Name: index_phases_on_start_at_and_end_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phases_on_start_at_and_end_at ON public.phases USING btree (start_at, end_at);
 
 
 --
@@ -7086,6 +7111,10 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250610112901'),
+('20250609151800'),
+('20250605090517'),
+('20250519080057'),
 ('20250513160156'),
 ('20250509140651'),
 ('20250509131056'),

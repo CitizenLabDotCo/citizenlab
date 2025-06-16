@@ -31,13 +31,4 @@ class ApplicationRecord < ActiveRecord::Base
     valid?
     errors[attribute_name].blank?.tap { |_| errors.clear }
   end
-
-  def sanitize_multilocs(*fields)
-    service = SanitizationService.new
-    fields.each do |field|
-      next if (value = self[field]).nil?
-
-      self[field] = service.sanitize_multiloc(value, [])
-    end
-  end
 end

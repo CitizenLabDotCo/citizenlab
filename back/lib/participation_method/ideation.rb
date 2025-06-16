@@ -2,6 +2,7 @@
 
 module ParticipationMethod
   class Ideation < Base
+    SUPPORTED_REACTION_MODES = %w[up down].freeze
     ALLOWED_EXTRA_FIELD_TYPES = %w[
       page number linear_scale rating text multiline_text select multiselect multiselect_image
       ranking sentiment_linear_scale matrix_linear_scale
@@ -383,7 +384,11 @@ module ParticipationMethod
       true
     end
 
-    def supports_built_in_fields?
+    def built_in_title_required?
+      true
+    end
+
+    def built_in_body_required?
       true
     end
 
@@ -415,10 +420,6 @@ module ParticipationMethod
       true
     end
 
-    def supports_reacting?
-      true
-    end
-
     def supports_status?
       true
     end
@@ -436,6 +437,10 @@ module ParticipationMethod
     end
 
     def automatically_assign_idea?
+      true
+    end
+
+    def add_autoreaction_to_inputs?
       true
     end
 

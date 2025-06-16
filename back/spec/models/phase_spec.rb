@@ -11,6 +11,12 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'common_ground_phase factory' do
+    it 'is valid' do
+      expect(build(:common_ground_phase)).to be_valid
+    end
+  end
+
   it { is_expected.to belong_to(:project) }
   it { is_expected.to validate_presence_of(:title_multiloc) }
 
@@ -21,47 +27,6 @@ RSpec.describe Phase do
       })
       expect(phase.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
-
-    it 'sanitizes when escaped HTML tags present' do
-      phase = create(:phase, description_multiloc: {
-        'en' => 'Something &lt;img src=x onerror=alert(1)&gt;'
-      })
-      expect(phase.description_multiloc).to eq({ 'en' => 'Something <img src="x">' })
-    end
-  end
-
-  describe 'sanitization of simple multilocs' do
-    let(:multiloc) do
-      {
-        'en' => 'Something <script>alert("XSS")</script> something',
-        'fr-BE' => 'Something <img src=x onerror=alert(1)>',
-        'nl-BE' => 'Plain <b>text</b> with <i>formatting</i>'
-      }
-    end
-
-    shared_examples 'sanitizes HTML in multiloc' do |field_name, options = {}|
-      it "removes all HTML tags from #{field_name}" do
-        phase = build(:phase, field_name => multiloc)
-        phase.save!
-
-        expect(phase.public_send(field_name)['en']).to eq('Something alert("XSS") something')
-
-        # Use different expectation for fr-BE based on options
-        if options[:strip_spaces]
-          expect(phase.public_send(field_name)['fr-BE']).to eq('Something')
-        else
-          expect(phase.public_send(field_name)['fr-BE']).to eq('Something ')
-        end
-
-        expect(phase.public_send(field_name)['nl-BE']).to eq('Plain text with formatting')
-      end
-    end
-
-    include_examples 'sanitizes HTML in multiloc', :title_multiloc, strip_spaces: true
-    include_examples 'sanitizes HTML in multiloc', :voting_term_singular_multiloc
-    include_examples 'sanitizes HTML in multiloc', :voting_term_plural_multiloc
-    include_examples 'sanitizes HTML in multiloc', :native_survey_title_multiloc
-    include_examples 'sanitizes HTML in multiloc', :native_survey_button_multiloc
   end
 
   describe 'voting_term_singular_multiloc_with_fallback' do

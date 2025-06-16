@@ -27,6 +27,7 @@ export interface Props {
   enableDragAndDrop?: boolean;
   multiple?: boolean;
   maxSizeMb?: number;
+  dataCy?: string;
 }
 
 const FileUploader = ({
@@ -40,6 +41,7 @@ const FileUploader = ({
   enableDragAndDrop = false,
   multiple = false,
   maxSizeMb,
+  dataCy,
 }: Props) => {
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
 
@@ -86,7 +88,6 @@ const FileUploader = ({
   };
 
   const fileNames = files.map((file) => file.name).join(', ');
-
   const content = (
     <Box
       className={className}
@@ -99,6 +100,7 @@ const FileUploader = ({
         id={id}
         multiple={multiple}
         maxSizeMb={maxSizeMb}
+        dataCy={dataCy}
       />
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 

@@ -15,7 +15,7 @@ class ApplicationMailer < ActionMailer::Base
     :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
     :align_direction
 
-  helper_method :organization_name, :recipient_name, :url_service, :multiloc_service, :organization_name,
+  helper_method :organization_name, :recipient_name, :url_service, :multiloc_service,
     :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :gv_gray_logo_url,

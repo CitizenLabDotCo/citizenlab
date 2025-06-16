@@ -155,6 +155,7 @@ interface Props {
   id: string;
   multiple?: boolean;
   maxSizeMb?: number;
+  dataCy?: string;
 }
 
 const FileInput = ({
@@ -162,6 +163,7 @@ const FileInput = ({
   id,
   onAdd,
   maxSizeMb,
+  dataCy,
   multiple = false,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -210,6 +212,7 @@ const FileInput = ({
     <Container className={className}>
       <Input
         id={id}
+        data-cy={dataCy}
         onChange={onChange}
         onClick={onClick}
         type="file"

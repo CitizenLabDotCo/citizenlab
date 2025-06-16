@@ -1034,28 +1034,6 @@
         }
       },
 
-      "fragments": {
-        "type": "object",
-        "title": "Fragments",
-        "description":  "Internal system to allow specific pieces of UI to be overridden with custom HTML.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["enabled_fragments"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "enabled_fragments": {
-            "title": "Enabled Fragments",
-            "type": "array",
-            "default": [],
-            "description": "List of fragment names that should be enabled (e.g., 'signed-out-header').",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-
       "form_mapping": {
         "type": "object",
         "title": "Mapping features used in in-platform surveys",
@@ -1455,6 +1433,18 @@
         "type": "object",
         "title": "Common ground",
         "description": "New participation method that is currently under development. [DO NOT ENABLE]",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_planning": {
+        "type": "object",
+        "title": "Project planning",
+        "description": "New back office projects overview [DO NOT ENABLE]",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

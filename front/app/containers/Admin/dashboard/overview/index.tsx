@@ -21,15 +21,15 @@ import messages from '../messages';
 import tracks from '../tracks';
 
 import ChartFilters from './ChartFilters';
+import EmailDeliveriesCard from './charts/EmailDeliveriesCard';
+import EventsCard from './charts/EventsCard';
+import InputStatusCard from './charts/InputStatusCard';
+import InvitationsCard from './charts/InvitationsCard';
+import ProjectStatusCard from './charts/ProjectStatusCard';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import { getSensibleResolution } from './getSensibleResolution';
 import overviewMessages from './messages';
-import InputStatusCard from './charts/InputStatusCard';
-import EmailDeliveriesCard from './charts/EmailDeliveriesCard';
-import InvitationsCard from './charts/InvitationsCard';
-import EventsCard from './charts/EventsCard';
-import ProjectStatusCard from './charts/ProjectStatusCard';
 
 export type IResource = 'ideas' | 'comments' | 'reactions';
 

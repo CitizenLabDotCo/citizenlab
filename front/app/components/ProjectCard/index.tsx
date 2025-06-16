@@ -543,6 +543,7 @@ const ProjectCard = memo<InputProps>(
         onClick={() => {
           handleProjectCardOnClick(project.data.id);
         }}
+        data-cy="e2e-project-card"
       >
         {screenReaderContent}
         {size !== 'large' && contentHeader}

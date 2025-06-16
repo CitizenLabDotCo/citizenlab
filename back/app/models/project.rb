@@ -70,10 +70,6 @@ class Project < ApplicationRecord
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
-  before_validation do
-    sanitize_multilocs :title_multiloc, :description_preview_multiloc, :header_bg_alt_text_multiloc
-  end
-
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
   before_validation :strip_title
@@ -106,6 +102,10 @@ class Project < ApplicationRecord
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+    using: { tsearch: { prefix: true } }
+
+  pg_search_scope :search_by_title,
+    against: :title_multiloc,
     using: { tsearch: { prefix: true } }
 
   scope :with_all_areas, -> { where(include_all_areas: true) }
@@ -218,6 +218,7 @@ class Project < ApplicationRecord
     self.folder_changed = false
   end
 
+  # @return [ParticipationMethod::Base]
   def pmethod
     # NOTE: if a project is passed to this method, timeline projects used to always return 'Ideation'
     # as it was never set and defaulted to this when the participation_method was available on the project

@@ -1,4 +1,3 @@
-import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -6,6 +5,7 @@ import { makeUser } from 'api/users/__mocks__/useUsers';
 import { IUser } from 'api/users/types';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useUnblockUser from './useUnblockUser';
 

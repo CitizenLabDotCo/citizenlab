@@ -12,12 +12,7 @@ interface Props extends Omit<RadioProps, 'onChange'> {
 }
 
 const Radio = ({ name, id, ...rest }: Props) => {
-  const {
-    trigger,
-    setValue,
-
-    control,
-  } = useFormContext();
+  const { trigger, setValue, control } = useFormContext();
 
   return (
     <>

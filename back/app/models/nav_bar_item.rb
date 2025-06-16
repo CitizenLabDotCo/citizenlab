@@ -41,7 +41,6 @@ class NavBarItem < ApplicationRecord
   validates :project, presence: true, if: :project?
 
   before_validation :set_code, on: :create
-  before_validation { sanitize_multilocs :title_multiloc }
 
   scope :only_default, lambda {
     result = left_joins(:static_page)

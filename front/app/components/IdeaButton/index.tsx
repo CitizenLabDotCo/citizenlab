@@ -48,7 +48,7 @@ const IdeaButton = memo<Props>(
     latLng,
     phase,
     participationMethod,
-    ...buttonContainerProps
+    ...buttonProps
   }) => {
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
@@ -178,7 +178,7 @@ const IdeaButton = memo<Props>(
             }`}
           >
             <Button
-              {...buttonContainerProps}
+              {...buttonProps}
               aria-describedby={
                 tippyEnabled ? 'tooltip-content-idea-button' : undefined
               }
