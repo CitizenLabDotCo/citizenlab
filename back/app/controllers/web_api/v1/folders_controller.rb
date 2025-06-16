@@ -41,8 +41,7 @@ class WebApi::V1::FoldersController < ApplicationController
       @project_folders,
       WebApi::V1::FolderSerializer,
       params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: visible_children_count_by_parent_id,,
-        user_followers: {}
+        visible_children_count_by_parent_id: visible_children_count_by_parent_id
       )
     )
   end
