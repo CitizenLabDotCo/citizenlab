@@ -37,11 +37,25 @@ class WebApi::V1::FoldersController < ApplicationController
     @project_folders = paginate @project_folders
     @project_folders = @project_folders.includes(:images, admin_publication: [:children])
 
+    moderators_per_folder = User
+      .where("roles @> '[{\"type\":\"project_folder_moderator\"}]'")
+      .each_with_object({}) do |user, hash|
+        user.roles.each do |role|
+          next unless role['type'] == 'project_folder_moderator'
+          folder_id = role['project_folder_id']
+          next unless folder_id
+
+          hash[folder_id] ||= []
+          hash[folder_id] << user.id
+        end
+      end
+
     render json: linked_json(
       @project_folders,
       WebApi::V1::FolderMiniSerializer,
       params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: visible_children_count_by_parent_id
+        visible_children_count_by_parent_id: visible_children_count_by_parent_id,
+        moderators_per_folder: moderators_per_folder
       )
     )
   end
