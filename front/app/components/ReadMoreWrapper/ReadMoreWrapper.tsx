@@ -152,10 +152,12 @@ const ReadMoreWrapper = memo<Props>(
                       fontSize={`${fontSizes.m}px`}
                       padding="0"
                       ariaExpanded={expanded}
+                      ariaControls={`e2e-project-${contentId}`}
                       icon="arrow-down"
                       iconPos="right"
                       iconSize="16px"
                       ref={readMoreButtonRef}
+                      type="button"
                     >
                       <FormattedMessage {...messages.readMore} />
                     </ReadMoreButton>
@@ -178,10 +180,12 @@ const ReadMoreWrapper = memo<Props>(
                     fontSize={`${fontSizes.m}px`}
                     padding="0"
                     ariaExpanded={expanded}
+                    ariaControls={`e2e-project-${contentId}`}
                     icon="arrow-up"
                     iconPos="right"
                     iconSize="16px"
                     ref={seeLessButtonRef}
+                    type="button"
                   >
                     <FormattedMessage {...messages.readLess} />
                   </Button>
