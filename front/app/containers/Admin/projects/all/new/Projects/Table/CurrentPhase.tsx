@@ -67,17 +67,17 @@ const CurrentPhase = ({ project }: Props) => {
 
       if (daysUntilPhaseEnds === 0) {
         return formatMessage(messages.endsToday);
-      } else {
-        const { unit, value } = parseNumberOfDays(daysUntilPhaseEnds);
+      }
 
-        switch (unit) {
-          case 'day':
-            return formatMessage(messages.daysLeft, { days: value });
-          case 'month':
-            return formatMessage(messages.monthsLeft, { months: value });
-          case 'year':
-            return formatMessage(messages.yearsLeft, { years: value });
-        }
+      const { unit, value } = parseNumberOfDays(daysUntilPhaseEnds);
+
+      switch (unit) {
+        case 'day':
+          return formatMessage(messages.daysLeft, { days: value });
+        case 'month':
+          return formatMessage(messages.monthsLeft, { months: value });
+        case 'year':
+          return formatMessage(messages.yearsLeft, { years: value });
       }
     }
 
