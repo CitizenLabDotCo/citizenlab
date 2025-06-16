@@ -1,4 +1,10 @@
-import { Multiloc, ImageSizes, IRelationship, Pagination } from 'typings';
+import {
+  Multiloc,
+  ImageSizes,
+  IRelationship,
+  Pagination,
+  ILinks,
+} from 'typings';
 
 import { PublicationStatus } from 'api/projects/types';
 
@@ -19,6 +25,7 @@ export type AdminParameters = {
 
 export interface IProjectFolders {
   data: IProjectFolderData[];
+  links?: ILinks;
 }
 export interface INewProjectFolderDiff {
   title_multiloc: Multiloc;
