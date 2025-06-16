@@ -39,7 +39,7 @@ class WebApi::V1::FoldersController < ApplicationController
 
     render json: linked_json(
       @project_folders,
-      WebApi::V1::FolderSerializer,
+      WebApi::V1::FolderMiniSerializer,
       params: jsonapi_serializer_params(
         visible_children_count_by_parent_id: visible_children_count_by_parent_id
       )
