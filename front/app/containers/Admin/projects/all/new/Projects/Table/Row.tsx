@@ -21,6 +21,7 @@ import ProjectMoreActionsMenu, {
 } from 'containers/Admin/projects/components/ProjectRow/ProjectMoreActionsMenu';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
+import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -47,8 +48,10 @@ const Row = ({ project }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const locale = useLocale();
+
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [isBeingCopyied, setIsBeingCopyied] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     first_phase_start_date,
@@ -105,6 +108,11 @@ const Row = ({ project }: Props) => {
             </Box>
           )}
         </Box>
+        {error && (
+          <Box mt="8px">
+            <Error text={error} />
+          </Box>
+        )}
       </StyledTd>
       <Td background={colors.grey50} width="140px">
         <CurrentPhase project={project} />
@@ -135,7 +143,7 @@ const Row = ({ project }: Props) => {
             projectId={project.id}
             firstPublishedAt={project.attributes.first_published_at}
             folderId={folderId}
-            setError={() => {}}
+            setError={setError}
             setIsRunningAction={handleActionLoading}
           />
         </Box>
