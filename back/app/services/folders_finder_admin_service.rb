@@ -31,4 +31,11 @@ class FoldersFinderAdminService
 
     scope.where(id: moderated_folders)
   end
+
+  def self.search(scope, params = {})
+    search = params[:search] || ''
+    return scope if search.blank?
+
+    scope.search_by_title(search)
+  end
 end

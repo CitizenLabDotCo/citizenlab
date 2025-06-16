@@ -56,4 +56,20 @@ describe FoldersFinderAdminService do
       expect(result.pluck(:id)).to match_array([f1.id, f2.id, f3.id])
     end
   end
+
+  describe 'self.search' do
+    let!(:p1) { create(:project_folder, title_multiloc: { 'en' => 'Test Folder 1' }) }
+    let!(:p2) { create(:project_folder, title_multiloc: { 'en' => 'Another Folder' }) }
+    let!(:p3) { create(:project_folder, title_multiloc: { 'en' => 'Test Folder 2' }) }
+
+    it 'filters projects by search term' do
+      result = described_class.search(ProjectFolders::Folder.all, { search: 'Test' })
+      expect(result.pluck(:id)).to match_array([p1, p3].pluck(:id))
+    end
+
+    it 'returns all projects when search term is empty' do
+      result = described_class.search(ProjectFolders::Folder.all, {})
+      expect(result.pluck(:id)).to match_array([p1, p2, p3].pluck(:id))
+    end
+  end
 end
