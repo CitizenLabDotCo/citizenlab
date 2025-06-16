@@ -20,6 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import messages from './messages';
+import Row from './Row';
 
 const Table = () => {
   const { formatMessage } = useIntl();
@@ -47,9 +48,9 @@ const Table = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {/* {projects?.data.map((project) => (
-            <Row project={project} key={project.id} />
-          ))} */}
+          {folders?.data.map((folder) => (
+            <Row folder={folder} key={folder.id} />
+          ))}
           TODO
         </Tbody>
       </TableComponent>
