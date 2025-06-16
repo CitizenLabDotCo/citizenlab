@@ -33,21 +33,23 @@ const Meta = () => {
     const settings = tenant.data.attributes.settings;
     const tenantLocales = settings.core.locales;
 
-    const bannerNode = homepageLayout?.data?.attributes?.craftjs_json
-      ? Object.values(
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          homepageLayout.data.attributes.craftjs_json || {}
-        ).find((node: any) => {
-          return (
-            node &&
-            node.type &&
-            typeof node.type === 'object' &&
-            'resolvedName' in node.type &&
-            node.type.resolvedName === 'HomepageBanner'
-          );
-        })
-      : null;
+    const bannerNode = (() => {
+      if (!homepageLayout?.data?.attributes?.craftjs_json) {
+        return null;
+      }
+
+      const craftjsData = homepageLayout.data.attributes.craftjs_json;
+
+      return Object.values(craftjsData).find((node: any) => {
+        return (
+          node &&
+          node.type &&
+          typeof node.type === 'object' &&
+          'resolvedName' in node.type &&
+          node.type.resolvedName === 'HomepageBanner'
+        );
+      });
+    })();
 
     const headerBg = bannerNode?.props?.image?.imageUrl || '';
 
