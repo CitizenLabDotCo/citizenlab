@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import projectFoldersKeys from './keys';
 import { IProjectFolders, AdminParameters, ProjectFoldersKeys } from './types';
 
-const fetchProjectFolders = (queryParams: AdminParameters) =>
+const fetchProjectFoldersAdmin = (queryParams: AdminParameters) =>
   fetcher<IProjectFolders>({
     path: `/project_folders/for_admin`,
     action: 'get',
@@ -17,7 +17,7 @@ const fetchProjectFolders = (queryParams: AdminParameters) =>
     },
   });
 
-const useProjectFolders = (queryParams: AdminParameters) => {
+const useProjectFoldersAdmin = (queryParams: AdminParameters) => {
   return useQuery<
     IProjectFolders,
     CLErrors,
@@ -25,8 +25,8 @@ const useProjectFolders = (queryParams: AdminParameters) => {
     ProjectFoldersKeys
   >({
     queryKey: projectFoldersKeys.list({ ...queryParams, admin: true }),
-    queryFn: () => fetchProjectFolders(queryParams),
+    queryFn: () => fetchProjectFoldersAdmin(queryParams),
   });
 };
 
-export default useProjectFolders;
+export default useProjectFoldersAdmin;
