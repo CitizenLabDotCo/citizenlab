@@ -3,6 +3,8 @@ import React, { useCallback, useState } from 'react';
 import { Text, Box, Button } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
+import useCopyInputs from 'api/copy_inputs/useCopyInputs';
+
 import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
 
 import Modal from 'components/UI/Modal';
@@ -15,30 +17,61 @@ import messages from './messages';
 type Props = {
   showPastInputsModal: boolean;
   setShowPastInputsModal: (show: boolean) => void;
+  currentPhaseid: string;
 };
 
 const ImportInputsModal = ({
   showPastInputsModal,
   setShowPastInputsModal,
+  currentPhaseid,
 }: Props) => {
   const { formatMessage } = useIntl();
-
   const [projectId, setProjectId] = useState<string | undefined>();
   const [phaseId, setPhaseId] = useState<string | undefined>();
+  const [noOfInputs, setNoOfInputs] = useState<number | undefined>();
+  const { mutate: copyInputs, isLoading: isCopying } = useCopyInputs();
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
       setProjectId(value);
+      setNoOfInputs(undefined);
     },
     [setProjectId]
+  );
+
+  const runCopyInputs = useCallback(
+    (
+      fromPhaseId: string,
+      dryRun: boolean,
+      onSuccess?: (response: any) => void
+    ) => {
+      copyInputs(
+        {
+          toPhaseId: currentPhaseid,
+          fromPhaseId,
+          dryRun,
+        },
+        onSuccess ? { onSuccess } : undefined
+      );
+    },
+    [copyInputs, currentPhaseid]
   );
 
   const handlePhaseFilter = useCallback(
     ({ value }: IOption) => {
       setPhaseId(value);
+      runCopyInputs(value, true, (response) => {
+        setNoOfInputs(response.data.attributes.total);
+      });
     },
-    [setPhaseId]
+    [runCopyInputs]
   );
+
+  const handleImport = useCallback(() => {
+    if (!phaseId) return;
+    runCopyInputs(phaseId, false);
+    setShowPastInputsModal(false);
+  }, [phaseId, runCopyInputs, setShowPastInputsModal]);
 
   return (
     <Modal
@@ -50,7 +83,7 @@ const ImportInputsModal = ({
       header={formatMessage(messages.startFromPastInputs)}
     >
       <Box m="24px" data-cy="e2e-copy-survey-modal">
-        <Text mb="10px" variant="bodyS" color="textSecondary">
+        <Text mb="12px" variant="bodyS" color="textSecondary">
           {formatMessage(messages.createInputsDescription)}
         </Text>
         <Box py="5px" mt="0px" alignItems="center">
@@ -70,6 +103,16 @@ const ImportInputsModal = ({
           )}
         </Box>
 
+        {typeof noOfInputs === 'number' && (
+          <Box>
+            <Text variant="bodyS" color="textSecondary">
+              {formatMessage(messages.noOfInputsToImport, {
+                count: noOfInputs,
+              })}
+            </Text>
+          </Box>
+        )}
+
         <Box mt="40px" display="flex" justifyContent="space-between">
           <Button
             buttonStyle="secondary-outlined"
@@ -81,10 +124,8 @@ const ImportInputsModal = ({
           </Button>
           <Button
             buttonStyle="admin-dark"
-            disabled={!phaseId}
-            onClick={() => {
-              // Handle importing inputs
-            }}
+            disabled={!phaseId || isCopying || noOfInputs === 0}
+            onClick={handleImport}
           >
             {formatMessage(messages.importInputs)}
           </Button>
