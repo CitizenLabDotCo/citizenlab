@@ -9,6 +9,8 @@ import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import ProjectMoreActionsMenu from 'containers/Admin/projects/components/ProjectRow/ProjectMoreActionsMenu';
+
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
 import { useIntl } from 'utils/cl-intl';
@@ -16,6 +18,7 @@ import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
 
 import { VISIBILITY_LABELS, PUBLICATION_STATUS_LABELS } from '../constants';
+
 import CurrentPhase from './CurrentPhase';
 
 const StyledTd = styled(Td)`
@@ -50,6 +53,8 @@ const Row = ({ project }: Props) => {
     if (!parsedDate) return '';
     return format(parsedDate, 'P', { locale: getLocale(locale) });
   };
+
+  const folderId = project.relationships.folder?.data?.id;
 
   return (
     <Tr>
@@ -95,6 +100,14 @@ const Row = ({ project }: Props) => {
         <Text m="0" fontSize="s" color="primary">
           {formatMessage(VISIBILITY_LABELS[visible_to])}
         </Text>
+      </Td>
+      <Td background={colors.grey50} width="60px">
+        <ProjectMoreActionsMenu
+          projectId={project.id}
+          folderId={folderId}
+          setError={() => {}}
+          setIsRunningAction={() => {}}
+        />
       </Td>
     </Tr>
   );
