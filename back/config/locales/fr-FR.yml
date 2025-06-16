@@ -285,7 +285,7 @@ fr:
       likes_count: 'Nombre de « likes »'
       location: 'Localisation'
       longitude: 'Longitude'
-      neutral_reactions_count: 'Incertain'
+      neutral_reactions_count: 'Incertain(e)'
       participants: 'Participants'
       picks: 'Choix'
       project: 'Projet'
