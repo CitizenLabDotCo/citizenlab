@@ -42,7 +42,7 @@ const Table = () => {
         <Thead>
           <Tr background={colors.grey50}>
             <Th py="16px">{formatMessage(messages.folder)}</Th>
-            <Th py="16px">{formatMessage(messages.manager)}</Th>
+            <Th py="16px">{formatMessage(messages.managers)}</Th>
             <Th py="16px">{formatMessage(messages.status)}</Th>
           </Tr>
         </Thead>

@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Folders.Table.folder',
     defaultMessage: 'Folder',
   },
-  manager: {
-    id: 'app.containers.Admin.projects.all.new.Folders.Table.manager',
-    defaultMessage: 'Manager',
+  managers: {
+    id: 'app.containers.Admin.projects.all.new.Folders.Table.managers',
+    defaultMessage: 'Managers',
   },
   status: {
     id: 'app.containers.Admin.projects.all.new.Folders.Table.status',
