@@ -42,6 +42,7 @@ class WebApi::V1::FoldersController < ApplicationController
       .each_with_object({}) do |user, hash|
         user.roles.each do |role|
           next unless role['type'] == 'project_folder_moderator'
+
           folder_id = role['project_folder_id']
           next unless folder_id
 
