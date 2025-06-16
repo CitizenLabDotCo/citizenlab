@@ -1,4 +1,4 @@
-import { Multiloc, ILinks } from 'typings';
+import { Multiloc, ILinks, Pagination } from 'typings';
 
 import { ActionDescriptors } from 'api/projects/types';
 
@@ -6,28 +6,23 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
-type PageNumbers = {
-  'page[number]'?: number;
-  'page[size]'?: number;
-};
-
 type ActiveParticipatoryPhase = {
   endpoint: 'with_active_participatory_phase';
-} & PageNumbers;
+} & Pagination;
 
 type FollowedItem = {
   endpoint: 'for_followed_item';
-} & PageNumbers;
+} & Pagination;
 
 export type FinishedOrArchived = {
   endpoint: 'finished_or_archived';
   filter_by: 'finished' | 'archived' | 'finished_and_archived';
-} & PageNumbers;
+} & Pagination;
 
 type Areas = {
   endpoint: 'for_areas';
   areas?: string[];
-} & PageNumbers;
+} & Pagination;
 
 export type Parameters =
   | ActiveParticipatoryPhase
