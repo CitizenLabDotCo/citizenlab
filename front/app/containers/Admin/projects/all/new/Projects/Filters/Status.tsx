@@ -22,7 +22,11 @@ const OPTIONS = [
   { value: 'archived', message: PUBLICATION_STATUS_LABELS.archived },
 ] as const;
 
-const Status = () => {
+interface Props {
+  mr?: string;
+}
+
+const Status = ({ mr }: Props) => {
   const { formatMessage } = useIntl();
   const values = useParam('status') ?? [];
 
@@ -36,7 +40,7 @@ const Status = () => {
       multipleSelectionAllowed
       selected={values}
       values={options}
-      mr="8px"
+      mr={mr}
       onChange={(value: PublicationStatus[]) => {
         setParam('status', value);
       }}

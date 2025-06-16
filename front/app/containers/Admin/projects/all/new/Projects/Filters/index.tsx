@@ -17,9 +17,9 @@ const Filters = () => {
       alignItems="center"
     >
       <Box display="flex" alignItems="center" w="100%">
-        <Sort />
+        <Sort mr="12px" />
         <Manager />
-        <Status />
+        <Status mr="8px" />
         <Dates />
       </Box>
       <Search />

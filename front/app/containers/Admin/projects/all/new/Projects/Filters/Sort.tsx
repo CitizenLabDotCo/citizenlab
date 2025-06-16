@@ -24,7 +24,11 @@ const OPTIONS = [
   { value: 'recently_created', message: messages.recently_created },
 ] as const;
 
-const Sort = () => {
+interface Props {
+  mr?: string;
+}
+
+const Sort = ({ mr }: Props) => {
   const { formatMessage } = useIntl();
   const value = useParam('sort') ?? 'phase_starting_or_ending_soon';
 
@@ -34,7 +38,7 @@ const Sort = () => {
   }));
 
   return (
-    <Box mr="12px">
+    <Box mr={mr}>
       <Select
         value={value}
         options={options}
