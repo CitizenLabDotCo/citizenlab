@@ -33,21 +33,20 @@ const Meta = () => {
     const settings = tenant.data.attributes.settings;
     const tenantLocales = settings.core.locales;
 
-    const headerBg = (() => {
-      const layoutData = homepageLayout.data.attributes.craftjs_json;
+    const bannerNode = homepageLayout?.data?.attributes?.craftjs_json
+      ? Object.keys(homepageLayout.data.attributes.craftjs_json).reduce(
+          (result, nodeId) => {
+            const node = homepageLayout.data.attributes.craftjs_json[nodeId];
+            if (node.displayName === 'HomepageBanner') {
+              return node;
+            }
+            return result;
+          },
+          null
+        )
+      : null;
 
-      const bannerNode = Object.values(layoutData).find((node: any) => {
-        return (
-          node &&
-          node.type &&
-          typeof node.type === 'object' &&
-          'resolvedName' in node.type &&
-          node.type.resolvedName === 'HomepageBanner'
-        );
-      });
-
-      return bannerNode?.props?.image?.imageUrl || '';
-    })();
+    const headerBg = bannerNode?.props?.image?.imageUrl || '';
 
     const organizationNameMultiLoc = settings.core.organization_name;
     const organizationName = localize(organizationNameMultiLoc);
