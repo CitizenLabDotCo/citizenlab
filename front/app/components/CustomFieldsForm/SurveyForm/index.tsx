@@ -39,14 +39,10 @@ const SurveyForm = ({
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: customFields } = useCustomFields({
     projectId,
-    phaseId: participationMethod !== 'ideation' ? phaseId : undefined,
+    phaseId,
   });
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
-
-  const showTogglePostAnonymously =
-    phase?.data.attributes.allow_anonymous_participation &&
-    participationMethod !== 'native_survey';
 
   const pageButtonLabelMultiloc = customFields?.find(
     (field) => field.id === nestedPagesData[currentPageNumber].page.id
@@ -114,7 +110,6 @@ const SurveyForm = ({
           currentPageNumber={currentPageNumber}
           lastPageNumber={lastPageNumber}
           setCurrentPageNumber={setCurrentPageNumber}
-          showTogglePostAnonymously={showTogglePostAnonymously}
           participationMethod={participationMethod}
           projectId={projectId}
           onSubmit={onSubmit}

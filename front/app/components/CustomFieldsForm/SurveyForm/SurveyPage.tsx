@@ -16,8 +16,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
-
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import PageControlButtons from 'components/Form/Components/Layouts/PageControlButtons';
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
@@ -56,7 +54,6 @@ type SurveyPage = {
   currentPageNumber: number;
   setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
   lastPageNumber: number;
-  showTogglePostAnonymously?: boolean;
   participationMethod?: ParticipationMethod;
   ideaId?: string;
   projectId: string;
@@ -72,7 +69,6 @@ const SurveyPage = ({
   page,
   pageQuestions,
   lastPageNumber,
-  showTogglePostAnonymously,
   participationMethod,
   ideaId: initialIdeaId,
   projectId,
@@ -95,7 +91,6 @@ const SurveyPage = ({
 
   const { pathname } = useLocation();
   const isAdminPage = isPage('admin', pathname);
-  const isIdeaEditPage = isPage('idea_edit', pathname);
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
 
@@ -104,9 +99,6 @@ const SurveyPage = ({
   const { data: idea } = useIdeaById(ideaId);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
-  const [postAnonymously, setPostAnonymously] = useState(
-    idea?.data.attributes.anonymous || false
-  );
 
   const schema = generateYupValidationSchema({
     pageQuestions,
@@ -132,15 +124,6 @@ const SurveyPage = ({
     }
   };
 
-  const handleOnChangeAnonymousPosting = () => {
-    if (!postAnonymously) {
-      setShowAnonymousConfirmationModal(true);
-    }
-
-    setPostAnonymously((postAnonymously) => !postAnonymously);
-    methods.setValue('anonymous', !postAnonymously);
-  };
-
   // If the idea (survey submission) has no author relationship,
   // it was either created through 'anyone' permissions or with
   // the anonymous toggle on. In these cases, we show the idea id
@@ -150,7 +133,7 @@ const SurveyPage = ({
   const formCompletionPercentage = getFormCompletionPercentage({
     customFields,
     formValues: methods.getValues() ?? {},
-    userIsEditing: isIdeaEditPage,
+    userIsEditing: false,
     userIsOnLastPage: currentPageNumber === lastPageNumber,
   });
 
@@ -263,15 +246,6 @@ const SurveyPage = ({
                       ideaId={ideaId}
                       phase={phase}
                     />
-
-                    {currentPageNumber === lastPageNumber - 1 &&
-                      showTogglePostAnonymously &&
-                      !isIdeaEditPage && (
-                        <ProfileVisiblity
-                          postAnonymously={postAnonymously}
-                          onChange={handleOnChangeAnonymousPosting}
-                        />
-                      )}
                     {currentPageNumber === lastPageNumber &&
                       idea &&
                       showIdeaId && (
