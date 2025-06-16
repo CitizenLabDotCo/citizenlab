@@ -28,38 +28,40 @@ import ErrorDisplay from '../ErrorDisplay';
 import { getSubtextElement } from './controlUtils';
 import messages from './messages';
 
-const StickyTh = styled(Th)`
+const StickyTh = styled(Th)<{ hasLongContent: boolean }>`
   background: ${(props) =>
     RGBAtoRGB(props.theme.colors.tenantPrimaryLighten95, 0.05)};
-
   position: sticky;
   inset-inline-start: 0px;
   z-index: 1;
-  flex-grow: 1;
 
+  overflow-wrap: break-word;
+  hyphens: auto;
+
+  min-width: 200px;
+  max-width: 40vw;
+
+  // 200px is too much for phones, so we need something responsive for small screens.
   ${media.phone`
-    min-width: 120px;
-    `}
-
-  ${media.tablet`
-    min-width: 180px;
-    `}
-
-  ${media.desktop`
-      min-width: 200px;
-    `}
+    min-width: ${({ hasLongContent }) =>
+      // 40vw would be too wide on small screens for short labels such as "yes" or "no"
+      hasLongContent ? '40vw' : 'fit-content'};
+  `}
 `;
 
 const StyledTd = styled(Td)`
   background: ${(props) =>
     RGBAtoRGB(props.theme.colors.tenantPrimaryLighten95, 0.05)};
-  max-width: 100px;
+  // This min-width also ensures that the th elements have the same min-width.
+  min-width: 84px;
 
   .circle {
     margin-right: 0px;
     border: 1px solid ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
+
+const LONG_LABEL_THRESHOLD = 10; // Threshold for long labels, used to apply specific styling
 
 const MatrixControl = ({
   data,
@@ -153,30 +155,35 @@ const MatrixControl = ({
           aria-labelledby={`matrix-question-label-${id}`}
         >
           <Thead>
-            <Td minWidth="84px" pt="0px" />
-            {columnsFromSchema.map((column, index) => {
-              return (
-                <Th minWidth="84px" key={index} scope="col" pt="0px">
-                  <Box title={column} display="flex" justifyContent="center">
+            <Tr>
+              <Th pt="0px" />
+              {columnsFromSchema.map((column, index) => {
+                return (
+                  <Th key={index} scope="col" pt="0px">
                     <Text
                       textAlign="center"
                       m="0px"
                       p="0px"
                       mx="auto"
-                      color={'tenantPrimary'}
+                      color="tenantPrimary"
                     >
                       {column}
                     </Text>
-                  </Box>
-                </Th>
-              );
-            })}
+                  </Th>
+                );
+              })}
+            </Tr>
           </Thead>
           <Tbody>
             {statements.map((statement, index) => {
               return (
                 <Tr key={index}>
-                  <StickyTh scope="row">
+                  <StickyTh
+                    scope="row"
+                    hasLongContent={
+                      statement?.label.length > LONG_LABEL_THRESHOLD
+                    }
+                  >
                     <Text m="4px" color="tenantPrimary">
                       {statement?.label}
                     </Text>
@@ -185,11 +192,7 @@ const MatrixControl = ({
                   {columnsFromSchema.map((_, columnIndex) => {
                     return (
                       <StyledTd key={`radio-${columnIndex}-${index}`}>
-                        <Box
-                          min-width="84px"
-                          display="flex"
-                          justifyContent="center"
-                        >
+                        <Box display="flex" justifyContent="center">
                           <Radio
                             mx="auto"
                             onKeyDown={(e) => {
