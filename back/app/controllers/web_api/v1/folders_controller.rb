@@ -46,7 +46,7 @@ class WebApi::V1::FoldersController < ApplicationController
           next unless folder_id
 
           hash[folder_id] ||= []
-          hash[folder_id] << user.id
+          hash[folder_id] << user
         end
       end
 
@@ -56,7 +56,8 @@ class WebApi::V1::FoldersController < ApplicationController
       params: jsonapi_serializer_params(
         visible_children_count_by_parent_id: visible_children_count_by_parent_id,
         moderators_per_folder: moderators_per_folder
-      )
+      ),
+      include: [:moderators]
     )
   end
 
