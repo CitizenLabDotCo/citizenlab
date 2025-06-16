@@ -23,14 +23,12 @@ module IdeaCustomFields
       }
     }
 
-    skip_before_action :authenticate_user, only: %i[index]
     before_action :set_custom_field, only: %i[show as_geojson]
     before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
     rescue_from UpdatingFormWithInputError, with: :render_updating_form_with_input_error
 
     def index
-      puts 'here1'
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
 
       # The elsif and else parts are a bit messy because of the challenges of combining arrays from
@@ -508,16 +506,13 @@ module IdeaCustomFields
     end
 
     def set_custom_form
-      puts 'here3'
       container_id = params[secure_constantize(:container_id)]
       @container = secure_constantize(:container_class).find container_id
-      puts "container.class.name #{@container.class.name}"
 
       @custom_form = CustomForm.find_or_initialize_by participation_context: @container
     end
 
     def set_custom_field
-      puts 'here4'
       @custom_field = CustomField.find params[:id]
       authorize @custom_field, policy_class: IdeaCustomFieldPolicy
     end
