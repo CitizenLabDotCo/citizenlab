@@ -23,7 +23,7 @@ import ImageField from './Fields/ImageField';
 import ImageMultichoiceField from './Fields/ImageMultichoiceField';
 import LinearScaleField from './Fields/LinearScale';
 import MatrixField from './Fields/MatrixField';
-import MultiFileUploaderField from './Fields/MultiFileUploadField';
+import MultiFileUploadField from './Fields/MultiFileUploadField';
 import MultiSelectField from './Fields/MultiSelectField';
 import RankingField from './Fields/RankingField';
 import RatingField from './Fields/RatingField';
@@ -97,7 +97,7 @@ const renderField = ({
       );
     case 'files':
       return (
-        <MultiFileUploaderField
+        <MultiFileUploadField
           name={question.key}
           ideaId={ideaId}
           scrollErrorIntoView={true}

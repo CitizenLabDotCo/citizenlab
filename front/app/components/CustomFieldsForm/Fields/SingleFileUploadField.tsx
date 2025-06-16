@@ -26,7 +26,11 @@ interface Props
   scrollErrorIntoView?: boolean;
 }
 
-const FileUploaderField = ({ name, ideaId, scrollErrorIntoView }: Props) => {
+const SingleFileUploaderField = ({
+  name,
+  ideaId,
+  scrollErrorIntoView,
+}: Props) => {
   const { data: ideaFiles } = useIdeaFiles(ideaId);
   const {
     setValue,
@@ -119,4 +123,4 @@ const FileUploaderField = ({ name, ideaId, scrollErrorIntoView }: Props) => {
   );
 };
 
-export default FileUploaderField;
+export default SingleFileUploaderField;
