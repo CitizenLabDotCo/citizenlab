@@ -76,7 +76,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
           projectStartsInDays={project.attributes.starts_days_from_now}
           projectEndedDaysAgo={project.attributes.ended_days_ago}
         />
-        {phase && project.attributes.action_descriptors && (
+        {phase && (
           <Text mt="2px" mb="0px" color="textSecondary">
             {getCTAMessage({
               phase: phase.data,

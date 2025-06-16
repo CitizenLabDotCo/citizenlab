@@ -25,4 +25,40 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.visibility',
     defaultMessage: 'Visibility',
   },
+  preLaunch: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.preLaunch',
+    defaultMessage: 'Pre-launch',
+  },
+  ended: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.ended',
+    defaultMessage: 'Ended',
+  },
+  endsToday: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.endsToday',
+    defaultMessage: 'Ends today',
+  },
+  daysLeft: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.daysLeft',
+    defaultMessage: '{days}d left',
+  },
+  monthsLeft: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.monthsLeft',
+    defaultMessage: '{months}mo left',
+  },
+  yearsLeft: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.yearsLeft',
+    defaultMessage: '{years}y left',
+  },
+  daysToStart: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.daysToStart',
+    defaultMessage: '{days}d to start',
+  },
+  monthsToStart: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.monthsToStart',
+    defaultMessage: '{months}mo to start',
+  },
+  yearsToStart: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.yearsToStart',
+    defaultMessage: '{years}y to start',
+  },
 });

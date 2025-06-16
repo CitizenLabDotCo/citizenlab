@@ -2,20 +2,13 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import Filters from './Filters';
 import Table from './Table';
 
 const Projects = () => {
   return (
     <Box>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        p="16px"
-        border={`1px solid #ccc`}
-      >
-        FILTERS
-      </Box>
+      <Filters />
       <Box mt="16px">
         <Table />
       </Box>

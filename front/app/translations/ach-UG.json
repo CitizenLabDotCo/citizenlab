@@ -57,7 +57,6 @@
   "app.components.AvatarBubbles.numberOfUsers": "crwdns3561763:0{numberOfUsers}crwdne3561763:0",
   "app.components.AvatarBubbles.participant": "crwdns3373803:0crwdne3373803:0",
   "app.components.AvatarBubbles.participants1": "crwdns3373805:0crwdne3373805:0",
-  "app.components.CityLogoSection.iframeTitle": "crwdns212862:0{orgName}crwdne212862:0",
   "app.components.Comments.cancel": "crwdns212864:0crwdne212864:0",
   "app.components.Comments.commentingDisabledInCurrentPhase": "crwdns212866:0crwdne212866:0",
   "app.components.Comments.commentingDisabledInactiveProject": "crwdns212868:0crwdne212868:0",

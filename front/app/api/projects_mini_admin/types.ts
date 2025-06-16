@@ -1,4 +1,4 @@
-import { Multiloc, Pagination, ILinks } from 'typings';
+import { Multiloc, Pagination, ILinks, IRelationship } from 'typings';
 
 import { PublicationStatus, Visibility } from 'api/projects/types';
 
@@ -38,9 +38,7 @@ export type ProjectMiniAdminData = {
   };
   relationships: {
     current_phase?: {
-      data: {
-        id: string;
-      } | null;
+      data: IRelationship | null;
     };
   };
 };

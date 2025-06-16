@@ -11,9 +11,11 @@ import useLocalize from 'hooks/useLocalize';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
 
+import { VISIBILITY_LABELS, PUBLICATION_STATUS_LABELS } from '../constants';
 import CurrentPhase from './CurrentPhase';
 
 const StyledTd = styled(Td)`
@@ -31,6 +33,7 @@ interface Props {
 
 const Row = ({ project }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const locale = useLocale();
 
   const {
@@ -85,12 +88,12 @@ const Row = ({ project }: Props) => {
       </Td>
       <Td background={colors.grey50} width="140px">
         <Text m="0" fontSize="s" color="primary">
-          {publication_status}
+          {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
         </Text>
       </Td>
       <Td background={colors.grey50} width="140px">
         <Text m="0" fontSize="s" color="primary">
-          {visible_to}
+          {formatMessage(VISIBILITY_LABELS[visible_to])}
         </Text>
       </Td>
     </Tr>

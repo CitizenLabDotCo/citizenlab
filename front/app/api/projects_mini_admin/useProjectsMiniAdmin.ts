@@ -1,8 +1,7 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import miniProjectsKeys from './keys';
 import { ProjectsMiniAdmin, ProjectsMiniAdminKeys, Parameters } from './types';
@@ -22,23 +21,15 @@ const useProjectsMiniAdmin = (
   queryParams: Parameters,
   { enabled = true }: { enabled: boolean } = { enabled: true }
 ) => {
-  return useInfiniteQuery<
+  return useQuery<
     ProjectsMiniAdmin,
     CLErrors,
     ProjectsMiniAdmin,
     ProjectsMiniAdminKeys
   >({
     queryKey: miniProjectsKeys.list(queryParams),
-    queryFn: ({ pageParam }) => {
-      return fetchProjectsMiniAdmin({
-        ...queryParams,
-        'page[number]': pageParam,
-      });
-    },
-    getNextPageParam: (lastPage) => {
-      const hasNextPage = lastPage.links.next;
-      const pageNumber = getPageNumberFromUrl(lastPage.links.self);
-      return hasNextPage && pageNumber ? pageNumber + 1 : null;
+    queryFn: () => {
+      return fetchProjectsMiniAdmin(queryParams);
     },
     enabled,
   });
