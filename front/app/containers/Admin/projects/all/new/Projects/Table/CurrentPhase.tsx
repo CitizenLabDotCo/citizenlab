@@ -33,9 +33,10 @@ const CurrentPhase = ({ project }: Props) => {
 
   const { first_phase_start_date } = project.attributes;
 
+  const now = new Date();
+
   const projectStartingInFuture =
-    first_phase_start_date === null ||
-    new Date(first_phase_start_date) > new Date();
+    first_phase_start_date === null || new Date(first_phase_start_date) > now;
 
   const getCurrentPhaseText = () => {
     if (phase) {
@@ -59,10 +60,7 @@ const CurrentPhase = ({ project }: Props) => {
       );
       if (!parsedPhaseEndDate) return;
 
-      const daysUntilPhaseEnds = differenceInDays(
-        parsedPhaseEndDate,
-        new Date()
-      );
+      const daysUntilPhaseEnds = differenceInDays(parsedPhaseEndDate, now);
       if (daysUntilPhaseEnds < 0) return; // should not happen, but just in case
 
       if (daysUntilPhaseEnds === 0) {
@@ -88,7 +86,7 @@ const CurrentPhase = ({ project }: Props) => {
 
     const daysUntilProjectStarts = differenceInDays(
       parsedProjectStartDate,
-      new Date()
+      now
     );
 
     if (daysUntilProjectStarts < 0) return; // should not happen, but just in case
