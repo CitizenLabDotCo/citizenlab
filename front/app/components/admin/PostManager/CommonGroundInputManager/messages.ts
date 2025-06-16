@@ -9,6 +9,11 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.noInputs',
     defaultMessage: 'No inputs yet',
   },
+  inputImportProgress: {
+    id: 'app.components.admin.PostManager.inputImportProgress',
+    defaultMessage:
+      '{importedCount} out of {totalCount} {totalCount, plural, one {input has} other {inputs have}} been imported. The import is still in progress, please check back later.',
+  },
   noInputsDescription: {
     id: 'app.components.admin.PostManager.noInputsDescription',
     defaultMessage:
@@ -45,5 +50,10 @@ export default defineMessages({
   noProject: {
     id: 'app.components.admin.PostManager.noProject',
     defaultMessage: 'No project',
+  },
+  noOfInputsToImport: {
+    id: 'app.components.admin.PostManager.noOfInputsToImport',
+    defaultMessage:
+      '{count, plural, =0 {0 inputs} one {1 input} other {# inputs}} will be imported from the selected project and phase. The import will run in the background, and the inputs will appear in the input manager once it is complete.',
   },
 });
