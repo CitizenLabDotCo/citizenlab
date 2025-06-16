@@ -6,7 +6,7 @@ import { WrappedComponentProps } from 'react-intl';
 
 import { API_PATH } from 'containers/App/constants';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -87,7 +87,7 @@ class ExportIdeasButton extends React.PureComponent<
     const { exportType } = this.props;
     const { exporting } = this.state;
     return (
-      <Button
+      <ButtonWithLink
         buttonStyle="text"
         onClick={this.handleExportIdeas}
         processing={exporting}
@@ -103,7 +103,7 @@ class ExportIdeasButton extends React.PureComponent<
         {exportType === 'selected_posts' && (
           <FormattedMessage {...messages.exportSelectedInputs} />
         )}
-      </Button>
+      </ButtonWithLink>
     );
   }
 }

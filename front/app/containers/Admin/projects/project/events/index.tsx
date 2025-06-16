@@ -21,7 +21,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -34,7 +34,7 @@ const ListWrapper = styled.div`
   flex-direction: column;
 `;
 
-const AddButton = styled(Button)`
+const AddButton = styled(ButtonWithLink)`
   align-self: flex-start;
 `;
 
@@ -171,29 +171,29 @@ const AdminProjectEventsIndex = () => {
                           )}
                         </Text>
                       </Box>
-                      <Button
+                      <ButtonWithLink
                         buttonStyle="text"
                         icon="delete"
                         onClick={createDeleteClickHandler(event.id)}
                         processing={isLoading}
                       >
                         <FormattedMessage {...messages.deleteButtonLabel} />
-                      </Button>
-                      <Button
+                      </ButtonWithLink>
+                      <ButtonWithLink
                         buttonStyle="secondary-outlined"
                         disabled={event.attributes.attendees_count === 0}
                         icon="download"
                         onClick={() => handleAttendeesExport(event)}
                       >
                         <FormattedMessage {...messages.exportAttendees} />
-                      </Button>
-                      <Button
+                      </ButtonWithLink>
+                      <ButtonWithLink
                         buttonStyle="secondary-outlined"
                         icon="edit"
                         linkTo={`/admin/projects/${projectId}/events/${event.id}`}
                       >
                         <FormattedMessage {...messages.editButtonLabel} />
-                      </Button>
+                      </ButtonWithLink>
                     </Row>
                   );
                 })}

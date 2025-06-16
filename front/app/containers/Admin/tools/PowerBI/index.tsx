@@ -4,7 +4,7 @@ import { Box, Text, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -56,7 +56,7 @@ const PowerBI = () => {
           theme="dark"
         >
           <div>
-            <Button
+            <ButtonWithLink
               disabled={!isPowerBIEnabled}
               height="45px"
               icon={isPowerBIEnabled ? 'arrow-right' : 'lock'}
@@ -68,7 +68,7 @@ const PowerBI = () => {
               bgColor={colors.primary}
             >
               {formatMessage(messages.powerBIDownloadTemplates)}
-            </Button>
+            </ButtonWithLink>
           </div>
         </Tooltip>
       </Box>

@@ -17,7 +17,7 @@ import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
 import PageNotFound from 'components/PageNotFound';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
@@ -114,14 +114,14 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 justifyContent="flex-end"
                 ml="30px"
               >
-                <Button
+                <ButtonWithLink
                   icon="edit"
                   linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
                   buttonStyle="secondary-outlined"
                   padding="6px 12px"
                 >
                   <FormattedMessage {...messages.editFolder} />
-                </Button>
+                </ButtonWithLink>
               </Box>
             )}
             <Box ml="8px">

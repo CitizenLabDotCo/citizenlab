@@ -8,7 +8,7 @@ import useMarkInternalCommentForDeletion from 'api/internal_comments/useMarkInte
 import useAuthUser from 'api/me/useAuthUser';
 
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
@@ -37,13 +37,13 @@ const ButtonsWrapper = styled.div`
   padding: 30px;
 `;
 
-const CancelButton = styled(Button)`
+const CancelButton = styled(ButtonWithLink)`
   margin-right: 10px;
   margin-top: 5px;
   margin-bottom: 5px;
 `;
 
-const AcceptButton = styled(Button)`
+const AcceptButton = styled(ButtonWithLink)`
   margin-top: 5px;
   margin-bottom: 5px;
 `;

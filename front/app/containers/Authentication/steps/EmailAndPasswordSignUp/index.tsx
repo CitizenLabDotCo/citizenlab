@@ -17,7 +17,7 @@ import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import { StyledPasswordIconTooltip } from 'components/smallForm';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
@@ -187,7 +187,7 @@ const EmailAndPasswordSignUp = ({
             <PoliciesMarkup />
           </Box>
           <Box w="100%" display="flex" mt="24px">
-            <Button
+            <ButtonWithLink
               type="submit"
               width="auto"
               disabled={loading}
@@ -195,7 +195,7 @@ const EmailAndPasswordSignUp = ({
               id="e2e-signup-password-submit-button"
             >
               {formatMessage(sharedMessages.continue)}
-            </Button>
+            </ButtonWithLink>
           </Box>
         </form>
         <Text mt="24px">

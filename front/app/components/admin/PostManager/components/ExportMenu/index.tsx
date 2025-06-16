@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { Dropdown } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -12,7 +12,7 @@ import messages from '../../messages';
 
 import ExportButtons from './ExportButtons';
 
-const DropdownButton = styled(Button)``;
+const DropdownButton = styled(ButtonWithLink)``;
 
 const Container = styled.div`
   height: 100%;
