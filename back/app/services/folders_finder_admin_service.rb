@@ -1,7 +1,11 @@
 class FoldersFinderAdminService
   def self.execute(scope, params)
-    # TODO
-    scope
+    folders = filter_status(scope, params)
+    folders = filter_folder_manager(folders, params)
+    folders = search(folders, params)
+
+    folders
+      .order('project_folders_folders.created_at DESC, project_folders_folders.id ASC')
   end
 
   # FILTERING METHODS

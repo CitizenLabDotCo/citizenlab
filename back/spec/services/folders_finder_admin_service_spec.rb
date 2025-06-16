@@ -2,11 +2,25 @@ require 'rails_helper'
 
 describe FoldersFinderAdminService do
   describe 'self.execute' do
+    let!(:f1) { create(:project_folder) }
+    let!(:f2) do 
+      folder = create(:project_folder)
+      publication = AdminPublication.find_by(publication_id: folder.id, publication_type: 'ProjectFolders::Folder')
+      publication.update!(publication_status: 'draft')
+      folder
+    end
+    let!(:f3) { create(:project_folder) }
+
+    let!(:user1) { create(:user, roles: [{ 'type' => 'project_folder_moderator', project_folder_id: f1.id }]) }
+    let!(:user2) { create(:user, roles: [{ 'type' => 'project_folder_moderator', project_folder_id: f2.id }]) }
+
     it 'works' do
       scope = ProjectFolders::Folder.all
-      params = {}
+      params = { status: ['published'], managers: [user1.id, user2.id] }
       result = described_class.execute(scope, params)
-      expect(result).to eq(scope)
+      # Only f1 should be returned, as it is the only one that is published AND managed by a user in the
+      # specified list of managers.
+      expect(result).to match_array([f1])
     end
   end
 
