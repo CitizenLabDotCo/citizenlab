@@ -53,16 +53,15 @@ module EmailCampaigns
       return unless region_key
       return Error unless self.class.editable_regions.any? { |r| r[:key] == region_key }
 
-      # TODO: What about HTML escaping? Should we always escape?
       # NOTE: custom_text_multiloc returns default values if not overridden
-      override = @campaign.custom_text_multiloc&.dig(locale.locale_sym.to_s, region_key)
-      template = Liquid::Template.parse(override)
+      custom_text = MultilocService.new.t(@campaign.custom_text_multiloc, locale.to_s)
+      region_text = custom_text.dig(region_key)
       values = values.transform_keys(&:to_s)
-      template.render(values)
+
+      # TODO: Need to santitize here
+      render_liquid_template(text: region_text, values: values)
     end
 
-    # TODO: Seems to get called three times per email?
-    # TODO: How does the manual mailer handle {{ variable }}?
     private_class_method def self.editable_region(key, type: 'text', message_key: key, variables: [])
       message_group = "email_campaigns.#{campaign_class.name.demodulize.underscore}"
       {
@@ -72,6 +71,25 @@ module EmailCampaigns
         variables: variables,
         default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{message_key}") || {}
       }
+    end
+
+    def render_liquid_template(text: nil, values: {}, html: false)
+      template_text =  html ? fix_image_widths(text) : text
+      template = Liquid::Template.parse(template_text)
+      template.render(values)
+    end
+
+    def fix_image_widths(html)
+      doc = Nokogiri::HTML.fragment(html)
+
+      doc.css('img').each do |img|
+        # Set the width to 100% if it's not set.
+        # Otherwise, the image will be displayed at its original size.
+        # This can mess up the layout if the original image is e.g. 4000px wide.
+        img['width'] = '100%' if img['width'].blank?
+      end
+
+      doc.to_s
     end
 
     def reply_to_email
