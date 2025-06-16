@@ -11,6 +11,7 @@ import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
 
 const defaultProps: Props = {
   projectId: 'projectId',
+  firstPublishedAt: '2019-05-11T17:04:13.090Z',
   setError: jest.fn(),
 };
 
@@ -47,10 +48,6 @@ const mockProject = {
 
 jest.mock('api/me/useAuthUser', () => () => ({ data: { data: mockUserData } }));
 
-jest.mock('api/projects/useProjectById', () => {
-  return jest.fn(() => ({ data: { data: mockProject } }));
-});
-
 const copyApiPath = '*projects/:projectId/copy';
 const deleteApiPath = '*projects/:id';
 
@@ -71,6 +68,7 @@ describe('ProjectMoreActionsMenu', () => {
     const setErrorFn = jest.fn();
     const props: Props = {
       projectId: 'projectId',
+      firstPublishedAt: '2019-05-11T17:04:13.090Z',
       setError: setErrorFn,
     };
     render(<ProjectMoreActionsMenu {...props} />);

@@ -105,6 +105,7 @@ const Row = ({ project }: Props) => {
         <Box mr="12px">
           <ProjectMoreActionsMenu
             projectId={project.id}
+            firstPublishedAt={project.attributes.first_published_at}
             folderId={folderId}
             setError={() => {}}
             setIsRunningAction={() => {}}

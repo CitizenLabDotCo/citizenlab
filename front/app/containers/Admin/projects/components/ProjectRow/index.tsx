@@ -201,6 +201,7 @@ const ProjectRow = ({
           {!hideMoreActions && (
             <ProjectMoreActionsMenu
               projectId={projectId}
+              firstPublishedAt={project.data.attributes.first_published_at}
               folderId={folderId ? folderId : undefined}
               setError={setError}
               setIsRunningAction={handleActionLoading}
