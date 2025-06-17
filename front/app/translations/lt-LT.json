@@ -179,6 +179,7 @@
   "app.components.FileUploader.a11y_removeFile": "Pašalinti šį failą",
   "app.components.FileUploader.fileInputDescription": "Spustelėkite , kad pasirinktumėte failą",
   "app.components.FileUploader.fileUploadLabel": "Priedai (ne daugiau kaip 50 MB)",
+  "app.components.FileUploader.file_too_large2": "Didesni nei {maxSizeMb}MB failai neleidžiami.",
   "app.components.FileUploader.incorrect_extension": "{fileName} mūsų sistema nepalaiko, jis nebus įkeltas.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Pasirinktas būsenos filtras: visi",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# submission} other {# submissions}}",

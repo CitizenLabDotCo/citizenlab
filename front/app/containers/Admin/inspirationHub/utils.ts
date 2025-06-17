@@ -79,6 +79,10 @@ export const useRansackParams = () => {
   );
 };
 
+export const clearRansackParams = () => {
+  removeSearchParams(RANSACK_PARAMS);
+};
+
 export const useLocalizeProjectLibrary = () => {
   const locale = useLocale();
 

@@ -179,6 +179,7 @@
   "app.components.FileUploader.a11y_removeFile": "Fjern denne filen",
   "app.components.FileUploader.fileInputDescription": "Klikk for å velge en fil",
   "app.components.FileUploader.fileUploadLabel": "Vedlegg (maks. 50 MB)",
+  "app.components.FileUploader.file_too_large2": "Filer som er større enn {maxSizeMb}MB er ikke tillatt.",
   "app.components.FileUploader.incorrect_extension": "{fileName} ikke støttes av systemet vårt, vil den ikke bli lastet opp.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Valgt statusfilter: alle",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {~ # innsending} other {# innsendinger}}",

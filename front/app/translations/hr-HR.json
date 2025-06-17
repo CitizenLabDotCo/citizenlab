@@ -179,6 +179,7 @@
   "app.components.FileUploader.a11y_removeFile": "Ukloni ovu datoteku",
   "app.components.FileUploader.fileInputDescription": "Kliknite kako biste odabrali datoteku",
   "app.components.FileUploader.fileUploadLabel": "Privici (maks. 50MB)",
+  "app.components.FileUploader.file_too_large2": "Datoteke veće od {maxSizeMb}MB nisu dopuštene.",
   "app.components.FileUploader.incorrect_extension": "Naš sustav ne podržava {fileName} i stoga neće biti prenesen.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Odabrani filtar statusa: svi",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# predaja} other {# predaje}}",

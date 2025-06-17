@@ -179,6 +179,7 @@
   "app.components.FileUploader.a11y_removeFile": "crwdns213036:0crwdne213036:0",
   "app.components.FileUploader.fileInputDescription": "crwdns213038:0crwdne213038:0",
   "app.components.FileUploader.fileUploadLabel": "crwdns213040:0crwdne213040:0",
+  "app.components.FileUploader.file_too_large2": "crwdns4747361:0{maxSizeMb}crwdne4747361:0",
   "app.components.FileUploader.incorrect_extension": "crwdns213042:0{fileName}crwdne213042:0",
   "app.components.FilterBoxes.a11y_allFilterSelected": "crwdns213044:0crwdne213044:0",
   "app.components.FilterBoxes.a11y_numberOfInputs": "crwdns213048:0inputsCount={inputsCount}crwdne213048:0",

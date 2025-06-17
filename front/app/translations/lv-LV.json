@@ -179,6 +179,7 @@
   "app.components.FileUploader.a11y_removeFile": "Dzēst šo failu",
   "app.components.FileUploader.fileInputDescription": "Noklikšķiniet, lai atlasītu failu",
   "app.components.FileUploader.fileUploadLabel": "Pielikumi (ne vairāk kā 50 MB)",
+  "app.components.FileUploader.file_too_large2": "Faili, kas lielāki par {maxSizeMb}MB, nav atļauti.",
   "app.components.FileUploader.incorrect_extension": "{fileName} mūsu sistēma neatbalsta, tas netiks augšupielādēts.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Izvēlētais statusa filtrs: visi",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# iesniegšana} other {# iesniegumi}}",
