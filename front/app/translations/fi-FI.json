@@ -166,6 +166,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "Nähdään siellä, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Tapahtumatietoa näkyi vähemmän.",
   "app.components.EventCard.a11y_moreContentVisible": "Lisää tietoa tapahtumasta tuli näkyviin.",
+  "app.components.EventCard.a11y_readMore": "Lue lisää \"{eventTitle}\"-tapahtumasta.",
   "app.components.EventCard.endsAt": "Päättyy klo",
   "app.components.EventCard.readMore": "Lue lisää",
   "app.components.EventCard.showLess": "Näytä vähemmän",
