@@ -13,6 +13,7 @@ import Sort from './Sort';
 const Filters = () => {
   const managerIds = useParam('managers') ?? [];
   const searchValue = useParam('search');
+  const statuses = useParam('status') ?? [];
 
   return (
     <Box
@@ -29,7 +30,13 @@ const Filters = () => {
             setParam('managers', value);
           }}
         />
-        <Status mr="8px" />
+        <Status
+          mr="8px"
+          values={statuses}
+          onChange={(publicationStatuses) => {
+            setParam('status', publicationStatuses);
+          }}
+        />
         <Dates />
       </Box>
       <Search

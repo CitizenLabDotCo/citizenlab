@@ -8,7 +8,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import { PUBLICATION_STATUS_LABELS } from '../constants';
 import messages from '../Projects/Filters/messages';
-import { useParam, setParam } from '../Projects/utils';
 
 type Option = {
   value: PublicationStatus;
@@ -22,12 +21,13 @@ const OPTIONS = [
 ] as const;
 
 interface Props {
+  values: PublicationStatus[];
   mr?: string;
+  onChange: (value: PublicationStatus[]) => void;
 }
 
-const Status = ({ mr }: Props) => {
+const Status = ({ values, mr, onChange }: Props) => {
   const { formatMessage } = useIntl();
-  const values = useParam('status') ?? [];
 
   const options: Option[] = OPTIONS.map((option) => ({
     value: option.value,
@@ -40,9 +40,7 @@ const Status = ({ mr }: Props) => {
       selected={values}
       values={options}
       mr={mr}
-      onChange={(value: PublicationStatus[]) => {
-        setParam('status', value);
-      }}
+      onChange={onChange}
       title={formatMessage(messages.status)}
       name="manager-select"
     />
