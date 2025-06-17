@@ -30,6 +30,7 @@ export type ProjectMiniAdminData = {
   type: 'project_mini_admin';
   attributes: {
     first_phase_start_date: string | null;
+    first_published_at: string | null;
     folder_title_multiloc: Multiloc | null;
     last_phase_end_date: string | null;
     publication_status: PublicationStatus;
@@ -38,6 +39,9 @@ export type ProjectMiniAdminData = {
   };
   relationships: {
     current_phase?: {
+      data: IRelationship | null;
+    };
+    folder?: {
       data: IRelationship | null;
     };
   };
