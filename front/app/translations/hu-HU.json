@@ -166,6 +166,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "Találkozunk ott, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Kevesebb eseményinformáció vált láthatóvá.",
   "app.components.EventCard.a11y_moreContentVisible": "Az eseményről több információ is láthatóvá vált.",
+  "app.components.EventCard.a11y_readMore": "További információ a „{eventTitle}” eseményről.",
   "app.components.EventCard.endsAt": "órakor ér véget",
   "app.components.EventCard.readMore": "Olvass tovább",
   "app.components.EventCard.showLess": "Mutass kevesebbet",
