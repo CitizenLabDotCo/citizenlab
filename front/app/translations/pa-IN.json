@@ -166,6 +166,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "ਉੱਥੇ ਮਿਲਦੇ ਹਾਂ, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "ਘੱਟ ਘਟਨਾ ਦੀ ਜਾਣਕਾਰੀ ਦਿਖਾਈ ਦੇਣ ਲੱਗੀ।",
   "app.components.EventCard.a11y_moreContentVisible": "ਹੋਰ ਘਟਨਾ ਦੀ ਜਾਣਕਾਰੀ ਦਿਸਦੀ ਹੋ ਗਈ.",
+  "app.components.EventCard.a11y_readMore": "\"{eventTitle}\" ਘਟਨਾ ਬਾਰੇ ਹੋਰ ਪੜ੍ਹੋ।",
   "app.components.EventCard.endsAt": "'ਤੇ ਸਮਾਪਤ ਹੁੰਦਾ ਹੈ",
   "app.components.EventCard.readMore": "ਹੋਰ ਪੜ੍ਹੋ",
   "app.components.EventCard.showLess": "ਘੱਟ ਦਿਖਾਓ",
