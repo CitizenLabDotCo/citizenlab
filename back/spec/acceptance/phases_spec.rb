@@ -907,6 +907,7 @@ resource 'Phases' do
         end
       end
     end
+
     get 'web_api/v1/phases/:id/sentiment_by_quarter' do
       let(:project) { create(:community_monitor_project) }
       let(:active_phase) { project.phases.first }
