@@ -12,6 +12,7 @@ import styled, { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
@@ -66,7 +67,13 @@ const SingleSelectRadioEnumControl = ({
         display="block"
         id="e2e-single-select-control"
         onBlur={() => setDidBlur(true)}
+        as="fieldset"
+        border="none"
+        p="0px"
       >
+        <ScreenReaderOnly>
+          <legend>{getLabel(uischema, schema, path)}</legend>
+        </ScreenReaderOnly>
         {options?.map((option, index: number) => (
           <StyledBox
             background={theme.colors.tenantPrimaryLighten95}
