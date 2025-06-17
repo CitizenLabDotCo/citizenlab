@@ -166,6 +166,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "Τα λέμε εκεί, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Λιγότερες πληροφορίες για την εκδήλωση έγιναν ορατές.",
   "app.components.EventCard.a11y_moreContentVisible": "Περισσότερες πληροφορίες για την εκδήλωση έγιναν ορατές.",
+  "app.components.EventCard.a11y_readMore": "Διαβάστε περισσότερα για την εκδήλωση \"{eventTitle}\".",
   "app.components.EventCard.endsAt": "Τελειώνει στις",
   "app.components.EventCard.readMore": "Διαβάστε περισσότερα",
   "app.components.EventCard.showLess": "Εμφάνιση λιγότερων",
