@@ -13,4 +13,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Folders.Table.status',
     defaultMessage: 'Status',
   },
+  numberOfProjects: {
+    id: 'app.containers.Admin.projects.all.new.Folders.Table.numberOfProjects',
+    defaultMessage:
+      '{numberOfProjects, plural, one {# project} other {# projects}}',
+  },
 });

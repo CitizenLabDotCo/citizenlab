@@ -7,7 +7,10 @@ import { MiniProjectFolder } from 'api/project_folders_mini/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+
+import messages from './messages';
 
 const StyledTd = styled(Td)`
   &:hover {
@@ -24,6 +27,7 @@ interface Props {
 
 const Row = ({ folder }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   return (
     <Tr>
@@ -40,6 +44,11 @@ const Row = ({ folder }: Props) => {
           className="project-table-row-title"
         >
           {localize(folder.attributes.title_multiloc)}
+        </Text>
+        <Text m="0" fontSize="xs" color="textSecondary">
+          {formatMessage(messages.numberOfProjects, {
+            numberOfProjects: folder.attributes.visible_projects_count,
+          })}
         </Text>
       </StyledTd>
       <Td background={colors.grey50}>
