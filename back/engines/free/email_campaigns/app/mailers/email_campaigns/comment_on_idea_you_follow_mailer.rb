@@ -2,7 +2,6 @@
 
 module EmailCampaigns
   class CommentOnIdeaYouFollowMailer < ApplicationMailer
-    # TODO: Test that variables match the variables in the default text
     # TODO: What about the difference based on idea term here?
     # Maybe change the actual translations to include as a variable 'an idea' or 'a proposal'?
     def self.campaign_class

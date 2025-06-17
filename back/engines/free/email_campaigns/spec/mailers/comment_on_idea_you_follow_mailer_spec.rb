@@ -82,14 +82,5 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
         expect(mail_body).to include('CLICK ME to go to "Plant more trees"')
       end
     end
-
-    # TODO: Make this generic for all campaigns
-    describe 'editable regions' do
-      it 'has editable regions that match defined multilocs' do
-        described_class.editable_regions.each do |region|
-          expect { campaign.send(:"#{region[:key]}_multiloc") }.not_to raise_error
-        end
-      end
-    end
   end
 end
