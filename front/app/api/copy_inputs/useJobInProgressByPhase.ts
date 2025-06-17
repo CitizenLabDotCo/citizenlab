@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import jobsKeys from './keys';
 import { IJobs } from './types';
 
-const fetchLatestJobForPhase = async (
+const fetchInProgressPhaseJobs = async (
   phaseId: string
 ): Promise<IJobs | undefined> => {
   return fetcher<IJobs>({
@@ -20,11 +20,11 @@ const fetchLatestJobForPhase = async (
   });
 };
 
-const useJobProgressByPhase = (phaseId: string) =>
+const useJobInProgressByPhase = (phaseId: string) =>
   useQuery<IJobs | undefined, CLErrors>({
     queryKey: jobsKeys.list({ phaseId }),
-    queryFn: () => fetchLatestJobForPhase(phaseId),
+    queryFn: () => fetchInProgressPhaseJobs(phaseId),
     keepPreviousData: true,
   });
 
-export default useJobProgressByPhase;
+export default useJobInProgressByPhase;
