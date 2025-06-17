@@ -35,7 +35,7 @@ type FileToUploadFormat = {
   id?: string | null;
 };
 
-const FileUploaderField = ({
+const MultiFileUploadField = ({
   name,
   ideaId,
   scrollErrorIntoView,
@@ -188,4 +188,4 @@ const FileUploaderField = ({
   );
 };
 
-export default FileUploaderField;
+export default MultiFileUploadField;
