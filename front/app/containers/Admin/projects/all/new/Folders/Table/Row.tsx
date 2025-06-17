@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Tr,
+  Td,
+  Text,
+  Spinner,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { MiniProjectFolder } from 'api/project_folders_mini/types';
@@ -33,6 +40,7 @@ interface Props {
 const Row = ({ folder }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const [isBeingDeleted, setIsBeingDeleted] = useState(false);
 
   const moderators = folder.relationships.moderators.data;
   const { publication_status } = folder.attributes;
@@ -45,21 +53,30 @@ const Row = ({ folder }: Props) => {
           clHistory.push(`/admin/projects/folders/${folder.id}`);
         }}
       >
-        <Text
-          m="0"
-          fontSize="s"
-          color="primary"
-          className="project-table-row-title"
-        >
-          {localize(folder.attributes.title_multiloc)}
-        </Text>
-        <Text m="0" fontSize="xs" color="textSecondary">
-          {formatMessage(messages.numberOfProjects, {
-            numberOfProjects: folder.attributes.visible_projects_count,
-          })}
-        </Text>
+        <Box display="flex" alignItems="center">
+          <Box>
+            <Text
+              m="0"
+              fontSize="s"
+              color="primary"
+              className="project-table-row-title"
+            >
+              {localize(folder.attributes.title_multiloc)}
+            </Text>
+            <Text m="0" fontSize="xs" color="textSecondary">
+              {formatMessage(messages.numberOfProjects, {
+                numberOfProjects: folder.attributes.visible_projects_count,
+              })}
+            </Text>
+          </Box>
+          {isBeingDeleted && (
+            <Box ml="16px">
+              <Spinner size="20px" color={colors.grey400} />
+            </Box>
+          )}
+        </Box>
       </StyledTd>
-      <Td background={colors.grey50} width="240px">
+      <Td background={colors.grey50} width="260px">
         <Text m="0" fontSize="s" color="primary">
           {moderators.map((moderator, index) => (
             <>
@@ -83,7 +100,7 @@ const Row = ({ folder }: Props) => {
           <FolderMoreActionsMenu
             folderId={folder.id}
             setError={() => {}}
-            setIsRunningAction={() => {}}
+            setIsRunningAction={setIsBeingDeleted}
           />
         </Box>
       </Td>
