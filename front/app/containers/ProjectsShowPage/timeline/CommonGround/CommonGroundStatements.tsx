@@ -231,43 +231,50 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
           justifyContent="space-between"
           gap="8px"
           flexDirection={isPhone ? 'column' : 'row'}
+          flexWrap="wrap"
         >
-          <Button
-            buttonStyle="secondary-outlined"
-            icon="check-circle"
-            iconColor={colors.green500}
-            justify={isPhone ? 'left' : 'center'}
-            textColor={colors.textPrimary}
-            onClick={() => triggerSwipe('up')}
-            whiteSpace="normal"
-            fullWidth
-          >
-            {formatMessage(messages.agreeLabel)}
-          </Button>
-          <Button
-            buttonStyle="secondary-outlined"
-            icon="sentiment-neutral"
-            iconColor={colors.grey700}
-            justify={isPhone ? 'left' : 'center'}
-            textColor={colors.textPrimary}
-            whiteSpace="normal"
-            onClick={() => triggerSwipe('neutral')}
-            fullWidth
-          >
-            {formatMessage(messages.unsureLabel)}
-          </Button>
-          <Button
-            buttonStyle="secondary-outlined"
-            icon="cancel"
-            iconColor={colors.red600}
-            justify={isPhone ? 'left' : 'center'}
-            textColor={colors.textPrimary}
-            whiteSpace="normal"
-            onClick={() => triggerSwipe('down')}
-            fullWidth
-          >
-            {formatMessage(messages.disagreeLabel)}
-          </Button>
+          <Box flex="1 1 140px">
+            <Button
+              buttonStyle="secondary-outlined"
+              icon="check-circle"
+              iconColor={colors.green500}
+              justify={isPhone ? 'left' : 'center'}
+              textColor={colors.textPrimary}
+              onClick={() => triggerSwipe('up')}
+              whiteSpace="normal"
+              fullWidth
+            >
+              {formatMessage(messages.agreeLabel)}
+            </Button>
+          </Box>
+          <Box flex="1 1 140px">
+            <Button
+              buttonStyle="secondary-outlined"
+              icon="sentiment-neutral"
+              iconColor={colors.grey700}
+              justify={isPhone ? 'left' : 'center'}
+              textColor={colors.textPrimary}
+              whiteSpace="normal"
+              onClick={() => triggerSwipe('neutral')}
+              fullWidth
+            >
+              {formatMessage(messages.unsureLabel)}
+            </Button>
+          </Box>
+          <Box flex="1 1 140px">
+            <Button
+              buttonStyle="secondary-outlined"
+              icon="cancel"
+              iconColor={colors.red600}
+              justify={isPhone ? 'left' : 'center'}
+              textColor={colors.textPrimary}
+              whiteSpace="normal"
+              onClick={() => triggerSwipe('down')}
+              fullWidth
+            >
+              {formatMessage(messages.disagreeLabel)}
+            </Button>
+          </Box>
         </Box>
       </StatementCard>
     </Box>
