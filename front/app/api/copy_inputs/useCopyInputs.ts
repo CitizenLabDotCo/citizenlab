@@ -10,7 +10,7 @@ const copyInputs = ({
   toPhaseId,
   fromPhaseId,
   dryRun = false,
-  allowDuplicates = true,
+  allowDuplicates = false,
 }: CopyRequestParams) =>
   fetcher<IJob>({
     path: `/phases/${toPhaseId}/inputs/copy`,
