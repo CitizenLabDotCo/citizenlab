@@ -59,4 +59,83 @@ resource 'Idea Custom Fields' do
       end
     end
   end
+
+  context 'When there are 2 survey phases in same project' do
+    get 'web_api/v1/admin/phases/:phase_id/custom_fields' do
+      let(:phase_id) { current_phase.id }
+
+      let(:past_phase) { create(:native_survey_phase, start_at: 2.weeks.ago, end_at: 1.week.ago) }
+      let(:form) { create(:custom_form, participation_context: past_phase) }
+      let!(:custom_field1) { create(:custom_field_text, resource: form, key: 'survey1_field') }
+
+      let(:current_phase) { create(:native_survey_phase, start_at: 1.week.ago, end_at: 1.week.from_now) }
+
+      let(:project) { create(:project, phases[past_phase]) }
+
+      context 'when survey form not persisted' do
+        shared_examples "default survey custom fields" do
+          example_request 'List default survey custom fields' do
+            assert_status 200
+            expect(response_data.size).to eq 3
+
+            keys = response_data.map { |d| d.dig(:attributes, :key) }
+
+            expect(keys).to include('page1', 'form_end')
+            expect(keys.any? { |key| key.include?('default_question') }).to be true
+          end
+        end
+
+        context 'when admin' do
+          before { admin_header_token }
+
+          include_examples "default survey custom fields"
+        end
+
+        context 'when regular user' do
+          before { header_token_for(user) }
+
+          let(:user) { create(:user) }
+
+          include_examples "default survey custom fields"
+        end
+
+        context 'when visitor' do
+          include_examples "default survey custom fields"
+        end
+      end
+
+      context 'when survey form persisted' do
+        let(:form2) { create(:custom_form, participation_context: current_phase) }
+        let!(:custom_field2) { create(:custom_field_text, resource: form2, key: 'survey2_field') }
+
+        shared_examples "non-default survey custom fields" do
+          example_request 'List all custom fields for a survey' do
+            assert_status 200
+            expect(response_data.size).to eq 1
+            expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [
+              custom_field2.key
+            ]
+          end
+        end
+
+        context 'when admin' do
+          before { admin_header_token }
+
+          include_examples "non-default survey custom fields"
+        end
+
+        context 'when regular user' do
+          before { header_token_for(user) }
+
+          let(:user) { create(:user) }
+
+          include_examples "non-default survey custom fields"
+        end
+
+        context 'when visitor' do
+          include_examples "non-default survey custom fields"
+        end
+      end
+    end
+  end
 end
