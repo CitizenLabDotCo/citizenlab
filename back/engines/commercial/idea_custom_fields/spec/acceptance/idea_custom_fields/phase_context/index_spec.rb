@@ -64,13 +64,13 @@ resource 'Idea Custom Fields' do
     get 'web_api/v1/admin/phases/:phase_id/custom_fields' do
       let(:phase_id) { current_phase.id }
 
-      let(:past_phase) { create(:native_survey_phase, start_at: 2.weeks.ago, end_at: 1.week.ago) }
+      let(:project) { create(:project) }
+
+      let(:past_phase) { create(:native_survey_phase, start_at: 2.weeks.ago, end_at: 1.week.ago, project: project) }
       let(:form) { create(:custom_form, participation_context: past_phase) }
       let!(:custom_field1) { create(:custom_field_text, resource: form, key: 'survey1_field') }
 
-      let(:current_phase) { create(:native_survey_phase, start_at: 1.week.ago, end_at: 1.week.from_now) }
-
-      let(:project) { create(:project, phases[past_phase]) }
+      let(:current_phase) { create(:native_survey_phase, start_at: 1.day.ago, end_at: 1.week.from_now, project: project) }
 
       context 'when survey form not persisted' do
         shared_examples 'default survey custom fields' do
@@ -97,10 +97,43 @@ resource 'Idea Custom Fields' do
           let(:user) { create(:user) }
 
           include_examples 'default survey custom fields'
+
+          example '[Unauthorized] List survey fields in admin only project' do
+            project.update!(visible_to: 'admins')
+            do_request
+            assert_status 401
+          end
+
+          example '[Unauthorized] List survey fields in project for groups not including user' do
+            project.update!(visible_to: 'groups')
+            do_request
+            assert_status 401
+          end
+
+          example 'List survey fields in project for groups including user' do
+            project.update!(visible_to: 'groups')
+            group = create(:group)
+            membership = create(:membership, group: group, user: user)
+            create(:groups_project, group: group, project: project)
+            do_request
+            assert_status 200
+          end
         end
 
         context 'when visitor' do
           include_examples 'default survey custom fields'
+
+          example '[Unauthorized] List survey fields in admin only project' do
+            project.update!(visible_to: 'admins')
+            do_request
+            assert_status 401
+          end
+
+          example '[Unauthorized] List survey fields in project for groups' do
+            project.update!(visible_to: 'groups')
+            do_request
+            assert_status 401
+          end
         end
       end
 
@@ -130,10 +163,43 @@ resource 'Idea Custom Fields' do
           let(:user) { create(:user) }
 
           include_examples 'non-default survey custom fields'
+
+          example '[Unauthorized] List survey fields in admin only project' do
+            project.update!(visible_to: 'admins')
+            do_request
+            assert_status 401
+          end
+
+          example '[Unauthorized] List survey fields in project for groups not including user' do
+            project.update!(visible_to: 'groups')
+            do_request
+            assert_status 401
+          end
+
+          example 'List survey fields in project for groups including user' do
+            project.update!(visible_to: 'groups')
+            group = create(:group)
+            membership = create(:membership, group: group, user: user)
+            create(:groups_project, group: group, project: project)
+            do_request
+            assert_status 200
+          end
         end
 
         context 'when visitor' do
           include_examples 'non-default survey custom fields'
+
+          example '[Unauthorized] List survey fields in admin only project' do
+            project.update!(visible_to: 'admins')
+            do_request
+            assert_status 401
+          end
+
+          example '[Unauthorized] List survey fields in project for groups' do
+            project.update!(visible_to: 'groups')
+            do_request
+            assert_status 401
+          end
         end
       end
     end
