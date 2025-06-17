@@ -19,7 +19,7 @@ const ProjectFilesTab = () => {
         <UploadFileButton />
       </Box>
       <Box mt="40px" p="16px" background={colors.white}>
-        Table Here
+        TODO: Add file table component
       </Box>
     </Box>
   );

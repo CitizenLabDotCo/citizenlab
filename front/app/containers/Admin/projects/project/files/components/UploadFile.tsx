@@ -23,7 +23,7 @@ const UploadFileButton = () => {
         onClick={() => setModalOpen(true)}
       />
       <Modal opened={modalOpen} close={() => setModalOpen(false)}>
-        TODO - Modal Content
+        TODO: Add modal content
       </Modal>
     </>
   );
