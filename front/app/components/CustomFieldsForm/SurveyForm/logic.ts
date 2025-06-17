@@ -23,22 +23,26 @@ export const determineNextPageNumber = ({
   const currentPageQuestionsWithLogic = currentPageQuestions?.filter(
     (question) => question.logic.rules?.length
   );
-
   if (currentPageQuestionsWithLogic?.length) {
     currentPageQuestionsWithLogic.forEach((question) => {
       const rules = question.logic.rules;
       if (rules && rules.length > 0) {
         const rule = rules.find((rule) => {
           const value = formData?.[question.key];
-
           if (question.input_type === 'select') {
             const optionId = question.options?.find(
               (option) => option.key === value
             )?.id;
-            return (
-              optionId !== undefined &&
-              (rule.if === optionId || rule.if === String(optionId))
-            );
+            if (rule.if === 'any_other_answer') {
+              return (
+                optionId !== undefined &&
+                (rule.if !== optionId || rule.if !== String(optionId))
+              );
+            } else if (rule.if === 'no_answer') {
+              return !value;
+            }
+
+            return rule.if === optionId || rule.if === String(optionId);
           } else if (
             question.input_type === 'multiselect' ||
             question.input_type === 'multiselect_image'
@@ -59,10 +63,7 @@ export const determineNextPageNumber = ({
         if (rule) {
           const nextPage = pages.find(
             (page) => page.page.id === rule.goto_page_id
-          ) as {
-            page: IFlatCustomField;
-            pageQuestions: IFlatCustomField[];
-          };
+          ) as Pages[number];
           nextPageIndex = pages.findIndex(
             (page) => page.page.id === nextPage.page.id
           );
@@ -113,6 +114,14 @@ export const determinePreviousPageNumber = ({
           )?.id;
 
           if (question.input_type === 'select') {
+            if (rule.if === 'any_other_answer') {
+              return (
+                optionId !== undefined &&
+                (rule.if !== optionId || rule.if !== String(optionId))
+              );
+            } else if (rule.if === 'no_answer') {
+              return !value;
+            }
             return (
               optionId !== undefined &&
               (rule.if === optionId || rule.if === String(optionId))
