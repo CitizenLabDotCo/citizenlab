@@ -99,7 +99,7 @@ const generateYupValidationSchema = ({
       }
 
       case 'number': {
-        if (key === 'project_budget' && enabled) {
+        if (key === 'proposed_budget' && enabled) {
           schema[key] = required
             ? number().required(fieldRequired)
             : number()
