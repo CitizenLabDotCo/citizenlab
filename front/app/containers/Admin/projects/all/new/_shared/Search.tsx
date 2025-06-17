@@ -18,7 +18,6 @@ const Search = ({ value, placeholder, onChange }: Props) => {
         onChange(search ?? undefined);
       }}
       a11y_numberOfSearchResults={0}
-      // placeholder={formatMessage(messages.search)}
       placeholder={placeholder}
       labelColor={colors.grey600}
     />
