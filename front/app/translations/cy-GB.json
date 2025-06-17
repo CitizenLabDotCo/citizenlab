@@ -166,6 +166,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "Welwn ni chi yno, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Daeth llai o wybodaeth am ddigwyddiadau yn weladwy.",
   "app.components.EventCard.a11y_moreContentVisible": "Daeth mwy o wybodaeth am y digwyddiad yn weladwy.",
+  "app.components.EventCard.a11y_readMore": "Darllenwch fwy am y digwyddiad \"{eventTitle}\".",
   "app.components.EventCard.endsAt": "Yn gorffen am",
   "app.components.EventCard.readMore": "Darllen mwy",
   "app.components.EventCard.showLess": "Dangos llai",
