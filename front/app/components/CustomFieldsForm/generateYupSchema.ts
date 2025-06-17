@@ -110,15 +110,15 @@ const generateYupValidationSchema = ({
                     originalValue === '' ? null : value
                   )
                   .nullable();
+        } else {
+          schema[key] = required
+            ? number().required(fieldRequired)
+            : number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .nullable();
         }
-
-        schema[key] = required
-          ? number().required(fieldRequired)
-          : number()
-              .transform((value, originalValue) =>
-                originalValue === '' ? null : value
-              )
-              .nullable();
         break;
       }
 
