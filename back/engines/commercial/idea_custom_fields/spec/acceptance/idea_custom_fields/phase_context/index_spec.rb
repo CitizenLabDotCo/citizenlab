@@ -89,6 +89,13 @@ resource 'Idea Custom Fields' do
           before { admin_header_token }
 
           include_examples 'returns default survey custom fields'
+
+          example 'List survey fields in project for groups not including user' do
+            project.update!(visible_to: 'groups')
+            do_request
+            assert_status 200
+            expect(response_data.size).to eq 3
+          end
         end
 
         context 'when regular user' do
@@ -117,6 +124,7 @@ resource 'Idea Custom Fields' do
             create(:groups_project, group: group, project: project)
             do_request
             assert_status 200
+            expect(response_data.size).to eq 3
           end
         end
 
@@ -155,6 +163,13 @@ resource 'Idea Custom Fields' do
           before { admin_header_token }
 
           include_examples 'returns non-default survey custom fields'
+
+          example 'List survey fields in project for groups not including user' do
+            project.update!(visible_to: 'groups')
+            do_request
+            assert_status 200
+            expect(response_data.size).to eq 1
+          end
         end
 
         context 'when regular user' do
@@ -183,6 +198,7 @@ resource 'Idea Custom Fields' do
             create(:groups_project, group: group, project: project)
             do_request
             assert_status 200
+            expect(response_data.size).to eq 1
           end
         end
 

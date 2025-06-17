@@ -71,6 +71,13 @@ resource 'Idea Custom Fields' do
           'proposed_budget'
         ]
       end
+
+      example 'List input fields in project for groups not including user' do
+        context.update!(visible_to: 'groups')
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 13
+      end
     end
 
     context 'when resident' do
@@ -113,6 +120,7 @@ resource 'Idea Custom Fields' do
         create(:groups_project, group: group, project: context)
         do_request
         assert_status 200
+        expect(response_data.size).to eq 12
       end
     end
   end
