@@ -23,6 +23,8 @@ module EmailCampaigns
       end
     end
 
+    # TODO: Manual allows some attributes to be set which automated campaigns do not eg sender.
+
     # For customisable regions we merge in the defaults for multilocs.
     def subject_multiloc
       merge_default_region_values(:subject_multiloc)
