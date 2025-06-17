@@ -22,9 +22,11 @@ export interface ICampaignData {
     enabled?: boolean;
     subject_multiloc: Multiloc;
     body_multiloc: Multiloc;
+    title_multiloc?: Multiloc;
+    intro_multiloc?: Multiloc;
+    button_text_multiloc?: Multiloc;
     sender: 'author' | 'organization';
     reply_to: 'author' | 'organization';
-    custom_text_multiloc?: Multiloc;
     editable_regions?: EditableRegion[];
     created_at: string;
     updated_at: string;
@@ -66,7 +68,9 @@ export interface CampaignFormValues {
   reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
-  custom_text_multiloc?: Multiloc;
+  title_text_multiloc?: Multiloc;
+  intro_multiloc?: Multiloc;
+  button_text_multiloc?: Multiloc;
   group_ids?: string[];
 }
 
@@ -76,6 +80,7 @@ export interface EditableRegion {
   type: 'html' | 'text';
   variables: string[];
   default_value_multiloc?: Multiloc;
+  allow_blank_locales: boolean;
 }
 
 type CampaignUpdate =

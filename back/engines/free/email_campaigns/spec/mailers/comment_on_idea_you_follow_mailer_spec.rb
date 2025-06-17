@@ -59,14 +59,10 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
 
       before do
         campaign.update!(
-          custom_text_multiloc: {
-            'en' => {
-              'subject' => 'Custom Subject - {{ input_title }}',
-              'header_title' => 'NEW TITLE',
-              'header_message' => '<b>BODY TEXT</b> new comment by {{ authorName }}',
-              'cta_button_text' => 'CLICK ME to go to "{{ inputTitle }}"'
-            }
-          }
+          subject_multiloc: { 'en' => 'Custom Subject - {{ input_title }}' },
+          title_multiloc: { 'en' => 'NEW TITLE' },
+          intro_multiloc: { 'en' => '<b>BODY TEXT</b> new comment by {{ authorName }}' },
+          button_text_multiloc: { 'en' => 'CLICK ME to go to "{{ inputTitle }}"' }
         )
       end
 

@@ -279,4 +279,8 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.automated.variablesToolTip',
     defaultMessage: 'You can use the following variables in your message:',
   },
+  fieldMultilocError: {
+    id: 'app.containers.Admin.emails.fieldMultilocError',
+    defaultMessage: 'Please provide a value for all languages',
+  },
 });

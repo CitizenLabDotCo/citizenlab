@@ -2,7 +2,6 @@
 
 module EmailCampaigns
   class CommentOnIdeaYouFollowMailer < ApplicationMailer
-    # TODO: Test that variables match the variables in the default text
     # TODO: What about the difference based on idea term here?
     # Maybe change the actual translations to include as a variable 'an idea' or 'a proposal'?
     def self.campaign_class
@@ -14,23 +13,25 @@ module EmailCampaigns
     def self.editable_regions
       [
         editable_region(
-          'subject',
+          :subject_multiloc,
+          default_message_key: 'subject',
           variables: ['input_title']
         ),
         editable_region(
-          'header_title',
-          message_key: 'main_header.idea',
+          :title_multiloc,
+          default_message_key: 'main_header.idea',
           variables: ['authorName']
         ),
         editable_region(
-          'header_message',
+          :intro_multiloc,
           type: 'html',
-          message_key: 'event_description',
-          variables: %w[authorName authorNameFull inputTitle]
+          default_message_key: 'event_description',
+          variables: %w[authorName authorNameFull inputTitle],
+          allow_blank_locales: true
         ),
         editable_region(
-          'cta_button_text',
-          message_key: 'cta_reply_to',
+          :button_text_multiloc,
+          default_message_key: 'cta_reply_to',
           variables: %w[commentAuthor inputTitle]
         )
       ]
@@ -40,7 +41,7 @@ module EmailCampaigns
 
     def subject
       format_editable_region(
-        region_key: 'subject',
+        region_key: :subject_multiloc,
         values: {
           input_title: localize_for_recipient(event.idea_title_multiloc)
         }
@@ -49,7 +50,7 @@ module EmailCampaigns
 
     def header_title
       format_editable_region(
-        region_key: 'header_title',
+        region_key: :title_multiloc,
         values: {
           authorName: event.comment_author_name
         }
@@ -59,7 +60,7 @@ module EmailCampaigns
     # TODO: This is a HTML region, changed the template to use <%== %> but we need to ensure it's always sanitised before output.
     def header_message
       format_editable_region(
-        region_key: 'header_message',
+        region_key: :intro_multiloc,
         values: {
           authorNameFull: event.comment_author_name,
           authorName: event.initiating_user_first_name,
@@ -70,7 +71,7 @@ module EmailCampaigns
 
     def cta_button_text
       format_editable_region(
-        region_key: 'cta_button_text',
+        region_key: :button_text_multiloc,
         values: {
           commentAuthor: event.initiating_user_first_name&.capitalize,
           inputTitle: localize_for_recipient(event.idea_title_multiloc)

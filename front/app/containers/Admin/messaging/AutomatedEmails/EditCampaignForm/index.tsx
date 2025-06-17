@@ -22,8 +22,9 @@ import { Section, SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -44,24 +45,26 @@ const EditCampaignForm = ({
   const { data: authUser } = useAuthUser();
   const { data: appConfig } = useAppConfiguration();
   const currentLocale = useLocale();
-  const schema = object({});
+  const { formatMessage } = useIntl();
 
-  // Helper function to convert single multiloc object to multiples object with locale keys and vice versa
-  // TODO: Needs to be made more generic (ie locale agnostic)
-  // TODO: Do we need to validate the multiloc values? In theory there should always be values (need to make sure of this)
-  const switchKeys = (input) => {
-    return Object.keys(input).reduce((acc, locale) => {
-      Object.entries(input[locale]).forEach(([key, value]) => {
-        acc[key] = acc[key] || {};
-        acc[key][locale] = value;
-      });
-      return acc;
-    }, {});
-  };
+  // Schema and default values are derived from which editable regions are present
+  const editableRegions = campaign.data.attributes.editable_regions || [];
 
-  const defaultValues = switchKeys(
-    campaign.data.attributes.custom_text_multiloc
+  const schema = object(
+    editableRegions.reduce((fieldSchema, region) => {
+      if (!region.allow_blank_locales) {
+        fieldSchema[region.key] = validateMultilocForEveryLocale(
+          formatMessage(messages.fieldMultilocError)
+        );
+      }
+      return fieldSchema;
+    }, {})
   );
+
+  const defaultValues = editableRegions.reduce((fieldValue, region) => {
+    fieldValue[region.key] = campaign.data.attributes[region.key];
+    return fieldValue;
+  }, {});
 
   const methods = useForm({
     mode: 'onBlur',
@@ -69,19 +72,13 @@ const EditCampaignForm = ({
     resolver: yupResolver(schema),
   });
 
-  const editableRegions = campaign.data.attributes.editable_regions || [];
-
   if (!authUser || !appConfig || editableRegions.length === 0) {
     return null;
   }
 
   const onFormSubmit = async (formValues) => {
-    // Convert the form values into a single value for the API
-    const campaignFormValues = {
-      custom_text_multiloc: switchKeys(formValues),
-    };
     try {
-      await onSubmit(campaignFormValues);
+      await onSubmit(formValues);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
