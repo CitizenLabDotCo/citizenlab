@@ -86,7 +86,8 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
       CTAButton={
         showSignIn ? (
           <Box display="flex" gap="8px">
-            {postingEnabled && (
+            {/* We only want to show one button in the CTA */}
+            {postingEnabled ? (
               <Button
                 fontWeight="500"
                 bgColor={theme.colors.white}
@@ -98,18 +99,19 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
               >
                 <FormattedMessage {...messages.addInput} />
               </Button>
+            ) : (
+              <Button
+                onClick={handleReactToInputs}
+                fontWeight="500"
+                bgColor={theme.colors.white}
+                textColor={theme.colors.tenantText}
+                textHoverColor={theme.colors.black}
+                padding="6px 12px"
+                fontSize="14px"
+              >
+                <FormattedMessage {...messages.viewInputs} />
+              </Button>
             )}
-            <Button
-              onClick={handleReactToInputs}
-              fontWeight="500"
-              bgColor={theme.colors.white}
-              textColor={theme.colors.tenantText}
-              textHoverColor={theme.colors.black}
-              padding="6px 12px"
-              fontSize="14px"
-            >
-              <FormattedMessage {...messages.viewInputs} />
-            </Button>
           </Box>
         ) : null
       }
