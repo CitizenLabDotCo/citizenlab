@@ -51,7 +51,6 @@ const Table = () => {
           {folders?.data.map((folder) => (
             <Row folder={folder} key={folder.id} />
           ))}
-          TODO
         </Tbody>
       </TableComponent>
       {lastPage > 1 && (

@@ -33,13 +33,24 @@ const Row = ({ folder }: Props) => {
           clHistory.push(`/admin/projects/folders/${folder.id}`);
         }}
       >
-        <Text>{localize(folder.attributes.title_multiloc)}</Text>
+        <Text
+          m="0"
+          fontSize="s"
+          color="primary"
+          className="project-table-row-title"
+        >
+          {localize(folder.attributes.title_multiloc)}
+        </Text>
       </StyledTd>
-      <Td>
-        <Text>Manager (TODO)</Text>
+      <Td background={colors.grey50}>
+        <Text m="0" fontSize="s" color="primary">
+          Manager (TODO)
+        </Text>
       </Td>
-      <Td>
-        <Text>Status (TODO)</Text>
+      <Td background={colors.grey50}>
+        <Text m="0" fontSize="s" color="primary">
+          Status (TODO)
+        </Text>
       </Td>
     </Tr>
   );
