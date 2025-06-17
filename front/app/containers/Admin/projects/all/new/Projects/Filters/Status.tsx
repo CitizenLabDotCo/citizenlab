@@ -6,7 +6,7 @@ import FilterSelector from 'components/FilterSelector';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { PUBLICATION_STATUS_LABELS } from '../constants';
+import { PUBLICATION_STATUS_LABELS } from '../../constants';
 import { useParam, setParam } from '../utils';
 
 import messages from './messages';
