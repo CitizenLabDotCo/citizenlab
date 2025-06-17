@@ -136,8 +136,7 @@ resource 'ProjectFolder' do
 
       example_request 'List all folders for admin' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
+        expect(response_data.size).to eq 2
       end
 
       example 'Includes folder moderators', document: false do
