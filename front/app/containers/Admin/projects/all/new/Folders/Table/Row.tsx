@@ -7,6 +7,8 @@ import { MiniProjectFolder } from 'api/project_folders_mini/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import FolderMoreActionsMenu from 'containers/Admin/projects/projectFolders/components/ProjectFolderRow/FolderMoreActionsMenu';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
@@ -57,7 +59,7 @@ const Row = ({ folder }: Props) => {
           })}
         </Text>
       </StyledTd>
-      <Td background={colors.grey50}>
+      <Td background={colors.grey50} width="240px">
         <Text m="0" fontSize="s" color="primary">
           {moderators.map((moderator, index) => (
             <>
@@ -71,10 +73,19 @@ const Row = ({ folder }: Props) => {
           ))}
         </Text>
       </Td>
-      <Td background={colors.grey50}>
+      <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s" color="primary">
           {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
         </Text>
+      </Td>
+      <Td background={colors.grey50} width="40px">
+        <Box mr="12px">
+          <FolderMoreActionsMenu
+            folderId={folder.id}
+            setError={() => {}}
+            setIsRunningAction={() => {}}
+          />
+        </Box>
       </Td>
     </Tr>
   );
