@@ -57,10 +57,10 @@ en:
         "5": "Weekly, on Fridays at %{hourOfDay}"
         "6": "Weekly, on Saturdays at %{hourOfDay}"
     editable_region_names:
-      subject: "Subject"
-      title: "Title"
-      intro: "Introduction"
-      button_text: "Button text"
+      subject_multiloc: "Subject"
+      title_multiloc: "Title"
+      intro_multiloc: "Introduction"
+      button_text_multiloc: "Button text"
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"

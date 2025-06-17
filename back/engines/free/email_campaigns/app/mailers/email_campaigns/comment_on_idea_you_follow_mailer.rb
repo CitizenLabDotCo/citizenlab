@@ -13,23 +13,24 @@ module EmailCampaigns
     def self.editable_regions
       [
         editable_region(
-          'subject',
+          :subject_multiloc,
+          default_message_key: 'subject',
           variables: ['input_title']
         ),
         editable_region(
-          'title',
-          message_key: 'main_header.idea',
+          :title_multiloc,
+          default_message_key: 'main_header.idea',
           variables: ['authorName']
         ),
         editable_region(
-          'intro',
+          :intro_multiloc,
           type: 'html',
-          message_key: 'event_description',
+          default_message_key: 'event_description',
           variables: %w[authorName authorNameFull inputTitle]
         ),
         editable_region(
-          'button_text',
-          message_key: 'cta_reply_to',
+          :button_text_multiloc,
+          default_message_key: 'cta_reply_to',
           variables: %w[commentAuthor inputTitle]
         )
       ]
@@ -39,7 +40,7 @@ module EmailCampaigns
 
     def subject
       format_editable_region(
-        region_key: 'subject',
+        region_key: :subject_multiloc,
         values: {
           input_title: localize_for_recipient(event.idea_title_multiloc)
         }
@@ -48,7 +49,7 @@ module EmailCampaigns
 
     def header_title
       format_editable_region(
-        region_key: 'title',
+        region_key: :title_multiloc,
         values: {
           authorName: event.comment_author_name
         }
@@ -58,7 +59,7 @@ module EmailCampaigns
     # TODO: This is a HTML region, changed the template to use <%== %> but we need to ensure it's always sanitised before output.
     def header_message
       format_editable_region(
-        region_key: 'intro',
+        region_key: :intro_multiloc,
         values: {
           authorNameFull: event.comment_author_name,
           authorName: event.initiating_user_first_name,
@@ -69,7 +70,7 @@ module EmailCampaigns
 
     def cta_button_text
       format_editable_region(
-        region_key: 'button_text',
+        region_key: :button_text_multiloc,
         values: {
           commentAuthor: event.initiating_user_first_name&.capitalize,
           inputTitle: localize_for_recipient(event.idea_title_multiloc)

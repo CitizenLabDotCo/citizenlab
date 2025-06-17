@@ -46,22 +46,19 @@ const EditCampaignForm = ({
   const currentLocale = useLocale();
   const schema = object({});
 
-  // Helper function to convert single multiloc object to multiples object with locale keys and vice versa
-  // TODO: Needs to be made more generic (ie locale agnostic)
-  // TODO: Do we need to validate the multiloc values? In theory there should always be values (need to make sure of this)
-  const switchKeys = (input) => {
-    return Object.keys(input).reduce((acc, locale) => {
-      Object.entries(input[locale]).forEach(([key, value]) => {
-        acc[key] = acc[key] || {};
-        acc[key][locale] = value;
-      });
-      return acc;
-    }, {});
-  };
+  const {
+    subject_multiloc,
+    title_multiloc,
+    intro_multiloc,
+    button_text_multiloc,
+  } = campaign.data.attributes;
 
-  const defaultValues = switchKeys(
-    campaign.data.attributes.custom_text_multiloc
-  );
+  const defaultValues = {
+    subject_multiloc,
+    title_multiloc,
+    intro_multiloc,
+    button_text_multiloc,
+  };
 
   const methods = useForm({
     mode: 'onBlur',
@@ -76,12 +73,8 @@ const EditCampaignForm = ({
   }
 
   const onFormSubmit = async (formValues) => {
-    // Convert the form values into a single value for the API
-    const campaignFormValues = {
-      custom_text_multiloc: switchKeys(formValues),
-    };
     try {
-      await onSubmit(campaignFormValues);
+      await onSubmit(formValues);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }

@@ -55,21 +55,21 @@ module EmailCampaigns
 
       # NOTE: Default values for regions are merged in the campaign class so that both this and the campaign serializer can use.
       multiloc_service = MultilocService.new
-      region_text = multiloc_service.t(@campaign.send(:"#{region_key}_multiloc"), locale.to_s)
+      region_text = multiloc_service.t(@campaign.send(region_key), locale.to_s)
       values = values.transform_keys(&:to_s)
 
       # TODO: Need to santitize here
       render_liquid_template(text: region_text, values: values, html: region[:type] == 'html')
     end
 
-    private_class_method def self.editable_region(key, type: 'text', message_key: key, variables: [])
+    private_class_method def self.editable_region(key, type: 'text', default_message_key: key.to_s, variables: [])
       message_group = "email_campaigns.#{campaign_class.name.demodulize.underscore}"
       {
         key: key,
-        title_multiloc: MultilocService.new.i18n_to_multiloc("email_campaigns.editable_region_names.#{key}"),
+        title_multiloc: MultilocService.new.i18n_to_multiloc("email_campaigns.editable_region_names.#{key.to_s}"),
         type: type,
         variables: variables,
-        default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{message_key}") || {}
+        default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{default_message_key}") || {}
       }
     end
 
