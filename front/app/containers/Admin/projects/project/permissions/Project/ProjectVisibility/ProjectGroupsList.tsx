@@ -14,7 +14,7 @@ import useProjectGroups from 'api/project_groups/useProjectGroups';
 import useLocalize from 'hooks/useLocalize';
 
 import { List, Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -41,7 +41,7 @@ const StyledMultipleSelect = styled(MultipleSelect)`
   z-index: 5;
 `;
 
-const AddGroupButton = styled(Button)`
+const AddGroupButton = styled(ButtonWithLink)`
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 30px;
@@ -180,13 +180,13 @@ const ProjectGroupsList = ({ projectId }: Props) => {
                 values={{ count: projectGroup.membership_count }}
               />
             </GroupMembershipCount>
-            <Button
+            <ButtonWithLink
               onClick={createDeleteGroupHandler(projectGroup.group_project_id)}
               buttonStyle="text"
               icon="delete"
             >
               <FormattedMessage {...messages.deleteButtonLabel} />
-            </Button>
+            </ButtonWithLink>
           </Row>
         ))}
       </List>

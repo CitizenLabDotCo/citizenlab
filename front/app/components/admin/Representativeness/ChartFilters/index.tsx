@@ -5,7 +5,7 @@ import { IOption } from 'typings';
 
 import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -21,7 +21,7 @@ const ChartFilters = ({ projectId, onProjectFilter, noData }: Props) => (
   <Box display="flex" justifyContent="space-between" alignItems="flex-end">
     <ProjectFilter projectId={projectId} onProjectFilter={onProjectFilter} />
     {!noData && (
-      <Button
+      <ButtonWithLink
         linkTo="/admin/dashboard/representation/edit-base-data"
         text={<FormattedMessage {...messages.editBaseData} />}
         bgColor={colors.teal}

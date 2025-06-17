@@ -7,7 +7,7 @@ import styled, { useTheme } from 'styled-components';
 
 import { SignUpInFlow } from 'containers/Authentication/typings';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -95,7 +95,7 @@ const ButtonWrapper = styled.div`
   padding-top: 20px;
 `;
 
-const ContinueButton = styled(Button)``;
+const ContinueButton = styled(ButtonWithLink)``;
 
 export type TOnContinueFunction = (authProvider: AuthProvider) => void;
 
@@ -185,7 +185,7 @@ const AuthProviderButton = memo<Props>(
 
     return (
       <Container className={className} id={id}>
-        <Button
+        <ButtonWithLink
           icon={icon}
           iconSize="22px"
           iconColor={
@@ -202,7 +202,7 @@ const AuthProviderButton = memo<Props>(
           textColor={theme.colors.tenantText}
         >
           {children}
-        </Button>
+        </ButtonWithLink>
 
         {showConsentOnFlow === flow && (
           <CSSTransition

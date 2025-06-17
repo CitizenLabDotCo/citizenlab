@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Icon, fontSizes } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 
@@ -49,7 +49,7 @@ const TableWrapper = ({
       </Box>
 
       {showModalButton && (
-        <Button
+        <ButtonWithLink
           buttonStyle="secondary-outlined"
           width="160px"
           ml="40px"
@@ -65,7 +65,7 @@ const TableWrapper = ({
             })}
             <Icon name="open-in-new" width="15px" height="15px" ml="12px" />
           </Box>
-        </Button>
+        </ButtonWithLink>
       )}
 
       <TableModal

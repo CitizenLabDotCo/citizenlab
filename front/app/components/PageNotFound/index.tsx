@@ -3,7 +3,7 @@ import React from 'react';
 import { Title, Text, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -33,7 +33,7 @@ const PageNotFound = () => {
         <Text fontSize="l" color={'textSecondary'} mb="36px">
           {formatMessage(messages.pageNotFoundDescription)}
         </Text>
-        <Button
+        <ButtonWithLink
           linkTo="/"
           text={formatMessage(messages.goBackToHomePage)}
           icon="arrow-left"

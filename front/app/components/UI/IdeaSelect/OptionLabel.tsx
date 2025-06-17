@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { Option } from './typings';
 import { optionIsIdea } from './utils';
@@ -30,7 +30,7 @@ const OptionLabel = ({
 
   if (option.value === 'loadMore' && hasNextPage) {
     return (
-      <Button
+      <ButtonWithLink
         onClick={fetchNextPage}
         processing={isLoading}
         icon="refresh"

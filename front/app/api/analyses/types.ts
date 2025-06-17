@@ -20,7 +20,8 @@ export interface IAnalysisData {
     participation_method:
       | 'native_survey'
       | 'ideation'
-      | 'community_monitor_survey';
+      | 'community_monitor_survey'
+      | 'proposals';
     show_insights: boolean;
   };
   relationships: {

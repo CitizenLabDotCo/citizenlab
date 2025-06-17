@@ -57,6 +57,7 @@ const Table = () => {
             <Th py="16px">{formatMessage(messages.projectEnd)}</Th>
             <Th py="16px">{formatMessage(messages.status)}</Th>
             <Th py="16px">{formatMessage(messages.visibility)}</Th>
+            <Th />
           </Tr>
         </Thead>
         <Tbody>

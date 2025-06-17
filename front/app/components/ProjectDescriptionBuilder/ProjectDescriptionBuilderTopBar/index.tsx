@@ -21,7 +21,7 @@ import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -105,7 +105,7 @@ const ProjectDescriptionBuilderTopBar = ({
           checked={previewEnabled}
           onChange={handleTogglePreview}
         />
-        <Button
+        <ButtonWithLink
           id="e2e-view-project-button"
           icon="eye"
           buttonStyle="secondary-outlined"

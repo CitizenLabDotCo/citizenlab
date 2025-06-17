@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -82,8 +82,8 @@ export default (props: Props) => (
     <NoPostDescription>
       <FormattedMessage {...messages.resetInputFiltersDescription} />
     </NoPostDescription>
-    <Button buttonStyle="admin-dark" onClick={props.handleSeeAll}>
+    <ButtonWithLink buttonStyle="admin-dark" onClick={props.handleSeeAll}>
       <FormattedMessage {...messages.resetFiltersButton} />
-    </Button>
+    </ButtonWithLink>
   </NoPostPage>
 );
