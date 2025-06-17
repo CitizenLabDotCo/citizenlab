@@ -80,6 +80,7 @@ export interface EditableRegion {
   type: 'html' | 'text';
   variables: string[];
   default_value_multiloc?: Multiloc;
+  allow_blank_locales: boolean;
 }
 
 type CampaignUpdate =

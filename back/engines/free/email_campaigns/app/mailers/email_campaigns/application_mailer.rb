@@ -62,14 +62,15 @@ module EmailCampaigns
       render_liquid_template(text: region_text, values: values, html: region[:type] == 'html')
     end
 
-    private_class_method def self.editable_region(key, type: 'text', default_message_key: key.to_s, variables: [])
+    private_class_method def self.editable_region(key, type: 'text', default_message_key: key.to_s, variables: [], allow_blank_locales: false)
       message_group = "email_campaigns.#{campaign_class.name.demodulize.underscore}"
       {
         key: key,
         title_multiloc: MultilocService.new.i18n_to_multiloc("email_campaigns.editable_region_names.#{key}"),
         type: type,
         variables: variables,
-        default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{default_message_key}") || {}
+        default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{default_message_key}") || {},
+        allow_blank_locales: allow_blank_locales
       }
     end
 

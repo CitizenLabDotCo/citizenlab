@@ -22,8 +22,9 @@ import { Section, SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -44,29 +45,32 @@ const EditCampaignForm = ({
   const { data: authUser } = useAuthUser();
   const { data: appConfig } = useAppConfiguration();
   const currentLocale = useLocale();
-  const schema = object({});
+  const { formatMessage } = useIntl();
 
-  const {
-    subject_multiloc,
-    title_multiloc,
-    intro_multiloc,
-    button_text_multiloc,
-  } = campaign.data.attributes;
+  // Schema and default values are derived from which editable regions are present
+  const editableRegions = campaign.data.attributes.editable_regions || [];
 
-  const defaultValues = {
-    subject_multiloc,
-    title_multiloc,
-    intro_multiloc,
-    button_text_multiloc,
-  };
+  const schema = object(
+    editableRegions.reduce((fieldSchema, region) => {
+      if (!region.allow_blank_locales) {
+        fieldSchema[region.key] = validateMultilocForEveryLocale(
+          formatMessage(messages.fieldMultilocError)
+        );
+      }
+      return fieldSchema;
+    }, {})
+  );
+
+  const defaultValues = editableRegions.reduce((fieldValue, region) => {
+    fieldValue[region.key] = campaign.data.attributes[region.key];
+    return fieldValue;
+  }, {});
 
   const methods = useForm({
     mode: 'onBlur',
     defaultValues,
     resolver: yupResolver(schema),
   });
-
-  const editableRegions = campaign.data.attributes.editable_regions || [];
 
   if (!authUser || !appConfig || editableRegions.length === 0) {
     return null;

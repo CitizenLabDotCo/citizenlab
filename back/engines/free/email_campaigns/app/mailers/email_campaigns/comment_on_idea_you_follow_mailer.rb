@@ -26,7 +26,8 @@ module EmailCampaigns
           :intro_multiloc,
           type: 'html',
           default_message_key: 'event_description',
-          variables: %w[authorName authorNameFull inputTitle]
+          variables: %w[authorName authorNameFull inputTitle],
+          allow_blank_locales: true
         ),
         editable_region(
           :button_text_multiloc,

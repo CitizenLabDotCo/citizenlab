@@ -33,7 +33,7 @@ module EmailCampaigns
     end
 
     def intro_multiloc
-      merge_default_region_values(:intro_multiloc, allow_blank_locales: true)
+      merge_default_region_values(:intro_multiloc)
     end
 
     def button_text_multiloc
@@ -59,13 +59,14 @@ module EmailCampaigns
     end
 
     # Methods for automated campaigns
-    def merge_default_region_values(region_key, allow_blank_locales: false)
+    def merge_default_region_values(region_key)
       values = self[region_key]
       return values if manual?
 
       region = mailer_class.editable_regions.find { |r| r[:key] == region_key }
       return values if region.nil?
 
+      allow_blank_locales = region[:allow_blank_locales]
       region[:default_value_multiloc].merge(values) do |_, default, saved|
         saved.blank? && !allow_blank_locales ? default : saved
       end
