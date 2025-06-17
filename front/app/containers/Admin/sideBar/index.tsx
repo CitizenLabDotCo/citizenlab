@@ -86,7 +86,7 @@ const getTopAndBottomNavItems = (navItems: NavItem[]) => {
 interface Props {
   authUser: IUser;
   appConfiguration: IAppConfiguration;
-  projectLibraryCountries: ProjectLibraryCountries;
+  projectLibraryCountries?: ProjectLibraryCountries;
 }
 
 const Sidebar = ({
@@ -212,9 +212,16 @@ const Sidebar = ({
 const SidebarWrapper = () => {
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: projectLibraryCountries } = useProjectLibraryCountries();
+  const { data: projectLibraryCountries, error } = useProjectLibraryCountries();
 
-  if (!authUser || !appConfiguration || !projectLibraryCountries) return null;
+  const shouldWaitForProjectLibraryCountries = () => {
+    if (projectLibraryCountries) return false;
+    if (error) return false;
+    return true;
+  };
+
+  if (!authUser || !appConfiguration || shouldWaitForProjectLibraryCountries())
+    return null;
 
   return (
     <Sidebar
