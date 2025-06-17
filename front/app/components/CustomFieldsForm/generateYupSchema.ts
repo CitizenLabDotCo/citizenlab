@@ -11,6 +11,9 @@ import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
 
+// NOTE: When the question is a built-in field, it is necessary to
+// check the `enabled` property before adding it to the schema.
+
 const generateYupValidationSchema = ({
   pageQuestions,
   formatMessage,
@@ -30,6 +33,7 @@ const generateYupValidationSchema = ({
       minimum_select_count,
       maximum_select_count,
       title_multiloc,
+      enabled,
     } = question;
 
     const title = localize(title_multiloc);
@@ -39,7 +43,7 @@ const generateYupValidationSchema = ({
 
     switch (input_type) {
       case 'text_multiloc': {
-        if (key === 'title_multiloc' && question.enabled) {
+        if (key === 'title_multiloc' && enabled) {
           schema[key] = validateAtLeastOneLocale(
             formatMessage(messages.titleRequired),
             {
@@ -61,7 +65,7 @@ const generateYupValidationSchema = ({
       }
 
       case 'html_multiloc': {
-        if (key === 'body_multiloc' && question.enabled) {
+        if (key === 'body_multiloc' && enabled) {
           schema[key] = validateAtLeastOneLocale(
             formatMessage(messages.descriptionRequired),
             {
@@ -84,7 +88,7 @@ const generateYupValidationSchema = ({
 
       case 'text':
       case 'multiline_text': {
-        if (key === 'location_description' && question.enabled) {
+        if (key === 'location_description' && enabled) {
           schema[key] = required
             ? string().required(fieldRequired).nullable()
             : string().nullable();
@@ -95,7 +99,7 @@ const generateYupValidationSchema = ({
       }
 
       case 'number': {
-        if (key === 'project_budget' && question.enabled) {
+        if (key === 'project_budget' && enabled) {
           schema[key] = required
             ? number().required(fieldRequired)
             : number()
@@ -178,7 +182,7 @@ const generateYupValidationSchema = ({
 
       case 'image_files': {
         schema[key] =
-          required && question.enabled
+          required && enabled
             ? array()
                 .min(1, formatMessage(messages.imageRequired))
                 .required(formatMessage(messages.imageRequired))
@@ -190,7 +194,7 @@ const generateYupValidationSchema = ({
 
       case 'files': {
         schema[key] =
-          required && question.enabled
+          required && enabled
             ? array()
                 .min(1, formatMessage(messages.fileRequired))
                 .required(formatMessage(messages.fileRequired))
@@ -201,7 +205,7 @@ const generateYupValidationSchema = ({
 
       case 'topic_ids': {
         schema[key] =
-          required && question.enabled
+          required && enabled
             ? array()
                 .of(string())
                 .min(1, formatMessage(messages.topicRequired))
@@ -277,7 +281,7 @@ const generateYupValidationSchema = ({
 
       case 'cosponsor_ids': {
         schema[key] =
-          required && question.enabled
+          required && enabled
             ? array().of(string()).required(fieldRequired).min(1, fieldRequired)
             : array().nullable();
         break;
