@@ -16,6 +16,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import FolderMoreActionsMenu from 'containers/Admin/projects/projectFolders/components/ProjectFolderRow/FolderMoreActionsMenu';
 
+import Error from 'components/UI/Error';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
@@ -41,6 +43,7 @@ const Row = ({ folder }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const moderators = folder.relationships.moderators.data;
   const { publication_status } = folder.attributes;
@@ -75,6 +78,11 @@ const Row = ({ folder }: Props) => {
             </Box>
           )}
         </Box>
+        {error && (
+          <Box mt="8px">
+            <Error text={error} />
+          </Box>
+        )}
       </StyledTd>
       <Td background={colors.grey50} width="260px">
         <Text m="0" fontSize="s" color="primary">
@@ -99,7 +107,7 @@ const Row = ({ folder }: Props) => {
         <Box mr="12px">
           <FolderMoreActionsMenu
             folderId={folder.id}
-            setError={() => {}}
+            setError={setError}
             setIsRunningAction={setIsBeingDeleted}
           />
         </Box>
