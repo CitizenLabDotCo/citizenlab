@@ -4,24 +4,21 @@ import { colors } from '@citizenlab/cl2-component-library';
 
 import SearchInput from 'components/UI/SearchInput';
 
-import { useIntl } from 'utils/cl-intl';
+interface Props {
+  value?: string;
+  placeholder: string;
+  onChange: (value: string | undefined) => void;
+}
 
-import { setParam, useParam } from '../utils';
-
-import messages from './messages';
-
-const Search = () => {
-  const { formatMessage } = useIntl();
-  const value = useParam('search') ?? undefined;
-
+const Search = ({ value, placeholder, onChange }: Props) => {
   return (
     <SearchInput
       defaultValue={value}
       onChange={(search) => {
-        setParam('search', search ?? undefined);
+        onChange(search ?? undefined);
       }}
       a11y_numberOfSearchResults={0}
-      placeholder={formatMessage(messages.search)}
+      placeholder={placeholder}
       labelColor={colors.grey600}
     />
   );
