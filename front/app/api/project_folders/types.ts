@@ -11,7 +11,6 @@ export interface IQueryParameters {
   pageNumber?: number;
   pageSize?: number;
 }
-
 export interface IProjectFolders {
   data: IProjectFolderData[];
 }
