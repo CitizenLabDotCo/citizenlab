@@ -8,7 +8,7 @@ import { IPollQuestionData } from 'api/poll_questions/types';
 import { TextCell } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -17,7 +17,7 @@ import messages from '../messages';
 import WrongOptionsIndicator from './WrongOptionsIndicator';
 
 // Inline block so the button acts as a character and is stuck to the end of the title to make it clear it will edit the title text
-const EditTitleButton = styled(Button)`
+const EditTitleButton = styled(ButtonWithLink)`
   display: inline-block;
 `;
 
@@ -69,22 +69,22 @@ const QuestionRow = ({
     >
       <FormattedMessage {...messages.editPollAnswersButtonLabel} />
     </EditTitleButton>
-    <Button
+    <ButtonWithLink
       className="e2e-delete-question"
       onClick={onDelete}
       buttonStyle="text"
       icon="delete"
     >
       <FormattedMessage {...messages.deleteQuestion} />
-    </Button>
-    <Button
+    </ButtonWithLink>
+    <ButtonWithLink
       className="e2e-edit-options"
       onClick={onEdit}
       buttonStyle="secondary-outlined"
       icon="edit"
     >
       <FormattedMessage {...messages.editPollQuestion} />
-    </Button>
+    </ButtonWithLink>
   </SortableRow>
 );
 

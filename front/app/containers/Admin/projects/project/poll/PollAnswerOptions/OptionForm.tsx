@@ -10,7 +10,7 @@ import { IPollQuestionData } from 'api/poll_questions/types';
 
 import { List } from 'components/admin/ResourceList';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,7 +23,7 @@ import OptionRow from './OptionRow';
 
 const Container = styled.div``;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(ButtonWithLink)`
   margin-bottom: 20px;
 `;
 

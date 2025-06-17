@@ -16,7 +16,7 @@ import styled, { useTheme } from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
@@ -58,7 +58,7 @@ const ButtonContainer = styled.div`
   `}
 `;
 
-const StyledPrimaryButton = styled(Button)`
+const StyledPrimaryButton = styled(ButtonWithLink)`
   margin-left: 20px;
 
   ${media.tablet`
@@ -154,7 +154,7 @@ const CallToAction = ({
           <ButtonContainer>
             {((enabled && secondaryButtonText) ||
               (secondaryButtonLink && secondaryButtonText)) && (
-              <Button
+              <ButtonWithLink
                 fontWeight="500"
                 padding="13px 22px"
                 buttonStyle="text"
@@ -166,7 +166,7 @@ const CallToAction = ({
                 openLinkInNewTab={openInNewTab(secondaryButtonLink)}
               >
                 {lоcalize(secondaryButtonText)}
-              </Button>
+              </ButtonWithLink>
             )}
             {((enabled && primaryButtonText) ||
               (primaryButtonLink && primaryButtonText)) && (
