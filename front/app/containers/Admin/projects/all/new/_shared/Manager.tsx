@@ -7,9 +7,8 @@ import FilterSelector from 'components/FilterSelector';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import { useParam, setParam } from '../utils';
-
-import messages from './messages';
+import messages from '../Projects/Filters/messages';
+import { useParam, setParam } from '../Projects/utils';
 
 const Manager = () => {
   const { formatMessage } = useIntl();
