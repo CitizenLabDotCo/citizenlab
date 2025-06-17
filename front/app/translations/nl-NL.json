@@ -166,6 +166,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "Zie je daar, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Er werd minder informatie zichtbaar over de activiteiten",
   "app.components.EventCard.a11y_moreContentVisible": "Er werd meer informatie zichtbaar over de activiteiten",
+  "app.components.EventCard.a11y_readMore": "Lees meer over het evenement \"{eventTitle}\".",
   "app.components.EventCard.endsAt": "Eindigt op",
   "app.components.EventCard.readMore": "Verder lezen",
   "app.components.EventCard.showLess": "Toon minder",
