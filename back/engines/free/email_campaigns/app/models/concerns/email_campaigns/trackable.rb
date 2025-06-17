@@ -24,11 +24,12 @@ module EmailCampaigns
     end
 
     def save_delivery(command)
-      deliveries.create(
-        delivery_status: 'sent',
-        user: command[:recipient],
-        tracked_content: command[:tracked_content]
-      )
+      command[:delivery].save!
+      # deliveries.create(
+      #   delivery_status: 'sent',
+      #   user: command[:recipient],
+      #   tracked_content: command[:tracked_content]
+      # )
     end
   end
 end

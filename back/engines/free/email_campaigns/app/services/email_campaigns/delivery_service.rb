@@ -91,20 +91,14 @@ module EmailCampaigns
     end
 
     def send_preview(campaign, recipient)
-      campaign.generate_commands(
-        recipient: recipient,
-        time: Time.zone.now
-      ).each do |command|
+      add_command_defaults(campaign.generate_commands(recipient:), campaign, recipient).each do |command|
         process_command(campaign, command.merge({ recipient: recipient }))
       end
     end
 
     # This only works for emails that are sent out internally
     def preview_html(campaign, recipient)
-      command = campaign.generate_commands(
-        recipient: recipient,
-        time: Time.zone.now
-      ).first&.merge(recipient: recipient)
+      command = add_command_defaults(campaign.generate_commands(recipient:), campaign, recipient).first&.merge(recipient: recipient)
       return unless command
 
       mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
@@ -138,7 +132,7 @@ module EmailCampaigns
 
     def assign_campaigns_command(campaigns_with_recipients, options)
       campaigns_with_recipients.flat_map do |(recipient, campaign)|
-        campaign.generate_commands(recipient: recipient, **options)
+        campaign.generate_commands(recipient: recipient, **options) # TODO
           .map { |command| command.merge(recipient: recipient) }
           .zip([campaign].cycle)
       end
@@ -170,6 +164,19 @@ module EmailCampaigns
         .with(campaign: campaign, command: command)
         .campaign_mail
         .deliver_later(wait: command[:delay] || 0)
+    end
+
+    def add_command_defaults(command, campaign, recipient)
+      command.merge(
+        recipient: recipient,
+        time: Time.zone.now,
+        delivery: campaign.deliveries.new(
+          id: SecureRandom.uuid,
+          delivery_status: 'sent',
+          user: recipient,
+          tracked_content: command[:tracked_content]
+        )
+      )
     end
   end
 end
