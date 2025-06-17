@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { Tr, Td, Text } from '@citizenlab/cl2-component-library';
+import { Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { MiniProjectFolder } from 'api/project_folders_mini/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import clHistory from 'utils/cl-router/history';
 
 const StyledTd = styled(Td)`
   &:hover {
@@ -25,7 +27,12 @@ const Row = ({ folder }: Props) => {
 
   return (
     <Tr>
-      <StyledTd>
+      <StyledTd
+        background={colors.grey50}
+        onClick={() => {
+          clHistory.push(`/admin/projects/folders/${folder.id}`);
+        }}
+      >
         <Text>{localize(folder.attributes.title_multiloc)}</Text>
       </StyledTd>
       <Td>
