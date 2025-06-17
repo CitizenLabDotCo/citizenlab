@@ -77,7 +77,9 @@ resource 'Idea Custom Fields' do
       let!(:hidden_field) { create(:custom_field_text, resource: form, key: 'extra_field2', hidden: true) }
       let!(:disabled_field) { create(:custom_field_text, resource: form, key: 'extra_field3', enabled: false) }
 
-      before { resident_header_token }
+      let(:user) { create(:user) }
+
+      before { header_token_for(user) }
 
       example_request 'List all allowed custom fields for a project' do
         assert_status 200
@@ -90,6 +92,27 @@ resource 'Idea Custom Fields' do
           nil, 'topic_ids', 'location_description',
           'extra_field1', 'form_end'
         ]
+      end
+
+      example '[Unauthorized] List input fields in admin only project' do
+        context.update!(visible_to: 'admins')
+        do_request
+        assert_status 401
+      end
+
+      example '[Unauthorized] List input fields in project for groups not including user' do
+        context.update!(visible_to: 'groups')
+        do_request
+        assert_status 401
+      end
+
+      example 'List survey fields in project for groups including user' do
+        context.update!(visible_to: 'groups')
+        group = create(:group)
+        create(:membership, group: group, user: user)
+        create(:groups_project, group: group, project: context)
+        do_request
+        assert_status 200
       end
     end
   end

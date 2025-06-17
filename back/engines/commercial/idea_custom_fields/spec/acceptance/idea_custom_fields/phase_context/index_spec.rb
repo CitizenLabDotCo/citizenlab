@@ -73,7 +73,7 @@ resource 'Idea Custom Fields' do
       let(:current_phase) { create(:native_survey_phase, start_at: 1.day.ago, end_at: 1.week.from_now, project: project) }
 
       context 'when survey form not persisted' do
-        shared_examples 'default survey custom fields' do
+        shared_examples 'returns default survey custom fields' do
           example_request 'List default survey custom fields' do
             assert_status 200
             expect(response_data.size).to eq 3
@@ -88,7 +88,7 @@ resource 'Idea Custom Fields' do
         context 'when admin' do
           before { admin_header_token }
 
-          include_examples 'default survey custom fields'
+          include_examples 'returns default survey custom fields'
         end
 
         context 'when regular user' do
@@ -96,7 +96,7 @@ resource 'Idea Custom Fields' do
 
           let(:user) { create(:user) }
 
-          include_examples 'default survey custom fields'
+          include_examples 'returns default survey custom fields'
 
           example '[Unauthorized] List survey fields in admin only project' do
             project.update!(visible_to: 'admins')
@@ -121,7 +121,7 @@ resource 'Idea Custom Fields' do
         end
 
         context 'when visitor' do
-          include_examples 'default survey custom fields'
+          include_examples 'returns default survey custom fields'
 
           example '[Unauthorized] List survey fields in admin only project' do
             project.update!(visible_to: 'admins')
@@ -141,7 +141,7 @@ resource 'Idea Custom Fields' do
         let(:form2) { create(:custom_form, participation_context: current_phase) }
         let!(:custom_field2) { create(:custom_field_text, resource: form2, key: 'survey2_field') }
 
-        shared_examples 'non-default survey custom fields' do
+        shared_examples 'returns non-default survey custom fields' do
           example_request 'List all custom fields for a survey' do
             assert_status 200
             expect(response_data.size).to eq 1
@@ -154,15 +154,15 @@ resource 'Idea Custom Fields' do
         context 'when admin' do
           before { admin_header_token }
 
-          include_examples 'non-default survey custom fields'
+          include_examples 'returns non-default survey custom fields'
         end
 
         context 'when regular user' do
-          before { header_token_for(user) }
-
           let(:user) { create(:user) }
 
-          include_examples 'non-default survey custom fields'
+          before { header_token_for(user) }
+
+          include_examples 'returns non-default survey custom fields'
 
           example '[Unauthorized] List survey fields in admin only project' do
             project.update!(visible_to: 'admins')
@@ -187,7 +187,7 @@ resource 'Idea Custom Fields' do
         end
 
         context 'when visitor' do
-          include_examples 'non-default survey custom fields'
+          include_examples 'returns non-default survey custom fields'
 
           example '[Unauthorized] List survey fields in admin only project' do
             project.update!(visible_to: 'admins')
