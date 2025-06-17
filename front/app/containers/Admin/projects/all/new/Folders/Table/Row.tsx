@@ -10,6 +10,8 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import { PUBLICATION_STATUS_LABELS } from '../../constants';
+
 import messages from './messages';
 import User from './User';
 
@@ -31,6 +33,7 @@ const Row = ({ folder }: Props) => {
   const { formatMessage } = useIntl();
 
   const moderators = folder.relationships.moderators.data;
+  const { publication_status } = folder.attributes;
 
   return (
     <Tr>
@@ -70,7 +73,7 @@ const Row = ({ folder }: Props) => {
       </Td>
       <Td background={colors.grey50}>
         <Text m="0" fontSize="s" color="primary">
-          Status (TODO)
+          {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
         </Text>
       </Td>
     </Tr>
