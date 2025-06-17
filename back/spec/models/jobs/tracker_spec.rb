@@ -109,4 +109,26 @@ RSpec.describe Jobs::Tracker do
       expect(tracker.total).to eq(3)
     end
   end
+
+  describe '.completed scope' do
+    let_it_be(:completed_tracker) { create(:jobs_tracker, completed_at: 1.hour.ago) }
+    let_it_be(:incomplete_tracker) { create(:jobs_tracker, completed_at: nil) }
+
+    it 'returns completed trackers when true or no parameter' do
+      expect(described_class.completed).to match_array [completed_tracker]
+      expect(described_class.completed(true)).to match_array [completed_tracker]
+    end
+
+    it 'returns incomplete trackers when false' do
+      expect(described_class.completed(false)).to match_array [incomplete_tracker]
+    end
+
+    it 'returns all trackers when nil' do
+      expect(described_class.completed(nil)).to match_array [completed_tracker, incomplete_tracker]
+    end
+
+    it 'raises error for invalid completion values' do
+      expect { described_class.completed('invalid') }.to raise_error(ArgumentError)
+    end
+  end
 end

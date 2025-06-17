@@ -2,11 +2,14 @@
 
 class WebApi::V1::JobsController < ApplicationController
   def index
-    job_trackers = Jobs::Tracker
-      .where(index_params)
+    where_conditions = params.permit(:context_id, :context_type, :project_id, :owner_id)
+    completed = Utils.to_bool(params[:completed]) if params[:completed]
+
+    job_trackers = policy_scope(Jobs::Tracker)
+      .where(where_conditions)
+      .then { |scope| scope.completed(completed) }
       .order(created_at: :desc)
-      .then { paginate(_1) }
-      .then { policy_scope(_1) }
+      .then { |scope| paginate(scope) }
 
     render json: linked_json(
       job_trackers,
@@ -23,15 +26,5 @@ class WebApi::V1::JobsController < ApplicationController
       job_tracker,
       params: jsonapi_serializer_params
     ).serializable_hash
-  end
-
-  private
-
-  def index_params
-    params.permit(
-      :context_id, :context_type,
-      :project_id,
-      :owner_id
-    )
   end
 end

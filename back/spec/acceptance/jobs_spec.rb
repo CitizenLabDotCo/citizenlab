@@ -13,8 +13,9 @@ resource 'Jobs' do
     parameter :owner_id, 'Filter by owner id', required: false
     parameter :context_type, 'Filter by context type', required: false
     parameter :context_id, 'Filter by context id', required: false
+    parameter :completed, 'Filter by completion status', required: false
 
-    let!(:jobs) { create_list(:jobs_tracker, 3) }
+    let_it_be(:jobs) { create_list(:jobs_tracker, 3) }
 
     context 'when admin' do
       before { admin_header_token }
@@ -58,6 +59,29 @@ resource 'Jobs' do
         example_request 'Filter by context' do
           expect(status).to eq(200)
           expect(response_ids).to match_array(filtered_jobs.map(&:id))
+        end
+      end
+
+      describe 'filter by completion status' do
+        let_it_be(:completed_job) { create(:jobs_tracker, completed_at: 1.hour.ago) }
+
+        describe 'completed=true' do
+          let(:completed) { true }
+
+          example_request 'Filter by completed jobs' do
+            expect(status).to eq(200)
+            expect(response_ids).to contain_exactly(completed_job.id)
+          end
+        end
+
+        describe 'completed=false' do
+          let(:completed) { false }
+
+          example 'Filter by incomplete jobs', document: false do
+            do_request
+            expect(status).to eq(200)
+            expect(response_ids).to match_array(jobs.map(&:id))
+          end
         end
       end
     end
