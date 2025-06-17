@@ -8,7 +8,7 @@ RSpec.describe 'AllMailers' do
       it "#{campaign_class} has editable regions that match defined multilocs" do
         campaign = campaign_class.new
         campaign.mailer_class.editable_regions.each do |region|
-          expect { campaign.send(:"#{region[:key]}_multiloc") }.not_to raise_error
+          expect { campaign.send(region[:key]) }.not_to raise_error
         end
       end
 

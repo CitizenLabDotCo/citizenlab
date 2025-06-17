@@ -83,7 +83,7 @@ module EmailCampaigns
       sender_configurable? object
     }
     attribute :subject_multiloc, if: proc { |object|
-      content_configurable?(object) || editable?(object)
+      content_configurable?(object)
     }
     attribute :body_multiloc, if: proc { |object|
       content_configurable? object
@@ -99,13 +99,15 @@ module EmailCampaigns
       object.mailer_class.editable_regions
     end
     attribute :title_multiloc, if: proc { |object|
-      editable?(object)
+      content_configurable?(object)
     }
     attribute :intro_multiloc, if: proc { |object|
-      editable?(object)
-    }
+      content_configurable? object
+    } do |object|
+      TextImageService.new.render_data_images_multiloc object.intro_multiloc, field: :intro_multiloc, imageable: object
+    end
     attribute :button_text_multiloc, if: proc { |object|
-      editable?(object)
+      content_configurable?(object)
     }
 
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
@@ -128,11 +130,6 @@ module EmailCampaigns
 
     def self.content_configurable?(object)
       object.class.included_modules.include?(ContentConfigurable)
-    end
-
-    # TODO: Need some kind of new concern like content_configurable?
-    def self.editable?(object)
-      object.mailer_class.editable_regions.present?
     end
 
     def self.trackable?(object)

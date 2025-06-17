@@ -161,23 +161,6 @@ module EmailCampaigns
       false
     end
 
-    # For customisable regions we merge in defaults for the following multilocs.
-    def subject_multiloc
-      merge_default_region_values(:subject_multiloc)
-    end
-
-    def title_multiloc
-      merge_default_region_values(:title_multiloc)
-    end
-
-    def intro_multiloc
-      merge_default_region_values(:intro_multiloc)
-    end
-
-    def button_text_multiloc
-      merge_default_region_values(:button_text_multiloc)
-    end
-
     protected
 
     def set_enabled
@@ -202,14 +185,6 @@ module EmailCampaigns
       return if apply_recipient_filters.any?
 
       errors.add(:base, :no_recipients, message: "Can't send a campaign without recipients")
-    end
-
-    def merge_default_region_values(region_key)
-      values = self[region_key]
-      region = mailer_class.editable_regions.find { |r| r[:key] == region_key }
-      return values if region.nil?
-
-      region[:default_value_multiloc].merge(values)
     end
   end
 end
