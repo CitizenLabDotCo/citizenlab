@@ -66,7 +66,7 @@ module EmailCampaigns
       message_group = "email_campaigns.#{campaign_class.name.demodulize.underscore}"
       {
         key: key,
-        title_multiloc: MultilocService.new.i18n_to_multiloc("email_campaigns.editable_region_names.#{key.to_s}"),
+        title_multiloc: MultilocService.new.i18n_to_multiloc("email_campaigns.editable_region_names.#{key}"),
         type: type,
         variables: variables,
         default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{default_message_key}") || {}
