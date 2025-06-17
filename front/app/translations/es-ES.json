@@ -166,6 +166,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "¡Nos vemos allí, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Menos información de los eventos visible.",
   "app.components.EventCard.a11y_moreContentVisible": "Se ha hecho visible más información sobre el evento.",
+  "app.components.EventCard.a11y_readMore": "Más información sobre el evento \"{eventTitle}\".",
   "app.components.EventCard.endsAt": "Termina en",
   "app.components.EventCard.readMore": "Leer más",
   "app.components.EventCard.showLess": "Mostrar menos",
