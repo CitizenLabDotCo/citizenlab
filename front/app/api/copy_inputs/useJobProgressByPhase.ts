@@ -13,7 +13,7 @@ const fetchLatestJobForPhase = async (
     path: '/jobs',
     action: 'get',
     queryParams: {
-      context_type: 'phase',
+      context_type: 'Phase',
       context_id: phaseId,
     },
   });
