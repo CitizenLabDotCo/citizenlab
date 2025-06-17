@@ -7,7 +7,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 import { TextCell, Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -82,20 +82,20 @@ const QuestionFormRow = ({
         )}
       </TextCell>
 
-      <Button
+      <ButtonWithLink
         className="e2e-form-question-save"
         buttonStyle="admin-dark"
         onClick={onSave}
       >
         <FormattedMessage {...messages.saveQuestion} />
-      </Button>
-      <Button
+      </ButtonWithLink>
+      <ButtonWithLink
         className="e2e-form-question-cancel"
         buttonStyle="secondary-outlined"
         onClick={onCancel}
       >
         <FormattedMessage {...messages.cancelFormQuestion} />
-      </Button>
+      </ButtonWithLink>
     </Row>
   );
 };

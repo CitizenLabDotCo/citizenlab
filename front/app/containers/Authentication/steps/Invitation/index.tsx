@@ -8,7 +8,7 @@ import { string, object } from 'yup';
 import { SetError } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import {
@@ -77,7 +77,7 @@ const Invitation = ({ loading, setError, onSubmit }: Props) => {
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">
-          <Button
+          <ButtonWithLink
             type="submit"
             width="auto"
             disabled={loading}
@@ -85,7 +85,7 @@ const Invitation = ({ loading, setError, onSubmit }: Props) => {
             id="e2e-invite-submit-button"
           >
             {formatMessage(sharedMessages.continue)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       </form>
     </FormProvider>

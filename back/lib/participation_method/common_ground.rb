@@ -42,6 +42,22 @@ module ParticipationMethod
       true
     end
 
+    def supports_submission?
+      true
+    end
+
+    def supports_edits_after_publication?
+      true
+    end
+
+    def supports_inputs_without_author?
+      false
+    end
+
+    def use_reactions_as_votes?
+      true
+    end
+
     def default_fields(custom_form)
       [
         CustomField.new(

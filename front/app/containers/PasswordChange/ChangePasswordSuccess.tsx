@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import { Title } from 'components/smallForm';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -31,8 +31,8 @@ export default () => (
     <Title style={{ paddingTop: '26px' }}>
       <FormattedMessage {...messages.passwordChangeSuccessMessage} />
     </Title>
-    <Button linkTo={'/'} scrollToTop>
+    <ButtonWithLink linkTo={'/'} scrollToTop>
       <FormattedMessage {...messages.goHome} />
-    </Button>
+    </ButtonWithLink>
   </Box>
 );

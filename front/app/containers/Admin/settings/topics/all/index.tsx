@@ -10,7 +10,7 @@ import {
   SectionTitle,
   StyledLink,
 } from 'components/admin/Section';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal, {
   ModalContentContainer,
   ButtonsWrapper,
@@ -79,14 +79,14 @@ const AllTopics = () => {
       <TopicTermConfig />
 
       <ButtonWrapper>
-        <Button
+        <ButtonWithLink
           buttonStyle="admin-dark"
           icon="plus-circle"
           linkTo="/admin/settings/topics/new"
           id="e2e-add-custom-topic-button"
         >
           <FormattedMessage {...messages.addTopicButton} />
-        </Button>
+        </ButtonWithLink>
       </ButtonWrapper>
 
       <TopicsList topics={topics.data} handleDeleteClick={handleDeleteClick} />
@@ -101,20 +101,20 @@ const AllTopics = () => {
             <FormattedMessage {...messages.deleteTopicConfirmation} />
           </Content>
           <ButtonsWrapper>
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               onClick={closeSendConfirmationModal}
             >
               <FormattedMessage {...messages.cancel} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               buttonStyle="delete"
               onClick={handleTopicDeletionConfirm}
               processing={isLoading}
               id="e2e-custom-topic-delete-confirmation-button"
             >
               <FormattedMessage {...messages.delete} />
-            </Button>
+            </ButtonWithLink>
           </ButtonsWrapper>
         </ModalContentContainer>
       </Modal>

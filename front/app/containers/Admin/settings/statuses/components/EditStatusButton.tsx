@@ -3,7 +3,7 @@ import React from 'react';
 import { Tooltip, Box, TooltipProps } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -31,7 +31,7 @@ const EditStatusButton = ({
       trigger="mouseenter"
     >
       <Box>
-        <Button
+        <ButtonWithLink
           linkTo={linkTo}
           buttonStyle="secondary-outlined"
           icon="edit"
@@ -39,7 +39,7 @@ const EditStatusButton = ({
           data-testid="e2e-edit-status-button"
         >
           <FormattedMessage {...messages.editButtonLabel} />
-        </Button>
+        </ButtonWithLink>
       </Box>
     </Tooltip>
   );

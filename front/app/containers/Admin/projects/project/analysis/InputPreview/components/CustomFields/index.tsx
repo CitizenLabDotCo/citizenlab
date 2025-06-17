@@ -12,7 +12,7 @@ import { IAnalysis } from 'api/analyses/types';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import { IInput } from 'api/analysis_inputs/types';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -111,7 +111,7 @@ const CustomFields = ({ analysis, input, showAllQuestions }: Props) => {
                     </Box>
                   ) : (
                     <Box display="flex">
-                      <Button
+                      <ButtonWithLink
                         data-cy={
                           'e2e-analysis-add-remove-additional-custom-field'
                         }
@@ -133,7 +133,7 @@ const CustomFields = ({ analysis, input, showAllQuestions }: Props) => {
                         {additionalCustomFieldIds?.includes(customField.id)
                           ? formatMessage(messages.remove).toUpperCase()
                           : formatMessage(messages.addToAnalysis).toUpperCase()}
-                      </Button>
+                      </ButtonWithLink>
                     </Box>
                   )}
                 </Box>

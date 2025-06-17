@@ -25,7 +25,7 @@ import {
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
 import ContentViewer from 'components/ProjectDescriptionBuilder/ContentViewer';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -49,7 +49,7 @@ const Container = styled.div`
   `}
 `;
 
-const EditButton = styled(Button)`
+const EditButton = styled(ButtonWithLink)`
   display: table;
 
   ${isRtl`

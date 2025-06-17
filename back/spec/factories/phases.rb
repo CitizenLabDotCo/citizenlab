@@ -151,6 +151,7 @@ FactoryBot.define do
     end
 
     factory :common_ground_phase do
+      title_multiloc { { 'en' => 'Common Ground (en)', 'nl-BE' => 'Common Ground (nl)' } }
       participation_method { 'common_ground' }
     end
 

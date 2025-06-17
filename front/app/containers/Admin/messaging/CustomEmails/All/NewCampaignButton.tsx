@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -8,13 +8,13 @@ import messages from '../../messages';
 
 const NewCampaignButton = () => {
   return (
-    <Button
+    <ButtonWithLink
       buttonStyle="admin-dark"
       icon="plus-circle"
       linkTo="/admin/messaging/emails/custom/new"
     >
       <FormattedMessage {...messages.addCampaignButton} />
-    </Button>
+    </ButtonWithLink>
   );
 };
 
