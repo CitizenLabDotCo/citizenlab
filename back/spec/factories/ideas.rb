@@ -29,6 +29,36 @@ FactoryBot.define do
     after(:create) do |idea|
       idea.phases = idea.project.phases.select { |phase| phase.participation_method == 'ideation' } if idea.phases.empty?
     end
+
+    factory :idea_with_topics do
+      transient do
+        topics_count { 2 }
+      end
+      after(:create) do |idea, evaluator|
+        evaluator.topics_count.times do |_i|
+          topic = create(:topic)
+          idea.project.allowed_input_topics << topic
+          idea.topics << topic
+        end
+      end
+    end
+
+    factory :proposal, class: 'Idea' do
+      association :project, factory: :single_phase_proposals_project
+      creation_phase { project.phases.first }
+      after(:create) do |idea|
+        idea.phases = [idea.creation_phase] if idea.phases.empty?
+      end
+    end
+
+    factory :native_survey_response, class: 'Idea' do
+      association :project, factory: :single_phase_native_survey_project
+      creation_phase { project.phases.first }
+      idea_status { nil }
+      after(:create) do |idea|
+        idea.phases = [idea.creation_phase] if idea.phases.empty?
+      end
+    end
   end
 
   factory :common_ground_input, parent: :base_idea do
