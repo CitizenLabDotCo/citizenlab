@@ -42,15 +42,19 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-import ImportInputsModal from './ImportInputsModal';
 import messages from './messages';
 
 interface Props {
   projectId: string;
   phaseId: string;
+  setShowPastInputsModal: (value: React.SetStateAction<boolean>) => void;
 }
 
-const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
+const CommonGroundInputManager = ({
+  projectId,
+  phaseId,
+  setShowPastInputsModal,
+}: Props) => {
   const { data: project } = useProjectById(projectId);
   const [queryParameters, setQueryParameters] = useState<IIdeaQueryParameters>({
     'page[size]': 10,
@@ -64,7 +68,6 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
   const [previewPostId, setPreviewPostId] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
   const [selection, setSelection] = useState<Set<string>>(new Set());
-  const [showPastInputsModal, setShowPastInputsModal] = useState(false);
   const { data: jobProgressData } = useJobInProgressByPhase(phaseId);
   const { progress: importedCount, total: totalInputsToBeImported } =
     jobProgressData?.data[0]?.attributes || {};
@@ -164,11 +167,6 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
             <FormattedMessage {...messages.startFromPastInputs} />
           </Button>
         </Box>
-        <ImportInputsModal
-          showPastInputsModal={showPastInputsModal}
-          setShowPastInputsModal={setShowPastInputsModal}
-          currentPhaseid={phaseId}
-        />
       </NoPostPage>
     );
   }

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text, Button } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
@@ -8,6 +8,7 @@ import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 import CommonGroundInputManager from 'components/admin/PostManager/CommonGroundInputManager';
+import ImportInputsModal from 'components/admin/PostManager/CommonGroundInputManager/ImportInputsModal';
 import InputManager, {
   TFilterMenu,
 } from 'components/admin/PostManager/InputManager';
@@ -34,6 +35,7 @@ const AdminProjectIdeas = () => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);
+  const [showPastInputsModal, setShowPastInputsModal] = useState(false);
   const isCommonGround =
     phase?.data.attributes.participation_method === 'common_ground';
 
@@ -67,7 +69,16 @@ const AdminProjectIdeas = () => {
                 buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...ownMessages.importInputs} />
+                gfg
               </ButtonWithLink>
+            )}
+            {isCommonGround && (
+              <Button
+                buttonStyle="secondary-outlined"
+                onClick={() => setShowPastInputsModal(true)}
+              >
+                <FormattedMessage {...ownMessages.importInputs} />
+              </Button>
             )}
             {phase && (
               <NewIdeaButton
@@ -111,7 +122,19 @@ const AdminProjectIdeas = () => {
         </Box>
       </Box>
       {isCommonGround ? (
-        <CommonGroundInputManager projectId={projectId} phaseId={phaseId} />
+        <>
+          <CommonGroundInputManager
+            projectId={projectId}
+            phaseId={phaseId}
+            setShowPastInputsModal={setShowPastInputsModal}
+          />
+
+          <ImportInputsModal
+            showPastInputsModal={showPastInputsModal}
+            setShowPastInputsModal={setShowPastInputsModal}
+            currentPhaseid={phaseId}
+          />
+        </>
       ) : (
         <InputManager
           key={phaseId}
