@@ -10,13 +10,15 @@ import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 import messages from './messages';
 
+export type Pages = {
+  page: IFlatCustomField;
+  pageQuestions: IFlatCustomField[];
+}[];
+
 export const convertCustomFieldsToNestedPages = (
   customFields: IFlatCustomField[]
 ) => {
-  const nestedPagesData: {
-    page: IFlatCustomField;
-    pageQuestions: IFlatCustomField[];
-  }[] = [];
+  const nestedPagesData: Pages = [];
 
   customFields.forEach((field) => {
     if (field.input_type === 'page') {
