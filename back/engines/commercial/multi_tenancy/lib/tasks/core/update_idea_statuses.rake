@@ -11,11 +11,10 @@ namespace :cl2back do
   #  rake cl2back:rake cl2back:bulk_update_idea_status['haveyoursay.guelph.ca','idea_ids.txt','viewed','execute']
   task :bulk_update_idea_status, %i[tenant_host file_url status_code execute] => [:environment] do |_t, args|
     # Reduce logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
+    # dev_null = Logger.new('/dev/null')
+    # Rails.logger = dev_null
+    # ActiveRecord::Base.logger = dev_null
 
-    puts
     live_run = true if args[:execute] == 'execute'
 
     puts "live_run: #{live_run ? 'true' : 'false'}"
@@ -24,7 +23,7 @@ namespace :cl2back do
       puts Tenant.current.name
 
       idea_status = IdeaStatus.find_by(code: args[:status_code])
-      
+
       if idea_status.nil?
         puts "ERROR: No idea status found with code '#{args[:status_code]}'."
       else
@@ -69,6 +68,6 @@ namespace :cl2back do
       end
     end
 
-    puts
+    puts 'Done!'
   end
 end
