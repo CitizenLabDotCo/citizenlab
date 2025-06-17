@@ -1,4 +1,4 @@
-import { Multiloc, ImageSizes, IRelationship, ILinks } from 'typings';
+import { Multiloc, ImageSizes, IRelationship } from 'typings';
 
 import { PublicationStatus } from 'api/projects/types';
 
@@ -14,7 +14,6 @@ export interface IQueryParameters {
 
 export interface IProjectFolders {
   data: IProjectFolderData[];
-  links?: ILinks;
 }
 export interface INewProjectFolderDiff {
   title_multiloc: Multiloc;
