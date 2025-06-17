@@ -30,12 +30,12 @@ class WebApi::V1::FoldersController < ApplicationController
   end
 
   def index_for_admin
-    @project_folders = policy_scope(ProjectFolders::Folder)
-    @project_folders = FoldersFinderAdminService.execute(@project_folders, params)
-    @project_folders = paginate @project_folders
-    @project_folders = @project_folders.includes(:admin_publication)
+    project_folders = policy_scope(ProjectFolders::Folder)
+    project_folders = FoldersFinderAdminService.execute(project_folders, params)
+    project_folders = paginate project_folders
+    project_folders = project_folders.includes(:admin_publication)
 
-    authorize @project_folders
+    authorize project_folders
 
     moderators_per_folder = User
       .where("roles @> '[{\"type\":\"project_folder_moderator\"}]'")
@@ -52,7 +52,7 @@ class WebApi::V1::FoldersController < ApplicationController
       end
 
     render json: linked_json(
-      @project_folders,
+      project_folders,
       WebApi::V1::FolderMiniSerializer,
       params: jsonapi_serializer_params(
         visible_children_count_by_parent_id: visible_children_count_by_parent_id,
