@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -15,19 +15,18 @@ import useCommonGroundProgress from 'api/common_ground/useCommonGroundProgress';
 import useReactToStatement from 'api/common_ground/useReactToStatement';
 import useIdeaById from 'api/ideas/useIdeaById';
 
+import { useSwipeToReact, SwipeDirection } from 'hooks/useSwipeToReact';
+
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const SWIPE_THRESHOLD = 100;
-const ANIMATION_DURATION = 200; // ms
-
-const BackdropCard = styled.div<{ offset: number }>`
+const BackdropCard = styled.div<{ $offset: number }>`
   ${defaultCardStyle};
   position: absolute;
-  top: ${({ offset }) => offset * 8}px;
+  top: ${({ $offset }) => $offset * 8}px;
   left: 0;
   right: 0;
   width: 96%;
@@ -41,25 +40,25 @@ const BackdropCard = styled.div<{ offset: number }>`
 `;
 
 const StatementCard = styled(Box)<{
-  bgColor: string;
-  transform: string;
-  isAnimating: boolean;
-  isDragging: boolean;
+  $bgColor: string;
+  $transform: string;
+  $isAnimating: boolean;
+  $isDragging: boolean;
 }>`
   ${defaultCardStyle};
   min-height: 165px;
   position: relative;
   padding: 16px;
-  background: ${({ bgColor }) => bgColor};
-  box-shadow: ${({ isDragging }) =>
-    isDragging
+  background: ${({ $bgColor }) => $bgColor};
+  box-shadow: ${({ $isDragging }) =>
+    $isDragging
       ? '0px 8px 16px rgba(0, 0, 0, 0.12)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08)'};
   border-radius: 4px;
-  transform: ${({ transform }) => transform};
-  transition: ${({ isAnimating }) =>
-    isAnimating
-      ? `transform ${ANIMATION_DURATION}ms cubic-bezier(0.2,0,0,1), background-color 0.2s, box-shadow 0.2s`
+  transform: ${({ $transform }) => $transform};
+  transition: ${({ $isAnimating }) =>
+    $isAnimating
+      ? `transform 200ms cubic-bezier(0.2,0,0,1), background-color 0.2s, box-shadow 0.2s`
       : 'box-shadow 0.2s'};
   touch-action: none;
   user-select: none;
@@ -74,19 +73,19 @@ const StatementCard = styled(Box)<{
 `;
 
 const ActionIndicator = styled(Box)<{
-  type: 'agree' | 'disagree' | 'unsure';
-  visible: boolean;
+  $type: 'agree' | 'disagree' | 'unsure';
+  $visible: boolean;
 }>`
   position: absolute;
   padding: 8px 16px;
   border-radius: 4px;
   color: white;
   font-weight: bold;
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
   transition: opacity 0.2s;
 
-  ${({ type }) => {
-    switch (type) {
+  ${({ $type }) => {
+    switch ($type) {
       case 'agree':
         return `
           left: 20px;
@@ -122,17 +121,25 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
   const { mutate: reactToIdea } = useReactToStatement(phaseId);
   const { formatMessage } = useIntl();
   const isPhone = useBreakpoint('phone');
+
   const nextIdeaId = progressData?.data.relationships.next_idea.data?.id;
   const { data: current, isLoading: isIdeaLoading } = useIdeaById(nextIdeaId);
 
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const startRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const handleSwipe = (direction: SwipeDirection) => {
+    if (current) {
+      reactToIdea({ ideaId: current.data.id, mode: direction });
+    }
+  };
 
-  // Wait until both progressData is loaded AND (if there's a nextIdeaId, the corresponding idea is also loaded).
-  // Note: isIdeaLoading will still be true even if the next idea query is disabled (due to undefined ID),
-  // so we explicitly check for the presence of nextIdeaId to avoid blocking render unnecessarily.
+  const {
+    dragOffset,
+    swipeDirection,
+    isAnimating,
+    isDragging,
+    bind,
+    triggerSwipe,
+  } = useSwipeToReact({ onSwipe: handleSwipe });
+
   if ((nextIdeaId && isIdeaLoading) || isProgressDataLoading) {
     return (
       <Box display="flex" justifyContent="center" p="20px">
@@ -145,10 +152,10 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
     return (
       <Box mt="8px" width="100%" minHeight="260px">
         <StatementCard
-          bgColor="white"
-          transform="translate3d(0px, 0px, 0)"
-          isAnimating={false}
-          isDragging={false}
+          $bgColor="white"
+          $transform="translate3d(0px, 0px, 0)"
+          $isAnimating={false}
+          $isDragging={false}
           border={`1px solid ${colors.grey400}`}
           style={{ cursor: 'default' }}
         >
@@ -168,101 +175,36 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
     );
   }
 
-  const handlePointerDown = (e: React.PointerEvent<HTMLElement>) => {
-    // If user clicked a button, let the button handle it instead of starting a swipe
-    if ((e.target as HTMLElement).closest('button')) {
-      return;
-    }
-
-    e.currentTarget.setPointerCapture(e.pointerId);
-    startRef.current = { x: e.clientX, y: e.clientY };
-    setIsAnimating(false);
-    setIsDragging(true);
-  };
-
-  const handlePointerMove = (e: React.PointerEvent<HTMLElement>) => {
-    if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
-    const dx = e.clientX - startRef.current.x;
-    const dy = e.clientY - startRef.current.y;
-    setDragOffset({ x: dx, y: dy });
-  };
-
-  const snapBack = () => {
-    setIsAnimating(true);
-    setDragOffset({ x: 0, y: 0 });
-    setTimeout(() => setIsAnimating(false), ANIMATION_DURATION);
-  };
-
-  const snapOffAndReact = (mode: 'up' | 'down' | 'neutral') => {
-    const endX =
-      mode === 'up'
-        ? -window.innerWidth
-        : mode === 'down'
-        ? window.innerWidth
-        : 0;
-    const endY = mode === 'neutral' ? -window.innerHeight : dragOffset.y;
-
-    setIsAnimating(true);
-    setDragOffset({ x: endX, y: endY });
-
-    setTimeout(() => {
-      reactToIdea({ ideaId: current.data.id, mode });
-      // reset
-      setIsAnimating(false);
-      setIsDragging(false);
-      setDragOffset({ x: 0, y: 0 });
-    }, ANIMATION_DURATION);
-  };
-
-  const handlePointerUp = (e: React.PointerEvent<HTMLElement>) => {
-    if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
-    e.currentTarget.releasePointerCapture(e.pointerId);
-
-    const { x, y } = dragOffset;
-    const absX = Math.abs(x);
-    const absY = Math.abs(y);
-
-    setIsDragging(false);
-
-    if (absX > absY && absX > SWIPE_THRESHOLD) {
-      snapOffAndReact(x < 0 ? 'up' : 'down');
-    } else if (absY > absX && -y > SWIPE_THRESHOLD) {
-      snapOffAndReact('neutral');
-    } else {
-      snapBack();
-    }
-  };
+  const transform = `translate3d(${dragOffset.x}px, ${
+    dragOffset.y
+  }px, 0) rotate(${dragOffset.x * 0.05}deg)`;
 
   const bgColor = (() => {
-    const { x, y } = dragOffset;
-    const absX = Math.abs(x);
-    const absY = Math.abs(y);
-
-    if (absX > absY && absX > 50) {
-      return x < 0 ? `${colors.green500}15` : `${colors.red600}15`;
-    } else if (absY > absX && y < -50) {
-      return `${colors.grey600}15`;
+    switch (swipeDirection) {
+      case 'up':
+        return `${colors.green500}15`;
+      case 'down':
+        return `${colors.red600}15`;
+      case 'neutral':
+        return `${colors.grey600}15`;
+      default:
+        return 'white';
     }
-    return 'white';
   })();
 
   return (
     <Box mt="8px" position="relative" width="100%" minHeight="260px">
       {[2, 1].map((i) => (
-        <BackdropCard key={i} offset={i} aria-hidden="true" />
+        <BackdropCard key={i} $offset={i} aria-hidden="true" />
       ))}
 
       <StatementCard
-        bgColor={bgColor}
-        transform={`translate3d(${dragOffset.x}px, ${
-          dragOffset.y
-        }px, 0) rotate(${dragOffset.x * 0.05}deg)`}
-        isAnimating={isAnimating}
-        isDragging={isDragging}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
+        $bgColor={bgColor}
+        $transform={transform}
+        $isAnimating={isAnimating}
+        $isDragging={isDragging}
         border={`1px solid ${colors.grey400}`}
+        {...bind}
       >
         <Box mb="12px" id={`statement-body-${current.data.id}`}>
           <Text fontSize="l">
@@ -270,13 +212,13 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
           </Text>
         </Box>
 
-        <ActionIndicator type="agree" visible={dragOffset.x < -50}>
+        <ActionIndicator $type="agree" $visible={swipeDirection === 'up'}>
           {formatMessage(messages.agreeLabel)}
         </ActionIndicator>
-        <ActionIndicator type="disagree" visible={dragOffset.x > 50}>
+        <ActionIndicator $type="disagree" $visible={swipeDirection === 'down'}>
           {formatMessage(messages.disagreeLabel)}
         </ActionIndicator>
-        <ActionIndicator type="unsure" visible={dragOffset.y < -50}>
+        <ActionIndicator $type="unsure" $visible={swipeDirection === 'neutral'}>
           {formatMessage(messages.unsureLabel)}
         </ActionIndicator>
 
@@ -293,7 +235,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
             iconColor={colors.green500}
             justify={isPhone ? 'left' : 'center'}
             textColor={colors.textPrimary}
-            onClick={() => reactToIdea({ ideaId: current.data.id, mode: 'up' })}
+            onClick={() => triggerSwipe('up')}
             whiteSpace="normal"
             fullWidth
           >
@@ -306,9 +248,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
             justify={isPhone ? 'left' : 'center'}
             textColor={colors.textPrimary}
             whiteSpace="normal"
-            onClick={() =>
-              reactToIdea({ ideaId: current.data.id, mode: 'neutral' })
-            }
+            onClick={() => triggerSwipe('neutral')}
             fullWidth
           >
             {formatMessage(messages.unsureLabel)}
@@ -320,9 +260,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
             justify={isPhone ? 'left' : 'center'}
             textColor={colors.textPrimary}
             whiteSpace="normal"
-            onClick={() =>
-              reactToIdea({ ideaId: current.data.id, mode: 'down' })
-            }
+            onClick={() => triggerSwipe('down')}
             fullWidth
           >
             {formatMessage(messages.disagreeLabel)}
