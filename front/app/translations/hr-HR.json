@@ -166,6 +166,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "Vidimo se tamo, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Vidljivo je manje podataka o događaju.",
   "app.components.EventCard.a11y_moreContentVisible": "Vidljivo je više podataka o događaju.",
+  "app.components.EventCard.a11y_readMore": "Pročitajte više o događaju \"{eventTitle}\".",
   "app.components.EventCard.endsAt": "Završava u",
   "app.components.EventCard.readMore": "Čitaj više",
   "app.components.EventCard.showLess": "Prikaži manje",
