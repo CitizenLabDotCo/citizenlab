@@ -166,6 +166,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "Orada görüşürüz, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Daha az etkinlik bilgisi görüntüleniyor.",
   "app.components.EventCard.a11y_moreContentVisible": "Daha fazla etkinlik bilgisi görüntüleniyor.",
+  "app.components.EventCard.a11y_readMore": "\"{eventTitle}\" etkinliği hakkında daha fazla bilgi edinin.",
   "app.components.EventCard.endsAt": "Bitiş",
   "app.components.EventCard.readMore": "Daha fazla bilgi edinin",
   "app.components.EventCard.showLess": "Daha az göster",
