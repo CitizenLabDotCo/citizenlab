@@ -1,6 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-import { QueryParameters } from './types';
+import { Parameters } from './types';
 
 const baseKey = {
   type: 'folder_mini',
@@ -9,7 +9,7 @@ const baseKey = {
 const projectFoldersKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (parameters: QueryParameters) => [
+  list: (parameters: Parameters) => [
     { ...baseKey, operation: 'list', parameters },
   ],
 } satisfies QueryKeys;

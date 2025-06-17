@@ -5,12 +5,12 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import projectFoldersMiniKeys from './keys';
 import {
-  QueryParameters,
+  Parameters,
   ProjectFoldersMiniKeys,
   MiniProjectFolders,
 } from './types';
 
-const fetchProjectFoldersAdmin = (queryParams: QueryParameters) =>
+const fetchProjectFoldersAdmin = (queryParams: Parameters) =>
   fetcher<MiniProjectFolders>({
     path: `/project_folders/for_admin`,
     action: 'get',
@@ -21,7 +21,7 @@ const fetchProjectFoldersAdmin = (queryParams: QueryParameters) =>
     },
   });
 
-const useProjectFoldersAdmin = (queryParams: QueryParameters) => {
+const useProjectFoldersAdmin = (queryParams: Parameters) => {
   return useQuery<
     MiniProjectFolders,
     CLErrors,

@@ -8,7 +8,7 @@ import projectFoldersKeys from './keys';
 
 export type ProjectFoldersMiniKeys = Keys<typeof projectFoldersKeys>;
 
-export type QueryParameters = {
+export type Parameters = {
   status?: PublicationStatus[];
   managers?: string[];
   search?: string;
