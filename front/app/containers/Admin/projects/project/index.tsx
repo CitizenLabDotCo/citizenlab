@@ -54,12 +54,13 @@ const AdminProjectsProjectIndex = () => {
           url={`/admin/projects/${projectId}/events`}
           active={pathname.includes(`/admin/projects/${projectId}/events`)}
         />
-        <Tab
+        {/* TODO: Uncomment when ready to release. */}
+        {/* <Tab
           className="intercom-admin-project-files-tab"
           label={formatMessage(messages.filesTab)}
           url={`/admin/projects/${projectId}/files`}
           active={pathname.includes(`/admin/projects/${projectId}/files`)}
-        />
+        /> */}
       </NavigationTabs>
       <RouterOutlet />
     </div>

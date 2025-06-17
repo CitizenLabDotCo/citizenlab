@@ -10,7 +10,6 @@ const ProjectFilesTab = () => {
       <Box display="flex" justifyContent="space-between">
         <SearchInput
           placeholder="Search files"
-          data-cy="e2e-admin-projects-project-files-search-input"
           onChange={() => {}}
           id={''}
           ariaLabel={''}
