@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import inputsKeys from './keys';
+import jobsKeys from './keys';
 import { IJob, CopyRequestParams } from './types';
 
 const copyInputs = ({
@@ -29,7 +29,7 @@ const useCopyInputs = () => {
     mutationFn: copyInputs,
     onSuccess: (_, { toPhaseId }) => {
       queryClient.invalidateQueries({
-        queryKey: inputsKeys.list({ phaseId: toPhaseId }),
+        queryKey: jobsKeys.list({ phaseId: toPhaseId }),
       });
     },
   });
