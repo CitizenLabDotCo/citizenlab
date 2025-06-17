@@ -69,7 +69,7 @@ interface Props<ShowCount extends boolean> {
   getTabPanelId?: (tab: string) => string;
   getScreenReaderTextForTab?: (tab: string, count?: number) => JSX.Element;
   showCount: ShowCount;
-  fullWidth?: boolean; // 🆕 NEW prop
+  fullWidth?: boolean;
 }
 
 export const getDefaultTabId = (tab: string) => `tab-${tab}`;
@@ -84,7 +84,7 @@ const Tabs = <ShowCount extends boolean>({
   getTabId = getDefaultTabId,
   getTabPanelId = getDefaultTabPanelId,
   showCount,
-  fullWidth = false, // 🆕 NEW default value
+  fullWidth = false,
 }: Props<ShowCount>) => {
   const tabsRef = useRef({});
 
