@@ -11,6 +11,9 @@ import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
 
+// NOTE: When the question is a built-in field, it is necessary to
+// check the `enabled` property before adding it to the schema.
+
 const generateYupValidationSchema = ({
   pageQuestions,
   formatMessage,
@@ -30,6 +33,7 @@ const generateYupValidationSchema = ({
       minimum_select_count,
       maximum_select_count,
       title_multiloc,
+      enabled,
     } = question;
 
     const title = localize(title_multiloc);
@@ -39,7 +43,7 @@ const generateYupValidationSchema = ({
 
     switch (input_type) {
       case 'text_multiloc': {
-        if (key === 'title_multiloc') {
+        if (key === 'title_multiloc' && enabled) {
           schema[key] = validateAtLeastOneLocale(
             formatMessage(messages.titleRequired),
             {
@@ -61,7 +65,7 @@ const generateYupValidationSchema = ({
       }
 
       case 'html_multiloc': {
-        if (key === 'body_multiloc') {
+        if (key === 'body_multiloc' && enabled) {
           schema[key] = validateAtLeastOneLocale(
             formatMessage(messages.descriptionRequired),
             {
@@ -84,7 +88,7 @@ const generateYupValidationSchema = ({
 
       case 'text':
       case 'multiline_text': {
-        if (key === 'location_description') {
+        if (key === 'location_description' && enabled) {
           schema[key] = required
             ? string().required(fieldRequired).nullable()
             : string().nullable();
@@ -95,6 +99,16 @@ const generateYupValidationSchema = ({
       }
 
       case 'number': {
+        if (key === 'project_budget' && enabled) {
+          schema[key] = required
+            ? number().required(fieldRequired)
+            : number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .nullable();
+        }
+
         schema[key] = required
           ? number().required(fieldRequired)
           : number()
@@ -167,33 +181,36 @@ const generateYupValidationSchema = ({
       }
 
       case 'image_files': {
-        schema[key] = required
-          ? array()
-              .min(1, formatMessage(messages.imageRequired))
-              .required(formatMessage(messages.imageRequired))
-              .nullable()
-          : array().nullable();
+        schema[key] =
+          required && enabled
+            ? array()
+                .min(1, formatMessage(messages.imageRequired))
+                .required(formatMessage(messages.imageRequired))
+                .nullable()
+            : array().nullable();
 
         break;
       }
 
       case 'files': {
-        schema[key] = required
-          ? array()
-              .min(1, formatMessage(messages.fileRequired))
-              .required(formatMessage(messages.fileRequired))
-          : array().nullable();
+        schema[key] =
+          required && enabled
+            ? array()
+                .min(1, formatMessage(messages.fileRequired))
+                .required(formatMessage(messages.fileRequired))
+            : array().nullable();
 
         break;
       }
 
       case 'topic_ids': {
-        schema[key] = required
-          ? array()
-              .of(string())
-              .min(1, formatMessage(messages.topicRequired))
-              .required(formatMessage(messages.topicRequired))
-          : array().nullable();
+        schema[key] =
+          required && enabled
+            ? array()
+                .of(string())
+                .min(1, formatMessage(messages.topicRequired))
+                .required(formatMessage(messages.topicRequired))
+            : array().nullable();
         break;
       }
 
@@ -263,9 +280,10 @@ const generateYupValidationSchema = ({
       }
 
       case 'cosponsor_ids': {
-        schema[key] = required
-          ? array().of(string()).required(fieldRequired).min(1, fieldRequired)
-          : array().nullable();
+        schema[key] =
+          required && enabled
+            ? array().of(string()).required(fieldRequired).min(1, fieldRequired)
+            : array().nullable();
         break;
       }
 
