@@ -6,9 +6,8 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { setParam, useParam } from '../utils';
-
-import messages from './messages';
+import messages from '../Projects/Filters/messages';
+import { useParam, setParam } from '../Projects/utils';
 
 const Search = () => {
   const { formatMessage } = useIntl();

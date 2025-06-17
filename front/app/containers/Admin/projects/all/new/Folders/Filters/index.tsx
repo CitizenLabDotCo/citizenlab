@@ -3,9 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import Manager from '../../_shared/Manager';
+import Search from '../../_shared/Search';
 import Status from '../../_shared/Status';
-
-// import Search from './Search';
 
 const Filters = () => {
   return (
@@ -19,7 +18,7 @@ const Filters = () => {
         <Manager mr="8px" />
         <Status mr="8px" />
       </Box>
-      {/* <Search /> */}
+      <Search />
     </Box>
   );
 };
