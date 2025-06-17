@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useSearchParams } from 'react-router-dom';
 
 import useCommonGroundProgress from 'api/common_ground/useCommonGroundProgress';
@@ -40,7 +38,7 @@ const CommonGroundTabs = ({ phaseId, project }: Props) => {
   const remainingStatementsCount = progressData
     ? progressData.data.attributes.num_ideas -
       progressData.data.attributes.num_reacted_ideas
-    : 0;
+    : undefined;
 
   const tabData: TabData = {
     statements: {
@@ -84,9 +82,7 @@ const CommonGroundTabs = ({ phaseId, project }: Props) => {
           />
         </Box>
         {currentTab === 'statements' && (
-          <DndProvider backend={HTML5Backend}>
-            <CommonGroundStatements phaseId={phaseId} />
-          </DndProvider>
+          <CommonGroundStatements phaseId={phaseId} />
         )}
         {currentTab === 'results' && <CommonGroundResults phaseId={phaseId} />}
       </Box>
