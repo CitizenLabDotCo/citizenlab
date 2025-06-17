@@ -7,17 +7,25 @@ import SearchInput from 'components/UI/SearchInput';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../Projects/Filters/messages';
-import { useParam, setParam } from '../Projects/utils';
 
-const Search = () => {
+interface Props {
+  value?: string;
+  onChange: (value: string | undefined) => void;
+}
+
+const Search = ({ value, onChange }: Props) => {
   const { formatMessage } = useIntl();
-  const value = useParam('search') ?? undefined;
+  // const value = useParam('search') ?? undefined;
 
   return (
     <SearchInput
+      // defaultValue={value}
+      // onChange={(search) => {
+      //   setParam('search', search ?? undefined);
+      // }}
       defaultValue={value}
       onChange={(search) => {
-        setParam('search', search ?? undefined);
+        onChange(search ?? undefined);
       }}
       a11y_numberOfSearchResults={0}
       placeholder={formatMessage(messages.search)}

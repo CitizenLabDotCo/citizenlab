@@ -9,6 +9,7 @@ import { useParam, setParam } from '../utils';
 
 const Filters = () => {
   const managerIds = useParam('managers') ?? [];
+  const searchValue = useParam('search');
 
   return (
     <Box
@@ -27,7 +28,12 @@ const Filters = () => {
         />
         <Status mr="8px" />
       </Box>
-      <Search />
+      <Search
+        value={searchValue}
+        onChange={(search) => {
+          setParam('search', search);
+        }}
+      />
     </Box>
   );
 };
