@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import {
   Box,
@@ -125,11 +125,14 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
   const nextIdeaId = progressData?.data.relationships.next_idea.data?.id;
   const { data: current, isLoading: isIdeaLoading } = useIdeaById(nextIdeaId);
 
-  const handleSwipe = (direction: SwipeDirection) => {
-    if (current) {
-      reactToIdea({ ideaId: current.data.id, mode: direction });
-    }
-  };
+  const handleSwipe = useCallback(
+    (direction: SwipeDirection) => {
+      if (current) {
+        reactToIdea({ ideaId: current.data.id, mode: direction });
+      }
+    },
+    [current, reactToIdea]
+  );
 
   const {
     dragOffset,
