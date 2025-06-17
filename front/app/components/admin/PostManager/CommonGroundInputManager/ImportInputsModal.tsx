@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Text, Box, Button } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
+import { IJob } from 'api/copy_inputs/types';
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 
 import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
@@ -35,6 +36,7 @@ const ImportInputsModal = ({
     ({ value }: IOption) => {
       setProjectId(value);
       setNoOfInputs(undefined);
+      setPhaseId(undefined);
     },
     [setProjectId]
   );
@@ -43,7 +45,7 @@ const ImportInputsModal = ({
     (
       fromPhaseId: string,
       dryRun: boolean,
-      onSuccess?: (response: any) => void
+      onSuccess?: (response: IJob) => void
     ) => {
       copyInputs(
         {
@@ -57,29 +59,33 @@ const ImportInputsModal = ({
     [copyInputs, currentPhaseid]
   );
 
-  const handlePhaseFilter = useCallback(
-    ({ value }: IOption) => {
-      setPhaseId(value);
-      runCopyInputs(value, true, (response) => {
+  const handlePhaseFilter = useCallback(({ value }: IOption) => {
+    setPhaseId(value);
+  }, []);
+
+  useEffect(() => {
+    if (phaseId) {
+      runCopyInputs(phaseId, true, (response) => {
         setNoOfInputs(response.data.attributes.total);
       });
-    },
-    [runCopyInputs]
-  );
+    }
+  }, [phaseId, runCopyInputs]);
+
+  const handleClose = useCallback(() => {
+    setShowPastInputsModal(false);
+  }, [setShowPastInputsModal]);
 
   const handleImport = useCallback(() => {
     if (!phaseId) return;
     runCopyInputs(phaseId, false);
-    setShowPastInputsModal(false);
-  }, [phaseId, runCopyInputs, setShowPastInputsModal]);
+    handleClose();
+  }, [handleClose, phaseId, runCopyInputs]);
 
   return (
     <Modal
       width={520}
       opened={showPastInputsModal}
-      close={() => {
-        setShowPastInputsModal(false);
-      }}
+      close={handleClose}
       header={formatMessage(messages.startFromPastInputs)}
     >
       <Box m="24px" data-cy="e2e-copy-survey-modal">
@@ -114,12 +120,7 @@ const ImportInputsModal = ({
         )}
 
         <Box mt="40px" display="flex" justifyContent="space-between">
-          <Button
-            buttonStyle="secondary-outlined"
-            onClick={() => {
-              setShowPastInputsModal(false);
-            }}
-          >
+          <Button buttonStyle="secondary-outlined" onClick={handleClose}>
             {formatMessage(messages.cancel)}
           </Button>
           <Button
