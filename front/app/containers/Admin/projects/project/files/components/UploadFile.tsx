@@ -8,7 +8,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-const UploadFileButton = () => {
+const UploadFileModal = () => {
   const { formatMessage } = useIntl();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -29,4 +29,4 @@ const UploadFileButton = () => {
   );
 };
 
-export default UploadFileButton;
+export default UploadFileModal;
