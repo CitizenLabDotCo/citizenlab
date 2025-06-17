@@ -166,6 +166,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "Uz tikšanos, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Kļuva redzams mazāk informācijas par notikumu.",
   "app.components.EventCard.a11y_moreContentVisible": "Kļuva redzams vairāk informācijas par notikumu.",
+  "app.components.EventCard.a11y_readMore": "Vairāk par pasākumu \"{eventTitle}\".",
   "app.components.EventCard.endsAt": "Beidzas",
   "app.components.EventCard.readMore": "Lasīt vairāk",
   "app.components.EventCard.showLess": "Rādīt mazāk",
