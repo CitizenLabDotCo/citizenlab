@@ -39,7 +39,7 @@ const generateYupValidationSchema = ({
 
     switch (input_type) {
       case 'text_multiloc': {
-        if (key === 'title_multiloc') {
+        if (key === 'title_multiloc' && question.enabled) {
           schema[key] = validateAtLeastOneLocale(
             formatMessage(messages.titleRequired),
             {
@@ -61,7 +61,7 @@ const generateYupValidationSchema = ({
       }
 
       case 'html_multiloc': {
-        if (key === 'body_multiloc') {
+        if (key === 'body_multiloc' && question.enabled) {
           schema[key] = validateAtLeastOneLocale(
             formatMessage(messages.descriptionRequired),
             {
@@ -84,7 +84,7 @@ const generateYupValidationSchema = ({
 
       case 'text':
       case 'multiline_text': {
-        if (key === 'location_description') {
+        if (key === 'location_description' && question.enabled) {
           schema[key] = required
             ? string().required(fieldRequired).nullable()
             : string().nullable();
@@ -95,6 +95,16 @@ const generateYupValidationSchema = ({
       }
 
       case 'number': {
+        if (key === 'project_budget' && question.enabled) {
+          schema[key] = required
+            ? number().required(fieldRequired)
+            : number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .nullable();
+        }
+
         schema[key] = required
           ? number().required(fieldRequired)
           : number()
@@ -167,33 +177,36 @@ const generateYupValidationSchema = ({
       }
 
       case 'image_files': {
-        schema[key] = required
-          ? array()
-              .min(1, formatMessage(messages.imageRequired))
-              .required(formatMessage(messages.imageRequired))
-              .nullable()
-          : array().nullable();
+        schema[key] =
+          required && question.enabled
+            ? array()
+                .min(1, formatMessage(messages.imageRequired))
+                .required(formatMessage(messages.imageRequired))
+                .nullable()
+            : array().nullable();
 
         break;
       }
 
       case 'files': {
-        schema[key] = required
-          ? array()
-              .min(1, formatMessage(messages.fileRequired))
-              .required(formatMessage(messages.fileRequired))
-          : array().nullable();
+        schema[key] =
+          required && question.enabled
+            ? array()
+                .min(1, formatMessage(messages.fileRequired))
+                .required(formatMessage(messages.fileRequired))
+            : array().nullable();
 
         break;
       }
 
       case 'topic_ids': {
-        schema[key] = required
-          ? array()
-              .of(string())
-              .min(1, formatMessage(messages.topicRequired))
-              .required(formatMessage(messages.topicRequired))
-          : array().nullable();
+        schema[key] =
+          required && question.enabled
+            ? array()
+                .of(string())
+                .min(1, formatMessage(messages.topicRequired))
+                .required(formatMessage(messages.topicRequired))
+            : array().nullable();
         break;
       }
 
@@ -263,9 +276,10 @@ const generateYupValidationSchema = ({
       }
 
       case 'cosponsor_ids': {
-        schema[key] = required
-          ? array().of(string()).required(fieldRequired).min(1, fieldRequired)
-          : array().nullable();
+        schema[key] =
+          required && question.enabled
+            ? array().of(string()).required(fieldRequired).min(1, fieldRequired)
+            : array().nullable();
         break;
       }
 
@@ -280,6 +294,12 @@ const generateYupValidationSchema = ({
         // follow up field (never required)
         schema[`${key}_follow_up`] = string();
 
+        break;
+      }
+      case 'file_upload': {
+        schema[key] = required
+          ? object().required(fieldRequired).nullable()
+          : object().nullable();
         break;
       }
     }
