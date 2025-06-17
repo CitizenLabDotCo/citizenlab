@@ -23,6 +23,10 @@ interface Props {
 const ResultList = ({ title, description, items }: Props) => {
   const isPhone = useBreakpoint('phone');
 
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
     <Box mb="32px">
       <Title variant="h4" mb="4px">
