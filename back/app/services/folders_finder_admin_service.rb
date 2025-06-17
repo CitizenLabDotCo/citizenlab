@@ -14,8 +14,8 @@ class FoldersFinderAdminService
     return scope if status.blank?
 
     scope
-      .joins("INNER JOIN admin_publications ON admin_publications.publication_id = project_folders_folders.id AND admin_publications.publication_type = 'ProjectFolders::Folder'")
-      .where(admin_publications: { publication_status: status })
+      .joins(:admin_publications)
+      .where(admin_publications: { publication_type: 'ProjectFolders::Folder', publication_status: status })
   end
 
   def self.filter_folder_manager(scope, params = {})
