@@ -22,7 +22,6 @@ interface Props
   > {
   name: string;
   ideaId?: string;
-  fileId?: string;
   scrollErrorIntoView?: boolean;
 }
 
@@ -43,6 +42,7 @@ const SingleFileUploaderField = ({
   const file = getValues(name);
 
   useEffect(() => {
+    let isMounted = true;
     if (ideaFiles && ideaFiles.data.length > 0) {
       let remoteFile: IIdeaFileData | undefined = undefined;
       const convertFiles = async () => {
@@ -55,6 +55,7 @@ const SingleFileUploaderField = ({
           remoteFile.id,
           remoteFile.attributes.name
         ).then((file: UploadFile) => {
+          if (!isMounted) return;
           setValue(
             name,
             {
@@ -69,6 +70,9 @@ const SingleFileUploaderField = ({
       };
       convertFiles();
     }
+    return () => {
+      isMounted = false;
+    };
   }, [setValue, name, ideaFiles, trigger, file?.id]);
 
   const errorMessage = get(errors, name)?.message as string | undefined;

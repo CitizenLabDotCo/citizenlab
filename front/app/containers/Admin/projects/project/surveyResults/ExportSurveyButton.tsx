@@ -4,7 +4,7 @@ import React from 'react';
 
 import { exportSurveyResults } from 'api/survey_results/utils';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -49,14 +49,14 @@ export default class ExportSurveyButton extends React.PureComponent<
   render() {
     const { exporting } = this.state;
     return (
-      <Button
+      <ButtonWithLink
         buttonStyle="secondary-outlined"
         icon="download"
         onClick={this.handleExportSurveyResults}
         processing={exporting}
       >
         <FormattedMessage {...messages.exportSurveyResults} />
-      </Button>
+      </ButtonWithLink>
     );
   }
 }

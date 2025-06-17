@@ -490,7 +490,6 @@
   "app.containers.Admin.emails.sentToUsers": "Són correus electrònics enviats als usuaris",
   "app.containers.Admin.emails.subject": "Assignatura:",
   "app.containers.Admin.emails.supportButtonLabel": "Vegeu exemples a la nostra pàgina d'assistència",
-  "app.containers.Admin.emails.supportButtonLink": "https://support.govocal.com/en/articles/2762939-what-are-automated-emails",
   "app.containers.Admin.emails.to": "A:",
   "app.containers.Admin.emails.toAllUsers": "Voleu enviar aquest correu electrònic a tots els usuaris registrats?",
   "app.containers.Admin.emails.viewExample": "Veure",

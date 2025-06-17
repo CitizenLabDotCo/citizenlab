@@ -160,6 +160,38 @@ describe XlsxService do
         expect(worksheet[1].cells.map(&:value)).to include(cosponsorship.user.full_name)
       end
     end
+
+    describe 'default columns' do
+      it 'includes all expected default columns in export' do
+        headers = worksheet[0].cells.map(&:value)
+
+        expect(headers).to include(
+          'id',
+          'title',
+          'description',
+          'author_name',
+          'author_email',
+          'author_id',
+          'published_at',
+          'submitted_at',
+          'comments',
+          'likes',
+          'dislikes',
+          'unsure',
+          'url',
+          'project',
+          'topics',
+          'status',
+          'latitude',
+          'longitude',
+          'location_description',
+          'proposed_budget',
+          'assignee',
+          'assignee_email',
+          'attachments'
+        )
+      end
+    end
   end
 
   describe 'generate_comments_xlsx' do

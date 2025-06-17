@@ -6,7 +6,7 @@ import { DeleteReason, ICommentData } from 'api/comments/types';
 import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
 
 import CommentsAdminDeletionModal from 'components/PostShowComponents/Comments/Comment/CommentsAdminDeletionModal';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -68,7 +68,7 @@ const DeleteCommentButton = ({ ideaId, comment, projectId }: Props) => {
   return (
     <>
       <Tooltip content={<FormattedMessage {...messages.deleteComment} />}>
-        <Button
+        <ButtonWithLink
           onClick={() => {
             openDeleteModal();
           }}

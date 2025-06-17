@@ -2,13 +2,10 @@
 
 module ParticipationMethod
   class CommonGround < Base
+    SUPPORTED_REACTION_MODES = %w[up down neutral].freeze
+
     def self.method_str
       'common_ground'
-    end
-
-    # Reactions are used for voting.
-    def supports_reacting?
-      true
     end
 
     def built_in_title_required?
@@ -33,6 +30,22 @@ module ParticipationMethod
     # participation method and access the ideas directly.
     # [TODO] The behaviour of the +IdeasFinder+ class could potentially be reworked.
     def supports_public_visibility?
+      true
+    end
+
+    def supports_submission?
+      true
+    end
+
+    def supports_edits_after_publication?
+      true
+    end
+
+    def supports_inputs_without_author?
+      false
+    end
+
+    def use_reactions_as_votes?
       true
     end
 

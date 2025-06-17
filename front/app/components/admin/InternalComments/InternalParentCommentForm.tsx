@@ -11,7 +11,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import Avatar from 'components/Avatar';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 import { trackEventByName } from 'utils/analytics';
@@ -79,7 +79,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const CancelButton = styled(Button)`
+const CancelButton = styled(ButtonWithLink)`
   margin-right: 8px;
 `;
 
@@ -243,7 +243,7 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
               >
                 <FormattedMessage {...commentsMessages.cancel} />
               </CancelButton>
-              <Button
+              <ButtonWithLink
                 className="e2e-submit-parentcomment"
                 processing={processing}
                 onClick={onSubmit}
@@ -252,7 +252,7 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
                 icon="shield-check"
               >
                 <FormattedMessage {...commentsMessages.postInternalComment} />
-              </Button>
+              </ButtonWithLink>
             </ButtonWrapper>
           </label>
         </Form>

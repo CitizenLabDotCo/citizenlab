@@ -4,7 +4,7 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -31,14 +31,14 @@ const BottomBar = ({ onClick, ideaQueryParameters }: Props) => {
       flex="1"
       borderTop={`1px solid ${colors.grey300}`}
     >
-      <Button onClick={onClick} fullWidth={true}>
+      <ButtonWithLink onClick={onClick} fullWidth={true}>
         <FormattedMessage
           {...messages.showXResults}
           values={{
             ideasCount: ideasFilterCounts.data.attributes.total,
           }}
         />
-      </Button>
+      </ButtonWithLink>
       <ResetFiltersButton ideaQueryParameters={ideaQueryParameters} />
     </Box>
   );

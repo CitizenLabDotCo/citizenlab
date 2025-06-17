@@ -285,6 +285,7 @@ ur:
       likes_count: 'پسند کرتا ہے۔'
       location: 'مقام'
       longitude: 'طول البلد'
+      neutral_reactions_count: 'بے یقینی'
       participants: 'شرکاء'
       picks: 'چنتا ہے۔'
       project: 'پروجیکٹ'

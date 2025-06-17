@@ -2,7 +2,7 @@ import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 export const RowContent = styled.div`
   flex: 1;
@@ -29,6 +29,6 @@ export const ActionsRowContainer = styled.div`
   display: flex;
 `;
 
-export const RowButton = styled(Button)`
+export const RowButton = styled(ButtonWithLink)`
   margin-left: 7px;
 `;
