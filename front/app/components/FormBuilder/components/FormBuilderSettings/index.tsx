@@ -15,7 +15,6 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import {
@@ -26,7 +25,6 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 import tracks from '../tracks';
@@ -48,7 +46,6 @@ const FormBuilderSettings = ({
   builderConfig,
   formHasSubmissions,
 }: Props) => {
-  const locales = useAppConfigurationLocales();
   const localize = useLocalize();
   const [currentTab, setCurrentTab] = useState<ICustomFieldSettingsTab>(
     field.defaultTab || 'content'
@@ -56,10 +53,6 @@ const FormBuilderSettings = ({
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-
-  if (isNilOrError(locales)) {
-    return null;
-  }
 
   const getPageList = () => {
     const fieldNumbers = getFieldNumbers(formCustomFields);
@@ -202,7 +195,6 @@ const FormBuilderSettings = ({
         (showTabbedSettings && currentTab === 'content')) && (
         <ContentSettings
           field={field}
-          locales={locales}
           formHasSubmissions={formHasSubmissions}
         />
       )}
