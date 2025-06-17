@@ -8,15 +8,15 @@ import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../Projects/Filters/messages';
-import { useParam, setParam } from '../Projects/utils';
 
 interface Props {
+  managerIds: string[];
   mr?: string;
+  onChange: (managers: string[]) => void;
 }
 
-const Manager = ({ mr = '0px' }: Props) => {
+const Manager = ({ managerIds, mr = '0px', onChange }: Props) => {
   const { formatMessage } = useIntl();
-  const values = useParam('managers') ?? [];
   const { data: managers } = useUsers({
     pageSize: 500,
     can_admin: true,
@@ -32,12 +32,10 @@ const Manager = ({ mr = '0px' }: Props) => {
   return (
     <FilterSelector
       multipleSelectionAllowed
-      selected={values}
+      selected={managerIds}
       values={options}
       mr={mr}
-      onChange={(value) => {
-        setParam('managers', value);
-      }}
+      onChange={onChange}
       title={formatMessage(messages.manager)}
       name="manager-select"
     />

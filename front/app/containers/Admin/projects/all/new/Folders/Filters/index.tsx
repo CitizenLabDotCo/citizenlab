@@ -5,8 +5,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Manager from '../../_shared/Manager';
 import Search from '../../_shared/Search';
 import Status from '../../_shared/Status';
+import { useParam, setParam } from '../utils';
 
 const Filters = () => {
+  const managerIds = useParam('managers') ?? [];
+
   return (
     <Box
       display="flex"
@@ -15,7 +18,13 @@ const Filters = () => {
       alignItems="center"
     >
       <Box display="flex" alignItems="center" w="100%">
-        <Manager mr="8px" />
+        <Manager
+          managerIds={managerIds}
+          mr="8px"
+          onChange={(value) => {
+            setParam('managers', value);
+          }}
+        />
         <Status mr="8px" />
       </Box>
       <Search />
