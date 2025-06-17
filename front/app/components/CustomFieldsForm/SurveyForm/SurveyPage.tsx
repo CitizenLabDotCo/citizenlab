@@ -144,18 +144,61 @@ const determinePreviousPageNumber = ({
   formData?: Record<string, any>;
 }) => {
   let previousPageIndex: number | undefined;
-  const previousPage = pages.find(
-    (page) => currentPage.id === page.page.logic.next_page_id
+
+  const questionsWithLogic = pages.map((page) =>
+    page.pageQuestions.filter((question) => question.logic.rules?.length)
   );
-  if (previousPage) {
-    previousPageIndex = pages.findIndex(
-      (page) => page.page.id === previousPage.page.id
+
+  const questionsWithLogicReferringToCurrentPage = questionsWithLogic
+    .flat()
+    .filter((question) =>
+      question.logic.rules?.some((rule) => rule.goto_page_id === currentPage.id)
     );
+
+  if (questionsWithLogicReferringToCurrentPage.length > 0) {
+    questionsWithLogicReferringToCurrentPage.forEach((question) => {
+      const rules = question.logic.rules;
+      if (rules && rules.length > 0) {
+        const rule = rules.find((rule) => {
+          const value = formData?.[question.key];
+          const optionId = question.options?.find(
+            (option) => option.key === value
+          )?.id;
+          return (
+            optionId !== undefined &&
+            (rule.if === optionId || rule.if === String(optionId))
+          );
+        });
+
+        if (rule) {
+          const previousPage = pages.find((page) =>
+            page.pageQuestions.some(
+              (pageQuestion) => pageQuestion.id === question.id
+            )
+          );
+
+          if (previousPage) {
+            previousPageIndex = pages.findIndex(
+              (page) => page.page.id === previousPage.page.id
+            );
+          }
+        }
+      }
+    });
   } else {
-    const currentPageIndex = pages.findIndex(
-      (page) => page.page.id === currentPage.id
+    const previousPage = pages.find(
+      (page) => currentPage.id === page.page.logic.next_page_id
     );
-    previousPageIndex = currentPageIndex - 1;
+    if (previousPage) {
+      previousPageIndex = pages.findIndex(
+        (page) => page.page.id === previousPage.page.id
+      );
+    } else {
+      const currentPageIndex = pages.findIndex(
+        (page) => page.page.id === currentPage.id
+      );
+      previousPageIndex = currentPageIndex - 1;
+    }
   }
   return previousPageIndex;
 };
