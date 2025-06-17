@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,7 +31,7 @@ const ButtonBar = ({
     border-top="solid 1px #ddd"
   >
     <Box maxWidth="700px" display="flex" padding="10px 16px" margin="auto">
-      <Button
+      <ButtonWithLink
         className="e2e-submit-idea-form"
         processing={processing}
         disabled={processing}

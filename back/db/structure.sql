@@ -202,6 +202,7 @@ DROP INDEX IF EXISTS public.index_polls_response_options_on_response_id;
 DROP INDEX IF EXISTS public.index_polls_response_options_on_option_id;
 DROP INDEX IF EXISTS public.index_polls_questions_on_phase_id;
 DROP INDEX IF EXISTS public.index_polls_options_on_question_id;
+DROP INDEX IF EXISTS public.index_phases_on_start_at_and_end_at;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
 DROP INDEX IF EXISTS public.index_phases_on_manual_voters_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_phase_id;
@@ -5615,6 +5616,13 @@ CREATE INDEX index_phases_on_project_id ON public.phases USING btree (project_id
 
 
 --
+-- Name: index_phases_on_start_at_and_end_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phases_on_start_at_and_end_at ON public.phases USING btree (start_at, end_at);
+
+
+--
 -- Name: index_polls_options_on_question_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7104,6 +7112,7 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20250610112901'),
+('20250609151800'),
 ('20250605090517'),
 ('20250519080057'),
 ('20250513160156'),

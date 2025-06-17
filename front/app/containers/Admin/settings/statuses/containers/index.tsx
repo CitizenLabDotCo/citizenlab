@@ -23,7 +23,7 @@ import {
   SectionDescription,
 } from 'components/admin/Section';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
@@ -131,7 +131,7 @@ const IdeaStatuses = ({
             trigger="mouseenter"
           >
             <Box>
-              <Button
+              <ButtonWithLink
                 data-testid="e2e-add-status-button"
                 buttonStyle="admin-dark"
                 icon="plus-circle"
@@ -139,7 +139,7 @@ const IdeaStatuses = ({
                 disabled={!customIdeaStatusesAllowed}
               >
                 <FormattedMessage {...messages.addIdeaStatus} />
-              </Button>
+              </ButtonWithLink>
             </Box>
           </Tooltip>
         </ButtonWrapper>

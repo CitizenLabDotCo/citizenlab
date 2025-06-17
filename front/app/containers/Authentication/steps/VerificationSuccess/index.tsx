@@ -8,7 +8,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { Title } from 'containers/Authentication/steps/AuthProviders/styles';
 
 import Avatar from 'components/Avatar';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -87,12 +87,12 @@ export default memo<Props>(({ onClose, className }) => {
           <FormattedMessage {...messages.userVerifiedSubtitle} />
         </Subtitle>
         <ButtonWrapper>
-          <Button
+          <ButtonWithLink
             id="e2e-verification-success-close-button"
             onClick={handleOnClose}
           >
             <FormattedMessage {...messages.close} />
-          </Button>
+          </ButtonWithLink>
         </ButtonWrapper>
       </Container>
     );

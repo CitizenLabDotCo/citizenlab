@@ -6,7 +6,7 @@ import useCopyReport from 'api/reports/useCopyReport';
 import useDeleteReport from 'api/reports/useDeleteReport';
 import useReport from 'api/reports/useReport';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -14,7 +14,7 @@ import messages from '../messages';
 
 const BaseButton = (props) => {
   // hard-coded values come after the spread operator to override the prop values
-  return <Button {...props} mr={'8px'} iconSize={'18px'} />;
+  return <ButtonWithLink {...props} mr={'8px'} iconSize={'18px'} />;
 };
 
 const ReportRowTooltip = ({ disabled, content, children }) => (

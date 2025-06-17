@@ -4,7 +4,7 @@ import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
@@ -64,9 +64,9 @@ const Buttons = styled.div`
   transition: all ${duration}ms ${easing};
 `;
 
-const UseTemplateButton = styled(Button)``;
+const UseTemplateButton = styled(ButtonWithLink)``;
 
-const MoreDetailsButton = styled(Button)`
+const MoreDetailsButton = styled(ButtonWithLink)`
   margin-top: 10px;
 `;
 
