@@ -15,6 +15,7 @@ const fetchLatestJobForPhase = async (
     queryParams: {
       context_type: 'Phase',
       context_id: phaseId,
+      completed: false,
     },
   });
 };
