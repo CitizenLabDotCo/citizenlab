@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { IGroupData, MembershipType } from 'api/groups/types';
 
 import Outlet from 'components/Outlet';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -82,7 +82,7 @@ export const MoreInfoLink = styled.a`
   }
 `;
 
-export const Step2Button = styled(Button)``;
+export const Step2Button = styled(ButtonWithLink)``;
 
 export interface Props {
   onOpenStep2: (groupType: IGroupData['attributes']['membership_type']) => void;

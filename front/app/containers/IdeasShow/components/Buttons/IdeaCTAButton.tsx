@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IconNames } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 interface Props {
   className?: string;
@@ -20,7 +20,7 @@ const IdeaCTAButton = ({
   ariaExpanded,
 }: Props) => {
   return (
-    <Button
+    <ButtonWithLink
       className={className}
       icon={iconName}
       buttonStyle="white"
@@ -29,7 +29,7 @@ const IdeaCTAButton = ({
       ariaExpanded={ariaExpanded}
     >
       {buttonText}
-    </Button>
+    </ButtonWithLink>
   );
 };
 

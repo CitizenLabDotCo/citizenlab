@@ -3,7 +3,7 @@ import React from 'react';
 import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -31,7 +31,7 @@ interface Props {
 const Footer = ({ loadingMore, onShowMore }: Props) => {
   return (
     <Container>
-      <Button
+      <ButtonWithLink
         data-testid="show-more-button"
         onClick={onShowMore}
         buttonStyle="primary-outlined"

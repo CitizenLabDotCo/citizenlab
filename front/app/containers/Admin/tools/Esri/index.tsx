@@ -4,7 +4,7 @@ import { Box, Text, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -57,7 +57,7 @@ const Esri = () => {
           theme="dark"
         >
           <div>
-            <Button
+            <ButtonWithLink
               disabled={!isEsriEnabled}
               bgColor={colors.primary}
               icon={isEsriEnabled ? 'arrow-right' : 'lock'}
@@ -66,7 +66,7 @@ const Esri = () => {
               linkTo="/admin/tools/esri-integration"
             >
               {formatMessage(messages.esriIntegrationButton)}
-            </Button>
+            </ButtonWithLink>
           </div>
         </Tooltip>
       </Box>

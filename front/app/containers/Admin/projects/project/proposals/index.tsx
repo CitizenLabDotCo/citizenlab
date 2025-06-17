@@ -7,7 +7,7 @@ import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import ProjectProposalsManager from 'components/admin/PostManager/ProjectProposalsManager';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -47,14 +47,14 @@ const AdminProjectProposals = () => {
             <FormattedMessage {...messages.titleInputManager} />
           </Title>
           <Box display="flex" gap="8px">
-            <Button
+            <ButtonWithLink
               width="auto"
               linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
               icon="page"
               buttonStyle="secondary-outlined"
             >
               <FormattedMessage {...messages.importInputs} />
-            </Button>
+            </ButtonWithLink>
             {phase && (
               <NewIdeaButton
                 inputTerm={phase.data.attributes.input_term}

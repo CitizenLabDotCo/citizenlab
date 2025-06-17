@@ -11,7 +11,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import customPageMessages from 'containers/Admin/pagesAndMenu/containers/CustomPages/messages';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -46,14 +46,14 @@ const PagesMenu = () => {
             disabled={!disabledAddProjectToNavbarButton}
           >
             <Box>
-              <Button
+              <ButtonWithLink
                 icon="link"
                 buttonStyle="text"
                 onClick={() => setAddProjectModalIsOpen(true)}
                 disabled={disabledAddProjectToNavbarButton}
               >
                 {formatMessage(messages.addProject)}
-              </Button>
+              </ButtonWithLink>
             </Box>
           </Tooltip>
           <Tooltip
@@ -63,7 +63,7 @@ const PagesMenu = () => {
             disabled={canCreateCustomPages}
           >
             <Box>
-              <Button
+              <ButtonWithLink
                 buttonStyle="admin-dark"
                 icon="plus-circle"
                 id="create-custom-page"
@@ -72,7 +72,7 @@ const PagesMenu = () => {
                 disabled={!canCreateCustomPages}
               >
                 {formatMessage(messages.createCustomPageButton)}
-              </Button>
+              </ButtonWithLink>
             </Box>
           </Tooltip>
         </Box>

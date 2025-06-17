@@ -2,9 +2,9 @@ import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-export const ItemMenu = styled(Button)`
+export const ItemMenu = styled(ButtonWithLink)`
   color: ${colors.coolGrey600};
   display: flex;
   align-items: center;

@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import ExcelDownloadButton from 'components/admin/FormSync/ExcelDownloadButton';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -30,7 +30,7 @@ export const InputForm = () => {
           </SectionDescription>
         </Box>
         <Box display="flex" flexDirection="row">
-          <Button
+          <ButtonWithLink
             mr="8px"
             linkTo={`/admin/projects/${projectId}/phases/${phaseId}/form/edit`}
             width="auto"
@@ -38,7 +38,7 @@ export const InputForm = () => {
             data-cy="e2e-edit-input-form"
           >
             <FormattedMessage {...messages.editInputForm} />
-          </Button>
+          </ButtonWithLink>
           <DownloadPDFButtonWithModal
             mr="8px"
             formType="input_form"

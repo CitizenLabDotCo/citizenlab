@@ -172,6 +172,7 @@ const FileUploaderField = ({
               onFileRemove={(fileToRemove) =>
                 onFileRemove(fileToRemove as any, field.value)
               }
+              maxSizeMb={10}
             />
           );
         }}

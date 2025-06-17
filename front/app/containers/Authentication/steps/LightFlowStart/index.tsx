@@ -14,7 +14,7 @@ import useLocale from 'hooks/useLocale';
 import { SetError } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import {
@@ -108,7 +108,7 @@ const LightFlowStart = ({
               />
             </Box>
             <Box w="100%" display="flex" mt="32px">
-              <Button
+              <ButtonWithLink
                 id="e2e-light-flow-email-submit"
                 type="submit"
                 width="100%"
@@ -116,7 +116,7 @@ const LightFlowStart = ({
                 processing={loading}
               >
                 {formatMessage(sharedMessages.continue)}
-              </Button>
+              </ButtonWithLink>
             </Box>
           </form>
         </FormProvider>
