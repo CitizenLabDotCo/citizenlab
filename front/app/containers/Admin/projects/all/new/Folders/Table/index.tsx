@@ -19,6 +19,8 @@ import { PaginationWithoutPositioning } from 'components/Pagination';
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
+import { useParams } from '../utils';
+
 import messages from './messages';
 import Row from './Row';
 
@@ -26,7 +28,7 @@ const Table = () => {
   const { formatMessage } = useIntl();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: folders, isFetching } = useProjectFoldersAdmin({});
+  const { data: folders, isFetching } = useProjectFoldersAdmin(useParams());
 
   const lastPageLink = folders?.links?.last;
   const lastPage = lastPageLink ? getPageNumberFromUrl(lastPageLink) ?? 1 : 1;
