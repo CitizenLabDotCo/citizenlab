@@ -32,7 +32,8 @@ interface Option {
 }
 
 interface Props {
-  projectId?: string;
+  selectedProjectId?: string;
+  excludeProjectId?: string;
   emptyOptionMessage?: MessageDescriptor;
   placeholder?: string;
   hideLabel?: boolean;
@@ -60,7 +61,8 @@ const generateProjectOptions = (
 };
 
 const ProjectFilter = ({
-  projectId,
+  selectedProjectId,
+  excludeProjectId,
   emptyOptionMessage,
   placeholder,
   hideLabel = false,
@@ -87,8 +89,19 @@ const ProjectFilter = ({
         }
       : null;
 
-    return generateProjectOptions(projects.data, localize, emptyOption);
-  }, [projects, authUser, localize, formatMessage, emptyOptionMessage]);
+    const filteredProjects = excludeProjectId
+      ? projects.data.filter((project) => project.id !== excludeProjectId)
+      : projects.data;
+
+    return generateProjectOptions(filteredProjects, localize, emptyOption);
+  }, [
+    projects,
+    authUser,
+    emptyOptionMessage,
+    formatMessage,
+    excludeProjectId,
+    localize,
+  ]);
 
   const label = formatMessage(messages.labelProjectFilter);
 
@@ -98,7 +111,7 @@ const ProjectFilter = ({
         <StyledSelect
           id="projectFilter"
           label={hideLabel ? undefined : label}
-          value={projectId}
+          value={selectedProjectId}
           options={projectFilterOptions}
           placeholder={placeholder}
           onChange={onProjectFilter}

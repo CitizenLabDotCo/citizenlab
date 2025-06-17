@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Text, Box, Button } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 import { IOption } from 'typings';
 
 import { IJob } from 'api/copy_inputs/types';
@@ -26,19 +27,22 @@ const ImportInputsModal = ({
   setShowPastInputsModal,
   currentPhaseid,
 }: Props) => {
+  const { projectId: currentProjectId } = useParams();
   const { formatMessage } = useIntl();
-  const [projectId, setProjectId] = useState<string | undefined>();
+  const [selectedProjectId, setSelectedProjectId] = useState<
+    string | undefined
+  >();
   const [phaseId, setPhaseId] = useState<string | undefined>();
   const [noOfInputs, setNoOfInputs] = useState<number | undefined>();
   const { mutate: copyInputs, isLoading: isCopying } = useCopyInputs();
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
-      setProjectId(value);
+      setSelectedProjectId(value);
       setNoOfInputs(undefined);
       setPhaseId(undefined);
     },
-    [setProjectId]
+    [setSelectedProjectId]
   );
 
   const runCopyInputs = useCallback(
@@ -94,14 +98,15 @@ const ImportInputsModal = ({
         </Text>
         <Box py="5px" mt="0px" alignItems="center">
           <ProjectFilter
-            projectId={projectId}
+            projectId={selectedProjectId}
+            excludeProjectId={currentProjectId}
             emptyOptionMessage={messages.noProject}
             onProjectFilter={handleProjectFilter}
           />
-          {projectId && (
+          {selectedProjectId && (
             <PhaseFilter
               label={formatMessage(messages.selectAPhase)}
-              projectId={projectId}
+              projectId={selectedProjectId}
               phaseId={phaseId}
               participationMethods={['ideation', 'voting', 'common_ground']}
               onPhaseFilter={handlePhaseFilter}

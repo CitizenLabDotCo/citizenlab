@@ -156,7 +156,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
         {template === 'project' && (
           <Box width="100%" mt="12px">
             <ProjectFilter
-              projectId={selectedProjectId}
+              selectedProjectId={selectedProjectId}
               emptyOptionMessage={messages.noProjectSelected}
               onProjectFilter={handleProjectFilter}
             />

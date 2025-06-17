@@ -17,6 +17,7 @@ interface Option {
 interface Props {
   id?: string;
   projectId?: string;
+  excludeProjectId?: string;
   emptyOptionMessage?: MessageDescriptor;
   onProjectFilter: (filter: Option) => void;
 }
@@ -24,6 +25,7 @@ interface Props {
 const ProjectFilter = ({
   id,
   projectId,
+  excludeProjectId,
   emptyOptionMessage,
   onProjectFilter,
 }: Props) => {
@@ -57,7 +59,8 @@ const ProjectFilter = ({
       id={id || 'e2e-report-builder-project-filter-box'}
       width="100%"
       mb="20px"
-      projectId={projectId}
+      selectedProjectId={projectId}
+      excludeProjectId={excludeProjectId}
       emptyOptionMessage={getEmptyOptionMessage()}
       onProjectFilter={handleProjectFilter}
       includeHiddenProjects={true}
