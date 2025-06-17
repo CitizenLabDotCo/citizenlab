@@ -9,11 +9,11 @@ resource 'Jobs' do
   header 'Content-Type', 'application/json'
 
   get 'web_api/v1/jobs' do
-    parameter :project_id, 'Filter by project id', required: false
-    parameter :owner_id, 'Filter by owner id', required: false
-    parameter :context_type, 'Filter by context type', required: false
-    parameter :context_id, 'Filter by context id', required: false
-    parameter :completed, 'Filter by completion status', required: false
+    parameter :project_id, 'Filter by project id', required: false, type: :string
+    parameter :owner_id, 'Filter by owner id', required: false, type: :string
+    parameter :context_type, 'Filter by context type', required: false, type: :string
+    parameter :context_id, 'Filter by context id', required: false, type: :string
+    parameter :completed, 'Filter by completion status', required: false, type: :boolean
 
     let_it_be(:jobs) { create_list(:jobs_tracker, 3) }
 
