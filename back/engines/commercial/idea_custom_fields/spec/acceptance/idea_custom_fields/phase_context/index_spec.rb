@@ -73,7 +73,7 @@ resource 'Idea Custom Fields' do
       let(:project) { create(:project, phases[past_phase]) }
 
       context 'when survey form not persisted' do
-        shared_examples "default survey custom fields" do
+        shared_examples 'default survey custom fields' do
           example_request 'List default survey custom fields' do
             assert_status 200
             expect(response_data.size).to eq 3
@@ -88,7 +88,7 @@ resource 'Idea Custom Fields' do
         context 'when admin' do
           before { admin_header_token }
 
-          include_examples "default survey custom fields"
+          include_examples 'default survey custom fields'
         end
 
         context 'when regular user' do
@@ -96,11 +96,11 @@ resource 'Idea Custom Fields' do
 
           let(:user) { create(:user) }
 
-          include_examples "default survey custom fields"
+          include_examples 'default survey custom fields'
         end
 
         context 'when visitor' do
-          include_examples "default survey custom fields"
+          include_examples 'default survey custom fields'
         end
       end
 
@@ -108,7 +108,7 @@ resource 'Idea Custom Fields' do
         let(:form2) { create(:custom_form, participation_context: current_phase) }
         let!(:custom_field2) { create(:custom_field_text, resource: form2, key: 'survey2_field') }
 
-        shared_examples "non-default survey custom fields" do
+        shared_examples 'non-default survey custom fields' do
           example_request 'List all custom fields for a survey' do
             assert_status 200
             expect(response_data.size).to eq 1
@@ -121,7 +121,7 @@ resource 'Idea Custom Fields' do
         context 'when admin' do
           before { admin_header_token }
 
-          include_examples "non-default survey custom fields"
+          include_examples 'non-default survey custom fields'
         end
 
         context 'when regular user' do
@@ -129,11 +129,11 @@ resource 'Idea Custom Fields' do
 
           let(:user) { create(:user) }
 
-          include_examples "non-default survey custom fields"
+          include_examples 'non-default survey custom fields'
         end
 
         context 'when visitor' do
-          include_examples "non-default survey custom fields"
+          include_examples 'non-default survey custom fields'
         end
       end
     end
