@@ -27,11 +27,7 @@ namespace :cl2back do
       if idea_status.nil?
         puts "ERROR: No idea status found with code '#{args[:status_code]}'."
       else
-        idea_ids = []
-
-        File.readlines(args[:file_url]).each do |line|
-          idea_ids << line.strip
-        end
+        idea_ids = File.readlines(args[:file_url]).map(&:strip)
 
         idea_ids.each do |idea_id|
           idea = Idea.find_by(id: idea_id)
@@ -53,15 +49,13 @@ namespace :cl2back do
             rescue ActiveRecord::RecordInvalid, StandardError => e
               puts "ERROR: Updating Idea.id: #{idea.id} failed! Reason: #{e.message}"
             end
+          elsif idea.valid?
+            puts "Idea would be updated to new #{idea_status&.code.inspect} status: yes"
           else
-            if idea.valid?
-              puts "Idea would be updated to new #{idea_status&.code.inspect} status: yes"
-            else
-              puts "Idea would be updated to new #{idea_status&.code.inspect} status: NO!"
-              puts "Validation errors:"
-              idea.errors.full_messages.each do |error|
-                puts "  - #{error}"
-              end
+            puts "Idea would be updated to new #{idea_status&.code.inspect} status: NO!"
+            puts 'Validation errors:'
+            idea.errors.full_messages.each do |error|
+              puts "  - #{error}"
             end
           end
         end
