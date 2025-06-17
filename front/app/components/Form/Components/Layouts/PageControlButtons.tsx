@@ -99,10 +99,10 @@ const PageControlButtons = ({
     if (participationMethod === 'common_ground') {
       // We redirect admins to the input manager to easily manage inputs
       // and users to their own input.
-      if (isUserAdmin) {
-        return formatMessage(messages.backToInputManager);
-      }
-      return formatMessage(messages.viewYourInput);
+      const messageKey = isUserAdmin
+        ? messages.backToInputManager
+        : messages.viewYourInput;
+      return formatMessage(messageKey);
     }
 
     if (participationMethod === 'native_survey') {
