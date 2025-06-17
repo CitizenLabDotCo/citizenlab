@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created',
     defaultMessage: 'Recently created',
   },
-  manager: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager',
-    defaultMessage: 'Manager',
-  },
   status: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.status',
     defaultMessage: 'Status',
