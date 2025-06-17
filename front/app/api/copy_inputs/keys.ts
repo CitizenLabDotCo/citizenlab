@@ -8,10 +8,6 @@ const inputsKeys = {
   list: (parameters: { phaseId: string }) => [
     { ...baseKey, operation: 'list', parameters },
   ],
-  items: () => [{ ...baseKey, operation: 'item' }],
-  item: (parameters: { id: string }) => [
-    { ...baseKey, operation: 'item', parameters },
-  ],
 } satisfies QueryKeys;
 
 export default inputsKeys;
