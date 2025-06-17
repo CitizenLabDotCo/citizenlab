@@ -43,19 +43,18 @@ const generateYupValidationSchema = ({
 
     switch (input_type) {
       case 'text_multiloc': {
-        if (key === 'title_multiloc' && enabled) {
-          schema[key] = validateAtLeastOneLocale(
-            formatMessage(messages.titleRequired),
-            {
-              validateEachNonEmptyLocale: (schema) =>
-                schema
-                  .min(3, formatMessage(messages.titleMinLength, { min: 3 }))
-                  .max(
-                    120,
-                    formatMessage(messages.titleMaxLength, { max: 120 })
-                  ),
-            }
-          );
+        if (key === 'title_multiloc') {
+          schema[key] = enabled
+            ? validateAtLeastOneLocale(formatMessage(messages.titleRequired), {
+                validateEachNonEmptyLocale: (schema) =>
+                  schema
+                    .min(3, formatMessage(messages.titleMinLength, { min: 3 }))
+                    .max(
+                      120,
+                      formatMessage(messages.titleMaxLength, { max: 120 })
+                    ),
+              })
+            : {};
         } else {
           schema[key] = required
             ? validateAtLeastOneLocale(formatMessage(messages.titleRequired))
@@ -65,17 +64,19 @@ const generateYupValidationSchema = ({
       }
 
       case 'html_multiloc': {
-        if (key === 'body_multiloc' && enabled) {
-          schema[key] = validateAtLeastOneLocale(
-            formatMessage(messages.descriptionRequired),
-            {
-              validateEachNonEmptyLocale: (schema) =>
-                schema.min(
-                  3, // I'm not seeing the error for this case
-                  formatMessage(messages.descriptionMinLength, { min: 3 })
-                ),
-            }
-          );
+        if (key === 'body_multiloc') {
+          schema[key] = enabled
+            ? validateAtLeastOneLocale(
+                formatMessage(messages.descriptionRequired),
+                {
+                  validateEachNonEmptyLocale: (schema) =>
+                    schema.min(
+                      3, // I'm not seeing the error for this case
+                      formatMessage(messages.descriptionMinLength, { min: 3 })
+                    ),
+                }
+              )
+            : {};
         } else {
           schema[key] = required
             ? validateAtLeastOneLocale(
@@ -88,10 +89,11 @@ const generateYupValidationSchema = ({
 
       case 'text':
       case 'multiline_text': {
-        if (key === 'location_description' && enabled) {
-          schema[key] = required
-            ? string().required(fieldRequired).nullable()
-            : string().nullable();
+        if (key === 'location_description') {
+          schema[key] =
+            required && enabled
+              ? string().required(fieldRequired).nullable()
+              : string().nullable();
         } else {
           schema[key] = required ? string().required(fieldRequired) : string();
         }
@@ -99,14 +101,15 @@ const generateYupValidationSchema = ({
       }
 
       case 'number': {
-        if (key === 'proposed_budget' && enabled) {
-          schema[key] = required
-            ? number().required(fieldRequired)
-            : number()
-                .transform((value, originalValue) =>
-                  originalValue === '' ? null : value
-                )
-                .nullable();
+        if (key === 'proposed_budget') {
+          schema[key] =
+            required && enabled
+              ? number().required(fieldRequired)
+              : number()
+                  .transform((value, originalValue) =>
+                    originalValue === '' ? null : value
+                  )
+                  .nullable();
         }
 
         schema[key] = required
