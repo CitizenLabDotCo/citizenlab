@@ -2117,6 +2117,7 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Users",
   "app.containers.AdminPage.ProjectFiles.addFile": "Add file",
+  "app.containers.AdminPage.ProjectFiles.searchFiles": "Search files",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Collapse all fields",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Field description",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Edit input form",
