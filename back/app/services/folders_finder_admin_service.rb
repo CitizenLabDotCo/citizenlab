@@ -23,13 +23,10 @@ class FoldersFinderAdminService
     return scope if manager_ids.blank?
 
     managers = User.where(id: manager_ids)
-    moderated_folders = []
-
-    managers.each do |manager|
-      manager.roles.each do |role|
-        if role['type'] == 'project_folder_moderator'
-          moderated_folders << role['project_folder_id']
-        end
+    
+    moderated_folders = managers.flat_map do |manager|
+      manager.roles.select { |role| role['type'] == 'project_folder_moderator' }.map do
+        |role| role['project_folder_id']
       end
     end
 
