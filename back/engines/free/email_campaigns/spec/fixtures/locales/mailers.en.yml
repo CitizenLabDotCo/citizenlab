@@ -215,10 +215,17 @@ en:
       yesterday: Yesterday
     comment_on_idea_you_follow:
       cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on the idea ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
       main_header:
         idea: '%{authorName} commented on an idea you follow'
-      subject: 'There''s a new comment on an idea you follow'
+        question: '%{authorName} commented on a question you follow'
+        contribution: '%{authorName} commented on a contribution you follow'
+        project: '%{authorName} commented on a project you follow'
+        issue: '%{authorName} commented on an issue you follow'
+        option: '%{authorName} commented on an option you follow'
+        proposal: '%{authorName} commented on a proposal you follow'
+        petition: '%{authorName} commented on a petition you follow'
+      subject: 'There''s a new comment on "%{input_title}"'
       preheader: '%{authorName} left a comment on an idea for %{organizationName}'
     new_idea_for_admin:
       new_idea_for_admin:
