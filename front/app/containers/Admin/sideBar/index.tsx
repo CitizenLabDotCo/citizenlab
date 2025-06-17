@@ -86,7 +86,7 @@ const getTopAndBottomNavItems = (navItems: NavItem[]) => {
 interface Props {
   authUser: IUser;
   appConfiguration: IAppConfiguration;
-  projectLibraryCountries: ProjectLibraryCountries;
+  projectLibraryCountries?: ProjectLibraryCountries;
 }
 
 const Sidebar = ({
@@ -212,9 +212,27 @@ const Sidebar = ({
 const SidebarWrapper = () => {
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: projectLibraryCountries } = useProjectLibraryCountries();
+  const { data: projectLibraryCountries, error } = useProjectLibraryCountries();
 
-  if (!authUser || !appConfiguration || !projectLibraryCountries) return null;
+  // We need this because locally, you don't always want
+  // to have the project library running.
+  // This way, the sidebar will wait for the project library countries
+  // to be fetched before rendering, but it will still render
+  // the sidebar if the project library countries endpoint is not available
+  // (i.e. when it returns an error).
+  const shouldWaitForProjectLibraryCountries = () => {
+    if (projectLibraryCountries) return false;
+    if (error) return false;
+    return true;
+  };
+
+  if (
+    !authUser ||
+    !appConfiguration ||
+    shouldWaitForProjectLibraryCountries()
+  ) {
+    return null;
+  }
 
   return (
     <Sidebar

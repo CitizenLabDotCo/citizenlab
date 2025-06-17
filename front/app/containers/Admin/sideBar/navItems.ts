@@ -32,12 +32,13 @@ const getInspirationHubLink = (country_code: string) => {
 
 const getDefaultNavItems = (
   { data }: IAppConfiguration,
-  projectLibraryCountries: ProjectLibraryCountries
+  projectLibraryCountries?: ProjectLibraryCountries
 ): NavItem[] => {
   const country_code = coreSettings(data).country_code;
 
   const countryCodeSupported = (() => {
     if (country_code === null) return false;
+    if (!projectLibraryCountries) return false;
 
     const countriesSupportedByLibrary =
       projectLibraryCountries.data.attributes.map((country) => country.code);
