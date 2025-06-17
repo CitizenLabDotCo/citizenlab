@@ -83,7 +83,7 @@ module EmailCampaigns
       sender_configurable? object
     }
     attribute :subject_multiloc, if: proc { |object|
-      content_configurable? object
+      content_configurable?(object)
     }
     attribute :body_multiloc, if: proc { |object|
       content_configurable? object
@@ -95,12 +95,20 @@ module EmailCampaigns
     }
 
     # For customisation & preview of regions of the automated emails
-    attribute :custom_text_multiloc do |object|
-      object.custom_text_multiloc
-    end
     attribute :editable_regions do |object|
       object.mailer_class.editable_regions
     end
+    attribute :title_multiloc, if: proc { |object|
+      content_configurable?(object)
+    }
+    attribute :intro_multiloc, if: proc { |object|
+      content_configurable? object
+    } do |object|
+      TextImageService.new.render_data_images_multiloc object.intro_multiloc, field: :intro_multiloc, imageable: object
+    end
+    attribute :button_text_multiloc, if: proc { |object|
+      content_configurable?(object)
+    }
     attribute :has_preview do |object|
       object.mailer_class.respond_to?(:preview_email)
     end

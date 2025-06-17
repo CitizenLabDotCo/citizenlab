@@ -7,13 +7,11 @@ module EmailCampaigns
     layout 'campaign_mailer_minimal'
 
     def body
-      multiloc_service = MultilocService.new
-      @app_configuration = AppConfiguration.instance
-
-      body_html_with_liquid = multiloc_service.t(command[:body_multiloc], locale.to_s)
-      body_html_with_fixed_images = fix_image_widths(body_html_with_liquid)
-      template = Liquid::Template.parse(body_html_with_fixed_images)
-      template.render(liquid_params(recipient))
+      render_liquid_template(
+        text: MultilocService.new.t(command[:body_multiloc], locale.to_s),
+        values: liquid_params(recipient),
+        html: true
+      )
     end
 
     def body_text
@@ -61,19 +59,6 @@ module EmailCampaigns
 
     def home_url
       url_service.home_url(app_configuration: app_configuration, locale: locale)
-    end
-
-    def fix_image_widths(html)
-      doc = Nokogiri::HTML.fragment(html)
-
-      doc.css('img').each do |img|
-        # Set the width to 100% if it's not set.
-        # Otherwise, the image will be displayed at its original size.
-        # This can mess up the layout if the original image is e.g. 4000px wide.
-        img['width'] = '100%' if img['width'].blank?
-      end
-
-      doc.to_s
     end
   end
 end

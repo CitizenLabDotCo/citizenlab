@@ -147,7 +147,9 @@ module EmailCampaigns
         group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales,
-        custom_text_multiloc: I18n.available_locales.index_with { |_locale| {} } # TODO: Need to allow specific locales with nested attributes here
+        title_multiloc: I18n.available_locales,
+        intro_multiloc: I18n.available_locales,
+        button_text_multiloc: I18n.available_locales
       )
     end
   end

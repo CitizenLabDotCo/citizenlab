@@ -841,6 +841,7 @@
   "app.containers.Admin.emails.failed": "Failed",
   "app.containers.Admin.emails.fieldBody": "Message",
   "app.containers.Admin.emails.fieldBodyError": "Provide an email message for all languages",
+  "app.containers.Admin.emails.fieldMultilocError": "Please provide a value for all languages",
   "app.containers.Admin.emails.fieldReplyTo": "Replies should go to",
   "app.containers.Admin.emails.fieldReplyToEmailError": "Provide an email address in the correct format, for example name@provider.com",
   "app.containers.Admin.emails.fieldReplyToError": "Provide an email address",

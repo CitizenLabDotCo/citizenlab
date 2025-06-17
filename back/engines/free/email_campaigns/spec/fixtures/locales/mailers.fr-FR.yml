@@ -1,0 +1,16 @@
+fr:
+  email_campaigns:
+    comment_on_idea_you_follow:
+      cta_reply_to: 'Répondre à %{commentAuthor}'
+      event_description: '%{authorNameFull} a réagi à « %{inputTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
+      main_header:
+        idea: '%{authorName} a commenté une idée que vous suivez'
+        question: '%{authorName} a commenté une question que vous suivez'
+        contribution: '%{authorName} a commenté une contribution que vous suivez'
+        project: '%{authorName} a commenté un projet que vous suivez'
+        issue: '%{authorName} a commenté un problème que vous suivez'
+        option: '%{authorName} a commenté une option que vous suivez'
+        proposal: '%{authorName} a commenté une proposition que vous suivez'
+        petition: '%{authorName} a commenté une pétition que vous suivez'
+      subject: 'Il y a un nouveau commentaire sur « %{input_title} »'
+      preheader: '%{authorName} a publié un commentaire sur une idée pour %{organizationName}'

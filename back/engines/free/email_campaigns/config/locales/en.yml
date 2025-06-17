@@ -84,11 +84,11 @@ en:
         "5": "Weekly, on Fridays at %{hourOfDay}"
         "6": "Weekly, on Saturdays at %{hourOfDay}"
       quarterly: "Quarterly, on the first day of the quarter"
-    edit_region_names:
-      subject: "Subject"
-      header_title: "Title"
-      header_message: "Message"
-      cta_button_text: "Button text"
+    editable_region_names:
+      subject_multiloc: "Subject"
+      title_multiloc: "Title"
+      intro_multiloc: "Introduction"
+      button_text_multiloc: "Button text"
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
