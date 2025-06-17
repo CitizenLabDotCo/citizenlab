@@ -15,7 +15,7 @@ import useReports from 'api/reports/useReports';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import SearchInput from 'components/UI/SearchInput';
 import Warning from 'components/UI/Warning';
 
@@ -182,7 +182,7 @@ const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
         {!showEmptyState && (
           <Box display="flex" alignItems="center">
             <BuilderNotAllowedTooltip disabled={isReportBuilderAllowed}>
-              <Button
+              <ButtonWithLink
                 onClick={openModal}
                 icon="plus-circle"
                 buttonStyle="admin-dark"
@@ -190,7 +190,7 @@ const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
                 data-cy="e2e-create-report-button"
               >
                 <FormattedMessage {...messages.createAReport} />
-              </Button>
+              </ButtonWithLink>
             </BuilderNotAllowedTooltip>
           </Box>
         )}

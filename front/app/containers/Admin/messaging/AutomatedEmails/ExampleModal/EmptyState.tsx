@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -20,12 +20,12 @@ const EmptyState = () => {
         <FormattedMessage {...messages.seeEmailHereText} />
       </Text>
       <Box display="flex" justifyContent="center" mt="32px">
-        <Button
+        <ButtonWithLink
           linkTo={formatMessage(messages.supportButtonLink) as RouteType}
           openLinkInNewTab
         >
           <FormattedMessage {...messages.supportButtonLabel} />
-        </Button>
+        </ButtonWithLink>
       </Box>
     </Box>
   );

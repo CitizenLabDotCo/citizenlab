@@ -743,10 +743,18 @@ resource 'Ideas' do
       let(:publication_status) { 'published' }
 
       context 'when visitor' do
-        example_request '[Unauthorized] Cannot create a common-ground input' do
-          assert_status 401
-          expect(json_response_body)
-            .to match(errors: { base: [{ error: 'Unauthorized!' }] })
+        context 'when posting_idea is permitted to everyone' do
+          before do
+            phase.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'everyone')
+          end
+
+          # Even when posting is permitted, common ground inputs cannot be created by
+          # visitors because the participation method do not allow inputs without an author.
+          example_request '[Unauthorized] Cannot create a common-ground input' do
+            assert_status 401
+            expect(json_response_body)
+              .to match(errors: { base: [{ error: 'Unauthorized!' }] })
+          end
         end
       end
 

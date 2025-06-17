@@ -17,7 +17,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -109,7 +109,7 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
           ml="auto"
         >
           {showEditFormButton && (
-            <Button
+            <ButtonWithLink
               icon="edit"
               linkTo={linkToFormBuilder}
               buttonStyle="primary-inverse"
@@ -117,7 +117,7 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
               mr="12px"
             >
               <FormattedMessage {...messages.editForm} />
-            </Button>
+            </ButtonWithLink>
           )}
           <IconButton
             iconName="close"
@@ -154,14 +154,14 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
             alignItems="center"
             gap="20px"
           >
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
             >
               <FormattedMessage {...messages.cancelLeaveIdeaButtonText} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               icon={authUser ? 'arrow-left-circle' : 'delete'}
               buttonStyle={authUser ? 'primary' : 'delete'}
               width="100%"
@@ -170,7 +170,7 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
               data-cy="e2e-confirm-leave-new-idea-button"
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Box>
       </Modal>

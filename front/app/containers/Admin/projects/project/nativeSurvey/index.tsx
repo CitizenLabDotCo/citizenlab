@@ -15,7 +15,7 @@ import useLocale from 'hooks/useLocale';
 import FormResults from 'components/admin/FormResults';
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
@@ -122,7 +122,7 @@ const Forms = () => {
                 }}
               />
             </Box>
-            <Button
+            <ButtonWithLink
               linkTo={inputImporterLink}
               icon="page"
               iconSize="20px"
@@ -131,8 +131,8 @@ const Forms = () => {
               mr="8px"
             >
               {formatMessage(messages.importInputs)}
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
               icon="plus"
               buttonStyle="primary"
@@ -141,7 +141,7 @@ const Forms = () => {
               mr="8px"
             >
               {formatMessage(messages.newSubmission1)}
-            </Button>
+            </ButtonWithLink>
             <DropdownSettings
               haveSubmissionsComeIn={haveSubmissionsComeIn}
               handleDownloadResults={handleDownloadResults}

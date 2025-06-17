@@ -33,7 +33,7 @@ import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Title from 'components/PostShowComponents/Title';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileAttachments from 'components/UI/FileAttachments';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -212,16 +212,16 @@ const AdminIdeaContent = ({
   return (
     <Container>
       <Top>
-        <Button
+        <ButtonWithLink
           mr="8px"
           buttonStyle="primary"
           icon="edit"
           onClick={handleClickEdit}
         >
           <FormattedMessage {...messages.edit} />
-        </Button>
+        </ButtonWithLink>
         {!isCommonGround && (
-          <Button
+          <ButtonWithLink
             linkTo={`/ideas/${idea.data.attributes.slug}`}
             // We open in a new tab not lose state of the input manager
             openLinkInNewTab
@@ -229,16 +229,16 @@ const AdminIdeaContent = ({
             buttonStyle="secondary-outlined"
           >
             <FormattedMessage {...messages.view} />
-          </Button>
+          </ButtonWithLink>
         )}
-        <Button
+        <ButtonWithLink
           id="e2e-input-manager-side-modal-delete-button"
           buttonStyle="text"
           icon="delete"
           onClick={handleClickDelete}
         >
           <FormattedMessage {...messages.delete} />
-        </Button>
+        </ButtonWithLink>
       </Top>
       <Content>
         {!isNilOrError(project) && (

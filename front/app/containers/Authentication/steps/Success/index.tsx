@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -33,7 +33,7 @@ const Success = ({ loading, onContinue }: Props) => {
       <Text mt="8px" mb="24px" color="tenantText">
         {formatMessage(messages.nowContinueYourParticipation)}
       </Text>
-      <Button
+      <ButtonWithLink
         id="e2e-success-continue-button"
         mb="0"
         width="auto"
@@ -42,7 +42,7 @@ const Success = ({ loading, onContinue }: Props) => {
         onClick={onContinue}
       >
         {formatMessage(stepMessages.continue)}
-      </Button>
+      </ButtonWithLink>
     </Box>
   );
 };

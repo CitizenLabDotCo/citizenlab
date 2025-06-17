@@ -18,7 +18,7 @@ import { IPhase, ParticipationMethod } from 'api/phases/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 
@@ -400,15 +400,15 @@ const ParticipationMethodPicker = ({
             width="100%"
             alignItems="center"
           >
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
               mr="16px"
             >
               <FormattedMessage {...messages2.cancelMethodChange} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               buttonStyle="delete"
               width="100%"
               onClick={() => {
@@ -417,7 +417,7 @@ const ParticipationMethodPicker = ({
               }}
             >
               <FormattedMessage {...messages2.confirmMethodChange} />
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Box>
       </Modal>

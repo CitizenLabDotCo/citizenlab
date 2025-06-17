@@ -81,6 +81,15 @@ module Jobs
     validates :progress, numericality: { greater_than_or_equal_to: :error_count }
     validates :error_count, numericality: { greater_than_or_equal_to: 0 }
 
+    scope :completed, lambda { |completed = true|
+      case completed
+      when true then where.not(completed_at: nil)
+      when false then where(completed_at: nil)
+      when nil then all
+      else (raise ArgumentError, "Invalid value for 'completed': #{completed.inspect}")
+      end
+    }
+
     def completed?
       completed_at.present?
     end

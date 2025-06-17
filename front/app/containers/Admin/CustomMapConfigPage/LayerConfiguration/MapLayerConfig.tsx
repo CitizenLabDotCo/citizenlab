@@ -22,7 +22,7 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -67,7 +67,7 @@ const FooterRight = styled.div`
   margin-left: 15px;
 `;
 
-const CancelButton = styled(Button)`
+const CancelButton = styled(ButtonWithLink)`
   margin-left: 10px;
 `;
 
@@ -343,14 +343,14 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
 
         <Footer>
           <FooterLeft>
-            <Button
+            <ButtonWithLink
               buttonStyle="admin-dark"
               onClick={handleOnSubmit}
               processing={processing}
               disabled={!touched}
             >
               <FormattedMessage {...messages.save} />
-            </Button>
+            </ButtonWithLink>
 
             <CancelButton
               buttonStyle="secondary-outlined"

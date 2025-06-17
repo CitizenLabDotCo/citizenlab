@@ -11,7 +11,7 @@ import CommonGroundInputManager from 'components/admin/PostManager/CommonGroundI
 import InputManager, {
   TFilterMenu,
 } from 'components/admin/PostManager/InputManager';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -47,7 +47,7 @@ const AdminProjectIdeas = () => {
 
   return (
     <>
-      <AnalysisBanner projectId={projectId} />
+      <AnalysisBanner projectId={projectId} phaseId={phaseId} scope="project" />
       <Box mb="30px">
         <Box
           display="flex"
@@ -60,14 +60,14 @@ const AdminProjectIdeas = () => {
           </Title>
           <Box display="flex" gap="8px">
             {!isCommonGround && (
-              <Button
+              <ButtonWithLink
                 width="auto"
                 linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
                 icon="page"
                 buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...ownMessages.importInputs} />
-              </Button>
+              </ButtonWithLink>
             )}
             {phase && (
               <NewIdeaButton

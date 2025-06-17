@@ -5,7 +5,7 @@ import { RouteType } from 'routes';
 
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -41,7 +41,7 @@ const NewIdeaButton = ({ linkTo, inputTerm, participationMethod }: Props) => {
         );
 
   return (
-    <Button
+    <ButtonWithLink
       id="e2e-new-idea"
       buttonStyle="admin-dark"
       icon="plus"
