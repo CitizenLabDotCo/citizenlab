@@ -113,7 +113,7 @@ resource 'Idea Custom Fields' do
           example 'List survey fields in project for groups including user' do
             project.update!(visible_to: 'groups')
             group = create(:group)
-            membership = create(:membership, group: group, user: user)
+            create(:membership, group: group, user: user)
             create(:groups_project, group: group, project: project)
             do_request
             assert_status 200
@@ -179,7 +179,7 @@ resource 'Idea Custom Fields' do
           example 'List survey fields in project for groups including user' do
             project.update!(visible_to: 'groups')
             group = create(:group)
-            membership = create(:membership, group: group, user: user)
+            create(:membership, group: group, user: user)
             create(:groups_project, group: group, project: project)
             do_request
             assert_status 200
