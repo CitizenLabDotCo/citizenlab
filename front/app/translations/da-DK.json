@@ -166,6 +166,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "Vi ses der, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Færre oplysninger blev synlige om begivenheder.",
   "app.components.EventCard.a11y_moreContentVisible": "Flere oplysninger om begivenheder blev synlige.",
+  "app.components.EventCard.a11y_readMore": "Læs mere om arrangementet \"{eventTitle}\".",
   "app.components.EventCard.endsAt": "Slutter den",
   "app.components.EventCard.readMore": "Læs mere",
   "app.components.EventCard.showLess": "Vis mindre",
