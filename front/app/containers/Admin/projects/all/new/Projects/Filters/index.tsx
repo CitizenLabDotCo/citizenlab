@@ -2,15 +2,19 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { useIntl } from 'utils/cl-intl';
+
 import Manager from '../../_shared/Manager';
 import Search from '../../_shared/Search';
 import Status from '../../_shared/Status';
 import { useParam, setParam } from '../utils';
 
 import Dates from './Dates';
+import messages from './messages';
 import Sort from './Sort';
 
 const Filters = () => {
+  const { formatMessage } = useIntl();
   const managerIds = useParam('managers') ?? [];
   const searchValue = useParam('search');
   const statuses = useParam('status') ?? [];
@@ -41,6 +45,7 @@ const Filters = () => {
       </Box>
       <Search
         value={searchValue}
+        placeholder={formatMessage(messages.search)}
         onChange={(search) => {
           setParam('search', search);
         }}
