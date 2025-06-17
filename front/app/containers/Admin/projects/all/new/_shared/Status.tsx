@@ -6,10 +6,9 @@ import FilterSelector from 'components/FilterSelector';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { PUBLICATION_STATUS_LABELS } from '../../constants';
-import { useParam, setParam } from '../utils';
-
-import messages from './messages';
+import { PUBLICATION_STATUS_LABELS } from '../constants';
+import messages from '../Projects/Filters/messages';
+import { useParam, setParam } from '../Projects/utils';
 
 type Option = {
   value: PublicationStatus;

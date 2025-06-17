@@ -10,7 +10,11 @@ import { getFullName } from 'utils/textUtils';
 import messages from '../Projects/Filters/messages';
 import { useParam, setParam } from '../Projects/utils';
 
-const Manager = () => {
+interface Props {
+  mr?: string;
+}
+
+const Manager = ({ mr = '0px' }: Props) => {
   const { formatMessage } = useIntl();
   const values = useParam('managers') ?? [];
   const { data: managers } = useUsers({
@@ -30,7 +34,7 @@ const Manager = () => {
       multipleSelectionAllowed
       selected={values}
       values={options}
-      mr="0px"
+      mr={mr}
       onChange={(value) => {
         setParam('managers', value);
       }}
