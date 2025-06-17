@@ -88,7 +88,7 @@ const CustomFieldsForm = ({
           project_id: projectId,
           phase_ids,
           publication_status:
-            participationMethod === 'common_ground' ? 'published' : undefined, // TODO: Handling this on the FE for now, but should be handled on the BE
+            participationMethod === 'common_ground' ? 'published' : undefined,
         });
         updateSearchParams({ idea_id: idea.data.id });
       } else {
