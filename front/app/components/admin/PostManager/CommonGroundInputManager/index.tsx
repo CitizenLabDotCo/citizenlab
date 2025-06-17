@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Table,
@@ -15,7 +15,7 @@ import {
   Checkbox,
 } from '@citizenlab/cl2-component-library';
 
-import useJobProgressByPhase from 'api/copy_inputs/useJobProgressByPhase';
+import useJobInProgressByPhase from 'api/copy_inputs/useJobInProgressByPhase';
 import { IIdeaData, IIdeaQueryParameters } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
 import useProjectById from 'api/projects/useProjectById';
@@ -60,17 +60,31 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
     phase: phaseId,
     transitive: false,
   });
-  const { data: ideas, isLoading } = useIdeas(queryParameters);
+
   const [previewPostId, setPreviewPostId] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
   const [selection, setSelection] = useState<Set<string>>(new Set());
   const [showPastInputsModal, setShowPastInputsModal] = useState(false);
-  const { data: jobProgressData } = useJobProgressByPhase(phaseId);
-  const jobProgress = jobProgressData?.data[0];
-  const importedCount = jobProgress?.attributes.progress;
-  const totalInputsToBeImported = jobProgress?.attributes.total;
+  const { data: jobProgressData } = useJobInProgressByPhase(phaseId);
+  const { progress: importedCount, total: totalInputsToBeImported } =
+    jobProgressData?.data[0]?.attributes || {};
+  const isJobInProgress = importedCount !== undefined;
 
   const resetSelection = () => setSelection(new Set());
+
+  useEffect(() => {
+    setQueryParameters((prevParams) => ({
+      ...prevParams,
+      'page[number]': 1,
+      projects: [projectId],
+      phase: phaseId,
+    }));
+
+    resetSelection();
+  }, [projectId, phaseId]);
+
+  const { data: ideas, isLoading } = useIdeas(queryParameters);
+
   const openPreviewEdit = () => {
     const id = [...selection][0];
     if (selection.size === 1 && id) {
@@ -122,7 +136,7 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
       <NoPostPage>
         <Icon name="sidebar-pages-menu" />
         <NoPostHeader>
-          {jobProgress ? (
+          {isJobInProgress ? (
             <FormattedMessage
               {...messages.inputImportProgress}
               values={{ importedCount, totalCount: totalInputsToBeImported }}
@@ -145,7 +159,7 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
           <Button
             buttonStyle="admin-dark"
             onClick={() => setShowPastInputsModal(true)}
-            disabled={!!jobProgress}
+            disabled={!!isJobInProgress}
           >
             <FormattedMessage {...messages.startFromPastInputs} />
           </Button>
@@ -164,7 +178,7 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
 
   return (
     <>
-      {jobProgress && (
+      {isJobInProgress && (
         <Warning>
           <Box display="flex">
             <FormattedMessage
