@@ -28,7 +28,44 @@ namespace :cl2back do
       if idea_status.nil?
         puts "ERROR: No idea status found with code '#{args[:status_code]}'."
       else
-        puts 'Yay! Found the status!'
+        idea_ids = []
+
+        File.readlines(args[:file_url]).each do |line|
+          idea_ids << line.strip
+        end
+
+        idea_ids.each do |idea_id|
+          idea = Idea.find_by(id: idea_id)
+
+          puts "IDEA NOT FOUND: With ID: #{idea_id}" unless idea
+          next unless idea
+
+          if idea.idea_status_id == idea_status.id
+            puts "NO CHANGE: Idea.id: #{idea.id} already has status: #{idea&.idea_status&.code.inspect}"
+            next
+          end
+
+          idea.idea_status_id = idea_status.id
+
+          if live_run == true
+            begin
+              idea.save!
+              puts "Idea.id: #{idea.id} updated to status: #{idea&.idea_status&.code.inspect}"
+            rescue ActiveRecord::RecordInvalid, StandardError => e
+              puts "ERROR: Updating Idea.id: #{idea.id} failed! Reason: #{e.message}"
+            end
+          else
+            if idea.valid?
+              puts "Idea would be updated to new #{idea_status&.code.inspect} status: yes"
+            else
+              puts "Idea would be updated to new #{idea_status&.code.inspect} status: NO!"
+              puts "Validation errors:"
+              idea.errors.full_messages.each do |error|
+                puts "  - #{error}"
+              end
+            end
+          end
+        end
       end
     end
 
