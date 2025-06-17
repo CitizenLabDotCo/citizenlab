@@ -220,8 +220,13 @@ const SidebarWrapper = () => {
     return true;
   };
 
-  if (!authUser || !appConfiguration || shouldWaitForProjectLibraryCountries())
+  if (
+    !authUser ||
+    !appConfiguration ||
+    shouldWaitForProjectLibraryCountries()
+  ) {
     return null;
+  }
 
   return (
     <Sidebar
