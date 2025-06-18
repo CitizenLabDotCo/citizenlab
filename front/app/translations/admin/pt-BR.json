@@ -928,7 +928,7 @@
   "app.containers.Admin.inspirationHub.UpsellNudge.upsellTitle": "Participe de uma rede de profissionais pioneiros em democracia",
   "app.containers.Admin.inspirationHub.Volunteering": "Voluntariado",
   "app.containers.Admin.inspirationHub.Voting": "Votação",
-  "app.containers.Admin.inspirationHub.commnonGround": "Pontos em comum",
+  "app.containers.Admin.inspirationHub.commonGround": "Pontos em comum",
   "app.containers.Admin.inspirationHub.filters": "filtros",
   "app.containers.Admin.inspirationHub.resetFilters": "Redefinir filtros",
   "app.containers.Admin.inspirationHub.seemsLike": "Parece que não há mais projetos. Tente alterar o endereço {filters}.",
