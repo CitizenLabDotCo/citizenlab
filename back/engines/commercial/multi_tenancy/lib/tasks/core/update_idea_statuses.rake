@@ -17,10 +17,10 @@ namespace :cl2back do
 
     def safe_attributes(attrs)
       return {} unless attrs.is_a?(Hash)
-      
+
       attrs.transform_values do |value|
         if value.respond_to?(:to_geojson)
-          value.to_s  # Convert to string representation
+          value.to_s
         else
           value
         end
