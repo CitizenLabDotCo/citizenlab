@@ -91,14 +91,14 @@ module EmailCampaigns
     end
 
     def send_preview(campaign, recipient)
-      add_command_defaults(campaign.generate_commands(recipient:), campaign, recipient).each do |command|
+      generate_commands(campaign, recipient, options).each do |command|
         process_command(campaign, command.merge({ recipient: recipient }))
       end
     end
 
     # This only works for emails that are sent out internally
     def preview_html(campaign, recipient)
-      command = add_command_defaults(campaign.generate_commands(recipient:), campaign, recipient).first&.merge(recipient: recipient)
+      command = generate_commands(campaign, recipient, options).first&.merge(recipient: recipient)
       return unless command
 
       mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
@@ -132,7 +132,7 @@ module EmailCampaigns
 
     def assign_campaigns_command(campaigns_with_recipients, options)
       campaigns_with_recipients.flat_map do |(recipient, campaign)|
-        campaign.generate_commands(recipient: recipient, **options) # TODO
+        generate_commands(campaign, recipient, options)
           .map { |command| command.merge(recipient: recipient) }
           .zip([campaign].cycle)
       end
@@ -166,7 +166,8 @@ module EmailCampaigns
         .deliver_later(wait: command[:delay] || 0)
     end
 
-    def add_command_defaults(command, campaign, recipient)
+    def generate_commands(campaign, recipient, options = {})
+      command = campaign.generate_commands(recipient:, **options)
       command.merge(
         recipient: recipient,
         time: Time.zone.now,
