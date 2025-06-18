@@ -62,7 +62,7 @@ module EmailCampaigns
         inputTitle: localize_for_recipient(event.idea_title_multiloc),
         authorName: event.comment_author_name,
         authorNameFull: event.comment_author_name,
-        commentAuthor: event.initiating_user_first_name&.capitalize,
+        commentAuthor: event.initiating_user_first_name&.capitalize
       }
     end
 
