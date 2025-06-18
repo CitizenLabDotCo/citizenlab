@@ -37,10 +37,18 @@ const isRuleConditionMet = (
     question.input_type === 'multiselect' ||
     question.input_type === 'multiselect_image'
   ) {
+    const optionsWithExistingRules = question.options?.filter((option) =>
+      question.logic.rules?.some(
+        (r) => r.if === option.key || r.if === option.id
+      )
+    );
+
     if (rule.if === 'any_other_answer') {
       return (
         value?.length > 0 &&
-        !question.options?.some((option) => option.key === value[0])
+        !optionsWithExistingRules?.some(
+          (option) => value.includes(option.key) || value.includes(option.id)
+        )
       );
     }
 

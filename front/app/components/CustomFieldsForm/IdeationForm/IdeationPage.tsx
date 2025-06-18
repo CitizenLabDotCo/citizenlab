@@ -201,56 +201,7 @@ const IdeationPage = ({
           w="100%"
           data-cy={`e2e-page-number-${currentPageNumber + 1}`}
         >
-          {/* {isMapPage && (
-        <Box
-          id="map_page"
-          w={isMobileOrSmaller ? '100%' : '60%'}
-          minWidth="60%"
-          h="100%"
-            ref={draggableDivRef}
-            key={`esri_map_${currentStepNumber}`}
-        >
-          <EsriMap
-            layers={mapLayers}
-            initialData={{
-              showLegend: true,
-              showLayerVisibilityControl: true,
-              showLegendExpanded: true,
-              showZoomControls: isMobileOrSmaller ? false : true,
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              zoom: Number(mapConfig?.data?.attributes.zoom_level),
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              center: mapConfig?.data?.attributes.center_geojson,
-            }}
-            webMapId={mapConfig?.data.attributes.esri_web_map_id}
-            height="100%"
-          />
-        </Box>
-      )} */}
-
           <Box flex={'1 1 auto'} h="100%" mb="40px">
-            {/* {isMapPage && isMobileOrSmaller && (
-          <Box
-            aria-hidden={true}
-            height="30px"
-            py="20px"
-            ref={dragDividerRef}
-            position="absolute"
-            background={colors.white}
-            w="100%"
-            zIndex="1000"
-          >
-            <Box
-              mx="auto"
-              w="40px"
-              h="4px"
-              bgColor={colors.grey400}
-              borderRadius="10px"
-            />
-          </Box>
-        )} */}
             <Box
               display="flex"
               flexDirection="column"
