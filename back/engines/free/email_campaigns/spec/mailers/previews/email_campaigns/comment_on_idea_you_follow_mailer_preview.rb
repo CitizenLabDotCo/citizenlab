@@ -5,8 +5,9 @@ module EmailCampaigns
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
-      EmailCampaigns::CommentOnIdeaYouFollowMailer.preview_command(recipient: recipient_user)
-      # TODO: Finish this
+      campaign = EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.new
+      command = campaign.mailer_class.preview_command(recipient: recipient_user)
+      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end
   end
 end
