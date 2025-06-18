@@ -76,41 +76,39 @@ module EmailCampaigns
       Delivery.status_counts(object.id)
     end
 
-    attribute :sender, if: proc { |object|
+    attribute :sender, :reply_to, if: proc { |object|
       sender_configurable? object
     }
-    attribute :reply_to, if: proc { |object|
-      sender_configurable? object
+
+    attribute :deliveries_count, if: proc { |object|
+      trackable? object
     }
-    attribute :subject_multiloc, if: proc { |object|
+
+    # For customised emails
+    attribute :subject_multiloc, :title_multiloc, :button_text_multiloc, if: proc { |object|
       content_configurable?(object)
     }
+
     attribute :body_multiloc, if: proc { |object|
       content_configurable? object
     } do |object|
       TextImageService.new.render_data_images_multiloc object.body_multiloc, field: :body_multiloc, imageable: object
     end
-    attribute :deliveries_count, if: proc { |object|
-      trackable? object
-    }
 
-    # For customisation & preview of regions of the automated emails
-    attribute :editable_regions do |object|
-      object.mailer_class.editable_regions
-    end
-    attribute :title_multiloc, if: proc { |object|
-      content_configurable?(object)
-    }
     attribute :intro_multiloc, if: proc { |object|
       content_configurable? object
     } do |object|
       TextImageService.new.render_data_images_multiloc object.intro_multiloc, field: :intro_multiloc, imageable: object
     end
-    attribute :button_text_multiloc, if: proc { |object|
+
+    attribute :editable_regions, if: proc { |object|
       content_configurable?(object)
-    }
+    } do |object|
+      editable_regions?(object) ? object.mailer_class.editable_regions : {}
+    end
+
     attribute :has_preview do |object|
-      object.mailer_class.respond_to?(:preview_command)
+      content_configurable?(object) && previewable?(object)
     end
 
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
@@ -133,6 +131,14 @@ module EmailCampaigns
 
     def self.content_configurable?(object)
       object.class.included_modules.include?(ContentConfigurable)
+    end
+
+    def self.previewable?(object)
+      object.mailer_class.respond_to?(:preview_command)
+    end
+
+    def self.editable_regions?(object)
+      object.mailer_class.respond_to?(:editable_regions)
     end
 
     def self.trackable?(object)

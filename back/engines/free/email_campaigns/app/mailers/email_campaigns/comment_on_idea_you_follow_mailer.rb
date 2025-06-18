@@ -2,6 +2,8 @@
 
 module EmailCampaigns
   class CommentOnIdeaYouFollowMailer < ApplicationMailer
+    include EditableWithPreview
+
     # TODO: What about the difference based on idea term here?
     # Maybe change the actual translations to include as a variable 'an idea' or 'a proposal'?
     def self.campaign_class
@@ -95,7 +97,7 @@ module EmailCampaigns
     end
 
     def preheader
-      format_message('preheader')
+      format_message('preheader', values: substitution_variables)
     end
   end
 end

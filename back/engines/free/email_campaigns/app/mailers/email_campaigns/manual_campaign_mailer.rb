@@ -2,6 +2,8 @@
 
 module EmailCampaigns
   class ManualCampaignMailer < ApplicationMailer
+    include EditableWithPreview
+
     helper_method :body, :body_text
 
     layout 'campaign_mailer_minimal'
