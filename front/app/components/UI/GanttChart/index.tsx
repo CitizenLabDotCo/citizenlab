@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 import { addDays } from 'date-fns';
@@ -66,6 +66,10 @@ export const GanttChart = ({
 
   const months = getMonthMeta(startDate, endDate);
 
+  const [visibleMonthLabel, setVisibleMonthLabel] = useState(
+    months.length > 0 ? months[0].label : ''
+  );
+
   const totalDays = daysBetween(startDate, endDate);
   const todayOffset = daysBetween(startDate, today);
 
@@ -74,9 +78,33 @@ export const GanttChart = ({
 
   const onTimelineScroll = () => {
     if (timelineHeaderRef.current && timelineBodyRef.current) {
-      timelineHeaderRef.current.scrollLeft = timelineBodyRef.current.scrollLeft;
+      const scrollLeft = timelineBodyRef.current.scrollLeft;
+      timelineHeaderRef.current.scrollLeft = scrollLeft;
+
+      let currentLabel = '';
+      for (let i = months.length - 1; i >= 0; i--) {
+        const month = months[i];
+        const monthStartPx = month.offsetDays * dayWidth;
+        if (scrollLeft >= monthStartPx) {
+          currentLabel = month.label;
+          break;
+        }
+      }
+
+      if (currentLabel && currentLabel !== visibleMonthLabel) {
+        setVisibleMonthLabel(currentLabel);
+      }
     }
   };
+
+  useEffect(() => {
+    if (months.length > 0 && months[0].label !== visibleMonthLabel) {
+      if (timelineBodyRef.current) {
+        timelineBodyRef.current.scrollLeft = 0;
+      }
+      setVisibleMonthLabel(months[0].label);
+    }
+  }, [startDate, endDate]);
 
   const handleRangeChange = (range: TimeRangeOption) => {
     setSelectedRange(range);
@@ -126,29 +154,46 @@ export const GanttChart = ({
           width={`${leftColumnWidth}px`}
           minWidth={`${leftColumnWidth}px`}
           maxWidth={`${leftColumnWidth}px`}
-          style={{
-            position: 'sticky',
-            left: 0,
-            zIndex: 3,
-            borderRight: '1px solid #e0e0e0',
-          }}
+          style={{ position: 'sticky', left: 0, zIndex: 3 }}
           display="flex"
           alignItems="center"
           height={`${timelineHeight * 2}px`}
           pl="16px"
+          borderRight="1px solid #e0e0e0"
+          bg="#fff"
         >
           {chartTitle}
         </Box>
-
-        {/* Timeline header */}
         <Box flex="1" overflow="hidden" position="relative">
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            height={`${timelineHeight}px`}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            zIndex="2"
+            pl="16px"
+            pr="16px"
+            bg="#fafbfc"
+            style={{
+              fontWeight: 800,
+              fontSize: '18px',
+              color: '#222',
+              letterSpacing: '0.5px',
+            }}
+          >
+            {visibleMonthLabel}
+          </Box>
+
           <Box ref={timelineHeaderRef} style={{ overflow: 'hidden' }}>
             {/* Months row */}
             {showMonths && (
               <Box
                 display="flex"
                 height={`${timelineHeight}px`}
-                borderBottom="1px solid #e0e0e0"
+                // borderBottom="1px solid #e0e0e0" // <-- Line removed from here
                 style={{
                   overflow: 'hidden',
                   minWidth: `${totalDays * dayWidth}px`,
@@ -164,8 +209,8 @@ export const GanttChart = ({
                     alignItems="center"
                     justifyContent="center"
                     style={{
+                      color: 'transparent',
                       fontWeight: 800,
-                      color: '#222',
                       borderRight:
                         i === months.length - 1
                           ? undefined
@@ -182,11 +227,12 @@ export const GanttChart = ({
               </Box>
             )}
 
-            {/* Days row - Corrected Logic */}
+            {/* Days row */}
             {showDays && (
               <Box
                 display="flex"
                 height={`${timelineHeight}px`}
+                borderBottom="1px solid #e0e0e0" // <-- Line added here
                 style={{
                   overflow: 'hidden',
                   minWidth: `${totalDays * dayWidth}px`,
@@ -207,7 +253,7 @@ export const GanttChart = ({
                         color: '#888',
                         fontSize: '12px',
                         borderRight: '1px solid #e0e0e0',
-                        borderBottom: '1px solid #e0e0e0',
+                        // The bottom border for individual cells is now handled by the parent
                         height: '100%',
                         boxSizing: 'border-box',
                       }}
@@ -356,7 +402,6 @@ export const GanttChart = ({
                   left={`${startOffset * dayWidth}px`}
                   width={`${duration * dayWidth}px`}
                   height={`${rowHeight - 8}px`}
-                  // margin="4px 0"
                   background={getItemColor(item)}
                   borderColor={colors.grey300}
                   border="1px solid"
