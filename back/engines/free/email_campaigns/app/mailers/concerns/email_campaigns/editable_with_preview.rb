@@ -4,11 +4,12 @@ module EmailCampaigns
 
     class_methods do
       # Each mailer can define its own editable regions.
+      # These regions are used to define which custom text can be edited by the admin.
       def editable_regions
         []
       end
 
-      def editable_region(key, type: 'text', default_message_key: key.to_s, variables: [], allow_blank_locales: false)
+      def define_editable_region(key, type: 'text', default_message_key: key.to_s, variables: [], allow_blank_locales: false)
         message_group = "email_campaigns.#{campaign_class.name.demodulize.underscore}"
         {
           key: key,
@@ -42,7 +43,7 @@ module EmailCampaigns
 
     # To format an editable message, use `format_editable_region`.
     # The `region_key` must exist in editable regions.
-    def format_editable_region(region_key: nil, values: substitution_variables)
+    def format_editable_region(region_key, values: substitution_variables)
       region = self.class.editable_regions.find { |r| r[:key] == region_key }
       return unless region
 

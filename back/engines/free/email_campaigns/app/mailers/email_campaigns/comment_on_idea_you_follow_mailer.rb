@@ -10,28 +10,26 @@ module EmailCampaigns
       Campaigns::CommentOnIdeaYouFollow
     end
 
-    # Returns the editable regions for this campaign.
-    # These regions are used to define the custom text that can be edited by the user.
     def self.editable_regions
       [
-        editable_region(
+        define_editable_region(
           :subject_multiloc,
           default_message_key: 'subject',
           variables: ['input_title']
         ),
-        editable_region(
+        define_editable_region(
           :title_multiloc,
           default_message_key: 'main_header.idea',
           variables: ['authorName']
         ),
-        editable_region(
+        define_editable_region(
           :intro_multiloc,
           type: 'html',
           default_message_key: 'event_description',
           variables: %w[authorName authorNameFull inputTitle],
           allow_blank_locales: true
         ),
-        editable_region(
+        define_editable_region(
           :button_text_multiloc,
           default_message_key: 'cta_reply_to',
           variables: %w[commentAuthor inputTitle]
@@ -69,27 +67,19 @@ module EmailCampaigns
     end
 
     def subject
-      format_editable_region(
-        region_key: :subject_multiloc
-      )
+      format_editable_region(:subject_multiloc)
     end
 
     def header_title
-      format_editable_region(
-        region_key: :title_multiloc
-      )
+      format_editable_region(:title_multiloc)
     end
 
     def header_message
-      format_editable_region(
-        region_key: :intro_multiloc
-      )
+      format_editable_region(:intro_multiloc)
     end
 
     def cta_button_text
-      format_editable_region(
-        region_key: :button_text_multiloc
-      )
+      format_editable_region(:button_text_multiloc)
     end
 
     def preheader
