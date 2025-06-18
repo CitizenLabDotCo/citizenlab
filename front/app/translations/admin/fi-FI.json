@@ -928,7 +928,7 @@
   "app.containers.Admin.inspirationHub.UpsellNudge.upsellTitle": "Liity uraauurtavien demokratian harjoittajien verkostoon",
   "app.containers.Admin.inspirationHub.Volunteering": "Vapaaehtoistyö",
   "app.containers.Admin.inspirationHub.Voting": "Äänestäminen",
-  "app.containers.Admin.inspirationHub.commnonGround": "Yhteinen pohja",
+  "app.containers.Admin.inspirationHub.commonGround": "Yhteinen pohja",
   "app.containers.Admin.inspirationHub.filters": "suodattimet",
   "app.containers.Admin.inspirationHub.resetFilters": "Nollaa suodattimet",
   "app.containers.Admin.inspirationHub.seemsLike": "Näyttää siltä, että projekteja ei enää ole. Yritä muuttaa {filters}.",
