@@ -28,68 +28,68 @@ const isRuleConditionMet = (
     return !value || (Array.isArray(value) && value.length === 0);
   }
 
-  if (question.input_type === 'select') {
-    const optionId = question.options?.find(
-      (option) => option.key === value
-    )?.id;
+  switch (question.input_type) {
+    case 'select': {
+      const optionId = question.options?.find(
+        (option) => option.key === value
+      )?.id;
 
-    if (rule.if === 'any_other_answer') {
+      if (rule.if === 'any_other_answer') {
+        return (
+          optionId !== undefined &&
+          optionsWithoutExistingRules?.some((option) => value === option.id)
+        );
+      }
+
+      return rule.if === optionId || rule.if === String(optionId);
+    }
+
+    case 'multiselect':
+    case 'multiselect_image': {
+      if (rule.if === 'any_other_answer') {
+        return (
+          value?.length > 0 &&
+          optionsWithoutExistingRules?.some((option) =>
+            value.includes(option.id)
+          )
+        );
+      }
+
+      // For multiselect, check if any selected options match the rule
+      const optionIds = question.options
+        ?.filter((option) => value?.includes(option.key))
+        .map((option) => option.id);
+
       return (
-        optionsWithoutExistingRules?.some(
-          (option) => value === option.key || value === option.id
-        ) && optionId !== undefined
+        optionIds !== undefined &&
+        (optionIds.includes(String(rule.if)) || rule.if === String(optionIds))
       );
     }
 
-    return rule.if === optionId || rule.if === String(optionId);
-  }
-
-  if (
-    question.input_type === 'multiselect' ||
-    question.input_type === 'multiselect_image'
-  ) {
-    if (rule.if === 'any_other_answer') {
-      return (
-        value?.length > 0 &&
-        optionsWithoutExistingRules?.some(
-          (option) => value.includes(option.key) || value.includes(option.id)
-        )
+    case 'linear_scale':
+    case 'rating': {
+      const valuesArray = Array.from(Array(question.maximum).keys()).map(
+        (i) => i + 1
       );
+
+      const valuesWithoutExistingRules = valuesArray.filter(
+        (value) => !question.logic.rules?.some((r) => r.if === value)
+      );
+
+      if (rule.if === 'any_other_answer') {
+        return (
+          value !== undefined &&
+          value !== null &&
+          valuesWithoutExistingRules.some((option) => option === value)
+        );
+      }
+
+      return rule.if === value || rule.if === String(value);
     }
 
-    // For multiselect, check if any selected options match the rule
-    const optionIds = question.options
-      ?.filter((option) => value?.includes(option.key))
-      .map((option) => option.id);
-
-    return (
-      optionIds !== undefined &&
-      (optionIds.includes(String(rule.if)) || rule.if === String(optionIds))
-    );
+    default:
+      return rule.if === value || rule.if === String(value);
   }
-  if (
-    question.input_type === 'linear_scale' ||
-    question.input_type === 'rating'
-  ) {
-    const valuesArray = Array.from(Array(question.maximum).keys()).map(
-      (i) => i + 1
-    );
-
-    const valuesWithoutExistingRules = valuesArray.filter(
-      (value) => !question.logic.rules?.some((r) => r.if === value)
-    );
-
-    // Default case for other input types
-    if (rule.if === 'any_other_answer') {
-      return (
-        value !== undefined &&
-        value !== null &&
-        valuesWithoutExistingRules.some((option) => option === value)
-      );
-    }
-  }
-
-  return rule.if === value || rule.if === String(value);
 };
 
 export const determineNextPageNumber = ({
