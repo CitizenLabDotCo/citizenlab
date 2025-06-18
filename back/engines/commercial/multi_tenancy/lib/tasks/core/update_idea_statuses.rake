@@ -15,11 +15,26 @@ namespace :cl2back do
     # Rails.logger = dev_null
     # ActiveRecord::Base.logger = dev_null
 
+    def safe_attributes(attrs)
+      return {} unless attrs.is_a?(Hash)
+      
+      attrs.transform_values do |value|
+        if value.respond_to?(:to_geojson)
+          value.to_s  # Convert to string representation
+        else
+          value
+        end
+      end
+    end
+
+    reporter = ScriptReporter.new
+
     live_run = true if args[:execute] == 'execute'
+    tenant_host = args[:tenant_host].tr('.', '_')
 
     puts "live_run: #{live_run ? 'true' : 'false'}"
 
-    Apartment::Tenant.switch(args[:tenant_host].tr('.', '_')) do
+    Apartment::Tenant.switch(tenant_host) do
       puts Tenant.current.name
 
       idea_status = IdeaStatus.find_by(code: args[:status_code])
@@ -40,14 +55,24 @@ namespace :cl2back do
             next
           end
 
+          attrs_before = idea.attributes
           idea.idea_status_id = idea_status.id
 
           if live_run == true
             begin
               idea.save!
               puts "Idea.id: #{idea.id} updated to status: #{idea&.idea_status&.code.inspect}"
+              reporter.add_change(
+                safe_attributes(attrs_before),
+                safe_attributes(idea.attributes),
+                context: { tenant: tenant_host }
+              )
             rescue ActiveRecord::RecordInvalid, StandardError => e
               puts "ERROR: Updating Idea.id: #{idea.id} failed! Reason: #{e.message}"
+              reporter.add_error(
+                e.message,
+                context: { tenant: tenant_host }
+              )
             end
           elsif idea.valid?
             puts "Idea would be updated to new #{idea_status&.code.inspect} status: yes"
@@ -62,6 +87,7 @@ namespace :cl2back do
       end
     end
 
+    reporter.report!('bulk_upate_ideas_report.json', verbose: true)
     puts 'Done!'
   end
 end
