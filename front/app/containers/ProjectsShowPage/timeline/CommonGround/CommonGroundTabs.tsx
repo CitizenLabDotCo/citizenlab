@@ -57,7 +57,7 @@ const CommonGroundTabs = ({ phaseId, project }: Props) => {
 
   return (
     <ParticipationPermission
-      action="taking_survey"
+      action="reacting_idea"
       enabled={enabled}
       phaseId={phaseId}
       disabledMessage={disabledMessage}

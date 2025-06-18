@@ -192,7 +192,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
       case 'neutral':
         return `${colors.grey600}15`;
       default:
-        return 'white';
+        return colors.white;
     }
   })();
 
