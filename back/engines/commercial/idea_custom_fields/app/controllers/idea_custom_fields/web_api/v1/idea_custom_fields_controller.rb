@@ -537,4 +537,4 @@ module IdeaCustomFields
   end
 end
 
-IdeaCustomFields::WebApi::V1::IdeaCustomFieldsController.prepend(CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController)
+IdeaCustomFields::WebApi::V1::IdeaCustomFieldsController.prepend(CustomMaps::Patches::IdeaCustomFields::WebApi::V1::IdeaCustomFieldsController)
