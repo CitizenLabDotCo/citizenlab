@@ -55,6 +55,10 @@ module ProjectFolders
       against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
       using: { tsearch: { prefix: true } }
 
+    pg_search_scope :search_by_title,
+      against: :title_multiloc,
+      using: { tsearch: { prefix: true } }
+
     def projects
       Project.joins(:admin_publication).where(admin_publication: admin_publication.children)
     end
