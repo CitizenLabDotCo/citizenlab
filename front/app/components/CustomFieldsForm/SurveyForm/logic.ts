@@ -13,6 +13,13 @@ const isRuleConditionMet = (
 ) => {
   const value = formData?.[question.key];
 
+  const optionsWithoutExistingRules = question.options?.filter(
+    (option) =>
+      !question.logic.rules?.some(
+        (r) => r.if === option.key || r.if === option.id
+      )
+  );
+
   if (rule.if === 'no_answer') {
     return !value || (Array.isArray(value) && value.length === 0);
   }
@@ -24,9 +31,9 @@ const isRuleConditionMet = (
 
     if (rule.if === 'any_other_answer') {
       return (
-        optionId !== undefined &&
-        rule.if !== optionId &&
-        rule.if !== String(optionId)
+        optionsWithoutExistingRules?.some(
+          (option) => value === option.key || value === option.id
+        ) && optionId !== undefined
       );
     }
 
@@ -37,16 +44,10 @@ const isRuleConditionMet = (
     question.input_type === 'multiselect' ||
     question.input_type === 'multiselect_image'
   ) {
-    const optionsWithExistingRules = question.options?.filter((option) =>
-      question.logic.rules?.some(
-        (r) => r.if === option.key || r.if === option.id
-      )
-    );
-
     if (rule.if === 'any_other_answer') {
       return (
         value?.length > 0 &&
-        !optionsWithExistingRules?.some(
+        optionsWithoutExistingRules?.some(
           (option) => value.includes(option.key) || value.includes(option.id)
         )
       );
@@ -109,11 +110,25 @@ export const determineNextPageNumber = ({
     currentPageQuestionsWithLogic.forEach((question) => {
       const rules = question.logic.rules;
       if (rules && rules.length > 0) {
-        const rule = rules.find((rule) =>
+        const metRules = rules.filter((rule) =>
           isRuleConditionMet(question, rule, formData)
         );
+        if (metRules.length > 0) {
+          // Find the rule that points to the farthest page
+          let farthestRule = metRules[0];
+          let farthestPageIndex = -1;
 
-        if (rule) {
+          metRules.forEach((rule) => {
+            if (rule.goto_page_id) {
+              const pageIndex = findPageIndex(pages, rule.goto_page_id);
+              if (pageIndex > farthestPageIndex) {
+                farthestPageIndex = pageIndex;
+                farthestRule = rule;
+              }
+            }
+          });
+
+          const rule = farthestRule;
           nextPageIndex = findPageIndex(pages, rule.goto_page_id);
         }
       }
