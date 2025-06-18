@@ -8,7 +8,7 @@ import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 
 import Avatar from 'components/Avatar';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -61,7 +61,7 @@ const InputListItem = () => {
     <Box data-cy="e2e-analysis-input-preview">
       {showManageInputButton && (
         <Box display="flex" justifyContent="flex-end">
-          <Button
+          <ButtonWithLink
             linkTo={`/admin/projects/${projectId}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
             openLinkInNewTab
             buttonStyle="secondary-outlined"
@@ -70,11 +70,11 @@ const InputListItem = () => {
             padding="4px 8px"
           >
             {formatMessage(messages.manageInput)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       )}
       {mainCustomFieldId && (
-        <Button
+        <ButtonWithLink
           id="e2e-analysis-toggle-show-all-questions-button"
           onClick={() =>
             setShowAllQuestions((showAllQuestions) => !showAllQuestions)
@@ -89,7 +89,7 @@ const InputListItem = () => {
             : `${formatMessage(messages.viewAllQuestions)} (${
                 allCustomFields.length
               })`}
-        </Button>
+        </ButtonWithLink>
       )}
       {showAuthor && (
         <Box mt="20px" display="flex" alignItems="center">

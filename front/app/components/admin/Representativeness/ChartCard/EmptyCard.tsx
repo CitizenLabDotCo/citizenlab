@@ -15,7 +15,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { StyledBackgroundImage } from 'containers/Admin/Representativeness/Dashboard/EmptyState';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -84,13 +84,13 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
             )}
           </Text>
           {!isComingSoon && (
-            <Button
+            <ButtonWithLink
               width="164px"
               bgColor={colors.primary}
               linkTo="/admin/dashboard/representation/edit-base-data"
             >
               <FormattedMessage {...messages.submitBaseDataButton} />
-            </Button>
+            </ButtonWithLink>
           )}
         </Box>
       </Box>

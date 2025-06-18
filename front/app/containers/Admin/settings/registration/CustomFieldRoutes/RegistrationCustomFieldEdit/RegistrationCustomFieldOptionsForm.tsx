@@ -11,7 +11,7 @@ import { object } from 'yup';
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -70,16 +70,19 @@ const RegistrationCustomFieldOptionsForm = ({
           />
         </SectionField>
         <Box display="flex">
-          <Button type="submit" processing={methods.formState.isSubmitting}>
+          <ButtonWithLink
+            type="submit"
+            processing={methods.formState.isSubmitting}
+          >
             {formatMessage(messages.answerOptionSave)}
-          </Button>
+          </ButtonWithLink>
 
-          <Button
+          <ButtonWithLink
             buttonStyle="text"
             linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/`}
           >
             {formatMessage(messages.optionCancelButton)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       </form>
     </FormProvider>

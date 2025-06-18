@@ -22,7 +22,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SubSectionTitle } from 'components/admin/Section';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -75,9 +75,9 @@ const Buttons = styled.div`
   margin-left: 15px;
 `;
 
-const EditButton = styled(Button)``;
+const EditButton = styled(ButtonWithLink)``;
 
-const RemoveButton = styled(Button)``;
+const RemoveButton = styled(ButtonWithLink)``;
 
 const Spacer = styled.div`
   width: 14px;
