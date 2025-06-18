@@ -132,6 +132,17 @@ const SurveyPage = ({
     try {
       setShowFormFeedback(false);
       await onSubmit(formValues);
+      // Go to the next page
+      if (currentPageNumber < lastPageNumber) {
+        setCurrentPageNumber(nextPageNumber);
+      }
+
+      // Go to the project page if this is the last page
+      if (currentPageNumber === lastPageNumber) {
+        clHistory.push({
+          pathname: `/projects/${project?.data.attributes.slug}`,
+        });
+      }
     } catch (error) {
       // Only show feedback if the form submission failed
       // otherwise we rely on the field validation errors
@@ -155,20 +166,7 @@ const SurveyPage = ({
 
   const handleNextAndSubmit = () => {
     pagesRef.current?.scrollTo(0, 0);
-
     methods.handleSubmit((e) => onFormSubmit(e))();
-
-    // Go to the next page
-    if (currentPageNumber < lastPageNumber) {
-      setCurrentPageNumber(nextPageNumber);
-    }
-
-    // Go to the project page if this is the last page
-    if (currentPageNumber === lastPageNumber) {
-      clHistory.push({
-        pathname: `/projects/${project?.data.attributes.slug}`,
-      });
-    }
   };
 
   const handlePrevious = () => {
