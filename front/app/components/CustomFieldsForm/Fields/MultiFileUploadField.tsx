@@ -35,7 +35,7 @@ type FileToUploadFormat = {
   id?: string | null;
 };
 
-const FileUploaderField = ({
+const MultiFileUploadField = ({
   name,
   ideaId,
   scrollErrorIntoView,
@@ -172,6 +172,7 @@ const FileUploaderField = ({
               onFileRemove={(fileToRemove) =>
                 onFileRemove(fileToRemove as any, field.value)
               }
+              maxSizeMb={10}
             />
           );
         }}
@@ -188,4 +189,4 @@ const FileUploaderField = ({
   );
 };
 
-export default FileUploaderField;
+export default MultiFileUploadField;

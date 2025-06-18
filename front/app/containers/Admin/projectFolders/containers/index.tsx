@@ -10,7 +10,7 @@ import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useLocalize from 'hooks/useLocalize';
 
 import TabbedResource from 'components/admin/TabbedResource';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -82,14 +82,14 @@ const AdminProjectFolderEdition = () => {
     <>
       <TopContainer>
         <GoBackButton onClick={goBack} />
-        <Button
+        <ButtonWithLink
           buttonStyle="admin-dark"
           icon="eye"
           id="to-projectFolder"
           linkTo={`/folders/${projectFolder.data.attributes.slug}`}
         >
           <FormattedMessage {...messages.viewPublicProjectFolder} />
-        </Button>
+        </ButtonWithLink>
       </TopContainer>
       <TabbedResource {...tabbedProps}>
         <RouterOutlet />

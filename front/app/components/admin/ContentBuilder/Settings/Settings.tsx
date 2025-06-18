@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -61,7 +61,7 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
       {selectedNode.settings && React.createElement(selectedNode.settings)}
       {selectedNode.isDeletable ? (
         <Box display="flex">
-          <Button
+          <ButtonWithLink
             id="e2e-delete-button"
             icon="delete"
             buttonStyle="primary-outlined"
@@ -71,7 +71,7 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
             onClick={onDelete}
           >
             <FormattedMessage {...messages.delete} />
-          </Button>
+          </ButtonWithLink>
         </Box>
       ) : null}
     </StyledBox>

@@ -920,5 +920,82 @@ describe Export::Xlsx::InputSheetGenerator do
         end
       end
     end
+
+    context 'for a common ground context' do
+      let(:phase) { create(:common_ground_phase) }
+
+      describe 'when there are no inputs' do
+        let(:inputs) { [] }
+
+        it 'generates an empty sheet' do
+          expect(xlsx).to eq([
+            {
+              sheet_name: 'My sheet',
+              column_headers: [
+                'ID',
+                'Title',
+                'Author name',
+                'Author email',
+                'Author ID',
+                'Submitted at',
+                'Published at',
+                'Likes',
+                'Dislikes',
+                'Unsure',
+                'URL',
+                'Project'
+              ],
+              rows: []
+            }
+          ])
+        end
+      end
+
+      context 'with inputs and reactions' do
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase]) }
+        let!(:likes) { create_list(:reaction, 2, reactable: idea, mode: 'up') }
+        let!(:dislikes) { create_list(:reaction, 1, reactable: idea, mode: 'down') }
+        let!(:neutral_reactions) { create_list(:reaction, 3, reactable: idea, mode: 'neutral') }
+        let(:inputs) { [idea.reload] }
+
+        it 'includes all reaction counts in the export' do
+          expect(xlsx).to match([
+            {
+              sheet_name: 'My sheet',
+              column_headers: [
+                'ID',
+                'Title',
+                'Author name',
+                'Author email',
+                'Author ID',
+                'Submitted at',
+                'Published at',
+                'Likes',
+                'Dislikes',
+                'Unsure',
+                'URL',
+                'Project'
+              ],
+              rows: [
+                [
+                  idea.id,
+                  idea.title_multiloc['en'],
+                  idea.author.full_name,
+                  idea.author.email,
+                  idea.author_id,
+                  anything,
+                  anything,
+                  2,
+                  1,
+                  3,
+                  anything,
+                  idea.project.title_multiloc['en']
+                ]
+              ]
+            }
+          ])
+        end
+      end
+    end
   end
 end

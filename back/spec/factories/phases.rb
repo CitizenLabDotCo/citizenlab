@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :phase do
+  factory :phase, aliases: [:ideation_phase] do
     project
     ideas_order { nil }
     input_term { nil }
@@ -151,6 +151,7 @@ FactoryBot.define do
     end
 
     factory :common_ground_phase do
+      title_multiloc { { 'en' => 'Common Ground (en)', 'nl-BE' => 'Common Ground (nl)' } }
       participation_method { 'common_ground' }
     end
 

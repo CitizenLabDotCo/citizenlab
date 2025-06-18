@@ -7,7 +7,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { string, object, number, boolean, array } from 'yup';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
@@ -138,13 +138,13 @@ const IdeasWidget = () => {
           width={methods.getValues('width') || 300}
           height={methods.getValues('height') || 400}
         />
-        <Button
+        <ButtonWithLink
           onClick={handleShowCodeClick}
           buttonStyle="admin-dark"
           icon="code"
         >
           <FormattedMessage {...messages.exportHtmlCodeButton} />
-        </Button>
+        </ButtonWithLink>
       </WidgetPreviewWrapper>
 
       <Modal

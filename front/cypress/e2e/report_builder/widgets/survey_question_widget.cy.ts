@@ -214,15 +214,15 @@ describe('Survey question widget', () => {
         // Check if values are correct
         cy.get('.e2e-survey-question-ungrouped-bars')
           .first()
-          .contains('50% (4 choices)');
+          .contains('100% (4 choices)');
 
         cy.get('svg.e2e-progress-bar').should('have.length', 2);
         cy.get('svg.e2e-progress-bar')
           .first()
-          .should('have.attr', 'width', '50%');
+          .should('have.attr', 'width', '100%');
         cy.get('svg.e2e-progress-bar')
           .eq(1)
-          .should('have.attr', 'width', '50%');
+          .should('have.attr', 'width', '100%');
 
         // Group by gender and confirm correctness
         cy.get('#e2e-group-mode-select').select('user_field');

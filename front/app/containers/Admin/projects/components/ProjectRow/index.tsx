@@ -100,9 +100,7 @@ const ProjectRow = ({
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
       setIsBeingCopyied(isRunning);
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    } else if (actionType === 'deleting') {
+    } else {
       setIsBeingDeleted(isRunning);
     }
   };
@@ -201,6 +199,7 @@ const ProjectRow = ({
           {!hideMoreActions && (
             <ProjectMoreActionsMenu
               projectId={projectId}
+              firstPublishedAt={project.data.attributes.first_published_at}
               folderId={folderId ? folderId : undefined}
               setError={setError}
               setIsRunningAction={handleActionLoading}

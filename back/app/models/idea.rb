@@ -136,6 +136,9 @@ class Idea < ApplicationRecord
   has_many :embeddings_similarities, as: :embeddable, dependent: :destroy
   has_many :authoring_assistance_responses, dependent: :destroy
 
+  has_many :idea_relations, dependent: :destroy
+  has_many :related_ideas, through: :idea_relations
+
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
   with_options unless: :draft? do |post|
@@ -230,7 +233,9 @@ class Idea < ApplicationRecord
   }
 
   # Filter out empty content when switching participation methods (e.g. from survey to ideation)
-  scope :with_content, -> { where("ideas.title_multiloc != '{}' AND ideas.body_multiloc != '{}'") }
+  scope :with_content, lambda {
+    where("ideas.title_multiloc <> '{}'::jsonb OR ideas.body_multiloc <> '{}'::jsonb")
+  }
 
   scope :transitive, lambda { |transitive = true|
     transitive ? where(creation_phase: nil) : where.not(creation_phase: nil)

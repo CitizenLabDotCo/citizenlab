@@ -4,7 +4,7 @@ import { Box, Text, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -40,7 +40,7 @@ export const PublicAPI = () => {
           theme="dark"
         >
           <Box>
-            <Button
+            <ButtonWithLink
               disabled={!isPublicAPIEnabled}
               height="45px"
               icon={isPublicAPIEnabled ? 'arrow-right' : 'lock'}
@@ -52,7 +52,7 @@ export const PublicAPI = () => {
               bgColor={colors.primary}
             >
               {formatMessage(messages.managePublicAPIKeys)}
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Tooltip>
       </Box>

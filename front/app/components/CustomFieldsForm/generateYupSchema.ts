@@ -11,6 +11,9 @@ import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
 
+// NOTE: When the question is a built-in field, it is necessary to
+// check the `enabled` property before adding it to the schema.
+
 const generateYupValidationSchema = ({
   pageQuestions,
   formatMessage,
@@ -30,6 +33,7 @@ const generateYupValidationSchema = ({
       minimum_select_count,
       maximum_select_count,
       title_multiloc,
+      enabled,
     } = question;
 
     const title = localize(title_multiloc);
@@ -40,18 +44,17 @@ const generateYupValidationSchema = ({
     switch (input_type) {
       case 'text_multiloc': {
         if (key === 'title_multiloc') {
-          schema[key] = validateAtLeastOneLocale(
-            formatMessage(messages.titleRequired),
-            {
-              validateEachNonEmptyLocale: (schema) =>
-                schema
-                  .min(3, formatMessage(messages.titleMinLength, { min: 3 }))
-                  .max(
-                    120,
-                    formatMessage(messages.titleMaxLength, { max: 120 })
-                  ),
-            }
-          );
+          schema[key] = enabled
+            ? validateAtLeastOneLocale(formatMessage(messages.titleRequired), {
+                validateEachNonEmptyLocale: (schema) =>
+                  schema
+                    .min(3, formatMessage(messages.titleMinLength, { min: 3 }))
+                    .max(
+                      120,
+                      formatMessage(messages.titleMaxLength, { max: 120 })
+                    ),
+              })
+            : {};
         } else {
           schema[key] = required
             ? validateAtLeastOneLocale(formatMessage(messages.titleRequired))
@@ -62,16 +65,18 @@ const generateYupValidationSchema = ({
 
       case 'html_multiloc': {
         if (key === 'body_multiloc') {
-          schema[key] = validateAtLeastOneLocale(
-            formatMessage(messages.descriptionRequired),
-            {
-              validateEachNonEmptyLocale: (schema) =>
-                schema.min(
-                  3, // I'm not seeing the error for this case
-                  formatMessage(messages.descriptionMinLength, { min: 3 })
-                ),
-            }
-          );
+          schema[key] = enabled
+            ? validateAtLeastOneLocale(
+                formatMessage(messages.descriptionRequired),
+                {
+                  validateEachNonEmptyLocale: (schema) =>
+                    schema.min(
+                      3, // I'm not seeing the error for this case
+                      formatMessage(messages.descriptionMinLength, { min: 3 })
+                    ),
+                }
+              )
+            : {};
         } else {
           schema[key] = required
             ? validateAtLeastOneLocale(
@@ -85,9 +90,10 @@ const generateYupValidationSchema = ({
       case 'text':
       case 'multiline_text': {
         if (key === 'location_description') {
-          schema[key] = required
-            ? string().required(fieldRequired).nullable()
-            : string().nullable();
+          schema[key] =
+            required && enabled
+              ? string().required(fieldRequired).nullable()
+              : string().nullable();
         } else {
           schema[key] = required ? string().required(fieldRequired) : string();
         }
@@ -95,13 +101,24 @@ const generateYupValidationSchema = ({
       }
 
       case 'number': {
-        schema[key] = required
-          ? number().required(fieldRequired)
-          : number()
-              .transform((value, originalValue) =>
-                originalValue === '' ? null : value
-              )
-              .nullable();
+        if (key === 'proposed_budget') {
+          schema[key] =
+            required && enabled
+              ? number().required(fieldRequired)
+              : number()
+                  .transform((value, originalValue) =>
+                    originalValue === '' ? null : value
+                  )
+                  .nullable();
+        } else {
+          schema[key] = required
+            ? number().required(fieldRequired)
+            : number()
+                .transform((value, originalValue) =>
+                  originalValue === '' ? null : value
+                )
+                .nullable();
+        }
         break;
       }
 
@@ -167,33 +184,36 @@ const generateYupValidationSchema = ({
       }
 
       case 'image_files': {
-        schema[key] = required
-          ? array()
-              .min(1, formatMessage(messages.imageRequired))
-              .required(formatMessage(messages.imageRequired))
-              .nullable()
-          : array().nullable();
+        schema[key] =
+          required && enabled
+            ? array()
+                .min(1, formatMessage(messages.imageRequired))
+                .required(formatMessage(messages.imageRequired))
+                .nullable()
+            : array().nullable();
 
         break;
       }
 
       case 'files': {
-        schema[key] = required
-          ? array()
-              .min(1, formatMessage(messages.fileRequired))
-              .required(formatMessage(messages.fileRequired))
-          : array().nullable();
+        schema[key] =
+          required && enabled
+            ? array()
+                .min(1, formatMessage(messages.fileRequired))
+                .required(formatMessage(messages.fileRequired))
+            : array().nullable();
 
         break;
       }
 
       case 'topic_ids': {
-        schema[key] = required
-          ? array()
-              .of(string())
-              .min(1, formatMessage(messages.topicRequired))
-              .required(formatMessage(messages.topicRequired))
-          : array().nullable();
+        schema[key] =
+          required && enabled
+            ? array()
+                .of(string())
+                .min(1, formatMessage(messages.topicRequired))
+                .required(formatMessage(messages.topicRequired))
+            : array().nullable();
         break;
       }
 
@@ -263,9 +283,10 @@ const generateYupValidationSchema = ({
       }
 
       case 'cosponsor_ids': {
-        schema[key] = required
-          ? array().of(string()).required(fieldRequired).min(1, fieldRequired)
-          : array().nullable();
+        schema[key] =
+          required && enabled
+            ? array().of(string()).required(fieldRequired).min(1, fieldRequired)
+            : array().nullable();
         break;
       }
 
@@ -280,6 +301,12 @@ const generateYupValidationSchema = ({
         // follow up field (never required)
         schema[`${key}_follow_up`] = string();
 
+        break;
+      }
+      case 'file_upload': {
+        schema[key] = required
+          ? object().required(fieldRequired).nullable()
+          : object().nullable();
         break;
       }
     }
