@@ -5,12 +5,12 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import commonGroundProgressKeys from './keys/commonGroundProgressKeys';
 import commonGroundResultsKeys from './keys/commonGroundResultsKeys';
-import { ICommonGroundProgress, ReactToIdeaObject } from './types';
+import { ICommonGroundProgress, Params } from './types';
 
 const reactToStatement = ({
   ideaId,
   mode,
-}: ReactToIdeaObject): Promise<ICommonGroundProgress> =>
+}: Params): Promise<ICommonGroundProgress> =>
   fetcher<ICommonGroundProgress>({
     path: `/ideas/${ideaId}/reactions`,
     action: 'post',
@@ -23,11 +23,7 @@ const reactToStatement = ({
 
 const useReactToStatement = (phaseId: string | undefined) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    ICommonGroundProgress,
-    { errors: CLErrors },
-    ReactToIdeaObject
-  >({
+  return useMutation<ICommonGroundProgress, { errors: CLErrors }, Params>({
     mutationFn: ({ ideaId, mode }) => reactToStatement({ ideaId, mode }),
     onSuccess: () => {
       queryClient.invalidateQueries({

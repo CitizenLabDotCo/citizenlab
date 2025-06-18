@@ -69,7 +69,6 @@ const AdminProjectIdeas = () => {
                 buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...ownMessages.importInputs} />
-                gfg
               </ButtonWithLink>
             )}
             {isCommonGround && (

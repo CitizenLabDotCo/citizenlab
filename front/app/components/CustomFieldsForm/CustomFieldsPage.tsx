@@ -30,6 +30,7 @@ import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import CustomFields from './CustomFields';
 import AuthorField from './Fields/AuthorField';
@@ -99,6 +100,21 @@ const CustomFieldsPage = ({
   const [postAnonymously, setPostAnonymously] = useState(
     idea?.data.attributes.anonymous || false
   );
+
+  const handleNextAndsubmit = () => {
+    pagesRef.current?.scrollTo(0, 0);
+    if (currentPageNumber === lastPageNumber) {
+      const userCanModerate = project
+        ? canModerateProject(project.data, authUser)
+        : false;
+      const path =
+        userCanModerate && participationMethod === 'common_ground'
+          ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
+          : `/ideas/${idea?.data.attributes.slug}`;
+      clHistory.push({ pathname: path });
+    }
+    methods.handleSubmit((e) => onFormSubmit(e))();
+  };
 
   const schema = generateYupValidationSchema({
     pageQuestions,
@@ -341,18 +357,8 @@ const CustomFieldsPage = ({
 
             <Box w="100%">
               <PageControlButtons
-                handleNextAndSubmit={() => {
-                  pagesRef.current?.scrollTo(0, 0);
-                  if (currentPageNumber === lastPageNumber) {
-                    const isUserAdmin = authUser && isAdmin(authUser);
-                    const path =
-                      isUserAdmin && participationMethod === 'common_ground'
-                        ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
-                        : `/ideas/${idea?.data.attributes.slug}`;
-                    clHistory.push({ pathname: path });
-                  }
-                  methods.handleSubmit((e) => onFormSubmit(e))();
-                }}
+                handleNextAndSubmit={handleNextAndsubmit}
+                project={project}
                 handlePrevious={() => {
                   pagesRef.current?.scrollTo(0, 0);
                   setCurrentPageNumber(currentPageNumber - 1);

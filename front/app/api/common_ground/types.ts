@@ -71,7 +71,7 @@ export interface ICommonGroundProgress {
   data: ProgressData;
 }
 
-export interface ReactToIdeaObject {
+export interface Params {
   ideaId: string;
   mode: CommonGroundReactionMode;
 }

@@ -21,7 +21,7 @@ interface Props {
 }
 
 const ResultList = ({ title, description, items }: Props) => {
-  const isPhone = useBreakpoint('phone');
+  const isMobileOrSmaller = useBreakpoint('phone');
 
   if (items.length === 0) {
     return null;
@@ -57,14 +57,14 @@ const ResultList = ({ title, description, items }: Props) => {
             <Box py="12px">
               <Box
                 display="flex"
-                flexDirection={isPhone ? 'column' : 'row'}
-                alignItems={isPhone ? 'flex-start' : 'center'}
+                flexDirection={isMobileOrSmaller ? 'column' : 'row'}
+                alignItems={isMobileOrSmaller ? 'flex-start' : 'center'}
                 justifyContent="space-between"
               >
                 <Box
-                  width={isPhone ? '100%' : 'calc(100% - 182px)'}
-                  mb={isPhone ? '8px' : undefined}
-                  mr={isPhone ? undefined : '16px'}
+                  width={isMobileOrSmaller ? '100%' : 'calc(100% - 182px)'}
+                  mb={isMobileOrSmaller ? '8px' : undefined}
+                  mr={isMobileOrSmaller ? undefined : '16px'}
                 >
                   <T value={item.title_multiloc} supportHtml />
                 </Box>

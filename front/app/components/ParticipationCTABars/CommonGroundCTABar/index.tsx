@@ -43,7 +43,7 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
     project.attributes.action_descriptors.reacting_idea;
   const { enabled: postingEnabled } =
     project.attributes.action_descriptors.posting_idea;
-  const showSignIn =
+  const showButtons =
     reactingEnabled || isFixableByAuthentication(reactingDisabledReason);
 
   if (!currentPhase || hasProjectEndedOrIsArchived(project, currentPhase)) {
@@ -72,7 +72,7 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
       triggerAuthenticationFlow({
         context: {
           type: 'phase',
-          action: 'taking_survey',
+          action: 'reacting_idea',
           id: currentPhase.id,
         },
         successAction,
@@ -84,7 +84,7 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
     <ParticipationCTAContent
       currentPhase={currentPhase}
       CTAButton={
-        showSignIn ? (
+        showButtons ? (
           <Box display="flex" gap="8px">
             {/* We only want to show one button in the CTA */}
             {postingEnabled ? (

@@ -92,7 +92,7 @@ const ImportInputsModal = ({
       close={handleClose}
       header={formatMessage(messages.startFromPastInputs)}
     >
-      <Box m="24px" data-cy="e2e-copy-survey-modal">
+      <Box m="24px">
         <Text mb="12px" variant="bodyS" color="textSecondary">
           {formatMessage(messages.createInputsDescription)}
         </Text>

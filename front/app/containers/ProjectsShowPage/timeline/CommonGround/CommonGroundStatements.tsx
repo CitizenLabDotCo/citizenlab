@@ -8,6 +8,7 @@ import {
   colors,
   useBreakpoint,
   Spinner,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -36,7 +37,7 @@ const BackdropCard = styled.div<{ $offset: number }>`
   z-index: 1;
   pointer-events: none;
   user-select: none;
-  border-radius: 4px;
+  border-radius: ${stylingConsts.borderRadius};
 `;
 
 const StatementCard = styled(Box)<{
@@ -79,7 +80,7 @@ const ActionIndicator = styled(Box)<{
   position: absolute;
   padding: 8px 16px;
   border-radius: 4px;
-  color: white;
+  color: ${colors.white};
   font-weight: bold;
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
   transition: opacity 0.2s;

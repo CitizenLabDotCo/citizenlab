@@ -11,7 +11,6 @@ import {
   Spinner,
   colors,
   stylingConsts,
-  Icon,
   Checkbox,
 } from '@citizenlab/cl2-component-library';
 
@@ -28,21 +27,16 @@ import {
 } from 'components/admin/PostManager';
 import ActionBar from 'components/admin/PostManager/components/ActionBar';
 import PostPreview from 'components/admin/PostManager/components/PostPreview';
-import {
-  NoPostPage,
-  NoPostHeader,
-  NoPostDescription,
-} from 'components/admin/PostManager/components/PostTable/NoPost';
 import { TitleLink } from 'components/admin/PostManager/components/PostTable/Row';
 import Pagination from 'components/Pagination';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import messages from './messages';
+import NoInputsDisplay from './NoInputsDisplay';
 
 interface Props {
   projectId: string;
@@ -136,38 +130,14 @@ const CommonGroundInputManager = ({
 
   if (ideas.data.length === 0) {
     return (
-      <NoPostPage>
-        <Icon name="sidebar-pages-menu" />
-        <NoPostHeader>
-          {isJobInProgress ? (
-            <FormattedMessage
-              {...messages.inputImportProgress}
-              values={{ importedCount, totalCount: totalInputsToBeImported }}
-            />
-          ) : (
-            <FormattedMessage {...messages.noInputs} />
-          )}
-        </NoPostHeader>
-        <NoPostDescription>
-          <FormattedMessage {...messages.noInputsDescription} />
-        </NoPostDescription>
-        <Box display="flex" gap="8px">
-          <Button
-            buttonStyle="secondary-outlined"
-            width="auto"
-            linkTo={`/projects/${project?.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
-          >
-            <FormattedMessage {...messages.createInput} />
-          </Button>
-          <Button
-            buttonStyle="admin-dark"
-            onClick={() => setShowPastInputsModal(true)}
-            disabled={!!isJobInProgress}
-          >
-            <FormattedMessage {...messages.startFromPastInputs} />
-          </Button>
-        </Box>
-      </NoPostPage>
+      <NoInputsDisplay
+        isJobInProgress={isJobInProgress}
+        importedCount={importedCount}
+        totalInputsToBeImported={totalInputsToBeImported}
+        project={project?.data}
+        phaseId={phaseId}
+        setShowPastInputsModal={setShowPastInputsModal}
+      />
     );
   }
 
@@ -261,7 +231,7 @@ const CommonGroundInputManager = ({
         </Box>
       )}
       <PostPreview
-        type={'ProjectIdeas' as ManagerType}
+        type="ProjectIdeas"
         postId={previewPostId}
         selectedPhaseId={phaseId}
         mode={previewMode}

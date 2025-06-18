@@ -14,13 +14,14 @@ import { Multiloc } from 'typings';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { getInputTerm } from 'api/phases/utils';
+import { IProject } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../../messages';
 
@@ -65,6 +66,7 @@ interface Props {
   phases: IPhaseData[] | undefined;
   currentPhase: IPhaseData | undefined;
   pageButtonLabelMultiloc?: Multiloc;
+  project: IProject | undefined;
 }
 
 const PageControlButtons = ({
@@ -76,13 +78,16 @@ const PageControlButtons = ({
   phases,
   pageButtonLabelMultiloc,
   currentPhase,
+  project,
 }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { data: authUser } = useAuthUser();
-  const isUserAdmin = authUser && isAdmin(authUser);
+  const userCanModerate = project
+    ? canModerateProject(project.data, authUser)
+    : false;
 
   const getButtonMessage = () => {
     if (pageVariant !== 'after-submission') {
@@ -99,7 +104,7 @@ const PageControlButtons = ({
     if (participationMethod === 'common_ground') {
       // We redirect admins to the input manager to easily manage inputs
       // and users to their own input.
-      const messageKey = isUserAdmin
+      const messageKey = userCanModerate
         ? messages.backToInputManager
         : messages.viewYourInput;
       return formatMessage(messageKey);
