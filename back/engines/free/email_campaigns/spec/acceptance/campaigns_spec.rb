@@ -246,6 +246,7 @@ resource 'Campaigns' do
         let(:title_multiloc) { { 'en' => 'New title' } }
         let(:intro_multiloc) { { 'en' => '' } }
         let(:button_text_multiloc) { { 'en' => '' } }
+        let(:body_multiloc) { { 'en' => 'Body' } }
 
         example_request 'Update an automated campaign' do
           assert_status 200
@@ -264,6 +265,9 @@ resource 'Campaigns' do
 
           # Does not allow blank value in button_text_multiloc and returns default
           expect(attributes.dig(:button_text_multiloc, :en)).to eq 'Reply to {{commentAuthor}}'
+
+          # Does not save body_multiloc, as it is not applicable to automated campaigns
+          expect(attributes[:body_multiloc]).to eq({})
         end
       end
     end
