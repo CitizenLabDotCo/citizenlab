@@ -7,13 +7,16 @@ import FilterSelector from 'components/FilterSelector';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import { useParam, setParam } from '../utils';
-
 import messages from './messages';
 
-const Manager = () => {
+interface Props {
+  managerIds: string[];
+  mr?: string;
+  onChange: (managers: string[]) => void;
+}
+
+const Manager = ({ managerIds, mr = '0px', onChange }: Props) => {
   const { formatMessage } = useIntl();
-  const values = useParam('managers') ?? [];
   const { data: managers } = useUsers({
     pageSize: 500,
     can_admin: true,
@@ -29,12 +32,10 @@ const Manager = () => {
   return (
     <FilterSelector
       multipleSelectionAllowed
-      selected={values}
+      selected={managerIds}
       values={options}
-      mr="0px"
-      onChange={(value) => {
-        setParam('managers', value);
-      }}
+      mr={mr}
+      onChange={onChange}
       title={formatMessage(messages.manager)}
       name="manager-select"
     />

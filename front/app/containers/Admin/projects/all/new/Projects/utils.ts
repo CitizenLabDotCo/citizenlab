@@ -42,7 +42,7 @@ export const useParam = <ParamName extends keyof Parameters>(
   return (paramValue ?? undefined) as Parameters[typeof paramName] | undefined;
 };
 
-const PARAMS: (keyof Parameters)[] = [
+export const PARAMS: (keyof Parameters)[] = [
   'status',
   'managers',
   'search',

@@ -17,6 +17,8 @@ import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
 import useAuthUser from 'api/me/useAuthUser';
+import { ProjectLibraryCountries } from 'api/project_library_countries/types';
+import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { IUser } from 'api/users/types';
 
 import Outlet from 'components/Outlet';
@@ -84,9 +86,14 @@ const getTopAndBottomNavItems = (navItems: NavItem[]) => {
 interface Props {
   authUser: IUser;
   appConfiguration: IAppConfiguration;
+  projectLibraryCountries?: ProjectLibraryCountries;
 }
 
-const Sidebar = ({ authUser, appConfiguration }: Props) => {
+const Sidebar = ({
+  authUser,
+  appConfiguration,
+  projectLibraryCountries,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
 
@@ -102,7 +109,7 @@ const Sidebar = ({ authUser, appConfiguration }: Props) => {
   );
 
   const [navItems, setNavItems] = useState<NavItem[]>(() =>
-    getDefaultNavItems(appConfiguration)
+    getDefaultNavItems(appConfiguration, projectLibraryCountries)
   );
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
@@ -205,10 +212,35 @@ const Sidebar = ({ authUser, appConfiguration }: Props) => {
 const SidebarWrapper = () => {
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
+  const { data: projectLibraryCountries, error } = useProjectLibraryCountries();
 
-  if (!authUser || !appConfiguration) return null;
+  // We need this because locally, you don't always want
+  // to have the project library running.
+  // This way, the sidebar will wait for the project library countries
+  // to be fetched before rendering, but it will still render
+  // the sidebar if the project library countries endpoint is not available
+  // (i.e. when it returns an error).
+  const shouldWaitForProjectLibraryCountries = () => {
+    if (projectLibraryCountries) return false;
+    if (error) return false;
+    return true;
+  };
 
-  return <Sidebar authUser={authUser} appConfiguration={appConfiguration} />;
+  if (
+    !authUser ||
+    !appConfiguration ||
+    shouldWaitForProjectLibraryCountries()
+  ) {
+    return null;
+  }
+
+  return (
+    <Sidebar
+      authUser={authUser}
+      appConfiguration={appConfiguration}
+      projectLibraryCountries={projectLibraryCountries}
+    />
+  );
 };
 
 export default SidebarWrapper;

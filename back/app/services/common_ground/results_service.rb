@@ -19,11 +19,13 @@ module CommonGround
     private
 
     def top_consensus_ideas(n, reverse: false)
-      order_sql = Arel.sql('greatest(likes_count, dislikes_count) * 1.0 / (likes_count + dislikes_count)')
+      consensus_score_sql = Arel.sql('greatest(likes_count, dislikes_count) * 1.0 / (likes_count + dislikes_count)')
+      # The votes counts (excluding neutral votes) are used to break ties.
+      votes_count_sql = Arel.sql('(likes_count + dislikes_count)')
 
       ideas
         .where('likes_count + dislikes_count > 0')
-        .order(reverse ? order_sql.asc : order_sql.desc)
+        .order(reverse ? consensus_score_sql.asc : consensus_score_sql.desc, votes_count_sql.desc)
         .limit(n)
     end
 

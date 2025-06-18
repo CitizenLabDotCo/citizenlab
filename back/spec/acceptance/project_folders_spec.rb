@@ -128,6 +128,29 @@ resource 'ProjectFolder' do
       end
     end
 
+    get 'web_api/v1/project_folders/for_admin' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of folders per page'
+      end
+
+      example_request 'List all folders for admin' do
+        assert_status 200
+        expect(response_data.size).to eq 2
+      end
+
+      example 'Includes folder moderators', document: false do
+        folder = create(:project_folder)
+        user = create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }])
+        do_request
+
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data].first.dig(:relationships, :moderators, :data).pluck(:id)).to eq [user.id]
+        expect(json_response[:included].select { |inc| inc[:type] == 'user' }.pluck(:id)).to eq [user.id]
+      end
+    end
+
     post 'web_api/v1/project_folders' do
       with_options scope: :project_folder do
         parameter :title_multiloc, 'The title of the folder', required: true
