@@ -928,7 +928,7 @@
   "app.containers.Admin.inspirationHub.UpsellNudge.upsellTitle": "Treten Sie einem Netzwerk von Demokratie-Pionier*innen bei",
   "app.containers.Admin.inspirationHub.Volunteering": "Teilnehmende finden",
   "app.containers.Admin.inspirationHub.Voting": "Abstimmung",
-  "app.containers.Admin.inspirationHub.commnonGround": "ZusammenFinden",
+  "app.containers.Admin.inspirationHub.commonGround": "ZusammenFinden",
   "app.containers.Admin.inspirationHub.filters": "Filter",
   "app.containers.Admin.inspirationHub.resetFilters": "Filter zurücksetzen",
   "app.containers.Admin.inspirationHub.seemsLike": "Es scheint, als gäbe es keine Projekte mehr. Versuchen Sie, die {filters} zu ändern.",
