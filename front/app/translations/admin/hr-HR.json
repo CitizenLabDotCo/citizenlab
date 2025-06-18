@@ -928,7 +928,7 @@
   "app.containers.Admin.inspirationHub.UpsellNudge.upsellTitle": "Pridružite se mreži pionira praktičara demokracije",
   "app.containers.Admin.inspirationHub.Volunteering": "Volontiranje",
   "app.containers.Admin.inspirationHub.Voting": "Glasovanje",
-  "app.containers.Admin.inspirationHub.commnonGround": "Zajednički temelj",
+  "app.containers.Admin.inspirationHub.commonGround": "Zajednički temelj",
   "app.containers.Admin.inspirationHub.filters": "filteri",
   "app.containers.Admin.inspirationHub.resetFilters": "Resetiraj filtere",
   "app.containers.Admin.inspirationHub.seemsLike": "Čini se da više nema projekata. Pokušajte promijeniti {filters}.",
