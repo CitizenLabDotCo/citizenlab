@@ -198,6 +198,10 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
 
   return (
     <Box mt="8px" position="relative" width="100%" minHeight="260px">
+      {/*
+       * Renders two decorative BackdropCard components, visually stacked using an offset,
+       * which are hidden from screen readers for accessibility.
+       */}
       {[2, 1].map((i) => (
         <BackdropCard key={i} $offset={i} aria-hidden="true" />
       ))}
