@@ -22,7 +22,6 @@ export const TimeRangeSelector = ({
 
   const timeRangeOptions: { value: TimeRangeOption; label: string }[] = [
     { value: 'month', label: formatMessage(messages.timeRangeMonth) },
-    { value: 'week', label: formatMessage(messages.timeRangeWeek) },
     { value: 'quarter', label: formatMessage(messages.timeRangeQuarter) },
     { value: 'year', label: formatMessage(messages.timeRangeYear) },
     { value: '5years', label: formatMessage(messages.timeRange5Years) },

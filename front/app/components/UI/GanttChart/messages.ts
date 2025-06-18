@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.components.GanttChart.timeRange.month',
     defaultMessage: 'Month',
   },
-  timeRangeWeek: {
-    id: 'app.components.GanttChart.timeRange.week',
-    defaultMessage: 'Week',
-  },
   timeRangeQuarter: {
     id: 'app.components.GanttChart.timeRange.quarter',
     defaultMessage: 'Quarter',
