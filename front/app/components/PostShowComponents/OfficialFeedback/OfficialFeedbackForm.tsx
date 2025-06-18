@@ -20,7 +20,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 import { Section } from 'components/admin/Section';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 
@@ -69,9 +69,9 @@ const ButtonContainer = styled.div`
   display: flex;
 `;
 
-const SubmitButton = styled(Button)``;
+const SubmitButton = styled(ButtonWithLink)``;
 
-const CancelButton = styled(Button)`
+const CancelButton = styled(ButtonWithLink)`
   margin-left: 10px;
 `;
 

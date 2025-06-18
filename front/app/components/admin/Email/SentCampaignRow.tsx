@@ -17,7 +17,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { Row } from 'components/admin/ResourceList';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -99,9 +99,9 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
             <FormattedMessage {...messages.clicked} />
           </Text>
         </Box>
-        <Button linkTo={statsLink} icon="chart-bar" buttonStyle="text">
+        <ButtonWithLink linkTo={statsLink} icon="chart-bar" buttonStyle="text">
           <FormattedMessage {...messages.statsButton} />
-        </Button>
+        </ButtonWithLink>
       </Box>
     </Row>
   );

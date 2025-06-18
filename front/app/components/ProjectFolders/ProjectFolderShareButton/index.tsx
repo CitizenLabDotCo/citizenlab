@@ -5,7 +5,9 @@ import styled from 'styled-components';
 import { IProjectFolderData } from 'api/project_folders/types';
 
 import ProjectFolderSharingModal from 'components/ProjectFolders/ProjectFolderSharingModal';
-import Button, { Props as ButtonProps } from 'components/UI/ButtonWithLink';
+import ButtonWithLink, {
+  Props as ButtonProps,
+} from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -14,7 +16,7 @@ import messages from './messages';
 
 const Container = styled.div``;
 
-const ShareButton = styled(Button)``;
+const ShareButton = styled(ButtonWithLink)``;
 
 interface Props extends Omit<ButtonProps, 'onClick'> {
   projectFolder: IProjectFolderData;

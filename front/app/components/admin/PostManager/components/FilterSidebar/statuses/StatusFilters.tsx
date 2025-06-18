@@ -5,7 +5,7 @@ import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
@@ -58,7 +58,7 @@ const StatusFilters = ({
       {/* Input statuses can be edited and only admins can do this */}
       {isAdmin(authUser) && (
         <Box display="inline-flex">
-          <Button
+          <ButtonWithLink
             buttonStyle="text"
             icon="edit"
             pl="12px"
@@ -69,7 +69,7 @@ const StatusFilters = ({
             <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
               <FormattedMessage {...messages.editStatuses} />
             </Text>
-          </Button>
+          </ButtonWithLink>
         </Box>
       )}
       {statuses.map((status) =>

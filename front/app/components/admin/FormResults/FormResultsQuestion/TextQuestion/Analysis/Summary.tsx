@@ -16,7 +16,7 @@ import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/I
 import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { trackEventByName } from 'utils/analytics';
@@ -114,7 +114,7 @@ const Summary = ({
         />
 
         <Box display="flex" gap="16px">
-          <Button
+          <ButtonWithLink
             disabled={refreshDisabled}
             buttonStyle="secondary-outlined"
             icon="refresh"
@@ -132,8 +132,8 @@ const Summary = ({
                 values={{ count: missingInputsCount }}
               />
             )}
-          </Button>
-          <Button
+          </ButtonWithLink>
+          <ButtonWithLink
             id="e2e-explore-summary"
             buttonStyle="secondary-outlined"
             icon="eye"
@@ -142,7 +142,7 @@ const Summary = ({
             )}`}
           >
             {formatMessage(messages.explore)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       </Box>
     </>

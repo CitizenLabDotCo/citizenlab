@@ -10,7 +10,7 @@ import { isUndefined } from 'lodash-es';
 
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -78,13 +78,13 @@ const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
           <Box display="flex" justifyContent="flex-end" flexGrow={1}>
             {onClickViewExample && (
               <Box>
-                <Button
+                <ButtonWithLink
                   icon="eye"
                   onClick={onClickViewExample}
                   buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.viewExample} />
-                </Button>
+                </ButtonWithLink>
               </Box>
             )}
             {onClickEdit && isEditingEnabled && (
@@ -93,14 +93,14 @@ const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
                   disabled={isEditable}
                   content={formatMessage(messages.editDisabledTooltip)}
                 >
-                  <Button
+                  <ButtonWithLink
                     icon="edit"
                     onClick={onClickEdit}
                     disabled={!isEditable}
                     buttonStyle="secondary-outlined"
                   >
                     <FormattedMessage {...messages.editButtonLabel} />
-                  </Button>
+                  </ButtonWithLink>
                 </Tooltip>
               </Box>
             )}

@@ -10,7 +10,7 @@ import useAddMapLayer from 'api/map_layers/useAddMapLayer';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -34,7 +34,7 @@ const ButtonContainer = styled.div`
   display: flex;
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(ButtonWithLink)`
   & button {
     position: relative;
   }

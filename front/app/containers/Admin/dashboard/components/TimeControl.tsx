@@ -11,7 +11,7 @@ import moment, { Moment } from 'moment';
 import styled from 'styled-components';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -28,7 +28,7 @@ const DropdownContainer = styled.div`
   cursor: pointer;
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(ButtonWithLink)`
   margin-right: 15px;
 `;
 

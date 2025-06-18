@@ -19,7 +19,7 @@ import {
 } from 'components/admin/Section';
 import Highlighter from 'components/Highlighter';
 import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
@@ -192,7 +192,7 @@ const ProjectDescription = () => {
         justifyContent="flex-start"
       >
         <Box py="8px" px={`${defaultAdminCardPadding}px`} display="flex">
-          <Button
+          <ButtonWithLink
             buttonStyle="admin-dark"
             onClick={handleOnSubmit}
             processing={isLoading}
@@ -203,7 +203,7 @@ const ProjectDescription = () => {
             ) : (
               <FormattedMessage {...messages.save} />
             )}
-          </Button>
+          </ButtonWithLink>
 
           {success && (
             <Success

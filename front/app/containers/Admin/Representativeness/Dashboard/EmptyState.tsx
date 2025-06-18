@@ -11,7 +11,7 @@ import EmptyStateImage from 'assets/img/empty_status.svg';
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -41,14 +41,14 @@ const EmptyState = () => (
         </Text>
 
         <Box display="flex" justifyContent="center">
-          <Button
+          <ButtonWithLink
             width="auto"
             mb="16px"
             bgColor={colors.primary}
             linkTo="/admin/dashboard/representation/edit-base-data"
           >
             <FormattedMessage {...messages.submitBaseDataButton} />
-          </Button>
+          </ButtonWithLink>
         </Box>
       </Box>
 

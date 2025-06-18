@@ -36,7 +36,7 @@ class Permission < ApplicationRecord
     'voting' => %w[voting commenting_idea attending_event],
     'volunteering' => %w[volunteering attending_event],
     'document_annotation' => %w[annotating_document attending_event],
-    'common_ground' => %w[reacting_idea attending_event]
+    'common_ground' => %w[posting_idea reacting_idea attending_event]
   }
   SCOPE_TYPES = [nil, 'Phase'].freeze
 

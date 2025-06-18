@@ -9,7 +9,7 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 import useLocale from 'hooks/useLocale';
 
 import EditWarningModal from 'components/admin/SurveyEditWarningModal';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -43,7 +43,7 @@ const EditButtonWithWarningModal = ({ phaseId, editFormLink }: Props) => {
 
   return (
     <>
-      <Button
+      <ButtonWithLink
         onClick={() => {
           submissionCount.data.attributes.totalSubmissions > 0
             ? setShowEditWarningModal(true)
@@ -54,7 +54,7 @@ const EditButtonWithWarningModal = ({ phaseId, editFormLink }: Props) => {
         data-cy="e2e-edit-survey-form"
       >
         <FormattedMessage {...messages.editSurveyForm} />
-      </Button>
+      </ButtonWithLink>
       <EditWarningModal
         showEditWarningModal={showEditWarningModal}
         setShowEditWarningModal={setShowEditWarningModal}

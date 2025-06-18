@@ -15,7 +15,7 @@ import {
 
 import FormWrapper from 'components/Form/Components/FormWrapper';
 import customAjv from 'components/Form/utils/customAjv';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UserCustomFieldsForm from 'components/UserCustomFields';
 
 import { trackEventByName } from 'utils/analytics';
@@ -103,7 +103,7 @@ const CustomFields = ({
           alignItems={smallerThanPhone ? 'stretch' : 'center'}
           justifyContent={smallerThanPhone ? 'center' : 'space-between'}
         >
-          <Button
+          <ButtonWithLink
             id="e2e-signup-custom-fields-submit-btn"
             processing={loading}
             disabled={loading}
@@ -112,7 +112,7 @@ const CustomFields = ({
           />
 
           {allowSkip && (
-            <Button
+            <ButtonWithLink
               id="e2e-signup-custom-fields-skip-btn"
               buttonStyle="text"
               padding="0"
@@ -124,7 +124,7 @@ const CustomFields = ({
               mb={smallerThanPhone ? '16px' : undefined}
             >
               {formatMessage(messages.skip)}
-            </Button>
+            </ButtonWithLink>
           )}
         </Box>
       </FormWrapper>

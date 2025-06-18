@@ -27,7 +27,7 @@ import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
@@ -101,11 +101,11 @@ const Footer = styled.div`
   align-items: center;
 `;
 
-const CreateProjectButton = styled(Button)`
+const CreateProjectButton = styled(ButtonWithLink)`
   margin-right: 10px;
 `;
 
-const CloseButton = styled(Button)``;
+const CloseButton = styled(ButtonWithLink)``;
 
 export interface Props {
   projectTemplateId: string;

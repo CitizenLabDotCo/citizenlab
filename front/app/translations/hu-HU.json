@@ -179,6 +179,7 @@
   "app.components.FileUploader.a11y_removeFile": "Távolítsa el ezt a fájlt",
   "app.components.FileUploader.fileInputDescription": "Kattintson egy fájl kiválasztásához",
   "app.components.FileUploader.fileUploadLabel": "Mellékletek (max. 50 MB)",
+  "app.components.FileUploader.file_too_large2": "A {maxSizeMb}MB-nál nagyobb fájlok nem engedélyezettek.",
   "app.components.FileUploader.incorrect_extension": "A {fileName} a rendszerünk nem támogatja, ezért nem kerül feltöltésre.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Kiválasztott állapotszűrő: mind",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# beküldés} other {# beküldés}}",

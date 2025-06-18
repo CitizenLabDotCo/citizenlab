@@ -16,7 +16,7 @@ import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFile
 import { IProjectFolderData } from 'api/project_folders/types';
 
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -90,7 +90,7 @@ const ReadMoreInnerWrapper = styled.div`
   flex: 1;
 `;
 
-const ReadMoreButton = styled(Button)`
+const ReadMoreButton = styled(ButtonWithLink)`
   position: absolute;
   bottom: 0;
   left: 0;
@@ -102,7 +102,7 @@ const CollapseButtonWrapper = styled.div`
   margin-top: 20px;
 `;
 
-const CollapseButton = styled(Button)``;
+const CollapseButton = styled(ButtonWithLink)``;
 
 interface Props {
   projectFolder: IProjectFolderData;

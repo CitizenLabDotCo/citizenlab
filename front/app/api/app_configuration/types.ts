@@ -270,6 +270,7 @@ export interface IAppConfigurationSettings {
   community_monitor?: AppConfigurationFeature & {
     project_id: string;
   };
+  data_repository?: AppConfigurationFeature;
   user_fields_in_surveys?: AppConfigurationFeature;
   html_pdfs?: AppConfigurationFeature;
   project_planning?: AppConfigurationFeature;

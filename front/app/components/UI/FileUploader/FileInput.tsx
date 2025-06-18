@@ -1,4 +1,4 @@
-import React, { FormEvent, ChangeEvent } from 'react';
+import React, { FormEvent, useState, ChangeEvent } from 'react';
 
 import {
   colors,
@@ -6,11 +6,12 @@ import {
   defaultOutline,
   isRtl,
   Icon,
+  Error,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getBase64FromFile } from 'utils/fileUtils';
 
 import messages from './messages';
@@ -153,6 +154,7 @@ interface Props {
   className?: string;
   id: string;
   multiple?: boolean;
+  maxSizeMb?: number;
   dataCy?: string;
 }
 
@@ -160,9 +162,13 @@ const FileInput = ({
   className,
   id,
   onAdd,
+  maxSizeMb,
   dataCy,
   multiple = false,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
+  const [error, setError] = useState<string | undefined>(undefined);
   const onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
     // so we can upload the same file again after deleting it
@@ -173,6 +179,9 @@ const FileInput = ({
     const files = event.target.files;
 
     if (files && files.length > 0) {
+      // Reset any error state
+      setError(undefined);
+
       Array.from(files).forEach(async (file: UploadFile) => {
         const base64 = await getBase64FromFile(file);
         file.base64 = base64;
@@ -182,9 +191,19 @@ const FileInput = ({
           base64.substring(base64.indexOf(':') + 1, base64.indexOf(';base64'));
         if (!fileAccept.includes(file.extension)) {
           file.error = ['incorrect_extension'];
+          setError('incorrect_extension');
         }
-        file.remote = false;
-        onAdd(file);
+
+        if (maxSizeMb && file.size / 1000000 > maxSizeMb) {
+          // File is larger than maxSize
+          file.error = ['file_too_large'];
+          setError('file_too_large');
+        }
+
+        if (!file.error) {
+          file.remote = false;
+          onAdd(file);
+        }
       });
     }
   };
@@ -206,6 +225,13 @@ const FileInput = ({
         <StyledIcon name="upload-file" ariaHidden />
         <FormattedMessage {...messages.fileInputDescription} />
       </Label>
+      {error && (
+        <Error
+          text={formatMessage(messages[error], {
+            maxSizeMb: maxSizeMb || 0,
+          })}
+        />
+      )}
     </Container>
   );
 };

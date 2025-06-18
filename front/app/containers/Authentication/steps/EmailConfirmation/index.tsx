@@ -8,7 +8,7 @@ import { string, object } from 'yup';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
 import Input from 'components/HookForm/Input';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import {
@@ -130,7 +130,7 @@ const EmailConfirmation = ({
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">
-          <Button
+          <ButtonWithLink
             id="e2e-verify-email-button"
             type="submit"
             width="auto"
@@ -138,7 +138,7 @@ const EmailConfirmation = ({
             processing={busy}
           >
             {formatMessage(messages.verifyAndContinue)}
-          </Button>
+          </ButtonWithLink>
         </Box>
         <Box mt="24px">
           <FooterNotes

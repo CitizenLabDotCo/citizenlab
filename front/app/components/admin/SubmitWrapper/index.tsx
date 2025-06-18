@@ -6,7 +6,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { css } from 'styled-components';
 import { Omit } from 'typings';
 
-import Button, {
+import ButtonWithLink, {
   ButtonStyles,
   Props as OriginalButtonProps,
 } from 'components/UI/ButtonWithLink';
@@ -130,7 +130,7 @@ const SubmitWrapper = (props: Props) => {
 
   return (
     <Wrapper aria-live="polite" fullWidth={!!fullWidth}>
-      <Button
+      <ButtonWithLink
         className={`e2e-submit-wrapper-button ${props.className ?? ''}`}
         buttonStyle={style}
         processing={loading}
@@ -145,7 +145,7 @@ const SubmitWrapper = (props: Props) => {
         {status === 'success' && (
           <FormattedMessage {...messages.buttonSuccess} />
         )}
-      </Button>
+      </ButtonWithLink>
 
       {status === 'error' && (
         <Message className="error">

@@ -179,6 +179,7 @@
   "app.components.FileUploader.a11y_removeFile": "Usuń ten plik",
   "app.components.FileUploader.fileInputDescription": "Kliknij, aby wybrać plik",
   "app.components.FileUploader.fileUploadLabel": "Załączniki (maks. 50MB)",
+  "app.components.FileUploader.file_too_large2": "Pliki większe niż {maxSizeMb}MB nie są dozwolone.",
   "app.components.FileUploader.incorrect_extension": "{fileName} nie jest obsługiwany przez nasz system, nie zostanie wgrany.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Wybrane statusy filtrów: wszystkie",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# inicjatywa} few {# inicjatywy} many {# inicjatyw} other {# inicjatywy}}",
