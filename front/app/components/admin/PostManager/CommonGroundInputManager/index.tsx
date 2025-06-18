@@ -20,7 +20,6 @@ import useIdeas from 'api/ideas/useIdeas';
 import useProjectById from 'api/projects/useProjectById';
 
 import {
-  ManagerType,
   PreviewMode,
   StyledExportMenu,
   TopActionBar,

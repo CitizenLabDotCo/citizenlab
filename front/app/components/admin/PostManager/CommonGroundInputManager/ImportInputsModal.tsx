@@ -7,10 +7,9 @@ import { IOption } from 'typings';
 import { IJob } from 'api/copy_inputs/types';
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 
-import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
-
 import Modal from 'components/UI/Modal';
 import PhaseFilter from 'components/UI/PhaseFilter';
+import ProjectFilter from 'components/UI/ProjectFilter';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -97,12 +96,14 @@ const ImportInputsModal = ({
           {formatMessage(messages.createInputsDescription)}
         </Text>
         <Box py="5px" mt="0px" alignItems="center">
-          <ProjectFilter
-            projectId={selectedProjectId}
-            excludeProjectId={currentProjectId}
-            emptyOptionMessage={messages.noProject}
-            onProjectFilter={handleProjectFilter}
-          />
+          <Box mb="24px">
+            <ProjectFilter
+              selectedProjectId={selectedProjectId}
+              excludeProjectId={currentProjectId}
+              emptyOptionMessage={messages.noProject}
+              onProjectFilter={handleProjectFilter}
+            />
+          </Box>
           {selectedProjectId && (
             <PhaseFilter
               label={formatMessage(messages.selectAPhase)}

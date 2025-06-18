@@ -17,7 +17,6 @@ interface Option {
 interface Props {
   id?: string;
   projectId?: string;
-  excludeProjectId?: string;
   emptyOptionMessage?: MessageDescriptor;
   onProjectFilter: (filter: Option) => void;
 }
@@ -25,7 +24,6 @@ interface Props {
 const ProjectFilter = ({
   id,
   projectId,
-  excludeProjectId,
   emptyOptionMessage,
   onProjectFilter,
 }: Props) => {
@@ -60,7 +58,6 @@ const ProjectFilter = ({
       width="100%"
       mb="20px"
       selectedProjectId={projectId}
-      excludeProjectId={excludeProjectId}
       emptyOptionMessage={getEmptyOptionMessage()}
       onProjectFilter={handleProjectFilter}
       includeHiddenProjects={true}
