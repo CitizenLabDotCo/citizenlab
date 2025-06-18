@@ -121,7 +121,6 @@ class ApplicationMailer < ActionMailer::Base
   def mailgun_variables
     {
       'cl_tenant_id' => app_configuration.id,
-      'cl_user_id' => recipient.id,
       'cl_delivery_id' => command[:delivery].id
     }
   end
