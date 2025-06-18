@@ -92,6 +92,18 @@ describe CommonGround::ResultsService do
         expect(results.top_consensus_ideas).to eq [idea1, idea2]
       end
 
+      context 'when there are ties in consensus scores' do
+        let!(:idea5) do
+          idea = create(:idea, project: phase.project, phases: [phase])
+          create_list(:reaction, 5, reactable: idea, mode: 'up')
+          idea
+        end
+
+        it 'returns the idea with the highest number of votes first' do
+          expect(results.top_consensus_ideas).to eq [idea5, idea1]
+        end
+      end
+
       it 'returns top controversial ideas ordered by consensus score (lowest first)' do
         expect(results.top_controversial_ideas).to eq [idea3, idea2]
       end
