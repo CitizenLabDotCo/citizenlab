@@ -2,7 +2,14 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Pages } from '../util';
 
-// Utility function to check if a rule condition is met
+const findPageIndex = (pages: Pages, pageId: string | number) => {
+  return pages.findIndex((page) => page.page.id === pageId);
+};
+
+const findPageById = (pages: Pages, pageId: string | number) => {
+  return pages.find((page) => page.page.id === pageId);
+};
+
 const isRuleConditionMet = (
   question: IFlatCustomField,
   rule: {
@@ -14,10 +21,7 @@ const isRuleConditionMet = (
   const value = formData?.[question.key];
 
   const optionsWithoutExistingRules = question.options?.filter(
-    (option) =>
-      !question.logic.rules?.some(
-        (r) => r.if === option.key || r.if === option.id
-      )
+    (option) => !question.logic.rules?.some((r) => r.if === option.id)
   );
 
   if (rule.if === 'no_answer') {
@@ -63,27 +67,29 @@ const isRuleConditionMet = (
       (optionIds.includes(String(rule.if)) || rule.if === String(optionIds))
     );
   }
-
-  // Default case for other input types
-  if (rule.if === 'any_other_answer') {
-    return (
-      value !== undefined &&
-      value !== null &&
-      !question.options?.some((option) => option.key === value)
+  if (
+    question.input_type === 'linear_scale' ||
+    question.input_type === 'rating'
+  ) {
+    const valuesArray = Array.from(Array(question.maximum).keys()).map(
+      (i) => i + 1
     );
+
+    const valuesWithoutExistingRules = valuesArray.filter(
+      (value) => !question.logic.rules?.some((r) => r.if === value)
+    );
+
+    // Default case for other input types
+    if (rule.if === 'any_other_answer') {
+      return (
+        value !== undefined &&
+        value !== null &&
+        valuesWithoutExistingRules.some((option) => option === value)
+      );
+    }
   }
 
   return rule.if === value || rule.if === String(value);
-};
-
-// Utility function to find page index by ID
-const findPageIndex = (pages: Pages, pageId: string | number) => {
-  return pages.findIndex((page) => page.page.id === pageId);
-};
-
-// Utility function to find a page by ID
-const findPageById = (pages: Pages, pageId: string | number) => {
-  return pages.find((page) => page.page.id === pageId);
 };
 
 export const determineNextPageNumber = ({

@@ -345,4 +345,174 @@ describe('Survey form logic', () => {
     });
     expect(previousPageIndex4).toBe(0);
   });
+
+  it('determies previous and next page number based on linear scale question logic', () => {
+    pages[0].pageQuestions = [
+      {
+        type: 'custom_field',
+        id: 'question1',
+        key: 'question1',
+        input_type: 'linear_scale',
+        maximum: 5,
+        logic: {
+          rules: [
+            {
+              if: 1,
+              goto_page_id: 'page2',
+            },
+            {
+              if: 2,
+              goto_page_id: 'page3',
+            },
+            { if: 'any_other_answer', goto_page_id: 'page4' },
+            { if: 'no_answer', goto_page_id: 'page5' },
+          ],
+        },
+        title_multiloc: { en: '' },
+        description_multiloc: {},
+        required: false,
+        ordering: 0,
+        enabled: true,
+        created_at: '',
+        updated_at: '',
+      },
+    ];
+
+    const nextPageIndex = determineNextPageNumber({
+      pages,
+      currentPage: pages[0].page,
+      formData: {
+        question1: 1,
+      },
+    });
+    expect(nextPageIndex).toBe(1);
+    const previousPageIndex = determinePreviousPageNumber({
+      pages,
+      currentPage: pages[1].page,
+    });
+    expect(previousPageIndex).toBe(0);
+    const nextPageIndex2 = determineNextPageNumber({
+      pages,
+      currentPage: pages[0].page,
+      formData: {
+        question1: 2,
+      },
+    });
+    expect(nextPageIndex2).toBe(2);
+    const previousPageIndex2 = determinePreviousPageNumber({
+      pages,
+      currentPage: pages[2].page,
+    });
+    expect(previousPageIndex2).toBe(0);
+    const nextPageIndex3 = determineNextPageNumber({
+      pages,
+      currentPage: pages[0].page,
+      formData: {
+        question1: 3,
+      },
+    });
+
+    expect(nextPageIndex3).toBe(3);
+    const previousPageIndex3 = determinePreviousPageNumber({
+      pages,
+      currentPage: pages[3].page,
+    });
+    expect(previousPageIndex3).toBe(0);
+    const nextPageIndex4 = determineNextPageNumber({
+      pages,
+      currentPage: pages[0].page,
+      formData: {},
+    });
+    expect(nextPageIndex4).toBe(4);
+    const previousPageIndex4 = determinePreviousPageNumber({
+      pages,
+      currentPage: pages[4].page,
+    });
+    expect(previousPageIndex4).toBe(0);
+  });
+
+  it('determies previous and next page number based on rating question logic', () => {
+    pages[0].pageQuestions = [
+      {
+        type: 'custom_field',
+        id: 'question1',
+        key: 'question1',
+        input_type: 'rating',
+        maximum: 5,
+        logic: {
+          rules: [
+            {
+              if: 1,
+              goto_page_id: 'page2',
+            },
+            {
+              if: 2,
+              goto_page_id: 'page3',
+            },
+            { if: 'any_other_answer', goto_page_id: 'page4' },
+            { if: 'no_answer', goto_page_id: 'page5' },
+          ],
+        },
+        title_multiloc: { en: '' },
+        description_multiloc: {},
+        required: false,
+        ordering: 0,
+        enabled: true,
+        created_at: '',
+        updated_at: '',
+      },
+    ];
+
+    const nextPageIndex = determineNextPageNumber({
+      pages,
+      currentPage: pages[0].page,
+      formData: {
+        question1: 1,
+      },
+    });
+    expect(nextPageIndex).toBe(1);
+    const previousPageIndex = determinePreviousPageNumber({
+      pages,
+      currentPage: pages[1].page,
+    });
+    expect(previousPageIndex).toBe(0);
+    const nextPageIndex2 = determineNextPageNumber({
+      pages,
+      currentPage: pages[0].page,
+      formData: {
+        question1: 2,
+      },
+    });
+    expect(nextPageIndex2).toBe(2);
+    const previousPageIndex2 = determinePreviousPageNumber({
+      pages,
+      currentPage: pages[2].page,
+    });
+    expect(previousPageIndex2).toBe(0);
+    const nextPageIndex3 = determineNextPageNumber({
+      pages,
+      currentPage: pages[0].page,
+      formData: {
+        question1: 3,
+      },
+    });
+
+    expect(nextPageIndex3).toBe(3);
+    const previousPageIndex3 = determinePreviousPageNumber({
+      pages,
+      currentPage: pages[3].page,
+    });
+    expect(previousPageIndex3).toBe(0);
+    const nextPageIndex4 = determineNextPageNumber({
+      pages,
+      currentPage: pages[0].page,
+      formData: {},
+    });
+    expect(nextPageIndex4).toBe(4);
+    const previousPageIndex4 = determinePreviousPageNumber({
+      pages,
+      currentPage: pages[4].page,
+    });
+    expect(previousPageIndex4).toBe(0);
+  });
 });
