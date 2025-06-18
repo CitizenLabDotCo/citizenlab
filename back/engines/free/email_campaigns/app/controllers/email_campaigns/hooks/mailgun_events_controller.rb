@@ -22,9 +22,7 @@ module EmailCampaigns
 
     def create
       campaigns_recipient = Delivery.find_by(
-        id: params[:'event-data'][:'user-variables'][:cl_delivery_id],
-        # user_id: params[:'event-data'][:'user-variables'][:cl_user_id],
-        # campaign_id: params[:'event-data'][:'user-variables'][:cl_campaign_id]
+        id: params[:'event-data'][:'user-variables'][:cl_delivery_id]
       )
       if campaigns_recipient
         target_status = MAILGUN_STATUS_MAPPING[params[:'event-data'][:event]]

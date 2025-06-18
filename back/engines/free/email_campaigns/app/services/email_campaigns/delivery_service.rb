@@ -91,14 +91,14 @@ module EmailCampaigns
     end
 
     def send_preview(campaign, recipient)
-      generate_commands(campaign, recipient, options).each do |command|
+      generate_commands(campaign, recipient).each do |command|
         process_command(campaign, command.merge({ recipient: recipient }))
       end
     end
 
     # This only works for emails that are sent out internally
     def preview_html(campaign, recipient)
-      command = generate_commands(campaign, recipient, options).first&.merge(recipient: recipient)
+      command = generate_commands(campaign, recipient).first&.merge(recipient: recipient)
       return unless command
 
       mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
