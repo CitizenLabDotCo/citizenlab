@@ -3,7 +3,8 @@
 IdeaCustomFields::Engine.routes.draw do
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
-      namespace :admin do
+      # Use scope instead of namespace to keep 'admin' in the URL
+      scope path: 'admin' do
         resources :projects, only: [] do
           resources(
             :custom_fields,
