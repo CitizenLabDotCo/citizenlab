@@ -107,6 +107,7 @@ export type Props = {
   className?: string;
   isRequired?: boolean;
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
+  onClick?: () => void;
 } & BoxPaddingProps &
   BoxMarginProps;
 
@@ -124,6 +125,7 @@ const Radio = ({
   usePrimaryBorder = false,
   onKeyDown,
   onChange: _onChange,
+  onClick,
   ...rest
 }: Props) => {
   const theme = useTheme();
@@ -145,6 +147,7 @@ const Radio = ({
 
       if (!targetElementIsLink) {
         onChange(value);
+        onClick && onClick();
       }
     }
   };

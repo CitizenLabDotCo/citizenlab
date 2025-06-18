@@ -76,6 +76,7 @@ describe('Form builder page element', () => {
 
     // Go to the next page
     cy.dataCy('e2e-next-page').click();
+    cy.wait(1000);
 
     // Save survey response
     cy.dataCy('e2e-submit-form').should('exist');

@@ -127,7 +127,7 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
           const body = {
             custom_fields: [
               {
-                id: 'd99d4aaf-0b15-4b49-b9dc-58be06c6656c',
+                id: 'd99d4aaf-0b15-4b49-b9dc-58be06c6656',
                 input_type: 'page',
                 logic: {},
                 required: false,
