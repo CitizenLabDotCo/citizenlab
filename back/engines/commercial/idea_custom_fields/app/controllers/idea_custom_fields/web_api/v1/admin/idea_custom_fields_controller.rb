@@ -23,6 +23,7 @@ module IdeaCustomFields
       }
     }
 
+    skip_before_action :authenticate_user, only: %i[index]
     before_action :set_custom_field, only: %i[show as_geojson]
     before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
