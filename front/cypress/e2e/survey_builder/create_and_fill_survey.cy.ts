@@ -602,6 +602,7 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-previous-page').click();
     cy.dataCy('e2e-page-number-1').should('exist');
     cy.contains(questionTitle).should('exist');
+    cy.wait(1000);
 
     // Go to page 4 again (the chosen option is remembered)
     cy.dataCy('e2e-next-page').click({ force: true });

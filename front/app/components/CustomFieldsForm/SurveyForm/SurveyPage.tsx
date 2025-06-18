@@ -30,7 +30,9 @@ import { isPage } from 'utils/helperUtils';
 import CustomFields from '../CustomFields';
 import generateYupValidationSchema from '../generateYupSchema';
 import ProgressBar from '../ProgressBar';
-import { getFormCompletionPercentage } from '../util';
+import { getFormCompletionPercentage, Pages } from '../util';
+
+import { determineNextPageNumber, determinePreviousPageNumber } from './logic';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -50,6 +52,7 @@ export interface FormValues {
 
 type SurveyPage = {
   page: IFlatCustomField;
+  pages: Pages;
   pageQuestions: IFlatCustomField[];
   currentPageNumber: number;
   setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
@@ -67,6 +70,7 @@ type SurveyPage = {
 
 const SurveyPage = ({
   page,
+  pages,
   pageQuestions,
   lastPageNumber,
   participationMethod,
@@ -112,10 +116,33 @@ const SurveyPage = ({
     defaultValues,
   });
 
+  const previousPageNumber = determinePreviousPageNumber({
+    pages,
+    currentPage: page,
+    formData: methods.watch(),
+  });
+
+  const nextPageNumber = determineNextPageNumber({
+    pages,
+    currentPage: page,
+    formData: methods.watch(),
+  });
+
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       setShowFormFeedback(false);
       await onSubmit(formValues);
+      // Go to the next page
+      if (currentPageNumber < lastPageNumber) {
+        setCurrentPageNumber(nextPageNumber);
+      }
+
+      // Go to the project page if this is the last page
+      if (currentPageNumber === lastPageNumber) {
+        clHistory.push({
+          pathname: `/projects/${project?.data.attributes.slug}`,
+        });
+      }
     } catch (error) {
       // Only show feedback if the form submission failed
       // otherwise we rely on the field validation errors
@@ -136,6 +163,16 @@ const SurveyPage = ({
     userIsEditing: false,
     userIsOnLastPage: currentPageNumber === lastPageNumber,
   });
+
+  const handleNextAndSubmit = () => {
+    pagesRef.current?.scrollTo(0, 0);
+    methods.handleSubmit((e) => onFormSubmit(e))();
+  };
+
+  const handlePrevious = () => {
+    pagesRef.current?.scrollTo(0, 0);
+    setCurrentPageNumber(previousPageNumber);
+  };
 
   return (
     <FormProvider {...methods}>
@@ -282,25 +319,14 @@ const SurveyPage = ({
 
             <Box w="100%">
               <PageControlButtons
-                handleNextAndSubmit={() => {
-                  pagesRef.current?.scrollTo(0, 0);
-                  if (currentPageNumber === lastPageNumber) {
-                    clHistory.push({
-                      pathname: `/projects/${project?.data.attributes.slug}`,
-                    });
-                  }
-                  methods.handleSubmit((e) => onFormSubmit(e))();
-                }}
-                handlePrevious={() => {
-                  pagesRef.current?.scrollTo(0, 0);
-                  setCurrentPageNumber(currentPageNumber - 1);
-                }}
+                handleNextAndSubmit={handleNextAndSubmit}
+                handlePrevious={handlePrevious}
                 hasPreviousPage={currentPageNumber > 0}
                 isLoading={methods.formState.isSubmitting}
                 pageVariant={
                   currentPageNumber === lastPageNumber
                     ? 'after-submission'
-                    : currentPageNumber === lastPageNumber - 1
+                    : nextPageNumber === lastPageNumber
                     ? 'submission'
                     : 'other'
                 }

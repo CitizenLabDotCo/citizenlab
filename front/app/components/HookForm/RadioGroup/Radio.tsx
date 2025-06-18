@@ -25,6 +25,14 @@ const Radio = ({ name, id, ...rest }: Props) => {
               {...field}
               {...rest}
               id={id}
+              onClick={() => {
+                // Deselect the radio button if it is already selected
+                if (field.value === rest.value) {
+                  setValue(name, '');
+                  trigger(name);
+                  return;
+                }
+              }}
               currentValue={field.value}
               onChange={(value) => {
                 setValue(name, value);
