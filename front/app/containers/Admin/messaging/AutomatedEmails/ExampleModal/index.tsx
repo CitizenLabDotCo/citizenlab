@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Button,
+  Box,
+  Text,
+  IconTooltip,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 import useCampaignExamples from 'api/campaign_examples/useCampaignExamples';
 import useCampaign from 'api/campaigns/useCampaign';
@@ -9,7 +15,7 @@ import PreviewFrame from 'components/admin/Email/PreviewFrame';
 import T from 'components/T';
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
@@ -17,9 +23,17 @@ import messages from '../../messages';
 import EmptyState from './EmptyState';
 import ExampleFrame from './ExampleFrame';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import styled from 'styled-components';
+import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 
 /** Modulo function, since JS's native `%` remainder function works differently for negative numbers */
 const mod = (n: number, m: number) => ((n % m) + m) % m;
+
+const SendTestEmailButton = styled.button`
+  text-decoration: underline;
+  font-size: ${fontSizes.base}px;
+  cursor: pointer;
+`;
 
 const ExampleModal = ({
   campaignId,
@@ -36,9 +50,11 @@ const ExampleModal = ({
   const isEditingEnabled = useFeatureFlag({
     name: 'customised_automated_emails',
   });
+  const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
+    useSendCampaignPreview();
+  const { formatMessage } = useIntl();
 
   useEffect(() => {
-    // TODO: Fix this the next time the file is edited.
     if (examples?.data.length) {
       setSelectedExampleIdx(0);
     }
@@ -56,7 +72,19 @@ const ExampleModal = ({
     selectedExampleIdx === null ? null : examples.data[selectedExampleIdx];
 
   // New preview only works with editing enabled & where the BE has a preview class
+  // TODO: Seems to call preview twice
   const hasPreview = isEditingEnabled && campaign.data.attributes.has_preview;
+
+  const handleSendPreviewEmail = () => {
+    sendCampaignPreview(campaignId, {
+      onSuccess: () => {
+        const previewSentConfirmation = formatMessage(
+          messages.previewSentConfirmation
+        );
+        window.alert(previewSentConfirmation);
+      },
+    });
+  };
 
   return (
     <Modal
@@ -71,7 +99,23 @@ const ExampleModal = ({
           <EmptyState />
         )}
         {!isLoading && hasPreview && (
-          <PreviewFrame campaignId={campaign.data.id} showSubject={true} />
+          <>
+            <Box mb="30px" display="flex" alignItems="center">
+              <SendTestEmailButton
+                onClick={handleSendPreviewEmail}
+                disabled={isSendingCampaignPreview}
+              >
+                <FormattedMessage {...messages.sendTestEmailButton} />
+              </SendTestEmailButton>
+              &nbsp;
+              <IconTooltip
+                content={
+                  <FormattedMessage {...messages.sendTestEmailTooltip} />
+                }
+              />
+            </Box>
+            <PreviewFrame campaignId={campaign.data.id} showSubject={true} />
+          </>
         )}
         {!isLoading &&
           !hasPreview &&

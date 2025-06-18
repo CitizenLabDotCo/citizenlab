@@ -62,15 +62,14 @@ module EmailCampaigns
       multiloc_service = MultilocService.new
       region_text = multiloc_service.t(@campaign.send(region_key), locale.to_s)
       values = values.transform_keys(&:to_s)
-
-      # TODO: Need to santitize here
       render_liquid_template(text: region_text, values: values, html: region[:type] == 'html')
     end
 
     def render_liquid_template(text: nil, values: {}, html: false)
       template_text = html ? fix_image_widths(text) : text
       template = Liquid::Template.parse(template_text)
-      template.render(values)
+      rendered_value = template.render(values)
+      html ? rendered_value.html_safe : rendered_value
     end
 
     def fix_image_widths(html)

@@ -6,7 +6,7 @@
       <mj-text>
         <h1><%= header_title %></h1>
         <% if header_message %>
-          <p><%= header_message.html_safe %></p>
+          <p><%= header_message %></p>
         <% end %>
       </mj-text>
     </mj-column>

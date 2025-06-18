@@ -37,13 +37,13 @@ module EmailCampaigns
       ]
     end
 
-    def self.preview_email(campaign: nil, recipient: nil)
+    def self.preview_command(recipient: nil)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       url_service = Frontend::UrlService.new
       comment = Comment.first
       author = comment&.author
 
-      command = {
+      {
         recipient: recipient,
         event_payload: {
           initiating_user_first_name: author.first_name,
@@ -55,7 +55,6 @@ module EmailCampaigns
           unfollow_url: url_service.model_to_url(comment, locale: Locale.new(recipient.locale)) || '#'
         }
       }
-      with(campaign: campaign, command: command).campaign_mail
     end
 
     protected

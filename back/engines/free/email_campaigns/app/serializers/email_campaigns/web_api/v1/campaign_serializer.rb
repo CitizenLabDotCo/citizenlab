@@ -110,7 +110,7 @@ module EmailCampaigns
       content_configurable?(object)
     }
     attribute :has_preview do |object|
-      object.mailer_class.respond_to?(:preview_email)
+      object.mailer_class.respond_to?(:preview_command)
     end
 
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
