@@ -455,6 +455,7 @@ resource 'Phases' do
 
       describe 'common ground' do
         let(:participation_method) { 'common_ground' }
+        let(:input_term) { 'idea' }
 
         example_request 'Create a common ground phase', document: false do
           assert_status 201
@@ -465,6 +466,7 @@ resource 'Phases' do
 
           expect(phase.reacting_enabled).to be(true)
           expect(phase.reacting_dislike_enabled).to be(true)
+          expect(phase.input_term).to eq('contribution')
         end
       end
 

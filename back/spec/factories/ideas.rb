@@ -14,7 +14,7 @@ FactoryBot.define do
 
     publication_status { 'published' }
     idea_status
-    association :project, factory: :single_phase_ideation_project
+    project { phases.present? ? phases.first.project : association(:single_phase_ideation_project) }
   end
 
   factory :idea, parent: :base_idea do
@@ -77,6 +77,10 @@ FactoryBot.define do
 
   trait :with_author do
     author
+  end
+
+  trait :with_assignee do
+    assignee factory: :admin
   end
 
   trait :proposed do

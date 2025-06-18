@@ -934,6 +934,8 @@ describe Export::Xlsx::InputSheetGenerator do
               column_headers: [
                 'ID',
                 'Title',
+                'Author name',
+                'Author email',
                 'Author ID',
                 'Submitted at',
                 'Published at',
@@ -963,6 +965,8 @@ describe Export::Xlsx::InputSheetGenerator do
               column_headers: [
                 'ID',
                 'Title',
+                'Author name',
+                'Author email',
                 'Author ID',
                 'Submitted at',
                 'Published at',
@@ -976,6 +980,8 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   idea.id,
                   idea.title_multiloc['en'],
+                  idea.author.full_name,
+                  idea.author.email,
                   idea.author_id,
                   anything,
                   anything,
