@@ -40,21 +40,17 @@ module EmailCampaigns
     end
 
     def self.preview_command(recipient: nil)
-      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
-      url_service = Frontend::UrlService.new
-      comment = Comment.first
-      author = comment&.author
-
+      data = preview_data(recipient)
       {
         recipient: recipient,
         event_payload: {
-          initiating_user_first_name: author.first_name,
-          comment_author_name: name_service.display_name!(author),
-          comment_body_multiloc: comment&.body_multiloc || { 'en' => 'Example Comment' },
-          comment_url: url_service.model_to_url(comment, locale: Locale.new(recipient.locale)) || '#',
-          idea_title_multiloc: comment&.idea&.title_multiloc || { 'en' => 'Example Idea' },
+          initiating_user_first_name: data[:first_name],
+          comment_author_name: data[:display_name],
+          comment_body_multiloc: data[:comment_body_multiloc],
+          comment_url: data[:idea_url],
+          idea_title_multiloc: data[:idea_title_multiloc],
           idea_input_term: 'idea',
-          unfollow_url: url_service.model_to_url(comment, locale: Locale.new(recipient.locale)) || '#'
+          unfollow_url: data[:idea_url]
         }
       }
     end
@@ -68,7 +64,7 @@ module EmailCampaigns
         inputTitle: localize_for_recipient(event.idea_title_multiloc),
         authorName: event.comment_author_name,
         authorNameFull: event.comment_author_name,
-        commentAuthor: event.initiating_user_first_name&.capitalize
+        commentAuthor: event.initiating_user_first_name&.capitalize,
       }
     end
 
