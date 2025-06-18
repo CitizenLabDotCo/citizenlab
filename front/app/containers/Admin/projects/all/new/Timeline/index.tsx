@@ -16,20 +16,24 @@ import ProjectGanttChart, { GanttProject } from './ProjectGanttChart';
 const Timeline = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { data, isLoading, isError } = useProjectsMiniAdmin({
+  const {
+    data: projects,
+    isLoading,
+    isError,
+  } = useProjectsMiniAdmin({
     sort: 'phase_starting_or_ending_soon',
   });
 
-  const projectsData = data?.pages.map((page) => page.data).flat() || [];
-
-  const projects: GanttProject[] = projectsData.map((project) => ({
-    id: project.id,
-    title: localize(project.attributes.title_multiloc),
-    start: project.attributes.first_phase_start_date,
-    end: project.attributes.last_phase_end_date,
-    folder: localize(project.attributes.folder_title_multiloc),
-    daysLeft: 63,
-  }));
+  const projectsGanttData: GanttProject[] = (projects?.data || []).map(
+    (project) => ({
+      id: project.id,
+      title: localize(project.attributes.title_multiloc),
+      start: project.attributes.first_phase_start_date,
+      end: project.attributes.last_phase_end_date,
+      folder: localize(project.attributes.folder_title_multiloc),
+      daysLeft: 63,
+    })
+  );
 
   if (isLoading) {
     return (
@@ -43,7 +47,7 @@ const Timeline = () => {
     return <Text>{formatMessage(messages.failedToLoadTimelineError)}</Text>;
   }
 
-  return <ProjectGanttChart projects={projects} />;
+  return <ProjectGanttChart projects={projectsGanttData} />;
 };
 
 export default Timeline;
