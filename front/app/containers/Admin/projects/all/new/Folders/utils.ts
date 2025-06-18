@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
-import { Parameters } from 'api/projects_mini_admin/types';
+import { Parameters } from 'api/project_folders_mini/types';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -42,14 +42,7 @@ export const useParam = <ParamName extends keyof Parameters>(
   return (paramValue ?? undefined) as Parameters[typeof paramName] | undefined;
 };
 
-export const PARAMS: (keyof Parameters)[] = [
-  'status',
-  'managers',
-  'search',
-  'start_at',
-  'end_at',
-  'sort',
-];
+export const PARAMS: (keyof Parameters)[] = ['status', 'managers', 'search'];
 
 export const useParams = () => {
   const [searchParams] = useSearchParams();

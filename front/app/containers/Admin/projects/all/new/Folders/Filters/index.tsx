@@ -9,9 +9,7 @@ import Search from '../../_shared/Search';
 import Status from '../../_shared/Status';
 import { useParam, setParam } from '../utils';
 
-import Dates from './Dates';
 import messages from './messages';
-import Sort from './Sort';
 
 const Filters = () => {
   const { formatMessage } = useIntl();
@@ -27,9 +25,9 @@ const Filters = () => {
       alignItems="center"
     >
       <Box display="flex" alignItems="center" w="100%">
-        <Sort mr="12px" />
         <Manager
           managerIds={managerIds}
+          mr="8px"
           onChange={(value) => {
             setParam('managers', value);
           }}
@@ -41,7 +39,6 @@ const Filters = () => {
             setParam('status', publicationStatuses);
           }}
         />
-        <Dates />
       </Box>
       <Search
         value={searchValue}

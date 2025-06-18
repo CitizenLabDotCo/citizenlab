@@ -11,16 +11,6 @@ class WebApi::V1::FoldersController < ApplicationController
     @project_folders = paginate @project_folders
     @project_folders = @project_folders.includes(:images, admin_publication: [:children])
 
-    # Array of publication IDs for folders that
-    # still have visible children left.
-    parent_ids_for_visible_children = policy_scope(Project)
-      .includes(:admin_publication)
-      .pluck('admin_publications.parent_id')
-      .compact
-    # Caches the counts of visible children for
-    # the current user.
-    visible_children_count_by_parent_id = Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }
-
     user_followers = current_user&.follows
       &.where(followable_type: 'ProjectFolders::Folder')
       &.group_by do |follower|
@@ -36,6 +26,39 @@ class WebApi::V1::FoldersController < ApplicationController
         user_followers: user_followers
       ),
       include: %i[admin_publication images]
+    )
+  end
+
+  def index_for_admin
+    project_folders = policy_scope(ProjectFolders::Folder)
+    project_folders = FoldersFinderAdminService.execute(project_folders, params)
+    project_folders = paginate project_folders
+    project_folders = project_folders.includes(:admin_publication)
+
+    authorize project_folders
+
+    moderators_per_folder = User
+      .where("roles @> '[{\"type\":\"project_folder_moderator\"}]'")
+      .each_with_object({}) do |user, moderators_per_folder_hash|
+        user.roles.each do |role|
+          next unless role['type'] == 'project_folder_moderator'
+
+          folder_id = role['project_folder_id']
+          next unless folder_id
+
+          moderators_per_folder_hash[folder_id] ||= []
+          moderators_per_folder_hash[folder_id] << user
+        end
+      end
+
+    render json: linked_json(
+      project_folders,
+      WebApi::V1::FolderMiniSerializer,
+      params: jsonapi_serializer_params(
+        visible_children_count_by_parent_id: visible_children_count_by_parent_id,
+        moderators_per_folder: moderators_per_folder
+      ),
+      include: [:moderators]
     )
   end
 
@@ -130,6 +153,19 @@ class WebApi::V1::FoldersController < ApplicationController
       description_preview_multiloc: CL2_SUPPORTED_LOCALES,
       header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES
     )
+  end
+
+  def visible_children_count_by_parent_id
+    # Array of publication IDs for folders that
+    # still have visible children left.
+    parent_ids_for_visible_children = policy_scope(Project)
+      .includes(:admin_publication)
+      .pluck('admin_publications.parent_id')
+      .compact
+
+    # Caches the counts of visible children for
+    # the current user.
+    Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }
   end
 end
 
