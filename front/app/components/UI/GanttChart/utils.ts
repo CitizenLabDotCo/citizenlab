@@ -6,7 +6,6 @@ import {
   startOfQuarter,
   endOfQuarter,
   startOfDay,
-  add,
 } from 'date-fns';
 
 export type TimeRangeOption = 'month' | 'week' | 'quarter' | 'year' | '5years';
@@ -15,7 +14,6 @@ export const getTimeRangeDates = (
   option: TimeRangeOption,
   date: Date = new Date()
 ): { startDate: Date; endDate: Date } => {
-  let endDate;
   switch (option) {
     case 'month':
       return {
