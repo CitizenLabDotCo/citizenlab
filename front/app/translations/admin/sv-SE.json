@@ -928,7 +928,7 @@
   "app.containers.Admin.inspirationHub.UpsellNudge.upsellTitle": "Gå med i ett nätverk av banbrytande demokratiutövare",
   "app.containers.Admin.inspirationHub.Volunteering": "Volontärarbete",
   "app.containers.Admin.inspirationHub.Voting": "Omröstning",
-  "app.containers.Admin.inspirationHub.commnonGround": "Gemensam jord",
+  "app.containers.Admin.inspirationHub.commonGround": "Gemensam jord",
   "app.containers.Admin.inspirationHub.filters": "Filter",
   "app.containers.Admin.inspirationHub.resetFilters": "Återställ filter",
   "app.containers.Admin.inspirationHub.seemsLike": "Det verkar som om det inte finns några fler projekt. Försök att ändra {filters}.",
