@@ -40,8 +40,12 @@ module EmailCampaigns
       true
     end
 
+    def substitution_variables
+      {}
+    end
+
     # To format a non-editable message, use `format_message`.
-    def format_message(key, component: nil, escape_html: true, values: {})
+    def format_message(key, component: nil, escape_html: true, values: substitution_variables)
       group = component || @campaign.class.name.demodulize.underscore
       msg = t("email_campaigns.#{group}.#{key}", **values)
       escape_html ? msg : msg.html_safe
@@ -49,7 +53,7 @@ module EmailCampaigns
 
     # To format an editable message, use `format_editable_region`.
     # The `region_key` must exist in editable regions.
-    def format_editable_region(region_key: nil, values: {})
+    def format_editable_region(region_key: nil, values: substitution_variables)
       region = self.class.editable_regions.find { |r| r[:key] == region_key }
       return unless region
 
