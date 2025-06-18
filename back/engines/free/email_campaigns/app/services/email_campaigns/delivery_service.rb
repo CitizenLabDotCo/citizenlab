@@ -106,7 +106,6 @@ module EmailCampaigns
       end
     end
 
-    # TODO: No tests for this method (never were) - need to add some
     def preview_email(campaign, recipient)
       command = if campaign.manual?
         campaign.generate_commands(
