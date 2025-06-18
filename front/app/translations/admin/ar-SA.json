@@ -928,7 +928,7 @@
   "app.containers.Admin.inspirationHub.UpsellNudge.upsellTitle": "انضم إلى شبكة من ممارسي الديمقراطية الرائدين",
   "app.containers.Admin.inspirationHub.Volunteering": "التطوع",
   "app.containers.Admin.inspirationHub.Voting": "التصويت",
-  "app.containers.Admin.inspirationHub.commnonGround": "أرضية مشتركة",
+  "app.containers.Admin.inspirationHub.commonGround": "أرضية مشتركة",
   "app.containers.Admin.inspirationHub.filters": "المرشحات",
   "app.containers.Admin.inspirationHub.resetFilters": "إعادة تعيين المرشحات",
   "app.containers.Admin.inspirationHub.seemsLike": "يبدو أنه لا توجد مشاريع أخرى. حاول تغيير {filters}.",
