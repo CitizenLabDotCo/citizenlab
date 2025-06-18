@@ -6,6 +6,7 @@ import {
   startOfQuarter,
   endOfQuarter,
   startOfDay,
+  add,
 } from 'date-fns';
 
 export type TimeRangeOption = 'month' | 'week' | 'quarter' | 'year' | '5years';
@@ -14,6 +15,7 @@ export const getTimeRangeDates = (
   option: TimeRangeOption,
   date: Date = new Date()
 ): { startDate: Date; endDate: Date } => {
+  let endDate;
   switch (option) {
     case 'month':
       return {
@@ -21,6 +23,7 @@ export const getTimeRangeDates = (
         endDate: endOfMonth(date),
       };
     case 'week':
+      // Assuming week starts on Monday
       return {
         startDate: startOfWeek(date, { weekStartsOn: 1 }),
         endDate: endOfWeek(date, { weekStartsOn: 1 }),
@@ -63,5 +66,39 @@ export const scrollToToday = (
   }
 };
 
-export const daysBetween = (a: Date, b: Date) =>
-  Math.round((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24));
+export const daysBetween = (a: Date, b: Date) => {
+  const start = startOfDay(a);
+  const end = startOfDay(b);
+  // Add 1 to include the last day
+  return (
+    Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1
+  );
+};
+
+export function getMonthMeta(start: Date, end: Date) {
+  const months: {
+    label: string;
+    monthStart: Date;
+    daysInMonth: number;
+    offsetDays: number;
+  }[] = [];
+  let current = new Date(start.getFullYear(), start.getMonth(), 1);
+  while (current <= end) {
+    const year = current.getFullYear();
+    const monthIndex = current.getMonth();
+    const monthStart = new Date(year, monthIndex, 1);
+    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+    const offsetDays = Math.max(0, daysBetween(start, monthStart) - 1);
+    months.push({
+      label: monthStart.toLocaleString('default', {
+        month: 'long',
+        year: 'numeric',
+      }),
+      monthStart,
+      daysInMonth,
+      offsetDays,
+    });
+    current = new Date(year, monthIndex + 1, 1);
+  }
+  return months;
+}

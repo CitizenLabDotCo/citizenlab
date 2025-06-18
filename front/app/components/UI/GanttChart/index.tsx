@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react';
 
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
+import { addDays } from 'date-fns';
 
 import { TimeRangeSelector } from './TimeRangeSelector';
 import {
   daysBetween,
+  getMonthMeta,
   getTimeRangeDates,
   scrollToToday,
   TimeRangeOption,
@@ -36,39 +38,6 @@ export type GanttChartProps = {
   height?: string;
 };
 
-function getMonthMeta(start: Date, end: Date) {
-  const months: {
-    label: string;
-    monthStart: Date;
-    daysInMonth: number;
-    offsetDays: number;
-  }[] = [];
-  let current = new Date(start.getFullYear(), start.getMonth(), 1);
-  while (current <= end) {
-    const year = current.getFullYear();
-    const monthIndex = current.getMonth();
-    const monthStart = new Date(year, monthIndex, 1);
-    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-    const offsetDays = Math.max(
-      0,
-      Math.round(
-        (monthStart.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
-      )
-    );
-    months.push({
-      label: monthStart.toLocaleString('default', {
-        month: 'long',
-        year: 'numeric',
-      }),
-      monthStart,
-      daysInMonth,
-      offsetDays,
-    });
-    current = new Date(year, monthIndex + 1, 1);
-  }
-  return months;
-}
-
 export const GanttChart = ({
   items,
   chartTitle,
@@ -87,12 +56,12 @@ export const GanttChart = ({
   showMonths = true,
 }: GanttChartProps) => {
   const today = new Date();
-  const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('month');
+  const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
   const [startDate, setStartDate] = useState<Date>(
-    initialStartDate || getTimeRangeDates('month', today).startDate
+    initialStartDate || getTimeRangeDates('year', today).startDate
   );
   const [endDate, setEndDate] = useState<Date>(
-    initialEndDate || getTimeRangeDates('month', today).endDate
+    initialEndDate || getTimeRangeDates('year', today).endDate
   );
 
   const months = getMonthMeta(startDate, endDate);
@@ -213,7 +182,7 @@ export const GanttChart = ({
               </Box>
             )}
 
-            {/* Days row */}
+            {/* Days row - Corrected Logic */}
             {showDays && (
               <Box
                 display="flex"
@@ -224,10 +193,11 @@ export const GanttChart = ({
                   background: '#fafbfc',
                 }}
               >
-                {months.map((month) =>
-                  Array.from({ length: month.daysInMonth }).map((_, idx) => (
+                {Array.from({ length: totalDays }).map((_, idx) => {
+                  const day = addDays(startDate, idx);
+                  return (
                     <Box
-                      key={`${month.label}-${idx + 1}`}
+                      key={`day-${idx}`}
                       minWidth={`${dayWidth}px`}
                       width={`${dayWidth}px`}
                       display="flex"
@@ -242,10 +212,10 @@ export const GanttChart = ({
                         boxSizing: 'border-box',
                       }}
                     >
-                      {idx + 1}
+                      {day.getDate()}
                     </Box>
-                  ))
-                )}
+                  );
+                })}
               </Box>
             )}
           </Box>
@@ -322,11 +292,11 @@ export const GanttChart = ({
           </Box>
 
           {/* Today line */}
-          {showTodayLine && todayOffset >= 0 && todayOffset <= totalDays && (
+          {showTodayLine && todayOffset >= 0 && todayOffset < totalDays && (
             <Box
               position="absolute"
               top="0"
-              left={`${todayOffset * dayWidth - dayWidth / 2}px`}
+              left={`${(todayOffset - 1) * dayWidth + dayWidth / 2}px`}
               width="2px"
               height="100%"
               bg={colors.primary}
@@ -337,7 +307,7 @@ export const GanttChart = ({
             >
               <Box
                 position="absolute"
-                top="0"
+                top="-5px"
                 left="-4px"
                 width="10px"
                 height="10px"
@@ -358,44 +328,35 @@ export const GanttChart = ({
               const start = item.start ? new Date(item.start) : undefined;
               const end = item.end ? new Date(item.end) : undefined;
 
-              // Determine the effective start and end dates for display
-              const effectiveStart = start
-                ? Math.max(start.getTime(), startDate.getTime())
-                : startDate.getTime();
-              const effectiveEnd = end
-                ? Math.min(end.getTime(), endDate.getTime())
-                : endDate.getTime();
+              if (!start || !end) return null;
 
-              // If the item starts after the chart ends, or ends before the chart starts, don't render
+              const effectiveStart =
+                start.getTime() > startDate.getTime() ? start : startDate;
+              const effectiveEnd =
+                end.getTime() < endDate.getTime() ? end : endDate;
+
               if (
-                effectiveStart > endDate.getTime() ||
-                effectiveEnd < startDate.getTime()
+                effectiveStart.getTime() > endDate.getTime() ||
+                effectiveEnd.getTime() < startDate.getTime()
               ) {
                 return null;
               }
 
-              // Calculate the offset from the chart's start date to the item's effective start date
-              const startOffset = daysBetween(
-                startDate,
-                new Date(effectiveStart)
-              );
-              // Calculate the duration based on the effective start and end dates
-              const duration = daysBetween(
-                new Date(effectiveStart),
-                new Date(effectiveEnd)
-              );
+              const startOffset = daysBetween(startDate, effectiveStart) - 1;
 
-              if (duration <= 0) return null; // Don't render items with zero or negative duration
+              const duration = daysBetween(effectiveStart, effectiveEnd);
+
+              if (duration <= 0) return null;
 
               return (
                 <Box
                   key={item.id}
                   position="absolute"
-                  top={`${index * rowHeight}px`}
+                  top={`${index * rowHeight + 4}px`}
                   left={`${startOffset * dayWidth}px`}
                   width={`${duration * dayWidth}px`}
                   height={`${rowHeight - 8}px`}
-                  margin="2px 0"
+                  // margin="4px 0"
                   background={getItemColor(item)}
                   borderColor={colors.grey300}
                   border="1px solid"
