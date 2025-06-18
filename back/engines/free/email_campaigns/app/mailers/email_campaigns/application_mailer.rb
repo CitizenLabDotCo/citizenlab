@@ -35,7 +35,7 @@ module EmailCampaigns
       true
     end
 
-    # To format a non-editable message, use `format_message`.
+    # Format a non-editable message - use `EditableWithPreview.format_editable_region` when editable.
     def format_message(key, component: nil, escape_html: true, values: {})
       group = component || @campaign.class.name.demodulize.underscore
       msg = t("email_campaigns.#{group}.#{key}", **values)

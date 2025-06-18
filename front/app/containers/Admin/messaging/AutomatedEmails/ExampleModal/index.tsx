@@ -72,7 +72,7 @@ const ExampleModal = ({
     selectedExampleIdx === null ? null : examples.data[selectedExampleIdx];
 
   // New preview only works with editing enabled & where the BE has a preview class
-  // TODO: Seems to call preview twice
+  // TODO: Seems to call /preview twice
   const hasPreview = isEditingEnabled && campaign.data.attributes.has_preview;
 
   const handleSendPreviewEmail = () => {

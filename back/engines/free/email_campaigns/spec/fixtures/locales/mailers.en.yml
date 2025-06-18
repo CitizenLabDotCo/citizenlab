@@ -61,6 +61,12 @@ en:
       title_multiloc: "Title"
       intro_multiloc: "Introduction"
       button_text_multiloc: "Button text"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Doe'
+      display_name: 'Jane Doe'
+      comment_body: 'This is an example comment used for previewing the content of emails. This is not real data'
+      idea_title: 'Example Idea'
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
