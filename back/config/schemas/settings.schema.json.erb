@@ -1441,6 +1441,18 @@
         }
       },
 
+      "data_repository": {
+        "type": "object",
+        "title": "Data repository",
+        "description": "New data repository feature that is currently under development. [DO NOT ENABLE]",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "project_planning": {
         "type": "object",
         "title": "Project planning",
