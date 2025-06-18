@@ -928,7 +928,7 @@
   "app.containers.Admin.inspirationHub.UpsellNudge.upsellTitle": "Pievienojieties demokrātijas pionieru tīklam.",
   "app.containers.Admin.inspirationHub.Volunteering": "Brīvprātīgais darbs",
   "app.containers.Admin.inspirationHub.Voting": "Balsošana",
-  "app.containers.Admin.inspirationHub.commnonGround": "Kopīgs pamats",
+  "app.containers.Admin.inspirationHub.commonGround": "Kopīgs pamats",
   "app.containers.Admin.inspirationHub.filters": "filtri",
   "app.containers.Admin.inspirationHub.resetFilters": "Atiestatīt filtrus",
   "app.containers.Admin.inspirationHub.seemsLike": "Šķiet, ka projektu vairs nav. Mēģiniet mainīt {filters}.",
