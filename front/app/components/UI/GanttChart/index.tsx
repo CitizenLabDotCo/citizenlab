@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useLayoutEffect } from 'react';
 
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
-import { addDays } from 'date-fns';
+import { addDays, addMonths, subMonths } from 'date-fns';
 
 import { TimeRangeSelector } from './TimeRangeSelector';
 import {
@@ -58,53 +58,76 @@ export const GanttChart = ({
   const today = new Date();
   const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
   const [startDate, setStartDate] = useState<Date>(
-    initialStartDate || getTimeRangeDates('year', today).startDate
+    initialStartDate || subMonths(today, 6)
   );
   const [endDate, setEndDate] = useState<Date>(
-    initialEndDate || getTimeRangeDates('year', today).endDate
+    initialEndDate || addMonths(today, 6)
   );
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollState = useRef({
+    scrollLeft: 0,
+    scrollWidth: 0,
+  });
 
   const months = getMonthMeta(startDate, endDate);
-
   const [visibleMonthLabel, setVisibleMonthLabel] = useState(
     months.length > 0 ? months[0].label : ''
   );
-
   const totalDays = daysBetween(startDate, endDate);
   const todayOffset = daysBetween(startDate, today);
 
   const timelineHeaderRef = useRef<HTMLDivElement>(null);
   const timelineBodyRef = useRef<HTMLDivElement>(null);
 
+  useLayoutEffect(() => {
+    if (timelineBodyRef.current && scrollState.current.scrollWidth) {
+      const newScrollWidth = timelineBodyRef.current.scrollWidth;
+      const widthAdded = newScrollWidth - scrollState.current.scrollWidth;
+      timelineBodyRef.current.scrollLeft =
+        scrollState.current.scrollLeft + widthAdded;
+    }
+    scrollState.current.scrollWidth = 0;
+  }, [startDate]);
+
   const onTimelineScroll = () => {
-    if (timelineHeaderRef.current && timelineBodyRef.current) {
-      const scrollLeft = timelineBodyRef.current.scrollLeft;
-      timelineHeaderRef.current.scrollLeft = scrollLeft;
+    if (!timelineBodyRef.current || isLoading) return;
 
-      let currentLabel = '';
-      for (let i = months.length - 1; i >= 0; i--) {
-        const month = months[i];
-        const monthStartPx = month.offsetDays * dayWidth;
-        if (scrollLeft >= monthStartPx) {
-          currentLabel = month.label;
-          break;
-        }
-      }
+    if (timelineHeaderRef.current) {
+      timelineHeaderRef.current.scrollLeft = timelineBodyRef.current.scrollLeft;
+    }
 
-      if (currentLabel && currentLabel !== visibleMonthLabel) {
-        setVisibleMonthLabel(currentLabel);
+    let currentLabel = '';
+    for (let i = months.length - 1; i >= 0; i--) {
+      const month = months[i];
+      const monthStartPx = month.offsetDays * dayWidth;
+      if (timelineBodyRef.current.scrollLeft >= monthStartPx) {
+        currentLabel = month.label;
+        break;
       }
+    }
+    if (currentLabel && currentLabel !== visibleMonthLabel) {
+      setVisibleMonthLabel(currentLabel);
+    }
+
+    const { scrollLeft, scrollWidth, clientWidth } = timelineBodyRef.current;
+    const scrollBuffer = 800;
+
+    if (scrollLeft + clientWidth >= scrollWidth - scrollBuffer) {
+      setIsLoading(true);
+      setEndDate((prev) => addMonths(prev, 3));
+      setTimeout(() => setIsLoading(false), 50);
+    }
+
+    if (scrollLeft <= scrollBuffer) {
+      setIsLoading(true);
+      scrollState.current = {
+        scrollLeft: timelineBodyRef.current.scrollLeft,
+        scrollWidth: timelineBodyRef.current.scrollWidth,
+      };
+      setStartDate((prev) => subMonths(prev, 3));
+      setTimeout(() => setIsLoading(false), 50);
     }
   };
-
-  useEffect(() => {
-    if (months.length > 0 && months[0].label !== visibleMonthLabel) {
-      if (timelineBodyRef.current) {
-        timelineBodyRef.current.scrollLeft = 0;
-      }
-      setVisibleMonthLabel(months[0].label);
-    }
-  }, [startDate, endDate]);
 
   const handleRangeChange = (range: TimeRangeOption) => {
     setSelectedRange(range);
@@ -114,6 +137,9 @@ export const GanttChart = ({
     );
     setStartDate(newStartDate);
     setEndDate(newEndDate);
+    if (timelineBodyRef.current) {
+      timelineBodyRef.current.scrollLeft = 0;
+    }
   };
 
   const handleTodayClick = () => {
@@ -209,25 +235,16 @@ export const GanttChart = ({
                     justifyContent="center"
                     style={{
                       color: 'transparent',
-                      fontWeight: 800,
-                      fontSize: '18px',
-                      height: '100%',
-                      boxSizing: 'border-box',
-                      letterSpacing: '0.5px',
                     }}
                   >
                     {month.label}
                   </Box>
                 ))}
                 {months.map((_, i) => {
-                  // Don't draw a line for the very first month
                   if (i === 0) return null;
-
-                  // Get the current month to find its starting day position
                   const month = months[i];
                   const lineLeftPosition =
                     month.offsetDays * dayWidth + dayWidth / 2 - 0.5;
-
                   return (
                     <Box
                       key={`month-line-${i}`}
@@ -265,12 +282,7 @@ export const GanttChart = ({
                       display="flex"
                       alignItems="center"
                       justifyContent="center"
-                      height="100%"
-                      style={{
-                        color: '#888',
-                        fontSize: '12px',
-                        boxSizing: 'border-box',
-                      }}
+                      style={{ color: '#888', fontSize: '12px' }}
                     >
                       {day.getDate()}
                     </Box>
@@ -287,8 +299,6 @@ export const GanttChart = ({
         {/* Left column */}
         <Box
           width={`${leftColumnWidth}px`}
-          minWidth={`${leftColumnWidth}px`}
-          maxWidth={`${leftColumnWidth}px`}
           bg="#fff"
           style={{
             position: 'sticky',
@@ -297,7 +307,7 @@ export const GanttChart = ({
             borderRight: '1px solid #e0e0e0',
           }}
         >
-          {items.map((item, index) => (
+          {items.map((item) => (
             <Box
               key={item.id}
               height={`${rowHeight}px`}
@@ -306,13 +316,10 @@ export const GanttChart = ({
               pl="16px"
               pr="8px"
               borderBottom="1px solid #e0e0e0"
-              borderTop={index === 0 ? '1px solid #e0e0e0' : undefined}
               style={{
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                color: '#222',
-                fontWeight: 500,
               }}
             >
               {renderItemLabel ? renderItemLabel(item) : item.title}
@@ -330,11 +337,12 @@ export const GanttChart = ({
           position="relative"
         >
           <Box position="relative" minWidth={`${totalDays * dayWidth}px`}>
+            {/* Centered grid lines */}
             <Box
               position="absolute"
               top="0"
               left="0"
-              width={`${totalDays * dayWidth}px`}
+              width="100%"
               height="100%"
               zIndex="0"
             >
@@ -360,10 +368,7 @@ export const GanttChart = ({
                 width="2px"
                 height="100%"
                 bg={colors.primary}
-                style={{
-                  zIndex: 2,
-                  pointerEvents: 'none',
-                }}
+                style={{ zIndex: 2, pointerEvents: 'none' }}
               >
                 <Box
                   position="absolute"
@@ -377,27 +382,35 @@ export const GanttChart = ({
               </Box>
             )}
 
+            {/* Items container */}
             <Box position="relative" height={`${items.length * rowHeight}px`}>
               {items.map((item, index) => {
                 const start = item.start ? new Date(item.start) : undefined;
-                const end = item.end ? new Date(item.end) : undefined;
+                // --- CHANGE 1: Allow for a null end date ---
+                const end = item.end ? new Date(item.end) : null;
 
-                if (!start || !end) return null;
+                // Only skip if there's no start date
+                if (!start) return null;
 
                 const effectiveStart =
                   start.getTime() > startDate.getTime() ? start : startDate;
+
+                // --- CHANGE 2: Calculate the effectiveEnd based on whether end is null ---
                 const effectiveEnd =
-                  end.getTime() < endDate.getTime() ? end : endDate;
+                  end === null
+                    ? endDate // If no end date, the bar goes to the edge of the chart
+                    : end.getTime() < endDate.getTime()
+                    ? end
+                    : endDate;
 
                 if (
                   effectiveStart.getTime() > endDate.getTime() ||
-                  effectiveEnd.getTime() < startDate.getTime()
+                  (end !== null && end.getTime() < startDate.getTime())
                 ) {
                   return null;
                 }
 
                 const startOffset = daysBetween(startDate, effectiveStart) - 1;
-
                 const duration = daysBetween(effectiveStart, effectiveEnd);
 
                 if (duration <= 0) return null;
