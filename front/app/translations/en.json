@@ -206,7 +206,6 @@
   "app.components.GanttChart.timeRange.5years": "5 Years",
   "app.components.GanttChart.timeRange.month": "Month",
   "app.components.GanttChart.timeRange.quarter": "Quarter",
-  "app.components.GanttChart.timeRange.week": "Week",
   "app.components.GanttChart.timeRange.year": "Year",
   "app.components.GanttChart.today": "Today",
   "app.components.GoBackButton.group.edit.goBack": "Go back",
