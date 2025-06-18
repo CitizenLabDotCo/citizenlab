@@ -928,7 +928,7 @@
   "app.containers.Admin.inspirationHub.UpsellNudge.upsellTitle": "Uneix-te a una xarxa de professionals pioners de la democràcia",
   "app.containers.Admin.inspirationHub.Volunteering": "Volunteering",
   "app.containers.Admin.inspirationHub.Voting": "Voting",
-  "app.containers.Admin.inspirationHub.commnonGround": "Terreny en comú",
+  "app.containers.Admin.inspirationHub.commonGround": "Terreny en comú",
   "app.containers.Admin.inspirationHub.filters": "filters",
   "app.containers.Admin.inspirationHub.resetFilters": "Reset filters",
   "app.containers.Admin.inspirationHub.seemsLike": "Seems like there are no more projects. Try changing the {filters}.",
