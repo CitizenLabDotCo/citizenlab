@@ -167,17 +167,18 @@ module EmailCampaigns
     end
 
     def generate_commands(campaign, recipient, options = {})
-      command = campaign.generate_commands(recipient:, **options)
-      command.merge(
-        recipient: recipient,
-        time: Time.zone.now,
-        delivery: campaign.deliveries.new(
-          id: SecureRandom.uuid,
-          delivery_status: 'sent',
-          user: recipient,
-          tracked_content: command[:tracked_content]
+      campaign.generate_commands(recipient:, **options).map do |command|
+        command.merge(
+          recipient: recipient,
+          time: Time.zone.now,
+          delivery: campaign.deliveries.new(
+            id: SecureRandom.uuid,
+            delivery_status: 'sent',
+            user: recipient,
+            tracked_content: command[:tracked_content]
+          )
         )
-      )
+      end
     end
   end
 end
