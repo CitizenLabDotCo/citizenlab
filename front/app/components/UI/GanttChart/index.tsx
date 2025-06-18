@@ -299,6 +299,28 @@ export const GanttChart = ({
           bgColor={colors.background}
           position="relative"
         >
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            width={`${totalDays * dayWidth}px`}
+            height="100%"
+            display="flex"
+            zIndex="0"
+          >
+            {Array.from({ length: totalDays }).map((_, i) => (
+              <Box
+                key={`grid-line-${i}`}
+                width={`${dayWidth}px`}
+                height="100%"
+                borderRight="1px solid #e0e0e0"
+                style={{
+                  boxSizing: 'border-box',
+                }}
+              />
+            ))}
+          </Box>
+
           {/* Today line */}
           {showTodayLine && todayOffset >= 0 && todayOffset <= totalDays && (
             <Box
