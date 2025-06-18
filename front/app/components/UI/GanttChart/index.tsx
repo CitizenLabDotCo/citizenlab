@@ -159,7 +159,6 @@ export const GanttChart = ({
           alignItems="center"
           height={`${timelineHeight * 2}px`}
           pl="16px"
-          borderRight="1px solid #e0e0e0"
           bg="#fff"
         >
           {chartTitle}
@@ -193,14 +192,14 @@ export const GanttChart = ({
               <Box
                 display="flex"
                 height={`${timelineHeight}px`}
-                // borderBottom="1px solid #e0e0e0" // <-- Line removed from here
+                position="relative"
                 style={{
                   overflow: 'hidden',
                   minWidth: `${totalDays * dayWidth}px`,
                   background: '#fafbfc',
                 }}
               >
-                {months.map((month, i) => (
+                {months.map((month) => (
                   <Box
                     key={month.label}
                     minWidth={`${month.daysInMonth * dayWidth}px`}
@@ -211,10 +210,6 @@ export const GanttChart = ({
                     style={{
                       color: 'transparent',
                       fontWeight: 800,
-                      borderRight:
-                        i === months.length - 1
-                          ? undefined
-                          : '1px solid #e0e0e0',
                       fontSize: '18px',
                       height: '100%',
                       boxSizing: 'border-box',
@@ -224,6 +219,27 @@ export const GanttChart = ({
                     {month.label}
                   </Box>
                 ))}
+                {months.map((_, i) => {
+                  // Don't draw a line for the very first month
+                  if (i === 0) return null;
+
+                  // Get the current month to find its starting day position
+                  const month = months[i];
+                  const lineLeftPosition =
+                    month.offsetDays * dayWidth + dayWidth / 2 - 0.5;
+
+                  return (
+                    <Box
+                      key={`month-line-${i}`}
+                      position="absolute"
+                      left={`${lineLeftPosition}px`}
+                      top="0"
+                      width="1px"
+                      height="100%"
+                      bg="#e0e0e0"
+                    />
+                  );
+                })}
               </Box>
             )}
 
@@ -232,7 +248,7 @@ export const GanttChart = ({
               <Box
                 display="flex"
                 height={`${timelineHeight}px`}
-                borderBottom="1px solid #e0e0e0" // <-- Line added here
+                borderBottom="1px solid #e0e0e0"
                 style={{
                   overflow: 'hidden',
                   minWidth: `${totalDays * dayWidth}px`,
@@ -249,12 +265,10 @@ export const GanttChart = ({
                       display="flex"
                       alignItems="center"
                       justifyContent="center"
+                      height="100%"
                       style={{
                         color: '#888',
                         fontSize: '12px',
-                        borderRight: '1px solid #e0e0e0',
-                        // The bottom border for individual cells is now handled by the parent
-                        height: '100%',
                         boxSizing: 'border-box',
                       }}
                     >
@@ -315,111 +329,106 @@ export const GanttChart = ({
           bgColor={colors.background}
           position="relative"
         >
-          <Box
-            position="absolute"
-            top="0"
-            left="0"
-            width={`${totalDays * dayWidth}px`}
-            height="100%"
-            display="flex"
-            zIndex="0"
-          >
-            {Array.from({ length: totalDays }).map((_, i) => (
-              <Box
-                key={`grid-line-${i}`}
-                width={`${dayWidth}px`}
-                height="100%"
-                borderRight="1px solid #e0e0e0"
-                style={{
-                  boxSizing: 'border-box',
-                }}
-              />
-            ))}
-          </Box>
-
-          {/* Today line */}
-          {showTodayLine && todayOffset >= 0 && todayOffset < totalDays && (
+          <Box position="relative" minWidth={`${totalDays * dayWidth}px`}>
             <Box
               position="absolute"
               top="0"
-              left={`${(todayOffset - 1) * dayWidth + dayWidth / 2}px`}
-              width="2px"
+              left="0"
+              width={`${totalDays * dayWidth}px`}
               height="100%"
-              bg={colors.primary}
-              style={{
-                zIndex: 2,
-                pointerEvents: 'none',
-              }}
+              zIndex="0"
             >
+              {Array.from({ length: totalDays }).map((_, i) => (
+                <Box
+                  key={`grid-line-${i}`}
+                  position="absolute"
+                  left={`${i * dayWidth + dayWidth / 2 - 0.5}px`}
+                  top="0"
+                  width="1px"
+                  height="100%"
+                  bg="#e0e0e0"
+                />
+              ))}
+            </Box>
+
+            {/* Today line */}
+            {showTodayLine && todayOffset >= 0 && todayOffset < totalDays && (
               <Box
                 position="absolute"
-                top="-5px"
-                left="-4px"
-                width="10px"
-                height="10px"
-                borderRadius="50%"
+                top="0"
+                left={`${(todayOffset - 1) * dayWidth + dayWidth / 2 - 1}px`}
+                width="2px"
+                height="100%"
                 bg={colors.primary}
-              />
-            </Box>
-          )}
-
-          {/* Inner box for content and background */}
-          <Box
-            minWidth={`${totalDays * dayWidth}px`}
-            position="relative"
-            height={`${items.length * rowHeight}px`}
-          >
-            {/* Items */}
-            {items.map((item, index) => {
-              const start = item.start ? new Date(item.start) : undefined;
-              const end = item.end ? new Date(item.end) : undefined;
-
-              if (!start || !end) return null;
-
-              const effectiveStart =
-                start.getTime() > startDate.getTime() ? start : startDate;
-              const effectiveEnd =
-                end.getTime() < endDate.getTime() ? end : endDate;
-
-              if (
-                effectiveStart.getTime() > endDate.getTime() ||
-                effectiveEnd.getTime() < startDate.getTime()
-              ) {
-                return null;
-              }
-
-              const startOffset = daysBetween(startDate, effectiveStart) - 1;
-
-              const duration = daysBetween(effectiveStart, effectiveEnd);
-
-              if (duration <= 0) return null;
-
-              return (
+                style={{
+                  zIndex: 2,
+                  pointerEvents: 'none',
+                }}
+              >
                 <Box
-                  key={item.id}
                   position="absolute"
-                  top={`${index * rowHeight + 4}px`}
-                  left={`${startOffset * dayWidth}px`}
-                  width={`${duration * dayWidth}px`}
-                  height={`${rowHeight - 8}px`}
-                  background={getItemColor(item)}
-                  borderColor={colors.grey300}
-                  border="1px solid"
-                  borderRadius="4px"
-                  style={{
-                    cursor: onItemClick ? 'pointer' : 'default',
-                    zIndex: 1,
-                  }}
-                  onClick={() => onItemClick?.(item)}
-                >
-                  {renderItemTooltip && (
-                    <Tooltip content={renderItemTooltip(item)}>
-                      <Box width="100%" height="100%" />
-                    </Tooltip>
-                  )}
-                </Box>
-              );
-            })}
+                  top="-5px"
+                  left="-4px"
+                  width="10px"
+                  height="10px"
+                  borderRadius="50%"
+                  bg={colors.primary}
+                />
+              </Box>
+            )}
+
+            <Box position="relative" height={`${items.length * rowHeight}px`}>
+              {items.map((item, index) => {
+                const start = item.start ? new Date(item.start) : undefined;
+                const end = item.end ? new Date(item.end) : undefined;
+
+                if (!start || !end) return null;
+
+                const effectiveStart =
+                  start.getTime() > startDate.getTime() ? start : startDate;
+                const effectiveEnd =
+                  end.getTime() < endDate.getTime() ? end : endDate;
+
+                if (
+                  effectiveStart.getTime() > endDate.getTime() ||
+                  effectiveEnd.getTime() < startDate.getTime()
+                ) {
+                  return null;
+                }
+
+                const startOffset = daysBetween(startDate, effectiveStart) - 1;
+
+                const duration = daysBetween(effectiveStart, effectiveEnd);
+
+                if (duration <= 0) return null;
+
+                return (
+                  <Box
+                    key={item.id}
+                    position="absolute"
+                    top={`${index * rowHeight + 4}px`}
+                    left={`${startOffset * dayWidth}px`}
+                    width={`${duration * dayWidth}px`}
+                    height={`${rowHeight - 8}px`}
+                    background={getItemColor(item)}
+                    borderColor={colors.grey300}
+                    border="1px solid"
+                    borderRadius="4px"
+                    style={{
+                      cursor: onItemClick ? 'pointer' : 'default',
+                      zIndex: 1,
+                    }}
+                    onClick={() => onItemClick?.(item)}
+                  >
+                    {renderItemTooltip && (
+                      <Tooltip content={renderItemTooltip(item)}>
+                        <Box width="100%" height="100%" />
+                      </Tooltip>
+                    )}
+                  </Box>
+                );
+              })}
+            </Box>
           </Box>
         </Box>
       </Box>
