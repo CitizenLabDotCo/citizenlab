@@ -6,7 +6,7 @@ import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useUpdateCustomFields from './useUpdateCustomFields';
 
-let apiPath = '*admin/phases/:phaseId/custom_fields/update_all';
+let apiPath = '*/web_api/v1/phases/:phaseId/custom_fields/update_all';
 const server = setupServer(
   http.patch(apiPath, () => {
     return HttpResponse.json({ data: [] }, { status: 200 });
@@ -36,7 +36,7 @@ describe('useUpdateCustomFields', () => {
   });
 
   it('mutates data correctly in project', async () => {
-    apiPath = '*admin/projects/:projectId/custom_fields/update_all';
+    apiPath = '*web_api/v1/projects/:projectId/custom_fields/update_all';
 
     server.use(
       http.patch(apiPath, () => {
