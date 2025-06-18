@@ -928,7 +928,7 @@
   "app.containers.Admin.inspirationHub.UpsellNudge.upsellTitle": "Bli med i et nettverk av banebrytende demokratiutøvere",
   "app.containers.Admin.inspirationHub.Volunteering": "Frivillig arbeid",
   "app.containers.Admin.inspirationHub.Voting": "Stemmegivning",
-  "app.containers.Admin.inspirationHub.commnonGround": "Felles grunnlag",
+  "app.containers.Admin.inspirationHub.commonGround": "Felles grunnlag",
   "app.containers.Admin.inspirationHub.filters": "filtre",
   "app.containers.Admin.inspirationHub.resetFilters": "Tilbakestill filtre",
   "app.containers.Admin.inspirationHub.seemsLike": "Det ser ut til at det ikke finnes flere prosjekter. Prøv å endre {filters}.",
