@@ -194,15 +194,12 @@ const ConfigSelectWithLocaleSwitcher = ({
     });
   }, [append, platformLocale, formatMessage]);
 
-  const updateChoice = useCallback(
-    (choice: IOptionsType, index: number) => {
-      update(index, {
-        ...choice,
-        ...(!choice.id && !choice.temp_id ? { temp_id: generateTempId() } : {}),
-      });
-    },
-    [update]
-  );
+  const updateChoice = (choice: IOptionsType, index: number) => {
+    update(index, {
+      ...choice,
+      ...(!choice.id && !choice.temp_id ? { temp_id: generateTempId() } : {}),
+    });
+  };
 
   const handleMultilinePaste = useCallback(
     (lines, index) => {
