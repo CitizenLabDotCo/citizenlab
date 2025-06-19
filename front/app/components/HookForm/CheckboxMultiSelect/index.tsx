@@ -8,7 +8,6 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
-import { darken } from 'polished';
 import { Controller, useFormContext } from 'react-hook-form';
 import styled, { useTheme } from 'styled-components';
 import { CLError, IOption, RHFErrors } from 'typings';
@@ -27,7 +26,7 @@ const StyledBox = styled(Box)`
   cursor: pointer;
   background-color: ${colors.grey100};
   &:hover {
-    background-color: ${darken(0.05, colors.grey100)};
+    background-color: ${colors.grey200};
   }
 `;
 

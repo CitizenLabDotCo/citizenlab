@@ -8,7 +8,6 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
@@ -27,7 +26,7 @@ const StyledBox = styled(Box)`
   cursor: pointer;
   background-color: ${colors.grey100};
   &:hover {
-    background-color: ${darken(0.05, colors.grey100)};
+    background-color: ${colors.grey200};
   }
 `;
 

@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
 import { useFormContext } from 'react-hook-form';
 import styled, { useTheme } from 'styled-components';
 
@@ -24,7 +23,7 @@ const StyledBox = styled(Box)`
   cursor: pointer;
   background-color: ${colors.grey100};
   &:hover {
-    background-color: ${darken(0.05, colors.grey100)};
+    background-color: ${colors.grey200};
   }
 `;
 
