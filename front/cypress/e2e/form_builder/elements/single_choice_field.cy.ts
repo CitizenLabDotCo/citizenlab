@@ -57,7 +57,6 @@ describe('Form builder single choice field', () => {
     cy.contains('Question title').should('exist');
     cy.contains('Option 1').should('exist');
     cy.contains('Survey').should('exist');
-    cy.get('#e2e-single-select-control').should('exist');
   });
 
   it('allows submitting when there is an other option that is not selected and is not filled out', () => {
@@ -111,7 +110,7 @@ describe('Form builder single choice field', () => {
     cy.wait(2000);
     cy.contains(otherText).click({ force: true });
     cy.contains('Survey').should('exist');
-    cy.get('#e2e-single-select-control').should('exist');
+    cy.get(`[id^="${questionTitle}"]`).should('exist');
 
     // Try submitting without entering data for required field
     cy.dataCy('e2e-submit-form').click();
@@ -125,10 +124,10 @@ describe('Form builder single choice field', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get('[id^="properties"]')
+    cy.get(`[id^="${questionTitle}"]`)
+      .last()
       .should(($element) => {
         const id = $element.attr('id');
-        expect(id).to.include(questionTitle);
         expect(Cypress._.endsWith(id, '_other')).to.be.true;
       })
       .type(otherAnswer, { force: true });

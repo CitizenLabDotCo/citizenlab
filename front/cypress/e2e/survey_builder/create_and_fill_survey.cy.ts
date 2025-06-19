@@ -69,7 +69,7 @@ describe('Survey builder', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
 
     // Submit the survey response
     cy.dataCy('e2e-submit-form').should('be.visible').click();
@@ -262,7 +262,7 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`*[id^="properties${questionTitle}"]`).type(numberAnswer, {
+    cy.get(`*[id^="${questionTitle}"]`).type(numberAnswer, {
       force: true,
     });
 
@@ -304,7 +304,7 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
 
     // Save survey response
     cy.dataCy('e2e-submit-form').should('be.visible');
@@ -654,7 +654,7 @@ describe('Survey builder', () => {
       .should('not.have.class', 'disabled');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
-    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
 
     // Submit
     cy.dataCy('e2e-submit-form').should('be.visible').click();
