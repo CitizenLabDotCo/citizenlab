@@ -9,7 +9,7 @@ import { IFile, IUpdateFileProperties } from './types';
 
 const updateFile = async (requestBody: IUpdateFileProperties) => {
   return fetcher<IFile>({
-    path: `/file/${requestBody.id}`,
+    path: `/files/${requestBody.id}`,
     action: 'patch',
     body: { ...omit(requestBody, 'id') },
   });
