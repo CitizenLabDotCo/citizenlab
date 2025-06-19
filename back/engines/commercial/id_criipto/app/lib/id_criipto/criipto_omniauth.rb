@@ -79,11 +79,16 @@ module IdCriipto
       false
     end
 
-    def filter_auth_to_persist(_auth)
-      # Atm we use `auth_hash` in one place.
-      # It can be useful in some other cases too back/lib/tasks/single_use/20240125_convert_vienna_uid_to_userid.rake
-      # But some providers send us too sensitive information (SSN, address), so we cannot always store `auth_hash`.
-      nil
+    # def filter_auth_to_persist(_auth)
+    #   # Atm we use `auth_hash` in one place.
+    #   # It can be useful in some other cases too back/lib/tasks/single_use/20240125_convert_vienna_uid_to_userid.rake
+    #   # But some providers send us too sensitive information (SSN, address), so we cannot always store `auth_hash`.
+    #   nil
+    # end
+
+    def filter_auth_to_persist(auth)
+      auth_to_persist = auth.deep_dup
+      auth_to_persist.tap { |h| h.delete(:credentials) }
     end
 
     def logout_url(_user)
