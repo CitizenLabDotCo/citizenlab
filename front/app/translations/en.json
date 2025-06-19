@@ -162,6 +162,7 @@
   "app.components.EventAttendanceButton.attend": "Attend",
   "app.components.EventAttendanceButton.attending": "Attending",
   "app.components.EventAttendanceButton.forwardToFriend": "Forward to a friend",
+  "app.components.EventAttendanceButton.noSpotsLeft": "No spots left",
   "app.components.EventAttendanceButton.seeYouThere": "See you there!",
   "app.components.EventAttendanceButton.seeYouThereName": "See you there, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Less event information became visible.",
