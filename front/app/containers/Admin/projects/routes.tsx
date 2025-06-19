@@ -33,6 +33,7 @@ const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
 const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
+const AdminProjectFiles = lazy(() => import('./project/files'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
 const AdminProjectPermissions = lazy(
@@ -92,6 +93,7 @@ export enum projectsRoutes {
   projectMessagingNew = 'messaging/new',
   projectMessagingEdit = 'messaging/:campaignId/edit',
   projectMessagingShow = 'messaging/:campaignId',
+  projectFiles = 'files',
   projectEvents = 'events',
   projectEventsNew = 'events/new',
   projectEventsId = 'events/:id',
@@ -133,6 +135,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectFiles}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsDescription}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectMessaging}`>
@@ -361,6 +364,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <AdminProjectAnalysis />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectFiles,
+            element: (
+              <PageLoading>
+                <AdminProjectFiles />
               </PageLoading>
             ),
           },
