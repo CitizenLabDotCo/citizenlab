@@ -25,6 +25,12 @@ module IdCriipto
           custom_field_values[municipality_code_key] = municipality_code
         end
 
+        # Handle postal_code - requested by Leyre
+        postal_code = auth.extra.raw_info.dig('address', 'postal_code')
+        if (postal_code_key = config[:postal_code_custom_field_key]) && postal_code.present?
+          custom_field_values[postal_code_key] = postal_code
+        end
+
         first_name, *last_name = auth.extra.raw_info.name.split
         {
           first_name: first_name,
@@ -73,11 +79,9 @@ module IdCriipto
       false
     end
 
-    def filter_auth_to_persist(_auth)
-      # Atm we use `auth_hash` in one place.
-      # It can be useful in some other cases too back/lib/tasks/single_use/20240125_convert_vienna_uid_to_userid.rake
-      # But some providers send us too sensitive information (SSN, address), so we cannot always store `auth_hash`.
-      nil
+    def filter_auth_to_persist(auth)
+      auth_to_persist = auth.deep_dup
+      auth_to_persist.tap { |h| h.delete(:credentials) }
     end
 
     def logout_url(_user)
