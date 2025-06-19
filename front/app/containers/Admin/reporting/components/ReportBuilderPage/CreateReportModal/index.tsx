@@ -19,7 +19,7 @@ import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTa
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 import ProjectFilter from 'components/UI/ProjectFilter';
@@ -172,7 +172,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
             <Error text={errorMessage} />
           </Box>
         )}
-        <Button
+        <ButtonWithLink
           bgColor={colors.primary}
           width="auto"
           mt="40px"
@@ -183,7 +183,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           onClick={onCreateReport}
         >
           {formatMessage(messages.emptyStateButtonText)}
-        </Button>
+        </ButtonWithLink>
       </Box>
     </Modal>
   );

@@ -9,7 +9,7 @@ import { ITopicData } from 'api/topics/types';
 import useLocalize from 'hooks/useLocalize';
 
 import { Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -90,15 +90,15 @@ const CustomTopicRow = (props: Props) => {
           />
         )}
 
-        <Button
+        <ButtonWithLink
           linkTo={`/admin/settings/topics/${topic.id}/edit`}
           buttonStyle="secondary-outlined"
           icon="edit"
           id="e2e-custom-topic-edit-button"
         >
           <FormattedMessage {...messages.editButtonLabel} />
-        </Button>
-        <Button
+        </ButtonWithLink>
+        <ButtonWithLink
           disabled={staticPageIds.length > 0}
           onClick={handleDeleteClick(topic.id)}
           buttonStyle="text"
@@ -106,7 +106,7 @@ const CustomTopicRow = (props: Props) => {
           id="e2e-custom-topic-delete-button"
         >
           <FormattedMessage {...messages.deleteButtonLabel} />
-        </Button>
+        </ButtonWithLink>
       </Buttons>
     </Row>
   );

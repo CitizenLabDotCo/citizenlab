@@ -164,3 +164,8 @@ export type FormatMessage = (
   messageDescriptor: MessageDescriptor,
   values?: FormatMessageValues
 ) => string;
+
+export type Pagination = {
+  'page[number]'?: number;
+  'page[size]'?: number;
+};

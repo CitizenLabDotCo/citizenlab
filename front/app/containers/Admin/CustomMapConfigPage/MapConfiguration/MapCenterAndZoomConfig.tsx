@@ -13,7 +13,7 @@ import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
 import { SubSectionTitle } from 'components/admin/Section';
 import { goToMapLocation } from 'components/EsriMap/utils';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -66,7 +66,7 @@ const ButtonWrapper = styled.div`
   display: flex;
 `;
 
-const SaveButton = styled(Button)`
+const SaveButton = styled(ButtonWithLink)`
   margin-right: 10px;
 `;
 

@@ -179,6 +179,7 @@
   "app.components.FileUploader.a11y_removeFile": "Fjern denne fil",
   "app.components.FileUploader.fileInputDescription": "Klik for at vælge en fil",
   "app.components.FileUploader.fileUploadLabel": "Vedhæftninger (max. 50MB)",
+  "app.components.FileUploader.file_too_large2": "Filer større end {maxSizeMb}MB er ikke tilladt.",
   "app.components.FileUploader.incorrect_extension": "{fileName} understøttes ikke af vores system, det vil ikke blive uploadet.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Valgt statusfilter: alle",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, no {# inputs} one {# input} other {# inputs}}",

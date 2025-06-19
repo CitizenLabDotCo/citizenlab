@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -40,7 +40,7 @@ export const Widget = () => {
         <Text color="coolGrey700">
           {formatMessage(messages.widgetDescription)}
         </Text>
-        <Button
+        <ButtonWithLink
           height="45px"
           icon="arrow-right"
           iconColor={colors.white}
@@ -51,7 +51,7 @@ export const Widget = () => {
           bgColor={colors.primary}
         >
           {formatMessage(messages.manageWidget)}
-        </Button>
+        </ButtonWithLink>
       </Box>
     </Box>
   );

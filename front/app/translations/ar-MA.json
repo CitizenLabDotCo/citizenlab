@@ -179,6 +179,7 @@
   "app.components.FileUploader.a11y_removeFile": "إزالة هذا الملف",
   "app.components.FileUploader.fileInputDescription": "انقر لتحديد ملف ما",
   "app.components.FileUploader.fileUploadLabel": "المُرفقات (في حدود 50 ميغابايت)",
+  "app.components.FileUploader.file_too_large2": "لا يُسمح بالملفات التي يزيد حجمها عن {maxSizeMb}ميجابايت.",
   "app.components.FileUploader.incorrect_extension": "{fileName} غير مدعوم من قبل نظامنا، لذا لن يتم تحميله.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "عامل تصفية الحالة المحدّد: الكل",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, no {# inputs} واحد {# input} آخر {# inputs}}",

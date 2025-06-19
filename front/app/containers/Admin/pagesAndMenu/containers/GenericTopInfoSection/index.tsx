@@ -14,7 +14,7 @@ import HelmetIntl from 'components/HelmetIntl';
 import Feedback from 'components/HookForm/Feedback';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -125,15 +125,15 @@ const GenericTopInfoSection = ({
               />
             </Box>
             <Box display="flex">
-              <Button
+              <ButtonWithLink
                 type="submit"
                 processing={methods.formState.isSubmitting}
                 data-cy={`e2e-top-info-section-submit`}
               >
                 {formatMessage(messages.topInfoSaveButton)}
-              </Button>
+              </ButtonWithLink>
               {!pageData.attributes.top_info_section_enabled && (
-                <Button
+                <ButtonWithLink
                   ml="30px"
                   type="button"
                   buttonStyle="primary-outlined"
@@ -142,7 +142,7 @@ const GenericTopInfoSection = ({
                   data-cy={`e2e-top-info-section-secondary-submit`}
                 >
                   {formatMessage(messages.topInfoSaveAndEnableButton)}
-                </Button>
+                </ButtonWithLink>
               )}
             </Box>
           </SectionFormWrapper>

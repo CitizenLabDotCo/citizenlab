@@ -160,6 +160,7 @@ const AttachmentsControl = ({
         onFileAdd={handleFileOnAdd}
         onFileRemove={handleFileOnRemove}
         files={files}
+        maxSizeMb={10}
       />
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}

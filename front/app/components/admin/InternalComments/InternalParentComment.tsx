@@ -11,7 +11,7 @@ import useInternalComments from 'api/internal_comments/useInternalComments';
 
 import Highlighter from 'components/Highlighter';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -32,7 +32,7 @@ const StyledChildCommentForm = styled(InternalChildCommentForm)`
   margin-left: 38px;
 `;
 
-const LoadMoreButton = styled(Button)`
+const LoadMoreButton = styled(ButtonWithLink)`
   margin-top: 20px;
   margin-left: 38px;
 `;

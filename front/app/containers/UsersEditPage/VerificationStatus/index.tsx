@@ -16,7 +16,7 @@ import messages from 'containers/UsersEditPage/messages';
 
 import Avatar from 'components/Avatar';
 import FeatureFlag from 'components/FeatureFlag';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormSection } from 'components/UI/FormComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -88,7 +88,7 @@ const StyledText = styled(Text)`
   margin-top: 10px;
 `;
 
-const VerifyButton = styled(Button)``;
+const VerifyButton = styled(ButtonWithLink)``;
 
 const ReverifyButton = styled.button`
   color: ${colors.teal};

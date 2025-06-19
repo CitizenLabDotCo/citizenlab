@@ -5,7 +5,7 @@ import { RouteType } from 'routes';
 
 import { InputTerm } from 'api/phases/types';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -24,7 +24,7 @@ const NewIdeaButton = ({ linkTo, inputTerm }: Props) => {
   const { pathname } = useLocation();
 
   return (
-    <Button
+    <ButtonWithLink
       id="e2e-new-idea"
       buttonStyle="admin-dark"
       icon="plus"

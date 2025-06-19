@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
@@ -35,7 +35,7 @@ const GoBackButtonSolid = ({
   );
 
   return (
-    <Button
+    <ButtonWithLink
       id="e2e-go-back-link"
       icon="arrow-left-circle"
       buttonStyle="text"
@@ -57,7 +57,7 @@ const GoBackButtonSolid = ({
       <ScreenReaderOnly>
         {formatMessage(messages.goBackToPreviousPage)}
       </ScreenReaderOnly>
-    </Button>
+    </ButtonWithLink>
   );
 };
 
