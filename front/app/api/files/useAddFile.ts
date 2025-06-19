@@ -3,12 +3,12 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import eventsKeys from './keys';
+import filesKeys from './keys';
 import { IAddFileProperties, IFile } from './types';
 
 const addFile = async (requestBody: IAddFileProperties) => {
   return fetcher<IFile>({
-    path: `/file`,
+    path: `/files`,
     action: 'post',
     body: requestBody,
   });
@@ -19,7 +19,7 @@ const useAddFile = () => {
   return useMutation<IFile, CLErrors, IAddFileProperties>({
     mutationFn: addFile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: eventsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: filesKeys.lists() });
     },
   });
 };
