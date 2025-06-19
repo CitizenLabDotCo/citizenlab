@@ -1,42 +1,28 @@
-import React, { useRef, useState, useLayoutEffect } from 'react';
+import React, {
+  useRef,
+  useState,
+  useLayoutEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 import { addDays, addMonths, subMonths } from 'date-fns';
 
-import { TimeRangeSelector } from './TimeRangeSelector';
+import TimeRangeSelector from './TimeRangeSelector';
 import {
-  daysBetween,
-  getMonthMeta,
   getTimeRangeDates,
-  scrollToToday,
+  getMonthMeta,
+  getYearMeta,
+  scrollTo,
   TimeRangeOption,
+  getOffsetInDays,
+  getDurationInDays,
+  getOffsetInMonths,
+  getDurationInMonths,
+  getLabelFromScroll,
 } from './utils';
-
-export type GanttItem = {
-  id: string;
-  title: string;
-  start: string | null;
-  end: string | null;
-};
-
-export type GanttChartProps = {
-  chartTitle?: string;
-  items: GanttItem[];
-  startDate?: Date;
-  endDate?: Date;
-  leftColumnWidth?: number;
-  dayWidth?: number;
-  rowHeight?: number;
-  timelineHeight?: number;
-  onItemClick?: (item: GanttItem) => void;
-  renderItemTooltip?: (item: GanttItem) => React.ReactNode;
-  renderItemLabel?: (item: GanttItem) => React.ReactNode;
-  getItemColor?: (item: GanttItem) => string;
-  showTodayLine?: boolean;
-  showDays?: boolean;
-  showMonths?: boolean;
-  height?: string;
-};
+import { GanttChartProps } from './types';
 
 export const GanttChart = ({
   items,
@@ -45,6 +31,7 @@ export const GanttChart = ({
   endDate: initialEndDate,
   leftColumnWidth = 260,
   dayWidth = 40,
+  monthWidth = 50,
   rowHeight = 40,
   timelineHeight = 40,
   onItemClick,
@@ -52,115 +39,170 @@ export const GanttChart = ({
   renderItemLabel,
   getItemColor = () => colors.white,
   showTodayLine = true,
-  showDays = true,
-  showMonths = true,
 }: GanttChartProps) => {
   const today = new Date();
   const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
-  const [startDate, setStartDate] = useState<Date>(
-    initialStartDate || subMonths(today, 6)
-  );
-  const [endDate, setEndDate] = useState<Date>(
-    initialEndDate || addMonths(today, 6)
-  );
-  const [isLoading, setIsLoading] = useState(false);
-  const scrollState = useRef({
-    scrollLeft: 0,
-    scrollWidth: 0,
-  });
+  const isYearlyView = selectedRange === '5years';
 
-  const months = getMonthMeta(startDate, endDate);
-  const [visibleMonthLabel, setVisibleMonthLabel] = useState(
-    months.length > 0 ? months[0].label : ''
+  const { startDate: initialStart, endDate: initialEnd } = getTimeRangeDates(
+    selectedRange,
+    today
   );
-  const totalDays = daysBetween(startDate, endDate);
-  const todayOffset = daysBetween(startDate, today);
+
+  const [startDate, setStartDate] = useState<Date>(
+    initialStartDate || initialStart
+  );
+  const [endDate, setEndDate] = useState<Date>(initialEndDate || initialEnd);
+  const [isLoading, setIsLoading] = useState(false);
 
   const timelineHeaderRef = useRef<HTMLDivElement>(null);
   const timelineBodyRef = useRef<HTMLDivElement>(null);
+  const scrollState = useRef({ scrollLeft: 0, scrollWidth: 0 });
+
+  const dailyViewData = useMemo(() => {
+    if (isYearlyView) return null;
+    const totalDays = getDurationInDays(startDate, endDate);
+    return {
+      months: getMonthMeta(startDate, endDate),
+      totalDays,
+      todayOffset: getOffsetInDays(startDate, today),
+    };
+  }, [isYearlyView, startDate, endDate, today]);
+
+  const yearlyViewData = useMemo(() => {
+    if (!isYearlyView) return null;
+    return {
+      years: getYearMeta(startDate, endDate),
+      totalMonths: getDurationInMonths(startDate, endDate),
+      todayOffset: getOffsetInMonths(startDate, today),
+    };
+  }, [isYearlyView, startDate, endDate, today]);
+
+  const [visibleLabel, setVisibleLabel] = useState<string>('');
 
   useLayoutEffect(() => {
-    if (timelineBodyRef.current && scrollState.current.scrollWidth) {
-      const newScrollWidth = timelineBodyRef.current.scrollWidth;
-      const widthAdded = newScrollWidth - scrollState.current.scrollWidth;
+    setVisibleLabel(
+      isYearlyView
+        ? yearlyViewData?.years[0]?.label ?? ''
+        : dailyViewData?.months[0]?.label ?? ''
+    );
+  }, [selectedRange, yearlyViewData, dailyViewData, isYearlyView]);
+
+  useLayoutEffect(() => {
+    if (!timelineBodyRef.current) return;
+    const newLabel = getLabelFromScroll(
+      timelineBodyRef.current.scrollLeft,
+      isYearlyView,
+      dailyViewData,
+      yearlyViewData,
+      dayWidth,
+      monthWidth
+    );
+    if (newLabel) setVisibleLabel(newLabel);
+  }, [
+    startDate,
+    endDate,
+    isYearlyView,
+    dailyViewData,
+    yearlyViewData,
+    dayWidth,
+    monthWidth,
+  ]);
+
+  useLayoutEffect(() => {
+    if (timelineBodyRef.current && scrollState.current.scrollWidth > 0) {
+      const newWidth = timelineBodyRef.current.scrollWidth;
+      const added = newWidth - scrollState.current.scrollWidth;
       timelineBodyRef.current.scrollLeft =
-        scrollState.current.scrollLeft + widthAdded;
+        scrollState.current.scrollLeft + added;
+      scrollState.current.scrollWidth = 0;
     }
-    scrollState.current.scrollWidth = 0;
   }, [startDate]);
 
-  const onTimelineScroll = () => {
+  const onTimelineScroll = useCallback(() => {
     if (!timelineBodyRef.current || isLoading) return;
 
-    if (timelineHeaderRef.current) {
-      timelineHeaderRef.current.scrollLeft = timelineBodyRef.current.scrollLeft;
-    }
-
-    let currentLabel = '';
-    for (let i = months.length - 1; i >= 0; i--) {
-      const month = months[i];
-      const monthStartPx = month.offsetDays * dayWidth;
-      if (timelineBodyRef.current.scrollLeft >= monthStartPx) {
-        currentLabel = month.label;
-        break;
-      }
-    }
-    if (currentLabel && currentLabel !== visibleMonthLabel) {
-      setVisibleMonthLabel(currentLabel);
-    }
-
     const { scrollLeft, scrollWidth, clientWidth } = timelineBodyRef.current;
-    const scrollBuffer = 800;
 
-    if (scrollLeft + clientWidth >= scrollWidth - scrollBuffer) {
+    if (timelineHeaderRef.current) {
+      timelineHeaderRef.current.scrollLeft = scrollLeft;
+    }
+
+    const newLabel = getLabelFromScroll(
+      scrollLeft,
+      isYearlyView,
+      dailyViewData,
+      yearlyViewData,
+      dayWidth,
+      monthWidth
+    );
+    if (newLabel && newLabel !== visibleLabel) {
+      setVisibleLabel(newLabel);
+    }
+
+    const buffer = 800;
+    if (scrollLeft + clientWidth >= scrollWidth - buffer) {
       setIsLoading(true);
       setEndDate((prev) => addMonths(prev, 3));
       setTimeout(() => setIsLoading(false), 50);
     }
 
-    if (scrollLeft <= scrollBuffer) {
+    if (scrollLeft <= buffer) {
       setIsLoading(true);
-      scrollState.current = {
-        scrollLeft: timelineBodyRef.current.scrollLeft,
-        scrollWidth: timelineBodyRef.current.scrollWidth,
-      };
+      scrollState.current = { scrollLeft, scrollWidth };
       setStartDate((prev) => subMonths(prev, 3));
       setTimeout(() => setIsLoading(false), 50);
     }
-  };
+  }, [
+    isYearlyView,
+    dailyViewData,
+    yearlyViewData,
+    dayWidth,
+    monthWidth,
+    visibleLabel,
+    isLoading,
+  ]);
 
   const handleRangeChange = (range: TimeRangeOption) => {
     setSelectedRange(range);
-    const { startDate: newStartDate, endDate: newEndDate } = getTimeRangeDates(
+    const { startDate: newStart, endDate: newEnd } = getTimeRangeDates(
       range,
       today
     );
-    setStartDate(newStartDate);
-    setEndDate(newEndDate);
+    setStartDate(newStart);
+    setEndDate(newEnd);
     if (timelineBodyRef.current) {
       timelineBodyRef.current.scrollLeft = 0;
     }
   };
 
   const handleTodayClick = () => {
-    scrollToToday(timelineBodyRef, todayOffset, dayWidth);
+    const offset = isYearlyView
+      ? yearlyViewData?.todayOffset
+      : dailyViewData?.todayOffset;
+    const unitWidth = isYearlyView ? monthWidth : dayWidth;
+    if (offset !== undefined) {
+      scrollTo(timelineBodyRef, offset, unitWidth);
+    }
   };
+
+  const unitW = isYearlyView ? monthWidth : dayWidth;
+  const totalSize = isYearlyView
+    ? (yearlyViewData?.totalMonths || 0) * unitW
+    : (dailyViewData?.totalDays || 0) * unitW;
+  const todayOffset = isYearlyView
+    ? yearlyViewData?.todayOffset
+    : dailyViewData?.todayOffset;
 
   return (
     <Box
       bg="#fff"
+      border={`1px solid ${colors.grey300}`}
       borderRadius="8px"
       overflow="hidden"
-      border="1px solid #e0e0e0"
       p="24px"
     >
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        mb="8px"
-        position="relative"
-        zIndex="4"
-      >
+      <Box display="flex" justifyContent="flex-end" mb="8px">
         <TimeRangeSelector
           selectedRange={selectedRange}
           onRangeChange={handleRangeChange}
@@ -168,37 +210,27 @@ export const GanttChart = ({
         />
       </Box>
 
-      {/* Header row */}
-      <Box
-        display="flex"
-        position="relative"
-        zIndex="2"
-        boxShadow="0 1px 0 #e0e0e0"
-      >
-        {/* Left column header */}
+      <Box display="flex" boxShadow={`0 1px 0 ${colors.grey300}`}>
         <Box
           width={`${leftColumnWidth}px`}
           minWidth={`${leftColumnWidth}px`}
-          maxWidth={`${leftColumnWidth}px`}
-          style={{ position: 'sticky', left: 0, zIndex: 3 }}
+          position="sticky"
           display="flex"
           alignItems="center"
           height={`${timelineHeight * 2}px`}
           pl="16px"
-          bg="#fff"
+          bg={colors.white}
+          style={{ left: 0, zIndex: 3 }}
         >
           {chartTitle}
         </Box>
+
         <Box flex="1" overflow="hidden" position="relative">
           <Box
             position="absolute"
-            top="0"
-            left="0"
             height={`${timelineHeight}px`}
             display="flex"
             alignItems="center"
-            justifyContent="center"
-            zIndex="2"
             pl="16px"
             pr="16px"
             bg="#fafbfc"
@@ -207,105 +239,105 @@ export const GanttChart = ({
               fontSize: '18px',
               color: '#222',
               letterSpacing: '0.5px',
+              zIndex: 2,
             }}
           >
-            {visibleMonthLabel}
+            {visibleLabel}
           </Box>
 
-          <Box ref={timelineHeaderRef} style={{ overflow: 'hidden' }}>
-            {/* Months row */}
-            {showMonths && (
-              <Box
-                display="flex"
-                height={`${timelineHeight}px`}
-                position="relative"
-                style={{
-                  overflow: 'hidden',
-                  minWidth: `${totalDays * dayWidth}px`,
-                  background: '#fafbfc',
-                }}
-              >
-                {months.map((month) => (
-                  <Box
-                    key={month.label}
-                    minWidth={`${month.daysInMonth * dayWidth}px`}
-                    width={`${month.daysInMonth * dayWidth}px`}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{
-                      color: 'transparent',
-                    }}
-                  >
-                    {month.label}
-                  </Box>
-                ))}
-                {months.map((_, i) => {
-                  if (i === 0) return null;
-                  const month = months[i];
-                  const lineLeftPosition =
-                    month.offsetDays * dayWidth + dayWidth / 2 - 0.5;
-                  return (
+          <Box ref={timelineHeaderRef} overflow="hidden">
+            {isYearlyView && yearlyViewData ? (
+              <Box minWidth={`${totalSize}px`} bg="#fafbfc">
+                <Box display="flex" height={`${timelineHeight}px`}>
+                  {yearlyViewData.years.map((y) => (
                     <Box
-                      key={`month-line-${i}`}
-                      position="absolute"
-                      left={`${lineLeftPosition}px`}
-                      top="0"
-                      width="1px"
-                      height="100%"
-                      bg="#e0e0e0"
-                    />
-                  );
-                })}
-              </Box>
-            )}
-
-            {/* Days row */}
-            {showDays && (
-              <Box
-                display="flex"
-                height={`${timelineHeight}px`}
-                borderBottom="1px solid #e0e0e0"
-                style={{
-                  overflow: 'hidden',
-                  minWidth: `${totalDays * dayWidth}px`,
-                  background: '#fafbfc',
-                }}
-              >
-                {Array.from({ length: totalDays }).map((_, idx) => {
-                  const day = addDays(startDate, idx);
-                  return (
-                    <Box
-                      key={`day-${idx}`}
-                      minWidth={`${dayWidth}px`}
-                      width={`${dayWidth}px`}
+                      key={y.label}
+                      minWidth={`${y.monthsInYear * monthWidth}px`}
+                      width={`${y.monthsInYear * monthWidth}px`}
                       display="flex"
                       alignItems="center"
                       justifyContent="center"
-                      style={{ color: '#888', fontSize: '12px' }}
+                      borderLeft={`1px solid ${colors.grey300}`}
+                      style={{ color: 'transparent' }}
                     >
-                      {day.getDate()}
+                      {y.label}
                     </Box>
-                  );
-                })}
+                  ))}
+                </Box>
+                <Box
+                  display="flex"
+                  height={`${timelineHeight}px`}
+                  borderTop={`1px solid ${colors.grey300}`}
+                >
+                  {yearlyViewData.years.flatMap((y) =>
+                    Array.from({ length: 12 }).map((_, i) => (
+                      <Box
+                        key={`${y.label}-${i}`}
+                        minWidth={`${monthWidth}px`}
+                        width={`${monthWidth}px`}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        style={{ color: '#888', fontSize: '12px' }}
+                      >
+                        {i + 1}
+                      </Box>
+                    ))
+                  )}
+                </Box>
+              </Box>
+            ) : (
+              <Box minWidth={`${totalSize}px`} bg="#fafbfc">
+                <Box display="flex" height={`${timelineHeight}px`}>
+                  {dailyViewData?.months.map((m) => (
+                    <Box
+                      key={m.label}
+                      minWidth={`${m.daysInMonth * dayWidth}px`}
+                      width={`${m.daysInMonth * dayWidth}px`}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      borderLeft={`1px solid ${colors.grey300}`}
+                      style={{ color: 'transparent' }}
+                    >
+                      {m.label}
+                    </Box>
+                  ))}
+                </Box>
+                <Box
+                  display="flex"
+                  height={`${timelineHeight}px`}
+                  borderTop={`1px solid ${colors.grey300}`}
+                >
+                  {Array.from({ length: dailyViewData?.totalDays || 0 }).map(
+                    (_, i) => (
+                      <Box
+                        key={`day-${i}`}
+                        minWidth={`${dayWidth}px`}
+                        width={`${dayWidth}px`}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        style={{ color: '#888', fontSize: '12px' }}
+                      >
+                        {addDays(startDate, i).getDate()}
+                      </Box>
+                    )
+                  )}
+                </Box>
               </Box>
             )}
           </Box>
         </Box>
       </Box>
 
-      {/* Body */}
-      <Box display="flex" position="relative" height="100%">
-        {/* Left column */}
+      <Box display="flex">
         <Box
           width={`${leftColumnWidth}px`}
-          bg="#fff"
-          style={{
-            position: 'sticky',
-            left: 0,
-            zIndex: 2,
-            borderRight: '1px solid #e0e0e0',
-          }}
+          position="sticky"
+          borderRight={`1px solid ${colors.grey300}`}
+          bg={colors.white}
+          style={{ left: 0, zIndex: 2 }}
         >
           {items.map((item) => (
             <Box
@@ -315,7 +347,7 @@ export const GanttChart = ({
               alignItems="center"
               pl="16px"
               pr="8px"
-              borderBottom="1px solid #e0e0e0"
+              borderBottom={`1px solid ${colors.grey300}`}
               style={{
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
@@ -327,7 +359,6 @@ export const GanttChart = ({
           ))}
         </Box>
 
-        {/* Timeline body */}
         <Box
           flex="1"
           overflow="auto"
@@ -336,39 +367,35 @@ export const GanttChart = ({
           bgColor={colors.background}
           position="relative"
         >
-          <Box position="relative" minWidth={`${totalDays * dayWidth}px`}>
-            {/* Centered grid lines */}
-            <Box
-              position="absolute"
-              top="0"
-              left="0"
-              width="100%"
-              height="100%"
-              zIndex="0"
-            >
-              {Array.from({ length: totalDays }).map((_, i) => (
+          <Box position="relative" minWidth={`${totalSize}px`}>
+            <Box position="absolute" width="100%" height="100%">
+              {Array.from({
+                length: isYearlyView
+                  ? yearlyViewData?.totalMonths || 0
+                  : dailyViewData?.totalDays || 0,
+              }).map((_, i) => (
                 <Box
-                  key={`grid-line-${i}`}
+                  key={`grid-${i}`}
                   position="absolute"
-                  left={`${i * dayWidth + dayWidth / 2 - 0.5}px`}
-                  top="0"
+                  left={`${i * unitW + unitW / 2 - 0.5}px`}
                   width="1px"
                   height="100%"
-                  bg="#e0e0e0"
+                  bg={colors.divider}
                 />
               ))}
             </Box>
 
-            {/* Today line */}
-            {showTodayLine && todayOffset >= 0 && todayOffset < totalDays && (
+            {showTodayLine && todayOffset !== undefined && (
               <Box
                 position="absolute"
-                top="0"
-                left={`${(todayOffset - 1) * dayWidth + dayWidth / 2 - 1}px`}
                 width="2px"
                 height="100%"
                 bg={colors.primary}
-                style={{ zIndex: 2, pointerEvents: 'none' }}
+                style={{
+                  left: `${todayOffset * unitW + unitW / 2 - 1}px`,
+                  pointerEvents: 'none',
+                  zIndex: 1,
+                }}
               >
                 <Box
                   position="absolute"
@@ -382,35 +409,24 @@ export const GanttChart = ({
               </Box>
             )}
 
-            {/* Items container */}
             <Box position="relative" height={`${items.length * rowHeight}px`}>
               {items.map((item, index) => {
-                const start = item.start ? new Date(item.start) : undefined;
-                const end = item.end ? new Date(item.end) : null;
+                const s = item.start ? new Date(item.start) : undefined;
+                if (!s) return null;
+                const e = item.end ? new Date(item.end) : null;
 
-                // Only skip if there's no start date
-                if (!start) return null;
-
-                const effectiveStart =
-                  start.getTime() > startDate.getTime() ? start : startDate;
-
+                const effectiveStart = s > startDate ? s : startDate;
                 const effectiveEnd =
-                  end === null
-                    ? endDate // If no end date, the bar goes to the edge of the chart
-                    : end.getTime() < endDate.getTime()
-                    ? end
-                    : endDate;
+                  e === null ? endDate : e < endDate ? e : endDate;
+                if (effectiveStart >= effectiveEnd) return null;
 
-                if (
-                  effectiveStart.getTime() > endDate.getTime() ||
-                  (end !== null && end.getTime() < startDate.getTime())
-                ) {
-                  return null;
-                }
+                const startOffset = isYearlyView
+                  ? getOffsetInMonths(startDate, effectiveStart)
+                  : getOffsetInDays(startDate, effectiveStart);
 
-                const startOffset = daysBetween(startDate, effectiveStart) - 1;
-                const duration = daysBetween(effectiveStart, effectiveEnd);
-
+                const duration = isYearlyView
+                  ? getDurationInMonths(effectiveStart, effectiveEnd)
+                  : getDurationInDays(effectiveStart, effectiveEnd);
                 if (duration <= 0) return null;
 
                 return (
@@ -418,12 +434,12 @@ export const GanttChart = ({
                     key={item.id}
                     position="absolute"
                     top={`${index * rowHeight + 4}px`}
-                    left={`${startOffset * dayWidth}px`}
-                    width={`${duration * dayWidth}px`}
+                    left={`${startOffset * unitW}px`}
+                    width={`${duration * unitW}px`}
                     height={`${rowHeight - 8}px`}
                     background={getItemColor(item)}
-                    borderColor={colors.grey300}
                     border="1px solid"
+                    borderColor={colors.grey300}
                     borderRadius="4px"
                     style={{
                       cursor: onItemClick ? 'pointer' : 'default',
@@ -446,3 +462,5 @@ export const GanttChart = ({
     </Box>
   );
 };
+
+export default GanttChart;
