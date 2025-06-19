@@ -6,6 +6,20 @@ import filesKeys from './keys';
 
 export type FilesKeys = Keys<typeof filesKeys>;
 
+export interface IAddFileProperties {
+  file: {
+    file: string;
+    name: string;
+  };
+}
+
+export interface IUpdateFileProperties {
+  id: string;
+  file: {
+    name: string;
+  };
+}
+
 type FileSortOptions =
   | 'created_at'
   | '-created_at'
@@ -31,17 +45,6 @@ export interface Props {
 
 export interface IFiles {
   data: IFileData[];
-  meta: {
-    total_count: number;
-    total_pages: number;
-    current_page: number;
-    per_page: number;
-  };
-  links: {
-    self: string;
-    next: string;
-    last: string;
-  };
 }
 
 export interface IFile {

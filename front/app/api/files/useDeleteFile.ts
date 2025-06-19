@@ -23,4 +23,5 @@ const useDeleteFile = () => {
   });
 };
 
+// ts-prune-ignore-next
 export default useDeleteFile;
