@@ -274,6 +274,7 @@ export interface IAppConfigurationSettings {
   user_fields_in_surveys?: AppConfigurationFeature;
   html_pdfs?: AppConfigurationFeature;
   project_planning?: AppConfigurationFeature;
+  common_ground?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
