@@ -1,102 +1,177 @@
+import { RefObject } from 'react';
+
 import {
+  startOfDay,
+  endOfDay,
   startOfMonth,
   endOfMonth,
-  startOfWeek,
-  endOfWeek,
-  startOfQuarter,
-  endOfQuarter,
-  startOfDay,
+  eachDayOfInterval,
+  differenceInCalendarDays,
+  differenceInCalendarMonths,
+  addMonths,
+  subMonths,
+  addYears,
+  subYears,
+  getYear,
+  format,
+  subDays,
+  addDays,
+  startOfYear,
+  endOfYear,
 } from 'date-fns';
 
-export type TimeRangeOption = 'month' | 'week' | 'quarter' | 'year' | '5years';
+export type TimeRangeOption = 'month' | 'quarter' | 'year' | '5years';
+
+export type MonthMeta = {
+  label: string;
+  daysInMonth: number;
+  offsetDays: number;
+};
+
+export type YearMeta = {
+  label: string;
+  offsetMonths: number;
+  monthsInYear: number;
+};
+
+// Calculates a 0-indexed offset in days from the start of the timeline.
+export const getOffsetInDays = (
+  timelineStart: Date,
+  eventStart: Date
+): number => {
+  return differenceInCalendarDays(eventStart, timelineStart);
+};
+
+// Calculates the inclusive duration of an event in days
+export const getDurationInDays = (start: Date, end?: Date): number => {
+  if (!end) return 1; // Default to 1 day if no end date
+  // Add +1 to make the duration inclusive of the end date
+  return differenceInCalendarDays(end, start) + 1;
+};
+
+// Calculates a 0-indexed offset in months from the start of the timeline.
+export const getOffsetInMonths = (
+  timelineStart: Date,
+  eventStart: Date
+): number => {
+  return differenceInCalendarMonths(eventStart, timelineStart);
+};
+
+// Calculates the inclusive duration of an event in months.
+export const getDurationInMonths = (start: Date, end?: Date): number => {
+  if (!end) return 1; // Default to 1 month if no end date
+  // Add +1 to make the duration inclusive of the end date
+  return differenceInCalendarMonths(end, start) + 1;
+};
+
+export const getMonthMeta = (startDate: Date, endDate: Date): MonthMeta[] => {
+  const months: MonthMeta[] = [];
+  let currentDate = startOfMonth(startDate);
+  let accumulatedOffset = 0;
+
+  while (currentDate <= endDate) {
+    const monthStart =
+      currentDate < startDate ? startOfDay(startDate) : currentDate;
+    const monthEnd =
+      endOfMonth(currentDate) > endDate
+        ? endOfDay(endDate)
+        : endOfMonth(currentDate);
+
+    const daysInMonth = eachDayOfInterval({
+      start: monthStart,
+      end: monthEnd,
+    }).length;
+
+    months.push({
+      label: format(currentDate, 'MMMM yyyy'),
+      daysInMonth,
+      offsetDays: accumulatedOffset,
+    });
+
+    accumulatedOffset += daysInMonth;
+    currentDate = addMonths(currentDate, 1);
+  }
+  return months;
+};
+
+export const getYearMeta = (startDate: Date, endDate: Date): YearMeta[] => {
+  const startYearNum = getYear(startDate);
+  const endYearNum = getYear(endDate);
+  const years: YearMeta[] = [];
+
+  for (let year = startYearNum; year <= endYearNum; year++) {
+    const yearStartDate = startOfYear(new Date(year, 0, 1));
+    const offsetMonths = getOffsetInMonths(startDate, yearStartDate);
+
+    years.push({
+      label: year.toString(),
+      offsetMonths: offsetMonths < 0 ? 0 : offsetMonths,
+      monthsInYear: 12,
+    });
+  }
+  return years;
+};
 
 export const getTimeRangeDates = (
-  option: TimeRangeOption,
-  date: Date = new Date()
+  range: TimeRangeOption,
+  today: Date
 ): { startDate: Date; endDate: Date } => {
-  switch (option) {
-    case 'month':
+  switch (range) {
+    case '5years':
       return {
-        startDate: startOfMonth(date),
-        endDate: endOfMonth(date),
-      };
-    case 'week':
-      // Assuming week starts on Monday
-      return {
-        startDate: startOfWeek(date, { weekStartsOn: 1 }),
-        endDate: endOfWeek(date, { weekStartsOn: 1 }),
-      };
-    case 'quarter':
-      return {
-        startDate: startOfQuarter(date),
-        endDate: endOfQuarter(date),
+        startDate: startOfYear(subYears(today, 2)),
+        endDate: endOfYear(addYears(today, 2)),
       };
     case 'year':
       return {
-        startDate: new Date(date.getFullYear(), 0, 1),
-        endDate: new Date(date.getFullYear(), 11, 31),
+        startDate: subMonths(today, 6),
+        endDate: addMonths(today, 6),
       };
-    case '5years':
+    case 'quarter':
       return {
-        startDate: new Date(date.getFullYear() - 2, 0, 1),
-        endDate: new Date(date.getFullYear() + 2, 11, 31),
+        startDate: subMonths(today, 2),
+        endDate: addMonths(today, 2),
       };
+    case 'month':
     default:
       return {
-        startDate: startOfMonth(date),
-        endDate: endOfMonth(date),
+        startDate: subDays(today, 15),
+        endDate: addDays(today, 15),
       };
   }
 };
 
-export const scrollToToday = (
-  timelineBodyRef: React.RefObject<HTMLDivElement>,
-  todayOffset: number,
-  dayWidth: number
+export const scrollTo = (
+  ref: RefObject<HTMLDivElement>,
+  offset: number,
+  unitWidth: number
 ) => {
-  if (timelineBodyRef.current) {
-    const scrollLeft =
-      todayOffset * dayWidth - timelineBodyRef.current.clientWidth / 2;
-    timelineBodyRef.current.scrollTo({
-      left: Math.max(0, scrollLeft),
-      behavior: 'smooth',
-    });
+  if (ref.current) {
+    const containerWidth = ref.current.clientWidth;
+    const scrollTarget =
+      offset * unitWidth - containerWidth / 2 + unitWidth / 2;
+    ref.current.scrollLeft = scrollTarget;
   }
 };
 
-export const daysBetween = (a: Date, b: Date) => {
-  const start = startOfDay(a);
-  const end = startOfDay(b);
-  // Add 1 to include the last day
-  return (
-    Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1
-  );
-};
-
-export function getMonthMeta(start: Date, end: Date) {
-  const months: {
-    label: string;
-    monthStart: Date;
-    daysInMonth: number;
-    offsetDays: number;
-  }[] = [];
-  let current = new Date(start.getFullYear(), start.getMonth(), 1);
-  while (current <= end) {
-    const year = current.getFullYear();
-    const monthIndex = current.getMonth();
-    const monthStart = new Date(year, monthIndex, 1);
-    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-    const offsetDays = Math.max(0, daysBetween(start, monthStart) - 1);
-    months.push({
-      label: monthStart.toLocaleString('default', {
-        month: 'long',
-        year: 'numeric',
-      }),
-      monthStart,
-      daysInMonth,
-      offsetDays,
-    });
-    current = new Date(year, monthIndex + 1, 1);
+export const getLabelFromScroll = (
+  scrollLeft: number,
+  isYearlyView: boolean,
+  dailyData: { months: ReturnType<typeof getMonthMeta> } | null,
+  yearlyData: { years: ReturnType<typeof getYearMeta> } | null,
+  dayWidth: number,
+  monthWidth: number
+) => {
+  if (isYearlyView && yearlyData) {
+    for (let i = yearlyData.years.length - 1; i >= 0; i--) {
+      const y = yearlyData.years[i];
+      if (scrollLeft >= y.offsetMonths * monthWidth) return y.label;
+    }
+  } else if (dailyData) {
+    for (let i = dailyData.months.length - 1; i >= 0; i--) {
+      const m = dailyData.months[i];
+      if (scrollLeft >= m.offsetDays * dayWidth) return m.label;
+    }
   }
-  return months;
-}
+  return '';
+};
