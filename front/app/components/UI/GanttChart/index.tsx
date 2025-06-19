@@ -200,7 +200,6 @@ export const GanttChart = ({
       border={`1px solid ${colors.grey300}`}
       borderRadius="8px"
       overflow="hidden"
-      p="24px"
     >
       <Box display="flex" justifyContent="flex-end" mb="8px">
         <TimeRangeSelector
