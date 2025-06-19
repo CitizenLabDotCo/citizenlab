@@ -181,4 +181,5 @@ const SearchInput = ({
   );
 };
 
+/** @deprecated Use SearchInput from the components/UI/ folder instead.*/
 export default SearchInput;
