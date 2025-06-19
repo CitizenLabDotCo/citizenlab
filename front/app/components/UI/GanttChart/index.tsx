@@ -442,7 +442,6 @@ export const GanttChart = ({
                     borderRadius="4px"
                     style={{
                       cursor: onItemClick ? 'pointer' : 'default',
-                      zIndex: 1,
                     }}
                     onClick={() => onItemClick?.(item)}
                   >
