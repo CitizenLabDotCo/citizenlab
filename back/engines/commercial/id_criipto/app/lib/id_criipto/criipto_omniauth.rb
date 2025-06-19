@@ -25,6 +25,12 @@ module IdCriipto
           custom_field_values[municipality_code_key] = municipality_code
         end
 
+        # Handle postal_code - requested by Leyre
+        postal_code = auth.extra.raw_info.dig('address', 'postal_code')
+        if (postal_code_key = config[:postal_code_custom_field_key]) && postal_code.present?
+          custom_field_values[postal_code_key] = postal_code
+        end
+
         first_name, *last_name = auth.extra.raw_info.name.split
         {
           first_name: first_name,
