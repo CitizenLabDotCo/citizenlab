@@ -63,7 +63,7 @@ const SingleSelectField = ({
             <StyledBox
               style={{ cursor: 'pointer' }}
               mb="12px"
-              padding="20px "
+              padding="20px 20px 8px 20px"
               border={
                 options.includes(option.value)
                   ? `2px solid ${theme.colors.tenantPrimary}`

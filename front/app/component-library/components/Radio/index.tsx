@@ -67,6 +67,7 @@ const Label = styled.label`
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
+  margin-bottom: 12px;
 
   ${isRtl`
     flex-direction: row-reverse;
