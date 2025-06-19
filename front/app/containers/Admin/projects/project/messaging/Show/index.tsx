@@ -24,7 +24,7 @@ import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
 import SentCampaignDetails from 'components/admin/Email/SentCampaignDetails';
 import Stamp from 'components/admin/Email/Stamp';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -146,13 +146,13 @@ const Show = () => {
             </Box>
             {isDraft(campaign.data) && (
               <Buttons>
-                <Button
+                <ButtonWithLink
                   linkTo={`/admin/projects/${projectId}/messaging/${campaign.data.id}/edit`}
                   buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
-                </Button>
-                <Button
+                </ButtonWithLink>
+                <ButtonWithLink
                   buttonStyle="admin-dark"
                   icon="send"
                   iconPos="right"
@@ -161,7 +161,7 @@ const Show = () => {
                   processing={isSendingCampaign}
                 >
                   <FormattedMessage {...messages.send} />
-                </Button>
+                </ButtonWithLink>
               </Buttons>
             )}
           </Box>

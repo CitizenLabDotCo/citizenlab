@@ -15,7 +15,7 @@ import { List, Row } from 'components/admin/ResourceList';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { SubSectionTitle } from 'components/admin/Section';
 import Avatar from 'components/Avatar';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UserSelect from 'components/UI/UserSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -139,7 +139,7 @@ const FolderPermissions = () => {
                 isNotFolderModeratorOfFolderId={projectFolderId}
               />
             </Box>
-            <Button
+            <ButtonWithLink
               text={formatMessage(messages.addFolderManager)}
               buttonStyle="admin-dark"
               icon="plus-circle"
@@ -181,7 +181,7 @@ const FolderPermissions = () => {
                   <Text as="span" m="0">
                     {folderModerator.attributes.email}
                   </Text>
-                  <Button
+                  <ButtonWithLink
                     onClick={handleDeleteFolderModeratorClick(
                       folderModerator.id
                     )}
@@ -190,7 +190,7 @@ const FolderPermissions = () => {
                     processing={deleteIsLoading}
                   >
                     <FormattedMessage {...messages.deleteFolderManagerLabel} />
-                  </Button>
+                  </ButtonWithLink>
                 </Row>
               ))}
           </>

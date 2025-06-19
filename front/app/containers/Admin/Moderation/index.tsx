@@ -27,7 +27,7 @@ import ProjectSelector from 'components/admin/ProjectSelector';
 import { PageTitle } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
 import Pagination from 'components/Pagination';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Checkbox from 'components/UI/Checkbox';
 import SearchInput from 'components/UI/SearchInput';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
@@ -85,7 +85,7 @@ const Buttons = styled.div`
   display: flex;
 `;
 
-const MarkAsButton = styled(Button)`
+const MarkAsButton = styled(ButtonWithLink)`
   margin-right: 20px;
 `;
 

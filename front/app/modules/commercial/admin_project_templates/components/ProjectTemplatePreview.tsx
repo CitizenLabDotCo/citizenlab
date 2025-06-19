@@ -16,7 +16,7 @@ import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Centerer from 'components/UI/Centerer';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -120,7 +120,7 @@ const LinkCopiedIcon = styled(Icon)`
   fill: ${colors.success};
 `;
 
-const CopyLinkButton = styled(Button)`
+const CopyLinkButton = styled(ButtonWithLink)`
   margin-left: 20px;
 
   ${media.phone`

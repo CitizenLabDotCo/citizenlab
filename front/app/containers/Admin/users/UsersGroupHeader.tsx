@@ -7,7 +7,7 @@ import { MembershipType } from 'api/groups/types';
 
 import Outlet from 'components/Outlet';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -47,14 +47,14 @@ const UsersGroupHeader = memo(
         <TextAndButtons>
           <T as="h1" value={title} />
           <Buttons>
-            <Button
+            <ButtonWithLink
               hiddenText={<FormattedMessage {...messages.editGroup} />}
               padding=".65em"
               icon="edit"
               buttonStyle="secondary-outlined"
               onClick={onEdit}
             />
-            <Button
+            <ButtonWithLink
               hiddenText={<FormattedMessage {...messages.deleteGroup} />}
               padding=".65em"
               icon="delete"

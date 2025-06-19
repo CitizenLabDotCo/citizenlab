@@ -2,7 +2,7 @@ import { Input, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import ContentContainer from 'components/ContentContainer';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import PasswordIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 
 export const StyledContentContainer = styled(ContentContainer)`
@@ -22,7 +22,7 @@ export const Title = styled.h1`
   margin-bottom: 50px;
 `;
 
-export const StyledButton = styled(Button)`
+export const StyledButton = styled(ButtonWithLink)`
   margin-top: 20px;
   margin-bottom: 10px;
 `;

@@ -19,7 +19,7 @@ import useInvites from 'api/invites/useInvites';
 import { API_PATH } from 'containers/App/constants';
 
 import Pagination from 'components/Pagination';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import SearchInput from 'components/UI/SearchInput';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -120,14 +120,14 @@ const InvitesTable = () => {
           onChange={handleChangeSearchTerm}
           a11y_numberOfSearchResults={invites.data.length}
         />
-        <Button
+        <ButtonWithLink
           buttonStyle="admin-dark"
           icon="download"
           onClick={handleInvitesExport}
           processing={exporting}
         >
           <FormattedMessage {...messages.exportInvites} />
-        </Button>
+        </ButtonWithLink>
       </HeaderContainer>
 
       {invites.data.length > 0 && (

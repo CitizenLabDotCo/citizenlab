@@ -77,6 +77,7 @@ Rails.application.routes.draw do
       end
 
       resources :background_jobs, only: %i[index]
+      resources :jobs, only: %i[index show]
 
       resources :idea_statuses do
         patch 'reorder', on: :member
@@ -172,6 +173,10 @@ Rails.application.routes.draw do
           delete 'inputs', action: 'delete_inputs'
         end
 
+        resources :inputs, only: [], controller: 'ideas' do
+          post 'copy', on: :collection
+        end
+
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'json_forms_schema', on: :collection
@@ -238,6 +243,7 @@ Rails.application.routes.draw do
         resources :images, controller: '/web_api/v1/images', defaults: { container_type: 'ProjectFolder' }
         resources :files, controller: '/web_api/v1/files', defaults: { container_type: 'ProjectFolder' }
         get 'by_slug/:slug', on: :collection, to: 'folders#by_slug'
+        get 'for_admin', on: :collection, action: 'index_for_admin'
       end
 
       resources :notifications, only: %i[index show] do

@@ -15,7 +15,7 @@ class ProjectsFinderAdminService
     elsif params[:sort] == 'phase_starting_or_ending_soon'
       sort_phase_starting_or_ending_soon(projects)
     else
-      projects.order(created_at: :desc)
+      projects.order('projects.created_at DESC, projects.id ASC')
     end
   end
 

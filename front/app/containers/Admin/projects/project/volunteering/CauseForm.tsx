@@ -13,7 +13,7 @@ import Feedback from 'components/HookForm/Feedback';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -130,9 +130,12 @@ const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
             justifyContent="flex-start"
           >
             <Box py="8px" px={`${defaultAdminCardPadding}px`}>
-              <Button type="submit" processing={methods.formState.isSubmitting}>
+              <ButtonWithLink
+                type="submit"
+                processing={methods.formState.isSubmitting}
+              >
                 {formatMessage(messages.saveCause)}
-              </Button>
+              </ButtonWithLink>
             </Box>
           </Box>
         </form>

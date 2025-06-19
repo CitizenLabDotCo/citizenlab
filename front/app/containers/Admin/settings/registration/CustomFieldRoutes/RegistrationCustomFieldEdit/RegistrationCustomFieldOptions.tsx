@@ -13,7 +13,7 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { TextCell } from 'components/admin/ResourceList';
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -61,13 +61,13 @@ const RegistrationCustomFieldOptions = memo(
       return (
         <>
           <ButtonWrapper>
-            <Button
+            <ButtonWithLink
               buttonStyle="admin-dark"
               icon="plus-circle"
               linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/new`}
             >
               {formatMessage(messages.addOption)}
-            </Button>
+            </ButtonWithLink>
           </ButtonWrapper>
           <SortableList
             items={userCustomFieldOptions.data}
@@ -100,20 +100,20 @@ const RegistrationCustomFieldOptions = memo(
                             userCustomFieldOption.attributes.title_multiloc
                           )}
                         </TextCell>
-                        <Button
+                        <ButtonWithLink
                           linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/${userCustomFieldOptionId}`}
                           buttonStyle="secondary-outlined"
                           icon="edit"
                         >
                           {formatMessage(messages.editButtonLabel)}
-                        </Button>
-                        <Button
+                        </ButtonWithLink>
+                        <ButtonWithLink
                           onClick={handleDeleteClick(userCustomFieldOptionId)}
                           buttonStyle="text"
                           icon="delete"
                         >
                           {formatMessage(messages.deleteButtonLabel)}
-                        </Button>
+                        </ButtonWithLink>
                       </SortableRow>
                     );
                   }

@@ -179,6 +179,7 @@
   "app.components.FileUploader.a11y_removeFile": "Eliminar este archivo",
   "app.components.FileUploader.fileInputDescription": "Haga clic para seleccionar un archivo",
   "app.components.FileUploader.fileUploadLabel": "Archivos adjuntos (máximo 50MB)",
+  "app.components.FileUploader.file_too_large2": "No se permiten archivos de más de {maxSizeMb}MB.",
   "app.components.FileUploader.incorrect_extension": "{fileName} no es compatible con nuestro sistema, no será cargado.",
   "app.components.FilterBoxes.a11y_allFilterSelected": "Filtro de estado seleccionado: todos",
   "app.components.FilterBoxes.a11y_numberOfInputs": "{inputsCount, plural, one {# aporte} other {# aportes}}",

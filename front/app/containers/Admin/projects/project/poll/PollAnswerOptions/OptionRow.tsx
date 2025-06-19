@@ -6,13 +6,13 @@ import { Multiloc } from 'typings';
 
 import { Row, TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(ButtonWithLink)`
   display: inline-block;
 `;
 
@@ -33,14 +33,14 @@ const OptionRow = ({
         <T value={pollOptionTitle} />
       </Box>
     </TextCell>
-    <Button
+    <ButtonWithLink
       className="e2e-delete-option"
       onClick={deleteOption}
       buttonStyle="text"
       icon="delete"
     >
       <FormattedMessage {...messages.deleteOption} />
-    </Button>
+    </ButtonWithLink>
     <StyledButton
       className="e2e-edit-option"
       onClick={editOption}

@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 
 import { trackEventByName } from 'utils/analytics';
+import { parseBackendDateString } from 'utils/dateUtils';
 
 import { useRansackParam, setRansackParam } from '../utils';
 
@@ -12,7 +13,7 @@ import tracks from './tracks';
 
 const toDate = (str?: string) => {
   if (!str) return;
-  return new Date(str);
+  return parseBackendDateString(str);
 };
 
 const toString = (date?: Date) => {

@@ -12,7 +12,9 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
+import { PARAMS as FOLDER_PARAMS } from './Folders/utils';
 import messages from './messages';
+import { PARAMS as PROJECT_PARAMS } from './Projects/utils';
 
 interface TabProps {
   message: MessageDescriptor;
@@ -57,6 +59,10 @@ const Tabs = () => {
         icon="projects"
         active={tab === null}
         onClick={() => {
+          if (tab === 'folders') {
+            removeSearchParams(FOLDER_PARAMS);
+          }
+
           removeSearchParams(['tab']);
         }}
       />
@@ -65,6 +71,10 @@ const Tabs = () => {
         icon="folder-outline"
         active={tab === 'folders'}
         onClick={() => {
+          if ([null, 'timeline'].includes(tab)) {
+            removeSearchParams(PROJECT_PARAMS);
+          }
+
           updateSearchParams({ tab: 'folders' });
         }}
       />
@@ -73,6 +83,10 @@ const Tabs = () => {
         icon="calendar"
         active={tab === 'timeline'}
         onClick={() => {
+          if (tab === 'folders') {
+            removeSearchParams(FOLDER_PARAMS);
+          }
+
           updateSearchParams({ tab: 'timeline' });
         }}
       />

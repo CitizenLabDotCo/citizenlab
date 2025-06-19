@@ -16,7 +16,7 @@ import {
   QuestionRuleType,
 } from 'api/custom_fields/types';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -171,7 +171,7 @@ export const QuestionRuleInput = ({
                     flexGrow={0}
                     flexShrink={0}
                   >
-                    <Button
+                    <ButtonWithLink
                       onClick={() => {
                         setShowRuleInput(true);
                       }}
@@ -185,7 +185,7 @@ export const QuestionRuleInput = ({
                         fill={`${colors.coolGrey600}`}
                         name="plus-circle"
                       />
-                    </Button>
+                    </ButtonWithLink>
                   </Box>
                 )}
               </Box>
@@ -221,7 +221,7 @@ export const QuestionRuleInput = ({
                     )}
                   </Box>
                   <Box ml="auto" flexGrow={0} flexShrink={0}>
-                    <Button
+                    <ButtonWithLink
                       onClick={() => {
                         setSelectedPage(undefined);
                         setShowRuleInput(false);
@@ -237,7 +237,7 @@ export const QuestionRuleInput = ({
                         fill={`${colors.coolGrey600}`}
                         name="delete"
                       />
-                    </Button>
+                    </ButtonWithLink>
                   </Box>
                 </Box>
               )}
