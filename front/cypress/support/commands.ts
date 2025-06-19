@@ -1710,7 +1710,7 @@ function apiCreateSurveyQuestions(
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
-      url: `web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`,
+      url: `web_api/v1/phases/${phaseId}/custom_fields/update_all`,
       body: {
         custom_fields: [
           ...inputTypes.map(createBaseCustomField(imageId)),

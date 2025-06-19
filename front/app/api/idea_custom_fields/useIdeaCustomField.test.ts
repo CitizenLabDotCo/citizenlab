@@ -7,7 +7,7 @@ import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { ideaCustomFieldsData } from './__mocks__/useIdeaCustomFields';
 import useIdeaCustomField from './useIdeaCustomField';
 
-const apiPath = '*/admin/projects/:projectId/custom_fields/:customFieldId';
+const apiPath = '*/web_api/v1/projects/:projectId/custom_fields/:customFieldId';
 
 const server = setupServer(
   http.get(apiPath, () => {

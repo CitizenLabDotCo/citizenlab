@@ -8,7 +8,7 @@ resource 'Idea Custom Fields' do
 
   before { header 'Content-Type', 'application/json' }
 
-  patch 'web_api/v1/admin/projects/:project_id/custom_fields/update_all' do
+  patch 'web_api/v1/projects/:project_id/custom_fields/update_all' do
     parameter :custom_fields, type: :array
     with_options scope: 'custom_fields[]' do
       parameter :id, 'The ID of an existing custom field to update. When the ID is not provided, a new field is created.', required: false

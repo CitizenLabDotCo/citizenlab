@@ -24,8 +24,8 @@ export const fetchCustomFields = ({
   copy,
 }: Params) => {
   const apiEndpoint = phaseId
-    ? `admin/phases/${phaseId}/custom_fields`
-    : `admin/projects/${projectId}/custom_fields`;
+    ? `phases/${phaseId}/custom_fields`
+    : `projects/${projectId}/custom_fields`;
 
   return fetcher<ICustomFields>({
     path: `/${apiEndpoint}`,

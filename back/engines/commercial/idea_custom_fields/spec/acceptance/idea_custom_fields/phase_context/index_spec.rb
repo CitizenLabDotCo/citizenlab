@@ -8,7 +8,7 @@ resource 'Idea Custom Fields' do
 
   before { header 'Content-Type', 'application/json' }
 
-  get 'web_api/v1/admin/phases/:phase_id/custom_fields' do
+  get 'web_api/v1/phases/:phase_id/custom_fields' do
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
     parameter :copy, 'Return non-persisted copies of all custom fields with new IDs', type: :boolean, required: false
     parameter :input_types, 'Filter custom fields by input types', type: :array, items: { type: :string }, required: false
@@ -61,7 +61,7 @@ resource 'Idea Custom Fields' do
   end
 
   context 'When there are 2 survey phases in same project' do
-    get 'web_api/v1/admin/phases/:phase_id/custom_fields' do
+    get 'web_api/v1/phases/:phase_id/custom_fields' do
       let(:phase_id) { current_phase.id }
 
       let(:project) { create(:project) }
