@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { Box, colors, SearchInput } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+
+import SearchInput from 'components/UI/SearchInput';
 
 import { useIntl } from 'utils/cl-intl';
 
-import UploadFileModal from './components/UploadFile';
+import UploadFileButtonWithModal from './components/UploadFileButtonWithModal';
 import messages from './messages';
 
 const ProjectFilesTab = () => {
@@ -16,11 +18,9 @@ const ProjectFilesTab = () => {
         <SearchInput
           placeholder={formatMessage(messages.searchFiles)}
           onChange={() => {}} // TODO: Implement file search functionality.
-          id={'search-files-data-repository'}
-          ariaLabel={''}
-          a11y_closeIconTitle={''}
+          a11y_numberOfSearchResults={0}
         />
-        <UploadFileModal />
+        <UploadFileButtonWithModal />
       </Box>
       <Box mt="40px" p="16px" background={colors.white}>
         TODO: Add file table component
