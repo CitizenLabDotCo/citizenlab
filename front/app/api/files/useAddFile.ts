@@ -24,4 +24,5 @@ const useAddFile = () => {
   });
 };
 
+// ts-prune-ignore-next
 export default useAddFile;

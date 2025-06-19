@@ -25,4 +25,5 @@ const useUpdateFile = () => {
   });
 };
 
+// ts-prune-ignore-next
 export default useUpdateFile;
