@@ -386,7 +386,6 @@ export const GanttChart = ({
             <Box position="relative" height={`${items.length * rowHeight}px`}>
               {items.map((item, index) => {
                 const start = item.start ? new Date(item.start) : undefined;
-                // --- CHANGE 1: Allow for a null end date ---
                 const end = item.end ? new Date(item.end) : null;
 
                 // Only skip if there's no start date
@@ -395,7 +394,6 @@ export const GanttChart = ({
                 const effectiveStart =
                   start.getTime() > startDate.getTime() ? start : startDate;
 
-                // --- CHANGE 2: Calculate the effectiveEnd based on whether end is null ---
                 const effectiveEnd =
                   end === null
                     ? endDate // If no end date, the bar goes to the edge of the chart
