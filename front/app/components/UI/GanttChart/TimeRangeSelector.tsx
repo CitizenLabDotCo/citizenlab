@@ -42,7 +42,7 @@ export const TimeRangeSelector = ({
       <Box width="120px">
         <Select
           value={selectedRange}
-          onChange={(option) => onRangeChange(option.value as TimeRangeOption)}
+          onChange={(option) => onRangeChange(option.value)}
           options={timeRangeOptions}
         />
       </Box>
@@ -52,3 +52,5 @@ export const TimeRangeSelector = ({
     </Box>
   );
 };
+
+export default TimeRangeSelector;
