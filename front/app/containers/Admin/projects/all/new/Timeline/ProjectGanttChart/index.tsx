@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { GanttChart, GanttItem } from 'components/UI/GanttChart';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import GanttChart from 'components/UI/GanttChart';
+import { GanttItem } from 'components/UI/GanttChart/types';
 
 export type GanttProject = GanttItem & {
   folder: string;
