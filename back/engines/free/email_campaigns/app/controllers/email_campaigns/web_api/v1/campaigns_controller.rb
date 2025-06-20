@@ -8,22 +8,14 @@ module EmailCampaigns
       @campaigns = policy_scope(Campaign)
         .order(created_at: :desc)
 
-      if params[:campaign_names]
-        campaign_types = params[:campaign_names].map { |name| Campaign.from_campaign_name(name) }
-        @campaigns = @campaigns.where(type: campaign_types)
-      end
-
       if params[:without_campaign_names]
         campaign_types = params[:without_campaign_names].map { |name| Campaign.from_campaign_name(name) }
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
-      @campaigns = @campaigns.where(context_id: params[:context_id]) if params[:context_id]
+      @campaigns = @campaigns.where(context: campaign_context) if campaign_context
 
-      case params[:manual]&.downcase
-      when 'true' then @campaigns = @campaigns.manual
-      when 'false' then @campaigns = @campaigns.automatic
-      end
+      @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
 
       @campaigns = @campaigns
         .page(params.dig(:page, :number))
@@ -136,6 +128,19 @@ module EmailCampaigns
     def set_campaign
       @campaign = Campaign.find(params[:id])
       authorize @campaign
+    end
+
+    def campaign_context
+      return @campaign_context if @campaign_context
+
+      context_type = params[:campaign_context]
+      context_id = params[:"#{context_type.underscore}_id"]
+      context_model = case context_type
+      when 'Project' then Project
+      when 'Phase' then Phase
+      else raise "Unsupported context level for campaigns: #{reactable_type}"
+      end
+      @campaign_context = context_model.find(context_id)
     end
 
     def campaign_params

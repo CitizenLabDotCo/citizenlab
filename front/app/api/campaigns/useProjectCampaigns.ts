@@ -13,7 +13,6 @@ type ProjectCampaignsParams = QueryParameters & {
 
 const fetchCampaigns = ({ projectId, ...filters }: ProjectCampaignsParams) => {
   const {
-    campaignNames: campaign_names,
     withoutCampaignNames: without_campaign_names,
     pageNumber,
     pageSize,
@@ -22,7 +21,6 @@ const fetchCampaigns = ({ projectId, ...filters }: ProjectCampaignsParams) => {
     path: `/projects/${projectId}/email_campaigns`,
     action: 'get',
     queryParams: {
-      campaign_names,
       without_campaign_names,
       'page[number]': pageNumber || 1,
       'page[size]': pageSize || 20,

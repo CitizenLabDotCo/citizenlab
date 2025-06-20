@@ -20,26 +20,18 @@ resource 'Campaigns' do
       header_token_for @user
     end
 
-    get '/web_api/v1/campaigns' do
+    get '/web_api/v1/campaigns' do # TODO: add cases for scoped under projects and phases
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of campaigns per page'
       end
-      parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
-      parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false
 
       example_request 'List all campaigns' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
-      end
-
-      example 'List campaigns that are specific type(s)' do
-        do_request(campaign_names: %w[manual])
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
       end
 
       example 'List all campaigns that are not specific type(s)' do
@@ -349,7 +341,6 @@ resource 'Campaigns' do
         parameter :number, 'Page number'
         parameter :size, 'Number of campaigns per page'
       end
-      parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
       parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false

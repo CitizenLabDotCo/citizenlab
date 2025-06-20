@@ -10,7 +10,7 @@ import {
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
-import { CampaignName, ICampaignData } from 'api/campaigns/types';
+import { ICampaignData } from 'api/campaigns/types';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import { IPhaseFiles } from 'api/phase_files/types';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
@@ -498,13 +498,11 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   );
 };
 
-const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
-
 const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
   const { data: campaigns } = useCampaigns({
-    campaignNames: CONFIGURABLE_CAMPAIGN_NAMES,
+    // campaignNames: CONFIGURABLE_CAMPAIGN_NAMES, // TODO: Use context path
     pageSize: 250,
   });
 
