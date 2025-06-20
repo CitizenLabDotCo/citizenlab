@@ -128,6 +128,8 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Költségvetés",
   "app.components.CustomFieldsForm.descriptionMinLength": "A leírásnak legalább {min} karakter hosszúnak kell lennie",
   "app.components.CustomFieldsForm.descriptionRequired": "A leírás kitöltése kötelező",
+  "app.components.CustomFieldsForm.fieldMaximumItems": "Legfeljebb {maxSelections, plural, one {# opció} other {# opció}} választható ki a \"{fieldName}\" mezőhöz",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "Legalább {minSelections, plural, one {# opció} other {# opció}} választható ki a \"{fieldName}\" mezőhöz",
   "app.components.CustomFieldsForm.fieldRequired": "A(z) „{fieldName}” mező kitöltése kötelező",
   "app.components.CustomFieldsForm.imageRequired": "A kép megadása kötelező",
   "app.components.CustomFieldsForm.notPublic1": "*Ez a válasz csak a projektmenedzserekkel lesz megosztva, a nyilvánosság számára nem.",

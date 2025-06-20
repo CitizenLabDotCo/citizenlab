@@ -128,6 +128,8 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Haushalt",
   "app.components.CustomFieldsForm.descriptionMinLength": "Die Beschreibung muss mindestens {min} Zeichen lang sein.",
   "app.components.CustomFieldsForm.descriptionRequired": "Die Beschreibung ist erforderlich",
+  "app.components.CustomFieldsForm.fieldMaximumItems": "Höchstens {maxSelections, plural, one {~ Option} other {~ Optionen}} können für das Feld \"{fieldName}\" ausgewählt werden.",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "Mindestens {minSelections, plural, one {# Option} other {# Optionen}} können für das Feld \"{fieldName}\" ausgewählt werden.",
   "app.components.CustomFieldsForm.fieldRequired": "Das Feld \"{fieldName}\" ist erforderlich",
   "app.components.CustomFieldsForm.imageRequired": "Das Bild ist erforderlich",
   "app.components.CustomFieldsForm.notPublic1": "*Diese Antwort wird nur an die Projektmanager*innen und nicht an die Öffentlichkeit weitergegeben.",

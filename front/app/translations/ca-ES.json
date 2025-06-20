@@ -128,6 +128,8 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Pressupost",
   "app.components.CustomFieldsForm.descriptionMinLength": "La descripció ha de tenir com a mínim {min} caràcters de llargada",
   "app.components.CustomFieldsForm.descriptionRequired": "La descripció és obligatòria",
+  "app.components.CustomFieldsForm.fieldMaximumItems": "Com a màxim {maxSelections, plural, one {# opció} other {# opcions}} es poden seleccionar per al camp \"{fieldName}\"",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "Com a mínim {minSelections, plural, one {# opció} other {# opcions}} es poden seleccionar per al camp \"{fieldName}\"",
   "app.components.CustomFieldsForm.fieldRequired": "El camp \"{fieldName}\" és obligatori",
   "app.components.CustomFieldsForm.imageRequired": "La imatge és obligatòria",
   "app.components.CustomFieldsForm.notPublic1": "*Aquesta resposta només es compartirà amb els gestors de projectes i no amb el públic.",
