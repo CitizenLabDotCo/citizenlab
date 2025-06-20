@@ -11,4 +11,13 @@ class WebApi::V1::FilesV2Controller < ApplicationController
       params: jsonapi_serializer_params
     )
   end
+
+  def show
+    file = authorize(Files::File.find(params[:id]))
+
+    render json: WebApi::V1::FileV2Serializer.new(
+      file,
+      params: jsonapi_serializer_params
+    ).serializable_hash
+  end
 end

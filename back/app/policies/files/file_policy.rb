@@ -9,5 +9,9 @@ module Files
         admin? ? scope.all : scope.none
       end
     end
+
+    def show?
+      active? && admin?
+    end
   end
 end
