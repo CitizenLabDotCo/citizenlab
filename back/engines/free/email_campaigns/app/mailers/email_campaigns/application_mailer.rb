@@ -51,9 +51,5 @@ module EmailCampaigns
     def event
       @event ||= to_deep_struct(command[:event_payload])
     end
-
-    def mailgun_variables
-      super.merge!('cl_campaign_id' => campaign.id)
-    end
   end
 end
