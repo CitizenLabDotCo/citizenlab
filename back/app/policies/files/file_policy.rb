@@ -4,14 +4,16 @@ module Files
   class FilePolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        return scope.none unless active?
-
-        admin? ? scope.all : scope.none
+        active_admin? ? scope.all : scope.none
       end
     end
 
     def show?
-      active? && admin?
+      active_admin?
+    end
+
+    def create?
+      active_admin?
     end
   end
 end

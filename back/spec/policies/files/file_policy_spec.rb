@@ -12,24 +12,28 @@ RSpec.describe Files::FilePolicy do
       let(:user) { nil }
 
       it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:create) }
     end
 
     context 'for user' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:create) }
     end
 
     context 'for project moderator' do
       let(:user) { create(:project_moderator) }
 
       it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:create) }
     end
 
     context 'for admin' do
       let(:user) { create(:admin) }
 
       it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:create) }
     end
   end
 

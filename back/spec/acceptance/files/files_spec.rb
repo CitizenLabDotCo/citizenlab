@@ -6,6 +6,8 @@ require 'rspec_api_documentation/dsl'
 require_relative '../shared/errors_examples'
 
 resource 'Files' do
+  header 'Content-Type', 'application/json'
+
   get 'web_api/v1/files' do
     let_it_be(:files) { create_list(:file, 2) }
 
@@ -61,6 +63,26 @@ resource 'Files' do
       before { header_token_for create(:user) }
 
       include_examples 'unauthorized'
+    end
+  end
+
+  post 'web_api/v1/files' do
+    with_options scope: :file do
+      parameter :name, 'The name of the file', required: true
+      parameter :content, 'The content of the file encoded in base64', required: true
+    end
+
+    let(:name) { 'afvalkalender.pdf' }
+    let(:content) { file_as_base64(name, 'application/pdf') }
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example 'Create a file' do
+        expect { do_request }.to change(Files::File, :count).by(1)
+        assert_status 201
+        Files::File.find(response_data[:id])
+      end
     end
   end
 end
