@@ -31,6 +31,7 @@ module Analysis
           )
 
           if @comments_summary.save
+            SideFxBackgroundTaskService.new.after_create(@comments_summary.background_task, current_user)
             side_fx_service.after_create(@comments_summary, current_user)
             CommentsSummarizationJob.perform_later(@comments_summary)
             render json: CommentsSummarySerializer.new(

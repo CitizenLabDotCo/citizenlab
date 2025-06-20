@@ -30,6 +30,7 @@ resource 'AutoTaggings' do
         expect { do_request }
           .to have_enqueued_job(Analysis::AutoTaggingJob)
           .and change(Analysis::BackgroundTask, :count).from(0).to(1)
+          .and have_enqueued_job(LogActivityJob).with(anything, 'created', anything, anything)
         expect(status).to eq 202
         expect(Analysis::BackgroundTask.first).to have_attributes({
           progress: nil,

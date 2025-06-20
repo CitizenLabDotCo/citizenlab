@@ -20,6 +20,7 @@ module Analysis
             **auto_tagging_params
           )
           if @auto_tagging_task.save
+            side_fx_service.after_create(@auto_tagging_task, current_user)
             AutoTaggingJob.perform_later(@auto_tagging_task)
             head :accepted
           else
@@ -39,6 +40,10 @@ module Analysis
             :auto_tagging_method,
             tags_ids: []
           )
+        end
+
+        def side_fx_service
+          @side_fx_service ||= SideFxBackgroundTaskService.new
         end
       end
     end

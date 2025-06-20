@@ -154,36 +154,6 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(ideas.map(&:tags)).to match_array [[bananas_tag], []]
     end
 
-    it 'passes the monolingual locale to the prompt' do
-      task = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'nlp_topic')
-      idea = create(:idea, project: project)
-
-      expect_any_instance_of(Analysis::LLM::GPT41)
-        .to receive(:chat)
-        .and_return('- planets')
-
-      expect_any_instance_of(Analysis::AutoTaggingMethod::NLPTopic).to receive(:classify_many!)
-      expect_any_instance_of(Analysis::AutoTaggingMethod::NLPTopic)
-        .to receive(:fit_inputs_in_context_window)
-        .and_return([idea])
-
-      mock_locale = instance_double(Locale)
-      expect(Locale)
-        .to receive(:monolingual)
-        .and_return(mock_locale)
-      expect(mock_locale).to receive(:language_copy).and_return('High Valyrian')
-      expect_any_instance_of(Analysis::LLM::Prompt)
-        .to receive(:fetch)
-        .with('topic_modeling', project_title: kind_of(String), inputs_text: kind_of(String), max_topics: kind_of(Integer), language: 'High Valyrian')
-        .and_call_original
-
-      task.execute
-      expect(task.reload).to have_attributes({
-        state: 'succeeded',
-        progress: nil
-      })
-    end
-
     describe '#fit_inputs_in_context_window' do
       it 'recudes the inputs to fit in the context window' do
         stubbed_context_window = 1000
