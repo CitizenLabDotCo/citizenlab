@@ -171,12 +171,7 @@ module EmailCampaigns
         command.merge(
           recipient: recipient,
           time: Time.zone.now,
-          delivery: campaign.deliveries.new( # Needed to include the delivery ID in the Maigun headers
-            id: SecureRandom.uuid,
-            delivery_status: 'sent',
-            user: recipient,
-            tracked_content: command[:tracked_content]
-          )
+          delivery_id: SecureRandom.uuid # Needed to be included in the Mailgun headers, so Mailgun can update the delivery status
         )
       end
     end

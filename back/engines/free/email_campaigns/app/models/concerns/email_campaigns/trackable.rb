@@ -24,7 +24,12 @@ module EmailCampaigns
     end
 
     def save_delivery(command)
-      command[:delivery].save!
+      deliveries.create(
+        id: command[:delivery_id],
+        delivery_status: 'sent',
+        user: command[:recipient],
+        tracked_content: command[:tracked_content]
+      )
     end
   end
 end
