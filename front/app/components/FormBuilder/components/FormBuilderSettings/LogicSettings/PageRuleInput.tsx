@@ -10,7 +10,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
+import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+  LogicType,
+} from 'api/custom_fields/types';
 
 import { getTitleFromPageId } from 'components/FormBuilder/components/FormFields/FormField/Logic/utils';
 import { getFieldNumbers } from 'components/FormBuilder/components/utils';
@@ -22,26 +26,29 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
+import usePageList from '../usePageList';
 
 import { PageListType } from './index';
 
 type RuleInputProps = {
+  field: IFlatCustomFieldWithIndex;
   name: string;
   fieldId: string;
   validationError?: string;
-  pages: PageListType;
 };
 
 export const PageRuleInput = ({
-  pages,
+  field,
   name,
   fieldId,
   validationError,
 }: RuleInputProps) => {
   const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
+  const pageOptions = usePageList();
+  const fieldType = watch(`customFields.${field.index}.input_type`);
   const logic = watch(name) as LogicType | undefined;
-  const fields: IFlatCustomField[] = watch('customFields');
+  const formCustomFields: IFlatCustomField[] = watch('customFields');
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
     logic?.next_page_id ? logic.next_page_id : undefined
   );
@@ -50,7 +57,7 @@ export const PageRuleInput = ({
   );
   const [isRuleInvalid, setIsRuleInvalid] = useState(
     selectedPage
-      ? !isPageRuleValid(fields, fieldId, logic?.next_page_id)
+      ? !isPageRuleValid(formCustomFields, fieldId, logic?.next_page_id)
       : false
   );
   const onSelectionChange = (page: IOption) => {
@@ -60,7 +67,7 @@ export const PageRuleInput = ({
       next_page_id: page.value,
     };
     setValue(name, value, { shouldDirty: true });
-    setIsRuleInvalid(!isPageRuleValid(fields, fieldId, page.value));
+    setIsRuleInvalid(!isPageRuleValid(formCustomFields, fieldId, page.value));
     trigger();
   };
 
@@ -75,12 +82,33 @@ export const PageRuleInput = ({
 
   // Get the default next page when no rule is set
   const defaultNextPage = getTitleFromPageId(
-    findNextPageAfterCurrentPage(fields, fieldId),
+    findNextPageAfterCurrentPage(formCustomFields, fieldId),
     formatMessage(messages.page),
-    getFieldNumbers(fields),
-    fields,
+    getFieldNumbers(formCustomFields),
+    formCustomFields,
     formatMessage(messages.lastPage)
   );
+
+  // Which page is the current question on?
+  // Technically there should always be a current page ID and null should never be returned
+  const getCurrentPageId = (questionId: string): string | null => {
+    if (fieldType === 'page') return field.id;
+
+    let pageId: string | null = null;
+    for (const field of formCustomFields) {
+      if (field.input_type === 'page') pageId = field.id;
+      if (field.id === questionId) return pageId;
+    }
+    return null;
+  };
+
+  // Current and previous pages should be disabled in select options
+  const pages: PageListType = pageOptions.map((page) => {
+    return {
+      ...page,
+      disabled: page.value === getCurrentPageId(field.id) ? false : true,
+    };
+  });
 
   return (
     <>
