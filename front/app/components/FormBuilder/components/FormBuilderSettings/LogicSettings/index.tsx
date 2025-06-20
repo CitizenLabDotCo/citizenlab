@@ -27,10 +27,8 @@ export type PageListType =
     }[];
 
 type LogicSettingsProps = {
-  pageOptions: PageListType;
   field: IFlatCustomFieldWithIndex;
   builderConfig: FormBuilderConfig | undefined;
-  getCurrentPageId: (questionId: string) => string | null;
 };
 
 export type AnswersType =
@@ -40,12 +38,7 @@ export type AnswersType =
     }[]
   | undefined;
 
-const LogicSettings = ({
-  pageOptions,
-  field,
-  builderConfig,
-  getCurrentPageId,
-}: LogicSettingsProps) => {
+const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
   const { formatMessage } = useIntl();
   const {
     watch,
@@ -96,16 +89,6 @@ const LogicSettings = ({
     }
   }
 
-  // Current and previous pages should be disabled in select options
-  let disablePage = true;
-  const pages: PageListType = pageOptions.map((page) => {
-    page.disabled = disablePage;
-    if (page.value === getCurrentPageId(field.id)) {
-      disablePage = false;
-    }
-    return page;
-  });
-
   return (
     <>
       {field.input_type === 'page' ? (
@@ -135,10 +118,10 @@ const LogicSettings = ({
               )}
           </Box>
           <PageRuleInput
+            field={field}
             fieldId={field.temp_id || field.id}
             validationError={validationError}
             name={`customFields.${field.index}.logic`}
-            pages={pages}
           />
         </>
       ) : (
@@ -161,7 +144,6 @@ const LogicSettings = ({
                   validationError={validationError}
                   name={`customFields.${field.index}`}
                   answer={answer}
-                  pages={pageOptions}
                 />
               </Box>
             ))}
