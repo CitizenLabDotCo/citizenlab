@@ -13,7 +13,7 @@ module Files
     end
 
     def create?
-      active_admin?
+      active_admin? && record.uploader_id == user.id
     end
 
     def destroy?
