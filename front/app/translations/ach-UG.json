@@ -183,6 +183,7 @@
   "app.components.EventAttendanceButton.seeYouThereName": "crwdns953627:0{userFirstName}crwdne953627:0",
   "app.components.EventCard.a11y_lessContentVisible": "crwdns213018:0crwdne213018:0",
   "app.components.EventCard.a11y_moreContentVisible": "crwdns213020:0crwdne213020:0",
+  "app.components.EventCard.a11y_readMore": "crwdns4760285:0{eventTitle}crwdne4760285:0",
   "app.components.EventCard.endsAt": "crwdns213022:0crwdne213022:0",
   "app.components.EventCard.readMore": "crwdns953629:0crwdne953629:0",
   "app.components.EventCard.showLess": "crwdns213024:0crwdne213024:0",
