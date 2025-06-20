@@ -71,7 +71,10 @@ module EmailCampaigns
     end
 
     def header_title
-      format_editable_region(:title_multiloc)
+      format_editable_region(
+        :title_multiloc,
+        override_default_key: "main_header.#{event.idea_input_term}"
+      )
     end
 
     def header_message

@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.create! }
     let_it_be(:idea) { create(:idea) }
-    let_it_be(:initiator) { create(:user, first_name: 'Marion') }
+    let_it_be(:initiator) { create(:user, first_name: 'Marion', last_name: 'Smith') }
     let_it_be(:comment) { create(:comment, idea: idea, body_multiloc: { 'en' => 'I agree' }, author: initiator) }
     let_it_be(:notification) { create(:comment_on_idea_you_follow, recipient: recipient, idea: idea, comment: comment, initiating_user: initiator) }
     let_it_be(:command) do
@@ -17,8 +17,6 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
         recipient: recipient
       ).first.merge({ recipient: recipient })
     end
-
-    let(:mail_body) { mail.body.encoded.gsub(/(=?)\r\n/, '') } # Remove encoded newlines to ensure matching
 
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
@@ -38,19 +36,19 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
       end
 
       it 'assigns organisation name' do
-        expect(mail_body).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
+        expect(mail_body(mail)).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
       end
 
       it 'includes the comment author name' do
-        expect(mail_body).to include('Marion')
+        expect(mail_body(mail)).to include('Marion')
       end
 
       it 'includes the comment body' do
-        expect(mail_body).to include('I agree')
+        expect(mail_body(mail)).to include('I agree')
       end
 
       it 'includes the unfollow url' do
-        expect(mail_body).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
+        expect(mail_body(mail)).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
       end
     end
 
@@ -71,15 +69,26 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
       end
 
       it 'can customise the title' do
-        expect(mail_body).to include('NEW TITLE')
+        expect(mail_body(mail)).to include('NEW TITLE')
       end
 
       it 'can customise the body including HTML' do
-        expect(mail_body).to include('<b>BODY TEXT</b> new comment by Marion')
+        expect(mail_body(mail)).to include('<b>BODY TEXT</b> new comment by Marion')
       end
 
       it 'can customise the cta button' do
-        expect(mail_body).to include('CLICK ME to go to "Plant more trees"')
+        expect(mail_body(mail)).to include('CLICK ME to go to "Plant more trees"')
+      end
+
+      context 'title region has not been customised' do
+        before do
+          campaign.update!(title_multiloc: {})
+          command[:event_payload][:idea_input_term] = 'question'
+        end
+
+        it 'returns a title contextual to the input term when the region has not been customised' do
+          expect(mail_body(mail)).to include('Marion Smith commented on a question you follow')
+        end
       end
     end
   end

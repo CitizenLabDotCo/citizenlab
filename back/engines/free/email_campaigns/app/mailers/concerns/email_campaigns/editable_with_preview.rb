@@ -43,15 +43,27 @@ module EmailCampaigns
 
     # To format an editable message, use `format_editable_region`.
     # The `region_key` must exist in editable regions.
-    def format_editable_region(region_key, values: substitution_variables)
+    def format_editable_region(region_key, values: substitution_variables, override_default_key: nil)
       region = self.class.editable_regions.find { |r| r[:key] == region_key }
       return unless region
 
-      # NOTE: Default values for regions are merged in the campaign class so that both this and the campaign serializer can use.
+      # NOTE: Default values for regions are already merged in the campaign class
       multiloc_service = MultilocService.new
       region_text = multiloc_service.t(@campaign.send(region_key), locale.to_s)
-      values = values.transform_keys(&:to_s)
-      render_liquid_template(text: region_text, values: values, html: region[:type] == 'html')
+      region_default_text = multiloc_service.t(region[:default_value_multiloc], locale.to_s)
+
+      # Sometimes we need to override the default value because the default is conditional (not supported in editable regions).
+      # eg in `CommentOnIdeaYouFollowMailer` where title is dependent on the input term.
+      if override_default_key && region_text == region_default_text
+        message_group = "email_campaigns.#{campaign.class.name.demodulize.underscore}"
+        region_text = I18n.t("#{message_group}.#{override_default_key}", locale: locale.to_s).gsub(/%\{(.*?)}/, '{{\1}}')
+      end
+
+      render_liquid_template(
+        text: region_text,
+        values: values.transform_keys(&:to_s),
+        html: region[:type] == 'html'
+      )
     end
 
     def render_liquid_template(text: nil, values: {}, html: false)
