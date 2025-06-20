@@ -36,6 +36,12 @@ class WebApi::V1::FilesV2Controller < ApplicationController
     end
   end
 
+  def destroy
+    file = authorize(Files::File.find(params[:id]))
+    file.destroy!
+    head :no_content
+  end
+
   private
 
   def create_params

@@ -15,5 +15,9 @@ module Files
     def create?
       active_admin?
     end
+
+    def destroy?
+      active_admin?
+    end
   end
 end

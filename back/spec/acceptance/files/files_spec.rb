@@ -85,4 +85,20 @@ resource 'Files' do
       end
     end
   end
+
+  delete 'web_api/v1/files/:id' do
+    let_it_be(:file) { create(:file) }
+
+    let(:id) { file.id }
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example 'Delete a file' do
+        expect { do_request }.to change(Files::File, :count).by(-1)
+        assert_status 204
+        expect { Files::File.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
 end

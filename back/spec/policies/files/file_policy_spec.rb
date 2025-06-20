@@ -13,6 +13,7 @@ RSpec.describe Files::FilePolicy do
 
       it { is_expected.not_to permit(:show) }
       it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:destroy) }
     end
 
     context 'for user' do
@@ -20,6 +21,7 @@ RSpec.describe Files::FilePolicy do
 
       it { is_expected.not_to permit(:show) }
       it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:destroy) }
     end
 
     context 'for project moderator' do
@@ -27,6 +29,7 @@ RSpec.describe Files::FilePolicy do
 
       it { is_expected.not_to permit(:show) }
       it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:destroy) }
     end
 
     context 'for admin' do
@@ -34,6 +37,7 @@ RSpec.describe Files::FilePolicy do
 
       it { is_expected.to permit(:show) }
       it { is_expected.to permit(:create) }
+      it { is_expected.to permit(:destroy) }
     end
   end
 
