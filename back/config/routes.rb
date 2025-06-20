@@ -344,6 +344,8 @@ Rails.application.routes.draw do
           patch 'reorder', on: :member
         end
       end
+
+      resources :files, only: [:index], controller: :files_v2
     end
   end
 
