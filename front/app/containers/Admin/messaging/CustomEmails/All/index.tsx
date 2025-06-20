@@ -27,7 +27,7 @@ import NewCampaignButton from './NewCampaignButton';
 const CustomEmails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data: campaigns, fetchNextPage } = useCampaigns({
-    campaignNames: ['manual', 'manual_project_participants'],
+    manual: true,
     pageSize: 10,
   });
 

@@ -9,7 +9,7 @@ import { ICampaignsData, QueryParameters, CampaignsKeys } from './types';
 
 const fetchCampaigns = (filters: QueryParameters) => {
   const {
-    campaignNames: campaign_names,
+    manual: manual,
     withoutCampaignNames: without_campaign_names,
     pageNumber,
     pageSize,
@@ -18,7 +18,7 @@ const fetchCampaigns = (filters: QueryParameters) => {
     path: '/campaigns',
     action: 'get',
     queryParams: {
-      campaign_names,
+      manual,
       without_campaign_names,
       'page[number]': pageNumber || 1,
       'page[size]': pageSize || 20,

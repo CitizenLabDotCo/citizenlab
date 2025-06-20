@@ -140,7 +140,7 @@ export type CampaignName =
   | AdminModeratorCampaignName;
 
 export interface QueryParameters {
-  campaignNames?: CampaignName[];
+  manual?: boolean;
   withoutCampaignNames?: CampaignName[];
   pageSize?: number;
   pageNumber?: number;
