@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe File do
-  subject { build(:file) }
+  subject(:file) { build(:file) }
 
   it { is_expected.to be_valid }
 
@@ -13,6 +13,15 @@ RSpec.describe File do
   end
 
   describe 'associations' do
-    it { is_expected.to belong_to(:uploader).class_name('User') }
+    it { is_expected.to belong_to(:uploader).class_name('User').optional }
+  end
+
+  context 'when the uploader is deleted' do
+    let!(:file) { create(:file) }
+
+    it 'does not delete the file' do
+      expect { file.uploader.destroy! }.not_to change(Files::File, :count)
+      expect(file.reload.uploader).to be_nil
+    end
   end
 end

@@ -21,7 +21,7 @@
 #
 module Files
   class File < ApplicationRecord
-    belongs_to :uploader, class_name: 'User'
+    belongs_to :uploader, class_name: 'User', optional: true
 
     # TODO: Maybe reconsider the name of this column.
     # TODO: Using temporarily the ProjectFolders::FileUploader
