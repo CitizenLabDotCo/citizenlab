@@ -168,4 +168,30 @@ describe EmailCampaigns::DeliveryService do
       expect(service.consentable_campaign_types_for(user)).not_to include('ConsentableDisableableCampaignAForTest')
     end
   end
+
+  describe 'preview_email' do
+    let(:recipient) { create(:user) }
+
+    context 'Manual Campaign' do
+      let(:campaign) { create(:manual_campaign, subject_multiloc: { en: 'MANUAL CAMPAIGN' }) }
+
+      it 'returns a command with the recipient' do
+        preview = service.preview_email(campaign, recipient)
+        expect(preview).to be_a(Hash)
+        expect(preview[:subject]).to eq('MANUAL CAMPAIGN')
+        expect(preview[:html]).to start_with('<!doctype html>')
+      end
+    end
+
+    context 'Automated Campaign' do
+      let(:campaign) { create(:comment_on_idea_you_follow_campaign, subject_multiloc: { en: 'AUTOMATED CAMPAIGN' }) }
+
+      it 'returns a command with the recipient' do
+        preview = service.preview_email(campaign, recipient)
+        expect(preview).to be_a(Hash)
+        expect(preview[:subject]).to eq('AUTOMATED CAMPAIGN')
+        expect(preview[:html]).to start_with('<!doctype html>')
+      end
+    end
+  end
 end
