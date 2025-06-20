@@ -15,6 +15,7 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
+import usePageList from '../usePageList';
 
 import { PageRuleInput } from './PageRuleInput';
 import { QuestionRuleInput } from './QuestionRuleInput';
@@ -27,10 +28,8 @@ export type PageListType =
     }[];
 
 type LogicSettingsProps = {
-  pageOptions: PageListType;
   field: IFlatCustomFieldWithIndex;
   builderConfig: FormBuilderConfig | undefined;
-  getCurrentPageId: (questionId: string) => string | null;
 };
 
 export type AnswersType =
@@ -40,12 +39,7 @@ export type AnswersType =
     }[]
   | undefined;
 
-const LogicSettings = ({
-  pageOptions,
-  field,
-  builderConfig,
-  getCurrentPageId,
-}: LogicSettingsProps) => {
+const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
   const { formatMessage } = useIntl();
   const {
     watch,
@@ -95,7 +89,21 @@ const LogicSettings = ({
       });
     }
   }
+  const formCustomFields: IFlatCustomFieldWithIndex[] = watch('customFields');
+  const fieldType = watch(`customFields.${field.index}.input_type`);
+  const pageOptions = usePageList();
+  // Which page is the current question on?
+  // Technically there should always be a current page ID and null should never be returned
+  const getCurrentPageId = (questionId: string): string | null => {
+    if (fieldType === 'page') return field.id;
 
+    let pageId: string | null = null;
+    for (const field of formCustomFields) {
+      if (field.input_type === 'page') pageId = field.id;
+      if (field.id === questionId) return pageId;
+    }
+    return null;
+  };
   // Current and previous pages should be disabled in select options
   let disablePage = true;
   const pages: PageListType = pageOptions.map((page) => {
@@ -138,10 +146,10 @@ const LogicSettings = ({
               )}
           </Box>
           <PageRuleInput
+            field={field}
             fieldId={field.temp_id || field.id}
             validationError={validationError}
             name={`customFields.${field.index}.logic`}
-            pages={pages}
           />
         </>
       ) : (
