@@ -66,7 +66,6 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {<1 ਮਿੰਟ ਲੈਂਦਾ ਹੈ} one {1 ਮਿੰਟ ਲੈਂਦਾ ਹੈ} other {# ਮਿੰਟ ਲੈਂਦਾ ਹੈ}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "ਪੀਡੀਐਫ ਦੇ ਤੌਰ ਤੇ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.components.FormSync.downloadExcelTemplate": "ਇੱਕ ਐਕਸਲ ਟੈਂਪਲੇਟ ਡਾਊਨਲੋਡ ਕਰੋ",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "ਐਕਸਲ ਟੈਂਪਲੇਟਸ ਵਿੱਚ ਕੋਈ ਵੀ ਮੈਪਿੰਗ ਇਨਪੁਟ ਸਵਾਲ ਸ਼ਾਮਲ ਨਹੀਂ ਹੋਣਗੇ ਕਿਉਂਕਿ ਇਹ ਇਸ ਸਮੇਂ ਥੋਕ ਆਯਾਤ ਲਈ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ।",
   "app.components.ProjectTemplatePreview.close": "ਬੰਦ ਕਰੋ",
   "app.components.ProjectTemplatePreview.createProject": "ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "ਟੈਮਪਲੇਟ '{templateTitle}' 'ਤੇ ਆਧਾਰਿਤ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ",

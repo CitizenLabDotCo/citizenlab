@@ -66,7 +66,6 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download as pdf",
   "app.components.FormSync.downloadExcelTemplate": "Download an Excel template",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Excel templates will not include any mapping input questions as these are not supported for bulk importing at this time.",
   "app.components.ProjectTemplatePreview.close": "Zatvori",
   "app.components.ProjectTemplatePreview.createProject": "Kreirajte projekat",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Kreirajte projekat na osnovu šablona '{templateTitle}'",

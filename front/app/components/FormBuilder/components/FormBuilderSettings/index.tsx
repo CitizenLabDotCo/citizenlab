@@ -32,6 +32,7 @@ import { getFieldNumbers } from '../utils';
 
 import ContentSettings from './ContentSettings';
 import LogicSettings from './LogicSettings';
+import PrintSupportTooltip from './PrintSupportTooltip';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
@@ -152,9 +153,16 @@ const FormBuilderSettings = ({
         />
       </Box>
       {translatedStringKey && (
-        <Title variant="h4" as="h2" mb="8px">
-          <FormattedMessage {...translatedStringKey} />
-        </Title>
+        <Box display="flex">
+          <Box>
+            <Title variant="h4" as="h2" mb="8px">
+              <FormattedMessage {...translatedStringKey} />
+            </Title>
+          </Box>
+          <Box pt="16px" ml="8px">
+            <PrintSupportTooltip fieldType={fieldType} />
+          </Box>
+        </Box>
       )}
       {showTabbedSettings && builderConfig.isLogicEnabled && (
         <Box display="flex" width="100%" mb="40px">
