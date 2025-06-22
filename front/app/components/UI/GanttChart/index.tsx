@@ -10,6 +10,7 @@ import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 import { addDays, addMonths, subMonths } from 'date-fns';
 
 import TimeRangeSelector from './TimeRangeSelector';
+import { GanttChartProps } from './types';
 import {
   getTimeRangeDates,
   getMonthMeta,
@@ -22,7 +23,6 @@ import {
   getDurationInMonths,
   getLabelFromScroll,
 } from './utils';
-import { GanttChartProps } from './types';
 
 export const GanttChart = ({
   items,
