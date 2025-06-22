@@ -40,7 +40,7 @@ export const GanttChart = ({
   getItemColor = () => colors.white,
   showTodayLine = true,
 }: GanttChartProps) => {
-  const today = new Date();
+  const today = useMemo(() => new Date(), []);
   const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
   const isYearlyView = selectedRange === '5years';
 
@@ -246,8 +246,8 @@ export const GanttChart = ({
 
           <Box ref={timelineHeaderRef} overflow="hidden">
             {isYearlyView && yearlyViewData ? (
-              <Box minWidth={`${totalSize}px`} bg="#fafbfc">
-                <Box display="flex" height={`${timelineHeight}px`}>
+              <Box bg="#fafbfc">
+                <Box display="flex" height={`${timelineHeight}px`} w="0px">
                   {yearlyViewData.years.map((y) => (
                     <Box
                       key={y.label}
@@ -267,6 +267,7 @@ export const GanttChart = ({
                   display="flex"
                   height={`${timelineHeight}px`}
                   borderTop={`1px solid ${colors.grey300}`}
+                  w="0px" // Hack to keep the box from expanding the parent Box
                 >
                   {yearlyViewData.years.flatMap((y) =>
                     Array.from({ length: 12 }).map((_, i) => (
@@ -286,8 +287,12 @@ export const GanttChart = ({
                 </Box>
               </Box>
             ) : (
-              <Box minWidth={`${totalSize}px`} bg="#fafbfc">
-                <Box display="flex" height={`${timelineHeight}px`}>
+              <Box bg="#fafbfc">
+                <Box
+                  display="flex"
+                  height={`${timelineHeight}px`}
+                  w="0px" // Hack to keep the box from expanding the parent Box
+                >
                   {dailyViewData?.months.map((m) => (
                     <Box
                       key={m.label}
@@ -307,6 +312,7 @@ export const GanttChart = ({
                   display="flex"
                   height={`${timelineHeight}px`}
                   borderTop={`1px solid ${colors.grey300}`}
+                  width="0px" // Hack to keep the box from expanding the parent Box
                 >
                   {Array.from({ length: dailyViewData?.totalDays || 0 }).map(
                     (_, i) => (
@@ -366,7 +372,7 @@ export const GanttChart = ({
           bgColor={colors.background}
           position="relative"
         >
-          <Box position="relative" minWidth={`${totalSize}px`}>
+          <Box position="relative">
             <Box position="absolute" width="100%" height="100%">
               {Array.from({
                 length: isYearlyView
