@@ -187,9 +187,6 @@ export const GanttChart = ({
   };
 
   const unitW = isYearlyView ? monthWidth : dayWidth;
-  const totalSize = isYearlyView
-    ? (yearlyViewData?.totalMonths || 0) * unitW
-    : (dailyViewData?.totalDays || 0) * unitW;
   const todayOffset = isYearlyView
     ? yearlyViewData?.todayOffset
     : dailyViewData?.todayOffset;
@@ -244,9 +241,9 @@ export const GanttChart = ({
             {visibleLabel}
           </Box>
 
-          <Box ref={timelineHeaderRef} overflow="hidden">
+          <Box ref={timelineHeaderRef} overflow="hidden" bg="#fafbfc">
             {isYearlyView && yearlyViewData ? (
-              <Box bg="#fafbfc">
+              <Box>
                 <Box display="flex" height={`${timelineHeight}px`} w="0px">
                   {yearlyViewData.years.map((y) => (
                     <Box
@@ -269,15 +266,16 @@ export const GanttChart = ({
                   borderTop={`1px solid ${colors.grey300}`}
                   w="0px" // Hack to keep the box from expanding the parent Box
                 >
-                  {yearlyViewData.years.flatMap((y) =>
+                  {yearlyViewData.years.flatMap((year) =>
                     Array.from({ length: 12 }).map((_, i) => (
                       <Box
-                        key={`${y.label}-${i}`}
+                        key={`${year.label}-${i}`}
                         minWidth={`${monthWidth}px`}
                         width={`${monthWidth}px`}
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        borderLeft={`1px solid ${colors.divider}`}
                         style={{ color: '#888', fontSize: '12px' }}
                       >
                         {i + 1}
@@ -287,7 +285,7 @@ export const GanttChart = ({
                 </Box>
               </Box>
             ) : (
-              <Box bg="#fafbfc">
+              <Box>
                 <Box
                   display="flex"
                   height={`${timelineHeight}px`}
@@ -302,7 +300,6 @@ export const GanttChart = ({
                       alignItems="center"
                       justifyContent="center"
                       borderLeft={`1px solid ${colors.grey300}`}
-                      style={{ color: 'transparent' }}
                     >
                       {m.label}
                     </Box>
@@ -323,6 +320,7 @@ export const GanttChart = ({
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        borderLeft={`1px solid ${colors.divider}`}
                         style={{ color: '#888', fontSize: '12px' }}
                       >
                         {addDays(startDate, i).getDate()}
@@ -382,7 +380,7 @@ export const GanttChart = ({
                 <Box
                   key={`grid-${i}`}
                   position="absolute"
-                  left={`${i * unitW + unitW / 2 - 0.5}px`}
+                  left={`${i * unitW - 0.5}px`}
                   width="1px"
                   height="100%"
                   bg={colors.divider}
@@ -397,7 +395,7 @@ export const GanttChart = ({
                 height="100%"
                 bg={colors.primary}
                 style={{
-                  left: `${todayOffset * unitW + unitW / 2 - 1}px`,
+                  left: `${todayOffset * unitW - 1}px`,
                   pointerEvents: 'none',
                   zIndex: 1,
                 }}
