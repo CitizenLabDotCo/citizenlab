@@ -121,7 +121,7 @@ const CustomFieldsForm = ({
     : undefined;
 
   return (
-    <Box overflow="scroll" w="100%" ref={pagesRef}>
+    <Box overflowY="auto" overflowX="hidden" w="100%" ref={pagesRef}>
       {nestedPagesData[currentPageNumber] && (
         <CustomFieldsPage
           page={nestedPagesData[currentPageNumber].page}
