@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -29,10 +29,17 @@ import { isPage } from 'utils/helperUtils';
 
 import CustomFields from '../CustomFields';
 import generateYupValidationSchema from '../generateYupSchema';
+import PageEsriDivider from '../Map/PageEsriDivider';
+import PageEsriMap from '../Map/PageEsriMap';
+import useEsriMapPage from '../Map/useEsriMapPage';
 import ProgressBar from '../ProgressBar';
 import { getFormCompletionPercentage, Pages } from '../util';
 
 import { determineNextPageNumber, determinePreviousPageNumber } from './logic';
+
+const StyledForm = styled.form`
+  height: 100%;
+`;
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -65,7 +72,6 @@ type SurveyPage = {
   phase?: IPhaseData;
   defaultValues?: any;
   customFields: IFlatCustomField[];
-  pagesRef: React.RefObject<HTMLDivElement>;
 };
 
 const SurveyPage = ({
@@ -83,8 +89,10 @@ const SurveyPage = ({
   phase,
   defaultValues,
   customFields,
-  pagesRef,
 }: SurveyPage) => {
+  const pageRef = useRef<HTMLDivElement>(null);
+  const draggableDivRef = useRef<HTMLDivElement>(null);
+  const dragDividerRef = useRef<HTMLDivElement>(null);
   const [showFormFeedback, setShowFormFeedback] = useState(false);
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
@@ -114,6 +122,18 @@ const SurveyPage = ({
     mode: 'onBlur',
     resolver: yupResolver(schema),
     defaultValues,
+  });
+
+  // Map logic
+  const shouldShowMap = !isAdminPage && isMapPage;
+
+  const { mapConfig, mapLayers } = useEsriMapPage({
+    project,
+    pages,
+    currentPageNumber,
+    draggableDivRef,
+    dragDividerRef,
+    localize,
   });
 
   const previousPageNumber = determinePreviousPageNumber({
@@ -165,12 +185,12 @@ const SurveyPage = ({
   });
 
   const handleNextAndSubmit = () => {
-    pagesRef.current?.scrollTo(0, 0);
+    pageRef.current?.scrollTo(0, 0);
     methods.handleSubmit((e) => onFormSubmit(e))();
   };
 
   const handlePrevious = () => {
-    pagesRef.current?.scrollTo(0, 0);
+    pageRef.current?.scrollTo(0, 0);
     setCurrentPageNumber(previousPageNumber);
   };
 
@@ -178,7 +198,7 @@ const SurveyPage = ({
     <FormProvider {...methods}>
       {showFormFeedback && <Feedback />}
 
-      <form id="idea-form">
+      <StyledForm id="idea-form">
         <Box
           id="container"
           display="flex"
@@ -187,66 +207,45 @@ const SurveyPage = ({
           w="100%"
           data-cy={`e2e-page-number-${currentPageNumber + 1}`}
         >
-          {/* {isMapPage && (
-        <Box
-          id="map_page"
-          w={isMobileOrSmaller ? '100%' : '60%'}
-          minWidth="60%"
-          h="100%"
-            ref={draggableDivRef}
-            key={`esri_map_${currentStepNumber}`}
-        >
-          <EsriMap
-            layers={mapLayers}
-            initialData={{
-              showLegend: true,
-              showLayerVisibilityControl: true,
-              showLegendExpanded: true,
-              showZoomControls: isMobileOrSmaller ? false : true,
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              zoom: Number(mapConfig?.data?.attributes.zoom_level),
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              center: mapConfig?.data?.attributes.center_geojson,
-            }}
-            webMapId={mapConfig?.data.attributes.esri_web_map_id}
-            height="100%"
-          />
-        </Box>
-      )} */}
-
-          <Box flex={'1 1 auto'} h="100%" mb="40px">
-            {/* {isMapPage && isMobileOrSmaller && (
-          <Box
-            aria-hidden={true}
-            height="30px"
-            py="20px"
-            ref={dragDividerRef}
-            position="absolute"
-            background={colors.white}
-            w="100%"
-            zIndex="1000"
-          >
-            <Box
-              mx="auto"
-              w="40px"
-              h="4px"
-              bgColor={colors.grey400}
-              borderRadius="10px"
+          {shouldShowMap && (
+            <PageEsriMap
+              currentPageNumber={currentPageNumber}
+              mapConfig={mapConfig}
+              mapLayers={mapLayers}
+              draggableDivRef={draggableDivRef}
             />
-          </Box>
-        )} */}
+          )}
+          <Box
+            flex={'1 1 auto'}
+            h={shouldShowMap && isMobileOrSmaller ? '80%' : '100%'}
+            position="relative"
+            overflow="hidden"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
             <Box
               display="flex"
               flexDirection="column"
               height="100%"
-              mt={isMapPage && isMobileOrSmaller ? '20px' : undefined}
+              overflowY="auto"
+              overflowX="hidden"
+              ref={pageRef}
             >
-              <Box h="100%" display="flex" flexDirection="column">
-                <Box p="24px" w="100%">
-                  <Box display="flex" flexDirection="column">
-                    {/* {allowsAnonymousPostingInNativeSurvey && (
+              {shouldShowMap && isMobileOrSmaller && (
+                <PageEsriDivider dragDividerRef={dragDividerRef} />
+              )}
+              <Box
+                h="100%"
+                display="flex"
+                flexDirection="column"
+                mt={shouldShowMap && isMobileOrSmaller ? '20px' : undefined}
+                mb="40px"
+              >
+                <Box h="100%" display="flex" flexDirection="column">
+                  <Box p="24px" w="100%">
+                    <Box display="flex" flexDirection="column">
+                      {/* {allowsAnonymousPostingInNativeSurvey && (
                   <Box w="100%" mb="12px">
                     <Warning icon="shield-checkered">
                       {formatMessage(messages.anonymousSurveyMessage)}
@@ -254,48 +253,50 @@ const SurveyPage = ({
                   </Box>
                 )} */}
 
-                    <Title
-                      as="h1"
-                      variant={isMobileOrSmaller ? 'h2' : 'h1'}
-                      m="0"
-                      mb="20px"
-                      color="tenantPrimary"
-                    >
-                      {localize(page.title_multiloc)}
-                    </Title>
-
-                    <Box mb="48px">
-                      <QuillEditedContent
-                        fontWeight={400}
-                        textColor={theme.colors.tenantText}
+                      <Title
+                        as="h1"
+                        variant={isMobileOrSmaller ? 'h2' : 'h1'}
+                        m="0"
+                        mb="20px"
+                        color="tenantPrimary"
                       >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: localize(page.description_multiloc),
-                          }}
-                        />
-                      </QuillEditedContent>
-                    </Box>
+                        {localize(page.title_multiloc)}
+                      </Title>
 
-                    <CustomFields
-                      questions={pageQuestions}
-                      projectId={projectId}
-                      ideaId={ideaId}
-                      phase={phase}
-                    />
-                    {currentPageNumber === lastPageNumber &&
-                      idea &&
-                      showIdeaId && (
-                        <SubmissionReference
-                          inputId={idea.data.id}
-                          participationMethod={participationMethod}
-                        />
-                      )}
+                      <Box mb="48px">
+                        <QuillEditedContent
+                          fontWeight={400}
+                          textColor={theme.colors.tenantText}
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: localize(page.description_multiloc),
+                            }}
+                          />
+                        </QuillEditedContent>
+                      </Box>
+
+                      <CustomFields
+                        questions={pageQuestions}
+                        projectId={projectId}
+                        ideaId={ideaId}
+                        phase={phase}
+                      />
+                      {currentPageNumber === lastPageNumber &&
+                        idea &&
+                        showIdeaId && (
+                          <SubmissionReference
+                            inputId={idea.data.id}
+                            participationMethod={participationMethod}
+                          />
+                        )}
+                    </Box>
                   </Box>
                 </Box>
               </Box>
             </Box>
           </Box>
+
           {showAnonymousConfirmationModal && (
             <AnonymousParticipationConfirmationModal
               onCloseModal={() => {
@@ -338,7 +339,7 @@ const SurveyPage = ({
             </Box>
           </Box>
         </Box>
-      </form>
+      </StyledForm>
     </FormProvider>
   );
 };

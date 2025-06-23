@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -101,9 +101,9 @@ const IdeationPage = ({
   customFields,
   pages,
 }: CustomFieldsPage) => {
-  const pageRef = React.useRef<HTMLDivElement>(null);
-  const draggableDivRef = React.useRef<HTMLDivElement>(null);
-  const dragDividerRef = React.useRef<HTMLDivElement>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
+  const draggableDivRef = useRef<HTMLDivElement>(null);
+  const dragDividerRef = useRef<HTMLDivElement>(null);
   const [showFormFeedback, setShowFormFeedback] = useState(false);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
@@ -157,6 +157,8 @@ const IdeationPage = ({
   });
 
   // Map logic
+  const shouldShowMap = !isAdminPage && isMapPage;
+
   const { mapConfig, mapLayers } = useEsriMapPage({
     project,
     pages,
@@ -207,7 +209,7 @@ const IdeationPage = ({
     methods.setValue('anonymous', !postAnonymously);
   };
 
-  // If the idea (survey submission) has no author relationship,
+  // If the idea has no author relationship,
   // it was either created through 'anyone' permissions or with
   // the anonymous toggle on. In these cases, we show the idea id
   // on the success page.
@@ -228,8 +230,6 @@ const IdeationPage = ({
   const onCancelDisclaimer = () => {
     setIsDisclaimerOpened(false);
   };
-
-  const shouldShowMap = !isAdminPage && isMapPage;
 
   return (
     <FormProvider {...methods}>

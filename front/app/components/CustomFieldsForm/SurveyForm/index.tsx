@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
@@ -27,7 +27,6 @@ const SurveyForm = ({
   phaseId?: string;
   participationMethod?: ParticipationMethod;
 }) => {
-  const pagesRef = useRef<HTMLDivElement | null>(null);
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
   const { data: authUser } = useAuthUser();
@@ -98,7 +97,7 @@ const SurveyForm = ({
   }
 
   return (
-    <Box overflow="scroll" w="100%" ref={pagesRef}>
+    <Box overflow="scroll" w="100%">
       {nestedPagesData[currentPageNumber] && (
         <SurveyPage
           page={nestedPagesData[currentPageNumber].page}
@@ -114,7 +113,6 @@ const SurveyForm = ({
           phase={phase?.data}
           defaultValues={initialFormData}
           customFields={customFields ?? []}
-          pagesRef={pagesRef}
         />
       )}
     </Box>
