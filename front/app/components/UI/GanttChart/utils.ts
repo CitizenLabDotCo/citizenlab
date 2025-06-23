@@ -18,6 +18,7 @@ import {
   addDays,
   startOfYear,
   endOfYear,
+  differenceInMonths,
 } from 'date-fns';
 
 export type TimeRangeOption = 'month' | 'quarter' | 'year' | '5years';
@@ -26,12 +27,6 @@ export type MonthMeta = {
   label: string;
   daysInMonth: number;
   offsetDays: number;
-};
-
-export type YearMeta = {
-  label: string;
-  offsetMonths: number;
-  monthsInYear: number;
 };
 
 // Calculates a 0-indexed offset in days from the start of the timeline.
@@ -54,7 +49,7 @@ export const getOffsetInMonths = (
   timelineStart: Date,
   eventStart: Date
 ): number => {
-  return differenceInCalendarMonths(eventStart, timelineStart);
+  return differenceInMonths(startOfDay(eventStart), startOfDay(timelineStart));
 };
 
 // Calculates the inclusive duration of an event in months.
@@ -94,21 +89,55 @@ export const getMonthMeta = (startDate: Date, endDate: Date): MonthMeta[] => {
   return months;
 };
 
+interface YearMeta {
+  label: string;
+  offsetMonths: number;
+  monthsInYear: number;
+}
+
+/**
+ * Generates the metadata for the year blocks in the timeline header.
+ */
 export const getYearMeta = (startDate: Date, endDate: Date): YearMeta[] => {
+  if (endDate < startDate) {
+    return [];
+  }
+
   const startYearNum = getYear(startDate);
   const endYearNum = getYear(endDate);
   const years: YearMeta[] = [];
 
   for (let year = startYearNum; year <= endYearNum; year++) {
-    const yearStartDate = startOfYear(new Date(year, 0, 1));
-    const offsetMonths = getOffsetInMonths(startDate, yearStartDate);
+    const isFirstYear = year === startYearNum;
+    const isLastYear = year === endYearNum;
+    let monthsInYear: number;
 
-    years.push({
-      label: year.toString(),
-      offsetMonths: offsetMonths < 0 ? 0 : offsetMonths,
-      monthsInYear: 12,
-    });
+    if (isFirstYear && isLastYear) {
+      monthsInYear = differenceInMonths(endDate, startDate) + 1;
+    } else if (isFirstYear) {
+      monthsInYear = 12 - startDate.getMonth();
+    } else if (isLastYear) {
+      monthsInYear = endDate.getMonth() + 1;
+    } else {
+      monthsInYear = 12;
+    }
+
+    const firstDayOfYear = startOfYear(new Date(year, 0, 1));
+    let offsetMonths = differenceInMonths(firstDayOfYear, startDate);
+    if (offsetMonths < 0) {
+      offsetMonths = 0;
+    }
+
+    // Only add the year if it has a valid number of months
+    if (monthsInYear > 0) {
+      years.push({
+        label: year.toString(),
+        offsetMonths,
+        monthsInYear,
+      });
+    }
   }
+
   return years;
 };
 
