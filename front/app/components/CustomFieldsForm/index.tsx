@@ -139,6 +139,7 @@ const CustomFieldsForm = ({
           defaultValues={initialFormData}
           customFields={customFields ?? []}
           pagesRef={pagesRef}
+          pages={nestedPagesData}
         />
       )}
     </Box>

@@ -4,7 +4,7 @@ import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -36,10 +36,17 @@ import CustomFields from './CustomFields';
 import AuthorField from './Fields/AuthorField';
 import BudgetField from './Fields/BudgetField';
 import generateYupValidationSchema from './generateYupSchema';
+import PageEsriDivider from './Map/PageEsriDivider';
+import PageEsriMap from './Map/PageEsriMap';
+import useEsriMapPage from './Map/useEsriMapPage';
 import ProgressBar from './ProgressBar';
 import { getFormCompletionPercentage } from './util';
 
 import { FormValues } from './';
+
+const StyledForm = styled.form<{ isMobileOrSmaller: boolean }>`
+  height: ${(props) => (props.isMobileOrSmaller ? 'auto' : '100%')};
+`;
 
 type CustomFieldsPage = {
   page: IFlatCustomField;
@@ -57,6 +64,10 @@ type CustomFieldsPage = {
   defaultValues?: any;
   customFields: IFlatCustomField[];
   pagesRef: React.RefObject<HTMLDivElement>;
+  pages: {
+    page: IFlatCustomField;
+    pageQuestions: IFlatCustomField[];
+  }[];
 };
 
 const CustomFieldsPage = ({
@@ -75,7 +86,10 @@ const CustomFieldsPage = ({
   defaultValues,
   customFields,
   pagesRef,
+  pages,
 }: CustomFieldsPage) => {
+  const draggableDivRef = React.useRef<HTMLDivElement>(null);
+  const dragDividerRef = React.useRef<HTMLDivElement>(null);
   const [showFormFeedback, setShowFormFeedback] = useState(false);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
@@ -126,6 +140,16 @@ const CustomFieldsPage = ({
     mode: 'onBlur',
     resolver: yupResolver(schema),
     defaultValues,
+  });
+
+  // Map logic
+  const { mapConfig, mapLayers } = useEsriMapPage({
+    project,
+    pages,
+    currentPageNumber,
+    draggableDivRef,
+    dragDividerRef,
+    localize,
   });
 
   const onFormSubmit = async (
@@ -195,7 +219,7 @@ const CustomFieldsPage = ({
     <FormProvider {...methods}>
       {showFormFeedback && <Feedback />}
 
-      <form id="idea-form">
+      <StyledForm id="idea-form">
         <Box
           id="container"
           display="flex"
@@ -204,56 +228,19 @@ const CustomFieldsPage = ({
           w="100%"
           data-cy={`e2e-page-number-${currentPageNumber + 1}`}
         >
-          {/* {isMapPage && (
-        <Box
-          id="map_page"
-          w={isMobileOrSmaller ? '100%' : '60%'}
-          minWidth="60%"
-          h="100%"
-            ref={draggableDivRef}
-            key={`esri_map_${currentStepNumber}`}
-        >
-          <EsriMap
-            layers={mapLayers}
-            initialData={{
-              showLegend: true,
-              showLayerVisibilityControl: true,
-              showLegendExpanded: true,
-              showZoomControls: isMobileOrSmaller ? false : true,
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              zoom: Number(mapConfig?.data?.attributes.zoom_level),
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              center: mapConfig?.data?.attributes.center_geojson,
-            }}
-            webMapId={mapConfig?.data.attributes.esri_web_map_id}
-            height="100%"
-          />
-        </Box>
-      )} */}
+          {isMapPage && (
+            <PageEsriMap
+              currentPageNumber={currentPageNumber}
+              mapConfig={mapConfig}
+              mapLayers={mapLayers}
+              draggableDivRef={draggableDivRef}
+            />
+          )}
 
           <Box flex={'1 1 auto'} h="100%" mb="40px">
-            {/* {isMapPage && isMobileOrSmaller && (
-          <Box
-            aria-hidden={true}
-            height="30px"
-            py="20px"
-            ref={dragDividerRef}
-            position="absolute"
-            background={colors.white}
-            w="100%"
-            zIndex="1000"
-          >
-            <Box
-              mx="auto"
-              w="40px"
-              h="4px"
-              bgColor={colors.grey400}
-              borderRadius="10px"
-            />
-          </Box>
-        )} */}
+            {isMapPage && isMobileOrSmaller && (
+              <PageEsriDivider dragDividerRef={dragDividerRef} />
+            )}
             <Box
               display="flex"
               flexDirection="column"
@@ -263,14 +250,6 @@ const CustomFieldsPage = ({
               <Box h="100%" display="flex" flexDirection="column">
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
-                    {/* {allowsAnonymousPostingInNativeSurvey && (
-                  <Box w="100%" mb="12px">
-                    <Warning icon="shield-checkered">
-                      {formatMessage(messages.anonymousSurveyMessage)}
-                    </Warning>
-                  </Box>
-                )} */}
-
                     <Title
                       as="h1"
                       variant={isMobileOrSmaller ? 'h2' : 'h1'}
@@ -384,7 +363,7 @@ const CustomFieldsPage = ({
           onAcceptDisclaimer={onAcceptDisclaimer}
           onCancelDisclaimer={onCancelDisclaimer}
         />
-      </form>
+      </StyledForm>
     </FormProvider>
   );
 };
