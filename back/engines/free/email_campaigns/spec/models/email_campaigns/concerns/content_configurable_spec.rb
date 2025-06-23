@@ -118,6 +118,11 @@ RSpec.describe EmailCampaigns::ContentConfigurable do
         expect(campaign[:intro_multiloc]).to eq({ 'en' => 'Hello there' })
         expect(campaign.intro_multiloc).to eq({ 'en' => 'Hello there', 'fr-FR' => 'INTRO' })
       end
+
+      it 'santizes HTML tags' do
+        campaign.update!(intro_multiloc: { 'en' => '<p><script>REMOVE ME</script> Custom intro with <strong>HTML</strong></p>' })
+        expect(campaign[:intro_multiloc]).to eq({ 'en' => '<p>REMOVE ME Custom intro with <strong>HTML</strong></p>'})
+      end
     end
 
     describe '#button_text_multiloc' do

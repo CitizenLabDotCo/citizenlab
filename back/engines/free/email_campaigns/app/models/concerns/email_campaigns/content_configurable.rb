@@ -51,7 +51,8 @@ module EmailCampaigns
         features
       )
       value = service.linkify_multiloc value
-      service.remove_multiloc_empty_trailing_tags value
+      value = service.remove_multiloc_empty_trailing_tags value
+      self[multiloc] = value
     end
 
     def process_images(multiloc)
