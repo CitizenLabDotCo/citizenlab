@@ -52,7 +52,7 @@ module EmailCampaigns
       region_text = multiloc_service.t(@campaign.send(region_key), locale.to_s)
       region_default_text = multiloc_service.t(region[:default_value_multiloc], locale.to_s)
 
-      # Sometimes we need to override the default value because the default is conditional (not supported in editable regions).
+      # Sometimes we need to override the default value because the default is conditional
       # eg in `CommentOnIdeaYouFollowMailer` where title is dependent on the input term.
       if override_default_key && region_text == region_default_text
         message_group = "email_campaigns.#{campaign.class.name.demodulize.underscore}"

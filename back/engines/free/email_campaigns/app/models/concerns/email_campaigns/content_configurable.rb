@@ -19,6 +19,7 @@ module EmailCampaigns
         validates :intro_multiloc, multiloc: { presence: false, html: true }
         validates :button_text_multiloc, multiloc: { presence: true, html: true }
         before_validation :sanitize_intro_multiloc
+        before_validation :reject_default_region_values
         after_save :process_intro_images
       end
     end
@@ -42,23 +43,40 @@ module EmailCampaigns
 
     private
 
-    # Methods for manual campaigns
-    def process_body_images
-      processed_body_multiloc = TextImageService.new.swap_data_images_multiloc body_multiloc, field: :body_multiloc, imageable: self
-      update_column :body_multiloc, processed_body_multiloc
+    def sanitize_multiloc(multiloc, features)
+      service = SanitizationService.new
+      value = self[multiloc]
+      value = service.sanitize_multiloc(
+        value,
+        features
+      )
+      value = service.linkify_multiloc value
+      service.remove_multiloc_empty_trailing_tags value
     end
 
+    def process_images(multiloc)
+      processed_multiloc = TextImageService.new.swap_data_images_multiloc self[multiloc], field: multiloc, imageable: self
+      update_column multiloc, processed_multiloc
+    end
+
+    # Methods for manual campaigns
     def sanitize_body_multiloc
-      service = SanitizationService.new
-      self.body_multiloc = service.sanitize_multiloc(
-        body_multiloc,
-        %i[title alignment list decoration link image video]
-      )
-      self.body_multiloc = service.linkify_multiloc body_multiloc
-      self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc
+      sanitize_multiloc(:body_multiloc, %i[title alignment list decoration link image video])
+    end
+
+    def process_body_images
+      process_images(:body_multiloc)
     end
 
     # Methods for automated campaigns
+    def sanitize_intro_multiloc
+      sanitize_multiloc(:intro_multiloc, %i[alignment list decoration link image video])
+    end
+
+    def process_intro_images
+      process_images(:intro_multiloc)
+    end
+
     def merge_default_region_values(region_key)
       values = self[region_key]
       return values if manual?
@@ -72,19 +90,15 @@ module EmailCampaigns
       end
     end
 
-    def process_intro_images
-      processed_intro_multiloc = TextImageService.new.swap_data_images_multiloc intro_multiloc, field: :intro_multiloc, imageable: self
-      update_column :intro_multiloc, processed_intro_multiloc
-    end
-
-    def sanitize_intro_multiloc
-      service = SanitizationService.new
-      self.intro_multiloc = service.sanitize_multiloc(
-        intro_multiloc,
-        %i[alignment list decoration link image video]
-      )
-      self.intro_multiloc = service.linkify_multiloc intro_multiloc
-      self.intro_multiloc = service.remove_multiloc_empty_trailing_tags intro_multiloc
+    # Reject default region values from the saved values, so that the defaults always remain the latest.
+    def reject_default_region_values
+      regions = mailer_class.editable_regions
+      regions.each do |region|
+        field = region[:key]
+        self[field] = self[field].reject do |locale, value|
+          value == region[:default_value_multiloc][locale]
+        end
+      end
     end
   end
 end
