@@ -26,8 +26,8 @@ module EmailCampaigns
           first_name: I18n.t('email_campaigns.preview_data.first_name', locale: recipient.locale),
           last_name: I18n.t('email_campaigns.preview_data.last_name', locale: recipient.locale),
           display_name: I18n.t('email_campaigns.preview_data.display_name', locale: recipient.locale),
-          comment_body_multiloc: MultilocService.new.i18n_to_multiloc('email_campaigns.preview_data.comment_body', locale: recipient.locale),
-          idea_title_multiloc: MultilocService.new.i18n_to_multiloc('email_campaigns.preview_data.idea_title', locale: recipient.locale),
+          comment_body_multiloc: MultilocService.new.i18n_to_multiloc('email_campaigns.preview_data.comment_body'),
+          idea_title_multiloc: MultilocService.new.i18n_to_multiloc('email_campaigns.preview_data.idea_title'),
           idea_url: "/#{recipient.locale}/ideas/example-idea"
         }
       end
