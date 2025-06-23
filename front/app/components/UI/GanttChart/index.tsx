@@ -454,7 +454,7 @@ export const GanttChart = ({
                 height="100%"
                 bg={colors.primary}
                 style={{
-                  left: `${todayOffset * unitW - 1}px`,
+                  left: `${todayOffset * unitW + unitW / 2 - 1}px`,
                   pointerEvents: 'none',
                   zIndex: 1,
                 }}
