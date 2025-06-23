@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Tager <1 minut} one {Tager 1 minut} other {Tager # minutter}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download som pdf",
   "app.components.FormSync.downloadExcelTemplate": "Download en Excel-skabelon",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Excel-skabeloner vil ikke indeholde kortlægningsinput, da disse ikke understøttes til masseimport på nuværende tidspunkt.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-skabeloner vil ikke indeholde rangordningsspørgsmål, matrixspørgsmål, spørgsmål om filupload og spørgsmål om kortlægningsinput (Drop Pin, Draw Route, Draw Area, ESRI-filupload), da disse ikke understøttes til bulkimport på nuværende tidspunkt.",
   "app.components.ProjectTemplatePreview.close": "Luk",
   "app.components.ProjectTemplatePreview.createProject": "Opret projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Opret et projekt baseret på skabelonen '{templateTitle}'",
