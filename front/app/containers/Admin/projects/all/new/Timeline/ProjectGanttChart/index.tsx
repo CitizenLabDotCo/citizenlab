@@ -2,11 +2,13 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
-
-import messages from '../messages';
 import GanttChart from 'components/UI/GanttChart';
 import { GanttItem } from 'components/UI/GanttChart/types';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import messages from '../messages';
 
 export type GanttProject = GanttItem & {
   folder: string;
@@ -35,11 +37,16 @@ const ProjectGanttChart = ({ projects }: ProjectGanttChartProps) => {
     );
   };
 
+  const onItemLabelClick = (project: GanttProject) => {
+    clHistory.push(`/admin/projects/${project.id}`);
+  };
+
   return (
     <GanttChart
       items={projects}
       renderItemTooltip={renderProjectTooltip}
       chartTitle={formatMessage(messages.project)}
+      onItemLabelClick={onItemLabelClick}
     />
   );
 };

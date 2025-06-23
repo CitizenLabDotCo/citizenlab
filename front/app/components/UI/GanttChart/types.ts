@@ -20,4 +20,5 @@ export type GanttChartProps = {
   renderItemLabel?: (item: GanttItem) => React.ReactNode;
   getItemColor?: (item: GanttItem) => string;
   showTodayLine?: boolean;
+  onItemLabelClick?: (item: GanttItem) => void;
 };
