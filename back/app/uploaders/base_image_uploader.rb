@@ -6,6 +6,7 @@ class BaseImageUploader < BaseUploader
   ALLOWED_TYPES = %w[jpg jpeg gif png webp]
 
   # Using process at the class level applies it to all versions, including the original.
+  process :auto_orient
   process :strip
 
   # We're not caching, since the external image optimization process will
@@ -80,6 +81,14 @@ class BaseImageUploader < BaseUploader
     img.gravity gravity
     img.background 'rgba(255,255,255,0.0)'
     img.extent "#{target_width}x#{target_height}" if current_width != target_width || current_height != target_height
+  end
+
+  # Auto-orient the image based on EXIF data, before we strip the metadata.
+  def auto_orient
+    manipulate! do |img|
+      img.auto_orient
+      img
+    end
   end
 
   # Strip the image of any profiles, comments or these PNG chunks: bKGD,cHRM,EXIF,gAMA,
