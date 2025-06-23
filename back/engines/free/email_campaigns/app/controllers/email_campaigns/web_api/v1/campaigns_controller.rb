@@ -134,6 +134,8 @@ module EmailCampaigns
       return @campaign_context if @campaign_context
 
       context_type = params[:campaign_context]
+      return @campaign_context = nil if !context_type
+
       context_id = params[:"#{context_type.underscore}_id"]
       context_model = case context_type
       when 'Project' then Project

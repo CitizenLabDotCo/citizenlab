@@ -18,7 +18,7 @@ const fetchCampaigns = ({ projectId, ...filters }: ProjectCampaignsParams) => {
     pageSize,
   } = filters;
   return fetcher<ICampaignsData>({
-    path: `/projects/${projectId}/email_campaigns`,
+    path: `/projects/${projectId}/campaigns`,
     action: 'get',
     queryParams: {
       without_campaign_names,

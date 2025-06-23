@@ -312,10 +312,10 @@ resource 'Campaigns' do
       end
     end
 
-    get 'web_api/v1/projects/:context_id/email_campaigns' do
+    get 'web_api/v1/projects/:project_id/campaigns' do
       let(:campaign1) { create(:manual_project_participants_campaign) }
       let(:campaign2) { create(:manual_campaign) }
-      let(:context_id) { campaign1.project.id }
+      let(:project_id) { campaign1.context_id }
 
       example_request 'List all campaigns associated with a project' do
         assert_status 200
@@ -343,7 +343,6 @@ resource 'Campaigns' do
       end
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
-      parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false
 
       example 'List all campaigns only lists campaigns manageable by the project moderator' do
         phase_started = create(:project_phase_started_campaign)
