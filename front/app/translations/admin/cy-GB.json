@@ -66,7 +66,7 @@
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Yn cymryd <1 munud} one {Yn cymryd 1 munud} other {Yn cymryd # munud}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lawrlwytho fel pdf",
   "app.components.FormSync.downloadExcelTemplate": "Lawrlwythwch dempled Excel",
-  "app.components.FormSync.downloadExcelTemplateTooltip": "Ni fydd templedi Excel yn cynnwys unrhyw gwestiynau mewnbwn mapio gan nad yw'r rhain yn cael eu cefnogi ar gyfer mewnforio swmp ar hyn o bryd.",
+  "app.components.FormSync.downloadExcelTemplateTooltip2": "Ni fydd templedi Excel yn cynnwys cwestiynau Rhestru, cwestiynau Matrics, cwestiynau uwchlwytho ffeiliau ac unrhyw gwestiynau mewnbwn mapio (Gollwng Pin, Lluniadu Llwybr, Lluniadu Ardal, uwchlwytho ffeiliau ESRI) gan nad yw'r rhain yn cael eu cefnogi ar gyfer mewnforio swmp ar hyn o bryd.",
   "app.components.ProjectTemplatePreview.close": "Cau",
   "app.components.ProjectTemplatePreview.createProject": "Creu prosiect",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Creu prosiect yn seiliedig ar y templed '{templateTitle}'",
