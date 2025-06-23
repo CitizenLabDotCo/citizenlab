@@ -266,21 +266,26 @@ export const GanttChart = ({
                   borderTop={`1px solid ${colors.grey300}`}
                   w="0px" // Hack to keep the box from expanding the parent Box
                 >
-                  {yearlyViewData.years.flatMap((year) =>
-                    Array.from({ length: 12 }).map((_, i) => (
-                      <Box
-                        key={`${year.label}-${i}`}
-                        minWidth={`${monthWidth}px`}
-                        width={`${monthWidth}px`}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        borderLeft={`1px solid ${colors.divider}`}
-                        style={{ color: '#888', fontSize: '12px' }}
-                      >
-                        {i + 1}
-                      </Box>
-                    ))
+                  {Array.from({ length: yearlyViewData.totalMonths || 0 }).map(
+                    (_, i) => {
+                      const monthDate = addMonths(startDate, i);
+                      const monthLabel = monthDate.getMonth() + 1;
+
+                      return (
+                        <Box
+                          key={`month-col-${i}`}
+                          minWidth={`${monthWidth}px`}
+                          width={`${monthWidth}px`}
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          borderLeft={`1px solid ${colors.divider}`}
+                          style={{ color: '#888', fontSize: '12px' }}
+                        >
+                          {monthLabel}
+                        </Box>
+                      );
+                    }
                   )}
                 </Box>
               </Box>
