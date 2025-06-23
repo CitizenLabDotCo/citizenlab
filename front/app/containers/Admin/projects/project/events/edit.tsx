@@ -98,8 +98,9 @@ const AdminProjectEventEdit = () => {
     isCreatingNewEvent ? initializeEventTimes() : {}
   );
 
-  const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
+  const [attendanceButtonOptionsVisible, setAttendanceButtonOptionsVisible] =
     useState(false);
+  const [attendanceLimitVisible, setAttendanceLimitVisible] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     event?.data.attributes.location_point_geojson || null
@@ -158,9 +159,15 @@ const AdminProjectEventEdit = () => {
   // If there is a custom button url, set the state accordingly
   useEffect(() => {
     if (eventAttrs.using_url) {
-      setAttendanceOptionsVisible(true);
+      setAttendanceButtonOptionsVisible(true);
     }
   }, [eventAttrs.using_url]);
+
+  useEffect(() => {
+    if (eventAttrs.maximum_attendees) {
+      setAttendanceLimitVisible(true);
+    }
+  }, [eventAttrs.maximum_attendees]);
 
   // When address 1 is updated, geocode the location point to match
   useEffect(() => {
@@ -236,9 +243,18 @@ const AdminProjectEventEdit = () => {
     });
   };
 
+  const handleLimitToggleOnChange = (toggleValue: boolean) => {
+    setSubmitState('enabled');
+    setAttendanceLimitVisible(toggleValue);
+    setAttributeDiff({
+      ...attributeDiff,
+      maximum_attendees: null,
+    });
+  };
+
   const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
     setSubmitState('enabled');
-    setAttendanceOptionsVisible(toggleValue);
+    setAttendanceButtonOptionsVisible(toggleValue);
     setAttributeDiff({
       ...attributeDiff,
       using_url: '',
@@ -719,12 +735,13 @@ const AdminProjectEventEdit = () => {
                       </Box>
                     </Box>
                   }
-                  checked={attendanceOptionsVisible}
+                  checked={attendanceLimitVisible}
                   onChange={() => {
-                    handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
+                    handleLimitToggleOnChange(!attendanceLimitVisible);
                   }}
                 />
               </SectionField>
+              {attendanceLimitVisible && <p>Placeholder for toggled content</p>}
 
               <Title
                 variant="h4"
@@ -750,13 +767,15 @@ const AdminProjectEventEdit = () => {
                       </Box>
                     </Box>
                   }
-                  checked={attendanceOptionsVisible}
+                  checked={attendanceButtonOptionsVisible}
                   onChange={() => {
-                    handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
+                    handleCustomButtonToggleOnChange(
+                      !attendanceButtonOptionsVisible
+                    );
                   }}
                 />
               </SectionField>
-              {attendanceOptionsVisible && (
+              {attendanceButtonOptionsVisible && (
                 <>
                   <SectionField>
                     <Box maxWidth="400px">
@@ -799,7 +818,9 @@ const AdminProjectEventEdit = () => {
                         icon={
                           // TODO: Fix this the next time the file is edited.
                           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                          attendanceOptionsVisible ? undefined : 'plus-circle'
+                          attendanceButtonOptionsVisible
+                            ? undefined
+                            : 'plus-circle'
                         }
                         iconSize="20px"
                         bgColor={theme.colors.tenantPrimary}

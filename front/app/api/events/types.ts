@@ -85,6 +85,7 @@ export interface IEventProperties {
   online_link?: string;
   attend_button_multiloc?: Multiloc;
   using_url?: RouteType;
+  maximum_attendees?: number | null;
 }
 
 export interface IAddEventProperties {
