@@ -78,7 +78,7 @@
   "app.components.Comments.yourComment": "Votre commentaire",
   "app.components.CommonGroundResults.divisiveDescription": "Affirmations pour lesquelles les opinions divergent le plus, par ordre décroissant :",
   "app.components.CommonGroundResults.divisiveTitle": "Opinion partagée",
-  "app.components.CommonGroundResults.majorityDescription": "Plus de 60% ont voté dans un sens ou dans l'autre sur les questions suivantes :",
+  "app.components.CommonGroundResults.majorityDescription": "Affirmations par degré de consensus décroissant :",
   "app.components.CommonGroundResults.majorityTitle": "Consensus",
   "app.components.CommonGroundResults.participantLabel": "participant",
   "app.components.CommonGroundResults.participantsLabel1": "participants",
