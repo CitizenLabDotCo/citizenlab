@@ -37,7 +37,7 @@ RSpec.describe BaseImageUploader do
         [image.width, image.height]
       end
 
-      it 'correctly auto-orients image_with_90_degree_exif_rotation.jpg and strips its metadata' do
+      it 'correctly auto-orients image with EXIF rotation value and strips its metadata' do
         file_path = Rails.root.join('spec/fixtures/image_with_90_degree_exif_rotation.jpg').to_s
         file = File.open(file_path)
 
@@ -54,7 +54,7 @@ RSpec.describe BaseImageUploader do
         expect(image.exif).to be_empty # Ensure metadata is still stripped
       end
 
-      it 'does not alter dimensions for already correctly oriented images like image_with_zero_exif_rotation.jpg' do
+      it 'does not alter dimensions for already correctly oriented images' do
         file_path = Rails.root.join('spec/fixtures/image_with_zero_exif_rotation.jpg').to_s
         file = File.open(file_path)
 
