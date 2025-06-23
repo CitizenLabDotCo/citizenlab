@@ -166,6 +166,7 @@ const Radio = ({
     <Box
       onClick={handleOnChange}
       display="flex"
+      alignItems="flex-start"
       data-testid="radio-container"
       {...rest}
     >

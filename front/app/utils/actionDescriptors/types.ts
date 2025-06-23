@@ -103,7 +103,8 @@ export type ActionDescriptorAction =
   | 'taking_survey'
   | 'taking_poll'
   | 'attending_event'
-  | 'volunteering';
+  | 'volunteering'
+  | 'reacting_idea';
 
 // All disabled reasons
 export type DisabledReason =

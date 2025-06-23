@@ -71,7 +71,8 @@ const IdeationForm = ({
           ...formValues,
           project_id: projectId,
           phase_ids,
-          publication_status: undefined, // TODO: Change this logic when handling draft ideas
+          publication_status:
+            participationMethod === 'common_ground' ? 'published' : undefined,
         });
         updateSearchParams({ idea_id: idea.data.id });
       } else {
