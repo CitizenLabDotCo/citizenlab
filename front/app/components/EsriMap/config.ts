@@ -50,7 +50,10 @@ export const configureMapView = (
     mapView.ui.remove(zoom);
   } else if (initialData?.zoomWidgetLocation === 'right') {
     const zoom = mapView.ui.find('zoom');
-    mapView.ui.add(zoom, 'top-right');
+
+    // Note: Incorrect type from ArcGIS API, ui might be null.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    mapView.ui?.add(zoom, 'top-right');
   }
 
   // Add fullscreen widget if set
@@ -58,7 +61,10 @@ export const configureMapView = (
     const fullscreen = new Fullscreen({
       view: mapView,
     });
-    mapView.ui.add(fullscreen, 'top-right');
+
+    // Note: Incorrect type from ArcGIS API, ui might be null.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    mapView.ui?.add(fullscreen, 'top-right');
   }
 
   // Add map legend if set
@@ -74,7 +80,9 @@ export const configureMapView = (
   // Add any ui elements that were passed in
   if (initialData?.uiElements) {
     initialData.uiElements.forEach((uiElement) => {
-      mapView.ui.add(uiElement.element, uiElement.position);
+      // Note: Incorrect type from ArcGIS API, ui might be null.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      mapView.ui?.add(uiElement.element, uiElement.position);
     });
   }
 };
@@ -117,8 +125,9 @@ export const addMapLegend = (
         : showLegendExpanded,
     mode: 'floating',
   });
-
-  mapView.ui.add(legend, 'bottom-right');
+  // Note: Incorrect type from ArcGIS API, ui might be null.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  mapView.ui?.add(legend, 'bottom-right');
 };
 
 // showLayerVisibilityControls
@@ -132,7 +141,10 @@ export const showLayerVisibilityControls = (mapView: MapView) => {
     expanded: false,
     mode: 'floating',
   });
-  mapView.ui.add(layerList, {
+
+  // Note: Incorrect type from ArcGIS API, ui might be null.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  mapView.ui?.add(layerList, {
     position: 'top-right',
   });
 };
