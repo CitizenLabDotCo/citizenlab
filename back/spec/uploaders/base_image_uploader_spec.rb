@@ -2,7 +2,7 @@
 
 require 'carrierwave/test/matchers'
 require 'rails_helper'
-require 'mini_magick' # Added this line to ensure MiniMagick is available
+require 'mini_magick'
 
 RSpec.describe BaseImageUploader do
   let(:uploader) do
@@ -32,7 +32,7 @@ RSpec.describe BaseImageUploader do
     end
 
     context 'when handling images with EXIF orientation' do
-      def get_image_dimensions(file_path)
+      def get_processed_image_dimensions(file_path)
         image = MiniMagick::Image.open(file_path)
         [image.width, image.height]
       end
@@ -41,40 +41,46 @@ RSpec.describe BaseImageUploader do
         file_path = Rails.root.join('spec/fixtures/image_with_90_degree_exif_rotation.jpg').to_s
         file = File.open(file_path)
 
+        original_image = MiniMagick::Image.open(file.path)
+        expect(original_image.exif['Orientation']).to eq('6')
+        expect(original_image.width).to eq(450)
+        expect(original_image.height).to eq(300)
+
         uploader.store!(file)
 
-        processed_width, processed_height = get_image_dimensions(uploader.path)
+        processed_width, processed_height = get_processed_image_dimensions(uploader.path)
 
-        # image_with_90_degree_exif_rotation.jpg's raw dimensions are 450x300 (landscape for a portrait image)
-        # Correctly oriented, it should become 300x450 (portrait)
         expect(processed_width).to eq(300)
         expect(processed_height).to eq(450)
 
         image = MiniMagick::Image.open(uploader.path)
-        expect(image.exif).to be_empty # Ensure metadata is still stripped
+        expect(image.exif).to be_empty
+        expect(image.exif['Orientation']).to be_nil
       end
 
       it 'does not alter dimensions for already correctly oriented images' do
         file_path = Rails.root.join('spec/fixtures/image_with_zero_exif_rotation.jpg').to_s
         file = File.open(file_path)
 
+        original_image = MiniMagick::Image.open(file.path)
+        expect(original_image.exif['Orientation']).to eq('1')
+        expect(original_image.width).to eq(300)
+        expect(original_image.height).to eq(450)
+
         uploader.store!(file)
 
-        processed_width, processed_height = get_image_dimensions(uploader.path)
+        processed_width, processed_height = get_processed_image_dimensions(uploader.path)
 
-        # image_with_zero_exif_rotation.jpg's raw dimensions are 300x400 (already portrait)
         expect(processed_width).to eq(300)
         expect(processed_height).to eq(450)
 
         image = MiniMagick::Image.open(uploader.path)
-        expect(image.exif).to be_empty # Ensure metadata is still stripped
+        expect(image.exif).to be_empty
+        expect(image.exif['Orientation']).to be_nil
       end
     end
   end
 
-  # Note that we no longer permit .svg files, due to cross-site scripting concerns,
-  # raised in TAN-4535:
-  # https://www.notion.so/govocal/Vilnius-security-concerns-to-investigate-1eb9663b7b26801cb669f161e527d4d9
   it 'whitelists exactly [image/jpg image/jpeg image/gif image/png image/webp]' do
     expect(uploader.extension_allowlist).to match_array %w[jpg jpeg gif png webp]
     expect(uploader.content_type_allowlist).to match_array %w[image/jpg image/jpeg image/gif image/png image/webp]
