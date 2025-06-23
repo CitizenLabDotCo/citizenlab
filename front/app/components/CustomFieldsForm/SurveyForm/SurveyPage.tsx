@@ -333,6 +333,7 @@ const SurveyPage = ({
                 phases={phases?.data}
                 currentPhase={phase}
                 pageButtonLabelMultiloc={pageButtonLabelMultiloc}
+                project={project}
               />
             </Box>
           </Box>
