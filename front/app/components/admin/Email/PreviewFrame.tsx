@@ -19,14 +19,14 @@ type Props = {
   campaignId: string;
   className?: string;
   children?: React.ReactNode;
-  showSubject?: boolean;
+  showHeaders?: boolean;
 };
 
 const PreviewFrame = ({
   campaignId,
   className,
   children,
-  showSubject,
+  showHeaders,
 }: Props) => {
   const { data: previewData } = useCampaignPreview(campaignId);
   const previewSubject = previewData?.data.attributes.subject;
@@ -36,7 +36,7 @@ const PreviewFrame = ({
 
   return (
     <Box>
-      {showSubject && previewSubject && (
+      {showHeaders && previewSubject && (
         <Box my="4px" mb="16px" display="flex" gap="8px">
           <Text fontWeight="bold" my="0">
             <FormattedMessage {...messages.subject} />

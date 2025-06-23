@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import {
   Box,
+  Button,
   colors,
-  fontSizes,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -22,6 +22,7 @@ import { CampaignFormValues } from 'api/campaigns/types';
 import styled from 'styled-components';
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
+import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -30,18 +31,13 @@ const PageTitle = styled.h1`
   margin: 2rem 0 1rem;
 `;
 
-const SendTestEmailButton = styled.button`
-  text-decoration: underline;
-  font-size: ${fontSizes.base}px;
-  cursor: pointer;
-`;
-
 const Edit = () => {
   const { campaignId } = useParams() as {
     campaignId: string;
   };
   const { data: campaign } = useCampaign(campaignId);
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
+  const [previewSent, setPreviewSent] = React.useState(false);
 
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
@@ -50,10 +46,7 @@ const Edit = () => {
   const handleSendPreviewEmail = () => {
     sendCampaignPreview(campaignId, {
       onSuccess: () => {
-        const previewSentConfirmation = formatMessage(
-          messages.previewSentConfirmation
-        );
-        window.alert(previewSentConfirmation);
+        setPreviewSent(true);
       },
     });
   };
@@ -77,28 +70,50 @@ const Edit = () => {
       </PageTitle>
 
       <Box display="flex">
-        <Box mb="30px" display="flex" alignItems="center" width="50%">
+        <Box width="50%" mr="24px">
           <EditCampaignForm
             isLoading={isLoading}
             onSubmit={handleSubmit}
             campaign={campaign}
-            // campaignContextId={campaign.data.attributes.context_id}
           />
         </Box>
-        <Box>
-          <Box mb="30px" display="flex" alignItems="center" width="50%">
-            <SendTestEmailButton
-              onClick={handleSendPreviewEmail}
-              disabled={isSendingCampaignPreview}
-            >
-              <FormattedMessage {...messages.sendTestEmailButton} />
-            </SendTestEmailButton>
-            &nbsp;
-            <IconTooltip
-              content={<FormattedMessage {...messages.sendTestEmailTooltip} />}
-            />
+        <Box width="50%">
+          <Box display="inline-flex" width="100%" mb="12px">
+            <Box width="70%">
+              <h2>Preview</h2>
+            </Box>
+            <Box>
+              <Button
+                icon="send"
+                buttonStyle="secondary-outlined"
+                onClick={handleSendPreviewEmail}
+                disabled={isSendingCampaignPreview}
+                processing={isSendingCampaignPreview}
+              >
+                <Box display="inline-flex">
+                  <FormattedMessage {...messages.sendTestEmailButton} />
+                  <IconTooltip
+                    mt="3px"
+                    ml="4px"
+                    content={
+                      <FormattedMessage {...messages.sendTestEmailTooltip} />
+                    }
+                  />
+                </Box>
+              </Button>
+            </Box>
           </Box>
-          <PreviewFrame campaignId={campaign.data.id} showSubject={true} />
+          <Box>
+            {previewSent && (
+              <SuccessFeedback
+                successMessage={formatMessage(messages.previewSentConfirmation)}
+                closeSuccessMessage={() => setPreviewSent(false)}
+              />
+            )}
+          </Box>
+          <Box>
+            <PreviewFrame campaignId={campaign.data.id} showHeaders={true} />
+          </Box>
         </Box>
       </Box>
     </Box>
