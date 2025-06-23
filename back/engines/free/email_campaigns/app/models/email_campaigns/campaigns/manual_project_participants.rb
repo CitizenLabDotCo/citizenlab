@@ -38,6 +38,7 @@ module EmailCampaigns
 
     recipient_filter :project_participants_and_followers
 
+    validates :context, presence: true
     validates :context_type, inclusion: { in: ['Project'] }
 
     def self.recipient_role_multiloc_key

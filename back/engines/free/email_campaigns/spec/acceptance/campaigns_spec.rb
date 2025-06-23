@@ -90,6 +90,34 @@ resource 'Campaigns' do
       end
     end
 
+    context 'Listing all campaigns scoped under a context' do
+      let!(:manual_global) { create(:manual_campaign) }
+      let!(:manual_project) { create(:manual_project_participants_campaign) }
+      let!(:automated_phase) { create(:project_phase_started_campaign, context: create(:phase)) }
+
+      get '/web_api/v1/projects/:context_id/campaigns' do
+        let(:context_id) { manual_project.context_id }
+
+        example_request 'List all campaigns scoped under a project' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
+        end
+      end
+
+      get '/web_api/v1/phases/:context_id/campaigns' do
+        let(:context_id) { automated_phase.context_id }
+
+        example_request 'List all campaigns scoped under a phase' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].pluck(:id)).to eq [automated_phase.id]
+        end
+      end
+    end
+
     get '/web_api/v1/campaigns/:id' do
       let(:campaign) { create(:manual_campaign) }
       let(:id) { campaign.id }
@@ -311,25 +339,12 @@ resource 'Campaigns' do
         })
       end
     end
-
-    get 'web_api/v1/projects/:project_id/campaigns' do
-      let(:campaign1) { create(:manual_project_participants_campaign) }
-      let(:campaign2) { create(:manual_campaign) }
-      let(:project_id) { campaign1.context_id }
-
-      example_request 'List all campaigns associated with a project' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].pluck(:id)).to match_array [campaign1.id]
-      end
-    end
   end
 
   context 'as a project moderator' do
     before do
       header 'Content-Type', 'application/json'
-      @user = create(:user, roles: [{ type: 'project_moderator', project_id: @manual_project_participants_campaign.project.id }])
+      @user = create(:user, roles: [{ type: 'project_moderator', project_id: @manual_project_participants_campaign.context_id }])
       EmailCampaigns::UnsubscriptionToken.create!(user_id: @user.id)
       header_token_for @user
     end
@@ -444,7 +459,7 @@ resource 'Campaigns' do
 
       example '[Unauthorized] Create campaign, manageable by project moderator, for unmoderated project', document: false do
         do_request(campaign: {
-          context_id: manual_project_participants_campaign_not_moderated_by_this_pm.project.id,
+          context_id: manual_project_participants_campaign_not_moderated_by_this_pm.context_id,
           campaign_name: 'manual_project_participants'
         })
         expect(response_status).to eq 401

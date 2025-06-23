@@ -46,6 +46,8 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    validates :context_type, inclusion: { in: ['Phase'] }
+
     def mailer_class
       ProjectPhaseStartedMailer
     end
@@ -100,6 +102,10 @@ module EmailCampaigns
     end
 
     private
+
+    def skip_context_absence?
+      true
+    end
 
     def campaign_enabled_for_phase?(activity:, time: nil)
       activity.item.phase.campaigns_settings['project_phase_started']
