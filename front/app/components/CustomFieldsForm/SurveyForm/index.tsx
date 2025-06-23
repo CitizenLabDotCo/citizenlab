@@ -45,7 +45,7 @@ const SurveyForm = ({
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
   const pageButtonLabelMultiloc = customFields?.find(
-    (field) => field.id === nestedPagesData[currentPageNumber].page.id
+    (field) => field.id === nestedPagesData[currentPageNumber]?.page.id
   )?.page_button_label_multiloc;
 
   const lastPageNumber = nestedPagesData.length - 1;
@@ -78,10 +78,6 @@ const SurveyForm = ({
       });
       updateSearchParams({ idea_id: draftIdea.data.id });
     }
-    // Go to the next page
-    if (currentPageNumber < lastPageNumber) {
-      setCurrentPageNumber((pageNumber: number) => pageNumber + 1);
-    }
   };
 
   const initialFormData = draftIdea
@@ -106,6 +102,7 @@ const SurveyForm = ({
       {nestedPagesData[currentPageNumber] && (
         <SurveyPage
           page={nestedPagesData[currentPageNumber].page}
+          pages={nestedPagesData}
           pageQuestions={nestedPagesData[currentPageNumber].pageQuestions}
           currentPageNumber={currentPageNumber}
           lastPageNumber={lastPageNumber}
