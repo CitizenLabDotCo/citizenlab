@@ -231,7 +231,9 @@ const EventInformation = ({ event }: Props) => {
             // for multiple links/buttons is not accessible because it doesn't convey
             // the unique purpose of each link. Screen readers will not differentiate
             // between the links, making it difficult for users to navigate.
-            ariaLabel={localize(event.attributes.title_multiloc)}
+            ariaLabel={formatMessage(messages.a11y_readMore, {
+              eventTitle: localize(event.attributes.title_multiloc),
+            })}
           >
             {formatMessage(messages.readMore)}
           </ButtonWithLink>

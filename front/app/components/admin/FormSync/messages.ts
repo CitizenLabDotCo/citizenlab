@@ -10,8 +10,8 @@ export default defineMessages({
     defaultMessage: 'Download as pdf',
   },
   downloadExcelTemplateTooltip: {
-    id: 'app.components.FormSync.downloadExcelTemplateTooltip',
+    id: 'app.components.FormSync.downloadExcelTemplateTooltip2',
     defaultMessage:
-      'Excel templates will not include any mapping input questions as these are not supported for bulk importing at this time.',
+      'Excel templates will not include Ranking questions, Matrix questions, File upload questions and any mapping input questions (Drop Pin, Draw Route, Draw Area, ESRI file upload) as these are not supported for bulk importing at this time.',
   },
 });
