@@ -279,8 +279,24 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.automated.variablesToolTip',
     defaultMessage: 'You can use the following variables in your message:',
   },
-  fieldMultilocError: {
-    id: 'app.containers.Admin.emails.fieldMultilocError',
+  regionMultilocError: {
+    id: 'app.containers.Admin.emails.regionMultilocError',
     defaultMessage: 'Please provide a value for all languages',
+  },
+  editRegion_subject_multiloc: {
+    id: 'app.containers.Admin.emails.editRegion_subject_multiloc',
+    defaultMessage: 'Subject',
+  },
+  editRegion_title_multiloc: {
+    id: 'app.containers.Admin.emails.editRegion_title_multiloc',
+    defaultMessage: 'Title',
+  },
+  editRegion_intro_multiloc: {
+    id: 'app.containers.Admin.emails.editRegion_intro_multiloc',
+    defaultMessage: 'Introduction',
+  },
+  editRegion_button_text_multiloc: {
+    id: 'app.containers.Admin.emails.editRegion_button_text_multiloc',
+    defaultMessage: 'Button text',
   },
 });

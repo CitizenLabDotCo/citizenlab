@@ -56,11 +56,6 @@ en:
         "4": "Weekly, on Thursdays at %{hourOfDay}"
         "5": "Weekly, on Fridays at %{hourOfDay}"
         "6": "Weekly, on Saturdays at %{hourOfDay}"
-    editable_region_names:
-      subject_multiloc: "Subject"
-      title_multiloc: "Title"
-      intro_multiloc: "Introduction"
-      button_text_multiloc: "Button text"
     preview_data:
       first_name: 'Jane'
       last_name: 'Doe'

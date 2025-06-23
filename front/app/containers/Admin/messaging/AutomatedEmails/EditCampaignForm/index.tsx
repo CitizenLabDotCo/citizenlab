@@ -14,8 +14,6 @@ import {
 } from 'api/campaigns/types';
 import useAuthUser from 'api/me/useAuthUser';
 
-import useLocale from 'hooks/useLocale';
-
 import messages from 'containers/Admin/messaging/messages';
 
 import { Section, SectionField } from 'components/admin/Section';
@@ -44,7 +42,6 @@ const EditCampaignForm = ({
 }: CampaignFormProps) => {
   const { data: authUser } = useAuthUser();
   const { data: appConfig } = useAppConfiguration();
-  const currentLocale = useLocale();
   const { formatMessage } = useIntl();
 
   // Schema and default values are derived from which editable regions are present
@@ -54,7 +51,7 @@ const EditCampaignForm = ({
     editableRegions.reduce((fieldSchema, region) => {
       if (!region.allow_blank_locales) {
         fieldSchema[region.key] = validateMultilocForEveryLocale(
-          formatMessage(messages.fieldMultilocError)
+          formatMessage(messages.regionMultilocError)
         );
       }
       return fieldSchema;
@@ -101,6 +98,11 @@ const EditCampaignForm = ({
     </>
   );
 
+  const regionFieldLabel = (region: EditableRegion) => {
+    const messageKey = messages[`editRegion_${region.key}`];
+    return formatMessage(messageKey);
+  };
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
@@ -113,7 +115,7 @@ const EditCampaignForm = ({
               {region.type === 'html' && (
                 <QuillMultilocWithLocaleSwitcher
                   name={region.key}
-                  label={region.title_multiloc[currentLocale]}
+                  label={regionFieldLabel(region)}
                   labelTooltipText={tooltipText(region)}
                   noVideos
                   noAlign
@@ -122,7 +124,7 @@ const EditCampaignForm = ({
               {region.type === 'text' && (
                 <InputMultilocWithLocaleSwitcher
                   name={region.key}
-                  label={region.title_multiloc[currentLocale]}
+                  label={regionFieldLabel(region)}
                   labelTooltipText={tooltipText(region)}
                 />
               )}
