@@ -59,7 +59,7 @@ RSpec.describe BaseImageUploader do
       end
 
       it 'does not alter dimensions for already correctly oriented images' do
-        file_path = Rails.root.join('spec/fixtures/image_with_zero_exif_rotation.jpg').to_s
+        file_path = Rails.root.join('spec/fixtures/image_with_no_exif_rotation.jpg').to_s
         file = File.open(file_path)
 
         original_image = MiniMagick::Image.open(file.path)
