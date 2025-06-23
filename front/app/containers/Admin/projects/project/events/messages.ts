@@ -168,6 +168,19 @@ export default defineMessages({
     defaultMessage:
       'Additional address information that could help identify the location such as a building name, floor number, etc.',
   },
+  attendanceLimit: {
+    id: 'app.containers.AdminPage.ProjectEvents.attendanceLimit',
+    defaultMessage: 'Attendance limit',
+  },
+  toggleAttendanceLimitLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.toggleAttendanceLimitLabel',
+    defaultMessage: 'Limit the number of attendees',
+  },
+  toggleAttendanceLimitTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.toggleAttendanceLimitTooltip',
+    defaultMessage:
+      'Set a maximimum number of attendees. Cannot be set to a value lower than the current attendance count.',
+  },
   attendanceButton: {
     id: 'app.containers.AdminPage.ProjectEvents.attendanceButton',
     defaultMessage: 'Attendance button',

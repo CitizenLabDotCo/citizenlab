@@ -703,6 +703,35 @@ const AdminProjectEventEdit = () => {
                 style={{ fontWeight: '600' }}
                 mt="48px"
               >
+                {formatMessage(messages.attendanceLimit)}
+              </Title>
+              <SectionField>
+                <Toggle
+                  label={
+                    <Box display="flex">
+                      {formatMessage(messages.toggleAttendanceLimitLabel)}
+                      <Box ml="4px">
+                        <IconTooltip
+                          content={formatMessage(
+                            messages.toggleAttendanceLimitTooltip
+                          )}
+                        />
+                      </Box>
+                    </Box>
+                  }
+                  checked={attendanceOptionsVisible}
+                  onChange={() => {
+                    handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
+                  }}
+                />
+              </SectionField>
+
+              <Title
+                variant="h4"
+                color="primary"
+                style={{ fontWeight: '600' }}
+                mt="48px"
+              >
                 {formatMessage(messages.attendanceButton)}
               </Title>
               <SectionField>
