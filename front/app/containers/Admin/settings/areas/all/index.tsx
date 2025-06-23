@@ -21,7 +21,7 @@ import {
   SectionTitle,
 } from 'components/admin/Section';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -74,13 +74,13 @@ const AreaList = () => {
       <AreaTermConfig />
 
       <ButtonWrapper>
-        <Button
+        <ButtonWithLink
           buttonStyle="admin-dark"
           icon="plus-circle"
           linkTo="/admin/settings/areas/new"
         >
           <FormattedMessage {...messages.addAreaButton} />
-        </Button>
+        </ButtonWithLink>
       </ButtonWrapper>
       <SortableList
         items={areas.data}
@@ -176,21 +176,21 @@ const AreaListRow = ({
           />
         </Box>
       )}
-      <Button
+      <ButtonWithLink
         onClick={handleDeleteClick(item.id)}
         buttonStyle="text"
         icon="delete"
         disabled={staticPageIds && staticPageIds.length > 0}
       >
         <FormattedMessage {...messages.deleteButtonLabel} />
-      </Button>
-      <Button
+      </ButtonWithLink>
+      <ButtonWithLink
         linkTo={`/admin/settings/areas/${item.id}`}
         buttonStyle="secondary-outlined"
         icon="edit"
       >
         <FormattedMessage {...messages.editButtonLabel} />
-      </Button>
+      </ButtonWithLink>
     </SortableRow>
   );
 };

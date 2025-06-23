@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { SupportedLocale } from 'typings';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 import { SectionField } from 'components/admin/Section';
@@ -21,15 +21,14 @@ import FieldTypeSwitcher from '../FieldTypeSwitcher';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
-  locales: SupportedLocale[];
   formHasSubmissions: boolean;
 };
 
 const ContentSettings = ({
   field,
-  locales,
   formHasSubmissions,
 }: ContentSettingsProps) => {
+  const locales = useAppConfigurationLocales();
   const { watch } = useFormContext();
   const lockedAttributes = field.constraints?.locks;
   const platformLocale = useLocale();
@@ -44,6 +43,10 @@ const ContentSettings = ({
   const disableTogglingRequired = ['body_multiloc', 'title_multiloc'].includes(
     field.code || ''
   );
+
+  if (!locales) {
+    return null;
+  }
 
   return (
     <Box mt="16px">

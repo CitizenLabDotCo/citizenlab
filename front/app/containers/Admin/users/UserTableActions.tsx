@@ -23,7 +23,7 @@ import usersKeys from 'api/users/keys';
 import { API_PATH } from 'containers/App/constants';
 
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Checkbox from 'components/UI/Checkbox';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -120,7 +120,7 @@ const DropdownListItem = styled.button`
   }
 `;
 
-const DropdownFooterButton = styled(Button)`
+const DropdownFooterButton = styled(ButtonWithLink)`
   .Button {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -321,7 +321,7 @@ const UserTableActions = ({
         </Box>
         {showSelectAndExport && (
           <>
-            <Button
+            <ButtonWithLink
               ml="auto"
               onClick={exportUsers}
               className={`export e2e-${exportType} hasLeftMargin intercom-users-export-users-button`}
@@ -332,10 +332,10 @@ const UserTableActions = ({
               fontSize={`${fontSizes.s}px`}
             >
               <FormattedMessage {...messages[exportType]} />
-            </Button>
+            </ButtonWithLink>
             {selectedUsers !== 'none' && manualGroups && (
               <ActionButtonWrapper>
-                <Button
+                <ButtonWithLink
                   className="e2e-move-users"
                   onClick={toggleDropdown}
                   buttonStyle="admin-dark-text"
@@ -345,7 +345,7 @@ const UserTableActions = ({
                   fontSize={`${fontSizes.s}px`}
                 >
                   <FormattedMessage {...messages.moveUsersTableAction} />
-                </Button>
+                </ButtonWithLink>
 
                 <Dropdown
                   width="300px"
@@ -395,7 +395,7 @@ const UserTableActions = ({
             )}
 
             {groupType === 'manual' && selectedUsers !== 'none' && (
-              <Button
+              <ButtonWithLink
                 onClick={handleGroupsDeleteClick}
                 className="hasLeftMargin"
                 buttonStyle="admin-dark-text"
@@ -405,7 +405,7 @@ const UserTableActions = ({
                 fontSize={`${fontSizes.s}px`}
               >
                 <FormattedMessage {...messages.membershipDelete} />
-              </Button>
+              </ButtonWithLink>
             )}
           </>
         )}

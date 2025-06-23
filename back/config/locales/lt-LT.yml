@@ -285,6 +285,7 @@ lt:
       likes_count: 'Patinka'
       location: 'Vieta'
       longitude: 'Ilguma'
+      neutral_reactions_count: 'Nežinoma'
       participants: 'Dalyviai'
       picks: 'Parinkimai'
       project: 'Projektas'

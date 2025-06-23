@@ -11,7 +11,7 @@ import useLocale from 'hooks/useLocale';
 import usePrevious from 'hooks/usePrevious';
 
 import { TextCell, Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -121,21 +121,21 @@ const OptionFormRow = ({
         )}
       </TextCell>
 
-      <Button
+      <ButtonWithLink
         className="e2e-form-option-save"
         buttonStyle="admin-dark"
         onClick={onSave}
       >
         <FormattedMessage {...messages.saveOption} />
-      </Button>
+      </ButtonWithLink>
 
-      <Button
+      <ButtonWithLink
         className="e2e-form-option-cancel"
         buttonStyle="secondary-outlined"
         onClick={closeRow}
       >
         <FormattedMessage {...messages.cancelOption} />
-      </Button>
+      </ButtonWithLink>
     </Row>
   );
 };

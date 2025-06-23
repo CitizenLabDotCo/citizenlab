@@ -58,7 +58,7 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   # Previewing mails from all engines.
-  config.action_mailer.preview_path = Rails.root.join('engines/*/*/spec/mailers/previews')
+  config.action_mailer.preview_paths = [Rails.root.join('engines/*/*/spec/mailers/previews')]
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

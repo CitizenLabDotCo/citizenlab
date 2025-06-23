@@ -285,6 +285,7 @@ el:
       likes_count: 'Μου αρέσει'
       location: 'Τοποθεσία'
       longitude: 'Γεωγραφικό μήκος'
+      neutral_reactions_count: 'Αβέβαιο'
       participants: 'Συμμετέχοντες'
       picks: 'Επιλογές'
       project: 'Έργο'

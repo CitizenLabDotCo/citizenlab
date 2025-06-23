@@ -68,6 +68,7 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
+  has_many :jobs_trackers, class_name: 'Jobs::Tracker', dependent: :destroy
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
@@ -102,6 +103,10 @@ class Project < ApplicationRecord
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+    using: { tsearch: { prefix: true } }
+
+  pg_search_scope :search_by_title,
+    against: :title_multiloc,
     using: { tsearch: { prefix: true } }
 
   scope :with_all_areas, -> { where(include_all_areas: true) }

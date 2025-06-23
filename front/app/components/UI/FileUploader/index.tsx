@@ -26,6 +26,7 @@ export interface Props {
   apiErrors?: CLErrors | null;
   enableDragAndDrop?: boolean;
   multiple?: boolean;
+  maxSizeMb?: number;
   dataCy?: string;
 }
 
@@ -39,6 +40,7 @@ const FileUploader = ({
   className,
   enableDragAndDrop = false,
   multiple = false,
+  maxSizeMb,
   dataCy,
 }: Props) => {
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
@@ -96,8 +98,9 @@ const FileUploader = ({
       <FileInput
         onAdd={handleFileOnAdd}
         id={id}
-        dataCy={dataCy}
         multiple={multiple}
+        maxSizeMb={maxSizeMb}
+        dataCy={dataCy}
       />
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 

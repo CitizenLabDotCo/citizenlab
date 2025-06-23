@@ -13,7 +13,7 @@ import useReorderPollQuestion from 'api/poll_questions/useReorderPollQuestion';
 import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
 
 import { List } from 'components/admin/ResourceList';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -216,14 +216,14 @@ const PollAdminForm = ({ phaseId, pollQuestions }: Props) => {
         )}
       </StyledList>
       {!newQuestionTitle && !editingOptionsId && (
-        <Button
+        <ButtonWithLink
           className="e2e-add-question-btn"
           buttonStyle="admin-dark"
           icon="plus-circle"
           onClick={startNewQuestion}
         >
           <FormattedMessage {...messages.addPollQuestion} />
-        </Button>
+        </ButtonWithLink>
       )}
     </>
   );

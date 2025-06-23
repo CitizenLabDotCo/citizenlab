@@ -285,6 +285,7 @@ sr-Latn:
       likes_count: 'Свиђа'
       location: 'Location'
       longitude: 'Geografska dužina'
+      neutral_reactions_count: 'Unsure'
       participants: 'Participants'
       picks: 'Picks'
       project: 'Projekat'

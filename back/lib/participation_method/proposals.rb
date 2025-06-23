@@ -2,6 +2,8 @@
 
 module ParticipationMethod
   class Proposals < Ideation
+    SUPPORTED_REACTION_MODES = %w[up].freeze
+
     def self.method_str
       'proposals'
     end

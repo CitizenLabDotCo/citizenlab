@@ -6,7 +6,7 @@ import { IAdminPublicationData } from 'api/admin_publications/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { LoadMore, isAdminPublication } from './utils';
 
@@ -50,7 +50,7 @@ const OptionLabel = ({
 
   if (hasNextPage) {
     return (
-      <Button
+      <ButtonWithLink
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();

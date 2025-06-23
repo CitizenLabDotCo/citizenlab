@@ -14,9 +14,10 @@ import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -34,14 +35,15 @@ const StyledTitle = styled(Text)`
 `;
 
 type Props = {
-  phaseId: string;
+  phase: IPhaseData;
   titleText?: string | React.ReactNode;
 };
 
-const NewIdeaHeading = ({ phaseId, titleText }: Props) => {
+const NewIdeaHeading = ({ phase, titleText }: Props) => {
   const { slug: projectSlug } = useParams();
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: authUser } = useAuthUser();
+  const phaseId = phase.id;
 
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -58,12 +60,21 @@ const NewIdeaHeading = ({ phaseId, titleText }: Props) => {
 
   if (!project) return null;
 
+  const isCommonGround =
+    phase.attributes.participation_method === 'common_ground';
   const showEditFormButton =
-    !isSmallerThanPhone && canModerateProject(project.data, authUser);
+    !isSmallerThanPhone &&
+    canModerateProject(project.data, authUser) &&
+    !isCommonGround;
   const linkToFormBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/form/edit`;
 
-  const returnToProject = () => {
-    clHistory.push(`/projects/${projectSlug}`);
+  const onClickClose = () => {
+    const pathname = isCommonGround
+      ? `/admin/projects/${project.data.id}/phases/${phaseId}/ideas`
+      : `/projects/${projectSlug}`;
+    clHistory.push({
+      pathname,
+    });
   };
 
   return (
@@ -98,7 +109,7 @@ const NewIdeaHeading = ({ phaseId, titleText }: Props) => {
           ml="auto"
         >
           {showEditFormButton && (
-            <Button
+            <ButtonWithLink
               icon="edit"
               linkTo={linkToFormBuilder}
               buttonStyle="primary-inverse"
@@ -106,14 +117,14 @@ const NewIdeaHeading = ({ phaseId, titleText }: Props) => {
               mr="12px"
             >
               <FormattedMessage {...messages.editForm} />
-            </Button>
+            </ButtonWithLink>
           )}
           <IconButton
             iconName="close"
             onClick={(event) => {
               event?.preventDefault();
               if (ideaSubmitted) {
-                returnToProject();
+                onClickClose();
               } else {
                 openModal();
               }
@@ -143,23 +154,23 @@ const NewIdeaHeading = ({ phaseId, titleText }: Props) => {
             alignItems="center"
             gap="20px"
           >
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
             >
               <FormattedMessage {...messages.cancelLeaveIdeaButtonText} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               icon={authUser ? 'arrow-left-circle' : 'delete'}
               buttonStyle={authUser ? 'primary' : 'delete'}
               width="100%"
               mb={isSmallerThanPhone ? '16px' : undefined}
-              onClick={returnToProject}
+              onClick={onClickClose}
               data-cy="e2e-confirm-leave-new-idea-button"
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Box>
       </Modal>

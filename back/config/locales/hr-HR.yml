@@ -285,6 +285,7 @@ hr:
       likes_count: 'Sviđa mi se'
       location: 'Mjesto'
       longitude: 'Geografska duljina'
+      neutral_reactions_count: 'Nisam siguran/sigurna'
       participants: 'Sudionici'
       picks: 'Pijuci'
       project: 'Projekt'

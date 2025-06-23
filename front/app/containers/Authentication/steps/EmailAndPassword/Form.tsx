@@ -15,7 +15,7 @@ import { SetError } from 'containers/Authentication/typings';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -143,7 +143,7 @@ const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">
-          <Button
+          <ButtonWithLink
             type="submit"
             width="auto"
             disabled={loading}
@@ -151,7 +151,7 @@ const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
             id="e2e-signin-password-submit-button"
           >
             {formatMessage(containerMessages.logIn)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       </form>
       <Box mt="32px">

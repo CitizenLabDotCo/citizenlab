@@ -9,7 +9,7 @@ import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -118,7 +118,7 @@ const Options = injectIntl(
 
         {showSeeMoreButton && (
           <Box width="100%" display="flex" mt="16px" mb="12px">
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               text={
                 seeMore
@@ -136,7 +136,7 @@ const Options = injectIntl(
 
         {showEditAgeGroupsButton && (
           <Box width="100%" display="flex" mt="16px" mb="12px">
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               text={formatMessage(messages.editAgeGroups)}
               width="auto"

@@ -285,6 +285,7 @@ fi:
       likes_count: 'Tykkää'
       location: 'Sijainti'
       longitude: 'Pituusaste'
+      neutral_reactions_count: 'Epävarma'
       participants: 'Osallistujat'
       picks: 'Poimintoja'
       project: 'Projekti'

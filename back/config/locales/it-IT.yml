@@ -285,6 +285,7 @@ it:
       likes_count: 'Preferiti'
       location: 'Posizione'
       longitude: 'Longitudine'
+      neutral_reactions_count: 'Incerto'
       participants: 'Partecipanti'
       picks: 'Plettri'
       project: 'Progetto'

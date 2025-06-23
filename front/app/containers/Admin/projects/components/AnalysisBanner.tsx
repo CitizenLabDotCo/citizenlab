@@ -25,23 +25,19 @@ import clHistory from 'utils/cl-router/history';
 
 import messages from '../project/ideas/messages';
 
-type Props =
-  | {
-      projectId: string;
-      phaseId?: never;
-    }
-  | {
-      projectId?: never;
-      phaseId: string;
-    };
+type Props = {
+  projectId: string;
+  phaseId: string;
+  scope: 'project' | 'phase';
+};
 
 /** For ideation, the analysis is scoped on the project level, for the other
  * methods, it's scoped on the phase level. Pass the right prop, either the one
  * or the other */
-const AnalysisBanner = ({ projectId, phaseId }: Props) => {
+const AnalysisBanner = ({ projectId, phaseId, scope }: Props) => {
   const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses({
-    projectId,
-    phaseId,
+    projectId: scope === 'project' ? projectId : undefined,
+    phaseId: scope === 'phase' ? phaseId : undefined,
   });
 
   const { data: phase } = usePhase(phaseId);
@@ -63,13 +59,16 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
       );
     } else {
       createAnalysis(
-        { projectId, phaseId },
+        {
+          projectId: scope === 'project' ? projectId : undefined,
+          phaseId: scope === 'phase' ? phaseId : undefined,
+        },
         {
           onSuccess: (analysis) => {
             clHistory.push(
               `/admin/projects/${
                 projectId || phase?.data.relationships.project.data.id
-              }/analysis/${analysis.data.id}`
+              }/analysis/${analysis.data.id}?phase_id=${phaseId}`
             );
             trackEventByName(tracks.analysisCreated, {
               projectId,

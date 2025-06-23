@@ -285,6 +285,7 @@ pa:
       likes_count: 'ਪਸੰਦ ਹੈ'
       location: 'ਟਿਕਾਣਾ'
       longitude: 'ਲੰਬਕਾਰ'
+      neutral_reactions_count: 'ਅਨਿਸ਼ਚਿਤ'
       participants: 'ਭਾਗ ਲੈਣ ਵਾਲੇ'
       picks: 'ਪਿਕਸ'
       project: 'ਪ੍ਰੋਜੈਕਟ'

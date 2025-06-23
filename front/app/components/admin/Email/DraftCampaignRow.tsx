@@ -16,7 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { Row } from 'components/admin/ResourceList';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -61,9 +61,13 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
       </Box>
 
       <Box minWidth="220px" display="flex" justifyContent="flex-end">
-        <Button linkTo={editLink} buttonStyle="secondary-outlined" icon="edit">
+        <ButtonWithLink
+          linkTo={editLink}
+          buttonStyle="secondary-outlined"
+          icon="edit"
+        >
           <FormattedMessage {...messages.manageButtonLabel} />
-        </Button>
+        </ButtonWithLink>
       </Box>
     </Row>
   );

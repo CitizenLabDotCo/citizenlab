@@ -14,7 +14,7 @@ import InsightBody from 'containers/Admin/projects/project/analysis/Insights/Ins
 import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/InsightFooter';
 import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/QuestionHeader';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -102,7 +102,7 @@ const Question = ({
           customFieldIds={data?.data.attributes.custom_field_ids}
         />
         <Box display="flex" gap="16px">
-          <Button
+          <ButtonWithLink
             disabled={refreshDisabled}
             buttonStyle="secondary-outlined"
             icon="refresh"
@@ -115,8 +115,8 @@ const Question = ({
               {...messages.refresh}
               values={{ count: missingInputsCount }}
             />
-          </Button>
-          <Button
+          </ButtonWithLink>
+          <ButtonWithLink
             buttonStyle="secondary-outlined"
             icon="eye"
             linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
@@ -124,7 +124,7 @@ const Question = ({
             )}`}
           >
             {formatMessage(messages.explore)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       </Box>
     </>

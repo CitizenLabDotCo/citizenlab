@@ -285,6 +285,7 @@ lb:
       likes_count: 'Gefällt'
       location: 'Location'
       longitude: 'Längt'
+      neutral_reactions_count: 'Onsécher'
       participants: 'Participanten'
       picks: 'Wielt'
       project: 'Projet'

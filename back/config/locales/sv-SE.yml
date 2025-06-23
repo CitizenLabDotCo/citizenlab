@@ -285,6 +285,7 @@ sv:
       likes_count: 'Gillar'
       location: 'Plats'
       longitude: 'Longitud'
+      neutral_reactions_count: 'Osäker'
       participants: 'Deltagare'
       picks: 'Val'
       project: 'Projekt'

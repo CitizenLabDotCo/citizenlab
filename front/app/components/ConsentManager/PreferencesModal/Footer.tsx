@@ -4,7 +4,7 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -21,7 +21,7 @@ const ButtonContainer = ({ children }: { children: React.ReactNode }) => (
   </Box>
 );
 
-const CancelButton = styled(Button)`
+const CancelButton = styled(ButtonWithLink)`
   margin-right: 4px;
 `;
 
@@ -50,14 +50,14 @@ const Footer = ({
       >
         <FormattedMessage {...messages.back} />
       </CancelButton>
-      <Button
+      <ButtonWithLink
         onClick={handleCancelConfirm}
         buttonStyle="primary"
         bgColor={colors.primary}
         bgHoverColor={darken(0.1, colors.primary)}
       >
         <FormattedMessage {...messages.confirm} />
-      </Button>
+      </ButtonWithLink>
     </ButtonContainer>
   ) : mode === 'preferenceForm' ? (
     <ButtonContainer>
@@ -70,7 +70,7 @@ const Footer = ({
       >
         <FormattedMessage {...messages.cancel} />
       </CancelButton>
-      <Button
+      <ButtonWithLink
         onClick={handleSave}
         buttonStyle="primary"
         bgColor={colors.primary}
@@ -79,17 +79,17 @@ const Footer = ({
         id="e2e-preferences-save"
       >
         <FormattedMessage {...messages.save} />
-      </Button>
+      </ButtonWithLink>
     </ButtonContainer>
   ) : (
-    <Button
+    <ButtonWithLink
       onClick={handleCancel}
       buttonStyle="primary"
       bgColor={colors.primary}
       bgHoverColor={darken(0.1, colors.primary)}
     >
       <FormattedMessage {...messages.close} />
-    </Button>
+    </ButtonWithLink>
   );
 };
 

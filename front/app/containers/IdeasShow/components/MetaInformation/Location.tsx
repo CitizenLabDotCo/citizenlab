@@ -17,7 +17,7 @@ import {
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -77,7 +77,7 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
             <Box display="block" width="100%">
               <Box display="flex">
                 <StyledIcon name="position" ariaHidden />
-                <Button
+                <ButtonWithLink
                   m="0px"
                   p="0px"
                   fontSize="m"
@@ -102,7 +102,7 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
                   >
                     {address}
                   </Text>
-                </Button>
+                </ButtonWithLink>
               </Box>
 
               {!compact && (
