@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -32,7 +32,6 @@ const IdeationForm = ({
   // For the admin idea edit page only
   goBack?: () => void;
 }) => {
-  const pagesRef = useRef<HTMLDivElement | null>(null);
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
   const { data: authUser } = useAuthUser();
@@ -105,7 +104,7 @@ const IdeationForm = ({
     : undefined;
 
   return (
-    <Box overflow="scroll" w="100%" ref={pagesRef}>
+    <Box w="100%">
       {nestedPagesData[currentPageNumber] && (
         <IdeationPage
           page={nestedPagesData[currentPageNumber].page}
@@ -122,7 +121,7 @@ const IdeationForm = ({
           phase={phase?.data}
           defaultValues={initialFormData}
           customFields={customFields ?? []}
-          pagesRef={pagesRef}
+          pages={nestedPagesData}
         />
       )}
     </Box>
