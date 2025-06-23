@@ -177,14 +177,34 @@ export const GanttChart = ({
   };
 
   const handleTodayClick = () => {
+    scrollToToday();
+  };
+
+  const scrollToToday = useCallback(() => {
     const offset = isYearlyView
       ? yearlyViewData?.todayOffset
       : dailyViewData?.todayOffset;
     const unitWidth = isYearlyView ? monthWidth : dayWidth;
-    if (offset !== undefined) {
+    if (
+      offset !== undefined &&
+      timelineBodyRef.current &&
+      timelineBodyRef.current.scrollWidth > 0
+    ) {
       scrollTo(timelineBodyRef, offset, unitWidth);
     }
-  };
+  }, [isYearlyView, yearlyViewData, dailyViewData, dayWidth, monthWidth]);
+
+  const hasMounted = useRef(false);
+
+  useLayoutEffect(() => {
+    if (!hasMounted.current) {
+      scrollToToday();
+      hasMounted.current = true;
+    } else {
+      scrollToToday();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedRange]); // Prevent scrolling to current dat on infinite scroll
 
   const unitW = isYearlyView ? monthWidth : dayWidth;
   const todayOffset = isYearlyView
