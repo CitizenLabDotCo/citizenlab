@@ -6,6 +6,7 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { useIntl } from 'utils/cl-intl';
 
+import FilesTable from './components/FilesTable';
 import UploadFileButtonWithModal from './components/UploadFileButtonWithModal';
 import messages from './messages';
 
@@ -22,8 +23,8 @@ const ProjectFilesTab = () => {
         />
         <UploadFileButtonWithModal />
       </Box>
-      <Box mt="40px" p="16px" background={colors.white}>
-        TODO: Add file table component
+      <Box mt="40px" background={colors.white}>
+        <FilesTable />
       </Box>
     </Box>
   );
