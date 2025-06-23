@@ -214,6 +214,8 @@ const CustomFieldsPage = ({
     setIsDisclaimerOpened(false);
   };
 
+  const shouldShowMap = !isAdminPage && isMapPage;
+
   return (
     <FormProvider {...methods}>
       {showFormFeedback && <Feedback />}
@@ -227,7 +229,7 @@ const CustomFieldsPage = ({
           w="100%"
           data-cy={`e2e-page-number-${currentPageNumber + 1}`}
         >
-          {isMapPage && (
+          {shouldShowMap && (
             <PageEsriMap
               currentPageNumber={currentPageNumber}
               mapConfig={mapConfig}
@@ -238,13 +240,12 @@ const CustomFieldsPage = ({
 
           <Box
             flex={'1 1 auto'}
-            h={isMapPage && isMobileOrSmaller ? '80%' : '100%'}
+            h={shouldShowMap && isMobileOrSmaller ? '80%' : '100%'}
             position="relative"
             overflow="hidden"
             display="flex"
             flexDirection="column"
             justifyContent="space-between"
-            mb="40px"
           >
             <Box
               display="flex"
@@ -254,14 +255,15 @@ const CustomFieldsPage = ({
               overflowX="hidden"
               ref={pageRef}
             >
-              {isMapPage && isMobileOrSmaller && (
+              {shouldShowMap && isMobileOrSmaller && (
                 <PageEsriDivider dragDividerRef={dragDividerRef} />
               )}
               <Box
                 h="100%"
                 display="flex"
                 flexDirection="column"
-                mt={isMapPage && isMobileOrSmaller ? '20px' : undefined}
+                mt={shouldShowMap && isMobileOrSmaller ? '20px' : undefined}
+                mb="40px"
               >
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
