@@ -39,6 +39,7 @@ export const GanttChart = ({
   renderItemLabel,
   getItemColor = () => colors.white,
   showTodayLine = true,
+  onItemLabelClick,
 }: GanttChartProps) => {
   const today = useMemo(() => new Date(), []);
   const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
@@ -380,7 +381,40 @@ export const GanttChart = ({
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                cursor: onItemLabelClick ? 'pointer' : 'default',
+                ...(onItemLabelClick && {
+                  transition: 'background 0.2s',
+                }),
               }}
+              onClick={
+                onItemLabelClick ? () => onItemLabelClick(item) : undefined
+              }
+              onKeyDown={
+                onItemLabelClick
+                  ? (e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        onItemLabelClick(item);
+                      }
+                    }
+                  : undefined
+              }
+              tabIndex={onItemLabelClick ? 0 : undefined}
+              role={onItemLabelClick ? 'button' : undefined}
+              onMouseOver={
+                onItemLabelClick
+                  ? (e) => {
+                      (e.currentTarget as HTMLElement).style.background =
+                        colors.grey100;
+                    }
+                  : undefined
+              }
+              onMouseOut={
+                onItemLabelClick
+                  ? (e) => {
+                      (e.currentTarget as HTMLElement).style.background = '';
+                    }
+                  : undefined
+              }
             >
               {renderItemLabel ? renderItemLabel(item) : item.title}
             </Box>
