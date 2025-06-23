@@ -33,4 +33,32 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.actionsTableHeader',
     defaultMessage: 'Actions',
   },
+  audioFileDescription: {
+    id: 'app.containers.AdminPage.ProjectFiles.audioFileDescription',
+    defaultMessage: 'Audio interviews, Town Hall recordings',
+  },
+  audioFileExtensionDescription: {
+    id: 'app.containers.AdminPage.ProjectFiles.audioFileExtensionDescription',
+    defaultMessage: 'WAV, MP3',
+  },
+  addFile: {
+    id: 'app.containers.AdminPage.ProjectFiles.Modal.addFile',
+    defaultMessage: 'Add file',
+  },
+  textFileDescription: {
+    id: 'app.containers.AdminPage.ProjectFiles.textFileDescription',
+    defaultMessage: 'Reports, informational documents',
+  },
+  textFileExtensionDescription: {
+    id: 'app.containers.AdminPage.ProjectFiles.textFileExtensionDescription',
+    defaultMessage: 'PDF, DOCX, PPTX',
+  },
+  imageFileDescription: {
+    id: 'app.containers.AdminPage.ProjectFiles.imageFileDescription',
+    defaultMessage: 'Images',
+  },
+  imageFileExtensionDescription: {
+    id: 'app.containers.AdminPage.ProjectFiles.imageFileExtensionDescription',
+    defaultMessage: 'PNG, JPEG',
+  },
 });
