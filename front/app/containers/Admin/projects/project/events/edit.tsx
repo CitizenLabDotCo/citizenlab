@@ -156,18 +156,18 @@ const AdminProjectEventEdit = () => {
     }
   }, [remotePoint]);
 
+  useEffect(() => {
+    if (eventAttrs.maximum_attendees) {
+      setAttendanceLimitVisible(true);
+    }
+  }, [eventAttrs.maximum_attendees]);
+
   // If there is a custom button url, set the state accordingly
   useEffect(() => {
     if (eventAttrs.using_url) {
       setAttendanceButtonOptionsVisible(true);
     }
   }, [eventAttrs.using_url]);
-
-  useEffect(() => {
-    if (eventAttrs.maximum_attendees) {
-      setAttendanceLimitVisible(true);
-    }
-  }, [eventAttrs.maximum_attendees]);
 
   // When address 1 is updated, geocode the location point to match
   useEffect(() => {
