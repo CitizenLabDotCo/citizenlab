@@ -95,7 +95,7 @@ const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
                 >
                   <ButtonWithLink
                     icon="edit"
-                    onClick={onClickEdit}
+                    linkTo={`/admin/messaging/emails/automated/${campaign.id}/edit`}
                     disabled={!isEditable}
                     buttonStyle="secondary-outlined"
                   >

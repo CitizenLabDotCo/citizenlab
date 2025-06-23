@@ -111,7 +111,13 @@ module EmailCampaigns
 
     def preview
       preview = EmailCampaigns::DeliveryService.new.preview_email(@campaign, current_user)
-      render json: preview
+      render json: {
+        data: {
+          id: @campaign.id,
+          type: 'campaign_preview',
+          attributes: preview
+        }
+      }
     end
 
     def deliveries

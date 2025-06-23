@@ -5,6 +5,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import campaignsKeys from './keys';
 import { ICampaign, IUpdateCampaignProperties } from './types';
+import campaignPreviewsKeys from 'api/campaign_previews/keys';
 
 const updateCampaign = async ({
   id: campaignId,
@@ -22,6 +23,7 @@ const useUpdateCampaign = () => {
     mutationFn: updateCampaign,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: campaignsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: campaignPreviewsKeys.all() });
     },
   });
 };

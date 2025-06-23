@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import Frame from 'react-frame-component';
 import styled from 'styled-components';
 
-import { API_PATH } from 'containers/App/constants';
-
-import { getJwt } from 'utils/auth/jwt';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import useCampaignPreview from 'api/campaign_previews/useCampaignPreview';
 
 const StyledFrame = styled(Frame)`
   border-radius: ${(props) => props.theme.borderRadius};
@@ -30,24 +28,9 @@ const PreviewFrame = ({
   children,
   showSubject,
 }: Props) => {
-  const [previewHtml, setPreviewHtml] = useState<string>();
-  const [previewSubject, setPreviewSubject] = useState<string>();
-
-  useEffect(() => {
-    const jwt = getJwt();
-    fetch(`${API_PATH}/campaigns/${campaignId}/preview`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setPreviewHtml(data.html);
-        setPreviewSubject(data.subject);
-      });
-  }, [campaignId]);
+  const { data: previewData } = useCampaignPreview(campaignId);
+  const previewSubject = previewData?.data.attributes.subject;
+  const previewHtml = previewData?.data.attributes.html;
 
   if (!previewHtml) return null;
 

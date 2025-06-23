@@ -30,7 +30,6 @@ const StyledSection = styled(Section)`
 
 type CampaignFormProps = {
   onSubmit: (formValues: Partial<CampaignFormValues>) => void | Promise<void>;
-  defaultValues?: Partial<CampaignFormValues>;
   campaign: ICampaign;
   isLoading: boolean;
 };
