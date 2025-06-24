@@ -851,7 +851,7 @@
   "app.containers.Admin.emails.draft": "Draft",
   "app.containers.Admin.emails.editButtonLabel": "Edit",
   "app.containers.Admin.emails.editCampaignTitle": "Edit campaign",
-  "app.containers.Admin.emails.editDisabledTooltip": "This email cannot currently be edited.",
+  "app.containers.Admin.emails.editDisabledTooltip2": "Coming soon: This email cannot currently be edited.",
   "app.containers.Admin.emails.editRegion_button_text_multiloc": "Button text",
   "app.containers.Admin.emails.editRegion_intro_multiloc": "Introduction",
   "app.containers.Admin.emails.editRegion_subject_multiloc": "Subject",
