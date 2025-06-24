@@ -4,7 +4,7 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import filesKeys from './keys';
-import { FilesKeys, IFiles, Props, QueryParameters } from './types';
+import { FilesKeys, IFiles, IPaginationProps, QueryParameters } from './types';
 
 const fetchFiles = (queryParams: QueryParameters) =>
   fetcher<IFiles>({
@@ -14,7 +14,7 @@ const fetchFiles = (queryParams: QueryParameters) =>
   });
 
 const useFiles = (
-  { pageNumber, pageSize }: Props,
+  { pageNumber, pageSize }: IPaginationProps,
   { enabled = true }: { enabled?: boolean } = { enabled: true }
 ) => {
   const queryParameters: QueryParameters = {

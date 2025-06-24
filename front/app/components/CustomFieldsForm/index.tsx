@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -48,7 +48,6 @@ const CustomFieldsForm = ({
   // For the admin idea edit page only
   goBack?: () => void;
 }) => {
-  const pagesRef = useRef<HTMLDivElement | null>(null);
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
   const { data: authUser } = useAuthUser();
@@ -87,7 +86,8 @@ const CustomFieldsForm = ({
           ...formValues,
           project_id: projectId,
           phase_ids,
-          publication_status: undefined, // TODO: Change this logic when handling draft ideas
+          publication_status:
+            participationMethod === 'common_ground' ? 'published' : undefined,
         });
         updateSearchParams({ idea_id: idea.data.id });
       } else {
@@ -120,7 +120,7 @@ const CustomFieldsForm = ({
     : undefined;
 
   return (
-    <Box overflow="scroll" w="100%" ref={pagesRef}>
+    <Box w="100%">
       {nestedPagesData[currentPageNumber] && (
         <CustomFieldsPage
           page={nestedPagesData[currentPageNumber].page}
@@ -137,7 +137,7 @@ const CustomFieldsForm = ({
           phase={phase?.data}
           defaultValues={initialFormData}
           customFields={customFields ?? []}
-          pagesRef={pagesRef}
+          pages={nestedPagesData}
         />
       )}
     </Box>
