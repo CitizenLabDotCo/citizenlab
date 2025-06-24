@@ -175,7 +175,6 @@ const multipleVotingConfig: VotingMethodConfig = {
       return messages.submittedVoteCountText;
     }
   },
-  // To change
   getSubmissionTerm: (form) => {
     if (form === 'singular') {
       return messages.vote;
