@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "Error downloading the ICS file",
   "app.containers.EventsShow.linkToOnlineEvent": "Link to online event",
   "app.containers.EventsShow.locationIconAltText": "Location",
+  "app.containers.EventsShow.metaTitle1": "Event: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Online meeting",
   "app.containers.EventsShow.onlineLinkIconAltText": "Online meeting link",
   "app.containers.EventsShow.socialMediaSharingMessage": "Attend this event: {eventTitle}",
