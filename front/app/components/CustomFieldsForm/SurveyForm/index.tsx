@@ -44,8 +44,6 @@ const SurveyForm = ({
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
-  console.log(nestedPagesData);
-
   const lastPageNumber = nestedPagesData.length - 1;
 
   const onSubmit = async (formValues: FormValues) => {

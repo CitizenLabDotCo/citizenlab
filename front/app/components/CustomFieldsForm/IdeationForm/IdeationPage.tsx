@@ -207,7 +207,7 @@ const IdeationPage = ({
   const onCancelDisclaimer = () => {
     setIsDisclaimerOpened(false);
   };
-  console.log(page);
+
   return (
     <FormProvider {...methods}>
       {showFormFeedback && <Feedback />}
