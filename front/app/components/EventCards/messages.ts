@@ -1,4 +1,5 @@
 import { defineMessages } from 'react-intl';
+import eventsShowMessages from '../../containers/EventsShowPage/messages';
 
 export default defineMessages({
   startsAt: {
@@ -33,14 +34,8 @@ export default defineMessages({
     id: 'app.components.EventCard.a11y_readMore',
     defaultMessage: 'Read more about the "{eventTitle}" event.',
   },
-  attending: {
-    id: 'app.containers.EventsShow.attending',
-    defaultMessage: 'attending',
-  },
-  attended: {
-    id: 'app.containers.EventsShow.attended',
-    defaultMessage: 'attended',
-  },
+  attending: eventsShowMessages.attending,
+  attended: eventsShowMessages.attended,
   online: {
     id: 'app.containers.EventsShow.online2',
     defaultMessage: 'Online meeting',
