@@ -17,27 +17,29 @@ RSpec.describe File do
     it { is_expected.to belong_to(:uploader).class_name('User').optional }
   end
 
-  describe 'size' do
+  describe 'metadata' do
     context 'when creating a new file' do
-      it 'automatically calculates and stores the file size' do
+      it 'automatically calculates and stores both size and mime_type' do
         expect(file.size).to be_nil # Not calculated until save
+        expect(file.mime_type).to be_nil
 
         file.save!
 
         expect(file.size).to be_present
-        expect(file.size).to eq(file.content.size)
+        expect(file.size).to eq(130)
+        expect(file.mime_type).to eq('application/pdf')
       end
     end
 
     context 'when updating the file content' do
       let!(:file) { create(:file) }
 
-      it 'recalculates the size' do
-        original_size = file.size
-        expect(original_size).to be_present
+      it 'recalculates both size and mime_type' do
+        file.content = Rails.root.join('spec/fixtures/audio_mp4.mp4').open
 
-        file.content = Rails.root.join('spec/fixtures/afvalkalender.pdf').open
-        expect { file.save! }.to change(file, :size).from(original_size).to(1_645_987)
+        expect { file.save! }
+          .to change(file, :size).from(130).to(1_493)
+          .and change(file, :mime_type).from('application/pdf').to('video/mp4')
       end
     end
   end

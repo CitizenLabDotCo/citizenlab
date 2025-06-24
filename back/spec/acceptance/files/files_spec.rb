@@ -49,7 +49,8 @@ resource 'Files' do
             name: file.name,
             created_at: file.created_at.iso8601(3),
             updated_at: file.updated_at.iso8601(3),
-            size: 130
+            size: 130,
+            mime_type: 'application/pdf'
           },
           relationships: {
             uploader: {

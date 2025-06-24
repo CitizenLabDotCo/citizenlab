@@ -2400,7 +2400,8 @@ CREATE TABLE public.files (
     uploader_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    size integer
+    size integer,
+    mime_type character varying
 );
 
 
@@ -7337,6 +7338,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250624134747'),
 ('20250624102147'),
 ('20250618151933'),
 ('20250610112901'),

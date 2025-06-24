@@ -11,6 +11,7 @@
 #  created_at                                  :datetime         not null
 #  updated_at                                  :datetime         not null
 #  size(in bytes)                              :integer
+#  mime_type                                   :string
 #
 # Indexes
 #
@@ -33,14 +34,15 @@ module Files
     validates :content, presence: true
     validates :size, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
 
-    before_save :update_size
+    before_save :update_metadata
 
     private
 
-    def update_size
+    def update_metadata
       return unless content.present? && content_changed?
 
       self.size = content.size
+      self.mime_type = content.content_type
     end
   end
 end
