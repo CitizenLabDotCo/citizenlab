@@ -147,6 +147,7 @@ class User < ApplicationRecord
   has_many :follows, -> { order(:followable_id) }, class_name: 'Follower', dependent: :destroy
   has_many :cosponsorships, dependent: :destroy
   has_many :cosponsored_ideas, through: :cosponsorships, source: :idea
+  has_many :files, class_name: 'Files::File', foreign_key: :uploader_id, inverse_of: :uploader, dependent: :nullify
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :complete_registration
