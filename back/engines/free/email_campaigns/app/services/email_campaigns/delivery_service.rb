@@ -92,10 +92,7 @@ module EmailCampaigns
 
     def send_preview(campaign, recipient)
       commands = if campaign.manual?
-        campaign.generate_commands(
-          recipient: recipient,
-          time: Time.zone.now
-        )
+        generate_commands(campaign, recipient)
       else
         [campaign.mailer_class.preview_command(recipient:)].compact
       end
@@ -108,10 +105,7 @@ module EmailCampaigns
 
     def preview_email(campaign, recipient)
       command = if campaign.manual?
-        campaign.generate_commands(
-          recipient: recipient,
-          time: Time.zone.now
-        ).first&.merge(recipient: recipient)
+        generate_commands(campaign, recipient).first&.merge(recipient: recipient)
       else
         campaign.mailer_class.preview_command(recipient:)
       end
@@ -153,7 +147,7 @@ module EmailCampaigns
 
     def assign_campaigns_command(campaigns_with_recipients, options)
       campaigns_with_recipients.flat_map do |(recipient, campaign)|
-        campaign.generate_commands(recipient: recipient, **options)
+        generate_commands(campaign, recipient, options)
           .map { |command| command.merge(recipient: recipient) }
           .zip([campaign].cycle)
       end
@@ -185,6 +179,16 @@ module EmailCampaigns
         .with(campaign: campaign, command: command)
         .campaign_mail
         .deliver_later(wait: command[:delay] || 0)
+    end
+
+    def generate_commands(campaign, recipient, options = {})
+      campaign.generate_commands(recipient:, **options).map do |command|
+        command.merge(
+          recipient: recipient,
+          time: Time.zone.now,
+          delivery_id: SecureRandom.uuid # Needed to be included in the Mailgun headers, so Mailgun can update the delivery status
+        )
+      end
     end
   end
 end
