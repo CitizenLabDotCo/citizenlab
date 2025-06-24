@@ -16,4 +16,5 @@ export interface FormValues {
   topic_ids?: string[];
   cosponsor_ids?: string[];
   publication_status?: IdeaPublicationStatus;
+  anonymous?: boolean;
 }

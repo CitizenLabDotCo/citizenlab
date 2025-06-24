@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -23,7 +22,6 @@ import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
-import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
@@ -33,13 +31,13 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import CustomFields from '../CustomFields';
 import AuthorField from '../Fields/AuthorField';
 import BudgetField from '../Fields/BudgetField';
-import generateYupValidationSchema from '../generateYupSchema';
 import PageEsriDivider from '../Map/PageEsriDivider';
 import PageEsriMap from '../Map/PageEsriMap';
 import useEsriMapPage from '../Map/useEsriMapPage';
 import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
+import usePageForm from '../Page/usePageForm';
 import { getFormCompletionPercentage } from '../util';
 
 const StyledForm = styled.form`
@@ -86,14 +84,12 @@ const IdeationPage = ({
 }: CustomFieldsPage) => {
   const pageRef = useRef<HTMLDivElement>(null);
 
-  const [showFormFeedback, setShowFormFeedback] = useState(false);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
 
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
 
   const { pathname } = useLocation();
   const isAdminPage = isPage('admin', pathname);
@@ -125,21 +121,13 @@ const IdeationPage = ({
     methods.handleSubmit((e) => onFormSubmit(e))();
   };
 
-  const schema = generateYupValidationSchema({
+  const { methods, setShowFormFeedback, showFormFeedback } = usePageForm({
     pageQuestions,
-    formatMessage,
-    localize,
-  });
-
-  const methods = useForm({
-    mode: 'onBlur',
-    resolver: yupResolver(schema),
     defaultValues,
   });
 
   // Map logic
   const shouldShowMap = !isAdminPage && isMapPage;
-
   const { mapConfig, mapLayers, draggableDivRef, dragDividerRef } =
     useEsriMapPage({
       project,
@@ -197,7 +185,7 @@ const IdeationPage = ({
 
   const formCompletionPercentage = getFormCompletionPercentage({
     customFields,
-    formValues: methods.getValues() ?? {},
+    formValues: methods.getValues(),
     userIsEditing: isIdeaEditPage,
     userIsOnLastPage: currentPageNumber === lastPageNumber,
   });
