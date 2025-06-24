@@ -741,7 +741,26 @@ const AdminProjectEventEdit = () => {
                   }}
                 />
               </SectionField>
-              {attendanceLimitVisible && <p>Placeholder for toggled content</p>}
+              {attendanceLimitVisible && (
+                <SectionField>
+                  <Input
+                    id="maximum_attendees"
+                    label={formatMessage(messages.maximumAttendees)}
+                    type="number"
+                    min="1"
+                    placeholder=""
+                    value={
+                      eventAttrs.maximum_attendees
+                        ? eventAttrs.maximum_attendees.toString()
+                        : null
+                    }
+                    // onChange={handleMaximumAttendeesChange}
+                    labelTooltipText={formatMessage(
+                      messages.maximumAttendeesTooltip
+                    )}
+                  />
+                </SectionField>
+              )}
 
               <Title
                 variant="h4"

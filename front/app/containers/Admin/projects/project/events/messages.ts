@@ -179,7 +179,16 @@ export default defineMessages({
   toggleAttendanceLimitTooltip: {
     id: 'app.containers.AdminPage.ProjectEvents.toggleAttendanceLimitTooltip',
     defaultMessage:
-      'Set a maximimum number of attendees. Cannot be set to a value lower than the current attendance count.',
+      'Set a maximimum number of attendees. If the limit is reached, no further attendances will be accepted.',
+  },
+  maximumAttendees: {
+    id: 'app.containers.AdminPage.ProjectEvents.maximumAttendees',
+    defaultMessage: 'Maximum attendees',
+  },
+  maximumAttendeesTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.maximumAttendeesTooltip',
+    defaultMessage:
+      'Cannot be set to a value lower than the current attendance count.',
   },
   attendanceButton: {
     id: 'app.containers.AdminPage.ProjectEvents.attendanceButton',
