@@ -281,6 +281,7 @@ const IdeationPage = ({
                       projectId={projectId}
                       ideaId={ideaId}
                       phase={phase}
+                      participationMethod={participationMethod}
                     />
 
                     {currentPageNumber === lastPageNumber - 1 &&

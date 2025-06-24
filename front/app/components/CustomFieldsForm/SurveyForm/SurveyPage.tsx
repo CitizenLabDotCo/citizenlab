@@ -225,6 +225,7 @@ const SurveyPage = ({
                         projectId={projectId}
                         ideaId={ideaId}
                         phase={phase}
+                        participationMethod={participationMethod}
                       />
                       {currentPageNumber === lastPageNumber &&
                         idea &&

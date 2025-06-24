@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -149,11 +149,13 @@ const CustomFields = ({
   projectId,
   ideaId,
   phase,
+  participationMethod,
 }: {
   questions: IFlatCustomField[];
   projectId?: string;
   ideaId?: string;
   phase?: IPhaseData;
+  participationMethod?: ParticipationMethod;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -173,7 +175,9 @@ const CustomFields = ({
             subtextSupportsHtml: true,
           };
 
-          const answerNotPublic = !question.visible_to_public;
+          const answerNotPublic =
+            !question.visible_to_public &&
+            participationMethod !== 'native_survey';
 
           return (
             <Box key={question.id} mb="24px" position="relative">
