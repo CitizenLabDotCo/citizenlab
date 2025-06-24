@@ -366,8 +366,6 @@ const FormEdit = ({
     }
   };
 
-  const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
-
   return (
     <Box
       display="flex"
@@ -414,8 +412,8 @@ const FormEdit = ({
                 <Box mt="16px">
                   <FormStatus
                     successMessageIsVisible={successMessageIsVisible}
+                    setSuccessMessageIsVisible={setSuccessMessageIsVisible}
                     isSubmitting={isSubmitting}
-                    closeSuccessMessage={closeSuccessMessage}
                     builderConfig={builderConfig}
                     projectId={projectId}
                     phaseId={phaseId}

@@ -18,7 +18,7 @@ import messages from './messages';
 type FormStatusProps = {
   successMessageIsVisible: boolean;
   isSubmitting: boolean;
-  closeSuccessMessage: () => void;
+  setSuccessMessageIsVisible: (visible: boolean) => void;
   builderConfig: FormBuilderConfig;
   projectId: string;
   phaseId: string;
@@ -27,7 +27,7 @@ type FormStatusProps = {
 const FormStatus = ({
   successMessageIsVisible,
   isSubmitting,
-  closeSuccessMessage,
+  setSuccessMessageIsVisible,
   builderConfig: {
     formSavedSuccessMessage,
     getWarningNotice,
@@ -105,7 +105,7 @@ const FormStatus = ({
       {showSuccessMessage && (
         <SuccessFeedback
           successMessage={formatMessage(formSavedSuccessMessage)}
-          closeSuccessMessage={closeSuccessMessage}
+          closeSuccessMessage={() => setSuccessMessageIsVisible(false)}
         />
       )}
       {showWarnings()}
