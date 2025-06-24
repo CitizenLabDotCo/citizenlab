@@ -36,8 +36,8 @@ RSpec.describe File do
         original_size = file.size
         expect(original_size).to be_present
 
-        file.content = Rails.root.join('spec/fixtures/minimal_pdf.pdf').open
-        expect { file.save! }.to change(file, :size).from(original_size).to(130)
+        file.content = Rails.root.join('spec/fixtures/afvalkalender.pdf').open
+        expect { file.save! }.to change(file, :size).from(original_size).to(1_645_987)
       end
     end
   end
