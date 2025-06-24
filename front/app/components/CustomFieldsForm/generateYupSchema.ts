@@ -303,7 +303,8 @@ const generateYupValidationSchema = ({
 
         break;
       }
-      case 'file_upload': {
+      case 'file_upload':
+      case 'shapefile_upload': {
         schema[key] = required
           ? object().required(fieldRequired).nullable()
           : object().nullable();

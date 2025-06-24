@@ -132,6 +132,7 @@ const renderField = ({
         <ImageMultichoiceField question={question} scrollErrorIntoView={true} />
       );
     case 'file_upload':
+    case 'shapefile_upload':
       return (
         <SingleFileUploadField
           name={question.key}
@@ -189,6 +190,9 @@ const CustomFields = ({
                   formatMessage,
                   optionsLength: question.options?.length || 0,
                 })}
+                {question.input_type === 'shapefile_upload' && (
+                  <FormattedMessage {...messages.uploadShapefileInstructions} />
+                )}
               </Text>
               {answerNotPublic && (
                 <Text mt="0px" fontSize="s">
