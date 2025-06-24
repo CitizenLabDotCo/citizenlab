@@ -4,7 +4,9 @@ import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useAddIdea from 'api/ideas/useAddIdea';
-import useDraftIdeaByPhaseId from 'api/ideas/useDraftIdeaByPhaseId';
+import useDraftIdeaByPhaseId, {
+  clearDraftIdea,
+} from 'api/ideas/useDraftIdeaByPhaseId';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
 import { ParticipationMethod } from 'api/phases/types';
@@ -52,6 +54,10 @@ const SurveyForm = ({
 
   const onSubmit = async (formValues: FormValues) => {
     const isSubmitPage = currentPageNumber === nestedPagesData.length - 2;
+    if (currentPageNumber === nestedPagesData.length - 1) {
+      // Form has been submitted, clear the draft idea
+      clearDraftIdea();
+    }
     // The back-end initially returns a draft idea without an ID
     if (!draftIdea?.data.id) {
       // If the user is an admin or project moderator, we allow them to post to a specific phase
@@ -66,6 +72,7 @@ const SurveyForm = ({
         phase_ids,
         publication_status: isSubmitPage ? 'published' : 'draft',
       });
+
       updateSearchParams({ idea_id: idea.data.id });
     } else {
       await updateIdea({
