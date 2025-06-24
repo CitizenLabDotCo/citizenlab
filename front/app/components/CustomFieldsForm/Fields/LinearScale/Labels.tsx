@@ -1,8 +1,11 @@
 import React from 'react';
 
 import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
+
 import { IFlatCustomField } from 'api/custom_fields/types';
+
 import useLocalize from 'hooks/useLocalize';
+
 import { getLinearScaleLabel } from './utils';
 
 interface Props {
@@ -45,9 +48,13 @@ const Labels = ({ question, maximum }: Props) => {
         </>
       ) : (
         // Show labels as list underneath the buttons when more than 3 labels OR on mobile devices
-        <Box maxWidth={'100%'}>
+        <Box maxWidth={'100%'} role="list">
           {labelsFromSchema.map((label, index) => (
-            <Box display="flex" key={`${question.key}-${index}`}>
+            <Box
+              display="flex"
+              key={`${question.key}-${index}`}
+              role="listitem"
+            >
               {label && (
                 <>
                   <Text
