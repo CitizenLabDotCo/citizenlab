@@ -26,7 +26,9 @@ class WebApi::V1::FilesV2Controller < ApplicationController
   def create
     file = authorize(Files::File.new(create_params))
 
+    side_fx.before_create(file, current_user)
     if file.save
+      side_fx.after_create(file, current_user)
       render json: WebApi::V1::FileV2Serializer.new(
         file,
         params: jsonapi_serializer_params
@@ -38,7 +40,11 @@ class WebApi::V1::FilesV2Controller < ApplicationController
 
   def destroy
     file = authorize(Files::File.find(params[:id]))
+
+    side_fx.before_destroy(file, current_user)
     file.destroy!
+    side_fx.after_destroy(file, current_user)
+
     head :no_content
   end
 
@@ -49,5 +55,9 @@ class WebApi::V1::FilesV2Controller < ApplicationController
       content_by_content: params.require(:file).permit(:content, :name),
       uploader_id: current_user.id
     }
+  end
+
+  def side_fx
+    @side_fx ||= Files::SideFxFileService.new
   end
 end

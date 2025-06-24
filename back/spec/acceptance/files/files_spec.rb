@@ -76,10 +76,20 @@ resource 'Files' do
     let(:content) { file_as_base64(name, 'application/pdf') }
 
     context 'when admin' do
-      before { admin_header_token }
+      let(:admin) { create(:admin) }
+
+      before { header_token_for(admin) }
 
       example 'Create a file' do
-        expect { do_request }.to change(Files::File, :count).by(1)
+        expect { do_request }
+          .to change(Files::File, :count).by(1)
+          .and(enqueue_job(LogActivityJob).with(
+            a_kind_of(Files::File),
+            'created',
+            admin,
+            a_kind_of(Numeric)
+          ))
+
         assert_status 201
         Files::File.find(response_data[:id])
       end
@@ -92,10 +102,15 @@ resource 'Files' do
     let(:id) { file.id }
 
     context 'when admin' do
-      before { admin_header_token }
+      let(:admin) { create(:admin) }
+
+      before { header_token_for(admin) }
 
       example 'Delete a file' do
-        expect { do_request }.to change(Files::File, :count).by(-1)
+        expect { do_request }
+          .to change(Files::File, :count).by(-1)
+          .and enqueue_job(LogActivityJob)
+
         assert_status 204
         expect { Files::File.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
