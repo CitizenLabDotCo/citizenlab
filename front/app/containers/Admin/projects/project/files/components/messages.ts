@@ -61,4 +61,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.imageFileExtensionDescription',
     defaultMessage: 'PNG, JPEG',
   },
+  chooseFiles: {
+    id: 'app.containers.AdminPage.ProjectFiles.chooseFiles',
+    defaultMessage: 'Choose files',
+  },
+  dragAndDropFiles: {
+    id: 'app.containers.AdminPage.ProjectFiles.dragAndDropFiles',
+    defaultMessage: 'Drag and drop files here or',
+  },
 });

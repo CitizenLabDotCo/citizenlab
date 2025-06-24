@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 
-import { Button, Box } from '@citizenlab/cl2-component-library';
-import Dropzone from 'react-dropzone';
+import {
+  Button,
+  Box,
+  Text,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
+import { useDropzone } from 'react-dropzone';
 
-import FileUploader from 'components/UI/FileUploader';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -13,8 +18,20 @@ import messages from './messages';
 
 const UploadFileButtonWithModal = () => {
   const { formatMessage } = useIntl();
-
   const [modalOpen, setModalOpen] = useState(false);
+
+  const { getRootProps, getInputProps, open } = useDropzone({
+    noClick: false,
+    noKeyboard: false,
+    multiple: true,
+    validator: () => null, // Accept all file types.
+    onDrop: (_files) => {
+      // ToDo: Handle file uploads once BE is in place.
+    },
+    onDropRejected: (_fileRejections) => {
+      // ToDo: Handle file rejections, e.g., show error messages.
+    },
+  });
 
   return (
     <>
@@ -33,7 +50,7 @@ const UploadFileButtonWithModal = () => {
       >
         <Box mb="30px">
           <FileExampleDescription
-            iconName={'search'}
+            iconName={'audio'}
             fileTypeMessage={messages.audioFileDescription}
             fileExtensionMessage={messages.audioFileExtensionDescription}
           />
@@ -48,43 +65,27 @@ const UploadFileButtonWithModal = () => {
             fileExtensionMessage={messages.imageFileExtensionDescription}
           />
         </Box>
-        <Box>
-          <Dropzone
-            accept={{
-              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-              'text/*': ['.txt', '.csv', '.doc', '.docx', '.pdf'],
-              'audio/*': ['.mp3', '.wav', '.ogg'],
-            }}
-            maxSize={50}
-            disabled={false}
-            onDrop={(file) => {
-              console.log('File dropped!', file);
-            }}
-            onDropRejected={(test) => {
-              console.log('File drop rejected', test);
-            }}
-          >
-            {({ getInputProps }) => {
-              return (
-                <Box p="50px">
-                  DROPZONE FOR FILES HERE
-                  <input {...getInputProps()} />
-                </Box>
-              );
-            }}
-          </Dropzone>
+        <Box
+          {...getRootProps()}
+          p="20px"
+          border={`1px dashed ${colors.coolGrey300}`}
+          borderRadius={stylingConsts.borderRadius}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="column"
+        >
+          <Text m="0px" color="coolGrey600">
+            {formatMessage(messages.dragAndDropFiles)}
+          </Text>
+          <Button
+            buttonStyle="admin-dark"
+            text={formatMessage(messages.chooseFiles)}
+            mt="10px"
+            onClick={open}
+          />
+          <input {...getInputProps()} />
         </Box>
-
-        <FileUploader
-          id="e2e-file-uploader"
-          onFileAdd={() => {}}
-          onFileRemove={() => {}}
-          files={null}
-          apiErrors={[]}
-          onFileReorder={() => {}}
-          enableDragAndDrop
-          multiple
-        />
       </Modal>
     </>
   );
