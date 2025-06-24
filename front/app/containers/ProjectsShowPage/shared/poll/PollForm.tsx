@@ -6,7 +6,7 @@ import {
   defaultCardStyle,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IPollQuestionData } from 'api/poll_questions/types';
@@ -23,6 +23,9 @@ import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 import messages from './messages';
 import PollMultipleChoice from './PollMultipleChoice';
 import PollSingleChoice from './PollSingleChoice';
+import useAccessDeniedExplanation from 'api/access_denied_explanation/useAccessDeniedExplanation';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import useLocalize from 'hooks/useLocalize';
 
 const PollContainer = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -88,6 +91,21 @@ const PollForm = ({
   const { mutate: addPollResponse } = useAddPollResponse();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const theme = useTheme();
+
+  // Is there a custom access denied explanation for the phase?
+  const { data: accessDenied } = useAccessDeniedExplanation({
+    type: 'phase',
+    action: 'taking_poll',
+    id: phaseId,
+  });
+  const accessDeniedExplanation: string | undefined = localize(
+    accessDenied?.data.attributes.access_denied_explanation_multiloc
+  );
+  const outputCustomDeniedMessage =
+    accessDeniedExplanation && accessDeniedExplanation.length >= 0;
+
   const changeAnswerSingle = (questionId: string, optionId: string) => () => {
     setAnswers({ ...answers, [questionId]: [optionId] });
   };
@@ -162,7 +180,19 @@ const PollForm = ({
           !isNilOrError(disabledMessage) &&
           actionDisabledAndNotFixable && (
             <Box mb="16px">
-              <Warning>{formatMessage(disabledMessage)}</Warning>
+              <Warning>
+                {outputCustomDeniedMessage ? (
+                  <QuillEditedContent textColor={theme.colors.tenantText}>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: accessDeniedExplanation,
+                      }}
+                    />
+                  </QuillEditedContent>
+                ) : (
+                  formatMessage(disabledMessage)
+                )}
+              </Warning>
             </Box>
           )}
         <PollContainer id="project-poll" className="e2e-poll-form">
