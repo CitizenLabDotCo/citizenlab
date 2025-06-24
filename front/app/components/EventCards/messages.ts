@@ -34,11 +34,11 @@ export default defineMessages({
     defaultMessage: 'Read more about the "{eventTitle}" event.',
   },
   attending: {
-    id: 'app.containers.EventsShow.attending',
+    id: 'app.containers.EventCard.attending',
     defaultMessage: 'attending',
   },
   attended: {
-    id: 'app.containers.EventsShow.attended',
+    id: 'app.containers.EventCard.attended',
     defaultMessage: 'attended',
   },
   online: {
