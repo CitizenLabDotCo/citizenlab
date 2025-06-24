@@ -12,7 +12,7 @@ import EventDateStylized from './MetadataInformation/EventDateStylized';
 import FullEventTime from './MetadataInformation/EventTimeTextual';
 import Location from './MetadataInformation/Location';
 import OnlineLink from './MetadataInformation/OnlineLink';
-import AttendeesCount from './MetadataInformation/AttendeesCount';
+import ParticipantsCount from './MetadataInformation/ParticipantsCount';
 
 interface Props {
   event: IEventData;
@@ -46,7 +46,7 @@ const InformationSectionMobile = ({ event }: Props) => {
                   </Box>
                 )}
                 {event.attributes.attendees_count > 0 && (
-                  <AttendeesCount
+                  <ParticipantsCount
                     count={event.attributes.attendees_count}
                     maximumAttendees={event.attributes.maximum_attendees}
                     isPastEvent={isPastEvent}
