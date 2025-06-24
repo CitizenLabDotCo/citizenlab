@@ -66,7 +66,11 @@ export default defineMessages({
     defaultMessage: 'Choose files',
   },
   dragAndDropFiles: {
-    id: 'app.containers.AdminPage.ProjectFiles.dragAndDropFiles',
-    defaultMessage: 'Drag and drop files here or',
+    id: 'app.containers.AdminPage.ProjectFiles.dragAndDropFiles2',
+    defaultMessage: 'Drag and drop any files here or',
+  },
+  searchFiles: {
+    id: 'app.containers.AdminPage.ProjectFiles.searchFiles',
+    defaultMessage: 'Search files',
   },
 });

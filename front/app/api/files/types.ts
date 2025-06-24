@@ -54,7 +54,7 @@ export interface IFileData {
   type: string;
   attributes: IFileAttributes;
   relationships: {
-    uploader: IRelationship;
+    uploader: { data: IRelationship };
   };
 }
 

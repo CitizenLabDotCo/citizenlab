@@ -9,6 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useDropzone } from 'react-dropzone';
 
+import useAddFile from 'api/files/useAddFile';
+
 import { useIntl } from 'utils/cl-intl';
 
 import FileExampleDescription from './FileExampleDescription';
@@ -16,6 +18,7 @@ import messages from './messages';
 
 const FileUploadWithDropzone = () => {
   const { formatMessage } = useIntl();
+  const { mutate: addFile } = useAddFile();
 
   const { getRootProps, getInputProps, open } = useDropzone({
     noClick: false,
