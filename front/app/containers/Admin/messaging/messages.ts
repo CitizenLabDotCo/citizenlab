@@ -29,8 +29,8 @@ export default defineMessages({
     defaultMessage: 'Edit',
   },
   editDisabledTooltip: {
-    id: 'app.containers.Admin.emails.editDisabledTooltip',
-    defaultMessage: 'This email cannot currently be edited.',
+    id: 'app.containers.Admin.emails.editDisabledTooltip2',
+    defaultMessage: 'Coming soon: This email cannot currently be edited.',
   },
   fieldSender: {
     id: 'app.containers.Admin.emails.fieldSender',
