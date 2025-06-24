@@ -22,7 +22,7 @@ const ProjectFilter = ({
   return (
     <BaseProjectFilter
       className="intercom-admin-project-filter"
-      projectId={projectId}
+      selectedProjectId={projectId}
       emptyOptionMessage={messages.allProjects}
       hideLabel={hideLabel}
       placeholder={placeholder}

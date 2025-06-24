@@ -4,7 +4,7 @@ import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -12,6 +12,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -29,15 +30,23 @@ import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import CustomFields from './CustomFields';
 import AuthorField from './Fields/AuthorField';
 import BudgetField from './Fields/BudgetField';
 import generateYupValidationSchema from './generateYupSchema';
+import PageEsriDivider from './Map/PageEsriDivider';
+import PageEsriMap from './Map/PageEsriMap';
+import useEsriMapPage from './Map/useEsriMapPage';
 import ProgressBar from './ProgressBar';
 import { getFormCompletionPercentage } from './util';
 
 import { FormValues } from './';
+
+const StyledForm = styled.form`
+  height: 100%;
+`;
 
 type CustomFieldsPage = {
   page: IFlatCustomField;
@@ -54,7 +63,10 @@ type CustomFieldsPage = {
   phase?: IPhaseData;
   defaultValues?: any;
   customFields: IFlatCustomField[];
-  pagesRef: React.RefObject<HTMLDivElement>;
+  pages: {
+    page: IFlatCustomField;
+    pageQuestions: IFlatCustomField[];
+  }[];
 };
 
 const CustomFieldsPage = ({
@@ -72,12 +84,16 @@ const CustomFieldsPage = ({
   phase,
   defaultValues,
   customFields,
-  pagesRef,
+  pages,
 }: CustomFieldsPage) => {
+  const pageRef = React.useRef<HTMLDivElement>(null);
+  const draggableDivRef = React.useRef<HTMLDivElement>(null);
+  const dragDividerRef = React.useRef<HTMLDivElement>(null);
   const [showFormFeedback, setShowFormFeedback] = useState(false);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
+  const { data: project } = useProjectById(projectId);
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -98,6 +114,21 @@ const CustomFieldsPage = ({
     idea?.data.attributes.anonymous || false
   );
 
+  const handleNextAndsubmit = () => {
+    pageRef.current?.scrollTo(0, 0);
+    if (currentPageNumber === lastPageNumber) {
+      const userCanModerate = project
+        ? canModerateProject(project.data, authUser)
+        : false;
+      const path =
+        userCanModerate && participationMethod === 'common_ground'
+          ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
+          : `/ideas/${idea?.data.attributes.slug}`;
+      clHistory.push({ pathname: path });
+    }
+    methods.handleSubmit((e) => onFormSubmit(e))();
+  };
+
   const schema = generateYupValidationSchema({
     pageQuestions,
     formatMessage,
@@ -108,6 +139,16 @@ const CustomFieldsPage = ({
     mode: 'onBlur',
     resolver: yupResolver(schema),
     defaultValues,
+  });
+
+  // Map logic
+  const { mapConfig, mapLayers } = useEsriMapPage({
+    project,
+    pages,
+    currentPageNumber,
+    draggableDivRef,
+    dragDividerRef,
+    localize,
   });
 
   const onFormSubmit = async (
@@ -173,11 +214,13 @@ const CustomFieldsPage = ({
     setIsDisclaimerOpened(false);
   };
 
+  const shouldShowMap = !isAdminPage && isMapPage;
+
   return (
     <FormProvider {...methods}>
       {showFormFeedback && <Feedback />}
 
-      <form id="idea-form">
+      <StyledForm id="idea-form">
         <Box
           id="container"
           display="flex"
@@ -186,73 +229,44 @@ const CustomFieldsPage = ({
           w="100%"
           data-cy={`e2e-page-number-${currentPageNumber + 1}`}
         >
-          {/* {isMapPage && (
-        <Box
-          id="map_page"
-          w={isMobileOrSmaller ? '100%' : '60%'}
-          minWidth="60%"
-          h="100%"
-            ref={draggableDivRef}
-            key={`esri_map_${currentStepNumber}`}
-        >
-          <EsriMap
-            layers={mapLayers}
-            initialData={{
-              showLegend: true,
-              showLayerVisibilityControl: true,
-              showLegendExpanded: true,
-              showZoomControls: isMobileOrSmaller ? false : true,
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              zoom: Number(mapConfig?.data?.attributes.zoom_level),
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              center: mapConfig?.data?.attributes.center_geojson,
-            }}
-            webMapId={mapConfig?.data.attributes.esri_web_map_id}
-            height="100%"
-          />
-        </Box>
-      )} */}
-
-          <Box flex={'1 1 auto'} h="100%" mb="40px">
-            {/* {isMapPage && isMobileOrSmaller && (
-          <Box
-            aria-hidden={true}
-            height="30px"
-            py="20px"
-            ref={dragDividerRef}
-            position="absolute"
-            background={colors.white}
-            w="100%"
-            zIndex="1000"
-          >
-            <Box
-              mx="auto"
-              w="40px"
-              h="4px"
-              bgColor={colors.grey400}
-              borderRadius="10px"
+          {shouldShowMap && (
+            <PageEsriMap
+              currentPageNumber={currentPageNumber}
+              mapConfig={mapConfig}
+              mapLayers={mapLayers}
+              draggableDivRef={draggableDivRef}
             />
-          </Box>
-        )} */}
+          )}
+
+          <Box
+            flex={'1 1 auto'}
+            h={shouldShowMap && isMobileOrSmaller ? '80%' : '100%'}
+            position="relative"
+            overflow="hidden"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
             <Box
               display="flex"
               flexDirection="column"
               height="100%"
-              mt={isMapPage && isMobileOrSmaller ? '20px' : undefined}
+              overflowY="auto"
+              overflowX="hidden"
+              ref={pageRef}
             >
-              <Box h="100%" display="flex" flexDirection="column">
+              {shouldShowMap && isMobileOrSmaller && (
+                <PageEsriDivider dragDividerRef={dragDividerRef} />
+              )}
+              <Box
+                h="100%"
+                display="flex"
+                flexDirection="column"
+                mt={shouldShowMap && isMobileOrSmaller ? '20px' : undefined}
+                mb="40px"
+              >
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
-                    {/* {allowsAnonymousPostingInNativeSurvey && (
-                  <Box w="100%" mb="12px">
-                    <Warning icon="shield-checkered">
-                      {formatMessage(messages.anonymousSurveyMessage)}
-                    </Warning>
-                  </Box>
-                )} */}
-
                     <Title
                       as="h1"
                       variant={isMobileOrSmaller ? 'h2' : 'h1'}
@@ -339,17 +353,10 @@ const CustomFieldsPage = ({
 
             <Box w="100%">
               <PageControlButtons
-                handleNextAndSubmit={() => {
-                  pagesRef.current?.scrollTo(0, 0);
-                  if (currentPageNumber === lastPageNumber) {
-                    clHistory.push({
-                      pathname: `/ideas/${idea?.data.attributes.slug}`,
-                    });
-                  }
-                  methods.handleSubmit((e) => onFormSubmit(e))();
-                }}
+                handleNextAndSubmit={handleNextAndsubmit}
+                project={project}
                 handlePrevious={() => {
-                  pagesRef.current?.scrollTo(0, 0);
+                  pageRef.current?.scrollTo(0, 0);
                   setCurrentPageNumber(currentPageNumber - 1);
                 }}
                 hasPreviousPage={currentPageNumber > 0}
@@ -373,7 +380,7 @@ const CustomFieldsPage = ({
           onAcceptDisclaimer={onAcceptDisclaimer}
           onCancelDisclaimer={onCancelDisclaimer}
         />
-      </form>
+      </StyledForm>
     </FormProvider>
   );
 };

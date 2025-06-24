@@ -38,7 +38,7 @@ export interface QueryParameters {
   deleted?: boolean;
 }
 
-export interface Props {
+export interface IPaginationProps {
   pageNumber?: number;
   pageSize?: number;
 }
