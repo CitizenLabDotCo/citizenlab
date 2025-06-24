@@ -44,9 +44,7 @@ const SurveyForm = ({
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
-  const pageButtonLabelMultiloc = customFields?.find(
-    (field) => field.id === nestedPagesData[currentPageNumber]?.page.id
-  )?.page_button_label_multiloc;
+  console.log(nestedPagesData);
 
   const lastPageNumber = nestedPagesData.length - 1;
 
@@ -110,7 +108,6 @@ const SurveyForm = ({
           participationMethod={participationMethod}
           projectId={projectId}
           onSubmit={onSubmit}
-          pageButtonLabelMultiloc={pageButtonLabelMultiloc}
           phase={phase?.data}
           defaultValues={initialFormData}
           customFields={customFields ?? []}

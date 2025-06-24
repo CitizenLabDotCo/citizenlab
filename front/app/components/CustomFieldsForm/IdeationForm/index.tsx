@@ -52,10 +52,6 @@ const IdeationForm = ({
     phase?.data.attributes.allow_anonymous_participation &&
     participationMethod !== 'native_survey';
 
-  const pageButtonLabelMultiloc = customFields?.find(
-    (field) => field.id === nestedPagesData[currentPageNumber].page.id
-  )?.page_button_label_multiloc;
-
   const lastPageNumber = nestedPagesData.length - 1;
 
   const onSubmit = async (formValues: FormValues) => {
@@ -118,7 +114,6 @@ const IdeationForm = ({
           ideaId={idea?.id}
           projectId={projectId}
           onSubmit={onSubmit}
-          pageButtonLabelMultiloc={pageButtonLabelMultiloc}
           phase={phase?.data}
           defaultValues={initialFormData}
           customFields={customFields ?? []}
