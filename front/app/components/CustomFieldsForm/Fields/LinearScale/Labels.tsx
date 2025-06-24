@@ -48,13 +48,9 @@ const Labels = ({ question, maximum }: Props) => {
         </>
       ) : (
         // Show labels as list underneath the buttons when more than 3 labels OR on mobile devices
-        <Box maxWidth={'100%'} role="list">
+        <Box maxWidth={'100%'} as="ol" p="0px">
           {labelsFromSchema.map((label, index) => (
-            <Box
-              display="flex"
-              key={`${question.key}-${index}`}
-              role="listitem"
-            >
+            <Box display="flex" key={`${question.key}-${index}`} as="li">
               {label && (
                 <>
                   <Text
