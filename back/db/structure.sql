@@ -298,6 +298,7 @@ DROP INDEX IF EXISTS public.index_followers_on_followable_id_and_followable_type
 DROP INDEX IF EXISTS public.index_followers_on_followable;
 DROP INDEX IF EXISTS public.index_followers_followable_type_id_user_id;
 DROP INDEX IF EXISTS public.index_files_on_uploader_id;
+DROP INDEX IF EXISTS public.index_files_on_size;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
 DROP INDEX IF EXISTS public.index_events_on_location_point;
 DROP INDEX IF EXISTS public.index_events_attendances_on_updated_at;
@@ -2398,8 +2399,23 @@ CREATE TABLE public.files (
     content character varying,
     uploader_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    size integer
 );
+
+
+--
+-- Name: COLUMN files.uploader_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.files.uploader_id IS 'the user who uploaded the file';
+
+
+--
+-- Name: COLUMN files.size; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.files.size IS 'in bytes';
 
 
 --
@@ -5149,6 +5165,13 @@ CREATE INDEX index_events_on_project_id ON public.events USING btree (project_id
 
 
 --
+-- Name: index_files_on_size; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_on_size ON public.files USING btree (size);
+
+
+--
 -- Name: index_files_on_uploader_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7314,6 +7337,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250624102147'),
 ('20250618151933'),
 ('20250610112901'),
 ('20250609151800'),

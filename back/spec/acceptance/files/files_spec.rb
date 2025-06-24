@@ -48,7 +48,8 @@ resource 'Files' do
           attributes: {
             name: file.name,
             created_at: file.created_at.iso8601(3),
-            updated_at: file.updated_at.iso8601(3)
+            updated_at: file.updated_at.iso8601(3),
+            size: 130
           },
           relationships: {
             uploader: {

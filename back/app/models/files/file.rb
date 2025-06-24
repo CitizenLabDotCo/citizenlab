@@ -4,15 +4,17 @@
 #
 # Table name: files
 #
-#  id          :uuid             not null, primary key
-#  name        :string
-#  content     :string
-#  uploader_id :uuid
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                                          :uuid             not null, primary key
+#  name                                        :string
+#  content                                     :string
+#  uploader_id(the user who uploaded the file) :uuid
+#  created_at                                  :datetime         not null
+#  updated_at                                  :datetime         not null
+#  size(in bytes)                              :integer
 #
 # Indexes
 #
+#  index_files_on_size         (size)
 #  index_files_on_uploader_id  (uploader_id)
 #
 # Foreign Keys
@@ -29,5 +31,16 @@ module Files
 
     validates :name, presence: true
     validates :content, presence: true
+    validates :size, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
+
+    before_save :update_size
+
+    private
+
+    def update_size
+      return unless content.present? && content_changed?
+
+      self.size = content.size
+    end
   end
 end
