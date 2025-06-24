@@ -54,7 +54,6 @@ const FilesTable = () => {
           <Tr>
             <Th width="100px">{formatMessage(messages.addedTableHeader)}</Th>
             <Th width="60%">{formatMessage(messages.fileTableHeader)}</Th>{' '}
-            {/* Set width here */}
             <Th>{formatMessage(messages.typeTableHeader)}</Th>
             <Th>{formatMessage(messages.uploaderTableHeader)}</Th>
             <Th>{formatMessage(messages.visibilityTableHeader)}</Th>
