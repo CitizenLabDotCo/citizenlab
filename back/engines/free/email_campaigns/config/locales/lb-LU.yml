@@ -84,6 +84,12 @@ lb:
         "5": "Wochemaart, Freideg %{hourOfDay}"
         "6": "Wochemaart, Samschdes %{hourOfDay}"
       quarterly: "Trimester, um éischten Dag vum Véierel"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Hinde'
+      display_name: 'Jane Doe'
+      comment_body: 'Dëst ass e Beispillkommentar, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.'
+      idea_title: 'Beispill Iddi'
     footer:
       "link_privacy_policy": "Dateschutzrichtlinn"
       "link_terms_conditions": "Geschäftsbedéngungen"
