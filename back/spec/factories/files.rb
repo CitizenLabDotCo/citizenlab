@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :file, class: 'Files::File' do
-    name { 'test_file.txt' }
-    content { Rails.root.join('spec/fixtures/minimal_pdf.pdf').open }
+    name { 'minimal_pdf.pdf' }
+    content { Rails.root.join('spec/fixtures', name).open }
     association :uploader, factory: :user
   end
 end
