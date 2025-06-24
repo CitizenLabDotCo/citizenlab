@@ -8,13 +8,17 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
+import useAccessDeniedExplanation from 'api/access_denied_explanation/useAccessDeniedExplanation';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPollQuestionData } from 'api/poll_questions/types';
 import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -23,9 +27,6 @@ import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 import messages from './messages';
 import PollMultipleChoice from './PollMultipleChoice';
 import PollSingleChoice from './PollSingleChoice';
-import useAccessDeniedExplanation from 'api/access_denied_explanation/useAccessDeniedExplanation';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import useLocalize from 'hooks/useLocalize';
 
 const PollContainer = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
