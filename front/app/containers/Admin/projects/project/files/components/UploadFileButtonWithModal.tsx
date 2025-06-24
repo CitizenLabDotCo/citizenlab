@@ -48,31 +48,32 @@ const UploadFileButtonWithModal = () => {
             fileExtensionMessage={messages.imageFileExtensionDescription}
           />
         </Box>
-
-        <Dropzone
-          accept={{
-            'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-            'text/*': ['.txt', '.csv', '.doc', '.docx', '.pdf'],
-            'audio/*': ['.mp3', '.wav', '.ogg'],
-          }}
-          maxSize={50}
-          disabled={false}
-          onDrop={(file) => {
-            console.log('File dropped!', file);
-          }}
-          onDropRejected={(test) => {
-            console.log('File drop rejected', test);
-          }}
-        >
-          {({ getInputProps }) => {
-            return (
-              <Box p="50px">
-                DROPZONE FOR FILES HERE
-                <input {...getInputProps()} />
-              </Box>
-            );
-          }}
-        </Dropzone>
+        <Box>
+          <Dropzone
+            accept={{
+              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+              'text/*': ['.txt', '.csv', '.doc', '.docx', '.pdf'],
+              'audio/*': ['.mp3', '.wav', '.ogg'],
+            }}
+            maxSize={50}
+            disabled={false}
+            onDrop={(file) => {
+              console.log('File dropped!', file);
+            }}
+            onDropRejected={(test) => {
+              console.log('File drop rejected', test);
+            }}
+          >
+            {({ getInputProps }) => {
+              return (
+                <Box p="50px">
+                  DROPZONE FOR FILES HERE
+                  <input {...getInputProps()} />
+                </Box>
+              );
+            }}
+          </Dropzone>
+        </Box>
 
         <FileUploader
           id="e2e-file-uploader"
