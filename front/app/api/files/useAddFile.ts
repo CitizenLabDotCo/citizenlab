@@ -10,7 +10,9 @@ const addFile = async (requestBody: IAddFileProperties) => {
   return fetcher<IFile>({
     path: `/files`,
     action: 'post',
-    body: requestBody,
+    body: {
+      file: { ...requestBody },
+    },
   });
 };
 

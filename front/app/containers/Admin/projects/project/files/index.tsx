@@ -7,6 +7,7 @@ import SearchInput from 'components/UI/SearchInput';
 import { useIntl } from 'utils/cl-intl';
 
 import FilesTable from './components/FilesTable';
+import FileUploadWithDropzone from './components/FileUploadWithDropzone';
 import UploadFileButtonWithModal from './components/UploadFileButtonWithModal';
 import messages from './messages';
 
@@ -25,6 +26,9 @@ const ProjectFilesTab = () => {
       </Box>
       <Box mt="40px" background={colors.white}>
         <FilesTable />
+        <Box width="400px" p="20px">
+          <FileUploadWithDropzone />
+        </Box>
       </Box>
     </Box>
   );

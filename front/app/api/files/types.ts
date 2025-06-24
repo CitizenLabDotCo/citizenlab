@@ -7,10 +7,8 @@ import filesKeys from './keys';
 export type FilesKeys = Keys<typeof filesKeys>;
 
 export interface IAddFileProperties {
-  file: {
-    file: string;
-    name: string;
-  };
+  content: string;
+  name: string;
 }
 
 export interface IUpdateFileProperties {
