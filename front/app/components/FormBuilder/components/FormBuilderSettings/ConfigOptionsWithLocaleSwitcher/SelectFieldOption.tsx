@@ -47,6 +47,9 @@ const SelectFieldOption = memo(
     optionImages,
   }: Props) => {
     const [isUploading, setIsUploading] = useState(false);
+    const [localValue, setLocalValue] = useState(
+      choice.title_multiloc[locale] || ''
+    );
     const { formatMessage } = useIntl();
     const showImageSettings =
       inputType === 'multiselect_image' && !choice.other;
@@ -95,6 +98,23 @@ const SelectFieldOption = memo(
       }
     };
 
+    // Update local value immediately for responsive UI
+    const handleChange = (value: string) => {
+      setLocalValue(value);
+    };
+
+    // Only call the expensive update on blur
+    const handleBlur = () => {
+      const updatedChoice = {
+        ...choice,
+        title_multiloc: {
+          ...choice.title_multiloc,
+          [locale]: localValue,
+        },
+      };
+      onChoiceUpdate(updatedChoice, index);
+    };
+
     return (
       <>
         <Box width="100%" pl={choice.other === true ? '30px' : '0'}>
@@ -102,12 +122,10 @@ const SelectFieldOption = memo(
             id={`e2e-option-input-${index}`}
             size="small"
             type="text"
-            value={choice.title_multiloc[locale]}
+            value={localValue}
             onKeyDown={handleKeyDown}
-            onChange={(value) => {
-              choice.title_multiloc[locale] = value;
-              onChoiceUpdate(choice, index);
-            }}
+            onChange={handleChange}
+            onBlur={handleBlur}
             autoFocus={false}
             onMultilinePaste={
               onMultilinePaste
