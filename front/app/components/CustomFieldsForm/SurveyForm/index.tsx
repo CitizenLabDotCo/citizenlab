@@ -14,9 +14,10 @@ import useProjectById from 'api/projects/useProjectById';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
+import { FormValues } from '../Page/types';
 import { convertCustomFieldsToNestedPages } from '../util';
 
-import SurveyPage, { FormValues } from './SurveyPage';
+import SurveyPage from './SurveyPage';
 
 const SurveyForm = ({
   projectId,
@@ -51,7 +52,7 @@ const SurveyForm = ({
 
   const onSubmit = async (formValues: FormValues) => {
     const isSubmitPage = currentPageNumber === nestedPagesData.length - 2;
-    // Something strage is happening here where the back-end is returning a draft idea without an ID
+    // The back-end initially returns a draft idea without an ID
     if (!draftIdea?.data.id) {
       // If the user is an admin or project moderator, we allow them to post to a specific phase
       const phase_ids =
@@ -97,7 +98,7 @@ const SurveyForm = ({
   }
 
   return (
-    <Box overflow="scroll" w="100%">
+    <Box w="100%">
       {nestedPagesData[currentPageNumber] && (
         <SurveyPage
           page={nestedPagesData[currentPageNumber].page}

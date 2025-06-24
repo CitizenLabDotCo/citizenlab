@@ -1,14 +1,13 @@
 import React, { useState, useRef } from 'react';
 
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
-import { IdeaPublicationStatus } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
@@ -21,10 +20,8 @@ import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/Profi
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import PageControlButtons from 'components/Form/Components/Layouts/PageControlButtons';
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -40,24 +37,10 @@ import generateYupValidationSchema from '../generateYupSchema';
 import PageEsriDivider from '../Map/PageEsriDivider';
 import PageEsriMap from '../Map/PageEsriMap';
 import useEsriMapPage from '../Map/useEsriMapPage';
-import ProgressBar from '../ProgressBar';
+import PageFooter from '../Page/PageFooter';
+import PageTitle from '../Page/PageTitle';
+import { FormValues } from '../Page/types';
 import { getFormCompletionPercentage } from '../util';
-
-export interface FormValues {
-  title_multiloc: Multiloc;
-  body_multiloc?: Multiloc;
-  author_id?: string;
-  idea_images_attributes?: { image: string }[];
-  idea_files_attributes?: {
-    file_by_content: { content: string };
-    name: string;
-  }[];
-  location_description?: string | null;
-  location_point_geojson?: GeoJSON.Point | null;
-  topic_ids?: string[];
-  cosponsor_ids?: string[];
-  publication_status?: IdeaPublicationStatus;
-}
 
 const StyledForm = styled.form`
   height: 100%;
@@ -102,8 +85,7 @@ const IdeationPage = ({
   pages,
 }: CustomFieldsPage) => {
   const pageRef = useRef<HTMLDivElement>(null);
-  const draggableDivRef = useRef<HTMLDivElement>(null);
-  const dragDividerRef = useRef<HTMLDivElement>(null);
+
   const [showFormFeedback, setShowFormFeedback] = useState(false);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
@@ -112,7 +94,6 @@ const IdeationPage = ({
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const theme = useTheme();
 
   const { pathname } = useLocation();
   const isAdminPage = isPage('admin', pathname);
@@ -159,14 +140,13 @@ const IdeationPage = ({
   // Map logic
   const shouldShowMap = !isAdminPage && isMapPage;
 
-  const { mapConfig, mapLayers } = useEsriMapPage({
-    project,
-    pages,
-    currentPageNumber,
-    draggableDivRef,
-    dragDividerRef,
-    localize,
-  });
+  const { mapConfig, mapLayers, draggableDivRef, dragDividerRef } =
+    useEsriMapPage({
+      project,
+      pages,
+      currentPageNumber,
+      localize,
+    });
 
   const onFormSubmit = async (
     formValues: FormValues,
@@ -282,28 +262,7 @@ const IdeationPage = ({
               >
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
-                    <Title
-                      as="h1"
-                      variant={isMobileOrSmaller ? 'h2' : 'h1'}
-                      m="0"
-                      mb="20px"
-                      color="tenantPrimary"
-                    >
-                      {localize(page.title_multiloc)}
-                    </Title>
-
-                    <Box mb="48px">
-                      <QuillEditedContent
-                        fontWeight={400}
-                        textColor={theme.colors.tenantText}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: localize(page.description_multiloc),
-                          }}
-                        />
-                      </QuillEditedContent>
-                    </Box>
+                    <PageTitle page={page} />
 
                     {currentPageNumber === 0 && isAdmin(authUser) && (
                       <Box mb="24px">
@@ -352,43 +311,29 @@ const IdeationPage = ({
               }}
             />
           )}
-
-          <Box
-            maxWidth={
-              !isAdminPage ? (isMapPage ? '1100px' : '700px') : undefined
+          <PageFooter
+            variant={
+              currentPageNumber === lastPageNumber
+                ? 'after-submission'
+                : currentPageNumber === lastPageNumber - 1
+                ? 'submission'
+                : 'other'
             }
-            w="100%"
-            position="fixed"
-            bottom={isMobileOrSmaller || isAdminPage ? '0' : '40px'}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-          >
-            <ProgressBar formCompletionPercentage={formCompletionPercentage} />
-
-            <Box w="100%">
-              <PageControlButtons
-                handleNextAndSubmit={handleNextAndsubmit}
-                project={project}
-                handlePrevious={() => {
-                  pageRef.current?.scrollTo(0, 0);
-                  setCurrentPageNumber(currentPageNumber - 1);
-                }}
-                hasPreviousPage={currentPageNumber > 0}
-                isLoading={methods.formState.isSubmitting}
-                pageVariant={
-                  currentPageNumber === lastPageNumber
-                    ? 'after-submission'
-                    : currentPageNumber === lastPageNumber - 1
-                    ? 'submission'
-                    : 'other'
-                }
-                phases={phases?.data}
-                currentPhase={phase}
-                pageButtonLabelMultiloc={pageButtonLabelMultiloc}
-              />
-            </Box>
-          </Box>
+            hasPreviousPage={currentPageNumber > 0}
+            handleNextAndSubmit={handleNextAndsubmit}
+            handlePrevious={() => {
+              pageRef.current?.scrollTo(0, 0);
+              setCurrentPageNumber(currentPageNumber - 1);
+            }}
+            formCompletionPercentage={formCompletionPercentage}
+            pageButtonLabelMultiloc={pageButtonLabelMultiloc}
+            phase={phase}
+            project={project}
+            phases={phases}
+            isLoading={methods.formState.isSubmitting}
+            isAdminPage={isAdminPage}
+            isMapPage={isMapPage}
+          />
         </Box>
         <ContentUploadDisclaimer
           isDisclaimerOpened={isDisclaimerOpened}

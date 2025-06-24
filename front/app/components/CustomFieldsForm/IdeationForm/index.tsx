@@ -14,9 +14,10 @@ import useProjectById from 'api/projects/useProjectById';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
+import { FormValues } from '../Page/types';
 import { convertCustomFieldsToNestedPages } from '../util';
 
-import IdeationPage, { FormValues } from './IdeationPage';
+import IdeationPage from './IdeationPage';
 
 const IdeationForm = ({
   projectId,
