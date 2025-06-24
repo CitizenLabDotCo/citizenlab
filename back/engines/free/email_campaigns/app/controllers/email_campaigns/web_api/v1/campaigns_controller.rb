@@ -2,6 +2,10 @@
 
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
+    DEFAULTS_BY_CONTEXT = { # TODO: Move to somewhere else, or take from same list as delivery service and filter by supported context method
+      'Phase' => [Campaigns::ProjectPhaseStarted]
+    }
+
     before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]
 
     def index
@@ -17,10 +21,9 @@ module EmailCampaigns
 
       @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
 
-      @campaigns = @campaigns
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
-      render json: linked_json(@campaigns, WebApi::V1::CampaignSerializer, params: jsonapi_serializer_params)
+      add_default_context_campaigns! if campaign_context
+
+      render json: WebApi::V1::CampaignSerializer.new(@campaigns, jsonapi_serializer_params).serializable_hash
     end
 
     def show
@@ -155,6 +158,16 @@ module EmailCampaigns
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
       )
+    end
+
+    def add_default_context_campaigns!
+      add_campaigns = DEFAULTS_BY_CONTEXT[params[:campaign_context]]&.map do |campaign_class|
+        campaign_class.new(
+          enabled: true, # TODO: Fallback to global setting
+          context: campaign_context
+        )
+      end
+      @campaigns += add_campaigns if add_campaigns.present?
     end
   end
 end
