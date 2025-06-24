@@ -29,7 +29,7 @@ const EventShowPageMeta = ({ event }: Props) => {
   if (!tenantLocales) return null;
 
   const metaTitle = formatMessage(messages.metaTitle1, {
-    projectTitle: localize(event.attributes.title_multiloc, {
+    eventTitle: localize(event.attributes.title_multiloc, {
       maxChar: 50,
     }),
   });
