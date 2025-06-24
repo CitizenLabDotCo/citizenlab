@@ -23,6 +23,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import Input from 'components/HookForm/Input';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -61,6 +62,8 @@ const EditCampaignForm = ({
     fieldValue[region.key] = campaign.data.attributes[region.key];
     return fieldValue;
   }, {});
+
+  console.log(defaultValues);
 
   const methods = useForm({
     mode: 'onBlur',
@@ -102,10 +105,24 @@ const EditCampaignForm = ({
     return formatMessage(messageKey);
   };
 
+  const defaultReplyTo = appConfig.data.attributes.settings.core.reply_to_email;
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+        <h2>Edit</h2>
         <StyledSection>
+          <SectionField>
+            <Input
+              id="e2e-reply-to-input"
+              name="reply_to"
+              type="email"
+              placeholder={defaultReplyTo}
+              label={formatMessage(messages.fieldReplyTo)}
+              labelTooltipText={formatMessage(messages.fieldReplyToTooltip)}
+            />
+          </SectionField>
+
           {editableRegions.map((region) => (
             <SectionField
               className={`e2e-automated-campaign-edit-region-${region.key}`}

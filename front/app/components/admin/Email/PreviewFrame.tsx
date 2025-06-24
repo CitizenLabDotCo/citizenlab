@@ -3,7 +3,7 @@ import React from 'react';
 import Frame from 'react-frame-component';
 import styled from 'styled-components';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import useCampaignPreview from 'api/campaign_previews/useCampaignPreview';
@@ -37,11 +37,41 @@ const PreviewFrame = ({
   return (
     <Box>
       {showHeaders && previewSubject && (
-        <Box my="4px" mb="16px" display="flex" gap="8px">
-          <Text fontWeight="bold" my="0">
-            <FormattedMessage {...messages.subject} />
-          </Text>
-          <Text my="0">{previewSubject}</Text>
+        <Box
+          p="16px"
+          display="flex"
+          flexDirection="column"
+          gap="4px"
+          bgColor={colors.grey100}
+          border={`1px solid ${colors.divider}`}
+          borderBottom="none"
+        >
+          <Box display="flex" alignItems="center" gap="8px">
+            <Text fontWeight="bold" my="0" color="grey600" width="70px">
+              To
+            </Text>
+            <Text my="0">Someone </Text>
+          </Box>
+          <Box display="flex" alignItems="center" gap="8px">
+            <Text fontWeight="bold" my="0" color="grey600" width="70px">
+              From
+            </Text>
+            <Text my="0">Someone</Text>
+          </Box>
+          <Box display="flex" alignItems="center" gap="8px">
+            <Text fontWeight="bold" my="0" color="grey600" width="70px">
+              Reply-To
+            </Text>
+            <Text my="0">Someone</Text>
+          </Box>
+          <Box display="flex" alignItems="center" gap="8px">
+            <Text fontWeight="bold" my="0" color="grey600" width="70px">
+              <FormattedMessage {...messages.subject} />
+            </Text>
+            <Text my="0" fontWeight="bold">
+              {previewSubject}
+            </Text>
+          </Box>
         </Box>
       )}
       <StyledFrame

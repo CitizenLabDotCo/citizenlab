@@ -23,6 +23,7 @@ import styled from 'styled-components';
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
+import useLocalize from 'hooks/useLocalize';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -42,6 +43,7 @@ const Edit = () => {
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const handleSendPreviewEmail = () => {
     sendCampaignPreview(campaignId, {
@@ -66,11 +68,11 @@ const Edit = () => {
     <Box background={colors.white} p="40px">
       <GoBackButton onClick={goBack} />
       <PageTitle>
-        <FormattedMessage {...messages.editCampaignTitle} />
+        {localize(campaign.data.attributes.campaign_description_multiloc)}
       </PageTitle>
 
       <Box display="flex">
-        <Box width="50%" mr="24px">
+        <Box width="50%" mr="36px">
           <EditCampaignForm
             isLoading={isLoading}
             onSubmit={handleSubmit}
