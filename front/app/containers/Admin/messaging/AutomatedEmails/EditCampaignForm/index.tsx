@@ -4,7 +4,7 @@ import { Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
-import { object } from 'yup';
+import { object, string } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import {
@@ -47,23 +47,30 @@ const EditCampaignForm = ({
   // Schema and default values are derived from which editable regions are present
   const editableRegions = campaign.data.attributes.editable_regions || [];
 
-  const schema = object(
-    editableRegions.reduce((fieldSchema, region) => {
+  const schema = object({
+    ...editableRegions.reduce((fieldSchema, region) => {
       if (!region.allow_blank_locales) {
         fieldSchema[region.key] = validateMultilocForEveryLocale(
           formatMessage(messages.regionMultilocError)
         );
       }
       return fieldSchema;
-    }, {})
-  );
+    }, {}),
+    ...{
+      reply_to: string().email(formatMessage(messages.fieldReplyToEmailError)),
+    },
+  });
 
-  const defaultValues = editableRegions.reduce((fieldValue, region) => {
-    fieldValue[region.key] = campaign.data.attributes[region.key];
-    return fieldValue;
-  }, {});
+  const defaultValues = {
+    ...editableRegions.reduce((fieldValue, region) => {
+      fieldValue[region.key] = campaign.data.attributes[region.key];
+      return fieldValue;
+    }, {}),
+    ...{ reply_to: campaign.data.attributes.reply_to || '' },
+  };
 
   console.log(defaultValues);
+  console.log(campaign.data);
 
   const methods = useForm({
     mode: 'onBlur',
