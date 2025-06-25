@@ -105,12 +105,12 @@ const MapField = ({
   const handleMultiPointChange = useCallback(
     (coordinates?: number[][]) => {
       if (coordinates) {
-        const fieldValue = convertCoordinatesToGeoJSON(
+        const value = convertCoordinatesToGeoJSON(
           coordinates,
           question.input_type
         );
-
-        setValue(name, fieldValue, {
+        const covertedField = convertGeojsonToWKT({ value });
+        setValue(name, covertedField.value, {
           shouldDirty: true,
           shouldTouch: true,
           shouldValidate: true,
