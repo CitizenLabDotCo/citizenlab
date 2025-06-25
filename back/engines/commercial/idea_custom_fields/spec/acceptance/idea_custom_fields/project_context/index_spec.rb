@@ -7,7 +7,7 @@ resource 'Idea Custom Fields' do
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
   before { header 'Content-Type', 'application/json' }
 
-  get 'web_api/v1/admin/projects/:project_id/custom_fields' do
+  get 'web_api/v1/projects/:project_id/custom_fields' do
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
     parameter :input_types, 'Filter custom fields by input types', type: :array, items: { type: :string }, required: false
 
