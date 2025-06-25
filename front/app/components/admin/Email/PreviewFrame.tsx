@@ -12,7 +12,7 @@ const StyledFrame = styled(Frame)`
   border-radius: ${(props) => props.theme.borderRadius};
   border: 1px solid ${(props) => props.theme.colors.divider};
   width: 100%;
-  height: 450px;
+  //height: 450px;
 `;
 
 type Props = {
@@ -20,6 +20,7 @@ type Props = {
   className?: string;
   children?: React.ReactNode;
   showHeaders?: boolean;
+  height?: string;
 };
 
 const PreviewFrame = ({
@@ -27,6 +28,7 @@ const PreviewFrame = ({
   className,
   children,
   showHeaders,
+  height = '450px',
 }: Props) => {
   const { data: previewData } = useCampaignPreview(campaignId);
   const { to, from, reply_to, subject, html } =
@@ -53,6 +55,7 @@ const PreviewFrame = ({
         </Box>
       )}
       <StyledFrame
+        height={height}
         id="e2e-email-preview-iframe"
         className={className}
         initialContent={html}

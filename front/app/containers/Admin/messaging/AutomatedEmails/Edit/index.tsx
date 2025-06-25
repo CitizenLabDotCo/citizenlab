@@ -114,7 +114,11 @@ const Edit = () => {
             )}
           </Box>
           <Box>
-            <PreviewFrame campaignId={campaign.data.id} showHeaders={true} />
+            <PreviewFrame
+              campaignId={campaign.data.id}
+              showHeaders={true}
+              height="740px"
+            />
           </Box>
         </Box>
       </Box>
