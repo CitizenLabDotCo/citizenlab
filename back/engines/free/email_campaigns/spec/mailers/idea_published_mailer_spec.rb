@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'shared_examples_for_campaign_delivery_tracking'
 
 RSpec.describe EmailCampaigns::IdeaPublishedMailer do
   describe 'campaign_mail' do
@@ -24,32 +25,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     let_it_be(:mail) { mailer.campaign_mail.deliver_now }
     let_it_be(:body) { mail_body(mail) }
 
-    describe 'mailgun_headers' do
-      it 'includes X-Mailgun-Variables in headers' do
-        # We need to do this as we cannot directly access the true mailer instance
-        # when using `described_class.with(...)` in the test setup.
-        mailer_instance = nil
-        allow(described_class).to receive(:new).and_wrap_original do |original, *args|
-          mailer_instance = original.call(*args)
-          allow(mailer_instance).to receive(:mailgun_headers).and_call_original
-          mailer_instance
-        end
-
-        campaign.run_before_send_hooks(activity:)
-        mailer.campaign_mail.deliver_now
-        campaign.run_after_send_hooks(command)
-
-        expect(mailer_instance.mailgun_headers).to have_key('X-Mailgun-Variables')
-        mailgun_variables = JSON.parse mailer_instance.mailgun_headers['X-Mailgun-Variables']
-        expect(mailgun_variables).to match(
-          hash_including(
-            'cl_tenant_id' => instance_of(String),
-            'cl_delivery_id' => instance_of(String)
-          )
-        )
-        expect(EmailCampaigns::Delivery.ids).to eq [mailgun_variables['cl_delivery_id']]
-      end
-    end
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to eq('Your idea has been published')

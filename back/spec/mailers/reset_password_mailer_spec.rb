@@ -9,7 +9,7 @@ RSpec.describe ResetPasswordMailer do
   let_it_be(:mail) { mailer.send_reset_password.deliver_now }
 
   describe 'mailgun_headers' do
-    it 'includes X-Mailgun-Variables in headers' do
+    it 'includes X-Mailgun-Variables and cl_tenant_id' do
       # We need to do this as we cannot directly access the true mailer instance
       # when using `described_class.with(...)` in the test setup.
       mailer_instance = nil
@@ -22,6 +22,9 @@ RSpec.describe ResetPasswordMailer do
       mailer.send_reset_password.deliver_now
 
       expect(mailer_instance.mailgun_headers).to have_key('X-Mailgun-Variables')
+      expect(JSON.parse(mailer_instance.mailgun_headers['X-Mailgun-Variables'])).to match(
+        hash_including('cl_tenant_id' => instance_of(String))
+      )
     end
   end
 
