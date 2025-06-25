@@ -1367,7 +1367,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.lastUpdate1": "Geändert vor {days, plural, no {# Tagen} one {# Tag} other {# Tagen}}",
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Beim Versuch, diesen Bericht zu erstellen, ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Mit einer leeren Seite beginnen",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.communityMonitorTemplate": "Beginnen Sie mit einer Gemeinschaftspuls-Vorlage",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.communityMonitorTemplate": "Mit einer Gemeinschaftspuls-Vorlage beginnen",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Titel des Berichts",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle2": "Bericht erstellen",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Passen Sie Ihren Bericht an und teilen Sie ihn mit internen Stakeholdern oder Ihrer Bevölkerung als PDF-Datei.",
