@@ -9,6 +9,14 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
   let!(:project) { create(:project, custom_form: custom_form) }
   let!(:idea_custom_field) { create(:custom_field, resource: custom_form) }
 
+  context 'for a visitor' do
+    let(:user) { nil }
+
+    it { is_expected.to permit(:index) }
+    it { is_expected.to permit(:show) }
+    it { is_expected.not_to permit(:update_all) }
+  end
+
   context 'for a normal user who can access the project' do
     let(:user) { create(:user) }
 
