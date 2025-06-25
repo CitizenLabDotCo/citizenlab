@@ -22,7 +22,6 @@ const UploadFileButtonWithModal = () => {
 
   const { getRootProps, getInputProps, open } = useDropzone({
     noClick: false,
-    noKeyboard: false,
     multiple: true,
     validator: () => null, // Accept all file types.
     onDrop: (_files) => {
