@@ -2130,7 +2130,7 @@
   "app.containers.AdminPage.ProjectEvents.addressTwoLabel": "Adress 2",
   "app.containers.AdminPage.ProjectEvents.addressTwoPlaceholder": "T.ex. lägenhet, svit, byggnad",
   "app.containers.AdminPage.ProjectEvents.addressTwoTooltip": "Ytterligare adressinformation som kan hjälpa till att identifiera platsen, t.ex. byggnadens namn, våningsnummer etc.",
-  "app.containers.AdminPage.ProjectEvents.attend": "Deltagande",
+  "app.containers.AdminPage.ProjectEvents.attend": "Jag vill delta!",
   "app.containers.AdminPage.ProjectEvents.attendanceButton": "Närvaroknapp",
   "app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLink": "https://support.govocal.com/en/articles/5481527-adding-events-to-your-platform",
   "app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLinkText": "Se supportartikeln",
