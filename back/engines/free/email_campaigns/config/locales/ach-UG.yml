@@ -84,6 +84,12 @@ ach:
         "5": "crwdns4759257:0%{hourOfDay}crwdne4759257:0"
         "6": "crwdns4759259:0%{hourOfDay}crwdne4759259:0"
       quarterly: "crwdns4759261:0crwdne4759261:0"
+    preview_data:
+      first_name: 'crwdns4760369:0crwdne4760369:0'
+      last_name: 'crwdns4760371:0crwdne4760371:0'
+      display_name: 'crwdns4760373:0crwdne4760373:0'
+      comment_body: 'crwdns4760375:0crwdne4760375:0'
+      idea_title: 'crwdns4760377:0crwdne4760377:0'
     footer:
       "link_privacy_policy": "crwdns4759263:0crwdne4759263:0"
       "link_terms_conditions": "crwdns4759265:0crwdne4759265:0"
