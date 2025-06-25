@@ -69,9 +69,6 @@ const EditCampaignForm = ({
     ...{ reply_to: campaign.data.attributes.reply_to || '' },
   };
 
-  console.log(defaultValues);
-  console.log(campaign.data);
-
   const methods = useForm({
     mode: 'onBlur',
     defaultValues,
