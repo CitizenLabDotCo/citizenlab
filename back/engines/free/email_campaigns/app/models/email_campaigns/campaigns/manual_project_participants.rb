@@ -51,8 +51,8 @@ module EmailCampaigns
 
     private
 
-    def skip_context_absence?
-      true
+    def supports_context?(context)
+      context.is_a?(Project)
     end
 
     def project_participants_and_followers(users_scope, _options = {})

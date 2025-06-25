@@ -48,7 +48,7 @@ module EmailCampaigns
 
     before_validation :set_enabled, on: :create
 
-    validates :context, absence: true, unless: :skip_context_absence?
+    validate :validate_context
     validate :validate_recipients, on: :send
 
     scope :manual, -> { where type: DeliveryService.new.manual_campaign_types }
@@ -177,11 +177,17 @@ module EmailCampaigns
       }).serializable_hash
     end
 
-    def skip_context_absence?
+    def supports_context?(_context)
       false
     end
 
     private
+
+    def validate_context
+      return if context.nil? || supports_context?(context)
+
+      errors.add(:context, :invalid, message: 'Context is not supported for this campaign')
+    end
 
     def validate_recipients
       return if apply_recipient_filters.any?

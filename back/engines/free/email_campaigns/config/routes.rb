@@ -15,7 +15,9 @@ EmailCampaigns::Engine.routes.draw do
 
       %w[projects phases].each do |context|
         resources context.to_sym, only: [] do
-          resources :campaigns, defaults: { campaign_context: context.classify }, only: %i[index]
+          resources :campaigns, defaults: { campaign_context: context.classify }, only: %i[index] do
+            get :supported_campaign_types, on: :collection
+          end
         end
       end
 

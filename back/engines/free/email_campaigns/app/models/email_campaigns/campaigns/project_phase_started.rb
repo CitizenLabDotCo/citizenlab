@@ -103,8 +103,8 @@ module EmailCampaigns
 
     private
 
-    def skip_context_absence?
-      true
+    def supports_context?(context)
+      context.is_a?(Phase)
     end
 
     def campaign_enabled_for_phase?(activity:, time: nil)

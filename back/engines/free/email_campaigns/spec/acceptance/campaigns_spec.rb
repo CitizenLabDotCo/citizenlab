@@ -20,7 +20,7 @@ resource 'Campaigns' do
       header_token_for @user
     end
 
-    get '/web_api/v1/campaigns' do # TODO: add cases for scoped under projects and phases
+    get '/web_api/v1/campaigns' do
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of campaigns per page'
@@ -115,6 +115,16 @@ resource 'Campaigns' do
           expect(json_response[:data].size).to eq 1
           expect(json_response[:data].pluck(:id)).to eq [automated_phase.id]
         end
+      end
+    end
+
+    get '/web_api/v1/phases/:context_id/campaigns/supported_campaign_types' do
+      let(:context_id) { create(:ideation_phase).id }
+
+      example_request 'Lists all campaigns supported for an ideation phase' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes)).to match_array %w[ProjectPhaseStarted]
       end
     end
 
