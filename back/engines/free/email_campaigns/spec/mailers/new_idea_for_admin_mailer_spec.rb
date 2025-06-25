@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'shared_examples_for_campaign_delivery_tracking'
 
 RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
   describe 'campaign_mail' do
@@ -17,8 +18,11 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
           recipient: recipient
         ).first.merge({ recipient: recipient })
       end
-      let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+      let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+      let_it_be(:mail) { mailer.campaign_mail.deliver_now }
       let_it_be(:body) { mail_body(mail) }
+
+      include_examples 'campaign delivery tracking'
 
       it 'renders the subject' do
         expect(mail.subject).to eq('Gonzo, a new input has been published on your platform')
@@ -75,8 +79,11 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
           }
         }
       end
-      let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+      let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+      let_it_be(:mail) { mailer.campaign_mail.deliver_now }
       let_it_be(:body) { mail_body(mail) }
+
+      include_examples 'campaign delivery tracking'
 
       it 'renders the subject' do
         expect(mail.subject).to eq('Gonzo, an input requires your review')
