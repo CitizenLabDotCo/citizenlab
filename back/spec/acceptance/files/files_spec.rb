@@ -9,6 +9,8 @@ resource 'Files' do
   header 'Content-Type', 'application/json'
 
   get 'web_api/v1/files' do
+    parameter :uploader, 'Filter files by uploader user ID(s)', type: %i[string array]
+
     let_it_be(:files) { create_list(:file, 2) }
 
     context 'when admin' do
@@ -17,6 +19,18 @@ resource 'Files' do
       example_request 'List all files' do
         assert_status 200
         expect(response_data.size).to eq 2
+      end
+
+      describe 'when filtering by uploader' do
+        let(:file) { files.first }
+        let(:uploader) { file.uploader_id }
+
+        example 'List all files for a specific uploader', document: false do
+          do_request
+          assert_status 200
+          expect(response_data.size).to eq(1)
+          expect(response_ids).to eq [file.id]
+        end
       end
     end
 

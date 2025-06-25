@@ -4,14 +4,20 @@ class WebApi::V1::FilesV2Controller < ApplicationController
   include CarrierwaveErrorDetailsTransformation
 
   def index
-    files = policy_scope(Files::File)
-      .then { paginate(_1) }
+    files =
+      Files::FileFinder.new(**finder_params).execute
+        .then { policy_scope(_1) }
+        .then { paginate(_1) }
 
     render json: linked_json(
       files,
       WebApi::V1::FileV2Serializer,
       params: jsonapi_serializer_params
     )
+  end
+
+  def finder_params
+    params.permit(:uploader).to_h.symbolize_keys
   end
 
   def show
