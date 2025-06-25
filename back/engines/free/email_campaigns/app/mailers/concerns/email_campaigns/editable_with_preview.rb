@@ -23,12 +23,15 @@ module EmailCampaigns
       # Static data used that can be across email previews.
       def preview_data(recipient)
         {
-          first_name: I18n.t('email_campaigns.preview_data.first_name', locale: recipient.locale),
-          last_name: I18n.t('email_campaigns.preview_data.last_name', locale: recipient.locale),
-          display_name: I18n.t('email_campaigns.preview_data.display_name', locale: recipient.locale),
+          user_first_name: I18n.t('email_campaigns.preview_data.first_name', locale: recipient.locale),
+          user_last_name: I18n.t('email_campaigns.preview_data.last_name', locale: recipient.locale),
+          user_display_name: I18n.t('email_campaigns.preview_data.display_name', locale: recipient.locale),
+          project_title_multiloc: MultilocService.new.i18n_to_multiloc('email_campaigns.preview_data.project_title'),
+          project_url: "/#{recipient.locale}/projects/example-project",
           comment_body_multiloc: MultilocService.new.i18n_to_multiloc('email_campaigns.preview_data.comment_body'),
           idea_title_multiloc: MultilocService.new.i18n_to_multiloc('email_campaigns.preview_data.idea_title'),
-          idea_url: "/#{recipient.locale}/ideas/example-idea"
+          idea_url: "/#{recipient.locale}/ideas/example-idea",
+          proposal_title_multiloc: MultilocService.new.i18n_to_multiloc('email_campaigns.preview_data.proposal_title')
         }
       end
     end

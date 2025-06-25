@@ -88,8 +88,10 @@ en:
       first_name: 'Jane'
       last_name: 'Doe'
       display_name: 'Jane Doe'
+      project_title: 'Example project'
       comment_body: 'This is an example comment used for previewing the content of emails. This is not real content.'
       idea_title: 'Example Idea'
+      proposal_title: 'Example Proposal'
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"

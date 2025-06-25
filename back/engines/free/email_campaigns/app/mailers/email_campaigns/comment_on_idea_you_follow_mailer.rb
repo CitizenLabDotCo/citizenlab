@@ -42,8 +42,8 @@ module EmailCampaigns
       {
         recipient: recipient,
         event_payload: {
-          initiating_user_first_name: data[:first_name],
-          comment_author_name: data[:display_name],
+          initiating_user_first_name: data[:user_first_name],
+          comment_author_name: data[:user_display_name],
           comment_body_multiloc: data[:comment_body_multiloc],
           comment_url: data[:idea_url],
           idea_title_multiloc: data[:idea_title_multiloc],
