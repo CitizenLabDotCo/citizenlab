@@ -28,13 +28,10 @@ import useLocalize from 'hooks/useLocalize';
 import EsriMap from 'components/EsriMap';
 import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton';
 import { parseLayers } from 'components/EsriMap/utils';
-import { FormValues } from 'components/Form/typings';
-import { FormLabel } from 'components/UI/FormComponents';
 
 import { useIntl } from 'utils/cl-intl';
-import { sanitizeForClassname, getLabel } from 'utils/JSONFormUtils';
 
-import messages from '../../messages';
+import messages from '../../../messages';
 import InstructionAnimation from '../components/InstructionAnimation';
 import UndoButton from '../components/UndoButton';
 import {
@@ -52,7 +49,7 @@ import {
 type Props = {
   setShowFullscreenMap: (show: boolean) => void;
   mapConfig?: IMapConfig;
-  data: FormValues;
+  data: GeoJSON.Point | number[][] | undefined;
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: MapInputType;
@@ -69,9 +66,7 @@ const FullscreenMapInput = memo<Props>(
     handleMultiPointChange,
     inputType,
     questionPageMapView,
-    ...props
   }: ControlProps & Props) => {
-    const { uischema, path, id, schema, required } = props;
     const theme = useTheme();
     const locale = useLocale();
     const localize = useLocalize();
@@ -242,11 +237,11 @@ const FullscreenMapInput = memo<Props>(
                 position="sticky"
               >
                 <Box>
-                  <FormLabel
+                  {/* <FormLabel
                     htmlFor={id && sanitizeForClassname(id)}
                     labelValue={getLabel(uischema, schema, path)}
                     optional={!required}
-                  />
+                  /> */}
                   <Label>
                     <Box display="flex">
                       <Icon

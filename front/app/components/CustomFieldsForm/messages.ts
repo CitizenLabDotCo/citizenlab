@@ -158,4 +158,16 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.tapToAddAnArea',
     defaultMessage: 'Tap to add an area',
   },
+  back: {
+    id: 'app.components.CustomFieldsForm.back',
+    defaultMessage: 'Back',
+  },
+  confirm: {
+    id: 'app.components.CustomFieldsForm.confirm',
+    defaultMessage: 'Confirm',
+  },
+  removeAnswer: {
+    id: 'app.components.CustomFieldsForm.removeAnswer',
+    defaultMessage: 'Remove answer',
+  },
 });

@@ -47,6 +47,57 @@ export function convertGeojsonToWKT(rawData: any) {
   return data;
 }
 
+// This function converts WKT (Well Known Text) format back to GeoJSON
+export function convertWKTToGeojson(rawData: any) {
+  const data = Object.assign({}, rawData);
+
+  for (const key in data) {
+    if (
+      typeof data[key] === 'string' &&
+      data[key].match(/^(POINT|LINESTRING|POLYGON)/)
+    ) {
+      const wkt = data[key].trim();
+      const type = wkt.split(' ')[0].toLowerCase();
+      const coordsMatch = wkt.match(/\((.+)\)/);
+
+      if (coordsMatch) {
+        let coordsString = coordsMatch[1];
+
+        if (type === 'polygon') {
+          // Remove outer parentheses for polygon
+          coordsString = coordsString.match(/\((.+)\)/)?.[1] || coordsString;
+        }
+
+        // Parse the coordinates
+        const points = coordsString
+          .split(',')
+          .map((point) => point.trim().split(' ').map(Number));
+
+        let coordinates;
+        if (type === 'point') {
+          coordinates = points[0];
+        } else if (type === 'linestring') {
+          coordinates = points;
+        } else if (type === 'polygon') {
+          coordinates = [points];
+        }
+
+        data[key] = {
+          type:
+            type === 'point'
+              ? 'Point'
+              : type === 'linestring'
+              ? 'LineString'
+              : 'Polygon',
+          coordinates,
+        };
+      }
+    }
+  }
+
+  return data;
+}
+
 export function calculateDynamicHeight(isSmallerThanPhone: boolean) {
   const viewportHeight = window.innerHeight;
   const menuHeight = stylingConsts.menuHeight;

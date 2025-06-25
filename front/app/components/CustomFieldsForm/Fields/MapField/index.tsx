@@ -11,15 +11,18 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { CLError, RHFErrors } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
+
+import {
+  convertGeojsonToWKT,
+  convertWKTToGeojson,
+} from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import { parseLayers } from 'components/EsriMap/utils';
 import Error, { TFieldName } from 'components/UI/Error';
@@ -29,12 +32,15 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 import DesktopTabletView from './Desktop/DesktopTabletView';
+import MobileView from './Mobile/MobileView';
 
 const MapField = ({
   question,
+  projectId,
   scrollErrorIntoView,
 }: {
   question: IFlatCustomField & { input_type: 'point' | 'polygon' | 'line' };
+  projectId?: string;
   scrollErrorIntoView?: boolean;
 }) => {
   const name = question.key;
@@ -48,6 +54,9 @@ const MapField = ({
     watch,
   } = useFormContext();
 
+  const value = watch(name)
+    ? convertWKTToGeojson({ point: watch(name) }).point
+    : undefined;
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
 
@@ -60,16 +69,10 @@ const MapField = ({
   // State variables
   const [mapView, setMapView] = useState<MapView | null>(null);
 
-  // Get Project
-  const { slug } = useParams() as {
-    slug: string;
-  };
-  const { data: project } = useProjectBySlug(slug);
-
   // Get map configuration to use for this question
   const { data: customMapConfig, isLoading: isLoadingMapConfig } =
     useMapConfigById(question.map_config_id);
-  const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
+  const { data: projectMapConfig } = useProjectMapConfig(projectId);
 
   // If we dont have a custom map config, fall back to the project map config
   const mapConfig = question.map_config_id ? customMapConfig : projectMapConfig;
@@ -84,20 +87,17 @@ const MapField = ({
     setMapView(mapView);
   }, []);
 
-  const handleChange = (value?: GeoJSON.Point) => {
-    setValue(name, value, {
-      shouldDirty: true,
-      shouldTouch: true,
-      shouldValidate: true,
-    });
-  };
-
   // Handler for when single point data changes
   const handleSinglePointChange = useCallback(
     (point?: GeoJSON.Point) => {
-      handleChange(point);
+      const covertedPoint = convertGeojsonToWKT({ point });
+      setValue(name, covertedPoint.point, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
     },
-    [handleChange]
+    [setValue, name]
   );
 
   // // Handler for when multiple point data changes (line/polygon)
@@ -140,32 +140,37 @@ const MapField = ({
         </Label>
       </Box>
       {isLoadingMapConfig && question.map_config_id && <Spinner />}
-      {isMobileOrSmaller ? null : (
-        // <MobileView
-        //   mapConfig={mapConfig}
-        //   onMapInit={onMapInit}
-        //   mapView={mapView}
-        //   handleSinglePointChange={handleSinglePointChange}
-        //   // handleMultiPointChange={handleMultiPointChange}
-        //   inputType={question.input_type}
-        // />
-        <Controller
-          name={name}
-          control={control}
-          render={() => (
-            <DesktopTabletView
-              mapConfig={mapConfig}
-              mapLayers={mapLayers}
-              inputType={question.input_type}
-              onMapInit={onMapInit}
-              mapView={mapView}
-              handleSinglePointChange={handleSinglePointChange}
-              data={watch(name)}
-              // handleMultiPointChange={handleMultiPointChange}
-            />
-          )}
-        />
-      )}
+
+      <Controller
+        name={name}
+        control={control}
+        render={() => (
+          <>
+            {isMobileOrSmaller ? (
+              <MobileView
+                mapConfig={mapConfig}
+                onMapInit={onMapInit}
+                mapView={mapView}
+                handleSinglePointChange={handleSinglePointChange}
+                // handleMultiPointChange={handleMultiPointChange}
+                inputType={question.input_type}
+                data={value}
+              />
+            ) : (
+              <DesktopTabletView
+                mapConfig={mapConfig}
+                mapLayers={mapLayers}
+                inputType={question.input_type}
+                onMapInit={onMapInit}
+                mapView={mapView}
+                handleSinglePointChange={handleSinglePointChange}
+                data={value}
+                // handleMultiPointChange={handleMultiPointChange}
+              />
+            )}
+          </>
+        )}
+      />
       {validationError && (
         <Error
           marginTop="8px"

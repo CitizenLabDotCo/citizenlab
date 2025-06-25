@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box } from '@citizenlab/cl2-component-library';
-import { ControlProps } from '@jsonforms/core';
 import { useTheme } from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -14,10 +13,6 @@ import EsriMap from 'components/EsriMap';
 import { parseLayers } from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
 
-import { useIntl } from 'utils/cl-intl';
-import { sanitizeForClassname } from 'utils/JSONFormUtils';
-
-import ErrorDisplay from '../../../ErrorDisplay';
 import LocationTextInput from '../components/LocationTextInput';
 import MapOverlay from '../components/MapOverlay';
 import RemoveAnswerButton from '../components/RemoveAnswerButton';
@@ -28,7 +23,6 @@ import {
 } from '../multiPointUtils';
 import { updatePointDataAndDisplay, clearPointData } from '../pointUtils';
 import {
-  checkCoordinateErrors,
   getInitialMapCenter,
   getUserInputGraphicsLayer,
   MapInputType,
@@ -42,8 +36,8 @@ type Props = {
   mapView?: MapView | null;
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
-  didBlur: boolean;
   inputType: MapInputType;
+  data?: GeoJSON.Point | number[][] | undefined;
 };
 
 const MobileView = ({
@@ -53,16 +47,11 @@ const MobileView = ({
   handleSinglePointChange,
   handleMultiPointChange,
   inputType,
-  didBlur,
-  id,
-  ...props
-}: Props & ControlProps) => {
-  const { data, path, errors } = props;
-
+  data,
+}: Props) => {
   const theme = useTheme();
   const locale = useLocale();
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
 
   // state variables
   const [showFullscreenMapInput, setShowFullscreenMap] = useState(false);
@@ -157,20 +146,7 @@ const MobileView = ({
           )}
         </Box>
       </Box>
-      <ErrorDisplay
-        inputId={sanitizeForClassname(id)}
-        ajvErrors={
-          errors ||
-          checkCoordinateErrors({
-            data,
-            inputType,
-            schema: props.schema,
-            formatMessage,
-          })
-        }
-        fieldPath={path}
-        didBlur={didBlur}
-      />
+
       {showFullscreenMapInput && (
         <FullscreenMapInput
           setShowFullscreenMap={setShowFullscreenMap}
@@ -180,7 +156,7 @@ const MobileView = ({
           inputType={inputType}
           mapViewSurveyPage={mapView}
           questionPageMapView={mapView}
-          {...props}
+          data={data}
         />
       )}
     </>

@@ -151,6 +151,7 @@ const renderField = ({
               input_type: 'point' | 'polygon' | 'line';
             }
           }
+          projectId={projectId}
           scrollErrorIntoView={true}
         />
       );
