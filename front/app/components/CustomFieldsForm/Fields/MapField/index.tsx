@@ -100,22 +100,32 @@ const MapField = ({
     [setValue, name]
   );
 
-  // // Handler for when multiple point data changes (line/polygon)
-  // const handleMultiPointChange = useCallback(
-  //   (coordinates?: number[][]) => {
-  //     if (coordinates) {
-  //       const geoJSONObject = convertCoordinatesToGeoJSON(
-  //         coordinates,
-  //         uischema
-  //       );
-  //       handleChange(path, geoJSONObject);
-  //     } else {
-  //       handleChange(path, undefined);
-  //     }
-  //     setDidBlur(true);
-  //   },
-  //   [handleChange, path, uischema]
-  // );
+  // Handler for when multiple point data changes (line/polygon)
+  const handleMultiPointChange = useCallback(
+    (coordinates?: number[][]) => {
+      if (coordinates) {
+        const fieldValue = {
+          type: question.input_type,
+          coordinates:
+            question.input_type === 'line'
+              ? coordinates
+              : [...(value?.coordinates || []), coordinates],
+        };
+        setValue(name, fieldValue, {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        });
+      } else {
+        setValue(name, undefined, {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        });
+      }
+    },
+    [setValue, name, question.input_type, value?.coordinates]
+  );
 
   const getInstructionMessage = () => {
     if (isTabletOrSmaller) {
@@ -152,7 +162,7 @@ const MapField = ({
                 onMapInit={onMapInit}
                 mapView={mapView}
                 handleSinglePointChange={handleSinglePointChange}
-                // handleMultiPointChange={handleMultiPointChange}
+                handleMultiPointChange={handleMultiPointChange}
                 inputType={question.input_type}
                 data={value}
               />
@@ -165,7 +175,7 @@ const MapField = ({
                 mapView={mapView}
                 handleSinglePointChange={handleSinglePointChange}
                 data={value}
-                // handleMultiPointChange={handleMultiPointChange}
+                handleMultiPointChange={handleMultiPointChange}
               />
             )}
           </>

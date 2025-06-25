@@ -38,7 +38,6 @@ export const handleMapClickMultipoint = (
 ) => {
   // Project the point to Web Mercator, in case the map is using a different projection
   const projectedPoint = projectPointToWebMercator(event.mapPoint);
-
   // Add the clicked location to the existing points
   const newPoint = [projectedPoint.longitude, projectedPoint.latitude];
   const currentPointCoordinates = getUserInputPoints(mapView);

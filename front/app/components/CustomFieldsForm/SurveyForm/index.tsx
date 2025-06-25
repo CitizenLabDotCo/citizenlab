@@ -52,7 +52,7 @@ const SurveyForm = ({
     const isSubmitPage = currentPageNumber === nestedPagesData.length - 2;
     if (currentPageNumber === nestedPagesData.length - 1) {
       // Form has been submitted, clear the draft idea
-      clearDraftIdea();
+      return clearDraftIdea();
     }
     // The back-end initially returns a draft idea without an ID
     if (!draftIdea?.data.id) {
