@@ -332,7 +332,7 @@ fr-BE:
       write_in_language: 'Rédigez vos réponses dans la même langue que ce formulaire'
       linear_scale_print_description: 'Veuillez écrire un nombre entre %{min_label} et %{max_label} uniquement'
       unsupported_field: 'Ce champ ne peut pas être rempli sur papier. Veuillez utiliser la version numérique de ce formulaire.'
-      ranking_print_description: 'Veuillez inscrire dans chaque case un chiffre compris entre 1 (le plus préféré) et %{max_rank} (le moins préféré). N''utilisez chaque chiffre qu''une seule fois.'
+      ranking_print_description: 'Veuillez écrire un nombre de 1 à %{max_rank} dans chaque case, où 1 est l''option préférée et %{max_rank} la moins préférée. Utilisez chaque nombre une seule fois.'
       matrix_print_description: 'Pour chaque ligne, cochez un cercle avec une croix pour indiquer votre préférence.'
       rating_print_description: 'Veuillez noter ceci sur une échelle de 1 (moins bonne note) à %{max_stars} (meilleure note).'
       sentiment_linear_scale_print_description: 'Veuillez écrire un nombre entre 1 et 5.'
