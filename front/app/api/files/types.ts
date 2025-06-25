@@ -43,6 +43,13 @@ export interface IPaginationProps {
 
 export interface IFiles {
   data: IFileData[];
+  links: {
+    self: string;
+    first: string;
+    last: string;
+    next?: string;
+    prev?: string;
+  };
 }
 
 export interface IFile {

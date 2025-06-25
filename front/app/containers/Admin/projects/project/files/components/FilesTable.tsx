@@ -13,13 +13,16 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IPaginationProps } from 'api/files/types';
+import useDeleteFile from 'api/files/useDeleteFile';
 import useFiles from 'api/files/useFiles';
 
+import Pagination from 'components/Pagination';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import SearchInput from 'components/UI/SearchInput';
 import UserName from 'components/UI/UserName';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import FileSideView from './FileSideView';
 import FileUploadWithDropzone from './FileUploadWithDropzone';
@@ -29,34 +32,51 @@ import UploadFileButtonWithModal from './UploadFileButtonWithModal';
 const FilesTable = () => {
   const { formatMessage } = useIntl();
   const [sideViewOpened, setSideViewOpened] = useState(false);
+  const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
 
-  const [queryParameters, _setQueryParameters] = useState<IPaginationProps>({
+  const [queryParameters, setQueryParameters] = useState<IPaginationProps>({
     pageNumber: 1,
-    pageSize: 1,
+    pageSize: 8,
   });
 
   const { data: files } = useFiles({
     ...queryParameters,
   });
+  const { mutate: deleteFile } = useDeleteFile();
 
-  const editFileHandler = () => {
+  const currentPage = getPageNumberFromUrl(files?.links.self || '');
+  const lastPage = getPageNumberFromUrl(files?.links.last || '');
+
+  const handlePaginationClick = (pageNumber: number) => {
+    setQueryParameters((prevParams) => ({
+      ...prevParams,
+      pageNumber,
+    }));
+  };
+
+  const editFileHandler = (fileId: string) => () => {
     // ToDo: Logic to handle file editing
     setSideViewOpened(true);
+    setSelectedFileId(fileId);
   };
 
-  const deleteFileHandler = () => () => {
-    // ToDo: Logic to handle file deletion
+  const deleteFileHandler = (fileId: string) => () => {
+    deleteFile(fileId, {
+      onError: (_error) => {
+        // ToDo: Handle any file deletion errors.
+      },
+    });
   };
 
-  const getActions = (): IAction[] => [
+  const getActions = (fileId: string): IAction[] => [
     {
       label: <FormattedMessage {...messages.editFile} />,
-      handler: editFileHandler,
+      handler: editFileHandler(fileId),
       name: 'edit',
     },
     {
       label: <FormattedMessage {...messages.deleteFile} />,
-      handler: deleteFileHandler,
+      handler: deleteFileHandler(fileId),
       name: 'delete',
     },
   ];
@@ -112,21 +132,29 @@ const FilesTable = () => {
                         />
                       )}
                     </Td>
-                    <Td>{file.attributes.deleted_at ? 'Private' : 'Public'}</Td>
+                    <Td>{'ToDo'}</Td>
                     <Td>
                       <MoreActionsMenu
                         showLabel={false}
-                        actions={getActions()}
+                        actions={getActions(file.id)}
                       />
                     </Td>
                   </Tr>
                 ))}
               </Tbody>
             </Table>
+            <Box display="flex" justifyContent="center" my="8px">
+              <Pagination
+                currentPage={currentPage || 1}
+                totalPages={lastPage || 1}
+                loadPage={handlePaginationClick}
+              />
+            </Box>
           </Box>
           <FileSideView
             opened={sideViewOpened}
             setSideViewOpened={setSideViewOpened}
+            selectedFileId={selectedFileId}
           />
         </>
       ) : (

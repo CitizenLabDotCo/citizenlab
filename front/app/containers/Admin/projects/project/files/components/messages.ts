@@ -73,4 +73,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.searchFiles',
     defaultMessage: 'Search files',
   },
+  filesUploadedSuccessfully: {
+    id: 'app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully',
+    defaultMessage: 'All files uploaded successfully',
+  },
+  fileSizeError: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileSizeError',
+    defaultMessage: 'Files may not exceed the maximum limit of {maxSizeMb} MB.',
+  },
+  filesSuccessfullyUploaded: {
+    id: 'app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded',
+    defaultMessage:
+      'The following files were successfully uploaded: {fileNames}',
+  },
 });

@@ -4,12 +4,15 @@ import SideModal from 'components/UI/SideModal';
 
 type Props = {
   opened: boolean;
+  selectedFileId: string | null;
   setSideViewOpened: (opened: boolean) => void;
 };
-const FileSideView = ({ opened, setSideViewOpened }: Props) => {
+const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
   return (
     <SideModal opened={opened} close={() => setSideViewOpened(false)}>
-      Here is some content for the file side view.
+      <h3 style={{ marginTop: '30px' }}>
+        ToDo: Content for file side view. File ID: {selectedFileId}
+      </h3>
     </SideModal>
   );
 };
