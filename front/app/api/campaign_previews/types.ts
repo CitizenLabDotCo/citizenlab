@@ -9,8 +9,11 @@ export interface ICampaignPreviewData {
   id: string;
   type: string;
   attributes: {
-    html: string;
+    to: string;
+    from: string;
+    reply_to: string;
     subject: string;
+    html: string;
   };
 }
 

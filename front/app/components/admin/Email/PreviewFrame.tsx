@@ -29,14 +29,14 @@ const PreviewFrame = ({
   showHeaders,
 }: Props) => {
   const { data: previewData } = useCampaignPreview(campaignId);
-  const previewSubject = previewData?.data.attributes.subject;
-  const previewHtml = previewData?.data.attributes.html;
+  const { to, from, reply_to, subject, html } =
+    previewData?.data.attributes || {};
 
-  if (!previewHtml) return null;
+  if (!html) return null;
 
   return (
     <Box>
-      {showHeaders && previewSubject && (
+      {showHeaders && (
         <Box
           p="16px"
           display="flex"
@@ -46,41 +46,32 @@ const PreviewFrame = ({
           border={`1px solid ${colors.divider}`}
           borderBottom="none"
         >
-          <Box display="flex" alignItems="center" gap="8px">
-            <Text fontWeight="bold" my="0" color="grey600" width="70px">
-              To
-            </Text>
-            <Text my="0">Someone </Text>
-          </Box>
-          <Box display="flex" alignItems="center" gap="8px">
-            <Text fontWeight="bold" my="0" color="grey600" width="70px">
-              From
-            </Text>
-            <Text my="0">Someone</Text>
-          </Box>
-          <Box display="flex" alignItems="center" gap="8px">
-            <Text fontWeight="bold" my="0" color="grey600" width="70px">
-              Reply-To
-            </Text>
-            <Text my="0">Someone</Text>
-          </Box>
-          <Box display="flex" alignItems="center" gap="8px">
-            <Text fontWeight="bold" my="0" color="grey600" width="70px">
-              <FormattedMessage {...messages.subject} />
-            </Text>
-            <Text my="0" fontWeight="bold">
-              {previewSubject}
-            </Text>
-          </Box>
+          <HeaderField labelKey="to" value={to} />
+          <HeaderField labelKey="from" value={from} />
+          <HeaderField labelKey="reply_to" value={reply_to} />
+          <HeaderField labelKey="subject" value={subject} bold={true} />
         </Box>
       )}
       <StyledFrame
         id="e2e-email-preview-iframe"
         className={className}
-        initialContent={previewHtml}
+        initialContent={html}
       >
         {children}
       </StyledFrame>
+    </Box>
+  );
+};
+
+const HeaderField = ({ labelKey, value, bold = false }) => {
+  return (
+    <Box display="flex" alignItems="center" gap="8px">
+      <Text fontWeight="bold" my="0" color="grey600" width="70px">
+        <FormattedMessage {...messages[labelKey]} />
+      </Text>
+      <Text my="0" fontWeight={bold ? 'bold' : 'normal'}>
+        {value}
+      </Text>
     </Box>
   );
 };
