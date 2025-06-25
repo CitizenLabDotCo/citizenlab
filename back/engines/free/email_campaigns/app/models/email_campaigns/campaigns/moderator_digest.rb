@@ -40,7 +40,7 @@ module EmailCampaigns
     recipient_filter :user_filter_moderator_only
     recipient_filter :user_filter_no_invitees
 
-    before_send :content_worth_sending?
+    filter :content_worth_sending?
 
     N_TOP_IDEAS = 12
 

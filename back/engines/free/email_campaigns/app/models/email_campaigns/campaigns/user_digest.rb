@@ -39,7 +39,7 @@ module EmailCampaigns
 
     recipient_filter :user_filter_no_invitees
 
-    before_send :content_worth_sending?
+    filter :content_worth_sending?
 
     N_TOP_IDEAS = 3
     N_TOP_COMMENTS = 2

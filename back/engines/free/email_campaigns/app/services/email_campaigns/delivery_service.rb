@@ -111,7 +111,7 @@ module EmailCampaigns
     # * time: Time object when the sending command happened
     # * activity: Activity object which activity happened
     def apply_send_pipeline(campaign_candidates, options = {})
-      valid_campaigns           = filter_valid_campaigns_before_send(campaign_candidates, options)
+      valid_campaigns           = filter_campaigns(campaign_candidates, options)
       campaigns_with_recipients = assign_campaigns_recipients(valid_campaigns, options)
       campaigns_with_command    = assign_campaigns_command(campaigns_with_recipients, options)
 
@@ -119,8 +119,8 @@ module EmailCampaigns
       process_send_campaigns(campaigns_with_command)
     end
 
-    def filter_valid_campaigns_before_send(campaigns, options)
-      campaigns.select { |campaign| campaign.run_before_send_hooks(**options) }
+    def filter_campaigns(campaigns, options)
+      campaigns.select { |campaign| campaign.run_filter_hooks(**options) }
     end
 
     def assign_campaigns_recipients(campaigns, options)
@@ -140,6 +140,7 @@ module EmailCampaigns
 
     def process_send_campaigns(campaigns_with_command)
       campaigns_with_command.each do |(command, campaign)|
+        campaign.run_before_send_hooks(command)
         process_command(campaign, command)
         campaign.run_after_send_hooks(command)
       end

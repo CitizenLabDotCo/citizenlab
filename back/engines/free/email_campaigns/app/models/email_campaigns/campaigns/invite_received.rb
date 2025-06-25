@@ -35,7 +35,7 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages except: ['churned']
 
-    before_send :check_send_invite_email_toggle
+    filter :check_send_invite_email_toggle
     recipient_filter :filter_recipient
 
     def mailer_class
