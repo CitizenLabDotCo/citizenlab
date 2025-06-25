@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'shared_examples_for_campaign_delivery_tracking'
 
 RSpec.describe EmailCampaigns::AssigneeDigestMailer do
   describe 'AssigneeDigest' do
@@ -45,9 +46,12 @@ RSpec.describe EmailCampaigns::AssigneeDigestMailer do
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('Ideas requiring your feedback:')
