@@ -22,6 +22,7 @@ import CosponsorsField from './Fields/CosponsorsField';
 import ImageField from './Fields/ImageField';
 import ImageMultichoiceField from './Fields/ImageMultichoiceField';
 import LinearScaleField from './Fields/LinearScale';
+import MapField from './Fields/MapField';
 import MatrixField from './Fields/MatrixField';
 import MultiFileUploadField from './Fields/MultiFileUploadField';
 import MultiSelectField from './Fields/MultiSelectField';
@@ -137,6 +138,19 @@ const renderField = ({
         <SingleFileUploadField
           name={question.key}
           ideaId={ideaId}
+          scrollErrorIntoView={true}
+        />
+      );
+    case 'point':
+    case 'line':
+    case 'polygon':
+      return (
+        <MapField
+          question={
+            question as IFlatCustomField & {
+              input_type: 'point' | 'polygon' | 'line';
+            }
+          }
           scrollErrorIntoView={true}
         />
       );
