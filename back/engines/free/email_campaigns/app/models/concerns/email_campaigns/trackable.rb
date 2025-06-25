@@ -30,7 +30,7 @@ module EmailCampaigns
 
     private
 
-    def generate_delivery_id
+    def generate_delivery_id(_)
       @delivery_id = SecureRandom.uuid
     end
 

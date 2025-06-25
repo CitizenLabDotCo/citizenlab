@@ -13,8 +13,8 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::IdeaPublished.create! }
     let_it_be(:input) { create(:idea, author: recipient) }
+    let_it_be(:activity) { create(:activity, item: input, action: 'published') }
     let_it_be(:command) do
-      activity = create(:activity, item: input, action: 'published')
       create(:idea_published_campaign).generate_commands(
         activity: activity,
         recipient: recipient
@@ -35,15 +35,19 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
           mailer_instance
         end
 
+        campaign.run_before_send_hooks(activity:)
         mailer.campaign_mail.deliver_now
+        campaign.run_after_send_hooks(command)
 
         expect(mailer_instance.mailgun_headers).to have_key('X-Mailgun-Variables')
-        expect(JSON.parse(mailer_instance.mailgun_headers['X-Mailgun-Variables'])).to match(
+        mailgun_variables = JSON.parse mailer_instance.mailgun_headers['X-Mailgun-Variables']
+        expect(mailgun_variables).to match(
           hash_including(
             'cl_tenant_id' => instance_of(String),
             'cl_delivery_id' => instance_of(String)
           )
         )
+        expect(EmailCampaigns::Delivery.ids).to eq [mailgun_variables['cl_delivery_id']]
       end
     end
 
