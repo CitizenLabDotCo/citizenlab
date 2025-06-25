@@ -7,7 +7,6 @@ import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import MapView from '@arcgis/core/views/MapView';
 import { colors } from '@citizenlab/cl2-component-library';
-import { ControlElement } from '@jsonforms/core';
 
 import {
   getFillSymbol,
@@ -266,30 +265,21 @@ type GenerateLinePreviewProps = {
   event: any;
 };
 
-// convertCoordinatesToGeoJSON
-// Description: Converts array of coordinates to GeoJSON LineString or Polygon
 export const convertCoordinatesToGeoJSON = (
   coordinates: number[][],
-  uiSchema: ControlElement
+  inputType: MapInputType
 ) => {
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (coordinates) {
-    const geoJsonType =
-      uiSchema.options?.input_type === 'line' ? 'LineString' : 'Polygon';
+  const geoJsonType = inputType === 'line' ? 'LineString' : 'Polygon';
 
-    // Add an extra coordinate to close the line if we're forming a polygon
-    geoJsonType === 'Polygon' && coordinates.push(coordinates[0]);
+  // Add an extra coordinate to close the line if we're forming a polygon
+  geoJsonType === 'Polygon' && coordinates.push(coordinates[0]);
 
-    // Return the GeoJSON object
-    return {
-      type: geoJsonType,
-      // Polygons use a double-nested array structure, so we wrap the coordinates in an additional array if needed
-      coordinates: geoJsonType === 'LineString' ? coordinates : [coordinates],
-    };
-  }
-
-  return;
+  // Return the GeoJSON object
+  return {
+    type: geoJsonType,
+    // Polygons use a double-nested array structure, so we wrap the coordinates in an additional array if needed
+    coordinates: geoJsonType === 'LineString' ? coordinates : [coordinates],
+  };
 };
 
 // updateMultiPointsDataAndDisplay

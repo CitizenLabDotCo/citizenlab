@@ -33,6 +33,7 @@ import messages from '../../messages';
 
 import DesktopTabletView from './Desktop/DesktopTabletView';
 import MobileView from './Mobile/MobileView';
+import { convertCoordinatesToGeoJSON } from './multiPointUtils';
 
 const MapField = ({
   question,
@@ -104,13 +105,11 @@ const MapField = ({
   const handleMultiPointChange = useCallback(
     (coordinates?: number[][]) => {
       if (coordinates) {
-        const fieldValue = {
-          type: question.input_type,
-          coordinates:
-            question.input_type === 'line'
-              ? coordinates
-              : [...(value?.coordinates || []), coordinates],
-        };
+        const fieldValue = convertCoordinatesToGeoJSON(
+          coordinates,
+          question.input_type
+        );
+
         setValue(name, fieldValue, {
           shouldDirty: true,
           shouldTouch: true,
@@ -124,7 +123,7 @@ const MapField = ({
         });
       }
     },
-    [setValue, name, question.input_type, value?.coordinates]
+    [setValue, name, question.input_type]
   );
 
   const getInstructionMessage = () => {
