@@ -20,6 +20,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
@@ -66,6 +68,7 @@ interface Props {
   phases: IPhaseData[] | undefined;
   currentPhase: IPhaseData | undefined;
   pageButtonLabelMultiloc?: Multiloc;
+  pageButtonLink?: string;
   project: IProject | undefined;
 }
 
@@ -77,6 +80,7 @@ const PageControlButtons = ({
   pageVariant,
   phases,
   pageButtonLabelMultiloc,
+  pageButtonLink,
   currentPhase,
   project,
 }: Props) => {
@@ -153,17 +157,31 @@ const PageControlButtons = ({
             <FormattedMessage {...messages.previous} />
           </Button>
         )}
-        <Button
-          onClick={handleNextAndSubmit}
-          data-cy={CY_DATA_VALUES[pageVariant]}
-          icon={ICON_VALUES[pageVariant]}
-          iconPos="right"
-          bgColor={theme.colors.tenantPrimary}
-          boxShadow={defaultStyles.boxShadow}
-          processing={isLoading}
-        >
-          {getButtonMessage()}
-        </Button>
+        {pageButtonLink ? (
+          <ButtonWithLink
+            data-cy={CY_DATA_VALUES[pageVariant]}
+            icon={ICON_VALUES[pageVariant]}
+            iconPos="right"
+            bgColor={theme.colors.tenantPrimary}
+            boxShadow={defaultStyles.boxShadow}
+            processing={isLoading}
+            linkTo={pageButtonLink}
+          >
+            {getButtonMessage()}
+          </ButtonWithLink>
+        ) : (
+          <Button
+            onClick={handleNextAndSubmit}
+            data-cy={CY_DATA_VALUES[pageVariant]}
+            icon={ICON_VALUES[pageVariant]}
+            iconPos="right"
+            bgColor={theme.colors.tenantPrimary}
+            boxShadow={defaultStyles.boxShadow}
+            processing={isLoading}
+          >
+            {getButtonMessage()}
+          </Button>
+        )}
       </Box>
     </Box>
   );

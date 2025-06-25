@@ -8,13 +8,7 @@ import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/event
 
 import eventEmitter from 'utils/eventEmitter';
 
-const useEsriMapPage = ({
-  project,
-  pages,
-  currentPageNumber,
-
-  localize,
-}) => {
+const useEsriMapPage = ({ project, pages, currentPageNumber, localize }) => {
   const draggableDivRef = useRef<HTMLDivElement>(null);
   const dragDividerRef = useRef<HTMLDivElement>(null);
   const { data: projectMapConfig } = useProjectMapConfig(project?.data?.id);

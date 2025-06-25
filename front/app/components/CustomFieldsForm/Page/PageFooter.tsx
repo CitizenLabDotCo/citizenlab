@@ -17,6 +17,7 @@ const PageFooter = ({
   handlePrevious,
   formCompletionPercentage,
   pageButtonLabelMultiloc,
+  pageButtonLink,
   phase,
   project,
   phases,
@@ -30,6 +31,7 @@ const PageFooter = ({
   handlePrevious: () => void;
   formCompletionPercentage: number;
   pageButtonLabelMultiloc?: Multiloc;
+  pageButtonLink?: string;
   phase?: IPhaseData;
   project?: IProject;
   phases?: IPhases;
@@ -60,6 +62,7 @@ const PageFooter = ({
           phases={phases?.data}
           currentPhase={phase}
           pageButtonLabelMultiloc={pageButtonLabelMultiloc}
+          pageButtonLink={pageButtonLink}
           project={project}
         />
       </Box>

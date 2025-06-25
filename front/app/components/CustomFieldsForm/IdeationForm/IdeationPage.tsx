@@ -4,7 +4,6 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Multiloc } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -55,7 +54,6 @@ type CustomFieldsPage = {
   ideaId?: string;
   projectId: string;
   onSubmit: (formValues: FormValues) => Promise<void>;
-  pageButtonLabelMultiloc?: Multiloc;
   phase?: IPhaseData;
   defaultValues?: any;
   customFields: IFlatCustomField[];
@@ -76,7 +74,6 @@ const IdeationPage = ({
   onSubmit,
   currentPageNumber,
   setCurrentPageNumber,
-  pageButtonLabelMultiloc,
   phase,
   defaultValues,
   customFields,
@@ -315,7 +312,8 @@ const IdeationPage = ({
               setCurrentPageNumber(currentPageNumber - 1);
             }}
             formCompletionPercentage={formCompletionPercentage}
-            pageButtonLabelMultiloc={pageButtonLabelMultiloc}
+            pageButtonLabelMultiloc={page.page_button_label_multiloc}
+            pageButtonLink={page.page_button_link}
             phase={phase}
             project={project}
             phases={phases}
