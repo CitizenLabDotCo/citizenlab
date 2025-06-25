@@ -310,6 +310,14 @@ const generateYupValidationSchema = ({
           : object().nullable();
         break;
       }
+      case 'point':
+      case 'polygon':
+      case 'line': {
+        schema[key] = required
+          ? string().required(fieldRequired).nullable()
+          : string().nullable();
+        break;
+      }
     }
   });
 
