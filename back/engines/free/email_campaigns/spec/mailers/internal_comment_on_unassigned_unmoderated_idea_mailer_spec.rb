@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'shared_examples_for_campaign_delivery_tracking'
 
 RSpec.describe EmailCampaigns::InternalCommentOnUnassignedUnmoderatedIdeaMailer do
   describe 'InternalCommentOnUnassignedUnmoderatedIdeaMailer' do
@@ -27,11 +28,13 @@ RSpec.describe EmailCampaigns::InternalCommentOnUnassignedUnmoderatedIdeaMailer 
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
     let_it_be(:body) { mail_body(mail) }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
+    include_examples 'campaign delivery tracking'
     include_examples 'internal_comment_campaign_mailer_examples'
   end
 end
