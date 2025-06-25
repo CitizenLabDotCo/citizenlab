@@ -1320,7 +1320,7 @@
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Zeitleiste für Besucher*innen",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Phasenbericht",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Text über die Phase hinzufügen",
-  "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Dies ist ein text. Sie können ihn mit dem editor in der leiste auf der rechten seite bearbeiten und formatieren.",
+  "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Dies ist ein Text. Sie können ihn mit dem Editor im rechten Bereich bearbeiten und formatieren.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.participants": "Teilnehmende",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults": "Ergebnisse des Projekts",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Zusammenfassung des Berichts",
