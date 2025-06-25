@@ -86,4 +86,12 @@ export default defineMessages({
     defaultMessage:
       'The following files were successfully uploaded: {fileNames}',
   },
+  unknown: {
+    id: 'app.containers.AdminPage.ProjectFiles.unknown',
+    defaultMessage: 'Unknown',
+  },
+  confirmDelete: {
+    id: 'app.containers.AdminPage.ProjectFiles.confirmDelete',
+    defaultMessage: 'Are you sure you want to delete this file?',
+  },
 });

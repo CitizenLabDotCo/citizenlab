@@ -12,7 +12,7 @@ import {
   Box,
 } from '@citizenlab/cl2-component-library';
 
-import { IPaginationProps } from 'api/files/types';
+import { IPaginationProps, QueryParameters } from 'api/files/types';
 import useDeleteFile from 'api/files/useDeleteFile';
 import useFiles from 'api/files/useFiles';
 
@@ -34,9 +34,12 @@ const FilesTable = () => {
   const [sideViewOpened, setSideViewOpened] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
 
-  const [queryParameters, setQueryParameters] = useState<IPaginationProps>({
+  const [queryParameters, setQueryParameters] = useState<
+    QueryParameters & IPaginationProps
+  >({
     pageNumber: 1,
     pageSize: 8,
+    sort: 'created_at',
   });
 
   const { data: files } = useFiles({
@@ -61,11 +64,12 @@ const FilesTable = () => {
   };
 
   const deleteFileHandler = (fileId: string) => () => {
-    deleteFile(fileId, {
-      onError: (_error) => {
-        // ToDo: Handle any file deletion errors.
-      },
-    });
+    confirm(formatMessage(messages.confirmDelete)) &&
+      deleteFile(fileId, {
+        onError: (_error) => {
+          // ToDo: Handle any file deletion errors.
+        },
+      });
   };
 
   const getActions = (fileId: string): IAction[] => [
@@ -122,7 +126,10 @@ const FilesTable = () => {
                       ).toLocaleDateString()}
                     </Td>
                     <Td>{file.attributes.name}</Td>
-                    <Td>{file.attributes.mime_type}</Td>
+                    <Td>
+                      {file.attributes.mime_type ||
+                        formatMessage(messages.unknown)}
+                    </Td>
                     <Td>
                       {file.relationships.uploader.data.id && (
                         <UserName

@@ -81,7 +81,6 @@ const FileUploadWithDropzone = () => {
     },
   });
 
-  console.log({ apiErrors });
   return (
     <>
       <Box mb="30px">

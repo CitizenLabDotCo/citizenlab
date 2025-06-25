@@ -14,12 +14,13 @@ const fetchFiles = (queryParams: QueryParameters) =>
   });
 
 const useFiles = (
-  { pageNumber, pageSize }: IPaginationProps,
+  { pageNumber, pageSize, ...params }: QueryParameters & IPaginationProps,
   { enabled = true }: { enabled?: boolean } = { enabled: true }
 ) => {
   const queryParameters: QueryParameters = {
     'page[number]': pageNumber ?? 1,
     'page[size]': pageSize ?? 250,
+    ...params,
   };
 
   return useQuery<IFiles, CLErrors, IFiles, FilesKeys>({
