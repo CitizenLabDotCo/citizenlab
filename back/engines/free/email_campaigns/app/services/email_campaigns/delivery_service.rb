@@ -170,8 +170,7 @@ module EmailCampaigns
       campaign.generate_commands(recipient:, **options).map do |command|
         command.merge(
           recipient: recipient,
-          time: Time.zone.now,
-          delivery_id: SecureRandom.uuid # Needed to be included in the Mailgun headers, so Mailgun can update the delivery status
+          time: Time.zone.now
         )
       end
     end

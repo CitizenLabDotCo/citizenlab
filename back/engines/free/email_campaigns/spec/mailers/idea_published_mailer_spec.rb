@@ -20,8 +20,32 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
         recipient: recipient
       ).first.merge({ recipient: recipient })
     end
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
     let_it_be(:body) { mail_body(mail) }
+
+    describe 'mailgun_headers' do
+      it 'includes X-Mailgun-Variables in headers' do
+        # We need to do this as we cannot directly access the true mailer instance
+        # when using `described_class.with(...)` in the test setup.
+        mailer_instance = nil
+        allow(described_class).to receive(:new).and_wrap_original do |original, *args|
+          mailer_instance = original.call(*args)
+          allow(mailer_instance).to receive(:mailgun_headers).and_call_original
+          mailer_instance
+        end
+
+        mailer.campaign_mail.deliver_now
+
+        expect(mailer_instance.mailgun_headers).to have_key('X-Mailgun-Variables')
+        expect(JSON.parse(mailer_instance.mailgun_headers['X-Mailgun-Variables'])).to match(
+          hash_including(
+            'cl_tenant_id' => instance_of(String),
+            'cl_delivery_id' => instance_of(String)
+          )
+        )
+      end
+    end
 
     it 'renders the subject' do
       expect(mail.subject).to eq('Your idea has been published')

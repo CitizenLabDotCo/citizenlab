@@ -158,6 +158,10 @@ module EmailCampaigns
       false
     end
 
+    def extra_mailgun_variables
+      super || {}
+    end
+
     protected
 
     def set_enabled
