@@ -9,9 +9,10 @@ import { Controller, useFormContext } from 'react-hook-form';
 interface Props extends Omit<RadioProps, 'onChange'> {
   id: string;
   name: string;
+  canDeselect?: boolean; // Whether the radio can be deselected by clicking it again
 }
 
-const Radio = ({ name, id, ...rest }: Props) => {
+const Radio = ({ name, id, canDeselect, ...rest }: Props) => {
   const { trigger, setValue, control } = useFormContext();
 
   return (
@@ -27,7 +28,7 @@ const Radio = ({ name, id, ...rest }: Props) => {
               id={id}
               onClick={() => {
                 // Deselect the radio button if it is already selected
-                if (field.value === rest.value) {
+                if (field.value === rest.value && canDeselect) {
                   setValue(name, '');
                   trigger(name);
                   return;
