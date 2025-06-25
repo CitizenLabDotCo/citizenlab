@@ -88,7 +88,7 @@ class WebApi::V1::FilesController < ApplicationController
   def destroy
     file = @file.destroy
     if file.destroyed?
-      SideFxFileService.new.after_destroy(file, current_user)
+      SideFxFileService.new.after_destroy(file)
       head :ok
     else
       head :internal_server_error
