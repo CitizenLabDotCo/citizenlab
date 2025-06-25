@@ -275,6 +275,7 @@ export interface IAppConfigurationSettings {
   html_pdfs?: AppConfigurationFeature;
   project_planning?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
+  customised_automated_emails?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
