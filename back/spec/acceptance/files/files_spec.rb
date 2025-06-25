@@ -11,7 +11,17 @@ resource 'Files' do
   get 'web_api/v1/files' do
     parameter :uploader, 'Filter files by uploader user ID(s)', type: %i[string array]
 
-    let_it_be(:files) { create_list(:file, 2) }
+    parameter :sort, <<~SORT_DESC.squish, required: false
+      Sort order. Comma-separated list of attributes. Prefix with "-" to sort in descending order.
+      Options: "created_at", "-created_at", "name", "-name", "size", "-size"
+    SORT_DESC
+
+    let_it_be(:files) do
+      [
+        create(:file, name: 'a.pdf', created_at: 2.days.ago),
+        create(:file, name: 'b.pdf', created_at: 1.day.ago)
+      ]
+    end
 
     context 'when admin' do
       before { admin_header_token }
@@ -30,6 +40,25 @@ resource 'Files' do
           assert_status 200
           expect(response_data.size).to eq(1)
           expect(response_ids).to eq [file.id]
+        end
+      end
+
+      describe 'sorting' do
+        example 'Lists files sorted by creation date in descending order by default', document: false do
+          do_request
+          assert_status 200
+          expect(response_ids).to eq(files.reverse.map(&:id))
+        end
+
+        example 'List files sorted correctly', document: false do
+          do_request sort: 'name,-created_at'
+          expect(response_ids).to eq(files.map(&:id))
+
+          new_file = create(:file, name: 'a.pdf')
+          do_request sort: '-name,created_at'
+
+          expected_files = [files.last, files.first, new_file]
+          expect(response_ids).to eq(expected_files.map(&:id))
         end
       end
     end

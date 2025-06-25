@@ -6,6 +6,7 @@ class WebApi::V1::FilesV2Controller < ApplicationController
   def index
     files =
       Files::FileFinder.new(**finder_params).execute
+        .then { |scope| scope.order(**order_params) }
         .then { policy_scope(_1) }
         .then { paginate(_1) }
 
@@ -14,10 +15,6 @@ class WebApi::V1::FilesV2Controller < ApplicationController
       WebApi::V1::FileV2Serializer,
       params: jsonapi_serializer_params
     )
-  end
-
-  def finder_params
-    params.permit(:uploader).to_h.symbolize_keys
   end
 
   def show
@@ -61,6 +58,26 @@ class WebApi::V1::FilesV2Controller < ApplicationController
       content_by_content: params.require(:file).permit(:content, :name),
       uploader_id: current_user.id
     }
+  end
+
+  def finder_params
+    params.permit(:uploader).to_h.symbolize_keys
+  end
+
+  def order_params
+    sort = params[:sort].to_s.split(',').presence || ['-created_at']
+    attr_names = %w[created_at name size]
+
+    order_params = sort.to_h do |sort_value|
+      direction = sort_value.start_with?('-') ? :desc : :asc
+      attr_name = sort_value.delete_prefix('-')
+      [attr_name, direction]
+    end
+
+    unsupported_attrs = order_params.keys - attr_names
+    raise "Unsupported sort attribute(s): #{unsupported_attrs.join(', ')}" if unsupported_attrs.present?
+
+    order_params
   end
 
   def side_fx
