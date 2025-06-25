@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::AdminDigestMailer do
   describe 'campaign_mail' do
-    let_it_be(:recipient) { create(:admin, locale: 'en') }
+    let_it_be(:recipient) { create(:admin, locale: 'en', first_name: 'Bob', last_name: 'Jones') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::AdminDigest.create! }
     let_it_be(:command) do
       top_ideas = create_list(:idea, 3)
@@ -47,35 +47,61 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
-    it 'renders the subject' do
-      expect(mail.subject).to start_with('Your weekly admin report')
+    context 'default mail' do
+      it 'renders the subject' do
+        expect(mail.subject).to start_with('Your weekly admin report')
+      end
+
+      it 'renders the receiver email' do
+        expect(mail.to).to eq([recipient.email])
+      end
+
+      it 'renders the sender email' do
+        expect(mail.from).to all(end_with('@citizenlab.co'))
+      end
+
+      it 'assigns organisation name' do
+        expect(mail_body(mail)).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
+      end
+
+      it 'renders links to the top project ideas' do
+        ideas_urls = command.dig(:event_payload, :top_project_inputs).first[:top_ideas].pluck(:url)
+        first_idea_link = mail_document.css('.top-projects .idea a').first
+        expect(first_idea_link.attr('href')).to eq(ideas_urls.first)
+      end
+
+      it 'renders the proposal that reached the threshold' do
+        expect(mail_document.css('.successful-proposals .idea').length).to eq 2
+      end
+
+      it 'assigns home url' do
+        expect(mail_body(mail))
+          .to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
+      end
     end
 
-    it 'renders the receiver email' do
-      expect(mail.to).to eq([recipient.email])
-    end
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    it 'renders the sender email' do
-      expect(mail.from).to all(end_with('@citizenlab.co'))
-    end
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ firstName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ firstName }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' }
+        )
+      end
 
-    it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
-    end
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Bob'
+      end
 
-    it 'renders links to the top project ideas' do
-      ideas_urls = command.dig(:event_payload, :top_project_inputs).first[:top_ideas].pluck(:url)
-      first_idea_link = mail_document.css('.top-projects .idea a').first
-      expect(first_idea_link.attr('href')).to eq(ideas_urls.first)
-    end
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE FOR Bob')
+      end
 
-    it 'renders the proposal that reached the threshold' do
-      expect(mail_document.css('.successful-proposals .idea').length).to eq 2
-    end
-
-    it 'assigns home url' do
-      expect(mail.body.encoded)
-        .to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT</b>')
+      end
     end
   end
 end
