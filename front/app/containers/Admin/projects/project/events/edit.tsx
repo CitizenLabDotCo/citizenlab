@@ -460,7 +460,8 @@ const AdminProjectEventEdit = () => {
     };
 
     if (!isError(apiErrors)) {
-      const customErrors = { ...apiErrors };
+      const apiErrorsObj = apiErrors.errors || apiErrors;
+      const customErrors = { ...apiErrorsObj };
 
       if ('maximum_attendees' in customErrors) {
         customErrors.maximum_attendees = [maximumAttendeesErrorMessage];
