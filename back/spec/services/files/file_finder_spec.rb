@@ -19,7 +19,7 @@ RSpec.describe Files::FileFinder do
       @uploader1_file = create(:file, uploader: @uploader1)
       @uploader2_files = create_pair(:file, uploader: @uploader2)
 
-      @all_files = [
+      @files = [
         @file_without_uploader,
         @uploader1_file,
         @uploader2_files
@@ -28,7 +28,7 @@ RSpec.describe Files::FileFinder do
 
     context 'without any filters' do
       it 'returns all files' do
-        expect(results).to match_array(@all_files)
+        expect(results).to match_array(@files)
       end
     end
 
@@ -37,10 +37,21 @@ RSpec.describe Files::FileFinder do
       let_it_be(:project) { file_project.project }
       let_it_be(:file) { file_project.file }
 
-      let(:params) { { project: project.id } }
+      context 'when project is a single project' do
+        let(:params) { { project: project.id } }
 
-      it 'returns only files associated with the project' do
-        expect(results).to contain_exactly(file)
+        it 'returns only files associated with the project' do
+          expect(results).to contain_exactly(file)
+        end
+      end
+
+      context 'when project is nil' do
+        let(:params) { { project: nil } }
+
+        it 'returns files without a project' do
+          expect(results).to match_array(@files)
+          expect(results).not_to include(file)
+        end
       end
     end
 

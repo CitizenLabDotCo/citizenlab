@@ -10,7 +10,7 @@ resource 'Files' do
 
   get 'web_api/v1/files' do
     parameter :uploader, 'Filter files by uploader user ID(s)', type: %i[string array]
-    parameter :project, 'Filter files by project ID'
+    parameter :project, 'Filter files by project ID(s)', type: %i[string array]
 
     parameter :sort, <<~SORT_DESC.squish, required: false
       Sort order. Comma-separated list of attributes. Prefix with "-" to sort in descending order.
@@ -33,14 +33,22 @@ resource 'Files' do
       end
 
       describe 'when filtering by uploader' do
-        let(:file) { files.first }
-        let(:uploader) { file.uploader_id }
-
         example 'List all files for a specific uploader', document: false do
-          do_request
+          file = files.first
+
+          do_request(uploader: file.uploader_id)
+
           assert_status 200
-          expect(response_data.size).to eq(1)
           expect(response_ids).to eq [file.id]
+        end
+
+        example 'List all files for multiple uploaders', document: false do
+          create(:file)
+
+          do_request(uploader: files.map(&:uploader_id))
+
+          assert_status 200
+          expect(response_ids).to match_array files.map(&:id)
         end
       end
 

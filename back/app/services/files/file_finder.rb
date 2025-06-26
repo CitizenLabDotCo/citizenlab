@@ -25,9 +25,11 @@ module Files
     end
 
     def filter_by_project(files)
-      return files if @project == NO_VALUE
-
-      files.where(id: Files::FilesProject.where(project: @project).select(:file_id))
+      case @project
+      when NO_VALUE then files
+      when nil then files.where.missing(:files_projects)
+      else files.where(id: Files::FilesProject.where(project: @project).select(:file_id))
+      end
     end
   end
 end
