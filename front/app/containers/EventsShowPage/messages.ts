@@ -15,7 +15,7 @@ export default defineMessages({
       '{count, plural, one {# participant} other {# participants}}',
   },
   registered: {
-    id: 'app.containers.EventCard.registered',
+    id: 'app.containers.EventsShow.registered',
     defaultMessage: 'registered',
   },
   linkToOnlineEvent: {
