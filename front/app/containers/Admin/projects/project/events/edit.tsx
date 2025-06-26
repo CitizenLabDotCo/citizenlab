@@ -449,15 +449,15 @@ const AdminProjectEventEdit = () => {
       });
   };
 
+  const maximumAttendeesErrorMessage = {
+    error: formatMessage(messages.maximumAttendeesError),
+  };
+
   // Intercepts API error responses and ensures a consistent error message is shown for maximum_attendees validation.
   // Provides immediate feedback when a value is too low during input, matching the same error message shown
   // if maximum_attendees validation fails during form submission.
   const handleApiErrors = (apiErrors: ApiErrorType) => {
     setSaving(false);
-
-    const maximumAttendeesErrorMessage = {
-      error: formatMessage(messages.maximumAttendeesError),
-    };
 
     if (isError(apiErrors)) {
       // It's a regular Error object - set a generic error
