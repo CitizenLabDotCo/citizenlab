@@ -22,7 +22,7 @@ describe('Survey question logic', () => {
 
   it('allows setting logic for select question', () => {
     cy.setAdminLoginCookie();
-    cy.intercept('GET', `/web_api/v1/admin/phases/${phaseId}/custom_fields`).as(
+    cy.intercept('GET', `/web_api/v1/phases/${phaseId}/custom_fields`).as(
       'getCustomFields'
     );
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
@@ -42,9 +42,9 @@ describe('Survey question logic', () => {
 
     cy.intercept(
       'PATCH',
-      `/web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`
+      `/web_api/v1/phases/${phaseId}/custom_fields/update_all`
     ).as('updateCustomFields');
-    cy.intercept('GET', `/web_api/v1/admin/phases/${phaseId}/custom_fields`).as(
+    cy.intercept('GET', `/web_api/v1/phases/${phaseId}/custom_fields`).as(
       'getCustomFieldsAfterSave'
     );
 
@@ -75,31 +75,18 @@ describe('Survey question logic', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]');
 
     // Take survey and make sure it works as expected
-    cy.intercept(
-      'GET',
-      `/web_api/v1/phases/${phaseId}/custom_fields/json_forms_schema`
-    ).as('getJsonFormsSchema');
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.wait('@getJsonFormsSchema');
 
     cy.acceptCookies();
 
     // Select first option
-    cy.get('#e2e-single-select-control')
-      .should('exist')
-      .find('[data-testid="radio-container"]')
-      .first()
-      .click({ force: true });
+    cy.get('[data-testid="radio-container"]').first().click({ force: true });
 
     // Make sure submit button is shown
     cy.dataCy('e2e-submit-form');
 
     // Instead select option 2
-    cy.get('#e2e-single-select-control')
-      .should('exist')
-      .find('[data-testid="radio-container"]')
-      .eq(1)
-      .click();
+    cy.get('[data-testid="radio-container"]').eq(1).click();
 
     // Go to next page
     cy.wait(1000);
@@ -113,10 +100,7 @@ describe('Survey question logic', () => {
     cy.dataCy('e2e-previous-page').click();
     cy.dataCy('e2e-page-number-1');
     cy.wait(1000);
-    cy.get('#e2e-single-select-control')
-      .find('[data-testid="radio-container"]')
-      .eq(1)
-      .click();
+    cy.get('[data-testid="radio-container"]').eq(1).click();
 
     // Go to next page, make sure we're on page 3
     cy.wait(1000);
@@ -143,7 +127,7 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
           const body = {
             custom_fields: [
               {
-                id: 'd99d4aaf-0b15-4b49-b9dc-58be06c6656c',
+                id: 'd99d4aaf-0b15-4b49-b9dc-58be06c6656',
                 input_type: 'page',
                 logic: {},
                 required: false,
@@ -350,7 +334,7 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
               Authorization: `Bearer ${adminJwt}`,
             },
             method: 'PATCH',
-            url: `web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`,
+            url: `web_api/v1/phases/${phaseId}/custom_fields/update_all`,
             body,
           });
         });
@@ -382,10 +366,7 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
     cy.acceptCookies();
 
     // Select first option
-    cy.get('#e2e-single-select-control')
-      .find('[data-testid="radio-container"]')
-      .first()
-      .click();
+    cy.get('[data-testid="radio-container"]').first().click();
 
     // Go to next page
     cy.wait(1000);
