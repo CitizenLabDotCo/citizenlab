@@ -252,6 +252,14 @@ const AdminProjectEventEdit = () => {
     });
   };
 
+  const handleMaximumAttendeesChange = (value: string) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      maximum_attendees: value ? parseInt(value, 10) : null,
+    });
+  };
+
   const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
     setSubmitState('enabled');
     setAttendanceButtonOptionsVisible(toggleValue);
@@ -754,7 +762,7 @@ const AdminProjectEventEdit = () => {
                         ? eventAttrs.maximum_attendees.toString()
                         : null
                     }
-                    // onChange={handleMaximumAttendeesChange}
+                    onChange={handleMaximumAttendeesChange}
                     labelTooltipText={formatMessage(
                       messages.maximumAttendeesTooltip
                     )}
