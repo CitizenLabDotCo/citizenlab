@@ -55,7 +55,7 @@ describe EmailCampaigns::CampaignPolicy do
 
       context 'for a campaign manageable by project moderators' do
         context 'and campaign is for a project they moderate' do
-          let!(:campaign) { create(:manual_project_participants_campaign, project: project) }
+          let!(:campaign) { create(:manual_project_participants_campaign, context: project) }
 
           it { is_expected.to    permit(:show)    }
           it { is_expected.to    permit(:create)  }
@@ -68,7 +68,7 @@ describe EmailCampaigns::CampaignPolicy do
         end
 
         context 'and campaign is for a project they do not moderate' do
-          let!(:campaign) { create(:manual_project_participants_campaign, project: create(:project)) }
+          let!(:campaign) { create(:manual_project_participants_campaign, context: create(:project)) }
 
           it { is_expected.not_to permit(:show)    }
           it { is_expected.not_to permit(:create)  }
