@@ -852,7 +852,7 @@
   "app.containers.Admin.emails.editButtonLabel": "Bewerk",
   "app.containers.Admin.emails.editCampaignTitle": "Bewerk de campagne",
   "app.containers.Admin.emails.editDisabledTooltip2": "Binnenkort beschikbaar: Deze e-mail kan momenteel niet worden bewerkt.",
-  "app.containers.Admin.emails.editRegion_button_text_multiloc": "Tekst knop",
+  "app.containers.Admin.emails.editRegion_button_text_multiloc": "Knop tekst",
   "app.containers.Admin.emails.editRegion_intro_multiloc": "Inleiding",
   "app.containers.Admin.emails.editRegion_subject_multiloc": "Onderwerp",
   "app.containers.Admin.emails.editRegion_title_multiloc": "Titel",
