@@ -51,6 +51,8 @@ module EmailCampaigns
       }
     end
 
+    protected
+
     def substitution_variables
       {
         organizationName: organization_name,
@@ -61,8 +63,6 @@ module EmailCampaigns
         commentAuthor: event.initiating_user_first_name&.capitalize
       }
     end
-
-    protected
 
     def subject
       format_editable_region(:subject_multiloc)

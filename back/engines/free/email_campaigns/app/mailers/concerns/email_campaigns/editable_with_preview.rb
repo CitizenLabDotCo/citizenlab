@@ -37,12 +37,12 @@ module EmailCampaigns
       end
     end
 
+    private
+
     # Variables available for substitution in the email templates - override in classes.
     def substitution_variables
       {}
     end
-
-    private
 
     # To format an editable message, use `format_editable_region`.
     # The `region_key` must exist in editable regions.
