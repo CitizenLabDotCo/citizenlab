@@ -570,7 +570,6 @@ describe('Survey builder', () => {
     // Select the second option to go to page 2
     cy.contains('label', firstLogicQnOption2)
       .should('exist')
-      .should('be.visible')
       .click({ force: true });
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.contains(page2Title).should('exist');
@@ -970,7 +969,7 @@ describe('Survey builder', () => {
     cy.dataCy('e2e-previous-page').click();
 
     // Select the first option and click next
-    cy.contains(chooseOneOption1).should('be.visible').click({ force: true });
+    cy.contains(chooseOneOption1).click({ force: true });
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Check to see that we are on the fourth page and on the last page as indicated by the page logic
