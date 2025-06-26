@@ -128,6 +128,8 @@
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budżet",
   "app.components.CustomFieldsForm.descriptionMinLength": "Opis musi zawierać co najmniej {min} znaków.",
   "app.components.CustomFieldsForm.descriptionRequired": "Opis jest wymagany",
+  "app.components.CustomFieldsForm.fieldMaximumItems": "Co najwyżej {maxSelections, plural, one {# opcja} other {# opcje}} mogą być wybrane dla pola \"{fieldName}\".",
+  "app.components.CustomFieldsForm.fieldMinimumItems": "Co najmniej {minSelections, plural, one {# opcja} other {# opcje}} mogą być wybrane dla pola \"{fieldName}\".",
   "app.components.CustomFieldsForm.fieldRequired": "Pole \"{fieldName}\" jest wymagane",
   "app.components.CustomFieldsForm.imageRequired": "Obraz jest wymagany",
   "app.components.CustomFieldsForm.notPublic1": "*Ta odpowiedź zostanie udostępniona tylko kierownikom projektów, a nie publicznie.",
