@@ -4,16 +4,36 @@ module Files
   class FilePolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        active_admin? ? scope.all : scope.none
+        if active_admin?
+          scope.all
+        else
+          moderated_projects = UserRoleService.new.moderatable_projects(user)
+          scope.where(id: Files::FilesProject.where(project: moderated_projects).select(:file_id))
+        end
       end
     end
 
     def show?
-      active_admin?
+      return false unless active?
+      return true if admin?
+
+      UserRoleService.new.moderatable_projects(user, record.projects).exists?
     end
 
     def create?
-      active_admin? && record.uploader_id == user.id
+      return false unless active?
+      return false unless record.uploader_id == user.id # cannot upload file on behalf of another user
+      return true if admin?
+
+      # Allow creation only if the user moderates all associated projects.
+      #
+      # Note: w (instead of +record.projects+)
+      # because +record.files_projects+ may not be persisted yet, which can cause issues
+      # with some SQL queries.
+      projects = Project.where(id: record.project_ids)
+      return false if projects.empty?
+
+      UserRoleService.new.moderatable_projects(user, projects).count == projects.count
     end
 
     def destroy?

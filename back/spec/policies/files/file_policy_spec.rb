@@ -27,11 +27,63 @@ RSpec.describe Files::FilePolicy do
     end
 
     context 'for project moderator' do
-      let(:user) { create(:project_moderator) }
+      let_it_be(:projects) { create_pair(:project) }
 
-      it { is_expected.not_to permit(:show) }
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:destroy) }
+      context 'when the file is not associated with any projects' do
+        let(:user) { create(:project_moderator, projects: projects) }
+        let(:file) { build(:file, uploader: user) }
+
+        it { is_expected.not_to permit(:create) }
+
+        context do
+          before { file.save! }
+
+          it { is_expected.not_to permit(:show) }
+          it { is_expected.not_to permit(:destroy) }
+        end
+      end
+
+      context 'when the user moderates the associated projects' do
+        let(:user) { create(:project_moderator, projects: projects) }
+        let(:file) { build(:file, uploader: user, projects: projects) }
+
+        it { is_expected.to permit(:create) }
+
+        context do
+          before { file.save! }
+
+          it { is_expected.to permit(:show) }
+          it { is_expected.not_to permit(:destroy) }
+        end
+      end
+
+      context 'when the user moderates some of the associated projects' do
+        let(:user) { create(:project_moderator, projects: [projects.first]) }
+        let(:file) { build(:file, uploader: user, projects: projects) }
+
+        it { is_expected.not_to permit(:create) }
+
+        context do
+          before { file.save! }
+
+          it { is_expected.to permit(:show) }
+          it { is_expected.not_to permit(:destroy) }
+        end
+      end
+
+      context 'when the user moderates none of the associated projects' do
+        let(:user) { create(:project_moderator, projects: [create(:project)]) }
+        let(:file) { build(:file, uploader: user, projects: projects) }
+
+        it { is_expected.not_to permit(:create) }
+
+        context do
+          before { file.save! }
+
+          it { is_expected.not_to permit(:show) }
+          it { is_expected.not_to permit(:destroy) }
+        end
+      end
     end
 
     context 'for admin' do
@@ -73,7 +125,17 @@ RSpec.describe Files::FilePolicy do
     context 'for project moderator' do
       let(:user) { create(:project_moderator) }
 
-      it { is_expected.to be_empty }
+      context 'when the user moderates none of the associated projects' do
+        it { is_expected.to be_empty }
+      end
+
+      context 'when the user moderates some of the associated projects' do
+        let(:projects) { create_pair(:project) }
+        let(:user) { create(:project_moderator, projects: projects.take(1)) }
+        let!(:file) { create(:file, projects: projects) }
+
+        it { is_expected.to contain_exactly(file) }
+      end
     end
 
     context 'for admin' do

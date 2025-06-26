@@ -27,7 +27,9 @@ class WebApi::V1::FilesV2Controller < ApplicationController
   end
 
   def create
-    file = authorize(Files::File.new(create_params))
+    file = Files::File.new(create_params)
+    file.files_projects.build(project_id: params[:file][:project])
+    authorize(file)
 
     side_fx.before_create(file, current_user)
     if file.save
@@ -61,7 +63,10 @@ class WebApi::V1::FilesV2Controller < ApplicationController
   end
 
   def finder_params
-    params.permit(:uploader).to_h.symbolize_keys
+    params.permit(
+      :uploader,
+      :project
+    ).to_h.symbolize_keys
   end
 
   def order_params

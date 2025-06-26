@@ -13,6 +13,7 @@ ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_fdbeb12ddd;
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rails_fd874ecf4b;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_fba307ba3b;
+ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS fk_rails_f5c8c46abb;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_f32533b783;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
@@ -26,6 +27,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS fk
 ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS fk_rails_e51f754cf7;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_dfb57cbce2;
+ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS fk_rails_df4dbb0098;
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_de7c38cbc4;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_ddd7e21dfa;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_dd3b2cc184;
@@ -297,6 +299,9 @@ DROP INDEX IF EXISTS public.index_followers_on_user_id;
 DROP INDEX IF EXISTS public.index_followers_on_followable_id_and_followable_type;
 DROP INDEX IF EXISTS public.index_followers_on_followable;
 DROP INDEX IF EXISTS public.index_followers_followable_type_id_user_id;
+DROP INDEX IF EXISTS public.index_files_projects_on_project_id;
+DROP INDEX IF EXISTS public.index_files_projects_on_file_id_and_project_id;
+DROP INDEX IF EXISTS public.index_files_projects_on_file_id;
 DROP INDEX IF EXISTS public.index_files_on_uploader_id;
 DROP INDEX IF EXISTS public.index_files_on_size;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
@@ -482,6 +487,7 @@ ALTER TABLE IF EXISTS ONLY public.groups DROP CONSTRAINT IF EXISTS groups_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS groups_permissions_pkey;
 ALTER TABLE IF EXISTS ONLY public.followers DROP CONSTRAINT IF EXISTS followers_pkey;
 ALTER TABLE IF EXISTS ONLY public.flag_inappropriate_content_inappropriate_content_flags DROP CONSTRAINT IF EXISTS flag_inappropriate_content_inappropriate_content_flags_pkey;
+ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS files_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS files_pkey;
 ALTER TABLE IF EXISTS ONLY public.experiments DROP CONSTRAINT IF EXISTS experiments_pkey;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS events_pkey;
@@ -594,6 +600,7 @@ DROP TABLE IF EXISTS public.groups_permissions;
 DROP TABLE IF EXISTS public.groups;
 DROP TABLE IF EXISTS public.followers;
 DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_flags;
+DROP TABLE IF EXISTS public.files_projects;
 DROP TABLE IF EXISTS public.files;
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
@@ -2420,6 +2427,19 @@ COMMENT ON COLUMN public.files.size IS 'in bytes';
 
 
 --
+-- Name: files_projects; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.files_projects (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    file_id uuid NOT NULL,
+    project_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: flag_inappropriate_content_inappropriate_content_flags; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3815,6 +3835,14 @@ ALTER TABLE ONLY public.files
 
 
 --
+-- Name: files_projects files_projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.files_projects
+    ADD CONSTRAINT files_projects_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: flag_inappropriate_content_inappropriate_content_flags flag_inappropriate_content_inappropriate_content_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5177,6 +5205,27 @@ CREATE INDEX index_files_on_size ON public.files USING btree (size);
 --
 
 CREATE INDEX index_files_on_uploader_id ON public.files USING btree (uploader_id);
+
+
+--
+-- Name: index_files_projects_on_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_projects_on_file_id ON public.files_projects USING btree (file_id);
+
+
+--
+-- Name: index_files_projects_on_file_id_and_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_files_projects_on_file_id_and_project_id ON public.files_projects USING btree (file_id, project_id);
+
+
+--
+-- Name: index_files_projects_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_projects_on_project_id ON public.files_projects USING btree (project_id);
 
 
 --
@@ -7196,6 +7245,14 @@ ALTER TABLE ONLY public.project_reviews
 
 
 --
+-- Name: files_projects fk_rails_df4dbb0098; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.files_projects
+    ADD CONSTRAINT fk_rails_df4dbb0098 FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: baskets_ideas fk_rails_dfb57cbce2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7300,6 +7357,14 @@ ALTER TABLE ONLY public.comments
 
 
 --
+-- Name: files_projects fk_rails_f5c8c46abb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.files_projects
+    ADD CONSTRAINT fk_rails_f5c8c46abb FOREIGN KEY (file_id) REFERENCES public.files(id);
+
+
+--
 -- Name: events_attendances fk_rails_fba307ba3b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7338,6 +7403,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250626072615'),
 ('20250624134747'),
 ('20250624102147'),
 ('20250618151933'),

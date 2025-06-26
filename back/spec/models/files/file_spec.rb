@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe File do
+RSpec.describe Files::File do
   subject(:file) { build(:file) }
 
   it { is_expected.to be_valid }
@@ -15,6 +15,8 @@ RSpec.describe File do
 
   describe 'associations' do
     it { is_expected.to belong_to(:uploader).class_name('User').optional }
+    it { is_expected.to have_many(:files_projects).class_name('Files::FilesProject').dependent(:destroy) }
+    it { is_expected.to have_many(:projects).through(:files_projects) }
   end
 
   describe 'metadata' do

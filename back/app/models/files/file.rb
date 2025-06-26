@@ -26,6 +26,9 @@ module Files
   class File < ApplicationRecord
     belongs_to :uploader, class_name: 'User', optional: true
 
+    has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
+    has_many :projects, through: :files_projects
+
     # TODO: Maybe reconsider the name of this column.
     # TODO: Using temporarily the ProjectFolders::FileUploader
     mount_base64_file_uploader :content, ::ProjectFolders::FileUploader

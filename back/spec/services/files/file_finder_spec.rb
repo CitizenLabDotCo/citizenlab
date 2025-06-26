@@ -32,6 +32,18 @@ RSpec.describe Files::FileFinder do
       end
     end
 
+    context 'with project filter' do
+      let_it_be(:file_project) { create(:files_project) }
+      let_it_be(:project) { file_project.project }
+      let_it_be(:file) { file_project.file }
+
+      let(:params) { { project: project.id } }
+
+      it 'returns only files associated with the project' do
+        expect(results).to contain_exactly(file)
+      end
+    end
+
     context 'with uploader filter' do
       context 'when uploader is a single user' do
         let(:params) { { uploader: @uploader1 } }
