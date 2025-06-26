@@ -190,6 +190,11 @@ export default defineMessages({
     defaultMessage:
       'Cannot be set to a value lower than the current attendance count.',
   },
+  maximumAttendeesError: {
+    id: 'app.containers.AdminPage.ProjectEvents.maximumAttendeesTooltip',
+    defaultMessage:
+      'Cannot be set to a value lower than the current attendance count.',
+  },
   attendanceButton: {
     id: 'app.containers.AdminPage.ProjectEvents.attendanceButton',
     defaultMessage: 'Attendance button',

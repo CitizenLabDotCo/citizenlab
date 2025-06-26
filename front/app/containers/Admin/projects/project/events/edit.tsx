@@ -259,7 +259,7 @@ const AdminProjectEventEdit = () => {
 
     // Create a custom error message that will be used for both client and API validation
     const maximumAttendeesErrorMessage = {
-      error: formatMessage(messages.maximumAttendeesTooltip),
+      error: formatMessage(messages.maximumAttendeesError),
     };
 
     // Check if the new value is less than the current attendees count
@@ -456,7 +456,7 @@ const AdminProjectEventEdit = () => {
     setSaving(false);
 
     const maximumAttendeesErrorMessage = {
-      error: formatMessage(messages.maximumAttendeesTooltip),
+      error: formatMessage(messages.maximumAttendeesError),
     };
 
     if (!isError(apiErrors)) {
