@@ -757,7 +757,7 @@
   "app.containers.Admin.Users.userInsights": "Conocimiento del usuario",
   "app.containers.Admin.Users.youCantDeleteYourself": "No puedes eliminar tu propia cuenta a través de la página de administración de usuario",
   "app.containers.Admin.Users.youCantUnadminYourself": "No puedes terminar tu papel como administrador ahora",
-  "app.containers.Admin.communityMonitor.communityMonitorLabel": "Barómetro de satisfacción",
+  "app.containers.Admin.communityMonitor.communityMonitorLabel": "Barómetro",
   "app.containers.Admin.communityMonitor.healthScore": "Índice de bienestar",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Esta puntuación es la media de todas las preguntas de la escala de sentimientos contestadas por los participantes en el periodo seleccionado.",
   "app.containers.Admin.communityMonitor.lastQuarter": "último trimestre",
