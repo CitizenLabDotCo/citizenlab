@@ -31,7 +31,7 @@ module EmailCampaigns
       ]
     end
 
-    def self.editable_region_variables
+    def self.editable_region_variable_keys
       %w[organizationName input_title inputTitle authorName authorNameFull commentAuthor]
     end
 

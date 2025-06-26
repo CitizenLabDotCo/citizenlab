@@ -10,7 +10,7 @@ module EmailCampaigns
       end
 
       # Each mailer can define its own editable region variables - these must match the keys of substitution_variables.
-      def editable_region_variables
+      def editable_region_variable_keys
         []
       end
 
