@@ -15,6 +15,7 @@ module EmailCampaigns
       end
 
       @campaigns = @campaigns.where(context: campaign_context) if campaign_context
+      # TODO: Filter supported campaign types for context (supports_context?(context))
 
       @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
 

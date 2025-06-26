@@ -45,15 +45,15 @@ module EmailCampaigns
       'email_campaigns.admin_labels.recipient_role.project_participants'
     end
 
+    def self.supports_context?(context)
+      context.is_a?(Project)
+    end
+
     def manageable_by_project_moderator?
       true
     end
 
     private
-
-    def supports_context?(context)
-      context.is_a?(Project)
-    end
 
     def project_participants_and_followers(users_scope, _options = {})
       users_scope

@@ -76,6 +76,10 @@ module EmailCampaigns
       'email_campaigns.admin_labels.trigger.project_phase_changes'
     end
 
+    def self.supports_context?(context)
+      context.is_a?(Phase)
+    end
+
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       if notification.phase.voting?
@@ -102,10 +106,6 @@ module EmailCampaigns
     end
 
     private
-
-    def supports_context?(context)
-      context.is_a?(Phase)
-    end
 
     def campaign_enabled_for_phase?(activity:, time: nil)
       activity.item.phase.campaigns_settings['project_phase_started']

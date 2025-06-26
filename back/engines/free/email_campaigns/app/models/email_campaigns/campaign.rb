@@ -48,7 +48,6 @@ module EmailCampaigns
 
     before_validation :set_enabled, on: :create
 
-    validate :validate_context
     validate :validate_recipients, on: :send
 
     scope :manual, -> { where type: DeliveryService.new.manual_campaign_types }
@@ -102,6 +101,10 @@ module EmailCampaigns
     def self.content_type_multiloc_key; end
 
     def self.trigger_multiloc_key; end
+
+    def self.supports_context?(_context)
+      false
+    end
 
     def apply_recipient_filters(activity: nil, time: nil)
       current_class = self.class
@@ -177,17 +180,7 @@ module EmailCampaigns
       }).serializable_hash
     end
 
-    def supports_context?(_context)
-      false
-    end
-
     private
-
-    def validate_context
-      return if context.nil? || supports_context?(context)
-
-      errors.add(:context, :invalid, message: 'Context is not supported for this campaign')
-    end
 
     def validate_recipients
       return if apply_recipient_filters.any?

@@ -68,8 +68,6 @@ class SideFxPhaseService
       end
     end
 
-    fix_participation_method_change!(phase) if phase.participation_method_previously_changed?
-
     Surveys::WebhookManagerJob.perform_later(
       'participation_context_changed',
       phase,
@@ -113,9 +111,5 @@ class SideFxPhaseService
 
   def permissions_update_service
     @permissions_update_service ||= Permissions::PermissionsUpdateService.new
-  end
-
-  def fix_participation_method_change!(phase)
-    Campaign.where(context: phase).reject { |campaign| campaign.supports_context?(phase) }.each(&:destroy!)
   end
 end
