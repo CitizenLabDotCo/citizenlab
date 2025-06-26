@@ -43,6 +43,8 @@ const Timeline = () => {
       start: project.attributes.first_phase_start_date,
       end: project.attributes.last_phase_end_date,
       folder: localize(project.attributes.folder_title_multiloc),
+      highlightStartDate: project.attributes.current_phase_start_date,
+      highlightEndDate: project.attributes.current_phase_end_date,
     })
   );
 
