@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
-import { addDays, addMonths, subMonths } from 'date-fns';
+import { addDays, addMonths, subMonths, max, min } from 'date-fns';
 
 import TimeRangeSelector from './TimeRangeSelector';
 import { GanttChartProps } from './types';
@@ -205,7 +205,7 @@ export const GanttChart = ({
       scrollToToday();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedRange]); // Prevent scrolling to current dat on infinite scroll
+  }, [selectedRange]); // Prevent scrolling to current date on infinite scroll
 
   const unitW = isYearlyView ? monthWidth : dayWidth;
   const todayOffset = isYearlyView
@@ -491,29 +491,87 @@ export const GanttChart = ({
                   : getDurationInDays(effectiveStart, effectiveEnd);
                 if (duration <= 0) return null;
 
+                let highlightEl: JSX.Element | null = null;
+                const highlightStart = item.highlightStartDate
+                  ? new Date(item.highlightStartDate)
+                  : null;
+
+                if (highlightStart) {
+                  const highlightEnd = item.highlightEndDate
+                    ? new Date(item.highlightEndDate)
+                    : null;
+
+                  // Determine the logical start/end of the highlight within the item's bounds.
+                  const logicalHighlightStart = max([s, highlightStart]);
+                  const highlightCap = e || endDate;
+                  const logicalHighlightEnd = highlightEnd
+                    ? min([highlightEnd, highlightCap])
+                    : highlightCap;
+
+                  // Determine the visible portion of the highlight.
+                  const vizHighlightStart = max([
+                    effectiveStart,
+                    logicalHighlightStart,
+                  ]);
+                  const vizHighlightEnd = min([
+                    effectiveEnd,
+                    logicalHighlightEnd,
+                  ]);
+
+                  // Calculate geometry if there is a visible portion.
+                  if (vizHighlightStart < vizHighlightEnd) {
+                    const highlightOffset = isYearlyView
+                      ? getOffsetInMonths(startDate, vizHighlightStart)
+                      : getOffsetInDays(startDate, vizHighlightStart);
+
+                    const highlightDuration = isYearlyView
+                      ? getDurationInMonths(vizHighlightStart, vizHighlightEnd)
+                      : getDurationInDays(vizHighlightStart, vizHighlightEnd);
+
+                    if (highlightDuration > 0) {
+                      highlightEl = (
+                        <Box
+                          position="absolute"
+                          top={`${index * rowHeight + 4}px`}
+                          left={`${highlightOffset * unitW}px`}
+                          width={`${highlightDuration * unitW}px`}
+                          height={`${rowHeight - 8}px`}
+                          bg={colors.teal50}
+                          border={`1px solid ${colors.teal400}`}
+                          style={{
+                            pointerEvents: 'none',
+                          }}
+                        />
+                      );
+                    }
+                  }
+                }
+
                 return (
-                  <Box
-                    key={item.id}
-                    position="absolute"
-                    top={`${index * rowHeight + 4}px`}
-                    left={`${startOffset * unitW}px`}
-                    width={`${duration * unitW}px`}
-                    height={`${rowHeight - 8}px`}
-                    background={getItemColor(item)}
-                    border="1px solid"
-                    borderColor={colors.grey300}
-                    borderRadius="4px"
-                    style={{
-                      cursor: onItemClick ? 'pointer' : 'default',
-                    }}
-                    onClick={() => onItemClick?.(item)}
-                  >
-                    {renderItemTooltip && (
-                      <Tooltip content={renderItemTooltip(item)}>
-                        <Box width="100%" height="100%" />
-                      </Tooltip>
-                    )}
-                  </Box>
+                  <React.Fragment key={item.id}>
+                    <Box
+                      position="absolute"
+                      top={`${index * rowHeight + 4}px`}
+                      left={`${startOffset * unitW}px`}
+                      width={`${duration * unitW}px`}
+                      height={`${rowHeight - 8}px`}
+                      background={getItemColor(item)}
+                      border="1px solid"
+                      borderColor={colors.grey300}
+                      borderRadius="4px"
+                      style={{
+                        cursor: onItemClick ? 'pointer' : 'default',
+                      }}
+                      onClick={() => onItemClick?.(item)}
+                    >
+                      {renderItemTooltip && (
+                        <Tooltip content={renderItemTooltip(item)}>
+                          <Box width="100%" height="100%" />
+                        </Tooltip>
+                      )}
+                    </Box>
+                    {highlightEl}
+                  </React.Fragment>
                 );
               })}
             </Box>
