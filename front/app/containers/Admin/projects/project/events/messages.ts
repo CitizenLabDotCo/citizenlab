@@ -179,7 +179,7 @@ export default defineMessages({
   toggleAttendanceLimitTooltip: {
     id: 'app.containers.AdminPage.ProjectEvents.toggleAttendanceLimitTooltip',
     defaultMessage:
-      'Set a maximimum number of attendees. If the limit is reached, no further attendances will be accepted.',
+      'Set a maximum number of attendees. If the limit is reached, no further attendances will be accepted.',
   },
   maximumAttendees: {
     id: 'app.containers.AdminPage.ProjectEvents.maximumAttendees',

@@ -2176,7 +2176,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Project events",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Event name",
   "app.containers.AdminPage.ProjectEvents.toggleAttendanceLimitLabel": "Limit the number of attendees",
-  "app.containers.AdminPage.ProjectEvents.toggleAttendanceLimitTooltip": "Set a maximimum number of attendees. If the limit is reached, no further attendances will be accepted.",
+  "app.containers.AdminPage.ProjectEvents.toggleAttendanceLimitTooltip": "Set a maximum number of attendees. If the limit is reached, no further attendances will be accepted.",
   "app.containers.AdminPage.ProjectEvents.toggleCustomAttendanceButtonLabel": "Link the button to an external URL",
   "app.containers.AdminPage.ProjectEvents.toggleCustomAttendanceButtonTooltip": "By default, the in-platform attendance button will be shown allowing users to register their interest in an event. You can change this to link to an external URL instead.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
