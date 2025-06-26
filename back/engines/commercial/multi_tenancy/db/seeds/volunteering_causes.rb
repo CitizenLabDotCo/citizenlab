@@ -35,8 +35,7 @@ module MultiTenancy
           description_multiloc: volunteering_project.description_multiloc,
           start_at: phase_start_at,
           end_at: (phase_start_at + rand(150).days),
-          participation_method: 'volunteering',
-          campaigns_settings: { project_phase_started: true }
+          participation_method: 'volunteering'
         })
 
         Volunteering::Cause.create!([

@@ -37,7 +37,6 @@ RSpec.describe Tasks::SingleUse::Services::ContinuousProjectMigrationService do
       expect(phase.attributes.symbolize_keys).to include({
         participation_method: continuous_project_attributes[:participation_method],
         allow_anonymous_participation: continuous_project_attributes[:allow_anonymous_participation],
-        campaigns_settings: { 'project_phase_started' => true },
         document_annotation_embed_url: continuous_project_attributes[:document_annotation_embed_url],
         ideas_order: continuous_project_attributes[:ideas_order],
         input_term: continuous_project_attributes[:input_term],

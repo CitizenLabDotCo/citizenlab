@@ -5,7 +5,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   include Surveys::WebApi::V1::SurveyPhaseSerializer
   include DocumentAnnotation::WebApi::V1::DocumentAnnotationPhaseSerializer
 
-  attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count, :campaigns_settings,
+  attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count,
     :participation_method, :submission_enabled, :commenting_enabled,
     :reacting_enabled, :reacting_like_method, :reacting_like_limited_max,
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,

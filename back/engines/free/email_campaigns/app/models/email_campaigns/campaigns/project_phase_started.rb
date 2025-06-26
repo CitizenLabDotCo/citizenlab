@@ -40,8 +40,6 @@ module EmailCampaigns
 
     filter :campaign_enabled_for_phase?
 
-    recipient_filter :filter_notification_recipient
-
     def mailer_class
       ProjectPhaseStartedMailer
     end
@@ -93,12 +91,6 @@ module EmailCampaigns
 
     def manageable_by_project_moderator?
       true
-    end
-
-    private
-
-    def campaign_enabled_for_phase?(activity:, time: nil)
-      activity.item.phase.campaigns_settings['project_phase_started']
     end
   end
 end

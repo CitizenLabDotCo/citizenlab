@@ -272,7 +272,6 @@ resource 'Phases' do
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The input term for something.'
-        parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
@@ -292,7 +291,6 @@ resource 'Phases' do
       let(:participation_method) { phase.participation_method }
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
-      let(:campaigns_settings) { phase.campaigns_settings }
 
       example_request 'Create a phase for a project' do
         assert_status 201

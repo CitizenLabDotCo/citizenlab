@@ -91,7 +91,6 @@ class Tasks::SingleUse::Services::ContinuousProjectMigrationService
 
       participation_method: project.participation_method,
       allow_anonymous_participation: project.allow_anonymous_participation,
-      campaigns_settings: { project_phase_started: true },
       document_annotation_embed_url: project.document_annotation_embed_url,
       ideas_order: project.ideas_order,
       input_term: project.input_term,

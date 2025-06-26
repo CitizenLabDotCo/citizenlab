@@ -199,35 +199,6 @@ resource 'Campaigns' do
         expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
         expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
       end
-
-      context 'when updating ProjectPhaseStarted campaign' do
-        let!(:phase_with_campaign_enabled) { create(:phase, campaigns_settings: { project_phase_started: true }) }
-        let!(:phase_with_campaign_disabled) { create(:phase, campaigns_settings: { project_phase_started: false }) }
-
-        context do
-          let(:campaign) { create(:project_phase_started_campaign, enabled: true) }
-          let(:id) { campaign.id }
-          let(:enabled) { false }
-
-          example_request 'Update campaign enabled to false' do
-            assert_status 200
-            expect(phase_with_campaign_enabled.reload.campaigns_settings['project_phase_started']).to be false
-            expect(phase_with_campaign_disabled.reload.campaigns_settings['project_phase_started']).to be false
-          end
-        end
-
-        context do
-          let(:campaign) { create(:project_phase_started_campaign, enabled: false) }
-          let(:id) { campaign.id }
-          let(:enabled) { true }
-
-          example_request 'Update campaign enabled to true' do
-            assert_status 200
-            expect(phase_with_campaign_enabled.reload.campaigns_settings['project_phase_started']).to be true
-            expect(phase_with_campaign_disabled.reload.campaigns_settings['project_phase_started']).to be false
-          end
-        end
-      end
     end
 
     delete 'web_api/v1/campaigns/:id' do
