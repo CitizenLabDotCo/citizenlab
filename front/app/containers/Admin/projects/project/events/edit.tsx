@@ -459,21 +459,20 @@ const AdminProjectEventEdit = () => {
       error: formatMessage(messages.maximumAttendeesError),
     };
 
-    if (!isError(apiErrors)) {
-      const apiErrorsObj = apiErrors.errors || apiErrors;
-      const customErrors = { ...apiErrorsObj };
-
-      if ('maximum_attendees' in customErrors) {
-        customErrors.maximum_attendees = [maximumAttendeesErrorMessage];
-        setErrors(customErrors);
-      } else {
-        setErrors(customErrors);
-      }
-    } else {
+    if (isError(apiErrors)) {
       // It's a regular Error object - set a generic error
       setErrors({
         form: [{ error: formatMessage(messages.saveErrorMessage) }],
       });
+    } else {
+      const errorObject = 'errors' in apiErrors ? apiErrors.errors : apiErrors;
+      const customErrors = { ...errorObject };
+
+      if ('maximum_attendees' in customErrors) {
+        customErrors.maximum_attendees = [maximumAttendeesErrorMessage];
+      }
+
+      setErrors(customErrors);
     }
 
     setSubmitState('error');
