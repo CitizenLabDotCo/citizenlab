@@ -2158,6 +2158,7 @@
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Attachments are shown below the event description.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Location",
   "app.containers.AdminPage.ProjectEvents.maximumAttendees": "Maximum attendees",
+  "app.containers.AdminPage.ProjectEvents.maximumAttendeesError": "Cannot be set to a value lower than the current attendance count.",
   "app.containers.AdminPage.ProjectEvents.maximumAttendeesTooltip": "Cannot be set to a value lower than the current attendance count.",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Create a new event",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Online event link",
