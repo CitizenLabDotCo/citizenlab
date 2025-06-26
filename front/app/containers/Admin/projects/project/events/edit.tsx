@@ -449,6 +449,35 @@ const AdminProjectEventEdit = () => {
       });
   };
 
+  // Intercepts API error responses and ensures a consistent error message is shown for maximum_attendees validation.
+  // Provides immediate feedback when a value is too low during input, matching the same error message shown
+  // if maximum_attendees validation fails during form submission.
+  const handleApiErrors = (apiErrors: ApiErrorType) => {
+    setSaving(false);
+
+    const maximumAttendeesErrorMessage = {
+      error: formatMessage(messages.maximumAttendeesTooltip),
+    };
+
+    if (apiErrors && !isError(apiErrors)) {
+      const customErrors = { ...apiErrors };
+
+      if ('maximum_attendees' in customErrors) {
+        customErrors.maximum_attendees = [maximumAttendeesErrorMessage];
+        setErrors(customErrors);
+      } else {
+        setErrors(customErrors);
+      }
+    } else {
+      // It's a regular Error object - set a generic error
+      setErrors({
+        form: [{ error: formatMessage(messages.saveErrorMessage) }],
+      });
+    }
+
+    setSubmitState('error');
+  };
+
   const handleOnSubmit = async (e: FormEvent) => {
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
@@ -501,37 +530,7 @@ const AdminProjectEventEdit = () => {
                 handleEventFiles(data);
                 setSubmitState('success');
               },
-              onError: async (apiErrors) => {
-                setSaving(false);
-
-                // Make a copy of the errors and ensure it's the right type
-                if (
-                  apiErrors &&
-                  apiErrors.errors &&
-                  typeof apiErrors.errors === 'object'
-                ) {
-                  const customErrors = { ...apiErrors.errors };
-
-                  // Create the error message object outside in component scope
-                  const maximumAttendeesErrorMessage = {
-                    error: formatMessage(messages.maximumAttendeesTooltip),
-                  };
-
-                  // Check if maximum_attendees exists before trying to modify it
-                  if ('maximum_attendees' in customErrors) {
-                    customErrors.maximum_attendees = [
-                      maximumAttendeesErrorMessage,
-                    ];
-                    setErrors(customErrors);
-                  } else {
-                    setErrors(apiErrors.errors);
-                  }
-                } else {
-                  setErrors(apiErrors.errors);
-                }
-
-                setSubmitState('error');
-              },
+              onError: handleApiErrors,
             }
           );
         } else if (projectId) {
@@ -551,37 +550,7 @@ const AdminProjectEventEdit = () => {
                 addOrDeleteEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
-              onError: async (apiErrors) => {
-                setSaving(false);
-
-                // Make a copy of the errors and ensure it's the right type
-                if (
-                  apiErrors &&
-                  apiErrors.errors &&
-                  typeof apiErrors.errors === 'object'
-                ) {
-                  const customErrors = { ...apiErrors.errors };
-
-                  // Use the same error message object defined earlier
-                  const maximumAttendeesErrorMessage = {
-                    error: formatMessage(messages.maximumAttendeesTooltip),
-                  };
-
-                  // Check if maximum_attendees exists before trying to modify it
-                  if ('maximum_attendees' in customErrors) {
-                    customErrors.maximum_attendees = [
-                      maximumAttendeesErrorMessage,
-                    ];
-                    setErrors(customErrors);
-                  } else {
-                    setErrors(apiErrors.errors);
-                  }
-                } else {
-                  setErrors(apiErrors.errors);
-                }
-
-                setSubmitState('error');
-              },
+              onError: handleApiErrors,
             }
           );
         }
