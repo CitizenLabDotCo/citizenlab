@@ -50,6 +50,10 @@ const SurveyForm = ({
 
   const onSubmit = async (formValues: FormValues) => {
     const isSubmitPage = currentPageNumber === nestedPagesData.length - 2;
+    if (!authUser && !isSubmitPage) {
+      // If the user is not authenticated and is not on the submit page, do not save the draft idea
+      return;
+    }
     if (currentPageNumber === nestedPagesData.length - 1) {
       // Form has been submitted, clear the draft idea
       clearDraftIdea();
