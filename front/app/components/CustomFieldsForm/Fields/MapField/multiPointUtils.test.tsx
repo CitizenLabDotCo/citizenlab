@@ -1,4 +1,4 @@
-import { convertGeojsonToWKT, convertWKTToGeojson } from './utils';
+import { convertGeojsonToWKT, convertWKTToGeojson } from './multiPointUtils';
 
 describe('convertGeojsonToWKT', () => {
   it('correctly converts a GeoJSON Point to WKT', async () => {

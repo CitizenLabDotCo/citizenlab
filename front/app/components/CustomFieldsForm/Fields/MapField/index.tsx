@@ -19,11 +19,6 @@ import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 
 import useLocalize from 'hooks/useLocalize';
 
-import {
-  convertGeojsonToWKT,
-  convertWKTToGeojson,
-} from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
-
 import { parseLayers } from 'components/EsriMap/utils';
 import Error, { TFieldName } from 'components/UI/Error';
 
@@ -33,7 +28,11 @@ import messages from '../../messages';
 
 import DesktopTabletView from './Desktop/DesktopTabletView';
 import MobileView from './Mobile/MobileView';
-import { convertCoordinatesToGeoJSON } from './multiPointUtils';
+import {
+  convertCoordinatesToGeoJSON,
+  convertGeojsonToWKT,
+  convertWKTToGeojson,
+} from './multiPointUtils';
 
 const MapField = ({
   question,
