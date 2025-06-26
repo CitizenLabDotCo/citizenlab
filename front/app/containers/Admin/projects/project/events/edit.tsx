@@ -16,7 +16,7 @@ import { isEmpty, get, isError } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
-import { Multiloc, UploadFile } from 'typings';
+import { Multiloc, UploadFile, CLError } from 'typings';
 
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
@@ -116,6 +116,7 @@ const AdminProjectEventEdit = () => {
     null
   );
   const [hasAltTextChanged, setHasAltTextChanged] = useState(false);
+  const attendeesCount = event?.data.attributes.attendees_count;
 
   // Remote values
   const remotePoint = event?.data.attributes.location_point_geojson;
@@ -254,9 +255,40 @@ const AdminProjectEventEdit = () => {
 
   const handleMaximumAttendeesChange = (value: string) => {
     setSubmitState('enabled');
+    const numberValue = value ? parseInt(value, 10) : null;
+
+    // Check if the new value is less than the current attendees count
+    if (
+      numberValue !== null &&
+      attendeesCount &&
+      numberValue < attendeesCount
+    ) {
+      setErrors({
+        ...errors,
+        maximum_attendees: [
+          {
+            error: formatMessage(messages.maximumAttendeesTooltip),
+          },
+        ],
+      });
+    } else {
+      // Check if errors is an object with field name keys
+      if (
+        errors &&
+        typeof errors === 'object' &&
+        !Array.isArray(errors) &&
+        'maximum_attendees' in errors
+      ) {
+        // Type assertion to help TypeScript understand the structure
+        const errorObj = errors as { [fieldName: string]: CLError[] };
+        const { maximum_attendees, ...restErrors } = errorObj;
+        setErrors(restErrors);
+      }
+    }
+
     setAttributeDiff({
       ...attributeDiff,
-      maximum_attendees: value ? parseInt(value, 10) : null,
+      maximum_attendees: numberValue,
     });
   };
 
@@ -766,6 +798,10 @@ const AdminProjectEventEdit = () => {
                     labelTooltipText={formatMessage(
                       messages.maximumAttendeesTooltip
                     )}
+                  />
+                  <ErrorComponent
+                    apiErrors={get(errors, 'maximum_attendees')}
+                    text={get(errors, 'maximum_attendees')?.[0]?.error}
                   />
                 </SectionField>
               )}
