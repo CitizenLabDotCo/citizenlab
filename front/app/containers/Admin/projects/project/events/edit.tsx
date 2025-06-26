@@ -257,6 +257,11 @@ const AdminProjectEventEdit = () => {
     setSubmitState('enabled');
     const numberValue = value ? parseInt(value, 10) : null;
 
+    // Create a custom error message that will be used for both client and API validation
+    const maximumAttendeesErrorMessage = {
+      error: formatMessage(messages.maximumAttendeesTooltip),
+    };
+
     // Check if the new value is less than the current attendees count
     if (
       numberValue !== null &&
@@ -265,23 +270,21 @@ const AdminProjectEventEdit = () => {
     ) {
       setErrors({
         ...errors,
-        maximum_attendees: [
-          {
-            error: formatMessage(messages.maximumAttendeesTooltip),
-          },
-        ],
+        maximum_attendees: [maximumAttendeesErrorMessage],
       });
     } else {
-      // Check if errors is an object with field name keys
+      // Clear error if it exists - create a copy of the errors object
       if (
         errors &&
         typeof errors === 'object' &&
         !Array.isArray(errors) &&
         'maximum_attendees' in errors
       ) {
-        // Type assertion to help TypeScript understand the structure
-        const errorObj = errors as { [fieldName: string]: CLError[] };
-        const { maximum_attendees, ...restErrors } = errorObj;
+        // Create a new object without the maximum_attendees property
+        const { maximum_attendees, ...restErrors } = errors as {
+          maximum_attendees: CLError[];
+          [key: string]: any;
+        };
         setErrors(restErrors);
       }
     }
@@ -498,9 +501,35 @@ const AdminProjectEventEdit = () => {
                 handleEventFiles(data);
                 setSubmitState('success');
               },
-              onError: async (errors) => {
+              onError: async (apiErrors) => {
                 setSaving(false);
-                setErrors(errors.errors);
+
+                // Make a copy of the errors and ensure it's the right type
+                if (
+                  apiErrors &&
+                  apiErrors.errors &&
+                  typeof apiErrors.errors === 'object'
+                ) {
+                  const customErrors = { ...apiErrors.errors };
+
+                  // Create the error message object outside in component scope
+                  const maximumAttendeesErrorMessage = {
+                    error: formatMessage(messages.maximumAttendeesTooltip),
+                  };
+
+                  // Check if maximum_attendees exists before trying to modify it
+                  if ('maximum_attendees' in customErrors) {
+                    customErrors.maximum_attendees = [
+                      maximumAttendeesErrorMessage,
+                    ];
+                    setErrors(customErrors);
+                  } else {
+                    setErrors(apiErrors.errors);
+                  }
+                } else {
+                  setErrors(apiErrors.errors);
+                }
+
                 setSubmitState('error');
               },
             }
@@ -522,8 +551,35 @@ const AdminProjectEventEdit = () => {
                 addOrDeleteEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
-              onError: async (errors) => {
-                setErrors(errors.errors);
+              onError: async (apiErrors) => {
+                setSaving(false);
+
+                // Make a copy of the errors and ensure it's the right type
+                if (
+                  apiErrors &&
+                  apiErrors.errors &&
+                  typeof apiErrors.errors === 'object'
+                ) {
+                  const customErrors = { ...apiErrors.errors };
+
+                  // Use the same error message object defined earlier
+                  const maximumAttendeesErrorMessage = {
+                    error: formatMessage(messages.maximumAttendeesTooltip),
+                  };
+
+                  // Check if maximum_attendees exists before trying to modify it
+                  if ('maximum_attendees' in customErrors) {
+                    customErrors.maximum_attendees = [
+                      maximumAttendeesErrorMessage,
+                    ];
+                    setErrors(customErrors);
+                  } else {
+                    setErrors(apiErrors.errors);
+                  }
+                } else {
+                  setErrors(apiErrors.errors);
+                }
+
                 setSubmitState('error');
               },
             }
