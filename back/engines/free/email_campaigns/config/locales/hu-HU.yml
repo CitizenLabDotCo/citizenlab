@@ -84,6 +84,12 @@ hu:
         "5": "Hetente, péntekenként %{hourOfDay}-kor"
         "6": "Hetente, szombatonként %{hourOfDay}-kor"
       quarterly: "Negyedévenként, a negyedév első napján"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Dámvadtehén'
+      display_name: 'Jane Doe'
+      comment_body: 'Ez egy példa a hozzászólásra, amelyet e-mailek tartalmának előnézetére használnak. Ez nem valós tartalom.'
+      idea_title: 'Példaötlet'
     footer:
       "link_privacy_policy": "Adatvédelmi szabályzat"
       "link_terms_conditions": "Általános Szerződési Feltételek"

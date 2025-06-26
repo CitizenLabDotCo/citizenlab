@@ -84,6 +84,12 @@ lt:
         "5": "Kas savaitę, penktadieniais %{hourOfDay}"
         "6": "Kas savaitę, šeštadieniais %{hourOfDay}"
       quarterly: "Kas ketvirtį, pirmąją ketvirčio dieną"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Doe'
+      display_name: 'Nepažįstama moteris'
+      comment_body: 'Tai pavyzdinis komentaras, naudojamas el. laiškų turiniui peržiūrėti. Tai nėra tikrasis turinys.'
+      idea_title: 'Idėjos pavyzdys'
     footer:
       "link_privacy_policy": "Privatumo politika"
       "link_terms_conditions": "Taisyklės ir sąlygos"
