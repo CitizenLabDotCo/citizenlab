@@ -9,7 +9,6 @@ module MultiTenancy
         attributes %i[
           title_multiloc
           description_multiloc
-          campaigns_settings
           commenting_enabled
           reacting_dislike_enabled
           reacting_dislike_limited_max

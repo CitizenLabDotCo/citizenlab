@@ -23,8 +23,7 @@ module EmailCampaigns
           participation_method: 'native_survey',
           submission_enabled: true,
           native_survey_title_multiloc: { 'en' => 'Survey' },
-          native_survey_button_multiloc: { 'en' => 'Take the survey' },
-          campaigns_settings: { 'project_phase_started' => true }
+          native_survey_button_multiloc: { 'en' => 'Take the survey' }
         )
         idea = Idea.create!(
           project: project,
