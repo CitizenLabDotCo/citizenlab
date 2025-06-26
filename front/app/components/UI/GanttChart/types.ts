@@ -3,6 +3,8 @@ export type GanttItem = {
   title: string;
   start: string | null;
   end: string | null;
+  highlightStartDate?: string | null;
+  highlightEndDate?: string | null;
 };
 
 export type GanttChartProps = {
