@@ -11,7 +11,7 @@ module IdeaCustomFields
 
   class UpdatingFormWithInputError < StandardError; end
 
-  class WebApi::V1::Admin::IdeaCustomFieldsController < ApplicationController
+  class WebApi::V1::IdeaCustomFieldsController < ApplicationController
     CONSTANTIZER = {
       'Project' => {
         container_class: Project,
@@ -23,6 +23,7 @@ module IdeaCustomFields
       }
     }
 
+    skip_before_action :authenticate_user, only: %i[index]
     before_action :set_custom_field, only: %i[show as_geojson]
     before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
@@ -536,4 +537,4 @@ module IdeaCustomFields
   end
 end
 
-IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController.prepend(CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController)
+IdeaCustomFields::WebApi::V1::IdeaCustomFieldsController.prepend(CustomMaps::Patches::IdeaCustomFields::WebApi::V1::IdeaCustomFieldsController)
