@@ -275,16 +275,16 @@ const AdminProjectEventEdit = () => {
     } else {
       // Clear error if it exists - create a copy of the errors object
       if (
-        errors &&
         typeof errors === 'object' &&
         !Array.isArray(errors) &&
         'maximum_attendees' in errors
       ) {
         // Create a new object without the maximum_attendees property
-        const { maximum_attendees, ...restErrors } = errors as {
-          maximum_attendees: CLError[];
-          [key: string]: any;
-        };
+        const { maximum_attendees: _maximum_attendees, ...restErrors } =
+          errors as {
+            maximum_attendees: CLError[];
+            [key: string]: any;
+          };
         setErrors(restErrors);
       }
     }
@@ -459,7 +459,7 @@ const AdminProjectEventEdit = () => {
       error: formatMessage(messages.maximumAttendeesTooltip),
     };
 
-    if (apiErrors && !isError(apiErrors)) {
+    if (!isError(apiErrors)) {
       const customErrors = { ...apiErrors };
 
       if ('maximum_attendees' in customErrors) {
