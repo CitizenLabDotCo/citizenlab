@@ -102,4 +102,12 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.budgetFieldLabel',
     defaultMessage: 'Budget',
   },
+  uploadShapefileInstructions: {
+    id: 'app.components.CustomFieldsForm.uploadShapefileInstructions',
+    defaultMessage: '* Upload a zip file containing one or more shapefiles.',
+  },
+  anonymousSurveyMessage: {
+    id: 'app.components.CustomFieldsForm.anonymousSurveyMessage2',
+    defaultMessage: 'All responses to this survey are anonymized.',
+  },
 });

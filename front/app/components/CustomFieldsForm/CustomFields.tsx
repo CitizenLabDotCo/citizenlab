@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -19,15 +19,16 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import CosponsorsField from './Fields/CosponsorsField';
-import FileUploaderField from './Fields/FileUploadField';
 import ImageField from './Fields/ImageField';
 import ImageMultichoiceField from './Fields/ImageMultichoiceField';
 import LinearScaleField from './Fields/LinearScale';
 import MatrixField from './Fields/MatrixField';
+import MultiFileUploadField from './Fields/MultiFileUploadField';
 import MultiSelectField from './Fields/MultiSelectField';
 import RankingField from './Fields/RankingField';
 import RatingField from './Fields/RatingField';
 import SentimentScaleField from './Fields/SentimentScaleField';
+import SingleFileUploadField from './Fields/SingleFileUploadField';
 import SingleSelectField from './Fields/SingleSelectField';
 import InputIQ from './InputIQ';
 import messages from './messages';
@@ -96,7 +97,7 @@ const renderField = ({
       );
     case 'files':
       return (
-        <FileUploaderField
+        <MultiFileUploadField
           name={question.key}
           ideaId={ideaId}
           scrollErrorIntoView={true}
@@ -130,6 +131,15 @@ const renderField = ({
       return (
         <ImageMultichoiceField question={question} scrollErrorIntoView={true} />
       );
+    case 'file_upload':
+    case 'shapefile_upload':
+      return (
+        <SingleFileUploadField
+          name={question.key}
+          ideaId={ideaId}
+          scrollErrorIntoView={true}
+        />
+      );
     default:
       return null;
   }
@@ -140,11 +150,13 @@ const CustomFields = ({
   projectId,
   ideaId,
   phase,
+  participationMethod,
 }: {
   questions: IFlatCustomField[];
   projectId?: string;
   ideaId?: string;
   phase?: IPhaseData;
+  participationMethod?: ParticipationMethod;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -164,7 +176,9 @@ const CustomFields = ({
             subtextSupportsHtml: true,
           };
 
-          const answerNotPublic = !question.visible_to_public;
+          const answerNotPublic =
+            !question.visible_to_public &&
+            participationMethod !== 'native_survey';
 
           return (
             <Box key={question.id} mb="24px" position="relative">
@@ -176,6 +190,9 @@ const CustomFields = ({
                   formatMessage,
                   optionsLength: question.options?.length || 0,
                 })}
+                {question.input_type === 'shapefile_upload' && (
+                  <FormattedMessage {...messages.uploadShapefileInstructions} />
+                )}
               </Text>
               {answerNotPublic && (
                 <Text mt="0px" fontSize="s">

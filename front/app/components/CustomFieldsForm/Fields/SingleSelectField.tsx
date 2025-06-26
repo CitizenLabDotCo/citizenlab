@@ -78,6 +78,7 @@ const SingleSelectField = ({
                 key={option.value}
                 value={option.value}
                 label={option.label}
+                canDeselect
               />
             </StyledBox>
           ))}

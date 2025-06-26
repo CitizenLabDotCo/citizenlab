@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
-import { IdeaPublicationStatus, IIdeaData } from 'api/ideas/types';
+import { IIdeaData } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
@@ -15,26 +14,12 @@ import useProjectById from 'api/projects/useProjectById';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import CustomFieldsPage from './CustomFieldsPage';
-import { convertCustomFieldsToNestedPages } from './util';
+import { FormValues } from '../Page/types';
+import { convertCustomFieldsToNestedPages } from '../util';
 
-export interface FormValues {
-  title_multiloc: Multiloc;
-  body_multiloc?: Multiloc;
-  author_id?: string;
-  idea_images_attributes?: { image: string }[];
-  idea_files_attributes?: {
-    file_by_content: { content: string };
-    name: string;
-  }[];
-  location_description?: string | null;
-  location_point_geojson?: GeoJSON.Point | null;
-  topic_ids?: string[];
-  cosponsor_ids?: string[];
-  publication_status?: IdeaPublicationStatus;
-}
+import IdeationPage from './IdeationPage';
 
-const CustomFieldsForm = ({
+const IdeationForm = ({
   projectId,
   phaseId,
   participationMethod,
@@ -66,10 +51,6 @@ const CustomFieldsForm = ({
   const showTogglePostAnonymously =
     phase?.data.attributes.allow_anonymous_participation &&
     participationMethod !== 'native_survey';
-
-  const pageButtonLabelMultiloc = customFields?.find(
-    (field) => field.id === nestedPagesData[currentPageNumber].page.id
-  )?.page_button_label_multiloc;
 
   const lastPageNumber = nestedPagesData.length - 1;
 
@@ -122,7 +103,7 @@ const CustomFieldsForm = ({
   return (
     <Box w="100%">
       {nestedPagesData[currentPageNumber] && (
-        <CustomFieldsPage
+        <IdeationPage
           page={nestedPagesData[currentPageNumber].page}
           pageQuestions={nestedPagesData[currentPageNumber].pageQuestions}
           currentPageNumber={currentPageNumber}
@@ -133,7 +114,6 @@ const CustomFieldsForm = ({
           ideaId={idea?.id}
           projectId={projectId}
           onSubmit={onSubmit}
-          pageButtonLabelMultiloc={pageButtonLabelMultiloc}
           phase={phase?.data}
           defaultValues={initialFormData}
           customFields={customFields ?? []}
@@ -144,4 +124,4 @@ const CustomFieldsForm = ({
   );
 };
 
-export default CustomFieldsForm;
+export default IdeationForm;
