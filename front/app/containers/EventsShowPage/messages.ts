@@ -14,6 +14,10 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, one {# participant} other {# participants}}',
   },
+  haveRegistered: {
+    id: 'app.containers.EventsShow.haveRegistered',
+    defaultMessage: 'have registered',
+  },
   registered: {
     id: 'app.containers.EventsShow.registered',
     defaultMessage: 'registered',

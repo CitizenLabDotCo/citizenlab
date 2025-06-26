@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.components.EventCard.a11y_readMore',
     defaultMessage: 'Read more about the "{eventTitle}" event.',
   },
+  haveRegistered: {
+    id: 'app.containers.EventCard.haveRegistered',
+    defaultMessage: 'have registered',
+  },
   registered: {
     id: 'app.containers.EventCard.registered',
     defaultMessage: 'registered',
