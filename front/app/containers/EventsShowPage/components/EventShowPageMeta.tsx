@@ -2,19 +2,19 @@ import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
 
-import { IEventData } from 'api/events/types';
 import useEventImage from 'api/event_images/useEventImage';
+import { IEventData } from 'api/events/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
-
-import messages from '../messages';
 
 import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { imageSizes } from 'utils/fileUtils';
 import { stripHtml } from 'utils/textUtils';
+
+import messages from '../messages';
 
 interface Props {
   event: IEventData;
@@ -37,7 +37,7 @@ const EventShowPageMeta = ({ event }: Props) => {
     localize(event.attributes.description_multiloc),
     250
   );
-  const image = eventImage?.data?.attributes?.versions?.large;
+  const image = eventImage?.data.attributes.versions.large;
   const { location } = window;
 
   return (
