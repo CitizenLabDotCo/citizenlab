@@ -347,7 +347,6 @@ const generateYupValidationSchema = ({
                 test: (value) => {
                   if (!value) return false;
                   const converted = convertWKTToGeojson({ polygon: value });
-                  console.log(converted.polygon.coordinates);
                   return (
                     converted.polygon &&
                     converted.polygon.type === 'Polygon' &&
