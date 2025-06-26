@@ -49,7 +49,6 @@ const InformationSectionMobile = ({ event }: Props) => {
                   <ParticipantsCount
                     count={event.attributes.attendees_count}
                     maximumAttendees={event.attributes.maximum_attendees}
-                    isPastEvent={isPastEvent}
                   />
                 )}
                 <Box borderBottom={`solid 1px ${colors.divider}`} />
