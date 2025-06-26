@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useEventImage from 'api/event_images/useEventImage';
 import { IEventData } from 'api/events/types';
 
@@ -24,6 +25,7 @@ const EventShowPageMeta = ({ event }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const tenantLocales = useAppConfigurationLocales();
+  const { data: authUser } = useAuthUser();
   const { data: eventImage } = useEventImage(event);
 
   if (!tenantLocales) return null;
@@ -42,7 +44,16 @@ const EventShowPageMeta = ({ event }: Props) => {
 
   return (
     <Helmet>
-      <title>{metaTitle}</title>
+      <title>
+        {`${
+          authUser &&
+          typeof authUser.data.attributes.unread_notifications === 'number' &&
+          authUser.data.attributes.unread_notifications > 0
+            ? `(${authUser.data.attributes.unread_notifications}) `
+            : ''
+        }
+            ${metaTitle}`}
+      </title>
       {getCanonicalLink()}
       {getAlternateLinks(tenantLocales)}
       <meta name="title" content={metaTitle} />
