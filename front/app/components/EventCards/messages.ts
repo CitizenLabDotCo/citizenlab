@@ -33,13 +33,9 @@ export default defineMessages({
     id: 'app.components.EventCard.a11y_readMore',
     defaultMessage: 'Read more about the "{eventTitle}" event.',
   },
-  attending: {
-    id: 'app.containers.EventCard.attending',
-    defaultMessage: 'attending',
-  },
-  attended: {
-    id: 'app.containers.EventCard.attended',
-    defaultMessage: 'attended',
+  registered: {
+    id: 'app.containers.EventCard.registered',
+    defaultMessage: 'registered',
   },
   online: {
     id: 'app.containers.EventsShow.online2',
