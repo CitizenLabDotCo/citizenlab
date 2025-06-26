@@ -21,12 +21,18 @@ import { getBase64FromFile } from 'utils/fileUtils';
 import FileExampleDescription from './FileExampleDescription';
 import messages from './messages';
 
+type FilesValidationError =
+  | 'maxFilesExceeded'
+  | 'oversizedFiles'
+  | 'filesRejected';
+
 const FileUploadWithDropzone = () => {
   const { formatMessage } = useIntl();
   const { mutate: addFile, isLoading } = useAddFile();
 
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
-  const [attachedOversizedFiles, setAttachedOversizedFiles] = useState(false);
+  const [filesValidationError, setFilesValidationError] =
+    useState<FilesValidationError | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const { getRootProps, getInputProps, open } = useDropzone({
@@ -36,7 +42,14 @@ const FileUploadWithDropzone = () => {
       // Reset error & success state
       setApiErrors(null);
       setShowSuccessMessage(true);
-      setAttachedOversizedFiles(false);
+      setFilesValidationError(null);
+
+      // Check that no more than 35 files are selected.
+      if (files.length > 35) {
+        setFilesValidationError('maxFilesExceeded');
+        setShowSuccessMessage(false);
+        return;
+      }
 
       // Check that no file selected is larger than 50MB
       const maxFileSize = 50 * 1024 * 1024; // 50MB to bytes
@@ -44,7 +57,7 @@ const FileUploadWithDropzone = () => {
 
       // If there are oversized files, set the error state and return.
       if (oversizedFiles.length > 0) {
-        setAttachedOversizedFiles(true);
+        setFilesValidationError('oversizedFiles');
         setShowSuccessMessage(false);
         return;
       }
@@ -76,8 +89,9 @@ const FileUploadWithDropzone = () => {
         };
       });
     },
-    onDropRejected: (_fileRejections) => {
-      // ToDo: Handle file rejections, e.g., show error messages.
+    onDropRejected: () => {
+      setShowSuccessMessage(false);
+      setFilesValidationError('filesRejected');
     },
   });
 
@@ -123,20 +137,35 @@ const FileUploadWithDropzone = () => {
         <input {...getInputProps()} disabled={isLoading} />
       </Box>
       {showSuccessMessage && (
-        <Box display="flex" justifyContent="center">
+        <Box mt="24px">
           <Success
             text={formatMessage(messages.filesUploadedSuccessfully)}
             showIcon={true}
+            showBackground={true}
           />
         </Box>
       )}
-      {attachedOversizedFiles && (
+      {filesValidationError === 'maxFilesExceeded' && (
+        <Box mt="10px">
+          <Error
+            text={formatMessage(messages.maxFilesError, {
+              maxFiles: 2,
+            })}
+          />
+        </Box>
+      )}
+      {filesValidationError === 'oversizedFiles' && (
         <Box mt="10px">
           <Error
             text={formatMessage(messages.fileSizeError, {
               maxSizeMb: 50,
             })}
           />
+        </Box>
+      )}
+      {filesValidationError === 'filesRejected' && (
+        <Box mt="10px">
+          <Error text={formatMessage(messages.filesRejected)} />
         </Box>
       )}
       {apiErrors && <Error apiErrors={apiErrors.errors} />}

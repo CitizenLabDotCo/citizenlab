@@ -94,4 +94,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.confirmDelete',
     defaultMessage: 'Are you sure you want to delete this file?',
   },
+  maxFilesError: {
+    id: 'app.containers.AdminPage.ProjectFiles.maxFilesError',
+    defaultMessage:
+      'You can only upload a maximum of {maxFiles} files at a time.',
+  },
+  filesRejected: {
+    id: 'app.containers.AdminPage.ProjectFiles.filesRejected',
+    defaultMessage: 'Files were not able to be uploaded. Please try again.',
+  },
 });
