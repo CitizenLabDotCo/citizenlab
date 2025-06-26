@@ -170,4 +170,12 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.removeAnswer',
     defaultMessage: 'Remove answer',
   },
+  atLeastTwoPointsRequired: {
+    id: 'app.components.CustomFieldsForm.atLeastTwoPointsRequired',
+    defaultMessage: 'At least two points are required for a line.',
+  },
+  atLeastThreePointsRequired: {
+    id: 'app.components.CustomFieldsForm.atLeastThreePointsRequired',
+    defaultMessage: 'At least three points are required for a polygon.',
+  },
 });

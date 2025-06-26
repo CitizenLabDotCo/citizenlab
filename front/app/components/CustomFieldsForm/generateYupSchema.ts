@@ -9,6 +9,7 @@ import legacyMessages from 'components/Form/Components/Controls/messages';
 
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
+import { convertWKTToGeojson } from './Fields/MapField/multiPointUtils';
 import messages from './messages';
 
 // NOTE: When the question is a built-in field, it is necessary to
@@ -310,11 +311,52 @@ const generateYupValidationSchema = ({
           : object().nullable();
         break;
       }
-      case 'point':
-      case 'polygon':
-      case 'line': {
+      case 'point': {
         schema[key] = required
           ? string().required(fieldRequired).nullable()
+          : string().nullable();
+        break;
+      }
+
+      case 'line': {
+        schema[key] = required
+          ? string()
+              .required(fieldRequired)
+              .test({
+                message: formatMessage(messages.atLeastTwoPointsRequired),
+                test: (value) => {
+                  if (!value) return false;
+                  const converted = convertWKTToGeojson({ line: value });
+                  return (
+                    converted.line &&
+                    converted.line.type === 'LineString' &&
+                    Array.isArray(converted.line.coordinates) &&
+                    converted.line.coordinates.length > 1
+                  );
+                },
+              })
+          : string().nullable();
+        break;
+      }
+      case 'polygon': {
+        schema[key] = required
+          ? string()
+              .required(fieldRequired)
+              .test({
+                message: formatMessage(messages.atLeastThreePointsRequired),
+                test: (value) => {
+                  if (!value) return false;
+                  const converted = convertWKTToGeojson({ polygon: value });
+                  console.log(converted.polygon.coordinates);
+                  return (
+                    converted.polygon &&
+                    converted.polygon.type === 'Polygon' &&
+                    Array.isArray(converted.polygon.coordinates) &&
+                    converted.polygon.coordinates.length > 0 &&
+                    converted.polygon.coordinates[0].length > 3
+                  );
+                },
+              })
           : string().nullable();
         break;
       }
