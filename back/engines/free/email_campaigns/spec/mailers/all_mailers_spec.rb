@@ -15,14 +15,18 @@ RSpec.describe 'AllMailers' do
         end
 
         it "#{campaign_class} has valid variables defined that match the default text" do
+          editable_region_variables = campaign.mailer_class.editable_region_variables || []
           campaign.mailer_class.editable_regions.each do |region|
-            region_variables = region[:variables] || []
             # Extract variables in format {{variable}} from the default value text
             variables_in_text = region[:default_value_multiloc].values.join(' ').scan(/\{\{(.*?)}}/).flatten
             variables_in_text.each do |variable|
-              expect(region_variables).to include(variable.strip)
+              expect(editable_region_variables).to include(variable.strip)
             end
           end
+        end
+
+        it 'has editable_region_variables that match the substitution variables' do
+          # TODO:
         end
       end
     end
