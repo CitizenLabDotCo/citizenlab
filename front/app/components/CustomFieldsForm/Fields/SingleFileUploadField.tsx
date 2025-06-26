@@ -6,6 +6,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { UploadFile } from 'typings';
 
 import { IIdeaFileData } from 'api/idea_files/types';
+import useDeleteIdeaFile from 'api/idea_files/useDeleteIdeaFile';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 
 import Error from 'components/UI/Error';
@@ -31,6 +32,7 @@ const SingleFileUploaderField = ({
   scrollErrorIntoView,
 }: Props) => {
   const { data: ideaFiles } = useIdeaFiles(ideaId);
+  const { mutate: deleteIdeaFile } = useDeleteIdeaFile();
   const {
     setValue,
     formState: { errors },
@@ -47,7 +49,7 @@ const SingleFileUploaderField = ({
       let remoteFile: IIdeaFileData | undefined = undefined;
       const convertFiles = async () => {
         remoteFile = ideaFiles.data.find(
-          (ideaFile) => ideaFile.id === file?.id
+          (ideaFile) => ideaFile.attributes.name === file?.name
         );
         if (!remoteFile) return;
         convertUrlToUploadFile(
@@ -73,11 +75,17 @@ const SingleFileUploaderField = ({
     return () => {
       isMounted = false;
     };
-  }, [setValue, name, ideaFiles, trigger, file?.id]);
+  }, [setValue, name, ideaFiles, trigger, file?.name]);
 
   const errorMessage = get(errors, name)?.message as string | undefined;
 
   const onFileRemove = () => {
+    if (file.id && ideaId) {
+      deleteIdeaFile({
+        fileId: file.id,
+        ideaId,
+      });
+    }
     setValue(name, undefined, { shouldDirty: true });
     trigger(name);
   };

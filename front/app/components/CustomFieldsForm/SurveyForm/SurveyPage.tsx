@@ -15,7 +15,9 @@ import useLocalize from 'hooks/useLocalize';
 
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
+import Warning from 'components/UI/Warning';
 
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
@@ -24,6 +26,7 @@ import CustomFields from '../CustomFields';
 import PageEsriDivider from '../Map/PageEsriDivider';
 import PageEsriMap from '../Map/PageEsriMap';
 import useEsriMapPage from '../Map/useEsriMapPage';
+import messages from '../messages';
 import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
@@ -73,7 +76,7 @@ const SurveyPage = ({
   const { data: project } = useProjectById(projectId);
 
   const localize = useLocalize();
-
+  const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const isAdminPage = isPage('admin', pathname);
   const isMapPage = page.page_layout === 'map';
@@ -156,6 +159,8 @@ const SurveyPage = ({
     setCurrentPageNumber(previousPageNumber);
   };
 
+  const anonimizeSurveySubmissions =
+    phase?.attributes.allow_anonymous_participation;
   return (
     <FormProvider {...methods}>
       {showFormFeedback && <Feedback />}
@@ -207,13 +212,13 @@ const SurveyPage = ({
                 <Box h="100%" display="flex" flexDirection="column">
                   <Box p="24px" w="100%">
                     <Box display="flex" flexDirection="column">
-                      {/* {allowsAnonymousPostingInNativeSurvey && (
-                  <Box w="100%" mb="12px">
-                    <Warning icon="shield-checkered">
-                      {formatMessage(messages.anonymousSurveyMessage)}
-                    </Warning>
-                  </Box>
-                )} */}
+                      {anonimizeSurveySubmissions && (
+                        <Box w="100%" mb="12px">
+                          <Warning icon="shield-checkered">
+                            {formatMessage(messages.anonymousSurveyMessage)}
+                          </Warning>
+                        </Box>
+                      )}
 
                       <PageTitle page={page} />
 

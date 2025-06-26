@@ -16,7 +16,7 @@ resource 'Idea Custom Field Matrix Statements' do
     let(:custom_form) { create(:custom_form, participation_context: project) }
     let(:project_id) { project.id }
 
-    get 'web_api/v1/admin/projects/:project_id/custom_fields/:custom_field_id/custom_field_matrix_statements' do
+    get 'web_api/v1/projects/:project_id/custom_fields/:custom_field_id/custom_field_matrix_statements' do
       context 'when admin' do
         before { admin_header_token }
 
@@ -29,7 +29,7 @@ resource 'Idea Custom Field Matrix Statements' do
       end
     end
 
-    get 'web_api/v1/admin/projects/:project_id/custom_fields/:custom_field_id/custom_field_matrix_statements/:id' do
+    get 'web_api/v1/projects/:project_id/custom_fields/:custom_field_id/custom_field_matrix_statements/:id' do
       context 'when admin' do
         before { admin_header_token }
 
@@ -48,7 +48,7 @@ resource 'Idea Custom Field Matrix Statements' do
     let(:custom_form) { create(:custom_form, participation_context: phase) }
     let(:phase_id) { phase.id }
 
-    get 'web_api/v1/admin/phases/:phase_id/custom_fields/:custom_field_id/custom_field_matrix_statements' do
+    get 'web_api/v1/phases/:phase_id/custom_fields/:custom_field_id/custom_field_matrix_statements' do
       context 'when admin' do
         before { admin_header_token }
 
@@ -61,7 +61,7 @@ resource 'Idea Custom Field Matrix Statements' do
       end
     end
 
-    get 'web_api/v1/admin/phases/:phase_id/custom_fields/:custom_field_id/custom_field_matrix_statements/:id' do
+    get 'web_api/v1/phases/:phase_id/custom_fields/:custom_field_id/custom_field_matrix_statements/:id' do
       context 'when admin' do
         before { admin_header_token }
 

@@ -178,4 +178,8 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.atLeastThreePointsRequired',
     defaultMessage: 'At least three points are required for a polygon.',
   },
+  anonymousSurveyMessage: {
+    id: 'app.components.CustomFieldsForm.anonymousSurveyMessage2',
+    defaultMessage: 'All responses to this survey are anonymized.',
+  },
 });
