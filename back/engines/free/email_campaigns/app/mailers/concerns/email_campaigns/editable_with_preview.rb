@@ -43,6 +43,27 @@ module EmailCampaigns
       {}
     end
 
+    # Default methods for template output of the common editable regions.
+    def subject
+      format_editable_region(:subject_multiloc)
+    end
+
+    def header_title
+      format_editable_region(:title_multiloc)
+    end
+
+    def header_message
+      format_editable_region(:intro_multiloc)
+    end
+
+    def cta_button_text
+      format_editable_region(:button_text_multiloc)
+    end
+
+    def preheader
+      format_message('preheader', values: substitution_variables)
+    end
+
     # To format an editable message, use `format_editable_region`.
     # The `region_key` must exist in editable regions.
     def format_editable_region(region_key, values: substitution_variables, override_default_key: nil)

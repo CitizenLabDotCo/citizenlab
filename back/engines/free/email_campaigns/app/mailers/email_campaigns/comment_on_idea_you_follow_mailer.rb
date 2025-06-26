@@ -66,27 +66,11 @@ module EmailCampaigns
       }
     end
 
-    def subject
-      format_editable_region(:subject_multiloc)
-    end
-
     def header_title
       format_editable_region(
         :title_multiloc,
         override_default_key: "main_header.#{event.idea_input_term}"
       )
-    end
-
-    def header_message
-      format_editable_region(:intro_multiloc)
-    end
-
-    def cta_button_text
-      format_editable_region(:button_text_multiloc)
-    end
-
-    def preheader
-      format_message('preheader', values: substitution_variables)
     end
   end
 end

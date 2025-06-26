@@ -2,13 +2,10 @@
 
 module EmailCampaigns
   class AdminDigestMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
-    # TODO: Most of this code is generic and could be moved to a shared module
     def campaign_mail
-      campaign = EmailCampaigns::Campaigns::AdminDigest.new
-      command = campaign.mailer_class.preview_command(recipient: recipient_user)
-      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+      preview_campaign_mail(EmailCampaigns::Campaigns::AdminDigest)
     end
   end
 end

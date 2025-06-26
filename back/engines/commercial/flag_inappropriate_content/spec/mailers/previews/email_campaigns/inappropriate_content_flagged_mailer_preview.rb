@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class InappropriateContentFlaggedPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       flaggable = Idea.first

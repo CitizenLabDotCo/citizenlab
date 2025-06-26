@@ -88,22 +88,5 @@ module EmailCampaigns
         organizationName: organization_name
       }
     end
-
-    # TODO: These methods are pretty much the same - define these in the concern?
-    def subject
-      format_editable_region(:subject_multiloc)
-    end
-
-    def header_title
-      format_editable_region(:title_multiloc)
-    end
-
-    def header_message
-      format_editable_region(:intro_multiloc)
-    end
-
-    def preheader
-      format_message('preheader', values: substitution_variables)
-    end
   end
 end
