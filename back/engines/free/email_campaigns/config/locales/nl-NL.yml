@@ -88,7 +88,7 @@ nl:
       first_name: 'Emma'
       last_name: 'de Vries'
       display_name: 'Emma de Vries'
-      comment_body: 'Dit is een voorbeeldreactie die wordt gebruikt om de inhoud van e-mails te bekijken. Dit is niet de echte inhoud.'
+      comment_body: 'Dit is een voorbeeldreactie die wordt gebruikt om een voorvertoning van inhoud van e-mails te laten zien. Dit is niet de echte inhoud.'
       idea_title: 'Voorbeeldidee'
     footer:
       "link_privacy_policy": "Privacybeleid"
