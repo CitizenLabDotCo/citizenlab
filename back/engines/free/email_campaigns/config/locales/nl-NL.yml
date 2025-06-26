@@ -85,10 +85,10 @@ nl:
         "6": "Wekelijks, op zaterdag om %{hourOfDay}"
       quarterly: "Per kwartaal, op de eerste dag van het kwartaal"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Doe'
-      display_name: 'Jane Doe'
-      comment_body: 'Dit is een voorbeeldcommentaar dat wordt gebruikt om de inhoud van e-mails te bekijken. Dit is niet de echte inhoud.'
+      first_name: 'Emma'
+      last_name: 'de Vries'
+      display_name: 'Emma de Vries'
+      comment_body: 'Dit is een voorbeeldreactie die wordt gebruikt om de inhoud van e-mails te bekijken. Dit is niet de echte inhoud.'
       idea_title: 'Voorbeeldidee'
     footer:
       "link_privacy_policy": "Privacybeleid"
