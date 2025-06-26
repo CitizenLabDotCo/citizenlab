@@ -66,7 +66,7 @@ const EditCampaignForm = ({
       fieldValue[region.key] = campaign.data.attributes[region.key];
       return fieldValue;
     }, {}),
-    ...{ reply_to: campaign.data.attributes.reply_to || '' },
+    ...{ reply_to: campaign.data.attributes.reply_to },
   };
 
   const methods = useForm({
