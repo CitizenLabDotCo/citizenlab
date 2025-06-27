@@ -11,11 +11,8 @@ import { useFormContext } from 'react-hook-form';
 
 import {
   ICustomFieldSettingsTab,
-  IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
-
-import useLocalize from 'hooks/useLocalize';
 
 import {
   getTranslatedStringKey,
@@ -24,11 +21,10 @@ import {
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 import tracks from '../tracks';
-import { getFieldNumbers } from '../utils';
 
 import ContentSettings from './ContentSettings';
 import LogicSettings from './LogicSettings';
@@ -45,43 +41,10 @@ const FormBuilderSettings = ({
   closeSettings,
   builderConfig,
 }: Props) => {
-  const localize = useLocalize();
   const [currentTab, setCurrentTab] = useState<ICustomFieldSettingsTab>(
     field.defaultTab || 'content'
   );
-  const { formatMessage } = useIntl();
   const { watch } = useFormContext();
-  const formCustomFields: IFlatCustomField[] = watch('customFields');
-
-  const getPageList = () => {
-    const fieldNumbers = getFieldNumbers(formCustomFields);
-    const pageArray: { value: string; label: string }[] = [];
-
-    formCustomFields.forEach((field, i) => {
-      if (field.input_type === 'page') {
-        const isLastPage = i === formCustomFields.length - 1;
-
-        const pageTitle = localize(field.title_multiloc);
-        const pageLabel = isLastPage
-          ? formatMessage(messages.lastPage)
-          : `${formatMessage(messages.page)} ${fieldNumbers[field.id]}${
-              pageTitle
-                ? `: ${
-                    pageTitle.length > 25
-                      ? `${pageTitle.slice(0, 25)}...`
-                      : pageTitle
-                  }`
-                : ''
-            }`;
-
-        pageArray.push({
-          value: field.temp_id || field.id,
-          label: pageLabel,
-        });
-      }
-    });
-    return pageArray;
-  };
 
   const translatedStringKey = getTranslatedStringKey(
     watch(`customFields.${field.index}.input_type`),
@@ -107,19 +70,6 @@ const FormBuilderSettings = ({
   };
 
   const showTabbedSettings = getShowTabbedSettings();
-
-  // Which page is the current question on?
-  // Technically there should always be a current page ID and null should never be returned
-  const getCurrentPageId = (questionId: string): string | null => {
-    if (fieldType === 'page') return field.id;
-
-    let pageId: string | null = null;
-    for (const field of formCustomFields) {
-      if (field.input_type === 'page') pageId = field.id;
-      if (field.id === questionId) return pageId;
-    }
-    return null;
-  };
 
   return (
     <Box
@@ -203,9 +153,7 @@ const FormBuilderSettings = ({
       )}
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings
-          pageOptions={getPageList()}
           field={field}
-          getCurrentPageId={getCurrentPageId}
           key={field.index}
           builderConfig={builderConfig}
         />
