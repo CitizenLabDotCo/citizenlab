@@ -143,7 +143,7 @@ class ProjectsFinderAdminService
 
     if participation_states.include?('not_started')
       phase_scope = phase_scope
-        .or('start_at > ?', DateTime.current)
+        .or.not("start_at <= ?", DateTime.current)
     end
 
     if participation_states.include?('collecting_data')
@@ -169,10 +169,8 @@ class ProjectsFinderAdminService
     end
 
     if participation_states.include?('finished')
-      phases_not_ended = Phase.where("coalesce(end_at, 'infinity'::DATE) >= ?", DateTime.current)
-
       phase_scope = phase_scope
-        .or("id NOT IN (?)", phases_not_ended.select(:id))
+        .or.not("coalesce(end_at, 'infinity'::DATE) >= ?", DateTime.current)
     end
 
     scope.where(id: phase_scope.select(:project_id))
