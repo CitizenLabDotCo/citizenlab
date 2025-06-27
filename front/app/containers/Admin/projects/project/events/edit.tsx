@@ -273,7 +273,6 @@ const AdminProjectEventEdit = () => {
   const handleOnImageAdd = (imageFiles: UploadFile[]) => {
     setSubmitState('enabled');
     setUploadedImage(imageFiles[0]);
-    // Add this line to initialize the cropped base64 with the original image
     setCroppedImgBase64(imageFiles[0].base64);
   };
 
