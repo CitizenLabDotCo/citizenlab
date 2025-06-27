@@ -123,7 +123,10 @@ module EmailCampaigns
     end
 
     def supported_campaign_types
-      render json: raw_json(['ProjectPhaseStarted'])
+      supported_campaigns = DeliveryService::CAMPAIGN_CLASSES.select do |claz|
+        claz.supports_context?(campaign_context)
+      end
+      render json: raw_json(supported_campaigns.map(&:campaign_name))
     end
 
     private

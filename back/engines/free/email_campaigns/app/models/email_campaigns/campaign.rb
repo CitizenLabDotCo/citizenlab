@@ -166,6 +166,15 @@ module EmailCampaigns
       false
     end
 
+    # Necessary to preserve original behavior of the context enabled toggle
+    def enabled
+      if context
+        super && global_campaign.enabled
+      else
+        super
+      end
+    end
+
     protected
 
     def set_enabled
@@ -186,6 +195,10 @@ module EmailCampaigns
       return if apply_recipient_filters.any?
 
       errors.add(:base, :no_recipients, message: "Can't send a campaign without recipients")
+    end
+
+    def global_campaign
+      @global_campaign ||= self.class.find_by(context: nil, type: self.class.name)
     end
   end
 end

@@ -124,7 +124,7 @@ resource 'Campaigns' do
       example_request 'Lists all campaigns supported for an ideation phase' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes)).to match_array %w[ProjectPhaseStarted]
+        expect(json_response.dig(:data, :attributes)).to match_array %w[project_phase_started]
       end
     end
 
