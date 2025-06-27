@@ -157,8 +157,6 @@ class ProjectsFinderAdminService
         )
     end
 
-
-    # TODO
-    scope
+    scope.where(id: phase_scope.select(:project_id))
   end
 end
