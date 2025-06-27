@@ -13,28 +13,54 @@ RSpec.describe EmailCampaigns::AdminRightsReceivedMailer do
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
-    it 'renders the subject' do
-      expect(mail.subject).to start_with('You became an administrator on the platform of')
+    context 'with default content' do
+      let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      it 'renders the subject' do
+        expect(mail.subject).to start_with('You became an administrator on the platform of')
+      end
+
+      it 'renders the receiver email' do
+        expect(mail.to).to eq([recipient.email])
+      end
+
+      it 'renders the sender email' do
+        expect(mail.from).to all(end_with('@citizenlab.co'))
+      end
+
+      it 'assigns the message box title (title_what_can_you_do_administrator)' do
+        expect(mail_body(mail)).to match('What can you do as an administrator?')
+      end
+
+      it 'assigns moderate CTA' do
+        expect(mail_body(mail)).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
+      end
     end
 
-    it 'renders the receiver email' do
-      expect(mail.to).to eq([recipient.email])
-    end
+    context 'when editable regions are customised' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    it 'renders the sender email' do
-      expect(mail.from).to all(end_with('@citizenlab.co'))
-    end
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom subject for {{organizationName}}' },
+          title_multiloc: { 'en' => 'CUSTOM TITLE' },
+          intro_multiloc: { 'en' => '<b>CUSTOM BODY TEXT</b>' }
+        )
+      end
 
-    it 'assigns the message box title (title_what_can_you_do_administrator)' do
-      expect(mail.body.encoded).to match('What can you do as an administrator?')
-    end
+      it 'renders the customised subject' do
+        expect(mail.subject).to eq('Custom subject for Liege')
+      end
 
-    it 'assigns moderate CTA' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
+      it 'renders the customised title' do
+        expect(mail_body(mail)).to include('CUSTOM TITLE')
+      end
+
+      it 'renders the customised intro as html' do
+        expect(mail_body(mail)).to include('<b>CUSTOM BODY TEXT</b>')
+      end
     end
   end
 end
