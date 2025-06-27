@@ -28,18 +28,18 @@ module EmailCampaigns
       end
 
       def preview_command(recipient: nil)
-        data = preview_data(recipient)
+        data = PreviewService.preview_data(recipient)
         {
           recipient: recipient,
           event_payload: {
             assigned_inputs: [
               {
-                id: data[:id],
-                title_multiloc: data[:idea_title_multiloc],
-                url: data[:idea_url],
+                id: data.idea.id,
+                title_multiloc: data.idea.title_multiloc,
+                url: data.idea.url,
                 published_at: Time.now.iso8601,
                 assigned_at: Time.now.iso8601,
-                author_name: data[:user_display_name],
+                author_name: data.author.display_name,
                 likes_count: 10,
                 dislikes_count: 5,
                 comments_count: 4
@@ -47,12 +47,12 @@ module EmailCampaigns
             ],
             successful_assigned_inputs: [
               {
-                id: data[:id],
-                title_multiloc: data[:idea_title_multiloc],
-                url: data[:idea_url],
+                id: data.idea.id,
+                title_multiloc: data.idea.title_multiloc,
+                url: data.idea.url,
                 published_at: 5.days.ago.iso8601,
                 assigned_at: 5.days.ago.iso8601,
-                author_name: data[:user_display_name],
+                author_name: data.author.display_name,
                 likes_count: 14,
                 dislikes_count: 5,
                 comments_count: 7

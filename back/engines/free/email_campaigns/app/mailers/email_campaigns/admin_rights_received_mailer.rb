@@ -31,11 +31,11 @@ module EmailCampaigns
       end
 
       def preview_command(recipient: nil)
-        data = preview_data(recipient)
+        data = PreviewService.preview_data(recipient)
         {
           recipient: recipient,
           event_payload: {
-            organization_name: data[:organization_name]
+            organization_name: data.organization_name
           }
         }
       end
