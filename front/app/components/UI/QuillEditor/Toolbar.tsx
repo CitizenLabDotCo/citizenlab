@@ -142,7 +142,9 @@ const Toolbar = ({
   };
 
   const trackBasic =
-    (type: 'bold' | 'italic' | 'custom-link' | 'link') =>
+    (
+      type: 'bold' | 'italic' | 'underline' | 'strike' | 'custom-link' | 'link'
+    ) =>
     (_event: React.MouseEvent<HTMLElement>) => {
       trackEventByName(tracks.basicEditing, {
         type,
@@ -184,6 +186,16 @@ const Toolbar = ({
           className="ql-italic"
           onClick={trackBasic('italic')}
           aria-label={formatMessage(messages.italic)}
+        />
+        <button
+          className="ql-underline"
+          onClick={trackBasic('underline')}
+          aria-label={'Underline'}
+        />
+        <button
+          className="ql-strike"
+          onClick={trackBasic('strike')}
+          aria-label={'Strikthrough'}
         />
         {!noLinks && (
           <>

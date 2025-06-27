@@ -33,6 +33,8 @@ export const createQuill = (
     formats: [
       'bold',
       'italic',
+      'underline',
+      'strike',
       ...(!noLinks ? ['link'] : []),
       ...attributes,
       ...(withCTAButton ? ['button'] : []),

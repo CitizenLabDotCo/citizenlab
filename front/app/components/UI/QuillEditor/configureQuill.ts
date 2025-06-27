@@ -37,6 +37,7 @@ export const configureQuill = () => {
   VideoFormat.blotName = 'video';
   VideoFormat.tagName = 'iframe';
   Quill.register(VideoFormat, true);
+
   // END allow video resizing styles
 
   // BEGIN function to detect whether urls are external
