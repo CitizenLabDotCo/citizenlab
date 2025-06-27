@@ -10,8 +10,8 @@ import {
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
-import { CampaignName, ICampaignData } from 'api/campaigns/types';
-import useCampaigns from 'api/campaigns/useCampaigns';
+import { ICampaignData } from 'api/campaigns/types';
+import usePhaseCampaigns from 'api/campaigns/usePhaseCampaigns';
 import { IPhaseFiles } from 'api/phase_files/types';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -498,19 +498,14 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   );
 };
 
-const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
-
 const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
-  const { data: campaigns } = useCampaigns({
-    campaignNames: CONFIGURABLE_CAMPAIGN_NAMES,
-    pageSize: 250,
+  const { data: campaigns } = usePhaseCampaigns({
+    phaseId: phaseId || '',
   });
 
-  const flatCampaigns = campaigns?.pages.flatMap((page) => page.data);
-
-  if (!projectId || !flatCampaigns) return null;
+  if (!projectId) return null;
 
   const phaseLoading = phaseId && phase?.data.id !== phaseId;
   if (phaseLoading) return null;
@@ -519,7 +514,7 @@ const AdminPhaseEditWrapper = () => {
     <AdminPhaseEdit
       projectId={projectId}
       phase={phaseId ? phase : undefined}
-      flatCampaigns={flatCampaigns}
+      flatCampaigns={campaigns}
     />
   );
 };

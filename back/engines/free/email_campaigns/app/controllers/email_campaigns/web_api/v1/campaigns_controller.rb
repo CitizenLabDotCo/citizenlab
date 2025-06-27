@@ -3,32 +3,23 @@
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
     before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]
+    skip_after_action :verify_authorized, only: %i[supported_campaign_types]
 
     def index
       @campaigns = policy_scope(Campaign)
         .order(created_at: :desc)
-
-      if params[:campaign_names]
-        campaign_types = params[:campaign_names].map { |name| Campaign.from_campaign_name(name) }
-        @campaigns = @campaigns.where(type: campaign_types)
-      end
 
       if params[:without_campaign_names]
         campaign_types = params[:without_campaign_names].map { |name| Campaign.from_campaign_name(name) }
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
-      @campaigns = @campaigns.where(context_id: params[:context_id]) if params[:context_id]
+      @campaigns = @campaigns.where(context: campaign_context) if campaign_context
+      # TODO: Filter supported campaign types for context (supports_context?(context))
 
-      case params[:manual]&.downcase
-      when 'true' then @campaigns = @campaigns.manual
-      when 'false' then @campaigns = @campaigns.automatic
-      end
+      @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
 
-      @campaigns = @campaigns
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
-      render json: linked_json(@campaigns, WebApi::V1::CampaignSerializer, params: jsonapi_serializer_params)
+      render json: WebApi::V1::CampaignSerializer.new(@campaigns, jsonapi_serializer_params).serializable_hash
     end
 
     def show
@@ -132,11 +123,33 @@ module EmailCampaigns
       render json: raw_json(EmailCampaigns::Delivery.status_counts(@campaign.id))
     end
 
+    def supported_campaign_types
+      supported_campaigns = DeliveryService::CAMPAIGN_CLASSES.select do |claz|
+        claz.supports_context?(campaign_context)
+      end
+      render json: raw_json(supported_campaigns.map(&:campaign_name))
+    end
+
     private
 
     def set_campaign
       @campaign = Campaign.find(params[:id])
       authorize @campaign
+    end
+
+    def campaign_context
+      return @campaign_context if @campaign_context
+
+      context_type = params[:campaign_context]
+      return @campaign_context = nil if !context_type
+
+      context_id = params[:"#{context_type.underscore}_id"]
+      context_model = case context_type
+      when 'Project' then Project
+      when 'Phase' then Phase
+      else raise "Unsupported context level for campaigns: #{reactable_type}"
+      end
+      @campaign_context = context_model.find(context_id)
     end
 
     def campaign_params

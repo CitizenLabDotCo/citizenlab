@@ -25,21 +25,13 @@ resource 'Campaigns' do
         parameter :number, 'Page number'
         parameter :size, 'Number of campaigns per page'
       end
-      parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
-      parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false
 
       example_request 'List all campaigns' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
-      end
-
-      example 'List campaigns that are specific type(s)' do
-        do_request(campaign_names: %w[manual])
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
       end
 
       example 'List all campaigns that are not specific type(s)' do
@@ -95,6 +87,44 @@ resource 'Campaigns' do
         expect(json_response[:data][0][:attributes][:recipient_segment_multiloc]).to eq recipient_segment_multiloc
         expect(json_response[:data][0][:attributes][:content_type_multiloc]).to eq      content_type_multiloc
         expect(json_response[:data][0][:attributes][:trigger_multiloc]).to eq           trigger_multiloc
+      end
+    end
+
+    context 'Listing all campaigns scoped under a context' do
+      let!(:manual_global) { create(:manual_campaign) }
+      let!(:manual_project) { create(:manual_project_participants_campaign) }
+      let!(:automated_phase) { create(:project_phase_started_campaign, context: create(:phase)) }
+
+      get '/web_api/v1/projects/:context_id/campaigns' do
+        let(:context_id) { manual_project.context_id }
+
+        example_request 'List all campaigns scoped under a project' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
+        end
+      end
+
+      get '/web_api/v1/phases/:context_id/campaigns' do
+        let(:context_id) { automated_phase.context_id }
+
+        example_request 'List all campaigns scoped under a phase' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].pluck(:id)).to eq [automated_phase.id]
+        end
+      end
+    end
+
+    get '/web_api/v1/phases/:context_id/campaigns/supported_campaign_types' do
+      let(:context_id) { create(:ideation_phase).id }
+
+      example_request 'Lists all campaigns supported for an ideation phase' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes)).to match_array %w[project_phase_started]
       end
     end
 
@@ -189,6 +219,18 @@ resource 'Campaigns' do
         let(:reply_to) { 'otherguy@organization.net' }
         let(:group_ids) { [create(:group).id] }
 
+<<<<<<< HEAD
+      example_request 'Update a campaign' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
+        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+        expect(json_response.dig(:data, :attributes, :sender)).to match sender
+        expect(json_response.dig(:data, :attributes, :campaign_description_multiloc).stringify_keys).to eq campaign.class.campaign_description_multiloc
+        expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
+        expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
+        expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
+=======
         example_request 'Update a campaign' do
           assert_status 200
           json_response = json_parse(response_body)
@@ -269,6 +311,7 @@ resource 'Campaigns' do
           # Does not save body_multiloc, as it is not applicable to automated campaigns
           expect(attributes[:body_multiloc]).to eq({})
         end
+>>>>>>> master
       end
     end
 
@@ -361,25 +404,12 @@ resource 'Campaigns' do
         })
       end
     end
-
-    get 'web_api/v1/projects/:context_id/email_campaigns' do
-      let(:campaign1) { create(:manual_project_participants_campaign) }
-      let(:campaign2) { create(:manual_campaign) }
-      let(:context_id) { campaign1.project.id }
-
-      example_request 'List all campaigns associated with a project' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].pluck(:id)).to match_array [campaign1.id]
-      end
-    end
   end
 
   context 'as a project moderator' do
     before do
       header 'Content-Type', 'application/json'
-      @user = create(:user, roles: [{ type: 'project_moderator', project_id: @manual_project_participants_campaign.project.id }])
+      @user = create(:user, roles: [{ type: 'project_moderator', project_id: @manual_project_participants_campaign.context_id }])
       EmailCampaigns::UnsubscriptionToken.create!(user_id: @user.id)
       header_token_for @user
     end
@@ -391,10 +421,8 @@ resource 'Campaigns' do
         parameter :number, 'Page number'
         parameter :size, 'Number of campaigns per page'
       end
-      parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
-      parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false
 
       example 'List all campaigns only lists campaigns manageable by the project moderator' do
         phase_started = create(:project_phase_started_campaign)
@@ -496,7 +524,7 @@ resource 'Campaigns' do
 
       example '[Unauthorized] Create campaign, manageable by project moderator, for unmoderated project', document: false do
         do_request(campaign: {
-          context_id: manual_project_participants_campaign_not_moderated_by_this_pm.project.id,
+          context_id: manual_project_participants_campaign_not_moderated_by_this_pm.context_id,
           campaign_name: 'manual_project_participants'
         })
         expect(response_status).to eq 401

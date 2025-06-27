@@ -20,6 +20,10 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
+<<<<<<< HEAD
+#  context_type         :string
+=======
+>>>>>>> master
 #
 # Indexes
 #
@@ -34,6 +38,7 @@
 module EmailCampaigns
   class Campaign < ApplicationRecord
     belongs_to :author, class_name: 'User', optional: true
+    belongs_to :context, polymorphic: true, optional: true
     has_many :examples, class_name: 'EmailCampaigns::Example', dependent: :destroy
 
     # accepts_nested_attributes_for does not work for concerns
@@ -46,7 +51,6 @@ module EmailCampaigns
 
     before_validation :set_enabled, on: :create
 
-    validates :context_id, absence: true, unless: :skip_context_absence?
     validate :validate_recipients, on: :send
 
     scope :manual, -> { where type: DeliveryService.new.manual_campaign_types }
@@ -100,6 +104,10 @@ module EmailCampaigns
     def self.content_type_multiloc_key; end
 
     def self.trigger_multiloc_key; end
+
+    def self.supports_context?(_context)
+      false
+    end
 
     def apply_recipient_filters(activity: nil, time: nil)
       current_class = self.class
@@ -161,6 +169,15 @@ module EmailCampaigns
       false
     end
 
+    # Necessary to preserve original behavior of the context enabled toggle
+    def enabled
+      if context
+        super && global_campaign.enabled
+      else
+        super
+      end
+    end
+
     protected
 
     def set_enabled
@@ -175,16 +192,16 @@ module EmailCampaigns
       }).serializable_hash
     end
 
-    def skip_context_absence?
-      false
-    end
-
     private
 
     def validate_recipients
       return if apply_recipient_filters.any?
 
       errors.add(:base, :no_recipients, message: "Can't send a campaign without recipients")
+    end
+
+    def global_campaign
+      @global_campaign ||= self.class.find_by(context: nil, type: self.class.name)
     end
   end
 end

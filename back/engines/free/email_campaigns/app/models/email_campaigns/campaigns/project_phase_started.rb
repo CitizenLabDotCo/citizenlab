@@ -20,6 +20,10 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
+<<<<<<< HEAD
+#  context_type         :string
+=======
+>>>>>>> master
 #
 # Indexes
 #
@@ -41,9 +45,9 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 
-    before_send :campaign_enabled_for_phase?
-
     recipient_filter :filter_notification_recipient
+
+    validates :context_type, inclusion: { in: ['Phase'] }
 
     def mailer_class
       ProjectPhaseStartedMailer
@@ -73,6 +77,10 @@ module EmailCampaigns
       'email_campaigns.admin_labels.trigger.project_phase_changes'
     end
 
+    def self.supports_context?(context)
+      context.is_a?(Phase)
+    end
+
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       if notification.phase.voting?
@@ -96,12 +104,6 @@ module EmailCampaigns
 
     def manageable_by_project_moderator?
       true
-    end
-
-    private
-
-    def campaign_enabled_for_phase?(activity:, time: nil)
-      activity.item.phase.campaigns_settings['project_phase_started']
     end
   end
 end
