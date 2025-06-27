@@ -23,15 +23,14 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
-
-import { PageListType } from '.';
+import { PageListType } from '../usePageList';
 
 type QuestionRuleInputProps = {
   fieldId: string;
   validationError: string | undefined;
   answer: { key: string | number | undefined; label: string | undefined };
   name: string;
-  pages: PageListType;
+  pages: PageListType[];
 };
 
 export const QuestionRuleInput = ({

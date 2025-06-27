@@ -31,16 +31,15 @@ import usePageList from '../usePageList';
 type RuleInputProps = {
   field: IFlatCustomFieldWithIndex;
   name: string;
-  fieldId: string;
   validationError?: string;
 };
 
 export const PageRuleInput = ({
   field,
   name,
-  fieldId,
   validationError,
 }: RuleInputProps) => {
+  const fieldId = field.temp_id || field.id;
   const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
   const pageOptions = usePageList();

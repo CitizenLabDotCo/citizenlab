@@ -15,7 +15,7 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
-import usePageList from '../usePageList';
+import usePageList, { PageListType } from '../usePageList';
 
 import { PageRuleInput } from './PageRuleInput';
 import { QuestionRuleInput } from './QuestionRuleInput';
@@ -99,7 +99,7 @@ const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
   };
   // Current and previous pages should be disabled in select options
   let disablePage = true;
-  const pages: PageListType = pageOptions.map((page) => {
+  const pages: PageListType[] = pageOptions.map((page) => {
     const newPage = {
       ...page,
       disabled: disablePage,
@@ -140,7 +140,6 @@ const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
           </Box>
           <PageRuleInput
             field={field}
-            fieldId={field.temp_id || field.id}
             validationError={validationError}
             name={`customFields.${field.index}.logic`}
           />
