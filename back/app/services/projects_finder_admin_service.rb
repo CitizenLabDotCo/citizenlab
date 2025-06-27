@@ -138,12 +138,9 @@ class ProjectsFinderAdminService
     participation_states = params[:participation_states] || []
     return scope if participation_states.blank?
 
-    # Add some nonsense where clause that is always false so we can just use "or" afterwards
-    phase_scope = Phase.where("id IS NULL")
-
     if participation_states.include?('not_started')
-      phase_scope = phase_scope
-        .or.not.where("start_at <= ?", DateTime.current)
+      phases_not_in_the_future = Phase.where("start_at < ?", DateTime.current)
+      scope = scope.where.not(id: phases_not_in_the_future.select(:project_id))
     end
 
     if participation_states.include?('collecting_data')
@@ -167,6 +164,6 @@ class ProjectsFinderAdminService
         .or.not.where("coalesce(end_at, 'infinity'::DATE) >= ?", DateTime.current)
     end
 
-    scope.where(id: phase_scope.select(:project_id))
+    scope
   end
 end
