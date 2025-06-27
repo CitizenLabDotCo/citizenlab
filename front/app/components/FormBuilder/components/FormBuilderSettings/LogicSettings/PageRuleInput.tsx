@@ -101,11 +101,13 @@ export const PageRuleInput = ({
   };
 
   // Current and previous pages should be disabled in select options
-  const pages: PageListType = pageOptions.map((page) => {
-    return {
-      ...page,
-      disabled: page.value === getCurrentPageId(field.id) ? false : true,
-    };
+  let disablePage = true;
+  const pages = pageOptions.map((page) => {
+    page.disabled = disablePage;
+    if (page.value === getCurrentPageId(field.id)) {
+      disablePage = false;
+    }
+    return page;
   });
 
   return (
