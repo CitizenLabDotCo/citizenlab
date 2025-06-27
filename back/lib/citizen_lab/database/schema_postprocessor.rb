@@ -52,13 +52,27 @@ class CitizenLab::Database::SchemaPostprocessor
     --
     
     CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA shared_extensions;
-    
-    
+
+
     --
     -- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
     --
-    
+
     COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
+    --
+    -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
+    --
+
+    CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA shared_extensions;
+
+
+    --
+    -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
+    --
+
+    COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
     
     
     --
@@ -107,6 +121,7 @@ class CitizenLab::Database::SchemaPostprocessor
     DROP EXTENSION IF EXISTS vector;
     DROP EXTENSION IF EXISTS "uuid-ossp";
     DROP EXTENSION IF EXISTS postgis;
+    DROP EXTENSION IF EXISTS pg_trgm;
     DROP EXTENSION IF EXISTS pgcrypto;
     DROP SCHEMA IF EXISTS shared_extensions;
   SQL
