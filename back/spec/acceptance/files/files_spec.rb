@@ -9,7 +9,20 @@ resource 'Files' do
   header 'Content-Type', 'application/json'
 
   get 'web_api/v1/files' do
-    let_it_be(:files) { create_list(:file, 2) }
+    parameter :uploader, 'Filter files by uploader user ID(s)', type: %i[string array]
+    parameter :project, 'Filter files by project ID(s)', type: %i[string array]
+
+    parameter :sort, <<~SORT_DESC.squish, required: false
+      Sort order. Comma-separated list of attributes. Prefix with "-" to sort in descending order.
+      Options: "created_at", "-created_at", "name", "-name", "size", "-size"
+    SORT_DESC
+
+    let_it_be(:files) do
+      [
+        create(:file, name: 'a.pdf', created_at: 2.days.ago),
+        create(:file, name: 'b.pdf', created_at: 1.day.ago)
+      ]
+    end
 
     context 'when admin' do
       before { admin_header_token }
@@ -17,6 +30,57 @@ resource 'Files' do
       example_request 'List all files' do
         assert_status 200
         expect(response_data.size).to eq 2
+      end
+
+      describe 'when filtering by uploader' do
+        example 'List all files for a specific uploader', document: false do
+          file = files.first
+
+          do_request(uploader: file.uploader_id)
+
+          assert_status 200
+          expect(response_ids).to eq [file.id]
+        end
+
+        example 'List all files for multiple uploaders', document: false do
+          create(:file)
+
+          do_request(uploader: files.map(&:uploader_id))
+
+          assert_status 200
+          expect(response_ids).to match_array files.map(&:id)
+        end
+      end
+
+      describe 'when filtering by project' do
+        let(:project) { create(:project).id }
+        let!(:file) { create(:file, project_ids: [project]) }
+
+        example 'List all files for a specific project', document: false do
+          do_request
+          assert_status 200
+          expect(response_data.size).to eq(1)
+          expect(response_ids).to eq [file.id]
+        end
+      end
+
+      describe 'sorting' do
+        example 'Lists files sorted by creation date in descending order by default', document: false do
+          do_request
+          assert_status 200
+          expect(response_ids).to eq(files.reverse.map(&:id))
+        end
+
+        example 'List files sorted correctly', document: false do
+          do_request sort: 'name,-created_at'
+          expect(response_ids).to eq(files.map(&:id))
+
+          new_file = create(:file, name: 'a.pdf')
+          do_request sort: '-name,created_at'
+
+          expected_files = [files.last, files.first, new_file]
+          expect(response_ids).to eq(expected_files.map(&:id))
+        end
       end
     end
 
@@ -32,7 +96,8 @@ resource 'Files' do
   end
 
   get 'web_api/v1/files/:id' do
-    let_it_be(:file) { create(:file) }
+    let_it_be(:project) { create(:project) }
+    let_it_be(:file) { create(:file, projects: [project]) }
 
     let(:id) { file.id }
 
@@ -48,12 +113,13 @@ resource 'Files' do
           attributes: {
             name: file.name,
             created_at: file.created_at.iso8601(3),
-            updated_at: file.updated_at.iso8601(3)
+            updated_at: file.updated_at.iso8601(3),
+            size: 130,
+            mime_type: 'application/pdf'
           },
           relationships: {
-            uploader: {
-              data: { id: file.uploader_id, type: 'user' }
-            }
+            uploader: { data: { id: file.uploader_id, type: 'user' } },
+            projects: { data: [{ id: project.id, type: 'project' }] }
           }
         )
       end
@@ -69,11 +135,13 @@ resource 'Files' do
   post 'web_api/v1/files' do
     with_options scope: :file do
       parameter :name, 'The name of the file', required: true
-      parameter :content, 'The content of the file encoded in base64', required: true
+      parameter :content, 'The content of the file, encoded in Base64', required: true
+      parameter :project, 'The project to which the file will be uploaded', required: false
     end
 
     let(:name) { 'afvalkalender.pdf' }
     let(:content) { file_as_base64(name, 'application/pdf') }
+    let(:project) { create(:project).id }
 
     context 'when admin' do
       let(:admin) { create(:admin) }
@@ -91,7 +159,9 @@ resource 'Files' do
           ))
 
         assert_status 201
-        Files::File.find(response_data[:id])
+
+        file = Files::File.find(response_data[:id])
+        expect(file.project_ids).to contain_exactly(project)
       end
     end
   end
