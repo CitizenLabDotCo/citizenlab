@@ -14,7 +14,7 @@ module BulkImportIdeas::Exporters
         'preferCssPageSize' => true,
         'generateDocumentOutline' => true,
         'generateTaggedPdf' => true,
-        'index.html': Faraday::Multipart::FilePart.new(
+        'index.html' => Faraday::Multipart::FilePart.new(
           StringIO.new(html),
           'text/html',
           'index.html'
