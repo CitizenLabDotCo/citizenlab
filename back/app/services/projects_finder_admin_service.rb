@@ -169,7 +169,10 @@ class ProjectsFinderAdminService
     end
 
     if participation_states.include?('finished')
-      # TODO
+      phases_not_ended = Phase.where("coalesce(end_at, 'infinity'::DATE) >= ?", DateTime.current)
+
+      phase_scope = phase_scope
+        .or("id NOT IN (?)", phases_not_ended.select(:id))
     end
 
     scope.where(id: phase_scope.select(:project_id))
