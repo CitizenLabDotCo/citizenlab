@@ -101,18 +101,44 @@ describe ProjectsFinderAdminService do
 
   describe 'self.filter_participation_states' do
     # Project that has not started yet
-    # TODO
+    let!(:not_started_project) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today + 10.days, project: project)
+      project
+    end
 
     # Project with current data collection phase
-    # TODO
+    let!(:collecting_data_project) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 20.days, end_at: Time.zone.today - 11.days, project: project, participation_method: 'information')
+      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'ideation')
+      project
+    end
 
     # Project with current information phase
-    # TODO
+    let!(:information_phase_project) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 20.days, end_at: Time.zone.today - 11.days, project: project, participation_method: 'ideation')
+      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'information')
+      create(:phase, start_at: Time.zone.today + 11.days, end_at: nil, project: project, participation_method: 'ideation')
+      project
+    end
 
     # Project that is completely in the past
-    # TODO
+    let!(:past_project) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 20.days, project: project)
+      project
+    end
 
     # Project that has a gap between phases, and right now we're in the gap
+    let!(:gap_project) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 20.days, project: project)
+      create(:phase, start_at: Time.zone.today + 10.days, end_at: Time.zone.today + 20.days, project: project)
+      project
+    end
+
     # TODO
   end
 
