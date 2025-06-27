@@ -205,20 +205,20 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           iconPos={userIsAttending ? 'left' : 'right'}
           icon={getButtonIcon()}
           iconSize="20px"
-          bgColor={
-            maxAttendeesReached && !userIsAttending
-              ? colors.grey800 // Grey background when no spots left
-              : userIsAttending
-              ? colors.success
-              : theme.colors.tenantPrimary
-          }
-          disabled={buttonDisabled}
+          disabled={buttonDisabled || (maxAttendeesReached && !userIsAttending)}
           onClick={(event) => {
             event.preventDefault();
             handleClick();
           }}
           processing={isLoading}
           className="e2e-event-attendance-button"
+          aria-label={
+            maxAttendeesReached && !userIsAttending
+              ? formatMessage(messages.noSpotsLeft)
+              : formatMessage(
+                  userIsAttending ? messages.attending : messages.attend
+                )
+          }
         >
           {getButtonText()}
         </Button>
