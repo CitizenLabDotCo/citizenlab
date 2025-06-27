@@ -138,6 +138,26 @@ class ProjectsFinderAdminService
     participation_states = params[:participation_states] || []
     return scope if participation_state.blank?
 
+    # Add some nonsense where clause that is always false so we can just use "or" afterwards
+    phase_scope = Phase.where("id IS NULL")
+
+    if participation_states.include?('not_started')
+      phase_scope = phase_scope
+        .or('start_at > ?', DateTime.current)
+    end
+
+    if participation_states.include?('collecting_data')
+      phase_scope = phase_scope
+        .or(
+          "
+            ((start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)) AND
+            participation_method != 'information'
+          ",
+          start_at, end_at
+        )
+    end
+
+
     # TODO
     scope
   end
