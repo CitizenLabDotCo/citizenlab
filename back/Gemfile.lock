@@ -568,7 +568,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    crawler_detect (1.2.4)
+    crawler_detect (1.2.6)
       qonfig (>= 0.24)
     css_parser (1.14.0)
       addressable
@@ -993,7 +993,8 @@ GEM
       nio4r (~> 2.0)
     pundit (2.3.2)
       activesupport (>= 3.0.0)
-    qonfig (0.29.0)
+    qonfig (0.30.0)
+      base64 (>= 0.2)
     que (2.3.0)
     racc (1.8.1)
     rack (2.2.14)
