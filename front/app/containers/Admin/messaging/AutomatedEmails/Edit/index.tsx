@@ -71,6 +71,15 @@ const Edit = () => {
         {localize(campaign.data.attributes.campaign_description_multiloc)}
       </PageTitle>
 
+      <Box>
+        {previewSent && (
+          <SuccessFeedback
+            successMessage={formatMessage(messages.previewSentConfirmation)}
+            closeSuccessMessage={() => setPreviewSent(false)}
+          />
+        )}
+      </Box>
+
       <Box display="flex">
         <Box width="50%" mr="36px">
           <EditCampaignForm
@@ -104,14 +113,6 @@ const Edit = () => {
                 </Box>
               </Button>
             </Box>
-          </Box>
-          <Box>
-            {previewSent && (
-              <SuccessFeedback
-                successMessage={formatMessage(messages.previewSentConfirmation)}
-                closeSuccessMessage={() => setPreviewSent(false)}
-              />
-            )}
           </Box>
           <Box>
             <PreviewFrame

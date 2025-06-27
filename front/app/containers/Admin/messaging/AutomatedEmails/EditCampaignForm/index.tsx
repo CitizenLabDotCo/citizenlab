@@ -59,7 +59,9 @@ const EditCampaignForm = ({
       return fieldSchema;
     }, {}),
     ...{
-      reply_to: string().email(formatMessage(messages.fieldReplyToEmailError)),
+      reply_to: string()
+        .email(formatMessage(messages.fieldReplyToEmailError))
+        .nullable(),
     },
   });
 
