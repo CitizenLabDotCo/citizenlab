@@ -99,6 +99,23 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.filter_participation_states' do
+    # Project that has not started yet
+    # TODO
+
+    # Project with current data collection phase
+    # TODO
+
+    # Project with current information phase
+    # TODO
+
+    # Project that is completely in the past
+    # TODO
+
+    # Project that has a gap between phases, and right now we're in the gap
+    # TODO
+  end
+
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }
