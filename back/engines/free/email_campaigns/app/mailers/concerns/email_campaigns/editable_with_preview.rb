@@ -23,18 +23,6 @@ module EmailCampaigns
           allow_blank_locales: allow_blank_locales
         }
       end
-
-      # Static data used that can be across email previews.
-      def preview_data(recipient)
-        {
-          first_name: I18n.t('email_campaigns.preview_data.first_name', locale: recipient.locale),
-          last_name: I18n.t('email_campaigns.preview_data.last_name', locale: recipient.locale),
-          display_name: I18n.t('email_campaigns.preview_data.display_name', locale: recipient.locale),
-          comment_body_multiloc: MultilocService.new.i18n_to_multiloc('email_campaigns.preview_data.comment_body'),
-          idea_title_multiloc: MultilocService.new.i18n_to_multiloc('email_campaigns.preview_data.idea_title'),
-          idea_url: "/#{recipient.locale}/ideas/example-idea"
-        }
-      end
     end
 
     private
@@ -42,6 +30,27 @@ module EmailCampaigns
     # Variables available for substitution in the email templates - override in classes.
     def substitution_variables
       {}
+    end
+
+    # Default methods for template output of the common editable regions.
+    def subject
+      format_editable_region(:subject_multiloc)
+    end
+
+    def header_title
+      format_editable_region(:title_multiloc)
+    end
+
+    def header_message
+      format_editable_region(:intro_multiloc)
+    end
+
+    def cta_button_text
+      format_editable_region(:button_text_multiloc)
+    end
+
+    def preheader
+      format_message('preheader', values: substitution_variables)
     end
 
     # To format an editable message, use `format_editable_region`.

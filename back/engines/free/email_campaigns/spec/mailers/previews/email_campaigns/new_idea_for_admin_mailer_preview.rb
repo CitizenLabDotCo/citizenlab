@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class NewIdeaForAdminMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       idea = Idea.published.first

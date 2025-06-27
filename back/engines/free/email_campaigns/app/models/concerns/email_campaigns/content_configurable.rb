@@ -17,7 +17,7 @@ module EmailCampaigns
       with_options unless: :manual? do
         validates :title_multiloc, multiloc: { presence: true }
         validates :intro_multiloc, multiloc: { presence: false, html: true }
-        validates :button_text_multiloc, multiloc: { presence: true, html: true }
+        validates :button_text_multiloc, multiloc: { presence: true }, if: :editable_button_text?
         before_validation :sanitize_intro_multiloc
         before_validation :reject_default_region_values
         after_save :process_intro_images
@@ -100,6 +100,10 @@ module EmailCampaigns
           value == region[:default_value_multiloc][locale]
         end
       end
+    end
+
+    def editable_button_text?
+      mailer_class.editable_regions.any? { |region| region[:key] == :button_text_multiloc }
     end
   end
 end
