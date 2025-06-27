@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "Feeler beim Download vun der ICS Datei",
   "app.containers.EventsShow.linkToOnlineEvent": "Link op Online Event",
   "app.containers.EventsShow.locationIconAltText": "Plaz",
+  "app.containers.EventsShow.metaTitle": "Evenement: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Online Versammlung",
   "app.containers.EventsShow.onlineLinkIconAltText": "Online Reunioun Link",
   "app.containers.EventsShow.socialMediaSharingMessage": "Bei dësem Event deelhuelen: {eventTitle}",
