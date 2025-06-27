@@ -10,6 +10,9 @@ import {
 
 import useIdeaById from 'api/ideas/useIdeaById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -24,12 +27,13 @@ interface IdeaDetailViewProps {
 }
 
 const IdeaDetailView = ({ ideaId }: IdeaDetailViewProps) => {
+  const isInputIQEnabled = useFeatureFlag({ name: 'input_iq' });
   const { data: idea, isLoading } = useIdeaById(ideaId ? ideaId : undefined);
   const { formatMessage } = useIntl();
 
   if (isLoading) return <Spinner />;
 
-  if (!idea) {
+  if (!idea || !isInputIQEnabled) {
     return null;
   }
 
@@ -93,15 +97,11 @@ const IdeaDetailView = ({ ideaId }: IdeaDetailViewProps) => {
         mt="0px"
         mb="8px"
       >
-        {title_multiloc.en}
+        <T value={title_multiloc} />
       </Text>
 
       <QuillEditedContent>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: body_multiloc.en || '',
-          }}
-        />
+        <T value={body_multiloc} supportHtml />
       </QuillEditedContent>
       <Box mt="24px" w="100%" display="flex">
         <ButtonWithLink

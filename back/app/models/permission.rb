@@ -14,6 +14,7 @@
 #  global_custom_fields               :boolean          default(FALSE), not null
 #  verification_expiry                :integer
 #  access_denied_explanation_multiloc :jsonb            not null
+#  everyone_tracking_enabled          :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -34,7 +35,8 @@ class Permission < ApplicationRecord
     'poll' => %w[taking_poll attending_event],
     'voting' => %w[voting commenting_idea attending_event],
     'volunteering' => %w[volunteering attending_event],
-    'document_annotation' => %w[annotating_document attending_event]
+    'document_annotation' => %w[annotating_document attending_event],
+    'common_ground' => %w[posting_idea reacting_idea attending_event]
   }
   SCOPE_TYPES = [nil, 'Phase'].freeze
 
@@ -95,6 +97,10 @@ class Permission < ApplicationRecord
     return true if %w[users verified].include? permitted_by
 
     false
+  end
+
+  def everyone_tracking_enabled?
+    permitted_by == 'everyone' && everyone_tracking_enabled
   end
 
   private

@@ -23,7 +23,7 @@ import {
   SectionDescription,
 } from 'components/admin/Section';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
@@ -131,15 +131,15 @@ const IdeaStatuses = ({
             trigger="mouseenter"
           >
             <Box>
-              <Button
+              <ButtonWithLink
                 data-testid="e2e-add-status-button"
                 buttonStyle="admin-dark"
                 icon="plus-circle"
-                linkTo={`/admin/settings/${variant}/statuses/new`}
+                linkTo={`/admin/settings/statuses/${variant}/new`}
                 disabled={!customIdeaStatusesAllowed}
               >
                 <FormattedMessage {...messages.addIdeaStatus} />
-              </Button>
+              </ButtonWithLink>
             </Box>
           </Tooltip>
         </ButtonWrapper>
@@ -181,7 +181,7 @@ const IdeaStatuses = ({
                       tooltipContent={
                         <FormattedMessage {...messages.pricingPlanUpgrade} />
                       }
-                      linkTo={`/admin/settings/${variant}/statuses/${defaultStatus.id}`}
+                      linkTo={`/admin/settings/statuses/${variant}/${defaultStatus.id}`}
                     />
                   </Buttons>
                 </LockedRow>
@@ -231,7 +231,7 @@ const IdeaStatuses = ({
                       tooltipContent={
                         <FormattedMessage {...messages.pricingPlanUpgrade} />
                       }
-                      linkTo={`/admin/settings/${variant}/statuses/${ideaStatus.id}`}
+                      linkTo={`/admin/settings/statuses/${variant}/${ideaStatus.id}`}
                     />
                   </Buttons>
                 </SortableRow>

@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { projectFolderData } from './__mocks__/useProjectFolder';
 import useProjectFolderBySlug from './useProjectFolderBySlug';
@@ -20,12 +20,9 @@ describe('useProjectFolderBySlug', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useProjectFolderBySlug('test-slug'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useProjectFolderBySlug('test-slug'), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
 
@@ -42,12 +39,9 @@ describe('useProjectFolderBySlug', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useProjectFolderBySlug('test-slug'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useProjectFolderBySlug('test-slug'), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));

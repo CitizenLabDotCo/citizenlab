@@ -39,6 +39,7 @@ class WebApi::V1::CustomFormsController < ApplicationController
 
   def update_params
     params.require(:custom_form).permit(
+      :print_personal_data_fields,
       print_start_multiloc: CL2_SUPPORTED_LOCALES,
       print_end_multiloc: CL2_SUPPORTED_LOCALES
     )

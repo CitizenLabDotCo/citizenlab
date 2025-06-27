@@ -1,7 +1,10 @@
 import { useVisitorsTrafficSources } from 'api/graph_data_units';
 
 import { ProjectId, DatesStrings } from 'components/admin/GraphCards/typings';
-import { parsePieData } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
+import {
+  parsePieData,
+  parseTableData,
+} from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
 import { getTranslations } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/translations';
 
 import { useIntl } from 'utils/cl-intl';
@@ -13,7 +16,7 @@ export default function useVisitorsReferrerTypes({
   startAt,
   endAt,
 }: QueryParameters) {
-  const { data: analytics } = useVisitorsTrafficSources({
+  const { data } = useVisitorsTrafficSources({
     project_id: projectId,
     start_at: startAt,
     end_at: endAt,
@@ -22,9 +25,13 @@ export default function useVisitorsReferrerTypes({
   const { formatMessage } = useIntl();
   const translations = getTranslations(formatMessage);
 
-  const pieData = analytics
-    ? parsePieData(analytics.data.attributes, translations)
-    : null;
+  const pieData = data
+    ? parsePieData(data.data.attributes, translations)
+    : undefined;
 
-  return { pieData };
+  const tableData = data
+    ? parseTableData(data.data.attributes, translations)
+    : undefined;
+
+  return { pieData, tableData };
 }

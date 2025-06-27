@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import Modal from 'components/UI/Modal';
 
@@ -57,16 +57,16 @@ class ProfileDeletion extends PureComponent<
             subtitleMessage={messages.deletionSubtitle}
           />
           <Row>
-            <Button
+            <ButtonWithLink
               buttonStyle="delete"
               id="deletion"
               onClick={this.openDialog}
               width="auto"
               justifyWrapper="left"
-              className="e2e-delete-profile"
+              data-cy="e2e-delete-profile-button"
             >
               <FormattedMessage {...messages.deleteMyAccount} />
-            </Button>
+            </ButtonWithLink>
           </Row>
         </FormSection>
         <Modal opened={dialogOpened} close={this.onCloseDialog}>

@@ -78,6 +78,8 @@ class Topic < ApplicationRecord
   end
 
   def strip_title
+    return unless description_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

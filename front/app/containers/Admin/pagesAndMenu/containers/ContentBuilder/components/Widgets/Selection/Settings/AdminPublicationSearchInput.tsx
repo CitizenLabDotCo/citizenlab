@@ -1,7 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { debounce } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
 
@@ -22,7 +21,6 @@ const AdminPublicationSearchInput = ({
   adminPublicationIds,
   onChange,
 }: Props) => {
-  const [visibleSearchTerm, setVisibleSearchTerm] = useState('');
   const [search, setSearch] = useState('');
   const theme = useTheme();
 
@@ -37,15 +35,8 @@ const AdminPublicationSearchInput = ({
     pageSize: 6,
   });
 
-  const inputChangeDebounced = useMemo(() => {
-    return debounce((searchTerm: string) => {
-      setSearch(searchTerm);
-    }, 200);
-  }, []);
-
   const handleInputChange = (searchTerm: string) => {
-    setVisibleSearchTerm(searchTerm);
-    inputChangeDebounced(searchTerm);
+    setSearch(searchTerm);
   };
 
   const options = getOptions(
@@ -62,11 +53,11 @@ const AdminPublicationSearchInput = ({
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={true}
         value={null}
-        inputValue={visibleSearchTerm}
+        inputValue={search}
         placeholder={''}
         options={options}
         getOptionValue={getOptionId}
-        getOptionLabel={(option) => (
+        formatOptionLabel={(option) => (
           <OptionLabel
             option={option}
             hasNextPage={hasNextPage}

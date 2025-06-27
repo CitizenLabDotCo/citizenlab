@@ -2,6 +2,8 @@
 
 module ParticipationMethod
   class Proposals < Ideation
+    SUPPORTED_REACTION_MODES = %w[up].freeze
+
     def self.method_str
       'proposals'
     end
@@ -39,6 +41,10 @@ module ParticipationMethod
     end
 
     def use_reactions_as_votes?
+      true
+    end
+
+    def add_autoreaction_to_inputs?
       true
     end
 

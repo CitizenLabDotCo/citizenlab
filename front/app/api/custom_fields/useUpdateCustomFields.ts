@@ -56,12 +56,21 @@ const useUpdateCustomField = () => {
           phaseId: variables.phaseId,
         }),
       });
+
       queryClient.invalidateQueries({
         queryKey: customFormKeys.item({
           projectId: variables.projectId,
-          phaseId: variables.phaseId,
         }),
       });
+
+      if (variables.phaseId) {
+        queryClient.invalidateQueries({
+          queryKey: customFormKeys.item({
+            projectId: variables.projectId,
+            phaseId: variables.phaseId,
+          }),
+        });
+      }
     },
   });
 };

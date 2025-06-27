@@ -29,14 +29,14 @@ describe('Follow topic', () => {
     cy.get('#tab-Topics').click();
 
     // Follow the first topic
-    cy.get('[data-cy="e2e-follow-topic-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-topic-button"]').eq(0).click();
+    cy.dataCy('e2e-follow-topic-button').should('exist');
+    cy.dataCy('e2e-follow-topic-button').eq(0).click();
 
     // Unfollow the topic
-    cy.get('[data-cy="e2e-unfollow-topic-button"]').should('exist');
-    cy.get('[data-cy="e2e-unfollow-topic-button"]').eq(0).click();
+    cy.dataCy('e2e-unfollow-topic-button').should('exist');
+    cy.dataCy('e2e-unfollow-topic-button').eq(0).click();
 
-    cy.get('[data-cy="e2e-unfollow-topic-button"]').should('not.exist');
-    cy.get('[data-cy="e2e-follow-topic-button"]').should('exist');
+    cy.dataCy('e2e-unfollow-topic-button').should('not.exist');
+    cy.dataCy('e2e-follow-topic-button').should('exist');
   });
 });

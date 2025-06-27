@@ -402,9 +402,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyResultsTab',
     defaultMessage: 'Survey Results',
   },
+  resultsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.resultsTab',
+    defaultMessage: 'Results',
+  },
   surveyTab: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyTab',
     defaultMessage: 'Survey',
+  },
+  surveyFormTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyFormTab',
+    defaultMessage: 'Survey form',
   },
   exportSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
@@ -619,5 +627,14 @@ export default defineMessages({
   missingEndDateError: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.missingEndDateError',
     defaultMessage: 'Missing end date',
+  },
+  beta: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.beta',
+    defaultMessage: 'Beta',
+  },
+  betaTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.betaTooltip',
+    defaultMessage:
+      "This participation method is in beta. We're gradually rolling it out to gather feedback and improve the experience.",
   },
 });

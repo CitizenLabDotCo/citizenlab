@@ -61,6 +61,21 @@ resource 'Reactions' do
       expect(@idea.reload.likes_count).to eq 3
     end
 
+    example 'Create a neutral reaction to an idea', document: false do
+      do_request(reaction: { mode: 'neutral' })
+
+      assert_status(201)
+
+      expect(response_data).to include(
+        id: be_a(String),
+        type: 'reaction',
+        attributes: { mode: 'neutral' }
+      )
+
+      reaction = @idea.reactions.find(response_data[:id])
+      expect(reaction.mode).to eq('neutral')
+    end
+
     describe 'When the user already reacted' do
       before do
         @reaction = create(:reaction, reactable: @idea, user: @user, mode: 'up')

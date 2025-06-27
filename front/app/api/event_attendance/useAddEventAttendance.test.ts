@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { eventAttendanceData } from './__mocks__/useEventAttendance';
 import useAddEventAttendance from './useAddEventAttendance';
@@ -19,12 +19,9 @@ describe('useAddEventAttendance', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useAddEventAttendance('eventId'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAddEventAttendance('eventId'), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({ attendeeId: 'attendeeId', eventId: 'eventId' });
@@ -41,12 +38,9 @@ describe('useAddEventAttendance', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useAddEventAttendance('eventId'),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAddEventAttendance('eventId'), {
+      wrapper: createQueryClientWrapper(),
+    });
     act(() => {
       result.current.mutate({ attendeeId: 'attendeeId', eventId: 'eventId' });
     });

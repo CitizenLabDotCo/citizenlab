@@ -89,7 +89,7 @@ describe('Event show page', () => {
     cy.get('#e2e-participants-count').should('not.exist');
     cy.get('#e2e-text-only-location').should('exist');
     cy.get('#e2e-location-with-coordinates-button').should('not.exist');
-    cy.get('[data-cy="e2e-event-description"]');
+    cy.dataCy('e2e-event-description');
 
     // Click attend button
     cy.get('.e2e-event-attendance-button').click();

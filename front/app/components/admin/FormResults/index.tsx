@@ -10,7 +10,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import FormResultsPage from './FormResultsPage';
 import FormResultsQuestion from './FormResultsQuestion';
-import AnalysisBanner from './FormResultsQuestion/components/AnalysisBanner';
 import messages from './messages';
 
 type Props = {
@@ -71,7 +70,6 @@ const FormResults = (props: Props) => {
           {surveyResponseMessage}
         </Text>
       </Box>
-      <AnalysisBanner />
       <Box mt="24px">
         {totalSubmissions > 0 &&
           results.map((result, index) => {

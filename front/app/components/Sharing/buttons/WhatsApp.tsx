@@ -39,7 +39,7 @@ const WhatsApp = ({
   return (
     <Button
       onClick={handleClick(whatsAppHref)}
-      aria-label={formatMessage(messages.shareViaWhatsApp)}
+      ariaLabel={formatMessage(messages.shareViaWhatsApp)}
       bgColor={colors.success}
       width="40px"
       height="40px"

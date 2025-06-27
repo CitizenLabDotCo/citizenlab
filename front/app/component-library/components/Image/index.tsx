@@ -34,7 +34,8 @@ export type ImageProps = {
   BoxBorderProps &
   BoxVisibilityProps &
   BoxZIndexProps &
-  React.HTMLAttributes<HTMLImageElement>;
+  React.HTMLAttributes<HTMLImageElement> &
+  React.HTMLAttributes<HTMLElement>;
 
 const StyledImage = styled(Box)<ImageProps>`
   // objectFit

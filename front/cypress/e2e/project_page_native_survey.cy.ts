@@ -2,47 +2,25 @@ import moment = require('moment');
 import { randomString, randomEmail } from '../support/commands';
 
 describe('New project with native survey', () => {
-  const projectTitle = randomString();
-  const projectDescription = randomString();
-  const projectDescriptionPreview = randomString(30);
   const eventTitle = randomString();
   let projectId: string;
   let projectSlug: string;
-  const phaseTitle = randomString();
 
   before(() => {
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    })
-      .then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId,
-          title: phaseTitle,
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: true,
-          canComment: true,
-          canReact: true,
-        });
-      })
-      .then(() => {
-        cy.apiCreateEvent({
-          projectId,
-          title: eventTitle,
-          location: 'Event location',
-          includeLocation: true,
-          description: 'Event description',
-          startDate: moment().subtract(1, 'day').toDate(),
-          endDate: moment().add(1, 'day').toDate(),
-        });
+    cy.createProjectWithNativeSurveyPhase().then((result) => {
+      projectId = result.projectId;
+      projectSlug = result.projectSlug;
+
+      cy.apiCreateEvent({
+        projectId,
+        title: eventTitle,
+        location: 'Event location',
+        includeLocation: true,
+        description: 'Event description',
+        startDate: moment().subtract(1, 'day').toDate(),
+        endDate: moment().add(1, 'day').toDate(),
       });
+    });
   });
 
   beforeEach(() => {
@@ -70,36 +48,16 @@ describe('New project with native survey', () => {
 });
 
 describe('Project with native survey phase but not active', () => {
-  const projectTitle = randomString();
-  const projectDescription = randomString();
-  const projectDescriptionPreview = randomString(30);
-  const phaseTitle = randomString();
   let projectId: string;
   let projectSlug: string;
 
   before(() => {
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-
-      return cy.apiCreatePhase({
-        projectId,
-        title: phaseTitle,
-        startAt: '2018-03-01',
-        endAt: '2019-01-01',
-        participationMethod: 'native_survey',
-        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-        nativeSurveyTitleMultiloc: { en: 'Survey' },
-        canComment: true,
-        canPost: true,
-        canReact: true,
-        description: 'description',
-      });
+    cy.createProjectWithNativeSurveyPhase({
+      phaseStartAt: '2018-03-01',
+      phaseEndAt: '2019-01-01',
+    }).then((result) => {
+      projectId = result.projectId;
+      projectSlug = result.projectSlug;
     });
   });
 
@@ -195,7 +153,7 @@ describe('Native survey CTA bar', () => {
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
     // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
 
     cy.visit(`/en/projects/${projectSlug}`);
     cy.get('#project-survey-button').should('not.exist');

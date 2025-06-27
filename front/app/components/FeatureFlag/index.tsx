@@ -6,6 +6,7 @@ import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
 interface Props {
   name: TAppConfigurationSetting;
+  children: React.ReactNode;
 }
 
 const FeatureFlag: React.FC<Props> = ({ name, children }) => {

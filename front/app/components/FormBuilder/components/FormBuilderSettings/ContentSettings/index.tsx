@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { SupportedLocale } from 'typings';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 import { SectionField } from 'components/admin/Section';
@@ -15,22 +15,20 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import Toggle from 'components/HookForm/Toggle';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 import FieldTypeSwitcher from '../FieldTypeSwitcher';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
-  locales: SupportedLocale[];
   formHasSubmissions: boolean;
 };
 
-export const ContentSettings = ({
+const ContentSettings = ({
   field,
-  locales,
   formHasSubmissions,
 }: ContentSettingsProps) => {
+  const locales = useAppConfigurationLocales();
   const { watch } = useFormContext();
   const lockedAttributes = field.constraints?.locks;
   const platformLocale = useLocale();
@@ -46,61 +44,62 @@ export const ContentSettings = ({
     field.code || ''
   );
 
-  if (!isNilOrError(platformLocale)) {
-    return (
-      <Box mt="16px">
-        {!isFieldGrouping && (
-          <>
-            <FieldTypeSwitcher
-              field={field}
-              formHasSubmissions={formHasSubmissions}
-            />
-            {!lockedAttributes?.title_multiloc && (
-              <SectionField>
-                <InputMultilocWithLocaleSwitcher
-                  initiallySelectedLocale={platformLocale}
-                  id="e2e-title-multiloc"
-                  name={`customFields.${field.index}.title_multiloc`}
-                  label={<FormattedMessage {...messages.questionTitle} />}
-                  onKeyDown={handleKeyDown}
-                />
-              </SectionField>
-            )}
-            <SectionField>
-              <QuillMultilocWithLocaleSwitcher
-                name={`customFields.${field.index}.description_multiloc`}
-                label={
-                  <FormattedMessage {...messages.questionDescriptionOptional} />
-                }
-                noAlign={true}
-                maxHeight="150px"
-              />
-            </SectionField>
-          </>
-        )}
-        {getAdditionalSettings(
-          field,
-          watch(`customFields.${field.index}.input_type`),
-          locales,
-          platformLocale
-        )}
-        {!isFieldGrouping && (
-          <>
-            <SectionField id="e2e-required-toggle">
-              <Toggle
-                name={`customFields.${field.index}.required`}
-                disabled={disableTogglingRequired}
-                label={
-                  <Text as="span" variant="bodyM" my="0px">
-                    <FormattedMessage {...messages.requiredToggleLabel} />
-                  </Text>
-                }
-              />
-            </SectionField>
-          </>
-        )}
-      </Box>
-    );
+  if (!locales) {
+    return null;
   }
-  return null;
+
+  return (
+    <Box mt="16px">
+      {!isFieldGrouping && (
+        <>
+          <FieldTypeSwitcher
+            field={field}
+            formHasSubmissions={formHasSubmissions}
+          />
+          {!lockedAttributes?.title_multiloc && (
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                initiallySelectedLocale={platformLocale}
+                id="e2e-title-multiloc"
+                name={`customFields.${field.index}.title_multiloc`}
+                label={<FormattedMessage {...messages.questionTitle} />}
+                onKeyDown={handleKeyDown}
+              />
+            </SectionField>
+          )}
+          <SectionField>
+            <QuillMultilocWithLocaleSwitcher
+              name={`customFields.${field.index}.description_multiloc`}
+              label={
+                <FormattedMessage {...messages.questionDescriptionOptional} />
+              }
+              noAlign={true}
+              maxHeight="150px"
+            />
+          </SectionField>
+        </>
+      )}
+      {getAdditionalSettings(
+        field,
+        watch(`customFields.${field.index}.input_type`),
+        locales,
+        platformLocale
+      )}
+      {!isFieldGrouping && (
+        <SectionField id="e2e-required-toggle">
+          <Toggle
+            name={`customFields.${field.index}.required`}
+            disabled={disableTogglingRequired}
+            label={
+              <Text as="span" variant="bodyM" my="0px">
+                <FormattedMessage {...messages.requiredToggleLabel} />
+              </Text>
+            }
+          />
+        </SectionField>
+      )}
+    </Box>
+  );
 };
+
+export default ContentSettings;

@@ -40,7 +40,7 @@ export type AnswersType =
     }[]
   | undefined;
 
-export const LogicSettings = ({
+const LogicSettings = ({
   pageOptions,
   field,
   builderConfig,
@@ -55,10 +55,6 @@ export const LogicSettings = ({
   const selectOptions = watch(`customFields.${field.index}.options`);
   const linearScaleMaximum = watch(`customFields.${field.index}.maximum`);
   const fieldRequired = watch(`customFields.${field.index}.required`);
-
-  if (isNilOrError(locale)) {
-    return null;
-  }
 
   const error = get(formContextErrors, `customFields.${field.index}.logic`);
   const validationError = error?.message as string | undefined;
@@ -175,3 +171,5 @@ export const LogicSettings = ({
     </>
   );
 };
+
+export default LogicSettings;

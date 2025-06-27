@@ -6,15 +6,13 @@ const TIME_SERIES = [];
 
 describe('parseStats', () => {
   it('works when all stats data is empty', () => {
-    const responseData: ParticipantsResponse['data']['attributes'] = [
-      TIME_SERIES,
-      [],
-      [],
-      [],
-      undefined,
-      undefined,
-      undefined,
-    ];
+    const responseData: ParticipantsResponse['data']['attributes'] = {
+      participants_timeseries: TIME_SERIES,
+      participants_whole_period: 0,
+      participation_rate_whole_period: 0,
+      participants_compared_period: undefined,
+      participation_rate_compared_period: undefined,
+    };
 
     const expectedOutput = {
       participants: {
@@ -31,15 +29,13 @@ describe('parseStats', () => {
   });
 
   it('works when only data for participants in whole period', () => {
-    const responseData: ParticipantsResponse['data']['attributes'] = [
-      TIME_SERIES,
-      [{ count_participant_id: 4 }],
-      [],
-      [],
-      undefined,
-      undefined,
-      undefined,
-    ];
+    const responseData: ParticipantsResponse['data']['attributes'] = {
+      participants_timeseries: TIME_SERIES,
+      participants_whole_period: 4,
+      participation_rate_whole_period: 0,
+      participants_compared_period: undefined,
+      participation_rate_compared_period: undefined,
+    };
 
     const expectedOutput = {
       participants: {
@@ -56,15 +52,13 @@ describe('parseStats', () => {
   });
 
   it('correctly calculates participants delta', () => {
-    const responseData: ParticipantsResponse['data']['attributes'] = [
-      TIME_SERIES,
-      [{ count_participant_id: 4 }],
-      [],
-      [],
-      [{ count_participant_id: 1 }],
-      undefined,
-      undefined,
-    ];
+    const responseData: ParticipantsResponse['data']['attributes'] = {
+      participants_timeseries: TIME_SERIES,
+      participants_whole_period: 4,
+      participation_rate_whole_period: 0,
+      participants_compared_period: 1,
+      participation_rate_compared_period: 0,
+    };
 
     const expectedOutput = {
       participants: {
@@ -73,7 +67,7 @@ describe('parseStats', () => {
       },
       participationRate: {
         value: 0,
-        delta: undefined,
+        delta: 0,
       },
     };
 
@@ -81,15 +75,13 @@ describe('parseStats', () => {
   });
 
   it('correctly calculates participation rate whole period', () => {
-    const responseData: ParticipantsResponse['data']['attributes'] = [
-      TIME_SERIES,
-      [{ count_participant_id: 4 }],
-      [{ count_visitor_id: 6 }],
-      [{ count_participant_id: 3 }],
-      undefined,
-      undefined,
-      undefined,
-    ];
+    const responseData: ParticipantsResponse['data']['attributes'] = {
+      participants_timeseries: TIME_SERIES,
+      participants_whole_period: 4,
+      participation_rate_whole_period: 0.5,
+      participants_compared_period: undefined,
+      participation_rate_compared_period: undefined,
+    };
 
     const expectedOutput = {
       participants: {
@@ -106,20 +98,18 @@ describe('parseStats', () => {
   });
 
   it('correctly calculates participation rate previous period', () => {
-    const responseData: ParticipantsResponse['data']['attributes'] = [
-      TIME_SERIES,
-      [{ count_participant_id: 4 }],
-      [{ count_visitor_id: 6 }],
-      [{ count_participant_id: 3 }],
-      [{ count_participant_id: 3 }],
-      [{ count_visitor_id: 5 }],
-      [{ count_participant_id: 2 }],
-    ];
+    const responseData: ParticipantsResponse['data']['attributes'] = {
+      participants_timeseries: TIME_SERIES,
+      participants_whole_period: 4,
+      participation_rate_whole_period: 0.5,
+      participants_compared_period: 2,
+      participation_rate_compared_period: 0.4,
+    };
 
     const expectedOutput = {
       participants: {
         value: 4,
-        delta: 1,
+        delta: 2,
       },
       participationRate: {
         value: 50,

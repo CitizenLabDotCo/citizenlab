@@ -8,6 +8,11 @@ import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import ImagePlaceholder from 'components/ProjectCard/ImagePlaceholder';
 
 export const CardContainer = styled(Box)`
+  &:focus-visible {
+    margin-left: 12px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
   &:hover {
     h3 {
       color: ${({ theme }) => theme.colors.tenantPrimary};

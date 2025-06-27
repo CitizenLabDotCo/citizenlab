@@ -20,11 +20,12 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import {
   FormBuilderConfig,
   getIsPostingEnabled,
 } from 'components/FormBuilder/utils';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
@@ -35,7 +36,6 @@ import clHistory from 'utils/cl-router/history';
 import messages from '../messages';
 import tracks from '../tracks';
 
-import DownloadPDFButtonWithModal from './DownloadPDFButtonWithModal';
 import ownMessages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
@@ -103,6 +103,7 @@ const FormBuilderTopBar = ({
       background={`${colors.white}`}
       borderBottom={`1px solid ${colors.borderLight}`}
       top="0px"
+      data-cy="e2e-form-builder-top-bar"
     >
       <Box
         p="16px"
@@ -170,7 +171,7 @@ const FormBuilderTopBar = ({
           formType={builderConfig.type}
           phaseId={phaseId}
         />
-        <Button
+        <ButtonWithLink
           buttonStyle="secondary-outlined"
           icon="eye"
           mr="20px"
@@ -180,14 +181,14 @@ const FormBuilderTopBar = ({
           data-cy="e2e-preview-form-button"
         >
           <FormattedMessage {...builderConfig.viewFormLinkCopy} />
-        </Button>
-        <Button
+        </ButtonWithLink>
+        <ButtonWithLink
           buttonStyle="admin-dark"
           processing={isSubmitting}
           type="submit"
         >
           <FormattedMessage {...messages.save} />
-        </Button>
+        </ButtonWithLink>
       </Box>
       <Modal opened={showLeaveModal} close={closeModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
@@ -207,21 +208,21 @@ const FormBuilderTopBar = ({
             width="100%"
             alignItems="center"
           >
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
               mr="16px"
             >
               <FormattedMessage {...messages.cancelLeaveBuilderButtonText} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               buttonStyle="delete"
               width="100%"
               linkTo={builderConfig.goBackUrl || `/admin/projects/${projectId}`}
             >
               <FormattedMessage {...messages.confirmLeaveBuilderButtonText} />
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Box>
       </Modal>

@@ -447,8 +447,8 @@ RSpec.describe InputUiSchemaGeneratorService do
               hash_including(
                 type: 'Page',
                 options: hash_including(
-                  description: 'Je invoer is succesvol ingediend.',
-                  title: 'Bedankt voor het delen van je invoer!'
+                  description: 'Je bijdrage is succesvol ingediend.',
+                  title: 'Bedankt voor het delen van je bijdrage!'
                 ),
                 elements: []
               )

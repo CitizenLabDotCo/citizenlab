@@ -437,8 +437,9 @@ module MultiTenancy
               allowed: true
             },
             user_session_recording: {
-              enabled: true,
-              allowed: true
+              # Disable for E2E tests on localhost
+              enabled: false,
+              allowed: false
             },
             analysis: {
               enabled: true,
@@ -513,6 +514,14 @@ module MultiTenancy
             common_ground: {
               enabled: true,
               allowed: true
+            },
+            data_repository: {
+              enabled: true,
+              allowed: true
+            },
+            project_planning: {
+              enabled: false,
+              allowed: false
             }
           })
         )

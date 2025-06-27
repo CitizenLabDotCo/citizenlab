@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteCustomFieldOption from './useDeleteCustomFieldOption';
 
@@ -19,7 +19,7 @@ describe('useDeleteCustomFieldOption', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteCustomFieldOption(), {
+    const { result } = renderHook(() => useDeleteCustomFieldOption(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useDeleteCustomFieldOption', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteCustomFieldOption(), {
+    const { result } = renderHook(() => useDeleteCustomFieldOption(), {
       wrapper: createQueryClientWrapper(),
     });
 

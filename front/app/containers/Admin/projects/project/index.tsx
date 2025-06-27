@@ -19,7 +19,7 @@ const AdminProjectsProjectIndex = () => {
   const { pathname } = useLocation();
   const { projectId } = useParams() as { projectId: string };
   return (
-    <>
+    <div data-cy="e2e-admin-projects-project-index">
       <ProjectHeader projectId={projectId} />
       <NavigationTabs position="relative">
         <Tab
@@ -56,7 +56,7 @@ const AdminProjectsProjectIndex = () => {
         />
       </NavigationTabs>
       <RouterOutlet />
-    </>
+    </div>
   );
 };
 

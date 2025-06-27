@@ -6,7 +6,7 @@ import { RouteType } from 'routes';
 import useAnalyses from 'api/analyses/useAnalyses';
 import { ParticipationMethod } from 'api/phases/types';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
@@ -47,7 +47,7 @@ const Analyses = ({
   const projectLink: RouteType =
     participationMethod === 'ideation'
       ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
-      : `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
+      : `/admin/projects/${projectId}/phases/${phaseId}/results`;
 
   if (relevantAnalyses?.length === 0 && !isLoading) {
     return (
@@ -55,13 +55,13 @@ const Analyses = ({
         <Divider />
         <Text>{formatMessage(messages.noInsights)}</Text>
         <Box display="flex">
-          <Button
+          <ButtonWithLink
             linkTo={projectLink}
             buttonStyle="secondary-outlined"
             openLinkInNewTab
           >
             {formatMessage(messages.openProject)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       </Box>
     );

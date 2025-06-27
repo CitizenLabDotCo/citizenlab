@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import mockServer, { getAppConfigurationData } from './__mocks__/_mockServer';
 import useAppConfiguration from './useAppConfiguration';
@@ -16,7 +16,7 @@ describe('useAppConfiguration', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAppConfiguration(), {
+    const { result } = renderHook(() => useAppConfiguration(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -35,7 +35,7 @@ describe('useAppConfiguration', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAppConfiguration(), {
+    const { result } = renderHook(() => useAppConfiguration(), {
       wrapper: createQueryClientWrapper(),
     });
 

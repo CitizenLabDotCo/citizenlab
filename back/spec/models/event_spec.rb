@@ -17,6 +17,7 @@ RSpec.describe Event do
     it { is_expected.to have_many(:attendees).through(:attendances) }
     it { is_expected.to have_many(:event_files).dependent(:destroy) }
     it { is_expected.to have_many(:text_images).dependent(:destroy) }
+    it { is_expected.to validate_presence_of(:title_multiloc) }
   end
 
   describe 'description sanitizer' do

@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useRateAnalysisInsight from './useRateAnalysisInsight';
 const apiPath = '*analyses/:analysisId/insights/:id/rate';
@@ -18,7 +18,7 @@ describe('useRateAnalysisInsight', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useRateAnalysisInsight(), {
+    const { result } = renderHook(() => useRateAnalysisInsight(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -40,7 +40,7 @@ describe('useRateAnalysisInsight', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useRateAnalysisInsight(), {
+    const { result } = renderHook(() => useRateAnalysisInsight(), {
       wrapper: createQueryClientWrapper(),
     });
 

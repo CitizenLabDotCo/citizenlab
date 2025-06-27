@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { eventsData } from './__mocks__/useEvents';
 import useAddEvent from './useAddEvent';
@@ -19,7 +19,7 @@ describe('useAddEvent', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddEvent(), {
+    const { result } = renderHook(() => useAddEvent(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -47,7 +47,7 @@ describe('useAddEvent', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddEvent(), {
+    const { result } = renderHook(() => useAddEvent(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

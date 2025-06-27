@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import useProjectFiles from 'api/project_files/useProjectFiles';
 import useProjectById from 'api/projects/useProjectById';
 
-import Fragment from 'components/Fragment';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 import T from 'components/T';
 import FileAttachments from 'components/UI/FileAttachments';
@@ -75,43 +74,41 @@ const ProjectInfo = ({ projectId, className }: Props) => {
   if (project) {
     return (
       <Container className={`${className || ''} e2e-project-info`}>
-        <Fragment name={`projects/${project.data.id}/info`}>
-          <Left>
-            <Title color="tenantText">
-              <T value={project.data.attributes.title_multiloc} />
-            </Title>
-            <Box id={`project-description-${project.data.id}`}>
-              {isSmallerThanTablet && (
-                <ProjectArchivedIndicator projectId={projectId} mb="20px" />
-              )}
+        <Left>
+          <Title color="tenantText">
+            <T value={project.data.attributes.title_multiloc} />
+          </Title>
+          <Box id={`project-description-${project.data.id}`}>
+            {isSmallerThanTablet && (
+              <ProjectArchivedIndicator projectId={projectId} mb="20px" />
+            )}
 
-              {isSmallerThanTablet && (
-                <ProjectPreviewIndicator projectId={projectId} mb="20px" />
-              )}
-              <Box mb="24px">
-                <ReadMoreWrapper
-                  fontSize="m"
-                  contentId="description"
-                  content={
-                    <T
-                      value={project.data.attributes.description_multiloc}
-                      supportHtml
-                    />
-                  }
-                />
-              </Box>
-
-              {projectFiles && projectFiles.data.length > 0 && (
-                <Box mb="24px">
-                  <FileAttachments files={projectFiles.data} />
-                </Box>
-              )}
+            {isSmallerThanTablet && (
+              <ProjectPreviewIndicator projectId={projectId} mb="20px" />
+            )}
+            <Box mb="24px">
+              <ReadMoreWrapper
+                fontSize="m"
+                contentId="description"
+                content={
+                  <T
+                    value={project.data.attributes.description_multiloc}
+                    supportHtml
+                  />
+                }
+              />
             </Box>
-          </Left>
-          <Right>
-            <ProjectInfoSideBar projectId={project.data.id} />
-          </Right>
-        </Fragment>
+
+            {projectFiles && projectFiles.data.length > 0 && (
+              <Box mb="24px">
+                <FileAttachments files={projectFiles.data} />
+              </Box>
+            )}
+          </Box>
+        </Left>
+        <Right>
+          <ProjectInfoSideBar projectId={project.data.id} />
+        </Right>
       </Container>
     );
   }

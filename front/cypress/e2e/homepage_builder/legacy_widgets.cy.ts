@@ -96,7 +96,7 @@ describe('Homepage builder', () => {
     cy.wait('@getPages');
     cy.wait('@getNavbarItems');
     // go to page with homepage builder
-    cy.get('[data-cy="e2e-navbar-item-edit-button"]').first().click();
+    cy.dataCy('e2e-navbar-item-edit-button').first().click();
 
     cy.wait('@getHomePage');
     cy.wait(1000);
@@ -125,7 +125,7 @@ describe('Homepage builder', () => {
     });
 
     // Customize projects title
-    cy.get('[data-cy="e2e-projects"]').click({
+    cy.dataCy('e2e-projects').click({
       force: true,
     });
     cy.get('#project_title').type('Custom projects title');
@@ -142,11 +142,8 @@ describe('Homepage builder', () => {
     cy.get('div.e2e-text-box').first().should('contain', 'first text');
     cy.get('div.e2e-text-box').last().should('contain', 'last text');
     cy.wait('@getEvents');
-    cy.get('[data-cy="e2e-events"]').should('exist');
-    cy.get('[data-cy="e2e-projects"]').should(
-      'contain',
-      'Custom projects title'
-    );
+    cy.dataCy('e2e-events').should('exist');
+    cy.dataCy('e2e-projects').should('contain', 'Custom projects title');
 
     cy.setAdminLoginCookie();
 
@@ -157,7 +154,7 @@ describe('Homepage builder', () => {
 
     cy.wait('@getNavbarItems');
     // go to page with homepage builder
-    cy.get('[data-cy="e2e-navbar-item-edit-button"]').first().click();
+    cy.dataCy('e2e-navbar-item-edit-button').first().click();
 
     cy.wait('@getHomePage');
     cy.wait(1000);
@@ -172,14 +169,14 @@ describe('Homepage builder', () => {
 
     // Delete events
     cy.wait('@getEvents');
-    cy.get('[data-cy="e2e-events"]').should('exist');
-    cy.get('[data-cy="e2e-events"]').click({
+    cy.dataCy('e2e-events').should('exist');
+    cy.dataCy('e2e-events').click({
       force: true,
     });
     cy.get('#e2e-delete-button').click();
 
     // Clear projects title
-    cy.get('[data-cy="e2e-projects"]').click({
+    cy.dataCy('e2e-projects').click({
       force: true,
     });
 
@@ -194,11 +191,11 @@ describe('Homepage builder', () => {
     cy.wait('@getHomePage');
     cy.get('.e2e-two-column').should('not.exist');
     cy.get('div.e2e-text-box').should('not.exist');
-    cy.get('[data-cy="e2e-events"]').should('not.exist');
+    cy.dataCy('e2e-events').should('not.exist');
 
     cy.wait('@getAdminPublications');
     const regex = /currently working on/gi;
-    cy.get('[data-cy="e2e-projects"]').should(($el) => {
+    cy.dataCy('e2e-projects').should(($el) => {
       const text = $el.text();
       expect(text).to.match(regex);
     });
@@ -229,10 +226,8 @@ describe('Homepage builder', () => {
     cy.wait(2000);
     cy.wait('@getAppConfiguration');
     cy.wait('@getHomePage');
-    cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
-    cy.get('[data-cy="e2e-full-width-banner-layout-container"]').should(
-      'exist'
-    );
+    cy.dataCy('e2e-homepage-banner').should('exist');
+    cy.dataCy('e2e-full-width-banner-layout-container').should('exist');
 
     const signedOutHeaderEnglish = /Let’s shape the future of/gi;
     const signedOutSubheaderEnglish =
@@ -252,15 +247,13 @@ describe('Homepage builder', () => {
       .find('[data-testid=avatarBubblesContainer]')
       .should('exist');
 
-    cy.get('[data-cy=e2e-full-width-layout-header-image-overlay]').should(
-      'exist'
-    );
-    cy.get('[data-cy=e2e-full-width-layout-header-image-overlay]').should(
+    cy.dataCy('e2e-full-width-layout-header-image-overlay').should('exist');
+    cy.dataCy('e2e-full-width-layout-header-image-overlay').should(
       'have.css',
       'background-color',
       'rgb(10, 81, 89)'
     );
-    cy.get('[data-cy=e2e-full-width-layout-header-image-overlay]').should(
+    cy.dataCy('e2e-full-width-layout-header-image-overlay').should(
       'have.css',
       'opacity',
       '0.9'
@@ -279,18 +272,18 @@ describe('Homepage builder', () => {
     cy.wait('@getAppConfiguration');
     cy.get('.e2e-signed-in-header').should('exist');
 
-    cy.get("[data-cy='e2e-signed-in-header-image-overlay']").should(
+    cy.dataCy('e2e-signed-in-header-image-overlay').should(
       'have.css',
       'background-color',
       'rgb(10, 81, 89)'
     );
-    cy.get("[data-cy='e2e-signed-in-header-image-overlay']").should(
+    cy.dataCy('e2e-signed-in-header-image-overlay').should(
       'have.css',
       'opacity',
       '0.9'
     );
 
-    cy.get("[data-cy='e2e-signed-in-header-image']").should('not.exist');
+    cy.dataCy('e2e-signed-in-header-image').should('not.exist');
 
     // Go to admin page
 
@@ -302,7 +295,7 @@ describe('Homepage builder', () => {
 
     // Update homepage banner
 
-    cy.get('[data-cy="e2e-homepage-banner"]').click({
+    cy.dataCy('e2e-homepage-banner').click({
       force: true,
     });
 
@@ -315,14 +308,14 @@ describe('Homepage builder', () => {
     cy.wait(1000);
 
     // Update avatar bubbles
-    cy.get('[data-cy="e2e-banner-avatar-toggle"]').find('i').click();
+    cy.dataCy('e2e-banner-avatar-toggle').find('i').click();
 
     // Update header and subheader
-    cy.get('[data-cy="e2e-signed-out-header-section"]')
+    cy.dataCy('e2e-signed-out-header-section')
       .find('input')
       .clear()
       .type('New header');
-    cy.get('[data-cy="e2e-signed-out-subheader-section"]')
+    cy.dataCy('e2e-signed-out-subheader-section')
       .find('input')
       .clear()
       .type('New subheader');
@@ -342,7 +335,7 @@ describe('Homepage builder', () => {
     });
 
     // Update header
-    cy.get('[data-cy="e2e-signed-in-header-section"]')
+    cy.dataCy('e2e-signed-in-header-section')
       .find('input')
       .clear()
       .type('New header');
@@ -353,9 +346,9 @@ describe('Homepage builder', () => {
     cy.get('#customizedButtonText').clear().type('Custom button');
     cy.get('#customizedButtonUrl').clear().type('https://www.google.com');
 
-    cy.get("[data-cy='e2e-signed-in-header-image']").should('exist');
+    cy.dataCy('e2e-signed-in-header-image').should('exist');
     cy.get('.buttonText').should('contain', 'Custom button');
-    cy.get("[data-cy='e2e-homepage-banner']").should('contain', 'New header');
+    cy.dataCy('e2e-homepage-banner').should('contain', 'New header');
 
     // Save homepage
     cy.get('#e2e-content-builder-topbar-save').click({
@@ -371,12 +364,10 @@ describe('Homepage builder', () => {
     cy.wait('@getAppConfiguration');
     cy.wait('@getHomePage');
     cy.wait('@getAdminPublications');
-    cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
-    cy.get('[data-cy="e2e-full-width-banner-layout-container"]').should(
-      'exist'
-    );
+    cy.dataCy('e2e-homepage-banner').should('exist');
+    cy.dataCy('e2e-full-width-banner-layout-container').should('exist');
 
-    cy.get('[data-cy="e2e-full-width-banner-layout-header-image"]')
+    cy.dataCy('e2e-full-width-banner-layout-header-image')
       .should('have.css', 'background-image')
       .and('include', '.png');
 
@@ -408,10 +399,10 @@ describe('Homepage builder', () => {
 
     cy.wait('@getHomePage');
     cy.wait(1000);
-    cy.get('[data-cy="e2e-homepage-banner"]').click({
+    cy.dataCy('e2e-homepage-banner').click({
       force: true,
     });
-    cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
+    cy.dataCy('e2e-fixed-ratio-layout-option').click();
     cy.wait(1000);
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveHomePage');
@@ -422,8 +413,8 @@ describe('Homepage builder', () => {
     cy.wait('@getHomePage');
     cy.wait('@getAppConfiguration');
     cy.wait('@getAdminPublications');
-    cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
-    cy.get('[data-cy="e2e-fixed-ratio-layout-container"]').should('exist');
+    cy.dataCy('e2e-homepage-banner').should('exist');
+    cy.dataCy('e2e-fixed-ratio-layout-container').should('exist');
   });
 
   it.skip('updates homepage banner layout correctly two row', () => {
@@ -445,10 +436,10 @@ describe('Homepage builder', () => {
     cy.wait('@getHomePage');
     cy.wait(1000);
 
-    cy.get('[data-cy="e2e-homepage-banner"]').click({
+    cy.dataCy('e2e-homepage-banner').click({
       force: true,
     });
-    cy.get('[data-cy="e2e-two-row-layout-option"]').click();
+    cy.dataCy('e2e-two-row-layout-option').click();
     cy.wait(1000);
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveHomePage');
@@ -458,7 +449,7 @@ describe('Homepage builder', () => {
     cy.wait('@getHomePage');
     cy.wait('@getAppConfiguration');
     cy.wait('@getAdminPublications');
-    cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
-    cy.get('[data-cy="e2e-two-row-layout-container"]').should('exist');
+    cy.dataCy('e2e-homepage-banner').should('exist');
+    cy.dataCy('e2e-two-row-layout-container').should('exist');
   });
 });

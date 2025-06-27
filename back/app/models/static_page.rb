@@ -38,7 +38,7 @@ class StaticPage < ApplicationRecord
   CODES = %w[about cookie-policy terms-and-conditions privacy-policy faq custom].freeze
   RESERVED_SLUGS = (CODES - %w[custom]).freeze
 
-  slug from: proc { |page| page.title_multiloc.values.find(&:present?) }, except: RESERVED_SLUGS
+  slug from: proc { |page| page.title_multiloc&.values&.find(&:present?) }, except: RESERVED_SLUGS
 
   enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
 
@@ -56,7 +56,6 @@ class StaticPage < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   before_validation :set_code, on: :create
-
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
@@ -163,6 +162,8 @@ class StaticPage < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
@@ -185,7 +186,7 @@ class StaticPage < ApplicationRecord
 
     @service ||= SanitizationService.new
 
-    self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
+    self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video table])
     self[attribute] = @service.remove_multiloc_empty_trailing_tags(self[attribute])
     self[attribute] = @service.linkify_multiloc(self[attribute])
   end

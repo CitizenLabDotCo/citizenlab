@@ -18,7 +18,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -73,7 +73,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const linkToSurveyBuilder: RouteType =
     phaseParticipationMethod === 'community_monitor_survey'
       ? `/admin/community-monitor/projects/${project.data.id}/phases/${phaseId}/survey/edit`
-      : `/admin/projects/${project.data.id}/phases/${phaseId}/native-survey/edit`;
+      : `/admin/projects/${project.data.id}/phases/${phaseId}/survey-form/edit`;
 
   const leaveForm = () => {
     const leaveFormDestination = getLeaveFormDestination(
@@ -131,7 +131,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
           ml="auto"
         >
           {showEditSurveyButton && (
-            <Button
+            <ButtonWithLink
               data-cy="e2e-edit-survey-link"
               icon="edit"
               linkTo={linkToSurveyBuilder}
@@ -140,7 +140,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
               mr="12px"
             >
               <FormattedMessage {...messages.editSurvey} />
-            </Button>
+            </ButtonWithLink>
           )}
           <IconButton
             iconName="close"
@@ -181,14 +181,14 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
             alignItems="center"
             gap="20px"
           >
-            <Button
+            <ButtonWithLink
               buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
             >
               <FormattedMessage {...messages.cancelLeaveSurveyButtonText} />
-            </Button>
-            <Button
+            </ButtonWithLink>
+            <ButtonWithLink
               icon={authUser ? 'arrow-left-circle' : 'delete'}
               data-cy="e2e-confirm-delete-survey-results"
               buttonStyle={authUser ? 'primary' : 'delete'}
@@ -197,7 +197,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
               onClick={leaveForm}
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Box>
       </Modal>

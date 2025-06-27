@@ -169,6 +169,7 @@ const FormBuilderToolbox = ({
       overflowX="visible"
       borderRight={`1px solid ${colors.borderLight}`}
       pb="80px"
+      data-cy="e2e-form-builder-toolbox"
     >
       <Box overflowY="auto" w="100%" display="inline">
         <LayoutFields addField={addField} builderConfig={builderConfig} />

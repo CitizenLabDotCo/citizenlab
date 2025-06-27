@@ -4,8 +4,6 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 import { ITab } from 'typings';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
@@ -21,7 +19,6 @@ import messages from './messages';
 const SettingsPage = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const projectReviewEnabled = useFeatureFlag({ name: 'project_review' });
 
   const tabs: ITab[] = [
     {
@@ -51,25 +48,9 @@ const SettingsPage = () => {
     },
     {
       name: 'statuses',
-      label: formatMessage(messages.tabInputStatuses),
-      url: '/admin/settings/ideation/statuses',
+      label: formatMessage(messages.statuses),
+      url: '/admin/settings/statuses',
     },
-    {
-      name: 'proposal-statuses',
-      label: formatMessage(messages.tabProposalStatuses1),
-      url: '/admin/settings/proposals/statuses',
-    },
-
-    ...(projectReviewEnabled
-      ? [
-          {
-            name: 'project-review',
-            label: formatMessage(messages.tabApproval),
-            url: '/admin/settings/review',
-          } as ITab,
-        ]
-      : []),
-
     {
       name: 'policies',
       label: formatMessage(messages.tabPolicies),

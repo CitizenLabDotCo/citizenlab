@@ -1,6 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks';
-
 import { appConfigurationData } from 'api/app_configuration/__mocks__/useAppConfiguration';
+
+import { renderHook } from 'utils/testUtils/rtl';
 
 import useAreaTerms from './useAreaTerms';
 

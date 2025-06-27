@@ -101,7 +101,7 @@ const SiteMap = () => {
   const { data: authUser } = useAuthUser();
 
   const hasStaticPageWithCode = (code: TCustomPageCode): boolean => {
-    return pages?.data?.some((page) => page.attributes.code === code) || false;
+    return pages?.data.some((page) => page.attributes.code === code) || false;
   };
 
   const scrollTo =

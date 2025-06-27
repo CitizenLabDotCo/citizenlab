@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { IIdeaReaction } from './types';
 import useIdeaReaction from './useIdeaReaction';
@@ -44,7 +44,7 @@ describe('useIdeaReaction', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useIdeaReaction('ideaId'), {
+    const { result } = renderHook(() => useIdeaReaction('ideaId'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -63,7 +63,7 @@ describe('useIdeaReaction', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useIdeaReaction('ideaId'), {
+    const { result } = renderHook(() => useIdeaReaction('ideaId'), {
       wrapper: createQueryClientWrapper(),
     });
 

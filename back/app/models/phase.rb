@@ -88,6 +88,7 @@ class Phase < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
+  has_many :jobs_trackers, -> { where(context_type: 'Phase') }, class_name: 'Jobs::Tracker', as: :context, dependent: :destroy
   belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
 
   before_validation :sanitize_description_multiloc
@@ -261,6 +262,7 @@ class Phase < ApplicationRecord
     participation_method == 'voting'
   end
 
+  # @return [ParticipationMethod::Base]
   def pmethod
     reload_participation_method if !@pmethod
     @pmethod
@@ -344,6 +346,8 @@ class Phase < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
@@ -383,6 +387,8 @@ class Phase < ApplicationRecord
       ParticipationMethod::Poll.new(self)
     when 'volunteering'
       ParticipationMethod::Volunteering.new(self)
+    when 'common_ground'
+      ParticipationMethod::CommonGround.new(self)
     else
       ParticipationMethod::None.new
     end

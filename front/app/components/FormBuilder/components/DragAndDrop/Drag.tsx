@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable } from '@hello-pangea/dnd';
 
 type DragProps = {
   id: string;
@@ -22,7 +22,7 @@ export const Drag = ({
 
   useEffect(() => {
     // Since we provide an alternative way to reorder items using select dropdowns,
-    // we want to override the react-beautiful-dnd aria description for the drag handle to reduce confusion.
+    // we want to override the @hello-pangea/dnd aria description for the drag handle to reduce confusion.
     draggableRef.current?.setAttribute('aria-describedby', '');
   }, []);
 

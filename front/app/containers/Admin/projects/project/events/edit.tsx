@@ -35,9 +35,10 @@ import useLocale from 'hooks/useLocale';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import ErrorComponent from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -91,6 +92,7 @@ const AdminProjectEventEdit = () => {
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
+  const [croppedImgBase64, setCroppedImgBase64] = useState<string | null>(null);
 
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
     isCreatingNewEvent ? initializeEventTimes() : {}
@@ -309,11 +311,11 @@ const AdminProjectEventEdit = () => {
         imageId: remoteImageId,
       });
     }
-    if (uploadedImage && !uploadedImage.remote) {
+    if (uploadedImage && croppedImgBase64 && !uploadedImage.remote) {
       addEventImage({
         eventId: data.data.id,
         image: {
-          image: uploadedImage.base64,
+          image: croppedImgBase64 || '',
           ...(eventImageAltText
             ? { alt_text_multiloc: eventImageAltText }
             : {}),
@@ -491,9 +493,15 @@ const AdminProjectEventEdit = () => {
     setHasAltTextChanged(true);
   };
 
+  const handleImageCropChange = (imgBase64: string) => {
+    setCroppedImgBase64(imgBase64);
+  };
+
   if (event !== undefined && isInitialLoading) {
     return <Spinner />;
   }
+
+  const imageShouldBeSaved = uploadedImage ? !uploadedImage.remote : false;
 
   return (
     <Box mt="44px" mx="44px">
@@ -534,17 +542,32 @@ const AdminProjectEventEdit = () => {
               </SectionField>
               <SectionField>
                 <Label>{formatMessage(messages.eventImage)}</Label>
-                <ImagesDropzone
-                  images={uploadedImage ? [uploadedImage] : []}
-                  maxImagePreviewWidth="360px"
-                  objectFit="contain"
-                  acceptedFileTypes={{
-                    'image/*': ['.jpg', '.jpeg', '.png'],
-                  }}
-                  onAdd={handleOnImageAdd}
-                  onRemove={handleOnImageRemove}
-                  imagePreviewRatio={1 / 2}
-                />
+
+                {!imageShouldBeSaved && (
+                  <ImagesDropzone
+                    images={uploadedImage ? [uploadedImage] : []}
+                    maxImagePreviewWidth="360px"
+                    objectFit="contain"
+                    acceptedFileTypes={{
+                      'image/*': ['.jpg', '.jpeg', '.png'],
+                    }}
+                    onAdd={handleOnImageAdd}
+                    onRemove={handleOnImageRemove}
+                    imagePreviewRatio={1 / 3}
+                  />
+                )}
+
+                {imageShouldBeSaved && (
+                  <Box display="flex" flexDirection="column" gap="8px">
+                    <ImageCropperContainer
+                      image={uploadedImage}
+                      onComplete={handleImageCropChange}
+                      aspectRatioWidth={3}
+                      aspectRatioHeight={1}
+                      onRemove={handleOnImageRemove}
+                    />
+                  </Box>
+                )}
               </SectionField>
               {uploadedImage && (
                 <SectionField>
@@ -741,7 +764,7 @@ const AdminProjectEventEdit = () => {
                       <Box width="100%">
                         <Label>{formatMessage(messages.preview)}</Label>
                       </Box>
-                      <Button
+                      <ButtonWithLink
                         minWidth="160px"
                         iconPos={'right'}
                         icon={
@@ -761,7 +784,7 @@ const AdminProjectEventEdit = () => {
                             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                             eventAttrs?.attend_button_multiloc[locale]
                           : formatMessage(messages.attend)}
-                      </Button>
+                      </ButtonWithLink>
                     </Box>
                   )}
                 </>

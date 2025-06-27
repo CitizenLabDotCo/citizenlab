@@ -18,6 +18,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
         ).first.merge({ recipient: recipient })
       end
       let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+      let_it_be(:body) { mail_body(mail) }
 
       it 'renders the subject' do
         expect(mail.subject).to eq('Gonzo, a new input has been published on your platform')
@@ -32,7 +33,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
       end
 
       it 'includes the header' do
-        expect(mail.body.encoded).to have_tag('div') do
+        expect(body).to have_tag('div') do
           with_tag 'h1' do
             with_text(/Gonzo, a new input has been published on your platform/)
           end
@@ -43,7 +44,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
       end
 
       it 'includes the input box' do
-        expect(mail.body.encoded).to have_tag('table') do
+        expect(body).to have_tag('table') do
           with_tag 'h2' do
             with_text(/My idea title/)
           end
@@ -54,7 +55,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
       end
 
       it 'includes the CTA' do
-        expect(mail.body.encoded).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
+        expect(body).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
           with_text(/Give feedback to Kermit the Frog/)
         end
       end
@@ -75,6 +76,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
         }
       end
       let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+      let_it_be(:body) { mail_body(mail) }
 
       it 'renders the subject' do
         expect(mail.subject).to eq('Gonzo, an input requires your review')
@@ -89,7 +91,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
       end
 
       it 'includes the header' do
-        expect(mail.body.encoded).to have_tag('div') do
+        expect(body).to have_tag('div') do
           with_tag 'h1' do
             with_text(/Gonzo, an input requires your review/)
           end
@@ -103,7 +105,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
       end
 
       it 'includes the input box' do
-        expect(mail.body.encoded).to have_tag('table') do
+        expect(body).to have_tag('table') do
           with_tag 'h2' do
             with_text(/My proposal title/)
           end
@@ -114,7 +116,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
       end
 
       it 'includes the CTA' do
-        expect(mail.body.encoded).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
+        expect(body).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
           with_text(/Review the input/)
         end
       end

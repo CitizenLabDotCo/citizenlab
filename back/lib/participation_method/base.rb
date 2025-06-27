@@ -2,8 +2,22 @@
 
 module ParticipationMethod
   class Base
+    SUPPORTED_REACTION_MODES = [].freeze
+
     def self.all_methods
-      [DocumentAnnotation, Ideation, Information, NativeSurvey, CommunityMonitorSurvey, Poll, Proposals, Survey, Volunteering, Voting]
+      [
+        CommonGround,
+        CommunityMonitorSurvey,
+        DocumentAnnotation,
+        Ideation,
+        Information,
+        NativeSurvey,
+        Poll,
+        Proposals,
+        Survey,
+        Volunteering,
+        Voting
+      ]
     end
 
     def initialize(phase)
@@ -59,6 +73,10 @@ module ParticipationMethod
       []
     end
 
+    def everyone_tracking_enabled?
+      false
+    end
+
     def generate_slug(input)
       # Input is not created in this participation method,
       # so the default is to return nothing.
@@ -86,7 +104,11 @@ module ParticipationMethod
       false
     end
 
-    def supports_built_in_fields?
+    def built_in_title_required?
+      false
+    end
+
+    def built_in_body_required?
       false
     end
 
@@ -114,8 +136,8 @@ module ParticipationMethod
       true
     end
 
-    def supports_multiple_posts?
-      true
+    def allow_posting_again_after
+      0.seconds
     end
 
     def supports_permitted_by_everyone?
@@ -126,8 +148,14 @@ module ParticipationMethod
       false
     end
 
-    def supports_reacting?
-      false
+    # @param mode [String, nil] One of the values in Reaction::MODES. If nil, checks
+    #   whether any reaction modes are supported.
+    def supports_reacting?(mode = nil)
+      if mode
+        self.class::SUPPORTED_REACTION_MODES.include?(mode)
+      else
+        self.class::SUPPORTED_REACTION_MODES.present?
+      end
     end
 
     def supports_serializing?(_attribute)
@@ -138,10 +166,13 @@ module ParticipationMethod
       false
     end
 
+    # Returns whether this participation method supports idea statuses?
     def supports_status?
       false
     end
 
+    # Returns whether this participation method supports new input submissions from
+    # end-users.
     def supports_submission?
       false
     end
@@ -154,6 +185,7 @@ module ParticipationMethod
       true
     end
 
+    # Returns whether inputs in this participation method can be moved to another phase.
     def transitive?
       false
     end
@@ -187,6 +219,22 @@ module ParticipationMethod
     end
 
     def supports_multiple_phase_reports?
+      false
+    end
+
+    # Whether to add a reaction to inputs when they are submitted.
+    # See +Idea::SUBMISSION_STATUSES+ for what it means for an input to be considered
+    # submitted.
+    #
+    # One issue with this is that reactions aren’t scoped to a specific phase, and an
+    # input can be associated with multiple phases. In practice, though, ideas are
+    # typically associated with only one phase before submission, even if this isn’t
+    # enforced.
+    #
+    # Currently, a reaction will be added only if at least one of the input’s phases has
+    # +add_autoreaction_to_inputs?+ set to true — which, in principle, should be just one
+    # phase.
+    def add_autoreaction_to_inputs?
       false
     end
 

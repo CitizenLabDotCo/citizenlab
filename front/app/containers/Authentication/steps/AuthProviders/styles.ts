@@ -6,7 +6,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 export const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
@@ -71,11 +71,11 @@ export const Footer = styled.div`
   padding-top: 10px;
 `;
 
-export const SubmitButton = styled(Button)`
+export const SubmitButton = styled(ButtonWithLink)`
   margin-right: 10px;
 `;
 
-export const CancelButton = styled(Button)``;
+export const CancelButton = styled(ButtonWithLink)``;
 
 export const HelpImage = styled(Image)`
   width: 100%;

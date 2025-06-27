@@ -118,7 +118,13 @@ const IdeasNewPage = () => {
     );
   }
 
-  return <IdeasNewIdeationForm project={project} phaseId={phaseId} />;
+  return (
+    <IdeasNewIdeationForm
+      project={project}
+      phaseId={phaseId}
+      participationMethod={participationMethod}
+    />
+  );
 };
 
 export default IdeasNewPage;

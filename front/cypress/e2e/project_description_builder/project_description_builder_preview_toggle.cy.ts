@@ -88,14 +88,15 @@ describe('Project description builder preview', () => {
     getIframeBody().contains('Edited text.').should('be.visible');
   });
 
-  it('shows draft content when it exists', () => {
+  it('shows draft content when it exists on desktop and mobile preview', () => {
     cy.visit(
       `/admin/project-description-builder/projects/${projectId}/description`
     );
     cy.get('div#ROOT');
-    cy.wait(1000);
     cy.get('div.e2e-text-box').should('exist');
     cy.get('div.e2e-text-box').click();
+    cy.wait(5000);
+
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Another edited text.', { force: true });
 
@@ -109,34 +110,15 @@ describe('Project description builder preview', () => {
     getIframeBody()
       .contains('Edited text.Another edited text.')
       .should('be.visible');
-  });
 
-  it('allows user to navigate between mobile and desktop preview and see content in both', () => {
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
-      position: 'inside',
-    });
-    cy.wait(1000);
-    cy.get('div.e2e-text-box').click();
-    cy.get('.ql-editor').click();
-    cy.get('.ql-editor').type('Sample text.', { force: true });
+    cy.dataCy('mobile-preview-iframe').should('exist');
 
-    // Make sure we see updated text on screen (seems to be some sort of delay)
-    cy.get('div.e2e-text-box').contains('Edited text.Sample text.');
-
-    // Preview on desktop
-    cy.get('#e2e-preview-toggle').click({ force: true });
-    cy.wait(1000);
-
-    getIframeBody().contains('Sample text.').should('be.visible');
-
-    // Preview on mobile
-    cy.get('[data-cy="mobile-preview-iframe"]').should('exist');
+    // Switch to desktop preview
     cy.get('#e2e-desktop-preview').click({ force: true });
 
-    getIframeBody().contains('Sample text.').should('be.visible');
-    cy.get('[data-cy="desktop-preview-iframe"]').should('exist');
+    getIframeBody()
+      .contains('Edited text.Another edited text.')
+      .should('be.visible');
+    cy.dataCy('desktop-preview-iframe').should('exist');
   });
 });

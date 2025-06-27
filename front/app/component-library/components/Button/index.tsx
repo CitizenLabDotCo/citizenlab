@@ -505,7 +505,8 @@ export type ButtonContainerProps = {
   BoxPositionProps &
   BoxWidthProps &
   BoxHeightProps &
-  React.HTMLAttributes<HTMLDivElement>;
+  React.HTMLAttributes<HTMLDivElement> &
+  React.HTMLAttributes<HTMLElement>;
 
 export interface Props extends ButtonContainerProps {
   children?: React.ReactNode;
@@ -528,11 +529,12 @@ export interface Props extends ButtonContainerProps {
   ariaControls?: string;
   as?: React.ElementType;
   tabIndex?: number;
+  dataCy?: string;
 }
 export type Ref = HTMLButtonElement;
 
 const Button = forwardRef<Ref, Props>((props, ref) => {
-  const handleOnClick = (event: MouseEvent<HTMLDivElement>) => {
+  const handleOnClick = (event: MouseEvent<HTMLElement>) => {
     const { onClick, processing, disabled } = props;
 
     if (onClick) {
@@ -603,6 +605,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
     disabled = false,
     tabIndex,
     as,
+    dataCy,
     ...rest
   } = props;
 
@@ -710,6 +713,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
         as={as}
         tabIndex={tabIndex}
         ref={ref}
+        data-cy={dataCy}
       >
         {childContent}
       </StyledButton>

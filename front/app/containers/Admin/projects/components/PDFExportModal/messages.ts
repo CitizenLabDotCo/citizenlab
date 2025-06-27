@@ -14,14 +14,14 @@ export default defineMessages({
     defaultMessage: 'Add fields for name and email',
   },
   clickExportToPDFIdeaForm: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFIdeaForm',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFIdeaForm2',
     defaultMessage:
-      'Questions not currently supported: Images, Tags and File Upload.',
+      'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Images, Tags and File Upload.',
   },
   clickExportToPDFSurvey: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey5',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey6',
     defaultMessage:
-      'Questions not currently supported: Mapping questions (drop pin, draw route and draw area), image choice questions, ranking questions, matrix questions and file upload questions.',
+      'All questions are shown on the PDF. However, the following are not currently supported for import via FormSync: Mapping questions (drop pin, draw route and draw area), ranking questions, matrix questions and file upload questions.',
   },
   itIsAlsoPossibleIdeation: {
     id: 'app.containers.Admin.projects.all.itIsAlsoPossible1',
@@ -42,5 +42,21 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.personalDataExplanation5',
     defaultMessage:
       'This option will add the first name, last name, and email fields to the exported PDF. Upon uploading the paper form, we will use that data to auto-generate an account for the offline survey respondent.',
+  },
+  collapsibleInstructionsStartTitle: {
+    id: 'app.containers.Admin.projects.all.collapsibleInstructionsStartTitle',
+    defaultMessage: 'Start of the form',
+  },
+  collapsibleInstructionsEndTitle: {
+    id: 'app.containers.Admin.projects.all.collapsibleInstructionsEndTitle',
+    defaultMessage: 'End of the form',
+  },
+  customiseStart: {
+    id: 'app.containers.Admin.projects.all.customiseStart',
+    defaultMessage: 'Customise the start of the form.',
+  },
+  customiseEnd: {
+    id: 'app.containers.Admin.projects.all.customiseEnd',
+    defaultMessage: 'Customise the end of the form.',
   },
 });

@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { campaignsData, links } from './__mocks__/useCampaigns';
 import { QueryParameters } from './types';
@@ -27,7 +27,7 @@ describe('useProjectCampaigns', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useProjectCampaigns(params), {
+    const { result } = renderHook(() => useProjectCampaigns(params), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -46,7 +46,7 @@ describe('useProjectCampaigns', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useProjectCampaigns(params), {
+    const { result } = renderHook(() => useProjectCampaigns(params), {
       wrapper: createQueryClientWrapper(),
     });
 

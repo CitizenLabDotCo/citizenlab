@@ -171,6 +171,9 @@ class WebApi::V1::IdeasController < ApplicationController
     input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
     input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
 
+    # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
+    input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
+
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
     if phase_for_input.pmethod.supports_survey_form? && phase_for_input.allow_anonymous_participation?
       input.anonymous = true
@@ -197,6 +200,7 @@ class WebApi::V1::IdeasController < ApplicationController
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
         sidefx.after_create(input, current_user)
+        write_everyone_tracking_cookie input
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
@@ -297,6 +301,28 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     render json: json_result
+  end
+
+  def copy
+    dest_phase = Phase.find(params[:phase_id])
+    authorize(dest_phase, :copy_inputs_to_phase?)
+
+    job_args = [:submitted_or_published, copy_filters, dest_phase, current_user]
+    job_kwargs = { allow_duplicates: allow_duplicates? }.compact
+
+    tracker = if dry_run?
+      Ideas::CopyJob.dry_run(*job_args, **job_kwargs)
+    else
+      Ideas::CopyJob
+        .with_tracking(owner: current_user)
+        .perform_later(*job_args, **job_kwargs)
+        .tracker
+    end
+
+    render json: WebApi::V1::Jobs::TrackerSerializer.new(
+      tracker,
+      params: jsonapi_serializer_params
+    ).serializable_hash
   end
 
   private
@@ -519,6 +545,26 @@ class WebApi::V1::IdeasController < ApplicationController
     if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
       { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
     end
+  end
+
+  def copy_filters
+    params.require(:filters).permit(:phase)
+  end
+
+  def dry_run?
+    @dry_run ||= Utils.to_bool(params.fetch(:dry_run, false))
+  end
+
+  def allow_duplicates?
+    Utils.to_bool(params[:allow_duplicates]) if params[:allow_duplicates]
+  end
+
+  def write_everyone_tracking_cookie(input)
+    Permissions::EveryoneTrackingService.new(
+      input.author,
+      input.creation_phase,
+      input.request
+    ).write_everyone_tracking_cookie(cookies, input.author_hash)
   end
 end
 

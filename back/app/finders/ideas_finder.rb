@@ -5,7 +5,7 @@ class IdeasFinder < ApplicationFinder
     scope ||= _base_scope
     super(
       params,
-      scope: scope.publicly_visible,
+      scope: scope.publicly_visible.with_content,
       includes: includes,
       current_user: current_user
     )
@@ -18,7 +18,10 @@ class IdeasFinder < ApplicationFinder
   end
 
   def transitive_condition(transitive)
-    transitive ? records.transitive : records
+    return records if transitive.nil?
+
+    transitive = Utils.to_bool(transitive)
+    records.transitive(transitive)
   end
 
   def projects_condition(project_ids)

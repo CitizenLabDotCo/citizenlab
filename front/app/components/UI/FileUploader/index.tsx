@@ -26,6 +26,8 @@ export interface Props {
   apiErrors?: CLErrors | null;
   enableDragAndDrop?: boolean;
   multiple?: boolean;
+  maxSizeMb?: number;
+  dataCy?: string;
 }
 
 const FileUploader = ({
@@ -38,6 +40,8 @@ const FileUploader = ({
   className,
   enableDragAndDrop = false,
   multiple = false,
+  maxSizeMb,
+  dataCy,
 }: Props) => {
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
 
@@ -84,7 +88,6 @@ const FileUploader = ({
   };
 
   const fileNames = files.map((file) => file.name).join(', ');
-
   const content = (
     <Box
       className={className}
@@ -92,7 +95,13 @@ const FileUploader = ({
       data-cy="e2e-file-uploader-container"
       w="100%"
     >
-      <FileInput onAdd={handleFileOnAdd} id={id} multiple={multiple} />
+      <FileInput
+        onAdd={handleFileOnAdd}
+        id={id}
+        multiple={multiple}
+        maxSizeMb={maxSizeMb}
+        dataCy={dataCy}
+      />
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 
       <List key={files.length} className="files-list e2e-files-list">

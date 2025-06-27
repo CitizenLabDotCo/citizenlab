@@ -34,7 +34,6 @@ const PostShowTranslatedTitle = ({
 
   return (
     <StyledH1
-      id="e2e-idea-title"
       customColor={color}
       m="0"
       aria-live={showTranslatedContent ? 'polite' : undefined}

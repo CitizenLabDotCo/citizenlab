@@ -1,5 +1,7 @@
 import { RegistrationsResponse } from 'api/graph_data_units/responseTypes/RegistrationsWidget';
 
+import { toPercentage } from '../../utils';
+
 export const parseStats = (
   data: RegistrationsResponse['data']['attributes']
 ) => {
@@ -23,11 +25,6 @@ const calculateRegistrationsStats = (
     value: registrations_whole_period,
     delta: registrationsDelta,
   };
-};
-
-const toPercentage = (value: number | undefined) => {
-  if (value === undefined) return 0;
-  return Math.round(Math.min(value, 1) * 100);
 };
 
 const calculateRegistrationRateStats = (

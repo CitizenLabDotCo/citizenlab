@@ -18,6 +18,7 @@ gem 'csv', '~> 3.3.0'
 gem 'rack-cors', '2.0.0'
 
 group :development, :test do
+  gem 'ricecream', '~> 0.2.1'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'pry'
@@ -128,8 +129,13 @@ gem 'faker'
 gem 'order_as_specified'
 gem 'scenic'
 gem 'ice_cube', '~> 0.17'
+
+# Libraries for PDF generation /reading
 gem 'prawn', '~> 2.5'
 gem 'prawn-grouping', '~> 0.2.0'
+gem 'pdf-reader'
+gem 'faraday'
+gem 'faraday-multipart'
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an
@@ -150,6 +156,7 @@ gem 'intercom', '~> 4.2'
 # through the emails engine and is therefore specified
 # in the main app.
 gem 'mjml-rails', '~> 4.11'
+gem 'mrml'
 gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai', '~> 1.4'
 gem 'combine_pdf', '~> 1.0.26'

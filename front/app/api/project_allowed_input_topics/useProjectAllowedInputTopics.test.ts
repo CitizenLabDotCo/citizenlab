@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { projectAllowedInputTopics } from './__mocks__/useProjectAllowedInputTopics';
 import useProjectAllowedInputTopics from './useProjectAllowedInputTopics';
@@ -23,7 +23,7 @@ describe('useProjectAllowedInputTopics', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useProjectAllowedInputTopics({ projectId: '1' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -45,7 +45,7 @@ describe('useProjectAllowedInputTopics', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useProjectAllowedInputTopics({ projectId: '1' }),
       {
         wrapper: createQueryClientWrapper(),

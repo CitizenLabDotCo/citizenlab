@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 
-import { Icon, Dropdown, colors } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Dropdown,
+  colors,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import { getMonth } from 'date-fns';
 import moment, { Moment } from 'moment';
 import styled from 'styled-components';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -23,7 +28,7 @@ const DropdownContainer = styled.div`
   cursor: pointer;
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(ButtonWithLink)`
   margin-right: 15px;
 `;
 
@@ -55,6 +60,7 @@ interface Props {
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
   minDate?: Moment;
+  tooltip?: string;
   onChange: (startAtMoment: Moment | null, endAtMoment: Moment | null) => void;
 }
 
@@ -63,6 +69,7 @@ const TimeControl = ({
   startAtMoment,
   endAtMoment,
   minDate,
+  tooltip,
   onChange,
 }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
@@ -213,6 +220,7 @@ const TimeControl = ({
           });
         }}
       />
+      {tooltip && <IconTooltip ml="12px" content={tooltip} />}
     </Container>
   );
 };

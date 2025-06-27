@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { projectAllowedInputTopics } from './__mocks__/useProjectAllowedInputTopics';
 import useAddProjectAllowedInputTopic from './useAddProjectAllowedInputTopic';
@@ -23,12 +23,9 @@ describe('useAddProjectAllowedInputTopic', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useAddProjectAllowedInputTopic(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAddProjectAllowedInputTopic(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -48,12 +45,9 @@ describe('useAddProjectAllowedInputTopic', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useAddProjectAllowedInputTopic(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAddProjectAllowedInputTopic(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({

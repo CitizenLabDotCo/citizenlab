@@ -23,6 +23,8 @@ import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
 import useCustomForm from 'api/custom_form/useCustomForm';
+import { IPhaseData } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
@@ -62,21 +64,21 @@ type FormEditProps = {
   defaultValues: {
     customFields: IFlatCustomField[];
   };
-  projectId: string;
-  phaseId: string;
   builderConfig: FormBuilderConfig;
   totalSubmissions: number;
   viewFormLink: RouteType;
+  phase: IPhaseData;
 };
 
 const FormEdit = ({
   defaultValues,
-  phaseId,
-  projectId,
   builderConfig,
   totalSubmissions,
   viewFormLink,
+  phase,
 }: FormEditProps) => {
+  const phaseId = phase.id;
+  const projectId = phase.relationships.project.data.id;
   const { formatMessage } = useIntl();
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
@@ -93,10 +95,7 @@ const FormEdit = ({
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
 
-  const { data: customForm } = useCustomForm({
-    projectId,
-    phaseId: isFormPhaseSpecific ? phaseId : undefined,
-  });
+  const { data: customForm } = useCustomForm(phase);
 
   // Set the form opened at date from the API date only when the form is first loaded
   const [formOpenedAt, setFormOpenedAt] = useState<string | undefined>();
@@ -137,6 +136,7 @@ const FormEdit = ({
         linear_scale_label_11_multiloc: object(),
         required: boolean(),
         ask_follow_up: boolean(),
+        include_in_printed_form: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
@@ -259,7 +259,10 @@ const FormEdit = ({
               page_button_label_multiloc:
                 field.page_button_label_multiloc || {},
               page_button_link: field.page_button_link || '',
-              include_in_printed_form: field.include_in_printed_form || false,
+              include_in_printed_form:
+                field.include_in_printed_form === undefined
+                  ? true
+                  : field.include_in_printed_form,
             }
           : {}),
         ...(field.map_config_id && {
@@ -413,6 +416,7 @@ const FormEdit = ({
       position="fixed"
       bgColor={colors.background}
       h="100vh"
+      data-cy="e2e-survey-form-builder"
     >
       <HelmetIntl title={messages.helmetTitle} />
       <FocusOn>
@@ -513,14 +517,15 @@ const FormBuilderPage = ({
   viewFormLink,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
-  const { projectId, phaseId } = useParams();
+  const { phaseId } = useParams();
   const { data: submissionCount } = useFormSubmissionCount({
     phaseId,
   });
+  const { data: phase } = usePhase(phaseId);
 
   const formCustomFields = builderConfig.formCustomFields;
 
-  if (typeof projectId !== 'string' || typeof phaseId !== 'string') {
+  if (!phase) {
     return null;
   }
 
@@ -532,8 +537,7 @@ const FormBuilderPage = ({
     ? createPortal(
         <FormEdit
           defaultValues={{ customFields: formCustomFields }}
-          phaseId={phaseId}
-          projectId={projectId}
+          phase={phase.data}
           builderConfig={builderConfig}
           totalSubmissions={submissionCount.data.attributes.totalSubmissions}
           viewFormLink={viewFormLink}

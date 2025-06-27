@@ -10,9 +10,15 @@ import Error, { TFieldName } from 'components/UI/Error';
 interface Props {
   name: string;
   children?: React.ReactNode;
+  scrollErrorIntoView?: boolean;
 }
 
-const RadioGroup = ({ name, children, ...props }: Props & BoxProps) => {
+const RadioGroup = ({
+  name,
+  children,
+  scrollErrorIntoView,
+  ...props
+}: Props & BoxProps) => {
   const {
     formState: { errors: formContextErrors },
   } = useFormContext();
@@ -32,7 +38,7 @@ const RadioGroup = ({ name, children, ...props }: Props & BoxProps) => {
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
       {apiError && (
@@ -42,7 +48,7 @@ const RadioGroup = ({ name, children, ...props }: Props & BoxProps) => {
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
-          scrollIntoView={false}
+          scrollIntoView={scrollErrorIntoView}
         />
       )}
     </Box>

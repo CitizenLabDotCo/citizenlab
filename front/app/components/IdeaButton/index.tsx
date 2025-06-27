@@ -14,7 +14,9 @@ import useLocalize from 'hooks/useLocalize';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
-import Button, { Props as ButtonProps } from 'components/UI/ButtonWithLink';
+import ButtonWithLink, {
+  Props as ButtonProps,
+} from 'components/UI/ButtonWithLink';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { trackEventByName } from 'utils/analytics';
@@ -48,7 +50,7 @@ const IdeaButton = memo<Props>(
     latLng,
     phase,
     participationMethod,
-    ...buttonContainerProps
+    ...buttonProps
   }) => {
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
@@ -177,8 +179,8 @@ const IdeaButton = memo<Props>(
               disabledReason ? disabledReason : ''
             }`}
           >
-            <Button
-              {...buttonContainerProps}
+            <ButtonWithLink
+              {...buttonProps}
               aria-describedby={
                 tippyEnabled ? 'tooltip-content-idea-button' : undefined
               }
@@ -202,7 +204,7 @@ const IdeaButton = memo<Props>(
                   })}
                 />
               )}
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Tooltip>
       </Box>

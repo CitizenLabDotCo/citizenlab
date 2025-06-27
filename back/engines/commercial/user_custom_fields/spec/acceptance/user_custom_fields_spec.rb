@@ -18,10 +18,12 @@ resource 'User Custom Fields' do
     end
     parameter :input_types, "Array of input types. Only return custom fields for the given types. Allowed values: #{CustomField::INPUT_TYPES.join(', ')}", required: false
 
-    example_request 'List all custom fields' do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 3
+    example 'List all accessible custom fields' do
+      create(:custom_field, enabled: false)
+      create(:custom_field, hidden: true)
+      do_request
+      assert_status 200
+      expect(json_response_body[:data].size).to eq 3
     end
 
     example 'List all custom fields with the projects that they are used in' do

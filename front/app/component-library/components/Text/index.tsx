@@ -69,7 +69,8 @@ export type TextProps = {
   BoxDisplayProps &
   BoxOverflowProps &
   BoxVisibilityProps &
-  React.HTMLAttributes<HTMLParagraphElement>;
+  React.HTMLAttributes<HTMLParagraphElement> &
+  React.HTMLAttributes<HTMLElement>;
 
 const StyledText = styled(Box)<BoxProps & TextProps>`
   ${isRtl`direction: rtl;`}

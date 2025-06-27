@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteProjectFolderModerator from './useDeleteProjectFolderModerator';
 const apiPath = '*project_folders/:projectFolderId/moderators/:id';
@@ -18,12 +18,9 @@ describe('useDeleteProjectFolderModerator', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useDeleteProjectFolderModerator(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useDeleteProjectFolderModerator(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({ id: 'id', projectFolderId: 'projectFolderId' });
@@ -39,12 +36,9 @@ describe('useDeleteProjectFolderModerator', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useDeleteProjectFolderModerator(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useDeleteProjectFolderModerator(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({ id: 'id', projectFolderId: 'projectFolderId' });

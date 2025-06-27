@@ -77,7 +77,7 @@ export const SupportMenu = () => {
         onClickOutside={() => setIsDropdownOpen(false)}
         left={isSmallerThanTablet ? '60px' : '200px'}
         mobileLeft="60px"
-        top="-40px"
+        top="-100px"
         content={
           <Box>
             <ItemMenu

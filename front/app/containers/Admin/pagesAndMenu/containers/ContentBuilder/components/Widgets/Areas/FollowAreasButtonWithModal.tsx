@@ -23,7 +23,6 @@ const FollowAreasButtonWithModal = () => {
   const { formatMessage } = useIntl();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const { data: areasWithProjectCount } = useAreasWithProjectsCounts();
-  const { areaTerm, areasTerm } = useAreaTerms();
   const { areasTerm: capitalizedAreasTerm } = useAreaTerms({
     capitalized: true,
   });
@@ -39,25 +38,16 @@ const FollowAreasButtonWithModal = () => {
         textDecoration="underline"
         data-cy="e2e-follow-areas-button"
       >
-        {formatMessage(messages.followAreas1, {
-          areasTerm,
-        })}
+        {formatMessage(messages.followPreferences)}
       </Button>
       <Modal
         opened={isModalOpened}
         close={() => setIsModalOpened(false)}
-        header={formatMessage(messages.areasYouFollow1, {
-          capitalizedAreasTerm,
-        })}
+        header={capitalizedAreasTerm}
       >
         <Box p={isSmallerThanPhone ? '16px' : '32px'}>
           <Box mb="24px">
-            <Warning>
-              {formatMessage(messages.areaButtonsInfo1, {
-                areasTerm,
-                areaTerm,
-              })}
-            </Warning>
+            <Warning>{formatMessage(messages.areaButtonsInfo2)}</Warning>
           </Box>
           <Box mb="24px">
             {areasWithProjectCount.data.map((area, i) => (

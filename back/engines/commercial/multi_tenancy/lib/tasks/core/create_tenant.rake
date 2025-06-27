@@ -334,6 +334,14 @@ namespace :cl2_back do
         common_ground: {
           enabled: true,
           allowed: true
+        },
+        data_repository: {
+          enabled: true,
+          allowed: true
+        },
+        project_planning: {
+          enabled: false,
+          allowed: false
         }
       }
     )

@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { campaignExamplesData } from './__mocks__/useCampaignExamples';
 import useCampaignExample from './useCampaignExample';
@@ -23,7 +23,7 @@ describe('useCampaignExample', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useCampaignExample('id'), {
+    const { result } = renderHook(() => useCampaignExample('id'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -42,7 +42,7 @@ describe('useCampaignExample', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useCampaignExample('id'), {
+    const { result } = renderHook(() => useCampaignExample('id'), {
       wrapper: createQueryClientWrapper(),
     });
 

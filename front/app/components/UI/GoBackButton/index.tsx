@@ -3,7 +3,7 @@ import React, { FormEvent } from 'react';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
@@ -30,7 +30,7 @@ const GoBackButton = ({
 }: Props) => {
   return (
     <Container className={className || ''}>
-      <Button
+      <ButtonWithLink
         id="e2e-go-back-button"
         onClick={onClick}
         buttonStyle="text"

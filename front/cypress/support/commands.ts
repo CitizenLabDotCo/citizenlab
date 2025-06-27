@@ -1,9 +1,12 @@
 import 'cypress-file-upload';
 import './dnd';
+import * as moment from 'moment';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
 import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
+import { IProjectGroup } from '../../app/api/project_groups/types';
+import { IGroup } from '../../app/api/groups/types';
 import { Multiloc } from '../../app/typings';
 
 import jwtDecode from 'jwt-decode';
@@ -12,11 +15,14 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
+      dataCy: typeof dataCy;
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
       goToLandingPage: typeof goToLandingPage;
       login: typeof login;
       signUp: typeof signUp;
       apiLogin: typeof apiLogin;
+      apiCreateManualGroup: typeof apiCreateManualGroup;
+      apiAddMembership: typeof apiAddMembership;
       setAdminLoginCookie: typeof setAdminLoginCookie;
       setModeratorLoginCookie: typeof setModeratorLoginCookie;
       setConsentCookie: typeof setConsentCookie;
@@ -64,7 +70,7 @@ declare global {
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
-      apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
+      apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
       apiRemoveAllReports: typeof apiRemoveAllReports;
@@ -86,6 +92,9 @@ declare global {
       uploadProjectFolderImage: typeof uploadProjectFolderImage;
       uploadProjectImage: typeof uploadProjectImage;
       apiCreateModeratorForProject: typeof apiCreateModeratorForProject;
+      apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
+      createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
+      createProjectWithIdeationPhase: typeof createProjectWithIdeationPhase;
     }
   }
 }
@@ -843,9 +852,11 @@ function apiCreateProject({
 function apiEditPhase({
   phaseId,
   submission_enabled,
+  user_fields_in_form,
 }: {
   phaseId: string;
   submission_enabled?: boolean;
+  user_fields_in_form?: boolean;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -860,6 +871,7 @@ function apiEditPhase({
       body: {
         phase: {
           submission_enabled,
+          user_fields_in_form,
         },
       },
     });
@@ -1343,10 +1355,12 @@ function apiCreateEvent({
   });
 }
 
-function apiEnableProjectDescriptionBuilder({
+function apiToggleProjectDescriptionBuilder({
   projectId,
+  enabled = true,
 }: {
   projectId: string;
+  enabled?: boolean;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1360,7 +1374,7 @@ function apiEnableProjectDescriptionBuilder({
       url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_description/upsert`,
       body: {
         content_builder_layout: {
-          enabled: true,
+          enabled,
         },
       },
     });
@@ -1489,28 +1503,52 @@ function apiUpdatePermissionCustomField(
   custom_field_id: string
 ) {}
 
-// function apiSetPermissionCustomField(
-//   phaseId: string,
-//   action: IPhasePermissionAction,
-//   custom_field_id: string
-// ) {
-//   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-//     const adminJwt = response.body.jwt;
+function apiCreateManualGroup({ title }: { title: Multiloc }) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
 
-//     return cy.request({
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: `Bearer ${adminJwt}`,
-//       },
-//       method: 'POST',
-//       url: `web_api/v1/phases/${phaseId}/permissions/${action}/permissions_custom_fields`,
-//       body: {
-//         custom_field_id,
-//         required: true,
-//       },
-//     });
-//   });
-// }
+    return cy.request<IGroup>({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/groups',
+      body: {
+        group: {
+          title_multiloc: title,
+          membership_type: 'manual',
+        },
+      },
+    });
+  });
+}
+
+function apiAddMembership({
+  userId,
+  groupId,
+}: {
+  userId: string;
+  groupId: string;
+}) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/groups/${groupId}/memberships`,
+      body: {
+        membership: {
+          user_id: userId,
+        },
+      },
+    });
+  });
+}
 
 function apiUpdateAppConfiguration(
   updatedAttributes: IUpdatedAppConfigurationProperties
@@ -1533,6 +1571,7 @@ function apiUpdateAppConfiguration(
 }
 
 function clickLocaleSwitcherAndType(title: string) {
+  cy.wait(1000);
   cy.get('.e2e-localeswitcher').each((button) => {
     cy.wrap(button).click();
     cy.get('#title_multiloc').clear().type(title);
@@ -1866,6 +1905,197 @@ function notIntersectsViewport(subject?: any) {
   expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.false;
 }
 
+function apiCreateNativeSurveyPhase({
+  projectId,
+  title,
+  startAt,
+  endAt,
+  canPost = true,
+  canReact = true,
+  canComment = true,
+  description,
+  nativeSurveyButtonMultiloc = { en: 'Take the survey' },
+  nativeSurveyTitleMultiloc = { en: 'Survey' },
+  allow_anonymous_participation,
+  presentation_mode,
+}: {
+  projectId: string;
+  title: string;
+  startAt: string;
+  endAt?: string;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+  description?: string;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
+  allow_anonymous_participation?: boolean;
+  presentation_mode?: 'card' | 'map';
+}) {
+  return cy.apiCreatePhase({
+    projectId,
+    title,
+    startAt,
+    endAt,
+    participationMethod: 'native_survey',
+    canPost,
+    canReact,
+    canComment,
+    description,
+    nativeSurveyButtonMultiloc,
+    nativeSurveyTitleMultiloc,
+    allow_anonymous_participation,
+    presentation_mode,
+  });
+}
+
+type NativeSurveyPhaseResult = {
+  projectId: string;
+  projectSlug: string;
+  phaseId: string;
+};
+
+function createProjectWithNativeSurveyPhase({
+  projectTitle = randomString(),
+  projectDescriptionPreview = randomString(30),
+  projectDescription = randomString(),
+  publicationStatus = 'published',
+  phaseTitle = randomString(),
+  phaseStartAt = moment().subtract(9, 'month').format('DD/MM/YYYY'),
+  phaseEndAt,
+  canPost = true,
+  canReact = true,
+  canComment = true,
+  description,
+  nativeSurveyButtonMultiloc = { en: 'Take the survey' },
+  nativeSurveyTitleMultiloc = { en: 'Survey' },
+  allow_anonymous_participation,
+  presentation_mode,
+}: {
+  projectTitle?: string;
+  projectDescriptionPreview?: string;
+  projectDescription?: string;
+  publicationStatus?: IProjectAttributes['publication_status'];
+  phaseTitle?: string;
+  phaseStartAt?: string;
+  phaseEndAt?: string;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+  description?: string;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
+  allow_anonymous_participation?: boolean;
+  presentation_mode?: 'card' | 'map';
+} = {}): Cypress.Chainable<NativeSurveyPhaseResult> {
+  return cy
+    .apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus,
+    })
+    .then((project) => {
+      const projectId = project.body.data.id;
+      const projectSlug = project.body.data.attributes.slug;
+
+      return cy
+        .apiCreateNativeSurveyPhase({
+          projectId,
+          title: phaseTitle,
+          startAt: phaseStartAt,
+          endAt: phaseEndAt,
+          canPost,
+          canReact,
+          canComment,
+          description,
+          nativeSurveyButtonMultiloc,
+          nativeSurveyTitleMultiloc,
+          allow_anonymous_participation,
+          presentation_mode,
+        })
+        .then((phase) => {
+          const phaseId = phase.body.data.id;
+
+          return {
+            projectId,
+            projectSlug,
+            phaseId,
+          };
+        });
+    });
+}
+
+function createProjectWithIdeationPhase({
+  projectTitle = randomString(),
+  projectDescription = randomString(),
+  projectDescriptionPreview = projectDescription,
+  projectPublicationStatus = 'published',
+  phaseTitle = 'Ideation phase',
+  phaseStartAt = moment().subtract(9, 'month').format('DD/MM/YYYY'),
+  phaseEndAt = moment().add(3, 'month').format('DD/MM/YYYY'),
+  canPost = true,
+  canReact = true,
+  canComment = true,
+}: {
+  projectTitle?: string;
+  projectDescription?: string;
+  projectDescriptionPreview?: string;
+  projectPublicationStatus?: 'draft' | 'published' | 'archived';
+  phaseTitle?: string;
+  phaseStartAt?: string;
+  phaseEndAt?: string;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+} = {}) {
+  return cy
+    .apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: projectPublicationStatus,
+    })
+    .then((project) => {
+      const projectId = project.body.data.id;
+      const projectSlug = project.body.data.attributes.slug;
+
+      return cy
+        .apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: phaseStartAt,
+          endAt: phaseEndAt,
+          participationMethod: 'ideation',
+          canPost,
+          canReact,
+          canComment,
+        })
+        .then((phase) => {
+          const phaseId = phase.body.data.id;
+
+          return {
+            projectId,
+            projectSlug,
+            phaseId,
+            phaseTitle,
+          };
+        });
+    });
+}
+
+/**
+ * Get an element by its data-cy attribute.
+ * This is a utility function to make it easier to find elements by their data-cy attribute.
+ * @param {string} dataCyValue - The value of the data-cy attribute
+ * @returns Cypress chainable object representing the element with the specified data-cy attribute
+ * @example cy.dataCy('e2e-after-submission')
+ */
+function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.get(`[data-cy="${dataCyValue}"]`);
+}
+
+Cypress.Commands.add('dataCy', dataCy);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
@@ -1929,8 +2159,8 @@ Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
 Cypress.Commands.add(
-  'apiEnableProjectDescriptionBuilder',
-  apiEnableProjectDescriptionBuilder
+  'apiToggleProjectDescriptionBuilder',
+  apiToggleProjectDescriptionBuilder
 );
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
@@ -1971,4 +2201,15 @@ Cypress.Commands.add('uploadProjectImage', uploadProjectImage);
 Cypress.Commands.add(
   'apiCreateModeratorForProject',
   apiCreateModeratorForProject
+);
+Cypress.Commands.add('apiCreateNativeSurveyPhase', apiCreateNativeSurveyPhase);
+Cypress.Commands.add(
+  'createProjectWithNativeSurveyPhase',
+  createProjectWithNativeSurveyPhase
+);
+Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
+Cypress.Commands.add('apiAddMembership', apiAddMembership);
+Cypress.Commands.add(
+  'createProjectWithIdeationPhase',
+  createProjectWithIdeationPhase
 );

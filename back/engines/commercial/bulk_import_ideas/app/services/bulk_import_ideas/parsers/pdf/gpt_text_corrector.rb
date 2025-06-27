@@ -1,4 +1,6 @@
 class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
+  JUMBLING_FIELD_TYPES = %w[multiline_text html_multiloc text text_multiloc]
+
   # @param [Array<Hash>] idea_rows - comes from IdeaBaseFileParser#ideas_to_idea_rows
   def initialize(phase, idea_rows)
     @phase = phase
@@ -19,8 +21,7 @@ class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
   private
 
   def correctable_idea_fields
-    types = BulkImportIdeas::Exporters::IdeaPdfFormExporter::JUMBLING_FIELD_TYPES
-    text_fields = @form_fields.select { |f| f.input_type.in?(types) }
+    text_fields = @form_fields.select { |f| f.input_type.in?(JUMBLING_FIELD_TYPES) }
     core_fields = text_fields.filter_map { _1.code&.to_sym }
     custom_fields = text_fields.reject(&:code?).map { _1.key&.to_sym }
 

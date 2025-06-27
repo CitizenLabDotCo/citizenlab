@@ -1034,32 +1034,10 @@
         }
       },
 
-      "fragments": {
-        "type": "object",
-        "title": "Fragments",
-        "description":  "Internal system to allow specific pieces of UI to be overridden with custom HTML.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["enabled_fragments"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "enabled_fragments": {
-            "title": "Enabled Fragments",
-            "type": "array",
-            "default": [],
-            "description": "List of fragment names that should be enabled (e.g., 'signed-out-header').",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-
       "form_mapping": {
         "type": "object",
         "title": "Mapping features used in in-platform surveys",
-        "description":  "Alpha version - do not enable for active platform(s) unless agreed with Product. Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
+        "description":  "Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1454,7 +1432,31 @@
       "common_ground": {
         "type": "object",
         "title": "Common ground",
-        "description": "New participation method that is currently under development. [DO NOT ENABLE]",
+        "description": "Common Ground is a participation method that lets participants post and react to concise statements using a swipe style: agree, disagree, or unsure. Statements are then ranked by consensus and controversy.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "data_repository": {
+        "type": "object",
+        "title": "Data repository",
+        "description": "New data repository feature that is currently under development. [DO NOT ENABLE]",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_planning": {
+        "type": "object",
+        "title": "Project planning",
+        "description": "New back office projects overview [DO NOT ENABLE]",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

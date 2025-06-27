@@ -13,7 +13,6 @@ import Unauthorized from 'components/Unauthorized';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import FragmentForm from './FragmentForm';
 import LoginCredentials from './LoginCredentials';
 import messages from './messages';
 import ProfileDeletion from './ProfileDeletion';
@@ -60,7 +59,6 @@ const UsersEditPage = () => {
           <div>
             <VerificationStatus />
             <ProfileForm />
-            <FragmentForm />
             {passwordLoginActive && <LoginCredentials user={authUser.data} />}
             <ProfileDeletion />
             <CampaignsConsentForm

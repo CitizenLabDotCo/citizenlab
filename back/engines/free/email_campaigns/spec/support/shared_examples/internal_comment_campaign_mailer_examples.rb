@@ -14,26 +14,26 @@ RSpec.shared_examples 'internal_comment_campaign_mailer_examples' do
   end
 
   it 'assigns organisation name' do
-    expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
+    expect(body).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
   end
 
   it 'includes the comment author name' do
-    expect(mail.body.encoded).to include('Matthias')
+    expect(body).to include('Matthias')
   end
 
   it 'includes the comment body' do
-    expect(mail.body.encoded).to include('Wowzers!')
+    expect(body).to include('Wowzers!')
   end
 
   it 'includes the post title' do
-    expect(mail.body.encoded).to include('Permit paving')
+    expect(body).to include('Permit paving')
   end
 
   it 'includes the post body text' do
-    expect(mail.body.encoded).to include('paving your front garden')
+    expect(body).to include('paving your front garden')
   end
 
   it 'includes the image url' do
-    expect(mail.body.encoded).to include(idea_image.image.versions[:medium].url)
+    expect(body).to include(idea_image.image.versions[:medium].url)
   end
 end

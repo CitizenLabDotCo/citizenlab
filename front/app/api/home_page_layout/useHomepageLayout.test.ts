@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { homepageBuilderLayoutData } from './__mocks__/homepageLayout';
 import useHomepageLayout from './useHomepageLayout';
@@ -24,7 +24,7 @@ describe('useHomepageLayout', () => {
 
   it('returns data correctly', async () => {
     const spy = jest.spyOn(global, 'fetch');
-    const { result, waitFor } = renderHook(() => useHomepageLayout(), {
+    const { result } = renderHook(() => useHomepageLayout(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -44,7 +44,7 @@ describe('useHomepageLayout', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useHomepageLayout(), {
+    const { result } = renderHook(() => useHomepageLayout(), {
       wrapper: createQueryClientWrapper(),
     });
 

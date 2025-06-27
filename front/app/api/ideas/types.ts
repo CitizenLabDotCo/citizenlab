@@ -168,7 +168,7 @@ export interface IIdeaData {
       data: IRelationship | null;
     };
     cosponsors?: {
-      data: IRelationship | null;
+      data: IRelationship[] | null;
     };
     manual_votes_last_updated_by?: {
       data: IRelationship | null;

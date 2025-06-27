@@ -2,6 +2,7 @@
 
 module ParticipationMethod
   class Voting < Ideation
+    SUPPORTED_REACTION_MODES = [].freeze
     delegate :additional_export_columns, :supports_serializing?, :validate_phase, to: :voting_method
 
     def self.method_str
@@ -23,12 +24,12 @@ module ParticipationMethod
       'ideation'
     end
 
-    def supports_reacting?
+    def supports_submission?
       false
     end
 
-    def supports_submission?
-      false
+    def add_autoreaction_to_inputs?
+      supports_submission?
     end
 
     def voting_method

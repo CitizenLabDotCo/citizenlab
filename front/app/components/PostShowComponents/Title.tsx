@@ -38,7 +38,7 @@ const PostTitle = memo<Props>(
     align = 'center',
   }) => {
     return (
-      <Container className={className} align={align}>
+      <Container className={className} align={align} id="e2e-idea-title">
         <Outlet
           id="app.components.PostShowComponents.Title.translation"
           title={title}
@@ -50,7 +50,7 @@ const PostTitle = memo<Props>(
             outletComponents.length > 0 ? (
               <>{outletComponents}</>
             ) : (
-              <StyledH1 id="e2e-idea-title" customColor={color} m="0">
+              <StyledH1 customColor={color} m="0">
                 {title}
               </StyledH1>
             )

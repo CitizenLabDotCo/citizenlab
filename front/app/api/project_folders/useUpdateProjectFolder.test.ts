@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { projectFolderData } from './__mocks__/useProjectFolder';
 import useUpdateProjectFolder from './useUpdateProjectFolder';
@@ -19,7 +19,7 @@ describe('useUpdateProjectFolder', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdateProjectFolder(), {
+    const { result } = renderHook(() => useUpdateProjectFolder(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -55,7 +55,7 @@ describe('useUpdateProjectFolder', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateProjectFolder(), {
+    const { result } = renderHook(() => useUpdateProjectFolder(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

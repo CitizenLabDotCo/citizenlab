@@ -9,7 +9,7 @@ import {
 
 import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -38,7 +38,7 @@ const DeleteStatusButton = ({
       trigger="mouseenter"
     >
       <Box>
-        <Button
+        <ButtonWithLink
           onClick={() => deleteIdeaStatus(ideaStatusId)}
           buttonStyle="text"
           disabled={buttonDisabled}
@@ -47,7 +47,7 @@ const DeleteStatusButton = ({
           textHoverColor={colors.red600}
         >
           <FormattedMessage {...messages.deleteButtonLabel} />
-        </Button>
+        </ButtonWithLink>
       </Box>
     </Tooltip>
   );

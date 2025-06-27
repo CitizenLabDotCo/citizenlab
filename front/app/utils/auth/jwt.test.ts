@@ -1,5 +1,7 @@
 import * as cookies from 'js-cookie';
+
 import { SECURE_COOKIE } from '../cookie';
+
 import { setJwt } from './jwt';
 
 jest.mock('js-cookie', () => ({

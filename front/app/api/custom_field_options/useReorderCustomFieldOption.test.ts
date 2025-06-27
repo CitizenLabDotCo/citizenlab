@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
 import useReorderCustomFieldOption from './useReorderCustomFieldOption';
@@ -22,12 +22,9 @@ describe('useReorderCustomFieldOption', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useReorderCustomFieldOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useReorderCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -47,12 +44,9 @@ describe('useReorderCustomFieldOption', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useReorderCustomFieldOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useReorderCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
     act(() => {
       result.current.mutate({
         optionId: 'id',

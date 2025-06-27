@@ -1,40 +1,39 @@
-<mj-section padding="25px"
-            text-align="left">
-  <mj-column
-    padding="20px 25px"
-    border="1px solid #eaeaea">
-    <mj-text>
-      <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
-        <%= format_message('author_wrote', values: {authorName: event.flaggable_author_name }) %>
-      </p>
-      <% case event.flaggable_type %>
-      <% when 'Comment' %>
-        <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
-          <%= localize_for_recipient(event.flaggable_body_multiloc) %>
-        </h2>
-      <% when 'Idea' %>
-        <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
-          <%= localize_for_recipient(event.flaggable_title_multiloc) %>
-        </h2>
-        <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
-          <%= localize_for_recipient(event.flaggable_body_multiloc) %>
-        </p>
-      <% end %>
-      
-    </mj-text>
+<mj-section padding="0 25px 25px">
+  <mj-column>
+    <mj-table>
+      <tr>
+        <td style="border:1px solid #eaeaea; padding:20px 25px; background-color:#fff; border-radius:5px;">
+          <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
+            <%= format_message('author_wrote', values: {authorName: event.flaggable_author_name }) %>
+          </p>
+          <% case event.flaggable_type %>
+          <% when 'Comment' %>
+            <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+              <%= localize_for_recipient(event.flaggable_body_multiloc) %>
+            </h2>
+          <% when 'Idea' %>
+            <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+              <%= localize_for_recipient(event.flaggable_title_multiloc) %>
+            </h2>
+            <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
+              <%= localize_for_recipient(event.flaggable_body_multiloc) %>
+            </p>
+          <% end %>
+        </td>
+      </tr>
+    </mj-table>
   </mj-column>
 </mj-section>
 
-
-  <mj-section padding="20px 25px" text-align="left">
-    <mj-column>
-      <mj-text font-size="14px" color="#84939E">
-        <% if event.flag_automatically_detected %>
-        <p><%= format_message('automatically_flagged') %></p>
-        <% end %>
-        <p><%= format_message('how_to_review') %></p>
-      </mj-text>
-    </mj-column>
-  </mj-section>
+<mj-section padding="20px 25px" text-align="left">
+  <mj-column>
+    <mj-text font-size="14px" color="#84939E">
+      <% if event.flag_automatically_detected %>
+      <p><%= format_message('automatically_flagged') %></p>
+      <% end %>
+      <p><%= format_message('how_to_review') %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
 
 <%= render partial: 'application/cta_button', locals: { href: event.flaggable_url, message: format_message('cta_review') } %>

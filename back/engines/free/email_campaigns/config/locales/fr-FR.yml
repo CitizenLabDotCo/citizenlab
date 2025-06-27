@@ -305,7 +305,7 @@ fr:
       main_header: '%{post}" a un nouveau commentaire interne'
       preheader: '%{post}" a un nouveau commentaire interne'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      header_message: '%{feedback_author_name} a publié une mise à jour sur « %{input_title} ».'
       header_title: 'Il y a une mise à jour sur « %{input_title} »'
       subject: 'Un retour officiel a été publié sur « %{input_title} »'
       preheader: 'Il y a une mise à jour sur une contribution que vous suivez'
@@ -378,7 +378,7 @@ fr:
       cta_go_to_project: "Accéder au projet"
     status_change_on_idea_you_follow:
       status_change: 'Le nouveau statut de cette contribution est « %{status} »'
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_message: '%{organizationName} a mis à jour le statut de la contribution « %{input_title} » sur leur plateforme de participation.'
       header_title: 'Une contribution que vous suivez a un nouveau statut'
       subject: 'Le statut de « %{input_title} » a changé'
       preheader: 'Une contribution que vous suivez a un nouveau statut'

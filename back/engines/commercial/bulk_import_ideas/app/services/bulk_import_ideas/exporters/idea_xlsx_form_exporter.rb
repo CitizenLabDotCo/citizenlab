@@ -18,7 +18,7 @@ module BulkImportIdeas::Exporters
       }
 
       xlsx_utils = Export::Xlsx::Utils.new
-      @form_fields.each do |field|
+      form_fields.each do |field|
         column_name = xlsx_utils.add_duplicate_column_name_suffix(custom_field_service.handle_title(field, @locale))
 
         value = case field.input_type
@@ -49,6 +49,10 @@ module BulkImportIdeas::Exporters
       XlsxService.new.hash_array_to_xlsx [columns]
     end
 
+    def format
+      'xlsx'
+    end
+
     def mime_type
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     end
@@ -58,7 +62,7 @@ module BulkImportIdeas::Exporters
     end
 
     def importer_data
-      fields = @form_fields.map do |field|
+      fields = form_fields.map do |field|
         {
           name: custom_field_service.handle_title(field, @locale),
           type: 'field',
@@ -70,7 +74,7 @@ module BulkImportIdeas::Exporters
           position: nil
         }
       end
-      options = @form_fields.map do |field|
+      options = form_fields.map do |field|
         field.ordered_transformed_options.map do |option|
           {
             name: custom_field_service.handle_title(option, @locale),
@@ -89,6 +93,12 @@ module BulkImportIdeas::Exporters
         page_count: 1,
         fields: fields + options.flatten
       }
+    end
+
+    private
+
+    def form_fields
+      @form_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).xlsx_importable_fields
     end
   end
 end

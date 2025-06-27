@@ -14,7 +14,7 @@ import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { StyledLink } from 'components/admin/Section';
 import T from 'components/T';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal, {
   ModalContentContainer,
   Content,
@@ -167,7 +167,7 @@ const SortableProjectTopicList = memo(
                       >
                         <RowTitle value={getTitle(projectAllowedInputTopic)} />
                       </Box>
-                      <Button
+                      <ButtonWithLink
                         onClick={handleProjectTopicDelete(
                           projectAllowedInputTopic.id
                         )}
@@ -177,7 +177,7 @@ const SortableProjectTopicList = memo(
                         id="e2e-project-topic-delete-button"
                       >
                         <FormattedMessage {...messages.delete} />
-                      </Button>
+                      </ButtonWithLink>
                     </SortableRow>
                   )
                 )}
@@ -194,20 +194,20 @@ const SortableProjectTopicList = memo(
                 <FormattedMessage {...messages.generalTopicDeletionWarning} />
               </Content>
               <ButtonsWrapper>
-                <Button
+                <ButtonWithLink
                   buttonStyle="secondary-outlined"
                   onClick={closeSendConfirmationModal}
                 >
                   <FormattedMessage {...messages.cancel} />
-                </Button>
-                <Button
+                </ButtonWithLink>
+                <ButtonWithLink
                   buttonStyle="delete"
                   onClick={handleProjectTopicDeletionConfirm}
                   processing={isLoading}
                   id="e2e-project-topic-delete-confirm-button"
                 >
                   <FormattedMessage {...messages.delete} />
-                </Button>
+                </ButtonWithLink>
               </ButtonsWrapper>
             </ModalContentContainer>
           </Modal>

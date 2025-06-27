@@ -64,7 +64,7 @@ module EmailCampaigns
     end
 
     def fix_image_widths(html)
-      doc = Nokogiri::HTML(html)
+      doc = Nokogiri::HTML.fragment(html)
 
       doc.css('img').each do |img|
         # Set the width to 100% if it's not set.

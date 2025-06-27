@@ -17,6 +17,18 @@ RSpec.describe Sluggable do
     end
 
     describe 'generate_slug' do
+      let(:test_model) do
+        Class.new(ApplicationRecord) do
+          include Sluggable
+          connection.create_table(:test_models, temporary: true) do |t|
+            t.jsonb :title_multiloc
+            t.string :slug
+          end
+          self.table_name = 'test_models'
+          slug from: proc { |it| it.title_multiloc }
+        end
+      end
+
       it 'does not set a slug when `slug` is not included in the class' do
         sluggable = create(sluggable_factories[:no_slug])
         expect(sluggable[:slug]).to be_blank
@@ -54,6 +66,20 @@ RSpec.describe Sluggable do
           sluggable = build(sluggable_factories[:slug_from_first_title], title_multiloc: { en: title })
           expect(sluggable).to be_valid
         end
+      end
+
+      it 'generates a fallback slug when the from_value is nil' do
+        sluggable = test_model.new(title_multiloc: nil)
+        sluggable.save!
+        expect(sluggable.slug).to be_present
+        expect(sluggable.slug).to match(Sluggable::SLUG_REGEX)
+      end
+
+      it 'generates a fallback slug when the from_value is empty' do
+        sluggable = test_model.new(title_multiloc: {})
+        sluggable.save!
+        expect(sluggable.slug).to be_present
+        expect(sluggable.slug).to match(Sluggable::SLUG_REGEX)
       end
     end
 

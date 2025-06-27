@@ -9,6 +9,16 @@ RSpec.describe Group do
     end
   end
 
+  it { is_expected.to validate_presence_of(:title_multiloc) }
+
+  it 'validates presence of slug' do
+    group = build(:group)
+    allow(group).to receive(:generate_slug) # Stub to do nothing
+    group.slug = nil
+    expect(group).to be_invalid
+    expect(group.errors[:slug]).to include("can't be blank")
+  end
+
   context 'users (members)' do
     it 'can be assigned to manual groups' do
       g1 = create(:group)

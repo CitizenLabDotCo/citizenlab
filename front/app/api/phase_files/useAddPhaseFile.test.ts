@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { phaseFilesData } from './__mocks__/usePhaseFiles';
 import useAddPhaseFile from './useAddPhaseFile';
@@ -20,7 +20,7 @@ describe('useAddPhaseFile', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddPhaseFile(), {
+    const { result } = renderHook(() => useAddPhaseFile(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -44,7 +44,7 @@ describe('useAddPhaseFile', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddPhaseFile(), {
+    const { result } = renderHook(() => useAddPhaseFile(), {
       wrapper: createQueryClientWrapper(),
     });
 

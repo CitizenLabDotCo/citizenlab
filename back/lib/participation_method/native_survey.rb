@@ -2,14 +2,18 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
+    ALLOWED_EXTRA_FIELD_TYPES = %w[
+      page number linear_scale rating text multiline_text select multiselect
+      multiselect_image file_upload shapefile_upload point line polygon
+      ranking matrix_linear_scale sentiment_linear_scale
+    ]
+
     def self.method_str
       'native_survey'
     end
 
     def allowed_extra_field_input_types
-      %w[page number linear_scale rating text multiline_text select multiselect
-        multiselect_image file_upload shapefile_upload point line polygon
-        ranking matrix_linear_scale sentiment_linear_scale]
+      ALLOWED_EXTRA_FIELD_TYPES
     end
 
     def assign_defaults(input)
@@ -95,8 +99,8 @@ module ParticipationMethod
       setting.nil? ? true : setting
     end
 
-    def supports_multiple_posts?
-      false
+    def allow_posting_again_after
+      nil # Never allow posting again
     end
 
     def supports_permitted_by_everyone?

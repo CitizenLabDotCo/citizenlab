@@ -5,6 +5,58 @@ require 'rails_helper'
 RSpec.describe Idea do
   context 'associations' do
     it { is_expected.to have_many(:reactions) }
+    it { is_expected.to have_many(:idea_relations).dependent(:destroy) }
+    it { is_expected.to have_many(:related_ideas).through(:idea_relations) }
+  end
+
+  describe 'title validation' do
+    it 'requires title_multiloc when title_multiloc_required? is true' do
+      idea = build(:idea, publication_status: 'published')
+      allow(idea).to receive(:title_multiloc_required?).and_return(true)
+
+      idea.title_multiloc = nil
+
+      expect(idea).to be_invalid
+      expect(idea.errors[:title_multiloc]).to include("can't be blank")
+    end
+
+    it 'does not require title_multiloc when title_multiloc_required? is false' do
+      idea = build(:idea)
+      allow(idea).to receive(:title_multiloc_required?).and_return(false)
+
+      idea.title_multiloc = nil
+
+      expect(idea).to be_valid
+    end
+  end
+
+  describe 'body validation' do
+    it 'requires title_multiloc when body_multiloc_required? is true' do
+      idea = build(:idea, publication_status: 'published')
+      allow(idea).to receive(:body_multiloc_required?).and_return(true)
+
+      idea.body_multiloc = nil
+
+      expect(idea).to be_invalid
+      expect(idea.errors[:body_multiloc]).to include("can't be blank")
+    end
+
+    it 'does not require body_multiloc when body_multiloc_required? is false' do
+      idea = build(:idea)
+      allow(idea).to receive(:body_multiloc_required?).and_return(false)
+
+      idea.body_multiloc = nil
+
+      expect(idea).to be_valid
+    end
+  end
+
+  it 'validates presence of slug' do
+    idea = build(:idea)
+    allow(idea).to receive(:generate_slug) # Stub to do nothing
+    idea.slug = nil
+    expect(idea).to be_invalid
+    expect(idea.errors[:slug]).to include("can't be blank")
   end
 
   context 'Default factory' do
@@ -594,6 +646,13 @@ RSpec.describe Idea do
       expect(idea.body_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
 
+    it 'sanitizes img tags in the body' do
+      idea = create(:idea, body_multiloc: {
+        'en' => 'Something <img src=x onerror=alert(1)>'
+      })
+      expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
+    end
+
     it "allows embedded youtube video's in the body" do
       idea = create(:idea, body_multiloc: {
         'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'
@@ -689,6 +748,22 @@ RSpec.describe Idea do
       _response = create(:native_survey_response)
 
       expect(described_class.where_pmethod { |pmethod| %w[ideation proposals].include? pmethod.class.method_str }).to match_array [proposal, idea]
+    end
+  end
+
+  describe 'with_content scope' do
+    it 'filters out ideas with empty title and body multiloc hashes' do
+      create(:idea_status_proposed)
+
+      # Skipping validations because, in theory, inputs in ideation phases should always
+      # have a title and body—but this can happen if the participation method of the
+      # phase is changed.
+      idea_with_only_title = build(:idea, body_multiloc: {}).tap { _1.save(validate: false) }
+      idea_with_only_body = build(:idea, title_multiloc: {}).tap { _1.save(validate: false) }
+      _idea_without_content = build(:idea, title_multiloc: {}, body_multiloc: {}).tap { _1.save(validate: false) }
+      idea_with_both = create(:idea)
+
+      expect(described_class.with_content).to match_array [idea_with_only_title, idea_with_only_body, idea_with_both]
     end
   end
 end

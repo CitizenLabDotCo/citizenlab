@@ -229,12 +229,16 @@ const InputManager = ({
     setQueryParameters(
       // Don't reset the project filter OR phase filter if we're in the project input manager
       // or all ideas (including from other projects) will be visible.
+      // Maintain transitive=true parameter to filter out proposal ideas.
       type === 'ProjectIdeas' && typeof projectId === 'string'
         ? {
             projects: [projectId],
             phase: queryParameters.phase,
+            transitive: true,
           }
-        : {}
+        : {
+            transitive: true,
+          }
     );
   };
 

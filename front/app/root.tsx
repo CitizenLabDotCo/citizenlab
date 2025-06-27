@@ -10,8 +10,7 @@ import { wrapUseRoutesV6 } from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import modules from 'modules';
-// eslint-disable-next-line react/no-deprecated
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import {
   createRoutesFromChildren,
@@ -84,18 +83,19 @@ const Root = () => {
 };
 
 const mountApplication = () => {
+  const container = document.getElementById('app');
+  const root = createRoot(container!);
   try {
     modules.beforeMountApplication();
   } finally {
     // We don't want to use StrictMode during E2E tests, since it causes test failures due to
     // some issues with the re-rendering & re-running of effects in the JSONForms and react-select libraries.
     window.Cypress
-      ? render(<Root />, document.getElementById('app'))
-      : render(
+      ? root.render(<Root />)
+      : root.render(
           <StrictMode>
             <Root />
-          </StrictMode>,
-          document.getElementById('app')
+          </StrictMode>
         );
   }
 };

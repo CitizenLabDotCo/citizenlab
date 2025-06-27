@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteProjectFolder from './useDeleteProjectFolder';
 const apiPath = '*project_folders/:folderId';
@@ -18,7 +18,7 @@ describe('useDeleteProjectFolder', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteProjectFolder(), {
+    const { result } = renderHook(() => useDeleteProjectFolder(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -38,7 +38,7 @@ describe('useDeleteProjectFolder', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteProjectFolder(), {
+    const { result } = renderHook(() => useDeleteProjectFolder(), {
       wrapper: createQueryClientWrapper(),
     });
 

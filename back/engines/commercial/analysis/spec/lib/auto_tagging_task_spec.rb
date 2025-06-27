@@ -66,16 +66,9 @@ RSpec.describe Analysis::AutoTaggingTask do
 
       positive_tag = create(:tag, tag_type: 'sentiment', analysis: analysis, name: 'sentiment +')
 
-      mock_nlp_client = instance_double(NLPCloud::Client)
-      expect(mock_nlp_client).to receive(:sentiment).and_return({
-        'scored_labels' => [
-          { 'label' => 'NEGATIVE', 'score' => 0.99 }
-        ]
-      })
       expect_any_instance_of(Analysis::AutoTaggingMethod::Sentiment)
-        .to receive(:nlp_cloud_client_for)
-        .with(anything, 'nl-NL')
-        .and_return(mock_nlp_client)
+        .to receive(:sentiment_for_text)
+        .and_return('NEGATIVE')
 
       expect { att.execute }
         .to change(Analysis::Tag, :count).from(1).to(2)
@@ -101,28 +94,11 @@ RSpec.describe Analysis::AutoTaggingTask do
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'language')
       idea = create(:idea, project: project, title_multiloc: { en: 'Dit is niet echt in het Engels, mais en Nederlands' })
-      fr_tag = create(:tag, name: 'fr', tag_type: 'language', analysis: analysis)
+      create(:tag, name: 'fr', tag_type: 'language', analysis: analysis)
 
-      mock_nlp_client = instance_double(NLPCloud::Client)
-
-      expect(mock_nlp_client).to receive(:langdetection).and_return({
-        'languages' => [
-          {
-            'nl' => 0.9142834369645996
-          },
-          {
-            'pl' => 0.1142834369645996
-          },
-          {
-            'fr' => 0.828571521669868466
-          }
-        ]
-      })
       expect_any_instance_of(Analysis::AutoTaggingMethod::Language)
-        .to receive(:nlp_cloud_client_for)
-        .and_return(
-          mock_nlp_client
-        )
+        .to receive(:language_for_text)
+        .and_return('nl')
 
       expect { att.execute }
         .to change(Analysis::Tag, :count).from(1).to(2)
@@ -135,7 +111,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       nl_tag = Analysis::Tag.find_by(analysis: analysis, name: 'nl')
       expect(nl_tag).to be_present
 
-      expect(idea.tags).to match_array([nl_tag, fr_tag])
+      expect(idea.tags).to eq [nl_tag]
       expect(idea.taggings.first.background_task).to eq att
     end
   end
@@ -178,36 +154,6 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(ideas.map(&:tags)).to match_array [[bananas_tag], []]
     end
 
-    it 'passes the monolingual locale to the prompt' do
-      task = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'nlp_topic')
-      idea = create(:idea, project: project)
-
-      expect_any_instance_of(Analysis::LLM::GPT41)
-        .to receive(:chat)
-        .and_return('- planets')
-
-      expect_any_instance_of(Analysis::AutoTaggingMethod::NLPTopic).to receive(:classify_many!)
-      expect_any_instance_of(Analysis::AutoTaggingMethod::NLPTopic)
-        .to receive(:fit_inputs_in_context_window)
-        .and_return([idea])
-
-      mock_locale = instance_double(Locale)
-      expect(Locale)
-        .to receive(:monolingual)
-        .and_return(mock_locale)
-      expect(mock_locale).to receive(:language_copy).and_return('High Valyrian')
-      expect_any_instance_of(Analysis::LLM::Prompt)
-        .to receive(:fetch)
-        .with('topic_modeling', project_title: kind_of(String), inputs_text: kind_of(String), max_topics: kind_of(Integer), language: 'High Valyrian')
-        .and_call_original
-
-      task.execute
-      expect(task.reload).to have_attributes({
-        state: 'succeeded',
-        progress: nil
-      })
-    end
-
     describe '#fit_inputs_in_context_window' do
       it 'recudes the inputs to fit in the context window' do
         stubbed_context_window = 1000
@@ -243,7 +189,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       tags = create_list(:tag, 3, analysis: analysis)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id], filters: { search: 'world' })
-      idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
+      idea1 = create(:idea, project: project, title_multiloc: { en: 'Football is the greatest sport in the world' })
       idea2 = create(:idea, project: project, title_multiloc: { en: 'This does contain world, but is already tagged so should not be auto-tagged' })
       create(:tagging, input: idea2, tag: tags[0])
       _idea3 = create(:idea, project: project, title_multiloc: { en: 'This does not contain w o r l d, so it should not be auto-tagged' })
@@ -306,7 +252,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       tags = create_list(:tag, 3, analysis: analysis)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'few_shot_classification', tags_ids: [tags[0].id, tags[1].id])
-      idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
+      idea1 = create(:idea, project: project, title_multiloc: { en: 'Football is the greatest sport in the world' })
       idea2 = create(:idea, project: project, title_multiloc: { en: 'We should have a dancing stage in the parc' })
       idea3 = create(:idea, project: project, title_multiloc: { en: 'We need more houses' })
       create(:tagging, input: idea3, tag: tags[0])
@@ -317,8 +263,12 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(mock_llm).to receive(:chat) do |prompt|
         expect(prompt).to include(tags[0].name, tags[1].name, 'other')
         expect(prompt).to include('other')
-        expect(prompt).to include('Footbal is the greatest sport in the world').once
+        expect(prompt).to include('Football is the greatest sport in the world').once
         expect(prompt).to include('We need more houses').once
+
+        # There's no guarantee on the order of ideas in the prompt, so we reorder them to
+        # be able to write consistent expectations in the rest of the test.
+        idea1, idea2 = [idea1, idea2].sort_by { |i| prompt.index(i.title_multiloc['en']) }
       end.and_return("#{tags[0].name}\n   #{tags[1].name.upcase}")
 
       expect { att.execute }

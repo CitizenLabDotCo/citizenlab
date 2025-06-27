@@ -22,14 +22,7 @@ const ProfileVisiblity = ({ postAnonymously, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box
-      p="40px"
-      mb="20px"
-      boxShadow="0px 2px 4px -1px rgba(0,0,0,0.06)"
-      borderRadius="3px"
-      width="100%"
-      background="white"
-    >
+    <Box mt="20px">
       <FormLabel
         labelValue={<>{formatMessage(messages.profileVisiblity)}</>}
         display="flex"
@@ -41,13 +34,14 @@ const ProfileVisiblity = ({ postAnonymously, onChange }: Props) => {
               {formatMessage(messages.inputsAssociatedWithProfile)}
             </Text>
           }
-          iconSize="16px"
+          iconSize="20px"
           placement="top-start"
           display="inline"
-          ml="4px"
+          mb="4px"
           transform="translate(0,-1)"
         />
       </FormLabel>
+
       <CheckboxWithLabel
         dataTestId="e2e-post-idea-anonymously-checkbox"
         checked={postAnonymously}

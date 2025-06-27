@@ -7,8 +7,6 @@ describe('Idea form settings', () => {
   const projectDescription = randomString();
 
   let projectId: string;
-  let projectSlug: string;
-  let phaseId: string;
 
   beforeEach(() => {
     // create new project
@@ -17,24 +15,19 @@ describe('Idea form settings', () => {
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-    })
-      .then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId,
-          title: 'firstPhaseTitle',
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          endAt: moment().subtract(3, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'ideation',
-          canPost: true,
-          canComment: true,
-          canReact: true,
-        });
-      })
-      .then((phase) => {
-        phaseId = phase.body.data.id;
+    }).then((project) => {
+      projectId = project.body.data.id;
+      return cy.apiCreatePhase({
+        projectId,
+        title: 'firstPhaseTitle',
+        startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+        endAt: moment().subtract(3, 'month').format('DD/MM/YYYY'),
+        participationMethod: 'ideation',
+        canPost: true,
+        canComment: true,
+        canReact: true,
       });
+    });
 
     cy.setAdminLoginCookie();
   });
@@ -118,13 +111,13 @@ describe('Idea form settings', () => {
       cy.visit(
         `admin/projects/${timelineWithIdeationProjectId}/phases/${ideationPhaseIdInTimelineProject}/form`
       );
-      cy.get('[data-cy="e2e-edit-input-form"]').should('exist');
+      cy.dataCy('e2e-edit-input-form').should('be.visible');
 
       // // Timeline project with budget phase
       cy.visit(
         `admin/projects/${timelineWithBudgetProjectId}/phases/${budgetPhaseInTimelineproject}/form`
       );
-      cy.get('[data-cy="e2e-edit-input-form"]').should('exist');
+      cy.dataCy('e2e-edit-input-form').should('be.visible');
     });
   });
 

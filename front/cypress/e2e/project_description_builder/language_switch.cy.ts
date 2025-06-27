@@ -27,7 +27,7 @@ describe('Project description builder language switch', () => {
       }).then((project) => {
         projectSlug = projectTitle;
         projectId = project.body.data.id;
-        cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
+        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
           cy.visit(
             `/admin/project-description-builder/projects/${projectId}/description`
           );
@@ -85,7 +85,7 @@ describe('Project description builder language switch', () => {
     );
 
     // Delete content
-    cy.get('.e2e-text-box').click({ force: true });
+    cy.get('.e2e-text-box').wait(1000).click({ force: true });
     cy.get('#e2e-delete-button').click({ force: true });
 
     // Confirm correct content on live page

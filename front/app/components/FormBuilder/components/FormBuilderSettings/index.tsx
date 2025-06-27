@@ -15,7 +15,6 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import {
@@ -26,14 +25,14 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 import tracks from '../tracks';
 import { getFieldNumbers } from '../utils';
 
-import { ContentSettings } from './ContentSettings';
-import { LogicSettings } from './LogicSettings';
+import ContentSettings from './ContentSettings';
+import LogicSettings from './LogicSettings';
+import PrintSupportTooltip from './PrintSupportTooltip';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
@@ -48,7 +47,6 @@ const FormBuilderSettings = ({
   builderConfig,
   formHasSubmissions,
 }: Props) => {
-  const locales = useAppConfigurationLocales();
   const localize = useLocalize();
   const [currentTab, setCurrentTab] = useState<ICustomFieldSettingsTab>(
     field.defaultTab || 'content'
@@ -56,10 +54,6 @@ const FormBuilderSettings = ({
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-
-  if (isNilOrError(locales)) {
-    return null;
-  }
 
   const getPageList = () => {
     const fieldNumbers = getFieldNumbers(formCustomFields);
@@ -159,9 +153,16 @@ const FormBuilderSettings = ({
         />
       </Box>
       {translatedStringKey && (
-        <Title variant="h4" as="h2" mb="8px">
-          <FormattedMessage {...translatedStringKey} />
-        </Title>
+        <Box display="flex">
+          <Box>
+            <Title variant="h4" as="h2" mb="8px">
+              <FormattedMessage {...translatedStringKey} />
+            </Title>
+          </Box>
+          <Box pt="16px" ml="8px">
+            <PrintSupportTooltip fieldType={fieldType} />
+          </Box>
+        </Box>
       )}
       {showTabbedSettings && builderConfig.isLogicEnabled && (
         <Box display="flex" width="100%" mb="40px">
@@ -202,7 +203,6 @@ const FormBuilderSettings = ({
         (showTabbedSettings && currentTab === 'content')) && (
         <ContentSettings
           field={field}
-          locales={locales}
           formHasSubmissions={formHasSubmissions}
         />
       )}

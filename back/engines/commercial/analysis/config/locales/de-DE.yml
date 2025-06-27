@@ -10,11 +10,11 @@ de:
       tag_vs_bin:
         inputs: "Personen, die auf „%{question}“ mit „%{answer}“ antworten, posten %{percent_more_less} häufiger in „%{tag}“."
         likes: "Personen, die mit „%{answer}“ auf „%{question}“ antworten, mögen %{percent_more_less} -Beiträge in „%{tag}“ überdurchschnittlich."
-        dislikes: "Personen, die mit „%{answer}“ auf „%{question}“ antworten, mögen %{percent_more_less} -Beiträge in „%{tag}“ weniger als der Durchschnitt."
+        dislikes: "Personen, die mit „%{answer}“ auf „%{question}“ antworten, mögen %{percent_more_less} Beiträge in „%{tag}“ als der Durchschnitt."
         participants: "Personen, die mit „%{answer}“ auf „%{question}“ antworten, nehmen %{percent_more_less} häufiger an „%{tag}“ teil als der Durchschnitt."
       bin_vs_bin:
         inputs: "Personen, die '%{answer1}' auf '%{question1}' antworten, antworten '%{answer2}' auf '%{question2}' %{percent_more_less} als der Durchschnitt."
         likes: "Personen, die '%{answer1}' auf '%{question1}' antworten, mögen %{percent_more_less} Beiträge, wenn sie '%{answer2}' auf '%{question2}' antworten, als der Durchschnitt."
-        dislikes: "Personen, die mit „%{answer1}“ bis „%{question1}“ antworten, mögen %{percent_more_less} -Beiträge weniger, wenn sie mit „%{answer2}“ bis „%{question2}“ antworten, als der Durchschnitt."
+        dislikes: "Personen, die mit „%{answer1}“ bis „%{question1}“ antworten, mögen %{percent_more_less} Beiträge, wenn sie mit „%{answer2}“ bis „%{question2}“ antworten, als der Durchschnitt."
         participants: "Personen, die mit „%{answer1}“ bis „%{question1}“ antworten, nehmen %{percent_more_less} teil, wenn sie mit „%{answer2}“ bis „%{question2}“ antworten, als der Durchschnitt."
 

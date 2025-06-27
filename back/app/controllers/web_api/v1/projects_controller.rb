@@ -144,10 +144,27 @@ class WebApi::V1::ProjectsController < ApplicationController
     base_render_mini_index
   end
 
+  def index_for_admin
+    projects = policy_scope(Project).not_hidden
+    projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
+
+    @projects = paginate projects
+    @projects = @projects.includes(:phases, :admin_publication)
+
+    authorize @projects, :index_for_admin?
+
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniAdminSerializer,
+      params: jsonapi_serializer_params,
+      include: %i[current_phase]
+    )
+  end
+
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
-      params: jsonapi_serializer_params.merge(use_cache: params[:use_cache]),
+      params: jsonapi_serializer_params.merge(use_cache: params[:use_cache], request: request),
       include: %i[admin_publication project_images current_phase avatars]
     ).serializable_hash
   end
@@ -324,9 +341,10 @@ class WebApi::V1::ProjectsController < ApplicationController
     project = CommunityMonitorService.new.find_or_create_project(current_user)
 
     authorize project
+
     render json: WebApi::V1::ProjectSerializer.new(
       project,
-      params: jsonapi_serializer_params,
+      params: jsonapi_serializer_params.merge(request: request),
       include: %i[current_phase]
     ).serializable_hash
   end

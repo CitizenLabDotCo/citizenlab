@@ -40,7 +40,7 @@ class Project < ApplicationRecord
 
   VISIBLE_TOS = %w[public groups admins].freeze
 
-  slug from: proc { |project| project.title_multiloc.values.find(&:present?) }
+  slug from: proc { |project| project.title_multiloc&.values&.find(&:present?) }
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
@@ -68,6 +68,7 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
+  has_many :jobs_trackers, class_name: 'Jobs::Tracker', dependent: :destroy
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
@@ -102,6 +103,10 @@ class Project < ApplicationRecord
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+    using: { tsearch: { prefix: true } }
+
+  pg_search_scope :search_by_title,
+    against: :title_multiloc,
     using: { tsearch: { prefix: true } }
 
   scope :with_all_areas, -> { where(include_all_areas: true) }
@@ -214,6 +219,7 @@ class Project < ApplicationRecord
     self.folder_changed = false
   end
 
+  # @return [ParticipationMethod::Base]
   def pmethod
     # NOTE: if a project is passed to this method, timeline projects used to always return 'Ideation'
     # as it was never set and defaulted to this when the participation_method was available on the project
@@ -256,6 +262,8 @@ class Project < ApplicationRecord
   end
 
   def strip_title
+    return unless title_multiloc&.any?
+
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end

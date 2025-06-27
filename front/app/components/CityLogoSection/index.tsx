@@ -4,16 +4,9 @@ import { Image } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-import Fragment from 'components/Fragment';
-
-import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -33,17 +26,14 @@ const LogoLink = styled.a`
 `;
 
 const CityLogoSection = () => {
-  const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
 
   if (!isNilOrError(appConfiguration)) {
     const currentTenantLogo =
       appConfiguration.data.attributes.logo?.large || null;
     const tenantSite =
       appConfiguration.data.attributes.settings.core.organization_site;
-    const footerLocale = `footer-city-logo-${locale}`;
     const localizedOrgName = localize(
       appConfiguration.data.attributes.settings.core.organization_name
     );
@@ -59,20 +49,15 @@ const CityLogoSection = () => {
       );
 
       return (
-        <Fragment
-          title={formatMessage(messages.iframeTitle)}
-          name={footerLocale}
-        >
-          <Container id="hook-footer-logo">
-            {tenantSite ? (
-              <LogoLink href={tenantSite} target="_blank">
-                {tenantImage}
-              </LogoLink>
-            ) : (
-              <>{tenantImage}</>
-            )}
-          </Container>
-        </Fragment>
+        <Container id="hook-footer-logo">
+          {tenantSite ? (
+            <LogoLink href={tenantSite} target="_blank">
+              {tenantImage}
+            </LogoLink>
+          ) : (
+            <>{tenantImage}</>
+          )}
+        </Container>
       );
     }
   }

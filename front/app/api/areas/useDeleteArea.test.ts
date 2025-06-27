@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteArea from './useDeleteArea';
 const apiPath = '*areas/:id';
@@ -18,7 +18,7 @@ describe('useDeleteArea', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteArea(), {
+    const { result } = renderHook(() => useDeleteArea(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -36,7 +36,7 @@ describe('useDeleteArea', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteArea(), {
+    const { result } = renderHook(() => useDeleteArea(), {
       wrapper: createQueryClientWrapper(),
     });
 

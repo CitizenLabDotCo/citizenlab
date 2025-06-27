@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :phase do
+  factory :phase, aliases: [:ideation_phase] do
     project
     ideas_order { nil }
     input_term { nil }
@@ -148,6 +148,16 @@ FactoryBot.define do
     factory :document_annotation_phase do
       participation_method { 'document_annotation' }
       document_annotation_embed_url { 'https://citizenlab.konveio.com/document-title' }
+    end
+
+    factory :common_ground_phase do
+      title_multiloc { { 'en' => 'Common Ground (en)', 'nl-BE' => 'Common Ground (nl)' } }
+      participation_method { 'common_ground' }
+    end
+
+    trait :ongoing do
+      start_at { Time.zone.today - 7.days }
+      end_at { Time.zone.today + 7.days }
     end
   end
 end

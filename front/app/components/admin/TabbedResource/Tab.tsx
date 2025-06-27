@@ -73,7 +73,7 @@ const Tab = ({
   return (
     <Container
       key={url}
-      className={`${name} ${activeClassForTab()} ${className}`}
+      className={`${activeClassForTab()} ${className}`}
       data-testid="resource-single-tab"
     >
       <Link to={url}>

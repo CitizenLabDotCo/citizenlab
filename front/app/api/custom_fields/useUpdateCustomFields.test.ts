@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useUpdateCustomFields from './useUpdateCustomFields';
 
@@ -18,7 +18,7 @@ describe('useUpdateCustomFields', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly in phase', async () => {
-    const { result, waitFor } = renderHook(() => useUpdateCustomFields(), {
+    const { result } = renderHook(() => useUpdateCustomFields(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -44,7 +44,7 @@ describe('useUpdateCustomFields', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateCustomFields(), {
+    const { result } = renderHook(() => useUpdateCustomFields(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -67,7 +67,7 @@ describe('useUpdateCustomFields', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateCustomFields(), {
+    const { result } = renderHook(() => useUpdateCustomFields(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

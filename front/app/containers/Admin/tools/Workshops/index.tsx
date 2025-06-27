@@ -3,13 +3,13 @@ import React from 'react';
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import workshopsImage from './workshops.png';
+import workshopsImage from './workshop.png'; // Avoid plural 'workshops' as our Workshops server will intervene and re-route the image path, breaking the link.
 
 export const Workshops = () => {
   const { formatMessage } = useIntl();
@@ -31,7 +31,7 @@ export const Workshops = () => {
           {formatMessage(messages.workshopsDescription)}
         </Text>
         <Box display="flex" width="100%" alignItems="center">
-          <Button
+          <ButtonWithLink
             height="45px"
             icon="arrow-right"
             iconColor={colors.white}
@@ -42,8 +42,8 @@ export const Workshops = () => {
             bgColor={colors.primary}
           >
             {formatMessage(messages.manageWorkshops)}
-          </Button>
-          <Button
+          </ButtonWithLink>
+          <ButtonWithLink
             height="45px"
             buttonStyle="text"
             linkTo={formatMessage(messages.workshopsSupportLink) as RouteType}
@@ -51,7 +51,7 @@ export const Workshops = () => {
             textColor={colors.primary}
           >
             {formatMessage(messages.learnMore)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       </Box>
     </Box>

@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { reportsData } from './__mocks__/_mockServer';
 import useUpdateReport from './useUpdateReport';
@@ -20,7 +20,7 @@ describe('useUpdateReport', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdateReport(), {
+    const { result } = renderHook(() => useUpdateReport(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -42,7 +42,7 @@ describe('useUpdateReport', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateReport(), {
+    const { result } = renderHook(() => useUpdateReport(), {
       wrapper: createQueryClientWrapper(),
     });
 

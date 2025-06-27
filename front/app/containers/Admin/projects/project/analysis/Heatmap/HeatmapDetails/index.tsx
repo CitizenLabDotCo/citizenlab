@@ -241,7 +241,7 @@ const HeatmapDetails = ({
                     const cell = analysisHeatmapCells?.data.find(
                       (cell) =>
                         (cell.relationships.row.data.id === tag.id &&
-                          cell.relationships.column.data.id === bin.id) || //Also search for the transposed row/column, because the back-end only generates one version
+                          cell.relationships.column.data.id === bin.id) || // Also search for the transposed row/column, because the back-end only generates one version
                         (cell.relationships.column.data.id === tag.id &&
                           cell.relationships.row.data.id === bin.id)
                     );
@@ -270,7 +270,7 @@ const HeatmapDetails = ({
                     const cell = analysisHeatmapCells?.data.find(
                       (cell) =>
                         (cell.relationships.row.data.id === rowBin.id &&
-                          cell.relationships.column.data.id === columnBin.id) || //Also search for the transposed row/column, because the back-end only generates one version
+                          cell.relationships.column.data.id === columnBin.id) || // Also search for the transposed row/column, because the back-end only generates one version
                         (cell.relationships.column.data.id === rowBin.id &&
                           cell.relationships.row.data.id === columnBin.id)
                     );

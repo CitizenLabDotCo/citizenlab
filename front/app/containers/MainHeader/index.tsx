@@ -3,8 +3,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import { media, isRtl, useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Fragment from 'components/Fragment';
-
 import DesktopNavItems from './Components/DesktopNavItems';
 import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarContent';
 import MobileNavbarContent from './Components/NavbarContent/MobileNavbarContent';
@@ -61,8 +59,16 @@ const Left = styled.div`
     `}
 `;
 
-const StyledRightFragment = styled(Fragment)`
+const RightContainer = styled.div`
   max-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: ${({ theme }) => theme.menuHeight}px;
+
+  ${isRtl`
+    justify-content: flex-start;
+  `}
 `;
 
 const MainHeader = () => {
@@ -109,9 +115,9 @@ const MainHeader = () => {
           {isDesktopUser && <DesktopNavItems />}
         </Left>
 
-        <StyledRightFragment name="navbar-right">
+        <RightContainer>
           {isDesktopUser ? <DesktopNavbarContent /> : <MobileNavbarContent />}
-        </StyledRightFragment>
+        </RightContainer>
       </ContainerInner>
     </Container>
   );

@@ -8,8 +8,13 @@ describe('Idea creation', () => {
   let firstPhaseId: string;
   let projectSlug: string;
   const newIdeaContent = randomString(60);
+  const newIdeaTitle = randomString(10);
 
-  before(() => {
+  beforeEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
+
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: description,
@@ -44,19 +49,15 @@ describe('Idea creation', () => {
       })
       .then((phase) => {
         firstPhaseId = phase.body.data.id;
+        cy.setAdminLoginCookie();
       });
   });
 
-  beforeEach(() => {
-    cy.setAdminLoginCookie();
-  });
-
   it('allows the admin to add an idea to an old phase', () => {
-    const newIdeaTitle = randomString(40);
-
     cy.visit(`admin/projects/${projectId}/phases/${firstPhaseId}/ideas`);
     cy.acceptCookies();
     cy.get('#e2e-new-idea').click();
+    cy.wait(1000);
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
@@ -65,19 +66,22 @@ describe('Idea creation', () => {
     // The next line was flaky on CI where the "type" command resulted in skipped letters
     // Seems to be a known problem, and one solution is to type then clear to "warm up" Cypress
     // Related: https://github.com/cypress-io/cypress/issues/3817
-    cy.get('#e2e-idea-title-input input').type('x');
-    cy.get('#e2e-idea-title-input input').clear();
-    cy.get('#e2e-idea-title-input input').type(`${newIdeaTitle}`);
+    cy.get('#title_multiloc').type('x', { delay: 0 });
+    cy.get('#title_multiloc').clear();
+    cy.get('#title_multiloc').type(`${newIdeaTitle}`, { delay: 0 });
 
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
+    cy.get('#body_multiloc .ql-editor').type(newIdeaContent, {
+      delay: 0,
+    });
+    cy.wait(500);
 
     // Go to the next page of the idea form
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Go to the third page of the idea form that should have the topics picker
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // add a topic
     cy.get('.e2e-topics-picker').find('button').eq(4).click({ force: true });
@@ -88,11 +92,11 @@ describe('Idea creation', () => {
       .should('have.length', 1);
 
     // save the form
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.dataCy('e2e-submit-form').click();
     cy.wait(3000);
 
-    cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-after-submission"]').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+    cy.dataCy('e2e-after-submission').click();
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${newIdeaTitle}`);

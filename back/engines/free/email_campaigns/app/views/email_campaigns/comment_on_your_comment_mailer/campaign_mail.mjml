@@ -1,4 +1,4 @@
-<mj-section padding="25px"text-align="left">
+<mj-section padding="25px" text-align="left">
   <mj-column background-color="#F2F6F8" border-radius="5px" padding="25px">
     <mj-text font-size="14px">
       <%= format_message('replied', values: {

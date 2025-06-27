@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { questionData } from './__mocks__/useAnalysisQuestion';
 import useRegenerateAnalysisQuestion from './useRegenerateAnalysisQuestion';
@@ -20,12 +20,9 @@ describe('useRegenerateAnalysisQuestion', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useRegenerateAnalysisQuestion(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useRegenerateAnalysisQuestion(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -45,12 +42,9 @@ describe('useRegenerateAnalysisQuestion', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useRegenerateAnalysisQuestion(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useRegenerateAnalysisQuestion(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({

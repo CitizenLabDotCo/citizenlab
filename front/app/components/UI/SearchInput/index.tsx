@@ -3,7 +3,6 @@ import React from 'react';
 import {
   SearchInput,
   SearchInputProps,
-  Label,
 } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
@@ -41,9 +40,6 @@ const SearchInputWrapper = ({
   labelColor,
 }: Props & WrappedComponentProps) => (
   <>
-    <Label htmlFor="search-input" hidden>
-      {formatMessage(messages.searchLabel)}
-    </Label>
     <SearchInput
       defaultValue={defaultValue}
       id="search-input"

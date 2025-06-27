@@ -585,11 +585,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             </>
           </SectionField>
         )}
-        <SectionField>
+        <SectionField data-cy="e2e-project-folder-short-description">
           <SubSectionTitle>
             <FormattedMessage {...messages.folderDescriptions} />
           </SubSectionTitle>
-          <Box mb="35px" data-cy="e2e-project-folder-description">
+          <Box mb="35px">
             <TextAreaMultilocWithLocaleSwitcher
               data-cy="e2e-project-folder-short-description"
               valueMultiloc={shortDescriptionMultiloc}

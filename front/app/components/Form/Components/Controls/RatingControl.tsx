@@ -54,7 +54,7 @@ const RatingControl = ({
       : `calc(100% / ${maximum} - 8px)`;
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
     const value = data || minimum;
     let newValue = value;
 

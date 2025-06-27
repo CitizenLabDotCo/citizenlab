@@ -1,7 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import endpoints, {
   phaseResponse,
@@ -25,7 +25,7 @@ describe('useAuthenticationRequirements', () => {
       id: '456',
     } as const;
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useAuthenticationRequirements(context),
       {
         wrapper: createQueryClientWrapper(),
@@ -47,7 +47,7 @@ describe('useAuthenticationRequirements', () => {
       id: '789',
     } as const;
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useAuthenticationRequirements(context),
       {
         wrapper: createQueryClientWrapper(),

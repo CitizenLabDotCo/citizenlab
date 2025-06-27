@@ -80,8 +80,4 @@ export default defineMessages({
     defaultMessage:
       'Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.',
   },
-  downloadExcelTemplate: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate',
-    defaultMessage: 'Download an Excel template',
-  },
 });

@@ -21,6 +21,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
       ).first.merge({ recipient: recipient })
     end
     let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:body) { mail_body(mail) }
 
     it 'renders the subject' do
       expect(mail.subject).to eq('Your idea has been published')
@@ -35,7 +36,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     end
 
     it 'includes the header' do
-      expect(mail.body.encoded).to have_tag('div') do
+      expect(body).to have_tag('div') do
         with_tag 'h1' do
           with_text(/You posted/)
         end
@@ -43,7 +44,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     end
 
     it 'includes the input box' do
-      expect(mail.body.encoded).to have_tag('table') do
+      expect(body).to have_tag('table') do
         with_tag 'p' do
           with_text(/Reach more people/)
         end
@@ -51,7 +52,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     end
 
     it 'includes the CTA' do
-      expect(mail.body.encoded).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
+      expect(body).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
         with_text(/Go to your idea/)
       end
     end

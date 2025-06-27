@@ -51,7 +51,7 @@ const RANSACK_PARAMS: (keyof RansackParams)[] = [
   'q[topic_id_in]',
   'q[practical_end_at_gteq]',
   'q[practical_end_at_lt]',
-  'q[title_en_or_description_en_or_tenant_name_cont]',
+  'q[title_en_or_description_en_or_tenant_name_or_title_multiloc_text_cont]',
   'q[s]',
 ];
 
@@ -77,6 +77,10 @@ export const useRansackParams = () => {
       }, {} as RansackParams),
     [searchParams]
   );
+};
+
+export const clearRansackParams = () => {
+  removeSearchParams(RANSACK_PARAMS);
 };
 
 export const useLocalizeProjectLibrary = () => {

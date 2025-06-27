@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { commentsData, links } from './__mocks__/useInternalComments';
 import useInternalComments from './useInternalComments';
@@ -26,7 +26,7 @@ describe('useInternalComments', () => {
         );
       })
     );
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useInternalComments({ type: 'idea', ideaId: 'ideaId' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -50,7 +50,7 @@ describe('useInternalComments', () => {
         );
       })
     );
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useInternalComments({ type: 'author', authorId: 'authorId' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -74,7 +74,7 @@ describe('useInternalComments', () => {
         );
       })
     );
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useInternalComments({ type: 'comment', commentId: 'commentId' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -96,7 +96,7 @@ describe('useInternalComments', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useInternalComments({ type: 'idea', ideaId: 'ideaId' }),
       {
         wrapper: createQueryClientWrapper(),

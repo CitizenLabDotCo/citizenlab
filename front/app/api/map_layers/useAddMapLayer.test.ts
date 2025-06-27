@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { mapLayerData } from './__mocks__/mapLayerData';
 import useAddMapLayer from './useAddMapLayer';
@@ -20,7 +20,7 @@ describe('useAddMapLayer', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddMapLayer(), {
+    const { result } = renderHook(() => useAddMapLayer(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -47,7 +47,7 @@ describe('useAddMapLayer', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddMapLayer(), {
+    const { result } = renderHook(() => useAddMapLayer(), {
       wrapper: createQueryClientWrapper(),
     });
 

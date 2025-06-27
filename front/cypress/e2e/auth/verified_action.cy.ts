@@ -1,6 +1,11 @@
 import { randomString } from '../../support/commands';
 import moment = require('moment');
 
+/* 
+  This test only works locally when you run the fake SSO server on the same docker network (see the bit where it navigates to http://host.docker.internal:8081/oauth/authorize). 
+  
+  To make this work with our e2e tests on CircleCI requires some devops work.
+*/
 describe.skip('Verified action', () => {
   let projectId: string;
   let projectSlug: string;

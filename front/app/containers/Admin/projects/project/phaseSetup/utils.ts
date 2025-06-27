@@ -6,7 +6,7 @@ export function getTimelineTab(
   | 'setup'
   | 'ideas'
   | 'proposals'
-  | 'native-survey'
+  | 'results'
   | 'polls'
   | 'survey-results'
   | 'volunteering' {
@@ -17,7 +17,7 @@ export function getTimelineTab(
   } else if (participationMethod === 'proposals') {
     return 'proposals';
   } else if (participationMethod === 'native_survey') {
-    return 'native-survey';
+    return 'results';
   } else if (participationMethod === 'poll') {
     return 'polls';
   } else if (participationMethod === 'survey') {

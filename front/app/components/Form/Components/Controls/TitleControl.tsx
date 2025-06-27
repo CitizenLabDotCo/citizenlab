@@ -6,7 +6,6 @@ import { withJsonFormsControlProps } from '@jsonforms/react';
 import { debounce } from 'lodash-es';
 
 import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
-import SimilarIdeasList from 'containers/IdeasNewPage/SimilarInputs/SimilarInputsList';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -59,7 +58,7 @@ export const TitleControl = ({
   }
 
   return (
-    <Box id="e2e-idea-title-input">
+    <Box id="title_multiloc">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={label}
@@ -99,7 +98,7 @@ export const TitleControl = ({
         fieldPath={path}
         didBlur={didBlur}
       />
-      {showSimilarInputs && <SimilarIdeasList />}
+      {/* {showSimilarInputs && <SimilarIdeasList />} */}
     </Box>
   );
 };

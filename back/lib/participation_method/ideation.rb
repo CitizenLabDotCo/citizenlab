@@ -2,6 +2,12 @@
 
 module ParticipationMethod
   class Ideation < Base
+    SUPPORTED_REACTION_MODES = %w[up down].freeze
+    ALLOWED_EXTRA_FIELD_TYPES = %w[
+      page number linear_scale rating text multiline_text select multiselect multiselect_image
+      ranking sentiment_linear_scale matrix_linear_scale
+    ]
+
     def self.method_str
       'ideation'
     end
@@ -11,7 +17,7 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[page number linear_scale rating text multiline_text select multiselect multiselect_image ranking sentiment_linear_scale matrix_linear_scale]
+      ALLOWED_EXTRA_FIELD_TYPES
     end
 
     def allowed_ideas_orders
@@ -96,8 +102,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 0,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: 0
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -119,8 +124,7 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 1,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: 1
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -143,8 +147,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 2,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: 2
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -166,8 +169,7 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 3,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: 3
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -190,8 +192,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 4,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: 4
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -213,8 +214,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 5,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: 5
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -236,8 +236,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 6,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: 6
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -260,8 +259,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 7,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: 7
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -283,8 +281,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 8,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: 8
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -306,8 +303,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 9,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: 9
         )
       ]
       if proposed_budget_in_form?
@@ -331,8 +327,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: false,
-          ordering: 10,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: 10
         )
       end
 
@@ -357,8 +352,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: false,
-          ordering: proposed_budget_in_form? ? 11 : 10,
-          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+          ordering: proposed_budget_in_form? ? 11 : 10
         )
       end
 
@@ -390,7 +384,11 @@ module ParticipationMethod
       true
     end
 
-    def supports_built_in_fields?
+    def built_in_title_required?
+      true
+    end
+
+    def built_in_body_required?
       true
     end
 
@@ -422,10 +420,6 @@ module ParticipationMethod
       true
     end
 
-    def supports_reacting?
-      true
-    end
-
     def supports_status?
       true
     end
@@ -443,6 +437,10 @@ module ParticipationMethod
     end
 
     def automatically_assign_idea?
+      true
+    end
+
+    def add_autoreaction_to_inputs?
       true
     end
 

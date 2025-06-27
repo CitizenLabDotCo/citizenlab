@@ -24,7 +24,7 @@ module ProjectFolders
     self.table_name = 'project_folders_folders'
     include PgSearch::Model
 
-    slug from: proc { |project| project.title_multiloc.values.find(&:present?) }
+    slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
     has_one :admin_publication, as: :publication, dependent: :destroy
     accepts_nested_attributes_for :admin_publication, update_only: true
@@ -53,6 +53,10 @@ module ProjectFolders
 
     pg_search_scope :search_by_all,
       against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+      using: { tsearch: { prefix: true } }
+
+    pg_search_scope :search_by_title,
+      against: :title_multiloc,
       using: { tsearch: { prefix: true } }
 
     def projects
@@ -94,9 +98,17 @@ module ProjectFolders
     end
 
     def strip_title
+      return unless title_multiloc&.any?
+
       title_multiloc.each do |key, value|
         title_multiloc[key] = value.strip
       end
+    end
+
+    def set_slug
+      return unless title_multiloc&.any?
+
+      self.slug = title_multiloc.values.find(&:present?)
     end
 
     def set_admin_publication

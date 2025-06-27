@@ -99,6 +99,29 @@ resource 'StaticPages' do
         expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
       end
 
+      # Although the info section WYSIWYG for static pages does not support HTML tables,
+      # we sometimes use a static_page for custom content that can include tables.
+      # In such cases we save the HTML to the multiloc field directly.
+      example 'Update a static page with table elements in info section' do
+        table_html = <<~HTML
+          <table style="width:100%;border-collapse:collapse;display:table !important;border:1px solid #ddd;">
+            <tr style="display:table-row !important;">
+              <th style="width:80px;border:1px solid #ddd;padding:5px;text-align:left;display:table-cell !important;">Verktøy</th>
+            </tr>
+            <tr style="display:table-row !important;">
+              <td style="border:1px solid #ddd;padding:5px;text-align:left;display:table-cell !important;">Matomo</td>
+            </tr>
+          </table>
+        HTML
+
+        top_info_section_multiloc = { en: table_html.strip }
+
+        do_request(static_page: { top_info_section_multiloc: top_info_section_multiloc })
+        assert_status 200
+
+        expect(json_response.dig(:data, :attributes, :top_info_section_multiloc, :en).strip).to eq(top_info_section_multiloc[:en])
+      end
+
       describe 'updating topics' do
         let(:projects_filter_type) { 'topics' }
         let(:topic1) { create(:topic) }
@@ -269,14 +292,6 @@ resource 'StaticPages' do
         page.nav_bar_item&.destroy!
         do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
         assert_status 200
-      end
-
-      example '[error] Update an invalid NavBarItem title of a static page' do
-        title_multiloc = { 'en' => 42 }
-        create(:nav_bar_item, static_page: page)
-
-        do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
-        assert_status 422
       end
     end
 

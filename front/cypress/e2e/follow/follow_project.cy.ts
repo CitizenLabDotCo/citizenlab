@@ -45,11 +45,11 @@ describe('Follow project', () => {
     cy.get('#e2e-project-page').contains(projectTitle);
 
     // Follow
-    cy.get('[data-cy="e2e-follow-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-button"]').click();
+    cy.dataCy('e2e-follow-button').should('exist');
+    cy.dataCy('e2e-follow-button').click();
 
     // Check that it shows unfollow after
-    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
+    cy.dataCy('e2e-unfollow-button').should('exist');
+    cy.dataCy('e2e-follow-button').should('not.exist');
   });
 });

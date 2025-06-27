@@ -53,28 +53,35 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Fill in the title and description since these are required
-    cy.get('#e2e-idea-title-input input').type(title);
-    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+    cy.get('#title_multiloc ').type(title, { delay: 0 });
+    cy.get('#title_multiloc ').should('contain.value', title);
 
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.wait(500);
 
-    cy.get('#e2e-idea-description-input .ql-editor').type(description);
-    cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+    cy.dataCy('e2e-page-number-2').should('exist');
+    cy.get('#body_multiloc .ql-editor').type(description);
+    cy.get('#body_multiloc .ql-editor').contains(description);
+    cy.wait(500);
 
     // Go to the next page of the idea form that has the attachments field
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.wait(1000);
 
-    cy.get('#e2e-idea-file-upload').should('exist');
+    cy.dataCy('e2e-page-number-3').should('exist');
+    cy.get('[data-cy="e2e-idea-file-upload"]', { timeout: 10000 }).should(
+      'exist'
+    );
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
-    cy.get('[data-cy="e2e-edit-input-form"]').click();
+    cy.dataCy('e2e-edit-input-form').click();
 
     // The attachments tool box item should be disabled as it is already on the canvas
-    cy.get('[data-cy="e2e-attachments-item"]').as('attachmentsToolboxItem');
+    cy.dataCy('e2e-attachments-item').as('attachmentsToolboxItem');
     cy.get('@attachmentsToolboxItem').should('exist');
     cy.get('@attachmentsToolboxItem').should('have.attr', 'disabled');
 
-    cy.get('[data-cy="e2e-form-fields"]').within(() => {
+    cy.dataCy('e2e-form-fields').within(() => {
       cy.contains('Attachments').should('exist');
       cy.contains('Attachments').click();
     });
@@ -82,14 +89,14 @@ describe('Input form builder', () => {
     // Title should not be present or editable
     cy.get('#e2e-title-multiloc').should('not.exist');
 
-    cy.get('[data-cy="e2e-more-field-actions"]').eq(1).click({ force: true });
+    cy.dataCy('e2e-more-field-actions').eq(1).click({ force: true });
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
 
     // The Attachments tool box item should be enabled as it has been removed from the canvas
     cy.get('@attachmentsToolboxItem').should('not.have.attr', 'disabled');
 
     // Check to see that Attachments is removed from the canvas
-    cy.get('[data-cy="e2e-form-fields"]').within(() => {
+    cy.dataCy('e2e-form-fields').within(() => {
       cy.contains('Attachments').should('not.exist');
     });
 
@@ -102,17 +109,18 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Fill in the title and description since these are required
-    cy.get('#e2e-idea-title-input input').type(title);
-    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+    cy.get('#title_multiloc ').type(title, { delay: 0 });
+    cy.get('#title_multiloc ').should('contain.value', title);
 
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').type(description);
-    cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+    cy.get('#body_multiloc .ql-editor').type(description);
+    cy.get('#body_multiloc .ql-editor').contains(description);
 
     // Go to the page that had the attachments field
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.wait(1000);
 
-    cy.get('#e2e-idea-file-upload').should('not.exist');
+    cy.get('[data-cy="e2e-idea-file-upload"]').should('not.exist');
   });
 });

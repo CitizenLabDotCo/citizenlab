@@ -9,7 +9,7 @@ import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/usePr
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 import useTopics from 'api/topics/useTopics';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { trackEventByName } from 'utils/analytics';
@@ -34,7 +34,7 @@ const SelectGroupsContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-const AddTopicButton = styled(Button)`
+const AddTopicButton = styled(ButtonWithLink)`
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 30px;

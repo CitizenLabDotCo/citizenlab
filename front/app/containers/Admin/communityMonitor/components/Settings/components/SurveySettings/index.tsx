@@ -12,10 +12,12 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
 
+import UserFieldsToggle from 'containers/Admin/communityMonitor/components/Settings/components/UserFieldsToggle';
+
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
 import EditWarningModal from 'components/admin/SurveyEditWarningModal';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -24,7 +26,6 @@ import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 import ViewSurveyButton from '../../../ViewSurveyButton';
 import messages from '../../messages';
 import AnonymousToggle from '../AnonymousToggle';
-import UserFieldsToggle from 'containers/Admin/communityMonitor/components/Settings/components/UserFieldsToggle';
 
 const SurveySettings = () => {
   const locale = useLocale();
@@ -59,12 +60,8 @@ const SurveySettings = () => {
     submissionCount.data.attributes.totalSubmissions > 0;
 
   // Variables from form config
-  const {
-    downloadExcelLink,
-    postingEnabled,
-    togglePostingEnabled,
-    inputImporterLink,
-  } = getFormActionsConfig(project.data, updatePhase, phase.data);
+  const { postingEnabled, togglePostingEnabled, inputImporterLink } =
+    getFormActionsConfig(project.data, updatePhase, phase.data);
   const editFormLink: RouteType = `/admin/community-monitor/projects/${project.data.id}/phases/${phase.data.id}/survey/edit`;
 
   // Functions to handle modal states
@@ -126,7 +123,7 @@ const SurveySettings = () => {
                 }}
               />
             </Box>
-            <Button
+            <ButtonWithLink
               linkTo={inputImporterLink}
               icon="page"
               iconSize="20px"
@@ -135,9 +132,9 @@ const SurveySettings = () => {
               mr="8px"
             >
               {formatMessage(messages.importInputs)}
-            </Button>
+            </ButtonWithLink>
             <ViewSurveyButton />
-            <Button
+            <ButtonWithLink
               icon="edit"
               iconSize="20px"
               buttonStyle="admin-dark"
@@ -150,13 +147,12 @@ const SurveySettings = () => {
               data-cy="e2e-edit-survey-content"
             >
               {formatMessage(messages.editSurvey)}
-            </Button>
+            </ButtonWithLink>
             <DropdownSettings
               haveSubmissionsComeIn={haveSubmissionsComeIn}
               handleDownloadResults={handleDownloadResults}
               setDropdownOpened={setDropdownOpened}
               isDropdownOpened={isDropdownOpened}
-              downloadExcelLink={downloadExcelLink}
               setShowDeleteModal={setShowDeleteModal}
             />
           </Box>

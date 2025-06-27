@@ -18,7 +18,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 import SearchInput from 'components/UI/SearchInput';
@@ -88,14 +88,16 @@ const TopBar = () => {
 
   const goBack = () => {
     if (analysis?.data.attributes.participation_method === 'native_survey') {
-      clHistory.push(
-        `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
-      );
+      clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/results`);
     } else if (
       analysis?.data.attributes.participation_method ===
       'community_monitor_survey'
     ) {
       clHistory.push(`/admin/community-monitor/live-monitor`);
+    } else if (analysis?.data.attributes.participation_method === 'proposals') {
+      clHistory.push(
+        `/admin/projects/${projectId}/phases/${phaseId}/proposals`
+      );
     } else {
       clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/ideas`);
     }
@@ -147,14 +149,14 @@ const TopBar = () => {
             {localize(projectTitle)}
           </TruncatedTitle>
         </Box>
-        <Button
+        <ButtonWithLink
           buttonStyle="secondary-outlined"
           icon="filter"
           size="s"
           onClick={toggleFilters}
         >
           {formatMessage(messages.filters)}
-        </Button>
+        </ButtonWithLink>
         <FilterItems filters={filters} isEditable analysisId={analysisId} />
         <Box marginLeft="auto">
           <SearchInput
@@ -166,7 +168,7 @@ const TopBar = () => {
           />
         </Box>
         <Tasks />
-        <Button
+        <ButtonWithLink
           icon="info-solid"
           buttonStyle="text"
           openLinkInNewTab

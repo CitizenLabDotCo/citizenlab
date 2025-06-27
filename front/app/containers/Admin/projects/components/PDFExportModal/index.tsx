@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
-  Button,
   CollapsibleContainer,
   Text,
   Title,
@@ -10,14 +9,18 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 import { object, boolean } from 'yup';
 
+import useCustomForm from 'api/custom_form/useCustomForm';
+import useUpdateCustomForm from 'api/custom_form/useUpdateCustomForm';
+import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { FormType } from 'components/FormBuilder/utils';
-import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
 import Modal from 'components/UI/Modal';
 
@@ -28,21 +31,15 @@ import { saveIdeaFormAsPDF } from '../../project/inputForm/saveIdeaFormAsPDF';
 import { supportsNativeSurvey } from '../../project/inputImporter/ReviewSection/utils';
 import { saveSurveyAsPDF } from '../../project/nativeSurvey/saveSurveyAsPDF';
 
+import FormActions from './FormActions';
 import messages from './messages';
+import MultilocFieldCollapsible from './MultilocFieldCollapsible';
+import PersonalDataCheckbox from './PersonalDataCheckbox';
 
 export interface FormPDFExportFormValues {
-  personal_data: boolean;
-}
-
-const DEFAULT_VALUES = {
-  personal_data: false,
-} satisfies FormPDFExportFormValues;
-
-interface Props {
-  open: boolean;
-  formType: FormType;
-  onClose: () => void;
-  phaseId: string;
+  print_start_multiloc?: Multiloc;
+  print_end_multiloc?: Multiloc;
+  print_personal_data_fields: boolean;
 }
 
 const CLICK_EXPORT_MESSAGES: { [key in FormType]: MessageDescriptor } = {
@@ -55,31 +52,65 @@ const IT_IS_POSSIBLE_MESSAGES: { [key in FormType]: MessageDescriptor } = {
   survey: messages.itIsAlsoPossibleSurvey,
 };
 
-const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
+type PDFExportModalProps = Props & {
+  phase: IPhaseData;
+};
+
+const PDFExportModal = ({
+  open,
+  formType,
+  onClose,
+  phase,
+}: PDFExportModalProps) => {
+  const htmlPdfsActive = useFeatureFlag({
+    name: 'html_pdfs',
+  });
+
   const { formatMessage } = useIntl();
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const locale = useLocale();
-  const { data: phase } = usePhase(phaseId);
+  const { data: customForm } = useCustomForm(phase);
+  const { mutateAsync: updateCustomForm } = useUpdateCustomForm(phase);
+  const phaseId = phase.id;
 
   const schema = object({
-    personal_data: boolean(),
+    ...(htmlPdfsActive && {
+      print_start_multiloc: object(),
+      print_end_multiloc: object(),
+    }),
+    print_personal_data_fields: boolean(),
   });
 
   const methods = useForm({
     mode: 'onSubmit',
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: {
+      ...(htmlPdfsActive && {
+        print_start_multiloc: {},
+        print_end_multiloc: {},
+      }),
+      print_personal_data_fields: false,
+    },
     resolver: yupResolver(schema),
   });
 
-  if (!phase) {
-    return null;
-  }
+  useEffect(() => {
+    if (customForm) {
+      methods.reset({
+        ...(htmlPdfsActive && {
+          print_start_multiloc: customForm.data.attributes.print_start_multiloc,
+          print_end_multiloc: customForm.data.attributes.print_end_multiloc,
+        }),
+        print_personal_data_fields:
+          customForm.data.attributes.print_personal_data_fields,
+      });
+    }
+  }, [customForm, htmlPdfsActive, methods]);
 
-  const participationMethod = phase.data.attributes.participation_method;
-
-  const onExport = async ({ personal_data }: FormPDFExportFormValues) => {
-    if (supportsNativeSurvey(participationMethod)) {
+  const onExport = async ({
+    print_personal_data_fields: personal_data,
+  }: FormPDFExportFormValues) => {
+    if (supportsNativeSurvey(phase.attributes.participation_method)) {
       await saveSurveyAsPDF({
         phaseId,
         locale,
@@ -94,10 +125,16 @@ const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
     setLoading(true);
 
     try {
+      await updateCustomForm({
+        ...(htmlPdfsActive && {
+          printStartMultiloc: formValues.print_start_multiloc,
+          printEndMultiloc: formValues.print_end_multiloc,
+        }),
+        printPersonalDataFields: formValues.print_personal_data_fields,
+      });
       await onExport(formValues);
       setLoading(false);
       onClose();
-      methods.reset();
     } catch (e) {
       setLoading(false);
 
@@ -116,6 +153,9 @@ const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
         </Title>
       }
       niceHeader
+      // This is necessary to prevent the modal from closing when you e.g. select text in
+      // the textarea and happen to arrive outside of the modal with your cursor.
+      closeOnClickOutside={false}
     >
       <Box p="24px">
         <CollapsibleContainer
@@ -153,23 +193,28 @@ const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleExport)}>
             <Feedback onlyShowErrors />
-            <CheckboxWithLabel
-              name="personal_data"
-              label={
-                <Text as="span" m="0">
-                  <FormattedMessage {...messages.askPersonalData3} />
-                </Text>
-              }
-              labelTooltipText={
-                <FormattedMessage {...messages.personalDataExplanation5} />
-              }
-              mb="24px"
-            />
-            <Box display="flex">
-              <Button type="submit" processing={loading}>
-                <FormattedMessage {...messages.exportAsPDF} />
-              </Button>
-            </Box>
+            {htmlPdfsActive && (
+              <Box mb="24px">
+                <MultilocFieldCollapsible
+                  title={formatMessage(
+                    messages.collapsibleInstructionsStartTitle
+                  )}
+                  name="print_start_multiloc"
+                  label={formatMessage(messages.customiseStart)}
+                />
+
+                <MultilocFieldCollapsible
+                  title={formatMessage(
+                    messages.collapsibleInstructionsEndTitle
+                  )}
+                  name="print_end_multiloc"
+                  label={formatMessage(messages.customiseEnd)}
+                  mb="0"
+                />
+              </Box>
+            )}
+            <PersonalDataCheckbox />
+            <FormActions loading={loading} />
           </form>
         </FormProvider>
       </Box>
@@ -177,4 +222,19 @@ const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
   );
 };
 
-export default PDFExportModal;
+type Props = {
+  phaseId: string;
+  open: boolean;
+  formType: FormType;
+  onClose: () => void;
+};
+
+export default (props: Props) => {
+  const { data: phase } = usePhase(props.phaseId);
+
+  if (!phase) {
+    return null;
+  }
+
+  return <PDFExportModal phase={phase.data} {...props} />;
+};

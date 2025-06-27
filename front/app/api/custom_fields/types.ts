@@ -17,6 +17,7 @@ export interface ICustomFieldsParameters {
 
 export type ICustomFieldInputType =
   | 'text'
+  | 'text_multiloc'
   | 'multiline_text'
   | 'multiselect'
   | 'number'
@@ -42,6 +43,7 @@ export type ICustomFieldInputType =
 
 export type IOptionsType = {
   id?: string;
+  key?: string;
   title_multiloc: Multiloc;
   other?: boolean;
   temp_id?: string;
@@ -49,9 +51,9 @@ export type IOptionsType = {
 };
 
 export type IMatrixStatementsType = {
-  id?: string;
+  id: string;
+  key: string;
   title_multiloc: Multiloc;
-  temp_id?: string;
 };
 
 export type QuestionRuleType = { if: string | number; goto_page_id: string };
@@ -143,6 +145,7 @@ export type IFlatCustomField = Omit<
     options?: IOptionsType[];
     matrix_statements?: IMatrixStatementsType[];
     map_config?: { data: IRelationship };
+    visible_to_public?: boolean;
   };
 
 export type ICustomFieldSettingsTab = 'content' | 'logic';
@@ -154,35 +157,44 @@ export type IFlatCustomFieldWithIndex = IFlatCustomField & {
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
-export type IFlatCreateCustomField = Optional<
-  IFlatCustomField,
-  | 'description_multiloc'
-  | 'type'
-  | 'key'
-  | 'options'
-  | 'matrix_statements'
-  | 'ordering'
-  | 'created_at'
-  | 'updated_at'
-  | 'linear_scale_label_1_multiloc'
-  | 'linear_scale_label_2_multiloc'
-  | 'linear_scale_label_3_multiloc'
-  | 'linear_scale_label_4_multiloc'
-  | 'linear_scale_label_5_multiloc'
-  | 'linear_scale_label_6_multiloc'
-  | 'linear_scale_label_7_multiloc'
-  | 'linear_scale_label_8_multiloc'
-  | 'linear_scale_label_9_multiloc'
-  | 'linear_scale_label_10_multiloc'
-  | 'linear_scale_label_11_multiloc'
-  | 'maximum'
-  | 'random_option_ordering'
-  | 'dropdown_layout'
-  | 'question_category'
-  | 'ask_follow_up'
-  | 'include_in_printed_form'
+export type ICreateMatrixStatementsType = {
+  id?: string;
+  title_multiloc: Multiloc;
+  temp_id?: string;
+};
+
+export type IFlatCreateCustomField = Omit<
+  Optional<
+    IFlatCustomField,
+    | 'description_multiloc'
+    | 'type'
+    | 'key'
+    | 'options'
+    | 'ordering'
+    | 'created_at'
+    | 'updated_at'
+    | 'linear_scale_label_1_multiloc'
+    | 'linear_scale_label_2_multiloc'
+    | 'linear_scale_label_3_multiloc'
+    | 'linear_scale_label_4_multiloc'
+    | 'linear_scale_label_5_multiloc'
+    | 'linear_scale_label_6_multiloc'
+    | 'linear_scale_label_7_multiloc'
+    | 'linear_scale_label_8_multiloc'
+    | 'linear_scale_label_9_multiloc'
+    | 'linear_scale_label_10_multiloc'
+    | 'linear_scale_label_11_multiloc'
+    | 'maximum'
+    | 'random_option_ordering'
+    | 'dropdown_layout'
+    | 'question_category'
+    | 'ask_follow_up'
+    | 'include_in_printed_form'
+  >,
+  'matrix_statements'
 > & {
   isLocalOnly: boolean;
+  matrix_statements?: ICreateMatrixStatementsType[];
 };
 
 export interface ICustomFields {

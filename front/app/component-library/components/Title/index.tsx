@@ -51,9 +51,10 @@ export type TitleProps = {
   BoxDisplayProps &
   BoxOverflowProps &
   BoxVisibilityProps &
-  React.HTMLAttributes<HTMLHeadingElement>;
+  React.HTMLAttributes<HTMLHeadingElement> &
+  React.HTMLAttributes<HTMLElement>;
 
-const StyledTitle = styled(Box)`
+const StyledTitle = styled(Box)<TitleProps>`
   ${isRtl`direction: rtl;`}
 
   ${({
