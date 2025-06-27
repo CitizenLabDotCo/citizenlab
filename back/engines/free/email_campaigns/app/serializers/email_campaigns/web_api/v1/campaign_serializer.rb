@@ -107,6 +107,12 @@ module EmailCampaigns
       editable_regions?(object) ? object.mailer_class.editable_regions : {}
     end
 
+    attribute :editable_region_variable_keys, if: proc { |object|
+      content_configurable?(object)
+    } do |object|
+      editable_regions?(object) ? object.mailer_class.editable_region_variable_keys : []
+    end
+
     attribute :has_preview do |object|
       content_configurable?(object) && previewable?(object)
     end
