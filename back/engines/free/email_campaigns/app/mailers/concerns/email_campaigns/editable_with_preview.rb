@@ -27,6 +27,7 @@ module EmailCampaigns
       # Static data used that can be across email previews.
       def preview_data(recipient)
         {
+          id: SecureRandom.uuid,
           user_first_name: I18n.t('email_campaigns.preview_data.first_name', locale: recipient.locale),
           user_last_name: I18n.t('email_campaigns.preview_data.last_name', locale: recipient.locale),
           user_display_name: I18n.t('email_campaigns.preview_data.display_name', locale: recipient.locale),

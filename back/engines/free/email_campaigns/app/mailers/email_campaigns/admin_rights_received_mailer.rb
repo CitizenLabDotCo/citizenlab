@@ -19,6 +19,9 @@ module EmailCampaigns
           ),
           define_editable_region(
             :intro_multiloc, default_message_key: 'message_you_became_administrator', type: 'html', allow_blank_locales: true
+          ),
+          define_editable_region(
+            :button_text_multiloc, default_message_key: 'cta_manage_platform'
           )
         ]
       end
