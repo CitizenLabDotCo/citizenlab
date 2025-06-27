@@ -2,24 +2,48 @@
 
 module EmailCampaigns
   class AdminRightsReceivedMailer < ApplicationMailer
+    include EditableWithPreview
+
+    class << self
+      def campaign_class
+        Campaigns::AdminRightsReceived
+      end
+
+      def editable_regions
+        [
+          define_editable_region(
+            :subject_multiloc, default_message_key: 'subject'
+          ),
+          define_editable_region(
+            :title_multiloc, default_message_key: 'title_you_became_administrator'
+          ),
+          define_editable_region(
+            :intro_multiloc, default_message_key: 'message_you_became_administrator', type: 'html', allow_blank_locales: true
+          )
+        ]
+      end
+
+      def editable_region_variable_keys
+        %w[organizationName]
+      end
+
+      def preview_command(recipient: nil)
+        data = preview_data(recipient)
+        {
+          recipient: recipient,
+          event_payload: {
+            organization_name: data[:organization_name]
+          }
+        }
+      end
+    end
+
     protected
 
-    def subject
-      format_message('subject', values: { organizationName: organization_name })
-    end
-
-    private
-
-    def header_title
-      format_message('title_you_became_administrator')
-    end
-
-    def header_message
-      format_message('message_you_became_administrator', values: { organizationName: organization_name })
-    end
-
-    def preheader
-      format_message('preheader', values: { organizationName: organization_name })
+    def substitution_variables
+      {
+        organizationName: organization_name
+      }
     end
   end
 end
