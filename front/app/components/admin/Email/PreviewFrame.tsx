@@ -1,12 +1,18 @@
 import React from 'react';
 
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import Frame from 'react-frame-component';
 import styled from 'styled-components';
 
 import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import messages from './messages';
+import { API_PATH } from 'containers/App/constants';
+
+import { getJwt } from 'utils/auth/jwt';
 import { FormattedMessage } from 'utils/cl-intl';
 import useCampaignPreview from 'api/campaign_previews/useCampaignPreview';
+
+import messages from './messages';
 
 const StyledFrame = styled(Frame)`
   border-radius: ${(props) => props.theme.borderRadius};

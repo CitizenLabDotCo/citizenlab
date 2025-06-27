@@ -25,17 +25,13 @@ import { isNewCustomFieldObject } from 'api/custom_fields/util';
 import useCustomForm from 'api/custom_form/useCustomForm';
 import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
 import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
 import FormFields from 'components/FormBuilder/components/FormFields';
 import HelmetIntl from 'components/HelmetIntl';
-import Feedback from 'components/HookForm/Feedback';
-import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
-import Error from 'components/UI/Error';
-import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -45,6 +41,7 @@ import validateLogic from 'utils/yup/validateLogic';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import validateOneStatementForMatrix from 'utils/yup/validateOneStatementForMatrix';
 
+import FormStatus from '../components/FormStatus';
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
 
@@ -84,12 +81,9 @@ const FormEdit = ({
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
-  const [accessRightsMessageIsVisible, setAccessRightsMessageIsVisible] =
-    useState(true);
   const [autosaveEnabled, setAutosaveEnabled] = useState(true);
-  const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
+  const { isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
-  const showWarningNotice = totalSubmissions > 0;
   const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
@@ -153,7 +147,7 @@ const FormEdit = ({
     setError,
     handleSubmit,
     control,
-    formState: { errors, isDirty },
+    formState: { isDirty },
     getValues,
     reset,
   } = methods;
@@ -217,9 +211,6 @@ const FormEdit = ({
       setSelectedField(newField);
     }
   };
-
-  const hasErrors = !!Object.keys(errors).length;
-  const editedAndCorrect = !isSubmitting && isDirty && !hasErrors;
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
     setSuccessMessageIsVisible(false);
@@ -375,38 +366,6 @@ const FormEdit = ({
     }
   };
 
-  const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
-  const showSuccessMessage =
-    successMessageIsVisible &&
-    !editedAndCorrect &&
-    Object.keys(errors).length === 0;
-
-  const handleAccessRightsClose = () => setAccessRightsMessageIsVisible(false);
-
-  const showWarnings = () => {
-    if (editedAndCorrect) {
-      return (
-        <Box mb="8px">
-          <Warning>{formatMessage(messages.unsavedChanges)}</Warning>
-        </Box>
-      );
-    } else if (showWarningNotice && builderConfig.getWarningNotice) {
-      return builderConfig.getWarningNotice();
-    } else if (
-      !hasErrors &&
-      !successMessageIsVisible &&
-      builderConfig.getAccessRightsNotice &&
-      accessRightsMessageIsVisible
-    ) {
-      return builderConfig.getAccessRightsNotice(
-        projectId,
-        phaseId,
-        handleAccessRightsClose
-      );
-    }
-    return null;
-  };
-
   return (
     <Box
       display="flex"
@@ -428,7 +387,6 @@ const FormEdit = ({
               viewFormLink={viewFormLink}
               autosaveEnabled={autosaveEnabled}
               setAutosaveEnabled={setAutosaveEnabled}
-              showAutosaveToggle={totalSubmissions === 0} // Only allow autosave if no survey submissions
               phaseId={phaseId}
             />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
@@ -451,32 +409,14 @@ const FormEdit = ({
                 px="30px"
               >
                 <Box mt="16px">
-                  {hasErrors && (
-                    <Box mb="16px">
-                      <Error
-                        marginTop="8px"
-                        marginBottom="8px"
-                        text={formatMessage(
-                          errors['staleData']
-                            ? messages.staleDataErrorMessage
-                            : messages.errorMessage
-                        )}
-                        scrollIntoView={false}
-                      />
-                    </Box>
-                  )}
-
-                  <Feedback
-                    successMessage={formatMessage(formSavedSuccessMessage)}
-                    onlyShowErrors
+                  <FormStatus
+                    successMessageIsVisible={successMessageIsVisible}
+                    setSuccessMessageIsVisible={setSuccessMessageIsVisible}
+                    isSubmitting={isSubmitting}
+                    builderConfig={builderConfig}
+                    projectId={projectId}
+                    phaseId={phaseId}
                   />
-                  {showSuccessMessage && (
-                    <SuccessFeedback
-                      successMessage={formatMessage(formSavedSuccessMessage)}
-                      closeSuccessMessage={closeSuccessMessage}
-                    />
-                  )}
-                  {showWarnings()}
                   <FormFields
                     onEditField={setSelectedField}
                     selectedFieldId={selectedField?.id}
@@ -494,7 +434,6 @@ const FormEdit = ({
                       field={selectedField}
                       closeSettings={closeSettings}
                       builderConfig={builderConfig}
-                      formHasSubmissions={totalSubmissions > 0}
                     />
                   </Box>
                 )}
@@ -518,7 +457,7 @@ const FormBuilderPage = ({
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
   const { phaseId } = useParams();
-  const { data: submissionCount } = useFormSubmissionCount({
+  const { data: submissionCount } = useSubmissionsCount({
     phaseId,
   });
   const { data: phase } = usePhase(phaseId);

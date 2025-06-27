@@ -38,14 +38,12 @@ interface Props {
   field: IFlatCustomFieldWithIndex;
   closeSettings: (triggerAutosave?: boolean) => void;
   builderConfig: FormBuilderConfig;
-  formHasSubmissions: boolean;
 }
 
 const FormBuilderSettings = ({
   field,
   closeSettings,
   builderConfig,
-  formHasSubmissions,
 }: Props) => {
   const localize = useLocalize();
   const [currentTab, setCurrentTab] = useState<ICustomFieldSettingsTab>(
@@ -201,10 +199,7 @@ const FormBuilderSettings = ({
         !builderConfig.isLogicEnabled || // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (showTabbedSettings && currentTab === 'content')) && (
-        <ContentSettings
-          field={field}
-          formHasSubmissions={formHasSubmissions}
-        />
+        <ContentSettings field={field} />
       )}
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings

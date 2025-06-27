@@ -10,6 +10,8 @@ import { isUndefined } from 'lodash-es';
 
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -19,7 +21,6 @@ import messages from '../messages';
 import CampaignDescription from './CampaignDescription';
 import PhaseEmailSettingsModal from './PhaseEmailSettingsModal';
 import { CampaignData } from './types';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type Props = {
   campaign: CampaignData;
