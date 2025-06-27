@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "Błąd pobierania pliku ICS",
   "app.containers.EventsShow.linkToOnlineEvent": "Link do wydarzenia online",
   "app.containers.EventsShow.locationIconAltText": "Lokalizacja",
+  "app.containers.EventsShow.metaTitle": "Wydarzenie: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Spotkanie online",
   "app.containers.EventsShow.onlineLinkIconAltText": "Link do spotkania online",
   "app.containers.EventsShow.socialMediaSharingMessage": "Weź udział w tym wydarzeniu: {eventTitle}",

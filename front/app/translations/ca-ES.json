@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "S'ha produït un error en baixar el fitxer ICS",
   "app.containers.EventsShow.linkToOnlineEvent": "Enllaç a l'esdeveniment en línia",
   "app.containers.EventsShow.locationIconAltText": "Ubicació",
+  "app.containers.EventsShow.metaTitle": "Esdeveniment: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Reunió en línia",
   "app.containers.EventsShow.onlineLinkIconAltText": "Enllaç de reunió en línia",
   "app.containers.EventsShow.socialMediaSharingMessage": "Assisteix a aquest esdeveniment: {eventTitle}",

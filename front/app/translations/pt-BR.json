@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "Erro ao baixar o arquivo ICS",
   "app.containers.EventsShow.linkToOnlineEvent": "Link para evento on-line",
   "app.containers.EventsShow.locationIconAltText": "Localização",
+  "app.containers.EventsShow.metaTitle": "Evento: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Reunião on-line",
   "app.containers.EventsShow.onlineLinkIconAltText": "Link da reunião on-line",
   "app.containers.EventsShow.socialMediaSharingMessage": "Participe deste evento: {eventTitle}",

@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "Fel vid nedladdning av filen ICS",
   "app.containers.EventsShow.linkToOnlineEvent": "Länk till evenemanget online",
   "app.containers.EventsShow.locationIconAltText": "Plats",
+  "app.containers.EventsShow.metaTitle": "Händelse: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Möte online",
   "app.containers.EventsShow.onlineLinkIconAltText": "Länk till online-möte",
   "app.containers.EventsShow.socialMediaSharingMessage": "Delta i detta evenemang: {eventTitle}",

@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "Gwall wrth lawrlwytho'r ffeil ICS",
   "app.containers.EventsShow.linkToOnlineEvent": "Dolen i ddigwyddiad ar-lein",
   "app.containers.EventsShow.locationIconAltText": "Lleoliad",
+  "app.containers.EventsShow.metaTitle": "Digwyddiad: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Cyfarfod ar-lein",
   "app.containers.EventsShow.onlineLinkIconAltText": "Dolen cyfarfod ar-lein",
   "app.containers.EventsShow.socialMediaSharingMessage": "Mynychwch y digwyddiad hwn: {eventTitle}",
