@@ -139,7 +139,46 @@ describe ProjectsFinderAdminService do
       project
     end
 
-    # TODO
+    it 'returns all projects when no participation states specified' do
+      result = described_class.filter_participation_states(Project.all, {})
+      expect(result.pluck(:id).sort).to match_array([
+        not_started_project.id,
+        collecting_data_project.id,
+        information_phase_project.id,
+        past_project.id,
+        gap_project.id
+      ].sort)
+    end
+
+    it 'returns not_started projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['not_started'] })
+      expect(result.pluck(:id)).to eq([not_started_project.id])
+    end
+
+    it 'returns collecting_data projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['collecting_data'] })
+      expect(result.pluck(:id)).to eq([collecting_data_project.id])
+    end
+
+    it 'returns informing projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['informing'] })
+      expect(result.pluck(:id)).to eq([information_phase_project.id])
+    end
+
+    it 'returns finished projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['finished'] })
+      expect(result.pluck(:id)).to eq([past_project.id])
+    end
+
+    it 'returns collecting_data and finished projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['collecting_data', 'finished'] })
+      expect(result.pluck(:id).sort).to match_array([collecting_data_project.id, past_project.id].sort)
+    end
+
+    it 'returns not_started, collecting_data, informing and finished projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['not_started', 'collecting_data', 'informing', 'finished'] })
+      expect(result.pluck(:id).sort).to match_array([not_started_project.id, collecting_data_project.id, information_phase_project.id, past_project.id].sort)
+    end
   end
 
   describe 'self.execute' do

@@ -136,41 +136,35 @@ class ProjectsFinderAdminService
 
   def self.filter_participation_states(scope, params = {})
     participation_states = params[:participation_states] || []
-    return scope if participation_state.blank?
+    return scope if participation_states.blank?
 
     # Add some nonsense where clause that is always false so we can just use "or" afterwards
     phase_scope = Phase.where("id IS NULL")
 
     if participation_states.include?('not_started')
       phase_scope = phase_scope
-        .or.not("start_at <= ?", DateTime.current)
+        .or.not.where("start_at <= ?", DateTime.current)
     end
 
     if participation_states.include?('collecting_data')
       phase_scope = phase_scope
-        .or(
-          "
+        .or(Phase.where("
             ((start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)) AND
             participation_method != 'information'
-          ",
-          start_at, end_at
-        )
+        ", Date.today, Date.today))
     end
 
     if participation_states.include?('informing')
       phase_scope = phase_scope
-        .or(
-          "
+        .or(Phase.where("
             ((start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)) AND
             participation_method = 'information'
-          ",
-          start_at, end_at
-        )
+        ", Date.today, Date.today))
     end
 
     if participation_states.include?('finished')
       phase_scope = phase_scope
-        .or.not("coalesce(end_at, 'infinity'::DATE) >= ?", DateTime.current)
+        .or.not.where("coalesce(end_at, 'infinity'::DATE) >= ?", DateTime.current)
     end
 
     scope.where(id: phase_scope.select(:project_id))
