@@ -1064,7 +1064,7 @@ GEM
     rbtree (0.4.6)
     rdoc (6.11.0)
       psych (>= 4.0.0)
-    redcarpet (3.6.0)
+    redcarpet (3.6.1)
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
