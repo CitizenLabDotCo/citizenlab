@@ -46,7 +46,8 @@ module Files
       using: %i[tsearch trigram],
       # For the ranking, trigram scores are only used to break ties between results that
       # have a tsearch score of 0. In other words, tsearch matches are always ranked
-      # higher than trigram matches.
+      # higher than trigram matches. (Both tsearch and trigram scores are in the range
+      # [0, 1].)
       ranked_by: 'CAST(:tsearch > 0 AS INTEGER) * (0.9 * :tsearch + 0.1) + 0.1 * :trigram'
 
     private
