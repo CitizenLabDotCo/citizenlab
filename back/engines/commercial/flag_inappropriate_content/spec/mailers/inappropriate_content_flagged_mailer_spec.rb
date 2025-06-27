@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require_relative '../../../../free/email_campaigns/spec/mailers/shared_examples_for_campaign_delivery_tracking'
 
 RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFlaggedMailer do
   describe 'campaign_mail' do

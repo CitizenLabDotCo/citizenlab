@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require_relative 'shared_examples_for_campaign_delivery_tracking'
 
 RSpec.describe EmailCampaigns::ProjectReviewStateChangeMailer do
   describe 'campaign_mail' do
