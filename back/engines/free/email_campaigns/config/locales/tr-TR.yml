@@ -84,6 +84,12 @@ tr:
         "5": "Haftalık Cuma günleri %{hourOfDay}"
         "6": "Haftalık Cumartesi günleri %{hourOfDay}"
       quarterly: "Üç ayda bir, üç aylık dönemin ilk gününde"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Doe'
+      display_name: 'Jane Doe'
+      comment_body: 'Bu, e-postaların içeriğini önizlemek için kullanılan örnek bir yorumdur. Bu gerçek içerik değildir.'
+      idea_title: 'Örnek Fikir'
     footer:
       "link_privacy_policy": "Gi̇zli̇li̇k Poli̇ti̇kası"
       "link_terms_conditions": "Hüküm ve Koşullar"

@@ -84,6 +84,12 @@ pl:
         "5": "Co tydzień, w piątki %{hourOfDay}"
         "6": "Co tydzień, w soboty %{hourOfDay}"
       quarterly: "Kwartalnie, pierwszego dnia kwartału"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Doe'
+      display_name: 'Jane Doe'
+      comment_body: 'Jest to przykładowy komentarz używany do podglądu treści wiadomości e-mail. To nie jest prawdziwa treść.'
+      idea_title: 'Przykładowy pomysł'
     footer:
       "link_privacy_policy": "Polityka prywatności"
       "link_terms_conditions": "Regulamin"

@@ -50,6 +50,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
   },
+  filesTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.filesTab',
+    defaultMessage: 'Files',
+  },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
     defaultMessage: 'View project',

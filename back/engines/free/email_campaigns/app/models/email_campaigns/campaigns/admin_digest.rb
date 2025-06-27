@@ -20,7 +20,10 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
+<<<<<<< HEAD
 #  context_type         :string
+=======
+>>>>>>> master
 #
 # Indexes
 #

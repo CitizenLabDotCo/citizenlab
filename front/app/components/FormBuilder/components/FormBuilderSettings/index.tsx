@@ -32,19 +32,18 @@ import { getFieldNumbers } from '../utils';
 
 import ContentSettings from './ContentSettings';
 import LogicSettings from './LogicSettings';
+import PrintSupportTooltip from './PrintSupportTooltip';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
   closeSettings: (triggerAutosave?: boolean) => void;
   builderConfig: FormBuilderConfig;
-  formHasSubmissions: boolean;
 }
 
 const FormBuilderSettings = ({
   field,
   closeSettings,
   builderConfig,
-  formHasSubmissions,
 }: Props) => {
   const localize = useLocalize();
   const [currentTab, setCurrentTab] = useState<ICustomFieldSettingsTab>(
@@ -152,9 +151,16 @@ const FormBuilderSettings = ({
         />
       </Box>
       {translatedStringKey && (
-        <Title variant="h4" as="h2" mb="8px">
-          <FormattedMessage {...translatedStringKey} />
-        </Title>
+        <Box display="flex">
+          <Box>
+            <Title variant="h4" as="h2" mb="8px">
+              <FormattedMessage {...translatedStringKey} />
+            </Title>
+          </Box>
+          <Box pt="16px" ml="8px">
+            <PrintSupportTooltip fieldType={fieldType} />
+          </Box>
+        </Box>
       )}
       {showTabbedSettings && builderConfig.isLogicEnabled && (
         <Box display="flex" width="100%" mb="40px">
@@ -193,10 +199,7 @@ const FormBuilderSettings = ({
         !builderConfig.isLogicEnabled || // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (showTabbedSettings && currentTab === 'content')) && (
-        <ContentSettings
-          field={field}
-          formHasSubmissions={formHasSubmissions}
-        />
+        <ContentSettings field={field} />
       )}
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings

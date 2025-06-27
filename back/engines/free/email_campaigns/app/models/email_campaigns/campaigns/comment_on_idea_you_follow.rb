@@ -20,7 +20,10 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
+<<<<<<< HEAD
 #  context_type         :string
+=======
+>>>>>>> master
 #
 # Indexes
 #
@@ -36,6 +39,7 @@ module EmailCampaigns
   class Campaigns::CommentOnIdeaYouFollow < Campaign
     include Consentable
     include Disableable
+    include ContentConfigurable
     include ActivityTriggerable
     include RecipientConfigurable
     include LifecycleStageRestrictable
