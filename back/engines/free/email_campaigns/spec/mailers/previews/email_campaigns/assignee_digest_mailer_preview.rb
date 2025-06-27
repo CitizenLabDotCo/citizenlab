@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class AssigneeDigestMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient_user)

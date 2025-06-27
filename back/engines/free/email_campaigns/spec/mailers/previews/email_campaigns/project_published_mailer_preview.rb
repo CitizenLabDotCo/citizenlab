@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class ProjectPublishedMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       project = Project.find_by(internal_role: 'open_idea_box')

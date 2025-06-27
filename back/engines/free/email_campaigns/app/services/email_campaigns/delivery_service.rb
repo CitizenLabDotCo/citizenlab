@@ -115,6 +115,9 @@ module EmailCampaigns
       return {} unless mail
 
       {
+        to: campaign.class.recipient_segment_multiloc_key ? I18n.t(campaign.class.recipient_segment_multiloc_key, locale: recipient.locale) : '',
+        from: mail[:from].value,
+        reply_to: mail.reply_to.first,
         subject: mail.subject,
         html: mail.body.to_s
       }

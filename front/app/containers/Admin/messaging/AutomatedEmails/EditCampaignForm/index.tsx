@@ -4,7 +4,7 @@ import { Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
-import { object } from 'yup';
+import { object, string } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import {
@@ -23,6 +23,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import Input from 'components/HookForm/Input';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -30,7 +31,6 @@ const StyledSection = styled(Section)`
 
 type CampaignFormProps = {
   onSubmit: (formValues: Partial<CampaignFormValues>) => void | Promise<void>;
-  defaultValues?: Partial<CampaignFormValues>;
   campaign: ICampaign;
   isLoading: boolean;
 };
@@ -46,22 +46,32 @@ const EditCampaignForm = ({
 
   // Schema and default values are derived from which editable regions are present
   const editableRegions = campaign.data.attributes.editable_regions || [];
+  const editableRegionVariableKeys =
+    campaign.data.attributes.editable_region_variable_keys || [];
 
-  const schema = object(
-    editableRegions.reduce((fieldSchema, region) => {
+  const schema = object({
+    ...editableRegions.reduce((fieldSchema, region) => {
       if (!region.allow_blank_locales) {
         fieldSchema[region.key] = validateMultilocForEveryLocale(
           formatMessage(messages.regionMultilocError)
         );
       }
       return fieldSchema;
-    }, {})
-  );
+    }, {}),
+    ...{
+      reply_to: string()
+        .email(formatMessage(messages.fieldReplyToEmailError))
+        .nullable(),
+    },
+  });
 
-  const defaultValues = editableRegions.reduce((fieldValue, region) => {
-    fieldValue[region.key] = campaign.data.attributes[region.key];
-    return fieldValue;
-  }, {});
+  const defaultValues = {
+    ...editableRegions.reduce((fieldValue, region) => {
+      fieldValue[region.key] = campaign.data.attributes[region.key];
+      return fieldValue;
+    }, {}),
+    ...{ reply_to: campaign.data.attributes.reply_to },
+  };
 
   const methods = useForm({
     mode: 'onBlur',
@@ -81,32 +91,47 @@ const EditCampaignForm = ({
     }
   };
 
-  const tooltipText = (region: EditableRegion) => (
-    <>
-      <p>
-        <FormattedMessage {...messages.variablesToolTip} />
-      </p>
-      <ul>
-        {region.variables.map((variable) => (
-          <li key={variable}>
-            {'{{'}
-            {variable}
-            {'}}'}
-          </li>
-        ))}
-      </ul>
-    </>
-  );
+  const variablesTooltipText =
+    editableRegionVariableKeys.length === 0 ? null : (
+      <>
+        <p>
+          <FormattedMessage {...messages.variablesToolTip} />
+        </p>
+        <ul>
+          {editableRegionVariableKeys.map((variable) => (
+            <li key={variable}>
+              {'{{'}
+              {variable}
+              {'}}'}
+            </li>
+          ))}
+        </ul>
+      </>
+    );
 
   const regionFieldLabel = (region: EditableRegion) => {
     const messageKey = messages[`editRegion_${region.key}`];
     return formatMessage(messageKey);
   };
 
+  const defaultReplyTo = appConfig.data.attributes.settings.core.reply_to_email;
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+        <h2>Edit</h2>
         <StyledSection>
+          <SectionField>
+            <Input
+              id="e2e-reply-to-input"
+              name="reply_to"
+              type="email"
+              placeholder={defaultReplyTo}
+              label={formatMessage(messages.fieldReplyTo)}
+              labelTooltipText={formatMessage(messages.fieldReplyToTooltip)}
+            />
+          </SectionField>
+
           {editableRegions.map((region) => (
             <SectionField
               className={`e2e-automated-campaign-edit-region-${region.key}`}
@@ -116,7 +141,7 @@ const EditCampaignForm = ({
                 <QuillMultilocWithLocaleSwitcher
                   name={region.key}
                   label={regionFieldLabel(region)}
-                  labelTooltipText={tooltipText(region)}
+                  labelTooltipText={variablesTooltipText}
                   noVideos
                   noAlign
                 />
@@ -125,7 +150,7 @@ const EditCampaignForm = ({
                 <InputMultilocWithLocaleSwitcher
                   name={region.key}
                   label={regionFieldLabel(region)}
-                  labelTooltipText={tooltipText(region)}
+                  labelTooltipText={variablesTooltipText}
                 />
               )}
             </SectionField>
