@@ -4,7 +4,10 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 
-import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+} from 'api/custom_fields/types';
 
 import useLocale from 'hooks/useLocale';
 
@@ -82,7 +85,7 @@ const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
       });
     }
   }
-  const formCustomFields: IFlatCustomFieldWithIndex[] = watch('customFields');
+  const formCustomFields: IFlatCustomField[] = watch('customFields');
   const fieldType = watch(`customFields.${field.index}.input_type`);
   const pageOptions = usePageList();
   // Which page is the current question on?
