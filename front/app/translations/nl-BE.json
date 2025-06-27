@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "Fout bij het downloaden van het ICS-bestand",
   "app.containers.EventsShow.linkToOnlineEvent": "Link naar online evenement",
   "app.containers.EventsShow.locationIconAltText": "Locatie",
+  "app.containers.EventsShow.metaTitle": "Activiteit: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Online bijeenkomst",
   "app.containers.EventsShow.onlineLinkIconAltText": "Link naar online vergadering",
   "app.containers.EventsShow.socialMediaSharingMessage": "Woon dit evenement bij: {eventTitle}",
