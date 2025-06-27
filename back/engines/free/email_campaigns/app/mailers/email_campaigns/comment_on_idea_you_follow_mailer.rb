@@ -4,8 +4,6 @@ module EmailCampaigns
   class CommentOnIdeaYouFollowMailer < ApplicationMailer
     include EditableWithPreview
 
-    # TODO: What about the difference based on idea term here?
-    # Maybe change the actual translations to include as a variable 'an idea' or 'a proposal'?
     def self.campaign_class
       Campaigns::CommentOnIdeaYouFollow
     end
@@ -14,27 +12,27 @@ module EmailCampaigns
       [
         define_editable_region(
           :subject_multiloc,
-          default_message_key: 'subject',
-          variables: ['input_title']
+          default_message_key: 'subject'
         ),
         define_editable_region(
           :title_multiloc,
-          default_message_key: 'main_header.idea',
-          variables: ['authorName']
+          default_message_key: 'main_header.idea'
         ),
         define_editable_region(
           :intro_multiloc,
           type: 'html',
           default_message_key: 'event_description',
-          variables: %w[authorName authorNameFull inputTitle],
           allow_blank_locales: true
         ),
         define_editable_region(
           :button_text_multiloc,
-          default_message_key: 'cta_reply_to',
-          variables: %w[commentAuthor inputTitle]
+          default_message_key: 'cta_reply_to'
         )
       ]
+    end
+
+    def self.editable_region_variable_keys
+      %w[organizationName input_title inputTitle authorName authorNameFull commentAuthor]
     end
 
     def self.preview_command(recipient: nil)

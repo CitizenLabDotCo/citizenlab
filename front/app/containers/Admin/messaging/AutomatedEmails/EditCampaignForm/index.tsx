@@ -46,6 +46,8 @@ const EditCampaignForm = ({
 
   // Schema and default values are derived from which editable regions are present
   const editableRegions = campaign.data.attributes.editable_regions || [];
+  const editableRegionVariableKeys =
+    campaign.data.attributes.editable_region_variable_keys || [];
 
   const schema = object({
     ...editableRegions.reduce((fieldSchema, region) => {
@@ -87,22 +89,23 @@ const EditCampaignForm = ({
     }
   };
 
-  const tooltipText = (region: EditableRegion) => (
-    <>
-      <p>
-        <FormattedMessage {...messages.variablesToolTip} />
-      </p>
-      <ul>
-        {region.variables.map((variable) => (
-          <li key={variable}>
-            {'{{'}
-            {variable}
-            {'}}'}
-          </li>
-        ))}
-      </ul>
-    </>
-  );
+  const variablesTooltipText =
+    editableRegionVariableKeys.length === 0 ? null : (
+      <>
+        <p>
+          <FormattedMessage {...messages.variablesToolTip} />
+        </p>
+        <ul>
+          {editableRegionVariableKeys.map((variable) => (
+            <li key={variable}>
+              {'{{'}
+              {variable}
+              {'}}'}
+            </li>
+          ))}
+        </ul>
+      </>
+    );
 
   const regionFieldLabel = (region: EditableRegion) => {
     const messageKey = messages[`editRegion_${region.key}`];
@@ -136,7 +139,7 @@ const EditCampaignForm = ({
                 <QuillMultilocWithLocaleSwitcher
                   name={region.key}
                   label={regionFieldLabel(region)}
-                  labelTooltipText={tooltipText(region)}
+                  labelTooltipText={variablesTooltipText}
                   noVideos
                   noAlign
                 />
@@ -145,7 +148,7 @@ const EditCampaignForm = ({
                 <InputMultilocWithLocaleSwitcher
                   name={region.key}
                   label={regionFieldLabel(region)}
-                  labelTooltipText={tooltipText(region)}
+                  labelTooltipText={variablesTooltipText}
                 />
               )}
             </SectionField>

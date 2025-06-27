@@ -9,12 +9,16 @@ module EmailCampaigns
         []
       end
 
-      def define_editable_region(key, type: 'text', default_message_key: key.to_s, variables: [], allow_blank_locales: false)
+      # Each mailer can define its own editable region variables - these must match the keys of substitution_variables.
+      def editable_region_variable_keys
+        []
+      end
+
+      def define_editable_region(key, type: 'text', default_message_key: key.to_s, allow_blank_locales: false)
         message_group = "email_campaigns.#{campaign_class.name.demodulize.underscore}"
         {
           key: key,
           type: type,
-          variables: variables,
           default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{default_message_key}") || {},
           allow_blank_locales: allow_blank_locales
         }
@@ -35,7 +39,7 @@ module EmailCampaigns
 
     private
 
-    # Variables for substitution in the email templates - override in subclasses.
+    # Variables available for substitution in the email templates - override in classes.
     def substitution_variables
       {}
     end
