@@ -8,6 +8,7 @@ class ProjectsFinderAdminService
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
     projects = filter_date(projects, params)
+    projects = filter_participation_states(projects, params)
 
     # Apply sorting
     if params[:sort] == 'recently_viewed'
@@ -131,5 +132,61 @@ class ProjectsFinderAdminService
       )
 
     scope.where(id: overlapping_project_ids)
+  end
+
+  def self.filter_participation_states(scope, params = {})
+    participation_states = params[:participation_states] || []
+    return scope if participation_states.blank?
+    
+    use_or = false
+  
+    if participation_states.include?('not_started')
+      phases_not_in_the_future = Phase.where("start_at < ?", DateTime.current)
+      scope = scope.where.not(id: phases_not_in_the_future.select(:project_id))
+
+      use_or = true
+    end
+
+    if participation_states.include?('collecting_data')
+      phase_scope = Phase.where("
+          ((start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)) AND
+          participation_method != 'information'
+      ", Date.today, Date.today)
+
+      if use_or
+        scope = scope.or(Phase.where(id: phase_scope.select(:project_id)))
+      else
+        scope = scope.where(id: phase_scope.select(:project_id))
+      end
+
+      use_or = true
+    end
+
+    if participation_states.include?('informing')
+      phase_scope = Phase.where("
+        ((start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)) AND
+        participation_method = 'information'
+      ", Date.today, Date.today)
+
+      if use_or
+        scope = scope.or(Phase.where(id: phase_scope.select(:project_id)))
+      else
+        scope = scope.where(id: phase_scope.select(:project_id))
+      end
+
+      use_or = true
+    end
+
+    if participation_states.include?('finished')
+      phases_not_in_the_past = Phase.where("coalesce(end_at, 'infinity'::DATE) >= ?", DateTime.current)
+
+      if use_or
+        scope = scope.or(Phase.where.not(id: phases_not_in_the_past.select(:project_id)))
+      else
+        scope = scope.where.not(id: phases_not_in_the_past.select(:project_id))
+      end
+    end
+
+    scope
   end
 end
