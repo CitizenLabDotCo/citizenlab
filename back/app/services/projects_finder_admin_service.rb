@@ -8,6 +8,7 @@ class ProjectsFinderAdminService
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
     projects = filter_date(projects, params)
+    projects = filter_participation_states(projects, params)
 
     # Apply sorting
     if params[:sort] == 'recently_viewed'
@@ -131,5 +132,13 @@ class ProjectsFinderAdminService
       )
 
     scope.where(id: overlapping_project_ids)
+  end
+
+  def self.filter_participation_states(scope, params = {})
+    participation_states = params[:participation_states] || []
+    return scope if participation_state.blank?
+
+    # TODO
+    scope
   end
 end
