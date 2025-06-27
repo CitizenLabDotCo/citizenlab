@@ -239,6 +239,7 @@ resource 'Events' do
           created_at: event.created_at.iso8601(3),
           updated_at: event.updated_at.iso8601(3),
           attendees_count: event.attendees_count,
+          maximum_attendees: event.maximum_attendees,
           online_link: event.online_link
         }
       )

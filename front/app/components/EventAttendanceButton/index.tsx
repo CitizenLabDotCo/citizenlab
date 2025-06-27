@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 
-import { Button, colors, Tooltip } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import { Button, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
 import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
@@ -35,7 +34,6 @@ type EventAttendanceButtonProps = {
 };
 
 const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
-  const theme = useTheme();
   const { data: user } = useAuthUser();
   const { mutate: addFollower } = useAddFollower();
   const { formatMessage } = useIntl();
@@ -142,10 +140,18 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     setConfirmationModalVisible(true);
   };
 
+  const maxAttendeesReached =
+    event.attributes.maximum_attendees !== null &&
+    event.attributes.attendees_count >= event.attributes.maximum_attendees;
+
   const getButtonText = () => {
+    // First check if maximum attendees is reached and user is not attending
+    if (maxAttendeesReached && !userIsAttending) {
+      return formatMessage(messages.noSpotsLeft);
+    }
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (customButtonText && event?.attributes.using_url) {
+    else if (customButtonText && event?.attributes.using_url) {
       return customButtonText;
     } else if (userIsAttending) {
       return formatMessage(messages.attending);
@@ -154,9 +160,13 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const getButtonIcon = () => {
+    // Don't show any icon when no spots left
+    if (maxAttendeesReached && !userIsAttending) {
+      return undefined;
+    }
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (event?.attributes.using_url) {
+    else if (event?.attributes.using_url) {
       return undefined;
     } else if (userIsAttending) {
       return 'check';
@@ -168,7 +178,9 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   // Permissions disabled reasons
   const buttonDisabled =
-    !!disabled_reason && !isFixableByAuthentication(disabled_reason);
+    (!!disabled_reason && !isFixableByAuthentication(disabled_reason)) ||
+    (maxAttendeesReached && !userIsAttending);
+
   const permissionDisabledMessageDescriptor = getPermissionsDisabledMessage(
     'attending_event',
     disabled_reason
@@ -191,16 +203,20 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           iconPos={userIsAttending ? 'left' : 'right'}
           icon={getButtonIcon()}
           iconSize="20px"
-          bgColor={
-            userIsAttending ? colors.success : theme.colors.tenantPrimary
-          }
-          disabled={buttonDisabled}
+          disabled={buttonDisabled || (maxAttendeesReached && !userIsAttending)}
           onClick={(event) => {
             event.preventDefault();
             handleClick();
           }}
           processing={isLoading}
           className="e2e-event-attendance-button"
+          aria-label={
+            maxAttendeesReached && !userIsAttending
+              ? formatMessage(messages.noSpotsLeft)
+              : formatMessage(
+                  userIsAttending ? messages.attending : messages.attend
+                )
+          }
         >
           {getButtonText()}
         </Button>

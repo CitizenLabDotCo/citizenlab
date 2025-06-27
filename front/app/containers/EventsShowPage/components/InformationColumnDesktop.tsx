@@ -57,7 +57,11 @@ const InformationColumnDesktop = ({ event, className }: Props) => {
                   </Box>
                 )}
                 {event.attributes.attendees_count > 0 && (
-                  <ParticipantsCount count={event.attributes.attendees_count} />
+                  <ParticipantsCount
+                    count={event.attributes.attendees_count}
+                    maximumAttendees={event.attributes.maximum_attendees}
+                    isPastEvent={isPastEvent}
+                  />
                 )}
                 <Box borderBottom={`solid 1px ${colors.divider}`} />
               </>

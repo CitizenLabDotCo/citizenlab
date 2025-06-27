@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.components.EventAttendanceButton.attending',
     defaultMessage: 'Attending',
   },
+  noSpotsLeft: {
+    id: 'app.components.EventAttendanceButton.noSpotsLeft',
+    defaultMessage: 'No spots left',
+  },
   seeYouThereName: {
     id: 'app.components.EventAttendanceButton.seeYouThereName',
     defaultMessage: 'See you there, {userFirstName}!',
