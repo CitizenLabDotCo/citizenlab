@@ -157,6 +157,21 @@ class ProjectsFinderAdminService
         )
     end
 
+    if participation_states.include?('informing')
+      phase_scope = phase_scope
+        .or(
+          "
+            ((start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)) AND
+            participation_method = 'information'
+          ",
+          start_at, end_at
+        )
+    end
+
+    if participation_states.include?('finished')
+      # TODO
+    end
+
     scope.where(id: phase_scope.select(:project_id))
   end
 end
