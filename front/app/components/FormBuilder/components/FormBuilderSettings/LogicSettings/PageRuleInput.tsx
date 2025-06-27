@@ -28,8 +28,6 @@ import { isPageRuleValid } from 'utils/yup/validateLogic';
 import messages from '../../messages';
 import usePageList from '../usePageList';
 
-import { PageListType } from './index';
-
 type RuleInputProps = {
   field: IFlatCustomFieldWithIndex;
   name: string;

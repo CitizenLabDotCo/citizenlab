@@ -20,13 +20,6 @@ import usePageList from '../usePageList';
 import { PageRuleInput } from './PageRuleInput';
 import { QuestionRuleInput } from './QuestionRuleInput';
 
-export type PageListType =
-  | {
-      value: string | undefined;
-      label: string;
-      disabled?: boolean;
-    }[];
-
 type LogicSettingsProps = {
   field: IFlatCustomFieldWithIndex;
   builderConfig: FormBuilderConfig | undefined;

@@ -9,6 +9,12 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { getFieldNumbers } from '../utils';
 
+type PageListType = {
+  value: string | undefined;
+  label: string;
+  disabled?: boolean;
+};
+
 function usePageList() {
   const { watch } = useFormContext();
   const { formatMessage } = useIntl();
@@ -16,7 +22,7 @@ function usePageList() {
 
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const fieldNumbers = getFieldNumbers(formCustomFields);
-  const pageArray: { value: string; label: string }[] = [];
+  const pageArray: PageListType[] = [];
 
   formCustomFields.forEach((field, i) => {
     if (field.input_type === 'page') {
