@@ -87,7 +87,8 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
         campaign.update!(
           subject_multiloc: { 'en' => 'Custom Subject - {{ firstName }}' },
           title_multiloc: { 'en' => 'NEW TITLE FOR {{ firstName }}' },
-          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' }
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' },
+          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
         )
       end
 
@@ -101,6 +102,10 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
 
       it 'can customise the body including HTML' do
         expect(mail_body(mail)).to include('<b>NEW BODY TEXT</b>')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail_body(mail)).to include('CLICK THE BUTTON')
       end
     end
   end
