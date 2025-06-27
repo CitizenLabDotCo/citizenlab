@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 
-import { Button, colors, Tooltip } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import { Button, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
 import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
@@ -35,7 +34,6 @@ type EventAttendanceButtonProps = {
 };
 
 const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
-  const theme = useTheme();
   const { data: user } = useAuthUser();
   const { mutate: addFollower } = useAddFollower();
   const { formatMessage } = useIntl();
