@@ -492,6 +492,8 @@ export const GanttChart = ({
                 if (duration <= 0) return null;
 
                 let highlightEl: JSX.Element | null = null;
+                let textInHighlight = false;
+
                 const highlightStart = item.highlightStartDate
                   ? new Date(item.highlightStartDate)
                   : null;
@@ -518,8 +520,11 @@ export const GanttChart = ({
                     logicalHighlightEnd,
                   ]);
 
-                  // Calculate geometry if there is a visible portion.
+                  // Condition: Is there a highlight and does it start at the same time as the bar?
                   if (vizHighlightStart < vizHighlightEnd) {
+                    textInHighlight =
+                      vizHighlightStart.getTime() === effectiveStart.getTime();
+
                     const highlightOffset = isYearlyView
                       ? getOffsetInMonths(startDate, vizHighlightStart)
                       : getOffsetInDays(startDate, vizHighlightStart);
@@ -538,14 +543,50 @@ export const GanttChart = ({
                           height={`${rowHeight - 8}px`}
                           bg={colors.teal50}
                           border={`1px solid ${colors.teal400}`}
+                          display="flex"
+                          alignItems="center"
+                          overflow="hidden"
                           style={{
                             pointerEvents: 'none',
                           }}
-                        />
+                        >
+                          {textInHighlight && (
+                            <Box
+                              as="span"
+                              px="8px"
+                              style={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                color: colors.grey800,
+                                fontWeight: 500,
+                              }}
+                            >
+                              {item.title}
+                            </Box>
+                          )}
+                        </Box>
                       );
                     }
                   }
                 }
+
+                const textLabel = (
+                  <Box
+                    as="span"
+                    px="8px"
+                    style={{
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      color: colors.grey800,
+                      fontWeight: 500,
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    {item.title}
+                  </Box>
+                );
 
                 return (
                   <React.Fragment key={item.id}>
@@ -559,14 +600,28 @@ export const GanttChart = ({
                       border="1px solid"
                       borderColor={colors.grey300}
                       borderRadius="4px"
+                      display="flex"
+                      alignItems="center"
+                      overflow="hidden"
                       style={{
                         cursor: onItemClick ? 'pointer' : 'default',
                       }}
                       onClick={() => onItemClick?.(item)}
                     >
+                      {!textInHighlight && textLabel}
                       {renderItemTooltip && (
                         <Tooltip content={renderItemTooltip(item)}>
-                          <Box width="100%" height="100%" />
+                          <Box
+                            position="absolute"
+                            width="100%"
+                            height="100%"
+                            top="0"
+                            left="0"
+                            style={{
+                              cursor: 'pointer',
+                              zIndex: 4,
+                            }}
+                          />
                         </Tooltip>
                       )}
                     </Box>
