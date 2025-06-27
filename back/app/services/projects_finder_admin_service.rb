@@ -143,6 +143,8 @@ class ProjectsFinderAdminService
     if participation_states.include?('not_started')
       phases_not_in_the_future = Phase.where("start_at < ?", DateTime.current)
       scope = scope.where.not(id: phases_not_in_the_future.select(:project_id))
+
+      use_or = true
     end
 
     if participation_states.include?('collecting_data')
@@ -151,10 +153,11 @@ class ProjectsFinderAdminService
           participation_method != 'information'
       ", Date.today, Date.today)
 
-      scope = scope.or if use_or
-
-      scope = scope
-        .where(id: phase_scope.select(:project_id))
+      if use_or
+        scope = scope.or(Phase.where(id: phase_scope.select(:project_id)))
+      else
+        scope = scope.where(id: phase_scope.select(:project_id))
+      end
 
       use_or = true
     end
@@ -165,10 +168,11 @@ class ProjectsFinderAdminService
         participation_method = 'information'
       ", Date.today, Date.today)
 
-      scope = scope.or if use_or
-
-      scope = scope
-        .where(id: phase_scope.select(:project_id))
+      if use_or
+        scope = scope.or(Phase.where(id: phase_scope.select(:project_id)))
+      else
+        scope = scope.where(id: phase_scope.select(:project_id))
+      end
 
       use_or = true
     end
@@ -176,10 +180,11 @@ class ProjectsFinderAdminService
     if participation_states.include?('finished')
       phases_not_in_the_past = Phase.where("coalesce(end_at, 'infinity'::DATE) >= ?", DateTime.current)
 
-      scope = scope.or if use_or
-
-      scope = scope
-        .where.not(id: phases_not_in_the_past.select(:project_id))
+      if use_or
+        scope = scope.or(Phase.where.not(id: phases_not_in_the_past.select(:project_id)))
+      else
+        scope = scope.where.not(id: phases_not_in_the_past.select(:project_id))
+      end
     end
 
     scope
