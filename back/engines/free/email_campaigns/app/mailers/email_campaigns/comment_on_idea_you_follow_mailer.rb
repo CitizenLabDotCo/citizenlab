@@ -31,17 +31,17 @@ module EmailCampaigns
       end
 
       def preview_command(recipient: nil)
-        data = preview_data(recipient)
+        data = PreviewService.preview_data(recipient)
         {
           recipient: recipient,
           event_payload: {
-            initiating_user_first_name: data[:user_first_name],
-            comment_author_name: data[:user_display_name],
-            comment_body_multiloc: data[:comment_body_multiloc],
-            comment_url: data[:idea_url],
-            idea_title_multiloc: data[:idea_title_multiloc],
+            initiating_user_first_name: data.author.first_name,
+            comment_author_name: data.author.display_name,
+            comment_body_multiloc: data.comment.body_multiloc,
+            comment_url: data.idea.url,
+            idea_title_multiloc: data.idea.title_multiloc,
             idea_input_term: 'idea',
-            unfollow_url: data[:idea_url]
+            unfollow_url: data.idea.url
           }
         }
       end

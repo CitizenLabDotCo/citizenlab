@@ -19,6 +19,9 @@ module EmailCampaigns
           ),
           define_editable_region(
             :intro_multiloc, default_message_key: 'text_introduction', type: 'html', allow_blank_locales: true
+          ),
+          define_editable_region(
+            :button_text_multiloc, default_message_key: 'cta_visit_the_platform'
           )
         ]
       end
@@ -28,7 +31,7 @@ module EmailCampaigns
       end
 
       def preview_command(recipient: nil)
-        data = preview_data(recipient)
+        data = PreviewService.preview_data(recipient)
         {
           recipient: recipient,
           event_payload: {
@@ -39,15 +42,15 @@ module EmailCampaigns
             },
             top_project_inputs: [
               {
-                project: { url: data[:project_url], title_multiloc: data[:project_title_multiloc] },
+                project: { url: data.project.url, title_multiloc: data.project.title_multiloc },
                 current_phase: nil,
                 top_ideas: [
                   {
                     id: '1234',
-                    title_multiloc: data[:idea_title_multiloc],
-                    url: data[:idea_url],
+                    title_multiloc: data.idea.title_multiloc,
+                    url: data.idea.url,
                     published_at: 1.week.ago.iso8601,
-                    author_name: data[:user_display_name],
+                    author_name: data.author.display_name,
                     likes_count: 10,
                     likes_increment: 2,
                     dislikes_count: 3,
@@ -60,18 +63,18 @@ module EmailCampaigns
             ],
             successful_proposals: [
               {
-                id: '1234',
-                title_multiloc: data[:proposal_title_multiloc],
-                url: data[:idea_url],
+                id: data.proposal.id,
+                title_multiloc: data.proposal.title_multiloc,
+                url: data.idea.url,
                 published_at: 1.day.ago.iso8601,
-                author_name: data[:user_display_name],
+                author_name: data.author.display_name,
                 likes_count: 12,
                 comments_count: 5
               }
             ]
           },
           tracked_content: {
-            idea_ids: ['1234']
+            idea_ids: [data.idea.id]
           }
         }
       end
