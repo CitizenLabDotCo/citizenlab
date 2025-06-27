@@ -767,7 +767,7 @@ GEM
     interception (0.5)
     intercom (4.2.1)
     io-console (0.8.0)
-    irb (1.15.1)
+    irb (1.15.2)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
@@ -985,7 +985,7 @@ GEM
     pry-rescue (1.6.0)
       interception (>= 0.5)
       pry (>= 0.12.0)
-    psych (5.2.3)
+    psych (5.2.4)
       date
       stringio
     public_suffix (5.1.1)
@@ -1044,10 +1044,10 @@ GEM
     rails-i18n (7.0.9)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
-    rails_semantic_logger (4.14.0)
+    rails_semantic_logger (4.17.0)
       rack
       railties (>= 5.1)
-      semantic_logger (~> 4.13)
+      semantic_logger (~> 4.16)
     railties (7.1.5.1)
       actionpack (= 7.1.5.1)
       activesupport (= 7.1.5.1)
@@ -1062,11 +1062,11 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rbtree (0.4.6)
-    rdoc (6.11.0)
+    rdoc (6.13.1)
       psych (>= 4.0.0)
     redcarpet (3.6.0)
     regexp_parser (2.10.0)
-    reline (0.6.0)
+    reline (0.6.1)
       io-console (~> 0.5)
     representable (3.1.1)
       declarative (< 0.1.0)
@@ -1204,7 +1204,7 @@ GEM
       railties (>= 4.0.0)
     scientist (1.6.4)
     securerandom (0.4.1)
-    semantic_logger (4.15.0)
+    semantic_logger (4.16.1)
       concurrent-ruby (~> 1.0)
     sentry-rails (5.21.0)
       railties (>= 5.0)
@@ -1241,7 +1241,7 @@ GEM
       spring (>= 4)
     ssrf_filter (1.2.0)
     stackprof (0.2.26)
-    stringio (3.1.2)
+    stringio (3.1.7)
     swd (2.0.2)
       activesupport (>= 3)
       attr_required (>= 0.0.5)
@@ -1300,7 +1300,7 @@ GEM
       rexml
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.7.1)
+    zeitwerk (2.7.2)
 
 PLATFORMS
   aarch64-linux
