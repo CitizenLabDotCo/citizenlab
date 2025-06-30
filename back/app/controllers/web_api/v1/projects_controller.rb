@@ -23,7 +23,6 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
     # but it doesn't make any difference with `preload`. Still using it in case the query changes.
     @projects = Project.where(id: publications.pluck(:publication_id)).ordered
-
     @projects = paginate @projects
     @projects = @projects.preload(
       :project_images,
