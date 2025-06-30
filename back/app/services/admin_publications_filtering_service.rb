@@ -132,4 +132,11 @@ class AdminPublicationsFilteringService
       scope.where(parent_id: folder) # .or(folder) Maybe we should add the folder itself
     end
   end
+
+  add_filter('include_unlisted') do |scope, options|
+    next scope if options[:include_unlisted] == 'true'
+
+    unlisted_projects = Project.where(unlisted: true)
+    scope.where.not(id: unlisted_projects.select(:publication_id))
+  end
 end
