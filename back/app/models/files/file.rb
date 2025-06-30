@@ -32,8 +32,7 @@ module Files
     has_many :projects, through: :files_projects
 
     # TODO: Maybe reconsider the name of this column.
-    # TODO: Using temporarily the ProjectFolders::FileUploader
-    mount_base64_file_uploader :content, ::ProjectFolders::FileUploader
+    mount_base64_file_uploader :content, FileUploader
 
     validates :name, presence: true
     validates :content, presence: true
