@@ -106,13 +106,15 @@ const SingleFileUploaderField = ({
 
   return (
     <Box data-cy="e2e-idea-file-upload" width="100%">
-      <Controller
-        name={name}
-        control={control}
-        render={({ field: { ref: _ref, ...field } }) => {
-          return <SingleFileInput onAdd={onFileAdd} id={name} {...field} />;
-        }}
-      />
+      {!file && (
+        <Controller
+          name={name}
+          control={control}
+          render={({ field: { ref: _ref, ...field } }) => {
+            return <SingleFileInput onAdd={onFileAdd} id={name} {...field} />;
+          }}
+        />
+      )}
       {errorMessage && (
         <Error
           marginTop="8px"

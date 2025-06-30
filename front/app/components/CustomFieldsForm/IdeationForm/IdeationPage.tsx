@@ -198,8 +198,6 @@ const IdeationPage = ({
 
   return (
     <FormProvider {...methods}>
-      {showFormFeedback && <Feedback />}
-
       <StyledForm id="idea-form">
         <Box
           id="container"
@@ -235,6 +233,8 @@ const IdeationPage = ({
               overflowX="hidden"
               ref={pageRef}
             >
+              {showFormFeedback && <Feedback />}
+
               {shouldShowMap && isMobileOrSmaller && (
                 <PageEsriDivider dragDividerRef={dragDividerRef} />
               )}
