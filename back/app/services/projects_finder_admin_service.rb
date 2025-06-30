@@ -138,11 +138,13 @@ class ProjectsFinderAdminService
     participation_states = params[:participation_states] || []
     return scope if participation_states.blank?
 
+    today = Time.zone.today
+
     conditions = []
 
     if participation_states.include?('not_started')
       # Projects with no phases that have started yet
-      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE start_at < '#{DateTime.current.iso8601}')"
+      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE start_at < '#{today}')"
     end
 
     if participation_states.include?('collecting_data')
@@ -150,7 +152,7 @@ class ProjectsFinderAdminService
       conditions << <<-SQL.squish
         projects.id IN (
           SELECT project_id FROM phases
-          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{Time.zone.today}', '#{Time.zone.today}')
+          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{today}', '#{today}')
           AND participation_method != 'information'
         )
       SQL
@@ -161,7 +163,7 @@ class ProjectsFinderAdminService
       conditions << <<-SQL.squish
         projects.id IN (
           SELECT project_id FROM phases
-          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{Time.zone.today}', '#{Time.zone.today}')
+          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{today}', '#{today}')
           AND participation_method = 'information'
         )
       SQL
@@ -169,7 +171,7 @@ class ProjectsFinderAdminService
 
     if participation_states.include?('past')
       # Projects with no phases that end in the future
-      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE coalesce(end_at, 'infinity'::DATE) >= '#{DateTime.current.iso8601}')"
+      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE coalesce(end_at, 'infinity'::DATE) >= '#{today}')"
     end
 
     scope.where(conditions.map { |c| "(#{c})" }.join(' OR '))
