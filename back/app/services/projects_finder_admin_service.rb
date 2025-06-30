@@ -138,28 +138,21 @@ class ProjectsFinderAdminService
     participation_states = params[:participation_states] || []
     return scope if participation_states.blank?
     
-    use_or = false
-  
+    project_ids = []
+
     if participation_states.include?('not_started')
       phases_not_in_the_future = Phase.where("start_at < ?", DateTime.current)
-      scope = scope.where.not(id: phases_not_in_the_future.select(:project_id))
-
-      use_or = true
+      not_started_ids = scope.where.not(id: phases_not_in_the_future.select(:project_id)).pluck(:id)
+      project_ids.concat(not_started_ids)
     end
 
     if participation_states.include?('collecting_data')
       phase_scope = Phase.where("
-          ((start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)) AND
-          participation_method != 'information'
+        ((start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)) AND
+        participation_method != 'information'
       ", Date.today, Date.today)
-
-      if use_or
-        scope = scope.or(Phase.where(id: phase_scope.select(:project_id)))
-      else
-        scope = scope.where(id: phase_scope.select(:project_id))
-      end
-
-      use_or = true
+      collecting_data_ids = scope.where(id: phase_scope.select(:project_id)).pluck(:id)
+      project_ids.concat(collecting_data_ids)
     end
 
     if participation_states.include?('informing')
@@ -167,26 +160,16 @@ class ProjectsFinderAdminService
         ((start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)) AND
         participation_method = 'information'
       ", Date.today, Date.today)
-
-      if use_or
-        scope = scope.or(Phase.where(id: phase_scope.select(:project_id)))
-      else
-        scope = scope.where(id: phase_scope.select(:project_id))
-      end
-
-      use_or = true
+      informing_ids = scope.where(id: phase_scope.select(:project_id)).pluck(:id)
+      project_ids.concat(informing_ids)
     end
 
     if participation_states.include?('finished')
       phases_not_in_the_past = Phase.where("coalesce(end_at, 'infinity'::DATE) >= ?", DateTime.current)
-
-      if use_or
-        scope = scope.or(Phase.where.not(id: phases_not_in_the_past.select(:project_id)))
-      else
-        scope = scope.where.not(id: phases_not_in_the_past.select(:project_id))
-      end
+      finished_ids = scope.where.not(id: phases_not_in_the_past.select(:project_id)).pluck(:id)
+      project_ids.concat(finished_ids)
     end
 
-    scope
+    scope.where(id: project_ids.uniq)
   end
 end
