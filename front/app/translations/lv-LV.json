@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Balsošana nav pieejama, jo šis posms nav aktīvs.",
   "app.components.AssignMultipleVotesControl.removeVote": "Noņemt balsojumu",
   "app.components.AssignMultipleVotesControl.select": "Atlasiet",
-  "app.components.AssignMultipleVotesControl.vote": "Balsojums",
-  "app.components.AssignMultipleVotesControl.votes": "balsis",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Jūs jau esat balsojis. Lai mainītu savu balsojumu, noklikšķiniet uz \"Mainīt savu balsojumu\".",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Jūs jau esat balsojis. Lai mainītu savu balsojumu, atgriezieties projekta lapā un noklikšķiniet uz \"Mainīt savu balsojumu\".",
   "app.components.AssignVoteControl.maxVotesReached": "Jūs esat sasniedzis maksimālo balsu skaitu, ko varat iesniegt.",

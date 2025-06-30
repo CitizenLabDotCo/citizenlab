@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "A votação não está disponível, pois essa fase não está ativa.",
   "app.components.AssignMultipleVotesControl.removeVote": "Remover voto",
   "app.components.AssignMultipleVotesControl.select": "Selecione",
-  "app.components.AssignMultipleVotesControl.vote": "Voto",
-  "app.components.AssignMultipleVotesControl.votes": "votos",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Você já enviou seus votos. Clique em \"Modificar seu voto\" para alterar seus votos.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Você já enviou seus votos. Para alterar seus votos, volte à página do projeto e clique em \"Modificar seu voto\".",
   "app.components.AssignVoteControl.maxVotesReached": "Você atingiu o número máximo de votos que pode enviar.",

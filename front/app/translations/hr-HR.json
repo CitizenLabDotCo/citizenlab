@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Glasovanje nije dostupno jer ova faza nije aktivna.",
   "app.components.AssignMultipleVotesControl.removeVote": "Ukloni glas",
   "app.components.AssignMultipleVotesControl.select": "Izaberi",
-  "app.components.AssignMultipleVotesControl.vote": "Glasanje",
-  "app.components.AssignMultipleVotesControl.votes": "glasova",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Već ste predali svoje glasove. Kliknite \"Izmijeni svoj glas\" da promijenite svoje glasove.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Već ste predali svoje glasove. Da biste promijenili svoje glasove, vratite se na stranicu projekta i kliknite \"Izmijeni svoj glas\".",
   "app.components.AssignVoteControl.maxVotesReached": "Dosegli ste maksimalan broj glasova koji možete poslati.",

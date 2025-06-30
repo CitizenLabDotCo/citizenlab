@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "ووٹنگ دستیاب نہیں ہے، کیونکہ یہ مرحلہ فعال نہیں ہے۔",
   "app.components.AssignMultipleVotesControl.removeVote": "ووٹ ہٹا دیں۔",
   "app.components.AssignMultipleVotesControl.select": "منتخب کریں۔",
-  "app.components.AssignMultipleVotesControl.vote": "ووٹ",
-  "app.components.AssignMultipleVotesControl.votes": "ووٹ",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "آپ پہلے ہی اپنے ووٹ جمع کر چکے ہیں۔ اپنے ووٹ تبدیل کرنے کے لیے \"اپنے ووٹ میں ترمیم کریں\" پر کلک کریں۔",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "آپ پہلے ہی اپنے ووٹ جمع کر چکے ہیں۔ اپنے ووٹ تبدیل کرنے کے لیے، پراجیکٹ کے صفحہ پر واپس جائیں اور \"اپنے ووٹ میں ترمیم کریں\" پر کلک کریں۔",
   "app.components.AssignVoteControl.maxVotesReached": "آپ ووٹوں کی زیادہ سے زیادہ تعداد تک پہنچ گئے ہیں جو آپ جمع کرا سکتے ہیں۔",

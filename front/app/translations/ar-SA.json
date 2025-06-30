@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "التصويت غير متاح، حيث أن هذه المرحلة غير نشطة.",
   "app.components.AssignMultipleVotesControl.removeVote": "إزالة التصويت",
   "app.components.AssignMultipleVotesControl.select": "يختار",
-  "app.components.AssignMultipleVotesControl.vote": "تصويت",
-  "app.components.AssignMultipleVotesControl.votes": "أصوات",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "لقد قدمت بالفعل تصويتاتك. انقر فوق \"تعديل تصويتك\" لتغيير تصويتك.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "لقد قدمت بالفعل تصويتاتك. لتغيير تصويتك ، ارجع إلى صفحة المشروع وانقر على \"تعديل تصويتك\".",
   "app.components.AssignVoteControl.maxVotesReached": "لقد وصلت إلى الحد الأقصى لعدد الأصوات التي يمكنك إرسالها.",

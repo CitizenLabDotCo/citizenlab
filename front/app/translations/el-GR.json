@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Η ψηφοφορία δεν είναι διαθέσιμη, δεδομένου ότι η φάση αυτή δεν είναι ενεργή.",
   "app.components.AssignMultipleVotesControl.removeVote": "Αφαίρεση ψήφου",
   "app.components.AssignMultipleVotesControl.select": "Επιλέξτε",
-  "app.components.AssignMultipleVotesControl.vote": "Ψηφίστε",
-  "app.components.AssignMultipleVotesControl.votes": "ψήφοι",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Έχετε ήδη υποβάλει τις ψήφους σας. Κάντε κλικ στο \"Τροποποίηση της ψήφου σας\" για να αλλάξετε τις ψήφους σας.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Έχετε ήδη υποβάλει τις ψήφους σας. Για να αλλάξετε τις ψήφους σας, επιστρέψτε στη σελίδα του έργου και κάντε κλικ στο \"Τροποποίηση της ψήφου σας\".",
   "app.components.AssignVoteControl.maxVotesReached": "Έχετε φτάσει στο μέγιστο αριθμό ψήφων που μπορείτε να υποβάλετε.",
