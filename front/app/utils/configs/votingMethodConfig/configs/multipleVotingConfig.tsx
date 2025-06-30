@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { VoteTerm } from 'api/phases/types';
-import { getPhaseVoteTerm } from 'api/phases/utils';
+import { getPhaseVoteTermMessage } from 'api/phases/utils';
 
 import AssignMultipleVotesBox from 'components/VoteInputs/multiple/AssignMultipleVotesBox';
 import AssignMultipleVotesInput from 'components/VoteInputs/multiple/AssignMultipleVotesInput';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalisedDateString } from 'utils/dateUtils';
 
 import messages from '../messages';
@@ -43,28 +42,21 @@ const multipleVotingConfig: VotingMethodConfig = {
   }: GetStatusDescriptionProps) => {
     if (!phase) return null;
 
-    const voteTerm = getPhaseVoteTerm(phase);
-    const cumulativeVotingInstructionsTotalVotesMessages: {
-      [key in VoteTerm]: MessageDescriptor;
-    } = {
-      vote: messages.cumulativeVotingInstructionsTotalVotes,
-      point: messages.cumulativeVotingInstructionsTotalPoints,
-      token: messages.cumulativeVotingInstructionsTotalTokens,
-      credit: messages.cumulativeVotingInstructionsTotalCredits,
-    };
     const cumulativeVotingInstructionsTotalVotesMessage =
-      cumulativeVotingInstructionsTotalVotesMessages[voteTerm];
-    const cumulativeVotingInstructionsMaxVotesPerIdeaMessages: {
-      [key in VoteTerm]: MessageDescriptor;
-    } = {
-      vote: messages.cumulativeVotingInstructionsMaxVotesPerIdea,
-      point: messages.cumulativeVotingInstructionsMaxPointsPerIdea,
-      token: messages.cumulativeVotingInstructionsMaxTokensPerIdea,
-      credit: messages.cumulativeVotingInstructionsMaxCreditsPerIdea,
-    };
-    const cumulativeVotingInstructionsMaxVotesPerIdeaMessage =
-      cumulativeVotingInstructionsMaxVotesPerIdeaMessages[voteTerm];
+      getPhaseVoteTermMessage(phase, {
+        vote: messages.cumulativeVotingInstructionsTotalVotes,
+        point: messages.cumulativeVotingInstructionsTotalPoints,
+        token: messages.cumulativeVotingInstructionsTotalTokens,
+        credit: messages.cumulativeVotingInstructionsTotalCredits,
+      });
 
+    const cumulativeVotingInstructionsMaxVotesPerIdeaMessage =
+      getPhaseVoteTermMessage(phase, {
+        vote: messages.cumulativeVotingInstructionsMaxVotesPerIdea,
+        point: messages.cumulativeVotingInstructionsMaxPointsPerIdea,
+        token: messages.cumulativeVotingInstructionsMaxTokensPerIdea,
+        credit: messages.cumulativeVotingInstructionsMaxCreditsPerIdea,
+      });
     if (submissionState === 'hasNotSubmitted') {
       return (
         <>

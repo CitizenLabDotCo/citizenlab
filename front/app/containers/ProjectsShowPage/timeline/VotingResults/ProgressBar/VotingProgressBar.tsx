@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { IIdeaData } from 'api/ideas/types';
-import { IPhase, VoteTerm } from 'api/phases/types';
-import { getPhaseVoteTerm } from 'api/phases/utils';
+import { IPhase } from 'api/phases/types';
+import { getPhaseVoteTermMessage } from 'api/phases/utils';
 
 import assignMultipleVotesInputMessages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/messages';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { roundPercentage } from 'utils/math';
 
 import messages from './messages';
@@ -35,14 +35,12 @@ const VotingProgressBar = ({ phase, idea }: Props) => {
     ? roundPercentage(offlineIdeaVotes, totalPhaseVotes)
     : 0;
 
-  const voteTerm = getPhaseVoteTerm(phase.data);
-  const xVotesMessages: { [key in VoteTerm]: MessageDescriptor } = {
+  const xVotesMessage = getPhaseVoteTermMessage(phase.data, {
     vote: assignMultipleVotesInputMessages.xVotes,
     point: assignMultipleVotesInputMessages.xPoints,
     token: assignMultipleVotesInputMessages.xTokens,
     credit: assignMultipleVotesInputMessages.xCredits,
-  };
-  const xVotesMessage = xVotesMessages[voteTerm];
+  });
   const tooltip = formatMessage(messages.votingTooltip);
 
   return (

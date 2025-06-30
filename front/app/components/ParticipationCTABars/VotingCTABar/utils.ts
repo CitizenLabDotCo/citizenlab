@@ -1,8 +1,7 @@
-import { MessageDescriptor } from 'react-intl';
 import { FormatMessage } from 'typings';
 
-import { IPhaseData, VoteTerm } from 'api/phases/types';
-import { getPhaseVoteTerm } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
+import { getPhaseVoteTermMessage } from 'api/phases/utils';
 
 import voteInputMessages from 'components/VoteInputs/_shared/messages';
 
@@ -131,14 +130,12 @@ export const getVotesCounter = (
 
     const votesLeft = voting_max_total - numberOfVotesCast;
 
-    const voteTerm = getPhaseVoteTerm(phase);
-    const votesLeftMessages: { [key in VoteTerm]: MessageDescriptor } = {
+    const votesLeftMessage = getPhaseVoteTermMessage(phase, {
       vote: messages.votesLeft,
       point: messages.pointsLeft,
       token: messages.tokensLeft,
       credit: messages.creditsLeft,
-    };
-    const votesLeftMessage = votesLeftMessages[voteTerm];
+    });
 
     return formatMessage(votesLeftMessage, {
       votesLeft: votesLeft.toLocaleString(),

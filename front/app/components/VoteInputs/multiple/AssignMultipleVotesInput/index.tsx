@@ -14,8 +14,8 @@ import { useTheme } from 'styled-components';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
-import { IPhaseData, VoteTerm } from 'api/phases/types';
-import { getPhaseVoteTerm } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
+import { getPhaseVoteTermMessage } from 'api/phases/utils';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
@@ -24,7 +24,7 @@ import {
   isFixableByAuthentication,
   getPermissionsDisabledMessage,
 } from 'utils/actionDescriptors';
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -127,14 +127,13 @@ const AssignMultipleVotesInput = ({
   const { voting_max_votes_per_idea, voting_max_total } = phase.attributes;
 
   if (isNil(voting_max_votes_per_idea)) return null;
-  const voteTerm = getPhaseVoteTerm(phase);
-  const xVotesMessages: { [key in VoteTerm]: MessageDescriptor } = {
+
+  const xVotesMessage = getPhaseVoteTermMessage(phase, {
     vote: messages.xVotes,
     point: messages.xPoints,
     token: messages.xTokens,
     credit: messages.xCredits,
-  };
-  const xVotesMessage = xVotesMessages[voteTerm];
+  });
 
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

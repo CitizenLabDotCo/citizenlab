@@ -42,7 +42,7 @@ const MultipleVotingInputs = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const getVoteTermOptions = () => {
+  const getVoteTermOptions = (): IOption[] => {
     const VOTE_TERMS: VoteTerm[] = ['vote', 'point', 'token'];
     const LABEL_MESSAGES: {
       [key in VoteTerm]: MessageDescriptor;
@@ -59,7 +59,7 @@ const MultipleVotingInputs = ({
       return {
         value: voteTerm,
         label: formatMessage(labelMessage),
-      } as IOption;
+      };
     });
   };
 

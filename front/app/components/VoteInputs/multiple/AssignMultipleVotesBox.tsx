@@ -4,10 +4,10 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
-import { IPhaseData, VoteTerm } from 'api/phases/types';
-import { getPhaseVoteTerm } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
+import { getPhaseVoteTermMessage } from 'api/phases/utils';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
 
 import messages from '../_shared/messages';
@@ -32,14 +32,12 @@ const AssignMultipleVotesBox = memo(({ ideaId, phase }: Props) => {
   }
 
   const votesLeft = voting_max_total - (numberOfVotesCast ?? 0);
-  const voteTerm = getPhaseVoteTerm(phase);
-  const votesLeftMessages: { [key in VoteTerm]: MessageDescriptor } = {
+  const votesLeftMessage = getPhaseVoteTermMessage(phase, {
     vote: messages.votesLeft,
     point: messages.pointsLeft,
     token: messages.tokensLeft,
     credit: messages.creditsLeft,
-  };
-  const votesLeftMessage = votesLeftMessages[voteTerm];
+  });
 
   return (
     <WhiteBox>

@@ -1,9 +1,9 @@
-import { IPhaseData, VoteTerm } from 'api/phases/types';
-import { getPhaseVoteTerm } from 'api/phases/utils';
+import { IPhaseData } from 'api/phases/types';
+import { getPhaseVoteTermMessage } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
@@ -18,18 +18,17 @@ const getTextNumberOfVotes = ({
   phase,
   formatMessage,
 }: Props & { numberOfVotes: number }) => {
-  const voteTerm = getPhaseVoteTerm(phase);
-  const numberOfVotesMessages: { [key in VoteTerm]: MessageDescriptor } = {
-    vote: messages.numberOfVotes,
-    point: messages.numberOfPoints,
-    token: messages.numberOfTokens,
-    credit: messages.numberOfCredits,
-  };
-  const numberOfVotesMessage = numberOfVotesMessages[voteTerm];
-
-  return formatMessage(numberOfVotesMessage, {
-    numberOfVotes,
-  });
+  return formatMessage(
+    getPhaseVoteTermMessage(phase, {
+      vote: messages.numberOfVotes,
+      point: messages.numberOfPoints,
+      token: messages.numberOfTokens,
+      credit: messages.numberOfCredits,
+    }),
+    {
+      numberOfVotes,
+    }
+  );
 };
 
 export { getTextNumberOfVotes };
