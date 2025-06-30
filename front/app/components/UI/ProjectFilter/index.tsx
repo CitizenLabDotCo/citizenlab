@@ -39,6 +39,7 @@ interface Props {
   hideLabel?: boolean;
   onProjectFilter: (filter: Option) => void;
   includeHiddenProjects?: boolean;
+  includeUnlistedProjects?: boolean;
 }
 
 const StyledSelect = styled(Select)`
@@ -68,6 +69,7 @@ const ProjectFilter = ({
   hideLabel = false,
   onProjectFilter,
   includeHiddenProjects = false,
+  includeUnlistedProjects = false,
   ...boxProps
 }: Props & Omit<BoxProps, 'children'>) => {
   const localize = useLocalize();
@@ -76,6 +78,7 @@ const ProjectFilter = ({
     publicationStatuses: PUBLICATION_STATUSES,
     canModerate: true,
     includeHidden: includeHiddenProjects,
+    includeUnlisted: includeUnlistedProjects,
   });
   const { data: authUser } = useAuthUser();
 
