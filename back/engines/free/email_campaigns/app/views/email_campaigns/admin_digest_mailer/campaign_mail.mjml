@@ -1,4 +1,4 @@
   <%= render 'statistics' %>
   <%= render 'email_campaigns/projects/top-projects' %>
   <%= render 'email_campaigns/proposals/successful-proposals' unless event.successful_proposals.empty? %>
-  <%= render partial: 'application/cta_button', locals: { href: home_url, message: format_message('cta_visit_the_platform') } %>
+  <%= render partial: 'application/cta_button', locals: { href: home_url, message: cta_button_text } %>

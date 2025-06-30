@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class InvitationToCosponsorIdeaMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::InvitationToCosponsorIdea.first

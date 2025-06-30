@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class ProjectPhaseUpcomingMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::ProjectPhaseUpcoming.first

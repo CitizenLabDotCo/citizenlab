@@ -74,6 +74,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.fieldSubject',
     defaultMessage: 'Email Subject',
   },
+  fieldGroupContent: {
+    id: 'app.containers.Admin.emails.fieldGroupContent',
+    defaultMessage: 'Email Content',
+  },
   fieldSubjectTooltip: {
     id: 'app.containers.Admin.emails.fieldSubjectTooltip',
     defaultMessage:

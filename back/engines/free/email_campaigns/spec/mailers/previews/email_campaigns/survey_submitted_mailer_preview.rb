@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class SurveySubmittedMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       project = Project.first

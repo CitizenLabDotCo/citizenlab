@@ -102,7 +102,13 @@ module EmailCampaigns
 
     def preview
       preview = EmailCampaigns::DeliveryService.new.preview_email(@campaign, current_user)
-      render json: preview
+      render json: {
+        data: {
+          id: @campaign.id,
+          type: 'campaign_preview',
+          attributes: preview
+        }
+      }
     end
 
     def deliveries
@@ -161,7 +167,6 @@ module EmailCampaigns
         :enabled,
         :sender,
         :reply_to,
-        :context_id, # TODO: Only create
         group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
@@ -171,7 +176,7 @@ module EmailCampaigns
     def automated_campaign_params
       params.require(:campaign).permit(
         :enabled,
-        :context_id, # TODO: Only create
+        :reply_to,
         subject_multiloc: I18n.available_locales,
         title_multiloc: I18n.available_locales,
         intro_multiloc: I18n.available_locales,

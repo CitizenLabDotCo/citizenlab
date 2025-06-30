@@ -43,7 +43,7 @@ module EmailCampaigns
     end
 
     def reply_to_email
-      command[:reply_to] || super
+      command[:reply_to] || @campaign.reply_to.presence || super
     end
 
     def event

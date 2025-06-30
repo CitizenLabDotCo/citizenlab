@@ -9,9 +9,9 @@ import { AdminRoute } from '../routes';
 const MessagingIndex = lazy(() => import('.'));
 const CustomEmailsIndex = lazy(() => import('./CustomEmails/All'));
 const CustomEmailsNew = lazy(() => import('./CustomEmails/New'));
-const CustomEmailsEdit = lazy(() => import('./CustomEmails/Edit'));
 const CustomEmailsShow = lazy(() => import('./CustomEmails/Show'));
 const AutomatedEmails = lazy(() => import('./AutomatedEmails'));
+const EmailsEdit = lazy(() => import('./Edit'));
 
 export enum messagingRoutes {
   messaging = 'messaging',
@@ -20,6 +20,7 @@ export enum messagingRoutes {
   emailsCustomCampaignId = 'emails/custom/:campaignId',
   emailsCustomCampaignIdEdit = 'emails/custom/:campaignId/edit',
   emailsAutomated = 'emails/automated',
+  emailsAutomatedCampaignIdEdit = 'emails/automated/:campaignId/edit',
 }
 
 export type messagingRouteTypes =
@@ -28,7 +29,8 @@ export type messagingRouteTypes =
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustomNew}`>
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}/${string}`>
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}/${string}/edit`>
-  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsAutomated}`>;
+  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsAutomated}`>
+  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsAutomated}/${string}/edit`>;
 
 const createAdminMessagingRoutes = () => ({
   path: messagingRoutes.messaging,
@@ -70,7 +72,7 @@ const createAdminMessagingRoutes = () => ({
       path: messagingRoutes.emailsCustomCampaignIdEdit,
       element: (
         <PageLoading>
-          <CustomEmailsEdit />
+          <EmailsEdit campaignType="custom" />
         </PageLoading>
       ),
     },
@@ -79,6 +81,14 @@ const createAdminMessagingRoutes = () => ({
       element: (
         <PageLoading>
           <AutomatedEmails />
+        </PageLoading>
+      ),
+    },
+    {
+      path: messagingRoutes.emailsAutomatedCampaignIdEdit,
+      element: (
+        <PageLoading>
+          <EmailsEdit campaignType="automated" />
         </PageLoading>
       ),
     },

@@ -181,8 +181,8 @@ resource 'Campaigns' do
 
       example_request 'Get a campaign HTML preview' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:html]).to be_present
+        expect(response_data.dig(:attributes, :html)).to be_present
+        expect(response_data.dig(:attributes, :subject)).to be_present
       end
     end
 
@@ -521,8 +521,8 @@ resource 'Campaigns' do
 
       example_request 'Get a campaign HTML preview, for campaign manageable by project moderator' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:html]).to be_present
+        expect(response_data.dig(:attributes, :html)).to be_present
+        expect(response_data.dig(:attributes, :subject)).to be_present
       end
     end
 
