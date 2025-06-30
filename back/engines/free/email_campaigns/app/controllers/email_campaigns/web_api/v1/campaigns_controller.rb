@@ -6,16 +6,23 @@ module EmailCampaigns
     skip_after_action :verify_authorized, only: %i[supported_campaign_types]
 
     def index
-      @campaigns = policy_scope(Campaign)
+      @campaigns = CampaignPolicy::Scope.new(pundit_user, Campaign, campaign_context)
+        .resolve
         .order(created_at: :desc)
+      # Necessary because we instantiate the scope directly instead of using Pundit's
+      # `policy_scope` method.
+      skip_policy_scope
 
       if params[:without_campaign_names]
         campaign_types = params[:without_campaign_names].map { |name| Campaign.from_campaign_name(name) }
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
-      @campaigns = @campaigns.where(context: campaign_context) if campaign_context
-      # TODO: Filter supported campaign types for context (supports_context?(context))
+      if campaign_context
+        @campaigns = @campaigns.where(context: campaign_context)
+        supported_ids = @campaigns.filter { |campaign| campaign.class.supports_context?(campaign_context) }.map(&:id)
+        @campaigns = @campaigns.where(id: supported_ids)
+      end
 
       @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
 

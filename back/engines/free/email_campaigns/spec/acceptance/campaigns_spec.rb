@@ -36,8 +36,6 @@ resource 'Campaigns' do
       header_token_for @user
     end
 
-    # TODO: Does not list campaigns if cannot moderate campaigns
-    # TODO: Filter out unsuppored campaigns
     get '/web_api/v1/campaigns' do
       with_options scope: :page do
         parameter :number, 'Page number'
@@ -122,6 +120,17 @@ resource 'Campaigns' do
           expect(json_response[:data].size).to eq 1
           expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
         end
+
+        example 'List only campaigns supported by the context', document: false do
+          create(:comment_on_idea_you_follow_campaign, context: manual_project.context)
+
+          do_request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
+        end
       end
 
       get '/web_api/v1/phases/:context_id/campaigns' do
@@ -132,6 +141,14 @@ resource 'Campaigns' do
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
           expect(json_response[:data].pluck(:id)).to eq [automated_phase.id]
+        end
+
+        example '[Unauthorized] List no campaigns, for a user that cannot moderate campaigns', document: false do
+          header_token_for create(:project_moderator)
+
+          do_request
+          assert_status 200
+          expect(json_parse(response_body)[:data].size).to eq 0
         end
       end
     end
@@ -474,29 +491,6 @@ resource 'Campaigns' do
     end
 
     let!(:manual_project_participants_campaign_not_moderated_by_this_pm) { create(:manual_project_participants_campaign) }
-
-    get '/web_api/v1/campaigns' do
-      with_options scope: :page do
-        parameter :number, 'Page number'
-        parameter :size, 'Number of campaigns per page'
-      end
-      parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
-      parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
-
-      example 'List all campaigns only lists campaigns manageable by the project moderator' do
-        phase_started = create(:project_phase_started_campaign)
-
-        do_request
-        assert_status 200
-        json_response = json_parse(response_body)
-
-        expect(EmailCampaigns::Campaign.count).to eq 9
-        expect(EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::ManualProjectParticipants').size)
-          .to eq 2
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].pluck(:id)).to match_array [@manual_project_participants_campaign.id, phase_started.id]
-      end
-    end
 
     get '/web_api/v1/campaigns/:id' do
       let(:id) { @manual_project_participants_campaign.id }

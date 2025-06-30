@@ -3,14 +3,16 @@
 module EmailCampaigns
   class CampaignPolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
+      attr_reader :campaign_context
+
+      def initialize(user_context, scope, campaign_context = nil)
+        super(user_context, scope)
+        @campaign_context = campaign_context
+      end
+
       def resolve
-        # TODO: Pass context
-        if user&.active? && user.admin?
+        if user&.active? && UserRoleService.new.can_moderate?(campaign_context, user)
           scope.all
-        elsif user&.active? && user.project_moderator?
-          scope.manageable_by_project_moderator.automatic.or(
-            scope.manageable_by_project_moderator.manual.where(context_id: user.moderatable_project_ids)
-          )
         else
           scope.none
         end
