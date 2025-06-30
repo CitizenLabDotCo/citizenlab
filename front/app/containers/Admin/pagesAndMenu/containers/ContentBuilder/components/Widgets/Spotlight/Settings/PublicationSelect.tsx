@@ -26,6 +26,7 @@ interface Props {
 const PublicationSelect = ({ publicationId, onSelect }: Props) => {
   const { data: adminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived'],
+    include_unlisted: true,
   });
   const localize = useLocalize();
   const { formatMessage } = useIntl();

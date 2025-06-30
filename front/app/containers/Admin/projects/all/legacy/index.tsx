@@ -101,6 +101,7 @@ const AdminProjectsListLegacy = memo(({ className }: Props) => {
       filter_is_moderator_of: true,
       exclude_projects_in_included_folders: true,
       search,
+      include_unlisted: true,
     },
     {
       enabled: activeTab === 'your-projects',
@@ -116,6 +117,7 @@ const AdminProjectsListLegacy = memo(({ className }: Props) => {
     filter_is_moderator_of: true,
     onlyProjects: true,
     search,
+    include_unlisted: true,
   });
 
   const { data: statusCounts } = useAdminPublicationsStatusCounts({
@@ -123,6 +125,7 @@ const AdminProjectsListLegacy = memo(({ className }: Props) => {
     onlyProjects: true,
     rootLevelOnly: false,
     search,
+    include_unlisted: true,
   });
 
   // PUBLISHED
@@ -132,6 +135,7 @@ const AdminProjectsListLegacy = memo(({ className }: Props) => {
       onlyProjects: true,
       rootLevelOnly: false,
       search,
+      include_unlisted: true,
     },
     {
       enabled: activeTab === 'published',
@@ -145,6 +149,7 @@ const AdminProjectsListLegacy = memo(({ className }: Props) => {
       onlyProjects: true,
       rootLevelOnly: false,
       search,
+      include_unlisted: true,
     },
     {
       enabled: activeTab === 'draft',
@@ -158,6 +163,7 @@ const AdminProjectsListLegacy = memo(({ className }: Props) => {
       onlyProjects: true,
       rootLevelOnly: false,
       search,
+      include_unlisted: true,
     },
     {
       enabled: activeTab === 'archived',
@@ -171,6 +177,7 @@ const AdminProjectsListLegacy = memo(({ className }: Props) => {
     onlyProjects: true,
     rootLevelOnly: false,
     search,
+    include_unlisted: true,
   };
   const { data: pendingReviewAdminPublications } = useAdminPublications(
     pendingReviewParams,
@@ -193,6 +200,7 @@ const AdminProjectsListLegacy = memo(({ className }: Props) => {
       // Admin publications in the "All" tab are shown in a flat list when there is a search query
       rootLevelOnly: !search || search.length === 0,
       search,
+      include_unlisted: true,
     },
     {
       enabled: activeTab === 'all',

@@ -28,6 +28,7 @@ const NonSortableFolderRow = ({
   const { data } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
     publicationStatusFilter: ['draft', 'published', 'archived'],
+    include_unlisted: true,
   });
 
   const folderChildAdminPublications = data?.pages

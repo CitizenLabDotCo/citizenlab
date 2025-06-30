@@ -50,6 +50,7 @@ const SortableFolderRow = ({
   const { data } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
     publicationStatusFilter: publicationStatuses,
+    include_unlisted: true,
   });
 
   const folderChildAdminPublications = data?.pages
