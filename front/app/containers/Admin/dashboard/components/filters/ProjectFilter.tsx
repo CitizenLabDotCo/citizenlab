@@ -27,6 +27,7 @@ const ProjectFilter = ({
       hideLabel={hideLabel}
       placeholder={placeholder}
       onProjectFilter={onProjectFilter}
+      includeUnlistedProjects
     />
   );
 };

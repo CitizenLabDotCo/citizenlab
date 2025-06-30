@@ -46,7 +46,10 @@ const ProjectValueSelector = memo(({ value, onChange, projects }: Props) => {
 });
 
 export default (inputProps: Props) => (
-  <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
+  <GetProjects
+    publicationStatuses={['draft', 'published', 'archived']}
+    includeUnlisted
+  >
     {(projects) => <ProjectValueSelector {...inputProps} projects={projects} />}
   </GetProjects>
 );

@@ -18,6 +18,7 @@ const IdeasTab = () => {
     sort: 'new',
     publicationStatuses,
     canModerate: true,
+    includeUnlisted: true,
   });
 
   return (

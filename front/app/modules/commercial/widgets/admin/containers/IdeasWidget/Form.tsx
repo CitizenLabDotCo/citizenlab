@@ -218,7 +218,10 @@ const WidgetForm = () => {
               <Label>
                 <FormattedMessage {...messages.fieldRelativeLink} />
               </Label>
-              <GetProjects publicationStatuses={['published', 'archived']}>
+              <GetProjects
+                publicationStatuses={['published', 'archived']}
+                includeUnlisted
+              >
                 {(projects) =>
                   projects && isNilOrError(projects) ? null : (
                     <Select
@@ -298,7 +301,10 @@ const WidgetForm = () => {
             <Label htmlFor="projects">
               <FormattedMessage {...messages.fieldProjects} />
             </Label>
-            <GetProjects publicationStatuses={['published', 'archived']}>
+            <GetProjects
+              publicationStatuses={['published', 'archived']}
+              includeUnlisted
+            >
               {(projects) =>
                 projects && isNilOrError(projects) ? null : (
                   <MultipleSelect

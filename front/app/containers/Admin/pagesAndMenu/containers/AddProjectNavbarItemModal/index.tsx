@@ -40,6 +40,7 @@ const AddProjectNavbarItemModal = ({ opened, onClose }: Props) => {
   const { mutateAsync: addNavbarItem } = useAddNavbarItem();
   const { data: projects } = useProjects({
     publicationStatuses: ['published', 'draft', 'archived'],
+    includeUnlisted: true,
   });
   const { data: appConfig } = useAppConfiguration();
 

@@ -83,6 +83,7 @@ const InvitationOptions = ({
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: projects } = useProjects({
     publicationStatuses: ['draft', 'published', 'archived'],
+    includeUnlisted: true,
   });
   const { data: groups } = useGroups({ membershipType: 'manual' });
   const localize = useLocalize();

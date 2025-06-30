@@ -102,6 +102,7 @@ const ImportInputsModal = ({
               excludeProjectId={currentProjectId}
               emptyOptionMessage={messages.noProject}
               onProjectFilter={handleProjectFilter}
+              includeUnlistedProjects
             />
           </Box>
           {selectedProjectId && (
