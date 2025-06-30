@@ -137,7 +137,7 @@ class ProjectsFinderAdminService
   def self.filter_participation_states(scope, params = {})
     participation_states = params[:participation_states] || []
     return scope if participation_states.blank?
-    
+
     conditions = []
 
     if participation_states.include?('not_started')
@@ -150,7 +150,7 @@ class ProjectsFinderAdminService
       conditions << <<-SQL.squish
         projects.id IN (
           SELECT project_id FROM phases
-          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{Date.today}', '#{Date.today}')
+          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{Time.zone.today}', '#{Time.zone.today}')
           AND participation_method != 'information'
         )
       SQL
@@ -161,7 +161,7 @@ class ProjectsFinderAdminService
       conditions << <<-SQL.squish
         projects.id IN (
           SELECT project_id FROM phases
-          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{Date.today}', '#{Date.today}')
+          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{Time.zone.today}', '#{Time.zone.today}')
           AND participation_method = 'information'
         )
       SQL
