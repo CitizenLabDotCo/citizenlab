@@ -26,16 +26,6 @@ export default defineMessages({
     id: 'app.components.AssignMultipleVotesControl.select',
     defaultMessage: 'Select',
   },
-  // To remove
-  vote: {
-    id: 'app.components.AssignMultipleVotesControl.vote',
-    defaultMessage: 'Vote',
-  },
-  // To remove
-  votes: {
-    id: 'app.components.AssignMultipleVotesControl.votes',
-    defaultMessage: 'votes',
-  },
   removeVote: {
     id: 'app.components.AssignMultipleVotesControl.removeVote',
     defaultMessage: 'Remove vote',
