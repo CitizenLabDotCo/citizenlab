@@ -14,7 +14,7 @@ export default defineMessages({
   tokensLeft: {
     id: 'app.components.VoteInputs._shared.tokensLeft',
     defaultMessage:
-      'You have {votesLeft} / {totalNumberOfVotes} {totalNumberOf votes, plural, =0 {tokens} one {token} other {tokens}} left.',
+      'You have {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {tokens} one {token} other {tokens}} left.',
   },
   creditsLeft: {
     id: 'app.components.VoteInputs._shared.creditsLeft',
