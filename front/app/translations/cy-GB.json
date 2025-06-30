@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Nid oes pleidleisio ar gael, gan nad yw'r cam hwn yn weithredol.",
   "app.components.AssignMultipleVotesControl.removeVote": "Dileu pleidlais",
   "app.components.AssignMultipleVotesControl.select": "Dewiswch",
-  "app.components.AssignMultipleVotesControl.vote": "Pleidlais",
-  "app.components.AssignMultipleVotesControl.votes": "pleidleisiau",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Rydych chi eisoes wedi cyflwyno eich pleidleisiau. Cliciwch \"Addasu eich pleidlais\" i newid eich pleidleisiau.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Rydych chi eisoes wedi cyflwyno eich pleidleisiau. I newid eich pleidleisiau, ewch yn ôl i dudalen y prosiect a chliciwch ar \"Addasu eich pleidlais\".",
   "app.components.AssignVoteControl.maxVotesReached": "Rydych wedi cyrraedd y nifer uchaf o bleidleisiau y gallwch eu cyflwyno.",

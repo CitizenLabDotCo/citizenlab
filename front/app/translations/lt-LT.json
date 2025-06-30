@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Balsuoti negalima, nes šis etapas nėra aktyvus.",
   "app.components.AssignMultipleVotesControl.removeVote": "Pašalinti balsavimą",
   "app.components.AssignMultipleVotesControl.select": "Pasirinkite",
-  "app.components.AssignMultipleVotesControl.vote": "Balsuoti",
-  "app.components.AssignMultipleVotesControl.votes": "balsai",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Jūs jau pateikėte savo balsus. Spustelėkite \"Pakeiskite savo balsą\" ir pakeiskite savo balsus.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Jūs jau pateikėte savo balsus. Jei norite pakeisti savo balsus, grįžkite į projekto puslapį ir spustelėkite \"Pakeiskite savo balsą\".",
   "app.components.AssignVoteControl.maxVotesReached": "Pasiekėte didžiausią galimą pateikti balsų skaičių.",

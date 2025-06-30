@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Ofstëmmung ass net verfügbar, well dës Phase net aktiv ass.",
   "app.components.AssignMultipleVotesControl.removeVote": "Ewechzehuelen Vote",
   "app.components.AssignMultipleVotesControl.select": "Wielt",
-  "app.components.AssignMultipleVotesControl.vote": "Stëmmen",
-  "app.components.AssignMultipleVotesControl.votes": "Stëmmen",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Dir hutt schonn Är Stëmmen ofginn. Klickt op \"Ännere Vote änneren\" fir Är Stëmmen z'änneren.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Dir hutt schonn Är Stëmmen ofginn. Fir Är Stëmmen z'änneren, gitt zréck op d'Projetsäit a klickt op \"Ännere Vote änneren\".",
   "app.components.AssignVoteControl.maxVotesReached": "Dir hutt déi maximal Unzuel u Stëmmen erreecht déi Dir kënnt ofginn.",

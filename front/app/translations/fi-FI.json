@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Äänestys ei ole mahdollista, koska tämä vaihe ei ole aktiivinen.",
   "app.components.AssignMultipleVotesControl.removeVote": "Poista ääni",
   "app.components.AssignMultipleVotesControl.select": "Valitse",
-  "app.components.AssignMultipleVotesControl.vote": "Äänestys",
-  "app.components.AssignMultipleVotesControl.votes": "ääniä",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Olet jo antanut äänesi. Napsauta \"Muokkaa ääntäsi\" muuttaaksesi ääntäsi.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Olet jo antanut äänesi. Jos haluat muuttaa ääniäsi, palaa projektisivulle ja napsauta \"Muokkaa ääntäsi\".",
   "app.components.AssignVoteControl.maxVotesReached": "Olet saavuttanut enimmäismäärän ääniä, jotka voit lähettää.",

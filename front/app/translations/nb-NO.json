@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Avstemning er ikke tilgjengelig, siden denne fasen ikke er aktiv.",
   "app.components.AssignMultipleVotesControl.removeVote": "Fjern stemme",
   "app.components.AssignMultipleVotesControl.select": "Velg",
-  "app.components.AssignMultipleVotesControl.vote": "Stemme",
-  "app.components.AssignMultipleVotesControl.votes": "stemmer",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Du har allerede sendt inn dine stemmer. Klikk på \"Endre din stemme\" for å endre stemmene dine.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Du har allerede sendt inn dine stemmer. Hvis du vil endre stemmene dine, går du tilbake til prosjektsiden og klikker på \"Endre stemmen din\".",
   "app.components.AssignVoteControl.maxVotesReached": "Du har nådd det maksimale antallet stemmer du kan sende inn.",

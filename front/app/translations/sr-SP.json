@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Voting is not available, since this phase is not active.",
   "app.components.AssignMultipleVotesControl.removeVote": "Уклони гласање",
   "app.components.AssignMultipleVotesControl.select": "Изаберите",
-  "app.components.AssignMultipleVotesControl.vote": "Гласајте",
-  "app.components.AssignMultipleVotesControl.votes": "гласови",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Већ сте послали своје гласове. Кликните на „Измените свој глас“ да бисте променили своје гласове.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Већ сте послали своје гласове. Да бисте променили своје гласове, вратите се на страницу пројекта и кликните на „Измени свој глас“.",
   "app.components.AssignVoteControl.maxVotesReached": "Достигли сте максималан број гласова који можете послати.",

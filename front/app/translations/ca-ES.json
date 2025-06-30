@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "La votació no està disponible, ja que aquesta fase no està activa.",
   "app.components.AssignMultipleVotesControl.removeVote": "Elimina el vot",
   "app.components.AssignMultipleVotesControl.select": "Seleccioneu",
-  "app.components.AssignMultipleVotesControl.vote": "Vota",
-  "app.components.AssignMultipleVotesControl.votes": "vots",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Ja heu enviat els vostres vots. Feu clic a \"Modifica el vostre vot\" per canviar els vostres vots.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Ja heu enviat els vostres vots. Per canviar els vostres vots, torneu a la pàgina del projecte i feu clic a \"Modifica el vostre vot\".",
   "app.components.AssignVoteControl.maxVotesReached": "Heu arribat al nombre màxim de vots que podeu enviar.",

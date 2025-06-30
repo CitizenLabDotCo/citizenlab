@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "ਵੋਟਿੰਗ ਉਪਲਬਧ ਨਹੀਂ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਪੜਾਅ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ।",
   "app.components.AssignMultipleVotesControl.removeVote": "ਵੋਟ ਹਟਾਓ",
   "app.components.AssignMultipleVotesControl.select": "ਚੁਣੋ",
-  "app.components.AssignMultipleVotesControl.vote": "ਵੋਟ ਕਰੋ",
-  "app.components.AssignMultipleVotesControl.votes": "ਵੋਟਾਂ",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਕਰਵਾ ਚੁੱਕੇ ਹੋ। ਆਪਣੀਆਂ ਵੋਟਾਂ ਬਦਲਣ ਲਈ \"ਆਪਣੀ ਵੋਟ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਕਰਵਾ ਚੁੱਕੇ ਹੋ। ਆਪਣੀਆਂ ਵੋਟਾਂ ਬਦਲਣ ਲਈ, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਵਾਪਸ ਜਾਓ ਅਤੇ \"ਆਪਣੀ ਵੋਟ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.components.AssignVoteControl.maxVotesReached": "ਤੁਸੀਂ ਵੱਧ ਤੋਂ ਵੱਧ ਵੋਟਾਂ ਦੀ ਗਿਣਤੀ 'ਤੇ ਪਹੁੰਚ ਗਏ ਹੋ ਜੋ ਤੁਸੀਂ ਸਪੁਰਦ ਕਰ ਸਕਦੇ ਹੋ।",

@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Abstimmungen sind nicht möglich, da diese Phase nicht aktiv ist.",
   "app.components.AssignMultipleVotesControl.removeVote": "Stimme entfernen",
   "app.components.AssignMultipleVotesControl.select": "Auswählen",
-  "app.components.AssignMultipleVotesControl.vote": "Auswählen",
-  "app.components.AssignMultipleVotesControl.votes": "Auswählen",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Sie haben Ihre Stimme bereits abgegeben. Klicken Sie auf \"Abstimmung ändern\", um Ihre Stimmen zu ändern.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Sie haben Ihre Stimme bereits abgegeben. Um Ihre Stimme zu ändern, gehen Sie zurück zur Projektseite und klicken Sie auf \"Abstimmung ändern\".",
   "app.components.AssignVoteControl.maxVotesReached": "Sie haben die maximale Anzahl von Stimmen erreicht, die Sie abgeben können.",

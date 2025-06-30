@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Głosowanie nie jest dostępne, ponieważ ta faza nie jest aktywna.",
   "app.components.AssignMultipleVotesControl.removeVote": "Usuń głos",
   "app.components.AssignMultipleVotesControl.select": "Wybierz",
-  "app.components.AssignMultipleVotesControl.vote": "Głosuj",
-  "app.components.AssignMultipleVotesControl.votes": "głosy",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Oddałeś już swój głos. Kliknij \"Modyfikuj swój głos\", aby zmienić swoje głosy.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Oddałeś już swój głos. Aby zmienić swoje głosy, wróć do strony projektu i kliknij \"Zmień swój głos\".",
   "app.components.AssignVoteControl.maxVotesReached": "Osiągnąłeś maksymalną liczbę głosów, które możesz oddać.",

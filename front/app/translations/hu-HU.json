@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Szavazás nem lehetséges, mivel ez a szakasz nem aktív.",
   "app.components.AssignMultipleVotesControl.removeVote": "Szavazat eltávolítása",
   "app.components.AssignMultipleVotesControl.select": "Válassza ki",
-  "app.components.AssignMultipleVotesControl.vote": "Szavazás",
-  "app.components.AssignMultipleVotesControl.votes": "szavazatokat",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Ön már leadta szavazatait. Kattintson a \"Szavazat módosítása\" gombra a szavazatok módosításához.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Ön már leadta szavazatait. Szavazatának módosításához lépjen vissza a projekt oldalára, és kattintson a \"Szavazat módosítása\" gombra.",
   "app.components.AssignVoteControl.maxVotesReached": "Elérte a leadható szavazatok maximális számát.",

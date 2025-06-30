@@ -21,8 +21,6 @@
   "app.components.AssignMultipleVotesControl.phaseNotActive": "Omröstning är inte tillgänglig, eftersom denna fas inte är aktiv.",
   "app.components.AssignMultipleVotesControl.removeVote": "Ta bort omröstning",
   "app.components.AssignMultipleVotesControl.select": "Välj",
-  "app.components.AssignMultipleVotesControl.vote": "Omröstning",
-  "app.components.AssignMultipleVotesControl.votes": "röster",
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Du har redan skickat in dina röster. Klicka på \"Ändra din röst\" för att ändra dina röster.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Du har redan skickat in dina röster. För att ändra dina röster, gå tillbaka till projektsidan och klicka på \"Ändra din röst\".",
   "app.components.AssignVoteControl.maxVotesReached": "Du har uppnått det maximala antalet röster som du kan skicka.",
