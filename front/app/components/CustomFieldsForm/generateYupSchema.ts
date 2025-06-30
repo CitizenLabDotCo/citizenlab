@@ -313,50 +313,46 @@ const generateYupValidationSchema = ({
       }
       case 'point': {
         schema[key] = required
-          ? string().required(fieldRequired).nullable()
+          ? string().required(fieldRequired)
           : string().nullable();
         break;
       }
 
       case 'line': {
-        schema[key] = required
-          ? string()
-              .required(fieldRequired)
-              .test({
-                message: formatMessage(messages.atLeastTwoPointsRequired),
-                test: (value) => {
-                  if (!value) return false;
-                  const converted = convertWKTToGeojson({ line: value });
-                  return (
-                    converted.line &&
-                    converted.line.type === 'LineString' &&
-                    Array.isArray(converted.line.coordinates) &&
-                    converted.line.coordinates.length > 1
-                  );
-                },
-              })
-          : string().nullable();
+        const line = string().test({
+          message: formatMessage(messages.atLeastTwoPointsRequired),
+          test: (value) => {
+            if (!value) return true;
+            const converted = convertWKTToGeojson({ line: value });
+            return (
+              converted.line &&
+              converted.line.type === 'LineString' &&
+              Array.isArray(converted.line.coordinates) &&
+              converted.line.coordinates.length > 1
+            );
+          },
+        });
+        schema[key] = required ? line.required(fieldRequired) : line.nullable();
         break;
       }
       case 'polygon': {
+        const polygon = string().test({
+          message: formatMessage(messages.atLeastThreePointsRequired),
+          test: (value) => {
+            if (!value) return true;
+            const converted = convertWKTToGeojson({ polygon: value });
+            return (
+              converted.polygon &&
+              converted.polygon.type === 'Polygon' &&
+              Array.isArray(converted.polygon.coordinates) &&
+              converted.polygon.coordinates.length > 0 &&
+              converted.polygon.coordinates[0].length > 3
+            );
+          },
+        });
         schema[key] = required
-          ? string()
-              .required(fieldRequired)
-              .test({
-                message: formatMessage(messages.atLeastThreePointsRequired),
-                test: (value) => {
-                  if (!value) return false;
-                  const converted = convertWKTToGeojson({ polygon: value });
-                  return (
-                    converted.polygon &&
-                    converted.polygon.type === 'Polygon' &&
-                    Array.isArray(converted.polygon.coordinates) &&
-                    converted.polygon.coordinates.length > 0 &&
-                    converted.polygon.coordinates[0].length > 3
-                  );
-                },
-              })
-          : string().nullable();
+          ? polygon.required(fieldRequired)
+          : polygon.nullable();
         break;
       }
     }

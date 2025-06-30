@@ -90,13 +90,6 @@ const SurveyForm = ({
   const initialFormData = draftIdea
     ? {
         ...draftIdea.data.attributes,
-        author_id: draftIdea.data.relationships.author?.data?.id,
-        cosponsor_ids: draftIdea.data.relationships.cosponsors?.data?.map(
-          (cosponsor) => cosponsor.id
-        ),
-        topic_ids: draftIdea.data.relationships.topics?.data.map(
-          (topic) => topic.id
-        ),
       }
     : undefined;
 
