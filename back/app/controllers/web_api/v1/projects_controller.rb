@@ -152,7 +152,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def index_for_admin
-    projects = policy_scope(Project).not_hidden.listed
+    projects = policy_scope(Project).not_hidden
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     @projects = paginate projects
