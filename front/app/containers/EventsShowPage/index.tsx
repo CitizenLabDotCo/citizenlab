@@ -23,6 +23,7 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
+import EventShowPageMeta from './components/EventShowPageMeta';
 import DesktopTopBar from './components/DesktopTopBar';
 import EventDescription from './components/EventDescription';
 import InformationColumnDesktop from './components/InformationColumnDesktop';
@@ -102,6 +103,7 @@ const EventsShowPage = () => {
 
   return (
     <>
+      <EventShowPageMeta event={event.data} />
       {isSmallerThanTablet ? (
         <MobileTopBar projectId={event.data.relationships.project.data.id} />
       ) : (

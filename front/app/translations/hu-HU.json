@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "Hiba az ICS-fájl letöltése során",
   "app.containers.EventsShow.linkToOnlineEvent": "Link az online eseményhez",
   "app.containers.EventsShow.locationIconAltText": "Elhelyezkedés",
+  "app.containers.EventsShow.metaTitle": "Esemény: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Online találkozó",
   "app.containers.EventsShow.onlineLinkIconAltText": "Online találkozó linkje",
   "app.containers.EventsShow.socialMediaSharingMessage": "Vegyen részt ezen az eseményen: {eventTitle}",

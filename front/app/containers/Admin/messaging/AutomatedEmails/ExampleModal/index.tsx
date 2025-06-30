@@ -7,9 +7,13 @@ import {
   IconTooltip,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useCampaignExamples from 'api/campaign_examples/useCampaignExamples';
 import useCampaign from 'api/campaigns/useCampaign';
+import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
 import T from 'components/T';
@@ -22,9 +26,6 @@ import messages from '../../messages';
 
 import EmptyState from './EmptyState';
 import ExampleFrame from './ExampleFrame';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import styled from 'styled-components';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 
 /** Modulo function, since JS's native `%` remainder function works differently for negative numbers */
 const mod = (n: number, m: number) => ((n % m) + m) % m;

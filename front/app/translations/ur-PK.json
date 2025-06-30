@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "ICS فائل ڈاؤن لوڈ کرنے میں خرابی۔",
   "app.containers.EventsShow.linkToOnlineEvent": "آن لائن ایونٹ کا لنک",
   "app.containers.EventsShow.locationIconAltText": "مقام",
+  "app.containers.EventsShow.metaTitle": "واقعہ: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "آن لائن میٹنگ",
   "app.containers.EventsShow.onlineLinkIconAltText": "آن لائن میٹنگ کا لنک",
   "app.containers.EventsShow.socialMediaSharingMessage": "اس تقریب میں شرکت کریں: {eventTitle}",
