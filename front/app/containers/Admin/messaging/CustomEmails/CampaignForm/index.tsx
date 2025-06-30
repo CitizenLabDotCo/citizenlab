@@ -214,7 +214,7 @@ const CampaignForm = ({
         </StyledSection>
         <StyledSection>
           <StyledSectionTitle>
-            <FormattedMessage {...messages.fieldSubject} />
+            <FormattedMessage {...messages.fieldGroupContent} />
           </StyledSectionTitle>
           <SectionField className="e2e-campaign_subject_multiloc">
             <InputMultilocWithLocaleSwitcher
@@ -226,9 +226,6 @@ const CampaignForm = ({
               maxCharCount={80}
             />
           </SectionField>
-          <StyledSectionTitle>
-            <FormattedMessage {...messages.fieldBody} />
-          </StyledSectionTitle>
           <SectionField className="e2e-campaign_body_multiloc">
             <QuillMultilocWithLocaleSwitcher
               name="body_multiloc"

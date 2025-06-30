@@ -38,6 +38,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
+import GoBackButton from 'components/UI/GoBackButton';
 
 const StampIcon = styled(Stamp)`
   margin-right: 20px;
@@ -194,8 +195,13 @@ const Show = () => {
     const senderName = getSenderName(senderType);
     const noGroupsSelected = groupIds.length === 0;
 
+    const goBack = () => {
+      clHistory.push(`/admin/messaging/emails/custom`);
+    };
+
     return (
       <Box background={colors.white} p="40px" id="e2e-custom-email-container">
+        <GoBackButton onClick={goBack} />
         <Box display="flex" mb="20px">
           <Box display="flex" alignItems="center" mr="auto">
             <Title mr="12px">
