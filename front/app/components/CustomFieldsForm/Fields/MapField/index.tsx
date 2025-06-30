@@ -74,6 +74,7 @@ const MapField = ({
 
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
+  const requiredError = errors?.type === 'required';
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
@@ -199,7 +200,7 @@ const MapField = ({
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
-          scrollIntoView={scrollErrorIntoView}
+          scrollIntoView={requiredError ? scrollErrorIntoView : false}
         />
       )}
       {apiError && (
