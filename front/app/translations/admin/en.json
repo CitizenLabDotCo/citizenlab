@@ -859,6 +859,8 @@
   "app.containers.Admin.emails.editRegion_intro_multiloc": "Introduction",
   "app.containers.Admin.emails.editRegion_subject_multiloc": "Subject",
   "app.containers.Admin.emails.editRegion_title_multiloc": "Title",
+  "app.containers.Admin.emails.emailCreated": "Email successfully created in draft",
+  "app.containers.Admin.emails.emailUpdated": "Email successfully updated",
   "app.containers.Admin.emails.emptyCampaignsDescription": "Easily connect with your participants by sending them emails. Choose who to contact and track your engagement.",
   "app.containers.Admin.emails.emptyCampaignsHeader": "Send your first email",
   "app.containers.Admin.emails.failed": "Failed",
