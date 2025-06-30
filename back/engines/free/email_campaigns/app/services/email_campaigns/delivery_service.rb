@@ -81,7 +81,7 @@ module EmailCampaigns
 
     #  called on every activity
     def send_on_activity(activity)
-      campaign_candidates = Campaign.where(type: campaign_types, context_id: activity.payload[:context_id])
+      campaign_candidates = Campaign.where(type: campaign_types)
       apply_send_pipeline(campaign_candidates, activity: activity)
     end
 

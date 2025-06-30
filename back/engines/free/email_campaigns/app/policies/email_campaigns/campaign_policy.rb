@@ -28,6 +28,8 @@ module EmailCampaigns
     end
 
     def update?
+      return false if record.manual? && record.respond_to?(:sent?) && record.sent?
+
       can_access_and_modify?
     end
 

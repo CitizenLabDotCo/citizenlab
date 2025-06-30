@@ -244,14 +244,17 @@ resource 'Campaigns' do
         end
 
         let(:project_id) { @user.roles.first['project_id'] }
+        let(:campaign) { build(:manual_project_participants_campaign) }
+        let(:campaign_name) { 'manual_project_participants' }
+        let(:subject_multiloc) { campaign.subject_multiloc }
+        let(:body_multiloc) { campaign.body_multiloc }
+        let(:sender) { 'author' }
+        let(:reply_to) { 'test@emailer.com' }
 
         context 'manual campaigns' do
-          let(:campaign) { build(:manual_project_participants_campaign) }
-          let(:campaign_name) { 'manual_project_participants' }
-          let(:subject_multiloc) { campaign.subject_multiloc }
-          let(:body_multiloc) { campaign.body_multiloc }
-          let(:sender) { 'author' }
-          let(:reply_to) { 'test@emailer.com' }
+          with_options scope: :campaign do
+            parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
+          end
 
           example_request 'Create a campaign, manageable by project moderator, for moderated project' do
             expect(response_status).to eq 201
@@ -278,9 +281,40 @@ resource 'Campaigns' do
           end
         end
       end
-    end
 
-    # TODO: Create phase started context campaign
+      post 'web_api/v1/phases/:phase_id/campaigns' do
+        create_campaign_params(self)
+        ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
+
+        context 'moderator' do # TODO: Move out of admin context
+          before do
+            @user = create(:project_moderator)
+            header_token_for @user
+          end
+
+          context 'automated campaigns' do
+            let(:phase_id) { create(:phase, project_id: @user.roles.first['project_id']).id }
+            let(:campaign) { build(:project_phase_started_campaign) }
+            let(:campaign_name) { 'project_phase_started' }
+            # let(:subject_multiloc) { campaign.subject_multiloc }
+            # let(:body_multiloc) { campaign.body_multiloc }
+            # let(:sender) { 'author' }
+            # let(:reply_to) { 'test@emailer.com' }
+
+            example_request 'Create a campaign' do
+              expect(response_status).to eq 201
+              json_response = json_parse(response_body)
+              # TODO: Uncomment when they are content and sender configurable
+              # expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
+              # expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+              # expect(json_response.dig(:data, :attributes, :sender)).to match sender
+              # expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
+              expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
+            end
+          end
+        end
+      end
+    end
 
     patch 'web_api/v1/campaigns/:id' do
       update_campaign_params(self)
