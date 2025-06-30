@@ -29,6 +29,7 @@ import Stamp from 'components/admin/Email/Stamp';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -38,7 +39,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
-import GoBackButton from 'components/UI/GoBackButton';
 
 const StampIcon = styled(Stamp)`
   margin-right: 20px;

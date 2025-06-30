@@ -15,17 +15,17 @@ import useCampaign from 'api/campaigns/useCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
+import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
+import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
+import messages from 'containers/Admin/messaging/messages';
+
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
 import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
+import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import messages from 'containers/Admin/messaging/messages';
-import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
-import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
-import T from 'components/T';
 
 type EditProps = {
   campaignType: 'custom' | 'automated';
