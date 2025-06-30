@@ -182,4 +182,8 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.anonymousSurveyMessage2',
     defaultMessage: 'All responses to this survey are anonymized.',
   },
+  fileSizeLimit: {
+    id: 'app.components.CustomFieldsForm.fileSizeLimit',
+    defaultMessage: 'The file size limit is {maxFileSize} MB.',
+  },
 });

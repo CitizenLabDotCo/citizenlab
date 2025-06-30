@@ -1,16 +1,12 @@
 import Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import MapView from '@arcgis/core/views/MapView';
-import { JsonSchema } from '@jsonforms/core';
 
 import { IMapConfig } from 'api/map_config/types';
 
-import customAjv from 'components/Form/utils/customAjv';
 import { Option } from 'components/UI/LocationInput';
 
 import { geocode, reverseGeocode } from 'utils/locationTools';
-
-import messages from '../../messages';
 
 import {
   getCoordinatesFromMultiPointData,
@@ -20,7 +16,6 @@ import {
 import { updatePointDataAndDisplay } from './pointUtils';
 
 export type MapInputType = 'point' | 'line' | 'polygon';
-export type EsriGeometryType = 'point' | 'polygon' | 'polyline' | 'multipoint';
 
 // reverseGeocodeAndSave
 // Description: Reverse geocodes a point and saves the address
@@ -78,39 +73,6 @@ export const getUserInputPoints = (
     const point = graphic.geometry as __esri.Point;
     return [point.longitude, point.latitude];
   });
-};
-
-// checkCoordinateErrors
-// Description: Gets any nested coordinate errors raised by ajv validation.
-// Given the nested structure of the JSON schema for GeoJSON data, we need to check validity here.
-export const checkCoordinateErrors = ({
-  data,
-  inputType,
-  schema,
-  formatMessage,
-}: CheckCoordinateErrorsProps) => {
-  const validate = customAjv.compile(schema);
-  if (isLineOrPolygonInput(inputType)) {
-    if (!validate(data)) {
-      if (validate.errors) {
-        for (const err of validate.errors) {
-          if (err.keyword === 'minItems') {
-            return formatMessage(messages.minimumCoordinates, {
-              numPoints: inputType === 'line' ? 2 : 3,
-            });
-          }
-        }
-      }
-    }
-  }
-  return '';
-};
-
-type CheckCoordinateErrorsProps = {
-  data: any;
-  inputType: MapInputType;
-  schema: JsonSchema;
-  formatMessage: (message: any, values?: any) => string;
 };
 
 // updateDataAndDisplay

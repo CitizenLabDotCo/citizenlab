@@ -11,10 +11,12 @@ import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
+import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { FormValues } from '../Page/types';
+import tracks from '../tracks';
 import { convertCustomFieldsToNestedPages } from '../util';
 
 import IdeationPage from './IdeationPage';
@@ -71,6 +73,7 @@ const IdeationForm = ({
             participationMethod === 'common_ground' ? 'published' : undefined,
         });
         updateSearchParams({ idea_id: idea.data.id });
+        trackEventByName(tracks.ideaFormSubmitted);
       } else {
         await updateIdea({
           id: idea.id,

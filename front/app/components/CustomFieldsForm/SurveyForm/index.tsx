@@ -13,10 +13,12 @@ import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
+import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { FormValues } from '../Page/types';
+import tracks from '../tracks';
 import { convertCustomFieldsToNestedPages } from '../util';
 
 import SurveyPage from './SurveyPage';
@@ -55,6 +57,7 @@ const SurveyForm = ({
       return;
     }
     if (currentPageNumber === nestedPagesData.length - 1) {
+      trackEventByName(tracks.surveyFormSubmitted);
       // Form has been submitted, clear the draft idea
       return clearDraftIdea();
     }
