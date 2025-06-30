@@ -167,7 +167,7 @@ class ProjectsFinderAdminService
       SQL
     end
 
-    if participation_states.include?('finished')
+    if participation_states.include?('past')
       # Projects with no phases that end in the future
       conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE coalesce(end_at, 'infinity'::DATE) >= '#{DateTime.current.iso8601}')"
     end

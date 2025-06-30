@@ -165,18 +165,18 @@ describe ProjectsFinderAdminService do
       expect(result.pluck(:id)).to eq([information_phase_project.id])
     end
 
-    it 'returns finished projects' do
-      result = described_class.filter_participation_states(Project.all, { participation_states: ['finished'] })
+    it 'returns past projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['past'] })
       expect(result.pluck(:id)).to eq([past_project.id])
     end
 
-    it 'returns collecting_data and finished projects' do
-      result = described_class.filter_participation_states(Project.all, { participation_states: ['collecting_data', 'finished'] })
+    it 'returns collecting_data and past projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['collecting_data', 'past'] })
       expect(result.pluck(:id).sort).to match_array([collecting_data_project.id, past_project.id].sort)
     end
 
-    it 'returns not_started, collecting_data, informing and finished projects' do
-      result = described_class.filter_participation_states(Project.all, { participation_states: ['not_started', 'collecting_data', 'informing', 'finished'] })
+    it 'returns not_started, collecting_data, informing and past projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['not_started', 'collecting_data', 'informing', 'past'] })
       expect(result.pluck(:id).sort).to match_array([not_started_project.id, collecting_data_project.id, information_phase_project.id, past_project.id].sort)
     end
   end
