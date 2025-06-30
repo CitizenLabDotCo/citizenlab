@@ -167,13 +167,13 @@ module EmailCampaigns
     end
 
     # Necessary to preserve original behavior of the context enabled toggle
-    def enabled
-      if context
-        super && global_campaign.enabled
-      else
-        super
-      end
-    end
+    # def enabled
+    #   if context
+    #     super && global_campaign&.enabled
+    #   else
+    #     super
+    #   end
+    # end
 
     protected
 

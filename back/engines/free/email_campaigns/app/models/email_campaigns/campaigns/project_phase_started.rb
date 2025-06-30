@@ -44,7 +44,7 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
-    validates :context_type, inclusion: { in: ['Phase'] }
+    validates :context_type, inclusion: { in: ['Phase'], allow_blank: true }
 
     def mailer_class
       ProjectPhaseStartedMailer
