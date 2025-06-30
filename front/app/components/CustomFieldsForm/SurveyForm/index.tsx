@@ -87,11 +87,7 @@ const SurveyForm = ({
     }
   };
 
-  const initialFormData = draftIdea
-    ? {
-        ...draftIdea.data.attributes,
-      }
-    : undefined;
+  const initialFormData = draftIdea?.data.attributes;
 
   if (isLoading) {
     return <Spinner />;

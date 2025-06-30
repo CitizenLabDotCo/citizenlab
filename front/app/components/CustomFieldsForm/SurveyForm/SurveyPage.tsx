@@ -163,8 +163,6 @@ const SurveyPage = ({
     phase?.attributes.allow_anonymous_participation;
   return (
     <FormProvider {...methods}>
-      {showFormFeedback && <Feedback />}
-
       <StyledForm id="idea-form">
         <Box
           id="container"
@@ -199,6 +197,8 @@ const SurveyPage = ({
               overflowX="hidden"
               ref={pageRef}
             >
+              {showFormFeedback && <Feedback />}
+
               {shouldShowMap && isMobileOrSmaller && (
                 <PageEsriDivider dragDividerRef={dragDividerRef} />
               )}
