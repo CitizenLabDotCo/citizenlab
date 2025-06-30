@@ -37,7 +37,7 @@ const Filters = () => {
           }}
         />
         <Status
-          mr="8px"
+          mr="0px"
           values={statuses}
           onChange={(publicationStatuses) => {
             setParam('status', publicationStatuses);

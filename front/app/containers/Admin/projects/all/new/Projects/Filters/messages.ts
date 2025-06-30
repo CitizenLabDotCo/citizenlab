@@ -23,7 +23,7 @@ export default defineMessages({
   },
   participationStates: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates',
-    defaultMessage: 'Participation states',
+    defaultMessage: 'Participation state',
   },
   notStarted: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted',
