@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import {
@@ -52,11 +52,26 @@ const MapField = ({
     control,
     setValue,
     watch,
+    getValues,
   } = useFormContext();
+
+  useEffect(() => {
+    if (typeof getValues(name) === 'object') {
+      // If the value is an object, it means it has been converted from WKT to GeoJSON
+      // We need to convert it back to WKT for the form state
+      const convertedValue = convertGeojsonToWKT({ field: getValues(name) });
+      setValue(name, convertedValue.field, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+    }
+  }, [getValues, name, setValue]);
 
   const value = watch(name)
     ? convertWKTToGeojson({ point: watch(name) }).point
     : undefined;
+
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
 
