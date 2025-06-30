@@ -20,10 +20,19 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
-<<<<<<< HEAD
 #  context_type         :string
-=======
->>>>>>> master
+#
+# Indexes
+#
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (author_id => users.id)
+#
+
 #
 # Indexes
 #

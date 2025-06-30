@@ -219,18 +219,6 @@ resource 'Campaigns' do
         let(:reply_to) { 'otherguy@organization.net' }
         let(:group_ids) { [create(:group).id] }
 
-<<<<<<< HEAD
-      example_request 'Update a campaign' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
-        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
-        expect(json_response.dig(:data, :attributes, :sender)).to match sender
-        expect(json_response.dig(:data, :attributes, :campaign_description_multiloc).stringify_keys).to eq campaign.class.campaign_description_multiloc
-        expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
-        expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
-        expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
-=======
         example_request 'Update a campaign' do
           assert_status 200
           json_response = json_parse(response_body)
@@ -311,7 +299,6 @@ resource 'Campaigns' do
           # Does not save body_multiloc, as it is not applicable to automated campaigns
           expect(attributes[:body_multiloc]).to eq({})
         end
->>>>>>> master
       end
     end
 
