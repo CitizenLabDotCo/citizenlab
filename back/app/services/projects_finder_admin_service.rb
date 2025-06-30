@@ -139,7 +139,6 @@ class ProjectsFinderAdminService
     return scope if participation_states.blank?
 
     today = Time.zone.today
-
     conditions = []
 
     if participation_states.include?('not_started')
