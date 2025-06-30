@@ -24,12 +24,6 @@ class WebApi::V1::ProjectsController < ApplicationController
     # but it doesn't make any difference with `preload`. Still using it in case the query changes.
     @projects = Project.where(id: publications.pluck(:publication_id)).ordered
 
-    # If include_unlisted is true, we include all projects, including unlisted ones.
-    # In this case, we do not apply the `listed` scope.
-    # If include_unlisted is not true, we do not include unlisted projects.
-    # In this case, we apply the `listed` scope to filter out unlisted projects.
-    @projects = @projects.listed if params[:include_unlisted] != 'true'
-
     @projects = paginate @projects
     @projects = @projects.preload(
       :project_images,
