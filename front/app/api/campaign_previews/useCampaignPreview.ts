@@ -19,7 +19,7 @@ const useCampaignPreview = (campaignId: string) => {
     ICampaignPreview,
     CampaignPreviewsKeys
   >({
-    queryKey: campaignPreviewsKeys.item({ campaignId: campaignId }),
+    queryKey: campaignPreviewsKeys.item({ campaignId }),
     queryFn: () => fetchCampaignPreview({ campaignId }),
   });
 };

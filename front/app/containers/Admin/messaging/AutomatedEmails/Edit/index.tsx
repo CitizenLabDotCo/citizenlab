@@ -7,10 +7,17 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
+import { CampaignFormValues } from 'api/campaigns/types';
 import useCampaign from 'api/campaigns/useCampaign';
+import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
+import useLocalize from 'hooks/useLocalize';
+
+import PreviewFrame from 'components/admin/Email/PreviewFrame';
+import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -18,12 +25,6 @@ import clHistory from 'utils/cl-router/history';
 
 import messages from '../../messages';
 import EditCampaignForm from '../EditCampaignForm';
-import { CampaignFormValues } from 'api/campaigns/types';
-import styled from 'styled-components';
-import PreviewFrame from 'components/admin/Email/PreviewFrame';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
-import useLocalize from 'hooks/useLocalize';
 
 const PageTitle = styled.h1`
   width: 100%;

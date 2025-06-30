@@ -17,13 +17,13 @@ import useAuthUser from 'api/me/useAuthUser';
 import messages from 'containers/Admin/messaging/messages';
 
 import { Section, SectionField } from 'components/admin/Section';
+import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-import Input from 'components/HookForm/Input';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;

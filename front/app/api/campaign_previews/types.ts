@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import campaignPreviewsKeys from './keys';
 
 export interface ICampaignPreview {
