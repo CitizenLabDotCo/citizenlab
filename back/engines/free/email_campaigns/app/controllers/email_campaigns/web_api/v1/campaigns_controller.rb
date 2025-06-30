@@ -32,6 +32,13 @@ module EmailCampaigns
       end.new
       @campaign.assign_attributes(campaign_params)
       @campaign.author ||= current_user
+      if campaign_context
+        if !@campaign.class.supports_context?(campaign_context)
+          raise Pundit::NotAuthorizedErrorWithReason, reason: 'Context not supported by campaign'
+        end
+
+        @campaign.context = campaign_context
+      end
 
       authorize @campaign
       SideFxCampaignService.new.before_create(@campaign, current_user)

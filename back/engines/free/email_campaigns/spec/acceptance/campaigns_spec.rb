@@ -220,38 +220,46 @@ resource 'Campaigns' do
       create_campaign_params(self)
       ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
-      context 'manual campaigns' do
-        let(:campaign) { build(:manual_project_participants_campaign) }
-        let(:campaign_name) { 'manual_project_participants' }
-        let(:subject_multiloc) { campaign.subject_multiloc }
-        let(:body_multiloc) { campaign.body_multiloc }
-        let(:sender) { 'author' }
-        let(:reply_to) { 'test@emailer.com' }
-        let(:project_id) { @user.roles.first['project_id'] }
-      end
-
-      example_request 'Create a campaign, manageable by project moderator, for moderated project' do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
-        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
-        expect(json_response.dig(:data, :attributes, :sender)).to match sender
-        expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
-        expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
-      end
-
-      describe do
-        let(:project_id) { manual_project_participants_campaign_not_moderated_by_this_pm.context_id }
-
-        example '[Unauthorized] Create campaign, manageable by project moderator, for unmoderated project', document: false do
-          do_request
-          expect(response_status).to eq 401
+      context 'moderator' do # TODO: Move out of admin context
+        before do
+          @user = create(:project_moderator)
+          header_token_for @user
         end
-      end
 
-      example '[Unauthorized] Create campaign, not manageable by project moderator', document: false do
-        do_request(campaign: { campaign_name: 'manual' })
-        expect(response_status).to eq 401
+        let(:project_id) { @user.roles.first['project_id'] }
+
+        context 'manual campaigns' do
+          let(:campaign) { build(:manual_project_participants_campaign) }
+          let(:campaign_name) { 'manual_project_participants' }
+          let(:subject_multiloc) { campaign.subject_multiloc }
+          let(:body_multiloc) { campaign.body_multiloc }
+          let(:sender) { 'author' }
+          let(:reply_to) { 'test@emailer.com' }
+
+          example_request 'Create a campaign, manageable by project moderator, for moderated project' do
+            expect(response_status).to eq 201
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
+            expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+            expect(json_response.dig(:data, :attributes, :sender)).to match sender
+            expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
+            expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
+          end
+
+          describe do
+            let(:project_id) { create(:project).id }
+
+            example '[Unauthorized] Create campaign, manageable by project moderator, for unmoderated project', document: false do
+              do_request
+              expect(response_status).to eq 401
+            end
+          end
+
+          example '[Unauthorized] Create campaign, not manageable by project moderator', document: false do
+            do_request(campaign: { campaign_name: 'manual' })
+            expect(response_status).to eq 401
+          end
+        end
       end
     end
 
@@ -625,7 +633,7 @@ resource 'Campaigns' do
 
       example '[Unauthorized] Get the delivery statistics of a sent campaign manageable by project moderator, for unmoderated project', document: false do
         other_project = create(:project)
-        @user.update(roles: [{ type: 'project_moderator', project_id: other_project.id }])
+        @user.update!(roles: [{ type: 'project_moderator', project_id: other_project.id }])
 
         do_request(id: @manual_project_participants_campaign.id)
         assert_status 401
