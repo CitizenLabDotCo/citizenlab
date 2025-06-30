@@ -149,6 +149,12 @@ export function getInputTerm(
   return 'idea';
 }
 
+export function getPhaseVoteTerm(phase: IPhaseData) {
+  const { vote_term } = phase.attributes;
+
+  return vote_term || 'vote';
+}
+
 export const INPUT_TERMS = [
   'idea',
   'option',

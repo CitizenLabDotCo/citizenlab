@@ -1,9 +1,12 @@
 import React from 'react';
 
+import { VoteTerm } from 'api/phases/types';
+import { getPhaseVoteTerm } from 'api/phases/utils';
+
 import AssignMultipleVotesBox from 'components/VoteInputs/multiple/AssignMultipleVotesBox';
 import AssignMultipleVotesInput from 'components/VoteInputs/multiple/AssignMultipleVotesInput';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { getLocalisedDateString } from 'utils/dateUtils';
 
 import messages from '../messages';
@@ -37,29 +40,30 @@ const multipleVotingConfig: VotingMethodConfig = {
   getStatusDescription: ({
     phase,
     submissionState,
-    localize,
-    formatMessage,
   }: GetStatusDescriptionProps) => {
-    const fallbackVoteTerm = formatMessage(messages.vote).toLowerCase();
-    const fallbackVotesTerm = formatMessage(messages.votes).toLowerCase();
-
-    const voteTerm =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      localize(phase?.attributes?.voting_term_singular_multiloc) ??
-      fallbackVoteTerm;
-    const votesTerm =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      localize(phase?.attributes?.voting_term_plural_multiloc) ??
-      fallbackVotesTerm;
-
-    const maxVotesTerm =
-      phase?.attributes.voting_max_total === 1 ? voteTerm : votesTerm;
-    const maxVotesPerIdeaTerm =
-      phase?.attributes.voting_max_votes_per_idea === 1 ? voteTerm : votesTerm;
-
     if (!phase) return null;
+
+    const voteTerm = getPhaseVoteTerm(phase);
+    const cumulativeVotingInstructionsTotalVotesMessages: {
+      [key in VoteTerm]: MessageDescriptor;
+    } = {
+      vote: messages.cumulativeVotingInstructionsTotalVotes,
+      point: messages.cumulativeVotingInstructionsTotalPoints,
+      token: messages.cumulativeVotingInstructionsTotalTokens,
+      credit: messages.cumulativeVotingInstructionsTotalCredits,
+    };
+    const cumulativeVotingInstructionsTotalVotesMessage =
+      cumulativeVotingInstructionsTotalVotesMessages[voteTerm];
+    const cumulativeVotingInstructionsMaxVotesPerIdeaMessages: {
+      [key in VoteTerm]: MessageDescriptor;
+    } = {
+      vote: messages.cumulativeVotingInstructionsMaxVotesPerIdea,
+      point: messages.cumulativeVotingInstructionsMaxPointsPerIdea,
+      token: messages.cumulativeVotingInstructionsMaxTokensPerIdea,
+      credit: messages.cumulativeVotingInstructionsMaxCreditsPerIdea,
+    };
+    const cumulativeVotingInstructionsMaxVotesPerIdeaMessage =
+      cumulativeVotingInstructionsMaxVotesPerIdeaMessages[voteTerm];
 
     if (submissionState === 'hasNotSubmitted') {
       return (
@@ -69,11 +73,10 @@ const multipleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              voteTerm: maxVotesTerm,
               optionCount: phase.attributes.ideas_count,
               totalVotes: phase.attributes.voting_max_total?.toLocaleString(),
             }}
-            {...messages.cumulativeVotingInstructionsTotalVotes}
+            {...cumulativeVotingInstructionsTotalVotesMessage}
           />
           <ul>
             <li>
@@ -83,10 +86,9 @@ const multipleVotingConfig: VotingMethodConfig = {
             </li>
             <li>
               <FormattedMessage
-                {...messages.cumulativeVotingInstructionsMaxVotesPerIdea}
+                {...cumulativeVotingInstructionsMaxVotesPerIdeaMessage}
                 values={{
                   maxVotes: phase.attributes.voting_max_votes_per_idea,
-                  voteTerm: maxVotesPerIdeaTerm,
                 }}
               />
             </li>
@@ -140,27 +142,14 @@ const multipleVotingConfig: VotingMethodConfig = {
           {...messages.votingSubmittedInstructionsContinuous}
         />
       );
-    } else if (
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      submissionState === 'submissionEnded' && // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      phase?.attributes.end_at
-    ) {
+    } else if (phase.attributes.end_at) {
       return (
         <FormattedMessage
           values={{
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            endDate: getLocalisedDateString(phase?.attributes.end_at),
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            maxVotes: phase?.attributes.voting_max_total?.toLocaleString(),
-            voteTerm: maxVotesTerm,
-            optionCount: phase.attributes.ideas_count,
+            endDate: getLocalisedDateString(phase.attributes.end_at),
           }}
           {...messages.multipleVotingEnded}
         />

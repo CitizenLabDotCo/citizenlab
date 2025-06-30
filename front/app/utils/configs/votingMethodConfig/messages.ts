@@ -62,10 +62,12 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.budget',
     defaultMessage: 'budget',
   },
+  // To remove?
   vote: {
     id: 'app.utils.votingMethodUtils.vote',
     defaultMessage: 'Vote',
   },
+  // To remove?
   votes: {
     id: 'app.utils.votingMethodUtils.votes',
     defaultMessage: 'Votes',
@@ -79,9 +81,24 @@ export default defineMessages({
     defaultMessage: 'votes',
   },
   numberOfVotes: {
-    id: 'app.utils.votingMethodUtils.numberOfVotes',
+    id: 'app.utils.votingMethodUtils.numberOfVotes1',
     defaultMessage:
-      '{numberOfVotes} {numberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}',
+      '{numberOfVotes, plural, =0 {0 votes} one {1 vote} other {# votes}}',
+  },
+  numberOfPoints: {
+    id: 'app.utils.votingMethodUtils.numberOfPoints',
+    defaultMessage:
+      '{numberOfVotes, plural, =0 {0 points} one {1 point} other {# points}}',
+  },
+  numberOfTokens: {
+    id: 'app.utils.votingMethodUtils.numberOfTokens',
+    defaultMessage:
+      '{numberOfVotes, plural, =0 {0 tokens} one {1 token} other {# tokens}}',
+  },
+  numberOfCredits: {
+    id: 'app.utils.votingMethodUtils.numberOfCredits',
+    defaultMessage:
+      '{numberOfVotes, plural, =0 {0 credits} one {1 credit} other {# credits}}',
   },
   budgetingSubmissionInstructionsTotalBudget2: {
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2',
@@ -149,27 +166,57 @@ export default defineMessages({
     defaultMessage: 'Final tally',
   },
   cumulativeVotingInstructionsTotalVotes: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes1',
     defaultMessage:
-      'You have a total of <b>{totalVotes} {voteTerm} to distribute between {optionCount} options</b>.',
+      'You have a total of <b>{totalVotes, plural, no {# votes} one {# vote} other {# votes}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
+  },
+  cumulativeVotingInstructionsTotalPoints: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPoints',
+    defaultMessage:
+      'You have a total of <b>{totalVotes, plural, no {# points} one {# point} other {# points}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
+  },
+  cumulativeVotingInstructionsTotalTokens: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalTokens',
+    defaultMessage:
+      'You have a total of <b>{totalVotes, plural, no {# tokens} one {# token} other {# tokens}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
+  },
+  cumulativeVotingInstructionsTotalCredits: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalCredits',
+    defaultMessage:
+      'You have a total of <b>{totalVotes, plural, no {# credits} one {# credit} other {# credits}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
   },
   cumulativeVotingInstructionsPreferredOptions: {
     id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2',
     defaultMessage: 'Select your preferred options by tapping on "Select".',
   },
   cumulativeVotingInstructionsMaxVotesPerIdea: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea2',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea3',
     defaultMessage:
-      'You can add a maximum number of {maxVotes} {voteTerm} per option.',
+      'You can add a maximum number of {maxVotes, plural, one {# vote} other {# votes}} per option.',
+  },
+  cumulativeVotingInstructionsMaxPointsPerIdea: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxPointsPerIdea',
+    defaultMessage:
+      'You can add a maximum number of {maxVotes, plural, one {# point} other {# points}} per option.',
+  },
+  cumulativeVotingInstructionsMaxTokensPerIdea: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxTokensPerIdea',
+    defaultMessage:
+      'You can add a maximum number of {maxVotes, plural, one {# token} other {# tokens}} per option.',
+  },
+  cumulativeVotingInstructionsMaxCreditsPerIdea: {
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxCreditsPerIdea',
+    defaultMessage:
+      'You can add a maximum number of {maxVotes, plural, one {# credit} other {# credits}} per option.',
   },
   cumulativeVotingInstructionsOnceYouAreDone: {
     id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone',
     defaultMessage: 'Once you are done, click “Submit” to cast your vote.',
   },
+  // To check message
   multipleVotingEnded: {
-    id: 'app.utils.votingMethodUtils.multipleVotingEnded',
-    defaultMessage:
-      'Voting closed on <b>{endDate}.</b> Participants had <b>{maxVotes} {voteTerm} each to distribute between {optionCount} options.</b>',
+    id: 'app.utils.votingMethodUtils.multipleVotingEnded1',
+    defaultMessage: 'Voting closed on <b>{endDate}.</b>',
   },
   singleVotingUnlimitedEnded: {
     id: 'app.utils.votingMethodUtils.singleVotingUnlimitedEnded',

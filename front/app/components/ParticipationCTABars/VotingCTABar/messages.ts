@@ -9,8 +9,8 @@ export default defineMessages({
       'You cast {votesCast} votes, which exceeds the limit of {votesLimit}. Please remove some votes and try again.',
   },
   noVotesCast: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.noVotesCast2',
-    defaultMessage: 'You need to vote before you can submit your {votesTerm}.',
+    id: 'app.components.ParticipationCTABars.VotingCTABar.noVotesCast3',
+    defaultMessage: 'You need to vote before you can submit.',
   },
 
   // budgeting disabled explanations
@@ -36,9 +36,24 @@ export default defineMessages({
     defaultMessage: '{budgetLeft} / {totalBudget} left',
   },
   votesLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.votesLeft2',
+    id: 'app.components.ParticipationCTABars.VotingCTABar.votesLeft3',
     defaultMessage:
-      '{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} left',
+      '{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {votes} one {vote} other {votes}} left',
+  },
+  pointsLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.pointsLeft',
+    defaultMessage:
+      '{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {points} one {point} other {points}} left',
+  },
+  tokensLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.tokensLeft',
+    defaultMessage:
+      '{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {tokens} one {token} other {tokens}} left',
+  },
+  creditsLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.creditsLeft',
+    defaultMessage:
+      '{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {credits} one {credit} other {credits}} left',
   },
   votesCast: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.votesCast',

@@ -2,8 +2,20 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   xVotes: {
-    id: 'app.components.AssignMultipleVotesControl.xVotes2',
-    defaultMessage: '{votes, plural, one {{singular}} other {{plural}}}',
+    id: 'app.components.AssignMultipleVotesControl.xVotes3',
+    defaultMessage: '{votes, plural, one {vote} other {votes}}',
+  },
+  xPoints: {
+    id: 'app.components.AssignMultipleVotesControl.xPoints',
+    defaultMessage: '{points, plural, one {point} other {points}}',
+  },
+  xTokens: {
+    id: 'app.components.AssignMultipleVotesControl.xTokens',
+    defaultMessage: '{tokens, plural, one {token} other {tokens}}',
+  },
+  xCredits: {
+    id: 'app.components.AssignMultipleVotesControl.xCredits',
+    defaultMessage: '{credits, plural, one {credit} other {credits}}',
   },
   numberManualVotes: {
     id: 'app.components.AssignMultipleVotesControl.numberManualVotes2',
@@ -14,10 +26,12 @@ export default defineMessages({
     id: 'app.components.AssignMultipleVotesControl.select',
     defaultMessage: 'Select',
   },
+  // To remove
   vote: {
     id: 'app.components.AssignMultipleVotesControl.vote',
     defaultMessage: 'Vote',
   },
+  // To remove
   votes: {
     id: 'app.components.AssignMultipleVotesControl.votes',
     defaultMessage: 'votes',

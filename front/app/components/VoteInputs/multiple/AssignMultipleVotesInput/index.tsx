@@ -14,9 +14,8 @@ import { useTheme } from 'styled-components';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
-import { IPhaseData } from 'api/phases/types';
-
-import useLocalize from 'hooks/useLocalize';
+import { IPhaseData, VoteTerm } from 'api/phases/types';
+import { getPhaseVoteTerm } from 'api/phases/utils';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
@@ -25,7 +24,7 @@ import {
   isFixableByAuthentication,
   getPermissionsDisabledMessage,
 } from 'utils/actionDescriptors';
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -65,7 +64,6 @@ const AssignMultipleVotesInput = ({
   // other
   const theme = useTheme();
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
   const isPhoneOrSmaller = useBreakpoint('phone');
 
   // action descriptors
@@ -126,21 +124,17 @@ const AssignMultipleVotesInput = ({
     return null;
   }
 
-  const {
-    voting_term_singular_multiloc,
-    voting_term_plural_multiloc,
-    voting_max_votes_per_idea,
-    voting_max_total,
-  } = phase.attributes;
+  const { voting_max_votes_per_idea, voting_max_total } = phase.attributes;
 
   if (isNil(voting_max_votes_per_idea)) return null;
-
-  const votingTermSingular =
-    localize(voting_term_singular_multiloc) ||
-    formatMessage(messages.vote).toLowerCase();
-  const votingTermPlural =
-    localize(voting_term_plural_multiloc) ||
-    formatMessage(messages.votes).toLowerCase();
+  const voteTerm = getPhaseVoteTerm(phase);
+  const xVotesMessages: { [key in VoteTerm]: MessageDescriptor } = {
+    vote: messages.xVotes,
+    point: messages.xPoints,
+    token: messages.xTokens,
+    credit: messages.xCredits,
+  };
+  const xVotesMessage = xVotesMessages[voteTerm];
 
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -238,10 +232,8 @@ const AssignMultipleVotesInput = ({
             />
           </Box>
           <Text fontSize="m" ml="8px" my="auto" aria-live="polite">
-            {formatMessage(messages.xVotes, {
+            {formatMessage(xVotesMessage, {
               votes,
-              singular: votingTermSingular,
-              plural: votingTermPlural,
             })}
           </Text>
         </Box>

@@ -1,10 +1,7 @@
 import { MessageDescriptor } from 'react-intl';
-import { FormatMessage } from 'typings';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-
-import { Localize } from 'hooks/useLocalize';
 
 import { UseFormatCurrencyReturn } from 'utils/currency/useFormatCurrency';
 
@@ -17,8 +14,6 @@ export type GetStatusDescriptionProps = {
   project: IProjectData;
   submissionState: VoteSubmissionState;
   phase?: IPhaseData;
-  localize: Localize;
-  formatMessage: FormatMessage;
   formatCurrency: UseFormatCurrencyReturn;
 };
 
