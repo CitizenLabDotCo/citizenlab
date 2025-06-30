@@ -137,6 +137,6 @@ class AdminPublicationsFilteringService
     next scope if options[:include_unlisted] == 'true'
 
     unlisted_projects = Project.where(unlisted: true)
-    scope.where.not(id: unlisted_projects.select(:publication_id))
+    scope.where.not(publication_id: unlisted_projects.select(:id))
   end
 end

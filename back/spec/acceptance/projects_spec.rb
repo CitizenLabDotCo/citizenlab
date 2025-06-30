@@ -1191,6 +1191,22 @@ resource 'Projects' do
           expect(response_data.map { |d| d.dig(:attributes, :slug) }).to include 'community-monitor'
         end
       end
+
+      context 'When unlisted projects exist' do
+        before { @projects << create(:project, unlisted: true) }
+
+        example 'Does not return unlisted projects by default', document: false do
+          do_request
+          assert_status 200
+          expect(json_response[:data].size).to eq(@projects.size - 1)
+        end
+
+        example 'Does return unlisted projects if include_unlisted is true', document: false do
+          do_request include_unlisted: true
+          assert_status 200
+          expect(json_response[:data].size).to eq(@projects.size)
+        end
+      end
     end
 
     context 'when non-moderator/non-admin user' do
