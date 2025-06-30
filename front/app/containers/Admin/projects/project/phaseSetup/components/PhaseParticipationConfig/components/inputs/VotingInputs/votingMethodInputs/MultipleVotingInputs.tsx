@@ -43,8 +43,7 @@ const MultipleVotingInputs = ({
   const { formatMessage } = useIntl();
 
   const getVoteTermOptions = (): IOption[] => {
-    const VOTE_TERMS: VoteTerm[] = ['vote', 'point', 'token'];
-    const LABEL_MESSAGES: {
+    const voteTermLabels: {
       [key in VoteTerm]: MessageDescriptor;
     } = {
       vote: messages.voteTerm,
@@ -53,14 +52,10 @@ const MultipleVotingInputs = ({
       credit: messages.creditTerm, // Assuming 'credit' is a placeholder for future use
     };
 
-    return VOTE_TERMS.map((voteTerm: VoteTerm) => {
-      const labelMessage = LABEL_MESSAGES[voteTerm];
-
-      return {
-        value: voteTerm,
-        label: formatMessage(labelMessage),
-      };
-    });
+    return Object.entries(voteTermLabels).map(([voteTerm, labelMessage]) => ({
+      value: voteTerm,
+      label: formatMessage(labelMessage),
+    }));
   };
 
   return (
