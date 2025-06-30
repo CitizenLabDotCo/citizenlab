@@ -146,7 +146,7 @@ const CampaignForm = ({
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <StyledSection>
           <StyledSectionField>
-            <Feedback />
+            <Feedback onlyShowErrors={true} />
           </StyledSectionField>
           <StyledSectionTitle>
             <FormattedMessage {...messages.senderRecipients} />

@@ -136,6 +136,14 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.previewSentConfirmation',
     defaultMessage: 'A preview email has been sent to your email address',
   },
+  emailUpdated: {
+    id: 'app.containers.Admin.emails.emailUpdated',
+    defaultMessage: 'Email successfully updated',
+  },
+  emailCreated: {
+    id: 'app.containers.Admin.emails.emailCreated',
+    defaultMessage: 'Email successfully created in draft',
+  },
   formSave: {
     id: 'app.containers.Admin.emails.formSave',
     defaultMessage: 'Save as draft',

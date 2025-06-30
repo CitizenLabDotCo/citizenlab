@@ -22,7 +22,9 @@ const New = () => {
       campaign_name: 'manual',
       ...values,
     });
-    clHistory.push(`/admin/messaging/emails/custom/${response.data.id}/edit`);
+    clHistory.push(
+      `/admin/messaging/emails/custom/${response.data.id}/edit?created=true`
+    );
   };
 
   const goBack = () => {
