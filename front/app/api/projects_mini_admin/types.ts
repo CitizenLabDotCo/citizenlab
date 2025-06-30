@@ -19,7 +19,7 @@ export type Parameters = {
     | 'recently_created';
 } & Pagination;
 
-type ParticipationState =
+export type ParticipationState =
   | 'not_started'
   | 'collecting_data'
   | 'informing'
