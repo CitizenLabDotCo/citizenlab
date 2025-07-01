@@ -39,6 +39,7 @@ class ProjectPolicy < ApplicationPolicy
       scope = projects
 
       if include_unlisted
+        # If include_unlisted:
         # If you are an admin, include all unlisted projects (do nothing)
         # Otherwise, include only unlisted projects that you can moderate
         unless user&.admin?
@@ -53,7 +54,7 @@ class ProjectPolicy < ApplicationPolicy
           )
         end
       else
-        # If the param is not passed, exclude unlisted projects
+        # If not include_unlisted: exclude unlisted projects
         scope = scope.where(unlisted: false)
       end
 
