@@ -114,7 +114,7 @@ resource 'AdminPublication' do
         do_request
         assert_status 200
         expect(response_data.size).to eq 10
-        expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id 
+        expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
       end
 
       example 'Shows unlisted projects when requested', document: false do
@@ -123,7 +123,7 @@ resource 'AdminPublication' do
         do_request include_unlisted: true
         assert_status 200
         expect(response_data.size).to eq 11
-        expect(response_data.pluck(:id)).to include unlisted_project.admin_publication.id 
+        expect(response_data.pluck(:id)).to include unlisted_project.admin_publication.id
       end
 
       context 'when admin is moderator of publications' do
@@ -707,7 +707,7 @@ resource 'AdminPublication' do
 
         moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
         @moderator.update!(roles: moderator_roles)
-  
+
         do_request
         assert_status 200
         expect(response_data.size).to eq 7
@@ -719,7 +719,7 @@ resource 'AdminPublication' do
 
         moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
         @moderator.update!(roles: moderator_roles)
-  
+
         do_request include_unlisted: true
         assert_status 200
         expect(response_data.size).to eq 8
@@ -797,9 +797,9 @@ resource 'AdminPublication' do
         unlisted_project_user_moderates = create(
           :project,
           unlisted: true,
-          admin_publication_attributes: { 
-            publication_status: 'published', 
-            parent_id: project_folder.admin_publication.id 
+          admin_publication_attributes: {
+            publication_status: 'published',
+            parent_id: project_folder.admin_publication.id
           }
         )
 
@@ -813,9 +813,9 @@ resource 'AdminPublication' do
         unlisted_project_user_moderates = create(
           :project,
           unlisted: true,
-          admin_publication_attributes: { 
-            publication_status: 'published', 
-            parent_id: project_folder.admin_publication.id 
+          admin_publication_attributes: {
+            publication_status: 'published',
+            parent_id: project_folder.admin_publication.id
           }
         )
 

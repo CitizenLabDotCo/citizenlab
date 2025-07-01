@@ -45,11 +45,11 @@ class ProjectPolicy < ApplicationPolicy
           scope = scope.joins(:admin_publication)
 
           scope = scope.where(
-            "(projects.unlisted = FALSE) OR " \
-            "(projects.unlisted = TRUE AND projects.id IN (?)) OR " \
-            "(projects.unlisted = TRUE AND admin_publications.parent_id IN (?))",
+            '(projects.unlisted = FALSE) OR ' \
+            '(projects.unlisted = TRUE AND projects.id IN (?)) OR ' \
+            '(projects.unlisted = TRUE AND admin_publications.parent_id IN (?))',
             user.moderatable_project_ids,
-            AdminPublication.where(publication_id: user.moderated_project_folder_ids).pluck(:id)
+            AdminPublication.where(publication_id: user.moderated_project_folder_ids).select(:id)
           )
         end
       else

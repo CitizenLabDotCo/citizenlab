@@ -1837,7 +1837,7 @@ resource 'Projects' do
   end
 
   get 'web_api/v1/projects/for_admin' do
-    context 'when moderator' do 
+    context 'when moderator' do
       before do
         @listed_projects = create_list(:project, 5)
         @unlisted_projects = create_list(:project, 4, unlisted: true)
