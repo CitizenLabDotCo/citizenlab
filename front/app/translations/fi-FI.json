@@ -1257,6 +1257,7 @@
   "app.containers.EventsShow.icsError": "Virhe ICS-tiedoston lataamisessa",
   "app.containers.EventsShow.linkToOnlineEvent": "Linkki verkkotapahtumaan",
   "app.containers.EventsShow.locationIconAltText": "Sijainti",
+  "app.containers.EventsShow.metaTitle": "Tapahtuma: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Online-kokous",
   "app.containers.EventsShow.onlineLinkIconAltText": "Linkki online-kokoukseen",
   "app.containers.EventsShow.socialMediaSharingMessage": "Osallistu tähän tapahtumaan: {eventTitle}",
