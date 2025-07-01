@@ -46,6 +46,7 @@ const IdeationForm = ({
   const { data: customFields } = useCustomFields({
     projectId,
     phaseId: participationMethod !== 'ideation' ? phaseId : undefined,
+    publicFields: true,
   });
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);

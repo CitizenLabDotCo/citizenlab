@@ -13,6 +13,7 @@ export interface ICustomFieldsParameters {
   phaseId?: string;
   inputTypes?: ICustomFieldInputType[];
   copy?: boolean;
+  publicFields?: boolean;
 }
 
 export type ICustomFieldInputType =

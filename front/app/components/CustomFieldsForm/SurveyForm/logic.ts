@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Pages } from '../util';
@@ -114,7 +115,7 @@ export const determineNextPageNumber = ({
 
   if (currentPageQuestionsWithLogic?.length) {
     currentPageQuestionsWithLogic.forEach((question) => {
-      const rules = question.logic.rules;
+      const rules = question.logic?.rules;
       if (rules && rules.length > 0) {
         const metRules = rules.filter((rule) =>
           isRuleConditionMet(question, rule, formData)

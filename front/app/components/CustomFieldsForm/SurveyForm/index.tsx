@@ -44,6 +44,7 @@ const SurveyForm = ({
   const { data: customFields } = useCustomFields({
     projectId,
     phaseId,
+    publicFields: true,
   });
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
