@@ -156,12 +156,6 @@ const multipleVotingConfig: VotingMethodConfig = {
       return messages.submittedVoteCountText;
     }
   },
-  getSubmissionTerm: (form) => {
-    if (form === 'singular') {
-      return messages.vote;
-    }
-    return messages.votes;
-  },
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },

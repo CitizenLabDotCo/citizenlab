@@ -147,12 +147,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 unsubmitBasket(basket.data.id, updateBasket);
               }}
             >
-              {config &&
-                formatMessage(messages.modifyYourSubmission, {
-                  submissionTerm: formatMessage(
-                    config.getSubmissionTerm('singular')
-                  ).toLowerCase(),
-                })}
+              {formatMessage(messages.modifyYourSubmission)}
             </Button>
           </Box>
         )}

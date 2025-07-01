@@ -54,30 +54,6 @@ export default defineMessages({
     defaultMessage:
       '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them.',
   },
-  budgets: {
-    id: 'app.utils.votingMethodUtils.budgets',
-    defaultMessage: 'Budgets',
-  },
-  budget: {
-    id: 'app.utils.votingMethodUtils.budget',
-    defaultMessage: 'budget',
-  },
-  vote: {
-    id: 'app.utils.votingMethodUtils.vote',
-    defaultMessage: 'Vote',
-  },
-  votes: {
-    id: 'app.utils.votingMethodUtils.votes',
-    defaultMessage: 'Votes',
-  },
-  midSentenceVote: {
-    id: 'app.utils.votingMethodUtils.midSentenceVote',
-    defaultMessage: 'vote',
-  },
-  midSentenceVotes: {
-    id: 'app.utils.votingMethodUtils.midSentenceVotes',
-    defaultMessage: 'votes',
-  },
   numberOfVotes: {
     id: 'app.utils.votingMethodUtils.numberOfVotes1',
     defaultMessage:

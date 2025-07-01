@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'Your vote may be submitted until',
   },
   modifyYourSubmission: {
-    id: 'app.components.StatusModule.modifyYourSubmission',
-    defaultMessage: 'Modify your {submissionTerm}',
+    id: 'app.components.StatusModule.modifyYourSubmission1',
+    defaultMessage: 'Modify your submission',
   },
   futurePhase: {
     id: 'app.components.StatusModule.futurePhase',

@@ -34,7 +34,6 @@ type IdeaPageVoteInputProps = IdeaCardVoteInputProps & {
   - getStatusTitle: Returns title for the status module
   - getStatusDescription: Returns description for the status module
   - getStatusSubmissionCountCopy: Returns copy related to the submission count
-  - getSubmissionTerm: Returns the submission type in specified form (i.e. singular vs plural)
   - preSubmissionWarning: Returns warning to be displayed before submission is made
   - useVoteTerm: Returns whether the custom vote term should be used in front office
   - getIdeaPageVoteInput: Returns the vote input to be displayed on the idea page
@@ -57,7 +56,6 @@ export type VotingMethodConfig = {
     compact,
     phase,
   }: IdeaPageVoteInputProps) => JSX.Element | null;
-  getSubmissionTerm: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
   useVoteTerm: boolean;
 };
