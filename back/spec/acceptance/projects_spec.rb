@@ -1838,8 +1838,8 @@ resource 'Projects' do
 
   get 'web_api/v1/projects/finished_or_archived' do
     before do
-      @listed_archived_project = create(:project, admin_publication_attributes: { publication_status: 'archived' })
-      @unlisted_archived_project = create(:project, unlisted: true, admin_publication_attributes: { publication_status: 'archived' })
+      @listed_archived_project = create(:project_with_past_phases, admin_publication_attributes: { publication_status: 'archived' })
+      @unlisted_archived_project = create(:project_with_past_phases, unlisted: true, admin_publication_attributes: { publication_status: 'archived' })
     end
 
     example 'Returns only listed projects' do
