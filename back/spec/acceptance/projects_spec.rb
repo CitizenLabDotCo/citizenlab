@@ -1835,4 +1835,34 @@ resource 'Projects' do
       end
     end
   end
+
+  get 'web_api/v1/projects/for_admin' do
+    context 'when moderator' do 
+      before do
+        @listed_projects = create_list(:project, 5)
+        @unlisted_projects = create_list(:project, 4, unlisted: true)
+        @unlisted_projects_user_moderates = create_list(:project, 2, unlisted: true)
+
+        @moderator = create(:project_moderator, projects: @unlisted_projects_user_moderates)
+
+        @unlisted_projects_user_moderates.each do |project|
+          @moderator.add_role 'project_moderator', project_id: project.id
+        end
+
+        @moderator.save!
+
+        header_token_for(@moderator)
+      end
+
+      example 'Shows unlisted projects that user moderates' do
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 7
+        expect(response_data.pluck(:id).sort).to match_array [
+          *@listed_projects.pluck(:id),
+          *@unlisted_projects_user_moderates.pluck(:id)
+        ].sort
+      end
+    end
+  end
 end
