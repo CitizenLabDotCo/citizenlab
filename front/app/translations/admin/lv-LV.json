@@ -1126,7 +1126,6 @@
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.phaseListTitle": "Fāzes:",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.project": "Projekts",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.startDate": "Darba uzsākšanas datums: {date}",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.summary": "{summary}",
   "app.containers.Admin.projects.all.new.folders": "Mapes",
   "app.containers.Admin.projects.all.new.projects": "Projekti",
   "app.containers.Admin.projects.all.new.timeline": "Laika grafiks",
