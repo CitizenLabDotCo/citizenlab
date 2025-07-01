@@ -11,9 +11,11 @@ class ProjectPolicy < ApplicationPolicy
       # of the user gives access).
       moderator_scope = user&.active? ? UserRoleService.new.moderatable_projects(user, scope) : scope.none
 
-      moderator_scope
+      moderator_scope = moderator_scope
         .or(resolve_for_visitor)
         .or(resolve_for_normal_user)
+
+      apply_listed_scope(moderator_scope, context[:include_unlisted])
     end
 
     private
@@ -31,6 +33,28 @@ class ProjectPolicy < ApplicationPolicy
       user_groups_visible = scope.user_groups_visible(user)
       user_groups_visible.not_draft
         .or(user_groups_visible.draft.where(preview_token: context[:project_preview_token]))
+    end
+
+    def self.apply_listed_scope(scope, include_unlisted)
+      if include_unlisted
+        # If you are an admin, include all unlisted projects (do nothing)
+        # Otherwise, include only unlisted projects that you can moderate
+        unless user&.admin?
+          scope = scope.joins(:admin_publication)
+
+          scope = scope
+            .where(unlisted: false)
+            .or(scope.where(unlisted: true, id: user.moderatable_project_ids))
+            .or(scope.where(unlisted: true, admin_publication: { 
+              parent_id: AdminPublication.where(publication_id: user.moderated_project_folder_ids).pluck(:id)
+            }))
+        end
+      else
+        # If the param is not passed, exclude unlisted projects
+        scope = scope.where(unlisted: false)
+      end
+
+      scope
     end
   end
 

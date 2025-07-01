@@ -18,26 +18,8 @@ class AdminPublicationPolicy < ApplicationPolicy
         # Remove hidden projects unless param is passed
         scope = scope.not_hidden unless context[:include_hidden]
 
-        # If include_unlisted param is passed:
-        if context[:include_unlisted]
-          # If you are an admin, include all unlisted projects (do nothing)
-          # Otherwise, include only unlisted projects that you can moderate
-          unless user&.admin?
-            scope = scope.joins(:admin_publication)
-
-            scope = scope
-              .where(unlisted: false)
-              .or(scope.where(unlisted: true, id: user.moderatable_project_ids))
-              .or(scope.where(unlisted: true, admin_publication: { 
-                parent_id: AdminPublication.where(publication_id: user.moderated_project_folder_ids).pluck(:id)
-              }))
-          end
-        else
-          # If the param is not passed, exclude unlisted projects
-          scope = scope.where(unlisted: false)
-        end
-
-        scope
+        # If include_unlisted param is passed: include unlisted projects
+        ProjectPolicy.apply_listed_scope(scope, context[:include_unlisted])
       else
         scope_for(klass)
       end
