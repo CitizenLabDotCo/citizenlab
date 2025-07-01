@@ -91,19 +91,23 @@ const FormBuilderSettings = ({
   const tabActiveBorder = `4px solid ${colors.primary}`;
   const fieldType = watch(`customFields.${field.index}.input_type`);
 
+  const fieldHasLogic = field.logic.rules && field.logic.rules.length > 0;
+
   const getShowTabbedSettings = () => {
     const isFieldWithLogicTab = [
-      'multiselect',
-      'multiselect_image',
       'linear_scale',
       'select',
       'rating',
       'page',
     ].includes(fieldType);
 
+    // Only show logic tab for multiselect/multiselect_image if they already have logic
+    const isMultiselectWithLogic =
+      ['multiselect', 'multiselect_image'].includes(fieldType) && fieldHasLogic;
+
     const isFormEndPage = fieldType === 'page' && field.key === 'form_end';
 
-    return isFieldWithLogicTab && !isFormEndPage;
+    return (isFieldWithLogicTab || isMultiselectWithLogic) && !isFormEndPage;
   };
 
   const showTabbedSettings = getShowTabbedSettings();
