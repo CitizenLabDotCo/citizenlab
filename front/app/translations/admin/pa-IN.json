@@ -1126,7 +1126,6 @@
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.phaseListTitle": "ਪੜਾਅ:",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.project": "ਪ੍ਰੋਜੈਕਟ",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.startDate": "ਸ਼ੁਰੂਆਤੀ ਮਿਤੀ: {date}",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.summary": "{summary}",
   "app.containers.Admin.projects.all.new.folders": "ਫੋਲਡਰ",
   "app.containers.Admin.projects.all.new.projects": "ਪ੍ਰੋਜੈਕਟ",
   "app.containers.Admin.projects.all.new.timeline": "ਸਮਾਂਰੇਖਾ",
