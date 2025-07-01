@@ -293,7 +293,7 @@
   "app.components.ParticipationCTABars.VotingCTABar.creditsLeft": "{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {credits} one {credit} other {credits}} left",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft1": "{budgetLeft} / {totalBudget} left",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1": "You need to spend a minimum of {votesMinimum} before you can submit your basket.",
-  "app.components.ParticipationCTABars.VotingCTABar.noVotesCast3": "You need to vote before you can submit.",
+  "app.components.ParticipationCTABars.VotingCTABar.noVotesCast4": "You need to select at least one option before you can submit.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "You need to add something to your basket before you can submit it.",
   "app.components.ParticipationCTABars.VotingCTABar.pointsLeft": "{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {points} one {point} other {points}} left",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "See options",
