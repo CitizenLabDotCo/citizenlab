@@ -12,9 +12,27 @@ class AdminPublicationPolicy < ApplicationPolicy
     private
 
     def scope_for_klass(klass)
-      # If the publication is a project, we usually hide hidden projects
-      if klass == Project && !context[:include_hidden]
-        scope_for(klass).not_hidden
+      if klass == Project
+        scope = scope_for(klass)
+
+        # Remove hidden projects unless param is passed
+        scope = scope.not_hidden unless context[:include_hidden]
+
+        # If include_unlisted param is passed:
+        if context[:include_unlisted]
+          # If you are an admin, include all unlisted projects
+          # Otherwise, include only unlisted projects that you can moderate
+          unless user&.admin?
+            scope = scope
+              .where(unlisted: false)
+              .or(scope.where(unlisted: true, publication: Publication.where(folder_id: user.moderatable_folder_ids)))
+          end
+        else
+          # If the param is not passed, exclude unlisted projects
+          scope = scope.where(unlisted: false)
+        end
+
+        scope
       else
         scope_for(klass)
       end
