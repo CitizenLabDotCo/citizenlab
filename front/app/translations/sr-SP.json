@@ -1257,6 +1257,7 @@
   "app.containers.EventsShow.icsError": "Грешка при преузимању ИЦС датотеке",
   "app.containers.EventsShow.linkToOnlineEvent": "Линк до онлајн догађаја",
   "app.containers.EventsShow.locationIconAltText": "Location",
+  "app.containers.EventsShow.metaTitle": "Event: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Онлине састанак",
   "app.containers.EventsShow.onlineLinkIconAltText": "Online meeting link",
   "app.containers.EventsShow.socialMediaSharingMessage": "Присуствујте овом догађају: {eventTitle}",
