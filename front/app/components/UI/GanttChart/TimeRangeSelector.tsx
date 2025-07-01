@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button, Select } from '@citizenlab/cl2-component-library';
+import { Box, Button, colors, Select } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -36,16 +36,14 @@ export const TimeRangeSelector = ({
       right="16px"
       top="0"
       zIndex="4"
-      bg="#fff"
+      bg={colors.white}
       p="8px"
     >
-      <Box width="120px">
-        <Select
-          value={selectedRange}
-          onChange={(option) => onRangeChange(option.value)}
-          options={timeRangeOptions}
-        />
-      </Box>
+      <Select
+        value={selectedRange}
+        onChange={(option) => onRangeChange(option.value)}
+        options={timeRangeOptions}
+      />
       <Button onClick={onTodayClick} buttonStyle="secondary" size="s">
         {formatMessage(messages.today)}
       </Button>
