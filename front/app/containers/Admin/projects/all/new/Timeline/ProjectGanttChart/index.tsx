@@ -10,18 +10,14 @@ import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 
-export type GanttProject = GanttItem & {
-  folder: string;
-};
-
 type ProjectGanttChartProps = {
-  projects: GanttProject[];
+  projects: GanttItem[];
 };
 
 const ProjectGanttChart = ({ projects }: ProjectGanttChartProps) => {
   const { formatMessage } = useIntl();
 
-  const renderProjectTooltip = (project: GanttProject) => {
+  const renderProjectTooltip = (project: GanttItem) => {
     return (
       <Box p="8px">
         <Box style={{ fontWeight: 'bold' }}>{project.title}</Box>
@@ -37,7 +33,7 @@ const ProjectGanttChart = ({ projects }: ProjectGanttChartProps) => {
     );
   };
 
-  const onItemLabelClick = (project: GanttProject) => {
+  const onItemLabelClick = (project: GanttItem) => {
     clHistory.push(`/admin/projects/${project.id}`);
   };
 

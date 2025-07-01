@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
-import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
+import { Box, colors, Spinner, Text } from '@citizenlab/cl2-component-library';
 
+import { PublicationStatus } from 'api/projects/types';
 import useProjectsMiniAdmin from 'api/projects_mini_admin/useProjectsMiniAdmin';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { PaginationWithoutPositioning } from 'components/Pagination';
 import Centerer from 'components/UI/Centerer';
+import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -16,7 +18,20 @@ import Filters from '../Projects/Filters';
 import { useParams } from '../Projects/utils';
 
 import messages from './messages';
-import ProjectGanttChart, { GanttProject } from './ProjectGanttChart';
+import ProjectGanttChart from './ProjectGanttChart';
+
+const getStatusColor = (status?: PublicationStatus) => {
+  switch (status) {
+    case 'published':
+      return colors.green500;
+    case 'draft':
+      return colors.orange500;
+    case 'archived':
+      return colors.background;
+    default:
+      return undefined;
+  }
+};
 
 const Timeline = () => {
   const localize = useLocalize();
@@ -36,7 +51,7 @@ const Timeline = () => {
     'page[number]': currentPage,
   });
 
-  const projectsGanttData: GanttProject[] = (projects?.data || []).map(
+  const projectsGanttData: GanttItem[] = (projects?.data || []).map(
     (project) => ({
       id: project.id,
       title: localize(project.attributes.title_multiloc),
@@ -45,6 +60,10 @@ const Timeline = () => {
       folder: localize(project.attributes.folder_title_multiloc),
       highlightStartDate: project.attributes.current_phase_start_date,
       highlightEndDate: project.attributes.current_phase_end_date,
+      color: getStatusColor(project.attributes.publication_status),
+      icon: localize(project.attributes.folder_title_multiloc)
+        ? 'folder-solid'
+        : undefined,
     })
   );
 
