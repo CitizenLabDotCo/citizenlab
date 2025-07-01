@@ -115,6 +115,10 @@ const AuthProviders = memo<Props>(
       useFeatureFlag({
         name: 'twoday_login',
       }) || providerForTest === 'twoday';
+    const rmUnifyLoginEnabled =
+      useFeatureFlag({
+        name: 'rm_unify_login',
+      }) || providerForTest === 'rm_unify';
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -158,6 +162,7 @@ const AuthProviders = memo<Props>(
       criiptoLoginEnabled ||
       keycloakLoginEnabled ||
       twodayLoginEnabled ||
+      rmUnifyLoginEnabled ||
       nemlogInLoginEnabled ||
       idAustriaLoginEnabled;
 
@@ -272,6 +277,21 @@ const AuthProviders = memo<Props>(
               {...messages.continueWithLoginMechanism}
               values={{
                 loginMechanismName: 'BankID eller Freja eID+',
+              }}
+            />
+          </StyledAuthProviderButton>
+        )}
+        {rmUnifyLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="bankId"
+            flow={flow}
+            authProvider="rm_unify"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithLoginMechanism}
+              values={{
+                loginMechanismName: 'RM Unify',
               }}
             />
           </StyledAuthProviderButton>

@@ -42,6 +42,8 @@ module IdeaCustomFields
       elsif @custom_form.custom_field_ids.present?
         authorized_ids = IdeaCustomFieldPolicy::Scope.new(pundit_user, @custom_form.custom_fields, @custom_form).resolve.ids
         service.all_fields.select { |field| authorized_ids.include? field.id }
+      elsif params[:public] == 'true'
+          service.enabled_fields.select { |field| IdeaCustomFieldPolicy.new(current_user, field).show? }
       else
         service.all_fields.select { |field| IdeaCustomFieldPolicy.new(current_user, field).show? }
       end

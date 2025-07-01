@@ -48,6 +48,9 @@ const SSOButtons = (props: Props) => {
   const twodayLoginEnabled = useFeatureFlag({
     name: 'twoday_login',
   });
+  const rmUnifyLoginEnabled = useFeatureFlag({
+    name: 'rm_unify_login',
+  });
 
   if (
     !googleLoginEnabled &&
@@ -60,6 +63,7 @@ const SSOButtons = (props: Props) => {
     !criiptoLoginEnabled &&
     !keycloakLoginEnabled &&
     !twodayLoginEnabled &&
+    !rmUnifyLoginEnabled &&
     !idAustriaLoginEnabled
   ) {
     if (passwordLoginEnabled) {
