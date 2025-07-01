@@ -123,7 +123,7 @@ export const getMonthMeta = (startDate: Date, endDate: Date): MonthMeta[] => {
 };
 
 // Describes the metadata for a single year's header in the "Multi-year" view.
-interface YearMeta {
+export interface YearMeta {
   label: string; // e.g., "2025"
   offsetMonths: number; // The cumulative offset in months from the start of the timeline.
   monthsInYear: number; // The number of months of this year visible in the timeline.
