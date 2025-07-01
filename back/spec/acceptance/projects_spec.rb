@@ -1836,6 +1836,19 @@ resource 'Projects' do
     end
   end
 
+  get 'web_api/v1/projects/finished_or_archived' do
+    before do
+      @listed_archived_project = create(:project, admin_publication_attributes: { publication_status: 'archived' })
+      @unlisted_archived_project = create(:project, unlisted: true, admin_publication_attributes: { publication_status: 'archived' })
+    end
+
+    example 'Returns only listed projects' do
+      do_request
+      assert_status 200
+      expect(response_data.pluck(:id)).to match_array [@listed_archived_project.id]
+    end
+  end
+
   get 'web_api/v1/projects/for_admin' do
     context 'when moderator' do
       before do
