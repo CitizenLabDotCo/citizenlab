@@ -34,9 +34,11 @@ module EmailCampaigns
 
     private
 
+    # rubocop:disable Naming/MemoizedInstanceVariableName
     def generate_delivery_id(_command)
-      @delivery_id = SecureRandom.uuid
+      @delivery_id ||= SecureRandom.uuid
     end
+    # rubocop:enable Naming/MemoizedInstanceVariableName
 
     def save_delivery(command)
       ErrorReporter.report_msg('No delivery ID in save_delivery!') if !@delivery_id
