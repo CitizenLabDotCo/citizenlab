@@ -40,7 +40,8 @@ export type ICustomFieldInputType =
   | 'line'
   | 'polygon'
   | 'cosponsor_ids'
-  | 'sentiment_linear_scale';
+  | 'sentiment_linear_scale'
+  | 'checkbox';
 
 export type IOptionsType = {
   id?: string;

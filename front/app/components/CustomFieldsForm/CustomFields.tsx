@@ -18,6 +18,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import CheckboxField from './Fields/CheckboxField';
 import CosponsorsField from './Fields/CosponsorsField';
 import ImageField from './Fields/ImageField';
 import ImageMultichoiceField from './Fields/ImageMultichoiceField';
@@ -155,6 +156,8 @@ const renderField = ({
           scrollErrorIntoView={true}
         />
       );
+    case 'checkbox':
+      return <CheckboxField name={question.key} scrollErrorIntoView={true} />;
     default:
       return null;
   }

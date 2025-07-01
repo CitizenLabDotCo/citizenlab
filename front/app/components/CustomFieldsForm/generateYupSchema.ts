@@ -304,6 +304,17 @@ const generateYupValidationSchema = ({
 
         break;
       }
+
+      case 'checkbox': {
+        schema[key] = required
+          ? string().test({
+              message: fieldRequired,
+              test: (value) => value === 'true',
+            })
+          : string().nullable();
+        break;
+      }
+
       case 'file_upload':
       case 'shapefile_upload': {
         schema[key] = required
@@ -311,6 +322,7 @@ const generateYupValidationSchema = ({
           : object().nullable();
         break;
       }
+
       case 'point': {
         schema[key] = required
           ? string().required(fieldRequired)
@@ -335,6 +347,7 @@ const generateYupValidationSchema = ({
         schema[key] = required ? line.required(fieldRequired) : line.nullable();
         break;
       }
+
       case 'polygon': {
         const polygon = string().test({
           message: formatMessage(messages.atLeastThreePointsRequired),
