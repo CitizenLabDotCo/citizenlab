@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "ICS dosyası indirilirken hata oluştu",
   "app.containers.EventsShow.linkToOnlineEvent": "Çevrimiçi etkinlik bağlantısı",
   "app.containers.EventsShow.locationIconAltText": "Konum",
+  "app.containers.EventsShow.metaTitle": "Etkinlik: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Çevrimiçi toplantı",
   "app.containers.EventsShow.onlineLinkIconAltText": "Çevrimiçi toplantı bağlantısı",
   "app.containers.EventsShow.socialMediaSharingMessage": "Bu etkinliğe katılın: {eventTitle}",
