@@ -134,6 +134,7 @@ const MenuItem = ({ navItem }: Props) => {
       to={navItem.link}
       className={`intercom-admin-menu-item-${navItem.name}`}
       active={inspirationHubActive}
+      data-intercom-target={`admin-menu-item-${navItem.name}`}
     >
       <>
         <Box
