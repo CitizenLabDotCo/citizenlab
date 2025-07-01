@@ -39,11 +39,13 @@ export const TimeRangeSelector = ({
       bg={colors.white}
       p="8px"
     >
-      <Select
-        value={selectedRange}
-        onChange={(option) => onRangeChange(option.value)}
-        options={timeRangeOptions}
-      />
+      <Box width="140px">
+        <Select
+          value={selectedRange}
+          onChange={(option) => onRangeChange(option.value)}
+          options={timeRangeOptions}
+        />
+      </Box>
       <Button onClick={onTodayClick} buttonStyle="secondary" size="s">
         {formatMessage(messages.today)}
       </Button>
