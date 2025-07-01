@@ -1257,6 +1257,7 @@
   "app.containers.EventsShow.icsError": "Kļūda, lejupielādējot ICS failu",
   "app.containers.EventsShow.linkToOnlineEvent": "Saite uz tiešsaistes pasākumu",
   "app.containers.EventsShow.locationIconAltText": "Atrašanās vieta",
+  "app.containers.EventsShow.metaTitle": "Pasākums: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Tiešsaistes sanāksme",
   "app.containers.EventsShow.onlineLinkIconAltText": "Tiešsaistes saite uz sanāksmi",
   "app.containers.EventsShow.socialMediaSharingMessage": "Apmeklējiet šo pasākumu: {eventTitle}",
