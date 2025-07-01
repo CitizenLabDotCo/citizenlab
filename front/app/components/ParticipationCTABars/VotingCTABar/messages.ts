@@ -39,22 +39,22 @@ export default defineMessages({
   votesLeft: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.votesLeft3',
     defaultMessage:
-      '{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {votes} one {vote} other {votes}} left',
+      '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {votes} one {vote} other {votes}} left',
   },
   pointsLeft: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.pointsLeft',
     defaultMessage:
-      '{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {points} one {point} other {points}} left',
+      '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {points} one {point} other {points}} left',
   },
   tokensLeft: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.tokensLeft',
     defaultMessage:
-      '{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {tokens} one {token} other {tokens}} left',
+      '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {tokens} one {token} other {tokens}} left',
   },
   creditsLeft: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.creditsLeft',
     defaultMessage:
-      '{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {credits} one {credit} other {credits}} left',
+      '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {credits} one {credit} other {credits}} left',
   },
   votesCast: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.votesCast',
