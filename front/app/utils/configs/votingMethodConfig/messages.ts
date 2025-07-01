@@ -164,24 +164,24 @@ export default defineMessages({
     defaultMessage: 'Final tally',
   },
   cumulativeVotingInstructionsTotalVotes: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes1',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes2',
     defaultMessage:
-      'You have a total of <b>{totalVotes, plural, no {# votes} one {# vote} other {# votes}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
+      'You have a total of <b>{totalVotes, plural, one {# vote} other {# votes}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
   },
   cumulativeVotingInstructionsTotalPoints: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPoints',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPoints1',
     defaultMessage:
-      'You have a total of <b>{totalVotes, plural, no {# points} one {# point} other {# points}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
+      'You have a total of <b>{totalVotes, plural, one {# point} other {# points}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
   },
   cumulativeVotingInstructionsTotalTokens: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalTokens',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalTokens1',
     defaultMessage:
-      'You have a total of <b>{totalVotes, plural, no {# tokens} one {# token} other {# tokens}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
+      'You have a total of <b>{totalVotes, plural, one {# token} other {# tokens}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
   },
   cumulativeVotingInstructionsTotalCredits: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalCredits',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalCredits1',
     defaultMessage:
-      'You have a total of <b>{totalVotes, plural, no {# credits} one {# credit} other {# credits}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
+      'You have a total of <b>{totalVotes, plural, one {# credit} other {# credits}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
   },
   cumulativeVotingInstructionsPreferredOptions: {
     id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2',
