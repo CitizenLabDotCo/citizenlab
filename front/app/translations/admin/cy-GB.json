@@ -1126,7 +1126,6 @@
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.phaseListTitle": "Cyfnodau:",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.project": "Prosiect",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.startDate": "Dyddiad cychwyn: {date}",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.summary": "{summary}",
   "app.containers.Admin.projects.all.new.folders": "Ffolderi",
   "app.containers.Admin.projects.all.new.projects": "Prosiectau",
   "app.containers.Admin.projects.all.new.timeline": "Amserlen",
