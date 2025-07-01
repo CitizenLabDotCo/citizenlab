@@ -20,7 +20,7 @@ class AdminPublicationPolicy < ApplicationPolicy
 
         # If include_unlisted param is passed:
         if context[:include_unlisted]
-          # If you are an admin, include all unlisted projects
+          # If you are an admin, include all unlisted projects (do nothing)
           # Otherwise, include only unlisted projects that you can moderate
           unless user&.admin?
             scope = scope.joins(:admin_publication)
