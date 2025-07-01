@@ -19,7 +19,7 @@ RSpec.shared_examples 'campaign delivery tracking' do
       expect(mailgun_variables).to match(
         hash_including(
           'cl_tenant_id' => instance_of(String),
-          'cl_delivery_id' => instance_of(String)
+          'cl_delivery_id' => EmailCampaigns::Delivery.order(:created_at).last.id
         )
       )
       expect(EmailCampaigns::Delivery.ids).to eq [mailgun_variables['cl_delivery_id']]

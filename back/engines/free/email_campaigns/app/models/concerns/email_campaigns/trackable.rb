@@ -25,6 +25,10 @@ module EmailCampaigns
     end
 
     def extra_mailgun_variables
+      if !@delivery_id
+        ErrorReporter.report_msg('No delivery ID in extra_mailgun_variables!')
+        @delivery_id = SecureRandom.uuid
+      end
       { 'cl_delivery_id' => @delivery_id }
     end
 
@@ -35,6 +39,7 @@ module EmailCampaigns
     end
 
     def save_delivery(command)
+      ErrorReporter.report_msg('No delivery ID in save_delivery!') if !@delivery_id
       deliveries.create(
         id: @delivery_id,
         delivery_status: 'sent',
