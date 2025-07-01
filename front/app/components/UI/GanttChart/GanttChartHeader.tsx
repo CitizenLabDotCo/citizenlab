@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { addMonths, addDays } from 'date-fns';
 
 import {
@@ -63,7 +63,6 @@ const GanttChartHeader: React.FC<GanttChartHeaderProps> = ({
                 alignItems="center"
                 justifyContent="center"
                 borderLeft={`1px solid ${colors.grey300}`}
-                style={{ color: 'transparent' }}
               >
                 {year.label}
               </Box>
@@ -88,9 +87,10 @@ const GanttChartHeader: React.FC<GanttChartHeaderProps> = ({
                   alignItems="center"
                   justifyContent="center"
                   borderLeft={`1px solid ${colors.divider}`}
-                  style={{ color: '#888', fontSize: '12px' }}
                 >
-                  {monthLabel}
+                  <Text fontSize="xs" color="grey600">
+                    {monthLabel}
+                  </Text>
                 </Box>
               );
             })}
@@ -111,22 +111,19 @@ const GanttChartHeader: React.FC<GanttChartHeaderProps> = ({
             return (
               <>
                 <Box display="flex" height={`${timelineHeight}px`} w="0px">
-                  {yearGroups.map((g) => (
+                  {yearGroups.map((yearGroup) => (
                     <Box
-                      key={g.year}
-                      minWidth={`${g.count * weekWidth}px`}
-                      width={`${g.count * weekWidth}px`}
+                      key={yearGroup.year}
+                      minWidth={`${yearGroup.count * weekWidth}px`}
+                      width={`${yearGroup.count * weekWidth}px`}
                       display="flex"
                       alignItems="center"
                       justifyContent="center"
                       borderLeft={`1px solid ${colors.grey300}`}
-                      style={{
-                        color: '#222',
-                        fontWeight: 700,
-                        fontSize: '14px',
-                      }}
                     >
-                      {g.year}
+                      <Text fontSize="s" fontWeight="semi-bold">
+                        {yearGroup.year}
+                      </Text>
                     </Box>
                   ))}
                 </Box>
@@ -136,18 +133,19 @@ const GanttChartHeader: React.FC<GanttChartHeaderProps> = ({
                   borderTop={`1px solid ${colors.grey300}`}
                   w="0px"
                 >
-                  {weekCells.map((w, i) => (
+                  {weekCells.map((weekCell, index) => (
                     <Box
-                      key={`week-${i}`}
+                      key={`week-${index}`}
                       minWidth={`${weekWidth}px`}
                       width={`${weekWidth}px`}
                       display="flex"
                       alignItems="center"
                       justifyContent="center"
                       borderLeft={`1px solid ${colors.divider}`}
-                      style={{ color: '#888', fontSize: '12px' }}
                     >
-                      {`W${w.weekNumber}`}
+                      <Text fontSize="xs" color="grey600">
+                        {weekCell.weekNumber}
+                      </Text>
                     </Box>
                   ))}
                 </Box>
@@ -170,22 +168,19 @@ const GanttChartHeader: React.FC<GanttChartHeaderProps> = ({
             return (
               <>
                 <Box display="flex" height={`${timelineHeight}px`} w="0px">
-                  {monthGroups.map((g) => (
+                  {monthGroups.map((monthGroup) => (
                     <Box
-                      key={g.month}
-                      minWidth={`${g.count * quarterWidth}px`}
-                      width={`${g.count * quarterWidth}px`}
+                      key={monthGroup.month}
+                      minWidth={`${monthGroup.count * quarterWidth}px`}
+                      width={`${monthGroup.count * quarterWidth}px`}
                       display="flex"
                       alignItems="center"
                       justifyContent="center"
                       borderLeft={`1px solid ${colors.grey300}`}
-                      style={{
-                        color: '#222',
-                        fontWeight: 700,
-                        fontSize: '14px',
-                      }}
                     >
-                      {g.month.split(' ')[0]}
+                      <Text fontSize="s" fontWeight="semi-bold">
+                        {monthGroup.month.split(' ')[0]}
+                      </Text>
                     </Box>
                   ))}
                 </Box>
@@ -195,18 +190,19 @@ const GanttChartHeader: React.FC<GanttChartHeaderProps> = ({
                   borderTop={`1px solid ${colors.grey300}`}
                   w="0px"
                 >
-                  {quarterCells.map((q, i) => (
+                  {quarterCells.map((quarterCell, index) => (
                     <Box
-                      key={`q-cell-${i}`}
+                      key={`q-cell-${index}`}
                       minWidth={`${quarterWidth}px`}
                       width={`${quarterWidth}px`}
                       display="flex"
                       alignItems="center"
                       justifyContent="center"
                       borderLeft={`1px solid ${colors.divider}`}
-                      style={{ color: '#888', fontSize: '12px' }}
                     >
-                      {q.label}
+                      <Text fontSize="xs" color="grey600">
+                        {quarterCell.label}
+                      </Text>
                     </Box>
                   ))}
                 </Box>
@@ -227,7 +223,9 @@ const GanttChartHeader: React.FC<GanttChartHeaderProps> = ({
                 justifyContent="center"
                 borderLeft={`1px solid ${colors.grey300}`}
               >
-                {m.label}
+                <Text fontSize="s" fontWeight="semi-bold">
+                  {m.label}
+                </Text>
               </Box>
             ))}
           </Box>
@@ -248,9 +246,10 @@ const GanttChartHeader: React.FC<GanttChartHeaderProps> = ({
                 alignItems="center"
                 justifyContent="center"
                 borderLeft={`1px solid ${colors.divider}`}
-                style={{ color: '#888', fontSize: '12px' }}
               >
-                {addDays(startDate, i).getDate()}
+                <Text fontSize="xs" color="grey600">
+                  {addDays(startDate, i).getDate()}
+                </Text>
               </Box>
             ))}
           </Box>
