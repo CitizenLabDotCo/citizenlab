@@ -84,6 +84,12 @@ fr:
         "5": "Chaque semaine, le vendredi à %{hourOfDay}"
         "6": "Chaque semaine, le samedi à %{hourOfDay}"
       quarterly: "Le premier jour de chaque trimestre"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Doe'
+      display_name: 'Jane Doe'
+      comment_body: 'Il s''agit d''un exemple de commentaire utilisé pour prévisualiser le contenu des courriels. Il ne s''agit pas d''un contenu réel.'
+      idea_title: 'Exemple d''idée'
     footer:
       "link_privacy_policy": "Politique de confidentialité"
       "link_terms_conditions": "Conditions Générales d'Utilisation"

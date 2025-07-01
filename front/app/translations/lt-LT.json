@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "Klaida atsisiunčiant ICS failą",
   "app.containers.EventsShow.linkToOnlineEvent": "Nuoroda į internetinį renginį",
   "app.containers.EventsShow.locationIconAltText": "Vieta",
+  "app.containers.EventsShow.metaTitle": "Renginys: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Susitikimas internetu",
   "app.containers.EventsShow.onlineLinkIconAltText": "Internetinio susitikimo nuoroda",
   "app.containers.EventsShow.socialMediaSharingMessage": "Dalyvaukite šiame renginyje: {eventTitle}",

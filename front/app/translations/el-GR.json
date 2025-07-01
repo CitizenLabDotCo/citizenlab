@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "Σφάλμα λήψης του αρχείου ICS",
   "app.containers.EventsShow.linkToOnlineEvent": "Σύνδεσμος για την online εκδήλωση",
   "app.containers.EventsShow.locationIconAltText": "Τοποθεσία",
+  "app.containers.EventsShow.metaTitle": "Εκδήλωση: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Διαδικτυακή συνάντηση",
   "app.containers.EventsShow.onlineLinkIconAltText": "Σύνδεσμος online συνάντησης",
   "app.containers.EventsShow.socialMediaSharingMessage": "Παρακολουθήστε αυτή την εκδήλωση: {eventTitle}",

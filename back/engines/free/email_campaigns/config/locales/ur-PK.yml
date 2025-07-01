@@ -84,6 +84,12 @@ ur:
         "5": "ہفتہ وار، جمعہ کو %{hourOfDay}پر"
         "6": "ہفتہ وار، ہفتہ کو %{hourOfDay}پر"
       quarterly: "سہ ماہی، سہ ماہی کے پہلے دن"
+    preview_data:
+      first_name: 'جین'
+      last_name: 'ڈو'
+      display_name: 'جین ڈو'
+      comment_body: 'یہ ایک مثالی تبصرہ ہے جسے ای میلز کے مواد کا جائزہ لینے کے لیے استعمال کیا جاتا ہے۔ یہ حقیقی مواد نہیں ہے۔'
+      idea_title: 'مثال آئیڈیا۔'
     footer:
       "link_privacy_policy": "رازداری کی پالیسی"
       "link_terms_conditions": "شرائط و ضوابط"

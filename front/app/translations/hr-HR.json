@@ -1252,6 +1252,7 @@
   "app.containers.EventsShow.icsError": "Pogreška pri preuzimanju ICS datoteke",
   "app.containers.EventsShow.linkToOnlineEvent": "Link na online događaj",
   "app.containers.EventsShow.locationIconAltText": "Mjesto",
+  "app.containers.EventsShow.metaTitle": "Događaj: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Online sastanak",
   "app.containers.EventsShow.onlineLinkIconAltText": "Link za online sastanak",
   "app.containers.EventsShow.socialMediaSharingMessage": "Prisustvujte ovom događaju: {eventTitle}",
