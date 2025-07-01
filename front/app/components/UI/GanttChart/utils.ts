@@ -27,17 +27,25 @@ import {
   differenceInCalendarWeeks,
   getDaysInMonth,
   setDate,
+  min,
 } from 'date-fns';
 
+// Defines the available zoom levels for the Gantt chart.
 export type TimeRangeOption = 'month' | 'quarter' | 'year' | 'multiyear';
 
+// Describes the metadata for a single month's header in the "Month" view.
 export type MonthMeta = {
-  label: string;
-  daysInMonth: number;
-  offsetDays: number;
+  label: string; // e.g., "July 2025"
+  daysInMonth: number; // The number of days of this month visible in the timeline.
+  offsetDays: number; // The cumulative offset in days from the start of the timeline.
 };
 
-// Calculates a 0-indexed offset in days from the start of the timeline.
+/**
+ * Calculates a 0-indexed offset in days from the start of the timeline.
+ * @param timelineStart The start date of the entire timeline.
+ * @param eventStart The date for which to calculate the offset.
+ * @returns The number of days from the timeline start.
+ */
 export const getOffsetInDays = (
   timelineStart: Date,
   eventStart: Date
@@ -45,13 +53,23 @@ export const getOffsetInDays = (
   return differenceInCalendarDays(eventStart, timelineStart);
 };
 
-// Calculates the inclusive duration of an event in days
+/**
+ * Calculates the inclusive duration of an event in days.
+ * @param start The start date of the event.
+ * @param end The end date of the event.
+ * @returns The duration in days (e.g., Jan 1 to Jan 1 is 1 day). Defaults to 1 if no end date.
+ */
 export const getDurationInDays = (start: Date, end?: Date): number => {
-  if (!end) return 1; // Default to 1 day if no end date
+  if (!end) return 1;
   return differenceInCalendarDays(end, start) + 1;
 };
 
-// Calculates a 0-indexed offset in months from the start of the timeline.
+/**
+ * Calculates a 0-indexed offset in months from the start of the timeline.
+ * @param timelineStart The start date of the entire timeline.
+ * @param eventStart The date for which to calculate the offset.
+ * @returns The number of full months from the timeline start.
+ */
 export const getOffsetInMonths = (
   timelineStart: Date,
   eventStart: Date
@@ -59,12 +77,23 @@ export const getOffsetInMonths = (
   return differenceInMonths(startOfDay(eventStart), startOfDay(timelineStart));
 };
 
-// Calculates the inclusive duration of an event in months.
+/**
+ * Calculates the inclusive duration of an event in calendar months.
+ * @param start The start date of the event.
+ * @param end The end date of the event.
+ * @returns The duration in months. Defaults to 1 if no end date.
+ */
 export const getDurationInMonths = (start: Date, end?: Date): number => {
   if (!end) return 1;
   return differenceInCalendarMonths(end, start) + 1;
 };
 
+/**
+ * Generates the metadata for the month headers in the "Month" (daily) view.
+ * @param startDate The start date of the visible timeline portion.
+ * @param endDate The end date of the visible timeline portion.
+ * @returns An array of MonthMeta objects.
+ */
 export const getMonthMeta = (startDate: Date, endDate: Date): MonthMeta[] => {
   const months: MonthMeta[] = [];
   let currentDate = startOfMonth(startDate);
@@ -73,10 +102,8 @@ export const getMonthMeta = (startDate: Date, endDate: Date): MonthMeta[] => {
   while (currentDate <= endDate) {
     const monthStart =
       currentDate < startDate ? startOfDay(startDate) : currentDate;
-    const monthEnd =
-      endOfMonth(currentDate) > endDate
-        ? endOfDay(endDate)
-        : endOfMonth(currentDate);
+    // Clamp the month's end date to the overall timeline end date.
+    const monthEnd = min([endOfMonth(currentDate), endOfDay(endDate)]);
 
     const daysInMonth = eachDayOfInterval({
       start: monthStart,
@@ -95,14 +122,18 @@ export const getMonthMeta = (startDate: Date, endDate: Date): MonthMeta[] => {
   return months;
 };
 
+// Describes the metadata for a single year's header in the "Multi-year" view.
 interface YearMeta {
-  label: string;
-  offsetMonths: number;
-  monthsInYear: number;
+  label: string; // e.g., "2025"
+  offsetMonths: number; // The cumulative offset in months from the start of the timeline.
+  monthsInYear: number; // The number of months of this year visible in the timeline.
 }
 
 /**
- * Generates the metadata for the year blocks in the multi-year timeline header.
+ * Generates the metadata for the year headers in the "Multi-year" view.
+ * @param startDate The start date of the visible timeline portion.
+ * @param endDate The end date of the visible timeline portion.
+ * @returns An array of YearMeta objects.
  */
 export const getYearMeta = (startDate: Date, endDate: Date): YearMeta[] => {
   if (endDate < startDate) {
@@ -118,8 +149,9 @@ export const getYearMeta = (startDate: Date, endDate: Date): YearMeta[] => {
     const isLastYear = year === endYearNum;
     let monthsInYear: number;
 
+    // Calculate how many months of the current year are within the timeline range.
     if (isFirstYear && isLastYear) {
-      monthsInYear = differenceInMonths(endDate, startDate) + 1;
+      monthsInYear = differenceInCalendarMonths(endDate, startDate) + 1;
     } else if (isFirstYear) {
       monthsInYear = 12 - startDate.getMonth();
     } else if (isLastYear) {
@@ -128,10 +160,11 @@ export const getYearMeta = (startDate: Date, endDate: Date): YearMeta[] => {
       monthsInYear = 12;
     }
 
-    const firstDayOfYear = startOfYear(new Date(year, 0, 1));
-    let offsetMonths = differenceInMonths(firstDayOfYear, startDate);
-    if (offsetMonths < 0) {
-      offsetMonths = 0;
+    // Calculate the offset for the year block cumulatively for reliable results.
+    let offsetMonths = 0;
+    if (years.length > 0) {
+      const lastYear = years[years.length - 1];
+      offsetMonths = lastYear.offsetMonths + lastYear.monthsInYear;
     }
 
     if (monthsInYear > 0) {
@@ -146,29 +179,38 @@ export const getYearMeta = (startDate: Date, endDate: Date): YearMeta[] => {
   return years;
 };
 
+/**
+ * Determines the default start and end dates for the timeline based on the selected view.
+ * @param range The selected time range option.
+ * @param today The current date.
+ * @returns An object with the calculated startDate and endDate.
+ */
 export const getTimeRangeDates = (
   range: TimeRangeOption,
   today: Date
 ): { startDate: Date; endDate: Date } => {
   switch (range) {
     case 'multiyear':
+      // A 5-year window centered on the current year.
       return {
         startDate: startOfYear(subYears(today, 2)),
         endDate: endOfYear(addYears(today, 2)),
       };
     case 'year':
+      // A 1-year window centered on the current date.
       return {
         startDate: subMonths(today, 6),
         endDate: addMonths(today, 6),
       };
     case 'quarter':
+      // A 3-month window centered on the current month.
       return {
-        // Show current month, one month before, and one after
         startDate: startOfMonth(subMonths(today, 1)),
         endDate: endOfMonth(addMonths(today, 1)),
       };
     case 'month':
     default:
+      // A ~30-day window centered on the current date.
       return {
         startDate: subDays(today, 15),
         endDate: addDays(today, 15),
@@ -176,6 +218,12 @@ export const getTimeRangeDates = (
   }
 };
 
+/**
+ * Scrolls a container element to center a specific item.
+ * @param ref A React ref to the scrollable HTMLDivElement.
+ * @param offset The index of the item to scroll to.
+ * @param unitWidth The width in pixels of a single item.
+ */
 export const scrollTo = (
   ref: RefObject<HTMLDivElement>,
   offset: number,
@@ -183,10 +231,9 @@ export const scrollTo = (
 ) => {
   if (ref.current) {
     const containerWidth = ref.current.clientWidth;
+    // Calculate the scroll position to center the target item.
     const scrollTarget =
       offset * unitWidth - containerWidth / 2 + unitWidth / 2;
-
-    // Use the scroll() method with smooth behavior for a better UX
     ref.current.scroll({
       left: scrollTarget,
       behavior: 'smooth',
@@ -194,13 +241,20 @@ export const scrollTo = (
   }
 };
 
+// Describes the metadata for a single 3-day cell in the "Quarter" view.
 export type QuarterCellMeta = {
-  label: string;
+  label: string; // The starting day of the cell, e.g., "1", "4", "7"
   startDate: Date;
   endDate: Date;
-  month: string;
+  month: string; // The month the cell belongs to, e.g., "July 2025"
 };
 
+/**
+ * Generates the metadata for the 3-day cells in the "Quarter" view.
+ * @param startDate The start date of the visible timeline portion.
+ * @param endDate The end date of the visible timeline portion.
+ * @returns An array of QuarterCellMeta objects.
+ */
 export const getQuarterCellsMeta = (
   startDate: Date,
   endDate: Date
@@ -212,20 +266,24 @@ export const getQuarterCellsMeta = (
     const monthLabel = format(currentMonth, 'MMMM yyyy');
     const daysInMonth = getDaysInMonth(currentMonth);
 
+    // Create cells starting on day 1, 4, 7, etc., for the entire month.
     for (let day = 1; day <= daysInMonth; day += 3) {
       const cellStart = setDate(currentMonth, day);
-      if (cellStart > endDate) break;
-      if (cellStart < startDate && addDays(cellStart, 2) < startDate) continue;
+
+      if (cellStart > endDate) break; // Don't generate cells beyond the timeline's end.
 
       const cellEnd = addDays(cellStart, 2);
+      // Skip cells that end entirely before the timeline's start date.
+      // Use startOfDay for a robust, timezone-agnostic comparison.
+      if (startOfDay(cellEnd) < startOfDay(startDate)) {
+        continue;
+      }
 
       cells.push({
         label: day.toString(),
+        // Clamp the cell's start and end dates to the timeline boundaries.
         startDate: cellStart < startDate ? startDate : cellStart,
-        endDate:
-          cellEnd > endOfMonth(currentMonth)
-            ? endOfMonth(currentMonth)
-            : cellEnd,
+        endDate: min([cellEnd, endOfMonth(currentMonth), endDate]),
         month: monthLabel,
       });
     }
@@ -234,6 +292,12 @@ export const getQuarterCellsMeta = (
   return cells;
 };
 
+/**
+ * Finds the index (offset) of a given date within the array of quarter cells.
+ * @param cells The array of generated QuarterCellMeta.
+ * @param eventStart The date to find.
+ * @returns The 0-based index of the cell.
+ */
 export const getOffsetInQuarterCells = (
   cells: QuarterCellMeta[],
   eventStart: Date
@@ -247,6 +311,13 @@ export const getOffsetInQuarterCells = (
   return Math.max(0, index);
 };
 
+/**
+ * Calculates the inclusive duration in 3-day cells.
+ * @param cells The array of generated QuarterCellMeta.
+ * @param start The start date.
+ * @param end The end date.
+ * @returns The number of cells spanned.
+ */
 export const getDurationInQuarterCells = (
   cells: QuarterCellMeta[],
   start: Date,
@@ -258,16 +329,24 @@ export const getDurationInQuarterCells = (
   return endIndex - startIndex + 1;
 };
 
+// Describes the metadata for a single week cell in the "Year" (weekly) view.
 export type WeekMeta = {
   year: number;
-  weekNumber: number;
+  weekNumber: number; // The ISO week number.
   startDate: Date;
   endDate: Date;
 };
 
+/**
+ * Generates the metadata for week cells in the "Year" (weekly) view.
+ * @param startDate The start date of the visible timeline portion.
+ * @param endDate The end date of the visible timeline portion.
+ * @returns An array of WeekMeta objects.
+ */
 export const getWeekMeta = (startDate: Date, endDate: Date): WeekMeta[] => {
   const weeks: WeekMeta[] = [];
-  let current = startOfWeek(startDate, { weekStartsOn: 1 }); // ISO week starts on Monday
+  // Start on a Monday to align with ISO week standards.
+  let current = startOfWeek(startDate, { weekStartsOn: 1 });
 
   while (current <= endDate) {
     const weekStart = current;
@@ -284,6 +363,12 @@ export const getWeekMeta = (startDate: Date, endDate: Date): WeekMeta[] => {
   return weeks;
 };
 
+/**
+ * Calculates a 0-indexed offset in weeks from the start of the timeline.
+ * @param timelineStart The start date of the timeline.
+ * @param eventStart The date for which to calculate the offset.
+ * @returns The number of weeks from the timeline start.
+ */
 export const getOffsetInWeeks = (
   timelineStart: Date,
   eventStart: Date
@@ -293,6 +378,12 @@ export const getOffsetInWeeks = (
   });
 };
 
+/**
+ * Calculates the inclusive duration of an event in weeks.
+ * @param start The start date of the event.
+ * @param end The end date of the event.
+ * @returns The duration in weeks.
+ */
 export const getDurationInWeeks = (start: Date, end?: Date): number => {
   if (!end) return 1;
   return (
