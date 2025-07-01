@@ -10,6 +10,7 @@ import React, {
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 import { addDays, addMonths, subMonths, max, min } from 'date-fns';
 
+import GanttItemIconBar from './GanttItemIconBar';
 import TimeRangeSelector from './TimeRangeSelector';
 import { GanttChartProps } from './types';
 import {
@@ -567,6 +568,12 @@ export const GanttChart = ({
                 onItemLabelClick ? () => onItemLabelClick(item) : undefined
               }
             >
+              <GanttItemIconBar
+                color={item.color}
+                icon={item.icon}
+                rowHeight={rowHeight}
+                mr="8px"
+              />
               {renderItemLabel ? renderItemLabel(item) : item.title}
             </Box>
           ))}
@@ -698,8 +705,10 @@ export const GanttChart = ({
                         >
                           {textInHighlight && (
                             <Box
+                              display="flex"
+                              alignItems="center"
                               as="span"
-                              px="8px"
+                              px="4px"
                               style={{
                                 whiteSpace: 'nowrap',
                                 overflow: 'hidden',
@@ -708,6 +717,13 @@ export const GanttChart = ({
                                 fontWeight: 500,
                               }}
                             >
+                              <GanttItemIconBar
+                                color={item.color}
+                                icon={item.icon}
+                                rowHeight={rowHeight}
+                                mr="8px"
+                                ml="0px"
+                              />
                               {item.title}
                             </Box>
                           )}
@@ -720,7 +736,7 @@ export const GanttChart = ({
                 const textLabel = (
                   <Box
                     as="span"
-                    px="8px"
+                    px="4px"
                     style={{
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
@@ -754,6 +770,13 @@ export const GanttChart = ({
                       }}
                       onClick={() => onItemClick?.(item)}
                     >
+                      <GanttItemIconBar
+                        color={item.color}
+                        icon={item.icon}
+                        rowHeight={rowHeight}
+                        mr="0px"
+                        ml="4px"
+                      />
                       {!textInHighlight && textLabel}
                       {renderItemTooltip && (
                         <Tooltip content={renderItemTooltip(item)}>
