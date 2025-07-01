@@ -35,7 +35,9 @@ class ProjectPolicy < ApplicationPolicy
         .or(user_groups_visible.draft.where(preview_token: context[:project_preview_token]))
     end
 
-    def self.apply_listed_scope(scope, include_unlisted)
+    def apply_listed_scope(projects, include_unlisted)
+      scope = projects
+
       if include_unlisted
         # If you are an admin, include all unlisted projects (do nothing)
         # Otherwise, include only unlisted projects that you can moderate

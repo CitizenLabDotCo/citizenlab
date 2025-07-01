@@ -18,8 +18,7 @@ class AdminPublicationPolicy < ApplicationPolicy
         # Remove hidden projects unless param is passed
         scope = scope.not_hidden unless context[:include_hidden]
 
-        # If include_unlisted param is passed: include unlisted projects
-        ProjectPolicy.apply_listed_scope(scope, context[:include_unlisted])
+        scope
       else
         scope_for(klass)
       end
