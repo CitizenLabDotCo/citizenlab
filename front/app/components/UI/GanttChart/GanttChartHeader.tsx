@@ -8,17 +8,9 @@ import {
   getDurationInDays,
   MonthMeta,
   YearMeta,
+  QuarterCellMeta,
+  WeekMeta,
 } from './utils';
-
-interface QuarterCell {
-  label: string;
-  month: string;
-}
-
-interface WeekCell {
-  year: number;
-  weekNumber: number;
-}
 
 interface GanttChartHeaderProps {
   isMultiYearView: boolean;
@@ -26,8 +18,8 @@ interface GanttChartHeaderProps {
   isQuarterView: boolean;
   monthMeta: MonthMeta[];
   yearMeta: YearMeta[];
-  quarterCells: QuarterCell[];
-  weekCells: WeekCell[];
+  quarterCells: QuarterCellMeta[];
+  weekCells: WeekMeta[];
   startDate: Date;
   endDate: Date;
   monthWidth: number;
