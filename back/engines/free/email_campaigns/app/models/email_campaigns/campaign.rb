@@ -140,19 +140,16 @@ module EmailCampaigns
       result
     end
 
-    def run_before_send_hooks(campaign)
-      result = true
+    def run_before_send_hooks(command)
       current_class = self.class
 
       while current_class <= ::EmailCampaigns::Campaign
-        result &&= current_class.before_send_hooks.all? do |action_symbol|
-          send(action_symbol, campaign)
+        current_class.before_send_hooks.each do |action_symbol|
+          send(action_symbol, command)
         end
 
         current_class = current_class.superclass
       end
-
-      result
     end
 
     def run_after_send_hooks(command)

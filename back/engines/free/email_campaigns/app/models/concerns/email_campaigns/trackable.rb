@@ -25,25 +25,28 @@ module EmailCampaigns
     end
 
     def extra_mailgun_variables
-      if !@delivery_id
-        ErrorReporter.report_msg('No delivery ID in extra_mailgun_variables!')
-        @delivery_id = SecureRandom.uuid
+      if !@command
+        ErrorReporter.report_msg('No command in extra_mailgun_variables!')
+        @command = {}
       end
-      { 'cl_delivery_id' => @delivery_id }
+      if !@command[:delivery_id]
+        ErrorReporter.report_msg('No delivery ID in extra_mailgun_variables!')
+        @command[:delivery_id] = SecureRandom.uuid
+      end
+      { 'cl_delivery_id' => @command[:delivery_id] }
     end
 
     private
 
-    # rubocop:disable Naming/MemoizedInstanceVariableName
-    def generate_delivery_id(_command)
-      @delivery_id ||= SecureRandom.uuid
+    def generate_delivery_id(command)
+      @command = command
+      command[:delivery_id] ||= SecureRandom.uuid
     end
-    # rubocop:enable Naming/MemoizedInstanceVariableName
 
     def save_delivery(command)
-      ErrorReporter.report_msg('No delivery ID in save_delivery!') if !@delivery_id
+      ErrorReporter.report_msg('No delivery ID in save_delivery!') if !command[:delivery_id]
       deliveries.create(
-        id: @delivery_id,
+        id: command[:delivery_id],
         delivery_status: 'sent',
         user: command[:recipient],
         tracked_content: command[:tracked_content]
