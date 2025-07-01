@@ -695,6 +695,37 @@ resource 'AdminPublication' do
         assert_status 200
         expect(publication_ids).to match_array [published_projects[0].id, published_projects[1].id, root_project.id]
       end
+
+      example 'Lists projects', document: false do
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 7
+      end
+
+      example 'Unlisted projects user can moderate are not included', document: false do
+        unlisted_project_user_moderates = create(:project, unlisted: true)
+
+        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
+        @moderator.update!(roles: moderator_roles)
+  
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 7
+      end
+
+      example 'Unlisted projects that user can moderate are included when requested', document: false do
+        unlisted_project_user_moderates = create(:project, unlisted: true)
+        unlisted_project = create(:project, unlisted: true)
+
+        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
+        @moderator.update!(roles: moderator_roles)
+  
+        do_request include_unlisted: true
+        assert_status 200
+        expect(response_data.size).to eq 8
+        expect(response_data.pluck(:id)).to include unlisted_project_user_moderates.admin_publication.id
+        expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
+      end
     end
   end
 

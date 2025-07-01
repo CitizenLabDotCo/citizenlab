@@ -25,7 +25,7 @@ class AdminPublicationPolicy < ApplicationPolicy
           unless user&.admin?
             scope = scope
               .where(unlisted: false)
-              .or(scope.where(unlisted: true, publication: Publication.where(folder_id: user.moderatable_folder_ids)))
+              .or(scope.where(unlisted: true, id: user.moderatable_project_ids))
           end
         else
           # If the param is not passed, exclude unlisted projects
