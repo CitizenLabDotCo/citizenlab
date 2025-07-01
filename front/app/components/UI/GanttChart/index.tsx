@@ -28,8 +28,6 @@ import {
   getWeekMeta,
   getOffsetInWeeks,
   getDurationInWeeks,
-  WeekMeta,
-  QuarterCellMeta,
 } from './utils';
 
 const quarterWidth = 48;
@@ -243,11 +241,7 @@ export const GanttChart = ({
 
   const scrollToToday = useCallback(() => {
     const offset = getOffset(today);
-    if (
-      offset !== undefined &&
-      timelineBodyRef.current &&
-      timelineBodyRef.current.scrollWidth > 0
-    ) {
+    if (timelineBodyRef.current && timelineBodyRef.current.scrollWidth > 0) {
       scrollTo(timelineBodyRef, offset, unitW);
     }
   }, [getOffset, today, unitW]);
