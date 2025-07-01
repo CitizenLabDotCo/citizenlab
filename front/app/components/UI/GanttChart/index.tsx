@@ -54,7 +54,7 @@ export const GanttChart = ({
   const today = useMemo(() => new Date(), []);
   const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
 
-  const isMultiYearView = selectedRange === '5years';
+  const isMultiYearView = selectedRange === 'multiyear';
   const isYearView = selectedRange === 'year';
   const isQuarterView = selectedRange === 'quarter';
 

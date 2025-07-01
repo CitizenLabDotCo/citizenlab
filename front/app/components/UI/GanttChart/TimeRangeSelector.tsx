@@ -24,7 +24,7 @@ export const TimeRangeSelector = ({
     { value: 'month', label: formatMessage(messages.timeRangeMonth) },
     { value: 'quarter', label: formatMessage(messages.timeRangeQuarter) },
     { value: 'year', label: formatMessage(messages.timeRangeYear) },
-    { value: '5years', label: formatMessage(messages.timeRange5Years) },
+    { value: 'multiyear', label: formatMessage(messages.timeRangeMultiyear) },
   ];
 
   return (

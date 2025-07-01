@@ -13,9 +13,9 @@ export default defineMessages({
     id: 'app.components.GanttChart.timeRange.year',
     defaultMessage: 'Year',
   },
-  timeRange5Years: {
-    id: 'app.components.GanttChart.timeRange.5years',
-    defaultMessage: '5 Years',
+  timeRangeMultiyear: {
+    id: 'app.components.GanttChart.timeRange.timeRangeMultiyear',
+    defaultMessage: 'Multi-year',
   },
   today: {
     id: 'app.components.GanttChart.today',

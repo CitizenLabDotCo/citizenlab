@@ -29,7 +29,7 @@ import {
   setDate,
 } from 'date-fns';
 
-export type TimeRangeOption = 'month' | 'quarter' | 'year' | '5years';
+export type TimeRangeOption = 'month' | 'quarter' | 'year' | 'multiyear';
 
 export type MonthMeta = {
   label: string;
@@ -151,7 +151,7 @@ export const getTimeRangeDates = (
   today: Date
 ): { startDate: Date; endDate: Date } => {
   switch (range) {
-    case '5years':
+    case 'multiyear':
       return {
         startDate: startOfYear(subYears(today, 2)),
         endDate: endOfYear(addYears(today, 2)),
