@@ -150,18 +150,12 @@ export function getInputTerm(
   return 'idea';
 }
 
-function getPhaseVoteTerm(phase: IPhaseData) {
-  const { vote_term } = phase.attributes;
-
-  return vote_term || 'vote';
-}
-
 export function getPhaseVoteTermMessage(
   phase: IPhaseData,
   voteTermMessages: { [key in VoteTerm]: MessageDescriptor }
 ) {
-  const voteTerm = getPhaseVoteTerm(phase);
-  return voteTermMessages[voteTerm];
+  const voteTermMessageKey: VoteTerm = phase.attributes.vote_term || 'vote';
+  return voteTermMessages[voteTermMessageKey];
 }
 
 export const INPUT_TERMS = [
