@@ -7,7 +7,7 @@ module EmailCampaigns
     included do
       validates :schedule, presence: true
 
-      before_send :filter_campaign_scheduled
+      filter :filter_campaign_scheduled
       before_validation :force_schedule_start_in_config_timezone
     end
 
