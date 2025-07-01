@@ -17,15 +17,7 @@ export type GanttChartProps = {
   items: GanttItem[];
   startDate?: Date;
   endDate?: Date;
-  leftColumnWidth?: number;
-  dayWidth?: number;
-  monthWidth?: number;
-  rowHeight?: number;
-  timelineHeight?: number;
-  onItemClick?: (item: GanttItem) => void;
   renderItemTooltip?: (item: GanttItem) => React.ReactNode;
-  renderItemLabel?: (item: GanttItem) => React.ReactNode;
-  getItemColor?: (item: GanttItem) => string;
   showTodayLine?: boolean;
   onItemLabelClick?: (item: GanttItem) => void;
 };

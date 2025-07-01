@@ -33,21 +33,18 @@ import {
 
 const quarterWidth = 48;
 const weekWidth = 48;
+const timelineHeight = 40;
+const rowHeight = 40;
+const monthWidth = 50;
+const dayWidth = 40;
+const leftColumnWidth = 260;
 
 export const GanttChart = ({
   items,
   chartTitle,
   startDate: initialStartDate,
   endDate: initialEndDate,
-  leftColumnWidth = 260,
-  dayWidth = 40,
-  monthWidth = 50,
-  rowHeight = 40,
-  timelineHeight = 40,
-  onItemClick,
   renderItemTooltip,
-  renderItemLabel,
-  getItemColor = () => colors.white,
   showTodayLine = true,
   onItemLabelClick,
 }: GanttChartProps) => {
@@ -574,7 +571,7 @@ export const GanttChart = ({
                 rowHeight={rowHeight}
                 mr="8px"
               />
-              {renderItemLabel ? renderItemLabel(item) : item.title}
+              {item.title}
             </Box>
           ))}
         </Box>
@@ -692,16 +689,12 @@ export const GanttChart = ({
                       <Box
                         width="100%"
                         height="100%"
-                        background={getItemColor(item)}
+                        background={colors.white}
                         border="1px solid"
                         borderColor={colors.grey300}
                         borderRadius="4px"
                         display="flex"
                         alignItems="center"
-                        style={{
-                          cursor: onItemClick ? 'pointer' : 'default',
-                        }}
-                        onClick={() => onItemClick?.(item)}
                       >
                         <Box
                           display="flex"
