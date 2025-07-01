@@ -3,6 +3,7 @@ export type GanttItem = {
   title: string;
   start: string | null;
   end: string | null;
+  folder?: string | null;
   highlightStartDate?: string | null;
   highlightEndDate?: string | null;
   icon?: string;
