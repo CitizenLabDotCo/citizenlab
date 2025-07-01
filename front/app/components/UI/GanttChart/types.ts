@@ -5,6 +5,8 @@ export type GanttItem = {
   end: string | null;
   highlightStartDate?: string | null;
   highlightEndDate?: string | null;
+  icon?: string;
+  color?: string;
 };
 
 export type GanttChartProps = {
