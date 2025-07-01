@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import Icon from 'component-library/components/Icon';
+import Icon, { IconNames } from 'component-library/components/Icon';
 
 interface GanttItemIconBarProps {
   color?: string;
-  icon?: string;
+  icon?: IconNames;
   rowHeight: number;
   ml?: string;
   mr?: string;
@@ -26,7 +26,7 @@ const GanttItemIconBar = ({
       bg={color}
       mr={icon ? '4px' : '0'}
     />
-    {icon && <Icon name={icon as any} width="16" height="16" ariaHidden />}
+    {icon && <Icon name={icon} width="16" height="16" ariaHidden />}
   </Box>
 );
 

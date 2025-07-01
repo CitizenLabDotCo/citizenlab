@@ -1,3 +1,5 @@
+import { IconNames } from '@citizenlab/cl2-component-library';
+
 export type GanttItem = {
   id: string;
   title: string;
@@ -6,7 +8,7 @@ export type GanttItem = {
   folder?: string | null;
   highlightStartDate?: string | null;
   highlightEndDate?: string | null;
-  icon?: string;
+  icon?: IconNames;
   color?: string;
 };
 
