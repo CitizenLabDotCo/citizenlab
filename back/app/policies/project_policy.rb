@@ -44,12 +44,13 @@ class ProjectPolicy < ApplicationPolicy
         unless user&.admin?
           scope = scope.joins(:admin_publication)
 
-          scope = scope
-            .where(unlisted: false)
-            .or(scope.where(unlisted: true, id: user.moderatable_project_ids))
-            .or(scope.where(unlisted: true, admin_publication: { 
-              parent_id: AdminPublication.where(publication_id: user.moderated_project_folder_ids).pluck(:id)
-            }))
+          scope = scope.where(
+            "(projects.unlisted = FALSE) OR " \
+            "(projects.unlisted = TRUE AND projects.id IN (?)) OR " \
+            "(projects.unlisted = TRUE AND admin_publications.parent_id IN (?))",
+            user.moderatable_project_ids,
+            AdminPublication.where(publication_id: user.moderated_project_folder_ids).pluck(:id)
+          )
         end
       else
         # If the param is not passed, exclude unlisted projects

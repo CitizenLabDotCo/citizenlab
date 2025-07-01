@@ -151,8 +151,6 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Make include_unlisted available to the policy scope.
     policy_context[:include_unlisted] = true
 
-    binding.pry
-
     projects = policy_scope(Project).not_hidden
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
