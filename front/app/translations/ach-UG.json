@@ -1257,6 +1257,7 @@
   "app.containers.EventsShow.icsError": "crwdns4750033:0crwdne4750033:0",
   "app.containers.EventsShow.linkToOnlineEvent": "crwdns4750035:0crwdne4750035:0",
   "app.containers.EventsShow.locationIconAltText": "crwdns4750037:0crwdne4750037:0",
+  "app.containers.EventsShow.metaTitle": "crwdns4786303:0{eventTitle}crwdnd4786303:0{orgName}crwdne4786303:0",
   "app.containers.EventsShow.online2": "crwdns4750039:0crwdne4750039:0",
   "app.containers.EventsShow.onlineLinkIconAltText": "crwdns4750041:0crwdne4750041:0",
   "app.containers.EventsShow.socialMediaSharingMessage": "crwdns4750043:0{eventTitle}crwdne4750043:0",
