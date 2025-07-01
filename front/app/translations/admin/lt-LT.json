@@ -1126,7 +1126,6 @@
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.phaseListTitle": "Etapai:",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.project": "Projektas",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.startDate": "Pradžios data: {date}",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.summary": "{summary}",
   "app.containers.Admin.projects.all.new.folders": "Aplankalai",
   "app.containers.Admin.projects.all.new.projects": "Projektai",
   "app.containers.Admin.projects.all.new.timeline": "Laiko juosta",
