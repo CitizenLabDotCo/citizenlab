@@ -1257,6 +1257,7 @@
   "app.containers.EventsShow.icsError": "ICS ਫਾਈਲ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਵਿੱਚ ਤਰੁੱਟੀ",
   "app.containers.EventsShow.linkToOnlineEvent": "ਔਨਲਾਈਨ ਇਵੈਂਟ ਲਈ ਲਿੰਕ",
   "app.containers.EventsShow.locationIconAltText": "ਟਿਕਾਣਾ",
+  "app.containers.EventsShow.metaTitle": "ਘਟਨਾ: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "ਆਨਲਾਈਨ ਮੀਟਿੰਗ",
   "app.containers.EventsShow.onlineLinkIconAltText": "ਔਨਲਾਈਨ ਮੀਟਿੰਗ ਲਿੰਕ",
   "app.containers.EventsShow.socialMediaSharingMessage": "ਇਸ ਇਵੈਂਟ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋ: {eventTitle}",
