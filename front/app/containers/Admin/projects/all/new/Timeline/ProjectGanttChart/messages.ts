@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.folder',
     defaultMessage: 'Folder: {folderName}',
   },
-  summary: {
-    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.summary',
-    defaultMessage: '{summary}',
-  },
   startDate: {
     id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.startDate',
     defaultMessage: 'Start date: {date}',
