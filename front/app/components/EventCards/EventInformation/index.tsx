@@ -205,18 +205,15 @@ const EventInformation = ({ event }: Props) => {
                 />
               </Box>
               <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
-                {event.attributes.attendees_count}{' '}
-                {event.attributes.maximum_attendees
-                  ? `/ ${event.attributes.maximum_attendees} ${formatMessage(
-                      isPastEvent
-                        ? messages.registered
-                        : messages.haveRegistered
-                    )}`
-                  : formatMessage(
-                      isPastEvent
-                        ? messages.registered
-                        : messages.haveRegistered
-                    )}
+                {typeof event.attributes.maximum_attendees === 'number'
+                  ? formatMessage(messages.registrantCountWithMaximum, {
+                      attendeesCount: event.attributes.attendees_count,
+                      maximumNumberOfAttendees:
+                        event.attributes.maximum_attendees,
+                    })
+                  : formatMessage(messages.registrantCount, {
+                      attendeesCount: event.attributes.attendees_count,
+                    })}
               </Text>
             </Box>
           )}
