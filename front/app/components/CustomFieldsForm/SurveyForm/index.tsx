@@ -57,7 +57,8 @@ const SurveyForm = ({
       // If the user is not authenticated and is not on the submit page, do not save the draft idea
       return;
     }
-    if (currentPageNumber === nestedPagesData.length - 1) {
+    if (currentPageNumber === nestedPagesData.length - 2) {
+      updateSearchParams({ idea_id: draftIdea?.data.id });
       trackEventByName(tracks.surveyFormSubmitted);
       // Form has been submitted, clear the draft idea
       return clearDraftIdea();
@@ -70,14 +71,12 @@ const SurveyForm = ({
           ? [phaseId]
           : null;
 
-      const idea = await addIdea({
+      await addIdea({
         ...formValues,
         project_id: projectId,
         phase_ids,
         publication_status: isSubmitPage ? 'published' : 'draft',
       });
-
-      updateSearchParams({ idea_id: idea.data.id });
     } else {
       await updateIdea({
         id: draftIdea.data.id,
@@ -87,7 +86,6 @@ const SurveyForm = ({
           publication_status: isSubmitPage ? 'published' : 'draft',
         },
       });
-      updateSearchParams({ idea_id: draftIdea.data.id });
     }
   };
 
