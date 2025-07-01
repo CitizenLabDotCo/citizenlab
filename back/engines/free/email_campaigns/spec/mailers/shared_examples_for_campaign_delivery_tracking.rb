@@ -10,7 +10,7 @@ RSpec.shared_examples 'campaign delivery tracking' do
         mailer_instance
       end
 
-      campaign.run_before_send_hooks({})
+      campaign.run_before_send_hooks(command)
       mailer.campaign_mail.deliver_now
       campaign.run_after_send_hooks(command)
 
