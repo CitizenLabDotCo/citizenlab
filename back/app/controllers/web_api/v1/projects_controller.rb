@@ -148,7 +148,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def index_for_admin
-    # Make include_unlisted available to the policy scope.
+    # Because this is only used in the back office, we always include unlisted projects.
     policy_context[:include_unlisted] = true
 
     projects = policy_scope(Project).not_hidden
