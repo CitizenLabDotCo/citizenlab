@@ -108,6 +108,24 @@ resource 'AdminPublication' do
         expect(publication_ids).to match_array [projects[0].id, projects[1].id, moderated_folder.id]
       end
 
+      example 'Does not show unlisted projects when not requested', document: false do
+        unlisted_project = create(:project, unlisted: true)
+
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 10
+        expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id 
+      end
+
+      example 'Shows unlisted projects when requested', document: false do
+        unlisted_project = create(:project, unlisted: true)
+
+        do_request include_unlisted: true
+        assert_status 200
+        expect(response_data.size).to eq 11
+        expect(response_data.pluck(:id)).to include unlisted_project.admin_publication.id 
+      end
+
       context 'when admin is moderator of publications' do
         before do
           @moderated_project1 = published_projects[0]
