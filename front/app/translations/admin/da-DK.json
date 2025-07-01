@@ -1126,7 +1126,6 @@
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.phaseListTitle": "Faser:",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.project": "Projekt",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.startDate": "Startdato: {date}",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.summary": "{summary}",
   "app.containers.Admin.projects.all.new.folders": "Mapper",
   "app.containers.Admin.projects.all.new.projects": "Projekter",
   "app.containers.Admin.projects.all.new.timeline": "Tidslinje",
