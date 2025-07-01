@@ -22,7 +22,7 @@ describe('Survey question logic', () => {
 
   it('allows setting logic for select question', () => {
     cy.setAdminLoginCookie();
-    cy.intercept('GET', `/web_api/v1/phases/${phaseId}/custom_fields`).as(
+    cy.intercept('GET', `/web_api/v1/phases/${phaseId}/custom_fields**`).as(
       'getCustomFields'
     );
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
@@ -44,7 +44,7 @@ describe('Survey question logic', () => {
       'PATCH',
       `/web_api/v1/phases/${phaseId}/custom_fields/update_all`
     ).as('updateCustomFields');
-    cy.intercept('GET', `/web_api/v1/phases/${phaseId}/custom_fields`).as(
+    cy.intercept('GET', `/web_api/v1/phases/${phaseId}/custom_fields**`).as(
       'getCustomFieldsAfterSave'
     );
 
