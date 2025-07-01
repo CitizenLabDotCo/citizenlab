@@ -764,7 +764,6 @@ export const GanttChart = ({
                       borderRadius="4px"
                       display="flex"
                       alignItems="center"
-                      overflow="hidden"
                       style={{
                         cursor: onItemClick ? 'pointer' : 'default',
                       }}
