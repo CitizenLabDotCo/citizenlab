@@ -60,12 +60,11 @@ resource 'Idea Custom Fields' do
       end
 
       example 'List all public custom fields for a phase' do
-
         do_request(public_fields: true)
         assert_status 200
         expect(response_data.size).to eq 1
         expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [
-          custom_field1.key,
+          custom_field1.key
         ]
       end
     end
