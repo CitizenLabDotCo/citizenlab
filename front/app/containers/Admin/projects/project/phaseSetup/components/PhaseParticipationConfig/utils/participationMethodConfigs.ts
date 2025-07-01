@@ -67,6 +67,7 @@ export const votingDefaultConfig: IUpdatedPhaseProperties = {
   autoshare_results_enabled: true,
   presentation_mode: 'card',
   ideas_order: 'random',
+  input_term: 'idea',
   vote_term: 'vote',
 };
 
