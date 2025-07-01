@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
-import { addDays, addMonths, subMonths, max, min, format } from 'date-fns';
+import { addDays, addMonths, subMonths, max, min } from 'date-fns';
 
 import GanttItemIconBar from './GanttItemIconBar';
 import TimeRangeSelector from './TimeRangeSelector';
@@ -687,6 +687,7 @@ export const GanttChart = ({
                       placement="top"
                       content={renderItemTooltip ? renderItemTooltip(item) : ''}
                       disabled={!renderItemTooltip}
+                      theme="dark"
                     >
                       <Box
                         width="100%"
@@ -720,7 +721,6 @@ export const GanttChart = ({
                         {highlightStart && (
                           <Box
                             position="absolute"
-                            // top={0}
                             left={`${
                               (getOffset(max([s, highlightStart])) -
                                 startOffset) *
