@@ -25,7 +25,7 @@ import { isNewCustomFieldObject } from 'api/custom_fields/util';
 import useCustomForm from 'api/custom_form/useCustomForm';
 import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
@@ -387,7 +387,6 @@ const FormEdit = ({
               viewFormLink={viewFormLink}
               autosaveEnabled={autosaveEnabled}
               setAutosaveEnabled={setAutosaveEnabled}
-              showAutosaveToggle={totalSubmissions === 0} // Only allow autosave if no survey submissions
               phaseId={phaseId}
             />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
@@ -435,7 +434,6 @@ const FormEdit = ({
                       field={selectedField}
                       closeSettings={closeSettings}
                       builderConfig={builderConfig}
-                      formHasSubmissions={totalSubmissions > 0}
                     />
                   </Box>
                 )}
@@ -459,7 +457,7 @@ const FormBuilderPage = ({
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
   const { phaseId } = useParams();
-  const { data: submissionCount } = useFormSubmissionCount({
+  const { data: submissionCount } = useSubmissionsCount({
     phaseId,
   });
   const { data: phase } = usePhase(phaseId);

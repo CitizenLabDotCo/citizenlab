@@ -99,11 +99,14 @@ const LogicSettings = ({
   // Current and previous pages should be disabled in select options
   let disablePage = true;
   const pages: PageListType = pageOptions.map((page) => {
-    page.disabled = disablePage;
+    const newPage = {
+      ...page,
+      disabled: disablePage,
+    };
     if (page.value === getCurrentPageId(field.id)) {
       disablePage = false;
     }
-    return page;
+    return newPage;
   });
 
   return (
@@ -161,7 +164,7 @@ const LogicSettings = ({
                   validationError={validationError}
                   name={`customFields.${field.index}`}
                   answer={answer}
-                  pages={pageOptions}
+                  pages={pages}
                 />
               </Box>
             ))}
