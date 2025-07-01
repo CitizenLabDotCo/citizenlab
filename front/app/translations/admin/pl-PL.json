@@ -1126,7 +1126,6 @@
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.phaseListTitle": "Fazy:",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.project": "Projekt",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.startDate": "Data rozpoczęcia: {date}",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.summary": "{summary}",
   "app.containers.Admin.projects.all.new.folders": "Foldery",
   "app.containers.Admin.projects.all.new.projects": "Projekty",
   "app.containers.Admin.projects.all.new.timeline": "Oś czasu",
