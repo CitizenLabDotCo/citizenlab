@@ -23,9 +23,14 @@ class AdminPublicationPolicy < ApplicationPolicy
           # If you are an admin, include all unlisted projects
           # Otherwise, include only unlisted projects that you can moderate
           unless user&.admin?
+            scope = scope.joins(:admin_publication)
+
             scope = scope
               .where(unlisted: false)
               .or(scope.where(unlisted: true, id: user.moderatable_project_ids))
+              .or(scope.where(unlisted: true, admin_publication: { 
+                parent_id: AdminPublication.where(publication_id: user.moderated_project_folder_ids).pluck(:id)
+              }))
           end
         else
           # If the param is not passed, exclude unlisted projects

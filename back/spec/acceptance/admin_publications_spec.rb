@@ -787,6 +787,46 @@ resource 'AdminPublication' do
         assert_status 200
         expect(publication_ids).to match_array [project_folder.id, @folder.id, root_project.id].flatten
       end
+
+      example 'Lists publications', document: false do
+        do_request
+        expect(response_data.size).to eq 18
+      end
+
+      example 'Does not list unlisted projects user can moderate', document: false do
+        unlisted_project_user_moderates = create(
+          :project,
+          unlisted: true,
+          admin_publication_attributes: { 
+            publication_status: 'published', 
+            parent_id: project_folder.admin_publication.id 
+          }
+        )
+
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 18
+        expect(response_ids).not_to include unlisted_project_user_moderates.admin_publication.id
+      end
+
+      example 'Lists unlisted projects in folder user can moderate when requested', document: false do
+        unlisted_project_user_moderates = create(
+          :project,
+          unlisted: true,
+          admin_publication_attributes: { 
+            publication_status: 'published', 
+            parent_id: project_folder.admin_publication.id 
+          }
+        )
+
+        unlisted_project = create(:project, unlisted: true)
+
+        do_request(include_unlisted: true)
+        assert_status 200
+        expect(response_data.size).to eq 19
+        expect(response_ids).to include unlisted_project_user_moderates.admin_publication.id
+        expect(response_ids).not_to include unlisted_project.admin_publication.id
+      end
     end
 
     patch 'web_api/v1/admin_publications/:id/reorder' do
