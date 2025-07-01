@@ -27,11 +27,13 @@ RSpec.describe EmailCampaigns::InternalCommentOnIdeaYouModerateMailer do
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
     let_it_be(:body) { mail_body(mail) }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
+    include_examples 'campaign delivery tracking'
     include_examples 'internal_comment_campaign_mailer_examples'
   end
 end
