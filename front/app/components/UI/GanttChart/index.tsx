@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
-import { addDays, addMonths, subMonths, max, min } from 'date-fns';
+import { addDays, addMonths, subMonths, max, min, format } from 'date-fns';
 
 import GanttItemIconBar from './GanttItemIconBar';
 import TimeRangeSelector from './TimeRangeSelector';
@@ -648,91 +648,6 @@ export const GanttChart = ({
                 const duration = getDuration(effectiveStart, effectiveEnd);
                 if (duration <= 0) return null;
 
-                let highlightEl: JSX.Element | null = null;
-                let textInHighlight = false;
-
-                const highlightStart = item.highlightStartDate
-                  ? new Date(item.highlightStartDate)
-                  : null;
-
-                if (highlightStart) {
-                  const highlightEnd = item.highlightEndDate
-                    ? new Date(item.highlightEndDate)
-                    : null;
-
-                  const logicalHighlightStart = max([s, highlightStart]);
-                  const highlightCap = e || endDate;
-                  const logicalHighlightEnd = highlightEnd
-                    ? min([highlightEnd, highlightCap])
-                    : highlightCap;
-
-                  const vizHighlightStart = max([
-                    effectiveStart,
-                    logicalHighlightStart,
-                  ]);
-                  const vizHighlightEnd = min([
-                    effectiveEnd,
-                    logicalHighlightEnd,
-                  ]);
-
-                  if (vizHighlightStart < vizHighlightEnd) {
-                    textInHighlight =
-                      vizHighlightStart.getTime() === effectiveStart.getTime();
-
-                    const highlightOffset = getOffset(vizHighlightStart);
-                    const highlightDuration = getDuration(
-                      vizHighlightStart,
-                      vizHighlightEnd
-                    );
-
-                    if (highlightDuration > 0) {
-                      highlightEl = (
-                        <Box
-                          position="absolute"
-                          top={`${index * rowHeight + 4}px`}
-                          left={`${highlightOffset * unitW}px`}
-                          width={`${highlightDuration * unitW}px`}
-                          height={`${rowHeight - 8}px`}
-                          bg={colors.teal50}
-                          border={`1px solid ${colors.teal400}`}
-                          display="flex"
-                          alignItems="center"
-                          overflow="hidden"
-                          style={{
-                            pointerEvents: 'none',
-                            zIndex: 1,
-                          }}
-                        >
-                          {textInHighlight && (
-                            <Box
-                              display="flex"
-                              alignItems="center"
-                              as="span"
-                              px="4px"
-                              style={{
-                                whiteSpace: 'nowrap',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                color: colors.grey800,
-                                fontWeight: 500,
-                              }}
-                            >
-                              <GanttItemIconBar
-                                color={item.color}
-                                icon={item.icon}
-                                rowHeight={rowHeight}
-                                mr="8px"
-                                ml="0px"
-                              />
-                              {item.title}
-                            </Box>
-                          )}
-                        </Box>
-                      );
-                    }
-                  }
-                }
-
                 const textLabel = (
                   <Box
                     as="span"
@@ -743,58 +658,125 @@ export const GanttChart = ({
                       textOverflow: 'ellipsis',
                       color: colors.grey800,
                       fontWeight: 500,
-                      pointerEvents: 'none',
                     }}
                   >
                     {item.title}
                   </Box>
                 );
 
+                let textInHighlight = false;
+                const highlightStart = item.highlightStartDate
+                  ? new Date(item.highlightStartDate)
+                  : null;
+                if (highlightStart) {
+                  textInHighlight =
+                    new Date(highlightStart).getTime() ===
+                    effectiveStart.getTime();
+                }
+
                 return (
-                  <React.Fragment key={item.id}>
-                    <Box
-                      position="absolute"
-                      top={`${index * rowHeight + 4}px`}
-                      left={`${startOffset * unitW}px`}
-                      width={`${duration * unitW}px`}
-                      height={`${rowHeight - 8}px`}
-                      background={getItemColor(item)}
-                      border="1px solid"
-                      borderColor={colors.grey300}
-                      borderRadius="4px"
-                      display="flex"
-                      alignItems="center"
-                      style={{
-                        cursor: onItemClick ? 'pointer' : 'default',
-                      }}
-                      onClick={() => onItemClick?.(item)}
+                  <Box
+                    key={item.id}
+                    position="absolute"
+                    top={`${index * rowHeight + 4}px`}
+                    left={`${startOffset * unitW}px`}
+                    width={`${duration * unitW}px`}
+                    height={`${rowHeight - 8}px`}
+                  >
+                    <Tooltip
+                      placement="top"
+                      content={renderItemTooltip ? renderItemTooltip(item) : ''}
+                      disabled={!renderItemTooltip}
                     >
-                      <GanttItemIconBar
-                        color={item.color}
-                        icon={item.icon}
-                        rowHeight={rowHeight}
-                        mr="0px"
-                        ml="4px"
-                      />
-                      {!textInHighlight && textLabel}
-                      {renderItemTooltip && (
-                        <Tooltip content={renderItemTooltip(item)}>
+                      <Box
+                        width="100%"
+                        height="100%"
+                        background={getItemColor(item)}
+                        border="1px solid"
+                        borderColor={colors.grey300}
+                        borderRadius="4px"
+                        display="flex"
+                        alignItems="center"
+                        style={{
+                          cursor: onItemClick ? 'pointer' : 'default',
+                        }}
+                        onClick={() => onItemClick?.(item)}
+                      >
+                        <Box
+                          display="flex"
+                          alignItems="center"
+                          style={{ pointerEvents: 'none', width: '100%' }}
+                        >
+                          <GanttItemIconBar
+                            color={item.color}
+                            icon={item.icon}
+                            rowHeight={rowHeight}
+                            mr="0px"
+                            ml="4px"
+                          />
+                          {!textInHighlight && textLabel}
+                        </Box>
+
+                        {highlightStart && (
                           <Box
                             position="absolute"
-                            width="100%"
+                            // top={0}
+                            left={`${
+                              (getOffset(max([s, highlightStart])) -
+                                startOffset) *
+                              unitW
+                            }px`}
+                            width={`${
+                              getDuration(
+                                max([s, highlightStart]),
+                                min([
+                                  e || endDate,
+                                  item.highlightEndDate
+                                    ? new Date(item.highlightEndDate)
+                                    : endDate,
+                                ])
+                              ) * unitW
+                            }px`}
                             height="100%"
-                            top="0"
-                            left="0"
+                            bg={colors.teal50}
+                            border={`1px solid ${colors.teal400}`}
+                            display="flex"
+                            alignItems="center"
+                            overflow="hidden"
                             style={{
-                              cursor: 'pointer',
-                              zIndex: 4,
+                              pointerEvents: 'none',
+                              zIndex: 1,
                             }}
-                          />
-                        </Tooltip>
-                      )}
-                    </Box>
-                    {highlightEl}
-                  </React.Fragment>
+                          >
+                            {textInHighlight && (
+                              <Box
+                                display="flex"
+                                alignItems="center"
+                                as="span"
+                                px="4px"
+                                style={{
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  color: colors.grey800,
+                                  fontWeight: 500,
+                                }}
+                              >
+                                <GanttItemIconBar
+                                  color={item.color}
+                                  icon={item.icon}
+                                  rowHeight={rowHeight}
+                                  mr="8px"
+                                  ml="0px"
+                                />
+                                {item.title}
+                              </Box>
+                            )}
+                          </Box>
+                        )}
+                      </Box>
+                    </Tooltip>
+                  </Box>
                 );
               })}
             </Box>
