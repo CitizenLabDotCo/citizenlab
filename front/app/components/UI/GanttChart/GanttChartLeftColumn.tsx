@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors, Button } from '@citizenlab/cl2-component-library';
 
 import GanttItemIconBar from './GanttItemIconBar';
 import { GanttItem } from './types';
@@ -24,36 +24,45 @@ const GanttChartLeftColumn: React.FC<GanttChartLeftColumnProps> = ({
       position="sticky"
       borderRight={`1px solid ${colors.grey300}`}
       bg={colors.white}
-      style={{ left: 0, zIndex: 2 }}
     >
-      {items.map((item) => (
+      {items.map((item, index) => (
         <Box
           key={item.id}
+          borderBottom={`1px solid ${colors.grey300}`}
+          borderTop={index === 0 ? `1px solid ${colors.grey300}` : 'none'}
           height={`${rowHeight}px`}
           display="flex"
-          alignItems="center"
-          pl="16px"
-          pr="8px"
-          borderBottom={`1px solid ${colors.grey300}`}
-          style={{
-            cursor: onItemLabelClick ? 'pointer' : 'default',
-          }}
-          onClick={onItemLabelClick ? () => onItemLabelClick(item) : undefined}
         >
-          <GanttItemIconBar
-            color={item.color}
-            icon={item.icon}
-            rowHeight={rowHeight}
-            mr="8px"
-          />
-          <Text
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-            variant="bodyS"
-            overflow="hidden"
+          <Button
+            buttonStyle="text"
+            justify="left"
+            onClick={
+              onItemLabelClick ? () => onItemLabelClick(item) : undefined
+            }
           >
-            {item.title}
-          </Text>
+            <Box
+              display="flex"
+              justifyContent="flex-start"
+              alignItems="center"
+              height="100%"
+              w="100%"
+            >
+              <GanttItemIconBar
+                color={item.color}
+                icon={item.icon}
+                rowHeight={rowHeight}
+                mr="8px"
+              />
+              <Text
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
+                variant="bodyS"
+                overflow="hidden"
+              >
+                {item.title}
+              </Text>
+            </Box>
+          </Button>
         </Box>
       ))}
     </Box>
