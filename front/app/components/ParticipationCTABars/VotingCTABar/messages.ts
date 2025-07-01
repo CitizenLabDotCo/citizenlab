@@ -37,22 +37,22 @@ export default defineMessages({
     defaultMessage: '{budgetLeft} / {totalBudget} left',
   },
   votesLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.votesLeft3',
+    id: 'app.components.ParticipationCTABars.VotingCTABar.votesLeft4',
     defaultMessage:
       '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {votes} one {vote} other {votes}} left',
   },
   pointsLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.pointsLeft',
+    id: 'app.components.ParticipationCTABars.VotingCTABar.pointsLeft2',
     defaultMessage:
       '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {points} one {point} other {points}} left',
   },
   tokensLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.tokensLeft',
+    id: 'app.components.ParticipationCTABars.VotingCTABar.tokensLeft2',
     defaultMessage:
       '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {tokens} one {token} other {tokens}} left',
   },
   creditsLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.creditsLeft',
+    id: 'app.components.ParticipationCTABars.VotingCTABar.creditsLeft2',
     defaultMessage:
       '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {credits} one {credit} other {credits}} left',
   },
