@@ -152,6 +152,8 @@ class ProjectsFinderService
     include_finished = %w[finished finished_and_archived].include?(@filter_by)
     include_archived = %w[archived finished_and_archived].include?(@filter_by)
 
+    binding.pry
+
     if include_finished
       finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
       finished_scope = joins_last_phases_with_reports(finished_scope)

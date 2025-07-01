@@ -1843,7 +1843,7 @@ resource 'Projects' do
     end
 
     example 'Returns only listed projects' do
-      do_request
+      do_request filter_by: 'finished_and_archived'
       assert_status 200
       expect(response_data.pluck(:id)).to match_array [@listed_archived_project.id]
     end
