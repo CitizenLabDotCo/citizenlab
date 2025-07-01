@@ -211,7 +211,6 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone',
     defaultMessage: 'Once you are done, click “Submit” to cast your vote.',
   },
-  // To check message
   multipleVotingEnded: {
     id: 'app.utils.votingMethodUtils.multipleVotingEnded1',
     defaultMessage: 'Voting closed on <b>{endDate}.</b>',
