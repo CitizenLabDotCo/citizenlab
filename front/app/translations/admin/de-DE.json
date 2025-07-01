@@ -1112,7 +1112,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "noch {years} Jahre",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "noch {years} Jahre bis zum Start",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.currentPhase": "Aktuelle Phase: {phaseName} ({participationMethod})",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.daysLeft": "{days} Tage übrig",
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.daysLeft": "{days} verbleibende Tage",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.folder": "Ordner: {folderName}",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noCurrentPhase": "Keine aktuelle Phase",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noEndDate": "Kein Enddatum",
