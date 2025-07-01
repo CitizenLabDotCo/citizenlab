@@ -10,6 +10,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Hidden community monitor project not included by default via AdminPublication policy scope
     policy_context[:include_hidden] = true if params[:include_hidden] == 'true'
 
+    # Make include_unlisted available to the policy scope.
+    policy_context[:include_unlisted] = true if params[:include_unlisted] == 'true'
+
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
       .where(publication_type: Project.name)
