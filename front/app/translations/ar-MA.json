@@ -1257,6 +1257,7 @@
   "app.containers.EventsShow.icsError": "حدث خطأ أثناء تنزيل ملف ICS",
   "app.containers.EventsShow.linkToOnlineEvent": "رابط إلى الحدث عبر الإنترنت",
   "app.containers.EventsShow.locationIconAltText": "موقع",
+  "app.containers.EventsShow.metaTitle": "الحدث: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "اجتماع عبر الإنترنت",
   "app.containers.EventsShow.onlineLinkIconAltText": "رابط اللقاء عبر الإنترنت",
   "app.containers.EventsShow.socialMediaSharingMessage": "حضور هذا الحدث: {eventTitle}",
