@@ -684,7 +684,7 @@ export const GanttChart = ({
                     height={`${rowHeight - 8}px`}
                   >
                     <Tooltip
-                      placement="top"
+                      placement="bottom"
                       content={renderItemTooltip ? renderItemTooltip(item) : ''}
                       disabled={!renderItemTooltip}
                       theme="dark"
