@@ -2,6 +2,7 @@ import React, {
   useRef,
   useState,
   useLayoutEffect,
+  useEffect,
   useCallback,
   useMemo,
 } from 'react';
@@ -21,8 +22,18 @@ import {
   getDurationInDays,
   getOffsetInMonths,
   getDurationInMonths,
-  getLabelFromScroll,
+  getQuarterCellsMeta,
+  getOffsetInQuarterCells,
+  getDurationInQuarterCells,
+  getWeekMeta,
+  getOffsetInWeeks,
+  getDurationInWeeks,
+  WeekMeta,
+  QuarterCellMeta,
 } from './utils';
+
+const quarterWidth = 48;
+const weekWidth = 48;
 
 export const GanttChart = ({
   items,
@@ -43,7 +54,10 @@ export const GanttChart = ({
 }: GanttChartProps) => {
   const today = useMemo(() => new Date(), []);
   const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
-  const isYearlyView = selectedRange === '5years';
+
+  const isMultiYearView = selectedRange === '5years';
+  const isYearView = selectedRange === 'year';
+  const isQuarterView = selectedRange === 'quarter';
 
   const { startDate: initialStart, endDate: initialEnd } = getTimeRangeDates(
     selectedRange,
@@ -55,59 +69,98 @@ export const GanttChart = ({
   );
   const [endDate, setEndDate] = useState<Date>(initialEndDate || initialEnd);
   const [isLoading, setIsLoading] = useState(false);
+  const [visibleLabel, setVisibleLabel] = useState<string>('');
 
   const timelineHeaderRef = useRef<HTMLDivElement>(null);
   const timelineBodyRef = useRef<HTMLDivElement>(null);
   const scrollState = useRef({ scrollLeft: 0, scrollWidth: 0 });
+  const rangeChanged = useRef(true);
 
-  const dailyViewData = useMemo(() => {
-    if (isYearlyView) return null;
-    const totalDays = getDurationInDays(startDate, endDate);
-    return {
-      months: getMonthMeta(startDate, endDate),
-      totalDays,
-      todayOffset: getOffsetInDays(startDate, today),
-    };
-  }, [isYearlyView, startDate, endDate, today]);
+  const monthMeta = useMemo(
+    () => getMonthMeta(startDate, endDate),
+    [startDate, endDate]
+  );
+  const yearMeta = useMemo(
+    () => getYearMeta(startDate, endDate),
+    [startDate, endDate]
+  );
+  const quarterCells = useMemo(
+    () => getQuarterCellsMeta(startDate, endDate),
+    [startDate, endDate]
+  );
+  const weekCells = useMemo(
+    () => getWeekMeta(startDate, endDate),
+    [startDate, endDate]
+  );
 
-  const yearlyViewData = useMemo(() => {
-    if (!isYearlyView) return null;
-    return {
-      years: getYearMeta(startDate, endDate),
-      totalMonths: getDurationInMonths(startDate, endDate),
-      todayOffset: getOffsetInMonths(startDate, today),
-    };
-  }, [isYearlyView, startDate, endDate, today]);
+  const unitW = isMultiYearView
+    ? monthWidth
+    : isYearView
+    ? weekWidth
+    : isQuarterView
+    ? quarterWidth
+    : dayWidth;
 
-  const [visibleLabel, setVisibleLabel] = useState<string>('');
+  const getOffset = useCallback(
+    (date: Date) => {
+      if (isMultiYearView) return getOffsetInMonths(startDate, date);
+      if (isYearView) return getOffsetInWeeks(startDate, date);
+      if (isQuarterView) return getOffsetInQuarterCells(quarterCells, date);
+      return getOffsetInDays(startDate, date);
+    },
+    [isMultiYearView, isYearView, isQuarterView, startDate, quarterCells]
+  );
 
-  useLayoutEffect(() => {
-    setVisibleLabel(
-      isYearlyView
-        ? yearlyViewData?.years[0]?.label ?? ''
-        : dailyViewData?.months[0]?.label ?? ''
-    );
-  }, [selectedRange, yearlyViewData, dailyViewData, isYearlyView]);
+  const getDuration = useCallback(
+    (start: Date, end: Date) => {
+      if (isMultiYearView) return getDurationInMonths(start, end);
+      if (isYearView) return getDurationInWeeks(start, end);
+      if (isQuarterView) {
+        return getDurationInQuarterCells(quarterCells, start, end);
+      }
+      return getDurationInDays(start, end);
+    },
+    [isMultiYearView, isYearView, isQuarterView, quarterCells]
+  );
+
+  const todayOffset = useMemo(() => {
+    if (!showTodayLine) return undefined;
+    return getOffset(today);
+  }, [getOffset, showTodayLine, today]);
 
   useLayoutEffect(() => {
     if (!timelineBodyRef.current) return;
-    const newLabel = getLabelFromScroll(
-      timelineBodyRef.current.scrollLeft,
-      isYearlyView,
-      dailyViewData,
-      yearlyViewData,
-      dayWidth,
-      monthWidth
-    );
-    if (newLabel) setVisibleLabel(newLabel);
+    const { scrollLeft } = timelineBodyRef.current;
+    let newLabel = '';
+
+    if (isMultiYearView) {
+      newLabel = yearMeta[0]?.label ?? '';
+    } else if (isYearView) {
+      const scrolledWeeks = Math.floor(scrollLeft / weekWidth);
+      const currentWeek: WeekMeta | undefined = weekCells[scrolledWeeks];
+      if (currentWeek !== undefined) {
+        newLabel = String(currentWeek.year);
+      }
+    } else if (isQuarterView) {
+      const scrolledCells = Math.floor(scrollLeft / quarterWidth);
+      const currentCell: QuarterCellMeta | undefined =
+        quarterCells[scrolledCells];
+      if (currentCell !== undefined) {
+        newLabel = currentCell.month;
+      }
+    } else {
+      newLabel = monthMeta[0]?.label ?? '';
+    }
+    setVisibleLabel(newLabel);
   }, [
-    startDate,
-    endDate,
-    isYearlyView,
-    dailyViewData,
-    yearlyViewData,
-    dayWidth,
-    monthWidth,
+    selectedRange,
+    isMultiYearView,
+    isYearView,
+    isQuarterView,
+    monthMeta,
+    yearMeta,
+    weekCells,
+    quarterCells,
   ]);
 
   useLayoutEffect(() => {
@@ -122,21 +175,43 @@ export const GanttChart = ({
 
   const onTimelineScroll = useCallback(() => {
     if (!timelineBodyRef.current || isLoading) return;
-
     const { scrollLeft, scrollWidth, clientWidth } = timelineBodyRef.current;
-
     if (timelineHeaderRef.current) {
       timelineHeaderRef.current.scrollLeft = scrollLeft;
     }
 
-    const newLabel = getLabelFromScroll(
-      scrollLeft,
-      isYearlyView,
-      dailyViewData,
-      yearlyViewData,
-      dayWidth,
-      monthWidth
-    );
+    let newLabel = '';
+    if (isMultiYearView) {
+      for (let i = yearMeta.length - 1; i >= 0; i--) {
+        const y = yearMeta[i];
+        if (scrollLeft >= y.offsetMonths * monthWidth) {
+          newLabel = y.label;
+          break;
+        }
+      }
+    } else if (isYearView) {
+      const scrolledWeeks = Math.floor(scrollLeft / weekWidth);
+      const currentWeek: WeekMeta | undefined = weekCells[scrolledWeeks];
+      if (currentWeek !== undefined) {
+        newLabel = String(currentWeek.year);
+      }
+    } else if (isQuarterView) {
+      const scrolledCells = Math.floor(scrollLeft / quarterWidth);
+      const currentCell: QuarterCellMeta | undefined =
+        quarterCells[scrolledCells];
+      if (currentCell !== undefined) {
+        newLabel = currentCell.month;
+      }
+    } else {
+      for (let i = monthMeta.length - 1; i >= 0; i--) {
+        const m = monthMeta[i];
+        if (scrollLeft >= m.offsetDays * dayWidth) {
+          newLabel = m.label;
+          break;
+        }
+      }
+    }
+
     if (newLabel && newLabel !== visibleLabel) {
       setVisibleLabel(newLabel);
     }
@@ -155,16 +230,32 @@ export const GanttChart = ({
       setTimeout(() => setIsLoading(false), 50);
     }
   }, [
-    isYearlyView,
-    dailyViewData,
-    yearlyViewData,
+    isLoading,
+    isMultiYearView,
+    isYearView,
+    isQuarterView,
+    monthMeta,
+    yearMeta,
+    weekCells,
+    quarterCells,
+    visibleLabel,
     dayWidth,
     monthWidth,
-    visibleLabel,
-    isLoading,
   ]);
 
+  const scrollToToday = useCallback(() => {
+    const offset = getOffset(today);
+    if (
+      offset !== undefined &&
+      timelineBodyRef.current &&
+      timelineBodyRef.current.scrollWidth > 0
+    ) {
+      scrollTo(timelineBodyRef, offset, unitW);
+    }
+  }, [getOffset, today, unitW]);
+
   const handleRangeChange = (range: TimeRangeOption) => {
+    rangeChanged.current = true;
     setSelectedRange(range);
     const { startDate: newStart, endDate: newEnd } = getTimeRangeDates(
       range,
@@ -172,45 +263,22 @@ export const GanttChart = ({
     );
     setStartDate(newStart);
     setEndDate(newEnd);
-    if (timelineBodyRef.current) {
-      timelineBodyRef.current.scrollLeft = 0;
-    }
   };
 
   const handleTodayClick = () => {
     scrollToToday();
   };
 
-  const scrollToToday = useCallback(() => {
-    const offset = isYearlyView
-      ? yearlyViewData?.todayOffset
-      : dailyViewData?.todayOffset;
-    const unitWidth = isYearlyView ? monthWidth : dayWidth;
-    if (
-      offset !== undefined &&
-      timelineBodyRef.current &&
-      timelineBodyRef.current.scrollWidth > 0
-    ) {
-      scrollTo(timelineBodyRef, offset, unitWidth);
+  useEffect(() => {
+    if (rangeChanged.current) {
+      const timer = setTimeout(() => {
+        scrollToToday();
+        rangeChanged.current = false;
+      }, 50);
+      return () => clearTimeout(timer);
     }
-  }, [isYearlyView, yearlyViewData, dailyViewData, dayWidth, monthWidth]);
-
-  const hasMounted = useRef(false);
-
-  useLayoutEffect(() => {
-    if (!hasMounted.current) {
-      scrollToToday();
-      hasMounted.current = true;
-    } else {
-      scrollToToday();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedRange]); // Prevent scrolling to current date on infinite scroll
-
-  const unitW = isYearlyView ? monthWidth : dayWidth;
-  const todayOffset = isYearlyView
-    ? yearlyViewData?.todayOffset
-    : dailyViewData?.todayOffset;
+    return undefined;
+  }, [startDate, endDate, scrollToToday]);
 
   return (
     <Box
@@ -263,10 +331,10 @@ export const GanttChart = ({
           </Box>
 
           <Box ref={timelineHeaderRef} overflow="hidden" bg="#fafbfc">
-            {isYearlyView && yearlyViewData ? (
+            {isMultiYearView ? (
               <Box>
                 <Box display="flex" height={`${timelineHeight}px`} w="0px">
-                  {yearlyViewData.years.map((y) => (
+                  {yearMeta.map((y) => (
                     <Box
                       key={y.label}
                       minWidth={`${y.monthsInYear * monthWidth}px`}
@@ -285,39 +353,159 @@ export const GanttChart = ({
                   display="flex"
                   height={`${timelineHeight}px`}
                   borderTop={`1px solid ${colors.grey300}`}
-                  w="0px" // Hack to keep the box from expanding the parent Box
+                  w="0px"
                 >
-                  {Array.from({ length: yearlyViewData.totalMonths || 0 }).map(
-                    (_, i) => {
-                      const monthDate = addMonths(startDate, i);
-                      const monthLabel = monthDate.getMonth() + 1;
-
-                      return (
-                        <Box
-                          key={`month-col-${i}`}
-                          minWidth={`${monthWidth}px`}
-                          width={`${monthWidth}px`}
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          borderLeft={`1px solid ${colors.divider}`}
-                          style={{ color: '#888', fontSize: '12px' }}
-                        >
-                          {monthLabel}
-                        </Box>
-                      );
-                    }
-                  )}
+                  {Array.from({
+                    length: getDurationInMonths(startDate, endDate),
+                  }).map((_, i) => {
+                    const monthLabel = addMonths(startDate, i).getMonth() + 1;
+                    return (
+                      <Box
+                        key={`month-col-${i}`}
+                        minWidth={`${monthWidth}px`}
+                        width={`${monthWidth}px`}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        borderLeft={`1px solid ${colors.divider}`}
+                        style={{ color: '#888', fontSize: '12px' }}
+                      >
+                        {monthLabel}
+                      </Box>
+                    );
+                  })}
                 </Box>
+              </Box>
+            ) : isYearView ? (
+              <Box>
+                {(() => {
+                  const yearGroups: { year: number; count: number }[] = [];
+                  weekCells.forEach((w) => {
+                    const lastGroup = yearGroups[yearGroups.length - 1];
+                    if (lastGroup && lastGroup.year === w.year) {
+                      lastGroup.count++;
+                    } else {
+                      yearGroups.push({ year: w.year, count: 1 });
+                    }
+                  });
+                  return (
+                    <>
+                      <Box
+                        display="flex"
+                        height={`${timelineHeight}px`}
+                        w="0px"
+                      >
+                        {yearGroups.map((g) => (
+                          <Box
+                            key={g.year}
+                            minWidth={`${g.count * weekWidth}px`}
+                            width={`${g.count * weekWidth}px`}
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            borderLeft={`1px solid ${colors.grey300}`}
+                            style={{
+                              color: '#222',
+                              fontWeight: 700,
+                              fontSize: '14px',
+                            }}
+                          >
+                            {g.year}
+                          </Box>
+                        ))}
+                      </Box>
+                      <Box
+                        display="flex"
+                        height={`${timelineHeight}px`}
+                        borderTop={`1px solid ${colors.grey300}`}
+                        w="0px"
+                      >
+                        {weekCells.map((w, i) => (
+                          <Box
+                            key={`week-${i}`}
+                            minWidth={`${weekWidth}px`}
+                            width={`${weekWidth}px`}
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            borderLeft={`1px solid ${colors.divider}`}
+                            style={{ color: '#888', fontSize: '12px' }}
+                          >
+                            {`W${w.weekNumber}`}
+                          </Box>
+                        ))}
+                      </Box>
+                    </>
+                  );
+                })()}
+              </Box>
+            ) : isQuarterView ? (
+              <Box>
+                {(() => {
+                  const monthGroups: { month: string; count: number }[] = [];
+                  quarterCells.forEach((cell) => {
+                    const lastGroup = monthGroups[monthGroups.length - 1];
+                    if (lastGroup && lastGroup.month === cell.month) {
+                      lastGroup.count++;
+                    } else {
+                      monthGroups.push({ month: cell.month, count: 1 });
+                    }
+                  });
+                  return (
+                    <>
+                      <Box
+                        display="flex"
+                        height={`${timelineHeight}px`}
+                        w="0px"
+                      >
+                        {monthGroups.map((g) => (
+                          <Box
+                            key={g.month}
+                            minWidth={`${g.count * quarterWidth}px`}
+                            width={`${g.count * quarterWidth}px`}
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            borderLeft={`1px solid ${colors.grey300}`}
+                            style={{
+                              color: '#222',
+                              fontWeight: 700,
+                              fontSize: '14px',
+                            }}
+                          >
+                            {g.month.split(' ')[0]}
+                          </Box>
+                        ))}
+                      </Box>
+                      <Box
+                        display="flex"
+                        height={`${timelineHeight}px`}
+                        borderTop={`1px solid ${colors.grey300}`}
+                        w="0px"
+                      >
+                        {quarterCells.map((q, i) => (
+                          <Box
+                            key={`q-cell-${i}`}
+                            minWidth={`${quarterWidth}px`}
+                            width={`${quarterWidth}px`}
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            borderLeft={`1px solid ${colors.divider}`}
+                            style={{ color: '#888', fontSize: '12px' }}
+                          >
+                            {q.label}
+                          </Box>
+                        ))}
+                      </Box>
+                    </>
+                  );
+                })()}
               </Box>
             ) : (
               <Box>
-                <Box
-                  display="flex"
-                  height={`${timelineHeight}px`}
-                  w="0px" // Hack to keep the box from expanding the parent Box
-                >
-                  {dailyViewData?.months.map((m) => (
+                <Box display="flex" height={`${timelineHeight}px`} w="0px">
+                  {monthMeta.map((m) => (
                     <Box
                       key={m.label}
                       minWidth={`${m.daysInMonth * dayWidth}px`}
@@ -335,24 +523,24 @@ export const GanttChart = ({
                   display="flex"
                   height={`${timelineHeight}px`}
                   borderTop={`1px solid ${colors.grey300}`}
-                  width="0px" // Hack to keep the box from expanding the parent Box
+                  width="0px"
                 >
-                  {Array.from({ length: dailyViewData?.totalDays || 0 }).map(
-                    (_, i) => (
-                      <Box
-                        key={`day-${i}`}
-                        minWidth={`${dayWidth}px`}
-                        width={`${dayWidth}px`}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        borderLeft={`1px solid ${colors.divider}`}
-                        style={{ color: '#888', fontSize: '12px' }}
-                      >
-                        {addDays(startDate, i).getDate()}
-                      </Box>
-                    )
-                  )}
+                  {Array.from({
+                    length: getDurationInDays(startDate, endDate),
+                  }).map((_, i) => (
+                    <Box
+                      key={`day-${i}`}
+                      minWidth={`${dayWidth}px`}
+                      width={`${dayWidth}px`}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      borderLeft={`1px solid ${colors.divider}`}
+                      style={{ color: '#888', fontSize: '12px' }}
+                    >
+                      {addDays(startDate, i).getDate()}
+                    </Box>
+                  ))}
                 </Box>
               </Box>
             )}
@@ -382,38 +570,9 @@ export const GanttChart = ({
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 cursor: onItemLabelClick ? 'pointer' : 'default',
-                ...(onItemLabelClick && {
-                  transition: 'background 0.2s',
-                }),
               }}
               onClick={
                 onItemLabelClick ? () => onItemLabelClick(item) : undefined
-              }
-              onKeyDown={
-                onItemLabelClick
-                  ? (e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        onItemLabelClick(item);
-                      }
-                    }
-                  : undefined
-              }
-              tabIndex={onItemLabelClick ? 0 : undefined}
-              role={onItemLabelClick ? 'button' : undefined}
-              onMouseOver={
-                onItemLabelClick
-                  ? (e) => {
-                      (e.currentTarget as HTMLElement).style.background =
-                        colors.grey100;
-                    }
-                  : undefined
-              }
-              onMouseOut={
-                onItemLabelClick
-                  ? (e) => {
-                      (e.currentTarget as HTMLElement).style.background = '';
-                    }
-                  : undefined
               }
             >
               {renderItemLabel ? renderItemLabel(item) : item.title}
@@ -432,12 +591,16 @@ export const GanttChart = ({
           <Box position="relative">
             <Box position="absolute" width="100%" height="100%">
               {Array.from({
-                length: isYearlyView
-                  ? yearlyViewData?.totalMonths || 0
-                  : dailyViewData?.totalDays || 0,
+                length: isMultiYearView
+                  ? getDurationInMonths(startDate, endDate)
+                  : isYearView
+                  ? weekCells.length
+                  : isQuarterView
+                  ? quarterCells.length
+                  : getDurationInDays(startDate, endDate),
               }).map((_, i) => (
                 <Box
-                  key={`grid-${i}`}
+                  key={`grid-line-${i}`}
                   position="absolute"
                   left={`${i * unitW - 0.5}px`}
                   width="1px"
@@ -482,13 +645,8 @@ export const GanttChart = ({
                   e === null ? endDate : e < endDate ? e : endDate;
                 if (effectiveStart >= effectiveEnd) return null;
 
-                const startOffset = isYearlyView
-                  ? getOffsetInMonths(startDate, effectiveStart)
-                  : getOffsetInDays(startDate, effectiveStart);
-
-                const duration = isYearlyView
-                  ? getDurationInMonths(effectiveStart, effectiveEnd)
-                  : getDurationInDays(effectiveStart, effectiveEnd);
+                const startOffset = getOffset(effectiveStart);
+                const duration = getDuration(effectiveStart, effectiveEnd);
                 if (duration <= 0) return null;
 
                 let highlightEl: JSX.Element | null = null;
@@ -503,14 +661,12 @@ export const GanttChart = ({
                     ? new Date(item.highlightEndDate)
                     : null;
 
-                  // Determine the logical start/end of the highlight within the item's bounds.
                   const logicalHighlightStart = max([s, highlightStart]);
                   const highlightCap = e || endDate;
                   const logicalHighlightEnd = highlightEnd
                     ? min([highlightEnd, highlightCap])
                     : highlightCap;
 
-                  // Determine the visible portion of the highlight.
                   const vizHighlightStart = max([
                     effectiveStart,
                     logicalHighlightStart,
@@ -520,18 +676,15 @@ export const GanttChart = ({
                     logicalHighlightEnd,
                   ]);
 
-                  // Condition: Is there a highlight and does it start at the same time as the bar?
                   if (vizHighlightStart < vizHighlightEnd) {
                     textInHighlight =
                       vizHighlightStart.getTime() === effectiveStart.getTime();
 
-                    const highlightOffset = isYearlyView
-                      ? getOffsetInMonths(startDate, vizHighlightStart)
-                      : getOffsetInDays(startDate, vizHighlightStart);
-
-                    const highlightDuration = isYearlyView
-                      ? getDurationInMonths(vizHighlightStart, vizHighlightEnd)
-                      : getDurationInDays(vizHighlightStart, vizHighlightEnd);
+                    const highlightOffset = getOffset(vizHighlightStart);
+                    const highlightDuration = getDuration(
+                      vizHighlightStart,
+                      vizHighlightEnd
+                    );
 
                     if (highlightDuration > 0) {
                       highlightEl = (
@@ -548,6 +701,7 @@ export const GanttChart = ({
                           overflow="hidden"
                           style={{
                             pointerEvents: 'none',
+                            zIndex: 1,
                           }}
                         >
                           {textInHighlight && (
