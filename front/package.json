@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "@apollo/client": "3.12.6",
-    "@arcgis/core": "4.28.10",
+    "@arcgis/core": "4.33.6",
     "@babel/runtime": "7.x",
     "@craftjs/core": "0.2.11",
     "@esri/arcgis-rest-request": "4.2.0",
