@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::FilesV2Controller < ApplicationController
+class WebApi::V1::Files::FilesController < ApplicationController
   include CarrierwaveErrorDetailsTransformation
 
   def index
