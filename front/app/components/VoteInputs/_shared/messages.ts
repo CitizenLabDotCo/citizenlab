@@ -21,12 +21,10 @@ export default defineMessages({
     defaultMessage:
       'You have {votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {credits} one {credit} other {credits}} left.',
   },
-  // To remove
   vote: {
     id: 'app.components.ParticipationCTABars.votesCounter.vote',
     defaultMessage: 'vote',
   },
-  // To remove
   votes: {
     id: 'app.components.ParticipationCTABars.votesCounter.votes',
     defaultMessage: 'votes',

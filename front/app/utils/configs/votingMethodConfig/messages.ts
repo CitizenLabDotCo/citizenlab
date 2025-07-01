@@ -62,12 +62,10 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.budget',
     defaultMessage: 'budget',
   },
-  // To remove?
   vote: {
     id: 'app.utils.votingMethodUtils.vote',
     defaultMessage: 'Vote',
   },
-  // To remove?
   votes: {
     id: 'app.utils.votingMethodUtils.votes',
     defaultMessage: 'Votes',
