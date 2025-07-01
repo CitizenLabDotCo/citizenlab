@@ -19,6 +19,14 @@ import {
   startOfYear,
   endOfYear,
   differenceInMonths,
+  getISOWeek,
+  getISOWeekYear,
+  addWeeks,
+  startOfWeek,
+  endOfWeek,
+  differenceInCalendarWeeks,
+  getDaysInMonth,
+  setDate,
 } from 'date-fns';
 
 export type TimeRangeOption = 'month' | 'quarter' | 'year' | '5years';
@@ -40,7 +48,6 @@ export const getOffsetInDays = (
 // Calculates the inclusive duration of an event in days
 export const getDurationInDays = (start: Date, end?: Date): number => {
   if (!end) return 1; // Default to 1 day if no end date
-  // Add +1 to make the duration inclusive of the end date
   return differenceInCalendarDays(end, start) + 1;
 };
 
@@ -54,8 +61,7 @@ export const getOffsetInMonths = (
 
 // Calculates the inclusive duration of an event in months.
 export const getDurationInMonths = (start: Date, end?: Date): number => {
-  if (!end) return 1; // Default to 1 month if no end date
-  // Add +1 to make the duration inclusive of the end date
+  if (!end) return 1;
   return differenceInCalendarMonths(end, start) + 1;
 };
 
@@ -96,7 +102,7 @@ interface YearMeta {
 }
 
 /**
- * Generates the metadata for the year blocks in the timeline header.
+ * Generates the metadata for the year blocks in the multi-year timeline header.
  */
 export const getYearMeta = (startDate: Date, endDate: Date): YearMeta[] => {
   if (endDate < startDate) {
@@ -128,7 +134,6 @@ export const getYearMeta = (startDate: Date, endDate: Date): YearMeta[] => {
       offsetMonths = 0;
     }
 
-    // Only add the year if it has a valid number of months
     if (monthsInYear > 0) {
       years.push({
         label: year.toString(),
@@ -158,8 +163,9 @@ export const getTimeRangeDates = (
       };
     case 'quarter':
       return {
-        startDate: subMonths(today, 2),
-        endDate: addMonths(today, 2),
+        // Show current month, one month before, and one after
+        startDate: startOfMonth(subMonths(today, 1)),
+        endDate: endOfMonth(addMonths(today, 1)),
       };
     case 'month':
     default:
@@ -179,28 +185,119 @@ export const scrollTo = (
     const containerWidth = ref.current.clientWidth;
     const scrollTarget =
       offset * unitWidth - containerWidth / 2 + unitWidth / 2;
-    ref.current.scrollLeft = scrollTarget;
+
+    // Use the scroll() method with smooth behavior for a better UX
+    ref.current.scroll({
+      left: scrollTarget,
+      behavior: 'smooth',
+    });
   }
 };
 
-export const getLabelFromScroll = (
-  scrollLeft: number,
-  isYearlyView: boolean,
-  dailyData: { months: ReturnType<typeof getMonthMeta> } | null,
-  yearlyData: { years: ReturnType<typeof getYearMeta> } | null,
-  dayWidth: number,
-  monthWidth: number
-) => {
-  if (isYearlyView && yearlyData) {
-    for (let i = yearlyData.years.length - 1; i >= 0; i--) {
-      const y = yearlyData.years[i];
-      if (scrollLeft >= y.offsetMonths * monthWidth) return y.label;
+export type QuarterCellMeta = {
+  label: string;
+  startDate: Date;
+  endDate: Date;
+  month: string;
+};
+
+export const getQuarterCellsMeta = (
+  startDate: Date,
+  endDate: Date
+): QuarterCellMeta[] => {
+  const cells: QuarterCellMeta[] = [];
+  let currentMonth = startOfMonth(startDate);
+
+  while (currentMonth <= endDate) {
+    const monthLabel = format(currentMonth, 'MMMM yyyy');
+    const daysInMonth = getDaysInMonth(currentMonth);
+
+    for (let day = 1; day <= daysInMonth; day += 3) {
+      const cellStart = setDate(currentMonth, day);
+      if (cellStart > endDate) break;
+      if (cellStart < startDate && addDays(cellStart, 2) < startDate) continue;
+
+      const cellEnd = addDays(cellStart, 2);
+
+      cells.push({
+        label: day.toString(),
+        startDate: cellStart < startDate ? startDate : cellStart,
+        endDate:
+          cellEnd > endOfMonth(currentMonth)
+            ? endOfMonth(currentMonth)
+            : cellEnd,
+        month: monthLabel,
+      });
     }
-  } else if (dailyData) {
-    for (let i = dailyData.months.length - 1; i >= 0; i--) {
-      const m = dailyData.months[i];
-      if (scrollLeft >= m.offsetDays * dayWidth) return m.label;
-    }
+    currentMonth = addMonths(currentMonth, 1);
   }
-  return '';
+  return cells;
+};
+
+export const getOffsetInQuarterCells = (
+  cells: QuarterCellMeta[],
+  eventStart: Date
+): number => {
+  const eventDay = startOfDay(eventStart);
+  const index = cells.findIndex(
+    (cell) =>
+      eventDay >= startOfDay(cell.startDate) &&
+      eventDay <= startOfDay(cell.endDate)
+  );
+  return Math.max(0, index);
+};
+
+export const getDurationInQuarterCells = (
+  cells: QuarterCellMeta[],
+  start: Date,
+  end?: Date
+): number => {
+  if (!end) return 1;
+  const startIndex = getOffsetInQuarterCells(cells, start);
+  const endIndex = getOffsetInQuarterCells(cells, end);
+  return endIndex - startIndex + 1;
+};
+
+export type WeekMeta = {
+  year: number;
+  weekNumber: number;
+  startDate: Date;
+  endDate: Date;
+};
+
+export const getWeekMeta = (startDate: Date, endDate: Date): WeekMeta[] => {
+  const weeks: WeekMeta[] = [];
+  let current = startOfWeek(startDate, { weekStartsOn: 1 }); // ISO week starts on Monday
+
+  while (current <= endDate) {
+    const weekStart = current;
+    const weekEnd = endOfWeek(current, { weekStartsOn: 1 });
+
+    weeks.push({
+      year: getISOWeekYear(weekStart),
+      weekNumber: getISOWeek(weekStart),
+      startDate: weekStart < startDate ? startDate : weekStart,
+      endDate: weekEnd > endDate ? endDate : weekEnd,
+    });
+    current = addWeeks(current, 1);
+  }
+  return weeks;
+};
+
+export const getOffsetInWeeks = (
+  timelineStart: Date,
+  eventStart: Date
+): number => {
+  return differenceInCalendarWeeks(eventStart, timelineStart, {
+    weekStartsOn: 1,
+  });
+};
+
+export const getDurationInWeeks = (start: Date, end?: Date): number => {
+  if (!end) return 1;
+  return (
+    differenceInCalendarWeeks(end, start, {
+      weekStartsOn: 1,
+    }) + 1
+  );
 };
