@@ -1257,6 +1257,7 @@
   "app.containers.EventsShow.icsError": "Fejl ved download af ICS-filen",
   "app.containers.EventsShow.linkToOnlineEvent": "Link til online begivenhed",
   "app.containers.EventsShow.locationIconAltText": "Placering",
+  "app.containers.EventsShow.metaTitle": "Begivenhed: {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Online møde",
   "app.containers.EventsShow.onlineLinkIconAltText": "Link til online-møde",
   "app.containers.EventsShow.socialMediaSharingMessage": "Deltag i dette arrangement: {eventTitle}",
