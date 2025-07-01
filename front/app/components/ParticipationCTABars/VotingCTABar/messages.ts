@@ -9,8 +9,9 @@ export default defineMessages({
       'You cast {votesCast} votes, which exceeds the limit of {votesLimit}. Please remove some votes and try again.',
   },
   noVotesCast: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.noVotesCast3',
-    defaultMessage: 'You need to vote before you can submit.',
+    id: 'app.components.ParticipationCTABars.VotingCTABar.noVotesCast4',
+    defaultMessage:
+      'You need to select at least one option before you can submit.',
   },
 
   // budgeting disabled explanations
