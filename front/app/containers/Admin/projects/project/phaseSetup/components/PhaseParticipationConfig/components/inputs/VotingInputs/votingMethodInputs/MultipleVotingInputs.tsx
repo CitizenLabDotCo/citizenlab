@@ -49,7 +49,7 @@ const MultipleVotingInputs = ({
       vote: messages.voteTerm,
       point: messages.pointTerm,
       token: messages.tokenTerm,
-      credit: messages.creditTerm, // Assuming 'credit' is a placeholder for future use
+      credit: messages.creditTerm,
     };
 
     return Object.entries(voteTermLabels).map(([voteTerm, labelMessage]) => ({
