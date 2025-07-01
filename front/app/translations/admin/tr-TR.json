@@ -1126,7 +1126,6 @@
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.phaseListTitle": "Aşamalar:",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.project": "Proje",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.startDate": "Başlangıç tarihi: {date}",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.summary": "{summary}",
   "app.containers.Admin.projects.all.new.folders": "Klasörler",
   "app.containers.Admin.projects.all.new.projects": "Projeler",
   "app.containers.Admin.projects.all.new.timeline": "Zaman Çizelgesi",
