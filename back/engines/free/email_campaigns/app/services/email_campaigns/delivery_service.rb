@@ -148,7 +148,7 @@ module EmailCampaigns
     def assign_campaigns_command(campaigns_with_recipients, options)
       campaigns_with_recipients.flat_map do |(recipient, campaign)|
         generate_commands(campaign, recipient, options)
-          .map { |command| command.merge(recipient: recipient) }
+          .map { |command| command.merge(recipient: recipient, delivery_id: SecureRandom.uuid) }
           .zip([campaign].cycle)
       end
     end
