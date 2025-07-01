@@ -1126,7 +1126,6 @@
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.phaseListTitle": "المراحل:",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.project": "مشروع",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.startDate": "تاريخ البدء: {date}",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.summary": "{summary}",
   "app.containers.Admin.projects.all.new.folders": "المجلدات",
   "app.containers.Admin.projects.all.new.projects": "المشاريع",
   "app.containers.Admin.projects.all.new.timeline": "الجدول الزمني",
