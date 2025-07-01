@@ -52,7 +52,7 @@ export const GanttChart = ({
   onItemLabelClick,
 }: GanttChartProps) => {
   const today = useMemo(() => new Date(), []);
-  const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
+  const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('month');
 
   const isMultiYearView = selectedRange === 'multiyear';
   const isYearView = selectedRange === 'year';
