@@ -1257,6 +1257,7 @@
   "app.containers.EventsShow.icsError": "Erreur lors du téléchargement du fichier calendrier (ICS)",
   "app.containers.EventsShow.linkToOnlineEvent": "Lien vers l'événement en ligne",
   "app.containers.EventsShow.locationIconAltText": "Lieu",
+  "app.containers.EventsShow.metaTitle": "Événement : {eventTitle} | {orgName}",
   "app.containers.EventsShow.online2": "Réunion en ligne",
   "app.containers.EventsShow.onlineLinkIconAltText": "Lien vers la réunion en ligne",
   "app.containers.EventsShow.socialMediaSharingMessage": "Participez à cet événement : {eventTitle}",
