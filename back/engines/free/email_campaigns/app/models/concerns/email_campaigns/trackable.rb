@@ -31,7 +31,6 @@ module EmailCampaigns
       end
       if !@command[:delivery_id]
         ErrorReporter.report_msg('No delivery ID in extra_mailgun_variables!')
-        @command[:delivery_id] = SecureRandom.uuid
       end
       { 'cl_delivery_id' => @command[:delivery_id] }
     end
