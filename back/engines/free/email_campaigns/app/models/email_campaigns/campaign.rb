@@ -58,6 +58,15 @@ module EmailCampaigns
                   end.map(&:name))
     }
 
+    def self.filter(action_symbol)
+      @filter_hooks ||= []
+      @filter_hooks << action_symbol
+    end
+
+    def self.filter_hooks
+      @filter_hooks || []
+    end
+
     def self.before_send(action_symbol)
       @before_send_hooks ||= []
       @before_send_hooks << action_symbol
@@ -116,13 +125,28 @@ module EmailCampaigns
       users_scope
     end
 
-    def run_before_send_hooks(activity: nil, time: nil)
+    def run_filter_hooks(activity: nil, time: nil)
+      result = true
+      current_class = self.class
+
+      while current_class <= ::EmailCampaigns::Campaign
+        result &&= current_class.filter_hooks.all? do |action_symbol|
+          send(action_symbol, activity: activity, time: time)
+        end
+
+        current_class = current_class.superclass
+      end
+
+      result
+    end
+
+    def run_before_send_hooks(campaign)
       result = true
       current_class = self.class
 
       while current_class <= ::EmailCampaigns::Campaign
         result &&= current_class.before_send_hooks.all? do |action_symbol|
-          send(action_symbol, activity: activity, time: time)
+          send(action_symbol, campaign)
         end
 
         current_class = current_class.superclass
@@ -159,6 +183,10 @@ module EmailCampaigns
 
     def manual?
       false
+    end
+
+    def extra_mailgun_variables
+      super || {}
     end
 
     protected
