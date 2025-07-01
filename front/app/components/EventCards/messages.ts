@@ -33,14 +33,6 @@ export default defineMessages({
     id: 'app.components.EventCard.a11y_readMore',
     defaultMessage: 'Read more about the "{eventTitle}" event.',
   },
-  haveRegistered: {
-    id: 'app.containers.EventCard.haveRegistered',
-    defaultMessage: 'have registered',
-  },
-  registered: {
-    id: 'app.containers.EventCard.registered',
-    defaultMessage: 'registered',
-  },
   online: {
     id: 'app.containers.EventsShow.online2',
     defaultMessage: 'Online meeting',
@@ -60,5 +52,14 @@ export default defineMessages({
   attendeesIconAltText: {
     id: 'app.containers.EventsShow.attendeesIconAltText',
     defaultMessage: 'Attendees',
+  },
+  registrantCountWithMaximum: {
+    id: 'app.containers.EventsShow.registrantCountWithMaximum',
+    defaultMessage: '{attendeesCount} / {maximumNumberOfAttendees} registrants',
+  },
+  registrantCount: {
+    id: 'app.containers.EventsShow.registrantCount',
+    defaultMessage:
+      '{attendeesCount, plural, =0 {0 registrants} one {1 registrant} other {# registrants}}',
   },
 });
