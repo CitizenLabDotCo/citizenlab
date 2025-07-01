@@ -137,14 +137,13 @@ export const GanttChart = ({
       newLabel = yearMeta[0]?.label ?? '';
     } else if (isYearView) {
       const scrolledWeeks = Math.floor(scrollLeft / weekWidth);
-      const currentWeek: WeekMeta | undefined = weekCells[scrolledWeeks];
+      const currentWeek = weekCells.at(scrolledWeeks);
       if (currentWeek !== undefined) {
         newLabel = String(currentWeek.year);
       }
     } else if (isQuarterView) {
       const scrolledCells = Math.floor(scrollLeft / quarterWidth);
-      const currentCell: QuarterCellMeta | undefined =
-        quarterCells[scrolledCells];
+      const currentCell = quarterCells.at(scrolledCells);
       if (currentCell !== undefined) {
         newLabel = currentCell.month;
       }
@@ -191,14 +190,13 @@ export const GanttChart = ({
       }
     } else if (isYearView) {
       const scrolledWeeks = Math.floor(scrollLeft / weekWidth);
-      const currentWeek: WeekMeta | undefined = weekCells[scrolledWeeks];
+      const currentWeek = weekCells.at(scrolledWeeks);
       if (currentWeek !== undefined) {
         newLabel = String(currentWeek.year);
       }
     } else if (isQuarterView) {
       const scrolledCells = Math.floor(scrollLeft / quarterWidth);
-      const currentCell: QuarterCellMeta | undefined =
-        quarterCells[scrolledCells];
+      const currentCell = quarterCells.at(scrolledCells);
       if (currentCell !== undefined) {
         newLabel = currentCell.month;
       }
@@ -381,7 +379,7 @@ export const GanttChart = ({
                 {(() => {
                   const yearGroups: { year: number; count: number }[] = [];
                   weekCells.forEach((w) => {
-                    const lastGroup = yearGroups[yearGroups.length - 1];
+                    const lastGroup = yearGroups.at(-1);
                     if (lastGroup && lastGroup.year === w.year) {
                       lastGroup.count++;
                     } else {
@@ -444,7 +442,7 @@ export const GanttChart = ({
                 {(() => {
                   const monthGroups: { month: string; count: number }[] = [];
                   quarterCells.forEach((cell) => {
-                    const lastGroup = monthGroups[monthGroups.length - 1];
+                    const lastGroup = monthGroups.at(-1);
                     if (lastGroup && lastGroup.month === cell.month) {
                       lastGroup.count++;
                     } else {
