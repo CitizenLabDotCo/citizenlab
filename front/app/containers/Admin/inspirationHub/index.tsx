@@ -18,21 +18,40 @@ import ProjectDrawer from './ProjectDrawer';
 import SortAndReset from './SortAndReset';
 import UpsellNudge from './UpsellNudge';
 import useCountryCodeSupportedInProjectLibrary from './useCountryCodeSupportedInProjectLibrary';
-import { setRansackParam } from './utils';
+import { useRansackParam, setRansackParam } from './utils';
 
 const InspirationHub = () => {
   const [initialCountryCodeSet, setInitialCountryCodeSet] = useState(false);
   const { status, countryCode } = useCountryCodeSupportedInProjectLibrary();
 
+  const pinCountryCode = useRansackParam('q[pin_country_code_eq]');
+  const tenantCountryCode = useRansackParam('q[tenant_country_code_in]');
+
   useEffect(() => {
+    // If the initial country code is already set, we don't need to do anything.
     if (initialCountryCodeSet) return;
 
+    // If the country code is supported, we set the ransack params
     if (status === 'supported') {
-      setRansackParam('q[pin_country_code_eq]', countryCode);
-      setRansackParam('q[tenant_country_code_in]', [countryCode]);
+      // But only if they are not already set. Otherwise, we are
+      // overwriting them, which is not what we want.
+      if (!pinCountryCode) {
+        setRansackParam('q[pin_country_code_eq]', countryCode);
+      }
+
+      if (!tenantCountryCode) {
+        setRansackParam('q[tenant_country_code_in]', [countryCode]);
+      }
+
       setInitialCountryCodeSet(true);
     }
-  }, [status, countryCode, initialCountryCodeSet]);
+  }, [
+    status,
+    countryCode,
+    initialCountryCodeSet,
+    pinCountryCode,
+    tenantCountryCode,
+  ]);
 
   if (status === 'loading') {
     return null;
