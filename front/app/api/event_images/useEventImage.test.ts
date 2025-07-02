@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { eventData } from 'api/event_images/__mocks__/useEventImage';
+import { eventData } from 'api/events/__mocks__/useEvent';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
