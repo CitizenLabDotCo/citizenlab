@@ -111,7 +111,7 @@ resource 'AdminPublication' do
       example 'Does not show unlisted projects when not requested', document: false do
         unlisted_project = create(:project, unlisted: true)
 
-        do_request
+        do_request include_unlisted: false
         assert_status 200
         expect(response_data.size).to eq 10
         expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
@@ -120,7 +120,7 @@ resource 'AdminPublication' do
       example 'Shows unlisted projects when requested', document: false do
         unlisted_project = create(:project, unlisted: true)
 
-        do_request include_unlisted: true
+        do_request
         assert_status 200
         expect(response_data.size).to eq 11
         expect(response_data.pluck(:id)).to include unlisted_project.admin_publication.id
@@ -702,13 +702,13 @@ resource 'AdminPublication' do
         expect(response_data.size).to eq 7
       end
 
-      example 'Unlisted projects user can moderate are not included', document: false do
+      example 'Unlisted projects user can moderate are not included if not requested', document: false do
         unlisted_project_user_moderates = create(:project, unlisted: true)
 
         moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
         @moderator.update!(roles: moderator_roles)
 
-        do_request
+        do_request include_unlisted: false
         assert_status 200
         expect(response_data.size).to eq 7
       end
@@ -720,7 +720,7 @@ resource 'AdminPublication' do
         moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
         @moderator.update!(roles: moderator_roles)
 
-        do_request include_unlisted: true
+        do_request
         assert_status 200
         expect(response_data.size).to eq 8
         expect(response_data.pluck(:id)).to include unlisted_project_user_moderates.admin_publication.id

@@ -17,8 +17,15 @@ class ProjectPolicy < ApplicationPolicy
 
       # By default, we include unlisted projects,
       # unless the context explicitly says not to.
-      include_unlisted = context[:include_unlisted] || true
-
+      # This is because even when this param says to
+      # include unlisted projects, users will not
+      # see them unless they can moderate them.
+      # So basically the parameter is only used in cases
+      # where it would be confusing for an admin/moderator to see unlisted projects
+      # that they can moderate, like when they are looking
+      # at the a homepage widget or the projects dropdown.
+      include_unlisted = context[:include_unlisted] != 'false'
+ 
       apply_listed_scope(moderator_scope, include_unlisted)
     end
 
