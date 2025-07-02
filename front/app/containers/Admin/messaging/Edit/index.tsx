@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -8,7 +9,7 @@ import {
   StatusLabel,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import { CampaignFormValues } from 'api/campaigns/types';
 import useCampaign from 'api/campaigns/useCampaign';
@@ -26,9 +27,18 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 type EditProps = {
   campaignType: 'custom' | 'automated';
+};
+
+type FeedbackType = 'sent' | 'updated' | 'created' | null;
+
+const feedbackMessages = {
+  sent: messages.previewSentConfirmation,
+  updated: messages.emailUpdated,
+  created: messages.emailCreated,
 };
 
 const Edit = ({ campaignType }: EditProps) => {
@@ -37,7 +47,16 @@ const Edit = ({ campaignType }: EditProps) => {
   };
   const { data: campaign } = useCampaign(campaignId);
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
-  const [previewSent, setPreviewSent] = React.useState(false);
+
+  const [searchParams] = useSearchParams();
+  const created = searchParams.get('created');
+  const [feedbackType, setFeedbackType] = useState<FeedbackType>(
+    created ? 'created' : null
+  );
+
+  useEffect(() => {
+    if (created) removeSearchParams(['created']);
+  }, [created]);
 
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
@@ -46,7 +65,7 @@ const Edit = ({ campaignType }: EditProps) => {
   const handleSendPreviewEmail = () => {
     sendCampaignPreview(campaignId, {
       onSuccess: () => {
-        setPreviewSent(true);
+        setFeedbackType('sent');
       },
     });
   };
@@ -57,6 +76,7 @@ const Edit = ({ campaignType }: EditProps) => {
 
   const handleSubmit = async (values: CampaignFormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
+    setFeedbackType('updated');
   };
 
   const goBack = () => {
@@ -86,10 +106,10 @@ const Edit = ({ campaignType }: EditProps) => {
         </Title>
       )}
       <Box>
-        {previewSent && (
+        {feedbackType && (
           <SuccessFeedback
-            successMessage={formatMessage(messages.previewSentConfirmation)}
-            closeSuccessMessage={() => setPreviewSent(false)}
+            successMessage={formatMessage(feedbackMessages[feedbackType])}
+            closeSuccessMessage={() => setFeedbackType(null)}
           />
         )}
       </Box>

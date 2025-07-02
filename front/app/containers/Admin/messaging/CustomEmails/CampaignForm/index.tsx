@@ -51,13 +51,6 @@ const StyledSectionTitle = styled(SectionTitle)`
   font-size: ${fontSizes.xl}px;
 `;
 
-export const PageTitle = styled.h1`
-  width: 100%;
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 2rem 0 1rem;
-`;
-
 export interface FormValues {
   sender: 'author' | 'organization';
   reply_to: string;
@@ -146,7 +139,7 @@ const CampaignForm = ({
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <StyledSection>
           <StyledSectionField>
-            <Feedback />
+            <Feedback onlyShowErrors={true} />
           </StyledSectionField>
           <StyledSectionTitle>
             <FormattedMessage {...messages.senderRecipients} />

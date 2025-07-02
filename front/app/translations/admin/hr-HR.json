@@ -885,7 +885,6 @@
   "app.containers.Admin.emails.send": "Pošalji",
   "app.containers.Admin.emails.sendNowButton": "Pošalji sad",
   "app.containers.Admin.emails.sendTestEmailButton": "Pošalji mi probnu e-poruku",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Nakon što kliknete na ovu vezu, probna e-poruka stići će samo na vašu adresu. Zahvaljujući tome možete vidjeti kako će izgledati u praksi.",
   "app.containers.Admin.emails.senderRecipients": "Pošiljatelj i primatelji",
   "app.containers.Admin.emails.sending": "Slanje",
   "app.containers.Admin.emails.sent": "Poslano",

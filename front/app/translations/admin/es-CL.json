@@ -885,7 +885,6 @@
   "app.containers.Admin.emails.send": "Enviar",
   "app.containers.Admin.emails.sendNowButton": "Enviar ahora",
   "app.containers.Admin.emails.sendTestEmailButton": "Mandame un mail de prueba",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Envía este proyecto a la dirección de correo electrónico con la que estas conectado, para comprobar cómo se ve en la 'vida real'.",
   "app.containers.Admin.emails.senderRecipients": "Remitente y destinatarios",
   "app.containers.Admin.emails.sending": "Enviando",
   "app.containers.Admin.emails.sent": "Enviado",
