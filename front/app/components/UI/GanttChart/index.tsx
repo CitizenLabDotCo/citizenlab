@@ -317,8 +317,6 @@ export const GanttChart = ({
               weekCells={weekCells}
               startDate={startDate}
               endDate={endDate}
-              getDurationInMonths={getDurationInMonths}
-              getDurationInDays={getDurationInDays}
             />
           </Box>
         </Box>
