@@ -160,6 +160,7 @@
   "app.components.CustomFieldsForm.imageRequired": "A kép megadása kötelező",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Minimum {numPoints} térképpont szükséges.",
   "app.components.CustomFieldsForm.notPublic1": "*Ez a válasz csak a projektmenedzserekkel lesz megosztva, a nyilvánosság számára nem.",
+  "app.components.CustomFieldsForm.otherArea": "Valahol máshol",
   "app.components.CustomFieldsForm.progressBarLabel": "Előrehalad",
   "app.components.CustomFieldsForm.removeAnswer": "Válasz eltávolítása",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Válassz ki annyit, amennyit szeretnél",

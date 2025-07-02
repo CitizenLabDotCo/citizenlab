@@ -160,6 +160,7 @@
   "app.components.CustomFieldsForm.imageRequired": "Kuva on pakollinen",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Vähintään {numPoints} karttapistettä vaaditaan.",
   "app.components.CustomFieldsForm.notPublic1": "*Tämä vastaus jaetaan vain projektipäälliköiden kanssa, eikä sitä jaeta julkisesti.",
+  "app.components.CustomFieldsForm.otherArea": "Jossain muualla",
   "app.components.CustomFieldsForm.progressBarLabel": "Edistyminen",
   "app.components.CustomFieldsForm.removeAnswer": "Poista vastaus",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Valitse niin monta kuin haluat",
