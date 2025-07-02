@@ -111,7 +111,6 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
   const localize = useLocalize();
   const { data: assignedItems } = useAdminPublications({
     filter_user_is_moderator_of: user.id,
-    include_unlisted: true,
   });
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

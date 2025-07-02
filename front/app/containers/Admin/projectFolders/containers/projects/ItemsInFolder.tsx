@@ -35,6 +35,7 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
   const { data } = useAdminPublications({
     childrenOfId: projectFolderId,
     publicationStatusFilter: publicationStatuses,
+    include_unlisted: false,
   });
 
   const canRemoveProjects = usePermission({
