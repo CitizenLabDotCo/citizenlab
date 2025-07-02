@@ -2,13 +2,14 @@ import React, { ReactNode } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { rowHeight } from '../utils';
+
 import GanttItem from './GanttItem';
 
 import type { GanttItem as GanttItemType } from '../types';
 
 interface TimelineItemsProps {
   items: GanttItemType[];
-  rowHeight: number;
   startDate: Date;
   endDate: Date;
   getOffset: (date: Date) => number;
@@ -19,7 +20,6 @@ interface TimelineItemsProps {
 
 const TimelineItems: React.FC<TimelineItemsProps> = ({
   items,
-  rowHeight,
   startDate,
   endDate,
   getOffset,
@@ -33,7 +33,6 @@ const TimelineItems: React.FC<TimelineItemsProps> = ({
         key={item.id}
         item={item}
         index={index}
-        rowHeight={rowHeight}
         startDate={startDate}
         endDate={endDate}
         getOffset={getOffset}

@@ -11,6 +11,11 @@ import {
   QuarterCellMeta,
   WeekMeta,
   TimeRangeOption,
+  monthWidth,
+  weekWidth,
+  quarterWidth,
+  dayWidth,
+  timelineHeight,
 } from '../utils';
 
 interface GanttChartHeaderProps {
@@ -21,11 +26,6 @@ interface GanttChartHeaderProps {
   weekCells: WeekMeta[];
   startDate: Date;
   endDate: Date;
-  monthWidth: number;
-  weekWidth: number;
-  quarterWidth: number;
-  dayWidth: number;
-  timelineHeight: number;
   getDurationInMonths: typeof getDurationInMonths;
   getDurationInDays: typeof getDurationInDays;
 }
@@ -38,11 +38,6 @@ const GanttChartHeader: React.FC<GanttChartHeaderProps> = ({
   weekCells,
   startDate,
   endDate,
-  monthWidth,
-  weekWidth,
-  quarterWidth,
-  dayWidth,
-  timelineHeight,
   getDurationInMonths,
   getDurationInDays,
 }) => {

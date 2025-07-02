@@ -33,6 +33,15 @@ import {
 // Defines the available zoom levels for the Gantt chart.
 export type TimeRangeOption = 'month' | 'quarter' | 'year' | 'multiyear';
 
+// Common layout constants for GanttChart. In future we can configure these through props if needed.
+export const quarterWidth = 48;
+export const weekWidth = 48;
+export const timelineHeight = 40;
+export const rowHeight = 40;
+export const monthWidth = 50;
+export const dayWidth = 40;
+export const leftColumnWidth = 260;
+
 // Describes the metadata for a single month's header in the "Month" view.
 export type MonthMeta = {
   label: string; // e.g., "July 2025"

@@ -3,6 +3,8 @@ import React from 'react';
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 import { max, min } from 'date-fns';
 
+import { rowHeight } from '../utils';
+
 import GanttItemIconBar from './GanttItemIconBar';
 
 import type { GanttItem } from '../types';
@@ -10,7 +12,6 @@ import type { GanttItem } from '../types';
 interface GanttItemProps {
   item: GanttItem;
   index: number;
-  rowHeight: number;
   startDate: Date;
   endDate: Date;
   getOffset: (date: Date) => number;
@@ -22,7 +23,6 @@ interface GanttItemProps {
 const GanttItem: React.FC<GanttItemProps> = ({
   item,
   index,
-  rowHeight,
   startDate,
   endDate,
   getOffset,

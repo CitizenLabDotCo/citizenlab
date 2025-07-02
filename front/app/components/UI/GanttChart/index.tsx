@@ -32,15 +32,13 @@ import {
   getWeekMeta,
   getOffsetInWeeks,
   getDurationInWeeks,
+  quarterWidth,
+  weekWidth,
+  timelineHeight,
+  monthWidth,
+  dayWidth,
+  leftColumnWidth,
 } from './utils';
-
-const quarterWidth = 48;
-const weekWidth = 48;
-const timelineHeight = 40;
-const rowHeight = 40;
-const monthWidth = 50;
-const dayWidth = 40;
-const leftColumnWidth = 260;
 
 export const GanttChart = ({
   items,
@@ -143,13 +141,13 @@ export const GanttChart = ({
     } else if (selectedRange === 'year') {
       const scrolledWeeks = Math.floor(scrollLeft / weekWidth);
       const currentWeek = weekCells.at(scrolledWeeks);
-      if (currentWeek !== undefined) {
+      if (currentWeek) {
         newLabel = String(currentWeek.year);
       }
     } else if (selectedRange === 'quarter') {
       const scrolledCells = Math.floor(scrollLeft / quarterWidth);
       const currentCell = quarterCells.at(scrolledCells);
-      if (currentCell !== undefined) {
+      if (currentCell) {
         newLabel = currentCell.month;
       }
     } else {
@@ -319,11 +317,6 @@ export const GanttChart = ({
               weekCells={weekCells}
               startDate={startDate}
               endDate={endDate}
-              monthWidth={monthWidth}
-              weekWidth={weekWidth}
-              quarterWidth={quarterWidth}
-              dayWidth={dayWidth}
-              timelineHeight={timelineHeight}
               getDurationInMonths={getDurationInMonths}
               getDurationInDays={getDurationInDays}
             />
@@ -334,9 +327,7 @@ export const GanttChart = ({
       <Box display="flex">
         <GanttChartLeftColumn
           items={items}
-          rowHeight={rowHeight}
           onItemLabelClick={onItemLabelClick}
-          leftColumnWidth={leftColumnWidth}
         />
         <Box
           flex="1"
@@ -356,7 +347,6 @@ export const GanttChart = ({
 
             <TimelineItems
               items={items}
-              rowHeight={rowHeight}
               startDate={startDate}
               endDate={endDate}
               getOffset={getOffset}

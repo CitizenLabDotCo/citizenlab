@@ -3,21 +3,18 @@ import React from 'react';
 import { Box, Text, colors, Button } from '@citizenlab/cl2-component-library';
 
 import { GanttItem } from '../types';
+import { rowHeight, leftColumnWidth } from '../utils';
 
 import GanttItemIconBar from './GanttItemIconBar';
 
 interface GanttChartLeftColumnProps {
   items: GanttItem[];
-  rowHeight: number;
   onItemLabelClick?: (item: GanttItem) => void;
-  leftColumnWidth: number;
 }
 
 const GanttChartLeftColumn: React.FC<GanttChartLeftColumnProps> = ({
   items,
-  rowHeight,
   onItemLabelClick,
-  leftColumnWidth,
 }) => {
   return (
     <Box
