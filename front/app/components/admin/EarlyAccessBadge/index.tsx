@@ -7,6 +7,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const EarlyAccessBadge = () => {
   const { formatMessage } = useIntl();
   return (
@@ -40,4 +41,5 @@ const EarlyAccessBadge = () => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default EarlyAccessBadge;
