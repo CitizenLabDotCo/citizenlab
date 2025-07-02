@@ -891,7 +891,7 @@
   "app.containers.Admin.emails.send": "Sūtīt",
   "app.containers.Admin.emails.sendNowButton": "Sūtīt tagad",
   "app.containers.Admin.emails.sendTestEmailButton": "Nosūtīt man testa e-pastu",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Noklikšķinot uz šīs saites, uz jūsu e-pasta adresi tiks nosūtīts testa e-pasta ziņojums. Tas ļaus jums pārbaudīt, kā faktiski e-pasts izskatās.",
+  "app.containers.Admin.emails.sendTestEmailTooltip2": "Noklikšķinot uz šīs saites, uz jūsu e-pasta adresi tiks nosūtīts testa e-pasts. Tas ļauj jums pārbaudīt, kā e-pasts izskatās \"reālajā dzīvē\".",
   "app.containers.Admin.emails.senderRecipients": "Sūtītājs un saņēmēji",
   "app.containers.Admin.emails.sending": "Sūta",
   "app.containers.Admin.emails.sent": "Nosūtīts",
