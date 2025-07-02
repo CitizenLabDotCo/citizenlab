@@ -72,6 +72,7 @@ class Phase < ApplicationRecord
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
   FALLBACK_INPUT_TERM = 'idea'
+  VOTE_TERMS = %w[vote point token credit]
   CAMPAIGNS = [:project_phase_started].freeze
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
@@ -152,6 +153,10 @@ class Phase < ApplicationRecord
 
   with_options if: ->(phase) { phase.pmethod.supports_input_term? } do
     validates :input_term, inclusion: { in: INPUT_TERMS }
+  end
+
+  with_options if: ->(phase) { phase.pmethod.supports_vote_term? } do
+    validates :vote_term, inclusion: { in: VOTE_TERMS }
   end
 
   with_options if: ->(phase) { phase.pmethod.supports_automated_statuses? } do

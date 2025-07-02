@@ -442,7 +442,6 @@ ALTER TABLE IF EXISTS ONLY public.polls_responses DROP CONSTRAINT IF EXISTS poll
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS polls_response_options_pkey;
 ALTER TABLE IF EXISTS ONLY public.polls_questions DROP CONSTRAINT IF EXISTS polls_questions_pkey;
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS polls_options_pkey;
-ALTER TABLE IF EXISTS public.phases DROP CONSTRAINT IF EXISTS phases_start_before_end;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS phases_pkey;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS phase_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.permissions DROP CONSTRAINT IF EXISTS permissions_pkey;
@@ -1656,7 +1655,8 @@ CREATE TABLE public.phases (
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
     similarity_enabled boolean DEFAULT true NOT NULL,
-    user_fields_in_form boolean DEFAULT false NOT NULL
+    user_fields_in_form boolean DEFAULT false NOT NULL,
+    vote_term character varying DEFAULT 'vote'::character varying
 );
 
 
@@ -4060,14 +4060,6 @@ ALTER TABLE ONLY public.phase_files
 
 ALTER TABLE ONLY public.phases
     ADD CONSTRAINT phases_pkey PRIMARY KEY (id);
-
-
---
--- Name: phases phases_start_before_end; Type: CHECK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE public.phases
-    ADD CONSTRAINT phases_start_before_end CHECK (((start_at IS NULL) OR (end_at IS NULL) OR (start_at <= end_at))) NOT VALID;
 
 
 --
@@ -7276,10 +7268,10 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250702085136'),
 ('20250616142444'),
 ('20250610112901'),
 ('20250609151800'),
-('20250606074930'),
 ('20250605090517'),
 ('20250603161856'),
 ('20250528153448'),
@@ -7287,7 +7279,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250521085055'),
 ('20250519080057'),
 ('20250513160156'),
-('20250509140651'),
 ('20250509131056'),
 ('20250502112945'),
 ('20250501134516'),

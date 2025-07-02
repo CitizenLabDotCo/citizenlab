@@ -16,6 +16,7 @@ module ParticipationMethod
     def assign_defaults_for_phase
       super
       phase.ideas_order ||= 'random'
+      phase.vote_term ||= 'vote'
       voting_method.assign_defaults_for_phase
     end
 
@@ -26,6 +27,10 @@ module ParticipationMethod
 
     def supports_submission?
       false
+    end
+
+    def supports_vote_term?
+      true
     end
 
     def add_autoreaction_to_inputs?
