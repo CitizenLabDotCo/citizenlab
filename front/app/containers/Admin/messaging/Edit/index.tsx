@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -27,12 +27,19 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 type EditProps = {
   campaignType: 'custom' | 'automated';
 };
 
 type FeedbackType = 'sent' | 'updated' | 'created' | null;
+
+const feedbackMessages = {
+  sent: messages.previewSentConfirmation,
+  updated: messages.emailUpdated,
+  created: messages.emailCreated,
+};
 
 const Edit = ({ campaignType }: EditProps) => {
   const { campaignId } = useParams() as {
@@ -41,20 +48,15 @@ const Edit = ({ campaignType }: EditProps) => {
   const { data: campaign } = useCampaign(campaignId);
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [feedbackType, setFeedbackType] = React.useState<FeedbackType>(null);
-  const feedbackMessages = {
-    sent: messages.previewSentConfirmation,
-    updated: messages.emailUpdated,
-    created: messages.emailCreated,
-  };
+  const [searchParams] = useSearchParams();
+  const created = searchParams.get('created');
+  const [feedbackType, setFeedbackType] = useState<FeedbackType>(
+    created ? 'created' : null
+  );
+
   useEffect(() => {
-    if (searchParams.get('created')) {
-      setFeedbackType('created');
-      searchParams.delete('created');
-      setSearchParams(searchParams);
-    }
-  }, [searchParams, setSearchParams]);
+    if (created) removeSearchParams(['created']);
+  }, [created]);
 
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
