@@ -160,6 +160,7 @@
   "app.components.CustomFieldsForm.imageRequired": "La imatge és obligatòria",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Es requereix un mínim de {numPoints} punts del mapa.",
   "app.components.CustomFieldsForm.notPublic1": "*Aquesta resposta només es compartirà amb els gestors de projectes i no amb el públic.",
+  "app.components.CustomFieldsForm.otherArea": "En algun altre lloc",
   "app.components.CustomFieldsForm.progressBarLabel": "Progrés",
   "app.components.CustomFieldsForm.removeAnswer": "Elimina la resposta",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Seleccioneu-ne tants com vulgueu",
