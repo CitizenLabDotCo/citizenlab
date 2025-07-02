@@ -357,7 +357,8 @@ const IdeasMap = memo<Props>(
                 // TODO: Fix this the next time the file is edited.
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 topElement?.graphic?.attributes?.cluster_count;
-              if (clusterCount && topElement.mapPoint) {
+
+              if (clusterCount > 1 && topElement.mapPoint) {
                 // User clicked a cluster. Zoom in on the cluster.
                 goToMapLocation(
                   esriPointToGeoJson(topElement.mapPoint),

@@ -1,7 +1,10 @@
-import Geometry from '@arcgis/core/geometry/Geometry';
-import * as projectOperator from '@arcgis/core/geometry/operators/projectOperator.js';
+import Extent from '@arcgis/core/geometry/Extent';
+import Mesh from '@arcgis/core/geometry/Mesh';
+import Multipoint from '@arcgis/core/geometry/Multipoint';
 import Point from '@arcgis/core/geometry/Point';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference.js';
+import Polygon from '@arcgis/core/geometry/Polygon';
+import Polyline from '@arcgis/core/geometry/Polyline';
+import * as projection from '@arcgis/core/geometry/projection.js';
 import { isArray, isNumber } from 'lodash-es';
 import { SupportedLocale } from 'typings';
 
@@ -16,16 +19,17 @@ import {
   getTileProvider as baseGetTileProvider,
 } from 'utils/map';
 
+type GeometryUnion = Extent | Multipoint | Point | Polygon | Polyline | Mesh;
 export type LatLngTuple = [number, number, number?];
 
-export const projectPointToWebMercator = (geometry: Geometry): Point => {
-  const projectedPoint = projectOperator.execute(
-    geometry as Point,
-    SpatialReference.WebMercator
-  );
+export const projectPointToWebMercator = (geometry: GeometryUnion): Point => {
+  const projectedPoint = projection.project(geometry, {
+    wkid: 3857, // Web Mercator Projection
+  });
 
   // Typing is a bit off with the ArcGIS Library,
   // but we can cast it to a Point when we return.
+
   if (isArray(projectedPoint)) {
     return projectedPoint[0] as Point;
   }
