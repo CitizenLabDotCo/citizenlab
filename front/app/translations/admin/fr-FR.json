@@ -891,7 +891,7 @@
   "app.containers.Admin.emails.send": "Envoyer",
   "app.containers.Admin.emails.sendNowButton": "Envoyer maintenant",
   "app.containers.Admin.emails.sendTestEmailButton": "Envoyer moi un email de test",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Envoyer ce brouillon à une adresse email qui vous appartient pour vérifier à quoi ressemble l'email dans la \"vraie vie\".",
+  "app.containers.Admin.emails.sendTestEmailTooltip2": "Envoyer ce brouillon à une adresse email qui vous appartient pour vérifier à quoi ressemble l'email dans la \"vraie vie\".",
   "app.containers.Admin.emails.senderRecipients": "Expéditeur et destinataires",
   "app.containers.Admin.emails.sending": "En cours d'envoi",
   "app.containers.Admin.emails.sent": "Envoyé",
