@@ -160,6 +160,7 @@
   "app.components.CustomFieldsForm.imageRequired": "Vaizdas yra būtinas",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Reikia surinkti ne mažiau kaip {numPoints} žemėlapio taškų.",
   "app.components.CustomFieldsForm.notPublic1": "*Šiuo atsakymu bus dalijamasi tik su projektų vadovais, o ne viešai.",
+  "app.components.CustomFieldsForm.otherArea": "Kažkur kitur",
   "app.components.CustomFieldsForm.progressBarLabel": "Pažanga",
   "app.components.CustomFieldsForm.removeAnswer": "Pašalinti atsakymą",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Pasirinkite tiek, kiek norite",
