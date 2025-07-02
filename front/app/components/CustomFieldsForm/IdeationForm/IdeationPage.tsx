@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { FormProvider } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import styled, { useTheme } from 'styled-components';
-import { Multiloc } from 'typings';
+import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -20,29 +18,26 @@ import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/Profi
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import PageControlButtons from 'components/Form/Components/Layouts/PageControlButtons';
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import CustomFields from './CustomFields';
-import AuthorField from './Fields/AuthorField';
-import BudgetField from './Fields/BudgetField';
-import generateYupValidationSchema from './generateYupSchema';
-import PageEsriDivider from './Map/PageEsriDivider';
-import PageEsriMap from './Map/PageEsriMap';
-import useEsriMapPage from './Map/useEsriMapPage';
-import ProgressBar from './ProgressBar';
-import { getFormCompletionPercentage } from './util';
-
-import { FormValues } from './';
+import CustomFields from '../CustomFields';
+import AuthorField from '../Fields/AuthorField';
+import BudgetField from '../Fields/BudgetField';
+import PageEsriDivider from '../Map/PageEsriDivider';
+import PageEsriMap from '../Map/PageEsriMap';
+import useEsriMapPage from '../Map/useEsriMapPage';
+import PageFooter from '../Page/PageFooter';
+import PageTitle from '../Page/PageTitle';
+import { FormValues } from '../Page/types';
+import usePageForm from '../Page/usePageForm';
+import { getFormCompletionPercentage } from '../util';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -59,7 +54,6 @@ type CustomFieldsPage = {
   ideaId?: string;
   projectId: string;
   onSubmit: (formValues: FormValues) => Promise<void>;
-  pageButtonLabelMultiloc?: Multiloc;
   phase?: IPhaseData;
   defaultValues?: any;
   customFields: IFlatCustomField[];
@@ -69,7 +63,7 @@ type CustomFieldsPage = {
   }[];
 };
 
-const CustomFieldsPage = ({
+const IdeationPage = ({
   page,
   pageQuestions,
   lastPageNumber,
@@ -80,24 +74,19 @@ const CustomFieldsPage = ({
   onSubmit,
   currentPageNumber,
   setCurrentPageNumber,
-  pageButtonLabelMultiloc,
   phase,
   defaultValues,
   customFields,
   pages,
 }: CustomFieldsPage) => {
-  const pageRef = React.useRef<HTMLDivElement>(null);
-  const draggableDivRef = React.useRef<HTMLDivElement>(null);
-  const dragDividerRef = React.useRef<HTMLDivElement>(null);
-  const [showFormFeedback, setShowFormFeedback] = useState(false);
+  const pageRef = useRef<HTMLDivElement>(null);
+
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
 
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
-  const theme = useTheme();
 
   const { pathname } = useLocation();
   const isAdminPage = isPage('admin', pathname);
@@ -129,27 +118,20 @@ const CustomFieldsPage = ({
     methods.handleSubmit((e) => onFormSubmit(e))();
   };
 
-  const schema = generateYupValidationSchema({
+  const { methods, setShowFormFeedback, showFormFeedback } = usePageForm({
     pageQuestions,
-    formatMessage,
-    localize,
-  });
-
-  const methods = useForm({
-    mode: 'onBlur',
-    resolver: yupResolver(schema),
     defaultValues,
   });
 
   // Map logic
-  const { mapConfig, mapLayers } = useEsriMapPage({
-    project,
-    pages,
-    currentPageNumber,
-    draggableDivRef,
-    dragDividerRef,
-    localize,
-  });
+  const shouldShowMap = !isAdminPage && isMapPage;
+  const { mapConfig, mapLayers, draggableDivRef, dragDividerRef } =
+    useEsriMapPage({
+      project,
+      pages,
+      currentPageNumber,
+      localize,
+    });
 
   const onFormSubmit = async (
     formValues: FormValues,
@@ -192,7 +174,7 @@ const CustomFieldsPage = ({
     methods.setValue('anonymous', !postAnonymously);
   };
 
-  // If the idea (survey submission) has no author relationship,
+  // If the idea has no author relationship,
   // it was either created through 'anyone' permissions or with
   // the anonymous toggle on. In these cases, we show the idea id
   // on the success page.
@@ -200,7 +182,7 @@ const CustomFieldsPage = ({
 
   const formCompletionPercentage = getFormCompletionPercentage({
     customFields,
-    formValues: methods.getValues() ?? {},
+    formValues: methods.getValues(),
     userIsEditing: isIdeaEditPage,
     userIsOnLastPage: currentPageNumber === lastPageNumber,
   });
@@ -214,12 +196,8 @@ const CustomFieldsPage = ({
     setIsDisclaimerOpened(false);
   };
 
-  const shouldShowMap = !isAdminPage && isMapPage;
-
   return (
     <FormProvider {...methods}>
-      {showFormFeedback && <Feedback />}
-
       <StyledForm id="idea-form">
         <Box
           id="container"
@@ -255,6 +233,8 @@ const CustomFieldsPage = ({
               overflowX="hidden"
               ref={pageRef}
             >
+              {showFormFeedback && <Feedback />}
+
               {shouldShowMap && isMobileOrSmaller && (
                 <PageEsriDivider dragDividerRef={dragDividerRef} />
               )}
@@ -267,28 +247,7 @@ const CustomFieldsPage = ({
               >
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
-                    <Title
-                      as="h1"
-                      variant={isMobileOrSmaller ? 'h2' : 'h1'}
-                      m="0"
-                      mb="20px"
-                      color="tenantPrimary"
-                    >
-                      {localize(page.title_multiloc)}
-                    </Title>
-
-                    <Box mb="48px">
-                      <QuillEditedContent
-                        fontWeight={400}
-                        textColor={theme.colors.tenantText}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: localize(page.description_multiloc),
-                          }}
-                        />
-                      </QuillEditedContent>
-                    </Box>
+                    <PageTitle page={page} />
 
                     {currentPageNumber === 0 && isAdmin(authUser) && (
                       <Box mb="24px">
@@ -307,6 +266,7 @@ const CustomFieldsPage = ({
                       projectId={projectId}
                       ideaId={ideaId}
                       phase={phase}
+                      participationMethod={participationMethod}
                     />
 
                     {currentPageNumber === lastPageNumber - 1 &&
@@ -337,43 +297,30 @@ const CustomFieldsPage = ({
               }}
             />
           )}
-
-          <Box
-            maxWidth={
-              !isAdminPage ? (isMapPage ? '1100px' : '700px') : undefined
+          <PageFooter
+            variant={
+              currentPageNumber === lastPageNumber
+                ? 'after-submission'
+                : currentPageNumber === lastPageNumber - 1
+                ? 'submission'
+                : 'other'
             }
-            w="100%"
-            position="fixed"
-            bottom={isMobileOrSmaller || isAdminPage ? '0' : '40px'}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-          >
-            <ProgressBar formCompletionPercentage={formCompletionPercentage} />
-
-            <Box w="100%">
-              <PageControlButtons
-                handleNextAndSubmit={handleNextAndsubmit}
-                project={project}
-                handlePrevious={() => {
-                  pageRef.current?.scrollTo(0, 0);
-                  setCurrentPageNumber(currentPageNumber - 1);
-                }}
-                hasPreviousPage={currentPageNumber > 0}
-                isLoading={methods.formState.isSubmitting}
-                pageVariant={
-                  currentPageNumber === lastPageNumber
-                    ? 'after-submission'
-                    : currentPageNumber === lastPageNumber - 1
-                    ? 'submission'
-                    : 'other'
-                }
-                phases={phases?.data}
-                currentPhase={phase}
-                pageButtonLabelMultiloc={pageButtonLabelMultiloc}
-              />
-            </Box>
-          </Box>
+            hasPreviousPage={currentPageNumber > 0}
+            handleNextAndSubmit={handleNextAndsubmit}
+            handlePrevious={() => {
+              pageRef.current?.scrollTo(0, 0);
+              setCurrentPageNumber(currentPageNumber - 1);
+            }}
+            formCompletionPercentage={formCompletionPercentage}
+            pageButtonLabelMultiloc={page.page_button_label_multiloc}
+            pageButtonLink={page.page_button_link}
+            phase={phase}
+            project={project}
+            phases={phases}
+            isLoading={methods.formState.isSubmitting}
+            isAdminPage={isAdminPage}
+            isMapPage={isMapPage}
+          />
         </Box>
         <ContentUploadDisclaimer
           isDisclaimerOpened={isDisclaimerOpened}
@@ -385,4 +332,4 @@ const CustomFieldsPage = ({
   );
 };
 
-export default CustomFieldsPage;
+export default IdeationPage;

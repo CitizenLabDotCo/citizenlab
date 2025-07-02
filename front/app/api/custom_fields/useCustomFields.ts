@@ -11,8 +11,15 @@ const useCustomFields = ({
   phaseId,
   inputTypes,
   copy,
+  publicFields = false,
 }: ICustomFieldsParameters) => {
-  const result = useRawCustomFields({ projectId, phaseId, inputTypes, copy });
+  const result = useRawCustomFields({
+    projectId,
+    phaseId,
+    inputTypes,
+    copy,
+    publicFields,
+  });
 
   const options = useCustomFieldOptionsBulk({
     customFields: result.data,

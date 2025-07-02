@@ -84,11 +84,7 @@ export default class ClickOutside extends PureComponent<Props, State> {
       this.container &&
       !this.container.contains(event.target)
     ) {
-      setTimeout(() => {
-        if (this.container) {
-          this.props.onClickOutside(event);
-        }
-      }, 10);
+      this.props.onClickOutside(event);
     }
   };
 
