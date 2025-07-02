@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-import useCountryCodeSupportedInProjectLibrary from 'hooks/useCountryCodeSupportedInProjectLibrary';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import sidebarMessages from 'containers/Admin/sideBar/messages';
@@ -18,6 +17,7 @@ import ProjectCards from './ProjectCards';
 import ProjectDrawer from './ProjectDrawer';
 import SortAndReset from './SortAndReset';
 import UpsellNudge from './UpsellNudge';
+import useCountryCodeSupportedInProjectLibrary from './useCountryCodeSupportedInProjectLibrary';
 import { setRansackParam } from './utils';
 
 const InspirationHub = () => {
