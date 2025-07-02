@@ -891,7 +891,7 @@
   "app.containers.Admin.emails.send": "Skicka",
   "app.containers.Admin.emails.sendNowButton": "Skicka nu",
   "app.containers.Admin.emails.sendTestEmailButton": "Skicka ett testmejl till mig",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "När du klickar på den här länken skickas endast ett testmejl till din e-postadress. Det gör att du kan kontrollera hur e-postmeddelandet ser ut i verkligheten.",
+  "app.containers.Admin.emails.sendTestEmailTooltip2": "När du klickar på den här länken skickas ett testmejl till endast din e-postadress. På så sätt kan du kontrollera hur e-postmeddelandet ser ut i \"verkligheten\".",
   "app.containers.Admin.emails.senderRecipients": "Avsändare och mottagare",
   "app.containers.Admin.emails.sending": "Skickar",
   "app.containers.Admin.emails.sent": "Skickades",
