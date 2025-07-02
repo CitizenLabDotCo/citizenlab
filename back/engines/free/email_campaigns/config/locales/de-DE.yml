@@ -85,11 +85,13 @@ de:
         "6": "Wöchentlich, samstags um %{hourOfDay}"
       quarterly: "Vierteljährlich, am ersten Tag des Quartals"
     preview_data:
-      first_name: 'Erika'
-      last_name: 'Mustermann'
-      display_name: 'Erika Mustermann'
+      author_first_name: 'Erika'
+      author_last_name: 'Mustermann'
+      author_display_name: 'Erika Mustermann'
+      project_title: 'Beispielprojekt'
       comment_body: 'Dies ist ein Beispielkommentar, der für die Vorschau des Inhalts von E-Mails verwendet wird. Dies ist kein echter Inhalt.'
       idea_title: 'Beispiel-Idee'
+      proposal_title: 'Beispiel-Vorschlag'
     footer:
       "link_privacy_policy": "Impressum & Datenschutz"
       "link_terms_conditions": "Nutzungsbedingungen"
