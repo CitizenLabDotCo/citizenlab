@@ -1,25 +1,25 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  votesLeft: {
-    id: 'app.components.VoteInputs._shared.votesLeft6',
+  numberOfVotesLeft: {
+    id: 'app.components.VoteInputs._shared.numberOfVotesLeft',
     defaultMessage:
-      'You have {votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {votes} one {vote} other {votes}} left.',
+      'You have {votesLeft, plural, =0 {no votes left} other {# out of {totalNumberOfVotes, plural, one {1 vote} other {# votes}} left}}.',
   },
-  pointsLeft: {
-    id: 'app.components.VoteInputs._shared.pointsLeft2',
+  numberOfPointsLeft: {
+    id: 'app.components.VoteInputs._shared.numberOfPointsLeft',
     defaultMessage:
-      'You have {votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {points} one {point} other {points}} left.',
+      'You have {votesLeft, plural, =0 {no points left} other {# out of {totalNumberOfVotes, plural, one {1 point} other {# points}} left}}.',
   },
-  tokensLeft: {
-    id: 'app.components.VoteInputs._shared.tokensLeft2',
+  numberOfTokensLeft: {
+    id: 'app.components.VoteInputs._shared.numberOfTokensLeft',
     defaultMessage:
-      'You have {votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {tokens} one {token} other {tokens}} left.',
+      'You have {votesLeft, plural, =0 {no tokens left} other {# out of {totalNumberOfVotes, plural, one {1 token} other {# tokens}} left}}.',
   },
-  creditsLeft: {
-    id: 'app.components.VoteInputs._shared.creditsLeft2',
+  numberOfCreditsLeft: {
+    id: 'app.components.VoteInputs._shared.numberOfCreditsLeft',
     defaultMessage:
-      'You have {votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {credits} one {credit} other {credits}} left.',
+      'You have {votesLeft, plural, =0 {no credits left} other {# out of {totalNumberOfVotes, plural, one {1 credit} other {# credits}} left}}.',
   },
   vote: {
     id: 'app.components.ParticipationCTABars.votesCounter.vote',

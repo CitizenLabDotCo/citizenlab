@@ -33,10 +33,10 @@ const AssignMultipleVotesBox = memo(({ ideaId, phase }: Props) => {
 
   const votesLeft = voting_max_total - (numberOfVotesCast ?? 0);
   const votesLeftMessage = getPhaseVoteTermMessage(phase, {
-    vote: messages.votesLeft,
-    point: messages.pointsLeft,
-    token: messages.tokensLeft,
-    credit: messages.creditsLeft,
+    vote: messages.numberOfVotesLeft,
+    point: messages.numberOfPointsLeft,
+    token: messages.numberOfTokensLeft,
+    credit: messages.numberOfCreditsLeft,
   });
 
   return (

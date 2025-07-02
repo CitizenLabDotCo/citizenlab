@@ -116,7 +116,7 @@ export const getVotesCounter = (
     } else {
       const votesLeft = voting_max_total - numberOfVotesCast;
 
-      return formatMessage(messages.votesLeft, {
+      return formatMessage(messages.numberOfVotesLeft, {
         votesLeft: votesLeft.toLocaleString(),
         totalNumberOfVotes: voting_max_total.toLocaleString(),
         voteTerm: formatMessage(voteInputMessages.vote),
@@ -131,10 +131,10 @@ export const getVotesCounter = (
     const votesLeft = voting_max_total - numberOfVotesCast;
 
     const votesLeftMessage = getPhaseVoteTermMessage(phase, {
-      vote: messages.votesLeft,
-      point: messages.pointsLeft,
-      token: messages.tokensLeft,
-      credit: messages.creditsLeft,
+      vote: messages.numberOfVotesLeft,
+      point: messages.numberOfPointsLeft,
+      token: messages.numberOfTokensLeft,
+      credit: messages.numberOfCreditsLeft,
     });
 
     return formatMessage(votesLeftMessage, {

@@ -36,25 +36,25 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.VotingCTABar.currencyLeft1',
     defaultMessage: '{budgetLeft} / {totalBudget} left',
   },
-  votesLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.votesLeft4',
+  numberOfVotesLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft',
     defaultMessage:
-      '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {votes} one {vote} other {votes}} left',
+      '{votesLeft, plural, =0 {No votes left} other {# out of {totalNumberOfVotes, plural, one {1 vote} other {# votes}} left}}',
   },
-  pointsLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.pointsLeft2',
+  numberOfPointsLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft',
     defaultMessage:
-      '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {points} one {point} other {points}} left',
+      '{votesLeft, plural, =0 {No points left} other {# out of {totalNumberOfVotes, plural, one {1 point} other {# points}} left}}',
   },
-  tokensLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.tokensLeft2',
+  numberOfTokensLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft',
     defaultMessage:
-      '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {tokens} one {token} other {tokens}} left',
+      '{votesLeft, plural, =0 {No tokens left} other {# out of {totalNumberOfVotes, plural, one {1 token} other {# tokens}} left}}',
   },
-  creditsLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.creditsLeft2',
+  numberOfCreditsLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfCreditsLeft',
     defaultMessage:
-      '{votesLeft} / {totalNumberOfVotes} {votesLeft, plural, =0 {credits} one {credit} other {credits}} left',
+      '{votesLeft, plural, =0 {No credits left} other {# out of {totalNumberOfVotes, plural, one {1 credit} other {# credits}} left}}',
   },
   votesCast: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.votesCast',
