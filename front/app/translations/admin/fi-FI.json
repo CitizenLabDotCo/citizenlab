@@ -891,7 +891,7 @@
   "app.containers.Admin.emails.send": "Lähettää",
   "app.containers.Admin.emails.sendNowButton": "Lähetä nyt",
   "app.containers.Admin.emails.sendTestEmailButton": "Lähetä minulle testisähköposti",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Kun napsautat tätä linkkiä, testisähköposti lähetetään vain sähköpostiosoitteeseesi. Tämän avulla voit tarkistaa, miltä sähköposti näyttää tosielämässä.",
+  "app.containers.Admin.emails.sendTestEmailTooltip2": "Kun napsautat tätä linkkiä, testisähköposti lähetetään vain sähköpostiosoitteeseesi. Näin voit tarkistaa, miltä sähköposti näyttää \"oikeassa elämässä\".",
   "app.containers.Admin.emails.senderRecipients": "Lähettäjä ja vastaanottajat",
   "app.containers.Admin.emails.sending": "Lähetetään",
   "app.containers.Admin.emails.sent": "Lähetetty",
