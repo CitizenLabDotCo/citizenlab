@@ -17,9 +17,13 @@ class ProjectPolicy < ApplicationPolicy
 
       # By default, we include unlisted projects,
       # unless the context explicitly says not to.
-      # This is because even when this param says to
-      # include unlisted projects, users will not
-      # see them unless they can moderate them.
+      # This is because there are a lot of policies
+      # that rely on this policy, and they seem to break
+      # when unlisted projects are not included.
+
+      # Also, even when this param says to
+      # include unlisted projects, only unlisted projects that
+      # the user can moderate will be included.
       # So basically the parameter is only used in cases
       # where it would be confusing for an admin/moderator to see unlisted projects
       # that they can moderate, like when they are looking
