@@ -891,7 +891,7 @@
   "app.containers.Admin.emails.send": "Gönder",
   "app.containers.Admin.emails.sendNowButton": "Şimdi gönder",
   "app.containers.Admin.emails.sendTestEmailButton": "Bana bir deneme e-postası gönder",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Bu bağlantıya tıkladığınızda, yalnızca sizin e-posta adresinize bir deneme e-postası gönderilecektir. Bu, e-postanın nasıl görüneceğini kontrol etmenizi sağlar.",
+  "app.containers.Admin.emails.sendTestEmailTooltip2": "Bu bağlantıya tıkladığınızda, yalnızca sizin e-posta adresinize bir test e-postası gönderilecektir. Bu, e-postanın 'gerçek hayatta' nasıl göründüğünü kontrol etmenizi sağlar.",
   "app.containers.Admin.emails.senderRecipients": "Gönderici ve alıcılar",
   "app.containers.Admin.emails.sending": "Gönderiliyor",
   "app.containers.Admin.emails.sent": "Gönderildi",
