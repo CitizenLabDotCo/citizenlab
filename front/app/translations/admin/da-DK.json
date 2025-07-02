@@ -891,7 +891,7 @@
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Send nu",
   "app.containers.Admin.emails.sendTestEmailButton": "Send mig en test-e-mail",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Når du klikker på dette link, sendes der en test-e-mail til kun din e-mailadresse. Dette giver dig mulighed for at kontrollere, hvordan e-mailen ser ud i virkeligheden.",
+  "app.containers.Admin.emails.sendTestEmailTooltip2": "Når du klikker på dette link, bliver der sendt en testmail til din egen e-mailadresse. Det giver dig mulighed for at tjekke, hvordan e-mailen ser ud i \"virkeligheden\".",
   "app.containers.Admin.emails.senderRecipients": "Afsender og modtagere",
   "app.containers.Admin.emails.sending": "Afsendelse",
   "app.containers.Admin.emails.sent": "Sendt",
