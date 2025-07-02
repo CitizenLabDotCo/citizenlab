@@ -53,27 +53,37 @@ class ProjectPolicy < ApplicationPolicy
     def apply_listed_scope(projects, include_unlisted)
       scope = projects
 
-      if include_unlisted && user&.active?
-        # If include_unlisted, and user is active:
-        # If you are an admin, include all unlisted projects (do nothing)
-        # Otherwise, include only unlisted projects that you can moderate
-        unless user&.admin?
+      # Admins: if include_unlisted, return all projects,
+      # otherwise, return only listed projects.
+      if user&.admin?
+        if include_unlisted
+          return scope
+        else
+          return scope.where(unlisted: false)
+        end
+      end
+
+      # Moderators: if include_unlisted, return all listed projects +
+      # unlisted projects that the user can moderate.
+      # otherwise, return only listed projects.
+      if user&.project_or_folder_moderator?
+        if include_unlisted
           scope = scope.joins(:admin_publication)
 
-          scope = scope.where(
+          return scope.where(
             '(projects.unlisted = FALSE) OR ' \
             '(projects.unlisted = TRUE AND projects.id IN (?)) OR ' \
             '(projects.unlisted = TRUE AND admin_publications.parent_id IN (?))',
             user.moderatable_project_ids,
             AdminPublication.where(publication_id: user.moderated_project_folder_ids).select(:id)
           )
+        else
+          return scope.where(unlisted: false)
         end
-      else
-        # If not include_unlisted: exclude unlisted projects
-        scope = scope.where(unlisted: false)
       end
 
-      scope
+      # Other: always return only listed projects.
+      scope.where(unlisted: false)
     end
   end
 
