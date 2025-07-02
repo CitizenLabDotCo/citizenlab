@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { addMonths, subMonths } from 'date-fns';
 
 import GanttChartHeader from './components/GanttChartHeader';
@@ -268,7 +268,7 @@ export const GanttChart = ({
 
   return (
     <Box
-      bg="#fff"
+      bg={colors.white}
       border={`1px solid ${colors.grey300}`}
       borderRadius="8px"
       overflow="hidden"
@@ -291,7 +291,6 @@ export const GanttChart = ({
           height={`${timelineHeight * 2}px`}
           pl="16px"
           bg={colors.white}
-          style={{ left: 0, zIndex: 3 }}
         >
           {chartTitle}
         </Box>
@@ -303,19 +302,15 @@ export const GanttChart = ({
             alignItems="center"
             pl="16px"
             pr="16px"
-            bg="#fafbfc"
-            style={{
-              fontWeight: 800,
-              fontSize: '18px',
-              color: '#222',
-              letterSpacing: '0.5px',
-              zIndex: 2,
-            }}
+            zIndex="2"
+            bg={colors.white}
           >
-            {visibleLabel}
+            <Text fontSize="l" fontWeight="semi-bold">
+              {visibleLabel}
+            </Text>
           </Box>
 
-          <Box ref={timelineHeaderRef} overflow="hidden" bg="#fafbfc">
+          <Box ref={timelineHeaderRef} overflow="hidden" bg={colors.white}>
             <GanttChartHeader
               selectedRange={selectedRange}
               monthMeta={monthMeta}
