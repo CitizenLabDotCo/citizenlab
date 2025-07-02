@@ -50,7 +50,11 @@ const ConfigurationMap = memo<Props>(
           const element = result.results[0];
           if (element.type === 'graphic') {
             // Set the hovered layer id
-            setHoveredLayerId(element.layer['customParameters']?.layerId);
+            setHoveredLayerId(
+              // Note: The Esri Type is wrong here, so we need to include this check
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              element.layer?.['customParameters']?.layerId ?? null
+            );
           }
         } else {
           setHoveredLayerId(null);
