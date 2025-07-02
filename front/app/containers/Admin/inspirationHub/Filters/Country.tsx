@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
-
-import useCountryCodeSupportedInProjectLibrary from 'hooks/useCountryCodeSupportedInProjectLibrary';
 
 import FilterSelector from 'components/FilterSelector';
 
@@ -46,30 +44,4 @@ const Country = () => {
   );
 };
 
-const CountryWrapper = () => {
-  const [initialCountryCodeSet, setInitialCountryCodeSet] = useState(false);
-  const { status, countryCode } = useCountryCodeSupportedInProjectLibrary();
-
-  useEffect(() => {
-    if (initialCountryCodeSet) return;
-
-    if (status === 'supported') {
-      setRansackParam('q[tenant_country_code_in]', [countryCode]);
-      setInitialCountryCodeSet(true);
-    }
-  }, [status, countryCode, initialCountryCodeSet]);
-
-  if (status === 'loading') {
-    return null;
-  }
-
-  // If the countryCode is supported, but the param is not set yet,
-  // we wait for it to be set.
-  if (status === 'supported' && !initialCountryCodeSet) {
-    return null;
-  }
-
-  return <Country />;
-};
-
-export default CountryWrapper;
+export default Country;

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Box, Title, Select } from '@citizenlab/cl2-component-library';
 
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
-
-import useCountryCodeSupportedInProjectLibrary from 'hooks/useCountryCodeSupportedInProjectLibrary';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -47,30 +45,4 @@ const PinnedProjects = () => {
   );
 };
 
-const PinnedProjectsWrapper = () => {
-  const [initialCountryCodeSet, setInitialCountryCodeSet] = useState(false);
-  const { status, countryCode } = useCountryCodeSupportedInProjectLibrary();
-
-  useEffect(() => {
-    if (initialCountryCodeSet) return;
-
-    if (status === 'supported') {
-      setRansackParam('q[pin_country_code_eq]', countryCode);
-      setInitialCountryCodeSet(true);
-    }
-  }, [status, countryCode, initialCountryCodeSet]);
-
-  if (status === 'loading') {
-    return null;
-  }
-
-  // If the countryCode is supported, but the param is not set yet,
-  // we wait for it to be set.
-  if (status === 'supported' && !initialCountryCodeSet) {
-    return null;
-  }
-
-  return <PinnedProjects />;
-};
-
-export default PinnedProjectsWrapper;
+export default PinnedProjects;

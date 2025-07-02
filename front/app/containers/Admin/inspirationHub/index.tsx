@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
+import useCountryCodeSupportedInProjectLibrary from 'hooks/useCountryCodeSupportedInProjectLibrary';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import sidebarMessages from 'containers/Admin/sideBar/messages';
@@ -17,14 +18,31 @@ import ProjectCards from './ProjectCards';
 import ProjectDrawer from './ProjectDrawer';
 import SortAndReset from './SortAndReset';
 import UpsellNudge from './UpsellNudge';
+import { setRansackParam } from './utils';
 
 const InspirationHub = () => {
-  const projectLibraryEnabled = useFeatureFlag({
-    name: 'project_library',
-    onlyCheckEnabled: true,
-  });
+  const [initialCountryCodeSet, setInitialCountryCodeSet] = useState(false);
+  const { status, countryCode } = useCountryCodeSupportedInProjectLibrary();
 
-  if (!projectLibraryEnabled) return <UpsellNudge />;
+  useEffect(() => {
+    if (initialCountryCodeSet) return;
+
+    if (status === 'supported') {
+      setRansackParam('q[pin_country_code_eq]', countryCode);
+      setRansackParam('q[tenant_country_code_in]', [countryCode]);
+      setInitialCountryCodeSet(true);
+    }
+  }, [status, countryCode, initialCountryCodeSet]);
+
+  if (status === 'loading') {
+    return null;
+  }
+
+  // If the countryCode is supported, but the param is not set yet,
+  // we wait for it to be set.
+  if (status === 'supported' && !initialCountryCodeSet) {
+    return null;
+  }
 
   return (
     <Box>
@@ -85,4 +103,15 @@ const InspirationHub = () => {
   );
 };
 
-export default InspirationHub;
+const InspirationHubWrapper = () => {
+  const projectLibraryEnabled = useFeatureFlag({
+    name: 'project_library',
+    onlyCheckEnabled: true,
+  });
+
+  if (!projectLibraryEnabled) return <UpsellNudge />;
+
+  return <InspirationHub />;
+};
+
+export default InspirationHubWrapper;
