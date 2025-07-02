@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
+import { Box, Tooltip, Text, colors } from '@citizenlab/cl2-component-library';
 import { max, min } from 'date-fns';
 
 import { rowHeight } from '../utils';
@@ -40,18 +40,16 @@ const GanttItem: React.FC<GanttItemProps> = ({
   const duration = getDuration(effectiveStart, effectiveEnd);
   if (duration <= 0) return null;
   const textLabel = (
-    <Box
-      as="span"
-      px="4px"
-      style={{
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        color: colors.grey800,
-        fontWeight: 500,
-      }}
-    >
-      {item.title}
+    <Box as="span" px="4px">
+      <Text
+        fontSize="s"
+        color="grey800"
+        overflow="hidden"
+        whiteSpace="nowrap"
+        my="0"
+      >
+        {item.title}
+      </Text>
     </Box>
   );
   let textInHighlight = false;
@@ -86,11 +84,7 @@ const GanttItem: React.FC<GanttItemProps> = ({
           display="flex"
           alignItems="center"
         >
-          <Box
-            display="flex"
-            alignItems="center"
-            style={{ pointerEvents: 'none', width: '100%' }}
-          >
+          <Box display="flex" alignItems="center">
             <GanttItemIconBar
               color={item.color}
               icon={item.icon}
@@ -123,22 +117,9 @@ const GanttItem: React.FC<GanttItemProps> = ({
               display="flex"
               alignItems="center"
               overflow="hidden"
-              style={{ pointerEvents: 'none', zIndex: 1 }}
             >
               {textInHighlight && (
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  as="span"
-                  px="4px"
-                  style={{
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    color: colors.grey800,
-                    fontWeight: 500,
-                  }}
-                >
+                <Box display="flex" alignItems="center" as="span" px="4px">
                   <GanttItemIconBar
                     color={item.color}
                     icon={item.icon}
@@ -146,7 +127,15 @@ const GanttItem: React.FC<GanttItemProps> = ({
                     mr="8px"
                     ml="0px"
                   />
-                  {item.title}
+                  <Text
+                    fontSize="s"
+                    color="grey800"
+                    overflow="hidden"
+                    whiteSpace="nowrap"
+                    my="0"
+                  >
+                    {item.title}
+                  </Text>
                 </Box>
               )}
             </Box>
