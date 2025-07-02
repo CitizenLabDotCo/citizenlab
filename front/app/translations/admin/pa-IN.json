@@ -891,7 +891,7 @@
   "app.containers.Admin.emails.send": "ਭੇਜੋ",
   "app.containers.Admin.emails.sendNowButton": "ਹੁਣੇ ਭੇਜੋ",
   "app.containers.Admin.emails.sendTestEmailButton": "ਮੈਨੂੰ ਇੱਕ ਟੈਸਟ ਈਮੇਲ ਭੇਜੋ",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "ਜਦੋਂ ਤੁਸੀਂ ਇਸ ਲਿੰਕ 'ਤੇ ਕਲਿੱਕ ਕਰਦੇ ਹੋ, ਤਾਂ ਇੱਕ ਟੈਸਟ ਈਮੇਲ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਈਮੇਲ ਪਤੇ 'ਤੇ ਭੇਜੀ ਜਾਵੇਗੀ। ਇਹ ਤੁਹਾਨੂੰ ਇਹ ਦੇਖਣ ਦੀ ਇਜਾਜ਼ਤ ਦਿੰਦਾ ਹੈ ਕਿ ਈਮੇਲ ਅਸਲ ਜ਼ਿੰਦਗੀ ਵਿੱਚ ਕਿਵੇਂ ਦਿਖਾਈ ਦਿੰਦੀ ਹੈ।",
+  "app.containers.Admin.emails.sendTestEmailTooltip2": "ਜਦੋਂ ਤੁਸੀਂ ਇਸ ਲਿੰਕ 'ਤੇ ਕਲਿੱਕ ਕਰਦੇ ਹੋ, ਤਾਂ ਇੱਕ ਟੈਸਟ ਈਮੇਲ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਈਮੇਲ ਪਤੇ 'ਤੇ ਭੇਜੀ ਜਾਵੇਗੀ। ਇਹ ਤੁਹਾਨੂੰ ਇਹ ਦੇਖਣ ਦੀ ਆਗਿਆ ਦਿੰਦਾ ਹੈ ਕਿ ਈਮੇਲ 'ਅਸਲ ਜ਼ਿੰਦਗੀ' ਵਿੱਚ ਕਿਵੇਂ ਦਿਖਾਈ ਦਿੰਦੀ ਹੈ।",
   "app.containers.Admin.emails.senderRecipients": "ਭੇਜਣ ਵਾਲੇ ਅਤੇ ਪ੍ਰਾਪਤਕਰਤਾ",
   "app.containers.Admin.emails.sending": "ਭੇਜ ਰਿਹਾ ਹੈ",
   "app.containers.Admin.emails.sent": "ਭੇਜਿਆ",
