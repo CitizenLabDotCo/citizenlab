@@ -11,11 +11,11 @@ module IdRmUnify
     end
 
     def self.feature_title
-      'RM Unify Login'
+      'RM Unify (Glow Connect) Login'
     end
 
     def self.feature_description
-      'Allow users to authenticate and verify with an RmUnify account.'
+      'Allow users to authenticate and verify with a Scottish schools Glow Connect (RmUnify) account.'
     end
 
     def self.allowed_by_default

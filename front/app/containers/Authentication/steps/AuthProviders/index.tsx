@@ -283,7 +283,7 @@ const AuthProviders = memo<Props>(
         )}
         {rmUnifyLoginEnabled && (
           <StyledAuthProviderButton
-            icon="bankId"
+            icon="glowConnect"
             flow={flow}
             authProvider="rm_unify"
             onContinue={onSelectAuthProvider}
@@ -291,7 +291,7 @@ const AuthProviders = memo<Props>(
             <FormattedMessage
               {...messages.continueWithLoginMechanism}
               values={{
-                loginMechanismName: 'RM Unify',
+                loginMechanismName: 'Glow Connect',
               }}
             />
           </StyledAuthProviderButton>

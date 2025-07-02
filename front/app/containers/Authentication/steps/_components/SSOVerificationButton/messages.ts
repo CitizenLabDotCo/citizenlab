@@ -23,7 +23,7 @@ export default defineMessages({
   },
   verifyRmUnify: {
     id: 'app.components.VerificationModal.verifyRmUnify',
-    defaultMessage: 'Verify with RM Unify',
+    defaultMessage: 'Verify with Glow Connect',
   },
   verifyAuth0: {
     id: 'app.components.VerificationModal.verifyAuth0',
