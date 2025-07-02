@@ -160,6 +160,7 @@
   "app.components.CustomFieldsForm.imageRequired": "Bilden är nödvändig",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Ett minimum av {numPoints} kartpunkter krävs.",
   "app.components.CustomFieldsForm.notPublic1": "*Detta svar kommer endast att delas med projektledare och inte med allmänheten.",
+  "app.components.CustomFieldsForm.otherArea": "Någon annanstans",
   "app.components.CustomFieldsForm.progressBarLabel": "Framsteg",
   "app.components.CustomFieldsForm.removeAnswer": "Ta bort svar",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Välj så många du vill",
