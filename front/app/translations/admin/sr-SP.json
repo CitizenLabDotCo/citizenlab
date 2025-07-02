@@ -891,7 +891,7 @@
   "app.containers.Admin.emails.send": "Пошаљи",
   "app.containers.Admin.emails.sendNowButton": "Пошаљи одмах",
   "app.containers.Admin.emails.sendTestEmailButton": "Пошаљите ми тест е-поште",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Када кликнете на ову везу, тест е-поште ће бити послат само на вашу адресу е-поште. Ово вам омогућава да проверите како емаил изгледа у стварном животу.",
+  "app.containers.Admin.emails.sendTestEmailTooltip2": "When you click this link, a test email will be sent to your email address only. This allows you to check what the email looks like in ‘real life’.",
   "app.containers.Admin.emails.senderRecipients": "Пошиљалац и примаоци",
   "app.containers.Admin.emails.sending": "Слање",
   "app.containers.Admin.emails.sent": "Послано",
