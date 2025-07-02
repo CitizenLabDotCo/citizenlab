@@ -43,7 +43,7 @@
   "app.components.Admin.Campaigns.opened": "Geopend",
   "app.components.Admin.Campaigns.project": "Project",
   "app.components.Admin.Campaigns.recipientsTitle": "Ontvangers",
-  "app.components.Admin.Campaigns.reply_to": "Reply-To",
+  "app.components.Admin.Campaigns.reply_to": "Antwoorden op",
   "app.components.Admin.Campaigns.sent": "Verzonden",
   "app.components.Admin.Campaigns.statsButton": "Statistieken",
   "app.components.Admin.Campaigns.subject": "Onderwerp",
