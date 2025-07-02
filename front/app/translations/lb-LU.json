@@ -160,6 +160,7 @@
   "app.components.CustomFieldsForm.imageRequired": "D'Bild ass obligatoresch",
   "app.components.CustomFieldsForm.minimumCoordinates2": "E Minimum vun {numPoints} Kaartepunkten ass erfuerderlech.",
   "app.components.CustomFieldsForm.notPublic1": "*Dës Äntwert gëtt nëmme mat de Projetmanager gedeelt, an net mat der Ëffentlechkeet.",
+  "app.components.CustomFieldsForm.otherArea": "Irgendwou anescht",
   "app.components.CustomFieldsForm.progressBarLabel": "Fortschrëtt",
   "app.components.CustomFieldsForm.removeAnswer": "Äntwert ewechhuelen",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Wielt sou vill wéi Dir wëllt",
