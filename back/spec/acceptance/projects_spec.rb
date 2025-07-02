@@ -1195,16 +1195,16 @@ resource 'Projects' do
       context 'When unlisted projects exist' do
         before { @projects << create(:project, unlisted: true) }
 
-        example 'Does not return unlisted projects by default', document: false do
+        example 'Returns unlisted projects by default', document: false do
           do_request
           assert_status 200
-          expect(json_response[:data].size).to eq(@projects.size - 1)
+          expect(json_response[:data].size).to eq(@projects.size)
         end
 
-        example 'Does return unlisted projects if include_unlisted is true', document: false do
-          do_request include_unlisted: true
+        example 'Does not return unlisted projects if include_unlisted is false', document: false do
+          do_request include_unlisted: false
           assert_status 200
-          expect(json_response[:data].size).to eq(@projects.size)
+          expect(json_response[:data].size).to eq(@projects.size - 1)
         end
       end
     end
