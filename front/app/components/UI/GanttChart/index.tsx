@@ -7,13 +7,14 @@ import React, {
   useMemo,
 } from 'react';
 
-import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
-import { addMonths, subMonths, max, min } from 'date-fns';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { addMonths, subMonths } from 'date-fns';
 
-import GanttChartHeader from './GanttChartHeader';
-import GanttChartLeftColumn from './GanttChartLeftColumn';
-import GanttItemIconBar from './GanttItemIconBar';
-import TimeRangeSelector from './TimeRangeSelector';
+import GanttChartHeader from './components/GanttChartHeader';
+import GanttChartLeftColumn from './components/GanttChartLeftColumn';
+import TimelineGrid from './components/TimelineGrid';
+import TimelineItems from './components/TimelineItems';
+import TimeRangeSelector from './components/TimeRangeSelector';
 import { GanttChartProps } from './types';
 import {
   getTimeRangeDates,
@@ -98,6 +99,20 @@ export const GanttChart = ({
     : isQuarterView
     ? quarterWidth
     : dayWidth;
+  const cellCount = useMemo(() => {
+    if (isMultiYearView) return getDurationInMonths(startDate, endDate);
+    if (isYearView) return weekCells.length;
+    if (isQuarterView) return quarterCells.length;
+    return getDurationInDays(startDate, endDate);
+  }, [
+    isMultiYearView,
+    isYearView,
+    isQuarterView,
+    startDate,
+    endDate,
+    weekCells,
+    quarterCells,
+  ]);
 
   const getOffset = useCallback(
     (date: Date) => {
@@ -358,194 +373,23 @@ export const GanttChart = ({
           position="relative"
         >
           <Box position="relative">
-            <Box position="absolute" width="100%" height="100%">
-              {Array.from({
-                length: isMultiYearView
-                  ? getDurationInMonths(startDate, endDate)
-                  : isYearView
-                  ? weekCells.length
-                  : isQuarterView
-                  ? quarterCells.length
-                  : getDurationInDays(startDate, endDate),
-              }).map((_, i) => (
-                <Box
-                  key={`grid-line-${i}`}
-                  position="absolute"
-                  left={`${i * unitW - 0.5}px`}
-                  width="1px"
-                  height="100%"
-                  bg={colors.divider}
-                />
-              ))}
-            </Box>
+            <TimelineGrid
+              cellCount={cellCount}
+              unitW={unitW}
+              showTodayLine={showTodayLine}
+              todayOffset={todayOffset}
+            />
 
-            {showTodayLine && todayOffset !== undefined && (
-              <Box
-                position="absolute"
-                width="2px"
-                height="100%"
-                bg={colors.primary}
-                style={{
-                  left: `${todayOffset * unitW + unitW / 2 - 1}px`,
-                  pointerEvents: 'none',
-                  zIndex: 1,
-                }}
-              >
-                <Box
-                  position="absolute"
-                  top="-5px"
-                  left="-4px"
-                  width="10px"
-                  height="10px"
-                  borderRadius="50%"
-                  bg={colors.primary}
-                />
-              </Box>
-            )}
-
-            <Box position="relative" height={`${items.length * rowHeight}px`}>
-              {items.map((item, index) => {
-                const s = item.start ? new Date(item.start) : undefined;
-                if (!s) return null;
-                const e = item.end ? new Date(item.end) : null;
-
-                const effectiveStart = s > startDate ? s : startDate;
-                const effectiveEnd =
-                  e === null ? endDate : e < endDate ? e : endDate;
-                if (effectiveStart >= effectiveEnd) return null;
-
-                const startOffset = getOffset(effectiveStart);
-                const duration = getDuration(effectiveStart, effectiveEnd);
-                if (duration <= 0) return null;
-
-                const textLabel = (
-                  <Box
-                    as="span"
-                    px="4px"
-                    style={{
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      color: colors.grey800,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {item.title}
-                  </Box>
-                );
-
-                let textInHighlight = false;
-                const highlightStart = item.highlightStartDate
-                  ? new Date(item.highlightStartDate)
-                  : null;
-                if (highlightStart) {
-                  textInHighlight =
-                    new Date(highlightStart).getTime() ===
-                    effectiveStart.getTime();
-                }
-
-                return (
-                  <Box
-                    key={item.id}
-                    position="absolute"
-                    top={`${index * rowHeight + 4}px`}
-                    left={`${startOffset * unitW}px`}
-                    width={`${duration * unitW}px`}
-                    height={`${rowHeight - 8}px`}
-                  >
-                    <Tooltip
-                      placement="bottom"
-                      content={renderItemTooltip ? renderItemTooltip(item) : ''}
-                      disabled={!renderItemTooltip}
-                      theme="dark"
-                    >
-                      <Box
-                        width="100%"
-                        height="100%"
-                        background={colors.white}
-                        border="1px solid"
-                        borderColor={colors.grey300}
-                        borderRadius="4px"
-                        display="flex"
-                        alignItems="center"
-                      >
-                        <Box
-                          display="flex"
-                          alignItems="center"
-                          style={{ pointerEvents: 'none', width: '100%' }}
-                        >
-                          <GanttItemIconBar
-                            color={item.color}
-                            icon={item.icon}
-                            rowHeight={rowHeight}
-                            mr="0px"
-                            ml="4px"
-                          />
-                          {!textInHighlight && textLabel}
-                        </Box>
-
-                        {highlightStart && (
-                          <Box
-                            position="absolute"
-                            left={`${
-                              (getOffset(max([s, highlightStart])) -
-                                startOffset) *
-                              unitW
-                            }px`}
-                            width={`${
-                              getDuration(
-                                max([s, highlightStart]),
-                                min([
-                                  e || endDate,
-                                  item.highlightEndDate
-                                    ? new Date(item.highlightEndDate)
-                                    : endDate,
-                                ])
-                              ) * unitW
-                            }px`}
-                            height="100%"
-                            bg={colors.teal50}
-                            border={`1px solid ${colors.teal400}`}
-                            display="flex"
-                            alignItems="center"
-                            overflow="hidden"
-                            style={{
-                              pointerEvents: 'none',
-                              zIndex: 1,
-                            }}
-                          >
-                            {textInHighlight && (
-                              <Box
-                                display="flex"
-                                alignItems="center"
-                                as="span"
-                                px="4px"
-                                style={{
-                                  whiteSpace: 'nowrap',
-                                  overflow: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                  color: colors.grey800,
-                                  fontWeight: 500,
-                                }}
-                              >
-                                <GanttItemIconBar
-                                  color={item.color}
-                                  icon={item.icon}
-                                  rowHeight={rowHeight}
-                                  mr="8px"
-                                  ml="0px"
-                                />
-                                {item.title}
-                              </Box>
-                            )}
-                          </Box>
-                        )}
-                      </Box>
-                    </Tooltip>
-                  </Box>
-                );
-              })}
-            </Box>
+            <TimelineItems
+              items={items}
+              rowHeight={rowHeight}
+              startDate={startDate}
+              endDate={endDate}
+              getOffset={getOffset}
+              getDuration={getDuration}
+              unitW={unitW}
+              renderItemTooltip={renderItemTooltip}
+            />
           </Box>
         </Box>
       </Box>

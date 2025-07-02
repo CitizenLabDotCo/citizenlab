@@ -10,7 +10,7 @@ import {
   YearMeta,
   QuarterCellMeta,
   WeekMeta,
-} from './utils';
+} from '../utils';
 
 interface GanttChartHeaderProps {
   isMultiYearView: boolean;
