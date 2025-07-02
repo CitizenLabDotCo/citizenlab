@@ -54,10 +54,6 @@ export const GanttChart = ({
   const today = useMemo(() => new Date(), []);
   const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
 
-  const isMultiYearView = selectedRange === 'multiyear';
-  const isYearView = selectedRange === 'year';
-  const isQuarterView = selectedRange === 'quarter';
-
   const { startDate: initialStart, endDate: initialEnd } = getTimeRangeDates(
     selectedRange,
     today
@@ -92,49 +88,45 @@ export const GanttChart = ({
     [startDate, endDate]
   );
 
-  const unitW = isMultiYearView
-    ? monthWidth
-    : isYearView
-    ? weekWidth
-    : isQuarterView
-    ? quarterWidth
-    : dayWidth;
-  const cellCount = useMemo(() => {
-    if (isMultiYearView) return getDurationInMonths(startDate, endDate);
-    if (isYearView) return weekCells.length;
-    if (isQuarterView) return quarterCells.length;
-    return getDurationInDays(startDate, endDate);
-  }, [
-    isMultiYearView,
-    isYearView,
-    isQuarterView,
-    startDate,
-    endDate,
-    weekCells,
-    quarterCells,
-  ]);
-
-  const getOffset = useCallback(
-    (date: Date) => {
-      if (isMultiYearView) return getOffsetInMonths(startDate, date);
-      if (isYearView) return getOffsetInWeeks(startDate, date);
-      if (isQuarterView) return getOffsetInQuarterCells(quarterCells, date);
-      return getOffsetInDays(startDate, date);
-    },
-    [isMultiYearView, isYearView, isQuarterView, startDate, quarterCells]
+  // Centralize per-view configuration
+  const viewConfig = useMemo(
+    () => ({
+      month: {
+        unitWidth: dayWidth,
+        getCellCount: () => getDurationInDays(startDate, endDate),
+        getOffset: (date: Date) => getOffsetInDays(startDate, date),
+        getDuration: (s: Date, e: Date) => getDurationInDays(s, e),
+      },
+      quarter: {
+        unitWidth: quarterWidth,
+        getCellCount: () => quarterCells.length,
+        getOffset: (date: Date) => getOffsetInQuarterCells(quarterCells, date),
+        getDuration: (s: Date, e: Date) =>
+          getDurationInQuarterCells(quarterCells, s, e),
+      },
+      year: {
+        unitWidth: weekWidth,
+        getCellCount: () => weekCells.length,
+        getOffset: (date: Date) => getOffsetInWeeks(startDate, date),
+        getDuration: (s: Date, e: Date) => getDurationInWeeks(s, e),
+      },
+      multiyear: {
+        unitWidth: monthWidth,
+        getCellCount: () => getDurationInMonths(startDate, endDate),
+        getOffset: (date: Date) => getOffsetInMonths(startDate, date),
+        getDuration: (s: Date, e: Date) => getDurationInMonths(s, e),
+      },
+    }),
+    [startDate, endDate, weekCells, quarterCells]
   );
 
-  const getDuration = useCallback(
-    (start: Date, end: Date) => {
-      if (isMultiYearView) return getDurationInMonths(start, end);
-      if (isYearView) return getDurationInWeeks(start, end);
-      if (isQuarterView) {
-        return getDurationInQuarterCells(quarterCells, start, end);
-      }
-      return getDurationInDays(start, end);
-    },
-    [isMultiYearView, isYearView, isQuarterView, quarterCells]
-  );
+  const {
+    unitWidth: unitW,
+    getCellCount,
+    getOffset,
+    getDuration,
+  } = viewConfig[selectedRange];
+  const cellCount = getCellCount();
 
   const todayOffset = useMemo(() => {
     if (!showTodayLine) return undefined;
@@ -146,15 +138,15 @@ export const GanttChart = ({
     const { scrollLeft } = timelineBodyRef.current;
     let newLabel = '';
 
-    if (isMultiYearView) {
+    if (selectedRange === 'multiyear') {
       newLabel = yearMeta[0]?.label ?? '';
-    } else if (isYearView) {
+    } else if (selectedRange === 'year') {
       const scrolledWeeks = Math.floor(scrollLeft / weekWidth);
       const currentWeek = weekCells.at(scrolledWeeks);
       if (currentWeek !== undefined) {
         newLabel = String(currentWeek.year);
       }
-    } else if (isQuarterView) {
+    } else if (selectedRange === 'quarter') {
       const scrolledCells = Math.floor(scrollLeft / quarterWidth);
       const currentCell = quarterCells.at(scrolledCells);
       if (currentCell !== undefined) {
@@ -164,16 +156,7 @@ export const GanttChart = ({
       newLabel = monthMeta[0]?.label ?? '';
     }
     setVisibleLabel(newLabel);
-  }, [
-    selectedRange,
-    isMultiYearView,
-    isYearView,
-    isQuarterView,
-    monthMeta,
-    yearMeta,
-    weekCells,
-    quarterCells,
-  ]);
+  }, [selectedRange, monthMeta, yearMeta, weekCells, quarterCells]);
 
   useLayoutEffect(() => {
     if (timelineBodyRef.current && scrollState.current.scrollWidth > 0) {
@@ -193,7 +176,7 @@ export const GanttChart = ({
     }
 
     let newLabel = '';
-    if (isMultiYearView) {
+    if (selectedRange === 'multiyear') {
       for (let i = yearMeta.length - 1; i >= 0; i--) {
         const y = yearMeta[i];
         if (scrollLeft >= y.offsetMonths * monthWidth) {
@@ -201,13 +184,13 @@ export const GanttChart = ({
           break;
         }
       }
-    } else if (isYearView) {
+    } else if (selectedRange === 'year') {
       const scrolledWeeks = Math.floor(scrollLeft / weekWidth);
       const currentWeek = weekCells.at(scrolledWeeks);
       if (currentWeek !== undefined) {
         newLabel = String(currentWeek.year);
       }
-    } else if (isQuarterView) {
+    } else if (selectedRange === 'quarter') {
       const scrolledCells = Math.floor(scrollLeft / quarterWidth);
       const currentCell = quarterCells.at(scrolledCells);
       if (currentCell !== undefined) {
@@ -242,9 +225,7 @@ export const GanttChart = ({
     }
   }, [
     isLoading,
-    isMultiYearView,
-    isYearView,
-    isQuarterView,
+    selectedRange,
     monthMeta,
     yearMeta,
     weekCells,
@@ -336,9 +317,7 @@ export const GanttChart = ({
 
           <Box ref={timelineHeaderRef} overflow="hidden" bg="#fafbfc">
             <GanttChartHeader
-              isMultiYearView={isMultiYearView}
-              isYearView={isYearView}
-              isQuarterView={isQuarterView}
+              selectedRange={selectedRange}
               monthMeta={monthMeta}
               yearMeta={yearMeta}
               quarterCells={quarterCells}

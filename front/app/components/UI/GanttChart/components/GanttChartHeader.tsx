@@ -10,12 +10,11 @@ import {
   YearMeta,
   QuarterCellMeta,
   WeekMeta,
+  TimeRangeOption,
 } from '../utils';
 
 interface GanttChartHeaderProps {
-  isMultiYearView: boolean;
-  isYearView: boolean;
-  isQuarterView: boolean;
+  selectedRange: TimeRangeOption;
   monthMeta: MonthMeta[];
   yearMeta: YearMeta[];
   quarterCells: QuarterCellMeta[];
@@ -32,9 +31,7 @@ interface GanttChartHeaderProps {
 }
 
 const GanttChartHeader: React.FC<GanttChartHeaderProps> = ({
-  isMultiYearView,
-  isYearView,
-  isQuarterView,
+  selectedRange,
   monthMeta,
   yearMeta,
   quarterCells,
@@ -49,6 +46,9 @@ const GanttChartHeader: React.FC<GanttChartHeaderProps> = ({
   getDurationInMonths,
   getDurationInDays,
 }) => {
+  const isMultiYearView = selectedRange === 'multiyear';
+  const isYearView = selectedRange === 'year';
+  const isQuarterView = selectedRange === 'quarter';
   return (
     <Box>
       {isMultiYearView ? (
