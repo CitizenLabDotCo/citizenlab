@@ -13,15 +13,18 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::IdeaPublished.create! }
     let_it_be(:input) { create(:idea, author: recipient) }
+    let_it_be(:activity) { create(:activity, item: input, action: 'published') }
     let_it_be(:command) do
-      activity = create(:activity, item: input, action: 'published')
       create(:idea_published_campaign).generate_commands(
         activity: activity,
         recipient: recipient
       ).first.merge({ recipient: recipient })
     end
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
     let_it_be(:body) { mail_body(mail) }
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to eq('Your idea has been published')
