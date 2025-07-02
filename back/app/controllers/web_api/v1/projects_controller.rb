@@ -11,7 +11,8 @@ class WebApi::V1::ProjectsController < ApplicationController
     policy_context[:include_hidden] = true if params[:include_hidden] == 'true'
 
     # Make include_unlisted available to the policy scope.
-    policy_context[:include_unlisted] = params[:include_unlisted]
+    policy_context[:apply_listed_scope] = true
+    policy_context[:include_unlisted] = params[:include_unlisted] != 'false'
 
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
@@ -64,7 +65,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # => [Project]
   def index_finished_or_archived
     # In this widget, we always want to exclude unlisted projects.
-    policy_context[:include_unlisted] = 'false'
+    policy_context[:apply_listed_scope] = true
+    policy_context[:include_unlisted] = false
 
     projects = policy_scope(Project)
     projects = ProjectsFinderService.new(projects, current_user, params).finished_or_archived
@@ -83,7 +85,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # ordered by the follow created_at (most recent first).
   def index_for_followed_item
     # In this widget, we always want to exclude unlisted projects.
-    policy_context[:include_unlisted] = 'false'
+    policy_context[:apply_listed_scope] = true
+    policy_context[:include_unlisted] = false
 
     projects = policy_scope(Project)
     projects = projects.not_draft
@@ -103,7 +106,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_with_active_participatory_phase
     # In this widget, we always want to exclude unlisted projects.
-    policy_context[:include_unlisted] = 'false'
+    policy_context[:apply_listed_scope] = true
+    policy_context[:include_unlisted] = false
 
     projects = policy_scope(Project)
     projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
@@ -128,7 +132,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Ordered by created_at, newest first.
   def index_for_areas
     # In this widget, we always want to exclude unlisted projects.
-    policy_context[:include_unlisted] = 'false'
+    policy_context[:apply_listed_scope] = true
+    policy_context[:include_unlisted] = false
 
     projects = policy_scope(Project)
     projects = ProjectsFinderService.new(projects, current_user, params).projects_for_areas
@@ -146,7 +151,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Ordered by created_at, newest first.
   def index_for_topics
     # In this widget, we always want to exclude unlisted projects.
-    policy_context[:include_unlisted] = 'false'
+    policy_context[:apply_listed_scope] = true
+    policy_context[:include_unlisted] = false
 
     projects = policy_scope(Project)
     projects = projects
@@ -163,6 +169,9 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def index_for_admin
+    # In this widget, we always want to exclude unlisted projects.
+    policy_context[:apply_listed_scope] = true
+
     projects = policy_scope(Project).not_hidden
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 

@@ -1,6 +1,40 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
+  def self.apply_listed_scope(scope, user, include_unlisted)
+    # Admins: if include_unlisted, return all projects,
+    # otherwise, return only listed projects.
+    if user&.admin?
+      if include_unlisted
+        return scope
+      else
+        return scope.where(unlisted: false)
+      end
+    end
+
+    # Moderators: if include_unlisted, return all listed projects +
+    # unlisted projects that the user can moderate.
+    # otherwise, return only listed projects.
+    if user&.project_or_folder_moderator?
+      if include_unlisted
+        scope = scope.joins(:admin_publication)
+
+        return scope.where(
+          '(projects.unlisted = FALSE) OR ' \
+          '(projects.unlisted = TRUE AND projects.id IN (?)) OR ' \
+          '(projects.unlisted = TRUE AND admin_publications.parent_id IN (?))',
+          user.moderatable_project_ids,
+          AdminPublication.where(publication_id: user.moderated_project_folder_ids).select(:id)
+        )
+      else
+        return scope.where(unlisted: false)
+      end
+    end
+
+    # Other: always return only listed projects.
+    scope.where(unlisted: false)
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       @scope = scope.includes(:admin_publication)
@@ -15,22 +49,15 @@ class ProjectPolicy < ApplicationPolicy
         .or(resolve_for_visitor)
         .or(resolve_for_normal_user)
 
-      # By default, we include unlisted projects,
-      # unless the context explicitly says not to.
-      # This is because there are a lot of policies
-      # that rely on this policy, and they seem to break
-      # when unlisted projects are not included.
+      if context[:apply_listed_scope]
+        moderator_scope = ProjectPolicy.apply_listed_scope(
+          moderator_scope,
+          user,
+          context[:include_unlisted]
+        )
+      end
 
-      # Also, even when this param says to
-      # include unlisted projects, only unlisted projects that
-      # the user can moderate will be included.
-      # So basically the parameter is only used in cases
-      # where it would be confusing for an admin/moderator to see unlisted projects
-      # that they can moderate, like when they are looking
-      # at the a homepage widget or the projects dropdown.
-      include_unlisted = context[:include_unlisted] != 'false'
- 
-      apply_listed_scope(moderator_scope, include_unlisted)
+      moderator_scope
     end
 
     private
@@ -48,42 +75,6 @@ class ProjectPolicy < ApplicationPolicy
       user_groups_visible = scope.user_groups_visible(user)
       user_groups_visible.not_draft
         .or(user_groups_visible.draft.where(preview_token: context[:project_preview_token]))
-    end
-
-    def apply_listed_scope(projects, include_unlisted)
-      scope = projects
-
-      # Admins: if include_unlisted, return all projects,
-      # otherwise, return only listed projects.
-      if user&.admin?
-        if include_unlisted
-          return scope
-        else
-          return scope.where(unlisted: false)
-        end
-      end
-
-      # Moderators: if include_unlisted, return all listed projects +
-      # unlisted projects that the user can moderate.
-      # otherwise, return only listed projects.
-      if user&.project_or_folder_moderator?
-        if include_unlisted
-          scope = scope.joins(:admin_publication)
-
-          return scope.where(
-            '(projects.unlisted = FALSE) OR ' \
-            '(projects.unlisted = TRUE AND projects.id IN (?)) OR ' \
-            '(projects.unlisted = TRUE AND admin_publications.parent_id IN (?))',
-            user.moderatable_project_ids,
-            AdminPublication.where(publication_id: user.moderated_project_folder_ids).select(:id)
-          )
-        else
-          return scope.where(unlisted: false)
-        end
-      end
-
-      # Other: always return only listed projects.
-      scope.where(unlisted: false)
     end
   end
 

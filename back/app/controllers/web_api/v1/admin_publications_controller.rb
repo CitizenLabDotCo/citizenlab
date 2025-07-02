@@ -6,7 +6,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
   def index
     # Make include_unlisted available to the policy scope.
-    policy_context[:include_unlisted] = params[:include_unlisted]
+    policy_context[:apply_listed_scope] = true
+    policy_context[:include_unlisted] = params[:include_unlisted] != 'false'
 
     admin_publications = policy_scope(AdminPublication.includes(:parent))
     admin_publications = admin_publication_filterer.filter(admin_publications, params.merge(current_user: current_user))
