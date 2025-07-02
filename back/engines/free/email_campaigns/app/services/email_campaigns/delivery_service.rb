@@ -82,6 +82,20 @@ module EmailCampaigns
     #  called on every activity
     def send_on_activity(activity)
       campaign_candidates = Campaign.where(type: campaign_types)
+
+      # Filtering global campaigns or context campaigns. Context campaigns
+      # can only be triggered by activity.
+      campaign_candidates = campaign_candidates.select do |campaign| # TODO: Test very well!
+        !campaign.context || campaign.supports_context?(campaign.context)
+      end
+      campaign_candidates = campaign_candidates.select do |campaign|
+        if campaign.context
+          campaign.activity_context(activity) == campaign.context
+        else
+          campaign_candidates.select(&:context).map(&:type).exclude?(campaign.type)
+        end
+      end
+
       apply_send_pipeline(campaign_candidates, activity: activity)
     end
 

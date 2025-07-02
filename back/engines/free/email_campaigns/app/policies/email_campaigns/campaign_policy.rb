@@ -12,7 +12,7 @@ module EmailCampaigns
 
       def resolve
         if user&.active? && UserRoleService.new.can_moderate?(campaign_context, user)
-          scope.all
+          scope.where(context: campaign_context)
         else
           scope.none
         end

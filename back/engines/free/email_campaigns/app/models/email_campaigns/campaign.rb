@@ -182,13 +182,13 @@ module EmailCampaigns
     end
 
     # Necessary to preserve original behavior of the context enabled toggle
-    # def enabled
-    #   if context
-    #     super && global_campaign&.enabled
-    #   else
-    #     super
-    #   end
-    # end
+    def enabled # TODO: Test
+      if context && !manual?
+        super && global_campaign&.enabled
+      else
+        super
+      end
+    end
 
     def extra_mailgun_variables
       super || {}
@@ -217,7 +217,7 @@ module EmailCampaigns
     end
 
     def global_campaign
-      @global_campaign ||= self.class.find_by(context: nil, type: self.class.name)
+      @global_campaign ||= !manual? && self.class.find_by(context: nil, type: self.class.name)
     end
   end
 end

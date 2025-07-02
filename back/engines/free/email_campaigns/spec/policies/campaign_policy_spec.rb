@@ -3,11 +3,12 @@
 require 'rails_helper'
 
 describe EmailCampaigns::CampaignPolicy do
-  subject { described_class.new(user, campaign) }
+  subject { described_class.new(user, context_campaign) }
 
-  let(:scope) { EmailCampaigns::CampaignPolicy::Scope.new(user, campaign.class, campaign.context) }
+  let(:scope) { EmailCampaigns::CampaignPolicy::Scope.new(user, context_campaign.class, context_campaign.context) }
   let(:context) { create(:project) }
-  let!(:campaign) { create(:comment_on_your_comment_campaign, context: context) }
+  let!(:global_campaign) { create(:comment_on_your_comment_campaign, context: nil) }
+  let!(:context_campaign) { create(:comment_on_your_comment_campaign, context: context) }
 
   context 'for a visitor' do
     let(:user) { nil }

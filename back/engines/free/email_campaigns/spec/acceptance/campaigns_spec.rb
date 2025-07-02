@@ -47,19 +47,19 @@ resource 'Campaigns' do
       example_request 'List all campaigns' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 7
+        expect(json_response[:data].size).to eq 6
       end
 
       example 'List all campaigns that are not specific type(s)' do
         do_request(without_campaign_names: %w[manual])
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 2
       end
 
       example 'List all manual campaigns' do
         do_request(manual: true)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].size).to eq 4
       end
 
       example 'List all automatic campaigns' do
@@ -72,7 +72,7 @@ resource 'Campaigns' do
         create_list(:delivery, 5, campaign: @manual_campaigns.first)
         do_request(manual: true)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].size).to eq 4
 
         sent_campaign = json_response[:data].find { |c| c[:id] == @manual_campaigns.first.id }
         unsent_campaign = json_response[:data].find { |c| c[:id] == @manual_campaigns.second.id }
@@ -109,6 +109,7 @@ resource 'Campaigns' do
     context 'Listing all campaigns scoped under a context' do
       let!(:manual_global) { create(:manual_campaign) }
       let!(:manual_project) { create(:manual_project_participants_campaign) }
+      let!(:global_phase) { create(:project_phase_started_campaign, context: nil) }
       let!(:automated_phase) { create(:project_phase_started_campaign, context: create(:phase)) }
 
       get '/web_api/v1/projects/:context_id/campaigns' do
@@ -122,6 +123,7 @@ resource 'Campaigns' do
         end
 
         example 'List only campaigns supported by the context', document: false do
+          create(:comment_on_idea_you_follow_campaign, context: nil)
           create(:comment_on_idea_you_follow_campaign, context: manual_project.context)
 
           do_request
@@ -294,7 +296,7 @@ resource 'Campaigns' do
 
           context 'automated campaigns' do
             let(:phase_id) { create(:phase, project_id: @user.roles.first['project_id']).id }
-            let(:campaign) { build(:project_phase_started_campaign) }
+            let!(:campaign) { create(:project_phase_started_campaign, context: nil) }
             let(:campaign_name) { 'project_phase_started' }
             # let(:subject_multiloc) { campaign.subject_multiloc }
             # let(:body_multiloc) { campaign.body_multiloc }
@@ -396,8 +398,9 @@ resource 'Campaigns' do
 
       context 'context campaigns' do
         let(:phase) { create(:ideation_phase) }
-        let(:campaign) { create(:project_phase_started_campaign, enabled: false, context: phase) }
-        let(:id) { campaign.id }
+        let!(:global_campaign) { create(:project_phase_started_campaign, enabled: true, context: nil) }
+        let(:context_campaign) { create(:project_phase_started_campaign, enabled: false, context: phase) }
+        let(:id) { context_campaign.id }
         let(:enabled) { true }
 
         context 'when moderator' do
@@ -405,7 +408,7 @@ resource 'Campaigns' do
 
           example_request 'Enable the campaign' do
             assert_status 200
-            expect(campaign.reload.enabled).to be true
+            expect(context_campaign.reload.enabled).to be true
           end
         end
 
