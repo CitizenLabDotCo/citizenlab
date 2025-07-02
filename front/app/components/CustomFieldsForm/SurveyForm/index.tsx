@@ -37,7 +37,11 @@ const SurveyForm = ({
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const { data: draftIdea, isLoading } = useDraftIdeaByPhaseId(phaseId);
+  const {
+    data: draftIdea,
+    isLoading,
+    refetch,
+  } = useDraftIdeaByPhaseId(phaseId);
 
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
@@ -53,20 +57,14 @@ const SurveyForm = ({
 
   const onSubmit = async (formValues: FormValues) => {
     const isSubmitPage = currentPageNumber === nestedPagesData.length - 2;
-    const isLastPage = currentPageNumber === nestedPagesData.length - 1;
-
-    if (isLastPage) {
-      // If the user is on the last page, the form has already been submitted
-      return;
-    }
+    const draftIdea = await refetch(); // Refetch the draft idea to ensure we have the latest data
 
     if (!authUser && !isSubmitPage) {
       // If the user is not authenticated and is not on the submit page, do not save the draft idea
       return;
     }
-
     // The back-end initially returns a draft idea without an ID
-    if (!draftIdea?.data.id) {
+    if (!draftIdea.data?.data.id) {
       // If the user is an admin or project moderator, we allow them to post to a specific phase
       const phase_ids =
         project && phaseId && canModerateProject(project.data, authUser)
@@ -83,7 +81,7 @@ const SurveyForm = ({
       updateSearchParams({ idea_id: isSubmitPage ? idea.data.id : undefined });
     } else {
       await updateIdea({
-        id: draftIdea.data.id,
+        id: draftIdea.data.data.id,
         requestBody: {
           ...formValues,
           project_id: projectId,
@@ -91,7 +89,7 @@ const SurveyForm = ({
         },
       });
       updateSearchParams({
-        idea_id: isSubmitPage ? draftIdea.data.id : undefined,
+        idea_id: isSubmitPage ? draftIdea.data.data.id : undefined,
       });
     }
 
