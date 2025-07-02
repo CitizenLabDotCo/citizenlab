@@ -91,8 +91,6 @@ const FormBuilderSettings = ({
   const tabActiveBorder = `4px solid ${colors.primary}`;
   const fieldType = watch(`customFields.${field.index}.input_type`);
 
-  const fieldHasLogic = field.logic.rules && field.logic.rules.length > 0;
-
   const getShowTabbedSettings = () => {
     const isFieldWithLogicTab = [
       'linear_scale',
@@ -101,7 +99,8 @@ const FormBuilderSettings = ({
       'page',
     ].includes(fieldType);
 
-    // Only show logic tab for multiselect/multiselect_image if they already have logic
+    // For backwards compatibility, we only show the logic tab for multiselect/multiselect_image if they already have logic.
+    const fieldHasLogic = field.logic.rules && field.logic.rules.length > 0;
     const isMultiselectWithLogic =
       ['multiselect', 'multiselect_image'].includes(fieldType) && fieldHasLogic;
 
