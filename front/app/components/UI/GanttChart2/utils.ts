@@ -2,11 +2,11 @@ import { RefObject } from 'react';
 
 import {
   startOfDay,
+  endOfDay,
   startOfMonth,
   endOfMonth,
   eachDayOfInterval,
   differenceInCalendarDays,
-  differenceInCalendarMonths,
   addMonths,
   subMonths,
   addYears,
@@ -25,6 +25,8 @@ import {
   differenceInCalendarWeeks,
   getDaysInMonth,
   setDate,
+  getDate,
+  getDay,
 } from 'date-fns';
 
 export type TimeRangeOption = 'month' | 'quarter' | 'year' | 'multiyear';
@@ -38,7 +40,7 @@ export const monthWidth = 50;
 export const dayWidth = 40;
 export const leftColumnWidth = 260;
 
-// --- NEW GROUPED TIME CELL STRUCTURE ---
+// --- GROUPED TIME CELL STRUCTURE ---
 export type SubCell = {
   key: string;
   label: string;
@@ -53,14 +55,6 @@ export type TimeGroup = {
   subCells: SubCell[];
 };
 
-// --- REFACTORED TIME GROUP GENERATOR ---
-
-/**
- * A generic, type-safe function to group cells.
- * @param getGroupKey - Function to get the unique key for a group (e.g., '2025-02').
- * @param getGroupLabel - Function to get the display label for a group (e.g., 'February 2025').
- * @param getSubCellLabel - Function to get the display label for a sub-cell (e.g., '15').
- */
 const createGroupGenerator =
   <T extends Date>(
     getGroupKey: (date: T) => string,
@@ -69,10 +63,8 @@ const createGroupGenerator =
   ) =>
   (cells: T[], getCellWidth: (cell: T) => number): TimeGroup[] => {
     if (!cells.length) return [];
-
     const groups: TimeGroup[] = [];
     let currentGroup: TimeGroup | null = null;
-
     for (const cell of cells) {
       const groupKey = getGroupKey(cell);
       if (!currentGroup || currentGroup.key !== groupKey) {
@@ -84,40 +76,31 @@ const createGroupGenerator =
         };
         groups.push(currentGroup);
       }
-
       const subCell: SubCell = {
         key: cell.toISOString(),
         label: getSubCellLabel(cell),
         width: getCellWidth(cell),
         date: cell,
       };
-
       currentGroup.subCells.push(subCell);
       currentGroup.totalWidth += subCell.width;
     }
-
     return groups;
   };
 
-// --- Key, Group Label, and Sub-Cell Label Generators ---
 const getDayMonthKey = (date: Date) => format(date, 'yyyy-MM');
 const getDayMonthLabel = (date: Date) => format(date, 'MMMM yyyy');
 const getDaySubCellLabel = (date: Date) => format(date, 'd');
-
 const getWeekYearKey = (date: Date) => getISOWeekYear(date).toString();
 const getWeekYearLabel = (date: Date) => getISOWeekYear(date).toString();
 const getWeekSubCellLabel = (date: Date) => getISOWeek(date).toString();
-
 const getQuarterMonthKey = (date: Date) => format(date, 'yyyy-MM');
-// UPDATED: Changed 'MMMM' to 'MMMM yyyy' to include the year in the quarter view label.
 const getQuarterMonthLabel = (date: Date) => format(date, 'MMMM yyyy');
 const getQuarterSubCellLabel = (date: Date) => format(date, 'd');
-
 const getMonthYearKey = (date: Date) => getYear(date).toString();
 const getMonthYearLabel = (date: Date) => getYear(date).toString();
 const getMonthSubCellLabel = (date: Date) => (date.getMonth() + 1).toString();
 
-// --- Generator Instantiation (Passing all required functions) ---
 export const groupDayCellsByMonth = createGroupGenerator(
   getDayMonthKey,
   getDayMonthLabel,
@@ -139,10 +122,9 @@ export const groupMonthCellsByYear = createGroupGenerator(
   getMonthSubCellLabel
 );
 
-// --- FLAT CELL LIST GENERATORS (for item positioning) ---
+// --- FLAT CELL LIST GENERATORS ---
 export const getDayCells = (startDate: Date, endDate: Date) =>
   eachDayOfInterval({ start: startDate, end: endDate });
-
 export const getWeekCells = (startDate: Date, endDate: Date) => {
   const weeks: Date[] = [];
   let current = startOfWeek(startDate, { weekStartsOn: 1 });
@@ -152,7 +134,6 @@ export const getWeekCells = (startDate: Date, endDate: Date) => {
   }
   return weeks;
 };
-
 export const getQuarterCells = (startDate: Date, endDate: Date) => {
   const cells: Date[] = [];
   let currentMonthDate = startOfMonth(startDate);
@@ -169,7 +150,6 @@ export const getQuarterCells = (startDate: Date, endDate: Date) => {
   }
   return cells;
 };
-
 export const getMonthCells = (startDate: Date, endDate: Date) => {
   const cells: Date[] = [];
   let current = startOfMonth(startDate);
@@ -180,42 +160,87 @@ export const getMonthCells = (startDate: Date, endDate: Date) => {
   return cells;
 };
 
-// --- GANTT ITEM OFFSET/DURATION CALCULATORS ---
-export const getOffsetInDays = (timelineStart: Date, eventStart: Date) =>
+// --- PRECISION CALCULATIONS ---
+// For "Month" (daily) view, precision is already 1 day.
+export const getPreciseOffsetInDays = (timelineStart: Date, eventStart: Date) =>
   differenceInCalendarDays(eventStart, timelineStart);
-export const getDurationInDays = (start: Date, end?: Date) =>
-  end ? differenceInCalendarDays(end, start) + 1 : 1;
+export const getPreciseDurationInDays = (start: Date, end: Date) =>
+  differenceInCalendarDays(end, start) + 1;
 
-export const getOffsetInMonths = (timelineStart: Date, eventStart: Date) =>
-  differenceInMonths(startOfDay(eventStart), startOfDay(timelineStart));
-export const getDurationInMonths = (start: Date, end?: Date) =>
-  end ? differenceInCalendarMonths(end, start) + 1 : 1;
+// For "Multi-year" (monthly) view.
+export const getPreciseOffsetInMonths = (
+  timelineStart: Date,
+  eventStart: Date
+) => {
+  const baseOffset = differenceInMonths(
+    startOfMonth(eventStart),
+    startOfMonth(timelineStart)
+  );
+  const dayOfMonth = getDate(eventStart);
+  const daysInMonth = getDaysInMonth(eventStart);
+  const fraction = (dayOfMonth - 1) / daysInMonth;
+  return baseOffset + fraction;
+};
+export const getPreciseDurationInMonths = (
+  start: Date,
+  end: Date,
+  timelineStart: Date
+) => {
+  return (
+    getPreciseOffsetInMonths(timelineStart, endOfDay(end)) -
+    getPreciseOffsetInMonths(timelineStart, startOfDay(start))
+  );
+};
 
-export const getOffsetInWeeks = (timelineStart: Date, eventStart: Date) =>
-  differenceInCalendarWeeks(eventStart, timelineStart, { weekStartsOn: 1 });
-export const getDurationInWeeks = (start: Date, end?: Date) =>
-  end ? differenceInCalendarWeeks(end, start, { weekStartsOn: 1 }) + 1 : 1;
+// For "Year" (weekly) view.
+export const getPreciseOffsetInWeeks = (
+  timelineStart: Date,
+  eventStart: Date
+) => {
+  const baseOffset = differenceInCalendarWeeks(eventStart, timelineStart, {
+    weekStartsOn: 1,
+  });
+  // getDay returns 0 for Sunday, 1 for Monday etc. We want Monday to be 0.
+  const dayOfWeek = (getDay(eventStart) + 6) % 7;
+  const fraction = dayOfWeek / 7;
+  return baseOffset + fraction;
+};
+export const getPreciseDurationInWeeks = (
+  start: Date,
+  end: Date,
+  timelineStart: Date
+) => {
+  return (
+    getPreciseOffsetInWeeks(timelineStart, endOfDay(end)) -
+    getPreciseOffsetInWeeks(timelineStart, startOfDay(start))
+  );
+};
 
-export const getOffsetInQuarters = (cells: Date[], eventStart: Date) => {
+// For "Quarter" (3-day segments) view.
+export const getPreciseOffsetInQuarters = (cells: Date[], eventStart: Date) => {
   const eventDay = startOfDay(eventStart);
-  const index = cells.findIndex(
+  const cellIndex = cells.findIndex(
     (cell) =>
       eventDay >= startOfDay(cell) && eventDay <= startOfDay(addDays(cell, 2))
   );
-  return Math.max(0, index);
+  if (cellIndex === -1) return 0;
+
+  const cellStartDate = cells[cellIndex];
+  const daysIntoCell = differenceInCalendarDays(eventDay, cellStartDate);
+  const fraction = daysIntoCell / 3; // Each cell is 3 days wide
+  return cellIndex + fraction;
 };
-export const getDurationInQuarters = (
+export const getPreciseDurationInQuarters = (
   cells: Date[],
   start: Date,
-  end?: Date
+  end: Date
 ) => {
-  if (!end) return 1;
-  const startIndex = getOffsetInQuarters(cells, start);
-  const endIndex = getOffsetInQuarters(cells, end);
-  return endIndex - startIndex + 1;
+  return (
+    getPreciseOffsetInQuarters(cells, endOfDay(end)) -
+    getPreciseOffsetInQuarters(cells, startOfDay(start))
+  );
 };
 
-// --- GENERAL HELPERS ---
 export const getTimeRangeDates = (
   range: TimeRangeOption,
   today: Date

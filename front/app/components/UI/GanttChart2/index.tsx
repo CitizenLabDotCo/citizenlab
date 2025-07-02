@@ -27,14 +27,14 @@ import {
   getWeekCells,
   getQuarterCells,
   getMonthCells,
-  getOffsetInDays,
-  getDurationInDays,
-  getOffsetInMonths,
-  getDurationInMonths,
-  getOffsetInWeeks,
-  getDurationInWeeks,
-  getOffsetInQuarters,
-  getDurationInQuarters,
+  getPreciseOffsetInDays,
+  getPreciseDurationInDays,
+  getPreciseOffsetInMonths,
+  getPreciseDurationInMonths,
+  getPreciseOffsetInWeeks,
+  getPreciseDurationInWeeks,
+  getPreciseOffsetInQuarters,
+  getPreciseDurationInQuarters,
   quarterWidth,
   weekWidth,
   timelineHeaderHeight,
@@ -54,7 +54,7 @@ export const GanttChart = ({
   onItemLabelClick,
 }: GanttChartProps) => {
   const today = useMemo(() => new Date(), []);
-  const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('month');
+  const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
 
   const { startDate: initialStart, endDate: initialEnd } = getTimeRangeDates(
     selectedRange,
@@ -79,8 +79,8 @@ export const GanttChart = ({
         getGroups: (start: Date, end: Date) =>
           groupDayCellsByMonth(getDayCells(start, end), () => dayWidth),
         getFlatCells: getDayCells,
-        getOffset: (date: Date) => getOffsetInDays(startDate, date),
-        getDuration: getDurationInDays,
+        getOffset: (date: Date) => getPreciseOffsetInDays(startDate, date),
+        getDuration: (s: Date, e: Date) => getPreciseDurationInDays(s, e),
       },
       quarter: {
         unitWidth: quarterWidth,
@@ -91,25 +91,27 @@ export const GanttChart = ({
           ),
         getFlatCells: getQuarterCells,
         getOffset: (cells: Date[], date: Date) =>
-          getOffsetInQuarters(cells, date),
+          getPreciseOffsetInQuarters(cells, date),
         getDuration: (cells: Date[], s: Date, e: Date) =>
-          getDurationInQuarters(cells, s, e),
+          getPreciseDurationInQuarters(cells, s, e),
       },
       year: {
         unitWidth: weekWidth,
         getGroups: (start: Date, end: Date) =>
           groupWeekCellsByYear(getWeekCells(start, end), () => weekWidth),
         getFlatCells: getWeekCells,
-        getOffset: (date: Date) => getOffsetInWeeks(startDate, date),
-        getDuration: getDurationInWeeks,
+        getOffset: (date: Date) => getPreciseOffsetInWeeks(startDate, date),
+        getDuration: (s: Date, e: Date) =>
+          getPreciseDurationInWeeks(s, e, startDate),
       },
       multiyear: {
         unitWidth: monthWidth,
         getGroups: (start: Date, end: Date) =>
           groupMonthCellsByYear(getMonthCells(start, end), () => monthWidth),
         getFlatCells: getMonthCells,
-        getOffset: (date: Date) => getOffsetInMonths(startDate, date),
-        getDuration: getDurationInMonths,
+        getOffset: (date: Date) => getPreciseOffsetInMonths(startDate, date),
+        getDuration: (s: Date, e: Date) =>
+          getPreciseDurationInMonths(s, e, startDate),
       },
     }),
     [startDate]
@@ -132,26 +134,32 @@ export const GanttChart = ({
     [startDate, endDate, getFlatCells]
   );
 
-  const getOffsetForView = (date: Date) => {
-    if (selectedRange === 'quarter') {
-      return (getOffset as (cells: Date[], date: Date) => number)(
-        flatTimeCells,
-        date
-      );
-    }
-    return (getOffset as (date: Date) => number)(date);
-  };
+  const getOffsetForView = useCallback(
+    (date: Date) => {
+      if (selectedRange === 'quarter') {
+        return (getOffset as (cells: Date[], date: Date) => number)(
+          flatTimeCells,
+          date
+        );
+      }
+      return (getOffset as (date: Date) => number)(date);
+    },
+    [selectedRange, getOffset, flatTimeCells]
+  );
 
-  const getDurationForView = (start: Date, end: Date) => {
-    if (selectedRange === 'quarter') {
-      return (getDuration as (cells: Date[], start: Date, end: Date) => number)(
-        flatTimeCells,
-        start,
-        end
-      );
-    }
-    return (getDuration as (start: Date, end: Date) => number)(start, end);
-  };
+  const getDurationForView = useCallback(
+    (start: Date, end: Date) => {
+      if (selectedRange === 'quarter') {
+        return (getDuration as (cells: Date[], s: Date, e: Date) => number)(
+          flatTimeCells,
+          start,
+          end
+        );
+      }
+      return (getDuration as (s: Date, e: Date) => number)(start, end);
+    },
+    [selectedRange, getDuration, flatTimeCells]
+  );
 
   const todayOffset = useMemo(() => {
     if (!showTodayLine) return undefined;
@@ -171,7 +179,6 @@ export const GanttChart = ({
   const onTimelineScroll = useCallback(() => {
     if (!timelineBodyRef.current || isLoading) return;
     const { scrollLeft, scrollWidth, clientWidth } = timelineBodyRef.current;
-
     let cumulativeWidth = 0;
     for (const group of timeGroups) {
       cumulativeWidth += group.totalWidth;
@@ -182,14 +189,12 @@ export const GanttChart = ({
         break;
       }
     }
-
     const buffer = 800;
     if (scrollLeft + clientWidth >= scrollWidth - buffer) {
       setIsLoading(true);
       setEndDate((prev) => addMonths(prev, 3));
       setTimeout(() => setIsLoading(false), 50);
     }
-
     if (scrollLeft <= buffer) {
       setIsLoading(true);
       scrollState.current = { scrollLeft, scrollWidth };
@@ -216,7 +221,6 @@ export const GanttChart = ({
     setEndDate(newEnd);
   };
 
-  // This effect handles the initial centering and re-centering when the date range changes.
   useEffect(() => {
     if (rangeChanged.current) {
       const timer = setTimeout(() => {
@@ -297,22 +301,19 @@ export const GanttChart = ({
             {showTodayLine && todayOffset !== undefined && (
               <Box
                 position="absolute"
-                // The line itself starts below the header
                 top={`${timelineHeaderHeight}px`}
-                // The line's height fills the body area
                 height={`calc(100% - ${timelineHeaderHeight}px)`}
                 width="2px"
                 bg={colors.primary}
                 zIndex="2"
                 style={{
-                  left: `${todayOffset * unitW + unitW / 2 - 1}px`, // To show the line in the middle of the cell
+                  left: `${todayOffset * unitW - 1}px`, // Center the line on the precise start of the day
                   pointerEvents: 'none',
                 }}
               >
-                {/* The circle sits on top of the line, at the header boundary */}
                 <Box
                   position="absolute"
-                  top="-5px" // Positions the circle halfway across the boundary
+                  top="-5px"
                   left="-4px"
                   width="10px"
                   height="10px"
