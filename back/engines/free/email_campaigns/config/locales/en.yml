@@ -163,6 +163,7 @@ en:
       yesterday: Yesterday
     community_monitor_report:
       subject: 'A new community monitor report is available'
+      preheader: 'A new community monitor report is available'
       title: 'A new community monitor report is available'
       text_introduction: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
       cta_report_button: 'View report'
