@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
-import { TimeGroup, timelineHeaderHeight } from './utils';
+import { TimeGroup, timelineHeaderHeight } from '../utils';
 
 /**
  * Renders a single major group in the timeline header (e.g., "February").

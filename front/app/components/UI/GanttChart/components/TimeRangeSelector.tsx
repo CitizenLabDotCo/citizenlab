@@ -4,8 +4,9 @@ import { Box, Button, colors, Select } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { TimeRangeOption } from '../utils';
+
 import messages from './messages';
-import { TimeRangeOption } from './utils';
 
 type TimeRangeSelectorProps = {
   selectedRange: TimeRangeOption;

@@ -3,10 +3,11 @@ import React from 'react';
 import { Box, Tooltip, Text, colors } from '@citizenlab/cl2-component-library';
 import { max, min } from 'date-fns';
 
-import GanttItemIconBar from './GanttItemIconBar';
-import { rowHeight } from './utils';
+import { rowHeight } from '../utils';
 
-import type { GanttItem } from './types';
+import GanttItemIconBar from './GanttItemIconBar';
+
+import type { GanttItem } from '../types';
 
 interface GanttItemProps {
   item: GanttItem;

@@ -2,9 +2,10 @@ import React from 'react';
 
 import { Box, Text, colors, Button } from '@citizenlab/cl2-component-library';
 
+import { GanttItem } from '../types';
+import { rowHeight, leftColumnWidth } from '../utils';
+
 import GanttItemIconBar from './GanttItemIconBar';
-import { GanttItem } from './types';
-import { rowHeight, leftColumnWidth } from './utils';
 
 interface GanttChartLeftColumnProps {
   items: GanttItem[];
@@ -25,7 +26,7 @@ const GanttChartLeftColumn: React.FC<GanttChartLeftColumnProps> = ({
       borderRight={`1px solid ${colors.grey300}`}
       bg={colors.white}
     >
-      {items.map((item, index) => (
+      {items.map((item) => (
         <Box
           key={item.id}
           borderBottom={`1px solid ${colors.grey300}`}

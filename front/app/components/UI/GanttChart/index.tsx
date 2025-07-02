@@ -10,10 +10,10 @@ import React, {
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { addMonths, subMonths } from 'date-fns';
 
-import GanttChartLeftColumn from './GanttChartLeftColumn';
-import GroupedTimeline from './GroupedTimeline';
-import TimelineItems from './TimelineItems';
-import TimeRangeSelector from './TimeRangeSelector';
+import GanttChartLeftColumn from './components/GanttChartLeftColumn';
+import GroupedTimeline from './components/GroupedTimeline';
+import TimelineItems from './components/TimelineItems';
+import TimeRangeSelector from './components/TimeRangeSelector';
 import { GanttChartProps } from './types';
 import {
   TimeRangeOption,

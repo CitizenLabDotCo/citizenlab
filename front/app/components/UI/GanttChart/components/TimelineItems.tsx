@@ -2,10 +2,11 @@ import React, { ReactNode } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import GanttItemComponent from './GanttItem';
-import { rowHeight, timelineHeaderHeight } from './utils';
+import { rowHeight, timelineHeaderHeight } from '../utils';
 
-import type { GanttItem } from './types';
+import GanttItemComponent from './GanttItem';
+
+import type { GanttItem } from '../types';
 
 interface TimelineItemsProps {
   items: GanttItem[];
