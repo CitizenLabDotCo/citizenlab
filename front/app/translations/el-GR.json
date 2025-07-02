@@ -160,6 +160,7 @@
   "app.components.CustomFieldsForm.imageRequired": "Η εικόνα απαιτείται",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Απαιτείται τουλάχιστον {numPoints} σημεία χάρτη.",
   "app.components.CustomFieldsForm.notPublic1": "*Η απάντηση αυτή θα κοινοποιηθεί μόνο στους διαχειριστές του έργου και όχι στο κοινό.",
+  "app.components.CustomFieldsForm.otherArea": "Κάπου αλλού",
   "app.components.CustomFieldsForm.progressBarLabel": "Πρόοδος",
   "app.components.CustomFieldsForm.removeAnswer": "Αφαίρεση απάντησης",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Επιλέξτε όσα θέλετε",
