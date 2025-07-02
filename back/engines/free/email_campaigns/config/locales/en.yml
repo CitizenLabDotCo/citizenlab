@@ -90,6 +90,7 @@ en:
       author_display_name: 'Jane Doe'
       project_title: 'Example project'
       comment_body: 'This is an example comment used for previewing the content of emails. This is not real content.'
+      comment_deleted_reason: 'Your comment was considered inappropriate.'
       idea_title: 'Example Idea'
       proposal_title: 'Example Proposal'
     footer:
