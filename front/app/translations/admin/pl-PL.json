@@ -891,7 +891,7 @@
   "app.containers.Admin.emails.send": "Wyślij",
   "app.containers.Admin.emails.sendNowButton": "Wyślij teraz",
   "app.containers.Admin.emails.sendTestEmailButton": "Wyślij mi maila testowego",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Po kliknięciu tego linku, na Twój adres e-mail zostanie wysłany tylko testowy e-mail. Dzięki temu możesz sprawdzić, jak e-mail wygląda w rzeczywistości.",
+  "app.containers.Admin.emails.sendTestEmailTooltip2": "Po kliknięciu tego łącza testowa wiadomość e-mail zostanie wysłana wyłącznie na Twój adres e-mail. Dzięki temu możesz sprawdzić, jak wygląda wiadomość e-mail w \"prawdziwym życiu\".",
   "app.containers.Admin.emails.senderRecipients": "Nadawca i odbiorcy",
   "app.containers.Admin.emails.sending": "Wysyłanie",
   "app.containers.Admin.emails.sent": "Wysłano",
