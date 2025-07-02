@@ -280,8 +280,8 @@ en:
       today: Today
       yesterday: Yesterday
     comment_on_your_comment:
-      cta_reply_to: 'Reply to %{firstName}'
-      event_description: '%{authorNameFull} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorName}.'
+      cta_reply_to: 'Reply to %{authorFirstName}'
+      event_description: '%{authorName} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorFirstName}.'
       subject: 'You have received a reply on your comment on the platform of %{organizationName}'
       main_header: '%{authorName} replied to your comment'
       preheader: '%{authorName} replied to your comment on %{organizationName}''s platform'

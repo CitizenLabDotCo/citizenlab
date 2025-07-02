@@ -11,4 +11,4 @@
   </mj-column>
 </mj-section>
 
-<%= render partial: 'application/cta_button', locals: { href: event.comment_url, message: format_message('cta_reply_to', values: {firstName: event.initiating_user_first_name&.capitalize}) } %>
+<%= render partial: 'application/cta_button', locals: { href: event.comment_url, message: cta_button_text } %>
