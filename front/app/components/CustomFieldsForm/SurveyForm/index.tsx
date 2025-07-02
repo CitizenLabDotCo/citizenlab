@@ -53,11 +53,18 @@ const SurveyForm = ({
 
   const onSubmit = async (formValues: FormValues) => {
     const isSubmitPage = currentPageNumber === nestedPagesData.length - 2;
+    const isLastPage = currentPageNumber === nestedPagesData.length - 1;
+
+    if (isLastPage) {
+      // If the user is on the last page, the form has already been submitted
+      return;
+    }
 
     if (!authUser && !isSubmitPage) {
       // If the user is not authenticated and is not on the submit page, do not save the draft idea
       return;
     }
+
     // The back-end initially returns a draft idea without an ID
     if (!draftIdea?.data.id) {
       // If the user is an admin or project moderator, we allow them to post to a specific phase
