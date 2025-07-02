@@ -82,7 +82,6 @@ const ReportBuilderToolbox = ({
     {
       publicationStatuses: ['published', 'archived'],
       canModerate: true,
-      includeUnlisted: true,
     },
     {
       enabled: userIsModerator,

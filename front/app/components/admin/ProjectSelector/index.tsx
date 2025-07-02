@@ -26,7 +26,6 @@ const ProjectSelector = ({ onChange, selectedProjectIds, title }: Props) => {
   const { data: projects } = useProjects({
     publicationStatuses: PUBLICATION_STATUSES,
     canModerate: true,
-    includeUnlisted: true,
   });
 
   const handleOnChange = (newProjectIds: string[]) => {
