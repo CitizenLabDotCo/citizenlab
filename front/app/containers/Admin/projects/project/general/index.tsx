@@ -568,7 +568,7 @@ const AdminProjectsProjectGeneral = () => {
           />
 
           <UnlistedInput
-            listed={projectAttributesDiff.unlisted !== true}
+            listed={projectAttrs.unlisted !== true}
             onChange={handleUnlistedOnChange}
           />
 
