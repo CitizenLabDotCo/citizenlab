@@ -24,7 +24,7 @@ class AdminPublicationPolicy < ApplicationPolicy
           scope = ProjectPolicy.apply_listed_scope(
             scope,
             user,
-            context[:include_unlisted]
+            context[:include_unlisted] != false
           )
         end
 

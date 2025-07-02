@@ -53,7 +53,7 @@ class ProjectPolicy < ApplicationPolicy
         moderator_scope = ProjectPolicy.apply_listed_scope(
           moderator_scope,
           user,
-          context[:include_unlisted]
+          context[:include_unlisted] != false
         )
       end
 
