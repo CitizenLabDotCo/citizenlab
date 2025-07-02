@@ -48,17 +48,13 @@ const PinnedProjects = () => {
 };
 
 const PinnedProjectsWrapper = () => {
-  const { status, countryCode } = useCountryCodeSupportedInProjectLibrary();
+  const countryCode = useCountryCodeSupportedInProjectLibrary();
 
   useEffect(() => {
-    if (status === 'supported') {
+    if (countryCode) {
       setRansackParam('q[pin_country_code_eq]', countryCode);
     }
-  }, [status, countryCode]);
-
-  if (status === 'loading') {
-    return null;
-  }
+  }, [countryCode]);
 
   return <PinnedProjects />;
 };

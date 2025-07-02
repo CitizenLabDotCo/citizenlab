@@ -47,17 +47,13 @@ const Country = () => {
 };
 
 const CountryWrapper = () => {
-  const { status, countryCode } = useCountryCodeSupportedInProjectLibrary();
+  const countryCode = useCountryCodeSupportedInProjectLibrary();
 
   useEffect(() => {
-    if (status === 'supported') {
+    if (countryCode) {
       setRansackParam('q[tenant_country_code_in]', [countryCode]);
     }
-  }, [status, countryCode]);
-
-  if (status === 'loading') {
-    return null;
-  }
+  }, [countryCode]);
 
   return <Country />;
 };

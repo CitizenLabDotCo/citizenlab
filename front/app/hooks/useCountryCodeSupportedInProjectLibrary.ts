@@ -24,11 +24,11 @@ const useCountryCodeSupportedInProjectLibrary = () => {
   }, [error, fetchedWithError]);
 
   if (fetchedWithError) {
-    return { status: 'error', countryCode: null } as const;
+    return null;
   }
 
   if (!projectLibraryCountries || !country_code) {
-    return { status: 'loading', countryCode: null } as const;
+    return null;
   }
 
   const countryCodeSupported = (() => {
@@ -39,13 +39,10 @@ const useCountryCodeSupportedInProjectLibrary = () => {
   })();
 
   if (!countryCodeSupported) {
-    return { status: 'not-supported', countryCode: null } as const;
+    return null;
   }
 
-  return {
-    status: 'supported',
-    countryCode: country_code,
-  } as const;
+  return country_code;
 };
 
 export default useCountryCodeSupportedInProjectLibrary;
