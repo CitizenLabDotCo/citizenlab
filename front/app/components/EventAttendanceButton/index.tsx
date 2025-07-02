@@ -168,7 +168,6 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       {userIsAttending ? (
         <Button
           {...buttonProps}
-          iconPos="left"
           icon={event.attributes.using_url ? undefined : 'check'}
           className="e2e-event-attendance-button"
         >
@@ -185,7 +184,6 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         >
           <Button
             {...buttonProps}
-            iconPos="right"
             icon={event.attributes.using_url ? undefined : 'plus-circle'}
             className="e2e-event-attendance-button"
             disabled={buttonDisabled}
