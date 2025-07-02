@@ -160,6 +160,7 @@
   "app.components.CustomFieldsForm.imageRequired": "ਚਿੱਤਰ ਲੋੜੀਂਦਾ ਹੈ",
   "app.components.CustomFieldsForm.minimumCoordinates2": "ਘੱਟੋ-ਘੱਟ {numPoints} ਨਕਸ਼ੇ ਦੇ ਬਿੰਦੂਆਂ ਦੀ ਲੋੜ ਹੈ।",
   "app.components.CustomFieldsForm.notPublic1": "*ਇਹ ਜਵਾਬ ਸਿਰਫ਼ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰਾਂ ਨਾਲ ਸਾਂਝਾ ਕੀਤਾ ਜਾਵੇਗਾ, ਜਨਤਾ ਨਾਲ ਨਹੀਂ।",
+  "app.components.CustomFieldsForm.otherArea": "ਕਿਤੇ ਹੋਰ",
   "app.components.CustomFieldsForm.progressBarLabel": "ਤਰੱਕੀ",
   "app.components.CustomFieldsForm.removeAnswer": "ਜਵਾਬ ਹਟਾਓ",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*ਜਿੰਨੇ ਮਰਜ਼ੀ ਚੁਣੋ",
