@@ -53,7 +53,6 @@ describe('Form builder image multiple choice choose multiple component', () => {
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains('Question title 2').should('exist');
     cy.contains('Option 1 question 2').should('exist');
-    cy.dataCy('e2e-image-multichoice-control').click();
   });
 
   it('allows using an other option that is mandatory when other is selected when entering data in the form/survey', () => {
@@ -73,11 +72,11 @@ describe('Form builder image multiple choice choose multiple component', () => {
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
     cy.wait(2000);
-    cy.dataCy('e2e-image-multichoice-control-checkbox').eq(1).click({
+    cy.get(`*[id^="${questionTitle}"]`).eq(1).click({
       force: true,
     });
     cy.contains('Survey').should('exist');
-    cy.get('#e2e-single-select-control').should('exist');
+    cy.get(`*[id^="${questionTitle}"]`).should('exist');
 
     // Try submitting without entering data for required field
     cy.dataCy('e2e-submit-form').wait(1000).click();
@@ -91,10 +90,10 @@ describe('Form builder image multiple choice choose multiple component', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get('[id^="properties"]')
+    cy.get(`*[id^="${questionTitle}"]`)
+      .last()
       .should(($element) => {
         const id = $element.attr('id');
-        expect(id).to.include(questionTitle);
         expect(Cypress._.endsWith(id, '_other')).to.be.true;
       })
       .type(otherAnswer, { force: true, delay: 0 });
