@@ -44,6 +44,7 @@ const SurveyForm = ({
   const { data: customFields } = useCustomFields({
     projectId,
     phaseId,
+    publicFields: true,
   });
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
@@ -57,7 +58,6 @@ const SurveyForm = ({
       // If the user is not authenticated and is not on the submit page, do not save the draft idea
       return;
     }
-
     // The back-end initially returns a draft idea without an ID
     if (!draftIdea?.data.id) {
       // If the user is an admin or project moderator, we allow them to post to a specific phase
