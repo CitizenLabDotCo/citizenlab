@@ -54,6 +54,11 @@ module EmailCampaigns
       { 'Notifications::ProjectPhaseStarted' => { 'created' => true } }
     end
 
+    # TODO: Use somewhere
+    def activity_context(activity)
+      activity.item.phase
+    end
+
     def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end
