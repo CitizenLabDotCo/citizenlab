@@ -49,8 +49,8 @@ class ProjectPolicy < ApplicationPolicy
     def apply_listed_scope(projects, include_unlisted)
       scope = projects
 
-      if include_unlisted
-        # If include_unlisted:
+      if include_unlisted && user&.active?
+        # If include_unlisted, and user is active:
         # If you are an admin, include all unlisted projects (do nothing)
         # Otherwise, include only unlisted projects that you can moderate
         unless user&.admin?
@@ -61,7 +61,7 @@ class ProjectPolicy < ApplicationPolicy
             '(projects.unlisted = TRUE AND projects.id IN (?)) OR ' \
             '(projects.unlisted = TRUE AND admin_publications.parent_id IN (?))',
             user.moderatable_project_ids,
-            AdminPublication.where(publication_id: user.moderated_project_folder_ids).select(:id)
+            AdminPublication.where(publication_id: user.moderated_project_folder_ids).pluck(:id)
           )
         end
       else

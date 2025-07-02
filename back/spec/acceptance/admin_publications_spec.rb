@@ -108,22 +108,22 @@ resource 'AdminPublication' do
         expect(publication_ids).to match_array [projects[0].id, projects[1].id, moderated_folder.id]
       end
 
-      example 'Does not show unlisted projects when not requested', document: false do
-        unlisted_project = create(:project, unlisted: true)
-
-        do_request include_unlisted: false
-        assert_status 200
-        expect(response_data.size).to eq 10
-        expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
-      end
-
-      example 'Shows unlisted projects when requested', document: false do
+      example 'Includes unlisted projects', document: false do
         unlisted_project = create(:project, unlisted: true)
 
         do_request
         assert_status 200
         expect(response_data.size).to eq 11
         expect(response_data.pluck(:id)).to include unlisted_project.admin_publication.id
+      end
+
+      example 'Does not include inlisted projects if include_unlisted is false', document: false do
+        unlisted_project = create(:project, unlisted: true)
+
+        do_request include_unlisted: false
+        assert_status 200
+        expect(response_data.size).to eq 10
+        expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
       end
 
       context 'when admin is moderator of publications' do
@@ -702,18 +702,7 @@ resource 'AdminPublication' do
         expect(response_data.size).to eq 7
       end
 
-      example 'Unlisted projects user can moderate are not included if not requested', document: false do
-        unlisted_project_user_moderates = create(:project, unlisted: true)
-
-        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
-        @moderator.update!(roles: moderator_roles)
-
-        do_request include_unlisted: false
-        assert_status 200
-        expect(response_data.size).to eq 7
-      end
-
-      example 'Unlisted projects that user can moderate are included when requested', document: false do
+      example 'Unlisted projects that user can moderate are included', document: false do
         unlisted_project_user_moderates = create(:project, unlisted: true)
         unlisted_project = create(:project, unlisted: true)
 
@@ -725,6 +714,17 @@ resource 'AdminPublication' do
         expect(response_data.size).to eq 8
         expect(response_data.pluck(:id)).to include unlisted_project_user_moderates.admin_publication.id
         expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
+      end
+
+      example 'Unlisted projects user can moderate are excluded if include_unlisted is false', document: false do
+        unlisted_project_user_moderates = create(:project, unlisted: true)
+
+        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
+        @moderator.update!(roles: moderator_roles)
+
+        do_request include_unlisted: false
+        assert_status 200
+        expect(response_data.size).to eq 7
       end
     end
   end
@@ -793,23 +793,7 @@ resource 'AdminPublication' do
         expect(response_data.size).to eq 18
       end
 
-      example 'Does not list unlisted projects user can moderate', document: false do
-        unlisted_project_user_moderates = create(
-          :project,
-          unlisted: true,
-          admin_publication_attributes: {
-            publication_status: 'published',
-            parent_id: project_folder.admin_publication.id
-          }
-        )
-
-        do_request
-        assert_status 200
-        expect(response_data.size).to eq 18
-        expect(response_ids).not_to include unlisted_project_user_moderates.admin_publication.id
-      end
-
-      example 'Lists unlisted projects in folder user can moderate when requested', document: false do
+      example 'Includes unlisted projects in folder user can moderate', document: false do
         unlisted_project_user_moderates = create(
           :project,
           unlisted: true,
@@ -821,11 +805,27 @@ resource 'AdminPublication' do
 
         unlisted_project = create(:project, unlisted: true)
 
-        do_request(include_unlisted: true)
+        do_request
         assert_status 200
         expect(response_data.size).to eq 19
         expect(response_ids).to include unlisted_project_user_moderates.admin_publication.id
         expect(response_ids).not_to include unlisted_project.admin_publication.id
+      end
+
+      example 'Does not include unlisted projects user can moderate if include_unlisted is false', document: false do
+        unlisted_project_user_moderates = create(
+          :project,
+          unlisted: true,
+          admin_publication_attributes: {
+            publication_status: 'published',
+            parent_id: project_folder.admin_publication.id
+          }
+        )
+
+        do_request include_unlisted: false
+        assert_status 200
+        expect(response_data.size).to eq 18
+        expect(response_ids).not_to include unlisted_project_user_moderates.admin_publication.id
       end
     end
 
