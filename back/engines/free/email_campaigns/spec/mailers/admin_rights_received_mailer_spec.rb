@@ -21,8 +21,6 @@ RSpec.describe EmailCampaigns::AdminRightsReceivedMailer do
     include_examples 'campaign delivery tracking'
 
     context 'with default content' do
-      let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
       it 'renders the subject' do
         expect(mail.subject).to start_with('You became an administrator on the platform of')
       end
