@@ -8,6 +8,7 @@ export type FilesKeys = Keys<typeof filesKeys>;
 
 export interface IAddFileProperties {
   content: string;
+  project?: string;
   name: string;
 }
 

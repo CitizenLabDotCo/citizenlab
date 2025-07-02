@@ -11,6 +11,7 @@ import {
   Tr,
   Box,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 
 import { IPaginationProps, QueryParameters } from 'api/files/types';
 import useDeleteFile from 'api/files/useDeleteFile';
@@ -34,12 +35,17 @@ const FilesTable = () => {
   const [sideViewOpened, setSideViewOpened] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
 
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
+
   const [queryParameters, setQueryParameters] = useState<
     QueryParameters & IPaginationProps
   >({
     pageNumber: 1,
     pageSize: 8,
     sort: 'created_at',
+    projects: [projectId],
   });
 
   const { data: files } = useFiles({
@@ -126,10 +132,7 @@ const FilesTable = () => {
                       ).toLocaleDateString()}
                     </Td>
                     <Td>{file.attributes.name}</Td>
-                    <Td>
-                      {file.attributes.mime_type ||
-                        formatMessage(messages.unknown)}
-                    </Td>
+                    <Td>ToDo</Td>
                     <Td>
                       {file.relationships.uploader.data.id && (
                         <UserName
@@ -150,13 +153,15 @@ const FilesTable = () => {
                 ))}
               </Tbody>
             </Table>
-            <Box display="flex" justifyContent="center" my="8px">
-              <Pagination
-                currentPage={currentPage || 1}
-                totalPages={lastPage || 1}
-                loadPage={handlePaginationClick}
-              />
-            </Box>
+            {lastPage && lastPage > 1 && (
+              <Box display="flex" justifyContent="center" my="8px">
+                <Pagination
+                  currentPage={currentPage || 1}
+                  totalPages={lastPage || 1}
+                  loadPage={handlePaginationClick}
+                />
+              </Box>
+            )}
           </Box>
           <FileSideView
             opened={sideViewOpened}

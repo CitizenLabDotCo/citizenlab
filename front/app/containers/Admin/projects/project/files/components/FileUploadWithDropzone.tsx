@@ -9,6 +9,7 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 import { useDropzone } from 'react-dropzone';
+import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
 import useAddFile from 'api/files/useAddFile';
@@ -29,6 +30,10 @@ type FilesValidationError =
 const FileUploadWithDropzone = () => {
   const { formatMessage } = useIntl();
   const { mutate: addFile, isLoading } = useAddFile();
+
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
 
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
   const [filesValidationError, setFilesValidationError] =
@@ -73,6 +78,7 @@ const FileUploadWithDropzone = () => {
         addFile(
           {
             content: fileContent,
+            project: projectId,
             name: file.name,
           },
           {
