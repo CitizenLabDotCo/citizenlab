@@ -173,6 +173,7 @@ class ProjectPolicy < ApplicationPolicy
       :header_bg,
       :visible_to,
       :include_all_areas,
+      :unlisted,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
