@@ -160,6 +160,7 @@
   "app.components.CustomFieldsForm.imageRequired": "تصویر درکار ہے۔",
   "app.components.CustomFieldsForm.minimumCoordinates2": "کم از کم {numPoints} نقشہ پوائنٹس درکار ہیں۔",
   "app.components.CustomFieldsForm.notPublic1": "*اس جواب کا اشتراک صرف پروجیکٹ مینیجرز کے ساتھ کیا جائے گا، عوام کے ساتھ نہیں۔",
+  "app.components.CustomFieldsForm.otherArea": "کہیں اور",
   "app.components.CustomFieldsForm.progressBarLabel": "پیش رفت",
   "app.components.CustomFieldsForm.removeAnswer": "جواب ہٹا دیں۔",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "* جتنے چاہیں منتخب کریں۔",
