@@ -85,11 +85,13 @@ ar:
         "6": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
       quarterly: "ربع سنوي، في اليوم الأول من الربع"
     preview_data:
-      first_name: 'جين'
-      last_name: 'ظبية'
-      display_name: 'جين دو'
+      author_first_name: 'جين'
+      author_last_name: 'ظبية'
+      author_display_name: 'جين دو'
+      project_title: 'مشروع مثال'
       comment_body: 'هذا مثال لتعليق يُستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقيًا.'
       idea_title: 'فكرة مثال'
+      proposal_title: 'مثال على الاقتراح'
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
