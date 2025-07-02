@@ -58,15 +58,5 @@ module EmailCampaigns
         post: localize_for_recipient(event.idea_title_multiloc)
       }
     end
-
-    # TODO: What about escape HTML here?
-
-    # def header_message
-    #   format_message(
-    #     'event_description',
-    #     values: { post: localize_for_recipient(event.idea_title_multiloc) },
-    #     escape_html: false
-    #   )
-    # end
   end
 end
