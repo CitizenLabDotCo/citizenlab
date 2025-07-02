@@ -401,3 +401,33 @@ export const getDurationInWeeks = (start: Date, end?: Date): number => {
     }) + 1
   );
 };
+
+/**
+ * Groups week cells by year to display year headers correctly.
+ */
+export const getYearGroups = (weekCells: WeekMeta[]) => {
+  return weekCells.reduce((acc, weekCell) => {
+    const lastGroup = acc.at(-1);
+    if (lastGroup && lastGroup.year === weekCell.year) {
+      lastGroup.count++;
+    } else {
+      acc.push({ year: weekCell.year, count: 1 });
+    }
+    return acc;
+  }, [] as { year: number; count: number }[]);
+};
+
+/**
+ * Groups quarter cells by month to display month headers correctly.
+ */
+export const getMonthGroups = (quarterCells: QuarterCellMeta[]) => {
+  return quarterCells.reduce((acc, cell) => {
+    const lastGroup = acc.at(-1);
+    if (lastGroup && lastGroup.month === cell.month) {
+      lastGroup.count++;
+    } else {
+      acc.push({ month: cell.month, count: 1 });
+    }
+    return acc;
+  }, [] as { month: string; count: number }[]);
+};
