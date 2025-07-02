@@ -29,7 +29,7 @@ module EmailCampaigns
       def preview_command(recipient: nil)
         {
           recipient: recipient,
-          event_payload:{
+          event_payload: {
             report_url: "#{Frontend::UrlService.new.home_url(locale: Locale.new(recipient.locale))}/admin/community-monitor/reports"
           }
         }
