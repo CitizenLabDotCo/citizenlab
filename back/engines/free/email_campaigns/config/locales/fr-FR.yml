@@ -85,11 +85,13 @@ fr:
         "6": "Chaque semaine, le samedi à %{hourOfDay}"
       quarterly: "Le premier jour de chaque trimestre"
     preview_data:
-      first_name: 'Jeanne'
-      last_name: 'Dupont'
-      display_name: 'Jeanne Dupont'
+      author_first_name: 'Jeanne'
+      author_last_name: 'Dupont'
+      author_display_name: 'Jeanne Dupont'
+      project_title: 'Exemple de projet'
       comment_body: 'Il s''agit d''un exemple de commentaire utilisé pour prévisualiser le contenu des courriels. Il ne s''agit pas d''un contenu réel.'
       idea_title: 'Exemple d''idée'
+      proposal_title: 'Exemple de proposition'
     footer:
       "link_privacy_policy": "Politique de confidentialité"
       "link_terms_conditions": "Conditions Générales d'Utilisation"

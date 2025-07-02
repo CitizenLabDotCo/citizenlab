@@ -85,11 +85,13 @@ el:
         "6": "Εβδομαδιαίως, τα Σάββατα %{hourOfDay}"
       quarterly: "Τριμηνιαία, την πρώτη ημέρα του τριμήνου"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Doe'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Doe'
+      author_display_name: 'Jane Doe'
+      project_title: 'Παράδειγμα έργου'
       comment_body: 'Αυτό είναι ένα παράδειγμα σχολίου που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.'
       idea_title: 'Παράδειγμα ιδέας'
+      proposal_title: 'Παράδειγμα πρότασης'
     footer:
       "link_privacy_policy": "Πολιτική απορρήτου"
       "link_terms_conditions": "Όροι & Προϋποθέσεις"

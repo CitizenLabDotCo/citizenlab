@@ -85,11 +85,13 @@ sv:
         "6": "Veckovis på lördagar %{hourOfDay}"
       quarterly: "Kvartalsvis, den första dagen i kvartalet"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Doe'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Doe'
+      author_display_name: 'Jane Doe'
+      project_title: 'Exempel på projekt'
       comment_body: 'Detta är ett exempel på en kommentar som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll.'
       idea_title: 'Exempel Idé'
+      proposal_title: 'Exempel på förslag'
     footer:
       "link_privacy_policy": "Sekretesspolicy"
       "link_terms_conditions": "Villkor"

@@ -85,11 +85,13 @@ hr:
         "6": "Tjedno, subotom u %{hourOfDay}"
       quarterly: "Tromjesečno, prvog dana tromjesečja"
     preview_data:
-      first_name: 'Jana'
-      last_name: 'Srna'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jana'
+      author_last_name: 'Srna'
+      author_display_name: 'Jane Doe'
+      project_title: 'Primjer projekta'
       comment_body: 'Ovo je primjer komentara koji se koristi za pregled sadržaja e-poruka. Ovo nije stvarni sadržaj.'
       idea_title: 'Primjer ideje'
+      proposal_title: 'Primjer prijedloga'
     footer:
       "link_privacy_policy": "Pravila o privatnosti"
       "link_terms_conditions": "Uvjeti korištenja"
