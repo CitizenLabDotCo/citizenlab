@@ -85,11 +85,13 @@ es-CL:
         "6": "Semanalmente los sábados a las %{hourOfDay}"
       quarterly: "Trimestralmente, el primer día del trimestre"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Doe'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Doe'
+      author_display_name: 'Jane Doe'
+      project_title: 'Ejemplo de proyecto'
       comment_body: 'Este es un comentario de ejemplo utilizado para previsualizar el contenido de los correos electrónicos. No es contenido real.'
       idea_title: 'Ejemplo de idea'
+      proposal_title: 'Ejemplo de propuesta'
     footer:
       "link_privacy_policy": "Política de privacidad"
       "link_terms_conditions": "Términos & Condiciones"
