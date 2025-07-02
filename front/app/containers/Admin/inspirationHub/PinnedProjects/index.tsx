@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Box, Title, Select } from '@citizenlab/cl2-component-library';
 
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
+
+import useCountryCodeSupportedInProjectLibrary from 'hooks/useCountryCodeSupportedInProjectLibrary';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -45,4 +47,20 @@ const PinnedProjects = () => {
   );
 };
 
-export default PinnedProjects;
+const PinnedProjectsWrapper = () => {
+  const { status, countryCode } = useCountryCodeSupportedInProjectLibrary();
+
+  useEffect(() => {
+    if (status === 'supported') {
+      setRansackParam('q[pin_country_code_eq]', countryCode);
+    }
+  }, [status, countryCode]);
+
+  if (status === 'loading') {
+    return null;
+  }
+
+  return <PinnedProjects />;
+};
+
+export default PinnedProjectsWrapper;
