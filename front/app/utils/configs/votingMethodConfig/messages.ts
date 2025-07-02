@@ -140,48 +140,48 @@ export default defineMessages({
     defaultMessage: 'Final tally',
   },
   cumulativeVotingInstructionsTotalVotes: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes2',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes3',
     defaultMessage:
-      'You have a total of <b>{totalVotes, plural, one {# vote} other {# votes}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
+      'You have a total of <b>{totalVotes, plural, one {# vote} other {# votes}} to distribute between {optionCount, plural, one {# option} other {# options}}</b>.',
   },
   cumulativeVotingInstructionsTotalPoints: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPoints1',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPoints2',
     defaultMessage:
-      'You have a total of <b>{totalVotes, plural, one {# point} other {# points}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
+      'You have a total of <b>{totalVotes, plural, one {# point} other {# points}} to distribute between {optionCount, plural, one {# option} other {# options}}</b>.',
   },
   cumulativeVotingInstructionsTotalTokens: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalTokens1',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalTokens2',
     defaultMessage:
-      'You have a total of <b>{totalVotes, plural, one {# token} other {# tokens}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
+      'You have a total of <b>{totalVotes, plural, one {# token} other {# tokens}} to distribute between {optionCount, plural, one {# option} other {# options}}</b>.',
   },
   cumulativeVotingInstructionsTotalCredits: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalCredits1',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalCredits2',
     defaultMessage:
-      'You have a total of <b>{totalVotes, plural, one {# credit} other {# credits}} to distribute between {optionCount, plural, one {# option} other {# options}} options</b>.',
+      'You have a total of <b>{totalVotes, plural, one {# credit} other {# credits}} to distribute between {optionCount, plural, one {# option} other {# options}}</b>.',
   },
   cumulativeVotingInstructionsPreferredOptions: {
     id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2',
     defaultMessage: 'Select your preferred options by tapping on "Select".',
   },
   cumulativeVotingInstructionsMaxVotesPerIdea: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea3',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea4',
     defaultMessage:
-      'You can add a maximum number of {maxVotes, plural, one {# vote} other {# votes}} per option.',
+      'You can add a maximum of {maxVotes, plural, one {# vote} other {# votes}} per option.',
   },
   cumulativeVotingInstructionsMaxPointsPerIdea: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxPointsPerIdea',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxPointsPerIdea1',
     defaultMessage:
-      'You can add a maximum number of {maxVotes, plural, one {# point} other {# points}} per option.',
+      'You can add a maximum of {maxVotes, plural, one {# point} other {# points}} per option.',
   },
   cumulativeVotingInstructionsMaxTokensPerIdea: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxTokensPerIdea',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxTokensPerIdea1',
     defaultMessage:
-      'You can add a maximum number of {maxVotes, plural, one {# token} other {# tokens}} per option.',
+      'You can add a maximum of {maxVotes, plural, one {# token} other {# tokens}} per option.',
   },
   cumulativeVotingInstructionsMaxCreditsPerIdea: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxCreditsPerIdea',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxCreditsPerIdea1',
     defaultMessage:
-      'You can add a maximum number of {maxVotes, plural, one {# credit} other {# credits}} per option.',
+      'You can add a maximum of {maxVotes, plural, one {# credit} other {# credits}} per option.',
   },
   cumulativeVotingInstructionsOnceYouAreDone: {
     id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone',
