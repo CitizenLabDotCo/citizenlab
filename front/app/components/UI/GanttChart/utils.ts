@@ -30,7 +30,6 @@ import {
   min,
 } from 'date-fns';
 
-// Defines the available zoom levels for the Gantt chart.
 export type TimeRangeOption = 'month' | 'quarter' | 'year' | 'multiyear';
 
 // Common layout constants for GanttChart. In future we can configure these through props if needed.
