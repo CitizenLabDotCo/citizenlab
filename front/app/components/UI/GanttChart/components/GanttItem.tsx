@@ -30,11 +30,11 @@ const GanttItem: React.FC<GanttItemProps> = ({
   unitW,
   renderItemTooltip,
 }) => {
-  const s = item.start ? new Date(item.start) : undefined;
-  if (!s) return null;
-  const e = item.end ? new Date(item.end) : null;
-  const effectiveStart = s > startDate ? s : startDate;
-  const effectiveEnd = e === null || e > endDate ? endDate : e;
+  const start = item.start ? new Date(item.start) : undefined;
+  if (!start) return null;
+  const end = item.end ? new Date(item.end) : null;
+  const effectiveStart = start > startDate ? start : startDate;
+  const effectiveEnd = end === null || end > endDate ? endDate : end;
   if (effectiveStart >= effectiveEnd) return null;
   const startOffset = getOffset(effectiveStart);
   const duration = getDuration(effectiveStart, effectiveEnd);
@@ -98,13 +98,13 @@ const GanttItem: React.FC<GanttItemProps> = ({
             <Box
               position="absolute"
               left={`${
-                (getOffset(max([s!, highlightStart])) - startOffset) * unitW
+                (getOffset(max([start!, highlightStart])) - startOffset) * unitW
               }px`}
               width={`${
                 getDuration(
-                  max([s!, highlightStart]),
+                  max([start!, highlightStart]),
                   min([
-                    e || endDate,
+                    end || endDate,
                     item.highlightEndDate
                       ? new Date(item.highlightEndDate)
                       : endDate,

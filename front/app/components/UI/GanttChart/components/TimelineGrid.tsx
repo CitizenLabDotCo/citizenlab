@@ -34,10 +34,10 @@ const TimelineGrid: React.FC<TimelineGridProps> = ({
         width="2px"
         height="100%"
         bg={colors.primary}
+        zIndex="1"
         style={{
           left: `${todayOffset * unitW + unitW / 2 - 1}px`,
           pointerEvents: 'none',
-          zIndex: 1,
         }}
       >
         <Box
