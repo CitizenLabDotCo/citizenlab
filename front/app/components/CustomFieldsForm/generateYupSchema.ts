@@ -89,7 +89,8 @@ const generateYupValidationSchema = ({
       }
 
       case 'text':
-      case 'multiline_text': {
+      case 'multiline_text':
+      case 'date': {
         if (key === 'location_description') {
           schema[key] =
             required && enabled

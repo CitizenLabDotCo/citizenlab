@@ -41,7 +41,8 @@ export type ICustomFieldInputType =
   | 'polygon'
   | 'cosponsor_ids'
   | 'sentiment_linear_scale'
-  | 'checkbox';
+  | 'checkbox'
+  | 'date';
 
 export type IOptionsType = {
   id?: string;
