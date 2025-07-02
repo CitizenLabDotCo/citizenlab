@@ -26,7 +26,9 @@ module EmailCampaigns
 
       @campaigns = parse_bool(params[:manual]) ? @campaigns.manual : @campaigns.automatic if params[:manual]
 
-      render json: WebApi::V1::CampaignSerializer.new(@campaigns, jsonapi_serializer_params).serializable_hash
+      @campaigns = paginate @campaigns
+
+      render json: linked_json(@campaigns, WebApi::V1::CampaignSerializer, params: jsonapi_serializer_params)
     end
 
     def show
