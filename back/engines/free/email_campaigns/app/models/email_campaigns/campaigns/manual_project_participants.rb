@@ -49,10 +49,6 @@ module EmailCampaigns
       context.is_a?(Project)
     end
 
-    def manageable_by_project_moderator?
-      true
-    end
-
     private
 
     def project_participants_and_followers(users_scope, _options = {})

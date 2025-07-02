@@ -53,12 +53,6 @@ module EmailCampaigns
     scope :manual, -> { where type: DeliveryService.new.manual_campaign_types }
     scope :automatic, -> { where.not(type: DeliveryService.new.manual_campaign_types) }
 
-    scope :manageable_by_project_moderator, lambda {
-      where(type: DeliveryService.new.campaign_classes.select do |campaign|
-                    campaign.new.manageable_by_project_moderator?
-                  end.map(&:name))
-    }
-
     def self.before_send(action_symbol)
       @before_send_hooks ||= []
       @before_send_hooks << action_symbol
@@ -156,10 +150,6 @@ module EmailCampaigns
 
     def self.policy_class
       CampaignPolicy
-    end
-
-    def manageable_by_project_moderator?
-      false
     end
 
     def manual?

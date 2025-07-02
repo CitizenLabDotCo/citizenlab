@@ -98,9 +98,5 @@ module EmailCampaigns
         }]
       end
     end
-
-    def manageable_by_project_moderator?
-      true
-    end
   end
 end
