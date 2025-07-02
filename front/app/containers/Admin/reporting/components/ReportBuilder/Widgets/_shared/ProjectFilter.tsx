@@ -61,7 +61,6 @@ const ProjectFilter = ({
       emptyOptionMessage={getEmptyOptionMessage()}
       onProjectFilter={handleProjectFilter}
       includeHiddenProjects
-      includeUnlistedProjects
     />
   );
 };
