@@ -891,7 +891,7 @@
   "app.containers.Admin.emails.send": "بھیجیں۔",
   "app.containers.Admin.emails.sendNowButton": "ابھی بھیجیں۔",
   "app.containers.Admin.emails.sendTestEmailButton": "مجھے ایک ٹیسٹ ای میل بھیجیں۔",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "جب آپ اس لنک پر کلک کریں گے، ایک ٹیسٹ ای میل صرف آپ کے ای میل ایڈریس پر بھیجا جائے گا۔ یہ آپ کو یہ چیک کرنے کی اجازت دیتا ہے کہ ای میل حقیقی زندگی میں کیسی دکھتی ہے۔",
+  "app.containers.Admin.emails.sendTestEmailTooltip2": "جب آپ اس لنک پر کلک کریں گے، ایک ٹیسٹ ای میل صرف آپ کے ای میل ایڈریس پر بھیجا جائے گا۔ یہ آپ کو یہ چیک کرنے کی اجازت دیتا ہے کہ 'حقیقی زندگی' میں ای میل کیسی دکھتی ہے۔",
   "app.containers.Admin.emails.senderRecipients": "بھیجنے والے اور وصول کنندگان",
   "app.containers.Admin.emails.sending": "بھیج رہا ہے۔",
   "app.containers.Admin.emails.sent": "بھیجا",
