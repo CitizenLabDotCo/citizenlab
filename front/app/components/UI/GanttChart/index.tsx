@@ -307,7 +307,7 @@ export const GanttChart = ({
                 bg={colors.primary}
                 zIndex="2"
                 style={{
-                  left: `${todayOffset * unitW - 1}px`, // Center the line on the precise start of the day
+                  left: `${todayOffset * unitW - 1}px`,
                   pointerEvents: 'none',
                 }}
               >
