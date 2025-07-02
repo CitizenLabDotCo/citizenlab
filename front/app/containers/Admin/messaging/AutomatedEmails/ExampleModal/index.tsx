@@ -9,14 +9,13 @@ import T from 'components/T';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 
 import EmptyState from './EmptyState';
 import ExampleFrame from './ExampleFrame';
 
-/** Modulo function, since JS's native `%` remainder function works differently for negative numbers */
+/** Modulo function, since JS's native `%` remainder function works diff  erently for negative numbers */
 const mod = (n: number, m: number) => ((n % m) + m) % m;
 
 const ExampleModal = ({
@@ -26,16 +25,14 @@ const ExampleModal = ({
   campaignId: string;
   onClose: () => void;
 }) => {
-  const { data: examples, isLoading } = useCampaignExamples({ campaignId });
+  const { data: examples } = useCampaignExamples({ campaignId });
   const { data: campaign } = useCampaign(campaignId);
   const [selectedExampleIdx, setSelectedExampleIdx] = useState<number | null>(
     null
   );
 
   useEffect(() => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (examples?.data?.length) {
+    if (examples?.data.length) {
       setSelectedExampleIdx(0);
     }
   }, [examples]);
@@ -46,12 +43,10 @@ const ExampleModal = ({
     );
   };
 
-  if (isNilOrError(examples)) return null;
+  if (!examples) return null;
 
   const selectedExample =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    selectedExampleIdx === null ? null : examples?.data[selectedExampleIdx];
+    selectedExampleIdx === null ? null : examples.data[selectedExampleIdx];
 
   return (
     <Modal
@@ -62,44 +57,42 @@ const ExampleModal = ({
       }
     >
       <Box mx="30px" mt="30px">
-        {!isLoading && examples.data.length === 0 && <EmptyState />}
-        {!isLoading &&
-          examples.data.length !== 0 &&
-          selectedExampleIdx !== null && (
-            <Box>
-              {selectedExample && campaign && (
-                <ExampleFrame example={selectedExample} campaign={campaign} />
-              )}
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <Button
-                  m="2px"
-                  p="4px"
-                  maxWidth="32px"
-                  icon="chevron-left"
-                  buttonStyle="secondary-outlined"
-                  onClick={() => changeSelectedExample(-1)}
-                />
-                <Box mx="24px" w="30px" display="flex" justifyContent="center">
-                  <Text color="blue500" fontSize="m">
-                    {selectedExampleIdx + 1}/{examples.data.length}
-                  </Text>
-                </Box>
-                <Button
-                  m="2px"
-                  p="4px"
-                  maxWidth="32px"
-                  icon="chevron-right"
-                  buttonStyle="secondary-outlined"
-                  onClick={() => changeSelectedExample(1)}
-                />
-              </Box>
-              <Box display="flex" w="100%" justifyContent="center">
-                <Text color="grey500">
-                  <FormattedMessage {...messages.sentToUsers} />
+        {examples.data.length === 0 && <EmptyState />}
+        {examples.data.length !== 0 && selectedExampleIdx !== null && (
+          <Box>
+            {selectedExample && campaign && (
+              <ExampleFrame example={selectedExample} campaign={campaign} />
+            )}
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Button
+                m="2px"
+                p="4px"
+                maxWidth="32px"
+                icon="chevron-left"
+                buttonStyle="secondary-outlined"
+                onClick={() => changeSelectedExample(-1)}
+              />
+              <Box mx="24px" w="30px" display="flex" justifyContent="center">
+                <Text color="blue500" fontSize="m">
+                  {selectedExampleIdx + 1}/{examples.data.length}
                 </Text>
               </Box>
+              <Button
+                m="2px"
+                p="4px"
+                maxWidth="32px"
+                icon="chevron-right"
+                buttonStyle="secondary-outlined"
+                onClick={() => changeSelectedExample(1)}
+              />
             </Box>
-          )}
+            <Box display="flex" w="100%" justifyContent="center">
+              <Text color="grey500">
+                <FormattedMessage {...messages.sentToUsers} />
+              </Text>
+            </Box>
+          </Box>
+        )}
       </Box>
     </Modal>
   );

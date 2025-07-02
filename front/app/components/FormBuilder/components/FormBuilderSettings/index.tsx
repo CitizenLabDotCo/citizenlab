@@ -38,14 +38,12 @@ interface Props {
   field: IFlatCustomFieldWithIndex;
   closeSettings: (triggerAutosave?: boolean) => void;
   builderConfig: FormBuilderConfig;
-  formHasSubmissions: boolean;
 }
 
 const FormBuilderSettings = ({
   field,
   closeSettings,
   builderConfig,
-  formHasSubmissions,
 }: Props) => {
   const localize = useLocalize();
   const [currentTab, setCurrentTab] = useState<ICustomFieldSettingsTab>(
@@ -95,17 +93,20 @@ const FormBuilderSettings = ({
 
   const getShowTabbedSettings = () => {
     const isFieldWithLogicTab = [
-      'multiselect',
-      'multiselect_image',
       'linear_scale',
       'select',
       'rating',
       'page',
     ].includes(fieldType);
 
+    // For backwards compatibility, we only show the logic tab for multiselect/multiselect_image if they already have logic.
+    const fieldHasLogic = field.logic.rules && field.logic.rules.length > 0;
+    const isMultiselectWithLogic =
+      ['multiselect', 'multiselect_image'].includes(fieldType) && fieldHasLogic;
+
     const isFormEndPage = fieldType === 'page' && field.key === 'form_end';
 
-    return isFieldWithLogicTab && !isFormEndPage;
+    return (isFieldWithLogicTab || isMultiselectWithLogic) && !isFormEndPage;
   };
 
   const showTabbedSettings = getShowTabbedSettings();
@@ -201,10 +202,7 @@ const FormBuilderSettings = ({
         !builderConfig.isLogicEnabled || // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (showTabbedSettings && currentTab === 'content')) && (
-        <ContentSettings
-          field={field}
-          formHasSubmissions={formHasSubmissions}
-        />
+        <ContentSettings field={field} />
       )}
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings

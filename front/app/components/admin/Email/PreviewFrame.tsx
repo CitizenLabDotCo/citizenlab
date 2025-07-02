@@ -1,18 +1,19 @@
 import React from 'react';
 
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import Frame from 'react-frame-component';
 import styled from 'styled-components';
 
-import { Box, colors, Text } from '@citizenlab/cl2-component-library';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 import useCampaignPreview from 'api/campaign_previews/useCampaignPreview';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const StyledFrame = styled(Frame)`
   border-radius: ${(props) => props.theme.borderRadius};
   border: 1px solid ${(props) => props.theme.colors.divider};
   width: 100%;
-  //height: 450px;
 `;
 
 type Props = {

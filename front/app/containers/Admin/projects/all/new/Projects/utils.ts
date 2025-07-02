@@ -24,6 +24,7 @@ export const setParam = <ParamName extends keyof Parameters>(
 const MULTISELECT_PARAMS = new Set<string>([
   'status',
   'managers',
+  'participation_states',
 ] satisfies Array<keyof Parameters>);
 
 export const useParam = <ParamName extends keyof Parameters>(
@@ -49,6 +50,7 @@ export const PARAMS: (keyof Parameters)[] = [
   'start_at',
   'end_at',
   'sort',
+  'participation_states',
 ];
 
 export const useParams = () => {

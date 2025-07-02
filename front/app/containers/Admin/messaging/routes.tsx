@@ -9,10 +9,9 @@ import { AdminRoute } from '../routes';
 const MessagingIndex = lazy(() => import('.'));
 const CustomEmailsIndex = lazy(() => import('./CustomEmails/All'));
 const CustomEmailsNew = lazy(() => import('./CustomEmails/New'));
-const CustomEmailsEdit = lazy(() => import('./CustomEmails/Edit'));
 const CustomEmailsShow = lazy(() => import('./CustomEmails/Show'));
 const AutomatedEmails = lazy(() => import('./AutomatedEmails'));
-const AutomatedEmailsEdit = lazy(() => import('./AutomatedEmails/Edit'));
+const EmailsEdit = lazy(() => import('./Edit'));
 
 export enum messagingRoutes {
   messaging = 'messaging',
@@ -73,7 +72,7 @@ const createAdminMessagingRoutes = () => ({
       path: messagingRoutes.emailsCustomCampaignIdEdit,
       element: (
         <PageLoading>
-          <CustomEmailsEdit />
+          <EmailsEdit campaignType="custom" />
         </PageLoading>
       ),
     },
@@ -89,7 +88,7 @@ const createAdminMessagingRoutes = () => ({
       path: messagingRoutes.emailsAutomatedCampaignIdEdit,
       element: (
         <PageLoading>
-          <AutomatedEmailsEdit />
+          <EmailsEdit campaignType="automated" />
         </PageLoading>
       ),
     },
