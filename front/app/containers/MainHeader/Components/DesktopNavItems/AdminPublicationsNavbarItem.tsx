@@ -155,6 +155,7 @@ const AdminPublicationsNavbarItem = ({
       publicationStatusFilter: ['published', 'archived'],
       rootLevelOnly: true,
       removeNotAllowedParents: true,
+      include_unlisted: false,
     },
     { enabled: projectsDropdownOpened }
   );
