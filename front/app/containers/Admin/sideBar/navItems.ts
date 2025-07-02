@@ -18,7 +18,7 @@ export type NavItem = {
   featureNames?: TAppConfigurationSetting[];
   count?: number;
   onlyCheckAllowed?: boolean;
-  showAtBottom?: boolean;
+  showAtBottom: boolean;
 };
 
 const getInspirationHubLink = (country_code: string) => {
@@ -47,35 +47,41 @@ const getDefaultNavItems = (
   })();
 
   return [
+    /* Top items */
     {
       name: 'dashboard',
       link: '/admin/dashboard/overview',
       iconName: 'dashboard',
       message: 'dashboard',
+      showAtBottom: false,
     },
     {
       name: 'projects',
       link: '/admin/projects',
       iconName: 'projects',
       message: 'projects',
+      showAtBottom: false,
     },
     {
       name: 'ideas',
       link: '/admin/ideas',
       iconName: 'messages-inbox',
       message: 'inputManager',
+      showAtBottom: false,
     },
     {
       name: 'userinserts',
       link: '/admin/users',
       iconName: 'users',
       message: 'users',
+      showAtBottom: false,
     },
     {
       name: 'messaging',
       link: '/admin/messaging',
       iconName: 'messages',
       message: 'messaging',
+      showAtBottom: false,
     },
     {
       name: 'reporting',
@@ -83,12 +89,14 @@ const getDefaultNavItems = (
       iconName: 'reports',
       message: 'reporting',
       featureNames: ['report_builder'],
+      showAtBottom: false,
     },
     {
       name: 'community_monitor',
       link: '/admin/community-monitor',
       iconName: 'community_monitor',
       message: 'community_monitor',
+      showAtBottom: false,
     },
     {
       name: 'inspirationHub',
@@ -98,7 +106,9 @@ const getDefaultNavItems = (
           : '/admin/inspiration-hub',
       iconName: 'globe',
       message: 'inspirationHub',
+      showAtBottom: false,
     },
+    /* Bottom items */
     {
       name: 'tools',
       link: `/admin/tools`,

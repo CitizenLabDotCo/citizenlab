@@ -13,7 +13,7 @@ import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
 import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
-import CustomFieldsForm from 'components/CustomFieldsForm';
+import IdeationForm from 'components/CustomFieldsForm/IdeationForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -124,7 +124,7 @@ const IdeasNewIdeationForm = ({
                     pb={isSmallerThanPhone ? '0' : '80px'}
                     display="flex"
                   >
-                    <CustomFieldsForm
+                    <IdeationForm
                       projectId={project.data.id}
                       phaseId={phaseId}
                       participationMethod={participationMethod}

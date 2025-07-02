@@ -9,7 +9,7 @@ import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import { Top } from 'components/admin/PostManager/components/PostPreview';
-import CustomFieldsForm from 'components/CustomFieldsForm';
+import IdeationForm from 'components/CustomFieldsForm/IdeationForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -42,7 +42,7 @@ const AdminIdeaEdit = ({
       </Top>
 
       <Box className="idea-form">
-        <CustomFieldsForm
+        <IdeationForm
           projectId={project.data.id}
           phaseId={phaseId}
           participationMethod={phase?.data.attributes.participation_method}

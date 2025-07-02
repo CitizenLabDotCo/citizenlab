@@ -46,7 +46,7 @@ module EmailCampaigns
     recipient_filter :user_filter_admins_moderators_only
     recipient_filter :user_filter_no_invitees
 
-    before_send :content_worth_sending?
+    filter :content_worth_sending?
 
     def mailer_class
       CommunityMonitorReportMailer
