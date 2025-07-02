@@ -140,7 +140,6 @@ describe('GanttChart utils', () => {
   describe('Quarterly View Utilities (3-day cells)', () => {
     it('getQuarterCellsMeta: generates correct 3-day cells, spanning a month change', () => {
       const cells = getQuarterCellsMeta(date('2024-02-27'), date('2024-03-05'));
-      // The logic now correctly produces 4 cells to cover the partial start and end
       expect(cells).toHaveLength(4);
 
       // The first cell starts on Feb 25 to include Feb 27, and its start date is clamped
