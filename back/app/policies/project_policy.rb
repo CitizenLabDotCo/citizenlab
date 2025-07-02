@@ -15,7 +15,11 @@ class ProjectPolicy < ApplicationPolicy
         .or(resolve_for_visitor)
         .or(resolve_for_normal_user)
 
-      apply_listed_scope(moderator_scope, context[:include_unlisted])
+      # By default, we include unlisted projects,
+      # unless the context explicitly says not to.
+      include_unlisted = context[:include_unlisted] || true
+
+      apply_listed_scope(moderator_scope, include_unlisted)
     end
 
     private
