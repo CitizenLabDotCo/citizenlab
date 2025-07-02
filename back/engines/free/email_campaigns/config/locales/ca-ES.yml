@@ -85,11 +85,13 @@ ca:
         "6": "Setmanalment, els dissabtes a les %{hourOfDay}"
       quarterly: "Trimestral, el primer dia del trimestre"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Daina'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Daina'
+      author_display_name: 'Jane Doe'
+      project_title: 'Projecte d''exemple'
       comment_body: 'Aquest és un exemple de comentari que s''utilitza per previsualitzar el contingut dels correus electrònics. Això no és contingut real.'
       idea_title: 'Idea d''exemple'
+      proposal_title: 'Proposta d''exemple'
     footer:
       "link_privacy_policy": "Política de privacitat"
       "link_terms_conditions": "Termes i Condicions"
