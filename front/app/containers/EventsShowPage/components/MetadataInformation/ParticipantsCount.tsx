@@ -4,21 +4,17 @@ import { Text } from '@citizenlab/cl2-component-library';
 
 import { IEventData } from 'api/events/types';
 
-import { useIntl } from 'utils/cl-intl';
-
-import messages from '../../messages';
+import useRegistrantCountMessage from 'components/EventCards/EventInformation/useRegistrantCountMessage';
 
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
 export interface Props {
   event: IEventData;
-  isPastEvent: boolean;
 }
 
-const ParticipantsCount = ({ isPastEvent, event }: Props) => {
-  const { formatMessage } = useIntl();
+const ParticipantsCount = ({ event }: Props) => {
+  const registrantCountMessage = useRegistrantCountMessage(event);
   const attendeesCount = event.attributes.attendees_count;
-  const maximumAttendees = event.attributes.maximum_attendees;
 
   if (attendeesCount > 0) {
     return (
@@ -31,14 +27,7 @@ const ParticipantsCount = ({ isPastEvent, event }: Props) => {
             color="coolGrey600"
             fontSize="s"
           >
-            {attendeesCount}{' '}
-            {maximumAttendees
-              ? `/ ${maximumAttendees} ${formatMessage(
-                  isPastEvent ? messages.registered : messages.haveRegistered
-                )}`
-              : formatMessage(
-                  isPastEvent ? messages.registered : messages.haveRegistered
-                )}
+            {registrantCountMessage}
           </Text>
         </Content>
       </Container>

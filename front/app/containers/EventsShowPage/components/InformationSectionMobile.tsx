@@ -45,7 +45,7 @@ const InformationSectionMobile = ({ event }: Props) => {
                     <EventAttendanceButton event={event} />
                   </Box>
                 )}
-                <ParticipantsCount event={event} isPastEvent={isPastEvent} />
+                <ParticipantsCount event={event} />
                 <Box borderBottom={`solid 1px ${colors.divider}`} />
               </>
 
