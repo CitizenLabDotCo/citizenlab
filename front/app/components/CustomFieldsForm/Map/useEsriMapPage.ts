@@ -11,7 +11,8 @@ import eventEmitter from 'utils/eventEmitter';
 const useEsriMapPage = ({ project, pages, currentPageNumber, localize }) => {
   const draggableDivRef = useRef<HTMLDivElement>(null);
   const dragDividerRef = useRef<HTMLDivElement>(null);
-  const { data: projectMapConfig } = useProjectMapConfig(project?.data?.id);
+  const { data: projectMapConfig, isFetching: isFetchingProjectConfig } =
+    useProjectMapConfig(project?.data?.id);
   const mapConfigId =
     pages[currentPageNumber]?.page?.map_config_id || projectMapConfig?.data.id;
   const { data: fetchedMapConfig, isFetching: isFetchingMapConfig } =
@@ -26,7 +27,7 @@ const useEsriMapPage = ({ project, pages, currentPageNumber, localize }) => {
   // Emit event when page changes and map is fetched
   useEffect(() => {
     eventEmitter.emit(FORM_PAGE_CHANGE_EVENT);
-  }, [currentPageNumber, isFetchingMapConfig]);
+  }, [currentPageNumber, isFetchingMapConfig, isFetchingProjectConfig]);
 
   const onDragDivider = useCallback(
     (event) => {
