@@ -161,6 +161,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       handleClick();
     },
     processing: isAddingAttendance || isRemovingAttendance,
+    className: 'e2e-event-attendance-button',
   };
 
   return (
@@ -169,7 +170,6 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         <Button
           {...buttonProps}
           icon={event.attributes.using_url ? undefined : 'check'}
-          className="e2e-event-attendance-button"
         >
           {customButtonText && event.attributes.using_url
             ? customButtonText
@@ -185,7 +185,6 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           <Button
             {...buttonProps}
             icon={event.attributes.using_url ? undefined : 'plus-circle'}
-            className="e2e-event-attendance-button"
             disabled={buttonDisabled}
           >
             {customButtonText && event.attributes.using_url
