@@ -16,15 +16,6 @@ export type NavItem = {
   showAtBottom: boolean;
 };
 
-// const getInspirationHubLink = (country_code: string) => {
-//   const pinnedProjectsCountryFilter = `q[pin_country_code_eq]=${country_code}`;
-//   const allProjectsCountryFilter = `q[tenant_country_code_in]=${JSON.stringify([
-//     country_code,
-//   ])}`;
-
-//   return `/admin/inspiration-hub?${pinnedProjectsCountryFilter}&${allProjectsCountryFilter}` as RouteType;
-// };
-
 const defaultNavItems: NavItem[] = [
   /* Top items */
   {
