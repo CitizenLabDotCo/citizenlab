@@ -160,6 +160,7 @@
   "app.components.CustomFieldsForm.imageRequired": "Das Bild ist erforderlich",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Ein Minimum von {numPoints} Kartenpunkten ist erforderlich.",
   "app.components.CustomFieldsForm.notPublic1": "*Diese Antwort wird nur an die Projektmanager*innen und nicht an die Öffentlichkeit weitergegeben.",
+  "app.components.CustomFieldsForm.otherArea": "Anderswo",
   "app.components.CustomFieldsForm.progressBarLabel": "Fortschritt",
   "app.components.CustomFieldsForm.removeAnswer": "Antwort entfernen",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Beliebig viele auswählen",
