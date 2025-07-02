@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::CommentMarkedAsSpamMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::CommentMarkedAsSpam.create! }
-    let_it_be(:initiating_user) { create(:user) }
+    let_it_be(:initiating_user) { create(:user, first_name: 'John', last_name: 'Doe') }
     let_it_be(:comment) { create(:comment, author: recipient) }
     let_it_be(:command) do
       {
@@ -46,16 +46,45 @@ RSpec.describe EmailCampaigns::CommentMarkedAsSpamMailer do
     end
 
     it 'assigns reporter\'s name' do
-      expect(mail.body.encoded).to match(initiating_user.first_name)
+      expect(mail_body(mail)).to match(initiating_user.first_name)
     end
 
     it 'assigns the reason' do
-      expect(mail.body.encoded).to match('The comment is inappropriate or offensive.')
+      expect(mail_body(mail)).to match('The comment is inappropriate or offensive.')
     end
 
     it 'assigns go to comment CTA' do
       comment_url = Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient.locale))
-      expect(mail.body.encoded).to match(comment_url)
+      expect(mail_body(mail)).to match(comment_url)
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ organizationName }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT - {{ post }}</b>' },
+          button_text_multiloc: { 'en' => 'CLICK THE BUTTON - {{ firstName }} {{ lastName }}' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Liege'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE FOR Liege')
+      end
+
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT - Plant more trees</b>')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail_body(mail)).to include('CLICK THE BUTTON - John Doe')
+      end
     end
   end
 end

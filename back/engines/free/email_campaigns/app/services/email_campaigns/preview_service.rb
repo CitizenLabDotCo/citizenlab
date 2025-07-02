@@ -2,7 +2,7 @@ module EmailCampaigns
   class PreviewService
     PreviewUser = Struct.new(:first_name, :last_name, :display_name)
     PreviewContentItem = Struct.new(:id, :title_multiloc, :body_multiloc, :url, :deleted_reason)
-    PreviewData = Struct.new(:idea, :project, :comment, :proposal, :author, :organization_name)
+    PreviewData = Struct.new(:idea, :project, :comment, :proposal, :author, :initiator, :organization_name)
 
     # Static content that can be used across all email previews.
     def self.preview_data(recipient)
@@ -30,6 +30,11 @@ module EmailCampaigns
           first_name: I18n.t('email_campaigns.preview_data.author_first_name', locale: recipient.locale),
           last_name: I18n.t('email_campaigns.preview_data.author_last_name', locale: recipient.locale),
           display_name: I18n.t('email_campaigns.preview_data.author_display_name', locale: recipient.locale)
+        ),
+        initiator: PreviewUser.new(
+          first_name: I18n.t('email_campaigns.preview_data.initiator_first_name', locale: recipient.locale),
+          last_name: I18n.t('email_campaigns.preview_data.initiator_last_name', locale: recipient.locale),
+          display_name: I18n.t('email_campaigns.preview_data.initiator_display_name', locale: recipient.locale)
         ),
         organization_name: MultilocService.new.t(AppConfiguration.instance.settings('core', 'organization_name'), recipient.locale)
       )
