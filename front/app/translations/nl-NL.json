@@ -160,6 +160,7 @@
   "app.components.CustomFieldsForm.imageRequired": "De afbeelding is vereist",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Een minimum van {numPoints} punten is vereist.",
   "app.components.CustomFieldsForm.notPublic1": "*Dit antwoord wordt alleen gedeeld met projectbeheerders en niet met het publiek.",
+  "app.components.CustomFieldsForm.otherArea": "Ergens anders",
   "app.components.CustomFieldsForm.progressBarLabel": "Voortgang",
   "app.components.CustomFieldsForm.removeAnswer": "Antwoord verwijderen",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Selecteer er zoveel als je wilt",
