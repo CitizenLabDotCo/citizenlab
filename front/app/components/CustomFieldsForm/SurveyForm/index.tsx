@@ -98,7 +98,7 @@ const SurveyForm = ({
     if (isSubmitPage) {
       trackEventByName(tracks.surveyFormSubmitted);
       // Form has been submitted, clear the draft idea
-      return clearDraftIdea();
+      return clearDraftIdea(phaseId);
     }
   };
 
