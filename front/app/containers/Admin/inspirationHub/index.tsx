@@ -39,7 +39,7 @@ const InspirationHub = () => {
         setRansackParam('q[pin_country_code_eq]', countryCode);
       }
 
-      if (!tenantCountryCode) {
+      if (!tenantCountryCode || tenantCountryCode.length === 0) {
         setRansackParam('q[tenant_country_code_in]', [countryCode]);
       }
 
