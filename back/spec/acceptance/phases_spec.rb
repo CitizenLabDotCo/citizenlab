@@ -38,6 +38,14 @@ resource 'Phases' do
         assert_status 200
         expect(json_response[:data].size).to eq 2
       end
+
+      example 'List all phases of unlisted project', document: false do
+        @project.update!(unlisted: true)
+        Permissions::PermissionsUpdateService.new.update_all_permissions
+        do_request
+        assert_status 200
+        expect(json_response[:data].size).to eq 2
+      end
     end
 
     context 'when admin' do
