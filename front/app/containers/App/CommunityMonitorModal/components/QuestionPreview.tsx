@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import { Spinner, Text } from '@citizenlab/cl2-component-library';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -60,6 +60,10 @@ const QuestionPreview = ({
       redirectToFullSurvey();
     }
   }, [fieldValue, onClose, projectSlug, phaseId]);
+
+  if (!customFields) {
+    return <Spinner />;
+  }
 
   // If there is no first sentiment linear scale, do not render anything
   if (!firstSentimentLinearScale) {
