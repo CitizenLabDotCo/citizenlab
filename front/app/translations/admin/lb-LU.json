@@ -2195,7 +2195,7 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/Benotzer",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Benotzer",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Actions",
-  "app.containers.AdminPage.ProjectFiles.addFile": "Add file",
+  "app.containers.AdminPage.ProjectFiles.addFile": "Datei derbäisetzen",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Added",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Delete file",
   "app.containers.AdminPage.ProjectFiles.editFile": "Edit file",
