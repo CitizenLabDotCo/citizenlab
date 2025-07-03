@@ -7,10 +7,9 @@ import filesKeys from './keys';
 export type FilesKeys = Keys<typeof filesKeys>;
 
 export interface IAddFileProperties {
-  file: {
-    file: string;
-    name: string;
-  };
+  content: string;
+  project?: string;
+  name: string;
 }
 
 export interface IUpdateFileProperties {
@@ -45,6 +44,13 @@ export interface IPaginationProps {
 
 export interface IFiles {
   data: IFileData[];
+  links: {
+    self: string;
+    first: string;
+    last: string;
+    next?: string;
+    prev?: string;
+  };
 }
 
 export interface IFile {
@@ -56,7 +62,7 @@ export interface IFileData {
   type: string;
   attributes: IFileAttributes;
   relationships: {
-    uploader: IRelationship;
+    uploader: { data: IRelationship };
   };
 }
 

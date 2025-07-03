@@ -2184,7 +2184,6 @@
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Acties",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Toegevoegd",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Bestand verwijderen",
-  "app.containers.AdminPage.ProjectFiles.editFile": "Bestand bewerken",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Bestand",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Bestanden zoeken",
   "app.containers.AdminPage.ProjectFiles.typeTableHeader": "Type",

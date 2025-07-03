@@ -2184,7 +2184,6 @@
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Radnje",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Dodano",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Izbriši datoteku",
-  "app.containers.AdminPage.ProjectFiles.editFile": "Uredi datoteku",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Datoteka",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Pretraži datoteke",
   "app.containers.AdminPage.ProjectFiles.typeTableHeader": "Tip",

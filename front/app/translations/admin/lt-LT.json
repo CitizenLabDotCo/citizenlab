@@ -2184,7 +2184,6 @@
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Veiksmai",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Pridėta",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Ištrinti failą",
-  "app.containers.AdminPage.ProjectFiles.editFile": "Redaguoti failą",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Failas",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Ieškoti failų",
   "app.containers.AdminPage.ProjectFiles.typeTableHeader": "Tipas",
