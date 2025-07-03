@@ -130,6 +130,10 @@ class Idea < ApplicationRecord
   has_many :cosponsorships, dependent: :destroy
   has_many :cosponsors, through: :cosponsorships, source: :user
 
+  # TODO: extract as a mixin?
+  has_many :file_attachments, -> { ordered }, as: :attachable, class_name: 'Files::FileAttachment', dependent: :destroy
+  has_many :attached_files, through: :file_attachments, source: :file, class_name: 'Files::File'
+
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_one :idea_trending_info

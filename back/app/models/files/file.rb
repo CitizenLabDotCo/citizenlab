@@ -89,6 +89,7 @@ module Files
 
     belongs_to :uploader, class_name: 'User', optional: true
 
+    has_many :attachments, class_name: 'Files::FileAttachment', inverse_of: :file, dependent: :destroy
     has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
     has_many :projects, through: :files_projects
 

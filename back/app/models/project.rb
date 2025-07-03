@@ -73,6 +73,10 @@ class Project < ApplicationRecord
   has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
   has_many :files, through: :files_projects
 
+  # TODO: extract as a mixin?
+  has_many :file_attachments, -> { ordered }, as: :attachable, class_name: 'Files::FileAttachment', dependent: :destroy
+  has_many :attached_files, through: :file_attachments, source: :file, class_name: 'Files::File'
+
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
