@@ -1,9 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  editFile: {
-    id: 'app.containers.AdminPage.ProjectFiles.editFile',
-    defaultMessage: 'Edit file',
+  viewFile: {
+    id: 'app.containers.AdminPage.ProjectFiles.viewFile',
+    defaultMessage: 'View file',
+  },
+  downloadFile: {
+    id: 'app.containers.AdminPage.ProjectFiles.downloadFile',
+    defaultMessage: 'Download file',
   },
   deleteFile: {
     id: 'app.containers.AdminPage.ProjectFiles.deleteFile2',

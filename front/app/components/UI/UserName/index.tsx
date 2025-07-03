@@ -6,6 +6,7 @@ import {
   Box,
   Text,
   Tooltip,
+  Image,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import { RouteType } from 'routes';
@@ -79,6 +80,7 @@ interface Props extends StyleProps {
   hideLastName?: boolean;
   anonymous?: boolean;
   showModeratorStyles?: boolean;
+  ShowAvatar?: boolean;
 }
 
 const UserName = ({
@@ -93,10 +95,13 @@ const UserName = ({
   color,
   showModeratorStyles,
   anonymous,
+  ShowAvatar,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: user } = useUserById(userId);
   const { data: authUser } = useAuthUser();
+
+  const avatarUrl = authUser?.data.attributes.avatar?.medium;
 
   const sharedNameProps: StyleProps = {
     fontWeight,
@@ -169,9 +174,21 @@ const UserName = ({
       user.data.id === authUser?.data.id && authUser?.data.attributes.no_name;
 
     const nameElement = (
-      <Name {...sharedNameProps} className={classNames}>
-        {name}
-      </Name>
+      <Box display="flex" alignItems="center" gap="4px">
+        {ShowAvatar && (
+          <Image
+            src={avatarUrl || ''}
+            alt={name}
+            width={`${fontSize || 14}px`}
+            height={`${fontSize || 14}px`}
+            borderRadius="50%"
+          />
+        )}
+
+        <Name {...sharedNameProps} className={classNames}>
+          {name}
+        </Name>
+      </Box>
     );
 
     const linkedNamelement = (
