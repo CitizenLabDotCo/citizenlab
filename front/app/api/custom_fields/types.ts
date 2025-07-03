@@ -13,6 +13,7 @@ export interface ICustomFieldsParameters {
   phaseId?: string;
   inputTypes?: ICustomFieldInputType[];
   copy?: boolean;
+  publicFields?: boolean;
 }
 
 export type ICustomFieldInputType =
@@ -39,7 +40,9 @@ export type ICustomFieldInputType =
   | 'line'
   | 'polygon'
   | 'cosponsor_ids'
-  | 'sentiment_linear_scale';
+  | 'sentiment_linear_scale'
+  | 'checkbox'
+  | 'date';
 
 export type IOptionsType = {
   id?: string;
