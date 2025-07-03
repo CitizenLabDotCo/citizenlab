@@ -85,15 +85,11 @@ module EmailCampaigns
 
       # Filtering global campaigns or context campaigns. Context campaigns
       # can only be triggered by activity.
-      campaign_candidates = campaign_candidates.select do |campaign| # TODO: Test very well!
-        !campaign.context || campaign.supports_context?(campaign.context)
+      campaign_candidates = campaign_candidates.select do |campaign| # TODO: Test carefully (activity_context with incompatible activity) -- Seems to make more sense as a filter hook
+        !campaign.context || campaign.activity_context(activity) == campaign.context
       end
       campaign_candidates = campaign_candidates.select do |campaign|
-        if campaign.context
-          campaign.activity_context(activity) == campaign.context
-        else
-          campaign_candidates.select(&:context).map(&:type).exclude?(campaign.type)
-        end
+        campaign.context || campaign_candidates.select(&:context).map(&:type).exclude?(campaign.type)
       end
 
       apply_send_pipeline(campaign_candidates, activity: activity)

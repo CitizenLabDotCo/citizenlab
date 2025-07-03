@@ -13,9 +13,20 @@ const fetchCampaigns = (filters: QueryParameters) => {
     withoutCampaignNames: without_campaign_names,
     pageNumber,
     pageSize,
+    projectId,
+    phaseId,
   } = filters;
+
+  // Determine the base path based on context
+  let path = '/campaigns';
+  if (projectId) {
+    path = `/projects/${projectId}/campaigns`;
+  } else if (phaseId) {
+    path = `/phases/${phaseId}/campaigns`;
+  }
+
   return fetcher<ICampaignsData>({
-    path: '/campaigns',
+    path: path as `/${string}`,
     action: 'get',
     queryParams: {
       manual,
@@ -36,10 +47,9 @@ const useCampaigns = (queryParams: QueryParameters) => {
     queryKey: campaignsKeys.list(queryParams),
     queryFn: ({ pageParam }) =>
       fetchCampaigns({ ...queryParams, pageNumber: pageParam }),
+    // Should still be needed for pagination in CustomEmails
     getNextPageParam: (lastPage) => {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const hasNextPage = lastPage.links?.next;
+      const hasNextPage = lastPage.links.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
 
       return hasNextPage && pageNumber ? pageNumber + 1 : null;

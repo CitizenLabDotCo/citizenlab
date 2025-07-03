@@ -160,6 +160,8 @@ export interface QueryParameters {
   withoutCampaignNames?: CampaignName[];
   pageSize?: number;
   pageNumber?: number;
+  projectId?: string;
+  phaseId?: string;
 }
 
 export interface CampaignAdd {
