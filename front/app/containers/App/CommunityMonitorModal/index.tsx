@@ -10,12 +10,12 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import SurveyTimeToComplete from 'components/SurveyTimeToComplete';
 import Modal from 'components/UI/Modal';
 
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
 import QuestionPreview from './components/QuestionPreview';
-import TimeToComplete from './components/TimeToComplete';
 import { triggerCommunityMonitorModal$ } from './events';
 import { isAllowedOnUrl } from './utils';
 
@@ -136,7 +136,9 @@ const CommunityMonitorModal = ({
           onClose={onClose}
         />
       </Box>
-      <TimeToComplete projectId={project.data.id} phaseId={phaseId} />
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <SurveyTimeToComplete projectId={project.data.id} phaseId={phaseId} />
+      </Box>
     </Modal>
   );
 };

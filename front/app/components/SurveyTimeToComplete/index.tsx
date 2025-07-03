@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
+import { colors, Icon, Text } from '@citizenlab/cl2-component-library';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
 import { useIntl } from 'utils/cl-intl';
 import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
 
-import messages from '../messages';
+import messages from './messages';
 
-const TimeToComplete = ({
+const SurveyTimeToComplete = ({
   projectId,
   phaseId,
 }: {
@@ -31,7 +31,7 @@ const TimeToComplete = ({
   const estimatedMinutesToComplete = calculateEstimatedSurveyTime(customFields);
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center">
+    <>
       <Icon
         my="auto"
         height="14px"
@@ -44,8 +44,8 @@ const TimeToComplete = ({
           minutes: estimatedMinutesToComplete,
         })}
       </Text>
-    </Box>
+    </>
   );
 };
 
-export default TimeToComplete;
+export default SurveyTimeToComplete;

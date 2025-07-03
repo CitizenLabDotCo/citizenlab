@@ -3,7 +3,6 @@ import React from 'react';
 import {
   Box,
   Button,
-  Icon,
   Title,
   Image,
   Text,
@@ -14,15 +13,15 @@ import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
-import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
+import SurveyTimeToComplete from 'components/SurveyTimeToComplete';
+
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
 
 import SentimentQuestionPreview from './assets/SentimentQuestionPreview.png';
 import messages from './messages';
@@ -53,14 +52,6 @@ const CommunityMonitorCTA = ({
   const { data: phase } = usePhase(phaseId);
 
   const isSurveyLive = phase?.data.attributes.submission_enabled;
-
-  const { data: customFields } = useCustomFields({
-    projectId: project?.data.id,
-    phaseId,
-    publicFields: true,
-  });
-  // Calculate estimated time to complete survey
-  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(customFields);
 
   const goToCommunityMonitorSurvey = () => {
     if (phaseId) {
@@ -156,17 +147,12 @@ const CommunityMonitorCTA = ({
             }
             mt="8px"
           >
-            <Icon
-              width="14px"
-              fill={theme.colors.tenantPrimary}
-              name="clock-circle"
-              mr="4px"
-            />
-            <Text color="tenantPrimary" m="0px" mt="2px" fontSize="s">
-              {formatMessage(messages.xMinutesToComplete, {
-                minutes: estimatedMinutesToComplete,
-              })}
-            </Text>
+            {project?.data.id && phaseId && (
+              <SurveyTimeToComplete
+                projectId={project.data.id}
+                phaseId={phaseId}
+              />
+            )}
           </Box>
         </Box>
       </Box>
