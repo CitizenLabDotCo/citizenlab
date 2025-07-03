@@ -2184,7 +2184,6 @@
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Handlinger",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Tilføjet",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Slet filen",
-  "app.containers.AdminPage.ProjectFiles.editFile": "Rediger fil",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Fil",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Søg i filer",
   "app.containers.AdminPage.ProjectFiles.typeTableHeader": "Type",

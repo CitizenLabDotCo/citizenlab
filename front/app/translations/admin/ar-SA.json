@@ -2184,7 +2184,6 @@
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "الإجراءات",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "تمت الإضافة",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "حذف الملف",
-  "app.containers.AdminPage.ProjectFiles.editFile": "تعديل الملف",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "ملف",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "البحث عن الملفات",
   "app.containers.AdminPage.ProjectFiles.typeTableHeader": "يكتب",
