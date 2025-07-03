@@ -13,7 +13,6 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import EarlyAccessBadge from 'components/admin/EarlyAccessBadge';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import UpsellTooltip from 'components/UpsellTooltip';
@@ -55,7 +54,6 @@ const SimilarityDetectionConfig = ({
     appConfiguration?.data.attributes.settings.core.timezone;
   if (!tenantTimezone) return null;
 
-  const showEarlyAccessMessage = isInputIQActivated;
   const showUpsellTooltip = !isInputIQAllowed;
   const allowConfiguringThreshold = isSuperAdmin(user) && isInputIQActivated;
 
@@ -76,7 +74,6 @@ const SimilarityDetectionConfig = ({
             label={
               <>
                 <FormattedMessage {...messages.enableSimilarInputDetection} />
-                {showEarlyAccessMessage && <EarlyAccessBadge />}
               </>
             }
             checked={!!similarity_enabled && isInputIQActivated}

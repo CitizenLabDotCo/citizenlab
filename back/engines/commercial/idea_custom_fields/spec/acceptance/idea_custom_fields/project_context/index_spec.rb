@@ -7,9 +7,10 @@ resource 'Idea Custom Fields' do
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
   before { header 'Content-Type', 'application/json' }
 
-  get 'web_api/v1/admin/projects/:project_id/custom_fields' do
+  get 'web_api/v1/projects/:project_id/custom_fields' do
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
     parameter :input_types, 'Filter custom fields by input types', type: :array, items: { type: :string }, required: false
+    parameter :public_fields, 'Only return custom fields that are visible to the public', type: :boolean, required: false
 
     let(:context) { create(:single_phase_ideation_project) }
     let(:project_id) { context.id }
@@ -71,13 +72,22 @@ resource 'Idea Custom Fields' do
           'proposed_budget'
         ]
       end
+
+      example 'List input fields in project for groups not including user' do
+        context.update!(visible_to: 'groups')
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 13
+      end
     end
 
     context 'when resident' do
       let!(:hidden_field) { create(:custom_field_text, resource: form, key: 'extra_field2', hidden: true) }
       let!(:disabled_field) { create(:custom_field_text, resource: form, key: 'extra_field3', enabled: false) }
 
-      before { resident_header_token }
+      let(:user) { create(:user) }
+
+      before { header_token_for(user) }
 
       example_request 'List all allowed custom fields for a project' do
         assert_status 200
@@ -90,6 +100,28 @@ resource 'Idea Custom Fields' do
           nil, 'topic_ids', 'location_description',
           'extra_field1', 'form_end'
         ]
+      end
+
+      example '[Unauthorized] List input fields in admin only project' do
+        context.update!(visible_to: 'admins')
+        do_request
+        assert_status 401
+      end
+
+      example '[Unauthorized] List input fields in project for groups not including user' do
+        context.update!(visible_to: 'groups')
+        do_request
+        assert_status 401
+      end
+
+      example 'List survey fields in project for groups including user' do
+        context.update!(visible_to: 'groups')
+        group = create(:group)
+        create(:membership, group: group, user: user)
+        create(:groups_project, group: group, project: context)
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 12
       end
     end
   end
