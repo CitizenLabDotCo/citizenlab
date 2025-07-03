@@ -2182,7 +2182,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/gweinyddol/defnyddwyr",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Defnyddwyr",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Camau gweithredu",
-  "app.containers.AdminPage.ProjectFiles.addFile": "Ychwanegu ffeil",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Ychwanegwyd",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Dileu ffeil",
   "app.containers.AdminPage.ProjectFiles.editFile": "Golygu ffeil",

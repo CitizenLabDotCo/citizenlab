@@ -2182,7 +2182,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Brugere",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Handlinger",
-  "app.containers.AdminPage.ProjectFiles.addFile": "Tilføj fil",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Tilføjet",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Slet filen",
   "app.containers.AdminPage.ProjectFiles.editFile": "Rediger fil",

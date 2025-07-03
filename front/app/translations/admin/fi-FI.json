@@ -2182,7 +2182,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/käyttäjät",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Käyttäjät",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Toiminnot",
-  "app.containers.AdminPage.ProjectFiles.addFile": "Lisää tiedosto",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Lisätty",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Poista tiedosto",
   "app.containers.AdminPage.ProjectFiles.editFile": "Muokkaa tiedostoa",

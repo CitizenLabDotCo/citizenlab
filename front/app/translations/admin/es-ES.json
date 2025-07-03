@@ -2182,7 +2182,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Usuarios",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Acciones",
-  "app.containers.AdminPage.ProjectFiles.addFile": "Añadir archivo",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Añadido",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Eliminar archivo",
   "app.containers.AdminPage.ProjectFiles.editFile": "Editar archivo",

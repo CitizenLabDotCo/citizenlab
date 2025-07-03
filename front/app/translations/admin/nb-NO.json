@@ -2182,7 +2182,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/brukere",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Brukere",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Handlinger",
-  "app.containers.AdminPage.ProjectFiles.addFile": "Legg til fil",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Lagt til",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Slett fil",
   "app.containers.AdminPage.ProjectFiles.editFile": "Rediger fil",

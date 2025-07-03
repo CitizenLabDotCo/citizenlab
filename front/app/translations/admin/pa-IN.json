@@ -2182,7 +2182,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "ਉਪਭੋਗਤਾ",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "ਕਾਰਵਾਈਆਂ",
-  "app.containers.AdminPage.ProjectFiles.addFile": "ਫਾਈਲ ਸ਼ਾਮਲ ਕਰੋ",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "ਜੋੜਿਆ ਗਿਆ",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "ਫਾਈਲ ਮਿਟਾਓ",
   "app.containers.AdminPage.ProjectFiles.editFile": "ਫਾਈਲ ਸੰਪਾਦਿਤ ਕਰੋ",
