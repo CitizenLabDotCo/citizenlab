@@ -179,6 +179,7 @@ export interface TFieldNameMap {
   banner_cta_button_multiloc: 'banner_cta_button_multiloc';
   banner_cta_button_url: 'banner_cta_button_url';
   tag_name: 'tag_name';
+  maximum_attendees: 'maximum_attendees';
 }
 
 export type TFieldName = TFieldNameMap[keyof TFieldNameMap];
@@ -236,6 +237,7 @@ const Error = (props: Props) => {
     id,
     scrollIntoView = true,
   } = props;
+  console.log('apiErrors', apiErrors);
 
   useEffect(() => {
     if (scrollIntoView) {
