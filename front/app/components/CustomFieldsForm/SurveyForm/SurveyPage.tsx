@@ -57,7 +57,7 @@ type SurveyPage = {
     isSubmitPage: boolean;
   }) => Promise<void>;
   phase?: IPhaseData;
-  defaultValues?: any;
+  defaultValues?: FormValues;
   customFields: IFlatCustomField[];
 };
 
