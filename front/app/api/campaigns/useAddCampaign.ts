@@ -3,6 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
+import campaignsKeys from './keys';
 import { ICampaign, CampaignAdd } from './types';
 
 const addCampaign = async ({
@@ -29,7 +30,7 @@ const useAddCampaign = () => {
   return useMutation<ICampaign, CLErrors, CampaignAdd>({
     mutationFn: addCampaign,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['campaigns'] });
+      queryClient.invalidateQueries({ queryKey: campaignsKeys.lists() });
     },
   });
 };
