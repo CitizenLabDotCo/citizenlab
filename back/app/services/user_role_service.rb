@@ -56,6 +56,7 @@ class UserRoleService
   end
 
   def moderatable_projects(user, scope = Project)
+    return scope.none unless user
     return scope.all if user.admin?
 
     moderatable_projects = scope.none
