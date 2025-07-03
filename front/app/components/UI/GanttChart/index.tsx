@@ -96,20 +96,20 @@ const GanttChart = ({
 
   // preserve scroll position when we prepend months
   useLayoutEffect(() => {
-    const el = timelineBodyRef.current;
-    if (el && scrollState.current.scrollWidth > 0) {
-      const newW = el.scrollWidth;
-      const diff = newW - scrollState.current.scrollWidth;
-      el.scrollLeft = scrollState.current.scrollLeft + diff;
+    const element = timelineBodyRef.current;
+    if (element && scrollState.current.scrollWidth > 0) {
+      const newWidth = element.scrollWidth;
+      const difference = newWidth - scrollState.current.scrollWidth;
+      element.scrollLeft = scrollState.current.scrollLeft + difference;
       scrollState.current.scrollWidth = 0;
     }
   }, [timelineStartDate]);
 
   // infinite scroll handler
   const onTimelineScroll = useCallback(() => {
-    const timelineEl = timelineBodyRef.current;
-    if (!timelineEl || isLoading) return;
-    const { scrollLeft, scrollWidth, clientWidth } = timelineEl;
+    const timelineElement = timelineBodyRef.current;
+    if (!timelineElement || isLoading) return;
+    const { scrollLeft, scrollWidth, clientWidth } = timelineElement;
 
     // update visible label
     let cumulativeWidth = 0;
@@ -136,18 +136,18 @@ const GanttChart = ({
   }, [isLoading, timeGroups, visibleLabel]);
 
   const scrollToToday = useCallback(() => {
-    const timelineEl = timelineBodyRef.current;
-    if (!timelineEl || todayOffset === undefined) return;
+    const timelineElement = timelineBodyRef.current;
+    if (!timelineElement || todayOffset === undefined) return;
     // Center today in view
-    const position = todayOffset * unitWidth - timelineEl.clientWidth / 2;
-    timelineEl.scrollTo({ left: position, behavior: 'auto' });
+    const position = todayOffset * unitWidth - timelineElement.clientWidth / 2;
+    timelineElement.scrollTo({ left: position, behavior: 'auto' });
   }, [todayOffset, unitWidth]);
 
   // Mount-only scroll: waits until timeGroups to exist, then fires once
   useEffect(() => {
     if (didInitialScroll.current || timeGroups.length === 0) return;
-    const el = timelineBodyRef.current;
-    if (!el) return;
+    const element = timelineBodyRef.current;
+    if (!element) return;
 
     didInitialScroll.current = true;
     // wait a paint for layout
@@ -169,9 +169,9 @@ const GanttChart = ({
   const handleRangeChange = (range: TimeRangeOption) => {
     rangeChanged.current = true;
     setSelectedRange(range);
-    const { startDate: ns, endDate: ne } = getTimeRangeDates(range, today);
-    setTimelineStartDate(ns);
-    setEndDate(ne);
+    const { startDate, endDate } = getTimeRangeDates(range, today);
+    setTimelineStartDate(startDate);
+    setEndDate(endDate);
   };
 
   useEffect(() => {

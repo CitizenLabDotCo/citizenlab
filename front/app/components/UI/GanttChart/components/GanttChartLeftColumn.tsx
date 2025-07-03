@@ -62,7 +62,7 @@ const GanttChartLeftColumn = ({
                 variant="bodyS"
                 overflow="hidden"
               >
-                {item.title}rerere
+                {item.title}
               </Text>
             </Box>
           </Button>

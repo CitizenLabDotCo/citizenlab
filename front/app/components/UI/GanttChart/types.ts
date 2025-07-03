@@ -11,11 +11,11 @@ export type GanttItem = {
   start: string | null;
   end: string | null;
   folder?: string | null;
-  /** Optional highlight range for the item */
+  // Optional highlight range for the item
   highlight?: {
-    /** start of highlight range */
+    // start of highlight range */
     start: string | null;
-    /** end of highlight range (null = open-ended) */
+    // end of highlight range (null = open-ended)
     end: string | null;
   };
   icon?: IconNames;
