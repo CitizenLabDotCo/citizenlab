@@ -24,6 +24,7 @@
 #  preview_token                :string           not null
 #  header_bg_alt_text_multiloc  :jsonb
 #  hidden                       :boolean          default(FALSE), not null
+#  unlisted                     :boolean          default(FALSE), not null
 #
 # Indexes
 #

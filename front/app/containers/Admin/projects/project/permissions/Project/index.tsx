@@ -11,11 +11,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import ProjectManagement from './ProjectManagement';
+import ProjectUnlisted from './ProjectUnlisted';
 import ProjectVisibility from './ProjectVisibility';
 
 const ProjectPermissions = () => {
   const { projectId } = useParams();
-
   if (!projectId) return null;
 
   return (
@@ -27,6 +27,7 @@ const ProjectPermissions = () => {
         <FormattedMessage {...messages.projectVisibilitySubtitle} />
       </SectionDescription>
       <ProjectVisibility projectId={projectId} />
+      <ProjectUnlisted projectId={projectId} />
       <Outlet
         id="app.containers.Admin.project.edit.permissions.moderatorRights"
         projectId={projectId}

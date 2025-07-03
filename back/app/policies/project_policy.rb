@@ -1,6 +1,40 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
+  def self.apply_listed_scope(scope, user, include_unlisted)
+    # Admins: if include_unlisted, return all projects,
+    # otherwise, return only listed projects.
+    if user&.admin?
+      if include_unlisted
+        return scope
+      else
+        return scope.where(unlisted: false)
+      end
+    end
+
+    # Moderators: if include_unlisted, return all listed projects +
+    # unlisted projects that the user can moderate.
+    # otherwise, return only listed projects.
+    if user&.project_or_folder_moderator?
+      if include_unlisted
+        scope = scope.joins(:admin_publication)
+
+        return scope.where(
+          '(projects.unlisted = FALSE) OR ' \
+          '(projects.unlisted = TRUE AND projects.id IN (?)) OR ' \
+          '(projects.unlisted = TRUE AND admin_publications.parent_id IN (?))',
+          user.moderatable_project_ids,
+          AdminPublication.where(publication_id: user.moderated_project_folder_ids).select(:id)
+        )
+      else
+        return scope.where(unlisted: false)
+      end
+    end
+
+    # Other: always return only listed projects.
+    scope.where(unlisted: false)
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       @scope = scope.includes(:admin_publication)
@@ -11,9 +45,19 @@ class ProjectPolicy < ApplicationPolicy
       # of the user gives access).
       moderator_scope = user&.active? ? UserRoleService.new.moderatable_projects(user, scope) : scope.none
 
-      moderator_scope
+      moderator_scope = moderator_scope
         .or(resolve_for_visitor)
         .or(resolve_for_normal_user)
+
+      if context[:apply_listed_scope]
+        moderator_scope = ProjectPolicy.apply_listed_scope(
+          moderator_scope,
+          user,
+          context[:include_unlisted] != false
+        )
+      end
+
+      moderator_scope
     end
 
     private
@@ -145,6 +189,7 @@ class ProjectPolicy < ApplicationPolicy
       :header_bg,
       :visible_to,
       :include_all_areas,
+      :unlisted,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
