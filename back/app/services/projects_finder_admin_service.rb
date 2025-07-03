@@ -122,18 +122,22 @@ class ProjectsFinderAdminService
     return scope if raw_start.blank? && raw_end.blank?
 
     start_at = parse_date(raw_start)
-    end_at = parse_date(raw_end)
+    end_at   = parse_date(raw_end)
 
-    start_at ||= Date.new(1970, 1, 1)
-    end_at ||= Date::Infinity.new
+    query_start_at = start_at || Date.new(1970, 1, 1)
 
-    overlapping_project_ids = Phase
-      .select(:project_id)
-      .where(
+    overlapping_project_ids = if end_at.present?
+      Phase.select(:project_id).where(
         "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)",
-        start_at,
+        query_start_at,
         end_at
       )
+    else
+      Phase.select(:project_id).where(
+        "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, 'infinity')",
+        query_start_at
+      )
+    end
 
     scope.where(id: overlapping_project_ids)
   end
