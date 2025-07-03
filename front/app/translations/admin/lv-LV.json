@@ -2182,7 +2182,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Lietotāji",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Darbības",
-  "app.containers.AdminPage.ProjectFiles.addFile": "Pievienot failu",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Pievienots",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Dzēst failu",
   "app.containers.AdminPage.ProjectFiles.editFile": "Rediģēt failu",

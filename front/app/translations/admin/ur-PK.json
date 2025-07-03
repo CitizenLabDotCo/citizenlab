@@ -2182,7 +2182,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/ایڈمن/صارفین",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "صارفین",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "اعمال",
-  "app.containers.AdminPage.ProjectFiles.addFile": "فائل شامل کریں۔",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "شامل کیا گیا۔",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "فائل کو حذف کریں۔",
   "app.containers.AdminPage.ProjectFiles.editFile": "فائل میں ترمیم کریں۔",

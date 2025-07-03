@@ -2182,7 +2182,6 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/kullanıcılar",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Kullanıcılar",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Eylemler",
-  "app.containers.AdminPage.ProjectFiles.addFile": "Dosya ekle",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Eklendi",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Dosya silme",
   "app.containers.AdminPage.ProjectFiles.editFile": "Dosya düzenleme",
