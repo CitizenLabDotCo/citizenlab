@@ -55,9 +55,21 @@ class WebApi::V1::FilesController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def index
-    @files = @container.send(secure_constantize(:file_relationship)).order(:ordering)
-    @files = secure_constantize(:policy_scope_class).new(pundit_user, @files).resolve
-    render json: WebApi::V1::FileSerializer.new(@files, params: jsonapi_serializer_params).serializable_hash
+    files = @container.send(secure_constantize(:file_relationship)).order(:ordering)
+
+    if files.empty?
+      file_attachments = policy_scope(@container.file_attachments.includes(:file))
+      render json: WebApi::V1::Files::FileAttachmentSerializer.new(
+        file_attachments,
+        params: jsonapi_serializer_params
+      ).serializable_hash
+    else
+      files = secure_constantize(:policy_scope_class).new(pundit_user, files).resolve
+      render json: WebApi::V1::FileSerializer.new(
+        files,
+        params: jsonapi_serializer_params
+      ).serializable_hash
+    end
   end
 
   def show
