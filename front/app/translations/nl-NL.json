@@ -2304,7 +2304,7 @@
   "app.utils.votingMethodUtils.howToParticipate": "Hoe deel te nemen",
   "app.utils.votingMethodUtils.howToVote": "Hoe te stemmen",
   "app.utils.votingMethodUtils.multipleVotingEnded1": "De stemming is gesloten op <b>{endDate}.</b>",
-  "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 studiepunten} one {1 studiepunt} other {# studiepunten}}",
+  "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 credits} one {1 credit} other {# credits}}",
   "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 punten} one {1 punt} other {# punten}}",
   "app.utils.votingMethodUtils.numberOfTokens": "{numberOfVotes, plural, =0 {0 tokens} one {1 token} other {# tokens}}",
   "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 stemmen} one {1 stem} other {# stemmen}}",
