@@ -12,7 +12,7 @@ type Props = {
   iconColor?: string;
   iconBackgroundColor?: string;
 };
-const InformationPoint = ({
+const FeatureInformationItem = ({
   iconName,
   mainText,
   secondaryText,
@@ -44,4 +44,4 @@ const InformationPoint = ({
   );
 };
 
-export default InformationPoint;
+export default FeatureInformationItem;

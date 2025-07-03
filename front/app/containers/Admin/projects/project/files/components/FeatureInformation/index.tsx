@@ -9,7 +9,7 @@ import {
 
 import { hexToRGBA } from 'utils/helperUtils';
 
-import InformationItem from './InformationItem';
+import FeatureInformationItem from './FeatureInformationItem';
 import messages from './messages';
 
 const FeatureInformation = () => {
@@ -23,28 +23,28 @@ const FeatureInformation = () => {
       background={colors.white}
       borderRadius={stylingConsts.borderRadius}
     >
-      <InformationItem
+      <FeatureInformationItem
         iconName={'upload-file'}
         mainText={messages.uploadAnyFile}
         secondaryText={messages.uploadAnyFileDescription}
         iconColor={colors.teal400}
         iconBackgroundColor={hexToRGBA(colors.teal400, 0.1)}
       />
-      <InformationItem
+      <FeatureInformationItem
         iconName={'paperclip'}
         mainText={messages.addFilesToProject}
         secondaryText={messages.addFilesToProjectDescription}
         iconColor={colors.teal400}
         iconBackgroundColor={hexToRGBA(colors.teal400, 0.1)}
       />
-      <InformationItem
+      <FeatureInformationItem
         iconName={'chart-bar'}
         mainText={messages.useAIOnFiles}
         secondaryText={messages.useAIOnFilesDescription}
         iconColor={colors.teal400}
         iconBackgroundColor={hexToRGBA(colors.teal400, 0.1)}
       />
-      <InformationItem
+      <FeatureInformationItem
         iconName={'stars'}
         mainText={messages.addFilesToSensemaking}
         secondaryText={messages.addFilesToSensemakingDescription}
@@ -52,7 +52,7 @@ const FeatureInformation = () => {
         iconBackgroundColor={hexToRGBA(colors.teal400, 0.1)}
       />
       <Divider />
-      <InformationItem
+      <FeatureInformationItem
         iconName={'arrow-up'}
         mainText={messages.comingSoon}
         secondaryText={messages.comingSoonDescription}

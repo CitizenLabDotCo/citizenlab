@@ -175,9 +175,9 @@ const UserName = ({
 
     const nameElement = (
       <Box display="flex" alignItems="center" gap="4px">
-        {ShowAvatar && (
+        {ShowAvatar && avatarUrl && (
           <Image
-            src={avatarUrl || ''}
+            src={avatarUrl}
             alt={name}
             width={`${fontSize || 14}px`}
             height={`${fontSize || 14}px`}
