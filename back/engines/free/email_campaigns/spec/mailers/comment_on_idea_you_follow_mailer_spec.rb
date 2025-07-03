@@ -20,7 +20,6 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
 
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
-    context 'default mail' do
       let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
       let_it_be(:mail) { mailer.campaign_mail.deliver_now }
 
@@ -53,7 +52,6 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
       it 'includes the unfollow url' do
         expect(mail_body(mail)).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
       end
-    end
 
     context 'with custom text' do
       let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }

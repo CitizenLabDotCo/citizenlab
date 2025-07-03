@@ -4,8 +4,8 @@ module EmailCampaigns
   class AssigneeDigestMailer < ApplicationMailer
     include EditableWithPreview
 
-    def editable_region_variable_keys
-      %w[organizationName firstName numberIdeas]
+    def editable
+      %i[subject_multiloc title_multiloc button_text_multiloc]
     end
 
     def preview_command(recipient: nil)
@@ -50,13 +50,6 @@ module EmailCampaigns
         firstName: recipient_first_name,
         numberIdeas: event&.need_feedback_assigned_inputs_count
       }
-    end
-
-    private
-
-    # This email has no intro text
-    def header_message
-      false
     end
   end
 end

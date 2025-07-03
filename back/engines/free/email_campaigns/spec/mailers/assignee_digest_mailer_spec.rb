@@ -52,11 +52,8 @@ RSpec.describe EmailCampaigns::AssigneeDigestMailer do
 
     include_examples 'campaign delivery tracking'
 
-    context 'default mail' do
-      let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
       it 'renders the subject' do
-        expect(mail.subject).to start_with('Ideas requiring your feedback')
+        expect(mail.subject).to start_with('Inputs requiring your feedback')
       end
 
       it 'renders the receiver email' do
@@ -70,7 +67,6 @@ RSpec.describe EmailCampaigns::AssigneeDigestMailer do
       it 'assigns organisation name' do
         expect(mail_body(mail)).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
       end
-    end
 
     context 'when editable regions are customised' do
       let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }

@@ -4,8 +4,8 @@ module EmailCampaigns
   class AdminRightsReceivedMailer < ApplicationMailer
     include EditableWithPreview
 
-    def editable_region_variable_keys
-      %w[organizationName]
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
     def preview_command(recipient: nil)

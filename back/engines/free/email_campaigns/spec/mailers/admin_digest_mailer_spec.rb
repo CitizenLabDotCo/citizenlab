@@ -50,7 +50,6 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
 
     include_examples 'campaign delivery tracking'
 
-    context 'default mail' do
       it 'renders the subject' do
         expect(mail.subject).to start_with('Your weekly admin report')
       end
@@ -81,7 +80,6 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
         expect(mail_body(mail))
           .to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
       end
-    end
 
     context 'with custom text' do
       let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }

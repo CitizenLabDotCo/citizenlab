@@ -20,7 +20,6 @@ RSpec.describe EmailCampaigns::AdminRightsReceivedMailer do
 
     include_examples 'campaign delivery tracking'
 
-    context 'with default content' do
       it 'renders the subject' do
         expect(mail.subject).to start_with('You became an administrator on the platform of')
       end
@@ -40,7 +39,6 @@ RSpec.describe EmailCampaigns::AdminRightsReceivedMailer do
       it 'assigns moderate CTA' do
         expect(mail_body(mail)).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
       end
-    end
 
     context 'when editable regions are customised' do
       let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
