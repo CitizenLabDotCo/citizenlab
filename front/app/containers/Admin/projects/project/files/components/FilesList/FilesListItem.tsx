@@ -92,12 +92,6 @@ const FilesListItem = ({
             {new Date(file.attributes.created_at).toLocaleDateString()}
           </Text>
           <Text fontSize="s" color={'coolGrey500'} m="0px">
-            • Public
-          </Text>
-          <Text fontSize="s" color={'coolGrey500'} m="0px">
-            • {'Semantic Type'}
-          </Text>
-          <Text fontSize="s" color={'coolGrey500'} m="0px">
             •
           </Text>
           <UserName

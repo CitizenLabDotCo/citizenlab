@@ -10,9 +10,7 @@ type Props = {
 const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
   return (
     <SideModal opened={opened} close={() => setSideViewOpened(false)}>
-      <h3 style={{ marginTop: '30px' }}>
-        ToDo: Content for file side view. File ID: {selectedFileId}
-      </h3>
+      TODO: Content for file side view. File ID: {selectedFileId}
     </SideModal>
   );
 };
