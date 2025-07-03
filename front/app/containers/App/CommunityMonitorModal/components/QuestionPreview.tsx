@@ -73,7 +73,7 @@ const QuestionPreview = ({
   return (
     <FormProvider {...methods}>
       <CustomFields
-        questions={[firstSentimentLinearScale]}
+        questions={[{ ...firstSentimentLinearScale, required: true }]}
         projectId={projectId}
         participationMethod={'native_survey'}
       />
