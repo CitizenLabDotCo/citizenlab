@@ -1883,7 +1883,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.voteCalled": "Hvad skal en stemme hedde?",
   "app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural2": "F.eks. poletter, point, CO2-kreditter...",
   "app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderSingular2": "F.eks. poletter, point, Co2-kreditter...",
-  "app.containers.AdminPage.ProjectEdit.Voting.voteTerm": "Stem",
+  "app.containers.AdminPage.ProjectEdit.Voting.voteTerm": "Stemme",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorSubtitle": "Hver afstemningsmetode har forskellige forhåndsindstillinger",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTitle": "Afstemningsmetode",
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2": "Afstemningsmetoden bestemmer reglerne for, hvordan brugerne stemmer.",
