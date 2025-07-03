@@ -617,7 +617,7 @@ const AdminProjectEventEdit = () => {
                 </SectionField>
               )}
 
-              <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
+              <Title variant="h4" color="primary" fontWeight="semi-bold">
                 {formatMessage(messages.eventDates)}
               </Title>
               {eventAttrs.start_at && eventAttrs.end_at && (
@@ -629,7 +629,7 @@ const AdminProjectEventEdit = () => {
                 />
               )}
 
-              <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
+              <Title variant="h4" color="primary" fontWeight="semi-bold">
                 {formatMessage(messages.eventLocation)}
               </Title>
               <SectionField>
@@ -727,7 +727,7 @@ const AdminProjectEventEdit = () => {
               <Title
                 variant="h4"
                 color="primary"
-                style={{ fontWeight: '600' }}
+                fontWeight="semi-bold"
                 mt="48px"
               >
                 {formatMessage(messages.attendanceLimit)}
@@ -772,7 +772,7 @@ const AdminProjectEventEdit = () => {
               <Title
                 variant="h4"
                 color="primary"
-                style={{ fontWeight: '600' }}
+                fontWeight="semi-bold"
                 mt="48px"
               >
                 {formatMessage(messages.attendanceButton)}
@@ -869,7 +869,7 @@ const AdminProjectEventEdit = () => {
               <Title
                 variant="h4"
                 color="primary"
-                style={{ fontWeight: '600' }}
+                fontWeight="semi-bold"
                 mt="48px"
               >
                 {formatMessage(messages.additionalInformation)}
