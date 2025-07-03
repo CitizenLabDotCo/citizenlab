@@ -1,12 +1,8 @@
 import React from 'react';
-
 import { Box, Tooltip, Text, colors } from '@citizenlab/cl2-component-library';
 import { max, min } from 'date-fns';
-
 import { rowHeight } from '../utils';
-
 import GanttItemIconBar from './GanttItemIconBar';
-
 import type { GanttItem } from '../types';
 
 interface GanttItemProps {
@@ -33,34 +29,49 @@ const GanttItemComponent: React.FC<GanttItemProps> = ({
   const start = item.start ? new Date(item.start) : undefined;
   if (!start) return null;
   const end = item.end ? new Date(item.end) : null;
+
   const effectiveStart = start > startDate ? start : startDate;
   const effectiveEnd = end === null || end > endDate ? endDate : end;
   if (effectiveStart >= effectiveEnd) return null;
+
   const startOffset = getOffset(effectiveStart);
   const duration = getDuration(effectiveStart, effectiveEnd);
   if (duration <= 0) return null;
 
-  const textLabel = (
-    <Box as="span" px="4px">
-      <Text
-        fontSize="s"
-        color="grey800"
-        overflow="hidden"
-        whiteSpace="nowrap"
-        my="0"
-      >
+  const highlightStart = item.highlightStartDate
+    ? new Date(item.highlightStartDate)
+    : null;
+  const highlightEnd = item.highlightEndDate
+    ? new Date(item.highlightEndDate)
+    : null;
+
+  let textInHighlight = false;
+  if (highlightStart) {
+    const startTs = effectiveStart.getTime();
+    const highlightStartTs = highlightStart.getTime();
+    const highlightEndTs = highlightEnd ? highlightEnd.getTime() : Infinity;
+    textInHighlight = startTs >= highlightStartTs && startTs < highlightEndTs;
+  }
+
+  const TextLabel = () => (
+    <Box
+      display="flex"
+      alignItems="center"
+      as="span"
+      px="4px"
+      overflow="hidden"
+    >
+      <GanttItemIconBar
+        color={item.color}
+        icon={item.icon}
+        rowHeight={rowHeight}
+        mr="8px"
+      />
+      <Text fontSize="s" color="grey800" overflow="hidden" whiteSpace="nowrap">
         {item.title}
       </Text>
     </Box>
   );
-
-  let textInHighlight = false;
-  const highlightStart = item.highlightStartDate
-    ? new Date(item.highlightStartDate)
-    : null;
-  if (highlightStart) {
-    textInHighlight = highlightStart.getTime() === effectiveStart.getTime();
-  }
 
   return (
     <Box
@@ -85,63 +96,40 @@ const GanttItemComponent: React.FC<GanttItemProps> = ({
           border="1px solid"
           borderColor={colors.grey300}
           borderRadius="4px"
-          display="flex"
-          alignItems="center"
         >
-          <Box display="flex" alignItems="center">
-            <GanttItemIconBar
-              color={item.color}
-              icon={item.icon}
-              rowHeight={rowHeight}
-              mr="0px"
-              ml="4px"
-            />
-            {!textInHighlight && textLabel}
-          </Box>
+          {/* Highlight overlay - rendered at the base level */}
           {highlightStart && (
             <Box
               position="absolute"
               left={`${
-                (getOffset(max([start!, highlightStart])) - startOffset) * unitW
+                (getOffset(max([effectiveStart, highlightStart])) -
+                  startOffset) *
+                unitW
               }px`}
               width={`${
                 getDuration(
-                  max([start!, highlightStart]),
-                  min([
-                    end || endDate,
-                    item.highlightEndDate
-                      ? new Date(item.highlightEndDate)
-                      : endDate,
-                  ])
+                  max([effectiveStart, highlightStart]),
+                  min([effectiveEnd, highlightEnd || endDate])
                 ) * unitW
               }px`}
               height="100%"
               bg={colors.teal50}
               border={`1px solid ${colors.teal400}`}
-              display="flex"
-              alignItems="center"
               overflow="hidden"
             >
-              {textInHighlight && (
-                <Box display="flex" alignItems="center" as="span" px="4px">
-                  <GanttItemIconBar
-                    color={item.color}
-                    icon={item.icon}
-                    rowHeight={rowHeight}
-                    mr="8px"
-                    ml="0px"
-                  />
-                  <Text
-                    fontSize="s"
-                    color="grey800"
-                    overflow="hidden"
-                    whiteSpace="nowrap"
-                    my="0"
-                  >
-                    {item.title}
-                  </Text>
-                </Box>
-              )}
+              {textInHighlight && <TextLabel />}
+            </Box>
+          )}
+
+          {!textInHighlight && (
+            <Box
+              position="relative"
+              zIndex="1"
+              height="100%"
+              display="flex"
+              alignItems="center"
+            >
+              <TextLabel />
             </Box>
           )}
         </Box>
