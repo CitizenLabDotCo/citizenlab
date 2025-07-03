@@ -16,6 +16,7 @@ export const verificationTypesLeavingPlatform = [
   'nemlog_in',
   'keycloak',
   'twoday',
+  'rm_unify',
   'fake_sso',
 ];
 
@@ -32,6 +33,7 @@ export type TVerificationMethodName =
   | 'id_card_lookup'
   | 'keycloak'
   | 'twoday'
+  | 'rm_unify'
   | 'nemlog_in'
   | 'oostende_rrn'
   | 'id_austria';
@@ -115,6 +117,16 @@ export type IDTwodayMethod = {
   };
 };
 
+export type IDRmUnifyMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'rm_unify';
+    method_metadata?: MethodMetadata;
+    ui_method_name: string;
+  };
+};
+
 export type IDAuth0Method = {
   id: string;
   type: 'verification_method';
@@ -142,6 +154,7 @@ export type TVerificationMethod =
   | IDCriiptoMethod
   | IDKeycloakMethod
   | IDTwodayMethod
+  | IDRmUnifyMethod
   | IDAuth0Method
   | IDIdAustriaMethod;
 // TODO: JS - No Fake SSO?
