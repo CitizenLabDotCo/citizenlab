@@ -21,6 +21,16 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
     last_phase&.end_at
   end
 
+  attribute :current_phase_start_date do |object|
+    phase = TimelineService.new.current_phase(object)
+    phase&.start_at
+  end
+
+  attribute :current_phase_end_date do |object|
+    phase = TimelineService.new.current_phase(object)
+    phase&.end_at
+  end
+
   attribute :folder_title_multiloc do |object|
     object.folder&.title_multiloc
   end
