@@ -252,12 +252,12 @@ const AdminProjectEventEdit = () => {
     });
   };
 
-  const handleMaximumAttendeesChange = (value: string) => {
+  const handleMaximumAttendeesChange = (maximum_attendees: string) => {
     setSubmitState('enabled');
-    const numberValue = value ? parseInt(value, 10) : null;
     setAttributeDiff({
       ...attributeDiff,
-      maximum_attendees: numberValue,
+      // If maximum_attendees is an empty string, set it to null
+      maximum_attendees: maximum_attendees ? Number(maximum_attendees) : null,
     });
     setErrors({});
   };
