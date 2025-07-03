@@ -122,9 +122,9 @@ en:
     admin_digest:
       subject: 'Your weekly admin report of %{time}'
       preheader: 'Admin digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, your weekly report'
-      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening on your platform!'
-      cta_visit_the_platform: 'Visit your platform'
+      title: '%{firstName}, your weekly report'
+      event_description: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening on your platform!'
+      cta_button: 'Visit your platform'
       new_users: 'New users'
       new_inputs: 'New inputs'
       new_comments: 'New comments'
@@ -148,16 +148,16 @@ en:
       title_what_can_you_do_administrator: 'What can you do as an administrator?'
       title_you_became_administrator: 'You became an administrator'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} reported this comment as spam'
+      preheader: 'Act upon this comment reported as spam'
+      title: '%{firstName} %{lastName} reported this comment as spam'
+      cta_button: 'Review comment'
       by_author: 'by %{authorName}'
       commented: '%{authorName} commented:'
-      cta_review_comment: 'Review comment'
       days_ago: '%{numberOfDays} days ago'
       event_description: 'The following comment posted on <strong>''%{post}''</strong> was reported:'
       inappropriate_content: 'The comment is inappropriate or offensive.'
-      preheader: 'Act upon this comment reported as spam'
       reported_this_because: '%{reporterFirstName} reported this because:'
-      subject: '%{organizationName}: %{firstName} %{lastName} reported this comment as spam'
-      title_comment_spam_report: '%{firstName} %{lastName} reported this comment as spam'
       today: Today
       wrong_content: 'The comment is not relevant.'
       yesterday: Yesterday
@@ -165,8 +165,8 @@ en:
       subject: 'A new community monitor report is available'
       preheader: 'A new community monitor report is available'
       title: 'A new community monitor report is available'
-      text_introduction: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
-      cta_report_button: 'View report'
+      event_description: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
+      cta_button: 'View report'
       report_name: 'Community monitor report'
     cosponsor_of_your_idea:
       cta_reply_to: 'View your proposal'
@@ -255,8 +255,11 @@ en:
       today: Today
       yesterday: Yesterday
     comment_on_idea_you_follow:
-      cta_reply_to: 'Reply to %{commentAuthor}'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} left a comment on an idea for %{organizationName}'
+      title: '%{authorName} commented on an input you follow'
       event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      cta_button: 'Reply to %{commentAuthor}'
       main_header:
         idea: '%{authorName} commented on an idea you follow'
         question: '%{authorName} commented on a question you follow'
@@ -266,8 +269,6 @@ en:
         option: '%{authorName} commented on an option you follow'
         proposal: '%{authorName} commented on a proposal you follow'
         petition: '%{authorName} commented on a petition you follow'
-      subject: 'There''s a new comment on "%{input_title}"'
-      preheader: '%{authorName} left a comment on an idea for %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'A new input has been published on your platform'
       event_description_publication: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'

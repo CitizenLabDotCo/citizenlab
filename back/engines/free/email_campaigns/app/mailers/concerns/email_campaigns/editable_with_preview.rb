@@ -2,35 +2,27 @@ module EmailCampaigns
   module EditableWithPreview
     extend ActiveSupport::Concern
 
-    class_methods do
-      # Each mailer can define its own editable regions.
-      # These regions are used to define which custom text can be edited by the admin.
-      def editable_regions
-        []
-      end
-
-      # Each mailer can define its own editable region variables - these must match the keys of substitution_variables.
-      def editable_region_variable_keys
-        []
-      end
-
-      def define_editable_region(key, type: 'text', default_message_key: key.to_s, allow_blank_locales: false)
-        message_group = "email_campaigns.#{self.name.demodulize.underscore.gsub('_mailer', '')}"
-        {
-          key: key,
-          type: type,
-          default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{default_message_key}") || {},
-          allow_blank_locales: allow_blank_locales
-        }
-      end
+    # Each mailer can define its own editable regions.
+    # These regions are used to define which custom text can be edited by the admin.
+    def editable
+      []
     end
 
-    private
+    def editable_regions
+      regions = []
+      define_editable_region(regions, :subject_multiloc, default_message_key: 'subject')
+      define_editable_region(regions, :title_multiloc, default_message_key: 'title')
+      define_editable_region(regions, :intro_multiloc, default_message_key: 'event_description', type: 'html', allow_blank_locales: true)
+      define_editable_region(regions, :button_text_multiloc, default_message_key: 'cta_button')
+      regions
+    end
 
     # Variables available for substitution in the email templates - override in classes.
     def substitution_variables
       {}
     end
+
+    private
 
     # Default methods for template output of the common editable regions.
     def subject
@@ -53,10 +45,22 @@ module EmailCampaigns
       format_message('preheader', values: substitution_variables)
     end
 
+    def define_editable_region(regions, key, type: 'text', default_message_key: key.to_s, allow_blank_locales: false)
+      return unless editable.include?(key)
+
+      message_group = "email_campaigns.#{self.class.name.demodulize.underscore.gsub('_mailer', '')}"
+      regions << {
+        key: key,
+        type: type,
+        default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{default_message_key}") || {},
+        allow_blank_locales: allow_blank_locales
+      }
+    end
+
     # To format an editable message, use `format_editable_region`.
     # The `region_key` must exist in editable regions.
     def format_editable_region(region_key, values: substitution_variables, override_default_key: nil)
-      region = self.class.editable_regions.find { |r| r[:key] == region_key }
+      region = editable_regions.find { |r| r[:key] == region_key }
       return unless region
 
       # NOTE: Default values for regions are already merged in the campaign class
@@ -64,7 +68,7 @@ module EmailCampaigns
       region_text = multiloc_service.t(@campaign.send(region_key), locale.to_s)
       region_default_text = multiloc_service.t(region[:default_value_multiloc], locale.to_s)
 
-      # Sometimes we need to override the default value because the default is conditional
+      # Sometimes we need to override the default value returned to the editor because the default is conditional
       # eg in `CommentOnIdeaYouFollowMailer` where title is dependent on the input term.
       if override_default_key && region_text == region_default_text
         message_group = "email_campaigns.#{campaign.class.name.demodulize.underscore}"

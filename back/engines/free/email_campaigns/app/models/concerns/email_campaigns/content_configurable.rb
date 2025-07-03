@@ -82,7 +82,7 @@ module EmailCampaigns
       values = self[region_key]
       return values if manual?
 
-      region = mailer_class.editable_regions.find { |r| r[:key] == region_key }
+      region = mailer_class.new.editable_regions.find { |r| r[:key] == region_key }
       return values if region.nil?
 
       allow_blank_locales = region[:allow_blank_locales]
@@ -93,7 +93,7 @@ module EmailCampaigns
 
     # Reject default region values from the saved values, so that the defaults always remain the latest.
     def reject_default_region_values
-      regions = mailer_class.editable_regions
+      regions = mailer_class.new.editable_regions
       regions.each do |region|
         field = region[:key]
         self[field] = self[field].reject do |locale, value|
@@ -103,7 +103,7 @@ module EmailCampaigns
     end
 
     def editable_button_text?
-      mailer_class.editable_regions.any? { |region| region[:key] == :button_text_multiloc }
+      mailer_class.new.editable_regions.any? { |region| region[:key] == :button_text_multiloc }
     end
   end
 end

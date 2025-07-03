@@ -107,7 +107,7 @@ module EmailCampaigns
       command = if campaign.manual?
         generate_commands(campaign, recipient).first&.merge(recipient: recipient)
       else
-        campaign.mailer_class.preview_command(recipient:)
+        campaign.mailer_class.new.preview_command(recipient:)
       end
       return {} unless command
 

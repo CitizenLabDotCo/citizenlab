@@ -38,6 +38,12 @@ module EmailCampaigns
       email_address_with_name (raw_from_email || 'hello@citizenlab.co'), from_name(command[:sender], command[:author])
     end
 
+    def header_title; end
+
+    def header_message; end
+
+    def cta_button_text; end
+
     private
 
     def from_name(sender_type, author)
