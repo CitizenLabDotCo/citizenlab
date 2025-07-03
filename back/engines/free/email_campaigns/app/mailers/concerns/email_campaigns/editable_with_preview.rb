@@ -15,7 +15,7 @@ module EmailCampaigns
       end
 
       def define_editable_region(key, type: 'text', default_message_key: key.to_s, allow_blank_locales: false)
-        message_group = "email_campaigns.#{campaign_class.name.demodulize.underscore}"
+        message_group = "email_campaigns.#{self.name.demodulize.underscore.gsub('_mailer', '')}"
         {
           key: key,
           type: type,
