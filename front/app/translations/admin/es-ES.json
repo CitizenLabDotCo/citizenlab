@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Una vez que se añadan plazas adicionales, se incrementará su facturación. Póngase en contacto con su gestor de GovSuccess para obtener más información.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "¡Gracias por completar la encuesta! Te invitamos a volver a hacerla el próximo trimestre.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Te toma <1 minuto} one {Te toma 1 minuto} other {Te toma # minutos}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Descargar como pdf",
   "app.components.FormSync.downloadExcelTemplate": "Descargar una plantilla Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Las plantillas de Excel no incluirán preguntas de clasificación, preguntas de matriz, preguntas de carga de archivos ni preguntas de introducción de datos cartográficos (punto, pinta ruta, pintar área, carga de archivos ESRI), ya que en este momento no son compatibles con la importación masiva.",

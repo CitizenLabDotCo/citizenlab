@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Pareiškimai",
   "app.components.CommunityMonitorModal.formError": "Įvyko klaida.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Šia nuolatine apklausa siekiama išsiaiškinti, ką manote apie valdymą ir viešąsias paslaugas.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Užtrunka <1 minutę} one {Užtrunka 1 minutę} other {Užtrunka # minučių}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "El. laiškas su patvirtinimo kodu buvo išsiųstas adresu {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Pakeiskite el. pašto adresą.",
   "app.components.ConfirmationModal.codeInput": "Kodas",

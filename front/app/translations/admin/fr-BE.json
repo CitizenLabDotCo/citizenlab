@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/fr/articles/7946486-activer-la-participation-anonyme",
   "app.components.BillingWarning.billingWarning": "Si des sièges supplémentaires sont ajoutés, votre facturation sera adaptée. Contactez votre GovSuccess Manager pour en savoir plus.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Merci d'avoir complété l'enquête ! N'hésitez pas à y participer à nouveau au prochain trimestre.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Prend <1 minute} one {Prend 1 minute} other {Prend # minutes}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Télécharger au format PDF",
   "app.components.FormSync.downloadExcelTemplate": "Télécharger un modèle Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Les modèles Excel n’incluent pas les questions de classement, les questions matricielles, les questions de téléchargement de fichiers et les questions cartographiques (placer un repère, dessiner un tracé, délimiter une zone, téléchargement de fichier ESRI), car elles ne sont actuellement pas prises en charge pour l’importation en masse.",

@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "хттпс://суппорт.цитизенлаб.цо/ен/артицлес/7946486-енаблинг-анонимоус-партиципатион",
   "app.components.BillingWarning.billingWarning": "Када се додају додатна места, ваш обрачун ће бити повећан. Обратите се свом ГовСуццесс менаџеру да сазнате више о томе.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Thank you for completing the survey! You're welcome to take it again next quarter.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download as pdf",
   "app.components.FormSync.downloadExcelTemplate": "Download an Excel template",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel templates will not include Ranking questions, Matrix questions, File upload questions and any mapping input questions (Drop Pin, Draw Route, Draw Area, ESRI file upload) as these are not supported for bulk importing at this time.",

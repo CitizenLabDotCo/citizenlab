@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "ایک بار اضافی سیٹیں شامل ہونے کے بعد، آپ کی بلنگ میں اضافہ ہو جائے گا۔ اس کے بارے میں مزید جاننے کے لیے اپنے GovSuccess مینیجر سے رابطہ کریں۔",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "سروے مکمل کرنے کے لیے آپ کا شکریہ! اگلی سہ ماہی میں اسے دوبارہ لینے کے لیے آپ کا استقبال ہے۔",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {<1 منٹ لیتا ہے} one {1 منٹ لیتا ہے} other {# منٹ لیتا ہے}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "پی ڈی ایف کے طور پر ڈاؤن لوڈ کریں۔",
   "app.components.FormSync.downloadExcelTemplate": "ایکسل ٹیمپلیٹ ڈاؤن لوڈ کریں۔",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "ایکسل ٹیمپلیٹس میں درجہ بندی کے سوالات، میٹرکس کے سوالات، فائل اپ لوڈ کے سوالات اور کوئی بھی میپنگ ان پٹ سوالات (ڈراپ پن، ڈرا روٹ، ڈرا ایریا، ESRI فائل اپ لوڈ) شامل نہیں ہوں گے کیونکہ یہ اس وقت بلک امپورٹنگ کے لیے تعاون یافتہ نہیں ہیں۔",

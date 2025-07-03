@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Depois que licenças adicionais forem adicionadas, sua fatura aumentará. Entre em contato com seu gestor GovSuccess para saber mais sobre isso.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Obrigado por você ter concluído a pesquisa! Você está convidado a respondê-la novamente no próximo trimestre.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Leva <1 minuto} one {Leva 1 minuto} other {Leva # minutos}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Baixar como pdf",
   "app.components.FormSync.downloadExcelTemplate": "Faça o download de um modelo do Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Os modelos do Excel não incluirão perguntas de classificação, perguntas de matriz, perguntas de upload de arquivo e perguntas de entrada de mapeamento (Drop Pin, Draw Route, Draw Area, upload de arquivo ESRI), pois elas não são compatíveis com a importação em massa no momento.",

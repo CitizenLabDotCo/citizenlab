@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/de/articles/7946486-anonyme-beteiligung-aktivieren",
   "app.components.BillingWarning.billingWarning": "Wenn Sie zusätzliche Zugänge hinzufügen, bekommen Sie eine separate Rechnung bzw. wird Ihre Jahresabrechnung erhöht. Wenden Sie sich an Ihre Kundenbetreuerin für mehr Informationen.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Vielen Dank für die Teilnahme an der Umfrage! Gerne können Sie im nächsten Quartal erneut teilnehmen.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Dauert <1 Minute} one {Dauert 1 Minute} other {Dauert # Minuten}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Als PDF herunterladen",
   "app.components.FormSync.downloadExcelTemplate": "Download einer Excel-Vorlage",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Die Excel-Vorlagen enthalten keine Ranking-Fragen, Matrix-Fragen, Dateiupload-Fragen und keine Fragen mit Kartierung (Pin setzen, Route zeichnen, Gebiet zeichnen, ESRI Datenupload), da diese derzeit für den Import nicht unterstützt werden.",

@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Ek koltuklar eklendiğinde, faturalandırmanız artırılacaktır. Bu konuda daha fazla bilgi edinmek için GovSuccess Yöneticinize ulaşın.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Anketi tamamladığınız için teşekkür ederiz! Önümüzdeki çeyrekte tekrar katılabilirsiniz.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {<1 dakika sürer} one {1 dakika sürer} other {# dakika sürer}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Pdf olarak indir",
   "app.components.FormSync.downloadExcelTemplate": "Bir Excel şablonu indirin",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel şablonları Sıralama sorularını, Matris sorularını, Dosya yükleme sorularını ve herhangi bir harita giriş sorusunu (Drop Pin, Draw Route, Draw Area, ESRI dosya yükleme) içermeyecektir, çünkü bunlar şu anda toplu içe aktarma için desteklenmemektedir.",

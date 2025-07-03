@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "بیانات",
   "app.components.CommunityMonitorModal.formError": "ایک خرابی کا سامنا کرنا پڑا۔",
   "app.components.CommunityMonitorModal.surveyDescription2": "یہ جاری سروے ٹریک کرتا ہے کہ آپ گورننس اور عوامی خدمات کے بارے میں کیسا محسوس کرتے ہیں۔",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {<1 منٹ لیتا ہے} one {1 منٹ لیتا ہے} other {# منٹ لیتا ہے}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "تصدیقی کوڈ کے ساتھ ایک ای میل {userEmail}پر بھیجا گیا ہے۔",
   "app.components.ConfirmationModal.changeYourEmail": "اپنا ای میل تبدیل کریں۔",
   "app.components.ConfirmationModal.codeInput": "کوڈ",

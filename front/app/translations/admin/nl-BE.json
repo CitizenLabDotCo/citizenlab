@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/nl/articles/7946486-anonieme-deelname-mogelijk-maken",
   "app.components.BillingWarning.billingWarning": "Zodra er extra accounts worden toegevoegd, wordt jullie factuur verhoogd. Neem contact op met je Government Success Manager voor meer informatie.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Bedankt voor het invullen van de vragenlijst! Je bent van harte welkom om hem volgend kwartaal weer in te vullen.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Duurt <1 minuut} one {Duurt 1 minuut} other {Duurt # minuten}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download als pdf",
   "app.components.FormSync.downloadExcelTemplate": "Download een Excel-sjabloon",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-sjablonen bevatten geen rangschikkingsvragen, matrixvragen, bestand uploadvragen en kaart-gerelateerde vragen (pin prikken, route tekenen, gebied tekenen, ESRI-bestandsupload) omdat deze op dit moment nog niet worden ondersteund voor bulkimport.",
