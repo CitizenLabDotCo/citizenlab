@@ -16,7 +16,7 @@ interface GanttItemProps {
   renderItemTooltip?: (item: GanttItem) => React.ReactNode;
 }
 
-const GanttItemComponent: React.FC<GanttItemProps> = ({
+const GanttItem = ({
   item,
   index,
   startDate,
@@ -25,7 +25,7 @@ const GanttItemComponent: React.FC<GanttItemProps> = ({
   getDuration,
   unitW,
   renderItemTooltip,
-}) => {
+}: GanttItemProps) => {
   const start = item.start ? new Date(item.start) : undefined;
   if (!start) return null;
   const end = item.end ? new Date(item.end) : null;
@@ -80,20 +80,19 @@ const GanttItemComponent: React.FC<GanttItemProps> = ({
   );
 
   return (
-    <Box
-      key={item.id}
-      position="absolute"
-      top={`${index * rowHeight + 4}px`}
-      left={`${startOffset * unitW}px`}
-      width={`${duration * unitW}px`}
-      height={`${rowHeight - 8}px`}
+    <Tooltip
+      placement="bottom"
+      content={renderItemTooltip ? renderItemTooltip(item) : ''}
+      disabled={!renderItemTooltip}
+      theme="dark"
+      followCursor="initial"
     >
-      <Tooltip
-        placement="bottom"
-        content={renderItemTooltip ? renderItemTooltip(item) : ''}
-        disabled={!renderItemTooltip}
-        theme="dark"
-        followCursor="initial"
+      <Box
+        position="absolute"
+        top={`${index * rowHeight + 4}px`}
+        left={`${startOffset * unitW}px`}
+        width={`${duration * unitW}px`}
+        height={`${rowHeight - 8}px`}
       >
         <Box
           width="100%"
@@ -141,9 +140,10 @@ const GanttItemComponent: React.FC<GanttItemProps> = ({
             </Box>
           )}
         </Box>
-      </Tooltip>
-    </Box>
+        {/* </Tooltip> */}
+      </Box>
+    </Tooltip>
   );
 };
 
-export default GanttItemComponent;
+export default GanttItem;
