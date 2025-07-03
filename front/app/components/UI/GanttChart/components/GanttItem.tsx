@@ -76,6 +76,7 @@ const GanttItemComponent: React.FC<GanttItemProps> = ({
         content={renderItemTooltip ? renderItemTooltip(item) : ''}
         disabled={!renderItemTooltip}
         theme="dark"
+        followCursor="initial"
       >
         <Box
           width="100%"
