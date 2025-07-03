@@ -2,12 +2,18 @@ import React from 'react';
 
 import { Box, Toggle, Text } from '@citizenlab/cl2-component-library';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
 interface Props {
   listed: boolean;
   onChange: () => void;
 }
 
 const UnlistedInput = ({ listed, onChange }: Props) => {
+  const { formatMessage } = useIntl();
+
   return (
     <Box>
       <Toggle
@@ -21,17 +27,16 @@ const UnlistedInput = ({ listed, onChange }: Props) => {
       />
       {listed ? (
         <Text mt="0" color="textSecondary">
-          This project will be listed normally on the homepage and widgets.
+          {formatMessage(messages.thisProjectWillBeListed)}
         </Text>
       ) : (
         <Text mt="0" color="textSecondary">
-          This project will stay hidden from the wider public unless you share
-          the link.
+          {formatMessage(messages.thisProjectWillStayHidden)}
           <ul>
-            <li>Not visible on the homepage or widgets</li>
-            <li>Not indexed by search engines</li>
-            <li>Email notifications only sent to participants</li>
-            <li>Only accessible via direct URL</li>
+            <li>{formatMessage(messages.notVisible)}</li>
+            <li>{formatMessage(messages.notIndexed)}</li>
+            <li>{formatMessage(messages.emailNotifications)}</li>
+            <li>{formatMessage(messages.onlyAccessible)}</li>
           </ul>
         </Text>
       )}

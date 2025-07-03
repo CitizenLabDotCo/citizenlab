@@ -7,7 +7,11 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 
 import { SubSectionTitle } from 'components/admin/Section';
 
+import { useIntl } from 'utils/cl-intl';
+
 import UnlistedInput from '../../general/components/UnlistedInput';
+
+import messages from './messages';
 
 interface Props {
   projectId: string;
@@ -16,6 +20,7 @@ interface Props {
 const ProjectUnlisted = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { mutate: updateProject } = useUpdateProject();
+  const { formatMessage } = useIntl();
 
   if (!project) {
     return null;
@@ -25,7 +30,9 @@ const ProjectUnlisted = ({ projectId }: Props) => {
 
   return (
     <Box>
-      <SubSectionTitle>Should the project be listed?</SubSectionTitle>
+      <SubSectionTitle>
+        {formatMessage(messages.shouldProjectBeListed)}
+      </SubSectionTitle>
       <Box mt="-12px" mb="40px">
         <UnlistedInput
           listed={!unlisted}
