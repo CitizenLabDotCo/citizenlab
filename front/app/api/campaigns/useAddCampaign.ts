@@ -3,7 +3,6 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import campaignKeys from './keys';
 import { ICampaign, CampaignAdd } from './types';
 
 const addCampaign = async ({
@@ -12,7 +11,6 @@ const addCampaign = async ({
   ...requestBody
 }: CampaignAdd) => {
   let path = '/campaigns';
-
   if (projectId) {
     path = `/projects/${projectId}/campaigns`;
   } else if (phaseId) {
@@ -31,7 +29,7 @@ const useAddCampaign = () => {
   return useMutation<ICampaign, CLErrors, CampaignAdd>({
     mutationFn: addCampaign,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: campaignKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ['campaigns'] });
     },
   });
 };
