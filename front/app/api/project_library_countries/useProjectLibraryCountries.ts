@@ -8,7 +8,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import projectLibraryCountriesKeys from './keys';
 import { ProjectLibraryCountries, ProjectLibraryCountriesKeys } from './types';
 
-const useProjectLibraryCountries = () => {
+const useProjectLibraryCountries = ({ enabled = true } = {}) => {
   const locale = useLocale();
 
   const fetchProjectLibraryCountries = () =>
@@ -27,6 +27,7 @@ const useProjectLibraryCountries = () => {
   >({
     queryKey: projectLibraryCountriesKeys.list({ locale }),
     queryFn: () => fetchProjectLibraryCountries(),
+    enabled,
   });
 };
 
