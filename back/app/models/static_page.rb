@@ -49,6 +49,10 @@ class StaticPage < ApplicationRecord
   has_many :static_pages_topics, dependent: :destroy
   has_many :topics, -> { order(:ordering) }, through: :static_pages_topics
 
+  # TODO: extract as a mixin?
+  has_many :file_attachments, -> { ordered }, as: :attachable, class_name: 'Files::FileAttachment', dependent: :destroy
+  has_many :attached_files, through: :file_attachments, source: :file, class_name: 'Files::File'
+
   has_many :areas_static_pages, dependent: :destroy
   has_many :areas, through: :areas_static_pages
 
