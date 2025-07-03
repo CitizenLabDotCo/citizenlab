@@ -9,8 +9,9 @@ export default defineMessages({
       'You cast {votesCast} votes, which exceeds the limit of {votesLimit}. Please remove some votes and try again.',
   },
   noVotesCast: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.noVotesCast2',
-    defaultMessage: 'You need to vote before you can submit your {votesTerm}.',
+    id: 'app.components.ParticipationCTABars.VotingCTABar.noVotesCast4',
+    defaultMessage:
+      'You need to select at least one option before you can submit.',
   },
 
   // budgeting disabled explanations
@@ -35,10 +36,25 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.VotingCTABar.currencyLeft1',
     defaultMessage: '{budgetLeft} / {totalBudget} left',
   },
-  votesLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.votesLeft2',
+  numberOfVotesLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft',
     defaultMessage:
-      '{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} left',
+      '{votesLeft, plural, =0 {No votes left} other {# out of {totalNumberOfVotes, plural, one {1 vote} other {# votes}} left}}',
+  },
+  numberOfPointsLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft',
+    defaultMessage:
+      '{votesLeft, plural, =0 {No points left} other {# out of {totalNumberOfVotes, plural, one {1 point} other {# points}} left}}',
+  },
+  numberOfTokensLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft',
+    defaultMessage:
+      '{votesLeft, plural, =0 {No tokens left} other {# out of {totalNumberOfVotes, plural, one {1 token} other {# tokens}} left}}',
+  },
+  numberOfCreditsLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfCreditsLeft',
+    defaultMessage:
+      '{votesLeft, plural, =0 {No credits left} other {# out of {totalNumberOfVotes, plural, one {1 credit} other {# credits}} left}}',
   },
   votesCast: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.votesCast',

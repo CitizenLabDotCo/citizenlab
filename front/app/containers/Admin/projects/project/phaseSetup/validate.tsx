@@ -1,5 +1,5 @@
 import { isFinite, isNaN } from 'lodash-es';
-import { FormatMessage, SupportedLocale } from 'typings';
+import { FormatMessage } from 'typings';
 
 import { IUpdatedPhaseProperties, IPhases } from 'api/phases/types';
 
@@ -8,8 +8,7 @@ import messages from '../messages';
 const validate = (
   state: IUpdatedPhaseProperties,
   phases: IPhases | undefined,
-  formatMessage: FormatMessage,
-  locales?: SupportedLocale[]
+  formatMessage: FormatMessage
 ) => {
   const {
     start_at,
@@ -23,8 +22,6 @@ const validate = (
     voting_min_total,
     voting_max_total,
     voting_max_votes_per_idea,
-    voting_term_plural_multiloc,
-    voting_term_singular_multiloc,
     reacting_threshold,
     expire_days_limit,
   } = state;
@@ -36,7 +33,6 @@ const validate = (
   let minTotalVotesError: string | undefined;
   let maxTotalVotesError: string | undefined;
   let maxVotesPerOptionError: string | undefined;
-  let voteTermError: string | undefined;
   let expireDateLimitError: string | undefined;
   let reactingThresholdError: string | undefined;
 
@@ -61,22 +57,6 @@ const validate = (
         }
       }
     }
-  }
-
-  if (
-    participation_method === 'voting' &&
-    voting_method === 'multiple_voting'
-  ) {
-    locales?.map((locale) => {
-      if (
-        (voting_term_plural_multiloc && !voting_term_plural_multiloc[locale]) ||
-        (voting_term_singular_multiloc &&
-          !voting_term_singular_multiloc[locale])
-      ) {
-        voteTermError = formatMessage(messages.voteTermError);
-        isValidated = false;
-      }
-    });
   }
 
   if (
@@ -186,7 +166,6 @@ const validate = (
       minTotalVotesError,
       maxTotalVotesError,
       maxVotesPerOptionError,
-      voteTermError,
       expireDateLimitError,
       reactingThresholdError,
     },

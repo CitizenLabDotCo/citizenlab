@@ -6,8 +6,6 @@ import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
-import useLocalize from 'hooks/useLocalize';
-
 import ErrorToast from 'components/ErrorToast';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
@@ -24,7 +22,6 @@ import { getVotesCounter } from './utils';
 const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { numberOfVotesCast } = useVoting();
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
   const formatCurrency = useFormatCurrency();
 
   const currentPhase = useMemo(() => {
@@ -46,7 +43,6 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const votesCounter = getVotesCounter(
     formatMessage,
-    localize,
     currentPhase,
     numberOfVotesCast,
     formatCurrency
