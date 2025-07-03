@@ -67,7 +67,13 @@ const GanttItemComponent: React.FC<GanttItemProps> = ({
         rowHeight={rowHeight}
         mr="8px"
       />
-      <Text fontSize="s" color="grey800" overflow="hidden" whiteSpace="nowrap">
+      <Text
+        fontSize="s"
+        color="grey800"
+        overflow="hidden"
+        whiteSpace="nowrap"
+        textOverflow="ellipsis"
+      >
         {item.title}
       </Text>
     </Box>
