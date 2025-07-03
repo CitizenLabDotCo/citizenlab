@@ -5,10 +5,6 @@ module EmailCampaigns
     include EditableWithPreview
 
     class << self
-      def campaign_class
-        Campaigns::AdminRightsReceived
-      end
-
       def editable_regions
         [
           define_editable_region(
