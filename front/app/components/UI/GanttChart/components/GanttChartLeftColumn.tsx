@@ -46,8 +46,7 @@ const GanttChartLeftColumn: React.FC<GanttChartLeftColumnProps> = ({
               justifyContent="flex-start"
               alignItems="center"
               height="100%"
-              w="100%"
-              pl="8px"
+              maxWidth={`${leftColumnWidth - 32}px`}
             >
               <GanttItemIconBar
                 color={item.color}
