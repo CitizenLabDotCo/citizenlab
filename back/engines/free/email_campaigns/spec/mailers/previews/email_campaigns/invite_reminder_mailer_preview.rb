@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class InviteReminderMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       inviter = User.last

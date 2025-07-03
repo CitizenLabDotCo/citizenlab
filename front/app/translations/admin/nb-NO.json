@@ -885,7 +885,6 @@
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Send nå",
   "app.containers.Admin.emails.sendTestEmailButton": "Send meg en test-e-post",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Når du klikker på denne lenken, sendes en test-e-post kun til din e-postadresse. På denne måten kan du sjekke hvordan e-posten ser ut i virkeligheten.",
   "app.containers.Admin.emails.senderRecipients": "Avsender og mottakere",
   "app.containers.Admin.emails.sending": "Sende",
   "app.containers.Admin.emails.sent": "Sendt",

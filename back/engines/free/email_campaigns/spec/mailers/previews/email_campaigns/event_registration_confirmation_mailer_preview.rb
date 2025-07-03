@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class EventRegistrationConfirmationMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       campaign.mailer_class

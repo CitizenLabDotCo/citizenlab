@@ -885,7 +885,6 @@
   "app.containers.Admin.emails.send": "Siųsti",
   "app.containers.Admin.emails.sendNowButton": "Siųsti dabar",
   "app.containers.Admin.emails.sendTestEmailButton": "Siųskite man bandomąjį el. laišką",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Paspaudus šią nuorodą, tik į jūsų el. pašto adresą bus išsiųstas bandomasis el. laiškas. Taip galėsite patikrinti, kaip el. laiškas atrodo realybėje.",
   "app.containers.Admin.emails.senderRecipients": "Siuntėjas ir gavėjai",
   "app.containers.Admin.emails.sending": "Siuntimas",
   "app.containers.Admin.emails.sent": "Išsiųsta",

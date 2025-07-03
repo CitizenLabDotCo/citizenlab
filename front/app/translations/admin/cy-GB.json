@@ -885,7 +885,6 @@
   "app.containers.Admin.emails.send": "Anfon",
   "app.containers.Admin.emails.sendNowButton": "Anfonwch nawr",
   "app.containers.Admin.emails.sendTestEmailButton": "Anfonwch e-bost prawf ataf",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Pan fyddwch yn clicio ar y ddolen hon, anfonir e-bost prawf i'ch cyfeiriad e-bost yn unig. Mae hyn yn caniatáu ichi wirio sut olwg sydd ar yr e-bost mewn bywyd go iawn.",
   "app.containers.Admin.emails.senderRecipients": "Anfonwr a derbynwyr",
   "app.containers.Admin.emails.sending": "Anfon",
   "app.containers.Admin.emails.sent": "Anfonwyd",

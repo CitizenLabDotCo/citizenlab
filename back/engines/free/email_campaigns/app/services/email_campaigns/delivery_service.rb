@@ -115,6 +115,13 @@ module EmailCampaigns
       return {} unless mail
 
       {
+        to: if campaign.class.recipient_segment_multiloc_key
+              I18n.t(campaign.class.recipient_segment_multiloc_key, locale: recipient.locale)
+            else
+              campaign.groups.map { |g| MultilocService.new.t(g.title_multiloc, recipient.locale) }.join(', ')
+        end,
+        from: mail[:from].value,
+        reply_to: mail.reply_to.first,
         subject: mail.subject,
         html: mail.body.to_s
       }

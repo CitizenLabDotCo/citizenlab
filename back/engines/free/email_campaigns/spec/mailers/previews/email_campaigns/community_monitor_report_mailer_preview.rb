@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class CommunityMonitorReportMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::CommunityMonitorReport.new

@@ -885,7 +885,6 @@
   "app.containers.Admin.emails.send": "Verzenden",
   "app.containers.Admin.emails.sendNowButton": "Stuur nu",
   "app.containers.Admin.emails.sendTestEmailButton": "Stuur me een test e-mail",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Zend deze test e-mail naar het e-mailadres waarmee je bent ingelogd om na te gaan hoe je e-mail er 'in het echt' zal uitzien.",
   "app.containers.Admin.emails.senderRecipients": "Afzender en ontvangers",
   "app.containers.Admin.emails.sending": "Verzenden",
   "app.containers.Admin.emails.sent": "Verzonden",
