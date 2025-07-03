@@ -52,7 +52,7 @@ module EmailCampaigns
     end
 
     def event
-      @event ||= to_deep_struct(command[:event_payload])
+      @event ||= to_deep_struct(command&.dig(:event_payload))
     end
   end
 end

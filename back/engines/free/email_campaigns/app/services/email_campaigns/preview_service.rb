@@ -5,7 +5,7 @@ module EmailCampaigns
     PreviewData = Struct.new(:idea, :project, :comment, :proposal, :author, :initiator, :organization_name)
 
     # Static content that can be used across all email previews.
-    def self.preview_data(recipient)
+    def preview_data(recipient)
       PreviewData.new(
         idea: PreviewContentItem.new(
           id: SecureRandom.uuid,

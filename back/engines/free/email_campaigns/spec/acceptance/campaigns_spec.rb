@@ -30,6 +30,7 @@ resource 'Campaigns' do
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
       parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false
 
+      # TODO: Change this so it creates ALL campaigns
       example_request 'List all campaigns' do
         assert_status 200
         json_response = json_parse(response_body)
