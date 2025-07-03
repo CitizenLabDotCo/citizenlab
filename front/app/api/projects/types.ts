@@ -95,6 +95,7 @@ export interface IProjectAttributes {
   folder_id?: string | null;
   action_descriptors: ActionDescriptors;
   uses_content_builder: boolean;
+  unlisted: boolean;
 }
 
 export type ActionDescriptors = {
