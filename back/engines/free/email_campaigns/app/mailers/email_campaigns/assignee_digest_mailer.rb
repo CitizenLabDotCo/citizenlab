@@ -8,8 +8,16 @@ module EmailCampaigns
       %i[subject_multiloc title_multiloc button_text_multiloc]
     end
 
-    def preview_command(recipient: nil)
-      data = PreviewService.preview_data(recipient)
+    def substitution_variables
+      {
+        organizationName: organization_name,
+        firstName: recipient_first_name,
+        numberIdeas: event&.need_feedback_assigned_inputs_count
+      }
+    end
+
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
       {
         recipient: recipient,
         event_payload: {
@@ -41,14 +49,6 @@ module EmailCampaigns
           ],
           need_feedback_assigned_inputs_count: 2
         }
-      }
-    end
-
-    def substitution_variables
-      {
-        organizationName: organization_name,
-        firstName: recipient_first_name,
-        numberIdeas: event&.need_feedback_assigned_inputs_count
       }
     end
   end

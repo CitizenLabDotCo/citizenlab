@@ -99,5 +99,9 @@ module EmailCampaigns
       end
       doc.to_s
     end
+
+    def preview_service
+      @preview_service ||= PreviewService.new
+    end
   end
 end

@@ -8,7 +8,7 @@ module EmailCampaigns
       %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def preview_command(recipient: nil)
+    def preview_command(recipient)
       {
         recipient: recipient,
         event_payload: {

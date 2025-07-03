@@ -8,8 +8,17 @@ module EmailCampaigns
       %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def preview_command(recipient: nil)
-      data = PreviewService.preview_data(recipient)
+    def substitution_variables
+      {
+        firstName: event&.initiating_user_first_name,
+        lastName: event&.initiating_user_last_name,
+        organizationName: organization_name,
+        post: localize_for_recipient(event&.idea_title_multiloc)
+      }
+    end
+
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
       {
         recipient: recipient,
         event_payload: {
@@ -22,15 +31,6 @@ module EmailCampaigns
           spam_report_reason_code: 'inappropriate',
           spam_report_other_reason: nil
         }
-      }
-    end
-
-    def substitution_variables
-      {
-        firstName: event&.initiating_user_first_name,
-        lastName: event&.initiating_user_last_name,
-        organizationName: organization_name,
-        post: localize_for_recipient(event&.idea_title_multiloc)
       }
     end
   end

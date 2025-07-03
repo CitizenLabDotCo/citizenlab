@@ -8,8 +8,16 @@ module EmailCampaigns
       %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def preview_command(recipient: nil)
-      data = PreviewService.preview_data(recipient)
+    def substitution_variables
+      {
+        time: formatted_todays_date,
+        firstName: recipient_first_name,
+        organizationName: organization_name
+      }
+    end
+
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
       {
         recipient: recipient,
         event_payload: {
@@ -54,14 +62,6 @@ module EmailCampaigns
         tracked_content: {
           idea_ids: [data.idea.id]
         }
-      }
-    end
-
-    def substitution_variables
-      {
-        time: formatted_todays_date,
-        firstName: recipient_first_name,
-        organizationName: organization_name
       }
     end
   end

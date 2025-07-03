@@ -8,8 +8,17 @@ module EmailCampaigns
       %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def preview_command(recipient: nil)
-      data = PreviewService.preview_data(recipient)
+    def substitution_variables
+      {
+        authorName: event&.comment_author_name,
+        authorFirstName: event&.initiating_user_first_name,
+        organizationName: organization_name,
+        post: localize_for_recipient(event&.idea_title_multiloc)
+      }
+    end
+
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
       {
         recipient: recipient,
         event_payload: {
@@ -21,15 +30,6 @@ module EmailCampaigns
           idea_title_multiloc: data.idea.title_multiloc,
           idea_type: 'Idea'
         }
-      }
-    end
-
-    def substitution_variables
-      {
-        authorName: event&.comment_author_name,
-        authorFirstName: event&.initiating_user_first_name,
-        organizationName: organization_name,
-        post: localize_for_recipient(event&.idea_title_multiloc)
       }
     end
   end

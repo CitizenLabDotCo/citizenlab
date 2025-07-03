@@ -8,8 +8,14 @@ module EmailCampaigns
       %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def preview_command(recipient: nil)
-      data = PreviewService.preview_data(recipient)
+    def substitution_variables
+      {
+        organizationName: organization_name
+      }
+    end
+
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
       {
         recipient: recipient,
         event_payload: {
@@ -19,12 +25,6 @@ module EmailCampaigns
           other_reason: data.comment.deleted_reason,
           idea_url: data.idea.url
         }
-      }
-    end
-
-    def substitution_variables
-      {
-        organizationName: organization_name
       }
     end
   end

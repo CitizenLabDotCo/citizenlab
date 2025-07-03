@@ -20,25 +20,25 @@ RSpec.describe EmailCampaigns::AdminRightsReceivedMailer do
 
     include_examples 'campaign delivery tracking'
 
-      it 'renders the subject' do
-        expect(mail.subject).to start_with('You became an administrator on the platform of')
-      end
+    it 'renders the subject' do
+      expect(mail.subject).to start_with('You became an administrator on the platform of')
+    end
 
-      it 'renders the receiver email' do
-        expect(mail.to).to eq([recipient.email])
-      end
+    it 'renders the receiver email' do
+      expect(mail.to).to eq([recipient.email])
+    end
 
-      it 'renders the sender email' do
-        expect(mail.from).to all(end_with('@citizenlab.co'))
-      end
+    it 'renders the sender email' do
+      expect(mail.from).to all(end_with('@citizenlab.co'))
+    end
 
-      it 'assigns the message box title (title_what_can_you_do_administrator)' do
-        expect(mail_body(mail)).to match('What can you do as an administrator?')
-      end
+    it 'assigns the message box title (title_what_can_you_do_administrator)' do
+      expect(mail_body(mail)).to match('What can you do as an administrator?')
+    end
 
-      it 'assigns moderate CTA' do
-        expect(mail_body(mail)).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
-      end
+    it 'assigns moderate CTA' do
+      expect(mail_body(mail)).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
+    end
 
     context 'when editable regions are customised' do
       let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
