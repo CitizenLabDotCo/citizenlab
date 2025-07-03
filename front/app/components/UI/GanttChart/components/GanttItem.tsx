@@ -121,7 +121,9 @@ const GanttItemComponent: React.FC<GanttItemProps> = ({
               height="100%"
               bg={colors.teal50}
               border={`1px solid ${colors.teal400}`}
+              display="flex"
               overflow="hidden"
+              alignItems="center"
             >
               {textInHighlight && <TextLabel />}
             </Box>
