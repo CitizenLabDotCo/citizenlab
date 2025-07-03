@@ -13,16 +13,14 @@ type ProjectCampaignsParams = QueryParameters & {
 
 const fetchCampaigns = ({ projectId, ...filters }: ProjectCampaignsParams) => {
   const {
-    campaignNames: campaign_names,
     withoutCampaignNames: without_campaign_names,
     pageNumber,
     pageSize,
   } = filters;
   return fetcher<ICampaignsData>({
-    path: `/projects/${projectId}/email_campaigns`,
+    path: `/projects/${projectId}/campaigns`,
     action: 'get',
     queryParams: {
-      campaign_names,
       without_campaign_names,
       'page[number]': pageNumber || 1,
       'page[size]': pageSize || 20,

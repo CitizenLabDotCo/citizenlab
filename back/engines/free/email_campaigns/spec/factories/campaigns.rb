@@ -18,7 +18,7 @@ FactoryBot.define do
     end
 
     factory :manual_project_participants_campaign, class: EmailCampaigns::Campaigns::ManualProjectParticipants do
-      association :project, factory: :project_with_active_ideation_phase
+      association :context, factory: :project_with_active_ideation_phase
     end
   end
 

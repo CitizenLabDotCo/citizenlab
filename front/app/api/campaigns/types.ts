@@ -156,10 +156,12 @@ export type CampaignName =
   | AdminModeratorCampaignName;
 
 export interface QueryParameters {
-  campaignNames?: CampaignName[];
+  manual?: boolean;
   withoutCampaignNames?: CampaignName[];
   pageSize?: number;
   pageNumber?: number;
+  projectId?: string;
+  phaseId?: string;
 }
 
 export interface CampaignAdd {
@@ -169,5 +171,6 @@ export interface CampaignAdd {
   sender: string;
   reply_to?: string;
   group_ids?: string[];
-  context_id?: string;
+  projectId?: string;
+  phaseId?: string;
 }
