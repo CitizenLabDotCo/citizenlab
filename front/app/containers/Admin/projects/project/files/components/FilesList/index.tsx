@@ -33,7 +33,7 @@ const FilesList = () => {
   >({
     pageNumber: 1,
     pageSize: 7,
-    sort: 'created_at',
+    sort: '-created_at',
     projects: [projectId],
   });
 
@@ -51,63 +51,64 @@ const FilesList = () => {
     }));
   };
 
+  const handleSearchChange = (searchTerm: string) => {
+    setQueryParameters((prevParams) => ({
+      ...prevParams,
+      search: searchTerm,
+      pageNumber: 1, // Reset to first page on new search
+    }));
+  };
+
   return (
     <Box display="flex" justifyContent="center" flexDirection="column">
-      {files?.data.length && files.data.length > 0 && (
-        <>
-          <Box display="flex" justifyContent="space-between">
-            <SearchInput
-              placeholder={formatMessage(messages.searchFiles)}
-              onChange={() => {}} // TODO: Implement file search functionality.
-              a11y_numberOfSearchResults={0}
-            />
-            <UploadFileButtonWithModal />
-          </Box>
-          <Box
-            mt="40px"
-            display="flex"
-            gap="20px"
-            justifyContent="space-between"
-          >
-            <Box
-              display="flex"
-              flexDirection="column"
-              width="100%"
-              minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
-            >
-              {files.data.length > 0 && (
-                <>
-                  {files.data.map((file) => (
-                    <FilesListItem
-                      file={file}
-                      setSelectedFileId={setSelectedFileId}
-                      setSideViewOpened={setSideViewOpened}
-                      key={file.id}
-                    />
-                  ))}
-                </>
-              )}
-              {lastPage && lastPage > 1 && (
-                <Box mt="auto" display="flex" justifyContent="center" p="12px">
-                  <Pagination
-                    currentPage={currentPage || 1}
-                    totalPages={lastPage || 1}
-                    loadPage={handlePaginationClick}
-                  />
-                </Box>
-              )}
-            </Box>
-            <Box>
-              <FeatureInformation />
-            </Box>
-          </Box>
-          <FileSideView
-            opened={sideViewOpened}
-            setSideViewOpened={setSideViewOpened}
-            selectedFileId={selectedFileId}
+      <>
+        <Box display="flex" justifyContent="space-between">
+          <SearchInput
+            placeholder={formatMessage(messages.searchFiles)}
+            onChange={handleSearchChange}
+            a11y_numberOfSearchResults={0}
           />
-        </>
-      )}
+          <UploadFileButtonWithModal />
+        </Box>
+        <Box mt="40px" display="flex" gap="20px" justifyContent="space-between">
+          <Box
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
+          >
+            {files?.data.length && files.data.length > 0 && (
+              <>
+                {files.data.map((file) => (
+                  <FilesListItem
+                    file={file}
+                    setSelectedFileId={setSelectedFileId}
+                    setSideViewOpened={setSideViewOpened}
+                    key={file.id}
+                  />
+                ))}
+              </>
+            )}
+            {lastPage && lastPage > 1 && (
+              <Box mt="auto" display="flex" justifyContent="center" p="12px">
+                <Pagination
+                  currentPage={currentPage || 1}
+                  totalPages={lastPage || 1}
+                  loadPage={handlePaginationClick}
+                />
+              </Box>
+            )}
+          </Box>
+          <Box>
+            <FeatureInformation />
+          </Box>
+        </Box>
+        <FileSideView
+          opened={sideViewOpened}
+          setSideViewOpened={setSideViewOpened}
+          selectedFileId={selectedFileId}
+        />
+      </>
     </Box>
   );
 };
