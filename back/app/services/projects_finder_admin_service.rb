@@ -117,21 +117,37 @@ class ProjectsFinderAdminService
   end
 
   def self.filter_date(scope, params = {})
-    start_at = params[:start_at]
-    end_at = params[:end_at]
-    return scope if start_at.blank? && end_at.blank?
+    raw_start = params[:start_at]
+    raw_end = params[:end_at]
+    return scope if raw_start.blank? && raw_end.blank?
+
+    start_at = parse_date(raw_start)
+    end_at = parse_date(raw_end)
 
     start_at ||= Date.new(1970, 1, 1)
-    end_at ||= DateTime::Infinity
+    end_at ||= Date::Infinity.new
 
     overlapping_project_ids = Phase
       .select(:project_id)
       .where(
         "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)",
-        start_at, end_at
+        start_at,
+        end_at
       )
 
     scope.where(id: overlapping_project_ids)
+  end
+
+  def self.parse_date(date_input)
+    return date_input if date_input.is_a?(Date) || date_input.is_a?(Time)
+
+    return nil if date_input.blank?
+
+    begin
+      Date.parse(date_input)
+    rescue ArgumentError
+      nil
+    end
   end
 
   def self.filter_participation_states(scope, params = {})
