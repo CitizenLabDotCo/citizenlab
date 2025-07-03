@@ -32,7 +32,7 @@ const SettingsNavigationBar = () => {
               label={tab.label}
               url={tab.url}
               active={isActive}
-              data-intercom-target={`community-monitor-settings-${tab.name}`}
+              className={`intercom-community-monitor-settings-${tab.name}`}
             />
           );
         })}

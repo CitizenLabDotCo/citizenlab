@@ -10,6 +10,7 @@ resource 'Idea Custom Fields' do
   get 'web_api/v1/projects/:project_id/custom_fields' do
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
     parameter :input_types, 'Filter custom fields by input types', type: :array, items: { type: :string }, required: false
+    parameter :public_fields, 'Only return custom fields that are visible to the public', type: :boolean, required: false
 
     let(:context) { create(:single_phase_ideation_project) }
     let(:project_id) { context.id }

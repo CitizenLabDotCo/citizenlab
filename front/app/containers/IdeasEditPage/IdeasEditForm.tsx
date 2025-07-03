@@ -12,7 +12,7 @@ import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
 import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
-import CustomFieldsForm from 'components/CustomFieldsForm';
+import IdeationForm from 'components/CustomFieldsForm/IdeationForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -127,7 +127,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                     display="flex"
                   >
                     {project && (
-                      <CustomFieldsForm
+                      <IdeationForm
                         projectId={project.data.id}
                         phaseId={phaseId}
                         participationMethod={
