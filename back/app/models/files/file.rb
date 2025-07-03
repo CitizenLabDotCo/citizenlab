@@ -25,6 +25,8 @@
 #
 module Files
   class File < ApplicationRecord
+    include PgSearch::Model
+
     belongs_to :uploader, class_name: 'User', optional: true
 
     has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
@@ -39,6 +41,14 @@ module Files
     validates :size, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
 
     before_save :update_metadata
+
+    pg_search_scope :search,
+      against: [:name],
+      using: %i[tsearch trigram],
+      # For the ranking, trigram scores are only used to break ties between results that
+      # have a tsearch score of 0. In other words, tsearch matches are always ranked
+      # higher than trigram matches.
+      ranked_by: 'CAST(:tsearch > 0 AS INTEGER) * (0.9 * :tsearch + 0.1) + 0.1 * :trigram'
 
     private
 
