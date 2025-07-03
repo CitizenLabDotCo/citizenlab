@@ -2188,7 +2188,7 @@
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Χρήστες",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Actions",
-  "app.containers.AdminPage.ProjectFiles.addFile": "Add file",
+  "app.containers.AdminPage.ProjectFiles.addFile": "Προσθήκη αρχείου",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Added",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Delete file",
   "app.containers.AdminPage.ProjectFiles.editFile": "Edit file",
