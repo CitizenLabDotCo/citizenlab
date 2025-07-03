@@ -5,10 +5,10 @@ namespace :single_use do
       puts "\nProcessing tenant #{tenant.host} \n\n"
 
       map_to_term = {
-        'vote' => %w[vote stem stimme voto voorkeur],
-        'point' => %w[],
-        'token' => %w[banaan],
-        'credit' => %w[]
+        'vote' => %w[vote stem stimme voto voorkeur äänestys stemme ster "pouvoir"],
+        'point' => %w[point punkt punt],
+        'token' => %w[token],
+        'credit' => ['"crédit carbone"']
       }
 
       map_to_term.each do |term, strings|
