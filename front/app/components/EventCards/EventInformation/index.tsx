@@ -206,9 +206,17 @@ const EventInformation = ({ event }: Props) => {
               </Box>
               <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
                 {event.attributes.attendees_count}{' '}
-                {formatMessage(
-                  isPastEvent ? messages.attended : messages.attending
-                )}
+                {event.attributes.maximum_attendees
+                  ? `/ ${event.attributes.maximum_attendees} ${formatMessage(
+                      isPastEvent
+                        ? messages.registered
+                        : messages.haveRegistered
+                    )}`
+                  : formatMessage(
+                      isPastEvent
+                        ? messages.registered
+                        : messages.haveRegistered
+                    )}
               </Text>
             </Box>
           )}

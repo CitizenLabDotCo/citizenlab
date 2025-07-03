@@ -16,7 +16,7 @@ import { isEmpty, get, isError } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
-import { Multiloc, UploadFile } from 'typings';
+import { Multiloc, UploadFile, CLError } from 'typings';
 
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
@@ -98,8 +98,9 @@ const AdminProjectEventEdit = () => {
     isCreatingNewEvent ? initializeEventTimes() : {}
   );
 
-  const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
+  const [attendanceButtonOptionsVisible, setAttendanceButtonOptionsVisible] =
     useState(false);
+  const [attendanceLimitVisible, setAttendanceLimitVisible] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     event?.data.attributes.location_point_geojson || null
@@ -115,6 +116,7 @@ const AdminProjectEventEdit = () => {
     null
   );
   const [hasAltTextChanged, setHasAltTextChanged] = useState(false);
+  const attendeesCount = event?.data.attributes.attendees_count;
 
   // Remote values
   const remotePoint = event?.data.attributes.location_point_geojson;
@@ -155,10 +157,16 @@ const AdminProjectEventEdit = () => {
     }
   }, [remotePoint]);
 
+  useEffect(() => {
+    if (eventAttrs.maximum_attendees) {
+      setAttendanceLimitVisible(true);
+    }
+  }, [eventAttrs.maximum_attendees]);
+
   // If there is a custom button url, set the state accordingly
   useEffect(() => {
     if (eventAttrs.using_url) {
-      setAttendanceOptionsVisible(true);
+      setAttendanceButtonOptionsVisible(true);
     }
   }, [eventAttrs.using_url]);
 
@@ -236,9 +244,60 @@ const AdminProjectEventEdit = () => {
     });
   };
 
+  const handleLimitToggleOnChange = (toggleValue: boolean) => {
+    setSubmitState('enabled');
+    setAttendanceLimitVisible(toggleValue);
+    setAttributeDiff({
+      ...attributeDiff,
+      maximum_attendees: null,
+    });
+  };
+
+  const handleMaximumAttendeesChange = (value: string) => {
+    setSubmitState('enabled');
+    const numberValue = value ? parseInt(value, 10) : null;
+
+    // Create a custom error message that will be used for both client and API validation
+    const maximumAttendeesErrorMessage = {
+      error: formatMessage(messages.maximumAttendeesError),
+    };
+
+    // Check if the new value is less than the current attendees count
+    if (
+      numberValue !== null &&
+      attendeesCount &&
+      numberValue < attendeesCount
+    ) {
+      setErrors({
+        ...errors,
+        maximum_attendees: [maximumAttendeesErrorMessage],
+      });
+    } else {
+      // Clear error if it exists - create a copy of the errors object
+      if (
+        typeof errors === 'object' &&
+        !Array.isArray(errors) &&
+        'maximum_attendees' in errors
+      ) {
+        // Create a new object without the maximum_attendees property
+        const { maximum_attendees: _maximum_attendees, ...restErrors } =
+          errors as {
+            maximum_attendees: CLError[];
+            [key: string]: any;
+          };
+        setErrors(restErrors);
+      }
+    }
+
+    setAttributeDiff({
+      ...attributeDiff,
+      maximum_attendees: numberValue,
+    });
+  };
+
   const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
     setSubmitState('enabled');
-    setAttendanceOptionsVisible(toggleValue);
+    setAttendanceButtonOptionsVisible(toggleValue);
     setAttributeDiff({
       ...attributeDiff,
       using_url: '',
@@ -390,6 +449,35 @@ const AdminProjectEventEdit = () => {
       });
   };
 
+  const maximumAttendeesErrorMessage = {
+    error: formatMessage(messages.maximumAttendeesError),
+  };
+
+  // Intercepts API error responses and ensures a consistent error message is shown for maximum_attendees validation.
+  // Provides immediate feedback when a value is too low during input, matching the same error message shown
+  // if maximum_attendees validation fails during form submission.
+  const handleApiErrors = (apiErrors: ApiErrorType) => {
+    setSaving(false);
+
+    if (isError(apiErrors)) {
+      // It's a regular Error object - set a generic error
+      setErrors({
+        form: [{ error: formatMessage(messages.saveErrorMessage) }],
+      });
+    } else {
+      const errorObject = 'errors' in apiErrors ? apiErrors.errors : apiErrors;
+      const customErrors = { ...errorObject };
+
+      if ('maximum_attendees' in customErrors) {
+        customErrors.maximum_attendees = [maximumAttendeesErrorMessage];
+      }
+
+      setErrors(customErrors);
+    }
+
+    setSubmitState('error');
+  };
+
   const handleOnSubmit = async (e: FormEvent) => {
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
@@ -442,11 +530,7 @@ const AdminProjectEventEdit = () => {
                 handleEventFiles(data);
                 setSubmitState('success');
               },
-              onError: async (errors) => {
-                setSaving(false);
-                setErrors(errors.errors);
-                setSubmitState('error');
-              },
+              onError: handleApiErrors,
             }
           );
         } else if (projectId) {
@@ -466,10 +550,7 @@ const AdminProjectEventEdit = () => {
                 addOrDeleteEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
-              onError: async (errors) => {
-                setErrors(errors.errors);
-                setSubmitState('error');
-              },
+              onError: handleApiErrors,
             }
           );
         }
@@ -703,6 +784,59 @@ const AdminProjectEventEdit = () => {
                 style={{ fontWeight: '600' }}
                 mt="48px"
               >
+                {formatMessage(messages.attendanceLimit)}
+              </Title>
+              <SectionField>
+                <Toggle
+                  label={
+                    <Box display="flex">
+                      {formatMessage(messages.toggleAttendanceLimitLabel)}
+                      <Box ml="4px">
+                        <IconTooltip
+                          content={formatMessage(
+                            messages.toggleAttendanceLimitTooltip
+                          )}
+                        />
+                      </Box>
+                    </Box>
+                  }
+                  checked={attendanceLimitVisible}
+                  onChange={() => {
+                    handleLimitToggleOnChange(!attendanceLimitVisible);
+                  }}
+                />
+              </SectionField>
+              {attendanceLimitVisible && (
+                <SectionField>
+                  <Input
+                    id="maximum_attendees"
+                    label={formatMessage(messages.maximumAttendees)}
+                    type="number"
+                    min="1"
+                    placeholder=""
+                    value={
+                      eventAttrs.maximum_attendees
+                        ? eventAttrs.maximum_attendees.toString()
+                        : null
+                    }
+                    onChange={handleMaximumAttendeesChange}
+                    labelTooltipText={formatMessage(
+                      messages.maximumAttendeesTooltip
+                    )}
+                  />
+                  <ErrorComponent
+                    apiErrors={get(errors, 'maximum_attendees')}
+                    text={get(errors, 'maximum_attendees')?.[0]?.error}
+                  />
+                </SectionField>
+              )}
+
+              <Title
+                variant="h4"
+                color="primary"
+                style={{ fontWeight: '600' }}
+                mt="48px"
+              >
                 {formatMessage(messages.attendanceButton)}
               </Title>
               <SectionField>
@@ -721,13 +855,15 @@ const AdminProjectEventEdit = () => {
                       </Box>
                     </Box>
                   }
-                  checked={attendanceOptionsVisible}
+                  checked={attendanceButtonOptionsVisible}
                   onChange={() => {
-                    handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
+                    handleCustomButtonToggleOnChange(
+                      !attendanceButtonOptionsVisible
+                    );
                   }}
                 />
               </SectionField>
-              {attendanceOptionsVisible && (
+              {attendanceButtonOptionsVisible && (
                 <>
                   <SectionField>
                     <Box maxWidth="400px">
@@ -770,7 +906,9 @@ const AdminProjectEventEdit = () => {
                         icon={
                           // TODO: Fix this the next time the file is edited.
                           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                          attendanceOptionsVisible ? undefined : 'plus-circle'
+                          attendanceButtonOptionsVisible
+                            ? undefined
+                            : 'plus-circle'
                         }
                         iconSize="20px"
                         bgColor={theme.colors.tenantPrimary}

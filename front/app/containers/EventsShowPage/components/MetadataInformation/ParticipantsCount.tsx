@@ -10,9 +10,11 @@ import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
 export interface Props {
   count: number;
+  maximumAttendees: number | null;
+  isPastEvent: boolean;
 }
 
-const ParticipantsCount = ({ count }: Props) => {
+const ParticipantsCount = ({ count, maximumAttendees, isPastEvent }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -25,7 +27,14 @@ const ParticipantsCount = ({ count }: Props) => {
           color="coolGrey600"
           fontSize="s"
         >
-          {formatMessage(messages.xParticipants, { count })}
+          {count}{' '}
+          {maximumAttendees
+            ? `/ ${maximumAttendees} ${formatMessage(
+                isPastEvent ? messages.registered : messages.haveRegistered
+              )}`
+            : formatMessage(
+                isPastEvent ? messages.registered : messages.haveRegistered
+              )}
         </Text>
       </Content>
     </Container>
