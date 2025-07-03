@@ -157,7 +157,8 @@ const AdminProjectEventEdit = () => {
   }, [remotePoint]);
 
   useEffect(() => {
-    if (eventAttrs.maximum_attendees) {
+    if (typeof eventAttrs.maximum_attendees === 'number') {
+      // If we have a maximum number of attendees, we want to ensure the toggle is on
       setAttendanceLimitVisible(true);
     }
   }, [eventAttrs.maximum_attendees]);
