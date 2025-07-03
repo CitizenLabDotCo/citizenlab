@@ -23,18 +23,14 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
+import { PageListType } from '../usePageList';
 
 type QuestionRuleInputProps = {
   fieldId: string;
   validationError: string | undefined;
   answer: { key: string | number | undefined; label: string | undefined };
   name: string;
-  pages:
-    | {
-        value: string | undefined;
-        label: string;
-      }[]
-    | undefined;
+  pages: PageListType[];
 };
 
 export const QuestionRuleInput = ({
@@ -200,25 +196,21 @@ export const QuestionRuleInput = ({
                     width="320px"
                     data-cy="e2e-rule-input-select"
                   >
-                    {pages && (
-                      <Select
-                        value={selectedPage}
-                        options={pages}
-                        label={
-                          <Text
-                            mb="0px"
-                            margin="0px"
-                            color="coolGrey600"
-                            fontSize="s"
-                          >
-                            <FormattedMessage
-                              {...messages.goToPageInputLabel}
-                            />
-                          </Text>
-                        }
-                        onChange={onSelectionChange}
-                      />
-                    )}
+                    <Select
+                      value={selectedPage}
+                      options={pages}
+                      label={
+                        <Text
+                          mb="0px"
+                          margin="0px"
+                          color="coolGrey600"
+                          fontSize="s"
+                        >
+                          <FormattedMessage {...messages.goToPageInputLabel} />
+                        </Text>
+                      }
+                      onChange={onSelectionChange}
+                    />
                   </Box>
                   <Box ml="auto" flexGrow={0} flexShrink={0}>
                     <ButtonWithLink

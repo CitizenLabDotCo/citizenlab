@@ -4,7 +4,10 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 
-import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+} from 'api/custom_fields/types';
 
 import useLocale from 'hooks/useLocale';
 
@@ -15,22 +18,14 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
+import usePageList, { PageListType } from '../usePageList';
 
 import { PageRuleInput } from './PageRuleInput';
 import { QuestionRuleInput } from './QuestionRuleInput';
 
-export type PageListType =
-  | {
-      value: string | undefined;
-      label: string;
-      disabled?: boolean;
-    }[];
-
 type LogicSettingsProps = {
-  pageOptions: PageListType;
   field: IFlatCustomFieldWithIndex;
   builderConfig: FormBuilderConfig | undefined;
-  getCurrentPageId: (questionId: string) => string | null;
 };
 
 export type AnswersType =
@@ -40,12 +35,7 @@ export type AnswersType =
     }[]
   | undefined;
 
-const LogicSettings = ({
-  pageOptions,
-  field,
-  builderConfig,
-  getCurrentPageId,
-}: LogicSettingsProps) => {
+const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
   const { formatMessage } = useIntl();
   const {
     watch,
@@ -95,10 +85,24 @@ const LogicSettings = ({
       });
     }
   }
+  const formCustomFields: IFlatCustomField[] = watch('customFields');
+  const fieldType = watch(`customFields.${field.index}.input_type`);
+  const pageOptions = usePageList();
+  // Which page is the current question on?
+  // Technically there should always be a current page ID and null should never be returned
+  const getCurrentPageId = (questionId: string): string | null => {
+    if (fieldType === 'page') return field.id;
 
+    let pageId: string | null = null;
+    for (const field of formCustomFields) {
+      if (field.input_type === 'page') pageId = field.id;
+      if (field.id === questionId) return pageId;
+    }
+    return null;
+  };
   // Current and previous pages should be disabled in select options
   let disablePage = true;
-  const pages: PageListType = pageOptions.map((page) => {
+  const pages: PageListType[] = pageOptions.map((page) => {
     const newPage = {
       ...page,
       disabled: disablePage,
@@ -138,10 +142,9 @@ const LogicSettings = ({
               )}
           </Box>
           <PageRuleInput
-            fieldId={field.temp_id || field.id}
+            field={field}
             validationError={validationError}
             name={`customFields.${field.index}.logic`}
-            pages={pages}
           />
         </>
       ) : (
