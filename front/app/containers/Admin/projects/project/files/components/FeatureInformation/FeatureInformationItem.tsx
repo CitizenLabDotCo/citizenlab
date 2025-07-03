@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Text, Icon, IconNames } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Icon,
+  colors,
+  IconNames,
+} from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 
 import { useIntl } from 'utils/cl-intl';
@@ -9,15 +15,11 @@ type Props = {
   iconName: IconNames;
   mainText: MessageDescriptor;
   secondaryText: MessageDescriptor;
-  iconColor?: string;
-  iconBackgroundColor?: string;
 };
 const FeatureInformationItem = ({
   iconName,
   mainText,
   secondaryText,
-  iconColor,
-  iconBackgroundColor,
 }: Props) => {
   const { formatMessage } = useIntl();
   return (
@@ -26,12 +28,17 @@ const FeatureInformationItem = ({
         <Box
           p="8px"
           borderRadius="50%"
-          background={iconBackgroundColor}
+          background={colors.teal100}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
-          <Icon height="20px" width="20px" fill={iconColor} name={iconName} />
+          <Icon
+            height="20px"
+            width="20px"
+            fill={colors.teal400}
+            name={iconName}
+          />
         </Box>
       </Box>
       <Box>
