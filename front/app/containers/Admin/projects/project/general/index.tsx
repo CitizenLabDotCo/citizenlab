@@ -567,10 +567,12 @@ const AdminProjectsProjectGeneral = () => {
             onChange={handleTopicsChange}
           />
 
-          <UnlistedInput
-            listed={projectAttrs.unlisted !== true}
-            onChange={handleUnlistedOnChange}
-          />
+          {isNewProject && (
+            <UnlistedInput
+              listed={projectAttrs.unlisted !== true}
+              onChange={handleUnlistedOnChange}
+            />
+          )}
 
           <GeographicAreaInputs
             areaIds={projectAttrs.area_ids}
