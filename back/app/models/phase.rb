@@ -66,6 +66,7 @@ class Phase < ApplicationRecord
   include Surveys::SurveyPhase
   include Volunteering::VolunteeringPhase
   include DocumentAnnotation::DocumentAnnotationPhase
+  include Files::FileAttachable
 
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
@@ -92,10 +93,6 @@ class Phase < ApplicationRecord
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
   has_many :jobs_trackers, -> { where(context_type: 'Phase') }, class_name: 'Jobs::Tracker', as: :context, dependent: :destroy
   belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
-
-  # TODO: extract as a mixin?
-  has_many :file_attachments, -> { ordered }, as: :attachable, class_name: 'Files::FileAttachment', dependent: :destroy
-  has_many :attached_files, through: :file_attachments, source: :file, class_name: 'Files::File'
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
