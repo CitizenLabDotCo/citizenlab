@@ -26,10 +26,11 @@ const GanttChartLeftColumn: React.FC<GanttChartLeftColumnProps> = ({
       borderRight={`1px solid ${colors.grey300}`}
       bg={colors.white}
     >
-      {items.map((item) => (
+      {items.map((item, index) => (
         <Box
           key={item.id}
           borderBottom={`1px solid ${colors.grey300}`}
+          borderTop={index === 0 ? `1px solid ${colors.grey300}` : undefined}
           height={`${rowHeight}px`}
           display="flex"
           bg={colors.white}
