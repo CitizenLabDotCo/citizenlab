@@ -171,5 +171,6 @@ export interface CampaignAdd {
   sender: string;
   reply_to?: string;
   group_ids?: string[];
-  context_id?: string;
+  projectId?: string;
+  phaseId?: string;
 }

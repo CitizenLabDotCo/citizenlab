@@ -6,12 +6,25 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import campaignKeys from './keys';
 import { ICampaign, CampaignAdd } from './types';
 
-const addCampaign = async (requestBody: CampaignAdd) =>
-  fetcher<ICampaign>({
-    path: '/campaigns',
+const addCampaign = async ({
+  projectId,
+  phaseId,
+  ...requestBody
+}: CampaignAdd) => {
+  let path = '/campaigns';
+
+  if (projectId) {
+    path = `/projects/${projectId}/campaigns`;
+  } else if (phaseId) {
+    path = `/phases/${phaseId}/campaigns`;
+  }
+
+  return fetcher<ICampaign>({
+    path: path as `/${string}`,
     action: 'post',
     body: { campaign: requestBody },
   });
+};
 
 const useAddCampaign = () => {
   const queryClient = useQueryClient();
