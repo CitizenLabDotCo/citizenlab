@@ -237,7 +237,6 @@ const Error = (props: Props) => {
     id,
     scrollIntoView = true,
   } = props;
-  console.log('apiErrors', apiErrors);
 
   useEffect(() => {
     if (scrollIntoView) {
