@@ -4,11 +4,8 @@ module EmailCampaigns
   class ApplicationMailer < ApplicationMailer
     layout 'campaign_mailer'
 
-    helper_method :show_unsubscribe_link?
-
     before_action do
       @command, @campaign = params.values_at(:command, :campaign)
-
       @user = @command[:recipient]
     end
 
@@ -22,9 +19,14 @@ module EmailCampaigns
 
     attr_reader :command, :campaign
 
-    helper_method :command, :campaign, :event
+    helper_method :command, :campaign, :event, :show_unsubscribe_link?, :cta_button_text
 
     private
+
+    def mailgun_variables
+      super.merge('cl_delivery_id' => command[:delivery_id])
+      # super.merge(campaign&.extra_mailgun_variables || {})
+    end
 
     def show_unsubscribe_link?
       user && campaign.class.try(:consentable_for?, user)
@@ -38,6 +40,7 @@ module EmailCampaigns
       true
     end
 
+    # Format a non-editable message - use `EditableWithPreview.format_editable_region` when editable.
     def format_message(key, component: nil, escape_html: true, values: {})
       group = component || @campaign.class.name.demodulize.underscore
       msg = t("email_campaigns.#{group}.#{key}", **values)

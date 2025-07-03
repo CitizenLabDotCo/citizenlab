@@ -4,19 +4,22 @@
 #
 # Table name: email_campaigns_campaigns
 #
-#  id               :uuid             not null, primary key
-#  type             :string           not null
-#  author_id        :uuid
-#  enabled          :boolean
-#  sender           :string
-#  reply_to         :string
-#  schedule         :jsonb
-#  subject_multiloc :jsonb
-#  body_multiloc    :jsonb
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  deliveries_count :integer          default(0), not null
-#  context_id       :uuid
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
 #
 # Indexes
 #
@@ -54,6 +57,15 @@ module EmailCampaigns
                     campaign.new.manageable_by_project_moderator?
                   end.map(&:name))
     }
+
+    def self.filter(action_symbol)
+      @filter_hooks ||= []
+      @filter_hooks << action_symbol
+    end
+
+    def self.filter_hooks
+      @filter_hooks || []
+    end
 
     def self.before_send(action_symbol)
       @before_send_hooks ||= []
@@ -113,12 +125,12 @@ module EmailCampaigns
       users_scope
     end
 
-    def run_before_send_hooks(activity: nil, time: nil)
+    def run_filter_hooks(activity: nil, time: nil)
       result = true
       current_class = self.class
 
       while current_class <= ::EmailCampaigns::Campaign
-        result &&= current_class.before_send_hooks.all? do |action_symbol|
+        result &&= current_class.filter_hooks.all? do |action_symbol|
           send(action_symbol, activity: activity, time: time)
         end
 
@@ -126,6 +138,18 @@ module EmailCampaigns
       end
 
       result
+    end
+
+    def run_before_send_hooks(command)
+      current_class = self.class
+
+      while current_class <= ::EmailCampaigns::Campaign
+        current_class.before_send_hooks.each do |action_symbol|
+          send(action_symbol, command)
+        end
+
+        current_class = current_class.superclass
+      end
     end
 
     def run_after_send_hooks(command)
@@ -156,6 +180,10 @@ module EmailCampaigns
 
     def manual?
       false
+    end
+
+    def extra_mailgun_variables
+      super || {}
     end
 
     protected
