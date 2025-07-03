@@ -12,10 +12,10 @@ interface GanttChartLeftColumnProps {
   onItemLabelClick?: (item: GanttItem) => void;
 }
 
-const GanttChartLeftColumn: React.FC<GanttChartLeftColumnProps> = ({
+const GanttChartLeftColumn = ({
   items,
   onItemLabelClick,
-}) => {
+}: GanttChartLeftColumnProps) => {
   return (
     <Box
       width={`${leftColumnWidth}px`}

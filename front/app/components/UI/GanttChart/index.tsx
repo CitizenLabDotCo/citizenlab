@@ -265,11 +265,7 @@ export const GanttChart = ({
         />
       </Box>
 
-      <Box
-        display="flex"
-        borderTop={`1px solid ${colors.grey300}`}
-        position="relative"
-      >
+      <Box display="flex" position="relative">
         <Box
           width={`${leftColumnWidth}px`}
           minWidth={`${leftColumnWidth}px`}
