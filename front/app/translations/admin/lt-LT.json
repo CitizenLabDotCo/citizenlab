@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Pridėjus papildomų vietų, jūsų sąskaita bus padidinta. Susisiekite su savo \"GovSuccess\" vadybininku ir sužinokite apie tai daugiau.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Dėkojame, kad užpildėte apklausą! Kitą ketvirtį kviečiame ją atlikti dar kartą.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Užtrunka <1 minutę} one {Užtrunka 1 minutę} other {Užtrunka # minučių}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Atsisiųsti kaip pdf",
   "app.components.FormSync.downloadExcelTemplate": "Atsisiųsti \"Excel\" šabloną",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Į \"Excel\" šablonus nebus įtraukti reitingavimo klausimai, matricos klausimai, failų įkėlimo klausimai ir bet kokie žemėlapių įvesties klausimai (\"Drop Pin\", \"Draw Route\", \"Draw Area\", ESRI failų įkėlimas), nes šiuo metu jie nepalaikomi masiniam importui.",
