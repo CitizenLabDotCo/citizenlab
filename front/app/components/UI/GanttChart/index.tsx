@@ -163,8 +163,13 @@ export const GanttChart = ({
 
   const todayOffset = useMemo(() => {
     if (!showTodayLine) return undefined;
-    return getOffsetForView(today);
-  }, [getOffsetForView, showTodayLine, today]);
+    let offset = getOffsetForView(today);
+    // For the month view, center the line in the middle of the day
+    if (selectedRange === 'month') {
+      offset += 0.5;
+    }
+    return offset;
+  }, [getOffsetForView, showTodayLine, today, selectedRange]);
 
   useLayoutEffect(() => {
     if (timelineBodyRef.current && scrollState.current.scrollWidth > 0) {
