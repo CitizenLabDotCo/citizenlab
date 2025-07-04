@@ -78,13 +78,15 @@ const FormBuilderSettings = ({
 
   // Which page is the current question on?
   // Technically there should always be a current page ID and null should never be returned
-  const getCurrentPageId = (questionId: string): string | null => {
+  const getCurrentPageId = (
+    field: IFlatCustomFieldWithIndex
+  ): string | null => {
     if (fieldType === 'page') return field.id;
 
     let pageId: string | null = null;
-    for (const field of formCustomFields) {
-      if (field.input_type === 'page') pageId = field.id;
-      if (field.id === questionId) return pageId;
+    for (const formCustomField of formCustomFields) {
+      if (formCustomField.input_type === 'page') pageId = formCustomField.id;
+      if (formCustomField.id === field.id) return pageId;
     }
     return null;
   };
