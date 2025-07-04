@@ -25,26 +25,22 @@ import { isRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
 
+import usePages from './usePages';
+
 type QuestionRuleInputProps = {
   field: IFlatCustomFieldWithIndex;
   validationError: string | undefined;
   answer: { key: string | number | undefined; label: string | undefined };
-  pages:
-    | {
-        value: string | undefined;
-        label: string;
-      }[]
-    | undefined;
 };
 
 export const QuestionRuleInput = ({
   field,
-  pages,
   answer,
   validationError,
 }: QuestionRuleInputProps) => {
   const fieldId = field.temp_id || field.id;
   const name = `customFields.${field.index}`;
+  const pages = usePages(field);
   const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
   const logic: LogicType = field.logic;
@@ -200,25 +196,21 @@ export const QuestionRuleInput = ({
                     width="320px"
                     data-cy="e2e-rule-input-select"
                   >
-                    {pages && (
-                      <Select
-                        value={selectedPage}
-                        options={pages}
-                        label={
-                          <Text
-                            mb="0px"
-                            margin="0px"
-                            color="coolGrey600"
-                            fontSize="s"
-                          >
-                            <FormattedMessage
-                              {...messages.goToPageInputLabel}
-                            />
-                          </Text>
-                        }
-                        onChange={onSelectionChange}
-                      />
-                    )}
+                    <Select
+                      value={selectedPage}
+                      options={pages}
+                      label={
+                        <Text
+                          mb="0px"
+                          margin="0px"
+                          color="coolGrey600"
+                          fontSize="s"
+                        >
+                          <FormattedMessage {...messages.goToPageInputLabel} />
+                        </Text>
+                      }
+                      onChange={onSelectionChange}
+                    />
                   </Box>
                   <Box ml="auto" flexGrow={0} flexShrink={0}>
                     <ButtonWithLink
