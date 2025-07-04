@@ -119,9 +119,8 @@ const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
               )}
           </Box>
           <PageRuleInput
-            fieldId={field.temp_id || field.id}
+            field={field}
             validationError={validationError}
-            name={`customFields.${field.index}.logic`}
             pages={pages}
           />
         </>
@@ -141,9 +140,8 @@ const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
             answers.map((answer) => (
               <Box key={answer.key}>
                 <QuestionRuleInput
-                  fieldId={field.temp_id || field.id}
+                  field={field}
                   validationError={validationError}
-                  name={`customFields.${field.index}`}
                   answer={answer}
                   pages={pages}
                 />
