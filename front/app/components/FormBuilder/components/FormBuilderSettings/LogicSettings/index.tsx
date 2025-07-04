@@ -34,7 +34,7 @@ export type PageListType =
 type LogicSettingsProps = {
   field: IFlatCustomFieldWithIndex;
   builderConfig: FormBuilderConfig | undefined;
-  getCurrentPageId: (questionId: string) => string | null;
+  getCurrentPageId: (field: IFlatCustomFieldWithIndex) => string | null;
 };
 
 export type AnswersType =
@@ -140,7 +140,7 @@ const LogicSettings = ({
       ...page,
       disabled: disablePage,
     };
-    if (page.value === getCurrentPageId(field.id)) {
+    if (page.value === getCurrentPageId(field)) {
       disablePage = false;
     }
     return newPage;
