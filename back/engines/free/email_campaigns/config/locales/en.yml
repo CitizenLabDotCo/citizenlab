@@ -205,11 +205,11 @@ en:
       event_description_action: 'Click below to read the proposal.'
       cta_button: 'Co-sponsor this proposal'
     invite_reminder:
-      cta_accept_invitation: 'Accept your invitation'
-      invitation_header: 'Your invitation is pending'
-      preheader: '%{organizationName} sent you an invite to join their participation platform some days ago.'
-      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
       subject: 'Pending invitation for the participation platform of %{organizationName}'
+      preheader: '%{organizationName} sent you an invite to join their participation platform some days ago.'
+      title: 'Your invitation is pending'
+      cta_button: 'Accept your invitation'
+      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
     invite_received:
       preheader: '%{organizationName} sent you an invite to join their participation platform.'
       subject: 'You are invited to join the platform of %{organizationName}'
