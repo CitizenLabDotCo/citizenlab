@@ -196,14 +196,14 @@ en:
       report_not_an_idea: 'This content is not relevant and does not belong here.'
       reported_this_because: '%{reporterFirstName} reported this because:'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'Co-sponsor this proposal'
+      subject: 'You have been invited to co-sponsor a proposal'
+      preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
+      title: 'You have been invited to co-sponsor a proposal'
       event_description: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
       event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
       event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
       event_description_action: 'Click below to read the proposal.'
-      main_header: 'You have been invited to co-sponsor a proposal'
-      subject: 'You have been invited to co-sponsor a proposal'
-      preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
+      cta_button: 'Co-sponsor this proposal'
     invite_reminder:
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'Your invitation is pending'
