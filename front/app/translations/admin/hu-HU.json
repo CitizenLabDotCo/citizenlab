@@ -64,7 +64,7 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Thank you for completing the survey! You're welcome to take it again next quarter.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {<1 percet vesz igénybe} one {1 percet vesz igénybe} other {# percet vesz igénybe}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Letöltés PDF-ként",
   "app.components.FormSync.downloadExcelTemplate": "Excel-sablon letöltése",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Az Excel-sablonok nem tartalmazzák a rangsorolási kérdéseket, a mátrixkérdéseket, a fájlfeltöltési kérdéseket és a térképezési beviteli kérdéseket (pont elhelyezése, útvonal rajzolása, terület rajzolása, ESRI fájlfeltöltés), mivel ezek tömeges importálása jelenleg nem támogatott.",
