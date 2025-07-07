@@ -28,9 +28,19 @@ type FileSortOptions =
   | '-size';
 
 export interface QueryParameters {
+  uploader_id?: string;
+  projects?: string[];
+  sort?: FileSortOptions;
+  search?: string;
+  deleted?: boolean;
   'page[number]'?: number;
   'page[size]'?: number;
-  uploader_id?: string;
+}
+
+export interface UseFilesProps {
+  pageNumber?: number;
+  pageSize?: number;
+  uploaderId?: string;
   projects?: string[];
   sort?: FileSortOptions;
   search?: string;
