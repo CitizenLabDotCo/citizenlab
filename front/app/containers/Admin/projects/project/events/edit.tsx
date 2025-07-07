@@ -760,7 +760,6 @@ const AdminProjectEventEdit = () => {
                     id="maximum_attendees"
                     label={formatMessage(messages.maximumAttendees)}
                     type="number"
-                    min="1"
                     value={eventAttrs.maximum_attendees?.toString()}
                     onChange={handleMaximumAttendeesChange}
                   />

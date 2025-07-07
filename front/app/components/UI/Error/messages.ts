@@ -339,6 +339,10 @@ export default defineMessages({
     defaultMessage:
       'The maximum number of attendees must be greater than or equal to the current number of attendees.',
   },
+  maximum_attendees_greater_than: {
+    id: 'app.errors.maximum_attendees_greater_than',
+    defaultMessage: 'The maximum number of attendees must be greater than 0.',
+  },
   title_multiloc_includes_banned_words: {
     id: 'app.errors.title_multiloc_includes_banned_words',
     defaultMessage:
