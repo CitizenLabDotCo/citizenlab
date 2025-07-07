@@ -30,7 +30,6 @@ resource 'Campaigns' do
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
       parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false
 
-      # TODO: Change this so it creates ALL campaigns
       example_request 'List all campaigns' do
         assert_status 200
         json_response = json_parse(response_body)
@@ -55,10 +54,16 @@ resource 'Campaigns' do
         expect(json_response[:data].size).to eq 5
       end
 
-      example 'List all automatic campaigns' do
+      example 'List ALL automatic campaigns' do
+        # Create one of every type of automated campaign
+        SettingsService.new.activate_feature! 'community_monitor'
+        @campaigns = EmailCampaigns::DeliveryService.new.campaign_classes.each do |klaz|
+          factory_type = :"#{klaz.name.demodulize.underscore}_campaign"
+          create(factory_type)
+        end
+
         do_request(manual: false)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
+        expect(response_data.size).to eq 49
       end
 
       example 'List all manual campaigns when one has been sent' do
