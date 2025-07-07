@@ -97,7 +97,7 @@ export const getTabs = (
       name: 'access-rights',
     },
     {
-      label: 'Emails',
+      label: formatMessage(messages.phaseEmails),
       url: 'emails',
       name: 'emails',
     },
