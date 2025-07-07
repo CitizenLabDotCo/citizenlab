@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Kun lisää paikkoja on lisätty, laskutustasi korotetaan. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja siitä.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Kiitos kyselyn täyttämisestä! Voit ottaa sen uudelleen ensi vuosineljänneksellä.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Kestää <1 minuutin} one {Kestää 1 minuutin} other {Kestää # minuuttia}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lataa pdf-tiedostona",
   "app.components.FormSync.downloadExcelTemplate": "Lataa Excel-malli",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-malleissa ei ole mukana ranking-kysymyksiä, matriisikysymyksiä, tiedostojen latauskysymyksiä tai kartoituskysymyksiä (pudotusnasta, reitin piirtäminen, alueen piirtäminen, ESRI-tiedostojen lataus), koska niitä ei tällä hetkellä tueta joukkotuonnissa.",

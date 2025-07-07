@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Aussagen",
   "app.components.CommunityMonitorModal.formError": "Es ist ein Fehler aufgetreten.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Diese laufende Umfrage erfasst Ihre Meinung zur Verwaltung und öffentlichen Diensten.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Dauert <1 Minute} one {Dauert 1 Minute} other {Dauert # Minuten}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "Es wurde eine E-Mail mit einem Bestätigungscode an {userEmail} gesendet.",
   "app.components.ConfirmationModal.changeYourEmail": "Ändern Sie Ihre E-Mail-Adresse.",
   "app.components.ConfirmationModal.codeInput": "Code",

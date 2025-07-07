@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "ਇੱਕ ਵਾਰ ਵਾਧੂ ਸੀਟਾਂ ਜੋੜਨ ਤੋਂ ਬਾਅਦ, ਤੁਹਾਡੀ ਬਿਲਿੰਗ ਵਧਾਈ ਜਾਵੇਗੀ। ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "ਸਰਵੇਖਣ ਨੂੰ ਪੂਰਾ ਕਰਨ ਲਈ ਤੁਹਾਡਾ ਧੰਨਵਾਦ! ਅਗਲੀ ਤਿਮਾਹੀ ਵਿੱਚ ਇਸਨੂੰ ਦੁਬਾਰਾ ਲੈਣ ਲਈ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ।",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {<1 ਮਿੰਟ ਲੈਂਦਾ ਹੈ} one {1 ਮਿੰਟ ਲੈਂਦਾ ਹੈ} other {# ਮਿੰਟ ਲੈਂਦਾ ਹੈ}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "ਪੀਡੀਐਫ ਦੇ ਤੌਰ ਤੇ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.components.FormSync.downloadExcelTemplate": "ਇੱਕ ਐਕਸਲ ਟੈਂਪਲੇਟ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "ਐਕਸਲ ਟੈਂਪਲੇਟਸ ਵਿੱਚ ਰੈਂਕਿੰਗ ਸਵਾਲ, ਮੈਟ੍ਰਿਕਸ ਸਵਾਲ, ਫਾਈਲ ਅਪਲੋਡ ਸਵਾਲ ਅਤੇ ਕੋਈ ਵੀ ਮੈਪਿੰਗ ਇਨਪੁੱਟ ਸਵਾਲ (ਡ੍ਰੌਪ ਪਿੰਨ, ਡਰਾਅ ਰੂਟ, ਡਰਾਅ ਏਰੀਆ, ESRI ਫਾਈਲ ਅਪਲੋਡ) ਸ਼ਾਮਲ ਨਹੀਂ ਹੋਣਗੇ ਕਿਉਂਕਿ ਇਹ ਇਸ ਸਮੇਂ ਥੋਕ ਆਯਾਤ ਲਈ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ।",

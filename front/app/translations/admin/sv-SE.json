@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "När ytterligare platser läggs till kommer din fakturering att öka. Kontakta din GovSuccess Manager för att få veta mer om detta.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Tack för att du besvarade enkäten! Du är välkommen att besvara den igen nästa kvartal.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Tar <1 minut} one {Tar 1 minut} other {Tar # minuter}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Ladda ner som pdf",
   "app.components.FormSync.downloadExcelTemplate": "Ladda ner en Excel-mall",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-mallarna innehåller inte frågor om rangordning, matrisfrågor, frågor om filuppladdning och frågor om kartdata (Drop Pin, Draw Route, Draw Area, ESRI-filuppladdning) eftersom dessa inte stöds för bulkimport i nuläget.",

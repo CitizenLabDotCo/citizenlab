@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Nakon što se dodaju dodatna mjesta, vaša naplata će se povećati. Obratite se svom GovSuccess Manageru da saznate više o tome.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Hvala što ste ispunili anketu! Slobodno ga ponovite sljedećeg kvartala.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Traje <1 minute} one {Traje 1 minutu} other {Traje # minute}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Preuzmi kao pdf",
   "app.components.FormSync.downloadExcelTemplate": "Preuzmite Excel predložak",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel predlošci neće uključivati pitanja o rangiranju, matrična pitanja, pitanja o prijenosu datoteka i bilo koja pitanja o unosu mapiranja (Ispuštanje pribadače, Crtanje rute, Crtanje područja, Prijenos ESRI datoteke) jer trenutno nije podržan skupni uvoz.",
