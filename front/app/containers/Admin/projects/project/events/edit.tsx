@@ -249,7 +249,7 @@ const AdminProjectEventEdit = () => {
     setAttendanceLimitVisible(toggleValue);
     setAttributeDiff({
       ...attributeDiff,
-      maximum_attendees: null,
+      maximum_attendees: toggleValue === false ? null : 100,
     });
   };
 
@@ -257,8 +257,9 @@ const AdminProjectEventEdit = () => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      // If maximum_attendees is an empty string, set it to null
-      maximum_attendees: maximum_attendees ? Number(maximum_attendees) : null,
+      // If maximum_attendees is an empty string, set it to 0.
+      // Number('') returns 0.
+      maximum_attendees: Number(maximum_attendees),
     });
     setErrors({});
   };
