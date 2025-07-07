@@ -12,6 +12,7 @@ import { CLErrors, UploadFile, Multiloc } from 'typings';
 
 import { ICampaignData } from 'api/campaigns/types';
 import useCampaigns from 'api/campaigns/useCampaigns';
+import useSupportedCampaignTypes from 'api/campaigns/useSupportedCampaignTypes';
 import { IPhaseFiles } from 'api/phase_files/types';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -484,8 +485,8 @@ const AdminPhaseEdit = ({ projectId, phase, campaigns }: Props) => {
 const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
-  // const { data: { attributes: supportedCampaignTypes } } = useSupportedCampaignTypes();
-  const supportedCampaignTypes = ['project_phase_started'];
+  const supportedCampaignTypes =
+    useSupportedCampaignTypes({ phaseId }).data?.data.attributes || [];
   const contextCampaigns = useCampaigns({
     ...(phaseId ? { phaseId } : {}),
     pageSize: 250,
