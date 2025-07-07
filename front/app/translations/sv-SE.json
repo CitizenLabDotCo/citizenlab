@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Uttalanden",
   "app.components.CommunityMonitorModal.formError": "Ett fel har uppstått.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Denna pågående undersökning visar vad du tycker om styrning och offentliga tjänster.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Tar <1 minut} one {Tar 1 minut} other {Tar # minuter}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "Ett e-postmeddelande med en bekräftelsekod har skickats till {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Ändra din e-postadress.",
   "app.components.ConfirmationModal.codeInput": "Kod",

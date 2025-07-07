@@ -53,32 +53,32 @@ const FilesListItem = ({
   };
 
   const downloadFileHandler = (_fileId: string) => () => {
-    // ToDo: Logic to handle file downloading
+    // TODO: Logic to handle file downloading.
   };
 
   const deleteFileHandler = (fileId: string) => () => {
     confirm(formatMessage(messages.confirmDelete)) &&
       deleteFile(fileId, {
         onError: (_error) => {
-          // ToDo: Handle any file deletion errors.
+          // TODO: Handle any file deletion errors.
         },
       });
   };
 
-  const getActions = (fileId: string): IAction[] => [
+  const actions: IAction[] = [
     {
       label: <FormattedMessage {...messages.viewFile} />,
-      handler: viewFileHandler(fileId),
+      handler: viewFileHandler(file.id),
       name: 'view',
     },
     {
       label: <FormattedMessage {...messages.downloadFile} />,
-      handler: downloadFileHandler(fileId),
+      handler: downloadFileHandler(file.id),
       name: 'download',
     },
     {
       label: <FormattedMessage {...messages.deleteFile} />,
-      handler: deleteFileHandler(fileId),
+      handler: deleteFileHandler(file.id),
       name: 'delete',
     },
   ];
@@ -98,7 +98,7 @@ const FilesListItem = ({
             userId={file.relationships.uploader.data.id}
             fontSize={14}
             color={colors.coolGrey500}
-            ShowAvatar={true}
+            showAvatar={true}
           />
         </Box>
       </Box>
@@ -107,7 +107,7 @@ const FilesListItem = ({
         alignItems="center"
         onClick={(e) => e.stopPropagation()}
       >
-        <MoreActionsMenu showLabel={false} actions={getActions(file.id)} />
+        <MoreActionsMenu showLabel={false} actions={actions} />
       </Box>
     </StyledBox>
   );

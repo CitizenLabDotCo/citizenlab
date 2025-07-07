@@ -4,11 +4,35 @@ import {
   Box,
   colors,
   Divider,
+  IconNames,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
 import FeatureInformationItem from './FeatureInformationItem';
 import messages from './messages';
+
+const mainFeatures = [
+  {
+    iconName: 'upload-file',
+    mainText: messages.uploadAnyFile,
+    secondaryText: messages.uploadAnyFileDescription,
+  },
+  {
+    iconName: 'paperclip',
+    mainText: messages.addFilesToProject,
+    secondaryText: messages.addFilesToProjectDescription,
+  },
+  {
+    iconName: 'chart-bar',
+    mainText: messages.useAIOnFiles,
+    secondaryText: messages.useAIOnFilesDescription,
+  },
+  {
+    iconName: 'stars',
+    mainText: messages.addFilesToSensemaking,
+    secondaryText: messages.addFilesToSensemakingDescription,
+  },
+];
 
 const FeatureInformation = () => {
   return (
@@ -21,29 +45,17 @@ const FeatureInformation = () => {
       background={colors.white}
       borderRadius={stylingConsts.borderRadius}
     >
-      <FeatureInformationItem
-        iconName={'upload-file'}
-        mainText={messages.uploadAnyFile}
-        secondaryText={messages.uploadAnyFileDescription}
-      />
-      <FeatureInformationItem
-        iconName={'paperclip'}
-        mainText={messages.addFilesToProject}
-        secondaryText={messages.addFilesToProjectDescription}
-      />
-      <FeatureInformationItem
-        iconName={'chart-bar'}
-        mainText={messages.useAIOnFiles}
-        secondaryText={messages.useAIOnFilesDescription}
-      />
-      <FeatureInformationItem
-        iconName={'stars'}
-        mainText={messages.addFilesToSensemaking}
-        secondaryText={messages.addFilesToSensemakingDescription}
-      />
+      {mainFeatures.map((feature, index) => (
+        <FeatureInformationItem
+          key={index}
+          iconName={feature.iconName as IconNames}
+          mainText={feature.mainText}
+          secondaryText={feature.secondaryText}
+        />
+      ))}
       <Divider />
       <FeatureInformationItem
-        iconName={'arrow-up'}
+        iconName="arrow-up"
         mainText={messages.comingSoon}
         secondaryText={messages.comingSoonDescription}
       />

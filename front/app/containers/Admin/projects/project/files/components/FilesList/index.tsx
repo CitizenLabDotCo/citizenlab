@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { IPaginationProps, QueryParameters } from 'api/files/types';
+import { GetFilesParameters } from 'api/files/types';
 import useFiles from 'api/files/useFiles';
 
 import Pagination from 'components/Pagination';
@@ -28,9 +28,7 @@ const FilesList = () => {
     projectId: string;
   };
 
-  const [queryParameters, setQueryParameters] = useState<
-    QueryParameters & IPaginationProps
-  >({
+  const [queryParameters, setQueryParameters] = useState<GetFilesParameters>({
     pageNumber: 1,
     pageSize: 7,
     sort: '-created_at',
@@ -63,67 +61,115 @@ const FilesList = () => {
 
   return (
     <Box display="flex" justifyContent="center" flexDirection="column">
-      <>
-        <Box display="flex" justifyContent="space-between">
-          <SearchInput
-            placeholder={formatMessage(messages.searchFiles)}
-            onChange={handleSearchChange}
-            a11y_numberOfSearchResults={0}
+      {files?.data.length && files.data.length > 0 && (
+        <>
+          <Box display="flex" justifyContent="space-between">
+            <SearchInput
+              placeholder={formatMessage(messages.searchFiles)}
+              onChange={handleSearchChange}
+              a11y_numberOfSearchResults={0}
+            />
+            <UploadFileButtonWithModal />
+          </Box>
+          <Box
+            mt="40px"
+            display="flex"
+            gap="20px"
+            justifyContent="space-between"
+          >
+            <Box
+              display="flex"
+              flexDirection="column"
+              width="100%"
+              minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
+            >
+              {files.data.map((file) => (
+                <FilesListItem
+                  file={file}
+                  setSelectedFileId={setSelectedFileId}
+                  setSideViewOpened={setSideViewOpened}
+                  key={file.id}
+                />
+              ))}
+              {lastPage && lastPage > 1 && (
+                <Box mt="auto" display="flex" justifyContent="center" p="12px">
+                  <Pagination
+                    currentPage={currentPage || 1}
+                    totalPages={lastPage || 1}
+                    loadPage={handlePaginationClick}
+                  />
+                </Box>
+              )}
+            </Box>
+            <Box>
+              <FeatureInformation />
+            </Box>
+          </Box>
+          <FileSideView
+            opened={sideViewOpened}
+            setSideViewOpened={setSideViewOpened}
+            selectedFileId={selectedFileId}
           />
           <UploadFileButtonWithModal />
-        </Box>
-        <Box mt="40px" display="flex" gap="20px" justifyContent="space-between">
+
           <Box
+            mt="40px"
             display="flex"
-            flexDirection="column"
-            width="100%"
-            minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
+            gap="20px"
+            justifyContent="space-between"
           >
-            {numberOfFiles > 0 && (
-              <>
-                {files?.data.map((file) => (
-                  <FilesListItem
-                    file={file}
-                    setSelectedFileId={setSelectedFileId}
-                    setSideViewOpened={setSideViewOpened}
-                    key={file.id}
+            <Box
+              display="flex"
+              flexDirection="column"
+              width="100%"
+              minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
+            >
+              {numberOfFiles > 0 && (
+                <>
+                  {files.data.map((file) => (
+                    <FilesListItem
+                      file={file}
+                      setSelectedFileId={setSelectedFileId}
+                      setSideViewOpened={setSideViewOpened}
+                      key={file.id}
+                    />
+                  ))}
+                </>
+              )}
+              {files.data.length === 0 && (
+                <>
+                  {queryParameters.search ? (
+                    <Box display="flex" width="100%" justifyContent="center">
+                      <Text color="coolGrey600">
+                        {formatMessage(messages.noFilesFound)}
+                      </Text>
+                    </Box>
+                  ) : (
+                    <>TODO: Add UI for when no files have been uploaded yet.</>
+                  )}
+                </>
+              )}
+              {lastPage && lastPage > 1 && (
+                <Box mt="auto" display="flex" justifyContent="center" p="12px">
+                  <Pagination
+                    currentPage={currentPage || 1}
+                    totalPages={lastPage || 1}
+                    loadPage={handlePaginationClick}
                   />
-                ))}
-              </>
-            )}
-            {files?.data.length === 0 && (
-              <>
-                {queryParameters.search ? (
-                  <Box display="flex" width="100%" justifyContent="center">
-                    <Text color="coolGrey600">
-                      {formatMessage(messages.noFilesFound)}
-                    </Text>
-                  </Box>
-                ) : (
-                  <>TODO: Add UI for when no files have been uploaded yet.</>
-                )}
-              </>
-            )}
-            {lastPage && lastPage > 1 && (
-              <Box mt="auto" display="flex" justifyContent="center" p="12px">
-                <Pagination
-                  currentPage={currentPage || 1}
-                  totalPages={lastPage || 1}
-                  loadPage={handlePaginationClick}
-                />
-              </Box>
-            )}
+                </Box>
+              )}
+            </Box>
+            <Box>
+              <FeatureInformation />
+            </Box>
           </Box>
-          <Box>
-            <FeatureInformation />
-          </Box>
-        </Box>
-        <FileSideView
-          opened={sideViewOpened}
-          setSideViewOpened={setSideViewOpened}
-          selectedFileId={selectedFileId}
-        />
-      </>
+          <FileSideView
+            opened={sideViewOpened}
+            setSideViewOpened={setSideViewOpened}
+            selectedFileId={selectedFileId}
+          />
+        </>
+      )}
     </Box>
   );
 };
