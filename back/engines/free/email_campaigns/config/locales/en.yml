@@ -169,11 +169,11 @@ en:
       cta_button: 'View report'
       report_name: 'Community monitor report'
     cosponsor_of_your_idea:
-      cta_reply_to: 'View your proposal'
-      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
-      main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
       subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
       preheader: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      title: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
+      cta_button: 'View your proposal'
     assignee_digest:
       subject: 'Inputs requiring your feedback: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'

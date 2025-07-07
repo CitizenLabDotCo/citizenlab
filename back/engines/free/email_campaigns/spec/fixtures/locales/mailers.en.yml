@@ -176,6 +176,12 @@ en:
       main_header: 'You have been invited to co-sponsor a proposal'
       subject: 'You have been invited to co-sponsor a proposal'
       preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
+    cosponsor_of_your_idea:
+      subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      preheader: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      title: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
+      cta_button: 'View your proposal'
     new_comment_on_commented_idea:
       cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{commentAuthorFull} also wrote a comment on the idea ''%{ideaTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
