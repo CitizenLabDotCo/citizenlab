@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Statements",
   "app.components.CommunityMonitorModal.formError": "Encountered an error.",
   "app.components.CommunityMonitorModal.surveyDescription2": "This ongoing survey tracks how you feel about governance and public services.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "Email sa verifikacionim kodom je poslat na {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Promenite vaš email.",
   "app.components.ConfirmationModal.codeInput": "Kôd",
