@@ -66,7 +66,7 @@ const FilesList = () => {
           <SearchInput
             placeholder={formatMessage(messages.searchFiles)}
             onChange={handleSearchChange}
-            a11y_numberOfSearchResults={0}
+            a11y_numberOfSearchResults={numberOfFiles}
           />
           <UploadFileButtonWithModal />
         </Box>
