@@ -2132,7 +2132,7 @@
   "app.containers.AdminPage.ProjectEvents.addressTwoTooltip": "Zusätzliche Adressinformationen, die zur Identifizierung des Standorts beitragen können, wie z. B. der Name des Gebäudes, die Stockwerksnummer usw.",
   "app.containers.AdminPage.ProjectEvents.attend": "Teilnehmen",
   "app.containers.AdminPage.ProjectEvents.attendanceButton": "Teilnahme-Button",
-  "app.containers.AdminPage.ProjectEvents.attendanceLimit": "Anwesenheitsbeschränkung",
+  "app.containers.AdminPage.ProjectEvents.attendanceLimit": "Teilnehmerbegrenzung",
   "app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLink": "https://support.govocal.com/de/articles/5481527-hinzufugen-von-ereignissen-zu-ihrer-plattform",
   "app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLinkText": "Support-Artikel ansehen",
   "app.containers.AdminPage.ProjectEvents.attendee": "Teilnehmende",
