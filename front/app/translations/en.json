@@ -2084,6 +2084,7 @@
   "app.errors.malformed_admin_value": "The admin value {value} found in row {row} is not valid",
   "app.errors.malformed_groups_value": "The group {value} found in row {row} is not a valid group",
   "app.errors.max_invites_limit_exceeded1": "The number of invitations exceeds the limit of 1000.",
+  "app.errors.maximum_attendees_greater_than": "The maximum number of attendees must be greater than 0.",
   "app.errors.maximum_attendees_greater_than_attendees_count": "The maximum number of attendees must be greater than or equal to the current number of attendees.",
   "app.errors.no_invites_specified": "Could not find any email address.",
   "app.errors.no_recipients": "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
