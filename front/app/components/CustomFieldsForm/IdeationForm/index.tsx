@@ -76,10 +76,14 @@ const IdeationForm = ({
         updateSearchParams({ idea_id: idea.data.id });
         trackEventByName(tracks.ideaFormSubmitted);
       } else {
+        // Strip away idea_files_attributes from the form values
+        // as they are handled via separate API calls
+        const { idea_files_attributes: _, ...formValuesWithoutFiles } =
+          formValues;
         await updateIdea({
           id: idea.id,
           requestBody: {
-            ...formValues,
+            ...formValuesWithoutFiles,
           },
         });
         updateSearchParams({ idea_id: idea.id });
@@ -92,7 +96,6 @@ const IdeationForm = ({
       setCurrentPageNumber((pageNumber: number) => pageNumber + 1);
     }
   };
-
   const initialFormData = idea
     ? {
         ...idea.attributes,
@@ -101,7 +104,6 @@ const IdeationForm = ({
           (cosponsor) => cosponsor.id
         ),
         topic_ids: idea.relationships.topics?.data.map((topic) => topic.id),
-        idea_files_attributes: [],
       }
     : undefined;
 
