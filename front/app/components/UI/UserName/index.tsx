@@ -174,7 +174,7 @@ const UserName = ({
       user.data.id === authUser?.data.id && authUser?.data.attributes.no_name;
 
     const nameElement = (
-      <Box display="flex" alignItems="center" gap="4px">
+      <Name {...sharedNameProps} className={classNames}>
         {showAvatar && avatarUrl && (
           <Image
             src={avatarUrl}
@@ -182,13 +182,12 @@ const UserName = ({
             width={`${fontSize || 14}px`}
             height={`${fontSize || 14}px`}
             borderRadius="50%"
+            mb="4px"
+            marginRight="4px"
           />
         )}
-
-        <Name {...sharedNameProps} className={classNames}>
-          {name}
-        </Name>
-      </Box>
+        {name}
+      </Name>
     );
 
     const linkedNamelement = (
