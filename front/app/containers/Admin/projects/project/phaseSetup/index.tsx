@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
 import { ICampaignData } from 'api/campaigns/types';
-import usePhaseCampaigns from 'api/campaigns/usePhaseCampaigns';
+import useCampaigns from 'api/campaigns/useCampaigns';
 import { IPhaseFiles } from 'api/phase_files/types';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -78,10 +78,10 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 interface Props {
   projectId: string;
   phase: IPhase | undefined;
-  flatCampaigns: ICampaignData[];
+  campaigns: ICampaignData[];
 }
 
-const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
+const AdminPhaseEdit = ({ projectId, phase, campaigns }: Props) => {
   const phaseId = phase?.data.id;
   const { data: phaseFiles } = usePhaseFiles(phaseId || null);
   const { data: phases } = usePhases(projectId);
@@ -105,22 +105,10 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
 
-  const initialCampaignsSettings = flatCampaigns.reduce((acc, campaign) => {
-    acc[campaign.attributes.campaign_name] = campaign.attributes.enabled;
-    return acc;
-  }, {});
-
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
     // If no phase is selected, we initialize the form data with default values.
-    setFormData(
-      phase
-        ? phase.data.attributes
-        : {
-            campaigns_settings: initialCampaignsSettings,
-            ...ideationDefaultConfig,
-          }
-    );
+    setFormData(phase ? phase.data.attributes : ideationDefaultConfig);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
@@ -345,6 +333,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   };
 
   const handleCampaignEnabledOnChange = (campaign: CampaignData) => {
+    // TODO
     const campaignKey = campaign.attributes.campaign_name;
 
     updateFormData({
@@ -429,7 +418,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
               apiErrors={errors}
             />
           </SectionField>
-          {Object.keys(flatCampaigns).length > 0 && (
+          {campaigns.length > 0 && (
             <SectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.automatedEmails} />
@@ -437,16 +426,10 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
               <Text color="coolGrey600" mt="0px" fontSize="m">
                 <FormattedMessage {...messages.automatedEmailsDescription} />
               </Text>
-              {flatCampaigns.map((campaign) => (
+              {campaigns.map((campaign) => (
                 <CampaignRow
                   campaign={stringifyCampaignFields(campaign, localize)}
-                  checked={
-                    // TODO: Fix this the next time the file is edited.
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    !!formData?.campaigns_settings?.[
-                      campaign.attributes.campaign_name
-                    ]
-                  }
+                  checked={!!campaign.attributes.enabled}
                   key={campaign.id}
                   handleOnEnabledToggle={handleCampaignEnabledOnChange}
                 />
@@ -501,9 +484,28 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
-  const { data: campaigns } = usePhaseCampaigns({
-    phaseId: phaseId || '',
-  });
+  // const { data: { attributes: supportedCampaignTypes } } = useSupportedCampaignTypes();
+  const supportedCampaignTypes = ['project_phase_started'];
+  const contextCampaigns = useCampaigns({
+    ...(phaseId ? { phaseId } : {}),
+    pageSize: 250,
+  }).data?.pages.flatMap((page) => page.data);
+  const globalCampaigns = useCampaigns({ pageSize: 250 }).data?.pages.flatMap(
+    (page) => page.data
+  );
+  const campaigns = supportedCampaignTypes
+    .map((campaignType) => {
+      const contextCampaign = contextCampaigns?.find(
+        (campaign) => campaign.attributes.campaign_name === campaignType
+      );
+      return (
+        contextCampaign ||
+        globalCampaigns?.find(
+          (campaign) => campaign.attributes.campaign_name === campaignType
+        )
+      );
+    })
+    .filter((campaign) => !!campaign);
 
   if (!projectId) return null;
 
@@ -514,7 +516,7 @@ const AdminPhaseEditWrapper = () => {
     <AdminPhaseEdit
       projectId={projectId}
       phase={phaseId ? phase : undefined}
-      flatCampaigns={campaigns}
+      campaigns={campaigns}
     />
   );
 };
