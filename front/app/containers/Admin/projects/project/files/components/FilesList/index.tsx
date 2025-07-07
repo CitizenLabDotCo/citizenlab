@@ -71,46 +71,6 @@ const FilesList = () => {
             />
             <UploadFileButtonWithModal />
           </Box>
-          <Box
-            mt="40px"
-            display="flex"
-            gap="20px"
-            justifyContent="space-between"
-          >
-            <Box
-              display="flex"
-              flexDirection="column"
-              width="100%"
-              minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
-            >
-              {files.data.map((file) => (
-                <FilesListItem
-                  file={file}
-                  setSelectedFileId={setSelectedFileId}
-                  setSideViewOpened={setSideViewOpened}
-                  key={file.id}
-                />
-              ))}
-              {lastPage && lastPage > 1 && (
-                <Box mt="auto" display="flex" justifyContent="center" p="12px">
-                  <Pagination
-                    currentPage={currentPage || 1}
-                    totalPages={lastPage || 1}
-                    loadPage={handlePaginationClick}
-                  />
-                </Box>
-              )}
-            </Box>
-            <Box>
-              <FeatureInformation />
-            </Box>
-          </Box>
-          <FileSideView
-            opened={sideViewOpened}
-            setSideViewOpened={setSideViewOpened}
-            selectedFileId={selectedFileId}
-          />
-          <UploadFileButtonWithModal />
 
           <Box
             mt="40px"
