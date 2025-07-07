@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "البيانات",
   "app.components.CommunityMonitorModal.formError": "واجه خطأ.",
   "app.components.CommunityMonitorModal.surveyDescription2": "يتتبع هذا الاستطلاع المستمر مشاعرك تجاه الحوكمة والخدمات العامة.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {يستغرق أقل من دقيقة واحدة} one {يستغرق دقيقة واحدة} other {يستغرق # دقائق}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "تم إرسال رسالة إلكترونية بها رمز تأكيد إلى {userEmail}. بريدك الالكتروني",
   "app.components.ConfirmationModal.changeYourEmail": "غيِّر عنوان بريدك الإلكتروني.",
   "app.components.ConfirmationModal.codeInput": "الرمز مقبول.",
