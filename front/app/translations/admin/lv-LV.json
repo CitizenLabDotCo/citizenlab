@@ -2184,7 +2184,6 @@
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Darbības",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Pievienots",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Dzēst failu",
-  "app.containers.AdminPage.ProjectFiles.editFile": "Rediģēt failu",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Failu",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Meklēšanas faili",
   "app.containers.AdminPage.ProjectFiles.typeTableHeader": "Tips",
