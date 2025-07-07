@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Δηλώσεις",
   "app.components.CommunityMonitorModal.formError": "Αντιμετώπισε ένα σφάλμα.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Αυτή η συνεχής έρευνα καταγράφει πώς αισθάνεστε για τη διακυβέρνηση και τις δημόσιες υπηρεσίες.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Διαρκεί <1 λεπτό} one {Διαρκεί 1 λεπτό} other {Διαρκεί # λεπτά}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "Ένα μήνυμα ηλεκτρονικού ταχυδρομείου με κωδικό επιβεβαίωσης έχει σταλεί στο {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Αλλάξτε το email σας.",
   "app.components.ConfirmationModal.codeInput": "Κωδικός",
