@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Declaracions",
   "app.components.CommunityMonitorModal.formError": "S'ha trobat un error.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Aquesta enquesta en curs fa un seguiment de la vostra opinió sobre la governança i els serveis públics.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Triga <1 minut} one {Triga 1 minut} other {Triga # minuts}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "S'ha enviat un correu electrònic amb un codi de confirmació a {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Canviar el vostre correu electrònic.",
   "app.components.ConfirmationModal.codeInput": "Codi",

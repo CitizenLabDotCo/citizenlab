@@ -57,8 +57,11 @@ const SurveyForm = ({
     formValues: FormValues;
     isSubmitPage: boolean;
   }) => {
-    if (!authUser && !isSubmitPage) {
-      // If the user is not authenticated and is not on the submit page, do not save the draft idea
+    const anonymousUser =
+      !authUser || phase?.data.attributes.allow_anonymous_participation;
+
+    // If the user is anonymous and is not on the submit page, do not save the draft idea
+    if (anonymousUser && !isSubmitPage) {
       return;
     }
 
