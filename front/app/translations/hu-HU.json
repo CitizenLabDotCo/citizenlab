@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Nyilatkozatok",
   "app.components.CommunityMonitorModal.formError": "Hiba történt.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Ez a folyamatban lévő felmérés nyomon követi, hogyan vélekedik a kormányzásról és a közszolgáltatásokról.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {<1 percet vesz igénybe} one {1 percet vesz igénybe} other {# percet vesz igénybe}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "A megerősítő kódot tartalmazó e-mailt elküldtük a {userEmail}címre.",
   "app.components.ConfirmationModal.changeYourEmail": "Módosítsa az e-mail címét.",
   "app.components.ConfirmationModal.codeInput": "Kód",
