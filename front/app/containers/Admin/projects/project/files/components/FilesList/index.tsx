@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { UseFilesParameters } from 'api/files/types';
+import { GetFilesParameters } from 'api/files/types';
 import useFiles from 'api/files/useFiles';
 
 import Pagination from 'components/Pagination';
@@ -28,7 +28,7 @@ const FilesList = () => {
     projectId: string;
   };
 
-  const [queryParameters, setQueryParameters] = useState<UseFilesParameters>({
+  const [queryParameters, setQueryParameters] = useState<GetFilesParameters>({
     pageNumber: 1,
     pageSize: 7,
     sort: 'created_at',

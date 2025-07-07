@@ -37,7 +37,7 @@ export interface QueryParameters {
   'page[size]'?: number;
 }
 
-export interface UseFilesParameters {
+export interface GetFilesParameters {
   pageNumber?: number;
   pageSize?: number;
   uploaderId?: string;

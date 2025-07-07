@@ -6,8 +6,8 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import filesKeys from './keys';
 import {
   FilesKeys,
+  GetFilesParameters,
   IFiles,
-  UseFilesParameters,
   QueryParameters,
 } from './types';
 
@@ -27,7 +27,7 @@ const useFiles = (
     sort,
     search,
     deleted,
-  }: UseFilesParameters,
+  }: GetFilesParameters,
   { enabled = true }: { enabled?: boolean } = { enabled: true }
 ) => {
   const queryParameters: QueryParameters = {
