@@ -2034,6 +2034,7 @@
   "app.containers.AdminPage.ProjectEdit.pendingReview": "Pending approval",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Access rights",
   "app.containers.AdminPage.ProjectEdit.phaseAccessRights": "Access rights",
+  "app.containers.AdminPage.ProjectEdit.phaseEmails": "Emails",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod2": "Most reactions",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Project card image",
