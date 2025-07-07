@@ -146,13 +146,13 @@ en:
       x_days_ago_by_author: '%{x} days ago by %{author}'
       title_successful_past_week: 'Assigned to you that reached the threshold'
     idea_marked_as_spam:
-      cta_review_idea: 'Review idea'
-      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
-      report_not_an_idea: 'This content is not an idea and does not belong here.'
       subject: 'You have a spam report on the platform of %{organizationName}'
       preheader: 'Act upon this spam report'
+      title: '%{firstName} %{lastName} reported spam'
+      cta_button: 'Review'
+      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
+      report_not_an_idea: 'This content is not relevant and does not belong here.'
       reported_this_because: '%{reporterFirstName} reported this because:'
-      title_spam_report: '%{firstName} %{lastName} reported spam'
     invite_reminder:
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'Your invitation is pending'
