@@ -95,6 +95,7 @@ const ImageField = ({
               {...rest}
               id={name}
               images={images}
+              maxImageFileSize={10} // 10 MB
               onAdd={(file) => {
                 setImages([file[0]]);
                 setValue(name, [{ image: file[0]?.base64 }], {
