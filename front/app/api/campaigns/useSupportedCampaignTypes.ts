@@ -1,15 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
 interface ISupportedCampaignTypesData {
   data: {
-    id: string;
     type: string;
     attributes: string[];
   };
-  included?: any[];
 }
 
 const fetchSupportedCampaignTypes = (projectId?: string, phaseId?: string) => {
@@ -35,7 +33,7 @@ const useSupportedCampaignTypes = ({
 }: {
   projectId?: string;
   phaseId?: string;
-} = {}) => {
+} = {}): UseQueryResult<ISupportedCampaignTypesData, CLErrors> => {
   return useQuery<ISupportedCampaignTypesData, CLErrors>({
     queryKey: ['campaign', 'supported_campaign_types', { projectId, phaseId }],
     queryFn: () => fetchSupportedCampaignTypes(projectId, phaseId),
