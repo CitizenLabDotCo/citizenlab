@@ -185,16 +185,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.maximumAttendees',
     defaultMessage: 'Maximum attendees',
   },
-  maximumAttendeesTooltip: {
-    id: 'app.containers.AdminPage.ProjectEvents.maximumAttendeesTooltip',
-    defaultMessage:
-      'Cannot be set to a value lower than the current attendance count.',
-  },
-  maximumAttendeesError: {
-    id: 'app.containers.AdminPage.ProjectEvents.maximumAttendeesError',
-    defaultMessage:
-      'Cannot be set to a value lower than the current attendance count.',
-  },
   attendanceButton: {
     id: 'app.containers.AdminPage.ProjectEvents.attendanceButton',
     defaultMessage: 'Attendance button',

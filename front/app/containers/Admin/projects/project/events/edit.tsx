@@ -16,7 +16,7 @@ import { isEmpty, get, isError } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
-import { Multiloc, UploadFile, CLError } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
@@ -116,7 +116,6 @@ const AdminProjectEventEdit = () => {
     null
   );
   const [hasAltTextChanged, setHasAltTextChanged] = useState(false);
-  const attendeesCount = event?.data.attributes.attendees_count;
 
   // Remote values
   const remotePoint = event?.data.attributes.location_point_geojson;
@@ -158,7 +157,8 @@ const AdminProjectEventEdit = () => {
   }, [remotePoint]);
 
   useEffect(() => {
-    if (eventAttrs.maximum_attendees) {
+    if (typeof eventAttrs.maximum_attendees === 'number') {
+      // If we have a maximum number of attendees, we want to ensure the toggle is on
       setAttendanceLimitVisible(true);
     }
   }, [eventAttrs.maximum_attendees]);
@@ -249,50 +249,19 @@ const AdminProjectEventEdit = () => {
     setAttendanceLimitVisible(toggleValue);
     setAttributeDiff({
       ...attributeDiff,
-      maximum_attendees: null,
+      maximum_attendees: toggleValue === false ? null : 100,
     });
   };
 
-  const handleMaximumAttendeesChange = (value: string) => {
+  const handleMaximumAttendeesChange = (maximum_attendees: string) => {
     setSubmitState('enabled');
-    const numberValue = value ? parseInt(value, 10) : null;
-
-    // Create a custom error message that will be used for both client and API validation
-    const maximumAttendeesErrorMessage = {
-      error: formatMessage(messages.maximumAttendeesError),
-    };
-
-    // Check if the new value is less than the current attendees count
-    if (
-      numberValue !== null &&
-      attendeesCount &&
-      numberValue < attendeesCount
-    ) {
-      setErrors({
-        ...errors,
-        maximum_attendees: [maximumAttendeesErrorMessage],
-      });
-    } else {
-      // Clear error if it exists - create a copy of the errors object
-      if (
-        typeof errors === 'object' &&
-        !Array.isArray(errors) &&
-        'maximum_attendees' in errors
-      ) {
-        // Create a new object without the maximum_attendees property
-        const { maximum_attendees: _maximum_attendees, ...restErrors } =
-          errors as {
-            maximum_attendees: CLError[];
-            [key: string]: any;
-          };
-        setErrors(restErrors);
-      }
-    }
-
     setAttributeDiff({
       ...attributeDiff,
-      maximum_attendees: numberValue,
+      // If maximum_attendees is an empty string, set it to 0.
+      // Number('') returns 0.
+      maximum_attendees: Number(maximum_attendees),
     });
+    setErrors({});
   };
 
   const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
@@ -449,35 +418,6 @@ const AdminProjectEventEdit = () => {
       });
   };
 
-  const maximumAttendeesErrorMessage = {
-    error: formatMessage(messages.maximumAttendeesError),
-  };
-
-  // Intercepts API error responses and ensures a consistent error message is shown for maximum_attendees validation.
-  // Provides immediate feedback when a value is too low during input, matching the same error message shown
-  // if maximum_attendees validation fails during form submission.
-  const handleApiErrors = (apiErrors: ApiErrorType) => {
-    setSaving(false);
-
-    if (isError(apiErrors)) {
-      // It's a regular Error object - set a generic error
-      setErrors({
-        form: [{ error: formatMessage(messages.saveErrorMessage) }],
-      });
-    } else {
-      const errorObject = 'errors' in apiErrors ? apiErrors.errors : apiErrors;
-      const customErrors = { ...errorObject };
-
-      if ('maximum_attendees' in customErrors) {
-        customErrors.maximum_attendees = [maximumAttendeesErrorMessage];
-      }
-
-      setErrors(customErrors);
-    }
-
-    setSubmitState('error');
-  };
-
   const handleOnSubmit = async (e: FormEvent) => {
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
@@ -530,7 +470,11 @@ const AdminProjectEventEdit = () => {
                 handleEventFiles(data);
                 setSubmitState('success');
               },
-              onError: handleApiErrors,
+              onError: async (errors) => {
+                setSaving(false);
+                setErrors(errors.errors);
+                setSubmitState('error');
+              },
             }
           );
         } else if (projectId) {
@@ -550,7 +494,11 @@ const AdminProjectEventEdit = () => {
                 addOrDeleteEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
-              onError: handleApiErrors,
+              onError: async (errors) => {
+                setSaving(false);
+                setErrors(errors.errors);
+                setSubmitState('error');
+              },
             }
           );
         }
@@ -671,7 +619,7 @@ const AdminProjectEventEdit = () => {
                 </SectionField>
               )}
 
-              <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
+              <Title variant="h4" color="primary" fontWeight="semi-bold">
                 {formatMessage(messages.eventDates)}
               </Title>
               {eventAttrs.start_at && eventAttrs.end_at && (
@@ -683,7 +631,7 @@ const AdminProjectEventEdit = () => {
                 />
               )}
 
-              <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
+              <Title variant="h4" color="primary" fontWeight="semi-bold">
                 {formatMessage(messages.eventLocation)}
               </Title>
               <SectionField>
@@ -781,7 +729,7 @@ const AdminProjectEventEdit = () => {
               <Title
                 variant="h4"
                 color="primary"
-                style={{ fontWeight: '600' }}
+                fontWeight="semi-bold"
                 mt="48px"
               >
                 {formatMessage(messages.attendanceLimit)}
@@ -812,21 +760,12 @@ const AdminProjectEventEdit = () => {
                     id="maximum_attendees"
                     label={formatMessage(messages.maximumAttendees)}
                     type="number"
-                    min="1"
-                    placeholder=""
-                    value={
-                      eventAttrs.maximum_attendees
-                        ? eventAttrs.maximum_attendees.toString()
-                        : null
-                    }
+                    value={eventAttrs.maximum_attendees?.toString()}
                     onChange={handleMaximumAttendeesChange}
-                    labelTooltipText={formatMessage(
-                      messages.maximumAttendeesTooltip
-                    )}
                   />
                   <ErrorComponent
+                    fieldName="maximum_attendees"
                     apiErrors={get(errors, 'maximum_attendees')}
-                    text={get(errors, 'maximum_attendees')?.[0]?.error}
                   />
                 </SectionField>
               )}
@@ -834,7 +773,7 @@ const AdminProjectEventEdit = () => {
               <Title
                 variant="h4"
                 color="primary"
-                style={{ fontWeight: '600' }}
+                fontWeight="semi-bold"
                 mt="48px"
               >
                 {formatMessage(messages.attendanceButton)}
@@ -868,7 +807,7 @@ const AdminProjectEventEdit = () => {
                   <SectionField>
                     <Box maxWidth="400px">
                       <InputMultilocWithLocaleSwitcher
-                        id="event-address-2"
+                        id="custom-button-text"
                         label={formatMessage(messages.customButtonText)}
                         type="text"
                         valueMultiloc={eventAttrs.attend_button_multiloc}
@@ -931,7 +870,7 @@ const AdminProjectEventEdit = () => {
               <Title
                 variant="h4"
                 color="primary"
-                style={{ fontWeight: '600' }}
+                fontWeight="semi-bold"
                 mt="48px"
               >
                 {formatMessage(messages.additionalInformation)}
