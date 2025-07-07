@@ -102,9 +102,8 @@ const MultiFileUploadField = ({
       setFiles((files) =>
         files.filter((file) => file.base64 !== fileToRemove.base64)
       );
+      trigger(name);
     }
-
-    trigger(name);
   };
 
   const onFileAdd = (file: UploadFile) => {
