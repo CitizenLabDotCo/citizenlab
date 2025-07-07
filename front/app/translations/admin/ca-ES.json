@@ -64,7 +64,7 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.citizenlab.co/en/articles/7946486-enbling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Thank you for completing the survey! You're welcome to take it again next quarter.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Triga <1 minut} one {Triga 1 minut} other {Triga # minuts}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Descarrega com a pdf",
   "app.components.FormSync.downloadExcelTemplate": "Descarregar una plantilla d'Excel",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Les plantilles d'Excel no inclouen preguntes de classificació, preguntes de matriu, preguntes de càrrega de fitxers ni cap pregunta d'entrada de mapatge (col·locació de marcadors, dibuix de ruta, dibuix d'àrea, càrrega de fitxers ESRI), ja que actualment no són compatibles amb la importació massiva.",
