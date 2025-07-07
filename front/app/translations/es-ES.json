@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Opiniones",
   "app.components.CommunityMonitorModal.formError": "Se ha producido un error.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Esta encuesta continua analiza tu opinión sobre la gobernanza y los servicios públicos.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Lleva <1 minuto} one {Lleva 1 minuto} other {Lleva # minutos}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "Se ha enviado un código de confirmación a tu correo electrónico {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Cambia tu correo electrónico.",
   "app.components.ConfirmationModal.codeInput": "Código",

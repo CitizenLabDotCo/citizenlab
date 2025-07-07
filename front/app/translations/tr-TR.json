@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "İfadeler",
   "app.components.CommunityMonitorModal.formError": "Bir hata ile karşılaşıldı.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Devam etmekte olan bu anket, yönetişim ve kamu hizmetleri hakkında ne düşündüğünüzü takip etmektedir.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {<1 dakika sürer} one {1 dakika sürer} other {# dakika sürer}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "{userEmail} adresine onay kodu bulunan bir e-posta gönderildi.",
   "app.components.ConfirmationModal.changeYourEmail": "E-posta adresinizi değiştirin.",
   "app.components.ConfirmationModal.codeInput": "Kod",
