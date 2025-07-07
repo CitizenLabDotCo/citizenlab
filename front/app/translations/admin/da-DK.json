@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Når der tilføjes flere pladser, vil din fakturering blive forhøjet. Kontakt Søren Kielgast på soren@govocal.dk for at få mere at vide om det.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Tak, fordi du gennemførte undersøgelsen! Du er velkommen til at tage den igen næste kvartal.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Tager <1 minut} one {Tager 1 minut} other {Tager # minutter}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download som pdf",
   "app.components.FormSync.downloadExcelTemplate": "Download en Excel-skabelon",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-skabeloner vil ikke indeholde rangordningsspørgsmål, matrixspørgsmål, spørgsmål om filupload og spørgsmål om kortlægningsinput (Drop Pin, Draw Route, Draw Area, ESRI-filupload), da disse ikke understøttes til bulkimport på nuværende tidspunkt.",
