@@ -1,7 +1,6 @@
 import React, { FormEvent, useEffect, useState, useCallback } from 'react';
 
 import {
-  Text,
   Box,
   Title,
   IconTooltip,
@@ -10,9 +9,6 @@ import {
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
-import { ICampaignData } from 'api/campaigns/types';
-import useCampaigns from 'api/campaigns/useCampaigns';
-import useSupportedCampaignTypes from 'api/campaigns/useSupportedCampaignTypes';
 import { IPhaseFiles } from 'api/phase_files/types';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -24,10 +20,6 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { useSyncPhaseFiles } from 'hooks/files/useSyncPhaseFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-import useLocalize from 'hooks/useLocalize';
-
-import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
-import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 
 import {
   Section,
@@ -49,7 +41,6 @@ import {
 import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-import CampaignRow from './components/CampaignRow';
 // import DateSetup from './components/DateSetup';
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
@@ -79,10 +70,9 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 interface Props {
   projectId: string;
   phase: IPhase | undefined;
-  campaigns: ICampaignData[];
 }
 
-const AdminPhaseEdit = ({ projectId, phase, campaigns }: Props) => {
+const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const phaseId = phase?.data.id;
   const { data: phaseFiles } = usePhaseFiles(phaseId || null);
   const { data: phases } = usePhases(projectId);
@@ -100,7 +90,6 @@ const AdminPhaseEdit = ({ projectId, phase, campaigns }: Props) => {
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
   );
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { width, containerRef } = useContainerWidthAndHeight();
@@ -333,18 +322,6 @@ const AdminPhaseEdit = ({ projectId, phase, campaigns }: Props) => {
     }
   };
 
-  const handleCampaignEnabledOnChange = (campaign: CampaignData) => {
-    // TODO
-    const campaignKey = campaign.attributes.campaign_name;
-
-    updateFormData({
-      campaigns_settings: {
-        ...formData?.campaigns_settings,
-        [campaignKey]: !formData?.campaigns_settings?.[campaignKey],
-      },
-    });
-  };
-
   if (!formData) return null;
 
   return (
@@ -419,24 +396,6 @@ const AdminPhaseEdit = ({ projectId, phase, campaigns }: Props) => {
               apiErrors={errors}
             />
           </SectionField>
-          {campaigns.length > 0 && (
-            <SectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.automatedEmails} />
-              </SubSectionTitle>
-              <Text color="coolGrey600" mt="0px" fontSize="m">
-                <FormattedMessage {...messages.automatedEmailsDescription} />
-              </Text>
-              {campaigns.map((campaign) => (
-                <CampaignRow
-                  campaign={stringifyCampaignFields(campaign, localize)}
-                  checked={!!campaign.attributes.enabled}
-                  key={campaign.id}
-                  handleOnEnabledToggle={handleCampaignEnabledOnChange}
-                />
-              ))}
-            </SectionField>
-          )}
 
           {/* TODO: Fix this the next time the file is edited. */}
           {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
@@ -485,28 +444,6 @@ const AdminPhaseEdit = ({ projectId, phase, campaigns }: Props) => {
 const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
-  const supportedCampaignTypes =
-    useSupportedCampaignTypes({ phaseId }).data?.data.attributes || [];
-  const contextCampaigns = useCampaigns({
-    ...(phaseId ? { phaseId } : {}),
-    pageSize: 250,
-  }).data?.pages.flatMap((page) => page.data);
-  const globalCampaigns = useCampaigns({ pageSize: 250 }).data?.pages.flatMap(
-    (page) => page.data
-  );
-  const campaigns = supportedCampaignTypes
-    .map((campaignType) => {
-      const contextCampaign = contextCampaigns?.find(
-        (campaign) => campaign.attributes.campaign_name === campaignType
-      );
-      return (
-        contextCampaign ||
-        globalCampaigns?.find(
-          (campaign) => campaign.attributes.campaign_name === campaignType
-        )
-      );
-    })
-    .filter((campaign): campaign is ICampaignData => !!campaign);
 
   if (!projectId) return null;
 
@@ -514,11 +451,7 @@ const AdminPhaseEditWrapper = () => {
   if (phaseLoading) return null;
 
   return (
-    <AdminPhaseEdit
-      projectId={projectId}
-      phase={phaseId ? phase : undefined}
-      campaigns={campaigns}
-    />
+    <AdminPhaseEdit projectId={projectId} phase={phaseId ? phase : undefined} />
   );
 };
 

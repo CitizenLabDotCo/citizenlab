@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import { ICampaignData } from 'api/campaigns/types';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import useSupportedCampaignTypes from 'api/campaigns/useSupportedCampaignTypes';
-import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -15,8 +14,7 @@ import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEma
 
 const AdminPhaseEmailWrapper = () => {
   const localize = useLocalize();
-  const { projectId, phaseId } = useParams();
-  const { data: phase } = usePhase(phaseId);
+  const { phaseId } = useParams();
   const supportedCampaignTypes =
     useSupportedCampaignTypes({ phaseId }).data?.data.attributes || [];
   const contextCampaigns = useCampaigns({
