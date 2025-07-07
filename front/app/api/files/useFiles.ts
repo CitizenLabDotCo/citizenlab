@@ -30,5 +30,4 @@ const useFiles = (
   });
 };
 
-// ts-prune-ignore-next
 export default useFiles;
