@@ -94,7 +94,7 @@ const MultiFileUploadField = ({
 
   const errorMessage = get(errors, name)?.message as string | undefined;
 
-  const onFileRemove = (fileToRemove: UploadFile) => {
+  const onFileRemove = (fileToRemove: FileType) => {
     if (ideaId && fileToRemove.id) {
       deleteIdeaFile({ ideaId, fileId: fileToRemove.id });
       setFiles((files) => files.filter((file) => file.id !== fileToRemove.id));
@@ -144,9 +144,7 @@ const MultiFileUploadField = ({
               id={name}
               files={files as FileType[]}
               onFileAdd={(fileToAdd) => onFileAdd(fileToAdd)}
-              onFileRemove={(fileToRemove) =>
-                onFileRemove(fileToRemove as UploadFile)
-              }
+              onFileRemove={(fileToRemove) => onFileRemove(fileToRemove)}
               maxSizeMb={10}
             />
           );
