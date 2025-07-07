@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
@@ -13,6 +13,7 @@ import Error from 'components/UI/Error';
 import FileUploaderComponent, {
   Props as FileUploaderProps,
 } from 'components/UI/FileUploader';
+import { FileType } from 'components/UI/FileUploader/FileDisplay';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
@@ -44,16 +45,17 @@ const MultiFileUploadField = ({
   const { data: ideaFiles } = useIdeaFiles(ideaId);
   const { mutate: deleteIdeaFile } = useDeleteIdeaFile();
   const { mutate: addIdeaFile } = useAddIdeaFile();
-  const processedFilesRef = useRef(new Set());
-
+  // For remote files, we need to store them in a state
+  const [files, setFiles] = useState<Partial<UploadFile>[]>([]);
   const {
     setValue,
     formState: { errors },
     control,
     trigger,
-    getValues,
   } = useFormContext();
 
+  // If the ideaId is provided, we are dealing with an existing idea
+  // and we need to fetch the files associated with it and convert them to UploadFile format
   useEffect(() => {
     if (ideaFiles && ideaFiles.data.length > 0) {
       let remoteFiles: UploadFile[] = [];
@@ -69,67 +71,43 @@ const MultiFileUploadField = ({
         ).then(
           (files) => files.filter((file) => file !== null) as UploadFile[]
         );
-        setValue(
-          name,
-          remoteFiles.map((file) => ({
-            file_by_content: {
-              content: file.base64,
-              name: file.filename,
-            },
-            name: file.filename,
-            id: file.id || null,
-          })),
-          { shouldDirty: true }
-        );
-        trigger(name);
+        setFiles(remoteFiles);
       };
       convertFiles();
     }
   }, [setValue, name, ideaFiles, trigger]);
 
+  // If the ideaId is not provided, we are dealing with a new idea
+  // and we need to convert the files to the format expected by the API
   useEffect(() => {
-    const formFiles = getValues(name) || [];
-
-    // Only process files we haven't seen before
-    const newFiles = formFiles.filter(
-      (file) => !processedFilesRef.current.has(file.file_by_content.content)
-    );
-
-    if (newFiles.length > 0) {
-      newFiles.forEach((file) => {
-        processedFilesRef.current.add(file.file_by_content.content);
-
-        convertUrlToUploadFile(file.file_by_content.content, null, file.name);
+    if (!ideaId) {
+      const convertedFiles = files.map((file) => ({
+        file_by_content: { content: file.base64, name: file.filename },
+        name: file.filename,
+        id: file.id || null,
+      })) as FileToUploadFormat[];
+      setValue(name, convertedFiles, {
+        shouldDirty: true,
       });
     }
-  }, [getValues, name, ideaId]);
+  }, [files, ideaId, name, setValue]);
 
   const errorMessage = get(errors, name)?.message as string | undefined;
 
-  const onFileRemove = (fileToRemove: FileToUploadFormat, value) => {
+  const onFileRemove = (fileToRemove: FileType) => {
     if (ideaId && fileToRemove.id) {
       deleteIdeaFile({ ideaId, fileId: fileToRemove.id });
-      setValue(
-        name,
-        value.filter((file: FileToUploadFormat) => fileToRemove.id !== file.id),
-        { shouldDirty: true }
-      );
+      setFiles((files) => files.filter((file) => file.id !== fileToRemove.id));
     } else {
-      setValue(
-        name,
-        value.filter(
-          (file: FileToUploadFormat) =>
-            fileToRemove.file_by_content.content !==
-            file.file_by_content.content
-        ),
-        { shouldDirty: true }
+      setFiles((files) =>
+        files.filter((file) => file.base64 !== fileToRemove.base64)
       );
     }
 
     trigger(name);
   };
 
-  const onFileAdd = (file: UploadFile, value) => {
+  const onFileAdd = (file: UploadFile) => {
     if (ideaId) {
       addIdeaFile({
         ideaId,
@@ -139,20 +117,17 @@ const MultiFileUploadField = ({
         },
       });
     } else {
-      const newFile = {
-        file_by_content: {
-          content: file.base64,
-          name: file.filename,
-        },
+      const newFile: Partial<UploadFile> = {
+        base64: file.base64,
+        id: file.id || undefined,
+        remote: false,
+        filename: file.filename,
         name: file.filename,
-        id: file.id || null,
       };
 
-      setValue(name, value ? [...value, newFile] : [newFile], {
-        shouldDirty: true,
-      });
+      setFiles((files) => [...files, newFile]);
+      trigger(name);
     }
-    trigger(name);
   };
 
   return (
@@ -167,11 +142,9 @@ const MultiFileUploadField = ({
               {...rest}
               data-cy={'e2e-idea-file-upload'}
               id={name}
-              files={field.value || []}
-              onFileAdd={(fileToAdd) => onFileAdd(fileToAdd, field.value)}
-              onFileRemove={(fileToRemove) =>
-                onFileRemove(fileToRemove as any, field.value)
-              }
+              files={files as FileType[]}
+              onFileAdd={(fileToAdd) => onFileAdd(fileToAdd)}
+              onFileRemove={(fileToRemove) => onFileRemove(fileToRemove)}
               maxSizeMb={10}
             />
           );
