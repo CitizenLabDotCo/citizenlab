@@ -1,7 +1,8 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { eventData } from 'api/event_images/__mocks__/useEventImage';
+import { eventData } from 'api/events/__mocks__/useEvent';
+import { IEventData } from 'api/events/types';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
@@ -10,6 +11,22 @@ import { eventImageData } from './__mocks__/useEventImage';
 import useEventImage from './useEventImage';
 
 const apiPath = '*/events/:eventId/images/:imageId';
+
+// Create event data with image relationship
+const eventWithImages: IEventData = {
+  ...eventData,
+  relationships: {
+    ...eventData.relationships,
+    event_images: {
+      data: [
+        {
+          id: eventImageData.id,
+          type: 'image',
+        },
+      ],
+    },
+  },
+};
 
 const server = setupServer(
   http.get(apiPath, () => {
@@ -22,7 +39,7 @@ describe('useEventImage', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result } = renderHook(() => useEventImage(eventData), {
+    const { result } = renderHook(() => useEventImage(eventWithImages), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -41,7 +58,7 @@ describe('useEventImage', () => {
       })
     );
 
-    const { result } = renderHook(() => useEventImage(eventData), {
+    const { result } = renderHook(() => useEventImage(eventWithImages), {
       wrapper: createQueryClientWrapper(),
     });
 
