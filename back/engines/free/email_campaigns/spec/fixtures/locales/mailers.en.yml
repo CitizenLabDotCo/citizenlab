@@ -448,6 +448,19 @@ en:
       event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
       cta_message: 'Click the button below to participate'
       cta_vote: 'Go to the platform to vote'
+    event_registration_confirmation:
+      subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      preheader: "%{firstName}, thanks for registering for %{eventTitle}"
+      title: "%{firstName}, thanks for registering for"
+      event_details:
+        labels:
+          date: 'Date'
+          location: 'Location'
+          online_link: 'Online link'
+          description: 'Description'
+          project: 'Project'
+      cta_button: 'View the event'
+      cta_add_to_calendar: 'Add to your calendar'
     admin_labels:
       recipient_role:
         admins: 'To admins'

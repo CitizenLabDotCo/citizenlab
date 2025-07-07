@@ -7,7 +7,7 @@
             border-radius="5px"
             href="<%= event.event_url %>"
             padding="12px 0">
-      <%= format_message('cta_go_to_event') %>
+      <%= cta_button_text %>
     </mj-button>
   </mj-column>
 

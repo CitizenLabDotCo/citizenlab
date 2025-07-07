@@ -503,7 +503,7 @@ en:
     event_registration_confirmation:
       subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
       preheader: "%{firstName}, thanks for registering for %{eventTitle}"
-      header_message: "%{firstName}, thanks for registering for"
+      title: "%{firstName}, thanks for registering for"
       event_details:
         labels:
           date: 'Date'
@@ -511,7 +511,7 @@ en:
           online_link: 'Online link'
           description: 'Description'
           project: 'Project'
-      cta_go_to_event: 'View the event'
+      cta_button: 'View the event'
       cta_add_to_calendar: 'Add to your calendar'
     voting_phase_started:
       subject: '%{organizationName}: The voting phase started for %{projectName}'
