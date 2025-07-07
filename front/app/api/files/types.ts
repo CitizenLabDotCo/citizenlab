@@ -47,11 +47,6 @@ export interface GetFilesParameters {
   deleted?: boolean;
 }
 
-export interface IPaginationProps {
-  pageNumber?: number;
-  pageSize?: number;
-}
-
 export interface IFiles {
   data: IFileData[];
   links: {
