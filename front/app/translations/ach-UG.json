@@ -95,7 +95,6 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "crwdns4747725:0crwdne4747725:0",
   "app.components.CommunityMonitorModal.formError": "crwdns4747727:0crwdne4747727:0",
   "app.components.CommunityMonitorModal.surveyDescription2": "crwdns4747729:0crwdne4747729:0",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "crwdns4747731:0minutes={minutes}crwdne4747731:0",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "crwdns4747733:0{userEmail}crwdne4747733:0",
   "app.components.ConfirmationModal.changeYourEmail": "crwdns4747735:0crwdne4747735:0",
   "app.components.ConfirmationModal.codeInput": "crwdns4747737:0crwdne4747737:0",
