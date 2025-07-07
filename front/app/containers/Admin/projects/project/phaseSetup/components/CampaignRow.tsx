@@ -12,6 +12,8 @@ import Link from 'utils/cl-router/Link';
 
 import messages from '../messages';
 
+// TODO: Delete this file after restructuring.
+
 type Props = {
   campaign: CampaignData;
   checked: boolean;
