@@ -36,6 +36,7 @@ module EmailCampaigns
     include ActivityTriggerable
     include Trackable
     include LifecycleStageRestrictable
+    include ContentConfigurable
     allow_lifecycle_stages except: ['churned']
 
     filter :check_send_invite_email_toggle

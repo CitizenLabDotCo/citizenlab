@@ -211,13 +211,13 @@ en:
       invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
       subject: 'Pending invitation for the participation platform of %{organizationName}'
     invite_received:
-      added_a_message: '%{organizationName} wrote the following message:'
-      cta_accept_invitation: 'Accept your invitation'
-      invitation_header: 'You are invited!'
-      invitation_header_message: '%{organizationName} invited you to their participation platform.'
-      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
       preheader: '%{organizationName} sent you an invite to join their participation platform.'
       subject: 'You are invited to join the platform of %{organizationName}'
+      title: 'You are invited!'
+      event_description: '%{organizationName} invited you to their participation platform.'
+      cta_button: 'Accept your invitation'
+      added_a_message: '%{organizationName} wrote the following message:'
+      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
     mention_in_comment:
       cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{commentAuthorFull} has mentioned you in his comment on the idea ''%{post}‘. Click the link below to enter the conversation with %{commentAuthor}'
