@@ -392,15 +392,20 @@ en:
       message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
       preheader: 'Here''s what you can do on the platform of %{organizationName}'
     idea_published:
-      subject:
+      subject: 'Your idea has been published'
+      preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
+      title: 'You posted "%{input_title}"'
+      input_type_subject:
         idea: 'Your idea has been published'
         question: 'Your question has been published'
         contribution: 'Your contribution has been published'
         project: 'Your project has been published'
         issue: 'Your issue has been published'
         option: 'Your option has been published'
-      main_header: 'You posted "%{input_title}"! Let''s make sure it gets read.'
-      message_get_votes: 'Reach more people:'
+        proposal: 'Your proposal has been published'
+        petition: 'Your petition has been published'
+      header_message: 'Let''s make sure it gets read.'
+      message_get_votes: 'Reach more people'
       action_published_idea: 'Published'
       action_add_image: '%{addImageLink} to increase visibility'
       add_image: 'Add an image'
@@ -410,8 +415,6 @@ en:
       send_email: email
       action_share_link: 'Share it via any channel by copying the %{link}'
       link: link
-      cta_view_idea: 'Go to your input'
-      preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'

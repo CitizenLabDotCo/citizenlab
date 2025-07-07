@@ -44,16 +44,16 @@ RSpec.describe EmailCampaigns::IdeaMarkedAsSpamMailer do
     end
 
     it 'assigns reporter\'s name' do
-      expect(mail.body.encoded).to match(initiating_user.first_name)
+      expect(mail_body(mail)).to include(initiating_user.first_name)
     end
 
     it 'assigns the reason' do
-      expect(mail.body.encoded).to match('This content is not an idea and does not belong here.')
+      expect(mail_body(mail)).to include('This content is not relevant and does not belong here.')
     end
 
     it 'assigns go to idea CTA' do
       idea_url = Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
-      expect(mail.body.encoded).to match(idea_url)
+      expect(mail_body(mail)).to include(idea_url)
     end
 
     context 'with custom text' do

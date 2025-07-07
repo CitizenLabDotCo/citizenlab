@@ -5,7 +5,7 @@ module EmailCampaigns
     include EmailCampaigns::MailerPreview
 
     def campaign_mail
-      preview_campaign_mail(EmailCampaigns::Campaigns::EventRegistrationConfirmation)
+      preview_campaign_mail(EmailCampaigns::Campaigns::IdeaMarkedAsSpam)
     end
   end
 end

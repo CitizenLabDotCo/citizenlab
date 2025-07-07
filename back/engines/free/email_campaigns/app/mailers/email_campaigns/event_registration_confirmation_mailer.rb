@@ -44,7 +44,7 @@ module EmailCampaigns
             start_at: Time.now + 1.day,
             title_multiloc: { 'en' => 'Event Title', 'fr' => 'Titre de l’événement' },
             end_at: Time.now + 1.day + 2.hours,
-            address1: nil,
+            address1: nil, # TODO: Add a proper address
             address2_multiloc: nil
           },
           event_url: data.idea.url,
@@ -58,7 +58,7 @@ module EmailCampaigns
     private
 
     def event_title
-      localize_for_recipient(event&.event_attributes&.title_multiloc)
+      localize_for_recipient(event_details&.title_multiloc)
     end
 
     def event_time
@@ -70,7 +70,7 @@ module EmailCampaigns
       )
 
       end_at = I18n.l(
-        timezone.at(event&.event_attributes&.end_at),
+        timezone.at(event_details&.end_at),
         format: :short, locale: locale.locale_sym
       )
 
@@ -78,9 +78,9 @@ module EmailCampaigns
     end
 
     def event_location
-      location = event&.event_attributes&.address_1&.to_s
+      location = event_details&.address_1&.to_s
 
-      address_details = localize_for_recipient(event&.event_attributes&.address_2_multiloc)
+      address_details = localize_for_recipient(event_details&.address_2_multiloc)
       if address_details.present?
         location += location.present? ? "\n(#{address_details})" : address_details
       end
@@ -96,7 +96,11 @@ module EmailCampaigns
       host = AppConfiguration.instance.base_backend_uri
       # In a mailer, the host must be specified explicitly for the url helpers to work
       # because, unlike in a controller, it cannot be inferred from the request.
-      web_api_v1_event_url(event.event_attributes.id, format: 'ics', host: host)
+      web_api_v1_event_url(event_details&.id, format: 'ics', host: host)
+    end
+
+    def event_details
+      event&.event_attributes
     end
   end
 end
