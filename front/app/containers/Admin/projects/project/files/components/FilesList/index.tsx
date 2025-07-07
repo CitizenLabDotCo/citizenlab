@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { IPaginationProps, QueryParameters } from 'api/files/types';
+import { UseFilesParameters } from 'api/files/types';
 import useFiles from 'api/files/useFiles';
 
 import Pagination from 'components/Pagination';
@@ -28,9 +28,7 @@ const FilesList = () => {
     projectId: string;
   };
 
-  const [queryParameters, setQueryParameters] = useState<
-    QueryParameters & IPaginationProps
-  >({
+  const [queryParameters, setQueryParameters] = useState<UseFilesParameters>({
     pageNumber: 1,
     pageSize: 7,
     sort: 'created_at',
@@ -75,18 +73,14 @@ const FilesList = () => {
               width="100%"
               minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
             >
-              {files.data.length > 0 && (
-                <>
-                  {files.data.map((file) => (
-                    <FilesListItem
-                      file={file}
-                      setSelectedFileId={setSelectedFileId}
-                      setSideViewOpened={setSideViewOpened}
-                      key={file.id}
-                    />
-                  ))}
-                </>
-              )}
+              {files.data.map((file) => (
+                <FilesListItem
+                  file={file}
+                  setSelectedFileId={setSelectedFileId}
+                  setSideViewOpened={setSideViewOpened}
+                  key={file.id}
+                />
+              ))}
               {lastPage && lastPage > 1 && (
                 <Box mt="auto" display="flex" justifyContent="center" p="12px">
                   <Pagination

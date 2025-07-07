@@ -4,7 +4,12 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import filesKeys from './keys';
-import { FilesKeys, IFiles, UseFilesProps, QueryParameters } from './types';
+import {
+  FilesKeys,
+  IFiles,
+  UseFilesParameters,
+  QueryParameters,
+} from './types';
 
 const fetchFiles = (queryParams: QueryParameters) =>
   fetcher<IFiles>({
@@ -22,7 +27,7 @@ const useFiles = (
     sort,
     search,
     deleted,
-  }: UseFilesProps,
+  }: UseFilesParameters,
   { enabled = true }: { enabled?: boolean } = { enabled: true }
 ) => {
   const queryParameters: QueryParameters = {
