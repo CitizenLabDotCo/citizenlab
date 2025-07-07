@@ -73,11 +73,10 @@ const ImageField = ({
             shouldDirty: true,
           }
         );
-        trigger(name);
       };
       convertImages();
     }
-  }, [ideaImages, setValue, name, trigger]);
+  }, [ideaImages, setValue, name]);
 
   const errorMessage = errors[name]?.message as string | undefined;
 
