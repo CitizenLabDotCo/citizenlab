@@ -61,75 +61,67 @@ const FilesList = () => {
 
   return (
     <Box display="flex" justifyContent="center" flexDirection="column">
-      {files?.data.length && files.data.length > 0 && (
-        <>
-          <Box display="flex" justifyContent="space-between">
-            <SearchInput
-              placeholder={formatMessage(messages.searchFiles)}
-              onChange={handleSearchChange}
-              a11y_numberOfSearchResults={0}
-            />
-            <UploadFileButtonWithModal />
-          </Box>
-
-          <Box
-            mt="40px"
-            display="flex"
-            gap="20px"
-            justifyContent="space-between"
-          >
-            <Box
-              display="flex"
-              flexDirection="column"
-              width="100%"
-              minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
-            >
-              {numberOfFiles > 0 && (
-                <>
-                  {files.data.map((file) => (
-                    <FilesListItem
-                      file={file}
-                      setSelectedFileId={setSelectedFileId}
-                      setSideViewOpened={setSideViewOpened}
-                      key={file.id}
-                    />
-                  ))}
-                </>
-              )}
-              {files.data.length === 0 && (
-                <>
-                  {queryParameters.search ? (
-                    <Box display="flex" width="100%" justifyContent="center">
-                      <Text color="coolGrey600">
-                        {formatMessage(messages.noFilesFound)}
-                      </Text>
-                    </Box>
-                  ) : (
-                    <>TODO: Add UI for when no files have been uploaded yet.</>
-                  )}
-                </>
-              )}
-              {lastPage && lastPage > 1 && (
-                <Box mt="auto" display="flex" justifyContent="center" p="12px">
-                  <Pagination
-                    currentPage={currentPage || 1}
-                    totalPages={lastPage || 1}
-                    loadPage={handlePaginationClick}
-                  />
-                </Box>
-              )}
-            </Box>
-            <Box>
-              <FeatureInformation />
-            </Box>
-          </Box>
-          <FileSideView
-            opened={sideViewOpened}
-            setSideViewOpened={setSideViewOpened}
-            selectedFileId={selectedFileId}
+      <>
+        <Box display="flex" justifyContent="space-between">
+          <SearchInput
+            placeholder={formatMessage(messages.searchFiles)}
+            onChange={handleSearchChange}
+            a11y_numberOfSearchResults={0}
           />
-        </>
-      )}
+          <UploadFileButtonWithModal />
+        </Box>
+        <Box mt="40px" display="flex" gap="20px" justifyContent="space-between">
+          <Box
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
+          >
+            {numberOfFiles > 0 && (
+              <>
+                {files?.data.map((file) => (
+                  <FilesListItem
+                    file={file}
+                    setSelectedFileId={setSelectedFileId}
+                    setSideViewOpened={setSideViewOpened}
+                    key={file.id}
+                  />
+                ))}
+              </>
+            )}
+            {files?.data.length === 0 && (
+              <>
+                {queryParameters.search ? (
+                  <Box display="flex" width="100%" justifyContent="center">
+                    <Text color="coolGrey600">
+                      {formatMessage(messages.noFilesFound)}
+                    </Text>
+                  </Box>
+                ) : (
+                  <>TODO: Add UI for when no files have been uploaded</>
+                )}
+              </>
+            )}
+            {lastPage && lastPage > 1 && (
+              <Box mt="auto" display="flex" justifyContent="center" p="12px">
+                <Pagination
+                  currentPage={currentPage || 1}
+                  totalPages={lastPage || 1}
+                  loadPage={handlePaginationClick}
+                />
+              </Box>
+            )}
+          </Box>
+          <Box>
+            <FeatureInformation />
+          </Box>
+        </Box>
+        <FileSideView
+          opened={sideViewOpened}
+          setSideViewOpened={setSideViewOpened}
+          selectedFileId={selectedFileId}
+        />
+      </>
     </Box>
   );
 };
