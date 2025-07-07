@@ -96,5 +96,10 @@ export const getTabs = (
       url: 'access-rights',
       name: 'access-rights',
     },
+    {
+      label: 'Emails',
+      url: 'emails',
+      name: 'emails',
+    },
   ].filter((tab) => typeof tab === 'object') as IPhaseTab[];
 };

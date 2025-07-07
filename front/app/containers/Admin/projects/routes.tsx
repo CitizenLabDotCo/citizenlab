@@ -108,6 +108,7 @@ export enum projectsRoutes {
   projectPhaseExternalSurveyResults = ':phaseId/survey-results',
   projectPhasePolls = ':phaseId/polls',
   projectPhaseAccessRights = ':phaseId/access-rights',
+  projectPhaseEmails = ':phaseId/emails',
   projectPhaseIdeas = ':phaseId/ideas',
   projectPhaseProposals = ':phaseId/proposals',
   projectPhaseIdeaForm = ':phaseId/form',
@@ -166,6 +167,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit?${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/emails`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
 const createAdminProjectsRoutes = () => {
@@ -468,6 +470,14 @@ const createAdminProjectsRoutes = () => {
               },
               {
                 path: projectsRoutes.projectPhaseAccessRights,
+                element: (
+                  <PageLoading>
+                    <AdminPhasePermissions />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseEmails,
                 element: (
                   <PageLoading>
                     <AdminPhasePermissions />
