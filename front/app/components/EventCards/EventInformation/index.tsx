@@ -26,6 +26,8 @@ import { getEventDateString } from 'utils/dateUtils';
 import DateBlocks from '../DateBlocks';
 import messages from '../messages';
 
+import useRegistrantCountMessage from './useRegistrantCountMessage';
+
 const EventInformationContainer = styled.div`
   padding: 16px;
   flex: 1;
@@ -61,6 +63,7 @@ const EventInformation = ({ event }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const localize = useLocalize();
+  const registrantCountMessage = useRegistrantCountMessage(event);
 
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
@@ -205,18 +208,7 @@ const EventInformation = ({ event }: Props) => {
                 />
               </Box>
               <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
-                {event.attributes.attendees_count}{' '}
-                {event.attributes.maximum_attendees
-                  ? `/ ${event.attributes.maximum_attendees} ${formatMessage(
-                      isPastEvent
-                        ? messages.registered
-                        : messages.haveRegistered
-                    )}`
-                  : formatMessage(
-                      isPastEvent
-                        ? messages.registered
-                        : messages.haveRegistered
-                    )}
+                {registrantCountMessage}
               </Text>
             </Box>
           )}
