@@ -99,8 +99,8 @@ const Tabs = () => {
       />
       {userIsAdmin && (
         <Tab
-          message={messages.timeline}
-          icon="calendar"
+          message={messages.ordering}
+          icon="drag-handle"
           active={tab === 'ordering'}
           onClick={() => {
             removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);

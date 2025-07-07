@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
@@ -17,7 +17,7 @@ const Ordering = () => {
     .flat();
 
   return (
-    <Box>
+    <Box bgColor={colors.white} px="24px">
       <SortableProjectList adminPublications={flatAdminPublications} />
     </Box>
   );
