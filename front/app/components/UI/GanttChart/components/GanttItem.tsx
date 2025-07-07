@@ -1,8 +1,12 @@
 import React from 'react';
+
 import { Box, Tooltip, Text, colors } from '@citizenlab/cl2-component-library';
 import { max, min } from 'date-fns';
+
 import { rowHeight } from '../utils';
+
 import GanttItemIconBar from './GanttItemIconBar';
+
 import type { GanttItem } from '../types';
 
 interface GanttItemProps {
