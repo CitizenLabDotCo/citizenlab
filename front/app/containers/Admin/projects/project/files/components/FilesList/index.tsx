@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import { IPaginationProps, QueryParameters } from 'api/files/types';
@@ -41,6 +41,8 @@ const FilesList = () => {
     ...queryParameters,
   });
 
+  const numberOfFiles = files?.data.length || 0;
+
   const currentPage = getPageNumberFromUrl(files?.links.self || '');
   const lastPage = getPageNumberFromUrl(files?.links.last || '');
 
@@ -77,9 +79,9 @@ const FilesList = () => {
             width="100%"
             minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
           >
-            {files?.data.length && files.data.length > 0 && (
+            {numberOfFiles > 0 && (
               <>
-                {files.data.map((file) => (
+                {files?.data.map((file) => (
                   <FilesListItem
                     file={file}
                     setSelectedFileId={setSelectedFileId}
@@ -88,6 +90,11 @@ const FilesList = () => {
                   />
                 ))}
               </>
+            )}
+            {queryParameters.search && files?.data.length === 0 && (
+              <Box display="flex" width="100%" justifyContent="center">
+                <Text color="coolGrey600">No files found.</Text>
+              </Box>
             )}
             {lastPage && lastPage > 1 && (
               <Box mt="auto" display="flex" justifyContent="center" p="12px">
