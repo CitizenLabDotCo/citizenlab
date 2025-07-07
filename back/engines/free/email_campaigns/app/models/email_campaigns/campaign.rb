@@ -182,7 +182,8 @@ module EmailCampaigns
     end
 
     # Necessary to preserve original behavior of the context enabled toggle
-    def enabled # TODO: Test
+    # TODO: Test
+    def enabled
       if context && !manual?
         super && global_campaign&.enabled
       else

@@ -506,7 +506,7 @@ const AdminPhaseEditWrapper = () => {
         )
       );
     })
-    .filter((campaign) => !!campaign);
+    .filter((campaign): campaign is ICampaignData => !!campaign);
 
   if (!projectId) return null;
 
