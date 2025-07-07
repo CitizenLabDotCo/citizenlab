@@ -107,4 +107,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.filesRejected',
     defaultMessage: 'Files were not able to be uploaded. Please try again.',
   },
+  noFilesFound: {
+    id: 'app.containers.AdminPage.ProjectFiles.noFilesFound',
+    defaultMessage: 'No files found.',
+  },
 });

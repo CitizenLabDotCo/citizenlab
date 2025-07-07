@@ -34,7 +34,7 @@ const FilesList = () => {
     pageNumber: 1,
     pageSize: 7,
     sort: '-created_at',
-    projects: [projectId],
+    project: [projectId],
   });
 
   const { data: files } = useFiles({
@@ -91,10 +91,18 @@ const FilesList = () => {
                 ))}
               </>
             )}
-            {queryParameters.search && files?.data.length === 0 && (
-              <Box display="flex" width="100%" justifyContent="center">
-                <Text color="coolGrey600">No files found.</Text>
-              </Box>
+            {files?.data.length === 0 && (
+              <>
+                {queryParameters.search ? (
+                  <Box display="flex" width="100%" justifyContent="center">
+                    <Text color="coolGrey600">
+                      {formatMessage(messages.noFilesFound)}
+                    </Text>
+                  </Box>
+                ) : (
+                  <>TODO: Add UI for when no files have been uploaded yet.</>
+                )}
+              </>
             )}
             {lastPage && lastPage > 1 && (
               <Box mt="auto" display="flex" justifyContent="center" p="12px">

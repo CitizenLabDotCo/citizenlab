@@ -31,7 +31,7 @@ export interface QueryParameters {
   'page[number]'?: number;
   'page[size]'?: number;
   uploader_id?: string;
-  projects?: string[];
+  project?: string[];
   sort?: FileSortOptions;
   search?: string;
   deleted?: boolean;
