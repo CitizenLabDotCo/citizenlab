@@ -8,9 +8,13 @@ import useCampaigns from 'api/campaigns/useCampaigns';
 import useSupportedCampaignTypes from 'api/campaigns/useSupportedCampaignTypes';
 import usePhase from 'api/phases/usePhase';
 
+import useLocalize from 'hooks/useLocalize';
+
 import CampaignRow from 'containers/Admin/messaging/AutomatedEmails/CampaignRow';
+import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 
 const AdminPhaseEmailWrapper = () => {
+  const localize = useLocalize();
   const { projectId, phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
   const supportedCampaignTypes =
@@ -40,7 +44,7 @@ const AdminPhaseEmailWrapper = () => {
       {campaigns.length > 0 &&
         campaigns.map((campaign) => (
           <CampaignRow
-            campaign={campaign}
+            campaign={stringifyCampaignFields(campaign, localize)}
             key={campaign.id}
             // onClickViewExample={onClickViewExample(campaign.id)}
           />
