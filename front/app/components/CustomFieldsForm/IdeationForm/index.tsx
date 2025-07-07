@@ -101,6 +101,7 @@ const IdeationForm = ({
           (cosponsor) => cosponsor.id
         ),
         topic_ids: idea.relationships.topics?.data.map((topic) => topic.id),
+        idea_files_attributes: [],
       }
     : undefined;
 
