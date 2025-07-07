@@ -22,28 +22,28 @@ const FeatureInformation = () => {
       borderRadius={stylingConsts.borderRadius}
     >
       <FeatureInformationItem
-        iconName={'upload-file'}
+        iconName="upload-file"
         mainText={messages.uploadAnyFile}
         secondaryText={messages.uploadAnyFileDescription}
       />
       <FeatureInformationItem
-        iconName={'paperclip'}
+        iconName="paperclip"
         mainText={messages.addFilesToProject}
         secondaryText={messages.addFilesToProjectDescription}
       />
       <FeatureInformationItem
-        iconName={'chart-bar'}
+        iconName="chart-bar"
         mainText={messages.useAIOnFiles}
         secondaryText={messages.useAIOnFilesDescription}
       />
       <FeatureInformationItem
-        iconName={'stars'}
+        iconName="stars"
         mainText={messages.addFilesToSensemaking}
         secondaryText={messages.addFilesToSensemakingDescription}
       />
       <Divider />
       <FeatureInformationItem
-        iconName={'arrow-up'}
+        iconName="arrow-up"
         mainText={messages.comingSoon}
         secondaryText={messages.comingSoonDescription}
       />
