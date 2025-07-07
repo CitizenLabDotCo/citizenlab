@@ -67,7 +67,7 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.citizenlab.co/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Thank you for completing the survey! You're welcome to take it again next quarter.",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Dauert <1 Minutt} one {Dauert 1 Minutt} other {Dauert # Minutten}}",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Als PDF eroflueden",
   "app.components.FormSync.downloadExcelTemplate": "Eng Excel-Schabloun eroflueden",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-Virlagen enthalen keng Rankingfroen, Matrixfroen, Froen zum Eroplueden vun Dateien a Froen zum Mapping-Input (Drop Pin, Draw Route, Draw Area, ESRI Datei Upload), well dës am Moment net fir Masseimport ënnerstëtzt ginn.",
