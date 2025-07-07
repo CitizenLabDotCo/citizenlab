@@ -2187,8 +2187,6 @@
   "app.containers.AdminPage.ProjectFiles.audioFileExtensionDescription": "WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "ਫਾਈਲਾਂ ਚੁਣੋ",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "ਫਾਈਲ ਮਿਟਾਓ",
-  "app.containers.AdminPage.ProjectFiles.dragAndDropFiles": "ਫਾਈਲਾਂ ਨੂੰ ਇੱਥੇ ਘਸੀਟੋ ਅਤੇ ਛੱਡੋ ਜਾਂ",
-  "app.containers.AdminPage.ProjectFiles.editFile": "ਫਾਈਲ ਸੰਪਾਦਿਤ ਕਰੋ",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "ਫਾਈਲ",
   "app.containers.AdminPage.ProjectFiles.imageFileDescription": "ਚਿੱਤਰ",
   "app.containers.AdminPage.ProjectFiles.imageFileExtensionDescription": "ਪੀਐਨਜੀ, ਜੇਪੀਈਜੀ",

@@ -2187,8 +2187,6 @@
   "app.containers.AdminPage.ProjectFiles.audioFileExtensionDescription": "WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Izvēlieties failus",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Dzēst failu",
-  "app.containers.AdminPage.ProjectFiles.dragAndDropFiles": "Velciet un nometiet failus šeit vai",
-  "app.containers.AdminPage.ProjectFiles.editFile": "Rediģēt failu",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Failu",
   "app.containers.AdminPage.ProjectFiles.imageFileDescription": "Attēli",
   "app.containers.AdminPage.ProjectFiles.imageFileExtensionDescription": "PNG, JPEG",
