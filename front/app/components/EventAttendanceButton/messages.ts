@@ -9,9 +9,10 @@ export default defineMessages({
     id: 'app.components.EventAttendanceButton.attending',
     defaultMessage: 'Attending',
   },
-  noSpotsLeft: {
-    id: 'app.components.EventAttendanceButton.noSpotsLeft',
-    defaultMessage: 'No spots left',
+  maxAttendeesReached: {
+    id: 'app.components.EventAttendanceButton.maxAttendeesReached',
+    defaultMessage:
+      'The maximum number of attendees has been reached. There are no spots left.',
   },
   seeYouThereName: {
     id: 'app.components.EventAttendanceButton.seeYouThereName',
