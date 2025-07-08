@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "{years}i'r chwith",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "{years}y i ddechrau",
   "app.containers.Admin.projects.all.new.folders": "Ffolderi",
+  "app.containers.Admin.projects.all.new.ordering": "Archebu",
   "app.containers.Admin.projects.all.new.projects": "Prosiectau",
   "app.containers.Admin.projects.all.new.timeline": "Amserlen",
   "app.containers.Admin.projects.all.notes": "Nodiadau",
