@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "{years}y venstre",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "{years}y for å starte",
   "app.containers.Admin.projects.all.new.folders": "Mapper",
+  "app.containers.Admin.projects.all.new.ordering": "Bestilling",
   "app.containers.Admin.projects.all.new.projects": "Prosjekter",
   "app.containers.Admin.projects.all.new.timeline": "Tidslinje",
   "app.containers.Admin.projects.all.notes": "Merknader",
