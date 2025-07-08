@@ -24,10 +24,17 @@ import { CampaignData } from './types';
 
 type Props = {
   campaign: CampaignData;
+  hasContext: boolean;
+  parentEnabled?: boolean;
   onClickViewExample?: () => void;
 };
 
-const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
+const CampaignRow = ({
+  campaign,
+  hasContext = false,
+  parentEnabled,
+  onClickViewExample,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [isNewPhaseModalOpen, setIsNewPhaseModalOpen] = useState(false);
   const { mutate: updateCampaign } = useUpdateCampaign();
@@ -61,6 +68,8 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
   });
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
 
+  const disabledByParent = hasContext; // && !parentEnabled;
+
   return (
     <>
       <PhaseEmailSettingsModal
@@ -79,7 +88,10 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
             }
             onChange={handleOnEnabledToggle}
           />
-          <CampaignDescription campaign={campaign} />
+          <CampaignDescription
+            campaign={campaign}
+            disabledByParent={disabledByParent}
+          />
           <Box display="flex" justifyContent="flex-end" flexGrow={1}>
             {onClickViewExample && (
               <Box>

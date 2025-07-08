@@ -17,9 +17,10 @@ import { CampaignData } from './types';
 
 interface Props {
   campaign: CampaignData;
+  disabledByParent: boolean;
 }
 
-const CampaignDescription = ({ campaign }: Props) => {
+const CampaignDescription = ({ campaign, disabledByParent = false }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Box display="flex" flexDirection="column" ml="20px">
@@ -27,21 +28,23 @@ const CampaignDescription = ({ campaign }: Props) => {
         <Text color="grey800" m="0">
           {campaign.campaign_description}
         </Text>
-        <IconTooltip
-          placement="top-start"
-          content={
-            <FormattedMessage
-              {...messages.disabledProjectPhaseEmailMessage}
-              values={{
-                automatedEmailsLink: (
-                  <Link to="/admin/messaging/emails/automated">
-                    <FormattedMessage {...messages.automatedEmailsLinkText} />
-                  </Link>
-                ),
-              }}
-            />
-          }
-        />
+        {disabledByParent && (
+          <IconTooltip
+            placement="top-start"
+            content={
+              <FormattedMessage
+                {...messages.disabledProjectPhaseEmailMessage}
+                values={{
+                  automatedEmailsLink: (
+                    <Link to="/admin/messaging/emails/automated">
+                      <FormattedMessage {...messages.automatedEmailsLinkText} />
+                    </Link>
+                  ),
+                }}
+              />
+            }
+          />
+        )}
       </Box>
       {campaign.recipient_segment &&
         (campaign.trigger || campaign.schedule) && (

@@ -44,6 +44,8 @@ const AdminPhaseEmailWrapper = () => {
           <CampaignRow
             campaign={stringifyCampaignFields(campaign, localize)}
             key={campaign.id}
+            hasContext={true}
+            // parentEnabled={globalCampaign.attributes.enabled}
             // onClickViewExample={onClickViewExample(campaign.id)}
           />
         ))}
