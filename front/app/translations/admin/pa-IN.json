@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "{years}ਬਾਕੀ",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "ਸ਼ੁਰੂ ਕਰਨ ਲਈ {years}y",
   "app.containers.Admin.projects.all.new.folders": "ਫੋਲਡਰ",
+  "app.containers.Admin.projects.all.new.ordering": "ਆਰਡਰ ਕਰਨਾ",
   "app.containers.Admin.projects.all.new.projects": "ਪ੍ਰੋਜੈਕਟ",
   "app.containers.Admin.projects.all.new.timeline": "ਸਮਾਂਰੇਖਾ",
   "app.containers.Admin.projects.all.notes": "ਨੋਟਸ",
