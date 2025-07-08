@@ -14,32 +14,13 @@ import GanttChartLeftColumn from './components/GanttChartLeftColumn';
 import GroupedTimeline from './components/GroupedTimeline';
 import TimelineItems from './components/TimelineItems';
 import TimeRangeSelector from './components/TimeRangeSelector';
+import { useGanttViewConfig } from './hooks/useGanttViewConfig';
 import { GanttChartProps } from './types';
 import {
   TimeRangeOption,
   getTimeRangeDates,
-  groupDayCellsByMonth,
-  groupWeekCellsByYear,
-  groupQuarterCellsByMonth,
-  groupMonthCellsByYear,
-  getDayCells,
-  getWeekCells,
-  getQuarterCells,
-  getMonthCells,
-  getPreciseOffsetInDays,
-  getPreciseDurationInDays,
-  getPreciseOffsetInMonths,
-  getPreciseDurationInMonths,
-  getPreciseOffsetInWeeks,
-  getPreciseDurationInWeeks,
-  getPreciseOffsetInQuarters,
-  getPreciseDurationInQuarters,
-  quarterWidth,
-  weekWidth,
   timelineHeaderHeight,
   rowHeight,
-  monthWidth,
-  dayWidth,
   leftColumnWidth,
 } from './utils';
 
@@ -52,12 +33,11 @@ const GanttChart = ({
 }: GanttChartProps) => {
   const today = useMemo(() => new Date(), []);
   const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
-  const { startDate: defaultStart, endDate: defaultEnd } = getTimeRangeDates(
-    selectedRange,
-    today
-  );
-  const [startDate, setStartDate] = useState<Date>(defaultStart);
-  const [endDate, setEndDate] = useState<Date>(defaultEnd);
+  const { startDate: baselineStartDate, endDate: rangeEndDate } =
+    getTimeRangeDates(selectedRange, today);
+  const [timelineStartDate, setTimelineStartDate] =
+    useState<Date>(baselineStartDate);
+  const [endDate, setEndDate] = useState<Date>(rangeEndDate);
 
   const [isLoading, setIsLoading] = useState(false);
   const [visibleLabel, setVisibleLabel] = useState<string>('');
@@ -65,51 +45,7 @@ const GanttChart = ({
   const scrollState = useRef({ scrollLeft: 0, scrollWidth: 0 });
   const didInitialScroll = useRef(false);
   const rangeChanged = useRef(true);
-
-  const viewConfig = useMemo(
-    () => ({
-      month: {
-        unitWidth: dayWidth,
-        getGroups: (start: Date, end: Date) =>
-          groupDayCellsByMonth(getDayCells(start, end), () => dayWidth),
-        getFlatCells: getDayCells,
-        getOffset: (date: Date) => getPreciseOffsetInDays(startDate, date),
-        getDuration: (s: Date, e: Date) => getPreciseDurationInDays(s, e),
-      },
-      quarter: {
-        unitWidth: quarterWidth,
-        getGroups: (start: Date, end: Date) =>
-          groupQuarterCellsByMonth(
-            getQuarterCells(start, end),
-            () => quarterWidth
-          ),
-        getFlatCells: getQuarterCells,
-        getOffset: (cells: Date[], date: Date) =>
-          getPreciseOffsetInQuarters(cells, date),
-        getDuration: (cells: Date[], s: Date, e: Date) =>
-          getPreciseDurationInQuarters(cells, s, e),
-      },
-      year: {
-        unitWidth: weekWidth,
-        getGroups: (start: Date, end: Date) =>
-          groupWeekCellsByYear(getWeekCells(start, end), () => weekWidth),
-        getFlatCells: getWeekCells,
-        getOffset: (date: Date) => getPreciseOffsetInWeeks(startDate, date),
-        getDuration: (s: Date, e: Date) =>
-          getPreciseDurationInWeeks(s, e, startDate),
-      },
-      multiyear: {
-        unitWidth: monthWidth,
-        getGroups: (start: Date, end: Date) =>
-          groupMonthCellsByYear(getMonthCells(start, end), () => monthWidth),
-        getFlatCells: getMonthCells,
-        getOffset: (date: Date) => getPreciseOffsetInMonths(startDate, date),
-        getDuration: (s: Date, e: Date) =>
-          getPreciseDurationInMonths(s, e, startDate),
-      },
-    }),
-    [startDate]
-  );
+  const viewConfig = useGanttViewConfig(timelineStartDate);
 
   const {
     unitWidth: unitWidth,
@@ -120,12 +56,12 @@ const GanttChart = ({
   } = viewConfig[selectedRange];
 
   const timeGroups = useMemo(
-    () => getGroups(startDate, endDate),
-    [startDate, endDate, getGroups]
+    () => getGroups(timelineStartDate, endDate),
+    [timelineStartDate, endDate, getGroups]
   );
   const flatTimeCells = useMemo(
-    () => getFlatCells(startDate, endDate),
-    [startDate, endDate, getFlatCells]
+    () => getFlatCells(timelineStartDate, endDate),
+    [timelineStartDate, endDate, getFlatCells]
   );
 
   const getOffsetForView = useCallback(
@@ -167,7 +103,7 @@ const GanttChart = ({
       el.scrollLeft = scrollState.current.scrollLeft + diff;
       scrollState.current.scrollWidth = 0;
     }
-  }, [startDate]);
+  }, [timelineStartDate]);
 
   // infinite scroll handler
   const onTimelineScroll = useCallback(() => {
@@ -194,7 +130,7 @@ const GanttChart = ({
     if (scrollLeft <= buffer) {
       setIsLoading(true);
       scrollState.current = { scrollLeft, scrollWidth };
-      setStartDate((prev) => subMonths(prev, 3));
+      setTimelineStartDate((prev) => subMonths(prev, 3));
       setTimeout(() => setIsLoading(false), 50);
     }
   }, [isLoading, timeGroups, visibleLabel]);
@@ -228,13 +164,13 @@ const GanttChart = ({
       rangeChanged.current = false;
     }, 100);
     return () => clearTimeout(timer);
-  }, [startDate, endDate, scrollToToday]);
+  }, [timelineStartDate, endDate, scrollToToday]);
 
   const handleRangeChange = (range: TimeRangeOption) => {
     rangeChanged.current = true;
     setSelectedRange(range);
     const { startDate: ns, endDate: ne } = getTimeRangeDates(range, today);
-    setStartDate(ns);
+    setTimelineStartDate(ns);
     setEndDate(ne);
   };
 
@@ -328,7 +264,7 @@ const GanttChart = ({
 
             <TimelineItems
               items={items}
-              viewBounds={{ left: startDate, right: endDate }}
+              viewBounds={{ left: timelineStartDate, right: endDate }}
               getOffset={getOffsetForView}
               getDuration={getDurationForView}
               unitWidth={unitWidth}
