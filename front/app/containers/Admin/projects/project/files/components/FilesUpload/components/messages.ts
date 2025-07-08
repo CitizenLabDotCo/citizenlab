@@ -14,8 +14,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles',
     defaultMessage: 'Confirm and upload files',
   },
-  close: {
-    id: 'app.containers.AdminPage.ProjectFiles.close',
-    defaultMessage: 'Close',
+  done: {
+    id: 'app.containers.AdminPage.ProjectFiles.done',
+    defaultMessage: 'Done',
+  },
+  selectFileType: {
+    id: 'app.containers.AdminPage.ProjectFiles.selectFileType',
+    defaultMessage: 'File type',
   },
 });

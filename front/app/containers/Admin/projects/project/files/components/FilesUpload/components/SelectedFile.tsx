@@ -150,12 +150,12 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
         <Box minWidth="200px">
           <Select
             value={semanticType}
+            placeholder={formatMessage(messages.selectFileType)}
             onChange={() => {}} // TODO: Implement onChange once SemanticFileType implemented.
             options={[
               { value: 'type_1', label: 'Type 1' },
               { value: 'type_2', label: 'Type 2' },
             ]}
-            size="small"
             disabled={status !== 'queued'}
           />
         </Box>

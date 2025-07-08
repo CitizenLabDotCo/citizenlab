@@ -35,8 +35,8 @@ const FileUploadActions = ({
 
   return (
     <Button
-      buttonStyle="secondary"
-      text={formatMessage(messages.close)}
+      buttonStyle="admin-dark"
+      text={formatMessage(messages.done)}
       mt="20px"
       onClick={onClose}
     />
