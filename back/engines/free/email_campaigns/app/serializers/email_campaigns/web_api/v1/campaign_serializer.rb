@@ -118,7 +118,12 @@ module EmailCampaigns
     end
 
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
-    belongs_to :context, polymorphic: true
+
+    # We specify the namespace for the serializer(s), because if we just use polymorphic: true
+    # jsonapi-serializer will look for the serializer(s) in the same namespace as this serializer, which will fail.
+    belongs_to :context, serializer: proc { |object|
+      "::WebApi::V1::#{object.class.name}Serializer".constantize
+    }
 
     has_many :groups, serializer: ::WebApi::V1::GroupSerializer, if: proc { |object|
       recipient_configurable? object
