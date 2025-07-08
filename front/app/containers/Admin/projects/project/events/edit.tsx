@@ -100,8 +100,7 @@ const AdminProjectEventEdit = () => {
 
   const [registerButtonOptionsVisible, setRegisterButtonOptionsVisible] =
     useState(false);
-  const [registrationLimitVisible, setRegistrationLimitVisible] =
-    useState(false);
+  const [registrationLimitVisible, setRegistrationLimitVisible] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     event?.data.attributes.location_point_geojson || null
