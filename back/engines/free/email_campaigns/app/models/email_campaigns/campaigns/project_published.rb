@@ -39,8 +39,7 @@ module EmailCampaigns
     include RecipientConfigurable
     include Trackable
     include LifecycleStageRestrictable
-    # allow_lifecycle_stages only: %w[trial active]
-    allow_lifecycle_stages except: ['churned']
+    allow_lifecycle_stages only: %w[trial active]
 
     filter :not_unlisted
     recipient_filter :filter_notification_recipient
