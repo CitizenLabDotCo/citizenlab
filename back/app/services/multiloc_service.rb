@@ -44,8 +44,8 @@ class MultilocService
   end
 
   # Converts the embedded variables to a liquid template format.
-  def i18n_to_multiloc_liquid_version(key)
-    i18n_to_multiloc(key).transform_values do |value|
+  def i18n_to_multiloc_liquid_version(key, raise_on_missing: true)
+    i18n_to_multiloc(key, raise_on_missing:).transform_values do |value|
       value.is_a?(String) ? value.gsub(/%\{(.*?)}/, '{{\1}}') : value
     end
   end

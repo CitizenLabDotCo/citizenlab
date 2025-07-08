@@ -68,23 +68,23 @@ RSpec.describe EmailCampaigns::InviteReceivedMailer do
 
       before do
         campaign.update!(
-          subject_multiloc: { 'en' => 'Custom Subject' },
-          title_multiloc: { 'en' => 'NEW TITLE' },
-          intro_multiloc: { 'en' => '<b>NEW BODY TEXT - {{ authorName }}</b>' },
+          subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE - {{ organizationName }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' },
           button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
         )
       end
 
       it 'can customise the subject' do
-        expect(mail.subject).to eq 'Custom Subject'
+        expect(mail.subject).to eq 'Custom Subject - Liege'
       end
 
       it 'can customise the title' do
-        expect(mail_body(mail)).to include('NEW TITLE')
+        expect(mail_body(mail)).to include('NEW TITLE - Liege')
       end
 
       it 'can customise the body including HTML' do
-        expect(mail_body(mail)).to include('<b>NEW BODY TEXT - Ned Flanders</b>')
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT</b>')
       end
 
       it 'can customise the cta button' do

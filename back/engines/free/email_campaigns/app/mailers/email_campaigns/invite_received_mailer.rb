@@ -26,7 +26,7 @@ module EmailCampaigns
           invitee_first_name: data.author.first_name,
           invitee_last_name: data.author.last_name,
           invite_text: '<p>Would you like to join our awesome platform?</p>',
-          activate_invite_url: Frontend::UrlService.new.invite_url('token', locale: Locale.new(recipient_user.locale))
+          activate_invite_url: Frontend::UrlService.new.invite_url('token', locale: Locale.new(recipient.locale))
         }
       }
     end

@@ -5,7 +5,7 @@ module EmailCampaigns
     include EditableWithPreview
 
     def editable
-      %i[subject_multiloc title_multiloc]
+      %i[subject_multiloc intro_multiloc title_multiloc]
     end
 
     def substitution_variables
@@ -25,7 +25,7 @@ module EmailCampaigns
           idea_title_multiloc: data.idea.title_multiloc,
           idea_body_multiloc: data.idea.body_multiloc,
           idea_url: data.idea.url,
-          idea_images: [], # TODO: Add images if available
+          idea_images: [],
           input_term: 'idea'
         }
       }

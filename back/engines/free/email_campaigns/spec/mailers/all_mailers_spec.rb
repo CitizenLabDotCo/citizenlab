@@ -19,7 +19,8 @@ RSpec.describe 'AllMailers' do
           editable_region_variables = mailer.substitution_variables.keys.map(&:to_s) || []
           mailer.editable_regions.each do |region|
             # Extract variables in format {{variable}} from the default english value text
-            variables_in_text = region[:default_value_multiloc]['en'].scan(/\{\{(.*?)}}/).flatten
+            region_default_value = region.dig(:default_value_multiloc, 'en')
+            variables_in_text = region_default_value ? region_default_value.scan(/\{\{(.*?)}}/).flatten : []
             variables_in_text.each do |variable|
               expect(editable_region_variables).to include(variable.strip)
             end

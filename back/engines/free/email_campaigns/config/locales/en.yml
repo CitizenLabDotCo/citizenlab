@@ -96,6 +96,7 @@ en:
       comment_deleted_reason: 'Your example comment was considered inappropriate.'
       idea_title: 'Example Idea'
       idea_body: 'This is some example idea content used for previewing the content of emails. This is not real content.'
+      event_title: 'Example Event'
       proposal_title: 'Example Proposal'
     footer:
       "link_privacy_policy": "Privacy Policy"

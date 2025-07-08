@@ -82,5 +82,9 @@ module EmailCampaigns
     def self.content_type_multiloc_key
       'email_campaigns.admin_labels.content_type.general'
     end
+
+    def self.recipient_segment_multiloc_key
+      'email_campaigns.admin_labels.recipient_segment.user_who_was_invited'
+    end
   end
 end

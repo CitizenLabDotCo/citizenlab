@@ -12,9 +12,9 @@ module EmailCampaigns
 
     def campaign_mail
       # TODO: Generate a preview ICS instead? Or move to the campaign / preview service?
-      if event&.event_attributes&.id
+      if event_details&.id
         attachments['event.ics'] = Events::IcsGenerator.new.generate_ics(
-          Event.find(event.event_attributes.id),
+          Event.find(event_details.id),
           locale.to_s
         )
       end
@@ -42,7 +42,7 @@ module EmailCampaigns
           event_attributes: {
             id: nil,
             start_at: Time.now + 1.day,
-            title_multiloc: { 'en' => 'Event Title', 'fr' => 'Titre de l’événement' },
+            title_multiloc: data.event.title_multiloc,
             end_at: Time.now + 1.day + 2.hours,
             address1: nil, # TODO: Add a proper address
             address2_multiloc: nil
@@ -50,7 +50,7 @@ module EmailCampaigns
           event_url: data.idea.url,
           project_title_multiloc: data.project.title_multiloc,
           project_url: data.project.url,
-          image_url: data.idea.url # TODO: Add a proper image URL for the idea
+          image_url: data.placeholder_image_url
         }
       }
     end
@@ -93,6 +93,8 @@ module EmailCampaigns
     end
 
     def add_to_calendar_url
+      return nil unless event_details&.id
+
       host = AppConfiguration.instance.base_backend_uri
       # In a mailer, the host must be specified explicitly for the url helpers to work
       # because, unlike in a controller, it cannot be inferred from the request.
