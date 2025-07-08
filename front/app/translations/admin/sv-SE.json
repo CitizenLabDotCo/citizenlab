@@ -372,7 +372,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.petitionTerm": "Framställning",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administratörer och projektledare",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.annotatingDocument": "<b>Dokument med kommentarer:</b>  {participants}",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.attendingEvent": "<b>Deltagande i evenemang:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.canParticipateTooltip": "{participants} kan delta i denna fas.",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.cancelDeleteButtonText": "Avbryt",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.comment": "<b>Kommentar:</b> {participants}",

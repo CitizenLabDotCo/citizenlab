@@ -372,7 +372,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.petitionTerm": "Peticija",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administratoriai ir vadovai",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.annotatingDocument": "<b>Dokumento anotacija:</b>  {participants}",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.attendingEvent": "<b>Dalyvaujantis renginys:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.canParticipateTooltip": "{participants} gali dalyvauti šiame etape.",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.cancelDeleteButtonText": "Atšaukti",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.comment": "<b>Komentaras:</b> {participants}",

@@ -372,7 +372,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.petitionTerm": "Petition",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Admins & managers",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.annotatingDocument": "<b>Annotating document:</b>  {participants}",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.attendingEvent": "<b>Attending event:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.canParticipateTooltip": "{participants} can participate in this phase.",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.cancelDeleteButtonText": "Cancel",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.comment": "<b>Comment:</b> {participants}",

@@ -372,7 +372,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.petitionTerm": "Petitie",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Platform- en projectbeheerders",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.annotatingDocument": "<b>Verzamel feedback op een document:</b>  {participants}",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.attendingEvent": "<b>Aanwezig bij activiteit:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.canParticipateTooltip": "{participants} kunnen deelnemen in deze fase.",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.cancelDeleteButtonText": "Annuleer",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.comment": "<b>Reactie:</b> {participants}",

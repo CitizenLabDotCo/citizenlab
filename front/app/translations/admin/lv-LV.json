@@ -372,7 +372,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.petitionTerm": "Lūgumraksts",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers": "Administratori un vadītāji",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.annotatingDocument": "<b>Dokumenta anotēšana:</b>  {participants}",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.attendingEvent": "<b>Pasākuma apmeklējums:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.canParticipateTooltip": "{participants} var piedalīties šajā posmā.",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.cancelDeleteButtonText": "Atcelt",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.comment": "<b>Komentārs:</b> {participants}",
