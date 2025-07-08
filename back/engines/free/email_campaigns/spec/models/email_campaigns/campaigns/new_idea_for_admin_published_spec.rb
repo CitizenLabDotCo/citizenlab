@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin do
-  let(:campaign) { build(:new_idea_for_admin_campaign) }
+RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdminPublished do
+  let(:campaign) { build(:new_idea_for_admin_published_campaign) }
 
   describe 'NewIdeaForAdmin Campaign default factory' do
     it { expect(campaign).to be_valid }

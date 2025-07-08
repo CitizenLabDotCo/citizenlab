@@ -24,7 +24,8 @@ en:
       "mention_in_official_feedback": Mention in an update
       "mention_in_internal_comment": Mention in an internal comment
       "new_comment_for_admin": New comment in a project I moderate
-      "new_idea_for_admin": New input in a project I moderate
+      "new_idea_for_admin_published": New published input in a project I moderate
+      "new_idea_for_admin_prescreening": New input requiring approval in a project I moderate
       "official_feedback_on_idea_you_follow": Update on an input that you follow
       "password_reset": Password reset
       "project_moderation_rights_received": Project moderation rights received
@@ -274,16 +275,23 @@ en:
         option: '%{authorName} commented on an option you follow'
         proposal: '%{authorName} commented on a proposal you follow'
         petition: '%{authorName} commented on a petition you follow'
-    new_idea_for_admin:
-      main_header_publication: 'A new input has been published on your platform'
-      event_description_publication: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
-      cta_publication: 'Give feedback to %{authorName}'
-      main_header_prescreening: 'An input requires your review'
-      event_description_prescreening: '%{authorName} has submitted a new input on your platform.'
-      input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
-      cta_prescreening: 'Review the input'
-      days_ago: '%{numberOfDays} days ago'
+    new_idea_for_admin_published:
+      subject: 'A new input has been published on your platform'
       preheader: '%{authorName} published a new input on your platform'
+      title: 'A new input has been published on your platform'
+      event_description: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
+      cta_button: 'Give feedback to %{authorName}'
+      days_ago: '%{numberOfDays} days ago'
+      today: Today
+      yesterday: Yesterday
+    new_idea_for_admin_prescreening:
+      subject: 'An input requires your review'
+      preheader: '%{authorName} published a new input on your platform'
+      title: 'An input requires your review'
+      cta_button: 'Review the input'
+      event_description: '%{authorName} has submitted a new input on your platform.'
+      input_not_visible: '<b>The input won''t be visible</b> until you modify its status.'
+      days_ago: '%{numberOfDays} days ago'
       today: Today
       yesterday: Yesterday
     comment_on_your_comment:

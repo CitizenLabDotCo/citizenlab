@@ -240,17 +240,23 @@ en:
         option: '%{authorName} commented on an option you follow'
         proposal: '%{authorName} commented on a proposal you follow'
         petition: '%{authorName} commented on a petition you follow'
-    new_idea_for_admin:
-      new_idea_for_admin:
-      main_header_publication: '%{firstName}, a new input has been published on your platform'
-      event_description_publication: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
-      cta_publication: 'Give feedback to %{authorName}'
-      main_header_prescreening: '%{firstName}, an input requires your review'
-      event_description_prescreening: '%{authorName} has submitted a new input on your platform.'
-      input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
-      cta_prescreening: 'Review the input'
-      days_ago: '%{numberOfDays} days ago'
+    new_idea_for_admin_published:
+      subject: 'A new input has been published on your platform'
       preheader: '%{authorName} published a new input on your platform'
+      title: 'A new input has been published on your platform'
+      event_description: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
+      cta_button: 'Give feedback to %{authorName}'
+      days_ago: '%{numberOfDays} days ago'
+      today: Today
+      yesterday: Yesterday
+    new_idea_for_admin_prescreening:
+      subject: 'An input requires your review'
+      preheader: '%{authorName} published a new input on your platform'
+      title: 'An input requires your review'
+      cta_button: 'Review the input'
+      event_description: '%{authorName} has submitted a new input on your platform.'
+      input_not_visible: '<b>The input won''t be visible</b> until you modify its status.'
+      days_ago: '%{numberOfDays} days ago'
       today: Today
       yesterday: Yesterday
     comment_on_your_comment:
@@ -535,6 +541,7 @@ en:
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Internal comment is posted on unassigned input in unmanaged project'
         user_is_mentioned_in_internal_comment: 'User is mentioned in internal comment'
         new_input_is_published: 'New input is published'
+        new_input_awaits_screening: 'New input awaits screening'
         new_proposal_is_posted: 'New proposal is posted'
         project_phase_changes: 'Project phase changes'
         project_published: 'Project published'
