@@ -8,7 +8,6 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
-import { CLErrors } from 'typings';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -26,8 +25,6 @@ import useLocalize from 'hooks/useLocalize';
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 
 import { FormValues } from 'components/Form/typings';
-import customAjv from 'components/Form/utils/customAjv';
-import removeRequiredOtherFields from 'components/Form/utils/removeRequiredOtherFields';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { geocode } from 'utils/locationTools';
@@ -65,14 +62,12 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const [ideaFormStatePerIdea, setIdeaFormStatePerIdea] = useState<
     Record<string, FormValues>
   >({});
-  const [ideaFormApiErrors, setIdeaFormApiErrors] = useState<
-    CLErrors | undefined
-  >();
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
     phaseId,
   });
+
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const { data: author } = useUserById(
     idea?.data.relationships.author?.data?.id,
@@ -133,14 +128,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   };
 
   const userFormDataValid = isUserFormDataValid(userFormData);
-
-  const schemaToValidate = removeRequiredOtherFields(
-    schema,
-    ideaFormData || {}
-  );
-  const ideaFormDataValid = ideaFormData
-    ? customAjv.validate(schemaToValidate, ideaFormData)
-    : false;
+  const ideaFormDataValid = true; // TODO: Implement validation logic for idea form data
 
   const onApproveIdea = async () => {
     if (
@@ -231,8 +219,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
       const nextIdeaId = getNextIdeaId(ideaId, ideas);
       setIdeaId(nextIdeaId);
-    } catch (e) {
-      setIdeaFormApiErrors(e.errors);
+    } catch (error) {
+      // Handle error (e.g., show a notification)
+      console.error('Error approving idea:', error);
     }
   };
 
@@ -266,12 +255,8 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
               />
             )}
             <IdeaForm
-              schema={schema}
-              uiSchema={uiSchema}
-              showAllErrors={true}
-              apiErrors={ideaFormApiErrors}
               formData={ideaFormData ?? {}}
-              ideaMetadata={ideaMetadata}
+              // ideaMetadata={ideaMetadata}
               setFormData={setIdeaFormData}
             />
           </>
