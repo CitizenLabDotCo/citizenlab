@@ -39,11 +39,11 @@ module EmailCampaigns
     include RecipientConfigurable
     include Trackable
     include LifecycleStageRestrictable
-    allow_lifecycle_stages only: %w[trial active]
+    # allow_lifecycle_stages only: %w[trial active]
+    allow_lifecycle_stages except: ['churned']
 
+    filter :not_unlisted
     recipient_filter :filter_notification_recipient
-
-    filter :not_unlisted?
 
     def mailer_class
       ProjectPublishedMailer
@@ -54,20 +54,11 @@ module EmailCampaigns
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
-      puts '#' * 20
-      puts 'paiergjaimnbhsionj'
-      puts '#' * 20
-
       users_scope.where(id: activity.item.recipient_id)
     end
 
-    def not_unlisted?(activity:)
-      puts '#' * 20
-      puts 'jfwpeofjatibjginbjrp'
-      puts activity.item
-      puts '#' * 20
-
-      activity.item.project.unlisted? == false
+    def not_unlisted(activity:, time: nil)
+      !activity.item.project.unlisted?
     end
 
     def self.recipient_role_multiloc_key
