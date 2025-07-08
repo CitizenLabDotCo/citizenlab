@@ -34,4 +34,8 @@ export default defineMessages({
     id: 'app.containers.EventsShow.editEvent',
     defaultMessage: 'Edit event',
   },
+  metaTitle: {
+    id: 'app.containers.EventsShow.metaTitle',
+    defaultMessage: 'Event: {eventTitle} | {orgName}',
+  },
 });

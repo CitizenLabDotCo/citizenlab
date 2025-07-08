@@ -11,12 +11,14 @@ module BulkImportIdeas::Exporters
       return false unless up?
 
       payload = {
-        'index.html': Faraday::Multipart::FilePart.new(
+        'preferCssPageSize' => true,
+        'generateDocumentOutline' => true,
+        'generateTaggedPdf' => true,
+        'index.html' => Faraday::Multipart::FilePart.new(
           StringIO.new(html),
           'text/html',
           'index.html'
-        ),
-        preferCssPageSize: true
+        )
       }
       url = "#{@api_url}/forms/chromium/convert/html"
 

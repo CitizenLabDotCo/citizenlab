@@ -313,10 +313,12 @@ class WebApi::V1::IdeasController < ApplicationController
     tracker = if dry_run?
       Ideas::CopyJob.dry_run(*job_args, **job_kwargs)
     else
-      Ideas::CopyJob
+      job = Ideas::CopyJob
         .with_tracking(owner: current_user)
         .perform_later(*job_args, **job_kwargs)
-        .tracker
+
+      sidefx.after_copy(job, current_user)
+      job.tracker
     end
 
     render json: WebApi::V1::Jobs::TrackerSerializer.new(

@@ -11,13 +11,15 @@ import { useParam, setParam } from '../utils';
 
 import Dates from './Dates';
 import messages from './messages';
+import ParticipationStates from './ParticipationStates';
 import Sort from './Sort';
 
 const Filters = () => {
   const { formatMessage } = useIntl();
   const managerIds = useParam('managers') ?? [];
-  const searchValue = useParam('search');
   const statuses = useParam('status') ?? [];
+  const participationStates = useParam('participation_states') ?? [];
+  const searchValue = useParam('search');
 
   return (
     <Box
@@ -35,10 +37,17 @@ const Filters = () => {
           }}
         />
         <Status
-          mr="8px"
+          mr="0px"
           values={statuses}
           onChange={(publicationStatuses) => {
             setParam('status', publicationStatuses);
+          }}
+        />
+        <ParticipationStates
+          mr="8px"
+          participationStates={participationStates}
+          onChange={(value) => {
+            setParam('participation_states', value);
           }}
         />
         <Dates />

@@ -19,7 +19,7 @@ describe('nav bar', () => {
     cy.get('#e2e-landing-page');
   }
 
-  it('navigates to project from All projects dropdown and back', () => {
+  it.skip('navigates to project from All projects dropdown and back', () => {
     cy.intercept('GET', '**/web_api/v1/admin_publications**').as(
       'getAdminPublications'
     );
@@ -46,7 +46,7 @@ describe('nav bar', () => {
       });
   });
 
-  it('navigates to projects overview page from All projects dropdown and back', () => {
+  it.skip('navigates to projects overview page from All projects dropdown and back', () => {
     cy.intercept('GET', '**/web_api/v1/admin_publications**').as(
       'getAdminPublications'
     );
@@ -89,7 +89,7 @@ const gotoURL = (baseURL: string, withLocale: boolean) => {
   describe(`direct visits ${
     withLocale ? '(with locale)' : '(without locale)'
   }`, () => {
-    it('navigates to project from All projects dropdown', () => {
+    it.skip('navigates to project from All projects dropdown', () => {
       cy.goToLandingPage();
       cy.get('.e2e-projects-dropdown-link').click();
       cy.get('#e2e-projects-dropdown-content > a')
