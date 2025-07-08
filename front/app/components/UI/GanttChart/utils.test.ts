@@ -148,7 +148,6 @@ describe('GanttChart utils', () => {
       });
       it('getPreciseDurationInQuarters: returns correct fractional duration', () => {
         const start = date('2025-01-02'); // 1/3 into first cell
-        // FIX: Changed end date to correctly test a fractional duration.
         const end = date('2025-01-06'); // 2/3 into second cell
         // Duration should be (1 + 2/3) - 1/3 = 1.33 cells
         expect(getPreciseDurationInQuarters(cells, start, end)).toBeCloseTo(
