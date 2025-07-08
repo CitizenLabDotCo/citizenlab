@@ -98,9 +98,10 @@ const AdminProjectEventEdit = () => {
     isCreatingNewEvent ? initializeEventTimes() : {}
   );
 
-  const [attendanceButtonOptionsVisible, setAttendanceButtonOptionsVisible] =
+  const [registerButtonOptionsVisible, setRegisterButtonOptionsVisible] =
     useState(false);
-  const [attendanceLimitVisible, setAttendanceLimitVisible] = useState(false);
+  const [registrationLimitVisible, setRegistrationLimitVisible] =
+    useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     event?.data.attributes.location_point_geojson || null
@@ -159,14 +160,14 @@ const AdminProjectEventEdit = () => {
   useEffect(() => {
     if (typeof eventAttrs.maximum_attendees === 'number') {
       // If we have a maximum number of attendees, we want to ensure the toggle is on
-      setAttendanceLimitVisible(true);
+      setRegistrationLimitVisible(true);
     }
   }, [eventAttrs.maximum_attendees]);
 
   // If there is a custom button url, set the state accordingly
   useEffect(() => {
     if (eventAttrs.using_url) {
-      setAttendanceButtonOptionsVisible(true);
+      setRegisterButtonOptionsVisible(true);
     }
   }, [eventAttrs.using_url]);
 
@@ -246,14 +247,14 @@ const AdminProjectEventEdit = () => {
 
   const handleLimitToggleOnChange = (toggleValue: boolean) => {
     setSubmitState('enabled');
-    setAttendanceLimitVisible(toggleValue);
+    setRegistrationLimitVisible(toggleValue);
     setAttributeDiff({
       ...attributeDiff,
       maximum_attendees: toggleValue === false ? null : 100,
     });
   };
 
-  const handleMaximumAttendeesChange = (maximum_attendees: string) => {
+  const handleMaximumRegistrantsChange = (maximum_attendees: string) => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
@@ -266,7 +267,7 @@ const AdminProjectEventEdit = () => {
 
   const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
     setSubmitState('enabled');
-    setAttendanceButtonOptionsVisible(toggleValue);
+    setRegisterButtonOptionsVisible(toggleValue);
     setAttributeDiff({
       ...attributeDiff,
       using_url: '',
@@ -732,36 +733,36 @@ const AdminProjectEventEdit = () => {
                 fontWeight="semi-bold"
                 mt="48px"
               >
-                {formatMessage(messages.attendanceLimit)}
+                {formatMessage(messages.registrationLimit)}
               </Title>
               <SectionField>
                 <Toggle
                   label={
                     <Box display="flex">
-                      {formatMessage(messages.toggleAttendanceLimitLabel)}
+                      {formatMessage(messages.toggleRegistrationLimitLabel)}
                       <Box ml="4px">
                         <IconTooltip
                           content={formatMessage(
-                            messages.toggleAttendanceLimitTooltip
+                            messages.toggleRegistrationLimitTooltip
                           )}
                         />
                       </Box>
                     </Box>
                   }
-                  checked={attendanceLimitVisible}
+                  checked={registrationLimitVisible}
                   onChange={() => {
-                    handleLimitToggleOnChange(!attendanceLimitVisible);
+                    handleLimitToggleOnChange(!registrationLimitVisible);
                   }}
                 />
               </SectionField>
-              {attendanceLimitVisible && (
+              {registrationLimitVisible && (
                 <SectionField>
                   <Input
                     id="maximum_attendees"
-                    label={formatMessage(messages.maximumAttendees)}
+                    label={formatMessage(messages.maximumRegistrants)}
                     type="number"
                     value={eventAttrs.maximum_attendees?.toString()}
-                    onChange={handleMaximumAttendeesChange}
+                    onChange={handleMaximumRegistrantsChange}
                   />
                   <ErrorComponent
                     fieldName="maximum_attendees"
@@ -776,33 +777,31 @@ const AdminProjectEventEdit = () => {
                 fontWeight="semi-bold"
                 mt="48px"
               >
-                {formatMessage(messages.attendanceButton)}
+                {formatMessage(messages.registerButton)}
               </Title>
               <SectionField>
                 <Toggle
                   label={
                     <Box display="flex">
-                      {formatMessage(
-                        messages.toggleCustomAttendanceButtonLabel
-                      )}
+                      {formatMessage(messages.toggleCustomRegisterButtonLabel)}
                       <Box ml="4px">
                         <IconTooltip
                           content={formatMessage(
-                            messages.toggleCustomAttendanceButtonTooltip
+                            messages.toggleCustomRegisterButtonTooltip
                           )}
                         />
                       </Box>
                     </Box>
                   }
-                  checked={attendanceButtonOptionsVisible}
+                  checked={registerButtonOptionsVisible}
                   onChange={() => {
                     handleCustomButtonToggleOnChange(
-                      !attendanceButtonOptionsVisible
+                      !registerButtonOptionsVisible
                     );
                   }}
                 />
               </SectionField>
-              {attendanceButtonOptionsVisible && (
+              {registerButtonOptionsVisible && (
                 <>
                   <SectionField>
                     <Box maxWidth="400px">
@@ -845,7 +844,7 @@ const AdminProjectEventEdit = () => {
                         icon={
                           // TODO: Fix this the next time the file is edited.
                           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                          attendanceButtonOptionsVisible
+                          registerButtonOptionsVisible
                             ? undefined
                             : 'plus-circle'
                         }
