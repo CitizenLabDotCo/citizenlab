@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "{years}y اليسار",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "{years}y للبدء",
   "app.containers.Admin.projects.all.new.folders": "المجلدات",
+  "app.containers.Admin.projects.all.new.ordering": "الطلب",
   "app.containers.Admin.projects.all.new.projects": "المشاريع",
   "app.containers.Admin.projects.all.new.timeline": "الجدول الزمني",
   "app.containers.Admin.projects.all.notes": "ملحوظات",
