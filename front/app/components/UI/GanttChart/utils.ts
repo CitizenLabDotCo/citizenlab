@@ -263,16 +263,3 @@ export const getTimeRangeDates = (
       return { startDate: subDays(today, 15), endDate: addDays(today, 15) };
   }
 };
-
-export const scrollTo = (
-  ref: RefObject<HTMLDivElement>,
-  offset: number,
-  unitWidth: number
-) => {
-  if (ref.current) {
-    const containerWidth = ref.current.clientWidth;
-    const scrollTarget =
-      offset * unitWidth - containerWidth / 2 + unitWidth / 2;
-    ref.current.scroll({ left: scrollTarget, behavior: 'smooth' });
-  }
-};
