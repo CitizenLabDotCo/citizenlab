@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "{years}y بائیں",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "شروع کرنے کے لیے {years}y",
   "app.containers.Admin.projects.all.new.folders": "فولڈرز",
+  "app.containers.Admin.projects.all.new.ordering": "آرڈر کرنا",
   "app.containers.Admin.projects.all.new.projects": "پروجیکٹس",
   "app.containers.Admin.projects.all.new.timeline": "ٹائم لائن",
   "app.containers.Admin.projects.all.notes": "نوٹس",
