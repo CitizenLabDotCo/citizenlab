@@ -1,4 +1,3 @@
-// FilesUpload.tsx
 import React, { useState } from 'react';
 
 import {
@@ -11,7 +10,6 @@ import { useDropzone } from 'react-dropzone';
 import { useParams } from 'react-router-dom';
 
 import { useIntl } from 'utils/cl-intl';
-import { getRandomNumberString } from 'utils/math';
 
 import messages from '../messages';
 
@@ -88,9 +86,9 @@ const FilesUpload = ({ setModalOpen }: Props) => {
             {formatMessage(messages.confirmAndUploadFiles)}
           </Title>
           <Box maxHeight="300px" overflowY="auto" mt="20px">
-            {fileList.map((item) => (
+            {fileList.map((item, index) => (
               <SelectedFile
-                key={`${item.file.name}-${getRandomNumberString()}`}
+                key={`${item.file.name}-${index}`}
                 fileMeta={item}
                 projectId={projectId}
                 onStatusUpdate={(updatedStatus) => {
@@ -113,7 +111,7 @@ const FilesUpload = ({ setModalOpen }: Props) => {
               onChange={() => {}} // TODO: Implement onChange logic once BE implemented.
               label={
                 <Text ml="8px" m="0px" color="coolGrey600" fontSize="s">
-                  TODO: Add label once Produce descides on copy.
+                  TODO: Add label once Product decides on copy.
                 </Text>
               }
             />
