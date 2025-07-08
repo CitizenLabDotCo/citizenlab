@@ -59,13 +59,11 @@ const ErrorIcon = styled(Icon)`
   `}
 `;
 
-const ContainerInner = styled.div<{
-  showBackground: boolean;
-}>`
+const ContainerInner = styled.div<{ showBackground: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: '0px 13px';
+  padding: 0px 13px;
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.errorLight};
   background: ${(props) =>
