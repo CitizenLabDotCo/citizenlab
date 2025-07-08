@@ -132,6 +132,17 @@ class SideFxIdeaService
     )
   end
 
+  # @param [Jobs::TrackableJob] job
+  def after_copy(job, user)
+    LogActivityJob.perform_later(
+      job.tracker,
+      'enqueued_idea_copy_job',
+      user,
+      job.tracker.created_at.to_i,
+      payload: { job_args: job.arguments }
+    )
+  end
+
   private
 
   def before_publish_or_submit(idea, _user); end

@@ -12,11 +12,18 @@ export type Parameters = {
   search?: string;
   start_at?: string;
   end_at?: string;
+  participation_states?: ParticipationState[];
   sort:
     | 'recently_viewed'
     | 'phase_starting_or_ending_soon'
     | 'recently_created';
 } & Pagination;
+
+export type ParticipationState =
+  | 'not_started'
+  | 'collecting_data'
+  | 'informing'
+  | 'past';
 
 export type ProjectsMiniAdminKeys = Keys<typeof projectsMiniAdminKeys>;
 

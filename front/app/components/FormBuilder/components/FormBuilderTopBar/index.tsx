@@ -17,6 +17,7 @@ import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
+import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -48,7 +49,6 @@ type FormBuilderTopBarProps = {
   builderConfig: FormBuilderConfig;
   viewFormLink: RouteType;
   autosaveEnabled: boolean;
-  showAutosaveToggle: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
   phaseId: string;
 };
@@ -59,7 +59,6 @@ const FormBuilderTopBar = ({
   viewFormLink,
   autosaveEnabled,
   setAutosaveEnabled,
-  showAutosaveToggle,
   phaseId,
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
@@ -69,6 +68,9 @@ const FormBuilderTopBar = ({
   };
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const { data: submissionCount } = useSubmissionsCount({
+    phaseId,
+  });
   const {
     formState: { isDirty },
   } = useFormContext();
@@ -78,12 +80,6 @@ const FormBuilderTopBar = ({
     setShowLeaveModal(false);
   };
 
-  if (!project || !phase) {
-    return null;
-  }
-
-  const isPostingEnabled = getIsPostingEnabled(phase.data);
-
   const handleGoback = () => {
     if (isDirty) {
       setShowLeaveModal(true);
@@ -91,6 +87,14 @@ const FormBuilderTopBar = ({
       clHistory.push(builderConfig.goBackUrl || `/admin/projects/${projectId}`);
     }
   };
+
+  if (!project || !phase || !submissionCount) {
+    return null;
+  }
+
+  const isPostingEnabled = getIsPostingEnabled(phase.data);
+  const showAutosaveToggle =
+    submissionCount.data.attributes.totalSubmissions === 0;
 
   return (
     <Box

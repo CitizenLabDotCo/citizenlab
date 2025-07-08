@@ -19,11 +19,12 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
       }
     end
 
-    let(:mail) do
-      campaign = EmailCampaigns::Campaigns::EventRegistrationConfirmation.create!
-      command = { recipient: recipient, event_payload: event_payload }
-      described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now
-    end
+    let(:command) { { recipient: recipient, event_payload: event_payload } }
+    let(:campaign) { EmailCampaigns::Campaigns::EventRegistrationConfirmation.create! }
+    let(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let(:mail) { mailer.campaign_mail.deliver_now }
+
+    include_examples 'campaign delivery tracking'
 
     it 'has the correct subject' do
       event_title = event_attributes['title_multiloc'][recipient.locale]

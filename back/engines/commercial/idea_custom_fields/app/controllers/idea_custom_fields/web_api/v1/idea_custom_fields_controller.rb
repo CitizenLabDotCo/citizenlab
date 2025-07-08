@@ -39,6 +39,8 @@ module IdeaCustomFields
       service = IdeaCustomFieldsService.new(@custom_form)
       fields = if params[:copy] == 'true'
         service.duplicate_all_fields
+      elsif params[:public_fields] == 'true'
+        service.enabled_fields.select { |field| IdeaCustomFieldPolicy.new(current_user, field).show? }
       elsif @custom_form.custom_field_ids.present?
         authorized_ids = IdeaCustomFieldPolicy::Scope.new(pundit_user, @custom_form.custom_fields, @custom_form).resolve.ids
         service.all_fields.select { |field| authorized_ids.include? field.id }

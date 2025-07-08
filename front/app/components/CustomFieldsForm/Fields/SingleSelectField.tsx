@@ -4,6 +4,7 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 import styled, { useTheme } from 'styled-components';
 
+import useAreas from 'api/areas/useAreas';
 import { IFlatCustomField } from 'api/custom_fields/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -38,12 +39,22 @@ const SingleSelectField = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { watch } = useFormContext();
+  const { data: areas } = useAreas({});
 
   const value = watch(question.key);
 
   const options = useMemo(() => {
+    if (question.key === 'u_domicile') {
+      return [
+        ...(areas?.data || []).map((area) => ({
+          value: area.id,
+          label: localize(area.attributes.title_multiloc),
+        })),
+        { value: 'outside', label: formatMessage(messages.otherArea) },
+      ];
+    }
     return extractOptions(question, localize, question.random_option_ordering);
-  }, [question, localize]);
+  }, [question, localize, areas, formatMessage]);
 
   return (
     <>
@@ -78,6 +89,7 @@ const SingleSelectField = ({
                 key={option.value}
                 value={option.value}
                 label={option.label}
+                canDeselect
               />
             </StyledBox>
           ))}
