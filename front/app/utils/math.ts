@@ -7,11 +7,9 @@ export const roundPercentage = (num: number, denom: number, decimals = 0) => {
 };
 
 export const getRandomNumberString = (): string => {
-  let result = '';
-  for (let i = 1; i < 10; i++) {
-    result += Math.floor(Math.random() * 10).toString();
-  }
-  return result;
+  return Array.from({ length: 9 }, () => Math.floor(Math.random() * 10)).join(
+    ''
+  );
 };
 
 // See https://stackoverflow.com/a/13483710

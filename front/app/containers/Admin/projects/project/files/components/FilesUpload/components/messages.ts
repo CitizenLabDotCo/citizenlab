@@ -10,10 +10,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.upload',
     defaultMessage: 'Upload',
   },
-  confirmAndUploadFiles: {
-    id: 'app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles',
-    defaultMessage: 'Confirm and upload files',
-  },
   done: {
     id: 'app.containers.AdminPage.ProjectFiles.done',
     defaultMessage: 'Done',
