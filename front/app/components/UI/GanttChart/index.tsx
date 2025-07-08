@@ -54,7 +54,8 @@ const GanttChart = ({
   onItemLabelClick,
 }: GanttChartProps) => {
   const today = useMemo(() => new Date(), []);
-  const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('month');
+  const [selectedRange, setSelectedRange] =
+    useState<TimeRangeOption>('multiyear');
 
   const { startDate: initialStart, endDate: initialEnd } = getTimeRangeDates(
     selectedRange,
