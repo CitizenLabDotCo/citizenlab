@@ -24,7 +24,7 @@ RSpec.describe EmailCampaigns::Campaigns::YourInputInScreening do
     end
   end
 
-  describe 'before_send' do
+  describe 'filter' do
     it "doesn't block the campaign if the input is in prescreening status" do
       campaign = create(:your_input_in_screening_campaign)
       user = create(:user)
@@ -32,7 +32,7 @@ RSpec.describe EmailCampaigns::Campaigns::YourInputInScreening do
       proposal = create(:proposal, author: user, publication_status: 'submitted', idea_status:)
       activity = create(:activity, item: proposal, action: 'submitted', user: user)
 
-      expect(campaign.run_before_send_hooks(activity: activity)).to be_truthy
+      expect(campaign.run_filter_hooks(activity: activity)).to be_truthy
     end
 
     it "doesn't send the campaign if the input is not in prescreening status" do
@@ -41,7 +41,7 @@ RSpec.describe EmailCampaigns::Campaigns::YourInputInScreening do
       proposal = create(:proposal, author: user)
       activity = create(:activity, item: proposal, action: 'submitted', user: user)
 
-      expect(campaign.run_before_send_hooks(activity: activity)).to be_falsy
+      expect(campaign.run_filter_hooks(activity: activity)).to be_falsy
     end
   end
 end

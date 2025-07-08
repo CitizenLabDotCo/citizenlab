@@ -13,7 +13,7 @@ import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
 import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
-import CustomFieldsForm from 'components/CustomFieldsForm';
+import IdeationForm from 'components/CustomFieldsForm/IdeationForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -46,12 +46,12 @@ const IdeasNewIdeationForm = ({
   participationMethod,
 }: Props) => {
   const { data: phases } = usePhases(project.data.id);
-  const { data: phaseFromUrl } = usePhase(phaseId);
+  const { data: phase } = usePhase(phaseId);
   const isSmallerThanPhone = useBreakpoint('phone');
   const [usingMapView, setUsingMapView] = useState(false);
   const [searchParams] = useSearchParams();
   const selectedIdeaId = searchParams.get('selected_idea_id');
-  const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
+  const participationMethodConfig = getConfig(phase?.data, phases);
 
   const handleCloseDetail = () => {
     updateSearchParams({ selected_idea_id: null });
@@ -69,14 +69,14 @@ const IdeasNewIdeationForm = ({
     };
   }, []);
 
-  if (!participationMethodConfig) {
+  if (!participationMethodConfig || !phase) {
     return null;
   }
 
   const titleText = participationMethodConfig.getFormTitle?.({
     project: project.data,
     phases: phases?.data,
-    phaseFromUrl: phaseFromUrl?.data,
+    phaseFromUrl: phase.data,
   });
   const maxWidth = usingMapView ? '1100px' : '700px';
 
@@ -107,7 +107,7 @@ const IdeasNewIdeationForm = ({
                   top={isSmallerThanPhone ? '0' : '40px'}
                 >
                   {phaseId && (
-                    <NewIdeaHeading phaseId={phaseId} titleText={titleText} />
+                    <NewIdeaHeading phase={phase.data} titleText={titleText} />
                   )}
                 </Box>
                 <Box
@@ -124,7 +124,7 @@ const IdeasNewIdeationForm = ({
                     pb={isSmallerThanPhone ? '0' : '80px'}
                     display="flex"
                   >
-                    <CustomFieldsForm
+                    <IdeationForm
                       projectId={project.data.id}
                       phaseId={phaseId}
                       participationMethod={participationMethod}

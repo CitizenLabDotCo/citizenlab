@@ -14,6 +14,10 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Ideation',
     defaultMessage: 'Ideation',
   },
+  commonGround: {
+    id: 'app.containers.Admin.inspirationHub.commonGround',
+    defaultMessage: 'Common ground',
+  },
   information: {
     id: 'app.containers.Admin.inspirationHub.Information',
     defaultMessage: 'Information',

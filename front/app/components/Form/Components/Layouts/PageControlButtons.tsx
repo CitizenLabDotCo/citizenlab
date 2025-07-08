@@ -11,14 +11,19 @@ import {
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
+import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { getInputTerm } from 'api/phases/utils';
+import { IProject } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../../messages';
 
@@ -42,6 +47,18 @@ const BUTTON_MESSAGES: Record<PageVariant, MessageDescriptor> = {
   'after-submission': messages.backToProject,
 };
 
+const inputTermMessages: Record<string, MessageDescriptor> = {
+  idea: messages.viewYourIdea,
+  option: messages.viewYourOption,
+  project: messages.viewYourProject,
+  question: messages.viewYourQuestion,
+  issue: messages.viewYourIssue,
+  contribution: messages.viewYourContribution,
+  proposal: messages.viewYourProposal,
+  petition: messages.viewYourPetition,
+  initiative: messages.viewYourInitiative,
+};
+
 interface Props {
   handleNextAndSubmit: () => void;
   handlePrevious: () => void;
@@ -51,6 +68,8 @@ interface Props {
   phases: IPhaseData[] | undefined;
   currentPhase: IPhaseData | undefined;
   pageButtonLabelMultiloc?: Multiloc;
+  pageButtonLink?: string;
+  project: IProject | undefined;
 }
 
 const PageControlButtons = ({
@@ -61,40 +80,46 @@ const PageControlButtons = ({
   pageVariant,
   phases,
   pageButtonLabelMultiloc,
+  pageButtonLink,
   currentPhase,
+  project,
 }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const { data: authUser } = useAuthUser();
+  const userCanModerate = project
+    ? canModerateProject(project.data, authUser)
+    : false;
 
   const getButtonMessage = () => {
     if (pageVariant !== 'after-submission') {
       return formatMessage(BUTTON_MESSAGES[pageVariant]);
-    } else {
-      if (localize(pageButtonLabelMultiloc)) {
-        // Page is using a custom button label
-        return localize(pageButtonLabelMultiloc);
-      }
+    }
+
+    const customLabel = localize(pageButtonLabelMultiloc);
+    if (customLabel) {
+      return customLabel;
+    }
+
+    const participationMethod = currentPhase?.attributes.participation_method;
+
+    if (participationMethod === 'common_ground') {
+      // We redirect admins to the input manager to easily manage inputs
+      // and users to their own input.
+      const messageKey = userCanModerate
+        ? messages.backToInputManager
+        : messages.viewYourInput;
+      return formatMessage(messageKey);
+    }
+
+    if (participationMethod === 'native_survey') {
+      return formatMessage(messages.backToProject);
     }
 
     const inputTerm = getInputTerm(phases, currentPhase);
-
-    const inputTermMessages: Record<string, MessageDescriptor> = {
-      idea: messages.viewYourIdea,
-      option: messages.viewYourOption,
-      project: messages.viewYourProject,
-      question: messages.viewYourQuestion,
-      issue: messages.viewYourIssue,
-      contribution: messages.viewYourContribution,
-      proposal: messages.viewYourProposal,
-      petition: messages.viewYourPetition,
-      initiative: messages.viewYourInitiative,
-    };
-
-    return currentPhase?.attributes.participation_method === 'native_survey'
-      ? formatMessage(messages.backToProject)
-      : formatMessage(inputTermMessages[inputTerm]);
+    return formatMessage(inputTermMessages[inputTerm]);
   };
 
   return (
@@ -132,17 +157,31 @@ const PageControlButtons = ({
             <FormattedMessage {...messages.previous} />
           </Button>
         )}
-        <Button
-          onClick={handleNextAndSubmit}
-          data-cy={CY_DATA_VALUES[pageVariant]}
-          icon={ICON_VALUES[pageVariant]}
-          iconPos="right"
-          bgColor={theme.colors.tenantPrimary}
-          boxShadow={defaultStyles.boxShadow}
-          processing={isLoading}
-        >
-          {getButtonMessage()}
-        </Button>
+        {pageButtonLink ? (
+          <ButtonWithLink
+            data-cy={CY_DATA_VALUES[pageVariant]}
+            icon={ICON_VALUES[pageVariant]}
+            iconPos="right"
+            bgColor={theme.colors.tenantPrimary}
+            boxShadow={defaultStyles.boxShadow}
+            processing={isLoading}
+            linkTo={pageButtonLink}
+          >
+            {getButtonMessage()}
+          </ButtonWithLink>
+        ) : (
+          <Button
+            onClick={handleNextAndSubmit}
+            data-cy={CY_DATA_VALUES[pageVariant]}
+            icon={ICON_VALUES[pageVariant]}
+            iconPos="right"
+            bgColor={theme.colors.tenantPrimary}
+            boxShadow={defaultStyles.boxShadow}
+            processing={isLoading}
+          >
+            {getButtonMessage()}
+          </Button>
+        )}
       </Box>
     </Box>
   );
