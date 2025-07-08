@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "{years}y lewy",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "{years}y, aby rozpocząć",
   "app.containers.Admin.projects.all.new.folders": "Foldery",
+  "app.containers.Admin.projects.all.new.ordering": "Zamawianie",
   "app.containers.Admin.projects.all.new.projects": "Projekty",
   "app.containers.Admin.projects.all.new.timeline": "Oś czasu",
   "app.containers.Admin.projects.all.notes": "Uwagi",
