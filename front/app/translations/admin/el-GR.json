@@ -2184,7 +2184,7 @@
   "app.containers.AdminPage.ProjectFiles.addFile": "Προσθήκη αρχείου",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Added",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Delete file",
-  "app.containers.AdminPage.ProjectFiles.editFile": "Edit file",
+  "app.containers.AdminPage.ProjectFiles.editFile": "Επεξεργασία αρχείου",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "File",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Search files",
   "app.containers.AdminPage.ProjectFiles.typeTableHeader": "Type",
