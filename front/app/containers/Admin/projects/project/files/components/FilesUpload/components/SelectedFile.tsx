@@ -8,6 +8,7 @@ import {
   Spinner,
   colors,
   Select,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { CLError } from 'typings';
 
@@ -71,9 +72,51 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
       case 'uploaded':
         return <Icon name="check" fill={colors.green500} />;
       case 'error':
-        return <Icon name="close" fill={colors.red500} />;
+        return (
+          <Tooltip
+            content={
+              <Error
+                apiErrors={apiErrors}
+                showBackground={false}
+                showIcon={false}
+                padding="0px 0px"
+                marginTop="0px"
+                marginBottom="0px"
+              />
+            }
+          >
+            <Icon fill={colors.red500} name="info-outline" />
+          </Tooltip>
+        );
       case 'uploading':
-        return <Spinner />;
+        return (
+          <Box width="24px">
+            <Spinner size="24px" />
+          </Box>
+        );
+      case 'too_large':
+        return (
+          <Tooltip
+            content={
+              <Error
+                text={
+                  !apiErrors ? (
+                    <Text m="0px" color="red500" fontSize="s">
+                      {formatMessage(messages.fileSizeError)}
+                    </Text>
+                  ) : undefined
+                }
+                showBackground={false}
+                showIcon={false}
+                padding="0px 0px"
+                marginTop="0px"
+                marginBottom="0px"
+              />
+            }
+          >
+            <Icon fill={colors.red500} name="info-outline" />
+          </Tooltip>
+        );
       default:
         return null;
     }
@@ -85,9 +128,9 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
         display="flex"
         alignItems="center"
         justifyContent="space-between"
-        mb="4px"
+        mb="8px"
       >
-        <Box display="flex" alignItems="center" gap="8px">
+        <Box display="flex" alignItems="center" gap="4px">
           {renderIcon()}
           <Text
             my="4px"
@@ -117,23 +160,6 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
           />
         </Box>
       </Box>
-      {status === 'too_large' && (
-        <Error
-          text={
-            apiErrors ? (
-              <Text m="0px" color="red500" fontSize="s">
-                {formatMessage(messages.fileSizeError)}
-              </Text>
-            ) : undefined
-          }
-          apiErrors={apiErrors}
-          showBackground={false}
-          showIcon={false}
-          padding="0px 0px"
-          marginTop="0px"
-          marginBottom="0px"
-        />
-      )}
     </>
   );
 };
