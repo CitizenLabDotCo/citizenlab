@@ -11,6 +11,7 @@ import { useDropzone } from 'react-dropzone';
 import { useParams } from 'react-router-dom';
 
 import { useIntl } from 'utils/cl-intl';
+import { getRandomNumberString } from 'utils/math';
 
 import messages from '../messages';
 
@@ -29,34 +30,42 @@ const MAX_FILES = 35;
 const FilesUpload = ({ setModalOpen }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
+
   const [fileList, setFileList] = useState<FileWithMeta[]>([]);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [hasStartedUploading, setHasStartedUploading] = useState(false);
 
+  // Create a React dropzone with the specified options
   const { getRootProps, getInputProps, open } = useDropzone({
     multiple: true,
-    validator: () => null,
+    validator: () => null, // Allow all file types to be uploaded.
     onDrop: (acceptedFiles) => {
+      // First check if user is trying to drop more than the maximum allowed files
       if (acceptedFiles.length > MAX_FILES) {
-        setFileList([]);
-        setShowSuccessMessage(false);
+        // If so, alert the user and do not proceed with the upload
+        alert(
+          formatMessage(messages.tooManyFiles, {
+            maxFiles: MAX_FILES,
+          })
+        );
         return;
       }
 
       const filesWithInitialStatus = acceptedFiles.map((file) => ({
         file,
-        // Check if file size exceeds the limit first
+        // Next, check if any file size exceeds the limit and set the status accordingly.
+        // Otherwise, queue the file for upload by setting the status to 'queued'.
         status:
           file.size > MAX_FILE_SIZE ? 'too_large' : ('queued' as UploadStatus),
       }));
 
       setFileList(filesWithInitialStatus);
-      setShowSuccessMessage(false);
     },
   });
 
   const handleUpload = () => {
     setHasStartedUploading(true);
+    // Update the status of all queued files to 'uploading',
+    // which will trigger the upload process in the SelectedFile component.
     setFileList((prev) =>
       prev.map((file) =>
         file.status === 'queued' ? { ...file, status: 'uploading' } : file
@@ -64,9 +73,10 @@ const FilesUpload = ({ setModalOpen }: Props) => {
     );
   };
 
-  const allDone =
+  const finishedUploading =
     hasStartedUploading &&
     fileList.every((file) =>
+      // All files should have a status of either 'uploaded', 'error', or 'too_large'
       ['uploaded', 'error', 'too_large'].includes(file.status)
     );
 
@@ -80,10 +90,11 @@ const FilesUpload = ({ setModalOpen }: Props) => {
           <Box maxHeight="300px" overflowY="auto" mt="20px">
             {fileList.map((item) => (
               <SelectedFile
-                key={`${item.file.name}-${item.file.size}`}
+                key={`${item.file.name}-${getRandomNumberString()}`}
                 fileMeta={item}
                 projectId={projectId}
                 onStatusUpdate={(updatedStatus) => {
+                  // Update the status of the file in the list
                   setFileList((prev) =>
                     prev.map((file) =>
                       file.file === item.file
@@ -102,7 +113,7 @@ const FilesUpload = ({ setModalOpen }: Props) => {
               onChange={() => {}} // TODO: Implement onChange logic once BE implemented.
               label={
                 <Text ml="8px" m="0px" color="coolGrey600" fontSize="s">
-                  TODO: Add label once BE is implemented.
+                  TODO: Add label once Produce descides on copy.
                 </Text>
               }
             />
@@ -110,12 +121,11 @@ const FilesUpload = ({ setModalOpen }: Props) => {
 
           <FileUploadActions
             hasStartedUploading={hasStartedUploading}
-            allDone={allDone}
+            finishedUploading={finishedUploading}
             onUpload={handleUpload}
             onClose={() => {
               setFileList([]);
               setHasStartedUploading(false);
-              setShowSuccessMessage(false);
               setModalOpen(false);
             }}
           />
@@ -125,9 +135,6 @@ const FilesUpload = ({ setModalOpen }: Props) => {
           getRootProps={getRootProps}
           getInputProps={getInputProps}
           open={open}
-          showSuccessMessage={showSuccessMessage}
-          formatMessage={formatMessage}
-          messages={messages}
         />
       )}
     </>

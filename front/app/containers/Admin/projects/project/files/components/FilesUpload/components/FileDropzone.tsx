@@ -3,30 +3,27 @@ import React from 'react';
 import {
   Box,
   Button,
-  Success,
   Text,
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { DropzoneInputProps, DropzoneRootProps } from 'react-dropzone';
 
-const FileDropzone = ({
-  getRootProps,
-  getInputProps,
-  open,
-  showSuccessMessage,
-  formatMessage,
-  messages,
-}: {
-  getRootProps: any;
-  getInputProps: any;
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
+
+type Props = {
+  getRootProps: <T extends DropzoneRootProps>(props?: T) => T;
+  getInputProps: <T extends DropzoneInputProps>(props?: T) => T;
   open: () => void;
-  showSuccessMessage: boolean;
-  formatMessage: (msg: any) => string;
-  messages: Record<string, any>;
-}) => {
+};
+
+const FileDropzone = ({ getRootProps, getInputProps, open }: Props) => {
+  const { formatMessage } = useIntl();
   return (
     <>
-      TODO: Add some additional bullet points here.
+      TODO: Add some additional bullet points here once Product decides.
       <Box
         {...getRootProps()}
         p="20px"
@@ -49,15 +46,6 @@ const FileDropzone = ({
         />
         <input {...getInputProps()} />
       </Box>
-      {showSuccessMessage && (
-        <Box mt="24px">
-          <Success
-            text={formatMessage(messages.filesUploadedSuccessfully)}
-            showIcon={true}
-            showBackground={true}
-          />
-        </Box>
-      )}
     </>
   );
 };

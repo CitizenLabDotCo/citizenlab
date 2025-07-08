@@ -8,20 +8,20 @@ import messages from './messages';
 
 interface Props {
   hasStartedUploading: boolean;
-  allDone: boolean;
+  finishedUploading: boolean;
   onUpload: () => void;
   onClose: () => void;
 }
 
 const FileUploadActions = ({
   hasStartedUploading,
-  allDone,
+  finishedUploading,
   onUpload,
   onClose,
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  if (!allDone) {
+  if (!finishedUploading) {
     return (
       <Button
         buttonStyle="admin-dark"

@@ -38,8 +38,9 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
   // Ref to track if the upload has started
   const hasStarted = useRef(false);
 
-  // Effect hook to trigger the file upload process when the status is 'uploading'
+  // Effect hook to trigger the file upload process when the status becomes 'uploading'
   useEffect(() => {
+    // Function to handle the file upload
     const uploadFile = async () => {
       const base64 = await getBase64FromFile(file);
       await mutateAsync(
@@ -53,9 +54,11 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
             setApiErrors(errors.error);
             onStatusUpdate({ status: 'error' });
           },
+          onSuccess: () => {
+            onStatusUpdate({ status: 'uploaded' });
+          },
         }
       );
-      onStatusUpdate({ status: 'uploaded' });
     };
 
     // If the status has been set to 'uploading',
@@ -147,9 +150,9 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
         </Box>
         <Box minWidth="200px">
           <Select
-            value={semanticType}
+            value={semanticType} // TODO: Replace with actual semantic type once implemented.
             placeholder={formatMessage(messages.selectFileType)}
-            onChange={() => {}} // TODO: Implement onChange once SemanticFileType implemented.
+            onChange={() => {}} // TODO: Implement onChange and options once SemanticFileType implemented.
             options={[
               { value: 'type_1', label: 'Type 1' },
               { value: 'type_2', label: 'Type 2' },

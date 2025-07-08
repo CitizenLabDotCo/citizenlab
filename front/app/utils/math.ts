@@ -6,6 +6,14 @@ export const roundPercentage = (num: number, denom: number, decimals = 0) => {
   return Math.round((num / denom) * 100 * factor) / factor;
 };
 
+export const getRandomNumberString = (): string => {
+  let result = '';
+  for (let i = 1; i < 10; i++) {
+    result += Math.floor(Math.random() * 10).toString();
+  }
+  return result;
+};
+
 // See https://stackoverflow.com/a/13483710
 export const roundPercentages = (values: number[], decimals = 0): number[] => {
   const total = sum(values);

@@ -119,4 +119,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles',
     defaultMessage: 'Confirm and upload',
   },
+  tooManyFiles: {
+    id: 'app.containers.AdminPage.ProjectFiles.tooManyFiles',
+    defaultMessage:
+      'You can only upload a maximum of {maxFiles} files at a time.',
+  },
 });
