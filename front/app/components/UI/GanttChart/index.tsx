@@ -44,7 +44,7 @@ import {
   leftColumnWidth,
 } from './utils';
 
-export const GanttChart = ({
+const GanttChart = ({
   items,
   chartTitle,
   startDate: initialStartDate,
@@ -54,7 +54,7 @@ export const GanttChart = ({
   onItemLabelClick,
 }: GanttChartProps) => {
   const today = useMemo(() => new Date(), []);
-  const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('year');
+  const [selectedRange, setSelectedRange] = useState<TimeRangeOption>('month');
 
   const { startDate: initialStart, endDate: initialEnd } = getTimeRangeDates(
     selectedRange,
@@ -242,6 +242,21 @@ export const GanttChart = ({
       onTimelineScroll();
     }
   }, [timeGroups, visibleLabel, onTimelineScroll]);
+
+  useEffect(() => {
+    if (!timelineBodyRef.current || todayOffset === undefined) return;
+
+    // Wait for next paint cycle to ensure DOM is ready
+    const timer = setTimeout(() => {
+      const container = timelineBodyRef.current;
+      if (!container) return;
+
+      const scrollPos = todayOffset * unitW - container.clientWidth / 2;
+      container.scrollTo({ left: scrollPos, behavior: 'auto' });
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, [todayOffset, unitW, startDate, endDate, selectedRange]);
 
   const totalBodyHeight = timelineHeaderHeight + items.length * rowHeight;
 
