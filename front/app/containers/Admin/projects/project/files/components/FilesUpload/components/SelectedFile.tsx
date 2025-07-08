@@ -1,0 +1,141 @@
+// SelectedFile.tsx
+import React, { useEffect, useRef, useState } from 'react';
+
+import {
+  Box,
+  Icon,
+  Text,
+  Spinner,
+  colors,
+  Select,
+} from '@citizenlab/cl2-component-library';
+import { CLError } from 'typings';
+
+import useAddFile from 'api/files/useAddFile';
+
+import Error from 'components/UI/Error';
+
+import { useIntl } from 'utils/cl-intl';
+import { getBase64FromFile } from 'utils/fileUtils';
+
+import { FileWithMeta } from '../types';
+
+import messages from './messages';
+
+type Props = {
+  fileMeta: FileWithMeta;
+  projectId: string;
+  onStatusUpdate: (status: Partial<FileWithMeta>) => void;
+};
+
+const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
+  const { formatMessage } = useIntl();
+  const { mutateAsync } = useAddFile();
+  const { file, status, semanticType } = fileMeta;
+  const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
+
+  // Ref to track if the upload has started
+  const hasStarted = useRef(false);
+
+  // Effect hook to trigger the file upload process when the status is 'uploading'
+  useEffect(() => {
+    const uploadFile = async () => {
+      const base64 = await getBase64FromFile(file);
+      await mutateAsync(
+        {
+          content: base64,
+          project: projectId,
+          name: file.name,
+        },
+        {
+          onError: (errors) => {
+            setApiErrors(errors.error);
+            onStatusUpdate({ status: 'error' });
+          },
+        }
+      );
+      onStatusUpdate({ status: 'uploaded' });
+    };
+
+    // If the status has been set to 'uploading',
+    // and the upload has not started yet, initiate the upload.
+    if (status === 'uploading' && !hasStarted.current) {
+      hasStarted.current = true;
+      uploadFile();
+    }
+  }, [status, file, projectId, mutateAsync, onStatusUpdate]);
+
+  // Render the appropriate icon based on the file's upload status
+  const renderIcon = () => {
+    switch (status) {
+      case 'uploaded':
+        return <Icon name="check" fill={colors.green500} />;
+      case 'error':
+        return <Icon name="close" fill={colors.red500} />;
+      case 'uploading':
+        return <Spinner />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        mb="4px"
+      >
+        <Box display="flex" alignItems="center" gap="8px">
+          {renderIcon()}
+          <Text
+            my="4px"
+            color={
+              status === 'error' || status === 'too_large'
+                ? 'disabled'
+                : 'textSecondary'
+            }
+            maxWidth="200px"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+          >
+            {file.name}
+          </Text>
+        </Box>
+        <Box minWidth="200px">
+          <Select
+            value={semanticType}
+            onChange={() => {}} // TODO: Implement onChange once SemanticFileType implemented.
+            options={[
+              { value: 'type_1', label: 'Type 1' },
+              { value: 'type_2', label: 'Type 2' },
+            ]}
+            size="small"
+            disabled={status !== 'queued'}
+          />
+        </Box>
+      </Box>
+      {status === 'too_large' && (
+        <Error
+          text={
+            apiErrors ? (
+              <Text m="0px" color="red500" fontSize="s">
+                {formatMessage(messages.fileSizeError)}
+              </Text>
+            ) : undefined
+          }
+          apiErrors={apiErrors}
+          showBackground={false}
+          showIcon={false}
+          padding="0px 0px"
+          marginTop="0px"
+          marginBottom="0px"
+        />
+      )}
+    </>
+  );
+};
+
+export default SelectedFile;
