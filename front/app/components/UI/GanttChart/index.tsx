@@ -18,7 +18,6 @@ import { GanttChartProps } from './types';
 import {
   TimeRangeOption,
   getTimeRangeDates,
-  scrollTo,
   groupDayCellsByMonth,
   groupWeekCellsByYear,
   groupQuarterCellsByMonth,
@@ -56,21 +55,20 @@ const GanttChart = ({
   const today = useMemo(() => new Date(), []);
   const [selectedRange, setSelectedRange] =
     useState<TimeRangeOption>('multiyear');
-
-  const { startDate: initialStart, endDate: initialEnd } = getTimeRangeDates(
+  const { startDate: defaultStart, endDate: defaultEnd } = getTimeRangeDates(
     selectedRange,
     today
   );
-
   const [startDate, setStartDate] = useState<Date>(
-    initialStartDate || initialStart
+    initialStartDate || defaultStart
   );
-  const [endDate, setEndDate] = useState<Date>(initialEndDate || initialEnd);
+  const [endDate, setEndDate] = useState<Date>(initialEndDate || defaultEnd);
+
   const [isLoading, setIsLoading] = useState(false);
   const [visibleLabel, setVisibleLabel] = useState<string>('');
-
   const timelineBodyRef = useRef<HTMLDivElement>(null);
   const scrollState = useRef({ scrollLeft: 0, scrollWidth: 0 });
+  const didInitialScroll = useRef(false);
   const rangeChanged = useRef(true);
 
   const viewConfig = useMemo(
@@ -136,65 +134,62 @@ const GanttChart = ({
   );
 
   const getOffsetForView = useCallback(
-    (date: Date) => {
-      if (selectedRange === 'quarter') {
-        return (getOffset as (cells: Date[], date: Date) => number)(
-          flatTimeCells,
-          date
-        );
-      }
-      return (getOffset as (date: Date) => number)(date);
-    },
+    (date: Date) =>
+      selectedRange === 'quarter'
+        ? (getOffset as (cells: Date[], date: Date) => number)(
+            flatTimeCells,
+            date
+          )
+        : (getOffset as (date: Date) => number)(date),
     [selectedRange, getOffset, flatTimeCells]
   );
 
   const getDurationForView = useCallback(
-    (start: Date, end: Date) => {
-      if (selectedRange === 'quarter') {
-        return (getDuration as (cells: Date[], s: Date, e: Date) => number)(
-          flatTimeCells,
-          start,
-          end
-        );
-      }
-      return (getDuration as (s: Date, e: Date) => number)(start, end);
-    },
+    (start: Date, end: Date) =>
+      selectedRange === 'quarter'
+        ? (getDuration as (cells: Date[], s: Date, e: Date) => number)(
+            flatTimeCells,
+            start,
+            end
+          )
+        : (getDuration as (s: Date, e: Date) => number)(start, end),
     [selectedRange, getDuration, flatTimeCells]
   );
 
   const todayOffset = useMemo(() => {
     if (!showTodayLine) return undefined;
     let offset = getOffsetForView(today);
-    if (selectedRange === 'month') {
-      offset += 0.5;
-    }
+    if (selectedRange === 'month') offset += 0.5;
     return offset;
   }, [getOffsetForView, showTodayLine, today, selectedRange]);
 
+  // preserve scroll position when we prepend months
   useLayoutEffect(() => {
-    if (timelineBodyRef.current && scrollState.current.scrollWidth > 0) {
-      const newWidth = timelineBodyRef.current.scrollWidth;
-      const added = newWidth - scrollState.current.scrollWidth;
-      timelineBodyRef.current.scrollLeft =
-        scrollState.current.scrollLeft + added;
+    const el = timelineBodyRef.current;
+    if (el && scrollState.current.scrollWidth > 0) {
+      const newW = el.scrollWidth;
+      const diff = newW - scrollState.current.scrollWidth;
+      el.scrollLeft = scrollState.current.scrollLeft + diff;
       scrollState.current.scrollWidth = 0;
     }
   }, [startDate]);
 
+  // infinite scroll handler
   const onTimelineScroll = useCallback(() => {
-    if (!timelineBodyRef.current || isLoading) return;
-    const { scrollLeft, scrollWidth, clientWidth } = timelineBodyRef.current;
+    const timelineEl = timelineBodyRef.current;
+    if (!timelineEl || isLoading) return;
+    const { scrollLeft, scrollWidth, clientWidth } = timelineEl;
 
+    // update visible label
     let cumulativeWidth = 0;
     for (const group of timeGroups) {
       cumulativeWidth += group.totalWidth;
       if (cumulativeWidth >= scrollLeft) {
-        if (group.label !== visibleLabel) {
-          setVisibleLabel(group.label);
-        }
+        if (group.label !== visibleLabel) setVisibleLabel(group.label);
         break;
       }
     }
+
     const buffer = 800;
     if (scrollLeft + clientWidth >= scrollWidth - buffer) {
       setIsLoading(true);
@@ -210,54 +205,49 @@ const GanttChart = ({
   }, [isLoading, timeGroups, visibleLabel]);
 
   const scrollToToday = useCallback(() => {
-    const offset = getOffsetForView(today);
-    if (timelineBodyRef.current && timelineBodyRef.current.scrollWidth > 0) {
-      scrollTo(timelineBodyRef, offset, unitW);
-    }
-  }, [getOffsetForView, today, unitW]);
+    const timelineEl = timelineBodyRef.current;
+    if (!timelineEl || todayOffset === undefined) return;
+    // Center today in view
+    const position = todayOffset * unitW - timelineEl.clientWidth / 2;
+    timelineEl.scrollTo({ left: position, behavior: 'auto' });
+  }, [todayOffset, unitW]);
+
+  // Mount-only scroll: waits until timeGroups to exist, then fires once
+  useEffect(() => {
+    if (didInitialScroll.current || timeGroups.length === 0) return;
+    const el = timelineBodyRef.current;
+    if (!el) return;
+
+    didInitialScroll.current = true;
+    // wait a paint for layout
+    requestAnimationFrame(() => {
+      scrollToToday();
+    });
+  }, [scrollToToday, timeGroups.length]);
+
+  // Scroll when the user switches range
+  useEffect(() => {
+    if (!rangeChanged.current) return;
+    const timer = setTimeout(() => {
+      scrollToToday();
+      rangeChanged.current = false;
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [startDate, endDate, scrollToToday]);
 
   const handleRangeChange = (range: TimeRangeOption) => {
     rangeChanged.current = true;
     setSelectedRange(range);
-    const { startDate: newStart, endDate: newEnd } = getTimeRangeDates(
-      range,
-      today
-    );
-    setStartDate(newStart);
-    setEndDate(newEnd);
+    const { startDate: ns, endDate: ne } = getTimeRangeDates(range, today);
+    setStartDate(ns);
+    setEndDate(ne);
   };
-
-  useEffect(() => {
-    if (rangeChanged.current) {
-      const timer = setTimeout(() => {
-        scrollToToday();
-        rangeChanged.current = false;
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-    return undefined;
-  }, [startDate, endDate, scrollToToday]);
 
   useEffect(() => {
     if (timeGroups.length > 0 && visibleLabel === '') {
       onTimelineScroll();
     }
   }, [timeGroups, visibleLabel, onTimelineScroll]);
-
-  useEffect(() => {
-    if (!timelineBodyRef.current || todayOffset === undefined) return;
-
-    // Wait for next paint cycle to ensure DOM is ready
-    const timer = setTimeout(() => {
-      const container = timelineBodyRef.current;
-      if (!container) return;
-
-      const scrollPos = todayOffset * unitW - container.clientWidth / 2;
-      container.scrollTo({ left: scrollPos, behavior: 'auto' });
-    }, 50);
-
-    return () => clearTimeout(timer);
-  }, [todayOffset, unitW, startDate, endDate, selectedRange]);
 
   const totalBodyHeight = timelineHeaderHeight + items.length * rowHeight;
 
@@ -286,7 +276,6 @@ const GanttChart = ({
         />
       </Box>
 
-      {/* This container needs position:relative for the absolute positioning of the header */}
       <Box display="flex" position="relative">
         <Box
           width={`${leftColumnWidth}px`}
