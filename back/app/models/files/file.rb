@@ -15,8 +15,10 @@
 #
 # Indexes
 #
-#  index_files_on_size         (size)
-#  index_files_on_uploader_id  (uploader_id)
+#  index_files_on_mime_type      (mime_type)
+#  index_files_on_name_gin_trgm  (name) USING gin
+#  index_files_on_size           (size)
+#  index_files_on_uploader_id    (uploader_id)
 #
 # Foreign Keys
 #

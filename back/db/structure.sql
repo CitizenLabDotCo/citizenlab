@@ -304,6 +304,8 @@ DROP INDEX IF EXISTS public.index_files_projects_on_file_id_and_project_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_file_id;
 DROP INDEX IF EXISTS public.index_files_on_uploader_id;
 DROP INDEX IF EXISTS public.index_files_on_size;
+DROP INDEX IF EXISTS public.index_files_on_name_gin_trgm;
+DROP INDEX IF EXISTS public.index_files_on_mime_type;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
 DROP INDEX IF EXISTS public.index_events_on_location_point;
 DROP INDEX IF EXISTS public.index_events_attendances_on_updated_at;
@@ -1461,7 +1463,10 @@ CREATE TABLE public.email_campaigns_campaigns (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     deliveries_count integer DEFAULT 0 NOT NULL,
-    context_id uuid
+    context_id uuid,
+    title_multiloc jsonb DEFAULT '{}'::jsonb,
+    intro_multiloc jsonb DEFAULT '{}'::jsonb,
+    button_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -5209,6 +5214,20 @@ CREATE INDEX index_events_on_project_id ON public.events USING btree (project_id
 
 
 --
+-- Name: index_files_on_mime_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_on_mime_type ON public.files USING btree (mime_type);
+
+
+--
+-- Name: index_files_on_name_gin_trgm; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_on_name_gin_trgm ON public.files USING gin (name shared_extensions.gin_trgm_ops);
+
+
+--
 -- Name: index_files_on_size; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7418,13 +7437,16 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250708085259'),
 ('20250627113458'),
 ('20250626072615'),
 ('20250624134747'),
 ('20250624102147'),
 ('20250618151933'),
+('20250616142444'),
 ('20250610112901'),
 ('20250609151800'),
+('20250606074930'),
 ('20250605090517'),
 ('20250603161856'),
 ('20250528153448'),
