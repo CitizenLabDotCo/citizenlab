@@ -95,6 +95,7 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Datganiadau",
   "app.components.CommunityMonitorModal.formError": "Wedi dod ar draws gwall.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Mae’r arolwg parhaus hwn yn olrhain sut rydych chi’n teimlo am lywodraethu a gwasanaethau cyhoeddus.",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Yn cymryd <1 munud} one {Yn cymryd 1 munud} other {Yn cymryd # munud}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "Mae e-bost gyda chod cadarnhau wedi'i anfon at {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Newidiwch eich e-bost.",
   "app.components.ConfirmationModal.codeInput": "Côd",
