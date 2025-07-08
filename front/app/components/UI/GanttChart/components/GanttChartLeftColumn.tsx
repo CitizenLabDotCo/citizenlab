@@ -37,6 +37,7 @@ const GanttChartLeftColumn = ({
         >
           <Button
             buttonStyle="text"
+            textDecorationHover="underline"
             justify="left"
             onClick={
               onItemLabelClick ? () => onItemLabelClick(item) : undefined
@@ -61,7 +62,7 @@ const GanttChartLeftColumn = ({
                 variant="bodyS"
                 overflow="hidden"
               >
-                {item.title}
+                {item.title}rerere
               </Text>
             </Box>
           </Button>
