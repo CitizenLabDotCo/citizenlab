@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "{years}y į kairę",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "{years}y pradėti",
   "app.containers.Admin.projects.all.new.folders": "Aplankalai",
+  "app.containers.Admin.projects.all.new.ordering": "Užsakymas",
   "app.containers.Admin.projects.all.new.projects": "Projektai",
   "app.containers.Admin.projects.all.new.timeline": "Laiko juosta",
   "app.containers.Admin.projects.all.notes": "Pastabos",
