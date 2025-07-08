@@ -8,7 +8,7 @@ module EmailCampaigns
 
     def preview_campaign_mail(campaign_class)
       campaign = campaign_class.new
-      command = campaign.mailer_class.preview_command(recipient: recipient_user)
+      command = campaign.preview_command(recipient_user)
       campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end
 
