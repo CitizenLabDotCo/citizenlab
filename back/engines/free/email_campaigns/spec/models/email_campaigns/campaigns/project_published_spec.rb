@@ -34,12 +34,12 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectPublished do
     let(:campaign) { create(:project_published_campaign) }
     let(:project) { create(:project, unlisted: false) }
     let(:notification) { create(:project_published, project: project) }
-    let(:activity) do 
+    let(:activity) do
       create(
-        :activity, 
-        action: 'created', 
+        :activity,
+        action: 'created',
         item_id: notification.id,
-        item_type: 'Notifications::ProjectPublished' 
+        item_type: 'Notifications::ProjectPublished'
       )
     end
 
