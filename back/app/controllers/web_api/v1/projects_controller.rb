@@ -169,7 +169,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def index_for_admin
-    # In this widget, we always want to include unlisted projects.
+    # In this endpoint, we always want to include unlisted projects.
     policy_context[:apply_listed_scope] = true
 
     projects = policy_scope(Project).not_hidden
