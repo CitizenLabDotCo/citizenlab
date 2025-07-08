@@ -14,11 +14,6 @@ export default defineMessages({
     defaultMessage:
       'The maximum number of event registrations has been reached. There are no spots left.',
   },
-  maxAttendeesReached: {
-    id: 'app.components.EventAttendanceButton.maxAttendeesReached',
-    defaultMessage:
-      'The maximum number of attendees has been reached. There are no spots left.',
-  },
   seeYouThereName: {
     id: 'app.components.EventAttendanceButton.seeYouThereName',
     defaultMessage: 'See you there, {userFirstName}!',

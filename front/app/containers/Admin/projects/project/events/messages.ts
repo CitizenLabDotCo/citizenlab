@@ -228,14 +228,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.exportRegistrants',
     defaultMessage: 'Export registrants',
   },
-  attendees: {
-    id: 'app.containers.AdminPage.ProjectEvents.attendees',
-    defaultMessage: 'attendees',
-  },
-  attendee: {
-    id: 'app.containers.AdminPage.ProjectEvents.attendee',
-    defaultMessage: 'attendee',
-  },
   registrants: {
     id: 'app.containers.AdminPage.ProjectEvents.registrants',
     defaultMessage: 'registrants',
