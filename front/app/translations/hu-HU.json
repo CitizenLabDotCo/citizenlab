@@ -176,8 +176,6 @@
   "app.components.ErrorBoundary.openFormText": "segítsen kitalálni",
   "app.components.ErrorToast.budgetExceededError": "Nincs elég költségvetése",
   "app.components.ErrorToast.votesExceededError": "Nincs elég szavazatod",
-  "app.components.EventAttendanceButton.attend": "Részt vesz",
-  "app.components.EventAttendanceButton.attending": "Részt vesz",
   "app.components.EventAttendanceButton.forwardToFriend": "Továbbítás egy barátnak",
   "app.components.EventAttendanceButton.seeYouThere": "Találkozunk ott!",
   "app.components.EventAttendanceButton.seeYouThereName": "Találkozunk ott, {userFirstName}!",

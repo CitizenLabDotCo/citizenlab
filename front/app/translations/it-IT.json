@@ -176,8 +176,6 @@
   "app.components.ErrorBoundary.openFormText": "aiutaci a capirlo",
   "app.components.ErrorToast.budgetExceededError": "Non hai un budget sufficiente",
   "app.components.ErrorToast.votesExceededError": "Non hai abbastanza voti a disposizione",
-  "app.components.EventAttendanceButton.attend": "Partecipa",
-  "app.components.EventAttendanceButton.attending": "Partecipare",
   "app.components.EventAttendanceButton.forwardToFriend": "Inoltra ad un amico",
   "app.components.EventAttendanceButton.seeYouThere": "Ci vediamo lì!",
   "app.components.EventAttendanceButton.seeYouThereName": "Ci vediamo lì, {userFirstName}!",

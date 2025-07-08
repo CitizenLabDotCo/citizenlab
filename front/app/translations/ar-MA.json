@@ -176,8 +176,6 @@
   "app.components.ErrorBoundary.openFormText": "ساعدنا في تحديد الخلل",
   "app.components.ErrorToast.budgetExceededError": "ليس لديك ميزانية كافية",
   "app.components.ErrorToast.votesExceededError": "ليس لديك ما يكفي من الأصوات المتبقية",
-  "app.components.EventAttendanceButton.attend": "يحضر",
-  "app.components.EventAttendanceButton.attending": "حضور",
   "app.components.EventAttendanceButton.forwardToFriend": "إرسال إلى صديق",
   "app.components.EventAttendanceButton.seeYouThere": "اراك هناك!",
   "app.components.EventAttendanceButton.seeYouThereName": "أراك هناك ، {userFirstName}!",

@@ -176,8 +176,6 @@
   "app.components.ErrorBoundary.openFormText": "hjælp os med at løse problemet",
   "app.components.ErrorToast.budgetExceededError": "Du har ikke nok budget",
   "app.components.ErrorToast.votesExceededError": "Du har ikke nok stemmer tilbage",
-  "app.components.EventAttendanceButton.attend": "Deltag",
-  "app.components.EventAttendanceButton.attending": "Deltager",
   "app.components.EventAttendanceButton.forwardToFriend": "Videresend til en ven",
   "app.components.EventAttendanceButton.seeYouThere": "Vi ses der!",
   "app.components.EventAttendanceButton.seeYouThereName": "Vi ses der, {userFirstName}!",

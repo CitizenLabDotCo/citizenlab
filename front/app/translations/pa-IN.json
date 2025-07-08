@@ -176,8 +176,6 @@
   "app.components.ErrorBoundary.openFormText": "ਇਸਦਾ ਪਤਾ ਲਗਾਉਣ ਵਿੱਚ ਸਾਡੀ ਮਦਦ ਕਰੋ",
   "app.components.ErrorToast.budgetExceededError": "ਤੁਹਾਡੇ ਕੋਲ ਲੋੜੀਂਦਾ ਬਜਟ ਨਹੀਂ ਹੈ",
   "app.components.ErrorToast.votesExceededError": "ਤੁਹਾਡੇ ਕੋਲ ਲੋੜੀਂਦੀਆਂ ਵੋਟਾਂ ਨਹੀਂ ਬਚੀਆਂ ਹਨ",
-  "app.components.EventAttendanceButton.attend": "ਹਾਜ਼ਰ ਹੋਵੋ",
-  "app.components.EventAttendanceButton.attending": "ਹਾਜ਼ਰ ਹੋ ਰਿਹਾ ਹੈ",
   "app.components.EventAttendanceButton.forwardToFriend": "ਇੱਕ ਦੋਸਤ ਨੂੰ ਅੱਗੇ",
   "app.components.EventAttendanceButton.seeYouThere": "ਉੱਥੇ ਮਿਲਦੇ ਹਾਂ!",
   "app.components.EventAttendanceButton.seeYouThereName": "ਉੱਥੇ ਮਿਲਦੇ ਹਾਂ, {userFirstName}!",

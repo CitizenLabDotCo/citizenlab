@@ -176,8 +176,6 @@
   "app.components.ErrorBoundary.openFormText": "palīdziet mums to noskaidrot",
   "app.components.ErrorToast.budgetExceededError": "Jums nav pietiekama budžeta",
   "app.components.ErrorToast.votesExceededError": "Jums vairs nav pietiekami daudz balsu",
-  "app.components.EventAttendanceButton.attend": "Apmeklējiet",
-  "app.components.EventAttendanceButton.attending": "Apmeklējot",
   "app.components.EventAttendanceButton.forwardToFriend": "Pārsūtīšana draugam",
   "app.components.EventAttendanceButton.seeYouThere": "Uz tikšanos!",
   "app.components.EventAttendanceButton.seeYouThereName": "Uz tikšanos, {userFirstName}!",
