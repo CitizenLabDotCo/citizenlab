@@ -6,12 +6,12 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-interface Props {
+type Props = {
   hasStartedUploading: boolean;
   finishedUploading: boolean;
   onUpload: () => void;
   onClose: () => void;
-}
+};
 
 const FileUploadActions = ({
   hasStartedUploading,
