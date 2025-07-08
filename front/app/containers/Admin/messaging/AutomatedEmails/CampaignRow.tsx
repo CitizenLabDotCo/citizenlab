@@ -32,6 +32,7 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
   const [isNewPhaseModalOpen, setIsNewPhaseModalOpen] = useState(false);
   const { mutate: updateCampaign } = useUpdateCampaign();
   const toggleEnabled = () => {
+    // TODO: Create if not context campaign but on context
     updateCampaign({
       id: campaign.id,
       campaign: {
@@ -44,7 +45,11 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
   };
   const handleOnEnabledToggle = () => {
     // Not abstracting yet since it is one scenario for now. If we need more, we can abstract it to handle more confirmations
-    if (campaign.attributes.campaign_name === 'project_phase_started') {
+    if (
+      campaign.attributes.campaign_name === 'project_phase_started' &&
+      !campaign.relationships.context
+    ) {
+      // TODO: Use context property, not relationship
       setIsNewPhaseModalOpen(true);
     } else {
       toggleEnabled();
@@ -66,7 +71,7 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
       />
       <ListItem p="8px 0">
         <Box display="flex" alignItems="center">
-          <Toggle
+          <Toggle // TODO: Disable toggle if context but disabled on global + info box
             disabled={isUndefined(campaign.attributes.enabled)}
             checked={
               isUndefined(campaign.attributes.enabled) ||

@@ -59,6 +59,9 @@ export interface ICampaignData {
     author: {
       data: IRelationship;
     };
+    context?: {
+      data: IRelationship;
+    };
     groups: {
       data: IRelationship[];
     };
