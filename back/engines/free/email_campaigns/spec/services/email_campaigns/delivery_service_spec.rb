@@ -183,7 +183,6 @@ describe EmailCampaigns::DeliveryService do
       end
     end
 
-    # TODO: 3 failing tests here
     context 'Automated Campaigns' do
       EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.each do |campaign_class|
         it "returns preview details for #{campaign_class}" do

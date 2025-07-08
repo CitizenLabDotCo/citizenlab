@@ -24,7 +24,7 @@ module EmailCampaigns
           idea_author_name: data.author.display_name,
           idea_cosponsor_name: data.initiator.display_name,
           idea_url: data.idea.url,
-          idea_image_medium_url: data.idea.url # TODO: Add a proper image URL for the idea
+          idea_image_medium_url: data.placeholder_image_url
         }
       }
     end
