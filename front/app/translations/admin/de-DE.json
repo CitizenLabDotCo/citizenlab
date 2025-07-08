@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "noch {years} Jahre",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "noch {years} Jahre bis zum Start",
   "app.containers.Admin.projects.all.new.folders": "Ordner",
+  "app.containers.Admin.projects.all.new.ordering": "Bestellung",
   "app.containers.Admin.projects.all.new.projects": "Projekte",
   "app.containers.Admin.projects.all.new.timeline": "Zeitleiste",
   "app.containers.Admin.projects.all.notes": "Anmerkungen",
