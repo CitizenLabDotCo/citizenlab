@@ -224,9 +224,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.attend',
     defaultMessage: 'Attend',
   },
-  exportAttendees: {
-    id: 'app.containers.AdminPage.ProjectEvents.exportAttendees',
-    defaultMessage: 'Export attendees',
+  exportRegistrants: {
+    id: 'app.containers.AdminPage.ProjectEvents.exportRegistrants',
+    defaultMessage: 'Export registrants',
   },
   attendees: {
     id: 'app.containers.AdminPage.ProjectEvents.attendees',
@@ -235,6 +235,14 @@ export default defineMessages({
   attendee: {
     id: 'app.containers.AdminPage.ProjectEvents.attendee',
     defaultMessage: 'attendee',
+  },
+  registrants: {
+    id: 'app.containers.AdminPage.ProjectEvents.registrants',
+    defaultMessage: 'registrants',
+  },
+  registrant: {
+    id: 'app.containers.AdminPage.ProjectEvents.registrant',
+    defaultMessage: 'registrant',
   },
   eventImageAltTextTitle: {
     id: 'app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle',
