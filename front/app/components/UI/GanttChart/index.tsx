@@ -112,7 +112,7 @@ const GanttChart = ({
   );
 
   const {
-    unitWidth: unitW,
+    unitWidth: unitWidth,
     getGroups,
     getFlatCells,
     getOffset,
@@ -203,9 +203,9 @@ const GanttChart = ({
     const timelineEl = timelineBodyRef.current;
     if (!timelineEl || todayOffset === undefined) return;
     // Center today in view
-    const position = todayOffset * unitW - timelineEl.clientWidth / 2;
+    const position = todayOffset * unitWidth - timelineEl.clientWidth / 2;
     timelineEl.scrollTo({ left: position, behavior: 'auto' });
-  }, [todayOffset, unitW]);
+  }, [todayOffset, unitWidth]);
 
   // Mount-only scroll: waits until timeGroups to exist, then fires once
   useEffect(() => {
@@ -310,7 +310,7 @@ const GanttChart = ({
                 bg={colors.primary}
                 zIndex="2"
                 style={{
-                  left: `${todayOffset * unitW - 1}px`,
+                  left: `${todayOffset * unitWidth - 1}px`,
                   pointerEvents: 'none',
                 }}
               >
@@ -331,7 +331,7 @@ const GanttChart = ({
               viewBounds={{ left: startDate, right: endDate }}
               getOffset={getOffsetForView}
               getDuration={getDurationForView}
-              unitW={unitW}
+              unitWidth={unitWidth}
               renderItemTooltip={renderItemTooltip}
             />
           </Box>

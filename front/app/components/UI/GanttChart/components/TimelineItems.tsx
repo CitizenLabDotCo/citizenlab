@@ -13,7 +13,7 @@ interface TimelineItemsProps {
   viewBounds: ViewBounds;
   getOffset: (date: Date) => number;
   getDuration: (start: Date, end: Date) => number;
-  unitW: number;
+  unitWidth: number;
   renderItemTooltip?: (item: GanttItem) => ReactNode;
 }
 
@@ -22,7 +22,7 @@ const TimelineItems = ({
   viewBounds,
   getOffset,
   getDuration,
-  unitW,
+  unitWidth,
   renderItemTooltip,
 }: TimelineItemsProps) => (
   <Box
@@ -41,7 +41,7 @@ const TimelineItems = ({
         viewBounds={viewBounds}
         getOffset={getOffset}
         getDuration={getDuration}
-        unitW={unitW}
+        unitWidth={unitWidth}
         renderItemTooltip={renderItemTooltip}
       />
     ))}

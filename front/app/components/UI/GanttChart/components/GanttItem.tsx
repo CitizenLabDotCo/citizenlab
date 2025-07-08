@@ -15,7 +15,7 @@ interface GanttItemProps {
   viewBounds: ViewBounds;
   getOffset: (date: Date) => number;
   getDuration: (start: Date, end: Date) => number;
-  unitW: number;
+  unitWidth: number;
   renderItemTooltip?: (item: GanttItem) => React.ReactNode;
 }
 
@@ -25,7 +25,7 @@ const GanttItem = ({
   viewBounds,
   getOffset,
   getDuration,
-  unitW,
+  unitWidth,
   renderItemTooltip,
 }: GanttItemProps) => {
   const start = item.start ? new Date(item.start) : undefined;
@@ -58,6 +58,30 @@ const GanttItem = ({
     textInHighlight = startTs >= highlightStartTs && startTs < highlightEndTs;
   }
 
+  // Determines the visible starting date of the highlight. It's the later of
+  // two dates: the start of the highlight period or the start of the visible Gantt bar.
+  const highlightVisibleStart = highlightStart
+    ? max([effectiveStart, highlightStart])
+    : null;
+
+  // Determines the visible ending date of the highlight. It's the earlier of
+  // the highlight's end date or the end of the visible Gantt bar.
+  const highlightVisibleEnd = highlightEnd
+    ? min([effectiveEnd, highlightEnd])
+    : min([effectiveEnd, viewBounds.right]);
+
+  // Calculates the highlight's starting position in pixels, relative to the
+  // left edge of the parent Gantt bar.
+  const highlightStartPx = highlightVisibleStart
+    ? (getOffset(highlightVisibleStart) - startOffset) * unitWidth
+    : 0;
+
+  // Calculates the highlight's total width in pixels based on its
+  // visible start and end dates.
+  const highlightWidthPx = highlightVisibleStart
+    ? getDuration(highlightVisibleStart, highlightVisibleEnd) * unitWidth
+    : 0;
+
   return (
     <Tooltip
       placement="bottom"
@@ -69,8 +93,8 @@ const GanttItem = ({
       <Box
         position="absolute"
         top={`${index * rowHeight + 4}px`}
-        left={`${startOffset * unitW}px`}
-        width={`${duration * unitW}px`}
+        left={`${startOffset * unitWidth}px`}
+        width={`${duration * unitWidth}px`}
         height={`${rowHeight - 8}px`}
       >
         <Box
@@ -85,17 +109,8 @@ const GanttItem = ({
           {highlightStart && (
             <Box
               position="absolute"
-              left={`${
-                (getOffset(max([effectiveStart, highlightStart])) -
-                  startOffset) *
-                unitW
-              }px`}
-              width={`${
-                getDuration(
-                  max([effectiveStart, highlightStart]),
-                  min([effectiveEnd, highlightEnd || viewBounds.right])
-                ) * unitW
-              }px`}
+              left={`${highlightStartPx}px`}
+              width={`${highlightWidthPx}px`}
               height="100%"
               bg={colors.teal50}
               border={`1px solid ${colors.teal400}`}
