@@ -100,7 +100,8 @@ const AdminProjectEventEdit = () => {
 
   const [registerButtonOptionsVisible, setRegisterButtonOptionsVisible] =
     useState(false);
-  const [registrationLimitVisible, setRegistrationLimitVisible] = useState(false);
+  const [registrationLimitVisible, setRegistrationLimitVisible] =
+    useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     event?.data.attributes.location_point_geojson || null
@@ -811,7 +812,7 @@ const AdminProjectEventEdit = () => {
                         valueMultiloc={eventAttrs.attend_button_multiloc}
                         onChange={handleCustomButtonMultilocOnChange}
                         labelTooltipText={formatMessage(
-                          messages.customButtonTextTooltip
+                          messages.customButtonTextTooltip3
                         )}
                         maxCharCount={28}
                       />
@@ -858,7 +859,7 @@ const AdminProjectEventEdit = () => {
                           ? // TODO: Fix this the next time the file is edited.
                             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                             eventAttrs?.attend_button_multiloc[locale]
-                          : formatMessage(messages.attend)}
+                          : formatMessage(messages.register)}
                       </ButtonWithLink>
                     </Box>
                   )}

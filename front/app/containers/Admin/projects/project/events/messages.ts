@@ -202,10 +202,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.customButtonText',
     defaultMessage: 'Custom button text',
   },
-  customButtonTextTooltip: {
-    id: 'app.containers.AdminPage.ProjectEvents.customButtonTextTooltip2',
+  customButtonTextTooltip3: {
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonTextTooltip3',
     defaultMessage:
-      'Set the button text to a value other than "Attend" when an external URL is set.',
+      'Set the button text to a value other than "Register" when an external URL is set.',
   },
   customButtonLink: {
     id: 'app.containers.AdminPage.ProjectEvents.customButtonLink',
@@ -220,9 +220,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.preview',
     defaultMessage: 'Preview',
   },
-  attend: {
-    id: 'app.containers.AdminPage.ProjectEvents.attend',
-    defaultMessage: 'Attend',
+  register: {
+    id: 'app.containers.AdminPage.ProjectEvents.register',
+    defaultMessage: 'Register',
   },
   exportRegistrants: {
     id: 'app.containers.AdminPage.ProjectEvents.exportRegistrants',
