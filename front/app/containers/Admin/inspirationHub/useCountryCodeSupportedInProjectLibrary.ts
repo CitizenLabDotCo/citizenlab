@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
@@ -10,24 +8,9 @@ const useCountryCodeSupportedInProjectLibrary = () => {
     ? coreSettings(appConfiguration.data).country_code
     : null;
 
-  // If the project library countries fetch fails,
-  // react-query will retry the request indefinitely for some reason.
-  // This piece of state is used to prevent that.
-  // I tried using the `retry` option that react-query provides,
-  // but it didn't work for some reason.
-  const [fetchedWithError, setFetchedWithError] = useState(false);
-  const { data: projectLibraryCountries, error } = useProjectLibraryCountries({
-    enabled: !fetchedWithError,
-  });
+  const { data: projectLibraryCountries, error } = useProjectLibraryCountries();
 
-  useEffect(() => {
-    if (fetchedWithError) return;
-    if (error) {
-      setFetchedWithError(true);
-    }
-  }, [error, fetchedWithError]);
-
-  if (fetchedWithError) {
+  if (error) {
     return { status: 'error', countryCode: null } as const;
   }
 
