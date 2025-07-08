@@ -13,6 +13,8 @@ const useCountryCodeSupportedInProjectLibrary = () => {
   // If the project library countries fetch fails,
   // react-query will retry the request indefinitely for some reason.
   // This piece of state is used to prevent that.
+  // I tried using the `retry` option that react-query provides,
+  // but it didn't work for some reason.
   const [fetchedWithError, setFetchedWithError] = useState(false);
   const { data: projectLibraryCountries, error } = useProjectLibraryCountries({
     enabled: !fetchedWithError,
@@ -33,12 +35,11 @@ const useCountryCodeSupportedInProjectLibrary = () => {
     return { status: 'loading', countryCode: null } as const;
   }
 
-  const countryCodeSupported = (() => {
-    const countriesSupportedByLibrary =
-      projectLibraryCountries.data.attributes.map((country) => country.code);
+  const countriesSupportedByLibrary =
+    projectLibraryCountries.data.attributes.map((country) => country.code);
 
-    return countriesSupportedByLibrary.includes(country_code);
-  })();
+  const countryCodeSupported =
+    countriesSupportedByLibrary.includes(country_code);
 
   if (!countryCodeSupported) {
     return { status: 'not-supported', countryCode: null } as const;
