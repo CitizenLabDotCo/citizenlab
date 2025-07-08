@@ -135,19 +135,19 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   // Button disabled logic
-  const maxAttendeesReached =
+  const maxRegistrationsReached =
     event.attributes.maximum_attendees !== null &&
     event.attributes.attendees_count >= event.attributes.maximum_attendees;
   const hasProjectDisabledReason =
     !!disabled_reason && !isFixableByAuthentication(disabled_reason);
-  const buttonDisabled = maxAttendeesReached || hasProjectDisabledReason;
+  const buttonDisabled = maxRegistrationsReached || hasProjectDisabledReason;
 
   const permissionDisabledMessageDescriptor = getPermissionsDisabledMessage(
     'attending_event',
     disabled_reason
   );
-  const disabledMessage = maxAttendeesReached
-    ? formatMessage(messages.maxAttendeesReached)
+  const disabledMessage = maxRegistrationsReached
+    ? formatMessage(messages.maxRegistrationsReached)
     : hasProjectDisabledReason && permissionDisabledMessageDescriptor
     ? formatMessage(permissionDisabledMessageDescriptor)
     : null;
@@ -173,7 +173,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         >
           {customButtonText && event.attributes.using_url
             ? customButtonText
-            : formatMessage(messages.attending)}
+            : formatMessage(messages.registered)}
         </Button>
       ) : (
         <Tooltip
@@ -189,7 +189,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           >
             {customButtonText && event.attributes.using_url
               ? customButtonText
-              : formatMessage(messages.attend)}
+              : formatMessage(messages.register)}
           </Button>
         </Tooltip>
       )}

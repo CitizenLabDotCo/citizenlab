@@ -94,7 +94,7 @@ describe('Event show page', () => {
     // Click attend button
     cy.get('.e2e-event-attendance-button').click();
     // Confirm that the button now shows "attending"
-    cy.get('.e2e-event-attendance-button').contains('Attending');
+    cy.get('.e2e-event-attendance-button').contains('Registered');
     // Confirm that participant count is now shown
     cy.get('#e2e-participants-count').should('exist');
   });
