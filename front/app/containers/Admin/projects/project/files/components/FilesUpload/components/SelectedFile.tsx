@@ -107,7 +107,6 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
                 }
                 showBackground={false}
                 showIcon={false}
-                padding="0px 0px"
                 marginTop="0px"
                 marginBottom="0px"
               />
