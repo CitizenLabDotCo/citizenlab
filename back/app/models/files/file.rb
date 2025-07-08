@@ -59,7 +59,7 @@ module Files
     # searching for one or two characters doesn't work well since it's too short for
     # trigram search, and tsearch only looks for exact matches in lexemes extracted from
     # the content. Additionally, neither tsearch nor trigram support searching for
-    # numbers.
+    # numbers or special characters.
     scope :search, lambda { |query|
       return none if query.blank?
 
