@@ -64,7 +64,6 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "crwdns667401:0crwdne667401:0",
   "app.components.BillingWarning.billingWarning": "crwdns487651:0crwdne487651:0",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "crwdns4305444:0crwdne4305444:0",
-  "app.components.CommunityMonitorModal.xMinutesToComplete": "crwdns4305446:0minutes={minutes}crwdne4305446:0",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "crwdns4607285:0crwdne4607285:0",
   "app.components.FormSync.downloadExcelTemplate": "crwdns4607287:0crwdne4607287:0",
   "app.components.FormSync.downloadExcelTemplateTooltip2": "crwdns4760303:0crwdne4760303:0",

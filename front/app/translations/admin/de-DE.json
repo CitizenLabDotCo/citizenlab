@@ -2183,7 +2183,7 @@
   "app.containers.AdminPage.ProjectFiles.Modal.addFile": "Datei hinzufügen",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Aktionen",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Hinzugefügt",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Audio-Interviews, Town Hall-Aufnahmen",
+  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Audio-Interviews, Meeting-Aufnahmen",
   "app.containers.AdminPage.ProjectFiles.audioFileExtensionDescription": "WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Dateien auswählen",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Datei löschen",
