@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "{years}y pa kreisi",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "{years}y, lai sāktu",
   "app.containers.Admin.projects.all.new.folders": "Mapes",
+  "app.containers.Admin.projects.all.new.ordering": "Pasūtīšana",
   "app.containers.Admin.projects.all.new.projects": "Projekti",
   "app.containers.Admin.projects.all.new.timeline": "Laika grafiks",
   "app.containers.Admin.projects.all.notes": "Piezīmes",
