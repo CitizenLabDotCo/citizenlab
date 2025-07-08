@@ -251,10 +251,10 @@ en:
       x_days_ago_by_author: '%{x} days ago by %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} commented:'
-      cta_reply_to: 'View %{commentAuthor}''s comment'
+      cta_button: 'View %{authorFirstName}''s comment'
       days_ago: '%{numberOfDays} days ago'
       event_description: '%{authorName} added a new comment on your platform.'
-      main_header: '%{firstName}, a new comment has been posted on your platform'
+      title: '%{firstName}, a new comment has been posted on your platform'
       subject: 'A new comment has been posted on %{organizationName}''s platform'
       preheader: '%{authorName} left a comment'
       today: Today
