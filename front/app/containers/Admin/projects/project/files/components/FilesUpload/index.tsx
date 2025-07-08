@@ -23,7 +23,7 @@ type Props = {
 };
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
-const MAX_FILES = 2;
+const MAX_FILES = 35;
 
 const FilesUpload = ({ setModalOpen }: Props) => {
   const { formatMessage } = useIntl();

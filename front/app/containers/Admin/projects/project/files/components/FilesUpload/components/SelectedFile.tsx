@@ -99,11 +99,9 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
             content={
               <Error
                 text={
-                  !apiErrors ? (
-                    <Text m="0px" color="red500" fontSize="s">
-                      {formatMessage(messages.fileSizeError)}
-                    </Text>
-                  ) : undefined
+                  <Text m="0px" color="red500" fontSize="s">
+                    {formatMessage(messages.fileSizeError)}
+                  </Text>
                 }
                 showBackground={false}
                 showIcon={false}
