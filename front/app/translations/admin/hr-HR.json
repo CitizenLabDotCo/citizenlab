@@ -2207,7 +2207,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Spremljeno!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Prikaži obrazac",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatizirana e-pošta",
-  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Možete konfigurirati e-poruke koje se aktiviraju na razini faze",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datumi",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Popuni anketu",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Pregled",

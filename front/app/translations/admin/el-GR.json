@@ -1145,7 +1145,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "View form",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Αυτοματοποιημένα μηνύματα ηλεκτρονικού ταχυδρομείου",
-  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Μπορείτε να ρυθμίσετε τα μηνύματα ηλεκτρονικού ταχυδρομείου που ενεργοποιούνται σε επίπεδο φάσης",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Ημερομηνίες",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη φάση;",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Περιγραφή φάσης",

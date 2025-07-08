@@ -2207,7 +2207,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Sparad!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Visa formulär",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatiserade e-postmeddelanden",
-  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Du kan konfigurera e-postmeddelanden som skickas när en ny fas inleds",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datum",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Svara på enkäten",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Undersökning",
