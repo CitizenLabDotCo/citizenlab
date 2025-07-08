@@ -11,20 +11,27 @@ export type GanttItem = {
   start: string | null;
   end: string | null;
   folder?: string | null;
-  highlightStartDate?: string | null;
-  highlightEndDate?: string | null;
+  /** Optional highlight range for the item */
+  highlight?: {
+    /** start of highlight range */
+    start: string | null;
+    /** end of highlight range (null = open-ended) */
+    end: string | null;
+  };
   icon?: IconNames;
   color?: string;
 };
 
-/**
- * Defines the props for the main GanttChart component.
- */
+export type ViewBounds = {
+  // left boundary
+  left: Date;
+  // right boundary
+  right: Date;
+};
+
 export type GanttChartProps = {
   chartTitle?: string;
   items: GanttItem[];
-  startDate?: Date;
-  endDate?: Date;
   renderItemTooltip?: (item: GanttItem) => ReactNode;
   showTodayLine?: boolean;
   onItemLabelClick?: (item: GanttItem) => void;

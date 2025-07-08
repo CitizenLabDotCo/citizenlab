@@ -6,27 +6,25 @@ import { rowHeight, timelineHeaderHeight } from '../utils';
 
 import GanttItemComponent from './GanttItem';
 
-import type { GanttItem } from '../types';
+import type { GanttItem, ViewBounds } from '../types';
 
 interface TimelineItemsProps {
   items: GanttItem[];
-  startDate: Date;
-  endDate: Date;
+  viewBounds: ViewBounds;
   getOffset: (date: Date) => number;
   getDuration: (start: Date, end: Date) => number;
   unitW: number;
   renderItemTooltip?: (item: GanttItem) => ReactNode;
 }
 
-const TimelineItems: React.FC<TimelineItemsProps> = ({
+const TimelineItems = ({
   items,
-  startDate,
-  endDate,
+  viewBounds,
   getOffset,
   getDuration,
   unitW,
   renderItemTooltip,
-}) => (
+}: TimelineItemsProps) => (
   <Box
     position="absolute"
     top={`${timelineHeaderHeight}px`}
@@ -40,8 +38,7 @@ const TimelineItems: React.FC<TimelineItemsProps> = ({
         key={item.id}
         item={item}
         index={index}
-        startDate={startDate}
-        endDate={endDate}
+        viewBounds={viewBounds}
         getOffset={getOffset}
         getDuration={getDuration}
         unitW={unitW}

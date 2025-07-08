@@ -7,13 +7,12 @@ import { rowHeight } from '../utils';
 
 import GanttItemIconBar from './GanttItemIconBar';
 
-import type { GanttItem } from '../types';
+import type { GanttItem, ViewBounds } from '../types';
 
 interface GanttItemProps {
   item: GanttItem;
   index: number;
-  startDate: Date;
-  endDate: Date;
+  viewBounds: ViewBounds;
   getOffset: (date: Date) => number;
   getDuration: (start: Date, end: Date) => number;
   unitW: number;
@@ -23,8 +22,7 @@ interface GanttItemProps {
 const GanttItem = ({
   item,
   index,
-  startDate,
-  endDate,
+  viewBounds,
   getOffset,
   getDuration,
   unitW,
@@ -34,19 +32,20 @@ const GanttItem = ({
   if (!start) return null;
   const end = item.end ? new Date(item.end) : null;
 
-  const effectiveStart = start > startDate ? start : startDate;
-  const effectiveEnd = end === null || end > endDate ? endDate : end;
+  const effectiveStart = start > viewBounds.left ? start : viewBounds.left;
+  const effectiveEnd =
+    end === null || end > viewBounds.right ? viewBounds.right : end;
   if (effectiveStart >= effectiveEnd) return null;
 
   const startOffset = getOffset(effectiveStart);
   const duration = getDuration(effectiveStart, effectiveEnd);
   if (duration <= 0) return null;
 
-  const highlightStart = item.highlightStartDate
-    ? new Date(item.highlightStartDate)
+  const highlightStart = item.highlight?.start
+    ? new Date(item.highlight.start)
     : null;
-  const highlightEnd = item.highlightEndDate
-    ? new Date(item.highlightEndDate)
+  const highlightEnd = item.highlight?.end
+    ? new Date(item.highlight.end)
     : null;
 
   let textInHighlight = false;
@@ -118,7 +117,7 @@ const GanttItem = ({
               width={`${
                 getDuration(
                   max([effectiveStart, highlightStart]),
-                  min([effectiveEnd, highlightEnd || endDate])
+                  min([effectiveEnd, highlightEnd || viewBounds.right])
                 ) * unitW
               }px`}
               height="100%"
@@ -144,7 +143,6 @@ const GanttItem = ({
             </Box>
           )}
         </Box>
-        {/* </Tooltip> */}
       </Box>
     </Tooltip>
   );

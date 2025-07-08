@@ -46,8 +46,6 @@ import {
 const GanttChart = ({
   items,
   chartTitle,
-  startDate: initialStartDate,
-  endDate: initialEndDate,
   renderItemTooltip,
   showTodayLine = true,
   onItemLabelClick,
@@ -58,10 +56,8 @@ const GanttChart = ({
     selectedRange,
     today
   );
-  const [startDate, setStartDate] = useState<Date>(
-    initialStartDate || defaultStart
-  );
-  const [endDate, setEndDate] = useState<Date>(initialEndDate || defaultEnd);
+  const [startDate, setStartDate] = useState<Date>(defaultStart);
+  const [endDate, setEndDate] = useState<Date>(defaultEnd);
 
   const [isLoading, setIsLoading] = useState(false);
   const [visibleLabel, setVisibleLabel] = useState<string>('');
@@ -332,8 +328,7 @@ const GanttChart = ({
 
             <TimelineItems
               items={items}
-              startDate={startDate}
-              endDate={endDate}
+              viewBounds={{ left: startDate, right: endDate }}
               getOffset={getOffsetForView}
               getDuration={getDurationForView}
               unitW={unitW}
