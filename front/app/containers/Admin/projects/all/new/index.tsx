@@ -25,9 +25,7 @@ const AdminProjectsListNew = () => {
         <Box display={tab === 'folders' ? 'block' : 'none'}>
           <Folders />
         </Box>
-        <Box display={tab === 'timeline' ? 'block' : 'none'}>
-          <Timeline />
-        </Box>
+        {tab === 'timeline' && <Timeline />}
       </Box>
     </Box>
   );
