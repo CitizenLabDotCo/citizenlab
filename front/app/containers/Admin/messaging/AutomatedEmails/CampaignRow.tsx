@@ -6,7 +6,6 @@ import {
   ListItem,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { isUndefined } from 'lodash-es';
 
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
@@ -25,14 +24,14 @@ import { CampaignData } from './types';
 type Props = {
   campaign: CampaignData;
   hasContext: boolean;
-  parentEnabled?: boolean;
+  globalEnabled?: boolean;
   onClickViewExample?: () => void;
 };
 
 const CampaignRow = ({
   campaign,
   hasContext = false,
-  parentEnabled,
+  globalEnabled,
   onClickViewExample,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -68,7 +67,7 @@ const CampaignRow = ({
   });
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
 
-  const disabledByParent = hasContext; // && !parentEnabled;
+  const disabledByParent = hasContext && !globalEnabled;
 
   return (
     <>
@@ -80,12 +79,9 @@ const CampaignRow = ({
       />
       <ListItem p="8px 0">
         <Box display="flex" alignItems="center">
-          <Toggle // TODO: Disable toggle if context but disabled on global + info box
-            disabled={isUndefined(campaign.attributes.enabled)}
-            checked={
-              isUndefined(campaign.attributes.enabled) ||
-              campaign.attributes.enabled
-            }
+          <Toggle
+            disabled={disabledByParent}
+            checked={!!campaign.attributes.enabled}
             onChange={handleOnEnabledToggle}
           />
           <CampaignDescription

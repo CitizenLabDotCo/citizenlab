@@ -3,7 +3,6 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { ICampaignData } from 'api/campaigns/types';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import useSupportedCampaignTypes from 'api/campaigns/useSupportedCampaignTypes';
 
@@ -24,31 +23,33 @@ const AdminPhaseEmailWrapper = () => {
   const globalCampaigns = useCampaigns({ pageSize: 250 }).data?.pages.flatMap(
     (page) => page.data
   );
-  const campaigns = supportedCampaignTypes
-    .map((campaignType) => {
-      const contextCampaign = contextCampaigns?.find(
-        (campaign) => campaign.attributes.campaign_name === campaignType
-      );
-      return (
-        contextCampaign ||
-        globalCampaigns?.find(
-          (campaign) => campaign.attributes.campaign_name === campaignType
-        )
-      );
-    })
-    .filter((campaign): campaign is ICampaignData => !!campaign);
+  // .filter((campaign): campaign is ICampaignData => !!campaign);
   return (
     <Box>
-      {campaigns.length > 0 &&
-        campaigns.map((campaign) => (
-          <CampaignRow
-            campaign={stringifyCampaignFields(campaign, localize)}
-            key={campaign.id}
-            hasContext={true}
-            // parentEnabled={globalCampaign.attributes.enabled}
-            // onClickViewExample={onClickViewExample(campaign.id)}
-          />
-        ))}
+      {supportedCampaignTypes.length > 0 &&
+        supportedCampaignTypes.map((campaignType) => {
+          const contextCampaign = contextCampaigns?.find(
+            (campaign) => campaign.attributes.campaign_name === campaignType
+          );
+          const globalCampaign = globalCampaigns?.find(
+            (campaign) => campaign.attributes.campaign_name === campaignType
+          );
+          const campaign = contextCampaign || globalCampaign;
+          const hasContext = !!contextCampaign;
+          const globalEnabled = globalCampaign?.attributes.enabled;
+
+          return (
+            campaign && (
+              <CampaignRow
+                campaign={stringifyCampaignFields(campaign, localize)}
+                key={campaign.id}
+                hasContext={hasContext}
+                globalEnabled={globalEnabled}
+                // onClickViewExample={onClickViewExample(campaign.id)}
+              />
+            )
+          );
+        })}
     </Box>
   );
 };
