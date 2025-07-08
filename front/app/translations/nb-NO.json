@@ -1262,7 +1262,6 @@
   "app.containers.DisabledAccount.text2": "Kontoen din på medvirkningsplattformen til {orgName} er midlertidig deaktivert på grunn av brudd på retningslinjene for fellesskapet. For mer informasjon om dette kan du gå til {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "Kontoen din har blitt midlertidig deaktivert",
   "app.containers.EventsShow.addToCalendar": "Legg til i kalenderen",
-  "app.containers.EventsShow.attendeesIconAltText": "Deltakere",
   "app.containers.EventsShow.editEvent": "Rediger hendelse",
   "app.containers.EventsShow.emailSharingBody2": "Delta på dette arrangementet: {eventTitle}. Les mer på {eventUrl}",
   "app.containers.EventsShow.eventDateTimeIcon": "Dato og klokkeslett for arrangementet",

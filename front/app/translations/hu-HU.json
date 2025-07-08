@@ -1262,7 +1262,6 @@
   "app.containers.DisabledAccount.text2": "A {orgName} részvételi platformon lévő fiókodat ideiglenesen letiltottuk a közösségi irányelvek megsértése miatt. További információért tekintse meg a {TermsAndConditions}oldalt.",
   "app.containers.DisabledAccount.title": "Fiókját ideiglenesen letiltottuk",
   "app.containers.EventsShow.addToCalendar": "Hozzáadás a naptárhoz",
-  "app.containers.EventsShow.attendeesIconAltText": "Résztvevők",
   "app.containers.EventsShow.editEvent": "Esemény szerkesztése",
   "app.containers.EventsShow.emailSharingBody2": "Vegyen részt ezen az eseményen: {eventTitle}. További információ: {eventUrl}",
   "app.containers.EventsShow.eventDateTimeIcon": "Esemény dátuma és időpontja",

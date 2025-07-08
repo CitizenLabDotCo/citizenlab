@@ -1262,7 +1262,6 @@
   "app.containers.DisabledAccount.text2": "El vostre compte a la plataforma de participació de {orgName} s'ha desactivat temporalment per una infracció de les directrius de la comunitat. Per a més informació sobre això, podeu consultar la {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "El teu compte s'ha desactivat temporalment",
   "app.containers.EventsShow.addToCalendar": "Afegeix al calendari",
-  "app.containers.EventsShow.attendeesIconAltText": "Els assistents",
   "app.containers.EventsShow.editEvent": "Edita l'esdeveniment",
   "app.containers.EventsShow.emailSharingBody2": "Assistiu a aquest esdeveniment: {eventTitle}. Llegeix més a {eventUrl}",
   "app.containers.EventsShow.eventDateTimeIcon": "Data i hora de l'esdeveniment",

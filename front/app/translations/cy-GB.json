@@ -1262,7 +1262,6 @@
   "app.containers.DisabledAccount.text2": "Mae eich cyfrif ar y platfform cyfranogiad o {orgName} wedi'i analluogi dros dro am dorri canllawiau cymunedol. I gael rhagor o wybodaeth am hyn, gallwch edrych ar y {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "Mae'ch cyfrif wedi'i analluogi dros dro",
   "app.containers.EventsShow.addToCalendar": "Ychwanegu at y calendr",
-  "app.containers.EventsShow.attendeesIconAltText": "Mynychwyr",
   "app.containers.EventsShow.editEvent": "Golygu digwyddiad",
   "app.containers.EventsShow.emailSharingBody2": "Mynychwch y digwyddiad hwn: {eventTitle}. Darllenwch fwy yn {eventUrl}",
   "app.containers.EventsShow.eventDateTimeIcon": "Dyddiad ac amser y digwyddiad",

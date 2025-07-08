@@ -1262,7 +1262,6 @@
   "app.containers.DisabledAccount.text2": "{orgName} katılım platformundaki hesabınız, topluluk kurallarının ihlali nedeniyle geçici olarak devre dışı bırakılmıştır. Bu konuda daha fazla bilgi için {TermsAndConditions}adresine başvurabilirsiniz.",
   "app.containers.DisabledAccount.title": "Hesabınız geçici olarak devre dışı bırakıldı",
   "app.containers.EventsShow.addToCalendar": "Takvime ekle",
-  "app.containers.EventsShow.attendeesIconAltText": "Katılımcılar",
   "app.containers.EventsShow.editEvent": "Etkinliği düzenle",
   "app.containers.EventsShow.emailSharingBody2": "Bu etkinliğe katılın: {eventTitle}. Daha fazla bilgi için: {eventUrl}",
   "app.containers.EventsShow.eventDateTimeIcon": "Etkinlik tarihi ve saati",
