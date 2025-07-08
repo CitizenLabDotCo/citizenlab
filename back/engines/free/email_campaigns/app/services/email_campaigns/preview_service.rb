@@ -17,7 +17,8 @@ module EmailCampaigns
         ),
         proposal: PreviewContentItem.new(
           id: SecureRandom.uuid,
-          title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.idea_title')
+          title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.proposal_title'),
+          url: "/#{recipient.locale}/ideas/example-proposal"
         ),
         project: PreviewContentItem.new(
           id: SecureRandom.uuid,

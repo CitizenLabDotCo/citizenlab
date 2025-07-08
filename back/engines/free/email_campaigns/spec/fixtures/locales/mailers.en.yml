@@ -203,14 +203,15 @@ en:
     moderator_digest:
       subject: 'Weekly manager report of "%{project_title}"'
       preheader: 'Project manager digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, your weekly report'
-      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
-      cta_manage: 'Manage your project'
+      title: '%{firstName}, your weekly report'
+      event_description: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
+      cta_button: 'Manage your project'
       new_users: 'New users'
       new_ideas: 'New ideas'
       new_comments: 'New comments'
       title_inputs_past_week: 'New inputs in the past week'
       title_no_inputs_past_week: 'No new inputs in past week'
+      title_threshold_reached: Threshold reached in the past week
       yesterday_by_author: 'Yesterday by %{author}'
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'

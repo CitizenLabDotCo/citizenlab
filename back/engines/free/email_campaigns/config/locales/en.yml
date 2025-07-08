@@ -236,9 +236,9 @@ en:
     moderator_digest:
       subject: 'Weekly manager report of "%{project_title}"'
       preheader: 'Project manager digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, your weekly report'
-      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
-      cta_manage: 'Manage your project'
+      title: '%{firstName}, your weekly report'
+      event_description: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
+      cta_button: 'Manage your project'
       new_users: 'New users'
       new_ideas: 'New ideas'
       new_comments: 'New comments'
