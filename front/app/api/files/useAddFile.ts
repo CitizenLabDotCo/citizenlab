@@ -10,7 +10,9 @@ const addFile = async (requestBody: IAddFileProperties) => {
   return fetcher<IFile>({
     path: `/files`,
     action: 'post',
-    body: requestBody,
+    body: {
+      file: { ...requestBody },
+    },
   });
 };
 
@@ -24,5 +26,4 @@ const useAddFile = () => {
   });
 };
 
-// ts-prune-ignore-next
 export default useAddFile;

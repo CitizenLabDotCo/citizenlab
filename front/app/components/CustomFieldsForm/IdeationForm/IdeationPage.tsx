@@ -55,7 +55,7 @@ type CustomFieldsPage = {
   projectId: string;
   onSubmit: (formValues: FormValues) => Promise<void>;
   phase?: IPhaseData;
-  defaultValues?: any;
+  defaultValues?: FormValues;
   customFields: IFlatCustomField[];
   pages: {
     page: IFlatCustomField;
