@@ -6,11 +6,11 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import FileUploadWithDropzone from './FileUploadWithDropzone';
+import messages from './messages';
 
 const UploadFileButtonWithModal = () => {
   const { formatMessage } = useIntl();
-
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -22,8 +22,13 @@ const UploadFileButtonWithModal = () => {
         text={formatMessage(messages.addFile)}
         onClick={() => setModalOpen(true)}
       />
-      <Modal opened={modalOpen} close={() => setModalOpen(false)}>
-        TODO: Add modal content
+      <Modal
+        opened={modalOpen}
+        close={() => setModalOpen(false)}
+        width={'510px'}
+        padding={'40px'}
+      >
+        <FileUploadWithDropzone />
       </Modal>
     </>
   );

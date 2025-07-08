@@ -154,8 +154,6 @@ describe('Edit community monitor survey', () => {
     // Save the survey
     cy.get('form').submit();
     cy.wait('@updateAll').then((interception) => {
-      console.log({ interception });
-
       // Get the custom fields from the response
       const customFields = interception.response?.body.data;
 
@@ -190,8 +188,6 @@ describe('Edit community monitor survey', () => {
     // Save the survey
     cy.get('form').submit();
     cy.wait('@updateAll').then((interception) => {
-      console.log({ interception });
-
       // Get the custom fields from the response
       const customFields = interception.response?.body.data;
 
