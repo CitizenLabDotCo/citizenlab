@@ -512,7 +512,7 @@
   "app.components.Sharing.shareViaWhatsApp": "Compartir por WhatsApp",
   "app.components.SideModal.closeButtonAria": "Cerrar",
   "app.components.StatusModule.futurePhase": "Estás viendo una fase que aún no ha comenzado. Podrás participar cuando comience la fase.",
-  "app.components.StatusModule.modifyYourSubmission1": "Modifica tu envío",
+  "app.components.StatusModule.modifyYourSubmission1": "Modifica tu respuesta",
   "app.components.StatusModule.submittedUntil3": "Puedes votar hasta",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Seleccionado/s {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}. {selectedTopicNames}",
   "app.components.UI.FullscreenImage.expandImage": "Ampliar imagen",
