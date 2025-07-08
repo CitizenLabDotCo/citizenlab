@@ -201,7 +201,7 @@ const EventInformation = ({ event }: Props) => {
                   my="auto"
                   fill={theme.colors.tenantPrimary}
                   name="user"
-                  title={formatMessage(messages.attendeesIconAltText)}
+                  title={formatMessage(messages.registrantsIconAltText)}
                   ariaHidden={false}
                   mr={theme.isRtl ? '0px' : '8px'}
                   ml={theme.isRtl ? '8px' : '0px'}

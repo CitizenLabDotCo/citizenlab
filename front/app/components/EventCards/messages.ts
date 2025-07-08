@@ -49,9 +49,9 @@ export default defineMessages({
     id: 'app.containers.EventsShow.onlineLinkIconAltText',
     defaultMessage: 'Online meeting link',
   },
-  attendeesIconAltText: {
-    id: 'app.containers.EventsShow.attendeesIconAltText',
-    defaultMessage: 'Attendees',
+  registrantsIconAltText: {
+    id: 'app.containers.EventsShow.registrantsIconAltText',
+    defaultMessage: 'Registrants',
   },
   registrantCountWithMaximum: {
     id: 'app.containers.EventsShow.registrantCountWithMaximum',

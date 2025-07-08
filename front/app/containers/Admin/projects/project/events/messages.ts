@@ -93,9 +93,9 @@ export default defineMessages({
       'Add offline events or meetings that are linked to your project here. Upcoming and past events are always shown immediately under your project.',
   },
   eventAttendanceExportText: {
-    id: 'app.containers.AdminPage.ProjectEvents.eventAttendanceExport',
+    id: 'app.containers.AdminPage.ProjectEvents.eventAttendanceExport1',
     defaultMessage:
-      'To email attendees directly from the platform, platform admins must create a user group in the  {userTabLink} tab. {supportArticleLink}.',
+      'To email registrants directly from the platform, admins must create a user group in the {userTabLink} tab. {supportArticleLink}.',
   },
   usersTabLink: {
     id: 'app.containers.AdminPage.ProjectEvents.usersTabLink',

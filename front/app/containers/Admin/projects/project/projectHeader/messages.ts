@@ -105,9 +105,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users',
     defaultMessage: 'Users interacting with Go Vocal methods',
   },
-  attendees: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.attendees',
-    defaultMessage: 'Event attendees',
+  registrants: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.registrants',
+    defaultMessage: 'Event registrants',
   },
   participantsExclusionTitle: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle2',
