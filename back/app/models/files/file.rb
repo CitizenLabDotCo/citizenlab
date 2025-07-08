@@ -64,6 +64,7 @@ module Files
       return none if query.blank?
 
       exact_matches = where('name ILIKE ?', "%#{sanitize_sql_like(query)}%")
+        # Exact matches are ranked higher than pg_search matches.
         .select('files.*, 1.0 AS pg_search_rank')
 
       pg_search_matches = _pg_search_only(query)
