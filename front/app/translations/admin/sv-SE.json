@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "{years}y vänster",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "{years}y för att starta",
   "app.containers.Admin.projects.all.new.folders": "Mappar",
+  "app.containers.Admin.projects.all.new.ordering": "Beställning",
   "app.containers.Admin.projects.all.new.projects": "Projekt",
   "app.containers.Admin.projects.all.new.timeline": "Tidslinje",
   "app.containers.Admin.projects.all.notes": "Anteckningar",
