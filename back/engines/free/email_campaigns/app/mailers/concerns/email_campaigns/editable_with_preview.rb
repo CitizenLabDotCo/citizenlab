@@ -52,7 +52,7 @@ module EmailCampaigns
       regions << {
         key: key,
         type: type,
-        default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{default_message_key}") || {},
+        default_value_multiloc: MultilocService.new.i18n_to_multiloc_liquid_version("#{message_group}.#{default_message_key}", raise_on_missing: !allow_blank_locales) || {},
         allow_blank_locales: allow_blank_locales
       }
     end

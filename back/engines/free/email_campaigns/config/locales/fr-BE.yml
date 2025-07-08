@@ -420,15 +420,7 @@ fr-BE:
       message_welcome: 'Félicitations, vous vous êtes inscrit avec succès sur la plateforme de participation de %{organizationName}. Vous pouvez maintenant découvrir la plateforme et faire entendre votre voix. Vous pouvez également ajouter une photo de profil et une courte description pour dire aux autres qui vous êtes.'
       preheader: 'Voici ce que vous pouvez faire sur la plateforme de %{organizationName}'
     idea_published:
-      subject:
-        idea: 'Votre idée a été publiée'
-        question: 'Votre question a été publiée'
-        contribution: 'Votre contribution a été publiée'
-        project: 'Votre projet a été publié'
-        issue: 'Votre problème a été publié'
-        option: 'Votre option a été publiée'
-        proposal: 'Votre proposition a été publiée'
-        petition: 'Votre pétition a été publiée'
+      subject: 'Votre idée a été publiée'
       main_header: 'Vous avez posté « %{input_title} »'
       header_message: 'Assurons-nous qu''il soit lu.'
       message_get_votes: 'Atteignez plus de gens avec votre idée :'

@@ -146,13 +146,13 @@ en:
       x_days_ago_by_author: '%{x} days ago by %{author}'
       title_successful_past_week: 'Assigned to you that reached the threshold'
     idea_marked_as_spam:
-      cta_review_idea: 'Review idea'
-      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
-      report_not_an_idea: 'This content is not an idea and does not belong here.'
       subject: 'You have a spam report on the platform of %{organizationName}'
       preheader: 'Act upon this spam report'
+      title: '%{firstName} %{lastName} reported spam'
+      cta_button: 'Review'
+      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
+      report_not_an_idea: 'This content is not relevant and does not belong here.'
       reported_this_because: '%{reporterFirstName} reported this because:'
-      title_spam_report: '%{firstName} %{lastName} reported spam'
     invite_reminder:
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'Your invitation is pending'
@@ -176,6 +176,12 @@ en:
       main_header: 'You have been invited to co-sponsor a proposal'
       subject: 'You have been invited to co-sponsor a proposal'
       preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
+    cosponsor_of_your_idea:
+      subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      preheader: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      title: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
+      cta_button: 'View your proposal'
     new_comment_on_commented_idea:
       cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{commentAuthorFull} also wrote a comment on the idea ''%{ideaTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
@@ -386,15 +392,20 @@ en:
       message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
       preheader: 'Here''s what you can do on the platform of %{organizationName}'
     idea_published:
-      subject:
+      subject: 'Your idea has been published'
+      preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
+      title: 'You posted "%{input_title}"'
+      input_type_subject:
         idea: 'Your idea has been published'
         question: 'Your question has been published'
         contribution: 'Your contribution has been published'
         project: 'Your project has been published'
         issue: 'Your issue has been published'
         option: 'Your option has been published'
-      main_header: 'You posted "%{input_title}"! Let''s make sure it gets read.'
-      message_get_votes: 'Reach more people:'
+        proposal: 'Your proposal has been published'
+        petition: 'Your petition has been published'
+      header_message: 'Let''s make sure it gets read.'
+      message_get_votes: 'Reach more people'
       action_published_idea: 'Published'
       action_add_image: '%{addImageLink} to increase visibility'
       add_image: 'Add an image'
@@ -404,8 +415,6 @@ en:
       send_email: email
       action_share_link: 'Share it via any channel by copying the %{link}'
       link: link
-      cta_view_idea: 'Go to your input'
-      preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'
@@ -442,6 +451,19 @@ en:
       event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
       cta_message: 'Click the button below to participate'
       cta_vote: 'Go to the platform to vote'
+    event_registration_confirmation:
+      subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      preheader: "%{firstName}, thanks for registering for %{eventTitle}"
+      title: "%{firstName}, thanks for registering for"
+      event_details:
+        labels:
+          date: 'Date'
+          location: 'Location'
+          online_link: 'Online link'
+          description: 'Description'
+          project: 'Project'
+      cta_button: 'View the event'
+      cta_add_to_calendar: 'Add to your calendar'
     admin_labels:
       recipient_role:
         admins: 'To admins'

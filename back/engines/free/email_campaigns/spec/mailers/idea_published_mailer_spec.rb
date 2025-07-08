@@ -59,5 +59,29 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
         with_text(/Go to your idea/)
       end
     end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject' },
+          title_multiloc: { 'en' => 'NEW TITLE' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE')
+      end
+
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT</b>')
+      end
+    end
   end
 end
