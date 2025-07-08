@@ -61,12 +61,11 @@ const ErrorIcon = styled(Icon)`
 
 const ContainerInner = styled.div<{
   showBackground: boolean;
-  padding?: string;
 }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: ${(props) => (props.padding ? props.padding : '0px 13px')};
+  padding: '0px 13px';
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.errorLight};
   background: ${(props) =>
@@ -132,7 +131,6 @@ const Bullet = styled.span`
 export interface Props {
   marginTop?: string;
   marginBottom?: string;
-  padding?: string;
   showIcon?: boolean;
   showBackground?: boolean;
   className?: string;
@@ -235,7 +233,6 @@ const Error = (props: Props) => {
     marginBottom = '0px',
     showIcon = true,
     showBackground = true,
-    padding,
     className = '',
     animate = true,
     id,
@@ -280,7 +277,6 @@ const Error = (props: Props) => {
         <ContainerInner
           ref={containerRef}
           showBackground={showBackground}
-          padding={padding}
           className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
         >
           {showIcon && (
