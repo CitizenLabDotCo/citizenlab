@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Box, Tooltip, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 import { max, min } from 'date-fns';
 
 import { rowHeight } from '../utils';
 
-import GanttItemIconBar from './GanttItemIconBar';
+import GanttItemTextLabel from './GanttItemTextLabel';
 
 import type { GanttItem, ViewBounds } from '../types';
 
@@ -56,32 +56,6 @@ const GanttItem = ({
     textInHighlight = startTs >= highlightStartTs && startTs < highlightEndTs;
   }
 
-  const TextLabel = () => (
-    <Box
-      display="flex"
-      alignItems="center"
-      as="span"
-      px="4px"
-      overflow="hidden"
-    >
-      <GanttItemIconBar
-        color={item.color}
-        icon={item.icon}
-        rowHeight={rowHeight}
-        mr="8px"
-      />
-      <Text
-        fontSize="s"
-        color="grey800"
-        overflow="hidden"
-        whiteSpace="nowrap"
-        textOverflow="ellipsis"
-      >
-        {item.title}
-      </Text>
-    </Box>
-  );
-
   return (
     <Tooltip
       placement="bottom"
@@ -127,7 +101,14 @@ const GanttItem = ({
               overflow="hidden"
               alignItems="center"
             >
-              {textInHighlight && <TextLabel />}
+              {textInHighlight && (
+                <GanttItemTextLabel
+                  title={item.title}
+                  id={item.id}
+                  color={item.color}
+                  icon={item.icon}
+                />
+              )}
             </Box>
           )}
 
@@ -139,7 +120,12 @@ const GanttItem = ({
               display="flex"
               alignItems="center"
             >
-              <TextLabel />
+              <GanttItemTextLabel
+                title={item.title}
+                id={item.id}
+                color={item.color}
+                icon={item.icon}
+              />
             </Box>
           )}
         </Box>
