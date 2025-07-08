@@ -115,7 +115,7 @@ const CampaignRow = ({
                 </ButtonWithLink>
               </Box>
             )}
-            {isEditingEnabled && (
+            {isEditingEnabled && !hasContext && (
               <Box ml="12px">
                 <Tooltip
                   disabled={isEditable}
