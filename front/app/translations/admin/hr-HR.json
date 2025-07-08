@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "Preostalo je {years}y",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "{years}y za početak",
   "app.containers.Admin.projects.all.new.folders": "Mape",
+  "app.containers.Admin.projects.all.new.ordering": "Naručivanje",
   "app.containers.Admin.projects.all.new.projects": "Projekti",
   "app.containers.Admin.projects.all.new.timeline": "Vremenska crta",
   "app.containers.Admin.projects.all.notes": "Bilješke",
