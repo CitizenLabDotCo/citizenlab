@@ -164,7 +164,6 @@ export const GanttChart = ({
   const todayOffset = useMemo(() => {
     if (!showTodayLine) return undefined;
     let offset = getOffsetForView(today);
-    // For the month view, center the line in the middle of the day
     if (selectedRange === 'month') {
       offset += 0.5;
     }
@@ -184,6 +183,7 @@ export const GanttChart = ({
   const onTimelineScroll = useCallback(() => {
     if (!timelineBodyRef.current || isLoading) return;
     const { scrollLeft, scrollWidth, clientWidth } = timelineBodyRef.current;
+
     let cumulativeWidth = 0;
     for (const group of timeGroups) {
       cumulativeWidth += group.totalWidth;
@@ -270,6 +270,7 @@ export const GanttChart = ({
         />
       </Box>
 
+      {/* This container needs position:relative for the absolute positioning of the header */}
       <Box display="flex" position="relative">
         <Box
           width={`${leftColumnWidth}px`}
@@ -286,6 +287,7 @@ export const GanttChart = ({
             onItemLabelClick={onItemLabelClick}
           />
         </Box>
+
         <Box
           flex="1"
           overflow="auto"
@@ -335,6 +337,16 @@ export const GanttChart = ({
             />
           </Box>
         </Box>
+
+        {visibleLabel && (
+          <Box position="absolute" top="4px" left={`${leftColumnWidth}px`}>
+            <Box bg={colors.background} px="16px" py="4px">
+              <Text m="0" variant="bodyM">
+                {visibleLabel}
+              </Text>
+            </Box>
+          </Box>
+        )}
       </Box>
     </Box>
   );
