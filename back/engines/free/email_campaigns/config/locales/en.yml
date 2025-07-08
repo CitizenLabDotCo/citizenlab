@@ -92,6 +92,7 @@ en:
       initiator_last_name: 'Smith'
       initiator_display_name: 'Bob Smith'
       project_title: 'Example project'
+      phase_title: 'Example phase'
       comment_body: 'This is an example comment used for previewing the content of emails. This is not real content.'
       comment_deleted_reason: 'Your example comment was considered inappropriate.'
       idea_title: 'Example Idea'
@@ -478,10 +479,10 @@ en:
     native_survey_not_submitted:
       subject: '%{organizationName}: Almost there! Submit your answers'
       preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
-      title_native_survey_not_submitted: 'Almost there! Submit your answers'
-      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
-      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
-      cta_complete_your_survey_response: 'Resume your survey response'
+      title: 'Almost there! Submit your answers'
+      event_description: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
+      cta_button: 'Resume your survey response'
+      submissions_close: 'Submissions will close on %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'

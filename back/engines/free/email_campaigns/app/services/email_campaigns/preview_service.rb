@@ -3,7 +3,7 @@ module EmailCampaigns
     PreviewUser = Struct.new(:first_name, :last_name, :display_name, :display_name_multiloc)
     PreviewContentItem = Struct.new(:id, :title_multiloc, :body_multiloc, :url, :deleted_reason)
     PreviewEvent = Struct.new(:id, :title_multiloc, :address1, :address2_multiloc)
-    PreviewData = Struct.new(:idea, :project, :comment, :proposal, :event, :author, :initiator, :organization_name, :placeholder_image_url)
+    PreviewData = Struct.new(:idea, :project, :phase, :comment, :proposal, :event, :author, :initiator, :organization_name, :placeholder_image_url)
 
     # Static content that can be used across all email previews.
     def preview_data(recipient)
@@ -24,6 +24,11 @@ module EmailCampaigns
           id: SecureRandom.uuid,
           title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.project_title'),
           url: "/#{recipient.locale}/projects/example-project"
+        ),
+        phase: PreviewContentItem.new(
+          id: SecureRandom.uuid,
+          title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.phase_title'),
+          url: "/#{recipient.locale}/phase/example-project/example-phase"
         ),
         comment: PreviewContentItem.new(
           id: SecureRandom.uuid,

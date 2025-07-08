@@ -301,6 +301,13 @@ en:
       title: 'You have been mentioned'
       subject: '%{organizationName} mentioned you in their feedback'
       preheader: '%{organizationName} mentioned you in feedback'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Almost there! Submit your answers'
+      preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
+      title: 'Almost there! Submit your answers'
+      event_description: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
+      cta_button: 'Resume your survey response'
+      submissions_close: 'Submissions will close on %{phaseEndDate}.'
     project_moderation_rights_received:
       cta_manage_project: 'Manage this project'
       message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
