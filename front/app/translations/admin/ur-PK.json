@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "واقعہ کی تصویر",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "ایونٹ کی تصویر کا متبادل متن",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "واقعہ کا مقام",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "شرکاء کو برآمد کریں۔",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "منسلکات (زیادہ سے زیادہ 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "منسلکات واقعہ کی تفصیل کے نیچے دکھائے گئے ہیں۔",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "مقام",

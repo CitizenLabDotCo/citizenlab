@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Afbeelding event",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Evenement afbeelding alternatieve tekst",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Locatie evenement",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Exporteer aanwezigen",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Bijlagen (max. 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Bijlagen worden op de activiteitkaart zelf weergegeven.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Locatie",

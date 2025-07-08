@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Delwedd digwyddiad",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Testun amgen delwedd digwyddiad",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Lleoliad y digwyddiad",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Allforio mynychwyr",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Atodiadau (50MB ar y mwyaf)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Dangosir atodiadau o dan ddisgrifiad y digwyddiad.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Lleoliad",

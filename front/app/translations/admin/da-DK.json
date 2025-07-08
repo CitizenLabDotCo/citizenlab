@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Billede af begivenhed",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Alternativ tekst til begivenhedsbillede",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Arrangementets placering",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Eksport af deltagere",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Vedhæftede filer (maks. 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Vedhæftede filer vises under beskrivelsen af begivenheden.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Beliggenhed",

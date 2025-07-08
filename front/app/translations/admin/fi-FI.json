@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Tapahtuman kuva",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Tapahtumakuvan vaihtoehtoinen teksti",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Tapahtumapaikka",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Vie osallistujat",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Liitteet (enintään 50 Mt)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Liitteet näkyvät tapahtuman kuvauksen alla.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Sijainti",

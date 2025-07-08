@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Image de l'événement",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Texte alternatif de l'image de l'événement",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Lieu de l'événement",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Exporter les participants",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Pièces jointes (max. 50Mo)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Les pièces jointes seront directement visibles sur les évènements.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Localisation",

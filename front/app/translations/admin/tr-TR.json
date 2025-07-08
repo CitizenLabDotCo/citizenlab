@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Etkinlik görüntüsü",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Etkinlik görseli alternatif metni",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Etkinlik yeri",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Katılımcıları ihraç edin",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Ekler (maksimum 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Ekler etkinlik açıklamasının altında gösterilir.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Konum",

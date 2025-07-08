@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Slika događaja",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Alternativni tekst slike događaja",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Mjesto događaja",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Izvoz sudionika",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Privici (maks. 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Privici se prikazuju ispod opisa događaja.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Lokacija",

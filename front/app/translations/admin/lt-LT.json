@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Įvykio vaizdas",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Įvykio vaizdo alternatyvus tekstas",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Renginio vieta",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Eksporto dalyviai",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Priedai (ne daugiau kaip 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Priedai pateikiami po įvykio aprašymu.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Vieta",

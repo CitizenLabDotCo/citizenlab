@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Слика догађаја",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Event image alternative text",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Локација догађаја",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Export attendees",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Прилози (макс. 50МБ)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Прилози су приказани испод описа догађаја.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Локација",

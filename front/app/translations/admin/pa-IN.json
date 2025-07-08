@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "ਘਟਨਾ ਚਿੱਤਰ",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "ਇਵੈਂਟ ਚਿੱਤਰ ਵਿਕਲਪਿਕ ਟੈਕਸਟ",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "ਘਟਨਾ ਸਥਾਨ",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "ਹਾਜ਼ਰੀਨ ਨੂੰ ਨਿਰਯਾਤ ਕਰੋ",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "ਅਟੈਚਮੈਂਟ (ਅਧਿਕਤਮ 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "ਅਟੈਚਮੈਂਟਾਂ ਨੂੰ ਘਟਨਾ ਦੇ ਵਰਣਨ ਦੇ ਹੇਠਾਂ ਦਿਖਾਇਆ ਗਿਆ ਹੈ।",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "ਟਿਕਾਣਾ",

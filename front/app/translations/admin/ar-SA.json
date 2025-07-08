@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "صورة الحدث",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "نص بديل لصورة الحدث",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "موقع الحدث",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "تصدير الحضور",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "المُرفقات (بحجم أقصى 50 ميغابايت)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "تظهر المرفقات أسفل وصف الحدث.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "الموقع",

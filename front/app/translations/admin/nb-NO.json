@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Bilde av hendelsen",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Alternativ tekst til hendelsesbildet",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Sted for arrangementet",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Eksporter deltakere",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Vedlegg (maks 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Vedlegg vises under beskrivelsen av arrangementet.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Beliggenhet",

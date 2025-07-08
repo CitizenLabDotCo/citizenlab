@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Imagem do evento",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Texto alternativo da imagem do evento",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Local do evento",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Exportação de participantes",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Anexos (max. 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Os anexos são mostrados abaixo da descrição do evento.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Localização",

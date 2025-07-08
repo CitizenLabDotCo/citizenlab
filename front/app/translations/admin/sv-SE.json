@@ -2151,7 +2151,6 @@
   "app.containers.AdminPage.ProjectEvents.eventImage": "Bild av evenemang",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Händelsebild alternativ text",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Plats för evenemanget",
-  "app.containers.AdminPage.ProjectEvents.exportAttendees": "Exportera deltagare",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Bilagor (max 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Bilagor visas under evenemangsbeskrivningen.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Plats",
