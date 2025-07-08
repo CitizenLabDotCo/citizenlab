@@ -1,5 +1,4 @@
-// SelectedFile.tsx
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -38,36 +37,34 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
   // Ref to track if the upload has started
   const hasStarted = useRef(false);
 
-  // Effect hook to trigger the file upload process when the status becomes 'uploading'
-  useEffect(() => {
-    // Function to handle the file upload
-    const uploadFile = async () => {
-      const base64 = await getBase64FromFile(file);
-      await mutateAsync(
-        {
-          content: base64,
-          project: projectId,
-          name: file.name,
+  // Function to upload the file
+  const uploadFile = useCallback(async () => {
+    const base64 = await getBase64FromFile(file);
+    await mutateAsync(
+      {
+        content: base64,
+        project: projectId,
+        name: file.name,
+      },
+      {
+        onError: (errors) => {
+          setApiErrors(errors.error);
+          onStatusUpdate({ status: 'error' });
         },
-        {
-          onError: (errors) => {
-            setApiErrors(errors.error);
-            onStatusUpdate({ status: 'error' });
-          },
-          onSuccess: () => {
-            onStatusUpdate({ status: 'uploaded' });
-          },
-        }
-      );
-    };
+        onSuccess: () => {
+          onStatusUpdate({ status: 'uploaded' });
+        },
+      }
+    );
+  }, [file, projectId, mutateAsync, onStatusUpdate]);
 
-    // If the status has been set to 'uploading',
-    // and the upload has not started yet, initiate the upload.
+  // Effect to handle the file upload when the status changes to 'uploading'
+  useEffect(() => {
     if (status === 'uploading' && !hasStarted.current) {
       hasStarted.current = true;
       uploadFile();
     }
-  }, [status, file, projectId, mutateAsync, onStatusUpdate]);
+  }, [status, uploadFile]);
 
   // Render the appropriate icon based on the file's upload status
   const renderIcon = () => {
@@ -152,8 +149,9 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
           <Select
             value={semanticType} // TODO: Replace with actual semantic type once implemented.
             placeholder={formatMessage(messages.selectFileType)}
-            onChange={() => {}} // TODO: Implement onChange and options once SemanticFileType implemented.
+            onChange={() => {}} // TODO: Implement onChange once SemanticFileType implemented.
             options={[
+              // TODO: Replace with actual options once implemented.
               { value: 'type_1', label: 'Type 1' },
               { value: 'type_2', label: 'Type 2' },
             ]}

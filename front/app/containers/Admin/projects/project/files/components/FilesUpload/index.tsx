@@ -23,7 +23,7 @@ type Props = {
 };
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
-const MAX_FILES = 35;
+const MAX_FILES = 2;
 
 const FilesUpload = ({ setModalOpen }: Props) => {
   const { formatMessage } = useIntl();
@@ -31,6 +31,8 @@ const FilesUpload = ({ setModalOpen }: Props) => {
 
   const [fileList, setFileList] = useState<FileWithMeta[]>([]);
   const [hasStartedUploading, setHasStartedUploading] = useState(false);
+  const [showMaxNumberFilesMessage, setShowMaxNumberFilesMessage] =
+    useState(false);
 
   // Create a React dropzone with the specified options
   const { getRootProps, getInputProps, open } = useDropzone({
@@ -39,14 +41,12 @@ const FilesUpload = ({ setModalOpen }: Props) => {
     onDrop: (acceptedFiles) => {
       // First check if user is trying to drop more than the maximum allowed files
       if (acceptedFiles.length > MAX_FILES) {
-        // If so, alert the user and do not proceed with the upload
-        alert(
-          formatMessage(messages.tooManyFiles, {
-            maxFiles: MAX_FILES,
-          })
-        );
+        // If so, show message to the user and do not proceed with the upload
+        setShowMaxNumberFilesMessage(true);
         return;
       }
+      // Reset the message if the number of files is within the limit
+      setShowMaxNumberFilesMessage(false);
 
       const filesWithInitialStatus = acceptedFiles.map((file) => ({
         file,
@@ -71,12 +71,11 @@ const FilesUpload = ({ setModalOpen }: Props) => {
     );
   };
 
+  const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
+
   const finishedUploading =
     hasStartedUploading &&
-    fileList.every((file) =>
-      // All files should have a status of either 'uploaded', 'error', or 'too_large'
-      ['uploaded', 'error', 'too_large'].includes(file.status)
-    );
+    fileList.every(({ status }) => FINISHED_STATUSES.includes(status));
 
   return (
     <>
@@ -129,11 +128,26 @@ const FilesUpload = ({ setModalOpen }: Props) => {
           />
         </>
       ) : (
-        <FileDropzone
-          getRootProps={getRootProps}
-          getInputProps={getInputProps}
-          open={open}
-        />
+        <>
+          <FileDropzone
+            getRootProps={getRootProps}
+            getInputProps={getInputProps}
+            open={open}
+          />
+          {showMaxNumberFilesMessage && (
+            <Text
+              mt="8px"
+              textAlign="center"
+              m="0px"
+              color="red500"
+              fontSize="s"
+            >
+              {formatMessage(messages.maxFilesError, {
+                maxFiles: MAX_FILES,
+              })}
+            </Text>
+          )}
+        </>
       )}
     </>
   );
