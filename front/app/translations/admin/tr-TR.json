@@ -2207,7 +2207,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Kaydedildi!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Formu görüntüle",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Otomatik e-postalar",
-  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Aşama düzeyinde tetiklenen e-postaları yapılandırabilirsiniz",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Tarihler",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Ankete katılın",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Anket",

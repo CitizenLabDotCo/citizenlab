@@ -2207,7 +2207,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Opgeslagen!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Bekijk formulier",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Geautomatiseerde e-mails",
-  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Je kunt e-mails configureren die op faseniveau worden getriggerd",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Data",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Vul de vragenlijst in",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Vragenlijst",

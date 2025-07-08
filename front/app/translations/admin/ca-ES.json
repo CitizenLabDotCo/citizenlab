@@ -1145,7 +1145,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "View form",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Correus electrònics automatitzats",
-  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Podeu configurar correus electrònics activats a nivell de fase",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dates",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Esteu segur que voleu eliminar aquesta fase?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Descripció de la fase",
