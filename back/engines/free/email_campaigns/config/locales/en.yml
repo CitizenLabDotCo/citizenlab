@@ -97,6 +97,8 @@ en:
       idea_title: 'Example Idea'
       idea_body: 'This is some example idea content used for previewing the content of emails. This is not real content.'
       event_title: 'Example Event'
+      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_address2: 'Room 3a, Upstairs'
       proposal_title: 'Example Proposal'
     footer:
       "link_privacy_policy": "Privacy Policy"

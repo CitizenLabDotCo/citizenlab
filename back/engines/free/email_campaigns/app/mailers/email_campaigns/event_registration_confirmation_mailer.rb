@@ -44,8 +44,8 @@ module EmailCampaigns
             start_at: Time.now + 1.day,
             title_multiloc: data.event.title_multiloc,
             end_at: Time.now + 1.day + 2.hours,
-            address1: nil, # TODO: Add a proper address
-            address2_multiloc: nil
+            address1: data.event.address1,
+            address2_multiloc: data.event.address2_multiloc
           },
           event_url: data.idea.url,
           project_title_multiloc: data.project.title_multiloc,
