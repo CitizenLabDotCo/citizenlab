@@ -35,7 +35,6 @@ const AdminPhaseEmailWrapper = () => {
             (campaign) => campaign.attributes.campaign_name === campaignType
           );
           const campaign = contextCampaign || globalCampaign;
-          const hasContext = !!contextCampaign;
           const globalEnabled = globalCampaign?.attributes.enabled;
 
           return (
@@ -43,7 +42,7 @@ const AdminPhaseEmailWrapper = () => {
               <CampaignRow
                 campaign={stringifyCampaignFields(campaign, localize)}
                 key={campaign.id}
-                hasContext={hasContext}
+                phaseId={phaseId}
                 globalEnabled={globalEnabled}
                 // onClickViewExample={onClickViewExample(campaign.id)}
               />

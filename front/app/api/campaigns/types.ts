@@ -60,7 +60,7 @@ export interface ICampaignData {
       data: IRelationship;
     };
     context?: {
-      data: IRelationship;
+      data?: IRelationship;
     };
     groups: {
       data: IRelationship[];
@@ -169,6 +169,7 @@ export interface QueryParameters {
 
 export interface CampaignAdd {
   campaign_name: string;
+  enabled?: boolean;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
   sender: string;

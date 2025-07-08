@@ -7,6 +7,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 
+import useAddCampaign from 'api/campaigns/useAddCampaign';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -23,28 +24,42 @@ import { CampaignData } from './types';
 
 type Props = {
   campaign: CampaignData;
-  hasContext: boolean;
+  phaseId?: string;
+  projectId?: string;
   globalEnabled?: boolean;
   onClickViewExample?: () => void;
 };
 
 const CampaignRow = ({
   campaign,
-  hasContext = false,
+  phaseId,
+  projectId,
   globalEnabled,
   onClickViewExample,
 }: Props) => {
+  const hasContext = !!(phaseId || projectId);
   const { formatMessage } = useIntl();
   const [isNewPhaseModalOpen, setIsNewPhaseModalOpen] = useState(false);
+  const { mutate: addCampaign } = useAddCampaign();
   const { mutate: updateCampaign } = useUpdateCampaign();
   const toggleEnabled = () => {
-    // TODO: Create if not context campaign but on context
-    updateCampaign({
-      id: campaign.id,
-      campaign: {
+    if (hasContext && !campaign.relationships.context?.data?.id) {
+      addCampaign({
+        phaseId,
+        campaign_name: campaign.attributes.campaign_name,
         enabled: !campaign.attributes.enabled,
-      },
-    });
+        subject_multiloc: campaign.attributes.subject_multiloc,
+        body_multiloc: campaign.attributes.body_multiloc,
+        sender: campaign.attributes.sender,
+      });
+    } else {
+      updateCampaign({
+        id: campaign.id,
+        campaign: {
+          enabled: !campaign.attributes.enabled,
+        },
+      });
+    }
   };
   const closeNewPhaseModal = () => {
     setIsNewPhaseModalOpen(false);
