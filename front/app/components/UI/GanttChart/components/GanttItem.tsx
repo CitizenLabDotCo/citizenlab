@@ -41,6 +41,8 @@ const GanttItem = ({
   const duration = getDuration(effectiveStart, effectiveEnd);
   if (duration <= 0) return null;
 
+  // The highlight logic renders a colored overlay to emphasize a specific date range
+  // (e.g., a "current phase") within the main Gantt item bar.
   const highlightStart = item.highlight?.start
     ? new Date(item.highlight.start)
     : null;
