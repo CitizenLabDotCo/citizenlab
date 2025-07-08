@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft": "{years}vuotta jäljellä",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart": "{years}y aloittaaksesi",
   "app.containers.Admin.projects.all.new.folders": "Kansiot",
+  "app.containers.Admin.projects.all.new.ordering": "Tilaaminen",
   "app.containers.Admin.projects.all.new.projects": "Projektit",
   "app.containers.Admin.projects.all.new.timeline": "Aikajana",
   "app.containers.Admin.projects.all.notes": "Huomautuksia",
