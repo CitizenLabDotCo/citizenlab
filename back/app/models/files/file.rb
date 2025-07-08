@@ -68,11 +68,12 @@ module Files
         .select('files.*, 1.0 AS pg_search_rank')
 
       pg_search_matches = _pg_search_only(query)
+        .where.not(id: exact_matches.reselect(:id))
         .with_pg_search_rank
         .reorder(nil) # Remove the ordering to be able to union.
 
       all_matches = "(#{exact_matches.to_sql} UNION #{pg_search_matches.to_sql}) AS files"
-      from(all_matches).select('files.*').order('pg_search_rank DESC')
+      from(all_matches).order('pg_search_rank DESC')
     }
 
     private
