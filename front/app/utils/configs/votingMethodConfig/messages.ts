@@ -40,14 +40,14 @@ export default defineMessages({
       '<b>Your budget will not be counted</b> until you click "Submit"',
   },
   votingSubmittedInstructions: {
-    id: 'app.utils.votingMethodUtils.votingSubmittedInstructions',
+    id: 'app.utils.votingMethodUtils.votingSubmittedInstructions1',
     defaultMessage:
-      '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them before <b>{endDate}</b>.',
+      '<b>Congratulations, your vote has been submitted!</b> You can check or modify your submission before <b>{endDate}</b>.',
   },
   votingSubmittedInstructionsNoEndDate: {
-    id: 'app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate',
+    id: 'app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate1',
     defaultMessage:
-      '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them.',
+      '<b>Congratulations, your vote has been submitted!</b> You can check or modify your submission below at any point.',
   },
   votingSubmittedInstructionsContinuous: {
     id: 'app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous',
