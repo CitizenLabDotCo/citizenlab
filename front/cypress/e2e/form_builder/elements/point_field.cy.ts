@@ -69,7 +69,7 @@ describe('Form builder point field', () => {
 
     // Try filling in the survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
     cy.contains(questionTitle).should('exist');
     cy.contains('Lava Flow Hazard Zones').should('exist');
 

@@ -89,7 +89,7 @@ describe('Follow idea', () => {
     cy.setAdminLoginCookie();
 
     cy.visit(`/ideas/${ideaSlug1}`);
-    cy.acceptCookies();
+
     cy.get('#e2e-idea-title').contains(ideaTitle1);
 
     // Shows an unfollow button because the user follows the idea automatically since they created it
@@ -107,7 +107,7 @@ describe('Follow idea', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`/ideas/${ideaSlug2}`);
-    cy.acceptCookies();
+
     cy.get('#e2e-idea-title').contains(ideaTitle2);
 
     // Follow
@@ -121,7 +121,7 @@ describe('Follow idea', () => {
 
   it('uses a light login flow when a user is not looged in and follows after', () => {
     cy.visit(`/ideas/${ideaSlug1}`);
-    cy.acceptCookies();
+
     cy.get('#e2e-idea-title').contains(ideaTitle1);
 
     // Follow

@@ -79,7 +79,7 @@ describe('Seat based billing', () => {
           let remainingSeats = totalSeats - usedSeats;
 
           cy.visit('/admin/users/admins');
-          cy.acceptCookies();
+
           cy.dataCy('e2e-admin-count').contains(adminCount);
           cy.dataCy('e2e-admin-remaining-seats').contains(remainingSeats);
           cy.dataCy('e2e-admin-used-seats').contains(usedSeats);
@@ -319,7 +319,6 @@ describe('Seat based billing', () => {
 
     it('allows user to add a moderator and shows a confirmation when needed', () => {
       cy.visit(`admin/projects/${projectId}/settings/access-rights`);
-      cy.acceptCookies();
 
       cy.intercept(`**/projects/${projectId}/moderators`).as(
         'moderatorsRequest'
@@ -364,7 +363,6 @@ describe('Seat based billing', () => {
 
     it('updates admin and moderators number', () => {
       cy.visit('/admin/users/admins');
-      cy.acceptCookies();
 
       cy.apiGetUsersCount().then((response) => {
         adminCount = response.body.data.attributes.administrators_count;
@@ -397,7 +395,6 @@ describe('Seat based billing', () => {
 
     it('updates remaining seats and used seats', () => {
       cy.visit('/admin/users/moderators');
-      cy.acceptCookies();
 
       // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
       cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
@@ -554,7 +551,6 @@ describe('Seat based billing', () => {
 
     it('allows user to add a moderator and shows confirmation when needed', () => {
       cy.visit(`admin/projects/folders/${folderId}/permissions`);
-      cy.acceptCookies();
 
       // Add moderator and check that they are shown in the list
       cy.get('#folderModeratorUserSearch').should('exist');
@@ -594,7 +590,6 @@ describe('Seat based billing', () => {
 
     it('updates admin and moderators number', () => {
       cy.visit('/admin/users/moderators');
-      cy.acceptCookies();
 
       cy.apiGetUsersCount().then((response) => {
         adminCount = response.body.data.attributes.administrators_count;
@@ -623,7 +618,7 @@ describe('Seat based billing', () => {
 
     it('updates remaining seats and used seats', () => {
       cy.visit('/admin/users/moderators');
-      cy.acceptCookies();
+
       // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
       cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
         let additionalModerators =

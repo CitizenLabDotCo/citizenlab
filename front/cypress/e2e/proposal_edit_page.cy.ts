@@ -94,7 +94,7 @@ describe('Proposal edit page', () => {
 
     // Edit proposal
     cy.visit(`/ideas/edit/${inputId}`);
-    cy.acceptCookies();
+
     cy.wait('@idea');
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form').should('exist');

@@ -58,8 +58,6 @@ describe('Project proposal new page', () => {
 
     cy.wait('@getProject');
 
-    cy.acceptCookies();
-
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist'); // Change to proposal later

@@ -65,7 +65,7 @@ describe('Project description builder Info & Accordions section', () => {
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.contains('Edited text.').should('be.visible');
     cy.contains('Accordion text.').should('be.visible');
     cy.contains('About').should('be.visible');

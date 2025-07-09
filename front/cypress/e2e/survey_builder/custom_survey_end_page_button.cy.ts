@@ -26,7 +26,7 @@ describe('Survey page logic', () => {
   it('correctly uses default button on survey end page if not customized', () => {
     // Visit survey front office
     cy.visit(`/projects/${projectSlug}/surveys/new`);
-    cy.acceptCookies();
+
     // Click next
     cy.dataCy('e2e-submit-form').should('exist');
     cy.dataCy('e2e-submit-form').click();
@@ -55,7 +55,7 @@ describe('Survey page logic', () => {
 
     // Visit survey front office
     cy.visit(`/projects/${projectSlug}/surveys/new`);
-    cy.acceptCookies();
+
     // Click next
     cy.dataCy('e2e-submit-form').should('exist');
     cy.dataCy('e2e-submit-form').click();

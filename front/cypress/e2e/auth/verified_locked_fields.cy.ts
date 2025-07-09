@@ -25,7 +25,6 @@ describe('Verified Locked fields', () => {
   beforeEach(() => {
     cy.setLoginCookie(verifiedEmail, verifiedPassword);
     cy.visit('/profile/edit');
-    cy.acceptCookies();
   });
   it('shows disabled locked fields with message', () => {
     cy.get('#last_name').should('be.disabled');

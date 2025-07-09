@@ -22,7 +22,6 @@ describe('Admin: edit project', () => {
 
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects/all');
-    cy.acceptCookies();
   });
 
   it('navigates to the project page when the user clicks the edit page', () => {

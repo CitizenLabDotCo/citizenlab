@@ -53,7 +53,6 @@ describe('Idea show page actions', () => {
 
       cy.visit(`/ideas/${ideaSlug}`);
       cy.get('#e2e-idea-show');
-      cy.acceptCookies();
 
       // We wait for this request so that we know the idea page is more or less
       // done loading. Should not be necessary but reduces flakiness.
@@ -77,7 +76,6 @@ describe('Idea show page actions', () => {
     before(() => {
       cy.visit(`/ideas/${ideaSlug}`);
       cy.get('#e2e-idea-show');
-      cy.acceptCookies();
     });
 
     it('saves a new official feedback, shows it and deletes it', () => {
@@ -208,7 +206,7 @@ describe('Idea show page actions', () => {
         cy.setLoginCookie(email, password);
         cy.reload();
         cy.visit(`/ideas/${ideaSlug2}`);
-        cy.acceptCookies();
+
         cy.get('#e2e-idea-show');
       });
 

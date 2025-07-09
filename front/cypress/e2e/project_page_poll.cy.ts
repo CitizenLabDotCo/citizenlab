@@ -76,7 +76,7 @@ describe('Timeline project with poll phase', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.wait(2000);
   });
 

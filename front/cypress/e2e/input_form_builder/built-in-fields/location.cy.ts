@@ -47,7 +47,6 @@ describe('Input form builder', () => {
 
     // Visit the project page and accept cookies. This is needed because the cookie banner is not interactive on the input form
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
 
     // Check that the location field is present on the idea form before turning it off
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);

@@ -25,7 +25,7 @@ describe('Follow topic', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`/profile/${userSlug}/following`);
-    cy.acceptCookies();
+
     cy.get('#tab-Topics').click();
 
     // Follow the first topic

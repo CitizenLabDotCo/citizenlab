@@ -28,7 +28,6 @@ describe('Copy projects outside folder', () => {
 
   it('allows user to copy project', () => {
     cy.visit('/admin/projects/all');
-    cy.acceptCookies();
 
     cy.get('#e2e-admin-projects-list-unsortable')
       .children()
@@ -105,7 +104,6 @@ describe('Copy projects inside folder', () => {
       cy.apiAddProjectsToFolder([projectId], folderId);
 
       cy.visit('/admin/projects/all');
-      cy.acceptCookies();
 
       cy.wait('@getAdminPublications');
       cy.wait(5000);

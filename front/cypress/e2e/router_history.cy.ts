@@ -14,7 +14,7 @@ describe('router history', () => {
     cy.setLoginCookie(email, password);
     cy.visit('/projects/an-idea-bring-it-to-your-council');
     cy.get('#e2e-project-page');
-    cy.acceptCookies();
+
     cy.location('pathname').should(
       'eq',
       '/en/projects/an-idea-bring-it-to-your-council'

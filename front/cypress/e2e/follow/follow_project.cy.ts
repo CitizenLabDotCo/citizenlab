@@ -41,7 +41,7 @@ describe('Follow project', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('#e2e-project-page').contains(projectTitle);
 
     // Follow

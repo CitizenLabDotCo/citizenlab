@@ -57,7 +57,6 @@ describe('Form builder ranking component', () => {
 
     // Visit the survey front office
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
 
     // Verify that the ranking question is displayed
     cy.contains('Question title 2').should('exist');

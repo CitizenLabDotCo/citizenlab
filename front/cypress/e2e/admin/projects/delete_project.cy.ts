@@ -18,7 +18,6 @@ describe('Admin: delete project', () => {
     }).then((project) => {
       const projectId = project.body.data.id;
       cy.visit('/admin/projects/all');
-      cy.acceptCookies();
 
       cy.get('#e2e-admin-projects-list-unsortable')
         .children()
@@ -49,7 +48,6 @@ describe('Admin: delete project', () => {
         folder.body.data.attributes.title_multiloc['en'];
       const folderId = folder.body.data.id;
       cy.visit('/admin/projects/all');
-      cy.acceptCookies();
 
       cy.contains(folderTitleToDelete).should('exist');
 
