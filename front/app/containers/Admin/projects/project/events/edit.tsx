@@ -787,7 +787,7 @@ const AdminProjectEventEdit = () => {
                       <Box ml="4px">
                         <IconTooltip
                           content={formatMessage(
-                            messages.toggleCustomRegisterButtonTooltip
+                            messages.toggleCustomRegisterButtonTooltip2
                           )}
                         />
                       </Box>
