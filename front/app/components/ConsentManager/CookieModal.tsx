@@ -30,6 +30,7 @@ const StyledModal = styled(Modal)`
 
 const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
+
   return (
     <StyledModal
       opened={true}
@@ -69,6 +70,7 @@ const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
             className="e2e-accept-cookies-btn"
             buttonStyle="primary"
             onClick={onAccept}
+            autoFocus
           >
             <FormattedMessage {...messages.accept} />
           </ButtonWithLink>
