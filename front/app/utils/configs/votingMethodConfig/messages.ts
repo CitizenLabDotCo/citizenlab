@@ -30,9 +30,9 @@ export default defineMessages({
     defaultMessage: 'person submitted their vote online',
   },
   votingPreSubmissionWarning: {
-    id: 'app.utils.votingMethodUtils.votingPreSubmissionWarning',
+    id: 'app.utils.votingMethodUtils.votingPreSubmissionWarning1',
     defaultMessage:
-      '<b>Your votes will not be counted</b> until you click "Submit"',
+      '<b>Your vote will not be counted</b> until you click "Submit"',
   },
   budgetingPreSubmissionWarning: {
     id: 'app.utils.votingMethodUtils.budgetingPreSubmissionWarning',

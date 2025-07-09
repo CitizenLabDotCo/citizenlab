@@ -35,15 +35,41 @@ export default defineMessages({
     defaultMessage: 'Add vote',
   },
 
-  // disabled explanations
-  maxVotesPerIdeaReached: {
-    id: 'app.components.AssignMultipleVotesControl.maxVotesPerIdeaReached',
+  maxVotesPerInputReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxVotesPerInputReached1',
     defaultMessage:
-      'You have reached the maximum number of {maxVotes} votes per idea',
+      'You have distributed the maximum number of votes for this option.',
   },
-  maxVotesReached: {
-    id: 'app.components.AssignMultipleVotesControl.maxVotesReached',
-    defaultMessage: 'You have used all of your votes',
+  maxPointsPerInputReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxPointsPerInputReached',
+    defaultMessage:
+      'You have distributed the maximum number of points for this option.',
+  },
+  maxTokensPerInputReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxTokensPerInputReached',
+    defaultMessage:
+      'You have distributed the maximum number of tokens for this option.',
+  },
+  maxCreditsPerInputReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxCreditsPerInputReached',
+    defaultMessage:
+      'You have distributed the maximum number of credits for this option.',
+  },
+  maxVotesInTotalReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxVotesInTotalReached',
+    defaultMessage: 'You have distributed all of your votes.',
+  },
+  maxPointsInTotalReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxPointsInTotalReached',
+    defaultMessage: 'You have distributed all of your points.',
+  },
+  maxTokensInTotalReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxTokensInTotalReached',
+    defaultMessage: 'You have distributed all of your tokens.',
+  },
+  maxCreditsInTotalReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxCreditsInTotalReached',
+    defaultMessage: 'You have distributed all of your credits.',
   },
   votesSubmitted1: {
     id: 'app.components.AssignMultipleVotesControl.votesSubmitted1',

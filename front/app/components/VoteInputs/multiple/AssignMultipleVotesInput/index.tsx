@@ -139,7 +139,7 @@ const AssignMultipleVotesInput = ({
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
   const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
-  const maxVotes = voting_max_total ?? 0;
+  const maxVotesInTotal = voting_max_total ?? 0;
 
   const action =
     phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
@@ -168,9 +168,7 @@ const AssignMultipleVotesInput = ({
     : undefined;
 
   const plusButtonDisabledExplanation = plusButtonDisabledMessage
-    ? formatMessage(plusButtonDisabledMessage, {
-        maxVotes: voting_max_votes_per_idea,
-      })
+    ? formatMessage(plusButtonDisabledMessage)
     : undefined;
 
   if (votes > 0) {
@@ -225,7 +223,7 @@ const AssignMultipleVotesInput = ({
               value={votes}
               max={Math.min(
                 voting_max_votes_per_idea,
-                maxVotes - (numberOfVotesCast ?? 0)
+                maxVotesInTotal - (numberOfVotesCast ?? 0)
               )}
               onChange={(newValue) => setVotes?.(ideaId, newValue)}
             />
