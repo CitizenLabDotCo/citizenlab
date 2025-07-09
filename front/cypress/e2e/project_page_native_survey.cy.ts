@@ -143,6 +143,7 @@ describe('Native survey CTA bar', () => {
 
     cy.logout();
     cy.setLoginCookie(email, password);
+    cy.acceptCookies();
 
     // Take the survey
     cy.visit(`/projects/${projectSlug}`);

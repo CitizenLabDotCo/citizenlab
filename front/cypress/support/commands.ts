@@ -194,7 +194,6 @@ function apiLogin(email: string, password: string) {
 function setLoginCookie(email: string, password: string) {
   return cy.apiLogin(email, password).then((res) => {
     cy.setCookie('cl2_jwt', res.body.jwt);
-    cy.setConsentCookie();
   });
 }
 
