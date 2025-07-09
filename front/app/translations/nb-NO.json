@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Godta",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Avvis policyen og lukk banneret",
   "app.components.ConsentManager.Banner.close": "Lukk",
-  "app.components.ConsentManager.Banner.mainText": "Denne plattformen bruker informasjonskapsler i samsvar med vår {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Administrer",
   "app.components.ConsentManager.Banner.policyLink": "Retningslinjer for informasjonskapsler",
   "app.components.ConsentManager.Banner.reject": "Avvis",

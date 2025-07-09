@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Akzeptéieren",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Richtlinn ofleenen a Banner zoumaachen",
   "app.components.ConsentManager.Banner.close": "Zoumaachen",
-  "app.components.ConsentManager.Banner.mainText": "Dësen Internetsite benotzt Cookieë geméiss eiser {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Beaarbechten",
   "app.components.ConsentManager.Banner.policyLink": "Cookie-Richtlinnen",
   "app.components.ConsentManager.Banner.reject": "Refuséieren",

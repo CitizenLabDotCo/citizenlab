@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Hyväksy",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Hylkää käytäntö ja sulje banneri",
   "app.components.ConsentManager.Banner.close": "kiinni",
-  "app.components.ConsentManager.Banner.mainText": "Tämä alusta käyttää evästeitä {policyLink} mukaisesti.",
   "app.components.ConsentManager.Banner.manage": "Muokkaa",
   "app.components.ConsentManager.Banner.policyLink": "Evästekäytäntö",
   "app.components.ConsentManager.Banner.reject": "Hylkää",

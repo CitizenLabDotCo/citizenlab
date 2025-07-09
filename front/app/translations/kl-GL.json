@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Akuersaarit",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Reject policy and close banner",
   "app.components.ConsentManager.Banner.close": "Matujuk",
-  "app.components.ConsentManager.Banner.mainText": "Iliuuseqarnikkut {policyLink}-erput akuerivat.",
   "app.components.ConsentManager.Banner.manage": "Aqutsinerit",
   "app.components.ConsentManager.Banner.policyLink": "Cookiet pillugit politik",
   "app.components.ConsentManager.Banner.reject": "Reject",

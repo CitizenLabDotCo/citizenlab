@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Αποδοχή",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Απορρίψτε την πολιτική και κλείστε το πανό",
   "app.components.ConsentManager.Banner.close": "Κλείσιμο",
-  "app.components.ConsentManager.Banner.mainText": "Αυτή η πλατφόρμα χρησιμοποιεί cookies σύμφωνα με την {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Διαχείριση",
   "app.components.ConsentManager.Banner.policyLink": "Πολιτική cookie",
   "app.components.ConsentManager.Banner.reject": "Απόρριψη",

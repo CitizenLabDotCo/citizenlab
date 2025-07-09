@@ -44,7 +44,6 @@
   "app.components.ConfirmationModal.wrongEmail": "E-mail greșit?",
   "app.components.ConsentManager.Banner.accept": "Acceptă",
   "app.components.ConsentManager.Banner.close": "Închide",
-  "app.components.ConsentManager.Banner.mainText": "Prin navigare, sunteți de acord cu {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Administrează",
   "app.components.ConsentManager.Banner.policyLink": "Politica Cookie",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Confirmă",

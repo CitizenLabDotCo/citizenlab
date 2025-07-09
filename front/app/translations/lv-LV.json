@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Pieņemt",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Noraidīt politiku un aizvērt baneri",
   "app.components.ConsentManager.Banner.close": "Aizvērt",
-  "app.components.ConsentManager.Banner.mainText": "Šī platforma izmanto sīkfailus saskaņā ar mūsu {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Pārvaldīt",
   "app.components.ConsentManager.Banner.policyLink": "Sīkdatņu politika",
   "app.components.ConsentManager.Banner.reject": "Noraidīt",

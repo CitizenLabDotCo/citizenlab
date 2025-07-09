@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "ਸਵੀਕਾਰ ਕਰੋ",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "ਨੀਤੀ ਨੂੰ ਰੱਦ ਕਰੋ ਅਤੇ ਬੈਨਰ ਬੰਦ ਕਰੋ",
   "app.components.ConsentManager.Banner.close": "ਬੰਦ ਕਰੋ",
-  "app.components.ConsentManager.Banner.mainText": "ਇਹ ਪਲੇਟਫਾਰਮ ਸਾਡੇ {policyLink}ਦੇ ਅਨੁਸਾਰ ਕੂਕੀਜ਼ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ।",
   "app.components.ConsentManager.Banner.manage": "ਪ੍ਰਬੰਧਿਤ ਕਰੋ",
   "app.components.ConsentManager.Banner.policyLink": "ਕੂਕੀ ਨੀਤੀ",
   "app.components.ConsentManager.Banner.reject": "ਅਸਵੀਕਾਰ ਕਰੋ",

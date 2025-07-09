@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Prihvati",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Odbij politiku i zatvori baner",
   "app.components.ConsentManager.Banner.close": "Zatvori",
-  "app.components.ConsentManager.Banner.mainText": "Ova platforma koristi kolačiće u skladu sa našom {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Upravljajte",
   "app.components.ConsentManager.Banner.policyLink": "Deklaracija o kolačićima",
   "app.components.ConsentManager.Banner.reject": "Odbij",
