@@ -20,7 +20,9 @@ const UnlistedInput = ({ listed, onChange }: Props) => {
         checked={listed}
         label={
           <Text fontWeight="semi-bold" color="primary">
-            {listed ? 'Listed' : 'Unlisted'}
+            {listed
+              ? formatMessage(messages.listed)
+              : formatMessage(messages.unlisted)}
           </Text>
         }
         onChange={onChange}

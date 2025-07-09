@@ -27,4 +27,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.onlyAccessible',
     defaultMessage: 'Only accessible via direct URL',
   },
+  listed: {
+    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.listed',
+    defaultMessage: 'Listed',
+  },
+  unlisted: {
+    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.unlisted',
+    defaultMessage: 'Unlisted',
+  },
 });
