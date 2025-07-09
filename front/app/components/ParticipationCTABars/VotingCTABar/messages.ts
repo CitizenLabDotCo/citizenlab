@@ -61,18 +61,4 @@ export default defineMessages({
     defaultMessage:
       '{votes, plural, =0 {# votes} one {# vote} other {# votes}} cast',
   },
-  stillHaveVotesLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.stillHaveVotesLeft',
-    defaultMessage:
-      'You still have {votesLeft} {votesTerm} left to distribute.',
-  },
-  stillHaveVotesLeftDescription: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.stillHaveVotesLeftDescription',
-    defaultMessage:
-      'You can still distribute more {votesTerm} amongst different options, are you sure you want to submit?',
-  },
-  seeOtherOptions: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2',
-    defaultMessage: 'See options',
-  },
 });
