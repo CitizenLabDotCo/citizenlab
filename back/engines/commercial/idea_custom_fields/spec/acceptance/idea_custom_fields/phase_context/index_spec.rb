@@ -6,6 +6,13 @@ require 'rspec_api_documentation/dsl'
 resource 'Idea Custom Fields' do
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
 
+  shared_examples 'Unauthorized (401)' do
+    example 'Unauthorized (401)', document: false do
+      do_request
+      expect(status).to eq 401
+    end
+  end
+
   before { header 'Content-Type', 'application/json' }
 
   get 'web_api/v1/phases/:phase_id/custom_fields' do
@@ -14,9 +21,9 @@ resource 'Idea Custom Fields' do
     parameter :input_types, 'Filter custom fields by input types', type: :array, items: { type: :string }, required: false
     parameter :public_fields, 'Only return custom fields that are visible to the public', type: :boolean, required: false
 
-    let(:context) { create(:native_survey_phase) }
-    let(:phase_id) { context.id }
-    let(:form) { create(:custom_form, participation_context: context) }
+    let(:survey_phase) { create(:native_survey_phase) }
+    let(:phase_id) { survey_phase.id }
+    let(:form) { create(:custom_form, participation_context: survey_phase) }
     let!(:custom_field1) { create(:custom_field_text, resource: form, key: 'extra_field1') }
     let!(:custom_field2) { create(:custom_field_number, resource: form, key: 'extra_field2', enabled: false) }
 
@@ -66,6 +73,53 @@ resource 'Idea Custom Fields' do
         expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [
           custom_field1.key
         ]
+      end
+    end
+
+    context 'when regular user' do
+      let(:user) { create(:user) }
+
+      before { header_token_for(user) }
+
+      context 'when the project is in draft' do
+        before do
+          survey_phase.project.update!(admin_publication_attributes: { publication_status: 'draft' })
+        end
+
+        context 'and the project_preview_link feature flag is enabled' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['project_preview_link'] = { 'enabled' => true, 'allowed' => true }
+            AppConfiguration.instance.update!(settings: settings)
+          end
+
+          context 'and a valid preview_token is provided in cookies' do
+            before { header('Cookie', "preview_token=#{survey_phase.project.preview_token}") }
+
+            example 'List all public custom fields for a phase' do
+              do_request(public_fields: true)
+              assert_status 200
+              expect(response_data.size).to eq 1
+              expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [custom_field1.key]
+            end
+          end
+
+          context 'and an invalid preview_token is provided in cookies' do
+            before { header('Cookie', 'preview_token=invalid') }
+
+            include_examples 'Unauthorized (401)'
+          end
+
+          context 'and no preview_token is provided in cookies' do
+            include_examples 'Unauthorized (401)'
+          end
+        end
+      
+        context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
+          before { header('Cookie', "preview_token=#{survey_phase.project.preview_token}") }
+
+          include_examples 'Unauthorized (401)'
+        end
       end
     end
   end
