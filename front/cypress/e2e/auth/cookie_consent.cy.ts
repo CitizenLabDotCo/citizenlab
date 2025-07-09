@@ -38,7 +38,7 @@ describe('Cookie consent form for signed-in users', () => {
 describe('Cookie consent form for signed-in admins', () => {
   beforeEach(() => {
     cy.clearCookies();
-    cy.setAdminLoginCookie();
+    cy.setLoginCookie('admin@govocal.com', 'democracy2.0');
   });
 
   it('Shows the correct options when signed up as admin user', () => {
