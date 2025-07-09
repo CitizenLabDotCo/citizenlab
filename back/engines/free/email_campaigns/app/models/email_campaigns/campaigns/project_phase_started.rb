@@ -54,8 +54,9 @@ module EmailCampaigns
       { 'Notifications::ProjectPhaseStarted' => { 'created' => true } }
     end
 
-    # TODO: Use somewhere
     def activity_context(activity)
+      return nil if !activity.item.is_a?(::Notification)
+
       activity.item.phase
     end
 
