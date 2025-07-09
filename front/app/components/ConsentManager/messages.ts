@@ -5,9 +5,14 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Banner.close',
     defaultMessage: 'Close',
   },
+  bannerTitle: {
+    id: 'app.components.ConsentManager.Banner.title',
+    defaultMessage: 'Make participation better',
+  },
   mainText: {
-    id: 'app.components.ConsentManager.Banner.mainText',
-    defaultMessage: 'By navigating the platform, you agree to our {policyLink}',
+    id: 'app.components.ConsentManager.Banner.description',
+    defaultMessage:
+      'We use cookies to make this site work better and help more people participate. {policyLink}.',
   },
   policyLink: {
     id: 'app.components.ConsentManager.Banner.policyLink',
