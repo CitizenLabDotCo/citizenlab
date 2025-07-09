@@ -91,7 +91,7 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
 
     context 'when user fields in surveys are enabled' do
       it 'produces an xlsx file including user fields for the survey phase' do
-        # Create a custom field of all types
+        # Create some user fields
         create(:custom_field_gender, :with_options)
         create(:custom_field_checkbox, resource_type: 'User')
         create(:custom_field_date, resource_type: 'User')

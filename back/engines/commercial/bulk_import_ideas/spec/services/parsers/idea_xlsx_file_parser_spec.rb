@@ -225,5 +225,40 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       expect(idea_rows[0][:custom_field_values][:text_field]).to eq '2'
       expect(idea_rows[1][:custom_field_values][:text_field]).to eq '2.2'
     end
+
+    it 'parses user fields in surveys correctly' do
+      # Basic survey
+      phase = create(:native_survey_phase, user_fields_in_form: true, with_permissions: true)
+      custom_form = create(:custom_form, participation_context: phase)
+      create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' })
+      create(:custom_field_text, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Text field' })
+      create(:custom_field_form_end_page, resource: custom_form)
+
+      # User fields
+      create(:custom_field_gender, :with_options, key: 'gender', title_multiloc: { 'en' => 'Gender' })
+      create(:custom_field_checkbox, resource_type: 'User', key: 'checkbox', title_multiloc: { 'en' => 'A Checkbox field' })
+      create(:custom_field_date, resource_type: 'User', key: 'date', title_multiloc: { 'en' => 'A Date field' })
+
+      service = described_class.new(create(:admin), 'en', phase.id, false)
+
+      xlsx_ideas_array = [
+        {
+          pdf_pages: [1],
+          fields: {
+            'Text field' => 'Something',
+            'Gender' => 'Male',
+            'A Checkbox field' => 'X',
+            'A Date field' => '01-01-2025'
+          }
+        }
+      ]
+      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      expect(idea_rows.count).to eq 1
+      custom_field_values = idea_rows[0][:custom_field_values]
+      expect(custom_field_values[:text_field]).to eq 'Something'
+      expect(custom_field_values[:u_gender]).to eq 'male'
+      expect(custom_field_values[:u_checkbox]).to be true
+      expect(custom_field_values[:u_date]).to eq '2025-01-01'
+    end
   end
 end
