@@ -16,7 +16,7 @@ resource 'Idea Custom Fields' do
   shared_examples 'draft project preview tests' do |options = {}|
     phase_var = options[:phase_var] || 'survey_phase'
     custom_field_var = options[:custom_field_var] || 'custom_field1'
-    
+
     before do
       phase = instance_eval(phase_var)
       phase.project.update!(admin_publication_attributes: { publication_status: 'draft' })
@@ -38,7 +38,7 @@ resource 'Idea Custom Fields' do
         example 'List all public custom fields for a phase' do
           do_request(public_fields: true)
           assert_status 200
-          
+
           field = instance_eval(custom_field_var)
           expect(response_data.size).to be >= 1
           expect(response_data.map { |d| d.dig(:attributes, :key) }).to include(field.key)
@@ -130,10 +130,10 @@ resource 'Idea Custom Fields' do
     end
 
     context 'when regular user' do
-
       let(:user) { create(:user) }
+
       before { header_token_for(user) }
-      
+
       context 'when the project is in draft' do
         include_examples 'draft project preview tests', {
           phase_var: 'survey_phase',
