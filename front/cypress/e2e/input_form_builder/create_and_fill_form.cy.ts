@@ -60,7 +60,6 @@ describe('Input form builder', () => {
 
     // Fill in the form
     cy.visit(`/projects/${projectSlug}/ideas/new`);
-    cy.acceptCookies();
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
@@ -161,7 +160,6 @@ describe('Input form builder', () => {
 
     // Fill in the form
     cy.visit(`/projects/${projectSlug}/ideas/new`);
-    cy.acceptCookies();
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');

@@ -3,7 +3,6 @@ describe('Proposals status form', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/settings/statuses/proposals');
-    cy.acceptCookies();
   });
 
   it('Shows form when creating a new proposals input status', () => {

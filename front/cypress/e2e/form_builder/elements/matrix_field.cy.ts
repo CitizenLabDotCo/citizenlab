@@ -65,7 +65,6 @@ describe('Form builder matrix component', () => {
 
     // Visit the survey front office
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
 
     // Verify that the matrix question is displayed
     cy.contains('Question title 2').should('exist');

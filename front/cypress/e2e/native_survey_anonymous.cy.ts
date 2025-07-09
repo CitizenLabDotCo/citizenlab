@@ -28,7 +28,7 @@ describe('Native survey: no authentication requirements', () => {
 
   it('allows anyone to participate, and shows the idea id upon completion', () => {
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('.e2e-idea-button').first().find('button').click();
     cy.location('pathname').should(
       'eq',
@@ -69,7 +69,7 @@ describe('Native survey: anonymous toggle on', () => {
   it('allows signed in users to participate, and shows the idea id upon completion', () => {
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('.e2e-idea-button').first().find('button').click();
     cy.location('pathname').should(
       'eq',

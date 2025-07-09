@@ -18,7 +18,6 @@ describe('Verification modal', () => {
             cy.setLoginCookie(email, password);
             cy.visit('/profile/edit');
             cy.get('#e2e-user-edit-profile-page').should('exist');
-            cy.acceptCookies();
           });
       });
 
