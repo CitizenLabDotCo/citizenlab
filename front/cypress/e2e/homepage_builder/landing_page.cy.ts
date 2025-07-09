@@ -52,7 +52,7 @@ describe('Landing page - not signed in', () => {
 
     // is accessible
     cy.injectAxe();
-    cy.checkA11y(undefined, { includedImpacts: ['critical'] });
+    cy.checkA11y();
 
     // shows the signed-out header CTA button, and shows the sign up/in modal when clicked
     cy.get('.e2e-signed-out-header-cta-button').click();
@@ -102,6 +102,8 @@ describe('Landing page - signed in', () => {
 
   it('shows correct content', () => {
     cy.goToLandingPage();
+    cy.injectAxe();
+
     cy.wait(2000);
     // shows the "complete your profile" header by default
     cy.get('.e2e-signed-in-header');
@@ -131,8 +133,7 @@ describe('Landing page - signed in', () => {
     });
 
     // Is accessible
-    cy.injectAxe();
-    cy.checkA11y(undefined, { includedImpacts: ['critical'] });
+    cy.checkA11y();
   });
 
   after(() => {
