@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Project events",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Event name",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "De Knäppchen mat enger externer URL verbannen",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Standardméisseg gëtt de Knäppchen fir d'Evenement an der Plattform unzemellen ugewisen, sou datt d'Benotzer hiert Interessi un engem Event registréiere kënnen. Dir kënnt dëst änneren, fir amplaz op eng extern URL ze verlinken.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Standardméisseg gëtt de Knäppchen fir d'Evenement an der Plattform unzemellen ugewisen, sou datt d'Benotzer sech fir en Event umellen kënnen. Dir kënnt dëst änneren, fir amplaz op eng extern URL ze verlinken.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Limitéiert d'Zuel vun den Eventregistréierten",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Setzt eng maximal Zuel vun den Umeldungen fir den Event fest. Wann d'Limit erreecht ass, ginn keng weider Umeldungen akzeptéiert.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/Benotzer",
