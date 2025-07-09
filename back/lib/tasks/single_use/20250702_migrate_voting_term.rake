@@ -6,7 +6,7 @@ namespace :single_use do
 
       map_to_term = {
         'vote' => ['vote', 'stem', 'stimme', 'voto', 'voorkeur', 'äänestys', 'stemme', 'ster', '"pouvoir"', 'fördela', 'prioriteit'],
-        'point' => ['point', 'punkt', 'punt'],
+        'point' => %w[point punkt punt],
         'token' => ['token'],
         'credit' => ['credit', '"crédit carbone"']
       }
