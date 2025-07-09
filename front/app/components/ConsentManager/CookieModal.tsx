@@ -37,6 +37,7 @@ const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
       close={onClose}
       closeOnClickOutside={false}
       hideCloseButton
+      width="600px"
     >
       <Box id="e2e-cookie-banner">
         <Title fontSize={isSmallerThanPhone ? 'xl' : undefined}>
