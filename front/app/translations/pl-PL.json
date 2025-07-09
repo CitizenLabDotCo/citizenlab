@@ -95,6 +95,7 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Oświadczenia",
   "app.components.CommunityMonitorModal.formError": "Napotkano błąd.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Ta bieżąca ankieta śledzi, jak oceniasz zarządzanie i usługi publiczne.",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Zajmuje <1 minutę} one {Zajmuje 1 minutę} other {Zajmuje # minut}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "Wiadomość z kodem potwierdzającym została wysłana na {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Zmień swój adres e-mail.",
   "app.components.ConfirmationModal.codeInput": "Kod",
