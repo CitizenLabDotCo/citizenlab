@@ -61,7 +61,7 @@ describe('Project description builder toggle', () => {
 
     // Attach a project file
     cy.visit(`admin/projects/${projectId}/settings`);
-    cy.wait(1000);
+    cy.wait(2000);
     cy.scrollTo('bottom');
 
     cy.get('#e2e-project-file-uploader').selectFile(
