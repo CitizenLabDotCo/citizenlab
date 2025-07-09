@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Wydarzenia w projekcie",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Nazwa zdarzenia",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Połącz przycisk z zewnętrznym adresem URL",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Domyślnie przycisk rejestracji wydarzenia na platformie będzie wyświetlany, umożliwiając użytkownikom zarejestrowanie zainteresowania wydarzeniem. Możesz to zmienić, aby zamiast tego połączyć się z zewnętrznym adresem URL.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Domyślnie przycisk rejestracji wydarzenia na platformie będzie wyświetlany, umożliwiając użytkownikom zarejestrowanie się na wydarzenie. Możesz to zmienić, aby zamiast tego połączyć się z zewnętrznym adresem URL.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Ogranicz liczbę zarejestrowanych uczestników wydarzenia",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Ustaw maksymalną liczbę zarejestrowanych uczestników wydarzenia. Jeśli limit zostanie osiągnięty, dalsze rejestracje nie będą akceptowane.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
