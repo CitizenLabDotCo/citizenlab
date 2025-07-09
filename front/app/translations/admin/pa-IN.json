@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "ਪ੍ਰੋਜੈਕਟ ਇਵੈਂਟਸ",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "ਘਟਨਾ ਦਾ ਨਾਮ",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "ਬਟਨ ਨੂੰ ਕਿਸੇ ਬਾਹਰੀ URL ਨਾਲ ਲਿੰਕ ਕਰੋ",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "ਡਿਫੌਲਟ ਤੌਰ 'ਤੇ, ਇਨ-ਪਲੇਟਫਾਰਮ ਇਵੈਂਟ ਰਜਿਸਟਰ ਬਟਨ ਦਿਖਾਇਆ ਜਾਵੇਗਾ ਜੋ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਕਿਸੇ ਇਵੈਂਟ ਵਿੱਚ ਆਪਣੀ ਦਿਲਚਸਪੀ ਰਜਿਸਟਰ ਕਰਨ ਦੀ ਆਗਿਆ ਦੇਵੇਗਾ। ਤੁਸੀਂ ਇਸਨੂੰ ਕਿਸੇ ਬਾਹਰੀ URL ਨਾਲ ਲਿੰਕ ਕਰਨ ਲਈ ਬਦਲ ਸਕਦੇ ਹੋ।",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "ਡਿਫੌਲਟ ਤੌਰ 'ਤੇ, ਇਨ-ਪਲੇਟਫਾਰਮ ਇਵੈਂਟ ਰਜਿਸਟਰ ਬਟਨ ਦਿਖਾਇਆ ਜਾਵੇਗਾ ਜੋ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਕਿਸੇ ਇਵੈਂਟ ਲਈ ਰਜਿਸਟਰ ਕਰਨ ਦੀ ਆਗਿਆ ਦੇਵੇਗਾ। ਤੁਸੀਂ ਇਸਨੂੰ ਕਿਸੇ ਬਾਹਰੀ URL ਨਾਲ ਲਿੰਕ ਕਰਨ ਲਈ ਬਦਲ ਸਕਦੇ ਹੋ।",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "ਇਵੈਂਟ ਰਜਿਸਟਰਾਂ ਦੀ ਗਿਣਤੀ ਸੀਮਤ ਕਰੋ",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "ਇਵੈਂਟ ਰਜਿਸਟਰੈਂਟਾਂ ਦੀ ਵੱਧ ਤੋਂ ਵੱਧ ਗਿਣਤੀ ਨਿਰਧਾਰਤ ਕਰੋ। ਜੇਕਰ ਸੀਮਾ ਪੂਰੀ ਹੋ ਜਾਂਦੀ ਹੈ, ਤਾਂ ਹੋਰ ਕੋਈ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਸਵੀਕਾਰ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ।",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
