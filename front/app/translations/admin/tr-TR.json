@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Proje etkinlikleri",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Etkinlik adı",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Düğmeyi harici bir URL'ye bağlama",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Varsayılan olarak, kullanıcıların bir etkinliğe ilgi duyduklarını kaydetmelerine olanak tanıyan platform içi etkinlik kayıt düğmesi gösterilecektir. Bunun yerine harici bir URL'ye bağlantı vermek için bunu değiştirebilirsiniz.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Varsayılan olarak, kullanıcıların bir etkinliğe kaydolmasına olanak tanıyan platform içi etkinlik kayıt düğmesi gösterilecektir. Bunun yerine harici bir URL'ye bağlantı vermek için bunu değiştirebilirsiniz.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Etkinliğe kayıt yaptıranların sayısını sınırlayın",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Maksimum etkinlik kayıt sayısı belirleyin. Sınıra ulaşılırsa, başka kayıt kabul edilmeyecektir.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/kullanıcılar",
