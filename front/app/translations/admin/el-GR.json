@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Εκδηλώσεις έργου",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Όνομα εκδήλωσης",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Συνδέστε το κουμπί με μια εξωτερική διεύθυνση URL",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Από προεπιλογή, θα εμφανίζεται το κουμπί καταχώρισης εκδηλώσεων εντός της πλατφόρμας που επιτρέπει στους χρήστες να δηλώσουν το ενδιαφέρον τους για μια εκδήλωση. Μπορείτε να το αλλάξετε ώστε να παραπέμπει σε μια εξωτερική διεύθυνση URL.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Από προεπιλογή, θα εμφανίζεται το κουμπί εγγραφής σε συμβάν εντός της πλατφόρμας, το οποίο επιτρέπει στους χρήστες να εγγραφούν σε ένα συμβάν. Μπορείτε να το αλλάξετε ώστε να παραπέμπει σε μια εξωτερική διεύθυνση URL.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Περιορίστε τον αριθμό των εγγεγραμμένων στην εκδήλωση",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Ορίστε έναν μέγιστο αριθμό εγγεγραμμένων για την εκδήλωση. Εάν επιτευχθεί το όριο, δεν θα γίνονται δεκτές περαιτέρω εγγραφές.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
