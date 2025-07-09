@@ -1,13 +1,13 @@
 ca:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Assignment of an idea to me
+      "idea_assigned_to_you": Assignment of an input to me
     admin_campaign_type_description:
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
+      "idea_assigned_to_you": Assignment of an input - admins and project managers
     idea_assigned_to_you:
       by_author: 'by %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_idea: 'An idea has been assigned to you. Give feedback by writing an official update or by changing its status.'
-      main_header: '%{firstName}, you have a new assignment'
-      subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader_idea: 'The idea of %{authorName} has been assigned to you'
+      event_description_idea: 'An input has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      main_header: '%{firstName}, an input was assigned to you'
+      subject: 'An input was assigned to you on the platform of %{organizationName}'
+      preheader_idea: 'The input of %{authorName} has been assigned to you'
