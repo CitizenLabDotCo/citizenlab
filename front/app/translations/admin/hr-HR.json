@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Događaji projekta",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Naziv događaja",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Poveži gumb s vanjskim URL-om",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Prema zadanim postavkama, prikazat će se gumb za registraciju događaja na platformi koji korisnicima omogućuje registraciju interesa za događaj. To možete promijeniti tako da umjesto toga vodi do vanjske URL adrese.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Prema zadanim postavkama, gumb za registraciju događaja na platformi bit će prikazan kako bi korisnicima omogućio registraciju za događaj. To možete promijeniti tako da umjesto toga vodi do vanjske URL adrese.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Ograničite broj prijavljenih na događaj",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Postavite maksimalan broj prijavljenih na događaj. Ako se dostigne ograničenje, daljnje prijave neće biti prihvaćene.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/korisnici",
