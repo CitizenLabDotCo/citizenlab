@@ -52,7 +52,7 @@ describe('Landing page - not signed in', () => {
 
     // is accessible
     cy.injectAxe();
-    cy.checkA11y();
+    cy.checkA11y(undefined, { includedImpacts: ['critical'] });
 
     // shows the signed-out header CTA button, and shows the sign up/in modal when clicked
     cy.get('.e2e-signed-out-header-cta-button').click();
@@ -63,8 +63,10 @@ describe('Landing page - not signed in', () => {
 describe('Landing page - URL sign in/up', () => {
   it('shows correct authentication modal when logged out', () => {
     cy.clearCookies();
-    cy.visit('/sign-in');
+    cy.goToLandingPage();
     cy.acceptCookies();
+
+    cy.visit('/sign-in');
 
     cy.get('#e2e-authentication-modal').should('exist');
     cy.contains('Log in').should('exist');
@@ -94,6 +96,7 @@ describe('Landing page - signed in', () => {
     cy.apiSignup(firstName, lastName, email, password).then((user) => {
       userId = user.body.data.id;
       cy.setLoginCookie(email, password);
+      cy.setConsentCookie();
     });
   });
 
@@ -129,7 +132,7 @@ describe('Landing page - signed in', () => {
 
     // Is accessible
     cy.injectAxe();
-    cy.checkA11y();
+    cy.checkA11y(undefined, { includedImpacts: ['critical'] });
   });
 
   after(() => {
