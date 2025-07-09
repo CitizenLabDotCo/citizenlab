@@ -197,8 +197,6 @@
   "app.components.ErrorBoundary.openFormText": "βοηθήστε μας να το λύσουμε",
   "app.components.ErrorToast.budgetExceededError": "Δεν έχετε αρκετό προϋπολογισμό",
   "app.components.ErrorToast.votesExceededError": "Δεν σας έχουν απομείνει αρκετές ψήφοι",
-  "app.components.EventAttendanceButton.attend": "Παρακολουθήστε το",
-  "app.components.EventAttendanceButton.attending": "Συμμετοχή",
   "app.components.EventAttendanceButton.forwardToFriend": "Προώθηση σε ένα φίλο",
   "app.components.EventAttendanceButton.seeYouThere": "Τα λέμε εκεί!",
   "app.components.EventAttendanceButton.seeYouThereName": "Τα λέμε εκεί, {userFirstName}!",

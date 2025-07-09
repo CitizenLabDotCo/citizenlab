@@ -197,8 +197,6 @@
   "app.components.ErrorBoundary.openFormText": "اس کا پتہ لگانے میں ہماری مدد کریں۔",
   "app.components.ErrorToast.budgetExceededError": "آپ کے پاس کافی بجٹ نہیں ہے۔",
   "app.components.ErrorToast.votesExceededError": "آپ کے پاس کافی ووٹ باقی نہیں ہیں۔",
-  "app.components.EventAttendanceButton.attend": "شرکت کرنا",
-  "app.components.EventAttendanceButton.attending": "شرکت کرنا",
   "app.components.EventAttendanceButton.forwardToFriend": "کسی دوست کو فارورڈ کریں۔",
   "app.components.EventAttendanceButton.seeYouThere": "وہاں ملتے ہیں!",
   "app.components.EventAttendanceButton.seeYouThereName": "وہاں ملتے ہیں، {userFirstName}!",

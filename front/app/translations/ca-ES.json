@@ -197,8 +197,6 @@
   "app.components.ErrorBoundary.openFormText": "ajudeu-nos a esbrinar-ho",
   "app.components.ErrorToast.budgetExceededError": "No tens prou pressupost",
   "app.components.ErrorToast.votesExceededError": "No et queden prou vots",
-  "app.components.EventAttendanceButton.attend": "assistir",
-  "app.components.EventAttendanceButton.attending": "Assistint",
   "app.components.EventAttendanceButton.forwardToFriend": "Reenvia a un amic",
   "app.components.EventAttendanceButton.seeYouThere": "Ens veiem allà!",
   "app.components.EventAttendanceButton.seeYouThereName": "Ens veiem allà, {userFirstName}!",

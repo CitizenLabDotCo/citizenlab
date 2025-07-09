@@ -197,8 +197,6 @@
   "app.components.ErrorBoundary.openFormText": "help ons het op te lossen",
   "app.components.ErrorToast.budgetExceededError": "Je hebt niet genoeg budget",
   "app.components.ErrorToast.votesExceededError": "Je hebt niet genoeg stemmen over",
-  "app.components.EventAttendanceButton.attend": "Bijwonen",
-  "app.components.EventAttendanceButton.attending": "Aanwezig",
   "app.components.EventAttendanceButton.forwardToFriend": "Doorsturen naar een vriend",
   "app.components.EventAttendanceButton.seeYouThere": "Zie je daar!",
   "app.components.EventAttendanceButton.seeYouThereName": "Zie je daar, {userFirstName}!",

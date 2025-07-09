@@ -197,8 +197,6 @@
   "app.components.ErrorBoundary.openFormText": "helpwch ni i ddarganfod y peth",
   "app.components.ErrorToast.budgetExceededError": "Nid oes gennych ddigon o gyllideb",
   "app.components.ErrorToast.votesExceededError": "Nid oes gennych ddigon o bleidleisiau ar ôl",
-  "app.components.EventAttendanceButton.attend": "Mynychu",
-  "app.components.EventAttendanceButton.attending": "Yn mynychu",
   "app.components.EventAttendanceButton.forwardToFriend": "Ymlaen at ffrind",
   "app.components.EventAttendanceButton.seeYouThere": "Welwn ni chi yno!",
   "app.components.EventAttendanceButton.seeYouThereName": "Welwn ni chi yno, {userFirstName}!",

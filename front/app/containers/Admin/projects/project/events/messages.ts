@@ -168,44 +168,44 @@ export default defineMessages({
     defaultMessage:
       'Additional address information that could help identify the location such as a building name, floor number, etc.',
   },
-  attendanceLimit: {
-    id: 'app.containers.AdminPage.ProjectEvents.attendanceLimit',
-    defaultMessage: 'Attendance limit',
+  registrationLimit: {
+    id: 'app.containers.AdminPage.ProjectEvents.registrationLimit',
+    defaultMessage: 'Registration limit',
   },
-  toggleAttendanceLimitLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.toggleAttendanceLimitLabel',
-    defaultMessage: 'Limit the number of attendees',
+  toggleRegistrationLimitLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel',
+    defaultMessage: 'Limit the number of event registrants',
   },
-  toggleAttendanceLimitTooltip: {
-    id: 'app.containers.AdminPage.ProjectEvents.toggleAttendanceLimitTooltip',
+  toggleRegistrationLimitTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip',
     defaultMessage:
-      'Set a maximum number of attendees. If the limit is reached, no further attendances will be accepted.',
+      'Set a maximum number of event registrants. If the limit is reached, no further registrations will be accepted.',
   },
-  maximumAttendees: {
-    id: 'app.containers.AdminPage.ProjectEvents.maximumAttendees',
-    defaultMessage: 'Maximum attendees',
+  maximumRegistrants: {
+    id: 'app.containers.AdminPage.ProjectEvents.maximumRegistrants',
+    defaultMessage: 'Maximum registrants',
   },
-  attendanceButton: {
-    id: 'app.containers.AdminPage.ProjectEvents.attendanceButton',
-    defaultMessage: 'Attendance button',
+  registerButton: {
+    id: 'app.containers.AdminPage.ProjectEvents.registerButton',
+    defaultMessage: 'Register button',
   },
-  toggleCustomAttendanceButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.toggleCustomAttendanceButtonLabel',
+  toggleCustomRegisterButtonLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel',
     defaultMessage: 'Link the button to an external URL',
   },
-  toggleCustomAttendanceButtonTooltip: {
-    id: 'app.containers.AdminPage.ProjectEvents.toggleCustomAttendanceButtonTooltip',
+  toggleCustomRegisterButtonTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip',
     defaultMessage:
-      'By default, the in-platform attendance button will be shown allowing users to register their interest in an event. You can change this to link to an external URL instead.',
+      'By default, the in-platform event register button will be shown allowing users to register their interest in an event. You can change this to link to an external URL instead.',
   },
   customButtonText: {
     id: 'app.containers.AdminPage.ProjectEvents.customButtonText',
     defaultMessage: 'Custom button text',
   },
-  customButtonTextTooltip: {
-    id: 'app.containers.AdminPage.ProjectEvents.customButtonTextTooltip2',
+  customButtonTextTooltip3: {
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonTextTooltip3',
     defaultMessage:
-      'Set the button text to a value other than "Attend" when an external URL is set.',
+      'Set the button text to a value other than "Register" when an external URL is set.',
   },
   customButtonLink: {
     id: 'app.containers.AdminPage.ProjectEvents.customButtonLink',
@@ -220,21 +220,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.preview',
     defaultMessage: 'Preview',
   },
-  attend: {
-    id: 'app.containers.AdminPage.ProjectEvents.attend',
-    defaultMessage: 'Attend',
+  register: {
+    id: 'app.containers.AdminPage.ProjectEvents.register',
+    defaultMessage: 'Register',
   },
-  exportAttendees: {
-    id: 'app.containers.AdminPage.ProjectEvents.exportAttendees',
-    defaultMessage: 'Export attendees',
+  exportRegistrants: {
+    id: 'app.containers.AdminPage.ProjectEvents.exportRegistrants',
+    defaultMessage: 'Export registrants',
   },
-  attendees: {
-    id: 'app.containers.AdminPage.ProjectEvents.attendees',
-    defaultMessage: 'attendees',
+  registrants: {
+    id: 'app.containers.AdminPage.ProjectEvents.registrants',
+    defaultMessage: 'registrants',
   },
-  attendee: {
-    id: 'app.containers.AdminPage.ProjectEvents.attendee',
-    defaultMessage: 'attendee',
+  registrant: {
+    id: 'app.containers.AdminPage.ProjectEvents.registrant',
+    defaultMessage: 'registrant',
   },
   eventImageAltTextTitle: {
     id: 'app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle',

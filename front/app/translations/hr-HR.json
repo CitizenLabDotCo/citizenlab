@@ -197,8 +197,6 @@
   "app.components.ErrorBoundary.openFormText": "pomognite nam da shvatimo",
   "app.components.ErrorToast.budgetExceededError": "Nemate dovoljno proračuna",
   "app.components.ErrorToast.votesExceededError": "Nemate dovoljno glasova",
-  "app.components.EventAttendanceButton.attend": "Pohađati",
-  "app.components.EventAttendanceButton.attending": "Prisustvovanje",
   "app.components.EventAttendanceButton.forwardToFriend": "Proslijedi prijatelju",
   "app.components.EventAttendanceButton.seeYouThere": "Vidimo se tamo!",
   "app.components.EventAttendanceButton.seeYouThereName": "Vidimo se tamo, {userFirstName}!",

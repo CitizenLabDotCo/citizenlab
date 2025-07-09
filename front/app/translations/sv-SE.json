@@ -197,8 +197,6 @@
   "app.components.ErrorBoundary.openFormText": "hjälp oss att ta reda på det",
   "app.components.ErrorToast.budgetExceededError": "Du har inte tillräckligt med budget",
   "app.components.ErrorToast.votesExceededError": "Du har inte tillräckligt med röster kvar",
-  "app.components.EventAttendanceButton.attend": "Deltagande",
-  "app.components.EventAttendanceButton.attending": "Deltagande",
   "app.components.EventAttendanceButton.forwardToFriend": "Vidarebefordra till en vän",
   "app.components.EventAttendanceButton.seeYouThere": "Vi ses där!",
   "app.components.EventAttendanceButton.seeYouThereName": "Vi ses där, {userFirstName}!",

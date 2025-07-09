@@ -197,8 +197,6 @@
   "app.components.ErrorBoundary.openFormText": "padėkite mums tai išsiaiškinti",
   "app.components.ErrorToast.budgetExceededError": "Neturite pakankamai biudžeto",
   "app.components.ErrorToast.votesExceededError": "Jums neliko pakankamai balsų",
-  "app.components.EventAttendanceButton.attend": "Dalyvaukite",
-  "app.components.EventAttendanceButton.attending": "Dalyvavimas",
   "app.components.EventAttendanceButton.forwardToFriend": "Persiųsti draugui",
   "app.components.EventAttendanceButton.seeYouThere": "Iki pasimatymo!",
   "app.components.EventAttendanceButton.seeYouThereName": "Iki pasimatymo, {userFirstName}!",
