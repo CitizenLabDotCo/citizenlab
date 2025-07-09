@@ -37,7 +37,6 @@ describe('Admin project approval flow', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`admin/projects/${projectId}`);
-    cy.acceptCookies();
 
     cy.dataCy('e2e-request-approval').click();
     cy.get('#e2e-request-approval-confirm').click();
@@ -57,7 +56,6 @@ describe('Admin project approval flow', () => {
   it('should be possible for a project moderator to publish an approved project', () => {
     cy.setLoginCookie(email, password);
     cy.visit(`admin/projects/${projectId}`);
-    cy.acceptCookies();
 
     cy.get('#e2e-publish').click();
     cy.get('#e2e-publish').should('not.exist');
