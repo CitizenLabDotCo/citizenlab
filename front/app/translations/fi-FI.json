@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Äänestys päättynyt",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Ääniäsi ei lasketa</b> ennen kuin napsautat \"Lähetä\"",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Onnittelut, äänesi on lähetetty!</b> Voit tarkistaa äänesi alta milloin tahansa tai muokata niitä ennen <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Onnittelut, äänesi on lähetetty!</b> Voit tarkistaa äänesi alta milloin tahansa tai muokata niitä.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Onnittelut, äänesi on lähetetty!</b> Voit tarkistaa äänesi alta milloin tahansa tai muokata niitä.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Ideoita ei ole saatavilla.",
   "components.UI.IdeaSelect.selectIdea": "Valitse idea",

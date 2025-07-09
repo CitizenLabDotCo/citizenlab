@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "التصويت مغلق",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>لن يتم احتساب أصواتك</b> حتى تنقر على \"إرسال\"",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>تهانينا ، لقد تم إرسال صوتك!</b> يمكنك التحقق من أصواتك أدناه في أي وقت أو تعديلها قبل <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>تهانينا ، لقد تم إرسال صوتك!</b> يمكنك التحقق من تصويتاتك أدناه في أي وقت أو تعديلها.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>تهانينا، لقد تم إرسال صوتك!</b> يمكنك التحقق من أصواتك أدناه في أي وقت أو تعديلها.",
   "components.UI.IdeaSelect.noIdeaAvailable": "لا توجد أفكار متاحة.",
   "components.UI.IdeaSelect.selectIdea": "اختر الفكرة",

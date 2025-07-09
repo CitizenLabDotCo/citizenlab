@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Oylama kapandı",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>\"Gönder\" butonuna tıklayana kadar oylarınız</b> sayılmayacaktır.",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Tebrikler, oyunuz teslim edildi!</b> Oylarınızı aşağıda istediğiniz zaman kontrol edebilir veya <b>{endDate}</b>adresinden önce değiştirebilirsiniz.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Tebrikler, oyunuz teslim edildi!</b> Oylarınızı aşağıda istediğiniz zaman kontrol edebilir veya değiştirebilirsiniz.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Tebrikler, oyunuz teslim edildi!</b> Oylarınızı aşağıda istediğiniz zaman kontrol edebilir veya değiştirebilirsiniz.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Mevcut bir fikir yok.",
   "components.UI.IdeaSelect.selectIdea": "Fikir seçin",

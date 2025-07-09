@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Afstemning lukket",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Dine stemmer bliver ikke talt med</b> , før du klikker på \"Send\".",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Tillykke, din stemme er blevet afgivet!</b> Du kan til enhver tid tjekke dine stemmer nedenfor eller ændre dem før <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Tillykke, din stemme er blevet afgivet!</b> Du kan til enhver tid tjekke dine stemmer nedenfor eller ændre dem.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Tillykke, din stemme er blevet afgivet!</b> Du kan til enhver tid tjekke dine stemmer nedenfor eller ændre dem.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Der er ingen idéer til rådighed.",
   "components.UI.IdeaSelect.selectIdea": "Vælg idé",

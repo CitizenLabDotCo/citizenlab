@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Гласање је затворено",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Ваши гласови се неће рачунати</b> док не кликнете на „Пошаљи“",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Честитамо, ваш глас је послат!</b> Можете проверити своје гласове испод у било ком тренутку или их изменити пре <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Честитамо, ваш глас је послат!</b> Можете проверити своје гласове испод у било ком тренутку или их изменити.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Честитамо, ваш глас је послат!</b> Можете проверити своје гласове испод у било ком тренутку или их изменити.",
   "components.UI.IdeaSelect.noIdeaAvailable": "There are no ideas available.",
   "components.UI.IdeaSelect.selectIdea": "Select idea",

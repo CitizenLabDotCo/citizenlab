@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Omröstningen avslutad",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Dina röster kommer inte att räknas</b> förrän du klickar på \"Skicka\"",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Grattis, din röst har skickats in!</b> Du kan när som helst kontrollera dina röster nedan eller ändra dem före <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Grattis, din röst har skickats in!</b> Du kan när som helst kontrollera dina röster nedan eller ändra dem.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Grattis, din röst har skickats in!</b> Du kan när som helst kontrollera dina röster nedan eller ändra dem.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Det finns inga tillgängliga idéer.",
   "components.UI.IdeaSelect.selectIdea": "Välj idé",

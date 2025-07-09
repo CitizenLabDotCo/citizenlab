@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Η ψηφοφορία έκλεισε",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Οι ψήφοι σας δεν θα καταμετρηθούν</b> μέχρι να κάνετε κλικ στο κουμπί \"Υποβολή\".",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Συγχαρητήρια, η ψήφος σας υποβλήθηκε!</b> Μπορείτε να ελέγξετε τις ψήφους σας παρακάτω ανά πάσα στιγμή ή να τις τροποποιήσετε πριν από τη διεύθυνση <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Συγχαρητήρια, η ψήφος σας υποβλήθηκε!</b> Μπορείτε να ελέγξετε τις ψήφους σας παρακάτω ανά πάσα στιγμή ή να τις τροποποιήσετε.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Συγχαρητήρια, η ψήφος σας υποβλήθηκε!</b> Μπορείτε να ελέγξετε τις ψήφους σας παρακάτω ανά πάσα στιγμή ή να τις τροποποιήσετε.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Δεν υπάρχουν διαθέσιμες ιδέες.",
   "components.UI.IdeaSelect.selectIdea": "Επιλέξτε ιδέα",
