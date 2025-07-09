@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Događaji u okviru projekta",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Naziv događaja",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Link the button to an external URL",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "By default, the in-platform event register button will be shown allowing users to register their interest in an event. You can change this to link to an external URL instead.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "By default, the in-platform event register button will be shown allowing users to register for an event. You can change this to link to an external URL instead.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Limit the number of event registrants",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Set a maximum number of event registrants. If the limit is reached, no further registrations will be accepted.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
