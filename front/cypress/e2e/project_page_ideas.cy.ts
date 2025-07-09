@@ -115,6 +115,7 @@ describe('New timeline project with active ideation phase', () => {
   beforeEach(() => {
     cy.visit(`/projects/${projectTitle}`);
     cy.clearCookies();
+    cy.acceptCookies();
   });
 
   // TODO: Improve this test

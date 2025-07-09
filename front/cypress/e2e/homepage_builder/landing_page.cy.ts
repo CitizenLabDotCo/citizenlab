@@ -64,6 +64,8 @@ describe('Landing page - URL sign in/up', () => {
   it('shows correct authentication modal when logged out', () => {
     cy.clearCookies();
     cy.visit('/sign-in');
+    cy.acceptCookies();
+
     cy.get('#e2e-authentication-modal').should('exist');
     cy.contains('Log in').should('exist');
 

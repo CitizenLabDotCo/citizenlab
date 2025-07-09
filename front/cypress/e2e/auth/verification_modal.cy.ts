@@ -47,6 +47,8 @@ describe('Verification modal', () => {
     it('lets you participate if you meet group conditions', () => {
       cy.clearCookies();
       cy.visit('/projects/verified-charlie-poeple-project');
+      cy.acceptCookies();
+
       cy.get('.e2e-idea-button').first().find('button').should('exist');
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
@@ -96,6 +98,8 @@ describe('Verification modal', () => {
     it('does not let you participate if you do not meet group conditions', () => {
       cy.clearCookies();
       cy.visit('/projects/verified-charlie-poeple-project');
+      cy.acceptCookies();
+
       cy.get('.e2e-idea-button').first().find('button').should('exist');
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
