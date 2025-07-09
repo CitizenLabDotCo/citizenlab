@@ -35,7 +35,11 @@ const FilesUpload = ({ setModalOpen }: Props) => {
     useState(false);
 
   // Create a React dropzone with the specified options
-  const { getRootProps, getInputProps, open } = useDropzone({
+  const {
+    getRootProps: getDropzoneRootProps,
+    getInputProps: getDropzoneInputProps,
+    open,
+  } = useDropzone({
     multiple: true,
     validator: () => null, // Allow all file types to be uploaded.
     onDrop: (acceptedFiles) => {
@@ -130,8 +134,8 @@ const FilesUpload = ({ setModalOpen }: Props) => {
       ) : (
         <>
           <FileDropzone
-            getRootProps={getRootProps}
-            getInputProps={getInputProps}
+            getDropzoneRootProps={getDropzoneRootProps}
+            getDropzoneInputProps={getDropzoneInputProps}
             open={open}
           />
           {showMaxNumberFilesMessage && (

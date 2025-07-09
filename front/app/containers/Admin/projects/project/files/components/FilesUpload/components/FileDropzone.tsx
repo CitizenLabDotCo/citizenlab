@@ -14,19 +14,23 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 type Props = {
-  getRootProps: ReturnType<typeof useDropzone>['getRootProps'];
-  getInputProps: ReturnType<typeof useDropzone>['getInputProps'];
+  getDropzoneRootProps: ReturnType<typeof useDropzone>['getRootProps'];
+  getDropzoneInputProps: ReturnType<typeof useDropzone>['getInputProps'];
   open: () => void;
 };
 
-const FileDropzone = ({ getRootProps, getInputProps, open }: Props) => {
+const FileDropzone = ({
+  getDropzoneRootProps,
+  getDropzoneInputProps,
+  open,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   // TODO: Add some additional bullet points before the dropzone once Product decides.
 
   return (
     <Box
-      {...getRootProps()}
+      {...getDropzoneRootProps()}
       p="20px"
       border={`1px dashed ${colors.coolGrey300}`}
       borderRadius={stylingConsts.borderRadius}
@@ -45,7 +49,7 @@ const FileDropzone = ({ getRootProps, getInputProps, open }: Props) => {
         mt="10px"
         onClick={open}
       />
-      <input {...getInputProps()} />
+      <input {...getDropzoneInputProps()} />
     </Box>
   );
 };
