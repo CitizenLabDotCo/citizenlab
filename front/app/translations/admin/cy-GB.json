@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Digwyddiadau prosiect",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Enw'r digwyddiad",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Cysylltu'r botwm ag URL allanol",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Yn ddiofyn, bydd y botwm cofrestru digwyddiad ar y platfform yn cael ei ddangos gan ganiatáu i ddefnyddwyr gofrestru eu diddordeb mewn digwyddiad. Gallwch newid hyn i gysylltu ag URL allanol yn lle.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Yn ddiofyn, bydd y botwm cofrestru digwyddiad ar y platfform yn cael ei ddangos gan ganiatáu i ddefnyddwyr gofrestru ar gyfer digwyddiad. Gallwch newid hyn i gysylltu ag URL allanol yn lle.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Cyfyngu ar nifer y rhai sy'n cofrestru ar gyfer y digwyddiad",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Gosodwch uchafswm nifer y bobl sy'n cofrestru ar gyfer y digwyddiad. Os cyrhaeddir y terfyn, ni dderbynnir unrhyw gofrestriadau pellach.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/gweinyddol/defnyddwyr",
