@@ -198,7 +198,7 @@
   "app.components.ErrorToast.budgetExceededError": "Je hebt niet genoeg budget",
   "app.components.ErrorToast.votesExceededError": "Je hebt niet genoeg stemmen over",
   "app.components.EventAttendanceButton.forwardToFriend": "Doorsturen naar een vriend",
-  "app.components.EventAttendanceButton.maxRegistrationsReached": "Het maximum aantal inschrijvingen voor het evenement is bereikt. Er zijn geen plekken meer vrij.",
+  "app.components.EventAttendanceButton.maxRegistrationsReached": "Het maximum aantal geregistreerden voor de activiteit is bereikt. Er zijn geen plekken meer vrij.",
   "app.components.EventAttendanceButton.register": "Registreer",
   "app.components.EventAttendanceButton.registered": "Geregistreerd",
   "app.components.EventAttendanceButton.seeYouThere": "Zie je daar!",
