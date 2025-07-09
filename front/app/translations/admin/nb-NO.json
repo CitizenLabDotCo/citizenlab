@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Prosjekthendelser",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Navn på hendelse",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Lenke knappen til en ekstern URL",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Som standard vises knappen for registrering av arrangementer på plattformen, slik at brukerne kan registrere sin interesse for et arrangement. Du kan endre denne til å lenke til en ekstern URL i stedet.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Som standard vises knappen for registrering av arrangementer på plattformen, slik at brukerne kan registrere seg for et arrangement. Du kan endre denne til å lenke til en ekstern URL i stedet.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Begrens antall påmeldte til arrangementet",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Angi et maksimalt antall påmeldte til arrangementet. Hvis grensen er nådd, godtas ingen flere påmeldinger.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/brukere",
