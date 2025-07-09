@@ -15,8 +15,8 @@ export const getMinusButtonDisabledMessage = (
 
   if (basketSubmitted) {
     return onIdeaPage
-      ? messages.votesSubmittedIdeaPage
-      : messages.votesSubmitted;
+      ? messages.votesSubmittedIdeaPage1
+      : messages.votesSubmitted1;
   }
   return undefined;
 };
@@ -34,8 +34,8 @@ export const getPlusButtonDisabledMessage = (
 
   if (basketSubmitted) {
     return onIdeaPage
-      ? messages.votesSubmittedIdeaPage
-      : messages.votesSubmitted;
+      ? messages.votesSubmittedIdeaPage1
+      : messages.votesSubmitted1;
   }
   if (!userHasVotesLeft) return messages.maxVotesReached;
   if (maxVotesPerIdeaReached) return messages.maxVotesPerIdeaReached;

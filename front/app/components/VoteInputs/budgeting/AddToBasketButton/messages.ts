@@ -28,15 +28,15 @@ export default defineMessages({
     id: 'app.components.VoteControl.budgetingNotVerified',
     defaultMessage: 'Please {verifyAccountLink} to continue.',
   },
-  basketAlreadySubmitted: {
-    id: 'app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted',
+  basketAlreadySubmitted1: {
+    id: 'app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted1',
     defaultMessage:
-      'You have already submitted your budget. Click "Modify your budget" to change your budget.',
+      'You have already submitted your budget. To modify it, click "Modify your submission".',
   },
-  basketAlreadySubmittedIdeaPage: {
-    id: 'app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage',
+  basketAlreadySubmittedIdeaPage1: {
+    id: 'app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1',
     defaultMessage:
-      'You have already submitted your budget. To change your budget, go back to the project page and click "Modify your budget".',
+      'You have already submitted your budget. To modify it, go back to the project page and click "Modify your submission".',
   },
   phaseNotActive: {
     id: 'app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive',
