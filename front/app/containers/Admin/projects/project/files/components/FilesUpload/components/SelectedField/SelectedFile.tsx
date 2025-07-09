@@ -1,26 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import {
-  Box,
-  Icon,
-  Text,
-  Spinner,
-  colors,
-  Select,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Select } from '@citizenlab/cl2-component-library';
 import { CLError } from 'typings';
 
 import useAddFile from 'api/files/useAddFile';
 
-import Error from 'components/UI/Error';
-
 import { useIntl } from 'utils/cl-intl';
 import { getBase64FromFile } from 'utils/fileUtils';
 
-import { FileWithMeta } from '../types';
+import { FileWithMeta } from '../../types';
+import messages from '../messages';
 
-import messages from './messages';
+import { StatusIcon } from './StatusIcon';
 
 type Props = {
   fileMeta: FileWithMeta;
@@ -66,58 +57,6 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
     }
   }, [status, uploadFile]);
 
-  // Render the appropriate icon based on the file's upload status
-  const renderIcon = () => {
-    switch (status) {
-      case 'uploaded':
-        return <Icon name="check" fill={colors.green500} />;
-      case 'error':
-        return (
-          <Tooltip
-            content={
-              <Error
-                apiErrors={apiErrors}
-                showBackground={false}
-                showIcon={false}
-                marginTop="0px"
-                marginBottom="0px"
-              />
-            }
-          >
-            <Icon fill={colors.red500} name="info-outline" />
-          </Tooltip>
-        );
-      case 'uploading':
-        return (
-          <Box width="24px">
-            <Spinner size="24px" />
-          </Box>
-        );
-      case 'too_large':
-        return (
-          <Tooltip
-            content={
-              <Error
-                text={
-                  <Text m="0px" color="red500" fontSize="s">
-                    {formatMessage(messages.fileSizeError)}
-                  </Text>
-                }
-                showBackground={false}
-                showIcon={false}
-                marginTop="0px"
-                marginBottom="0px"
-              />
-            }
-          >
-            <Icon fill={colors.red500} name="info-outline" />
-          </Tooltip>
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
     <>
       <Box
@@ -127,7 +66,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
         mb="8px"
       >
         <Box display="flex" alignItems="center" gap="4px">
-          {renderIcon()}
+          <StatusIcon status={status} apiErrors={apiErrors} />
           <Text
             my="4px"
             color={

@@ -15,7 +15,7 @@ import messages from '../messages';
 
 import FileDropzone from './components/FileDropzone';
 import FileUploadActions from './components/FileUploadActions';
-import SelectedFile from './components/SelectedFile';
+import SelectedFile from './components/SelectedField/SelectedFile';
 import { FileWithMeta, UploadStatus } from './types';
 
 type Props = {
