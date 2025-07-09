@@ -178,7 +178,7 @@ module EmailCampaigns
     end
 
     def activity_context(_activity)
-      raise NotImplementedError
+      nil
     end
 
     # Necessary to preserve original behavior of the context enabled toggle

@@ -86,8 +86,6 @@ RSpec.describe EmailCampaigns::Campaign do
           campaign = campaign_class.new
           campaign.activity_context(notification_activity)
           campaign.activity_context(area_activity)
-        rescue NotImplementedError
-          # This is expected for campaign classes that do not implement this method
         end.not_to raise_error
       end
     end
