@@ -68,9 +68,8 @@ const CampaignRow = ({
     // Not abstracting yet since it is one scenario for now. If we need more, we can abstract it to handle more confirmations
     if (
       campaign.attributes.campaign_name === 'project_phase_started' &&
-      !campaign.relationships.context
+      !hasContext
     ) {
-      // TODO: Use context property, not relationship
       setIsNewPhaseModalOpen(true);
     } else {
       toggleEnabled();
