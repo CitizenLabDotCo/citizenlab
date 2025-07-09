@@ -8,9 +8,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isAdmin } from 'utils/permissions/roles';
 
 import { PARAMS as FOLDER_PARAMS } from './Folders/utils';
 import messages from './messages';
@@ -51,6 +54,10 @@ const Tab = ({ message, active, icon, onClick }: TabProps) => {
 const Tabs = () => {
   const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab');
+  const { data: user } = useAuthUser();
+  if (!user) return null;
+
+  const userIsAdmin = isAdmin(user);
 
   return (
     <Box as="nav" display="flex" w="100%" mt="12px">
@@ -90,6 +97,17 @@ const Tabs = () => {
           updateSearchParams({ tab: 'timeline' });
         }}
       />
+      {userIsAdmin && (
+        <Tab
+          message={messages.ordering}
+          icon="drag-handle"
+          active={tab === 'ordering'}
+          onClick={() => {
+            removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
+            updateSearchParams({ tab: 'ordering' });
+          }}
+        />
+      )}
     </Box>
   );
 };

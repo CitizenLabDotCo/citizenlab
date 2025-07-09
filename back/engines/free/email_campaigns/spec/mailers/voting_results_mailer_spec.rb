@@ -18,11 +18,14 @@ RSpec.describe EmailCampaigns::VotingResultsMailer do
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
 
     before_all do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject including phase title' do
       expect(mail.subject).to match 'vote results revealed!'
