@@ -13,6 +13,23 @@ resource 'Idea Custom Fields' do
     end
   end
 
+  shared_examples 'List all public custom fields for a phase' do
+    example 'List all public custom fields for a phase' do
+      do_request(public_fields: true)
+      assert_status 200
+      expect(response_data.size).to eq 1
+      expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [custom_field1.key]
+    end
+  end
+
+  shared_context 'with project preview feature enabled' do
+    before do
+      settings = AppConfiguration.instance.settings
+      settings['project_preview_link'] = { 'enabled' => true, 'allowed' => true }
+      AppConfiguration.instance.update!(settings: settings)
+    end
+  end
+
   before { header 'Content-Type', 'application/json' }
 
   get 'web_api/v1/phases/:phase_id/custom_fields' do
@@ -87,21 +104,48 @@ resource 'Idea Custom Fields' do
         end
 
         context 'and the project_preview_link feature flag is enabled' do
-          before do
-            settings = AppConfiguration.instance.settings
-            settings['project_preview_link'] = { 'enabled' => true, 'allowed' => true }
-            AppConfiguration.instance.update!(settings: settings)
-          end
+          include_context 'with project preview feature enabled'
 
           context 'and a valid preview_token is provided in cookies' do
             before { header('Cookie', "preview_token=#{survey_phase.project.preview_token}") }
 
-            example 'List all public custom fields for a phase' do
-              do_request(public_fields: true)
-              assert_status 200
-              expect(response_data.size).to eq 1
-              expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [custom_field1.key]
-            end
+            include_examples 'List all public custom fields for a phase'
+          end
+
+          context 'and an invalid preview_token is provided in cookies' do
+            before { header('Cookie', 'preview_token=invalid') }
+
+            include_examples 'Unauthorized (401)'
+          end
+
+          context 'and no preview_token is provided in cookies' do
+            include_examples 'Unauthorized (401)'
+          end
+        end
+      
+        context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
+          before { header('Cookie', "preview_token=#{survey_phase.project.preview_token}") }
+
+          include_examples 'Unauthorized (401)'
+        end
+      end
+    end
+
+    context 'when a visitor' do
+      let(:user) { create(:user) }
+
+      context 'when the project is in draft' do
+        before do
+          survey_phase.project.update!(admin_publication_attributes: { publication_status: 'draft' })
+        end
+
+        context 'and the project_preview_link feature flag is enabled' do
+          include_context 'with project preview feature enabled'
+
+          context 'and a valid preview_token is provided in cookies' do
+            before { header('Cookie', "preview_token=#{survey_phase.project.preview_token}") }
+
+            include_examples 'List all public custom fields for a phase'
           end
 
           context 'and an invalid preview_token is provided in cookies' do
