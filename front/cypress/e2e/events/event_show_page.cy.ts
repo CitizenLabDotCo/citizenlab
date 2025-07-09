@@ -112,6 +112,8 @@ describe('Event show page', () => {
     // Event in an admin-view-only project, when not logged in should show unauthorized notice
     cy.clearCookies();
     cy.visit(`/events/${eventIdNoCoordinates}`);
+    cy.acceptCookies();
+
     cy.get('#e2e-not-authorized').should('exist');
     cy.get('#e2e-event-title').should('not.exist');
   });
