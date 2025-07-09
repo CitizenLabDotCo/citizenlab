@@ -1262,7 +1262,6 @@
   "app.containers.DisabledAccount.text2": "Il tuo account sulla piattaforma di partecipazione di {orgName} è stato temporaneamente disabilitato per una violazione delle linee guida della comunità. Per ulteriori informazioni al riguardo, è possibile consultare il sito {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "Il suo account è stato temporaneamente disabilitato",
   "app.containers.EventsShow.addToCalendar": "Aggiungi al calendario",
-  "app.containers.EventsShow.attendeesIconAltText": "Partecipanti",
   "app.containers.EventsShow.editEvent": "Modifica evento",
   "app.containers.EventsShow.emailSharingBody2": "Partecipa a questo evento: {eventTitle}. Per saperne di più: {eventUrl}",
   "app.containers.EventsShow.eventDateTimeIcon": "Data e ora dell'evento",

@@ -1262,7 +1262,6 @@
   "app.containers.DisabledAccount.text2": "Jūsų paskyra {orgName} dalyvavimo platformoje buvo laikinai išjungta dėl bendruomenės gairių pažeidimo. Daugiau informacijos apie tai galite rasti {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "Jūsų paskyra laikinai išjungta",
   "app.containers.EventsShow.addToCalendar": "Įtraukti į kalendorių",
-  "app.containers.EventsShow.attendeesIconAltText": "Dalyviai",
   "app.containers.EventsShow.editEvent": "Redaguoti įvykį",
   "app.containers.EventsShow.emailSharingBody2": "Dalyvaukite šiame renginyje: {eventTitle}. Daugiau informacijos {eventUrl}.",
   "app.containers.EventsShow.eventDateTimeIcon": "Įvykio data ir laikas",

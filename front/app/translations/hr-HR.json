@@ -1262,7 +1262,6 @@
   "app.containers.DisabledAccount.text2": "Vaš račun na platformi za sudjelovanje {orgName} privremeno je onemogućen zbog kršenja smjernica zajednice. Za više informacija o tome, možete konzultirati {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "Vaš račun je privremeno onemogućen",
   "app.containers.EventsShow.addToCalendar": "Dodaj u kalendar",
-  "app.containers.EventsShow.attendeesIconAltText": "Polaznici",
   "app.containers.EventsShow.editEvent": "Uredi događaj",
   "app.containers.EventsShow.emailSharingBody2": "Prisustvujte ovom događaju: {eventTitle}. Pročitajte više na {eventUrl}",
   "app.containers.EventsShow.eventDateTimeIcon": "Datum i vrijeme događaja",

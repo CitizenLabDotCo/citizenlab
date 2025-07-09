@@ -192,7 +192,7 @@ const ProjectHeader = ({ projectId }: Props) => {
                     <FormattedMessage {...messages.users} />
                   </li>
                   <li>
-                    <FormattedMessage {...messages.attendees} />
+                    <FormattedMessage {...messages.registrants} />
                   </li>
                 </ul>
 

@@ -1262,7 +1262,6 @@
   "app.containers.DisabledAccount.text2": "Jūsu konts līdzdalības platformā {orgName} ir uz laiku atspējots par kopienas vadlīniju pārkāpumu. Sīkāku informāciju par to var iegūt vietnē {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "Jūsu konts ir uz laiku atspējots",
   "app.containers.EventsShow.addToCalendar": "Pievienot kalendāram",
-  "app.containers.EventsShow.attendeesIconAltText": "Dalībnieki",
   "app.containers.EventsShow.editEvent": "Rediģēt notikumu",
   "app.containers.EventsShow.emailSharingBody2": "Apmeklējiet šo pasākumu: {eventTitle}. Vairāk lasiet {eventUrl}",
   "app.containers.EventsShow.eventDateTimeIcon": "Pasākuma datums un laiks",
