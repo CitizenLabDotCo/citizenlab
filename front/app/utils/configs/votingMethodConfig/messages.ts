@@ -49,11 +49,6 @@ export default defineMessages({
     defaultMessage:
       '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them.',
   },
-  votingSubmittedInstructionsContinuous: {
-    id: 'app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous',
-    defaultMessage:
-      '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them.',
-  },
   budgets: {
     id: 'app.utils.votingMethodUtils.budgets',
     defaultMessage: 'Budgets',
