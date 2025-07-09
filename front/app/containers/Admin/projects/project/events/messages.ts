@@ -193,10 +193,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel',
     defaultMessage: 'Link the button to an external URL',
   },
-  toggleCustomRegisterButtonTooltip: {
-    id: 'app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip',
+  toggleCustomRegisterButtonTooltip2: {
+    id: 'app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2',
     defaultMessage:
-      'By default, the in-platform event register button will be shown allowing users to register their interest in an event. You can change this to link to an external URL instead.',
+      'By default, the in-platform event register button will be shown, allowing users to register for an event. You can change this to link to an external URL instead.',
   },
   customButtonText: {
     id: 'app.containers.AdminPage.ProjectEvents.customButtonText',
