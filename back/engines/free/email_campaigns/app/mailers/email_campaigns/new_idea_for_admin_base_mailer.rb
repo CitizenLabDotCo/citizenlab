@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class MentionInOfficialFeedbackMailer < ApplicationMailer
+  class NewIdeaForAdminBaseMailer < ApplicationMailer
     include EditableWithPreview
 
     def editable
@@ -10,7 +10,8 @@ module EmailCampaigns
 
     def substitution_variables
       {
-        post: localize_for_recipient(event&.idea_title_multiloc),
+        firstName: recipient_first_name,
+        authorName: event&.idea_author_name,
         organizationName: organization_name
       }
     end
@@ -20,23 +21,13 @@ module EmailCampaigns
       {
         recipient: recipient,
         event_payload: {
-          official_feedback_author_multiloc: data.initiator.display_name_multiloc,
-          official_feedback_body_multiloc: data.comment.body_multiloc,
-          official_feedback_url: data.comment.url,
-          idea_published_at: Time.zone.today.prev_week.iso8601,
+          idea_submitted_at: (Time.now - 2.days).iso8601,
+          idea_published_at: (Time.now - 2.days).iso8601,
           idea_title_multiloc: data.idea.title_multiloc,
           idea_author_name: data.author.display_name,
-          idea_type: 'Idea'
+          idea_url: data.idea.url
         }
       }
-    end
-
-    private
-
-    helper_method :author_name
-
-    def author_name
-      localize_for_recipient(event&.official_feedback_author_multiloc)
     end
   end
 end
