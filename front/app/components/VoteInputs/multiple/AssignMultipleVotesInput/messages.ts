@@ -6,16 +6,16 @@ export default defineMessages({
     defaultMessage: '{votes, plural, one {vote} other {votes}}',
   },
   xPoints: {
-    id: 'app.components.AssignMultipleVotesControl.xPoints',
-    defaultMessage: '{points, plural, one {point} other {points}}',
+    id: 'app.components.AssignMultipleVotesControl.xPoints1',
+    defaultMessage: '{votes, plural, one {point} other {points}}',
   },
   xTokens: {
-    id: 'app.components.AssignMultipleVotesControl.xTokens',
-    defaultMessage: '{tokens, plural, one {token} other {tokens}}',
+    id: 'app.components.AssignMultipleVotesControl.xTokens1',
+    defaultMessage: '{votes, plural, one {token} other {tokens}}',
   },
   xCredits: {
-    id: 'app.components.AssignMultipleVotesControl.xCredits',
-    defaultMessage: '{credits, plural, one {credit} other {credits}}',
+    id: 'app.components.AssignMultipleVotesControl.xCredits1',
+    defaultMessage: '{votes, plural, one {credit} other {credits}}',
   },
   numberManualVotes: {
     id: 'app.components.AssignMultipleVotesControl.numberManualVotes2',
