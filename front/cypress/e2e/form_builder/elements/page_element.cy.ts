@@ -44,7 +44,7 @@ describe('Form builder page element', () => {
 
   it('adds page element and tests settings', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.acceptCookies();
+
     cy.dataCy('e2e-page');
     cy.wait(2000);
     cy.dataCy('e2e-page').click();

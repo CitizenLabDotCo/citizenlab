@@ -43,7 +43,6 @@ describe('Timeline ideation with anonymous participation allowed', () => {
 
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}/ideas/new`);
-    cy.acceptCookies();
 
     // add a title and description
     cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
@@ -83,7 +82,6 @@ describe('Timeline ideation with anonymous participation allowed', () => {
 
     cy.setLoginCookie(email, password);
     cy.visit(`/projects/${projectSlug}/ideas/new`);
-    cy.acceptCookies();
 
     // Add a title
     cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });

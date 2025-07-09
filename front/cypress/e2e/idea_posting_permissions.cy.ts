@@ -44,7 +44,7 @@ describe('Idea posting permissions', () => {
     it('sends unverified users to the signup flow', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('/projects/verified-ideation');
-      cy.acceptCookies();
+
       cy.get('.e2e-idea-button').first().find('button').should('exist');
       cy.wait(500);
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
@@ -54,7 +54,7 @@ describe('Idea posting permissions', () => {
     it('lets verified users post', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
       cy.visit('/projects/verified-ideation');
-      cy.acceptCookies();
+
       cy.get('.e2e-idea-button').first().find('button').should('exist');
       cy.wait(500);
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
@@ -204,7 +204,7 @@ describe('idea posting permissions for non-active users', () => {
   it("doesn't let non-active users comment", () => {
     cy.setLoginCookie(email, password);
     cy.visit('projects/verified-ideation');
-    cy.acceptCookies();
+
     cy.get('#e2e-ideas-list').find('.e2e-idea-card').should('exist');
     cy.get('#e2e-ideas-list').find('.e2e-idea-card').first().click();
     cy.get('#e2e-verify-identity-to-comment').should('exist');

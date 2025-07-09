@@ -50,7 +50,7 @@ describe('Project settings', () => {
     describe('when the content builder toggle is disabled', () => {
       it('links to project description settings', () => {
         cy.visit(`admin/projects/${globalProjectId}`);
-        cy.acceptCookies();
+
         cy.dataCy(
           'e2e-project-description-preview-link-to-multiloc-settings'
         ).click();

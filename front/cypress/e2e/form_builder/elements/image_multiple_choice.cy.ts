@@ -59,7 +59,7 @@ describe('Form builder image multiple choice choose multiple component', () => {
     const questionTitle = randomString();
     const otherAnswer = 'Walking';
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.acceptCookies();
+
     cy.dataCy('e2e-image-choice');
     cy.wait(2000);
     cy.dataCy('e2e-image-choice').click();

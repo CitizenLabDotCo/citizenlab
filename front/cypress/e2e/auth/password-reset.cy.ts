@@ -10,7 +10,6 @@ const tryReset = (email: string) => {
 describe('password reset', () => {
   beforeEach(() => {
     cy.visit('/en/password-recovery');
-    cy.acceptCookies();
   });
   it("shows no error if email doesn't exist", () => {
     tryReset(someEmail);
