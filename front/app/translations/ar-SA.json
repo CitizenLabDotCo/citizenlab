@@ -2311,9 +2311,7 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "تم إرسال التصويت 🎉",
   "app.utils.votingMethodUtils.votesCast": "الأصوات المدلى بها",
   "app.utils.votingMethodUtils.votingClosed": "التصويت مغلق",
-  "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>تهانينا ، لقد تم إرسال صوتك!</b> يمكنك التحقق من أصواتك أدناه في أي وقت أو تعديلها قبل <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>تهانينا ، لقد تم إرسال صوتك!</b> يمكنك التحقق من تصويتاتك أدناه في أي وقت أو تعديلها.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>تهانينا، لقد تم إرسال صوتك!</b> يمكنك التحقق من أصواتك أدناه في أي وقت أو تعديلها.",
   "components.UI.IdeaSelect.noIdeaAvailable": "لا توجد أفكار متاحة.",
   "components.UI.IdeaSelect.selectIdea": "اختر الفكرة",
   "containers.SiteMap.allProjects": "جميع المشاريع",
