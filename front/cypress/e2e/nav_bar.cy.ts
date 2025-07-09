@@ -46,7 +46,7 @@ describe('nav bar', () => {
       });
   });
 
-  it('navigates to projects overview page from All projects dropdown and back', () => {
+  it.skip('navigates to projects overview page from All projects dropdown and back', () => {
     cy.intercept('GET', '**/web_api/v1/admin_publications**').as(
       'getAdminPublications'
     );

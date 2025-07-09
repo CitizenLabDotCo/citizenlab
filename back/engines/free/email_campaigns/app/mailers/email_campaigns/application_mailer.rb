@@ -23,6 +23,11 @@ module EmailCampaigns
 
     private
 
+    def mailgun_variables
+      super.merge('cl_delivery_id' => command[:delivery_id])
+      # super.merge(campaign&.extra_mailgun_variables || {})
+    end
+
     def show_unsubscribe_link?
       user && campaign.class.try(:consentable_for?, user)
     end

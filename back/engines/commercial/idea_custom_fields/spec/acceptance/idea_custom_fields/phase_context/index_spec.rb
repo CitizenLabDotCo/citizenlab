@@ -12,12 +12,13 @@ resource 'Idea Custom Fields' do
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
     parameter :copy, 'Return non-persisted copies of all custom fields with new IDs', type: :boolean, required: false
     parameter :input_types, 'Filter custom fields by input types', type: :array, items: { type: :string }, required: false
+    parameter :public_fields, 'Only return custom fields that are visible to the public', type: :boolean, required: false
 
     let(:context) { create(:native_survey_phase) }
     let(:phase_id) { context.id }
     let(:form) { create(:custom_form, participation_context: context) }
     let!(:custom_field1) { create(:custom_field_text, resource: form, key: 'extra_field1') }
-    let!(:custom_field2) { create(:custom_field_number, resource: form, key: 'extra_field2') }
+    let!(:custom_field2) { create(:custom_field_number, resource: form, key: 'extra_field2', enabled: false) }
 
     context 'when admin' do
       before { admin_header_token }
@@ -55,6 +56,15 @@ resource 'Idea Custom Fields' do
         expect(response_data.size).to eq 1
         expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [
           custom_field2.key
+        ]
+      end
+
+      example 'List all public custom fields for a phase' do
+        do_request(public_fields: true)
+        assert_status 200
+        expect(response_data.size).to eq 1
+        expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [
+          custom_field1.key
         ]
       end
     end

@@ -19,7 +19,7 @@ module EmailCampaigns
     end
 
     included do
-      before_send :allowed_lifecycle_stage?
+      filter :allowed_lifecycle_stage?
     end
 
     def allowed_lifecycle_stage?(_options = {})
