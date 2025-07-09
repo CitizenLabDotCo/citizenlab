@@ -29,27 +29,4 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectPublished do
       })
     end
   end
-
-  describe '#filter' do
-    let(:campaign) { create(:project_published_campaign) }
-    let(:project) { create(:project, unlisted: false) }
-    let(:notification) { create(:project_published, project: project) }
-    let(:activity) do
-      create(
-        :activity,
-        action: 'created',
-        item_id: notification.id,
-        item_type: 'Notifications::ProjectPublished'
-      )
-    end
-
-    it 'returns true when project is listed' do
-      expect(campaign.run_filter_hooks(activity: activity)).to be_truthy
-    end
-
-    it 'returns false when project is unlisted' do
-      project.update!(unlisted: true)
-      expect(campaign.run_filter_hooks(activity: activity)).to be_falsy
-    end
-  end
 end

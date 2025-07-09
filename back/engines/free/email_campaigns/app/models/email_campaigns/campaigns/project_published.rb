@@ -41,7 +41,6 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: %w[trial active]
 
-    filter :not_unlisted
     recipient_filter :filter_notification_recipient
 
     def mailer_class
@@ -54,10 +53,6 @@ module EmailCampaigns
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient_id)
-    end
-
-    def not_unlisted(activity:, time: nil)
-      !activity.item.project.unlisted?
     end
 
     def self.recipient_role_multiloc_key
