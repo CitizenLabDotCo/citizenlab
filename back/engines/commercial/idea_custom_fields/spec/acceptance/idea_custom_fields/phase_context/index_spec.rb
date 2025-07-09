@@ -122,7 +122,7 @@ resource 'Idea Custom Fields' do
             include_examples 'Unauthorized (401)'
           end
         end
-      
+
         context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
           before { header('Cookie', "preview_token=#{survey_phase.project.preview_token}") }
 
@@ -158,7 +158,7 @@ resource 'Idea Custom Fields' do
             include_examples 'Unauthorized (401)'
           end
         end
-      
+
         context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
           before { header('Cookie', "preview_token=#{survey_phase.project.preview_token}") }
 
