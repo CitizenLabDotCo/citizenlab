@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Projektitapahtumat",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Tapahtuman nimi",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Linkitä painike ulkoiseen URL-osoitteeseen",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Oletusarvoisesti alustan sisäinen tapahtuman rekisteröintipainike näkyy, jonka avulla käyttäjät voivat rekisteröidä kiinnostuksensa tapahtumaan. Voit muuttaa tämän linkittämään ulkoiseen URL-osoitteeseen.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Oletusarvoisesti alustan sisäinen tapahtuman rekisteröintipainike näkyy, jotta käyttäjät voivat rekisteröityä tapahtumaan. Voit muuttaa tämän linkittämään ulkoiseen URL-osoitteeseen.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Rajoita tapahtumaan ilmoittautuneiden määrää",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Aseta tapahtuman osallistujien enimmäismäärä. Jos raja saavutetaan, uusia ilmoittautumisia ei oteta vastaan.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/käyttäjät",
