@@ -31,7 +31,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
     include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
-      expect(mail.subject).to eq('An input you follow has received an official update on the platform of Vaudeville')
+      expect(mail.subject).to eq('Official feedback was posted on "Input title"')
     end
 
     it 'renders the sender email' do
@@ -41,10 +41,10 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
     it 'includes the header' do
       expect(body).to have_tag('div') do
         with_tag 'h1' do
-          with_text(/There's an update on an input you follow/)
+          with_text(/There's an update on "Input title"/)
         end
         with_tag 'p' do
-          with_text(/Gonzo gave an update on the input 'Input title'\. Click the button below to enter the conversation with Gonzo/)
+          with_text(/Gonzo gave an update on 'Input title'\./)
         end
       end
     end
@@ -82,6 +82,30 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
 
     it 'includes the unfollow url' do
       expect(body).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: input, user: recipient)))
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE - {{ input_title }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT - {{ feedback_author_name }}</b>' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Vaudeville'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE - Input title')
+      end
+
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT - Gonzo</b>')
+      end
     end
   end
 end
