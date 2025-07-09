@@ -35,7 +35,10 @@ describe('Admin project approval flow', () => {
 
   it('should be possible for a project moderator to request approval for a project', () => {
     cy.setLoginCookie(email, password);
+
     cy.visit(`admin/projects/${projectId}`);
+    cy.acceptCookies();
+
     cy.dataCy('e2e-request-approval').click();
     cy.get('#e2e-request-approval-confirm').click();
     cy.dataCy('e2e-request-approval').should('not.exist');
@@ -44,7 +47,7 @@ describe('Admin project approval flow', () => {
   });
 
   it('should be possible for an admin to approve a project', () => {
-    cy.setAdminLoginCookie();
+    cy.setLoginCookie('admin@govocal.com', 'democracy2.0');
     cy.visit(`admin/projects/${projectId}`);
     cy.get('#e2e-approve-project').click();
     cy.get('#e2e-approve-project').should('not.exist');
@@ -54,6 +57,8 @@ describe('Admin project approval flow', () => {
   it('should be possible for a project moderator to publish an approved project', () => {
     cy.setLoginCookie(email, password);
     cy.visit(`admin/projects/${projectId}`);
+    cy.acceptCookies();
+
     cy.get('#e2e-publish').click();
     cy.get('#e2e-publish').should('not.exist');
 
