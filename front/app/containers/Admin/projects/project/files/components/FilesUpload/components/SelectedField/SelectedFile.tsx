@@ -49,7 +49,6 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
     );
   }, [file, projectId, mutate, onStatusUpdate]);
 
-  // Effect to handle the file upload when the status changes to 'uploading'
   useEffect(() => {
     if (status === 'uploading' && !hasStarted.current) {
       hasStarted.current = true;
@@ -74,7 +73,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
                 ? 'disabled'
                 : 'textSecondary'
             }
-            maxWidth="200px"
+            maxWidth="320px"
             overflow="hidden"
             textOverflow="ellipsis"
             whiteSpace="nowrap"

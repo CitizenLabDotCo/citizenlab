@@ -25,7 +25,6 @@ const UploadFileButtonWithModal = () => {
       <Modal
         opened={modalOpen}
         close={() => setModalOpen(false)}
-        width={'540px'}
         padding={'40px'}
       >
         <FilesUpload setModalOpen={setModalOpen} />
