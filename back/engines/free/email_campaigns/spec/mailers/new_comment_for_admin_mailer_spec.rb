@@ -64,10 +64,6 @@ RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
     context 'with custom text' do
       let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-      # organizationName: organization_name,
-      #   firstName: recipient&.first_name,
-      #   authorName: event&.comment_author_name
-
       before do
         campaign.update!(
           subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
