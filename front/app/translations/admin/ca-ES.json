@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Esdeveniments del projecte",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Nom de l'esdeveniment",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Enllaça el botó a una URL externa",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Per defecte, es mostrarà el botó de registre d'esdeveniments a la plataforma, que permetrà als usuaris registrar el seu interès en un esdeveniment. Podeu canviar-ho per enllaçar a una URL externa.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Per defecte, es mostrarà el botó de registre d'esdeveniments a la plataforma que permetrà als usuaris registrar-se per a un esdeveniment. Podeu canviar-ho per enllaçar a una URL externa.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Limitar el nombre d'inscrits a l'esdeveniment",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Estableix un nombre màxim d'inscrits a l'esdeveniment. Si s'arriba al límit, no s'acceptaran més inscripcions.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/usuaris",
