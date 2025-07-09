@@ -48,7 +48,7 @@ describe('Form builder long text field', () => {
 
     // Try filling in the survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
     cy.contains(questionTitle).should('exist');
 
     // Try submitting without entering data for required field

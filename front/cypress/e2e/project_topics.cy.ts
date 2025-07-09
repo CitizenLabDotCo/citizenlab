@@ -161,7 +161,6 @@ describe('Project topics', () => {
 
       // Visit the project page and accept cookies. This is needed because the cookie banner is not interactive on the input form
       cy.visit(`/projects/${projectSlug}`);
-      cy.acceptCookies();
 
       // Go to idea form for our project
       cy.visit(`projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
@@ -209,7 +208,6 @@ describe('Project topics', () => {
 
       // Visit the project page and accept cookies. This is needed because the cookie banner is not interactive on the input form
       cy.visit(`/projects/${projectSlug}`);
-      cy.acceptCookies();
 
       // Go to idea form for our project
       cy.visit(`projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);

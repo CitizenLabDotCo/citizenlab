@@ -4,7 +4,7 @@ describe('Admin: add project', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects/all');
-    cy.acceptCookies();
+
     cy.dataCy('e2e-new-project-button').click();
     cy.wait(1000);
     cy.get('.e2e-project-general-form');
