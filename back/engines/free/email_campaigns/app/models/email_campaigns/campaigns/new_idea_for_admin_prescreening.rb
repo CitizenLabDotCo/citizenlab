@@ -33,12 +33,21 @@
 #
 module EmailCampaigns
   class Campaigns::NewIdeaForAdminPrescreening < Campaigns::NewIdeaForAdminBase
+    allow_lifecycle_stages only: %w[trial active]
+    filter :prescreening_only?
+
     def mailer_class
       NewIdeaForAdminPrescreeningMailer
     end
 
     def self.trigger_multiloc_key
       'email_campaigns.admin_labels.trigger.new_input_awaits_screening'
+    end
+
+    private
+
+    def prescreening_only?(activity:, time: nil)
+      !activity.item.published?
     end
   end
 end

@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::NewIdeaForAdminPrescreeningMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en', first_name: 'Gonzo') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::NewIdeaForAdmin.create! }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::NewIdeaForAdminPrescreening.create! }
     let_it_be(:author) { create(:user, first_name: 'Kermit', last_name: 'the Frog') }
 
     let_it_be(:input) { create(:proposal, title_multiloc: { en: 'My proposal title' }, publication_status: 'submitted', idea_status: create(:proposals_status, code: 'prescreening'), author: author) }
@@ -28,7 +28,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminPrescreeningMailer do
     include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
-      expect(mail.subject).to eq('Gonzo, an input requires your review')
+      expect(mail.subject).to eq('An input requires your review')
     end
 
     it 'renders the receiver email' do
@@ -42,7 +42,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminPrescreeningMailer do
     it 'includes the header' do
       expect(body).to have_tag('div') do
         with_tag 'h1' do
-          with_text(/Gonzo, an input requires your review/)
+          with_text(/An input requires your review/)
         end
         with_tag 'p' do
           with_text(/Kermit the Frog has submitted a new input on your platform\./)

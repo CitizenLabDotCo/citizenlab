@@ -33,8 +33,16 @@
 #
 module EmailCampaigns
   class Campaigns::NewIdeaForAdminPublished < Campaigns::NewIdeaForAdminBase
+    allow_lifecycle_stages only: %w[trial active]
+    filter :published_only?
     def mailer_class
       NewIdeaForAdminPublishedMailer
+    end
+
+    private
+
+    def published_only?(activity:, time: nil)
+      activity.item.published?
     end
   end
 end

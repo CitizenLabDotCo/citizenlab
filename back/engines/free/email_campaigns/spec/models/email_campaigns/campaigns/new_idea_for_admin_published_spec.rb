@@ -66,6 +66,20 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdminPublished do
     end
   end
 
+  describe '#filter' do
+    let(:idea) { create(:idea, publication_status: 'submitted') }
+    let(:activity) {  create(:activity, item: idea, action: 'submitted') }
+
+    it 'returns false when idea is not published' do
+      expect(campaign.run_filter_hooks(activity: activity)).to be_falsy
+    end
+
+    it 'returns true when idea is published' do
+      idea.update(publication_status: 'published')
+      expect(campaign.run_filter_hooks(activity: activity)).to be_truthy
+    end
+  end
+
   describe '#generate_commands' do
     let(:user) { create(:user) }
     let(:title_multiloc) { { 'en' => 'My awesome idea' } }
