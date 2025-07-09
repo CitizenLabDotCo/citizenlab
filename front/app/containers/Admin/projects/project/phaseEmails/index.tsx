@@ -23,7 +23,6 @@ const AdminPhaseEmailWrapper = () => {
   const globalCampaigns = useCampaigns({ pageSize: 250 }).data?.pages.flatMap(
     (page) => page.data
   );
-  // .filter((campaign): campaign is ICampaignData => !!campaign);
   return (
     <Box>
       {supportedCampaignTypes.length > 0 &&
