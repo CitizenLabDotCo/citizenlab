@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Projekta notikumi",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Notikuma nosaukums",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Motivācijas pogas sasaiste ar ārējo URL",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Pēc noklusējuma tiks parādīta platformā esošā notikuma reģistrācijas poga, kas ļauj lietotājiem reģistrēt savu interesi par notikumu. To var mainīt, lai tā vietā izveidotu saiti uz ārējo URL.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Pēc noklusējuma tiks parādīta platformā esošā notikuma reģistrācijas poga, kas ļauj lietotājiem reģistrēties notikumam. To var mainīt, lai tā vietā izveidotu saiti uz ārējo URL.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Ierobežot pasākuma dalībnieku skaitu",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Iestatiet maksimālo notikuma dalībnieku skaitu. Ja limits tiks sasniegts, turpmākas reģistrācijas netiks pieņemtas.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
