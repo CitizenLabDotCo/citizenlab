@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Evénements du projet",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Nom de l'événement",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Lier le bouton à une URL externe",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Par défaut, le bouton d'inscription à un événement de la plateforme s'affiche pour permettre aux utilisateurs d'enregistrer leur intérêt pour un événement. Vous pouvez modifier ce bouton pour qu'il renvoie à une URL externe.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Par défaut, le bouton d'inscription à un événement de la plateforme s'affiche pour permettre aux utilisateurs de s'inscrire à un événement. Vous pouvez modifier ce bouton pour qu'il renvoie plutôt à une URL externe.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Limiter le nombre de personnes inscrites à l'événement",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Fixez un nombre maximum d'inscriptions à l'événement. Si la limite est atteinte, aucune autre inscription ne sera acceptée.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
