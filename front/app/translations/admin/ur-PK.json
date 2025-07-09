@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "پروجیکٹ کے واقعات",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "واقعہ کا نام",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "بٹن کو ایک بیرونی URL سے لنک کریں۔",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "پہلے سے طے شدہ طور پر، ان پلیٹ فارم ایونٹ رجسٹر کا بٹن دکھایا جائے گا جو صارفین کو ایونٹ میں اپنی دلچسپی رجسٹر کرنے کی اجازت دیتا ہے۔ اس کے بجائے آپ اسے کسی بیرونی URL سے لنک کرنے کے لیے تبدیل کر سکتے ہیں۔",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "پہلے سے طے شدہ طور پر، ان پلیٹ فارم ایونٹ رجسٹر بٹن دکھایا جائے گا جو صارفین کو ایونٹ کے لیے رجسٹر کرنے کی اجازت دیتا ہے۔ اس کی بجائے آپ اسے کسی بیرونی URL سے لنک کرنے کے لیے تبدیل کر سکتے ہیں۔",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "ایونٹ رجسٹر کرنے والوں کی تعداد کو محدود کریں۔",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "ایونٹ رجسٹر کرنے والوں کی زیادہ سے زیادہ تعداد مقرر کریں۔ اگر حد ہو جاتی ہے تو مزید رجسٹریشن قبول نہیں کی جائے گی۔",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/ایڈمن/صارفین",
