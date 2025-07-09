@@ -420,7 +420,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Hinweis: Wenn Sie anonyme oder offene Teilnahmerechte aktivieren, können Nutzende mehrfach teilnehmen, was zu irreführenden oder unvollständigen Nutzerdaten führen kann.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle2": "Teilnehmende <b>sind nicht enthalten</b>:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Zu den Teilnehmenden gehören:",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.registrants": "Teilnehmer an der Veranstaltung",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.registrants": "Teilnehmende der Veranstaltung",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Nutzende, die mit Go Vocal-Methoden interagieren",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.pendingApproval": "Warten auf Freigabe",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.pendingApprovalTooltip2": "Jemand wurde zum Freigeben des Projekts benachrichtigt.",
