@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Projekto renginiai",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Įvykio pavadinimas",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "Mygtuko susiejimas su išoriniu URL adresu",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Pagal numatytuosius nustatymus bus rodomas platformoje esantis renginio registravimo mygtukas, kuriuo naudotojai galės užregistruoti savo susidomėjimą renginiu. Jį galite pakeisti, kad vietoj to būtų pateikta nuoroda į išorinį URL adresą.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Pagal numatytuosius nustatymus bus rodomas platformoje esantis renginio registravimo mygtukas, kuriuo naudotojai galės užsiregistruoti į renginį. Jį galite pakeisti, kad vietoj to būtų pateikta nuoroda į išorinį URL adresą.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "riboti renginio dalyvių skaičių",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Nustatykite didžiausią renginio dalyvių skaičių. Jei limitas bus pasiektas, daugiau registracijų nebus priimama.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
