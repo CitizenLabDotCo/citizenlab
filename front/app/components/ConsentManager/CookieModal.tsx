@@ -39,11 +39,11 @@ const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
     >
       <Box id="e2e-cookie-banner">
         <Title fontSize={isSmallerThanPhone ? 'xl' : undefined}>
-          <FormattedMessage {...messages.bannerTitle} />
+          <FormattedMessage {...messages.modalTitle} />
         </Title>
         <Text id="cookie-banner-title">
           <FormattedMessage
-            {...messages.mainText}
+            {...messages.modalDescription}
             values={{
               policyLink: (
                 <Link to="/pages/cookie-policy">

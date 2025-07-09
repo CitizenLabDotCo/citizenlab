@@ -5,11 +5,11 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Banner.close',
     defaultMessage: 'Close',
   },
-  bannerTitle: {
+  modalTitle: {
     id: 'app.components.ConsentManager.Banner.title',
     defaultMessage: 'Make participation better',
   },
-  mainText: {
+  modalDescription: {
     id: 'app.components.ConsentManager.Banner.description',
     defaultMessage:
       'We use cookies to make this site work better and help more people participate. {policyLink}.',
