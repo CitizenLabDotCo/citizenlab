@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Project events",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Event name",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "A gomb külső URL-címhez csatolása",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "Alapértelmezés szerint a platformon belüli eseményregisztrációs gomb jelenik meg, amely lehetővé teszi a felhasználók számára, hogy regisztrálják érdeklődésüket egy esemény iránt. Ezt módosíthatja úgy, hogy egy külső URL-re mutató hivatkozást tartalmazzon.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "Alapértelmezés szerint a platformon belüli eseményregisztrációs gomb jelenik meg, amely lehetővé teszi a felhasználók számára az eseményre való regisztrációt. Ezt módosíthatja úgy, hogy egy külső URL-re mutató hivatkozást tartalmazzon.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "Korlátozza az eseményre regisztrálók számát",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "Állítsd be az eseményre regisztrálók maximális számát. Ha eléred a limitet, további regisztrációkat nem fogadunk el.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
