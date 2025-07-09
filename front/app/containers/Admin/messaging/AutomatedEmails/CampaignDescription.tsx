@@ -30,7 +30,9 @@ const CampaignDescription = ({ campaign, disabledByParent = false }: Props) => {
         </Text>
         {disabledByParent && (
           <IconTooltip
-            placement="top-start"
+            placement="top"
+            ml="4px"
+            mt="2px"
             content={
               <FormattedMessage
                 {...messages.disabledProjectPhaseEmailMessage}

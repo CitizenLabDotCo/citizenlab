@@ -311,10 +311,6 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.editRegion_button_text_multiloc',
     defaultMessage: 'Button text',
   },
-  automatedEmailsDescription: {
-    id: 'app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription',
-    defaultMessage: 'You can configure emails triggered on a phase level',
-  },
   disabledProjectPhaseEmailMessage: {
     id: 'app.containers.AdminPage.ProjectTimeline.disabledProjectPhaseEmailMessage',
     defaultMessage:
