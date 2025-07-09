@@ -25,7 +25,6 @@ describe('Follow area', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`/profile/${userSlug}/following`);
-    cy.acceptCookies();
 
     cy.get('#tab-Areas').click();
 

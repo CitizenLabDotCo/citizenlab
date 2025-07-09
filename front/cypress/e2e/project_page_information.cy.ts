@@ -42,7 +42,7 @@ describe('Information with events CTA', () => {
 
   it('does not show the CTA elements when visiting active information project with no events', () => {
     cy.visit(`/en/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('#e2e-project-see-events-button').should('not.exist');
     cy.get('#e2e-event-previews').should('not.exist');
     cy.get('#e2e-cta-bar-see-events').should('not.exist');
@@ -60,7 +60,7 @@ describe('Information with events CTA', () => {
       endDate: moment().add(1, 'day').toDate(),
     }).then(() => {
       cy.visit(`/en/projects/${projectSlug}`);
-      cy.acceptCookies();
+
       cy.get('#e2e-project-see-events-button').should('exist');
       cy.get('#e2e-cta-bar-see-events').should('exist');
       cy.get('#e2e-event-previews').should('exist');

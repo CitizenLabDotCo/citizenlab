@@ -42,7 +42,7 @@ describe('Follow folder', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`/folders/${folderSlug}`);
-    cy.acceptCookies();
+
     cy.get('#e2e-folder-title').contains(folderTitle);
 
     // Follow

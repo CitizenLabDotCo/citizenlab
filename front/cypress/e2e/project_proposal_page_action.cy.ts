@@ -52,7 +52,6 @@ describe('Proposal show page actions', () => {
 
       cy.visit(`/ideas/${proposalSlug}`);
       cy.get('#e2e-idea-show');
-      cy.acceptCookies();
 
       // We wait for this request so that we know the idea page is more or less
       // done loading. Should not be necessary but reduces flakiness.
