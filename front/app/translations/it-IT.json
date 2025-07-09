@@ -95,6 +95,7 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Dichiarazioni",
   "app.components.CommunityMonitorModal.formError": "Si è verificato un errore.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Questo sondaggio in corso analizza le tue opinioni sulla governance e sui servizi pubblici.",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Ci vuole <1 minuto} one {Ci vuole 1 minuto} other {Ci vogliono # minuti}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "Una mail con un codice di conferma è stata inviata a {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Cambia la tua email.",
   "app.components.ConfirmationModal.codeInput": "Codice",

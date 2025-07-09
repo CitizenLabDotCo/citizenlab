@@ -95,6 +95,7 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Izjave",
   "app.components.CommunityMonitorModal.formError": "Došlo je do pogreške.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Ovo istraživanje koje je u tijeku prati vaše mišljenje o upravljanju i javnim uslugama.",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Traje <1 minute} one {Traje 1 minutu} other {Traje # minute}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "E-poruka s potvrdnim kodom poslana je na {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Promijenite svoju adresu e-pošte.",
   "app.components.ConfirmationModal.codeInput": "Kod:",

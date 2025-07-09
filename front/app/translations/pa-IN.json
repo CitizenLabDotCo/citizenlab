@@ -95,6 +95,7 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "ਬਿਆਨ",
   "app.components.CommunityMonitorModal.formError": "ਇੱਕ ਗਲਤੀ ਆਈ।",
   "app.components.CommunityMonitorModal.surveyDescription2": "ਇਹ ਚੱਲ ਰਿਹਾ ਸਰਵੇਖਣ ਇਸ ਗੱਲ ਦਾ ਪਤਾ ਲਗਾਉਂਦਾ ਹੈ ਕਿ ਤੁਸੀਂ ਸ਼ਾਸਨ ਅਤੇ ਜਨਤਕ ਸੇਵਾਵਾਂ ਬਾਰੇ ਕਿਵੇਂ ਮਹਿਸੂਸ ਕਰਦੇ ਹੋ।",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {<1 ਮਿੰਟ ਲੈਂਦਾ ਹੈ} one {1 ਮਿੰਟ ਲੈਂਦਾ ਹੈ} other {# ਮਿੰਟ ਲੈਂਦਾ ਹੈ}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ ਵਾਲੀ ਇੱਕ ਈਮੇਲ {userEmail}'ਤੇ ਭੇਜੀ ਗਈ ਹੈ।",
   "app.components.ConfirmationModal.changeYourEmail": "ਆਪਣੀ ਈਮੇਲ ਬਦਲੋ।",
   "app.components.ConfirmationModal.codeInput": "ਕੋਡ",

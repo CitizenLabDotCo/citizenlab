@@ -95,6 +95,7 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Uttalelser",
   "app.components.CommunityMonitorModal.formError": "Det oppstod en feil.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Denne løpende undersøkelsen kartlegger hva du mener om styring og offentlige tjenester.",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Tar <1 minutt} one {Tar 1 minutt} other {Tar # minutter}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "En e-post med en bekreftelseskode har blitt sendt til {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Endre e-postadressen din.",
   "app.components.ConfirmationModal.codeInput": "Kode",

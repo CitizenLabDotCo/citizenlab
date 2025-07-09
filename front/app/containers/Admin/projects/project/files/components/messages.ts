@@ -1,9 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  editFile: {
-    id: 'app.containers.AdminPage.ProjectFiles.editFile',
-    defaultMessage: 'Edit file',
+  viewFile: {
+    id: 'app.containers.AdminPage.ProjectFiles.viewFile',
+    defaultMessage: 'View file',
+  },
+  downloadFile: {
+    id: 'app.containers.AdminPage.ProjectFiles.downloadFile',
+    defaultMessage: 'Download file',
   },
   deleteFile: {
     id: 'app.containers.AdminPage.ProjectFiles.deleteFile2',
@@ -66,7 +70,41 @@ export default defineMessages({
     defaultMessage: 'Choose files',
   },
   dragAndDropFiles: {
-    id: 'app.containers.AdminPage.ProjectFiles.dragAndDropFiles',
-    defaultMessage: 'Drag and drop files here or',
+    id: 'app.containers.AdminPage.ProjectFiles.dragAndDropFiles2',
+    defaultMessage: 'Drag and drop any files here or',
+  },
+  searchFiles: {
+    id: 'app.containers.AdminPage.ProjectFiles.searchFiles',
+    defaultMessage: 'Search files',
+  },
+  filesUploadedSuccessfully: {
+    id: 'app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully',
+    defaultMessage: 'All files uploaded successfully',
+  },
+  fileSizeError: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileSizeError',
+    defaultMessage: 'Files may not exceed the maximum limit of {maxSizeMb} MB.',
+  },
+  filesSuccessfullyUploaded: {
+    id: 'app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded',
+    defaultMessage:
+      'The following files were successfully uploaded: {fileNames}',
+  },
+  unknown: {
+    id: 'app.containers.AdminPage.ProjectFiles.unknown',
+    defaultMessage: 'Unknown',
+  },
+  confirmDelete: {
+    id: 'app.containers.AdminPage.ProjectFiles.confirmDelete',
+    defaultMessage: 'Are you sure you want to delete this file?',
+  },
+  maxFilesError: {
+    id: 'app.containers.AdminPage.ProjectFiles.maxFilesError',
+    defaultMessage:
+      'You can only upload a maximum of {maxFiles} files at a time.',
+  },
+  filesRejected: {
+    id: 'app.containers.AdminPage.ProjectFiles.filesRejected',
+    defaultMessage: 'Files were not able to be uploaded. Please try again.',
   },
 });

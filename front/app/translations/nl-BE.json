@@ -95,6 +95,7 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Stellingen",
   "app.components.CommunityMonitorModal.formError": "Er is een fout opgetreden.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Deze doorlopende vragenlijst houdt bij hoe je denkt over bestuur en openbare diensten.",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Duurt <1 minuut} one {Duurt 1 minuut} other {Duurt # minuten}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "Een e-mail met bevestigingscode is verzonden naar {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Verander je e-mail.",
   "app.components.ConfirmationModal.codeInput": "Code",

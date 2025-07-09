@@ -95,6 +95,7 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Paziņojumi",
   "app.components.CommunityMonitorModal.formError": "Konstatēta kļūda.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Šajā pastāvīgajā aptaujā tiek noskaidrota jūsu attieksme pret pārvaldību un sabiedriskajiem pakalpojumiem.",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {aizņem <1 minūti} one {aizņem 1 minūti} other {aizņem # minūtes}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "E-pasts ar apstiprinājuma kodu ir nosūtīts uz {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Nomainiet savu e-pasta adresi.",
   "app.components.ConfirmationModal.codeInput": "Kods",

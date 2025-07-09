@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 import Header from '../_shared/Header';
 
 import Folders from './Folders';
+import Ordering from './Ordering';
 import Projects from './Projects';
 import Tabs from './Tabs';
 import Timeline from './Timeline';
@@ -28,6 +29,11 @@ const AdminProjectsListNew = () => {
         <Box display={tab === 'timeline' ? 'block' : 'none'}>
           <Timeline />
         </Box>
+        {tab === 'ordering' && (
+          <Box>
+            <Ordering />
+          </Box>
+        )}
       </Box>
     </Box>
   );

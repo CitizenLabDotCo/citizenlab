@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.timeline',
     defaultMessage: 'Timeline',
   },
+  ordering: {
+    id: 'app.containers.Admin.projects.all.new.ordering',
+    defaultMessage: 'Ordering',
+  },
   draft: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.draft',
     defaultMessage: 'Draft',

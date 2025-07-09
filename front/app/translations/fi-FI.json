@@ -95,6 +95,7 @@
   "app.components.CommonGroundTabs.statementsTabLabel": "Lausunnot",
   "app.components.CommunityMonitorModal.formError": "Tapahtui virhe.",
   "app.components.CommunityMonitorModal.surveyDescription2": "Tämä jatkuva kysely seuraa, mitä mieltä olet hallinnosta ja julkisista palveluista.",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Kestää <1 minuutin} one {Kestää 1 minuutin} other {Kestää # minuuttia}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "Vahvistuskoodin sisältävä sähköposti on lähetetty osoitteeseen {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Vaihda sähköpostiosoitteesi.",
   "app.components.ConfirmationModal.codeInput": "Koodi",
