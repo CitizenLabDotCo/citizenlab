@@ -20,7 +20,7 @@ module EmailCampaigns
       {
         recipient: recipient,
         event_payload: {
-          official_feedback_author_multiloc: data.initiator.display_name_multiloc,
+          official_feedback_author_multiloc: data.initiator.display_name_multiloc, # TODO: Maybe organisation name here? eg 'City of Plattsburgh Official'
           official_feedback_body_multiloc: data.comment.body_multiloc,
           official_feedback_url: data.comment.url,
           idea_published_at: Time.zone.today.prev_week.iso8601,
