@@ -18,4 +18,8 @@ beforeEach(() => {
       success: true,
     },
   });
+  cy.setCookie(
+    'cl2_consent',
+    '{%22analytics%22:false%2C%22advertising%22:false%2C%22functional%22:true%2C%22savedChoices%22:{%22google_tag_manager%22:false%2C%22matomo%22:false%2C%22google_analytics%22:false}}'
+  );
 });
