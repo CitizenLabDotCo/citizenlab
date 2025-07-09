@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Zaakceptuj",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Odrzucić politykę i zamknąć baner",
   "app.components.ConsentManager.Banner.close": "Zamknij",
-  "app.components.ConsentManager.Banner.mainText": "Przeglądając stronę, zgadzasz się na naszą {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Zarządzaj",
   "app.components.ConsentManager.Banner.policyLink": "Polityka ciasteczek",
   "app.components.ConsentManager.Banner.reject": "Odrzuć",

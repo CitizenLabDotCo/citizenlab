@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "قبول کریں۔",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "پالیسی کو مسترد کریں اور بینر بند کریں۔",
   "app.components.ConsentManager.Banner.close": "بند",
-  "app.components.ConsentManager.Banner.mainText": "یہ پلیٹ فارم ہمارے {policyLink}کے مطابق کوکیز کا استعمال کرتا ہے۔",
   "app.components.ConsentManager.Banner.manage": "انتظام کریں۔",
   "app.components.ConsentManager.Banner.policyLink": "کوکی پالیسی",
   "app.components.ConsentManager.Banner.reject": "رد کرنا",

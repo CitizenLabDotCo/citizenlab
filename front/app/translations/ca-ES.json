@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Acceptar",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Rebutja la política i tanca el banner",
   "app.components.ConsentManager.Banner.close": "Tancar",
-  "app.components.ConsentManager.Banner.mainText": "Aquesta plataforma utilitza galetes d'acord amb el nostre {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Gestionar",
   "app.components.ConsentManager.Banner.policyLink": "Política de galetes",
   "app.components.ConsentManager.Banner.reject": "Rebutjar",

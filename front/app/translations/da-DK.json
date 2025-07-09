@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Accepter",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Afvis politik og luk banner",
   "app.components.ConsentManager.Banner.close": "Luk",
-  "app.components.ConsentManager.Banner.mainText": "Denne platform anvender cookies i overensstemmelse med vores {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Administrer",
   "app.components.ConsentManager.Banner.policyLink": "Cookiepolitik",
   "app.components.ConsentManager.Banner.reject": "Afvis",

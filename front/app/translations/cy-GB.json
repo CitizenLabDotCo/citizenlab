@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Derbyn",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Gwrthod y polisi a chau'r faner",
   "app.components.ConsentManager.Banner.close": "Cau",
-  "app.components.ConsentManager.Banner.mainText": "Mae'r platfform hwn yn defnyddio cwcis yn unol â'n {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Rheoli",
   "app.components.ConsentManager.Banner.policyLink": "Polisi cwcis",
   "app.components.ConsentManager.Banner.reject": "Gwrthod",

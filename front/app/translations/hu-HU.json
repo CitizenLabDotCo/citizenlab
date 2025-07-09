@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Elfogadás",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Az irányelv elutasítása és a szalaghirdetés bezárása",
   "app.components.ConsentManager.Banner.close": "Közeli",
-  "app.components.ConsentManager.Banner.mainText": "Ez a platform cookie-kat használ a {policyLink}szerint.",
   "app.components.ConsentManager.Banner.manage": "Kezelése",
   "app.components.ConsentManager.Banner.policyLink": "Cookie-szabályzat",
   "app.components.ConsentManager.Banner.reject": "Elutasít",

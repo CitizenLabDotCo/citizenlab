@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Acceptera",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Avvisa policy och stäng banderoll",
   "app.components.ConsentManager.Banner.close": "Stäng",
-  "app.components.ConsentManager.Banner.mainText": "Genom att surfa godkänner du vår {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Hantera",
   "app.components.ConsentManager.Banner.policyLink": "Policy webbkakor",
   "app.components.ConsentManager.Banner.reject": "Avvisa",

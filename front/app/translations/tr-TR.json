@@ -109,7 +109,6 @@
   "app.components.ConsentManager.Banner.accept": "Kabul et",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Politikayı reddet ve başlığı kapat",
   "app.components.ConsentManager.Banner.close": "Kapat",
-  "app.components.ConsentManager.Banner.mainText": "Bu platformda {policyLink} ile uyumlu şekilde çerezler kullanılmaktadır.",
   "app.components.ConsentManager.Banner.manage": "Yönet",
   "app.components.ConsentManager.Banner.policyLink": "Çerez politikası",
   "app.components.ConsentManager.Banner.reject": "Reddet",
