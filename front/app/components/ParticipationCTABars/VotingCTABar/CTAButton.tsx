@@ -157,6 +157,7 @@ const CTAButton = ({ phase, project }: Props) => {
             onClick={handleSubmitOnClick}
             fontWeight="500"
             id="e2e-voting-submit-button"
+            dataCy="e2e-voting-submit-button"
             textHoverColor={theme.colors.black}
             padding="6px 12px"
             fontSize="14px"
