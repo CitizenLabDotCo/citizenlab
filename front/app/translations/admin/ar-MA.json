@@ -2179,7 +2179,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "أحداث المشروع",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "اسم المشروع",
   "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonLabel": "ربط الزر برابط خارجي",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip": "افتراضيًا، سيظهر زر تسجيل الأحداث داخل المنصة، مما يسمح للمستخدمين بتسجيل اهتمامهم بالحدث. يمكنك تغيير هذا الخيار إلى رابط خارجي.",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomRegisterButtonTooltip2": "افتراضيًا، سيظهر زر تسجيل الأحداث داخل المنصة، مما يسمح للمستخدمين بالتسجيل في حدث ما. يمكنك تغيير هذا الخيار ليرتبط برابط خارجي.",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitLabel": "تحديد عدد المسجلين في الحدث",
   "app.containers.AdminPage.ProjectEvents.toggleRegistrationLimitTooltip": "حدد الحد الأقصى لعدد المسجلين في الفعالية. في حال تجاوز هذا الحد، لن تُقبل أي تسجيلات أخرى.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
