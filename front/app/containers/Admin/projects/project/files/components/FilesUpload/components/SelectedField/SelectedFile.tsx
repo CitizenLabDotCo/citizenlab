@@ -21,7 +21,7 @@ type Props = {
 
 const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync } = useAddFile();
+  const { mutate } = useAddFile();
   const { file, status, semanticType } = fileMeta;
   const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
 
@@ -31,7 +31,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
   // Function to upload the file
   const uploadFile = useCallback(async () => {
     const base64 = await getBase64FromFile(file);
-    await mutateAsync(
+    mutate(
       {
         content: base64,
         project: projectId,
@@ -47,7 +47,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
         },
       }
     );
-  }, [file, projectId, mutateAsync, onStatusUpdate]);
+  }, [file, projectId, mutate, onStatusUpdate]);
 
   // Effect to handle the file upload when the status changes to 'uploading'
   useEffect(() => {
