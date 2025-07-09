@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Sačuvano!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Pogledaj obrazac",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automated emails",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "You can configure emails triggered on a phase level",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datumi",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Take the survey",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Survey",

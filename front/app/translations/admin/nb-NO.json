@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Frelst!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Vis skjema",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatiserte e-poster",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Du kan konfigurere e-postmeldinger som utløses på fasenivå",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datoer",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Ta del i undersøkelsen",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Spørreundersøkelse",

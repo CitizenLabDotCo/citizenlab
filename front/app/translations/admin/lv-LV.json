@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saglabāts!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Skatīt veidlapu",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatizēti e-pasti",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Varat konfigurēt e-pasta ziņojumus, kas tiek aktivizēti fāžu līmenī.",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datumi",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Veiciet aptauju",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Aptauja",

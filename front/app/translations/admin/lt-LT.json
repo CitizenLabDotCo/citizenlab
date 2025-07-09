@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Išgelbėtas!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Peržiūrėti formą",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatiniai el. laiškai",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Galite sukonfigūruoti el. laiškus, paleidžiamus etapo lygmeniu",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datos",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Atlikite apklausą",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Apklausa",

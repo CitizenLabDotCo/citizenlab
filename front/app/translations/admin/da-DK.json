@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Gemt!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Vis formular",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatiske e-mails",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Du kan konfigurere e-mails, som udløses af et faseniveau",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datoer",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Besvar spørgeskemaet ",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Undersøgelse",

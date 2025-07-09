@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "محفوظ کیا گیا!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "فارم دیکھیں",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "خودکار ای میلز",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "آپ فیز لیول پر متحرک ای میلز کو کنفیگر کر سکتے ہیں۔",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "تاریخیں",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "سروے میں حصہ لیں۔",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "سروے",

@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "تم الحفظ!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "عرض النموذج",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "رسائل البريد الإلكتروني الآلية",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "يمكنك تكوين رسائل البريد الإلكتروني التي يتم تشغيلها على مستوى المرحلة",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "التواريخ",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "خذ الاستطلاع",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "استطلاع",

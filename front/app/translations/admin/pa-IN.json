@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "ਸੰਭਾਲਿਆ!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "ਫਾਰਮ ਦੇਖੋ",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "ਸਵੈਚਲਿਤ ਈਮੇਲਾਂ",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "ਤੁਸੀਂ ਇੱਕ ਪੜਾਅ ਪੱਧਰ 'ਤੇ ਸ਼ੁਰੂ ਕੀਤੀਆਂ ਈਮੇਲਾਂ ਨੂੰ ਕੌਂਫਿਗਰ ਕਰ ਸਕਦੇ ਹੋ",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "ਮਿਤੀਆਂ",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "ਸਰਵੇਖਣ ਲਵੋ",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "ਸਰਵੇਖਣ",

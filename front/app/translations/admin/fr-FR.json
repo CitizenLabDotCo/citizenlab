@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Enregistré !",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Voir le formulaire",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "E-mails automatisés",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Vous pouvez configurer les e-mails envoyés pour chaque phase individuellement",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dates",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Répondre à l'enquête",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Enquête",

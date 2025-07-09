@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Сачувано!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Прикажи образац",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Аутоматизоване е-поруке",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Можете да конфигуришете е-поруке које се активирају на нивоу фазе",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Датуми",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Take the survey",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Survey",

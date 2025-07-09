@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Tallennettu!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Näytä lomake",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automaattiset sähköpostit",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Voit määrittää vaihetasolla käynnistyvät sähköpostit",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Päivämäärät",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Vastaa kyselyyn",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Kysely",

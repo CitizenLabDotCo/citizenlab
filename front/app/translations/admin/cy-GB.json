@@ -2207,6 +2207,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Cadwyd!",
   "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "Gweld ffurflen",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "E-byst awtomataidd",
+  "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Gallwch chi ffurfweddu e-byst wedi'u sbarduno ar lefel cyfnod",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dyddiadau",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Cymerwch yr arolwg",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Arolwg",
