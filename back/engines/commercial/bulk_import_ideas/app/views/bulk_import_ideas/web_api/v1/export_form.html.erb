@@ -285,6 +285,13 @@
               <img alt="" src="<%= field[:map_url] %>">
             </div>
 
+          <% elsif field[:format] == :checkbox %>
+            <div class="options">
+                <div class="select">
+                  <div><input type="checkbox" class="checkbox"></div>
+                </div>
+            </div>
+
           <% else %>
             <div class="unsupported">
               <p><%= unsupported_field_text %></p>
