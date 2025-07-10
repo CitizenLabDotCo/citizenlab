@@ -4,8 +4,8 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IPhaseData } from 'api/phases/types';
-import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import usePhasesMiniByIds from 'api/phases_mini/usePhasesMiniByIds';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -108,12 +108,17 @@ const ProjectTooltip = ({ ganttItem, projectsById }: ProjectTooltipProps) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const project = projectsById[ganttItem.id];
-  console.log({ project });
-  // TODO
 
-  const { data: phasesData } = usePhases(ganttItem.id);
+  const phaseIds = project.relationships.phases?.data.map((phase) => phase.id);
 
-  const phases = phasesData?.data || [];
+  const phasesMiniData = usePhasesMiniByIds(phaseIds || []);
+
+  const phases = phasesMiniData
+    .filter((query) => query.data !== undefined)
+    .map((query) => {
+      return query.data?.data;
+    });
+
   const currentPhase = getCurrentPhase(phases);
   const folderName = ganttItem.folder || undefined;
   const tenantTimezone =
