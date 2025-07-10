@@ -30,8 +30,6 @@ const IdeaForm = ({
     phaseId: string;
   };
 
-  console.log(formData);
-
   const { data: phase } = usePhase(phaseId);
   const participationMethod = phase?.data.attributes.participation_method;
 
