@@ -2523,7 +2523,7 @@
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupNameEmptyError": "Provide a group name",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "Create a manual group",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1": "What type of group do you need?",
-  "app.containers.AdminPage.Users.GroupCreation.readMoreLink2": "https://support.govocal.com/en/articles/7043801-using-smart-and-manual-user-groups",
+  "app.containers.AdminPage.Users.GroupCreation.readMoreLink3": "https://support.govocal.com/en/articles/7043801-using-smart-and-manual-user-groups",
   "app.containers.AdminPage.Users.GroupCreation.saveGroup": "Save group",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal": "Create a manual group",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart": "Create a smart group",
