@@ -2523,7 +2523,7 @@
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupNameEmptyError": "Voer een groepnaam in",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "Maak een manuele groep aan",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1": "Welk type groep heb je nodig?",
-  "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "https://support.govocal.com/articles/2032807",
+  "app.containers.AdminPage.Users.GroupCreation.readMoreLink3": "https://support.govocal.com/en/articles/7043801-using-smart-and-manual-user-groups",
   "app.containers.AdminPage.Users.GroupCreation.saveGroup": "Groep opslaan",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal": "Maak een manuele groep aan",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart": "Maak een slimme groep aan",
