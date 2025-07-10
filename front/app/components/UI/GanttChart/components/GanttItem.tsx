@@ -3,6 +3,8 @@ import React from 'react';
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 import { max, min } from 'date-fns';
 
+import { parseBackendDateString } from 'utils/dateUtils';
+
 import { rowHeight } from '../utils';
 
 import GanttItemTextLabel from './GanttItemTextLabel';
@@ -28,13 +30,12 @@ const GanttItem = ({
   unitWidth,
   renderItemTooltip,
 }: GanttItemProps) => {
-  const start = item.start ? new Date(item.start) : undefined;
+  const start = item.start ? parseBackendDateString(item.start) : undefined;
   if (!start) return null;
-  const end = item.end ? new Date(item.end) : null;
+  const end = item.end ? parseBackendDateString(item.end) : null;
 
   const effectiveStart = start > viewBounds.left ? start : viewBounds.left;
-  const effectiveEnd =
-    end === null || end > viewBounds.right ? viewBounds.right : end;
+  const effectiveEnd = !end || end > viewBounds.right ? viewBounds.right : end;
   if (effectiveStart >= effectiveEnd) return null;
 
   const startOffset = getOffset(effectiveStart);
