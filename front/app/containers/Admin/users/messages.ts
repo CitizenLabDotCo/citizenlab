@@ -179,8 +179,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.step1LearnMoreGroups',
     defaultMessage: 'Learn more about groups',
   },
-  readMoreLink: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.readMoreLink2',
+  readMoreLink2: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.readMoreLink3',
     defaultMessage:
       'https://support.govocal.com/en/articles/7043801-using-smart-and-manual-user-groups',
   },
