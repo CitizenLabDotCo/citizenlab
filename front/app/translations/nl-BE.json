@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Stemming gesloten",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Je stemmen worden niet geteld</b> totdat je op \"Verzenden\" klikt",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Gefeliciteerd, je stem is uitgebracht!</b> Je kunt je stem hieronder op elk moment controleren of wijzigen tot en met <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Gefeliciteerd, je stem is uitgebracht!</b> Je kunt je stemmen hieronder op elk moment controleren of wijzigen.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Gefeliciteerd, je stem is uitgebracht!</b> Je kunt je stemmen hieronder op elk moment bekijken of wijzigen.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Er zijn geen ideeën beschikbaar.",
   "components.UI.IdeaSelect.selectIdea": "Selecteer idee",

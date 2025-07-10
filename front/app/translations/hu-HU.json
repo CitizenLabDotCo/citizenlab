@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "A szavazás lezárult",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>A szavazatait nem számoljuk</b> , amíg a \"Küldés\" gombra nem kattint.",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Gratulálunk, szavazatát elküldtük!</b> Az alábbiakban bármikor ellenőrizheti szavazatait, vagy <b>{endDate}</b>előtt módosíthatja azokat.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Gratulálunk, szavazatát elküldtük!</b> Az alábbiakban bármikor ellenőrizheti szavazatait, vagy módosíthatja azokat.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Gratulálunk, szavazatát elküldtük!</b> Az alábbiakban bármikor ellenőrizheti szavazatait, vagy módosíthatja azokat.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Nincsenek elérhető ötletek.",
   "components.UI.IdeaSelect.selectIdea": "Válassza ki az ötletet",

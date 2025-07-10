@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Balsavimas baigtas",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Jūsų balsai nebus skaičiuojami,</b> kol nepaspausite \"Pateikti\".",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Sveikiname, jūsų balsas jau atiduotas!</b> Toliau galite bet kada patikrinti savo balsus arba juos pakeisti prieš tai. <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Sveikiname, jūsų balsas jau atiduotas!</b> Toliau galite bet kada patikrinti savo balsus arba juos pakeisti.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Sveikiname, jūsų balsas jau atiduotas!</b> Toliau galite bet kada patikrinti savo balsus arba juos pakeisti.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Nėra jokių idėjų.",
   "components.UI.IdeaSelect.selectIdea": "Pasirinkite idėją",

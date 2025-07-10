@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Les votes sont clos",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Vos votes ne seront pas pris en compte</b> tant que vous n'aurez pas cliqué sur \"Soumettre\"",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Félicitations, votre vote a été soumis !</b> Vous pouvez vérifier vos votes ci-dessous. Vous avez la possibilité de les modifier jusqu'au <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Félicitations, votre vote a été soumis !</b> Vous pouvez à tout moment vérifier vos votes ci-dessous ou les modifier.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Félicitations, vos votes ont été soumis !</b> Vous pouvez à tout moment vérifier vos votes ci-dessous ou les modifier.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Il n'y a pas d'idées disponibles.",
   "components.UI.IdeaSelect.selectIdea": "Sélectionnez une idée",

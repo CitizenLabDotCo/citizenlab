@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Voting closed",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Your votes will not be counted</b> until you click \"Submit\"",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them before <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them.",
   "components.UI.IdeaSelect.noIdeaAvailable": "There are no ideas available.",
   "components.UI.IdeaSelect.selectIdea": "Select idea",

@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Ofstëmmung zougemaach",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Är Stëmmen ginn net</b> gezielt bis Dir op \"Submit\" klickt",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Gratulatioun, Äre Vote gouf ofginn!</b> Dir kënnt Är Stëmmen hei ënnen zu all Moment iwwerpréiwen oder se virum <b>{endDate}</b>änneren.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Gratulatioun, Äre Vote gouf ofginn!</b> Dir kënnt Är Stëmmen hei ënnen zu all Moment iwwerpréiwen oder se änneren.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Gratulatioun, Äre Vote gouf ofginn!</b> Dir kënnt Är Stëmmen zu all Moment hei drënner kontrolléieren oder se änneren.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Et gi keng Iddien verfügbar.",
   "components.UI.IdeaSelect.selectIdea": "Wielt Iddi",

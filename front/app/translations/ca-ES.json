@@ -2342,7 +2342,6 @@
   "app.utils.votingMethodUtils.votingClosed": "Votació tancada",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Els teus vots no es comptaran</b> fins que facis clic a \"Envia\"",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Enhorabona, el teu vot ha estat enviat!</b> Podeu consultar els vostres vots a continuació en qualsevol moment o modificar-los abans <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Enhorabona, el teu vot ha estat enviat!</b> Podeu consultar els vostres vots a continuació en qualsevol moment o modificar-los.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Enhorabona, el teu vot ha estat enviat!</b> Podeu consultar els vostres vots a continuació en qualsevol moment o modificar-los.",
   "components.UI.IdeaSelect.noIdeaAvailable": "No hi ha idees disponibles.",
   "components.UI.IdeaSelect.selectIdea": "Seleccioneu la idea",
