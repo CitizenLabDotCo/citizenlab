@@ -30,6 +30,7 @@ export const StatusIcon = ({ status }: Props) => {
       return <Icon name="check" fill={colors.green500} />;
     case 'error':
       return (
+        // TODO: Confirm that any BE errors will show useful messages + UI looks polished.
         <Tooltip content={<Feedback showBackground={false} showIcon={false} />}>
           <Icon fill={colors.red500} name="info-outline" />
         </Tooltip>
