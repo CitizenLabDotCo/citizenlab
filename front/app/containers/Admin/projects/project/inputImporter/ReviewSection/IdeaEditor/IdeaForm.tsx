@@ -62,6 +62,7 @@ const IdeaForm = ({
         ...values,
       };
       setFormData(updatedFormData);
+      methods.trigger();
     });
     return () => subscription.unsubscribe();
   }, [methods, formData, setFormData, setIdeaFormDataValid]);
