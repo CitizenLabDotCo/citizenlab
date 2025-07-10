@@ -11,7 +11,6 @@ import { useFormContext } from 'react-hook-form';
 
 import {
   ICustomFieldSettingsTab,
-  IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
@@ -46,7 +45,6 @@ const FormBuilderSettings = ({
     field.defaultTab || 'content'
   );
   const { watch } = useFormContext();
-  const formCustomFields: IFlatCustomField[] = watch('customFields');
 
   const translatedStringKey = getTranslatedStringKey(
     watch(`customFields.${field.index}.input_type`),
@@ -75,21 +73,6 @@ const FormBuilderSettings = ({
   };
 
   const showTabbedSettings = getShowTabbedSettings();
-
-  // Which page is the current question on?
-  // Technically there should always be a current page ID and null should never be returned
-  const getCurrentPageId = (
-    field: IFlatCustomFieldWithIndex
-  ): string | null => {
-    if (fieldType === 'page') return field.id;
-
-    let pageId: string | null = null;
-    for (const formCustomField of formCustomFields) {
-      if (formCustomField.input_type === 'page') pageId = formCustomField.id;
-      if (formCustomField.id === field.id) return pageId;
-    }
-    return null;
-  };
 
   return (
     <Box
@@ -174,7 +157,6 @@ const FormBuilderSettings = ({
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings
           field={field}
-          getCurrentPageId={getCurrentPageId}
           key={field.index}
           builderConfig={builderConfig}
         />
