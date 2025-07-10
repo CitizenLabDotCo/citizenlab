@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.fileSummaryLabel',
     defaultMessage: 'Summary',
   },
+  askButton: {
+    id: 'app.containers.AdminPage.ProjectFiles.askButton',
+    defaultMessage: 'Ask',
+  },
 });

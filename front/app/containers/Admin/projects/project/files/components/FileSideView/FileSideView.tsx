@@ -21,12 +21,17 @@ type Props = {
   selectedFileId: string | null;
   setSideViewOpened: (opened: boolean) => void;
 };
+
 const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
   const { data: file } = useFileById(selectedFileId);
 
   return (
-    <SideModal opened={opened} close={() => setSideViewOpened(false)}>
-      <Box display="flex" p="24px" mt="24px" gap="32px">
+    <SideModal
+      opened={opened}
+      close={() => setSideViewOpened(false)}
+      width="1100px"
+    >
+      <Box display="flex" p="24px" mt="24px" gap="32px" minHeight="96dvh">
         <Box width="50%">
           <StatusLabel
             text="SEMANTIC TYPE" // TODO: Replace with actual semantic type once implemented
@@ -37,6 +42,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
           <Title variant="h2" color="textPrimary" mt="12px">
             {file?.data.attributes.name}
           </Title>
+
           {file && (
             <Box>
               <FileMetadata file={file} />
@@ -49,7 +55,10 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
             </Box>
           )}
         </Box>
-        <Box width="50%">{file && <FileAnalysis file={file} />}</Box>
+
+        <Box width="50%" display="flex" flexDirection="column" minHeight="0">
+          {file && <FileAnalysis file={file} />}
+        </Box>
       </Box>
     </SideModal>
   );
