@@ -189,11 +189,13 @@ module BulkImportIdeas::Parsers
       field
     end
 
-    def format_date(date_string)
-      return nil if date_string.blank?
+    def format_date(date)
+      return nil if date.blank?
 
-      date = Date.parse(date_string)
-      date.strftime('%Y-%m-%d')
+      parsed_date = date.is_a?(Date) ? date : Date.parse(date) rescue nil
+      return nil unless parsed_date
+
+      parsed_date.strftime('%Y-%m-%d')
     end
 
     def fix_email_address(email)

@@ -261,4 +261,24 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       expect(custom_field_values[:u_date]).to eq '2025-01-01'
     end
   end
+
+  describe 'format_date' do
+    it 'formats date strings in dd-mm-yyyy format' do
+      date_string = '15-08-2023'
+      formatted_date = service.send(:format_date, date_string)
+      expect(formatted_date).to eq '2023-08-15'
+    end
+
+    it 'formats date objects' do
+      date_object = Date.new(2023, 8, 15)
+      formatted_date = service.send(:format_date, date_object)
+      expect(formatted_date).to eq '2023-08-15'
+    end
+
+    it 'returns nil for invalid date strings' do
+      invalid_date_string = 'A DATE'
+      formatted_date = service.send(:format_date, invalid_date_string)
+      expect(formatted_date).to be_nil
+    end
+  end
 end
