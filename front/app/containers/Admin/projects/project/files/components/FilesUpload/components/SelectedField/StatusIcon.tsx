@@ -30,7 +30,7 @@ export const StatusIcon = ({ status }: Props) => {
       return <Icon name="check" fill={colors.green500} />;
     case 'error':
       return (
-        <Tooltip content={<Feedback />}>
+        <Tooltip content={<Feedback showBackground={false} showIcon={false} />}>
           <Icon fill={colors.red500} name="info-outline" />
         </Tooltip>
       );
