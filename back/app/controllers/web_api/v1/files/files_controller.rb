@@ -64,7 +64,7 @@ class WebApi::V1::Files::FilesController < ApplicationController
 
   def finder_params
     params.permit(
-      :uploader, :project,
+      :search, :uploader, :project,
       uploader: [], project: []
     ).to_h.symbolize_keys
   end
