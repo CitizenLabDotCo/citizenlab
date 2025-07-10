@@ -243,6 +243,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
               setIdeaFormDataValid={setIdeaFormDataValid}
               setFormData={setIdeaFormData}
               setError={setError}
+              key={ideaId}
             />
           </>
         )}

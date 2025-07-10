@@ -10,6 +10,7 @@ import usePhase from 'api/phases/usePhase';
 import CustomFields from 'components/CustomFieldsForm/CustomFields';
 import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
 import { FormValues } from 'components/Form/typings';
+import Feedback from 'components/HookForm/Feedback';
 
 interface Props {
   formData: FormValues;
@@ -28,6 +29,8 @@ const IdeaForm = ({
     projectId: string;
     phaseId: string;
   };
+
+  console.log(formData);
 
   const { data: phase } = usePhase(phaseId);
   const participationMethod = phase?.data.attributes.participation_method;
@@ -59,11 +62,7 @@ const IdeaForm = ({
   // Watch for changes in form values and update formData and form validation state accordingly
   useEffect(() => {
     const subscription = methods.watch((values) => {
-      const updatedFormData = {
-        ...formData,
-        ...values,
-      };
-      setFormData(updatedFormData);
+      setFormData(values);
       methods.trigger();
     });
     return () => subscription.unsubscribe();
@@ -76,6 +75,7 @@ const IdeaForm = ({
     <Box w="90%">
       <FormProvider {...methods}>
         <form>
+          <Feedback />
           {questions && (
             <CustomFields
               questions={questions}
