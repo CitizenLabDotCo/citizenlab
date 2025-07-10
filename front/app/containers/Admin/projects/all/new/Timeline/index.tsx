@@ -104,6 +104,7 @@ const Timeline = () => {
             alignItems="center"
             justifyContent="center"
             borderRadius="8px"
+            zIndex="4"
           >
             <Spinner />
           </Box>
