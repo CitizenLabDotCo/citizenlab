@@ -157,7 +157,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectMiniAdminSerializer,
       params: jsonapi_serializer_params,
-      include: %i[current_phase]
+      include: %i[current_phase phases]
     )
   end
 

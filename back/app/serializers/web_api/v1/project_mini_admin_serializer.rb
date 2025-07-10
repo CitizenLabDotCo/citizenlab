@@ -40,4 +40,6 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
   end
 
   has_one :folder
+
+  has_many :phases, serializer: WebApi::V1::PhaseMiniSerializer
 end
