@@ -114,7 +114,7 @@
   "app.components.ConsentManager.Banner.manage": "Beheren",
   "app.components.ConsentManager.Banner.policyLink": "Cookiebeleid",
   "app.components.ConsentManager.Banner.reject": "Weiger",
-  "app.components.ConsentManager.Banner.title": "Deelname beter maken",
+  "app.components.ConsentManager.Banner.title": "Maak participatie beter",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Bevestigen",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Als je annuleert, gaan je voorkeuren verloren.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Advertenties",
