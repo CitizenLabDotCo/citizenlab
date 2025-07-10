@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import phasesMiniKeys from './keys';
 import { PhasesMiniKeys, PhaseMini } from './types';
 
-const fetchPhaseMini = (id?: string) =>
+export const fetchPhaseMini = (id?: string) =>
   fetcher<PhaseMini>({
     path: `/phases/${id}/mini`,
     action: 'get',
