@@ -2523,7 +2523,6 @@
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupNameEmptyError": "ਇੱਕ ਸਮੂਹ ਦਾ ਨਾਮ ਪ੍ਰਦਾਨ ਕਰੋ",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "ਇੱਕ ਮੈਨੁਅਲ ਗਰੁੱਪ ਬਣਾਓ",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1": "ਤੁਹਾਨੂੰ ਕਿਸ ਕਿਸਮ ਦੇ ਸਮੂਹ ਦੀ ਲੋੜ ਹੈ?",
-  "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "https://support.govocal.com/articles/2032807",
   "app.containers.AdminPage.Users.GroupCreation.saveGroup": "ਸਮੂਹ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰੋ",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal": "ਇੱਕ ਮੈਨੁਅਲ ਗਰੁੱਪ ਬਣਾਓ",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart": "ਇੱਕ ਸਮਾਰਟ ਗਰੁੱਪ ਬਣਾਓ",
