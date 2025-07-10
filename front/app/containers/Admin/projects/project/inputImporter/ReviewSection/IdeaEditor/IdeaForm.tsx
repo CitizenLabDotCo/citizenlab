@@ -51,10 +51,13 @@ const IdeaForm = ({
     defaultValues: formData,
   });
 
+  // Trigger validation on mount to ensure initial form validation state is valid
   useEffect(() => {
+    methods.trigger();
     setIdeaFormDataValid(methods.formState.isValid);
-  }, [methods.formState.isValid, setIdeaFormDataValid]);
+  }, [setIdeaFormDataValid, methods]);
 
+  // Watch for changes in form values and update formData and form validation state accordingly
   useEffect(() => {
     const subscription = methods.watch((values) => {
       const updatedFormData = {
