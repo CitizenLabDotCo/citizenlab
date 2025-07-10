@@ -51,11 +51,10 @@ const IdeaForm = ({
     defaultValues: formData,
   });
 
-  // Trigger validation on mount to ensure initial form validation state is valid
+  // Ensure initial form validation state is correct
   useEffect(() => {
-    methods.trigger();
     setIdeaFormDataValid(methods.formState.isValid);
-  }, [setIdeaFormDataValid, methods]);
+  }, [setIdeaFormDataValid, methods.formState.isValid]);
 
   // Watch for changes in form values and update formData and form validation state accordingly
   useEffect(() => {
@@ -70,6 +69,7 @@ const IdeaForm = ({
     return () => subscription.unsubscribe();
   }, [methods, formData, setFormData, setIdeaFormDataValid]);
 
+  // We are setting the setError function to the ref so that it can be used easily in the parent component for error handling
   setError.current = methods.setError;
 
   return (

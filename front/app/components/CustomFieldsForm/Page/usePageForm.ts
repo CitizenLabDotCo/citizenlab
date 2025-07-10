@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -31,7 +30,7 @@ const usePageForm = ({
 
   const methods = useForm({
     mode: 'onBlur',
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
     defaultValues,
   });
 
