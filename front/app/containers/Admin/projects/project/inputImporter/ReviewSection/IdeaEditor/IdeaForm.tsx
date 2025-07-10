@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { FormProvider } from 'react-hook-form';
+import { FormProvider, UseFormSetError } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -14,9 +14,16 @@ import { FormValues } from 'components/Form/typings';
 interface Props {
   formData: FormValues;
   setFormData: (formData: FormValues) => void;
+  setIdeaFormDataValid: (isValid: boolean) => void;
+  setError: React.MutableRefObject<UseFormSetError<FormValues> | undefined>;
 }
 
-const IdeaForm = ({ formData, setFormData }: Props) => {
+const IdeaForm = ({
+  formData,
+  setFormData,
+  setIdeaFormDataValid,
+  setError,
+}: Props) => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -39,19 +46,27 @@ const IdeaForm = ({ formData, setFormData }: Props) => {
       field.key !== 'idea_files_attributes'
   );
 
-  const { methods, setShowFormFeedback, showFormFeedback } = usePageForm({
+  const { methods } = usePageForm({
     pageQuestions: questions || [],
     defaultValues: formData,
   });
 
-  methods.watch((values) => {
-    const updatedFormData = {
-      ...formData,
-      ...values,
-    };
-    setFormData(updatedFormData);
-    setShowFormFeedback(true);
-  });
+  useEffect(() => {
+    setIdeaFormDataValid(methods.formState.isValid);
+  }, [methods.formState.isValid, setIdeaFormDataValid]);
+
+  useEffect(() => {
+    const subscription = methods.watch((values) => {
+      const updatedFormData = {
+        ...formData,
+        ...values,
+      };
+      setFormData(updatedFormData);
+    });
+    return () => subscription.unsubscribe();
+  }, [methods, formData, setFormData, setIdeaFormDataValid]);
+
+  setError.current = methods.setError;
 
   return (
     <Box w="90%">
