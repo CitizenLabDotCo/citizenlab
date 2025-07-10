@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Box, colors, Spinner, Text } from '@citizenlab/cl2-component-library';
 
 import { PublicationStatus } from 'api/projects/types';
+import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useProjectsMiniAdmin from 'api/projects_mini_admin/useProjectsMiniAdmin';
 
 import useLocalize from 'hooks/useLocalize';
@@ -72,7 +73,15 @@ const Timeline = () => {
   const lastPageLink = projects?.links.last;
   const lastPage = lastPageLink ? getPageNumberFromUrl(lastPageLink) ?? 1 : 1;
 
-  if (isLoading) {
+  const projectsById = projects?.data.reduce(
+    (acc, project) => ({
+      ...acc,
+      [project.id]: project,
+    }),
+    {} as Record<string, ProjectMiniAdminData>
+  );
+
+  if (isLoading || !projectsById) {
     return (
       <Centerer>
         <Spinner />
@@ -89,7 +98,10 @@ const Timeline = () => {
       <Filters />
 
       <Box position="relative" mt="16px">
-        <ProjectGanttChart projects={projectsGanttData} />
+        <ProjectGanttChart
+          ganttItems={projectsGanttData}
+          projectsById={projectsById}
+        />
 
         {isFetching && (
           <Box

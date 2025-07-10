@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
+
 import GanttChart from 'components/UI/GanttChart';
 import { GanttItem } from 'components/UI/GanttChart/types';
 
@@ -9,18 +11,23 @@ import clHistory from 'utils/cl-router/history';
 import messages from './messages';
 import ProjectTooltip from './ProjectTooltip';
 
-const ProjectGanttChart = ({ projects }: { projects: GanttItem[] }) => {
+interface Props {
+  ganttItems: GanttItem[];
+  projectsById: Record<string, ProjectMiniAdminData>;
+}
+
+const ProjectGanttChart = ({ ganttItems, projectsById }: Props) => {
   const { formatMessage } = useIntl();
 
-  const onItemLabelClick = (project: GanttItem) => {
-    clHistory.push(`/admin/projects/${project.id}`);
+  const onItemLabelClick = (ganttItem: GanttItem) => {
+    clHistory.push(`/admin/projects/${ganttItem.id}`);
   };
 
   return (
     <GanttChart
-      items={projects}
+      items={ganttItems}
       renderItemTooltip={(ganttItem) => (
-        <ProjectTooltip ganttItem={ganttItem} />
+        <ProjectTooltip ganttItem={ganttItem} projectsById={projectsById} />
       )}
       chartTitle={formatMessage(messages.project)}
       onItemLabelClick={onItemLabelClick}

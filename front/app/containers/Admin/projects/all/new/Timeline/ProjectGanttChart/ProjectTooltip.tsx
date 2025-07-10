@@ -6,6 +6,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -98,9 +99,18 @@ const PhaseList = ({ phases }: { phases: IPhaseData[] }) => {
   );
 };
 
-const ProjectTooltip = ({ ganttItem }: { ganttItem: GanttItem }) => {
+interface ProjectTooltipProps {
+  ganttItem: GanttItem;
+  projectsById: Record<string, ProjectMiniAdminData>;
+}
+
+const ProjectTooltip = ({ ganttItem, projectsById }: ProjectTooltipProps) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
+  const project = projectsById[ganttItem.id];
+  console.log({ project });
+  // TODO
+
   const { data: phasesData } = usePhases(ganttItem.id);
 
   const phases = phasesData?.data || [];
