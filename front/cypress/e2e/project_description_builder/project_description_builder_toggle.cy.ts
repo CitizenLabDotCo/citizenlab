@@ -103,7 +103,7 @@ describe('Project description builder toggle', () => {
 
     // Attach a project file
     cy.visit(`admin/projects/${projectId}/settings`);
-    cy.wait(1000);
+    cy.wait(2000);
     cy.scrollTo('bottom');
 
     cy.dataCy('e2e-project-file-uploader').should('exist');
@@ -111,6 +111,7 @@ describe('Project description builder toggle', () => {
       'cypress/fixtures/example.pdf'
     );
     cy.contains('example.pdf').should('exist');
+    cy.wait(2000);
 
     // Submit project
     cy.get('.e2e-submit-wrapper-button button').click();
