@@ -5,7 +5,7 @@ namespace :single_use do
       puts "\nProcessing tenant #{tenant.host} \n\n"
 
       map_to_term = {
-        'vote' => ['vote', 'stem', 'stimme', 'voto', 'voorkeur', 'äänestys', 'stemme', 'ster', '"pouvoir"', 'fördela', 'prioriteit'],
+        'vote' => ['vote', 'stem', 'stimme', 'voto', 'voorkeur', 'äänestys', 'stemme', 'ster', '"pouvoir"', 'fördela', 'prioriteit', 'votar'],
         'point' => %w[point punkt punt],
         'token' => ['token'],
         'credit' => ['credit', '"crédit carbone"']
