@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import campaignPreviewsKeys from 'api/campaign_previews/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import campaignsKeys from './keys';
@@ -22,6 +24,7 @@ const useUpdateCampaign = () => {
     mutationFn: updateCampaign,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: campaignsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: campaignPreviewsKeys.all() });
     },
   });
 };

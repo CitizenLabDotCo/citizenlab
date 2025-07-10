@@ -3,7 +3,15 @@
 require 'email_campaigns/engine'
 
 module EmailCampaigns
-  module MailerPreviewRecipient
+  module MailerPreview
+    private
+
+    def preview_campaign_mail(campaign_class)
+      campaign = campaign_class.new
+      command = campaign.preview_command(recipient_user)
+      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+    end
+
     def recipient_user
       @user ||= User.first
       @user.locale = params[:locale] || :en
