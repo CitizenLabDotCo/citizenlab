@@ -38,6 +38,7 @@ export const useGanttViewConfig = (timelineStartDate: Date) => {
         getGroups: (start: Date, end: Date) =>
           groupDayCellsByMonth(getDayCells(start, end), () => dayWidth),
         getFlatCells: getDayCells,
+        // Calculates the offset from the timeline start in days.
         getOffset: (date: Date) =>
           getPreciseOffsetInDays(timelineStartDate, date),
         getDuration: (s: Date, e: Date) => getPreciseDurationInDays(s, e),
@@ -50,6 +51,7 @@ export const useGanttViewConfig = (timelineStartDate: Date) => {
             () => quarterWidth
           ),
         getFlatCells: getQuarterCells,
+        // Calculates the offset in 3-day ("quarter") units.
         getOffset: (cells: Date[], date: Date) =>
           getPreciseOffsetInQuarters(cells, date),
         getDuration: (cells: Date[], s: Date, e: Date) =>
@@ -60,6 +62,7 @@ export const useGanttViewConfig = (timelineStartDate: Date) => {
         getGroups: (start: Date, end: Date) =>
           groupWeekCellsByYear(getWeekCells(start, end), () => weekWidth),
         getFlatCells: getWeekCells,
+        // Calculates the offset from the timeline start in weeks.
         getOffset: (date: Date) =>
           getPreciseOffsetInWeeks(timelineStartDate, date),
         getDuration: (s: Date, e: Date) =>
@@ -70,6 +73,7 @@ export const useGanttViewConfig = (timelineStartDate: Date) => {
         getGroups: (start: Date, end: Date) =>
           groupMonthCellsByYear(getMonthCells(start, end), () => monthWidth),
         getFlatCells: getMonthCells,
+        // Calculates the offset from the timeline start in months.
         getOffset: (date: Date) =>
           getPreciseOffsetInMonths(timelineStartDate, date),
         getDuration: (s: Date, e: Date) =>
