@@ -180,9 +180,9 @@ export default defineMessages({
     defaultMessage: 'Learn more about groups',
   },
   readMoreLink: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.readMoreLink',
+    id: 'app.containers.AdminPage.Users.GroupCreation.readMoreLink2',
     defaultMessage:
-      'http://support.govocal.com/nl-opstartgids/stap-2-configureer-de-belangrijkste-settings/maak-eventueel-verschillende-gebruikersgroepen-aan',
+      'https://support.govocal.com/en/articles/7043801-using-smart-and-manual-user-groups',
   },
   modalHeaderStep1: {
     id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1',
