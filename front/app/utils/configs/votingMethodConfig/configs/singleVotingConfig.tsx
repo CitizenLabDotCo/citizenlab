@@ -104,9 +104,7 @@ const singleVotingConfig: VotingMethodConfig = {
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (submissionState === 'submissionEnded') {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const votingMax = phase?.attributes?.voting_max_total;
+      const votingMax = phase.attributes.voting_max_total;
       if (votingMax) {
         if (votingMax > 1 && phase.attributes.end_at) {
           return (
@@ -115,9 +113,7 @@ const singleVotingConfig: VotingMethodConfig = {
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                endDate: getLocalisedDateString(phase?.attributes.end_at),
+                endDate: getLocalisedDateString(phase.attributes.end_at),
                 // TODO: Fix this the next time the file is edited.
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 maxVotes: votingMax?.toLocaleString(),
@@ -133,9 +129,7 @@ const singleVotingConfig: VotingMethodConfig = {
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                endDate: getLocalisedDateString(phase?.attributes.end_at),
+                endDate: getLocalisedDateString(phase.attributes.end_at),
                 // TODO: Fix this the next time the file is edited.
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 maxVotes: votingMax?.toLocaleString(),
@@ -154,9 +148,7 @@ const singleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              endDate: getLocalisedDateString(phase?.attributes.end_at),
+              endDate: getLocalisedDateString(phase.attributes.end_at),
             }}
             {...messages.singleVotingUnlimitedEnded}
           />
