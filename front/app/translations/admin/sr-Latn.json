@@ -2523,7 +2523,6 @@
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupNameEmptyError": "Navedi naziv grupe",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "Kreirajte manualnu grupu",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1": "Kakav tip grupe želite?",
-  "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "https://support.govocal.com/articles/2032807",
   "app.containers.AdminPage.Users.GroupCreation.saveGroup": "Sačuvajte grupu",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal": "Kreirajte manualnu grupu",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart": "Kreirajte smart grupu",

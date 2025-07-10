@@ -2523,7 +2523,6 @@
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupNameEmptyError": "Pateikite grupės pavadinimą",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "Sukurti rankinę grupę",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1": "Kokio tipo grupės jums reikia?",
-  "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "https://support.govocal.com/articles/2032807",
   "app.containers.AdminPage.Users.GroupCreation.saveGroup": "Išsaugoti grupę",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal": "Sukurti rankinę grupę",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart": "Sukurti išmaniąją grupę",
