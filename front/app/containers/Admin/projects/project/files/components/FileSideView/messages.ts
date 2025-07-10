@@ -29,9 +29,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.fileNameRequired',
     defaultMessage: 'File name is required.',
   },
-  fileSummaryLabel: {
-    id: 'app.containers.AdminPage.ProjectFiles.fileSummaryLabel',
-    defaultMessage: 'Summary',
+  fileDescriptionLabel: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileDescriptionLabel',
+    defaultMessage: 'Description',
   },
   askButton: {
     id: 'app.containers.AdminPage.ProjectFiles.askButton',

@@ -34,7 +34,7 @@ const FileEditForm = ({ file }: Props) => {
     semantic_type: string()
       .oneOf(['type_1', 'type_2', 'type_3', 'type_4'])
       .notRequired(),
-    summary_multiloc: object().notRequired(),
+    description_multiloc: object().notRequired(),
   });
 
   const fileNameWithoutExtension = file.data.attributes.name.split('.')[0];
@@ -48,7 +48,9 @@ const FileEditForm = ({ file }: Props) => {
     defaultValues: {
       name: fileNameWithoutExtension || '',
       semantic_type: 'type_1', // TODO: Replace with actual default value once semantic types are implemented.
-      summary_multiloc: undefined, // TODO: Replace with actual default value once summary is implemented.
+      description_multiloc: {
+        en: 'This is a sample AI-generated description for this file. It contains a few sentences describing the contents of this file. It can also be edited manually by the user.',
+      }, // TODO: Replace with actual default value once description is implemented.
     },
     resolver: yupResolver(schema),
   });
@@ -60,7 +62,7 @@ const FileEditForm = ({ file }: Props) => {
         file: {
           // Join the file name back with the extension before persisting.
           name: `${methods.getValues('name')}.${fileExtensionString}`,
-          // TODO: Add semantic type and summary once implemented
+          // TODO: Add semantic type and description_multiloc once implemented
         },
       });
     } catch (error) {
@@ -92,8 +94,8 @@ const FileEditForm = ({ file }: Props) => {
           />
 
           <TextAreaMultilocWithLocaleSwitcher
-            name="summary"
-            label={formatMessage(messages.fileSummaryLabel)}
+            name="description_multiloc"
+            label={formatMessage(messages.fileDescriptionLabel)}
           />
         </Box>
 
