@@ -20,10 +20,7 @@ import { IUser } from 'api/users/types';
 import useUpdateUser from 'api/users/useUpdateUser';
 import useUserById from 'api/users/useUserById';
 
-import useInputSchema from 'hooks/useInputSchema';
 import useLocalize from 'hooks/useLocalize';
-
-import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 
 import { FormValues } from 'components/Form/typings';
 
@@ -66,11 +63,6 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     Record<string, FormValues>
   >({});
 
-  const { schema, uiSchema } = useInputSchema({
-    projectId,
-    phaseId,
-  });
-
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const { data: author } = useUserById(
     idea?.data.relationships.author?.data?.id,
@@ -90,8 +82,6 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const { mutate: updateUser } = useUpdateUser();
   const { mutateAsync: createOfflineUser } = useCreateOfflineUser();
 
-  if (!schema || !uiSchema) return null;
-
   const userFormData = getUserFormValues(
     ideaId,
     userFormStatePerIdea,
@@ -106,8 +96,8 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       ? ideaFormStatePerIdea[ideaId]
       : // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      idea && schema
-      ? getIdeaFormValues(idea, schema)
+      idea
+      ? idea.data.attributes
       : null;
 
   const setUserFormData = (
