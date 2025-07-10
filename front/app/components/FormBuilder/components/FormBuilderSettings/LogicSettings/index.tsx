@@ -4,9 +4,13 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 
-import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+} from 'api/custom_fields/types';
 
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import Warning from 'components/UI/Warning';
@@ -15,6 +19,7 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
+import { getFieldNumbers } from '../../utils';
 
 import { PageRuleInput } from './PageRuleInput';
 import { QuestionRuleInput } from './QuestionRuleInput';
@@ -27,7 +32,6 @@ export type PageListType =
     }[];
 
 type LogicSettingsProps = {
-  pageOptions: PageListType;
   field: IFlatCustomFieldWithIndex;
   builderConfig: FormBuilderConfig | undefined;
   getCurrentPageId: (questionId: string) => string | null;
@@ -41,7 +45,6 @@ export type AnswersType =
   | undefined;
 
 const LogicSettings = ({
-  pageOptions,
   field,
   builderConfig,
   getCurrentPageId,
@@ -52,6 +55,8 @@ const LogicSettings = ({
     formState: { errors: formContextErrors },
   } = useFormContext();
   const locale = useLocale();
+  const localize = useLocalize();
+  const formCustomFields: IFlatCustomField[] = watch('customFields');
   const selectOptions = watch(`customFields.${field.index}.options`);
   const linearScaleMaximum = watch(`customFields.${field.index}.maximum`);
   const fieldRequired = watch(`customFields.${field.index}.required`);
@@ -95,6 +100,38 @@ const LogicSettings = ({
       });
     }
   }
+
+  const getPageList = () => {
+    const fieldNumbers = getFieldNumbers(formCustomFields);
+    const pageArray: { value: string; label: string }[] = [];
+
+    formCustomFields.forEach((field, i) => {
+      if (field.input_type === 'page') {
+        const isLastPage = i === formCustomFields.length - 1;
+
+        const pageTitle = localize(field.title_multiloc);
+        const pageLabel = isLastPage
+          ? formatMessage(messages.lastPage)
+          : `${formatMessage(messages.page)} ${fieldNumbers[field.id]}${
+              pageTitle
+                ? `: ${
+                    pageTitle.length > 25
+                      ? `${pageTitle.slice(0, 25)}...`
+                      : pageTitle
+                  }`
+                : ''
+            }`;
+
+        pageArray.push({
+          value: field.temp_id || field.id,
+          label: pageLabel,
+        });
+      }
+    });
+    return pageArray;
+  };
+
+  const pageOptions = getPageList();
 
   // Current and previous pages should be disabled in select options
   let disablePage = true;
