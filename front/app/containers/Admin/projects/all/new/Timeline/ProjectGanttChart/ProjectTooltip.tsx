@@ -98,28 +98,28 @@ const PhaseList = ({ phases }: { phases: IPhaseData[] }) => {
   );
 };
 
-const ProjectTooltip = ({ project }: { project: GanttItem }) => {
+const ProjectTooltip = ({ ganttItem }: { ganttItem: GanttItem }) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: phasesData } = usePhases(project.id);
+  const { data: phasesData } = usePhases(ganttItem.id);
 
   const phases = phasesData?.data || [];
   const currentPhase = getCurrentPhase(phases);
-  const folderName = project.folder || undefined;
+  const folderName = ganttItem.folder || undefined;
   const tenantTimezone =
     appConfiguration?.data.attributes.settings.core.timezone;
 
-  const startDate = project.start
-    ? new Date(project.start).toLocaleDateString()
+  const startDate = ganttItem.start
+    ? new Date(ganttItem.start).toLocaleDateString()
     : undefined;
-  const endDate = project.end
-    ? new Date(project.end).toLocaleDateString()
+  const endDate = ganttItem.end
+    ? new Date(ganttItem.end).toLocaleDateString()
     : undefined;
 
   return (
     <Box p="8px">
       <Text fontWeight="bold" color="white" my="0px">
-        {project.title}
+        {ganttItem.title}
       </Text>
       {folderName && (
         <Box>{formatMessage(messages.folder, { folderName })}</Box>

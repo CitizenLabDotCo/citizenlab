@@ -19,7 +19,9 @@ const ProjectGanttChart = ({ projects }: { projects: GanttItem[] }) => {
   return (
     <GanttChart
       items={projects}
-      renderItemTooltip={(project) => <ProjectTooltip project={project} />}
+      renderItemTooltip={(ganttItem) => (
+        <ProjectTooltip ganttItem={ganttItem} />
+      )}
       chartTitle={formatMessage(messages.project)}
       onItemLabelClick={onItemLabelClick}
     />
