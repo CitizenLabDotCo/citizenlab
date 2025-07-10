@@ -32,6 +32,7 @@ const ProjectFolderSitemap = ({ projectFolderId, hightestTitle }: Props) => {
   const { data: adminPublications } = useAdminPublications({
     childrenOfId: projectFolderId,
     publicationStatusFilter: publicationStatuses,
+    include_unlisted: false,
   });
 
   const childAdminPublications = adminPublications?.pages

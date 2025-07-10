@@ -160,6 +160,9 @@ const IdeaMeta = ({ ideaId }: Props) => {
 
         <meta property="og:url" content={ideaUrl} />
         <meta property="og:locale" content={locale} />
+        {project?.data.attributes.unlisted && (
+          <meta name="robots" content="noindex" />
+        )}
       </Helmet>
     );
   }

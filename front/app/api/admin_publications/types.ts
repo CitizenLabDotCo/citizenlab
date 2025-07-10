@@ -25,6 +25,7 @@ export interface IQueryParameters {
   // This excludes projects that are already inside included folders from the result set, so we don't show duplicates.
   exclude_projects_in_included_folders?: boolean;
   include_publications?: boolean;
+  include_unlisted?: boolean;
 }
 
 export type AdminPublicationType = 'project' | 'folder';

@@ -67,6 +67,7 @@ import {
   StyledSectionField,
 } from './components/styling';
 import TopicInputs from './components/TopicInputs';
+import UnlistedInput from './components/UnlistedInput';
 import messages from './messages';
 import validateTitle from './utils/validateTitle';
 
@@ -464,6 +465,14 @@ const AdminProjectsProjectGeneral = () => {
       setSubmitState(submitState);
     };
 
+  const handleUnlistedOnChange = () => {
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      unlisted: !projectAttrs.unlisted,
+    }));
+    setSubmitState('enabled');
+  };
+
   const projectAttrs = {
     ...(!isNilOrError(project) ? project.data.attributes : {}),
     ...projectAttributesDiff,
@@ -557,6 +566,13 @@ const AdminProjectsProjectGeneral = () => {
             selectedTopicIds={selectedTopicIds}
             onChange={handleTopicsChange}
           />
+
+          {isNewProject && (
+            <UnlistedInput
+              listed={projectAttrs.unlisted !== true}
+              onChange={handleUnlistedOnChange}
+            />
+          )}
 
           <GeographicAreaInputs
             areaIds={projectAttrs.area_ids}

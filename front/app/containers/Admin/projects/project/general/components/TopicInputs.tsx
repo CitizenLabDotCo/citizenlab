@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
@@ -15,7 +15,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import { StyledSectionField } from './styling';
 import TopicInputsTooltipExtraCopy from './TopicInputsTooltipExtraCopy';
 
 interface Props {
@@ -40,7 +39,7 @@ const TopicInputs = ({ selectedTopicIds, onChange }: Props) => {
   );
 
   return (
-    <StyledSectionField>
+    <Box>
       <SubSectionTitle>
         {topicsCopy} &nbsp;
         <IconTooltip
@@ -59,7 +58,7 @@ const TopicInputs = ({ selectedTopicIds, onChange }: Props) => {
         selectedTopicIds={selectedTopicIds}
         onClick={onChange}
       />
-    </StyledSectionField>
+    </Box>
   );
 };
 

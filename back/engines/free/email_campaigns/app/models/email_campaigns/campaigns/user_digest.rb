@@ -134,6 +134,7 @@ module EmailCampaigns
 
       ideas = IdeaPolicy::Scope.new(nil, Idea).resolve
         .published
+        .where(project: { unlisted: false })
         .includes(:comments)
         .activity_after(time - 1.week)
 
