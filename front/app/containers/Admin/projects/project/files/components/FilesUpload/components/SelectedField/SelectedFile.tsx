@@ -1,11 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
-import { Box, Text, Select } from '@citizenlab/cl2-component-library';
-import { CLError } from 'typings';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { object, string } from 'yup';
 
 import useAddFile from 'api/files/useAddFile';
 
+import Select from 'components/HookForm/Select';
+
 import { useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { getBase64FromFile } from 'utils/fileUtils';
 
 import { FileWithMeta } from '../../types';
@@ -21,80 +26,106 @@ type Props = {
 
 const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate } = useAddFile();
-  const { file, status, semanticType } = fileMeta;
-  const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
+  const { mutateAsync: addFile } = useAddFile();
+  const { file, status } = fileMeta;
 
   // Ref to track if the upload has started
   const hasStarted = useRef(false);
 
-  // Function to upload the file
-  const uploadFile = useCallback(async () => {
-    const base64 = await getBase64FromFile(file);
-    mutate(
-      {
-        content: base64,
-        project: projectId,
-        name: file.name,
-      },
-      {
-        onError: (errors) => {
-          setApiErrors(errors.error);
-          onStatusUpdate({ status: 'error' });
-        },
-        onSuccess: () => {
-          onStatusUpdate({ status: 'uploaded' });
-        },
-      }
-    );
-  }, [file, projectId, mutate, onStatusUpdate]);
+  // Setup for React hook form
+  const schema = object({
+    semantic_type: string() // TODO: Replace with actual SemanticFileType when ready and create separate Type in another file.
+      .oneOf(['meeting', 'interview', 'other'])
+      .nullable()
+      .notRequired(),
+  });
+  const methods = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  });
 
+  // Function to upload the file
+  const uploadFile = useCallback(
+    async (_semantic_type) => {
+      // TODO: Replace with actual semantic type once implemented
+      const base64 = await getBase64FromFile(file);
+
+      try {
+        await addFile({
+          content: base64,
+          project: projectId,
+          name: file.name,
+          // semantic_type  TODO: Replace with actual semantic type once BE implemented.
+        });
+        onStatusUpdate({
+          status: 'uploaded',
+        });
+      } catch (error) {
+        handleHookFormSubmissionError(error, methods.setError);
+        onStatusUpdate({
+          status: 'error',
+        });
+      }
+    },
+    [file, addFile, projectId, methods.setError, onStatusUpdate]
+  );
+
+  // Handle form submission (trigger file upload)
+  const submit = methods.handleSubmit((formData) => {
+    uploadFile(formData.semantic_type);
+  });
+
+  // Effect to handle the file upload when the status changes to 'uploading'
   useEffect(() => {
     if (status === 'uploading' && !hasStarted.current) {
       hasStarted.current = true;
-      uploadFile();
+      submit();
     }
-  }, [status, uploadFile]);
+  }, [methods, status, submit, uploadFile]);
 
   return (
     <>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        mb="8px"
-      >
-        <Box display="flex" alignItems="center" gap="4px">
-          <StatusIcon status={status} apiErrors={apiErrors} />
-          <Text
-            my="4px"
-            color={
-              status === 'error' || status === 'too_large'
-                ? 'disabled'
-                : 'textSecondary'
-            }
-            maxWidth="320px"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-          >
-            {file.name}
-          </Text>
+      <FormProvider {...methods}>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          mb="8px"
+        >
+          <Box display="flex" alignItems="center" gap="4px">
+            <StatusIcon status={status} />
+            <Text
+              my="4px"
+              color={
+                status === 'error' || status === 'too_large'
+                  ? 'disabled'
+                  : 'textSecondary'
+              }
+              maxWidth="320px"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+            >
+              {file.name}
+            </Text>
+          </Box>
+          <Box minWidth="200px">
+            <form>
+              <Select
+                name={'semantic_type'}
+                placeholder={formatMessage(messages.selectFileType)}
+                options={[
+                  // TODO: Replace with actual options once implemented.
+                  { value: 'meeting', label: 'Meeting' },
+                  { value: 'interview', label: 'Interview' },
+                  { value: 'other', label: 'Other' },
+                ]}
+                disabled={status !== 'queued'}
+              />
+            </form>
+          </Box>
         </Box>
-        <Box minWidth="200px">
-          <Select
-            value={semanticType} // TODO: Replace with actual semantic type once implemented.
-            placeholder={formatMessage(messages.selectFileType)}
-            onChange={() => {}} // TODO: Implement onChange once SemanticFileType implemented.
-            options={[
-              // TODO: Replace with actual options once implemented.
-              { value: 'type_1', label: 'Type 1' },
-              { value: 'type_2', label: 'Type 2' },
-            ]}
-            disabled={status !== 'queued'}
-          />
-        </Box>
-      </Box>
+      </FormProvider>
     </>
   );
 };

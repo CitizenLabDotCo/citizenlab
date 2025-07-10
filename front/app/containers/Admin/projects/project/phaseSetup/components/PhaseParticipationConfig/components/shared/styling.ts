@@ -7,7 +7,7 @@ import {
 import styled from 'styled-components';
 
 import { Section, SectionField } from 'components/admin/Section';
-import Error, { Props as ErrorProps } from 'components/UI/Error';
+import Error, { ErrorProps } from 'components/UI/Error';
 import Warning, { Props as WarningProps } from 'components/UI/Warning';
 
 export const Container = styled.div``;
