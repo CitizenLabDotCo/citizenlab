@@ -192,7 +192,11 @@ module BulkImportIdeas::Parsers
     def format_date(date)
       return nil if date.blank?
 
-      parsed_date = date.is_a?(Date) ? date : Date.parse(date) rescue nil
+      parsed_date = begin
+        date.is_a?(Date) ? date : Date.parse(date)
+      rescue StandardError
+        nil
+      end
       return nil unless parsed_date
 
       parsed_date.strftime('%Y-%m-%d')
