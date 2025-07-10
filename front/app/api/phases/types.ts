@@ -62,8 +62,7 @@ export interface IPhaseAttributes {
   document_annotation_embed_url?: string | null;
   custom_form_persisted?: boolean;
   voting_method?: VotingMethod | null;
-  voting_term_singular_multiloc?: Multiloc | null;
-  voting_term_plural_multiloc?: Multiloc | null;
+  vote_term?: VoteTerm;
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
@@ -115,8 +114,7 @@ export interface IUpdatedPhaseProperties {
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
-  voting_term_singular_multiloc?: Multiloc | null;
-  voting_term_plural_multiloc?: Multiloc | null;
+  vote_term?: VoteTerm;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   survey_popup_frequency?: number | null;
@@ -171,6 +169,8 @@ export type ParticipationMethod =
   | 'proposals';
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
+
+export type VoteTerm = 'vote' | 'point' | 'token' | 'credit';
 
 export type IdeaSortMethod =
   | 'trending'

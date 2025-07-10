@@ -17,8 +17,6 @@ import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-import useLocalize from 'hooks/useLocalize';
-
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -51,7 +49,6 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
 
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   // phase
@@ -111,8 +108,6 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 project,
                 phase,
                 submissionState: basketStatus,
-                localize,
-                formatMessage,
                 formatCurrency,
               })}
           </Box>
@@ -152,12 +147,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 unsubmitBasket(basket.data.id, updateBasket);
               }}
             >
-              {config &&
-                formatMessage(messages.modifyYourSubmission, {
-                  submissionTerm: formatMessage(
-                    config.getSubmissionTerm('singular')
-                  ).toLowerCase(),
-                })}
+              {formatMessage(messages.modifyYourSubmission)}
             </Button>
           </Box>
         )}

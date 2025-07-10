@@ -160,12 +160,6 @@ const budgetingConfig: VotingMethodConfig = {
     }
     return messages.submittedBudgetCountText;
   },
-  getSubmissionTerm: (form) => {
-    if (form === 'singular') {
-      return messages.budget;
-    }
-    return messages.budgets;
-  },
   preSubmissionWarning: () => {
     return messages.budgetingPreSubmissionWarning;
   },

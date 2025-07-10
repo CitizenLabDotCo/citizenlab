@@ -70,43 +70,42 @@ describe('Multiple voting project', () => {
     cy.apiRemoveUser(userId);
   });
 
-  it('shows the idea cards', () => {
-    cy.get('#e2e-ideas-container');
-  });
-
-  it('hides the idea sorting options', () => {
+  it('shows/hides things correctly', () => {
+    // it shows the idea cards
+    cy.get('#e2e-ideas-container').should('be.visible');
+    // it hides the idea sorting options
     cy.get('.e2e-filter-selector-button').should('not.exist');
   });
 
   it('can allocate the votes to ideas and show how many votes are left', () => {
     cy.contains('Cast your vote');
     cy.contains('How to vote');
-    cy.contains('5 / 5');
+    cy.dataCy('project-cta-bar-top').contains('5 out of 5 votes left');
 
     cy.get('#e2e-voting-submit-button')
-      .should('exist')
+      .should('be.visible')
       .should('have.class', 'disabled');
 
     cy.get('#e2e-ideas-container')
       .find('.e2e-multiple-votes-button button')
-      .should('exist')
+      .should('be.visible')
       .click();
 
     cy.get('#e2e-ideas-container')
       .find('.e2e-multiple-votes-widget')
-      .should('exist');
+      .should('be.visible');
 
     cy.get('#e2e-voting-submit-button')
-      .should('exist')
+      .should('be.visible')
       .should('not.have.class', 'disabled');
 
-    cy.contains('4 / 5');
+    cy.dataCy('project-cta-bar-top').contains('4 out of 5 votes left');
 
     cy.get('#e2e-ideas-container')
       .find('.e2e-vote-plus button')
       .click()
       .should('have.class', 'disabled');
-    cy.contains('3 / 5');
+    cy.dataCy('project-cta-bar-top').contains('3 out of 5 votes left');
 
     cy.wait(1000);
   });
@@ -116,7 +115,7 @@ describe('Multiple voting project', () => {
     cy.visit(`/en/projects/${projectSlug}`);
     cy.wait('@basketRequest');
     cy.get('#e2e-voting-submit-button')
-      .should('exist')
+      .should('be.visible')
       .should('not.have.class', 'disabled');
     cy.wait(1000);
     cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
@@ -135,8 +134,8 @@ describe('Multiple voting project', () => {
 
   it('can modify and remove your votes', () => {
     cy.get('#e2e-modify-votes')
-      .should('exist')
-      .should('contain', 'Modify your vote')
+      .should('be.visible')
+      .should('contain', 'Modify your submission')
       .click();
     cy.wait(1000);
 
@@ -146,18 +145,18 @@ describe('Multiple voting project', () => {
       .find('.e2e-vote-plus button')
       .should('not.have.class', 'disabled');
 
-    cy.contains('4 / 5');
+    cy.dataCy('project-cta-bar-top').contains('4 out of 5 votes left');
 
     cy.get('#e2e-ideas-container').find('.e2e-vote-minus button').click();
 
-    cy.contains('5 / 5');
+    cy.dataCy('project-cta-bar-top').contains('5 out of 5 votes left');
 
     cy.get('#e2e-ideas-container')
       .find('.e2e-multiple-votes-button button')
-      .should('exist');
+      .should('be.visible');
 
     cy.get('#e2e-voting-submit-button')
-      .should('exist')
+      .should('be.visible')
       .should('have.class', 'disabled');
   });
 
