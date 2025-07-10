@@ -2194,6 +2194,7 @@
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Actions",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Add files",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Added",
+  "app.containers.AdminPage.ProjectFiles.askButton": "Ask",
   "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Audio interviews, Town Hall recordings",
   "app.containers.AdminPage.ProjectFiles.audioFileExtensionDescription": "WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Choose files",
