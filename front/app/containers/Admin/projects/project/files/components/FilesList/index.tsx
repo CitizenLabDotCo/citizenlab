@@ -13,7 +13,7 @@ import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import FeatureInformation from '../FeatureInformation';
-import FileSideView from '../FileSideView';
+import FileSideView from '../FileSideView/FileSideView';
 import messages from '../messages';
 import UploadFileButtonWithModal from '../UploadFileButtonWithModal';
 
