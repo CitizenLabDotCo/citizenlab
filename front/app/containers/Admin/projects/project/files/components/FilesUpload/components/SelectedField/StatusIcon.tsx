@@ -8,8 +8,8 @@ import {
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { CLError } from 'typings';
 
+import Feedback from 'components/HookForm/Feedback';
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
@@ -18,11 +18,10 @@ import { UploadStatus } from '../../types';
 import messages from '../messages';
 
 type Props = {
-  apiErrors: CLError[] | null;
   status: UploadStatus;
 };
 
-export const StatusIcon = ({ status, apiErrors }: Props) => {
+export const StatusIcon = ({ status }: Props) => {
   const { formatMessage } = useIntl();
 
   // Render the appropriate icon based on the file's upload status
@@ -31,17 +30,7 @@ export const StatusIcon = ({ status, apiErrors }: Props) => {
       return <Icon name="check" fill={colors.green500} />;
     case 'error':
       return (
-        <Tooltip
-          content={
-            <Error
-              apiErrors={apiErrors}
-              showBackground={false}
-              showIcon={false}
-              marginTop="0px"
-              marginBottom="0px"
-            />
-          }
-        >
+        <Tooltip content={<Feedback />}>
           <Icon fill={colors.red500} name="info-outline" />
         </Tooltip>
       );
