@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "\"ਜੋੜੋ\" 'ਤੇ ਟੈਪ ਕਰਕੇ ਆਪਣੇ ਪਸੰਦੀਦਾ ਵਿਕਲਪਾਂ ਦੀ ਚੋਣ ਕਰੋ।",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "ਤੁਹਾਡੇ ਕੋਲ {optionCount} ਵਿਕਲਪਾਂ</b>ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਕੁੱਲ <b>{maxBudget} ਹਨ।",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੇ ਵਿਕਲਪਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਉਹਨਾਂ ਨੂੰ <b>{endDate}</b>ਤੋਂ ਪਹਿਲਾਂ ਸੋਧ ਸਕਦੇ ਹੋ।",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੇ ਵਿਕਲਪਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਉਹਨਾਂ ਨੂੰ ਸੋਧ ਸਕਦੇ ਹੋ।",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੇ ਵਿਕਲਪਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.utils.votingMethodUtils.budgets": "ਬਜਟ",
   "app.utils.votingMethodUtils.castYourVote": "ਆਪਣੀ ਵੋਟ ਪਾਓ",

@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Dewiswch eich hoff opsiynau trwy dapio ar \"Ychwanegu\".",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Mae gennych chi gyfanswm o <b>{maxBudget} i'w ddosbarthu rhwng {optionCount} opsiynau</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Llongyfarchiadau, mae eich cyllideb wedi'i chyflwyno!</b> Gallwch wirio'ch opsiynau isod ar unrhyw adeg neu eu haddasu cyn <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Llongyfarchiadau, mae eich cyllideb wedi'i chyflwyno!</b> Gallwch wirio'ch opsiynau isod ar unrhyw adeg neu eu haddasu.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Llongyfarchiadau, mae eich cyllideb wedi'i chyflwyno!</b> Gallwch wirio'ch opsiynau isod unrhyw bryd.",
   "app.utils.votingMethodUtils.budgets": "Cyllidebau",
   "app.utils.votingMethodUtils.castYourVote": "Bwriwch eich pleidlais",

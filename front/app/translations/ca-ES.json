@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Seleccioneu les vostres opcions preferides tocant \"Afegeix\".",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Teniu un total de <b>{maxBudget} per distribuir entre {optionCount} opcions</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Enhorabona, s'ha enviat el vostre pressupost!</b> Podeu comprovar les vostres opcions a continuació en qualsevol moment o modificar-les abans <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Enhorabona, s'ha enviat el vostre pressupost!</b> Podeu comprovar les vostres opcions a continuació en qualsevol moment o modificar-les.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Enhorabona, s'ha enviat el vostre pressupost!</b> Podeu comprovar les vostres opcions a continuació en qualsevol moment.",
   "app.utils.votingMethodUtils.budgets": "Pressupostos",
   "app.utils.votingMethodUtils.castYourVote": "Fes el teu vot",

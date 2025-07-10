@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Valitse haluamasi vaihtoehdot Lisää-painikkeella.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Sinulla on tällä alueella käytettävänä yhteensä <b>{maxBudget} euroa, jonka voit jakaa {optionCount} eri vaihtoehdon </b>välillä.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Onnittelut, budjettisi on lähetetty!</b> Voit tarkistaa vaihtoehdot alta milloin tahansa tai muokata niitä ennen <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Onnittelut, budjettisi on lähetetty!</b> Voit tarkistaa vaihtoehdot alta milloin tahansa tai muokata niitä.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Onnittelut, budjettisi on lähetetty!</b> Voit tarkistaa vaihtoehdot alta milloin tahansa.",
   "app.utils.votingMethodUtils.budgets": "Budjetit",
   "app.utils.votingMethodUtils.castYourVote": "Anna äänesi",

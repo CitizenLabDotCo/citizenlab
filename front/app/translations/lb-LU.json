@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Wielt Äre gewënschte Projet andeems Dir op \"Bäisetzen\" klickt.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Dir hutt am Ganzen <b>{maxBudget} fir tëscht {optionCount} Optiounen</b>ze verdeelen.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Gratulatioun, Äre Budget gouf virgeluecht!</b> Dir kënnt Är Optiounen hei ënnen zu all Moment iwwerpréiwen oder se virum <b>{endDate}</b>änneren.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Gratulatioun, Äre Budget gouf virgeluecht!</b> Dir kënnt Är Optiounen hei ënnen zu all Moment iwwerpréiwen oder se änneren.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Gratulatioun, Äre Budget gouf virgeluecht!</b> Dir kënnt Är Optiounen hei ënnen zu all Moment kontrolléieren.",
   "app.utils.votingMethodUtils.budgets": "Budgeten",
   "app.utils.votingMethodUtils.castYourVote": "Gitt Är Stëmm",

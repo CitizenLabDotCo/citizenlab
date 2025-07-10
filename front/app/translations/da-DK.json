@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Vælg dine foretrukne indstillinger ved at trykke på \"Tilføj\".",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Du har i alt <b>{maxBudget} at fordele mellem {optionCount} muligheder.</b>",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Tillykke, dit budget er blevet indsendt!</b> Du kan til enhver tid tjekke dine valg nedenfor eller ændre dem før <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Tillykke, dit budget er blevet indsendt!</b> Du kan til enhver tid tjekke dine valg nedenfor eller ændre dem.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Tillykke, dit budget er blevet indsendt!</b> Du kan til enhver tid tjekke dine muligheder nedenfor.",
   "app.utils.votingMethodUtils.budgets": "Budgetter",
   "app.utils.votingMethodUtils.castYourVote": "Afgiv din stemme",

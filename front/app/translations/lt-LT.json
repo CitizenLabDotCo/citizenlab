@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Pasirinkite norimas parinktis spustelėdami „Pridėti“.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Iš viso <b>{maxBudget} galite paskirstyti {optionCount} parinktims</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Sveikiname, jūsų biudžetas pateiktas!</b> Toliau esančias parinktis galite patikrinti bet kuriuo metu arba pakeisti prieš tai. <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Sveikiname, jūsų biudžetas pateiktas!</b> Bet kuriuo metu galite patikrinti toliau pateiktas parinktis arba jas keisti.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Sveikiname, jūsų biudžetas pateiktas!</b> Toliau bet kuriuo metu galite patikrinti savo galimybes.",
   "app.utils.votingMethodUtils.budgets": "Biudžetai",
   "app.utils.votingMethodUtils.castYourVote": "Atiduokite savo balsą",

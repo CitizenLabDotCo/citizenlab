@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "\"شامل کریں\" پر ٹیپ کرکے اپنے پسندیدہ اختیارات کا انتخاب کریں۔",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "آپ کے پاس {optionCount} اختیارات</b>کے درمیان تقسیم کرنے کے لیے کل <b>{maxBudget} ہیں۔",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>مبارک ہو، آپ کا بجٹ جمع کر دیا گیا ہے!</b> آپ کسی بھی وقت نیچے اپنے اختیارات کی جانچ کر سکتے ہیں یا <b>{endDate}</b>سے پہلے ان میں ترمیم کر سکتے ہیں۔",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>مبارک ہو، آپ کا بجٹ جمع کر دیا گیا ہے!</b> آپ کسی بھی وقت نیچے اپنے اختیارات کو چیک کر سکتے ہیں یا ان میں ترمیم کر سکتے ہیں۔",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>مبارک ہو، آپ کا بجٹ جمع کر دیا گیا ہے!</b> آپ کسی بھی وقت نیچے اپنے اختیارات چیک کر سکتے ہیں۔",
   "app.utils.votingMethodUtils.budgets": "بجٹ",
   "app.utils.votingMethodUtils.castYourVote": "اپنا ووٹ کاسٹ کریں۔",

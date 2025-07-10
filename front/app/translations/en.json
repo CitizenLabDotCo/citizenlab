@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Select your preferred options by tapping on \"Add\".",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "You have a total of <b>{maxBudget} to distribute between {optionCount} options</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point or modify them before <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point or modify them.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point.",
   "app.utils.votingMethodUtils.budgets": "Budgets",
   "app.utils.votingMethodUtils.castYourVote": "Cast your vote",

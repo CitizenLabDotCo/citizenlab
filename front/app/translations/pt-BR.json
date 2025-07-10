@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Selecione as suas opções preferidas tocando em \"Adicionar\".",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Você tem um total de <b>{maxBudget} para distribuir entre as opções de {optionCount} </b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Parabéns, o seu orçamento foi enviado!</b> Pode verificar as suas opções abaixo em qualquer momento ou modificá-las antes de <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Parabéns, o seu orçamento foi enviado!</b> Pode verificar as suas opções abaixo em qualquer momento ou modificá-las.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Parabéns, seu orçamento foi enviado!</b> Você pode verificar suas opções abaixo a qualquer momento.",
   "app.utils.votingMethodUtils.budgets": "Orçamentos",
   "app.utils.votingMethodUtils.castYourVote": "Faça seu voto",

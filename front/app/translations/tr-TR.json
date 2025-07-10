@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "\"Ekle\" üzerine dokunarak tercih ettiğiniz seçenekleri seçin.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "<b> {optionCount} seçenekleri arasında dağıtmak üzere</b> toplam <b>{maxBudget} tutarına sahipsiniz.</b>",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Tebrikler, bütçeniz gönderildi!</b> Aşağıdaki seçeneklerinizi istediğiniz zaman kontrol edebilir veya <b>{endDate}</b>adresinden önce değiştirebilirsiniz.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Tebrikler, bütçeniz gönderildi!</b> Aşağıdaki seçeneklerinizi istediğiniz zaman kontrol edebilir veya değiştirebilirsiniz.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Tebrikler, bütçeniz gönderildi!</b> Aşağıdaki seçeneklerinizi istediğiniz zaman kontrol edebilirsiniz.",
   "app.utils.votingMethodUtils.budgets": "Bütçeler",
   "app.utils.votingMethodUtils.castYourVote": "Oyunuzu kullanın",

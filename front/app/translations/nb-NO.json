@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Velg de ønskede alternativene ved å trykke på \"Legg til\".",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Du har totalt <b>{maxBudget} å fordele mellom {optionCount} alternativer.</b>",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Gratulerer, budsjettet ditt er sendt inn!</b> Du kan når som helst sjekke alternativene nedenfor eller endre dem før <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Gratulerer, budsjettet ditt er sendt inn!</b> Du kan når som helst sjekke eller endre alternativene nedenfor.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Gratulerer, budsjettet ditt er sendt inn!</b> Du kan når som helst sjekke alternativene nedenfor.",
   "app.utils.votingMethodUtils.budgets": "Budsjetter",
   "app.utils.votingMethodUtils.castYourVote": "Avgi din stemme",

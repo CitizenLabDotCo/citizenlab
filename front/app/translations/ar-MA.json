@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "حدد الخيارات المفضلة لديك من خلال النقر على \"إضافة\".",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "لديك إجمالي <b>{maxBudget} لتوزيعها بين {optionCount} خيارات</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>تهانينا ، لقد تم تقديم ميزانيتك!</b> يمكنك التحقق من الخيارات أدناه في أي وقت أو تعديلها قبل <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>تهانينا ، لقد تم تقديم ميزانيتك!</b> يمكنك التحقق من الخيارات أدناه في أي وقت أو تعديلها.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>تهانينا، لقد تم تقديم ميزانيتك!</b> يمكنك التحقق من خياراتك أدناه في أي وقت.",
   "app.utils.votingMethodUtils.budgets": "الميزانيات",
   "app.utils.votingMethodUtils.castYourVote": "أدلي بصوتك",

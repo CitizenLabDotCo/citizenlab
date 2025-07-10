@@ -2304,7 +2304,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Izvēlieties vēlamās opcijas, piesitot \"Pievienot\".",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Jums ir pieejami <b>{maxBudget} , ko sadalīt starp {optionCount} iespējām</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Apsveicam, jūsu budžets ir iesniegts!</b> Jebkurā brīdī varat pārbaudīt turpmāk norādītās iespējas vai mainīt tās pirms <b>{endDate}</b>.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Apsveicam, jūsu budžets ir iesniegts!</b> Jebkurā brīdī varat pārbaudīt turpmāk norādītās iespējas vai tās mainīt.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Apsveicam, jūsu budžets ir iesniegts!</b> Turpmāk jebkurā brīdī varat pārbaudīt savas iespējas.",
   "app.utils.votingMethodUtils.budgets": "Budžets",
   "app.utils.votingMethodUtils.castYourVote": "Nododiet savu balsi",
