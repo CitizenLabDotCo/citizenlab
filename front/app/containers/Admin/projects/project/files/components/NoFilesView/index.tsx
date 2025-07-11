@@ -13,7 +13,7 @@ const NoFilesView = ({ setOnInitialEmptyView }: Props) => {
   return (
     <Box display="flex" justifyContent="center" mt="40px">
       <Box
-        p="20px"
+        p="32px"
         display="flex"
         justifyContent="center"
         bgColor={colors.white}

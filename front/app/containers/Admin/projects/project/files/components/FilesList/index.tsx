@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import { GetFilesParameters } from 'api/files/types';
@@ -39,7 +39,11 @@ const FilesList = () => {
     project: [projectId],
   });
 
-  const { data: files } = useFiles({
+  const {
+    data: files,
+    isLoading,
+    isFetched,
+  } = useFiles({
     ...queryParameters,
   });
 
@@ -64,10 +68,10 @@ const FilesList = () => {
   };
 
   useEffect(() => {
-    if (numberOfFiles === 0 && !queryParameters.search) {
+    if (numberOfFiles === 0 && !queryParameters.search && isFetched) {
       setOnInitialEmptyView(true);
     }
-  }, [numberOfFiles, queryParameters.search]);
+  }, [numberOfFiles, queryParameters.search, isFetched]);
 
   return (
     <Box display="flex" justifyContent="center" flexDirection="column">
@@ -107,7 +111,12 @@ const FilesList = () => {
                   ))}
                 </>
               )}
-              {numberOfFiles === 0 && (
+              {isLoading && (
+                <Box display="flex" width="100%" justifyContent="center">
+                  <Spinner />
+                </Box>
+              )}
+              {numberOfFiles === 0 && isFetched && (
                 <>
                   <Box display="flex" width="100%" justifyContent="center">
                     <Text color="coolGrey600">
