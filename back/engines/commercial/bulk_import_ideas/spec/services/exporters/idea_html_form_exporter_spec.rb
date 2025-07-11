@@ -69,8 +69,8 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
 
   # User fields
-  let_it_be(:checkbox_field) { create(:custom_field_checkbox, resource_type: 'User', title_multiloc: { 'en' => 'Checkbox field' })}
-  let_it_be(:date_field) { create(:custom_field_date, resource_type: 'User', title_multiloc: { 'en' => 'Date field' })}
+  let_it_be(:checkbox_field) { create(:custom_field_checkbox, resource_type: 'User', title_multiloc: { 'en' => 'Checkbox field' }) }
+  let_it_be(:date_field) { create(:custom_field_date, resource_type: 'User', title_multiloc: { 'en' => 'Date field' }) }
 
   before do
     settings = AppConfiguration.instance.settings
