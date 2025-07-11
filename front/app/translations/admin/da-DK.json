@@ -2214,7 +2214,6 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Slet filen",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Download fil",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Træk og slip alle filer her eller",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "Filer må ikke overstige den maksimale grænse på {maxSizeMb} MB.",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Fil",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "Filerne kunne ikke uploades. Prøv venligst igen.",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "Følgende filer blev uploadet med succes: {fileNames}",

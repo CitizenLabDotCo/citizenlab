@@ -2214,7 +2214,6 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Izbriši datoteku",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Preuzmi datoteku",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Povucite i ispustite bilo koje datoteke ovdje ili",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "Datoteke ne smiju premašiti maksimalnu veličinu od {maxSizeMb} MB.",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Datoteka",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "Datoteke nisu mogle biti prenesene. Pokušajte ponovno.",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "Sljedeće datoteke su uspješno prenesene: {fileNames}",

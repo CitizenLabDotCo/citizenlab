@@ -2214,7 +2214,6 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Dileu ffeil",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Lawrlwytho ffeil",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Llusgwch a gollwng unrhyw ffeiliau yma neu",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "Ni chaiff ffeiliau fod yn fwy na'r terfyn uchaf o {maxSizeMb} MB.",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Ffeil",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "Ni ellid uwchlwytho ffeiliau. Rhowch gynnig arall arni.",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "Llwyddwyd i uwchlwytho'r ffeiliau canlynol: {fileNames}",
