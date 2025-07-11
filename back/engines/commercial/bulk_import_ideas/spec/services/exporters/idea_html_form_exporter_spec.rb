@@ -68,6 +68,10 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let!(:polygon_field) { create(:custom_field_polygon, resource: custom_form, title_multiloc: { 'en' => 'Polygon field' }) }
   let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
 
+  # User fields
+  let_it_be(:checkbox_field) { create(:custom_field_checkbox, resource_type: 'User', title_multiloc: { 'en' => 'Checkbox field' })}
+  let_it_be(:date_field) { create(:custom_field_date, resource_type: 'User', title_multiloc: { 'en' => 'Date field' })}
+
   before do
     settings = AppConfiguration.instance.settings
     settings['maps'] = {
@@ -249,30 +253,23 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(line.text).not_to include 'Please draw a route on the map below.'
         expect(line.text).to include 'This field cannot be completed on paper.'
       end
+    end
 
-      context 'user_fields_in_form is enabled' do
-        # let!(:parsed_html) do
-        #   create(:custom_field_checkbox, key: 'checkbox', resource_type: 'User', title_multiloc: { 'en' => 'Checkbox field' })
-        #   phase.update!(user_fields_in_form: true)
-        #   Nokogiri::HTML(service.export)
-        # end
+    context 'user_fields_in_form is enabled' do
+      let!(:parsed_html) do
+        phase.update!(user_fields_in_form: true)
+        Nokogiri::HTML(service.export)
+      end
 
-        it 'shows checkbox question' do
-          checkbox_field = create(:custom_field_checkbox, key: 'checkbox', resource_type: 'User', title_multiloc: { 'en' => 'Checkbox field' })
-          phase.update!(user_fields_in_form: true)
-          parsed_html = Nokogiri::HTML(service.export)
-          binding.pry
-          checkbox = parsed_html.css("div##{checkbox_field.id}")
-          # expect(ranking.text).to include 'Please write a number from 1 (most preferred) and 2 (least preferred) in each box. Use each number exactly once.'
-          # expect(ranking.text).to include 'Ranking one'
-          # expect(ranking.text).to include 'Ranking two'
-        end
+      it 'shows checkbox question' do
+        checkbox = parsed_html.css("div##{checkbox_field.id}")
+        expect(checkbox.text).to include 'Checkbox field'
+      end
 
-        it 'shows date question' do
-          date_field = create(:custom_field_date, resource: custom_form, key: 'date_field', title_multiloc: { 'en' => 'Date field' })
-          date_html = parsed_html.css("div##{date_field.id}")
-          expect(date_html.text).to include 'Please write a date in the format dd-mm-yyyy.'
-        end
+      it 'shows date question' do
+        date_html = parsed_html.css("div##{date_field.id}")
+        expect(date_html.text).to include 'Date field'
+        expect(date_html.text).to include 'Please write a date in the format dd-mm-yyyy.'
       end
     end
   end
