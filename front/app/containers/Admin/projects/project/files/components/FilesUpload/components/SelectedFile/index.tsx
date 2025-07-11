@@ -16,7 +16,7 @@ import { getBase64FromFile } from 'utils/fileUtils';
 import { FileWithMeta } from '../../types';
 import messages from '../messages';
 
-import { StatusIcon } from './StatusIcon';
+import { StatusIcon } from './components/StatusIcon';
 
 type Props = {
   fileMeta: FileWithMeta;
@@ -61,10 +61,10 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
           status: 'uploaded',
         });
       } catch (error) {
-        handleHookFormSubmissionError(error, methods.setError);
         onStatusUpdate({
           status: 'error',
         });
+        handleHookFormSubmissionError(error, methods.setError);
       }
     },
     [file, addFile, projectId, methods.setError, onStatusUpdate]
