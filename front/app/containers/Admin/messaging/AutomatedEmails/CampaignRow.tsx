@@ -25,10 +25,9 @@ import { CampaignData } from './types';
 type Props = {
   campaign: CampaignData;
   onClickViewExample?: () => void;
-  onClickEdit?: () => void;
 };
 
-const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
+const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
   const { formatMessage } = useIntl();
   const [isNewPhaseModalOpen, setIsNewPhaseModalOpen] = useState(false);
   const { mutate: updateCampaign } = useUpdateCampaign();
@@ -88,7 +87,7 @@ const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
                 </ButtonWithLink>
               </Box>
             )}
-            {onClickEdit && isEditingEnabled && (
+            {isEditingEnabled && (
               <Box ml="12px">
                 <Tooltip
                   disabled={isEditable}
@@ -96,7 +95,7 @@ const CampaignRow = ({ campaign, onClickViewExample, onClickEdit }: Props) => {
                 >
                   <ButtonWithLink
                     icon="edit"
-                    onClick={onClickEdit}
+                    linkTo={`/admin/messaging/emails/automated/${campaign.id}/edit`}
                     disabled={!isEditable}
                     buttonStyle="secondary-outlined"
                   >
