@@ -2205,7 +2205,7 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Delete file",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Download file",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Drag and drop any files here or",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "Files may not exceed the maximum limit of {maxSizeMb} MB.",
+  "app.containers.AdminPage.ProjectFiles.fileSizeError": "A fájlok mérete nem haladhatja meg a {maxSizeMb} MB maximális korlátot.",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "File",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "Files were not able to be uploaded. Please try again.",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "The following files were successfully uploaded: {fileNames}",
