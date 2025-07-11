@@ -24,7 +24,7 @@ export const applyMapRenderer = (
   const hasRenderer = !!layer.renderer;
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const hasHeatmap = hasRenderer && layer.renderer.type === 'heatmap';
+  const hasHeatmap = hasRenderer && layer.renderer?.type === 'heatmap';
 
   // If there is a renderer, and it already is the correct one,
   // no need to do anything

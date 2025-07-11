@@ -9,6 +9,7 @@ import Legend from '@arcgis/core/widgets/Legend';
 
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
+import { isNilOrError } from 'utils/helperUtils';
 import { calculateScaleFromZoom } from 'utils/mapUtils/map';
 
 import { InitialData } from './types';
@@ -47,13 +48,17 @@ export const configureMapView = (
   // Change location of zoom widget if specified
   if (initialData?.showZoomControls === false || isMobileOrSmaller) {
     const zoom = mapView.ui.find('zoom');
-    mapView.ui.remove(zoom);
+    if (!isNilOrError(zoom)) {
+      mapView.ui.remove(zoom);
+    }
   } else if (initialData?.zoomWidgetLocation === 'right') {
     const zoom = mapView.ui.find('zoom');
 
-    // Note: Incorrect type from ArcGIS API, ui might be null.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    mapView.ui?.add(zoom, 'top-right');
+    if (!isNilOrError(zoom)) {
+      // Note: Incorrect type from ArcGIS API, ui might be null.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      mapView.ui?.add(zoom, 'top-right');
+    }
   }
 
   // Add fullscreen widget if set
