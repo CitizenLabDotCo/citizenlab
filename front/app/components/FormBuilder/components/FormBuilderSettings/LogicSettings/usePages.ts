@@ -12,7 +12,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import { getFieldNumbers } from '../../utils';
 
-export type PageListType =
+type PageListType =
   | {
       value: string | undefined;
       label: string;

@@ -27,21 +27,17 @@ import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
 
-import { PageListType } from './index';
+import usePages from './usePages';
 
 type RuleInputProps = {
   field: IFlatCustomFieldWithIndex;
   validationError?: string;
-  pages: PageListType;
 };
 
-export const PageRuleInput = ({
-  pages,
-  field,
-  validationError,
-}: RuleInputProps) => {
+export const PageRuleInput = ({ field, validationError }: RuleInputProps) => {
   const fieldId = field.temp_id || field.id;
   const name = `customFields.${field.index}.logic`;
+  const pages = usePages(field);
   const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
   const logic = watch(name) as LogicType | undefined;
