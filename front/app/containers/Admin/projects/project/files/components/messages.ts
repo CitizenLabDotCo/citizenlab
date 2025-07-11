@@ -81,10 +81,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully',
     defaultMessage: 'All files uploaded successfully',
   },
-  fileSizeError: {
-    id: 'app.containers.AdminPage.ProjectFiles.fileSizeError',
-    defaultMessage: 'Files may not exceed the maximum limit of {maxSizeMb} MB.',
-  },
   filesSuccessfullyUploaded: {
     id: 'app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded',
     defaultMessage:
@@ -106,5 +102,26 @@ export default defineMessages({
   filesRejected: {
     id: 'app.containers.AdminPage.ProjectFiles.filesRejected',
     defaultMessage: 'Files were not able to be uploaded. Please try again.',
+  },
+  noFilesFound: {
+    id: 'app.containers.AdminPage.ProjectFiles.noFilesFound',
+    defaultMessage: 'No files found.',
+  },
+  addFiles: {
+    id: 'app.containers.AdminPage.ProjectFiles.addFiles',
+    defaultMessage: 'Add files',
+  },
+  close: {
+    id: 'app.containers.AdminPage.ProjectFiles.close',
+    defaultMessage: 'Close',
+  },
+  confirmAndUploadFiles: {
+    id: 'app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles',
+    defaultMessage: 'Confirm and upload',
+  },
+  tooManyFiles: {
+    id: 'app.containers.AdminPage.ProjectFiles.tooManyFiles',
+    defaultMessage:
+      'You can only upload a maximum of {maxFiles} files at a time.',
   },
 });

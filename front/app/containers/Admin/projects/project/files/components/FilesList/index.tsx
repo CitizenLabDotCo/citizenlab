@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import { GetFilesParameters } from 'api/files/types';
@@ -31,13 +31,15 @@ const FilesList = () => {
   const [queryParameters, setQueryParameters] = useState<GetFilesParameters>({
     pageNumber: 1,
     pageSize: 7,
-    sort: 'created_at',
-    projects: [projectId],
+    sort: '-created_at',
+    project: [projectId],
   });
 
   const { data: files } = useFiles({
     ...queryParameters,
   });
+
+  const numberOfFiles = files?.data.length || 0;
 
   const currentPage = getPageNumberFromUrl(files?.links.self || '');
   const lastPage = getPageNumberFromUrl(files?.links.last || '');
@@ -49,59 +51,77 @@ const FilesList = () => {
     }));
   };
 
+  const handleSearchChange = (searchTerm: string) => {
+    setQueryParameters((prevParams) => ({
+      ...prevParams,
+      search: searchTerm,
+      pageNumber: 1, // Reset to first page on new search
+    }));
+  };
+
   return (
     <Box display="flex" justifyContent="center" flexDirection="column">
-      {files?.data.length && files.data.length > 0 && (
-        <>
-          <Box display="flex" justifyContent="space-between">
-            <SearchInput
-              placeholder={formatMessage(messages.searchFiles)}
-              onChange={() => {}} // TODO: Implement file search functionality.
-              a11y_numberOfSearchResults={0}
-            />
-            <UploadFileButtonWithModal />
-          </Box>
-          <Box
-            mt="40px"
-            display="flex"
-            gap="20px"
-            justifyContent="space-between"
-          >
-            <Box
-              display="flex"
-              flexDirection="column"
-              width="100%"
-              minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
-            >
-              {files.data.map((file) => (
-                <FilesListItem
-                  file={file}
-                  setSelectedFileId={setSelectedFileId}
-                  setSideViewOpened={setSideViewOpened}
-                  key={file.id}
-                />
-              ))}
-              {lastPage && lastPage > 1 && (
-                <Box mt="auto" display="flex" justifyContent="center" p="12px">
-                  <Pagination
-                    currentPage={currentPage || 1}
-                    totalPages={lastPage || 1}
-                    loadPage={handlePaginationClick}
-                  />
-                </Box>
-              )}
-            </Box>
-            <Box>
-              <FeatureInformation />
-            </Box>
-          </Box>
-          <FileSideView
-            opened={sideViewOpened}
-            setSideViewOpened={setSideViewOpened}
-            selectedFileId={selectedFileId}
+      <>
+        <Box display="flex" justifyContent="space-between">
+          <SearchInput
+            placeholder={formatMessage(messages.searchFiles)}
+            onChange={handleSearchChange}
+            a11y_numberOfSearchResults={numberOfFiles}
           />
-        </>
-      )}
+          <UploadFileButtonWithModal />
+        </Box>
+        <Box mt="40px" display="flex" gap="20px" justifyContent="space-between">
+          <Box
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
+          >
+            {numberOfFiles > 0 && (
+              <>
+                {files?.data.map((file) => (
+                  <FilesListItem
+                    file={file}
+                    setSelectedFileId={setSelectedFileId}
+                    setSideViewOpened={setSideViewOpened}
+                    key={file.id}
+                  />
+                ))}
+              </>
+            )}
+            {numberOfFiles === 0 && (
+              <>
+                {queryParameters.search ? (
+                  <Box display="flex" width="100%" justifyContent="center">
+                    <Text color="coolGrey600">
+                      {formatMessage(messages.noFilesFound)}
+                    </Text>
+                  </Box>
+                ) : (
+                  <>TODO: Add UI for when no files have been uploaded</>
+                )}
+              </>
+            )}
+            {lastPage && lastPage > 1 && (
+              <Box mt="auto" display="flex" justifyContent="center" p="12px">
+                <Pagination
+                  currentPage={currentPage || 1}
+                  totalPages={lastPage || 1}
+                  loadPage={handlePaginationClick}
+                />
+              </Box>
+            )}
+          </Box>
+          <Box>
+            <FeatureInformation />
+          </Box>
+        </Box>
+        <FileSideView
+          opened={sideViewOpened}
+          setSideViewOpened={setSideViewOpened}
+          selectedFileId={selectedFileId}
+        />
+      </>
     </Box>
   );
 };

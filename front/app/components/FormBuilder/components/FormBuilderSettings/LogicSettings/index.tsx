@@ -18,14 +18,6 @@ import messages from '../../messages';
 
 import { PageRuleInput } from './PageRuleInput';
 import { QuestionRuleInput } from './QuestionRuleInput';
-import usePages from './usePages';
-
-export type PageListType =
-  | {
-      value: string | undefined;
-      label: string;
-      disabled?: boolean;
-    }[];
 
 type LogicSettingsProps = {
   field: IFlatCustomFieldWithIndex;
@@ -51,7 +43,6 @@ const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
   const fieldRequired = watch(`customFields.${field.index}.required`);
   const error = get(formContextErrors, `customFields.${field.index}.logic`);
   const validationError = error?.message as string | undefined;
-  const pages = usePages(field);
 
   // For Select Field
   let answers: AnswersType = selectOptions
@@ -118,11 +109,7 @@ const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
                 </Warning>
               )}
           </Box>
-          <PageRuleInput
-            field={field}
-            validationError={validationError}
-            pages={pages}
-          />
+          <PageRuleInput field={field} validationError={validationError} />
         </>
       ) : (
         <>
@@ -143,7 +130,6 @@ const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
                   field={field}
                   validationError={validationError}
                   answer={answer}
-                  pages={pages}
                 />
               </Box>
             ))}
