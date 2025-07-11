@@ -6,7 +6,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let(:service) { described_class.new phase, 'en', false }
 
   let(:project) { create(:project, title_multiloc: { en: 'PROJECT' }) }
-  let(:phase) { create(:native_survey_phase, project: project, title_multiloc: { en: 'PHASE' }) }
+  let(:phase) { create(:native_survey_phase, project: project, title_multiloc: { en: 'PHASE' }, with_permissions: true) }
   let(:custom_form) { create(:custom_form, participation_context: phase) }
   let!(:page_field) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' }) }
   let!(:text_field) { create(:custom_field_text, resource: custom_form, required: true, title_multiloc: { 'en' => 'Text field' }) }
@@ -248,6 +248,31 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(line.css('img').count).to eq 0
         expect(line.text).not_to include 'Please draw a route on the map below.'
         expect(line.text).to include 'This field cannot be completed on paper.'
+      end
+
+      context 'user_fields_in_form is enabled' do
+        # let!(:parsed_html) do
+        #   create(:custom_field_checkbox, key: 'checkbox', resource_type: 'User', title_multiloc: { 'en' => 'Checkbox field' })
+        #   phase.update!(user_fields_in_form: true)
+        #   Nokogiri::HTML(service.export)
+        # end
+
+        it 'shows checkbox question' do
+          checkbox_field = create(:custom_field_checkbox, key: 'checkbox', resource_type: 'User', title_multiloc: { 'en' => 'Checkbox field' })
+          phase.update!(user_fields_in_form: true)
+          parsed_html = Nokogiri::HTML(service.export)
+          binding.pry
+          checkbox = parsed_html.css("div##{checkbox_field.id}")
+          # expect(ranking.text).to include 'Please write a number from 1 (most preferred) and 2 (least preferred) in each box. Use each number exactly once.'
+          # expect(ranking.text).to include 'Ranking one'
+          # expect(ranking.text).to include 'Ranking two'
+        end
+
+        it 'shows date question' do
+          date_field = create(:custom_field_date, resource: custom_form, key: 'date_field', title_multiloc: { 'en' => 'Date field' })
+          date_html = parsed_html.css("div##{date_field.id}")
+          expect(date_html.text).to include 'Please write a date in the format dd-mm-yyyy.'
+        end
       end
     end
   end
