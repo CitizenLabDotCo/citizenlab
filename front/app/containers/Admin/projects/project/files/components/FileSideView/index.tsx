@@ -57,7 +57,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
         </Box>
 
         <Box width="50%" display="flex" flexDirection="column" minHeight="0">
-          {file && <FileAnalysis file={file} />}
+          {file && <FileAnalysis />}
         </Box>
       </Box>
     </SideModal>

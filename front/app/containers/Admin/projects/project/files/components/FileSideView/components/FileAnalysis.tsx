@@ -12,8 +12,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 
-import { IFile } from 'api/files/types';
-
 import Feedback from 'components/HookForm/Feedback';
 import TextArea from 'components/HookForm/TextArea';
 
@@ -22,13 +20,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from '../messages';
 
-type Props = {
-  file: IFile;
-};
-
-// TODO: Use this file, once BE ready to support analysis.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const FileAnalysis = ({ file }: Props) => {
+const FileAnalysis = () => {
   const { formatMessage } = useIntl();
 
   // Ref for scrolling the insights list to the bottom.
