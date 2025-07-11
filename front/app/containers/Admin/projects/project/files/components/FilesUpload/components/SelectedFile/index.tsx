@@ -61,10 +61,10 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
           status: 'uploaded',
         });
       } catch (error) {
-        handleHookFormSubmissionError(error, methods.setError);
         onStatusUpdate({
           status: 'error',
         });
+        handleHookFormSubmissionError(error, methods.setError);
       }
     },
     [file, addFile, projectId, methods.setError, onStatusUpdate]

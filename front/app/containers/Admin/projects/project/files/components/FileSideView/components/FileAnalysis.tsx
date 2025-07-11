@@ -14,6 +14,7 @@ import { object, string } from 'yup';
 
 import { IFile } from 'api/files/types';
 
+import Feedback from 'components/HookForm/Feedback';
 import TextArea from 'components/HookForm/TextArea';
 
 import { useIntl } from 'utils/cl-intl';
@@ -25,6 +26,8 @@ type Props = {
   file: IFile;
 };
 
+// TODO: Use this file, once BE ready to support analysis.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const FileAnalysis = ({ file }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -91,71 +94,6 @@ const FileAnalysis = ({ file }: Props) => {
               <Icon width="20px" fill={colors.coolGrey600} name="delete" />
             </Box>
           </Box>
-          <Box
-            bgColor={colors.grey100}
-            borderRadius={stylingConsts.borderRadius}
-            p="16px"
-            mt="16px"
-          >
-            <Text m="0px" color="textPrimary">
-              {`This is a sample AI-generated insight created to demonstrate how the system analyzes the contents of this file. It represents the kind of summary or observation that might be produced after reviewing key themes, recurring patterns, or notable trends within the file’s content. Once the file has been processed, this area will display useful insights that can help users quickly understand the main points, areas of concern, or opportunities highlighted in the material.`}
-            </Text>
-            <Box display="flex" justifyContent="flex-end">
-              <Icon width="20px" fill={colors.coolGrey600} name="delete" />
-            </Box>
-          </Box>
-          <Box
-            bgColor={colors.grey100}
-            borderRadius={stylingConsts.borderRadius}
-            p="16px"
-            mt="16px"
-          >
-            <Text m="0px" color="textPrimary">
-              {`This is a sample AI-generated insight created to demonstrate how the system analyzes the contents of this file. It represents the kind of summary or observation that might be produced after reviewing key themes, recurring patterns, or notable trends within the file’s content. Once the file has been processed, this area will display useful insights that can help users quickly understand the main points, areas of concern, or opportunities highlighted in the material.`}
-            </Text>
-            <Box display="flex" justifyContent="flex-end">
-              <Icon width="20px" fill={colors.coolGrey600} name="delete" />
-            </Box>
-          </Box>
-          <Box
-            bgColor={colors.grey100}
-            borderRadius={stylingConsts.borderRadius}
-            p="16px"
-            mt="16px"
-          >
-            <Text m="0px" color="textPrimary">
-              {`This is a sample AI-generated insight created to demonstrate how the system analyzes the contents of this file. It represents the kind of summary or observation that might be produced after reviewing key themes, recurring patterns, or notable trends within the file’s content. Once the file has been processed, this area will display useful insights that can help users quickly understand the main points, areas of concern, or opportunities highlighted in the material.`}
-            </Text>
-            <Box display="flex" justifyContent="flex-end">
-              <Icon width="20px" fill={colors.coolGrey600} name="delete" />
-            </Box>
-          </Box>
-          <Box
-            bgColor={colors.grey100}
-            borderRadius={stylingConsts.borderRadius}
-            p="16px"
-            mt="16px"
-          >
-            <Text m="0px" color="textPrimary">
-              {`This is a sample AI-generated insight created to demonstrate how the system analyzes the contents of this file. It represents the kind of summary or observation that might be produced after reviewing key themes, recurring patterns, or notable trends within the file’s content. Once the file has been processed, this area will display useful insights that can help users quickly understand the main points, areas of concern, or opportunities highlighted in the material.`}
-            </Text>
-            <Box display="flex" justifyContent="flex-end">
-              <Icon width="20px" fill={colors.coolGrey600} name="delete" />
-            </Box>
-          </Box>
-          <Box
-            bgColor={colors.grey100}
-            borderRadius={stylingConsts.borderRadius}
-            p="16px"
-            mt="16px"
-          >
-            <Text m="0px" color="textPrimary">
-              {`This is a sample AI-generated insight created to demonstrate how the system analyzes the contents of this file. It represents the kind of summary or observation that might be produced after reviewing key themes, recurring patterns, or notable trends within the file’s content. Once the file has been processed, this area will display useful insights that can help users quickly understand the main points, areas of concern, or opportunities highlighted in the material.`}
-            </Text>
-            <Box display="flex" justifyContent="flex-end">
-              <Icon width="20px" fill={colors.coolGrey600} name="delete" />
-            </Box>
-          </Box>
         </Text>
       </Box>
 
@@ -183,6 +121,7 @@ const FileAnalysis = ({ file }: Props) => {
               </Button>
             </Box>
           </Box>
+          <Feedback onlyShowErrors={true} />
         </form>
       </FormProvider>
     </Box>
