@@ -50,18 +50,18 @@ const SurveyForm = ({
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
   const lastPageNumber = nestedPagesData.length - 1;
+  const onSubmit = async ({
+    formValues,
+    isSubmitPage,
+  }: {
+    formValues: FormValues;
+    isSubmitPage: boolean;
+  }) => {
+    const anonymousUser =
+      !authUser || phase?.data.attributes.allow_anonymous_participation;
 
-  const onSubmit = async (formValues: FormValues) => {
-    const isSubmitPage = currentPageNumber === nestedPagesData.length - 2;
-    const isLastPage = currentPageNumber === nestedPagesData.length - 1;
-
-    if (isLastPage) {
-      // If the user is on the last page, the form has already been submitted
-      return;
-    }
-
-    if (!authUser && !isSubmitPage) {
-      // If the user is not authenticated and is not on the submit page, do not save the draft idea
+    // If the user is anonymous and is not on the submit page, do not save the draft idea
+    if (anonymousUser && !isSubmitPage) {
       return;
     }
 
@@ -94,11 +94,9 @@ const SurveyForm = ({
         idea_id: isSubmitPage ? draftIdea.data.id : undefined,
       });
     }
-
+    clearDraftIdea(phaseId);
     if (isSubmitPage) {
       trackEventByName(tracks.surveyFormSubmitted);
-      // Form has been submitted, clear the draft idea
-      return clearDraftIdea(phaseId);
     }
   };
 

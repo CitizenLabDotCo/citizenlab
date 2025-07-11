@@ -9,7 +9,7 @@ import customFieldsKeys from './keys';
 export type CustomFieldsKeys = Keys<typeof customFieldsKeys>;
 
 export interface ICustomFieldsParameters {
-  projectId: string;
+  projectId?: string;
   phaseId?: string;
   inputTypes?: ICustomFieldInputType[];
   copy?: boolean;

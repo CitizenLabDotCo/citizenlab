@@ -75,7 +75,7 @@ group :test do
   # gem 'bullet'
 end
 
-gem 'pundit', '~> 2.3.2'
+gem 'pundit', '~> 2.5.0'
 gem 'active_model_serializers', '~> 0.10.15'
 
 gem 'jwt', '~> 2.8.1'
@@ -89,7 +89,7 @@ gem 'carrierwave', '~> 3.0.7'
 gem 'carrierwave-base64', '~> 2.11'
 gem 'fog-aws', '~> 3.24'
 
-gem 'api-pagination', '~> 5.0.0'
+gem 'api-pagination', '~> 6.0.0'
 gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 7.0.9'
 
@@ -123,7 +123,7 @@ gem 'sentry-rails'
 gem 'simple_segment', '~>1.5'
 gem 'omniauth_openid_connect', '~> 0.7.1'
 gem 'faraday-jwt', '~> 0.1.0'
-gem 'acts_as_list', '~> 1.1'
+gem 'acts_as_list', '~> 1.2'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'
 gem 'order_as_specified'

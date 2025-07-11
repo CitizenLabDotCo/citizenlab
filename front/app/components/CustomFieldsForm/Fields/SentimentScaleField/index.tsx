@@ -76,7 +76,7 @@ const SentimentScaleField = ({ question, scrollErrorIntoView }: Props) => {
           scrollIntoView={scrollErrorIntoView}
         />
       )}
-      {value !== undefined && (
+      {value !== undefined && question.ask_follow_up && (
         <Box mt="12px">
           <Input
             name={followUpName}

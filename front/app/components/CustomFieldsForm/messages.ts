@@ -186,4 +186,8 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.fileSizeLimit',
     defaultMessage: 'The file size limit is {maxFileSize} MB.',
   },
+  otherArea: {
+    id: 'app.components.CustomFieldsForm.otherArea',
+    defaultMessage: 'Somewhere else',
+  },
 });
