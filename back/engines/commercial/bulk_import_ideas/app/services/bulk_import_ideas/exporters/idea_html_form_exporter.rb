@@ -177,12 +177,14 @@ module BulkImportIdeas::Exporters
         :multi_select_image
       when 'multiline_text', 'html_multiloc'
         :multi_line_text
-      when 'text', 'text_multiloc', 'number', 'linear_scale', 'rating', 'sentiment_linear_scale'
+      when 'text', 'text_multiloc', 'number', 'linear_scale', 'rating', 'sentiment_linear_scale', 'date'
         :single_line_text
       when 'ranking'
         :ranking
       when 'matrix_linear_scale'
         :matrix_linear_scale
+      when 'checkbox'
+        :checkbox
       when 'point', 'line', 'polygon'
         field_map_url(field) ? :mapping : :unsupported
       else
@@ -213,6 +215,7 @@ module BulkImportIdeas::Exporters
       html += ranking_print_instructions(field)
       html += matrix_print_instructions(field)
       html += map_print_instructions(field)
+      html += date_print_instructions(field)
       html
     end
 
@@ -390,6 +393,12 @@ module BulkImportIdeas::Exporters
       end
 
       format_instructions(description)
+    end
+
+    def date_print_instructions(field)
+      return '' unless field.input_type == 'date'
+
+      format_instructions(I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.date_print_description') })
     end
 
     def format_instructions(instructions)
