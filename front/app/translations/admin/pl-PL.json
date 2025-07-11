@@ -2523,7 +2523,6 @@
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupNameEmptyError": "Podaj nazwę grupy",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "Utwórz grupę ręcznie",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1": "Jakiego rodzaju grupy potrzebujesz?",
-  "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "https://support.govocal.com/articles/2032807",
   "app.containers.AdminPage.Users.GroupCreation.saveGroup": "Zapisz grupę",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonNormal": "Utwórz grupę ręcznie",
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart": "Utwórz inteligentną grupę",
