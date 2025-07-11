@@ -31,10 +31,10 @@ type Props = {
 const FileAnalysis = ({ file }: Props) => {
   const { formatMessage } = useIntl();
 
-  // Ref to scroll to insights to the bottom when new insights are added or on load.
+  // Ref for scrolling the insights list to the bottom.
   const insightsDivRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to the bottom of insights when the component mounts
+  // UseEffect to scroll to the bottom of insights when the component mounts
   // TODO: Add logic to scroll to the bottom when new insights are added (once implemented in BE).
   useEffect(() => {
     const container = insightsDivRef.current;
@@ -43,6 +43,7 @@ const FileAnalysis = ({ file }: Props) => {
     }
   }, []);
 
+  // Setup for analysis question form
   const schema = object({
     analysis_question: string(),
   });
@@ -57,7 +58,7 @@ const FileAnalysis = ({ file }: Props) => {
 
   const onFormSubmit = async () => {
     try {
-      // TODO: Submit the analysis question to the backend.
+      // TODO: Submit the analysis question to the backend once implemented.
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -69,17 +70,12 @@ const FileAnalysis = ({ file }: Props) => {
       flexDirection="column"
       flex="1"
       minHeight="0"
-      style={{ height: '100%', maxHeight: '92dvh', overflow: 'hidden' }}
+      maxHeight="92dvh"
+      overflow="hidden"
+      height="100%"
     >
       {/* Scrollable insights list */}
-      <Box
-        flex="1"
-        overflowY="auto"
-        pr="8px"
-        mb="16px"
-        minHeight="0"
-        ref={insightsDivRef}
-      >
+      <Box flex="1" overflowY="auto" pr="8px" mb="16px" ref={insightsDivRef}>
         <Text fontSize="m" whiteSpace="pre-wrap">
           {/* TODO; Replace with real insights */}
           <Box
@@ -91,6 +87,7 @@ const FileAnalysis = ({ file }: Props) => {
               {`This is a sample AI-generated insight created to demonstrate how the system analyzes the contents of this file. It represents the kind of summary or observation that might be produced after reviewing key themes, recurring patterns, or notable trends within the file’s content. Once the file has been processed, this area will display useful insights that can help users quickly understand the main points, areas of concern, or opportunities highlighted in the material.`}
             </Text>
             <Box display="flex" justifyContent="flex-end">
+              {/* TODO; Make this a clickable icon button for deleting the insight. */}
               <Icon width="20px" fill={colors.coolGrey600} name="delete" />
             </Box>
           </Box>
