@@ -12,6 +12,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import {
   IFlatCustomField,
+  IFlatCustomFieldWithIndex,
   LogicType,
   QuestionRuleType,
 } from 'api/custom_fields/types';
@@ -25,10 +26,9 @@ import { isRuleValid } from 'utils/yup/validateLogic';
 import messages from '../../messages';
 
 type QuestionRuleInputProps = {
-  fieldId: string;
+  field: IFlatCustomFieldWithIndex;
   validationError: string | undefined;
   answer: { key: string | number | undefined; label: string | undefined };
-  name: string;
   pages:
     | {
         value: string | undefined;
@@ -38,15 +38,15 @@ type QuestionRuleInputProps = {
 };
 
 export const QuestionRuleInput = ({
-  fieldId,
+  field,
   pages,
-  name,
   answer,
   validationError,
 }: QuestionRuleInputProps) => {
+  const fieldId = field.temp_id || field.id;
+  const name = `customFields.${field.index}`;
   const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
-  const field: IFlatCustomField = watch(name);
   const logic: LogicType = field.logic;
   const rules = logic.rules;
   const fields: IFlatCustomField[] = watch('customFields');
