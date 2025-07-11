@@ -110,9 +110,7 @@ const ProjectTooltip = ({ ganttItem, projectsById }: ProjectTooltipProps) => {
   const project = projectsById[ganttItem.id];
 
   const phaseIds = project.relationships.phases?.data.map((phase) => phase.id);
-
   const phasesMiniData = usePhasesByIds(phaseIds || []);
-
   const phases = phasesMiniData
     .map((query) => query.data?.data)
     .filter((data): data is IPhaseData => data !== undefined);

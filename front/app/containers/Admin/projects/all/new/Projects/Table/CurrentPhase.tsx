@@ -3,7 +3,9 @@ import React from 'react';
 import { Text } from '@citizenlab/cl2-component-library';
 import { differenceInDays, intervalToDuration } from 'date-fns';
 
-import usePhaseMini from 'api/phases_mini/usePhaseMini';
+import { IPhaseData } from 'api/phases/types';
+import usePhasesByIds from 'api/phases/usePhasesByIds';
+import { getCurrentPhase } from 'api/phases/utils';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import { PARTICIPATION_METHOD_LABELS } from 'containers/Admin/inspirationHub/constants';
@@ -40,9 +42,14 @@ const getSignificantDuration = (start: Date, end: Date) => {
 
 const CurrentPhase = ({ project }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: phase } = usePhaseMini(
-    project.relationships.current_phase?.data?.id
-  );
+
+  const phaseIds = project.relationships.phases?.data.map((phase) => phase.id);
+  const phasesMiniData = usePhasesByIds(phaseIds || []);
+  const phases = phasesMiniData
+    .map((query) => query.data?.data)
+    .filter((data): data is IPhaseData => data !== undefined);
+
+  const currentPhase = getCurrentPhase(phases);
 
   const { first_phase_start_date } = project.attributes;
 
@@ -52,9 +59,11 @@ const CurrentPhase = ({ project }: Props) => {
     first_phase_start_date === null || new Date(first_phase_start_date) > now;
 
   const getCurrentPhaseText = () => {
-    if (phase) {
+    if (currentPhase) {
       return formatMessage(
-        PARTICIPATION_METHOD_LABELS[phase.data.attributes.participation_method]
+        PARTICIPATION_METHOD_LABELS[
+          currentPhase.attributes.participation_method
+        ]
       );
     }
 
@@ -64,10 +73,10 @@ const CurrentPhase = ({ project }: Props) => {
   };
 
   const getSubText = () => {
-    if (!phase && !projectStartingInFuture) return;
+    if (!currentPhase && !projectStartingInFuture) return;
 
-    if (phase) {
-      const phaseEndDate = phase.data.attributes.end_at;
+    if (currentPhase) {
+      const phaseEndDate = currentPhase.attributes.end_at;
       const parsedPhaseEndDate = parseBackendDateString(
         phaseEndDate ?? undefined
       );
