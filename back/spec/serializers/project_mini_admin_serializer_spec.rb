@@ -29,13 +29,13 @@ describe WebApi::V1::ProjectMiniAdminSerializer do
     expect(serialized_project.dig(:data, :attributes, :folder_title_multiloc)).to eq(folder.title_multiloc)
   end
 
-  it 'includes current_phase' do
+  it 'includes phases' do
     project2 = create(:project_with_active_ideation_phase)
     serialized_project2 = described_class
       .new(project2, params: { current_user: user })
       .serializable_hash
 
-    current_phase_id = serialized_project2.dig(:data, :relationships, :current_phase, :data, :id)
-    expect(current_phase_id).to eq(project2.phases.first.id)
+    phase_ids = serialized_project2.dig(:data, :relationships, :phases, :data).pluck(:id)
+    expect(phase_ids).to eq(project2.phases.pluck(:id).map(&:to_s))
   end
 end

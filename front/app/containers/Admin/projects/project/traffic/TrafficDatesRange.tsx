@@ -40,8 +40,8 @@ const TrafficDatesRange = ({
           <Box display="flex" alignItems="center">
             <DateRangePicker
               selectedRange={{
-                from: parseBackendDateString(startAt),
-                to: parseBackendDateString(endAt),
+                from: startAt ? parseBackendDateString(startAt) : undefined,
+                to: endAt ? parseBackendDateString(endAt) : undefined,
               }}
               onUpdateRange={({ from, to }) => {
                 setStartAt(toBackendDateString(from));
