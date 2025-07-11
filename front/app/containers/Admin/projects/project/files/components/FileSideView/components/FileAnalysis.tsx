@@ -174,14 +174,10 @@ const FileAnalysis = ({ file }: Props) => {
 
             <Box
               display="flex"
-              justifyContent="space-between"
+              justifyContent="flex-end"
               alignItems="center"
               gap="20px"
             >
-              <Text fontSize="s" color="textSecondary">
-                {/* TODO: Replace with real count once supported by BE */}
-                123/1234
-              </Text>
               <Button icon="stars" size="s" buttonStyle="primary" type="submit">
                 {formatMessage(messages.askButton)}
               </Button>
