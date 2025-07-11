@@ -2222,6 +2222,7 @@
   "app.containers.AdminPage.ProjectFiles.imageFileDescription": "Images",
   "app.containers.AdminPage.ProjectFiles.imageFileExtensionDescription": "PNG, JPEG",
   "app.containers.AdminPage.ProjectFiles.maxFilesError": "You can only upload a maximum of {maxFiles} files at a time.",
+  "app.containers.AdminPage.ProjectFiles.noFilesFound": "No files found.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Search files",
   "app.containers.AdminPage.ProjectFiles.textFileDescription": "Reports, informational documents",
   "app.containers.AdminPage.ProjectFiles.textFileExtensionDescription": "PDF, DOCX, PPTX",
