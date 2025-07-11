@@ -15,7 +15,6 @@ describe('profile edition', () => {
   beforeEach(() => {
     cy.setLoginCookie(email, password);
     cy.visit('/profile/edit');
-    cy.acceptCookies();
   });
 
   function saveChanges() {

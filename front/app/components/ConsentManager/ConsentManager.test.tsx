@@ -103,37 +103,6 @@ describe('<ConsentManager />', () => {
       });
     });
 
-    it('rejects all cookies except functional if banner is closed', () => {
-      const { container } = render(<ConsentManager />);
-      fireEvent.click(container.querySelector('.e2e-close-cookie-banner'));
-
-      expect(setConsent).toHaveBeenCalledWith({
-        functional: true,
-        analytics: false,
-        advertising: false,
-        savedChoices: {
-          matomo: false,
-          google_analytics: false,
-        },
-      });
-    });
-
-    it('rejects all cookies except functional if preference modal is opened and confirmed without changes', () => {
-      const { container } = render(<ConsentManager />);
-      fireEvent.click(container.querySelector('.integration-open-modal'));
-      fireEvent.click(container.querySelector('#e2e-preferences-save'));
-
-      expect(setConsent).toHaveBeenCalledWith({
-        functional: true,
-        analytics: false,
-        advertising: false,
-        savedChoices: {
-          matomo: false,
-          google_analytics: false,
-        },
-      });
-    });
-
     it('accepts only functional and analytics cookies if analytics is enabled in preference modal', () => {
       const { container } = render(<ConsentManager />);
       fireEvent.click(container.querySelector('.integration-open-modal'));

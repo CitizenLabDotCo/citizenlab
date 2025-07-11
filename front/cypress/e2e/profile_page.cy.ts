@@ -97,6 +97,7 @@ describe('Profile Page', () => {
     cy.clearCookies();
     // Confirm that the user event tab is not visible to other users
     cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.acceptCookies();
 
     cy.get('#e2e-usersshowpage');
     cy.get('.e2e-events-nav').should('not.exist');

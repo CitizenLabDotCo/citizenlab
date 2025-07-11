@@ -2,7 +2,7 @@ import React, { FormEvent, useState, useCallback } from 'react';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
-import Banner from './Banner';
+import CookieModal from './CookieModal';
 import { TCategory } from './destinations';
 import PreferencesModal from './PreferencesModal';
 import { CategorizedDestinations, IPreferences } from './typings';
@@ -108,7 +108,7 @@ const Container = ({
       />
 
       {isConsentRequired && (
-        <Banner
+        <CookieModal
           onAccept={accept}
           onChangePreferences={openDialog}
           onClose={reject}

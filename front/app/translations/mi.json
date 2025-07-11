@@ -31,7 +31,6 @@
   "app.components.ConfirmationModal.wrongEmail": "Wrong email?",
   "app.components.ConsentManager.Banner.accept": "Accept",
   "app.components.ConsentManager.Banner.close": "Kati",
-  "app.components.ConsentManager.Banner.mainText": "This platform uses cookies in accordance with our {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Manage",
   "app.components.ConsentManager.Banner.policyLink": "Kaupapahere pihikete",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Confirm",

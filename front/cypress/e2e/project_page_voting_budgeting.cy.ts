@@ -66,7 +66,7 @@ describe('Budgeting project', () => {
             );
             cy.setLoginCookie(email, password);
             cy.visit(`/en/projects/${projectSlug}`);
-            cy.acceptCookies();
+
             cy.wait(1000);
           });
       });

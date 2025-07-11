@@ -299,7 +299,7 @@ describe('Embedded survey CTA', () => {
 
   it('shows the CTA button on visting the project page of an active survey project', () => {
     cy.visit(`/en/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('#e2e-take-survey-button').should('exist');
   });
 
