@@ -18,6 +18,7 @@ import messages from '../../messages';
 
 import { PageRuleInput } from './PageRuleInput';
 import { QuestionRuleInput } from './QuestionRuleInput';
+import usePages from './usePages';
 
 export type PageListType =
   | {
@@ -27,10 +28,8 @@ export type PageListType =
     }[];
 
 type LogicSettingsProps = {
-  pageOptions: PageListType;
   field: IFlatCustomFieldWithIndex;
   builderConfig: FormBuilderConfig | undefined;
-  getCurrentPageId: (questionId: string) => string | null;
 };
 
 export type AnswersType =
@@ -40,12 +39,7 @@ export type AnswersType =
     }[]
   | undefined;
 
-const LogicSettings = ({
-  pageOptions,
-  field,
-  builderConfig,
-  getCurrentPageId,
-}: LogicSettingsProps) => {
+const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
   const { formatMessage } = useIntl();
   const {
     watch,
@@ -55,9 +49,9 @@ const LogicSettings = ({
   const selectOptions = watch(`customFields.${field.index}.options`);
   const linearScaleMaximum = watch(`customFields.${field.index}.maximum`);
   const fieldRequired = watch(`customFields.${field.index}.required`);
-
   const error = get(formContextErrors, `customFields.${field.index}.logic`);
   const validationError = error?.message as string | undefined;
+  const pages = usePages(field);
 
   // For Select Field
   let answers: AnswersType = selectOptions
@@ -96,19 +90,6 @@ const LogicSettings = ({
     }
   }
 
-  // Current and previous pages should be disabled in select options
-  let disablePage = true;
-  const pages: PageListType = pageOptions.map((page) => {
-    const newPage = {
-      ...page,
-      disabled: disablePage,
-    };
-    if (page.value === getCurrentPageId(field.id)) {
-      disablePage = false;
-    }
-    return newPage;
-  });
-
   return (
     <>
       {field.input_type === 'page' ? (
@@ -138,9 +119,8 @@ const LogicSettings = ({
               )}
           </Box>
           <PageRuleInput
-            fieldId={field.temp_id || field.id}
+            field={field}
             validationError={validationError}
-            name={`customFields.${field.index}.logic`}
             pages={pages}
           />
         </>
@@ -160,9 +140,8 @@ const LogicSettings = ({
             answers.map((answer) => (
               <Box key={answer.key}>
                 <QuestionRuleInput
-                  fieldId={field.temp_id || field.id}
+                  field={field}
                   validationError={validationError}
-                  name={`customFields.${field.index}`}
                   answer={answer}
                   pages={pages}
                 />
