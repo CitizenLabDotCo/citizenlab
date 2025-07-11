@@ -2214,7 +2214,6 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Dzēst failu",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Lejupielādēt failu",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Velciet un nometiet šeit jebkurus failus vai",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "Faili nedrīkst pārsniegt maksimālo ierobežojumu {maxSizeMb} MB.",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Failu",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "Failus nebija iespējams augšupielādēt. Lūdzu, mēģiniet vēlreiz.",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "Veiksmīgi augšupielādēti šādi faili: {fileNames}",

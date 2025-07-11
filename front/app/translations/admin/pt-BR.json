@@ -2214,7 +2214,6 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Excluir arquivo",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Baixar arquivo",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Arraste e solte quaisquer arquivos aqui ou",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "Os arquivos não podem exceder o limite máximo de {maxSizeMb} MB.",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Arquivo",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "Não foi possível fazer o upload dos arquivos. Por favor, tente novamente.",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "Os seguintes arquivos foram carregados com sucesso: {fileNames}",

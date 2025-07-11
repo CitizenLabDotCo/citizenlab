@@ -2214,7 +2214,6 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Ištrinti failą",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Atsisiųsti failą",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Vilkite ir numeskite bet kokius failus čia arba",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "Failai negali viršyti didžiausios {maxSizeMb} MB ribos.",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Failas",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "Failų nepavyko įkelti. Bandykite dar kartą.",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "Sėkmingai įkelti šie failai: {fileNames}",
