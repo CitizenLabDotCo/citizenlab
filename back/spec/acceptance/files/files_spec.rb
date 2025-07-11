@@ -125,10 +125,11 @@ resource 'Files' do
           type: 'file',
           attributes: {
             name: file.name,
-            created_at: file.created_at.iso8601(3),
-            updated_at: file.updated_at.iso8601(3),
+            content: { url: file.content.url },
             size: 130,
-            mime_type: 'application/pdf'
+            mime_type: 'application/pdf',
+            created_at: file.created_at.iso8601(3),
+            updated_at: file.updated_at.iso8601(3)
           },
           relationships: {
             uploader: { data: { id: file.uploader_id, type: 'user' } },
