@@ -2214,7 +2214,6 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Dosya silme",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Dosyayı indirin",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Herhangi bir dosyayı buraya sürükleyip bırakın veya",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "Dosyalar maksimum {maxSizeMb} MB sınırını aşamaz.",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Dosya",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "Dosyalar yüklenemedi. Lütfen tekrar deneyin.",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "Aşağıdaki dosyalar başarıyla yüklendi: {fileNames}",

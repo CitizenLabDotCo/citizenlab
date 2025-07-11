@@ -2214,7 +2214,6 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Datei löschen",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Datei herunterladen",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Ziehen Sie beliebige Dateien per Drag & Drop hierher oder",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "Die Dateien dürfen die Höchstgrenze von {maxSizeMb} MB nicht überschreiten.",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Datei",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "Die Dateien konnten nicht hochgeladen werden. Bitte versuchen Sie es erneut.",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "Die folgenden Dateien wurden erfolgreich hochgeladen: {fileNames}",
