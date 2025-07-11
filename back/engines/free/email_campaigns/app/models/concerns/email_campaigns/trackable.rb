@@ -25,6 +25,7 @@ module EmailCampaigns
     end
 
     def extra_mailgun_variables(command)
+      ErrorReporter.report_msg('No delivery ID Mailgun variables!') if !command[:delivery_id] # This line can be removed after a month or so.
       { 'cl_delivery_id' => command[:delivery_id] }
     end
 
