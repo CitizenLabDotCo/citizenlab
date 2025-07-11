@@ -304,6 +304,7 @@ DROP INDEX IF EXISTS public.index_files_projects_on_file_id_and_project_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_file_id;
 DROP INDEX IF EXISTS public.index_files_on_uploader_id;
 DROP INDEX IF EXISTS public.index_files_on_size;
+DROP INDEX IF EXISTS public.index_files_on_name_gin_trgm;
 DROP INDEX IF EXISTS public.index_files_on_mime_type;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
 DROP INDEX IF EXISTS public.index_events_on_location_point;
@@ -5220,6 +5221,13 @@ CREATE INDEX index_files_on_mime_type ON public.files USING btree (mime_type);
 
 
 --
+-- Name: index_files_on_name_gin_trgm; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_on_name_gin_trgm ON public.files USING gin (name shared_extensions.gin_trgm_ops);
+
+
+--
 -- Name: index_files_on_size; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7429,6 +7437,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250708085259'),
 ('20250627113458'),
 ('20250626072615'),
 ('20250624134747'),

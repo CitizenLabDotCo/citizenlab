@@ -10,7 +10,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useCustomFields from 'api/custom_fields/useCustomFields';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
@@ -18,8 +18,6 @@ import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
-
-import useLocale from 'hooks/useLocale';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
@@ -29,7 +27,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
-import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
 import SelectSort from '../shared/Filters/SortFilterDropdown';
@@ -108,7 +105,6 @@ const IdeasWithoutFiltersSidebar = ({
   showDropdownFilters,
   showSearchbar,
 }: Props) => {
-  const locale = useLocale();
   const [searchParams] = useSearchParams();
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
   const smallerThanTablet = useBreakpoint('tablet');
@@ -123,10 +119,15 @@ const IdeasWithoutFiltersSidebar = ({
     updateSearchParams({ view });
   }, []);
 
-  const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
-    phaseId: ideaQueryParameters.phase,
-    projectId,
-  });
+  const { data: customFields } = useCustomFields({ projectId });
+
+  const locationEnabled = customFields?.find(
+    (field) => field.key === 'location_description'
+  )?.enabled;
+
+  const topicsEnabled = customFields?.find(
+    (field) => field.key === 'topic_ids'
+  )?.enabled;
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
@@ -134,13 +135,7 @@ const IdeasWithoutFiltersSidebar = ({
     return data?.pages.map((page) => page.data).flat();
   }, [data?.pages]);
   const { data: phase } = usePhase(phaseId);
-  const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
-    ? isFieldEnabled(
-        'location_description',
-        ideaCustomFieldsSchemas.data.attributes,
-        locale
-      )
-    : false;
+
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
     {
@@ -189,14 +184,6 @@ const IdeasWithoutFiltersSidebar = ({
 
     onUpdateQuery({ idea_status });
   };
-
-  const topicsEnabled = !isNilOrError(ideaCustomFieldsSchemas)
-    ? isFieldEnabled(
-        'topic_ids',
-        ideaCustomFieldsSchemas.data.attributes,
-        locale
-      )
-    : false;
 
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const showSearch = !(selectedView === 'map') && showSearchbar;
