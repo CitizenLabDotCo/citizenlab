@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import {
   Box,
@@ -27,6 +27,18 @@ type Props = {
 
 const FileAnalysis = ({ file }: Props) => {
   const { formatMessage } = useIntl();
+
+  // Ref to scroll to insights to the bottom when new insights are added or on load.
+  const insightsDivRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to the bottom of insights when the component mounts
+  // TODO: Add logic to scroll to the bottom when new insights are added (once implemented in BE).
+  useEffect(() => {
+    const container = insightsDivRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }, []);
 
   const schema = object({
     analysis_question: string(),
@@ -57,13 +69,46 @@ const FileAnalysis = ({ file }: Props) => {
       style={{ height: '100%', maxHeight: '92dvh', overflow: 'hidden' }}
     >
       {/* Scrollable insights list */}
-      <Box flex="1" overflowY="auto" pr="8px" mb="16px" minHeight="0">
+      <Box
+        flex="1"
+        overflowY="auto"
+        pr="8px"
+        mb="16px"
+        minHeight="0"
+        ref={insightsDivRef}
+      >
         <Text fontSize="m" whiteSpace="pre-wrap">
           {/* TODO; Replace with real insights */}
           <Box
             bgColor={colors.grey100}
             borderRadius={stylingConsts.borderRadius}
             p="16px"
+          >
+            <Text m="0px" color="textPrimary">
+              {`This is a sample AI-generated insight created to demonstrate how the system analyzes the contents of this file. It represents the kind of summary or observation that might be produced after reviewing key themes, recurring patterns, or notable trends within the file’s content. Once the file has been processed, this area will display useful insights that can help users quickly understand the main points, areas of concern, or opportunities highlighted in the material.`}
+            </Text>
+            <Box display="flex" justifyContent="flex-end">
+              <Icon width="20px" fill={colors.coolGrey600} name="delete" />
+            </Box>
+          </Box>
+          <Box
+            bgColor={colors.grey100}
+            borderRadius={stylingConsts.borderRadius}
+            p="16px"
+            mt="16px"
+          >
+            <Text m="0px" color="textPrimary">
+              {`This is a sample AI-generated insight created to demonstrate how the system analyzes the contents of this file. It represents the kind of summary or observation that might be produced after reviewing key themes, recurring patterns, or notable trends within the file’s content. Once the file has been processed, this area will display useful insights that can help users quickly understand the main points, areas of concern, or opportunities highlighted in the material.`}
+            </Text>
+            <Box display="flex" justifyContent="flex-end">
+              <Icon width="20px" fill={colors.coolGrey600} name="delete" />
+            </Box>
+          </Box>
+          <Box
+            bgColor={colors.grey100}
+            borderRadius={stylingConsts.borderRadius}
+            p="16px"
+            mt="16px"
           >
             <Text m="0px" color="textPrimary">
               {`This is a sample AI-generated insight created to demonstrate how the system analyzes the contents of this file. It represents the kind of summary or observation that might be produced after reviewing key themes, recurring patterns, or notable trends within the file’s content. Once the file has been processed, this area will display useful insights that can help users quickly understand the main points, areas of concern, or opportunities highlighted in the material.`}
