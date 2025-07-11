@@ -269,7 +269,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
       it 'shows date question' do
         date_html = parsed_html.css("div##{date_field.id}")
         expect(date_html.text).to include 'Date field'
-        expect(date_html.text).to include 'Please write a date in the format dd-mm-yyyy.'
+        expect(date_html.text).to include 'Please write a date in the format YYYY-MM-DD.'
       end
     end
   end
