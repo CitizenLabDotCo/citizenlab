@@ -15,17 +15,19 @@ import messages from '../messages';
 
 import FileDropzone from './components/FileDropzone';
 import FileUploadActions from './components/FileUploadActions';
+import InformationSection from './components/InformationSection/index.tsx';
 import SelectedFile from './components/SelectedFile';
 import { FileWithMeta, UploadStatus } from './types';
 
 type Props = {
-  setModalOpen: (open: boolean) => void;
+  setModalOpen?: (open: boolean) => void;
+  setOnInitialEmptyView?: (value: boolean) => void;
 };
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_FILES = 35;
 
-const FilesUpload = ({ setModalOpen }: Props) => {
+const FilesUpload = ({ setModalOpen, setOnInitialEmptyView }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
 
@@ -127,12 +129,14 @@ const FilesUpload = ({ setModalOpen }: Props) => {
             onClose={() => {
               setFileList([]);
               setHasStartedUploading(false);
-              setModalOpen(false);
+              setModalOpen?.(false);
+              setOnInitialEmptyView?.(false);
             }}
           />
         </>
       ) : (
         <>
+          <InformationSection />
           <FileDropzone
             getDropzoneRootProps={getDropzoneRootProps}
             getDropzoneInputProps={getDropzoneInputProps}

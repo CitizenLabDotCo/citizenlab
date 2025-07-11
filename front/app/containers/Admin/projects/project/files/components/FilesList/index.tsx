@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -15,6 +15,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import FeatureInformation from '../FeatureInformation';
 import FileSideView from '../FileSideView';
 import messages from '../messages';
+import NoFilesView from '../NoFilesView';
 import UploadFileButtonWithModal from '../UploadFileButtonWithModal';
 
 import FilesListItem from './components/FilesListItem';
@@ -23,6 +24,9 @@ const FilesList = () => {
   const { formatMessage } = useIntl();
   const [sideViewOpened, setSideViewOpened] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
+  const [onInitialEmptyView, setOnInitialEmptyView] = useState<boolean | null>(
+    false
+  );
 
   const { projectId } = useParams() as {
     projectId: string;
@@ -59,69 +63,80 @@ const FilesList = () => {
     }));
   };
 
+  useEffect(() => {
+    if (numberOfFiles === 0 && !queryParameters.search) {
+      setOnInitialEmptyView(true);
+    }
+  }, [numberOfFiles, queryParameters.search]);
+
   return (
     <Box display="flex" justifyContent="center" flexDirection="column">
-      <>
-        <Box display="flex" justifyContent="space-between">
-          <SearchInput
-            placeholder={formatMessage(messages.searchFiles)}
-            onChange={handleSearchChange}
-            a11y_numberOfSearchResults={numberOfFiles}
-          />
-          <UploadFileButtonWithModal />
-        </Box>
-        <Box mt="40px" display="flex" gap="20px" justifyContent="space-between">
+      {onInitialEmptyView ? (
+        <NoFilesView setOnInitialEmptyView={setOnInitialEmptyView} />
+      ) : (
+        <>
+          <Box display="flex" justifyContent="space-between">
+            <SearchInput
+              placeholder={formatMessage(messages.searchFiles)}
+              onChange={handleSearchChange}
+              a11y_numberOfSearchResults={numberOfFiles}
+            />
+            <UploadFileButtonWithModal />
+          </Box>
           <Box
+            mt="40px"
             display="flex"
-            flexDirection="column"
-            width="100%"
-            minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
+            gap="20px"
+            justifyContent="space-between"
           >
-            {numberOfFiles > 0 && (
-              <>
-                {files?.data.map((file) => (
-                  <FilesListItem
-                    file={file}
-                    setSelectedFileId={setSelectedFileId}
-                    setSideViewOpened={setSideViewOpened}
-                    key={file.id}
-                  />
-                ))}
-              </>
-            )}
-            {numberOfFiles === 0 && (
-              <>
-                {queryParameters.search ? (
+            <Box
+              display="flex"
+              flexDirection="column"
+              width="100%"
+              minHeight={lastPage && lastPage > 1 ? '66vh' : 'auto'}
+            >
+              {numberOfFiles > 0 && (
+                <>
+                  {files?.data.map((file) => (
+                    <FilesListItem
+                      file={file}
+                      setSelectedFileId={setSelectedFileId}
+                      setSideViewOpened={setSideViewOpened}
+                      key={file.id}
+                    />
+                  ))}
+                </>
+              )}
+              {numberOfFiles === 0 && (
+                <>
                   <Box display="flex" width="100%" justifyContent="center">
                     <Text color="coolGrey600">
                       {formatMessage(messages.noFilesFound)}
                     </Text>
                   </Box>
-                ) : (
-                  <>TODO: Add UI for when no files have been uploaded</>
-                )}
-              </>
-            )}
-            {lastPage && lastPage > 1 && (
-              <Box mt="auto" display="flex" justifyContent="center" p="12px">
-                <Pagination
-                  currentPage={currentPage || 1}
-                  totalPages={lastPage || 1}
-                  loadPage={handlePaginationClick}
-                />
-              </Box>
-            )}
+                </>
+              )}
+              {lastPage && lastPage > 1 && (
+                <Box mt="auto" display="flex" justifyContent="center" p="12px">
+                  <Pagination
+                    currentPage={currentPage || 1}
+                    totalPages={lastPage || 1}
+                    loadPage={handlePaginationClick}
+                  />
+                </Box>
+              )}
+            </Box>
+            <Box>
+              <FeatureInformation />
+            </Box>
           </Box>
-          <Box>
-            <FeatureInformation />
-          </Box>
-        </Box>
-        <FileSideView
-          opened={sideViewOpened}
-          setSideViewOpened={setSideViewOpened}
-          selectedFileId={selectedFileId}
-        />
-      </>
+          <FileSideView
+            opened={sideViewOpened}
+            setSideViewOpened={setSideViewOpened}
+            selectedFileId={selectedFileId}
+          />
+        </>
+      )}
     </Box>
   );
 };

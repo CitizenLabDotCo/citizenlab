@@ -91,6 +91,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
           alignItems="center"
           justifyContent="space-between"
           mb="8px"
+          gap="8px"
         >
           <Box display="flex" alignItems="center" gap="4px">
             <StatusIcon status={status} />
