@@ -2206,7 +2206,7 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Transcripties verwerken, enz.",
   "app.containers.AdminPage.ProjectFiles.Modal.addFile": "Bestand toevoegen",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Acties",
-  "app.containers.AdminPage.ProjectFiles.addFiles": "Bijlagen (max. 50MB)",
+  "app.containers.AdminPage.ProjectFiles.addFiles": "Voeg bestanden toe",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Toegevoegd",
   "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Audio-interviews, opnames van in het stadhuis",
   "app.containers.AdminPage.ProjectFiles.audioFileExtensionDescription": "WAV, MP3",
