@@ -49,9 +49,15 @@ type SurveyPage = {
   participationMethod?: ParticipationMethod;
   ideaId?: string;
   projectId: string;
-  onSubmit: (formValues: FormValues) => Promise<void>;
+  onSubmit: ({
+    formValues,
+    isSubmitPage,
+  }: {
+    formValues: FormValues;
+    isSubmitPage: boolean;
+  }) => Promise<void>;
   phase?: IPhaseData;
-  defaultValues?: any;
+  defaultValues?: FormValues;
   customFields: IFlatCustomField[];
 };
 
@@ -114,19 +120,22 @@ const SurveyPage = ({
   });
 
   const onFormSubmit = async (formValues: FormValues) => {
+    // Go to the project page if this is the last page
+    if (currentPageNumber === lastPageNumber) {
+      clHistory.push({
+        pathname: `/projects/${project?.data.attributes.slug}`,
+      });
+    }
+
     try {
       setShowFormFeedback(false);
-      await onSubmit(formValues);
+      await onSubmit({
+        formValues,
+        isSubmitPage: nextPageNumber === lastPageNumber,
+      });
       // Go to the next page
       if (currentPageNumber < lastPageNumber) {
         setCurrentPageNumber(nextPageNumber);
-      }
-
-      // Go to the project page if this is the last page
-      if (currentPageNumber === lastPageNumber) {
-        clHistory.push({
-          pathname: `/projects/${project?.data.attributes.slug}`,
-        });
       }
     } catch (error) {
       // Only show feedback if the form submission failed
@@ -161,6 +170,7 @@ const SurveyPage = ({
 
   const anonimizeSurveySubmissions =
     phase?.attributes.allow_anonymous_participation;
+
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form">
