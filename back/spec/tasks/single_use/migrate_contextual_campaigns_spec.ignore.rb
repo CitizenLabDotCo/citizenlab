@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'rake single_use:migrate_contextual_campaigns' do
   before { load_rake_tasks_if_not_loaded }
 
-  it 'blaargh' do
+  it 'Migrates different global enabled and campaigns_settings configurations' do
     tenant_global_enabled = create(:tenant, creation_finalized_at: Time.now)
     tenant_global_enabled.switch do
       create(:project_phase_started_campaign, enabled: true)

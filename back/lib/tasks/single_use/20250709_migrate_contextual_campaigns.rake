@@ -8,11 +8,10 @@ namespace :single_use do
 
       Phase.all.each do |phase|
         if phase.campaigns_settings&.key?('project_phase_started') && !phase.campaigns_settings['project_phase_started']
-          attributes = { enabled: false, context: phase }
-          EmailCampaigns::Campaigns::ProjectPhaseStarted.create!(attributes)
+          EmailCampaigns::Campaigns::ProjectPhaseStarted.find_or_create_by(context: phase).update!(enabled: false)
           reporter.add_create(
             'EmailCampaigns::Campaigns::ProjectPhaseStarted',
-            attributes,
+            { enabled: false, context: phase },
             context: { tenant: tenant.host, phase: phase.id }
           )
         end

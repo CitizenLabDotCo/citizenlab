@@ -423,11 +423,6 @@ resource 'Campaigns' do
       end
     end
 
-    patch 'web_api/v1/campaigns/:id' do
-      update_campaign_params(self)
-      ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
-    end
-
     delete 'web_api/v1/campaigns/:id' do
       let!(:id) { create(:manual_campaign).id }
 
