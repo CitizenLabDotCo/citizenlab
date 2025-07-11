@@ -16,7 +16,7 @@ import { getBase64FromFile } from 'utils/fileUtils';
 import { FileWithMeta } from '../../types';
 import messages from '../messages';
 
-import { StatusIcon } from './StatusIcon';
+import { StatusIcon } from './components/StatusIcon';
 
 type Props = {
   fileMeta: FileWithMeta;

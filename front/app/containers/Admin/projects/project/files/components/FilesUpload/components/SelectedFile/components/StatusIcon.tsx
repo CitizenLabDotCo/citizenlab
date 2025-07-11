@@ -14,8 +14,8 @@ import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { UploadStatus } from '../../types';
-import messages from '../messages';
+import { UploadStatus } from '../../../types';
+import messages from '../../messages';
 
 type Props = {
   status: UploadStatus;
