@@ -2214,7 +2214,6 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Usuń plik",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Pobierz plik",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Przeciągnij i upuść tutaj dowolne pliki lub",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "Pliki nie mogą przekraczać maksymalnego limitu {maxSizeMb} MB.",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Plik",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "Nie udało się przesłać plików. Spróbuj ponownie.",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "Następujące pliki zostały pomyślnie przesłane: {fileNames}",

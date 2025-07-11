@@ -2214,7 +2214,6 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Poista tiedosto",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Lataa tiedosto",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Vedä ja pudota tiedostot tähän tai",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "Tiedostojen enimmäiskoko ei saa ylittää {maxSizeMb} Mt.",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "Tiedosto",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "Tiedostojen lataaminen epäonnistui. Yritä uudelleen.",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "Seuraavat tiedostot ladattiin onnistuneesti: {fileNames}",
