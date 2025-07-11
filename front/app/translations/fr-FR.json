@@ -2110,7 +2110,7 @@
   "app.errors.malformed_groups_value": "Le groupe {value} trouvé à la ligne {row} n'est pas valide",
   "app.errors.max_invites_limit_exceeded1": "Le nombre d'invitations dépasse la limite de 1000.",
   "app.errors.maximum_attendees_greater_than1": "Le nombre maximum d'inscrits doit être supérieur à 0.",
-  "app.errors.maximum_attendees_greater_than_attendees_count1": "Le nombre maximum d'inscrits doit être supérieur ou égal au nombre actuel d'inscrits.",
+  "app.errors.maximum_attendees_greater_than_attendees_count1": "La valeur doit être supérieure ou égale au nombre de personnes déjà inscrites.\n",
   "app.errors.no_invites_specified": "Aucune adresse e-mail n'a été trouvée.",
   "app.errors.no_recipients": "La campagne ne peut pas être envoyée car il n'y a aucun destinataire. Le groupe auquel vous souhaitez l'envoyer est soit vide, soit aucun membre du groupe n'a donné son consentement pour recevoir des emails.",
   "app.errors.number_invalid": "Veuillez saisir un nombre valide.",
