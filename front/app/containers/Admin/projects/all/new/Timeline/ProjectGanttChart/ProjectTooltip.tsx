@@ -4,7 +4,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IPhaseData } from 'api/phases/types';
-import usePhasesMiniByIds from 'api/phases/usePhasesByIds';
+import usePhasesByIds from 'api/phases/usePhasesByIds';
 import { getCurrentPhase } from 'api/phases/utils';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
@@ -111,13 +111,11 @@ const ProjectTooltip = ({ ganttItem, projectsById }: ProjectTooltipProps) => {
 
   const phaseIds = project.relationships.phases?.data.map((phase) => phase.id);
 
-  const phasesMiniData = usePhasesMiniByIds(phaseIds || []);
+  const phasesMiniData = usePhasesByIds(phaseIds || []);
 
   const phases = phasesMiniData
-    .filter((query) => query.data !== undefined)
-    .map((query) => {
-      return query.data?.data;
-    });
+    .map((query) => query.data?.data)
+    .filter((data): data is IPhaseData => data !== undefined);
 
   const currentPhase = getCurrentPhase(phases);
   const folderName = ganttItem.folder || undefined;
