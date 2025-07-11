@@ -89,7 +89,7 @@ const FilesList = () => {
                 ))}
               </>
             )}
-            {files?.data.length === 0 && (
+            {numberOfFiles === 0 && (
               <>
                 {queryParameters.search ? (
                   <Box display="flex" width="100%" justifyContent="center">
