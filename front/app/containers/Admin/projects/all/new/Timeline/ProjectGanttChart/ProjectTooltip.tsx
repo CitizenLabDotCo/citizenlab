@@ -4,8 +4,8 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IPhaseData } from 'api/phases/types';
+import usePhasesMiniByIds from 'api/phases/usePhasesByIds';
 import { getCurrentPhase } from 'api/phases/utils';
-import usePhasesMiniByIds from 'api/phases_mini/usePhasesMiniByIds';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import useLocalize from 'hooks/useLocalize';
