@@ -1437,7 +1437,8 @@ CREATE TABLE public.email_campaigns_campaigns (
     context_id uuid,
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     intro_multiloc jsonb DEFAULT '{}'::jsonb,
-    button_text_multiloc jsonb DEFAULT '{}'::jsonb
+    button_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    context_type character varying
 );
 
 
@@ -7276,6 +7277,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250623094500'),
 ('20250616142444'),
 ('20250610112901'),
 ('20250609151800'),

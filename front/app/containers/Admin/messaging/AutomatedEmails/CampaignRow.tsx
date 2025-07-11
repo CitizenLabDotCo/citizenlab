@@ -6,8 +6,8 @@ import {
   ListItem,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { isUndefined } from 'lodash-es';
 
+import useAddCampaign from 'api/campaigns/useAddCampaign';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -24,27 +24,52 @@ import { CampaignData } from './types';
 
 type Props = {
   campaign: CampaignData;
+  phaseId?: string;
+  projectId?: string;
+  globalEnabled?: boolean;
   onClickViewExample?: () => void;
 };
 
-const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
+const CampaignRow = ({
+  campaign,
+  phaseId,
+  projectId,
+  globalEnabled,
+  onClickViewExample,
+}: Props) => {
+  const hasContext = !!(phaseId || projectId);
   const { formatMessage } = useIntl();
   const [isNewPhaseModalOpen, setIsNewPhaseModalOpen] = useState(false);
+  const { mutate: addCampaign } = useAddCampaign();
   const { mutate: updateCampaign } = useUpdateCampaign();
   const toggleEnabled = () => {
-    updateCampaign({
-      id: campaign.id,
-      campaign: {
+    if (hasContext && !campaign.relationships.context?.data?.id) {
+      addCampaign({
+        phaseId,
+        campaign_name: campaign.attributes.campaign_name,
         enabled: !campaign.attributes.enabled,
-      },
-    });
+        subject_multiloc: campaign.attributes.subject_multiloc,
+        body_multiloc: campaign.attributes.body_multiloc,
+        sender: campaign.attributes.sender,
+      });
+    } else {
+      updateCampaign({
+        id: campaign.id,
+        campaign: {
+          enabled: !campaign.attributes.enabled,
+        },
+      });
+    }
   };
   const closeNewPhaseModal = () => {
     setIsNewPhaseModalOpen(false);
   };
   const handleOnEnabledToggle = () => {
     // Not abstracting yet since it is one scenario for now. If we need more, we can abstract it to handle more confirmations
-    if (campaign.attributes.campaign_name === 'project_phase_started') {
+    if (
+      campaign.attributes.campaign_name === 'project_phase_started' &&
+      !hasContext
+    ) {
       setIsNewPhaseModalOpen(true);
     } else {
       toggleEnabled();
@@ -55,6 +80,8 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
     name: 'customised_automated_emails',
   });
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
+
+  const disabledByParent = hasContext && !globalEnabled;
 
   return (
     <>
@@ -67,14 +94,14 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
       <ListItem p="8px 0">
         <Box display="flex" alignItems="center">
           <Toggle
-            disabled={isUndefined(campaign.attributes.enabled)}
-            checked={
-              isUndefined(campaign.attributes.enabled) ||
-              campaign.attributes.enabled
-            }
+            disabled={disabledByParent}
+            checked={!!campaign.attributes.enabled}
             onChange={handleOnEnabledToggle}
           />
-          <CampaignDescription campaign={campaign} />
+          <CampaignDescription
+            campaign={campaign}
+            disabledByParent={disabledByParent}
+          />
           <Box display="flex" justifyContent="flex-end" flexGrow={1}>
             {onClickViewExample && (
               <Box>
@@ -87,7 +114,7 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
                 </ButtonWithLink>
               </Box>
             )}
-            {isEditingEnabled && (
+            {isEditingEnabled && !hasContext && (
               <Box ml="12px">
                 <Tooltip
                   disabled={isEditable}

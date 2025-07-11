@@ -114,19 +114,19 @@ const SurveyPage = ({
   });
 
   const onFormSubmit = async (formValues: FormValues) => {
+    // Go to the project page if this is the last page
+    if (currentPageNumber === lastPageNumber) {
+      clHistory.push({
+        pathname: `/projects/${project?.data.attributes.slug}`,
+      });
+    }
+
     try {
       setShowFormFeedback(false);
       await onSubmit(formValues);
       // Go to the next page
       if (currentPageNumber < lastPageNumber) {
         setCurrentPageNumber(nextPageNumber);
-      }
-
-      // Go to the project page if this is the last page
-      if (currentPageNumber === lastPageNumber) {
-        clHistory.push({
-          pathname: `/projects/${project?.data.attributes.slug}`,
-        });
       }
     } catch (error) {
       // Only show feedback if the form submission failed

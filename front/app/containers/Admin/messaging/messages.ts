@@ -311,4 +311,13 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.editRegion_button_text_multiloc',
     defaultMessage: 'Button text',
   },
+  disabledProjectPhaseEmailMessage: {
+    id: 'app.containers.AdminPage.ProjectTimeline.disabledProjectPhaseEmailMessage',
+    defaultMessage:
+      'This option is currently turned off for all projects on the {automatedEmailsLink} page. As a result, you will not be able to individually toggle this setting for this phase.',
+  },
+  automatedEmailsLinkText: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText',
+    defaultMessage: 'automated emails',
+  },
 });

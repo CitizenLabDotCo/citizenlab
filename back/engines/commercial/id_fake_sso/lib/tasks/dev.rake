@@ -30,8 +30,7 @@ namespace :dev do
         title_multiloc: { en: 'Verified actions test phase' },
         description_multiloc: { en: 'This phase has verified actions enabled' },
         start_at: Time.now - 1.day,
-        participation_method: 'ideation',
-        campaigns_settings: { project_phase_started: true }
+        participation_method: 'ideation'
       )
       phase.ideas.create!(
         title_multiloc: { en: 'Verified actions test idea' },

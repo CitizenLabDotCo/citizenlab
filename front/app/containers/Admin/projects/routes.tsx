@@ -40,6 +40,7 @@ const AdminProjectPermissions = lazy(
   () => import('./project/permissions/Project')
 );
 const AdminPhasePermissions = lazy(() => import('./project/permissions/Phase'));
+const AdminPhaseEmails = lazy(() => import('./project/phaseEmails'));
 const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
 const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
@@ -108,6 +109,7 @@ export enum projectsRoutes {
   projectPhaseExternalSurveyResults = ':phaseId/survey-results',
   projectPhasePolls = ':phaseId/polls',
   projectPhaseAccessRights = ':phaseId/access-rights',
+  projectPhaseEmails = ':phaseId/emails',
   projectPhaseIdeas = ':phaseId/ideas',
   projectPhaseProposals = ':phaseId/proposals',
   projectPhaseIdeaForm = ':phaseId/form',
@@ -166,6 +168,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit?${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/emails`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
 const createAdminProjectsRoutes = () => {
@@ -471,6 +474,14 @@ const createAdminProjectsRoutes = () => {
                 element: (
                   <PageLoading>
                     <AdminPhasePermissions />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseEmails,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseEmails />
                   </PageLoading>
                 ),
               },
