@@ -17,9 +17,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage',
     defaultMessage: 'File updated successfully.',
   },
-  semanticTypeLabel: {
-    id: 'app.containers.AdminPage.ProjectFiles.semanticTypeLabel',
-    defaultMessage: 'File Type',
+  categoryLabel: {
+    id: 'app.containers.AdminPage.ProjectFiles.categoryLabel',
+    defaultMessage: 'Category',
   },
   fileNameCannotContainDot: {
     id: 'app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot',

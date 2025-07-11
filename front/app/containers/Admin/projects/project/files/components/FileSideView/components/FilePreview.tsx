@@ -16,6 +16,7 @@ const FilePreview = ({ file }: Props) => {
   return (
     <Box>
       <Label>{formatMessage(messages.filePreviewLabel)}</Label>
+      {/* TODO: implement file preview. */}
       {file.data.attributes.name}
     </Box>
   );

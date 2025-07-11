@@ -27,27 +27,29 @@ const FileEditForm = ({ file }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: updateFile } = useUpdateFile();
 
-  const schema = object({
-    name: string()
-      .matches(/^[^.]*$/, formatMessage(messages.fileNameCannotContainDot))
-      .required(formatMessage(messages.fileNameRequired)),
-    semantic_type: string()
-      .oneOf(['type_1', 'type_2', 'type_3', 'type_4'])
-      .notRequired(),
-    description_multiloc: object().notRequired(),
-  });
-
+  // Extract the file name and extension from the file object, so we can use it when we save.
   const fileNameWithoutExtension = file.data.attributes.name.split('.')[0];
   const fileExtensionString = file.data.attributes.name
     .split('.')
     .slice(1)
     .join('.');
 
+  // Setup for the file edit form
+  const schema = object({
+    name: string()
+      .matches(/^[^.]*$/, formatMessage(messages.fileNameCannotContainDot))
+      .required(formatMessage(messages.fileNameRequired)),
+    category: string()
+      .oneOf(['type_1', 'type_2', 'type_3', 'type_4'])
+      .notRequired(),
+    description_multiloc: object().notRequired(),
+  });
+
   const methods = useForm({
     mode: 'onBlur',
     defaultValues: {
       name: fileNameWithoutExtension || '',
-      semantic_type: 'type_1', // TODO: Replace with actual default value once semantic types are implemented.
+      category: 'type_1', // TODO: Replace with actual default value once category is implemented.
       description_multiloc: {
         en: 'This is a sample AI-generated description for this file. It contains a few sentences describing the contents of this file. It can also be edited manually by the user.',
       }, // TODO: Replace with actual default value once description is implemented.
@@ -62,7 +64,7 @@ const FileEditForm = ({ file }: Props) => {
         file: {
           // Join the file name back with the extension before persisting.
           name: `${methods.getValues('name')}.${fileExtensionString}`,
-          // TODO: Add semantic type and description_multiloc once implemented
+          // TODO: Add category and description_multiloc once implemented
         },
       });
     } catch (error) {
@@ -82,10 +84,10 @@ const FileEditForm = ({ file }: Props) => {
           />
 
           <Select
-            name="semantic_type"
-            label={formatMessage(messages.semanticTypeLabel)}
+            name="category"
+            label={formatMessage(messages.categoryLabel)}
             options={[
-              // TODO: Replace with actual semantic types once implemented.
+              // TODO: Replace with actual category types once implemented.
               { value: 'type_1', label: 'Type 1' },
               { value: 'type_2', label: 'Type 2' },
               { value: 'type_3', label: 'Type 3' },

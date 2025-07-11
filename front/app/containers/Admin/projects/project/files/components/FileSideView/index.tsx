@@ -34,7 +34,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
       <Box display="flex" p="24px" mt="24px" gap="32px" minHeight="96dvh">
         <Box width="50%">
           <StatusLabel
-            text="SEMANTIC TYPE" // TODO: Replace with actual semantic type once implemented
+            text="CATEGORY" // TODO: Replace with actual category once implemented
             backgroundColor={colors.teal500}
             h="16px"
           />
