@@ -4,7 +4,7 @@ import phasesKeys from './keys';
 import { IPhase } from './types';
 import { fetchPhase } from './usePhase';
 
-type PhasesMiniByIdsReturnType = UseQueryOptions<IPhase>[];
+type PhasesByIdsReturnType = UseQueryOptions<IPhase>[];
 
 const usePhasesByIds = (phaseIds: string[]) => {
   const queries = phaseIds.map((phaseId) => ({
@@ -12,7 +12,7 @@ const usePhasesByIds = (phaseIds: string[]) => {
     queryFn: () => fetchPhase({ phaseId }),
   }));
 
-  return useQueries<PhasesMiniByIdsReturnType>({ queries });
+  return useQueries<PhasesByIdsReturnType>({ queries });
 };
 
 export default usePhasesByIds;
