@@ -40,7 +40,7 @@ const FileEditForm = ({ file }: Props) => {
       .matches(/^[^.]*$/, formatMessage(messages.fileNameCannotContainDot))
       .required(formatMessage(messages.fileNameRequired)),
     category: string()
-      .oneOf(['type_1', 'type_2', 'type_3', 'type_4'])
+      .oneOf(['type_1', 'type_2', 'type_3', 'type_4']) // TODO: Replace with actual category types once implemented.
       .notRequired(),
     description_multiloc: object().notRequired(),
   });
