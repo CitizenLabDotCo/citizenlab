@@ -78,4 +78,74 @@ RSpec.describe Event do
         .to change { event.reload.attendees_count }.by(-1)
     end
   end
+
+  describe 'maximum_attendees validation' do
+    it 'allows nil value' do
+      event = build(:event, maximum_attendees: nil)
+      expect(event).to be_valid
+    end
+
+    it 'allows positive integers' do
+      event = build(:event, maximum_attendees: 10)
+      expect(event).to be_valid
+    end
+
+    it 'does not allow negative integers' do
+      event = build(:event, maximum_attendees: -5)
+      expect(event).to be_invalid
+      expect(event.errors[:maximum_attendees]).to include('must be greater than 0')
+    end
+
+    it 'does not allow zero' do
+      event = build(:event, maximum_attendees: 0)
+      expect(event).to be_invalid
+      expect(event.errors[:maximum_attendees]).to include('must be greater than 0')
+    end
+
+    it 'does not allow non-integer values' do
+      event = build(:event, maximum_attendees: 10.5)
+      expect(event).to be_invalid
+      expect(event.errors[:maximum_attendees]).to include('must be an integer')
+    end
+  end
+
+  describe 'maximum_attendees_greater_than_attendees_count validation' do
+    let(:event) { create(:event, maximum_attendees: nil, attendees_count: 0) }
+
+    it 'is valid when maximum_attendees is nil' do
+      event.attendees_count = 5
+      expect(event).to be_valid
+    end
+
+    it 'is valid when attendees_count is nil' do
+      event.maximum_attendees = 10
+      event.attendees_count = nil
+      expect(event).to be_valid
+    end
+
+    it 'is valid when maximum_attendees equals attendees_count' do
+      event.maximum_attendees = 5
+      event.attendees_count = 5
+      expect(event).to be_valid
+    end
+
+    it 'is valid when maximum_attendees is greater than attendees_count' do
+      event.maximum_attendees = 10
+      event.attendees_count = 5
+      expect(event).to be_valid
+    end
+
+    it 'is invalid when maximum_attendees is less than attendees_count' do
+      event.maximum_attendees = 5
+      event.attendees_count = 10
+      expect(event).to be_invalid
+      expect(event.errors[:maximum_attendees]).to include('must be greater than or equal to the current number of attendees')
+    end
+
+    it 'allows changing maximum_attendees when there are no attendees' do
+      event.maximum_attendees = 1
+      event.attendees_count = 0
+      expect(event).to be_valid
+    end
+  end
 end

@@ -1,13 +1,18 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  attend: {
-    id: 'app.components.EventAttendanceButton.attend',
-    defaultMessage: 'Attend',
+  register: {
+    id: 'app.components.EventAttendanceButton.register',
+    defaultMessage: 'Register',
   },
-  attending: {
-    id: 'app.components.EventAttendanceButton.attending',
-    defaultMessage: 'Attending',
+  registered: {
+    id: 'app.components.EventAttendanceButton.registered',
+    defaultMessage: 'Registered',
+  },
+  maxRegistrationsReached: {
+    id: 'app.components.EventAttendanceButton.maxRegistrationsReached',
+    defaultMessage:
+      'The maximum number of event registrations has been reached. There are no spots left.',
   },
   seeYouThereName: {
     id: 'app.components.EventAttendanceButton.seeYouThereName',

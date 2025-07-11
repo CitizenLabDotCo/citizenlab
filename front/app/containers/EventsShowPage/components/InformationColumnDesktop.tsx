@@ -56,9 +56,7 @@ const InformationColumnDesktop = ({ event, className }: Props) => {
                     <EventAttendanceButton event={event} />
                   </Box>
                 )}
-                {event.attributes.attendees_count > 0 && (
-                  <ParticipantsCount count={event.attributes.attendees_count} />
-                )}
+                <ParticipantsCount event={event} />
                 <Box borderBottom={`solid 1px ${colors.divider}`} />
               </>
 

@@ -1,7 +1,10 @@
 import React, { useState, useCallback } from 'react';
 
-import { Button, colors, Tooltip } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import {
+  Button,
+  ButtonProps,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
 import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
@@ -35,7 +38,6 @@ type EventAttendanceButtonProps = {
 };
 
 const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
-  const theme = useTheme();
   const { data: user } = useAuthUser();
   const { mutate: addFollower } = useAddFollower();
   const { formatMessage } = useIntl();
@@ -44,28 +46,22 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     useState(false);
 
   // Attendance API
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const { data: eventsAttending } = useEventsByUserId(user?.data?.id);
+  const { data: eventsAttending } = useEventsByUserId(user?.data.id);
   const { mutate: addEventAttendance, isLoading: isAddingAttendance } =
     useAddEventAttendance(event.id);
   const { mutate: deleteEventAttendance, isLoading: isRemovingAttendance } =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    useDeleteEventAttendance(event.id, user?.data?.id);
+    useDeleteEventAttendance(event.id, user?.data.id);
 
   // Attendance
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const userAttendingEventObject = eventsAttending?.data?.find(
+  const userAttendingEventObject = eventsAttending?.data.find(
     (eventAttending) => eventAttending.id === event.id
   );
   const userIsAttending = !!userAttendingEventObject;
   const attendanceId =
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const customButtonText = localize(event?.attributes.attend_button_multiloc);
+  const customButtonText = event.attributes.attend_button_multiloc
+    ? localize(event.attributes.attend_button_multiloc)
+    : null;
 
   // Permissions
   const { data: project } = useProjectById(event.relationships.project.data.id);
@@ -91,9 +87,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     project.data.attributes.action_descriptors.attending_event;
 
   const handleClick = () => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (event?.attributes.using_url) {
+    if (event.attributes.using_url) {
       window.open(event.attributes.using_url);
       return;
     }
@@ -115,9 +109,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         ? ({
             type: 'phase',
             action: 'attending_event',
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            id: currentPhase?.id,
+            id: currentPhase.id,
           } as const)
         : ({
             type: 'global',
@@ -142,69 +134,65 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     setConfirmationModalVisible(true);
   };
 
-  const getButtonText = () => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (customButtonText && event?.attributes.using_url) {
-      return customButtonText;
-    } else if (userIsAttending) {
-      return formatMessage(messages.attending);
-    }
-    return formatMessage(messages.attend);
-  };
-
-  const getButtonIcon = () => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (event?.attributes.using_url) {
-      return undefined;
-    } else if (userIsAttending) {
-      return 'check';
-    }
-    return 'plus-circle';
-  };
-
-  const isLoading = isAddingAttendance || isRemovingAttendance;
-
-  // Permissions disabled reasons
-  const buttonDisabled =
+  // Button disabled logic
+  const maxRegistrationsReached =
+    event.attributes.maximum_attendees !== null &&
+    event.attributes.attendees_count >= event.attributes.maximum_attendees;
+  const hasProjectDisabledReason =
     !!disabled_reason && !isFixableByAuthentication(disabled_reason);
+  const buttonDisabled = maxRegistrationsReached || hasProjectDisabledReason;
+
   const permissionDisabledMessageDescriptor = getPermissionsDisabledMessage(
     'attending_event',
     disabled_reason
   );
-  const disabledMessage =
-    permissionDisabledMessageDescriptor &&
-    formatMessage(permissionDisabledMessageDescriptor);
+  const disabledMessage = maxRegistrationsReached
+    ? formatMessage(messages.maxRegistrationsReached)
+    : hasProjectDisabledReason && permissionDisabledMessageDescriptor
+    ? formatMessage(permissionDisabledMessageDescriptor)
+    : null;
+
+  const buttonProps: ButtonProps = {
+    ml: 'auto',
+    width: '100%',
+    iconSize: '20px',
+    onClick: (event) => {
+      event.preventDefault();
+      handleClick();
+    },
+    processing: isAddingAttendance || isRemovingAttendance,
+    className: 'e2e-event-attendance-button',
+  };
 
   return (
     <>
-      <Tooltip
-        disabled={!disabled_reason}
-        placement="bottom"
-        content={disabledMessage}
-        useContentWrapper={false}
-      >
+      {userIsAttending ? (
         <Button
-          ml="auto"
-          width={'100%'}
-          iconPos={userIsAttending ? 'left' : 'right'}
-          icon={getButtonIcon()}
-          iconSize="20px"
-          bgColor={
-            userIsAttending ? colors.success : theme.colors.tenantPrimary
-          }
-          disabled={buttonDisabled}
-          onClick={(event) => {
-            event.preventDefault();
-            handleClick();
-          }}
-          processing={isLoading}
-          className="e2e-event-attendance-button"
+          {...buttonProps}
+          icon={event.attributes.using_url ? undefined : 'check'}
         >
-          {getButtonText()}
+          {customButtonText && event.attributes.using_url
+            ? customButtonText
+            : formatMessage(messages.registered)}
         </Button>
-      </Tooltip>
+      ) : (
+        <Tooltip
+          disabled={!buttonDisabled}
+          placement="bottom"
+          content={disabledMessage}
+          useContentWrapper={false}
+        >
+          <Button
+            {...buttonProps}
+            icon={event.attributes.using_url ? undefined : 'plus-circle'}
+            disabled={buttonDisabled}
+          >
+            {customButtonText && event.attributes.using_url
+              ? customButtonText
+              : formatMessage(messages.register)}
+          </Button>
+        </Tooltip>
+      )}
       <ConfirmationModal
         opened={confirmationModalVisible}
         event={event}
