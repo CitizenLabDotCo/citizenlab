@@ -76,10 +76,10 @@ const CurrentPhase = ({ project }: Props) => {
     if (!currentPhase && !projectStartingInFuture) return;
 
     if (currentPhase) {
-      const phaseEndDate = currentPhase.attributes.end_at;
-      const parsedPhaseEndDate = parseBackendDateString(
-        phaseEndDate ?? undefined
-      );
+      const phaseEndDate = currentPhase.attributes.end_at ?? undefined;
+      const parsedPhaseEndDate = phaseEndDate
+        ? parseBackendDateString(phaseEndDate)
+        : undefined;
       if (!parsedPhaseEndDate) return;
 
       const daysUntilPhaseEnds = differenceInDays(parsedPhaseEndDate, now);
@@ -101,9 +101,9 @@ const CurrentPhase = ({ project }: Props) => {
       }
     }
 
-    const parsedProjectStartDate = parseBackendDateString(
-      first_phase_start_date ?? undefined
-    );
+    const parsedProjectStartDate = first_phase_start_date
+      ? parseBackendDateString(first_phase_start_date)
+      : undefined;
     if (!parsedProjectStartDate) return;
 
     const daysUntilProjectStarts = differenceInDays(

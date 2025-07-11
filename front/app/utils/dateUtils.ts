@@ -313,9 +313,7 @@ export const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 // This function makes sure that the date is always interpreted as midnight in the user's timezone.
 const backendDatestringRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 
-export const parseBackendDateString = (_dateString?: string) => {
-  if (!_dateString) return undefined;
-
+export function parseBackendDateString(_dateString: string) {
   let dateString = _dateString;
 
   // Sometimes, e.g. in the craftjson layouts,
@@ -345,7 +343,7 @@ export const parseBackendDateString = (_dateString?: string) => {
   }
 
   return date;
-};
+}
 
 export const toBackendDateString = (date?: Date) => {
   if (!date) return undefined;

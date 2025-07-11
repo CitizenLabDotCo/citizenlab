@@ -15,7 +15,10 @@ import { participationMethodMessage } from 'containers/Admin/projects/project/ph
 import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
-import { getPeriodRemainingUntil } from 'utils/dateUtils';
+import {
+  getPeriodRemainingUntil,
+  parseBackendDateString,
+} from 'utils/dateUtils';
 
 import messages from './messages';
 
@@ -121,10 +124,10 @@ const ProjectTooltip = ({ ganttItem, projectsById }: ProjectTooltipProps) => {
     appConfiguration?.data.attributes.settings.core.timezone;
 
   const startDate = ganttItem.start
-    ? new Date(ganttItem.start).toLocaleDateString()
+    ? parseBackendDateString(ganttItem.start).toLocaleDateString()
     : undefined;
   const endDate = ganttItem.end
-    ? new Date(ganttItem.end).toLocaleDateString()
+    ? parseBackendDateString(ganttItem.end).toLocaleDateString()
     : undefined;
 
   return (

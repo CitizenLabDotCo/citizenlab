@@ -64,7 +64,7 @@ const Row = ({ project }: Props) => {
   } = project.attributes;
 
   const formatDate = (date: string | null) => {
-    const parsedDate = parseBackendDateString(date ?? undefined);
+    const parsedDate = date ? parseBackendDateString(date) : undefined;
     if (!parsedDate) return '';
     return format(parsedDate, 'P', { locale: getLocale(locale) });
   };
