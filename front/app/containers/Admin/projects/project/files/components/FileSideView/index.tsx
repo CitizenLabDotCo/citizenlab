@@ -11,10 +11,13 @@ import useFileById from 'api/files/useFileById';
 
 import SideModal from 'components/UI/SideModal';
 
+import { useIntl } from 'utils/cl-intl';
+
 import FileAnalysis from './components/FileAnalysis';
 import FileEditForm from './components/FileEditForm';
 import FileMetadata from './components/FileMetadata';
 import FilePreview from './components/FilePreview';
+import messages from './messages';
 
 type Props = {
   opened: boolean;
@@ -23,6 +26,7 @@ type Props = {
 };
 
 const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: file } = useFileById(selectedFileId);
 
   return (
@@ -34,7 +38,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
       <Box display="flex" p="24px" mt="24px" gap="32px" minHeight="96dvh">
         <Box width="50%">
           <StatusLabel
-            text="CATEGORY" // TODO: Replace with actual category once implemented
+            text={formatMessage(messages.categoryLabel)}
             backgroundColor={colors.teal500}
             h="16px"
           />

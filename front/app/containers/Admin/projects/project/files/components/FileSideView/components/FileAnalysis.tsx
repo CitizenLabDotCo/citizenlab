@@ -69,7 +69,7 @@ const FileAnalysis = () => {
       {/* Scrollable insights list */}
       <Box flex="1" overflowY="auto" pr="8px" mb="16px" ref={insightsDivRef}>
         <Text fontSize="m" whiteSpace="pre-wrap">
-          {/* TODO; Replace with real insights */}
+          {/* TODO: Replace with real insights */}
           <Box
             bgColor={colors.grey100}
             borderRadius={stylingConsts.borderRadius}
