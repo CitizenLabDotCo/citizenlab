@@ -2214,7 +2214,6 @@
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "فائل کو حذف کریں۔",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "فائل ڈاؤن لوڈ کریں۔",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "کسی بھی فائل کو یہاں گھسیٹیں اور چھوڑیں یا",
-  "app.containers.AdminPage.ProjectFiles.fileSizeError": "فائلیں {maxSizeMb} MB کی زیادہ سے زیادہ حد سے زیادہ نہیں ہو سکتی ہیں۔",
   "app.containers.AdminPage.ProjectFiles.fileTableHeader": "فائل",
   "app.containers.AdminPage.ProjectFiles.filesRejected": "فائلیں اپ لوڈ کرنے کے قابل نہیں تھیں۔ براہ کرم دوبارہ کوشش کریں۔",
   "app.containers.AdminPage.ProjectFiles.filesSuccessfullyUploaded": "درج ذیل فائلیں کامیابی کے ساتھ اپ لوڈ ہو گئیں: {fileNames}",
