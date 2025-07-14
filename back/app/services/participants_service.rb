@@ -97,6 +97,7 @@ class ParticipantsService
   end
 
   # Returns a hash of project IDs to participant counts for the given projects.
+  # Uses cached data.
   def projects_participants_counts(projects)
     # TODO
     {}
