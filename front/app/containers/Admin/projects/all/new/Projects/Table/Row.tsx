@@ -120,7 +120,13 @@ const Row = ({ project, participantsCount }: Props) => {
       {COLUMN_VISIBILITY.participants && (
         <Td background={colors.grey50} width="1px">
           {participantsCount ? (
-            <Text m="0" fontSize="s" color="primary">
+            <Text
+              m="0"
+              fontSize="s"
+              color="primary"
+              textAlign="right"
+              mr="12px"
+            >
               {participantsCount}
             </Text>
           ) : (

@@ -10,6 +10,7 @@ import {
   colors,
   stylingConsts,
   Spinner,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 
 import useParticipantCounts from 'api/participant_counts/useParticipantCounts';
@@ -58,7 +59,14 @@ const Table = () => {
           <Tr background={colors.grey50}>
             <Th py="16px">{formatMessage(messages.project)}</Th>
             {COLUMN_VISIBILITY.participants && (
-              <Th py="16px">{formatMessage(messages.participants)}</Th>
+              <Th py="16px">
+                <Icon
+                  name="users"
+                  height="16px"
+                  fill={colors.primary}
+                  mr="8px"
+                />
+              </Th>
             )}
             {COLUMN_VISIBILITY.currentPhase && (
               <Th py="16px">{formatMessage(messages.currentPhase)}</Th>
