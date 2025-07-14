@@ -63,4 +63,9 @@ export default defineMessages({
     defaultMessage:
       'You can only upload a maximum of {maxFiles} files at a time.',
   },
+  uploadSummary: {
+    id: 'app.containers.AdminPage.ProjectFiles.uploadSummary',
+    defaultMessage:
+      '{numberOfFiles, plural, one {# file} other {# files}} uploaded successfully, {numberOfErrors, plural, one {# error} other {# errors}}.',
+  },
 });

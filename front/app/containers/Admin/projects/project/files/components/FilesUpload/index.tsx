@@ -84,6 +84,10 @@ const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
     hasStartedUploading &&
     fileList.every(({ status }) => FINISHED_STATUSES.includes(status));
 
+  const countFilesWithStatus = (status: UploadStatus) => {
+    return fileList.filter((file) => file.status === status).length;
+  };
+
   return (
     <>
       {fileList.length > 0 ? (
@@ -134,6 +138,18 @@ const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
               setShowInitialView?.(false);
             }}
           />
+          {finishedUploading && (
+            <Box display="flex" justifyContent="center">
+              <Text m="0px" mt="8px" color="coolGrey600" fontSize="s">
+                {formatMessage(messages.uploadSummary, {
+                  numberOfFiles: countFilesWithStatus('uploaded'),
+                  numberOfErrors:
+                    countFilesWithStatus('error') +
+                    countFilesWithStatus('too_large'),
+                })}
+              </Text>
+            </Box>
+          )}
         </>
       ) : (
         <>

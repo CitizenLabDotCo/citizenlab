@@ -42,4 +42,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.informationPoint3Description',
     defaultMessage: 'E.g. PNG, JPG',
   },
+  retryUpload: {
+    id: 'app.containers.AdminPage.ProjectFiles.retryUpload',
+    defaultMessage: 'Retry upload',
+  },
 });

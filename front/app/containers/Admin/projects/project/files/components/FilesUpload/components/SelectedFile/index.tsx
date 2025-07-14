@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconButton,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { object, string } from 'yup';
@@ -71,8 +76,8 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
   );
 
   // Handle form submission (trigger file upload)
-  const submit = methods.handleSubmit((formData) => {
-    uploadFile(formData.semantic_type);
+  const submit = methods.handleSubmit(async (formData) => {
+    await uploadFile(formData.semantic_type);
   });
 
   // Effect to handle the file upload when the status changes to 'uploading'
@@ -109,6 +114,19 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
             >
               {file.name}
             </Text>
+            {status === 'error' && (
+              <Tooltip content={formatMessage(messages.retryUpload)}>
+                <IconButton
+                  iconName="refresh"
+                  aria-label={formatMessage(messages.retryUpload)}
+                  onClick={() => {
+                    hasStarted.current = false;
+                    onStatusUpdate({ status: 'uploading' });
+                  }}
+                  a11y_buttonActionMessage={formatMessage(messages.retryUpload)}
+                />
+              </Tooltip>
+            )}
           </Box>
           <Box minWidth="200px">
             <form>
