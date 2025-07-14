@@ -11,6 +11,7 @@ class WebApi::V1::EventSerializer < WebApi::V1::BaseSerializer
     :using_url,
     :attend_button_multiloc,
     :attendees_count,
+    :maximum_attendees,
     :start_at,
     :end_at,
     :created_at,
