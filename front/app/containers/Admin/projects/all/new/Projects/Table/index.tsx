@@ -22,6 +22,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import { useParams } from '../utils';
 
+import { COLUMN_VISIBILITY } from './constants';
 import messages from './messages';
 import Row from './Row';
 
@@ -57,11 +58,21 @@ const Table = () => {
         <Thead>
           <Tr background={colors.grey50}>
             <Th py="16px">{formatMessage(messages.project)}</Th>
-            <Th py="16px">{formatMessage(messages.currentPhase)}</Th>
-            <Th py="16px">{formatMessage(messages.projectStart)}</Th>
-            <Th py="16px">{formatMessage(messages.projectEnd)}</Th>
-            <Th py="16px">{formatMessage(messages.status)}</Th>
-            <Th py="16px">{formatMessage(messages.visibility)}</Th>
+            {COLUMN_VISIBILITY.currentPhase && (
+              <Th py="16px">{formatMessage(messages.currentPhase)}</Th>
+            )}
+            {COLUMN_VISIBILITY.projectStart && (
+              <Th py="16px">{formatMessage(messages.projectStart)}</Th>
+            )}
+            {COLUMN_VISIBILITY.projectEnd && (
+              <Th py="16px">{formatMessage(messages.projectEnd)}</Th>
+            )}
+            {COLUMN_VISIBILITY.status && (
+              <Th py="16px">{formatMessage(messages.status)}</Th>
+            )}
+            {COLUMN_VISIBILITY.visibility && (
+              <Th py="16px">{formatMessage(messages.visibility)}</Th>
+            )}
             <Th />
           </Tr>
         </Thead>

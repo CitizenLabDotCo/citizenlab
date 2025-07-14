@@ -30,6 +30,7 @@ import { parseBackendDateString } from 'utils/dateUtils';
 import { PUBLICATION_STATUS_LABELS } from '../../constants';
 import { VISIBILITY_LABELS } from '../constants';
 
+import { COLUMN_VISIBILITY } from './constants';
 import CurrentPhase from './CurrentPhase';
 
 const StyledTd = styled(Td)`
@@ -115,29 +116,39 @@ const Row = ({ project }: Props) => {
           </Box>
         )}
       </StyledTd>
-      <Td background={colors.grey50} width="140px">
-        <CurrentPhase project={project} />
-      </Td>
-      <Td background={colors.grey50} width="100px">
-        <Text m="0" fontSize="s" color="primary">
-          {formatDate(first_phase_start_date)}
-        </Text>
-      </Td>
-      <Td background={colors.grey50} width="100px">
-        <Text m="0" fontSize="s" color="primary">
-          {formatDate(last_phase_end_date)}
-        </Text>
-      </Td>
-      <Td background={colors.grey50} width="100px">
-        <Text m="0" fontSize="s" color="primary">
-          {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
-        </Text>
-      </Td>
-      <Td background={colors.grey50} width="100px">
-        <Text m="0" fontSize="s" color="primary">
-          {formatMessage(VISIBILITY_LABELS[visible_to])}
-        </Text>
-      </Td>
+      {COLUMN_VISIBILITY.currentPhase && (
+        <Td background={colors.grey50} width="140px">
+          <CurrentPhase project={project} />
+        </Td>
+      )}
+      {COLUMN_VISIBILITY.projectStart && (
+        <Td background={colors.grey50} width="100px">
+          <Text m="0" fontSize="s" color="primary">
+            {formatDate(first_phase_start_date)}
+          </Text>
+        </Td>
+      )}
+      {COLUMN_VISIBILITY.projectEnd && (
+        <Td background={colors.grey50} width="100px">
+          <Text m="0" fontSize="s" color="primary">
+            {formatDate(last_phase_end_date)}
+          </Text>
+        </Td>
+      )}
+      {COLUMN_VISIBILITY.status && (
+        <Td background={colors.grey50} width="100px">
+          <Text m="0" fontSize="s" color="primary">
+            {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
+          </Text>
+        </Td>
+      )}
+      {COLUMN_VISIBILITY.visibility && (
+        <Td background={colors.grey50} width="100px">
+          <Text m="0" fontSize="s" color="primary">
+            {formatMessage(VISIBILITY_LABELS[visible_to])}
+          </Text>
+        </Td>
+      )}
       <Td background={colors.grey50} width="50px">
         <Box mr="12px">
           <ProjectMoreActionsMenu
