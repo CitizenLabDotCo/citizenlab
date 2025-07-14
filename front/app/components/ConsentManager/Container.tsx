@@ -30,16 +30,17 @@ const Container = ({
   reject,
   saveConsent,
 }: Props) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isPreferencesModalOpened, setIsPreferencesModalOpened] =
+    useState(false);
 
   const openDialog = () => {
     onToggleModal(false);
-    setIsDialogOpen(true);
+    setIsPreferencesModalOpened(true);
   };
 
   const closeDialog = () => {
     onToggleModal(true);
-    setIsDialogOpen(false);
+    setIsPreferencesModalOpened(false);
   };
 
   useObserveEvent('openConsentManager', openDialog);
@@ -47,19 +48,19 @@ const Container = ({
   const handleSave = (e: FormEvent) => {
     e.preventDefault();
 
-    setIsDialogOpen(false);
+    setIsPreferencesModalOpened(false);
     saveConsent();
   };
 
   const handleCancel = () => {
     resetPreferences();
-    setIsDialogOpen(false);
+    setIsPreferencesModalOpened(false);
   };
 
   return (
     <>
       <PreferencesModal
-        opened={isDialogOpen}
+        opened={isPreferencesModalOpened}
         categorizedDestinations={categorizedDestinations}
         preferences={preferences}
         handleCancel={handleCancel}
