@@ -26,9 +26,9 @@ module EmailCampaigns
 
     def extra_mailgun_variables(command)
       if !command[:delivery_id]
-        # This can be removed after a month or so. It seems like the delivery_id is always included now,
-        # but somehow the Mailgun header is also called when the delivery_id is not set yet. But if the
-        # error in MailgunEventsController is not raised, then all should be fine.
+        # This can be removed in August 2025. It seems like the delivery_id is always included now,
+        # but somehow the Mailgun header is also called when the delivery_id is not set yet. But if
+        # the error in MailgunEventsController is not raised, then all should be fine.
         ErrorReporter.report_msg(
           'No delivery ID in Mailgun variables!',
           extra: { command: command, campaign: self }

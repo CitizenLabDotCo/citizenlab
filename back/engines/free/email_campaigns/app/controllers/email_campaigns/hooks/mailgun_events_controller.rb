@@ -38,8 +38,8 @@ module EmailCampaigns
           head :not_acceptable
         end
       else
-        # If this error is never reported to Sentry, we can remove this after a month or so,
-        # together with the ErrorReporter call in extra_mailgun_variables in the Trackable concern.
+        # If this error is never reported to Sentry, we can remove this in August 2025, together
+        # with the ErrorReporter call in extra_mailgun_variables in the Trackable concern.
         ErrorReporter.report_msg(
           'No delivery found for delivery ID passed in Mailgun hook!',
           extra: { user_variables: params[:'event-data'][:'user-variables'] }
