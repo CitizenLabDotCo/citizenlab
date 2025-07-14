@@ -353,8 +353,10 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = policy_scope(Project)
       .where(id: params[:project_ids])
 
+    authorize projects, :participant_counts?
+
     participant_counts = ParticipantsService.new
-      .participant_counts_for_projects(projects)
+      .projects_participants_counts(projects)
 
     render json: raw_json({ participant_counts: participant_counts })
   end
