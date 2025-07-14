@@ -199,9 +199,9 @@ describe ParticipantsService do
       create(:idea, project: project2, author: pp1) # 1
       create(:idea, project: project2, author: pp2) # 2
       create(:idea, project: project2, author: pp3) # 3
-      create(:idea, project: project2, author: pp1) # duplicate of 1 
+      create(:idea, project: project2, author: pp1) # duplicate of 1
 
-      expect(service.projects_participants_counts([project1, project2])).to eq ({
+      expect(service.projects_participants_counts([project1, project2])).to eq({
         project1.id => 8,
         project2.id => 3
       })
