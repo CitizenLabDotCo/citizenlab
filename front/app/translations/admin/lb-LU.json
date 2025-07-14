@@ -1726,7 +1726,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "Cancel",
   "app.containers.AdminPage.Project.confirmation.title": "Are you sure you want to reset all participation data?",
   "app.containers.AdminPage.Project.confirmation.yes": "Reset all participation data",
-  "app.containers.AdminPage.Project.data.descriptionText": "Clear ideas, comments, votes, reactions, survey responses, poll responses, volunteers and event attendees. In the case of voting phases, this action will clear the votes but not the options.",
+  "app.containers.AdminPage.Project.data.descriptionText": "Kloer Iddien, Kommentarer, Stëmmen, Reaktiounen, Äntwerten op Ëmfroen, Äntwerten op Ëmfroen, Fräiwëlleger an Eventdeelhueler. Am Fall vun Ofstëmmungsphasen läscht dës Aktioun d'Stëmmen, awer net d'Optiounen.",
   "app.containers.AdminPage.Project.data.title": "Clear all participation data from this project",
   "app.containers.AdminPage.Project.resetParticipationData": "Reset all participation data",
   "app.containers.AdminPage.Project.settings.accessRights": "Zougang Rechter",
