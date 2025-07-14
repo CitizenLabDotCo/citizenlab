@@ -100,8 +100,10 @@ module BulkImportIdeas::Importers
     def add_published_at(idea_row, idea_attributes)
       return if idea_row[:published_at].blank?
 
-      if idea_row[:published_at].acts_like? :date
-        idea_attributes[:published_at] = idea_row[:published_at]
+      # TODO: Make this whole method more robust
+      published_at = DateTime.parse(idea_row[:published_at])
+      if published_at.acts_like? :date
+        idea_attributes[:published_at] = published_at
         return
       end
 
