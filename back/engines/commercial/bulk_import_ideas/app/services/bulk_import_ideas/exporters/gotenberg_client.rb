@@ -10,17 +10,12 @@ module BulkImportIdeas::Exporters
     def render_to_pdf(html)
       return false unless up?
 
-      # Create a file with explicit UTF-8 encoding
-      html_file = Tempfile.new(['input', '.html'])
-      html_file.write("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>#{html}</body></html>")
-      html_file.rewind
-
       payload = {
         'preferCssPageSize' => true,
         'generateDocumentOutline' => true, 
         'generateTaggedPdf' => true,
         'index.html' => Faraday::Multipart::FilePart.new(
-          html_file.path,
+          StringIO.new(html),
           'text/html; charset=utf-8',
           'index.html'
         )
@@ -32,13 +27,13 @@ module BulkImportIdeas::Exporters
         f.adapter :net_http
       end
       response = conn.post(url, payload)
-      html_file.close
-      html_file.unlink
 
       output_pdf = Tempfile.new(['gotenberg', '.pdf'])
       output_pdf.binmode
       output_pdf.write(response.body)
       output_pdf.rewind
+      
+      output_pdf
     end
 
     private
