@@ -21,13 +21,13 @@ import { FileWithMeta, UploadStatus } from './types';
 
 type Props = {
   setModalOpen?: (open: boolean) => void;
-  setOnInitialEmptyView?: (value: boolean) => void;
+  setShowInitialView?: (value: boolean) => void;
 };
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_FILES = 35;
 
-const FilesUpload = ({ setModalOpen, setOnInitialEmptyView }: Props) => {
+const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
 
@@ -68,6 +68,7 @@ const FilesUpload = ({ setModalOpen, setOnInitialEmptyView }: Props) => {
 
   const handleUpload = () => {
     setHasStartedUploading(true);
+    setShowInitialView?.(true);
     // Update the status of all queued files to 'uploading',
     // which will trigger the upload process in the SelectedFile component.
     setFileList((prev) =>
@@ -130,7 +131,7 @@ const FilesUpload = ({ setModalOpen, setOnInitialEmptyView }: Props) => {
               setFileList([]);
               setHasStartedUploading(false);
               setModalOpen?.(false);
-              setOnInitialEmptyView?.(false);
+              setShowInitialView?.(false);
             }}
           />
         </>
