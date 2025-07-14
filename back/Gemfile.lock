@@ -588,8 +588,7 @@ GEM
     distribution (0.8.0)
     docile (1.4.0)
     domain_name (0.6.20240107)
-    drb (2.2.0)
-      ruby2_keywords
+    drb (2.2.3)
     easy_translate (0.5.1)
       thread
       thread_safe
