@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Toggle,
@@ -19,14 +19,12 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import CampaignDescription from './CampaignDescription';
-import PhaseEmailSettingsModal from './PhaseEmailSettingsModal';
 import { CampaignData } from './types';
 
 type Props = {
   campaign: CampaignData;
   phaseId?: string;
   projectId?: string;
-  globalEnabled?: boolean;
   onClickViewExample?: () => void;
 };
 
@@ -34,12 +32,10 @@ const CampaignRow = ({
   campaign,
   phaseId,
   projectId,
-  globalEnabled,
   onClickViewExample,
 }: Props) => {
   const hasContext = !!(phaseId || projectId);
   const { formatMessage } = useIntl();
-  const [isNewPhaseModalOpen, setIsNewPhaseModalOpen] = useState(false);
   const { mutate: addCampaign } = useAddCampaign();
   const { mutate: updateCampaign } = useUpdateCampaign();
   const toggleEnabled = () => {
@@ -61,80 +57,52 @@ const CampaignRow = ({
       });
     }
   };
-  const closeNewPhaseModal = () => {
-    setIsNewPhaseModalOpen(false);
-  };
-  const handleOnEnabledToggle = () => {
-    // Not abstracting yet since it is one scenario for now. If we need more, we can abstract it to handle more confirmations
-    if (
-      campaign.attributes.campaign_name === 'project_phase_started' &&
-      !hasContext
-    ) {
-      setIsNewPhaseModalOpen(true);
-    } else {
-      toggleEnabled();
-    }
-  };
 
   const isEditingEnabled = useFeatureFlag({
     name: 'customised_automated_emails',
   });
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
 
-  const disabledByParent = hasContext && !globalEnabled;
-
   return (
-    <>
-      <PhaseEmailSettingsModal
-        open={isNewPhaseModalOpen}
-        close={closeNewPhaseModal}
-        onConfirm={toggleEnabled}
-        campaign={campaign}
-      />
-      <ListItem p="8px 0">
-        <Box display="flex" alignItems="center">
-          <Toggle
-            disabled={disabledByParent}
-            checked={!!campaign.attributes.enabled}
-            onChange={handleOnEnabledToggle}
-          />
-          <CampaignDescription
-            campaign={campaign}
-            disabledByParent={disabledByParent}
-          />
-          <Box display="flex" justifyContent="flex-end" flexGrow={1}>
-            {onClickViewExample && (
-              <Box>
+    <ListItem p="8px 0">
+      <Box display="flex" alignItems="center">
+        <Toggle
+          checked={!!campaign.attributes.enabled}
+          onChange={toggleEnabled}
+        />
+        <CampaignDescription campaign={campaign} />
+        <Box display="flex" justifyContent="flex-end" flexGrow={1}>
+          {onClickViewExample && (
+            <Box>
+              <ButtonWithLink
+                icon="eye"
+                onClick={onClickViewExample}
+                buttonStyle="secondary-outlined"
+              >
+                <FormattedMessage {...messages.viewExample} />
+              </ButtonWithLink>
+            </Box>
+          )}
+          {isEditingEnabled && !hasContext && (
+            <Box ml="12px">
+              <Tooltip
+                disabled={isEditable}
+                content={formatMessage(messages.editDisabledTooltip)}
+              >
                 <ButtonWithLink
-                  icon="eye"
-                  onClick={onClickViewExample}
+                  icon="edit"
+                  linkTo={`/admin/messaging/emails/automated/${campaign.id}/edit`}
+                  disabled={!isEditable}
                   buttonStyle="secondary-outlined"
                 >
-                  <FormattedMessage {...messages.viewExample} />
+                  <FormattedMessage {...messages.editButtonLabel} />
                 </ButtonWithLink>
-              </Box>
-            )}
-            {isEditingEnabled && !hasContext && (
-              <Box ml="12px">
-                <Tooltip
-                  disabled={isEditable}
-                  content={formatMessage(messages.editDisabledTooltip)}
-                >
-                  <ButtonWithLink
-                    icon="edit"
-                    linkTo={`/admin/messaging/emails/automated/${campaign.id}/edit`}
-                    disabled={!isEditable}
-                    buttonStyle="secondary-outlined"
-                  >
-                    <FormattedMessage {...messages.editButtonLabel} />
-                  </ButtonWithLink>
-                </Tooltip>
-              </Box>
-            )}
-          </Box>
+              </Tooltip>
+            </Box>
+          )}
         </Box>
-      </ListItem>
-    </>
+      </Box>
+    </ListItem>
   );
 };
 

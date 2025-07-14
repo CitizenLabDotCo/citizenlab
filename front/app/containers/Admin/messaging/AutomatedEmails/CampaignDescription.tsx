@@ -8,8 +8,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
@@ -17,37 +16,15 @@ import { CampaignData } from './types';
 
 interface Props {
   campaign: CampaignData;
-  disabledByParent: boolean;
 }
 
-const CampaignDescription = ({ campaign, disabledByParent = false }: Props) => {
+const CampaignDescription = ({ campaign }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Box display="flex" flexDirection="column" ml="20px">
-      <Box display="flex">
-        <Text color="grey800" m="0">
-          {campaign.campaign_description}
-        </Text>
-        {disabledByParent && (
-          <IconTooltip
-            placement="top"
-            ml="4px"
-            mt="2px"
-            content={
-              <FormattedMessage
-                {...messages.disabledProjectPhaseEmailMessage}
-                values={{
-                  automatedEmailsLink: (
-                    <Link to="/admin/messaging/emails/automated">
-                      <FormattedMessage {...messages.automatedEmailsLinkText} />
-                    </Link>
-                  ),
-                }}
-              />
-            }
-          />
-        )}
-      </Box>
+      <Text color="grey800" m="0">
+        {campaign.campaign_description}
+      </Text>
       {campaign.recipient_segment &&
         (campaign.trigger || campaign.schedule) && (
           <Box display="flex" alignItems="center">

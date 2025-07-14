@@ -34,14 +34,14 @@ const AdminPhaseEmailWrapper = () => {
       </Text>
       {supportedCampaignTypes.length > 0 &&
         supportedCampaignTypes.map((campaignType) => {
-          const contextCampaign = contextCampaigns?.find(
+          let campaign = contextCampaigns?.find(
             (campaign) => campaign.attributes.campaign_name === campaignType
           );
-          const globalCampaign = globalCampaigns?.find(
-            (campaign) => campaign.attributes.campaign_name === campaignType
-          );
-          const campaign = contextCampaign || globalCampaign;
-          const globalEnabled = globalCampaign?.attributes.enabled;
+          if (!campaign) {
+            campaign = globalCampaigns?.find(
+              (campaign) => campaign.attributes.campaign_name === campaignType
+            );
+          }
 
           return (
             campaign && (
@@ -49,7 +49,6 @@ const AdminPhaseEmailWrapper = () => {
                 campaign={stringifyCampaignFields(campaign, localize)}
                 key={campaign.id}
                 phaseId={phaseId}
-                globalEnabled={globalEnabled}
                 // onClickViewExample={onClickViewExample(campaign.id)}
               />
             )
