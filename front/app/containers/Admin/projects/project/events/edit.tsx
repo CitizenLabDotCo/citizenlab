@@ -302,6 +302,7 @@ const AdminProjectEventEdit = () => {
   const handleOnImageAdd = (imageFiles: UploadFile[]) => {
     setSubmitState('enabled');
     setUploadedImage(imageFiles[0]);
+    setCroppedImgBase64(imageFiles[0].base64);
   };
 
   const handleOnImageRemove = () => {

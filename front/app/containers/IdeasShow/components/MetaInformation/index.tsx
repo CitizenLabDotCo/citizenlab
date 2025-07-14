@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useCustomFields from 'api/custom_fields/useCustomFields';
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
@@ -10,7 +10,6 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useLocale from 'hooks/useLocale';
 
 import { isNilOrError } from 'utils/helperUtils';
-import { isFieldEnabled } from 'utils/projectUtils';
 
 import Attachments from './Attachments';
 import IdeaTopics from './IdeaTopics';
@@ -44,39 +43,32 @@ const MetaInformation = ({
   className,
 }: Props) => {
   const locale = useLocale();
-  const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
-    projectId,
-    inputId: ideaId,
-  });
+
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
 
   const participationContext = getCurrentPhase(phases?.data);
 
-  if (!isNilOrError(locale) && ideaCustomFieldsSchema && idea) {
+  const { data: customFields } = useCustomFields({ projectId });
+
+  const topicsEnabled = customFields?.find(
+    (field) => field.key === 'topic_ids'
+  )?.enabled;
+
+  const locationEnabled = customFields?.find(
+    (field) => field.key === 'location_description'
+  )?.enabled;
+
+  const attachmentsEnabled = customFields?.find(
+    (field) => field.key === 'idea_files_attributes'
+  )?.enabled;
+
+  if (!isNilOrError(locale) && idea) {
     const { anonymous } = idea.data.attributes;
     const hideAuthor =
       participationContext?.attributes.participation_method === 'voting';
     const isProposal =
       participationContext?.attributes.participation_method === 'proposals';
-
-    const topicsEnabled = isFieldEnabled(
-      'topic_ids',
-      ideaCustomFieldsSchema.data.attributes,
-      locale
-    );
-
-    const locationEnabled = isFieldEnabled(
-      'location_description',
-      ideaCustomFieldsSchema.data.attributes,
-      locale
-    );
-
-    const attachmentsEnabled = isFieldEnabled(
-      'idea_files_attributes',
-      ideaCustomFieldsSchema.data.attributes,
-      locale
-    );
 
     return (
       <Container className={`${className || ''} ${compact ? 'compact' : ''}`}>

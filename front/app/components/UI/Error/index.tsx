@@ -126,7 +126,7 @@ const Bullet = styled.span`
   margin-right: 8px;
 `;
 
-export interface Props {
+export interface ErrorProps {
   marginTop?: string;
   marginBottom?: string;
   showIcon?: boolean;
@@ -220,7 +220,7 @@ export const getApiErrorValues = (
   return payload ? { ...payload, ...values } : values;
 };
 
-const Error = (props: Props) => {
+const Error = (props: ErrorProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
 
