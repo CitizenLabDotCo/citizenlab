@@ -6,7 +6,7 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import FileUploadWithDropzone from './FileUploadWithDropzone';
+import FilesUpload from './FilesUpload';
 import messages from './messages';
 
 const UploadFileButtonWithModal = () => {
@@ -19,16 +19,15 @@ const UploadFileButtonWithModal = () => {
         buttonStyle="admin-dark"
         icon="plus-circle"
         iconSize="24px"
-        text={formatMessage(messages.addFile)}
+        text={formatMessage(messages.addFiles)}
         onClick={() => setModalOpen(true)}
       />
       <Modal
         opened={modalOpen}
         close={() => setModalOpen(false)}
-        width={'510px'}
         padding={'40px'}
       >
-        <FileUploadWithDropzone />
+        <FilesUpload setModalOpen={setModalOpen} />
       </Modal>
     </>
   );

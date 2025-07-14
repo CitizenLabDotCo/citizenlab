@@ -29,7 +29,7 @@ type FileSortOptions =
 
 export interface QueryParameters {
   uploader_id?: string;
-  projects?: string[];
+  project?: string[];
   sort?: FileSortOptions;
   search?: string;
   deleted?: boolean;
@@ -41,7 +41,7 @@ export interface GetFilesParameters {
   pageNumber?: number;
   pageSize?: number;
   uploaderId?: string;
-  projects?: string[];
+  project?: string[];
   sort?: FileSortOptions;
   search?: string;
   deleted?: boolean;

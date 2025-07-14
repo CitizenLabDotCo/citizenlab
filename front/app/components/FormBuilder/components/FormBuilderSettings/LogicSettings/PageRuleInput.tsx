@@ -10,7 +10,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
+import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+  LogicType,
+} from 'api/custom_fields/types';
 
 import { getTitleFromPageId } from 'components/FormBuilder/components/FormFields/FormField/Logic/utils';
 import { getFieldNumbers } from 'components/FormBuilder/components/utils';
@@ -23,21 +27,17 @@ import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
 
-import { PageListType } from './index';
+import usePages from './usePages';
 
 type RuleInputProps = {
-  name: string;
-  fieldId: string;
+  field: IFlatCustomFieldWithIndex;
   validationError?: string;
-  pages: PageListType;
 };
 
-export const PageRuleInput = ({
-  pages,
-  name,
-  fieldId,
-  validationError,
-}: RuleInputProps) => {
+export const PageRuleInput = ({ field, validationError }: RuleInputProps) => {
+  const fieldId = field.temp_id || field.id;
+  const name = `customFields.${field.index}.logic`;
+  const pages = usePages(field);
   const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
   const logic = watch(name) as LogicType | undefined;
