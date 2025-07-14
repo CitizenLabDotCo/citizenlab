@@ -96,6 +96,12 @@ class ParticipantsService
       .count
   end
 
+  # Returns a hash of project IDs to participant counts for the given projects.
+  def projects_participants_counts(projects)
+    # TODO
+    {}
+  end
+
   def clear_project_participants_count_cache(project)
     Rails.cache.delete("#{project.cache_key}/participant_count")
   end
