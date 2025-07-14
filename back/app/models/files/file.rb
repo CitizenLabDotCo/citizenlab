@@ -27,6 +27,46 @@
 #  fk_rails_...  (uploader_id => users.id)
 #
 module Files
+  # The Files::File model represents uploaded files in the system.
+  #
+  # = File categories
+  #
+  # This model implements a semantic typology for files through the +category+ attribute,
+  # allowing users to categorize files based on their content type or purpose.
+  #
+  #   file = Files::File.new(..., category: :meeting)
+  #   file.meeting?     # => true
+  #   file.category     # => 'meeting'
+  #
+  # == Available Categories
+  #
+  # [+meeting+]
+  #   The summary or minutes from an in-person meeting.
+  #
+  # [+interview+]
+  #   The summary or notes from a 1-on-1 interview.
+  #
+  # [+strategic_plan+]
+  #   An informational document that outlines how a project will achieve its goals
+  #   and objectives. These files typically include project roadmaps, implementation
+  #   strategies, resource allocation plans, timelines, and long-term vision statements.
+  #
+  # [+info_sheet+]
+  #   An informational document to give more context about a topic, project, or process.
+  #   These files serve as reference materials, fact sheets, or explanatory documents
+  #   that provide background information and additional details.
+  #
+  # [+policy+]
+  #   An official document with a policy proposal or established guidelines. These files
+  #   contain formal policies, regulations, procedures, or proposed changes to existing
+  #   governance structures and operational frameworks.
+  #
+  # [+report+]
+  #   A general writeup to share results or summarize a process.
+  #
+  # [+other+]
+  #   A catch-all category for files that don't fit into the specific categories above.
+  #
   class File < ApplicationRecord
     include PgSearch::Model
 
