@@ -32,7 +32,7 @@ module BulkImportIdeas::Exporters
       output_pdf.binmode
       output_pdf.write(response.body)
       output_pdf.rewind
-      
+
       output_pdf
     end
 
