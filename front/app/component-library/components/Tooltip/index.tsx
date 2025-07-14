@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 // eslint-disable-next-line no-restricted-imports
 import Tippy from '@tippyjs/react';
+import { followCursor } from 'tippy.js';
 
 import Box from '../Box';
 
@@ -62,6 +63,7 @@ const PLUGINS = [
       };
     },
   },
+  followCursor,
 ];
 
 const Tooltip = ({

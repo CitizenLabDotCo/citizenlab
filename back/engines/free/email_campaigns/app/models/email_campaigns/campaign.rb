@@ -182,7 +182,7 @@ module EmailCampaigns
       false
     end
 
-    def extra_mailgun_variables
+    def extra_mailgun_variables(_command)
       super || {}
     end
 

@@ -142,7 +142,7 @@ const CTAButton = ({ phase, project }: Props) => {
   );
 
   return (
-    <>
+    <Box width="100%">
       <Tooltip
         disabled={!disabledExplanation}
         placement="bottom"
@@ -180,7 +180,7 @@ const CTAButton = ({ phase, project }: Props) => {
           <FormattedMessage {...messages.budgetSubmitSuccess} />
         )}
       </ScreenReaderOnly>
-    </>
+    </Box>
   );
 };
 

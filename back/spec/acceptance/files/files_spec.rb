@@ -11,6 +11,7 @@ resource 'Files' do
   get 'web_api/v1/files' do
     parameter :uploader, 'Filter files by uploader user ID(s)', type: %i[string array]
     parameter :project, 'Filter files by project ID(s)', type: %i[string array]
+    parameter :search, 'Filter files by searching in filename'
 
     parameter :sort, <<~SORT_DESC.squish, required: false
       Sort order. Comma-separated list of attributes. Prefix with "-" to sort in descending order.
@@ -19,8 +20,8 @@ resource 'Files' do
 
     let_it_be(:files) do
       [
-        create(:file, name: 'a.pdf', created_at: 2.days.ago),
-        create(:file, name: 'b.pdf', created_at: 1.day.ago)
+        create(:file, name: 'report-a.pdf', created_at: 2.days.ago),
+        create(:file, name: 'report-b.pdf', created_at: 1.day.ago)
       ]
     end
 
@@ -64,6 +65,17 @@ resource 'Files' do
         end
       end
 
+      describe 'when searching filenames' do
+        example 'Search for files by filename', document: false do
+          file = create(:file, name: 'very-specific-filename.pdf')
+
+          do_request(search: 'very-specific-filename')
+
+          assert_status 200
+          expect(response_ids).to eq [file.id]
+        end
+      end
+
       describe 'sorting' do
         example 'Lists files sorted by creation date in descending order by default', document: false do
           do_request
@@ -75,7 +87,8 @@ resource 'Files' do
           do_request sort: 'name,-created_at'
           expect(response_ids).to eq(files.map(&:id))
 
-          new_file = create(:file, name: 'a.pdf')
+          # Same name as an existing file, but created later.
+          new_file = create(:file, name: 'report-a.pdf')
           do_request sort: '-name,created_at'
 
           expected_files = [files.last, files.first, new_file]

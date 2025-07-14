@@ -257,28 +257,30 @@ const AssignMultipleVotesInput = ({
   }
 
   return (
-    <Tooltip
-      disabled={!plusButtonDisabledExplanation}
-      placement="bottom"
-      content={plusButtonDisabledExplanation}
-    >
-      <div>
-        <Button
-          buttonStyle="primary-outlined"
-          disabled={!!plusButtonDisabledExplanation}
-          processing={isProcessing}
-          className="e2e-multiple-votes-button"
-          icon="vote-ballot"
-          width="100%"
-          onClick={onAdd}
-          opacityDisabled="0.8"
-          textDisabledColor={colors.coolGrey700}
-          borderDisabledColor={colors.coolGrey700}
-        >
-          {formatMessage(messages.select)}
-        </Button>
-      </div>
-    </Tooltip>
+    <Box w="100%">
+      <Tooltip
+        disabled={!plusButtonDisabledExplanation}
+        placement="bottom"
+        content={plusButtonDisabledExplanation}
+      >
+        <div>
+          <Button
+            buttonStyle="primary-outlined"
+            disabled={!!plusButtonDisabledExplanation}
+            processing={isProcessing}
+            className="e2e-multiple-votes-button"
+            icon="vote-ballot"
+            width="100%"
+            onClick={onAdd}
+            opacityDisabled="0.8"
+            textDisabledColor={colors.coolGrey700}
+            borderDisabledColor={colors.coolGrey700}
+          >
+            {formatMessage(messages.select)}
+          </Button>
+        </div>
+      </Tooltip>
+    </Box>
   );
 };
 

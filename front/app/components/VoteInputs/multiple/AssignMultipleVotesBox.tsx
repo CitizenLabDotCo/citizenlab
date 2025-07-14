@@ -13,7 +13,7 @@ import { isNil } from 'utils/helperUtils';
 import messages from '../_shared/messages';
 import WhiteBox from '../_shared/WhiteBox';
 
-import AssignMultipleVotesControl from './AssignMultipleVotesInput';
+import AssignMultipleVotesInput from './AssignMultipleVotesInput';
 
 interface Props {
   ideaId: string;
@@ -41,7 +41,7 @@ const AssignMultipleVotesBox = memo(({ ideaId, phase }: Props) => {
 
   return (
     <WhiteBox>
-      <AssignMultipleVotesControl ideaId={ideaId} phase={phase} onIdeaPage />
+      <AssignMultipleVotesInput ideaId={ideaId} phase={phase} onIdeaPage />
       <Box
         color={colors.grey700}
         mt="8px"
