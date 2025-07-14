@@ -12,7 +12,7 @@ module BulkImportIdeas::Exporters
 
       payload = {
         'preferCssPageSize' => true,
-        'generateDocumentOutline' => true, 
+        'generateDocumentOutline' => true,
         'generateTaggedPdf' => true,
         'index.html' => Faraday::Multipart::FilePart.new(
           StringIO.new(html),
