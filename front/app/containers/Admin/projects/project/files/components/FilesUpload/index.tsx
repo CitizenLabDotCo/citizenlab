@@ -24,6 +24,7 @@ type Props = {
   setShowInitialView?: (value: boolean) => void;
 };
 
+const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_FILES = 35;
 
@@ -68,9 +69,13 @@ const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
 
   const handleUpload = () => {
     setHasStartedUploading(true);
+
+    // If uploading for the first time, this keeps the initial view visible
+    // until the upload is complete and the user clicks "Done".
     setShowInitialView?.(true);
-    // Update the status of all queued files to 'uploading',
-    // which will trigger the upload process in the SelectedFile component.
+
+    // Update the status of all queued files to 'uploading'.
+    // This then triggers the upload process to start in the "SelectedFile" components.
     setFileList((prev) =>
       prev.map((file) =>
         file.status === 'queued' ? { ...file, status: 'uploading' } : file
@@ -78,12 +83,11 @@ const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
     );
   };
 
-  const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
-
   const finishedUploading =
     hasStartedUploading &&
     fileList.every(({ status }) => FINISHED_STATUSES.includes(status));
 
+  // Function to count files with a specific status
   const countFilesWithStatus = (status: UploadStatus) => {
     return fileList.filter((file) => file.status === status).length;
   };
@@ -135,9 +139,11 @@ const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
               setFileList([]);
               setHasStartedUploading(false);
               setModalOpen?.(false);
+              // If we're on the initial view, this will close it and open the full file list view.
               setShowInitialView?.(false);
             }}
           />
+          {/* Upload summary (# uploaded and # errors) */}
           {finishedUploading && (
             <Box display="flex" justifyContent="center">
               <Text m="0px" mt="8px" color="coolGrey600" fontSize="s">

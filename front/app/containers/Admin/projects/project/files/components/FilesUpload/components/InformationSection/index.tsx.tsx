@@ -29,6 +29,7 @@ const informationPoints = [
   },
 ];
 
+// InformationSection component displays a section with information about file uploading.
 const InformationSection = () => {
   return (
     <Box

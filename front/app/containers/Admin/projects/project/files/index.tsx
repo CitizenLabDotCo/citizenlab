@@ -15,6 +15,7 @@ const ProjectFilesTab = () => {
 
   const [showInitialView, setShowInitialView] = useState<boolean>(false);
 
+  // Try to fetch first file of the project, to determine if there are any files
   const { data: files } = useFiles({
     pageNumber: 1,
     pageSize: 1,

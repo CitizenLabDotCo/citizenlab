@@ -39,7 +39,6 @@ const FilesList = () => {
     data: files,
     isFetched,
     isFetching,
-    isInitialLoading,
   } = useFiles({
     ...queryParameters,
   });
@@ -63,14 +62,6 @@ const FilesList = () => {
       pageNumber: 1, // Reset to first page on new search
     }));
   };
-
-  if (isInitialLoading) {
-    return (
-      <Box display="flex" width="100%" justifyContent="center">
-        <Spinner />
-      </Box>
-    );
-  }
 
   return (
     <Box display="flex" justifyContent="center" flexDirection="column">

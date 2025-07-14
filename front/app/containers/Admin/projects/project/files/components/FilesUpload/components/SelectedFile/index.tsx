@@ -114,6 +114,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
             >
               {file.name}
             </Text>
+            {/* Retry upload button if the file has an API error on uploading */}
             {status === 'error' && (
               <Tooltip content={formatMessage(messages.retryUpload)}>
                 <IconButton

@@ -16,6 +16,8 @@ type Props = {
   mainText: MessageDescriptor;
   secondaryText: MessageDescriptor;
 };
+
+// Component is used to display a styled information item with an icon, main text, and secondary text.
 const InformationItem = ({ iconName, mainText, secondaryText }: Props) => {
   const { formatMessage } = useIntl();
   return (
