@@ -91,7 +91,7 @@ const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
           <Title fontWeight="semi-bold" color="coolGrey700" variant="h3">
             {formatMessage(messages.confirmAndUploadFiles)}
           </Title>
-          <Box maxHeight="300px" overflowY="auto" mt="20px">
+          <Box maxHeight="300px" overflowY="auto" overflowX="hidden" mt="20px">
             {fileList.map((item, index) => (
               <SelectedFile
                 key={`${item.file.name}-${index}`}
