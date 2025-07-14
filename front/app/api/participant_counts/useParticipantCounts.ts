@@ -25,6 +25,7 @@ const useParticipantCounts = (projectIds: string[]) => {
   >({
     queryKey: participantCountKeys.list({ project_ids: projectIds }),
     queryFn: () => fetchParticipantCounts(projectIds),
+    enabled: projectIds.length > 0,
   });
 };
 
