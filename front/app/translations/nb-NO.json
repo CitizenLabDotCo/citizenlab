@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Stemme sendt inn 🎉",
   "app.utils.votingMethodUtils.votesCast": "Avgitte stemmer",
   "app.utils.votingMethodUtils.votingClosed": "Avstemningen er avsluttet",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Gratulerer, din stemme er sendt inn!</b> Du kan når som helst sjekke eller endre stemmene dine nedenfor.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Det er ingen ideer tilgjengelig.",
   "components.UI.IdeaSelect.selectIdea": "Velg idé",
   "containers.SiteMap.allProjects": "Alle prosjekter",

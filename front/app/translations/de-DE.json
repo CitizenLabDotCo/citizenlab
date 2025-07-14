@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Stimme eingereicht 🎉",
   "app.utils.votingMethodUtils.votesCast": "Abgegebene Stimmen",
   "app.utils.votingMethodUtils.votingClosed": "Abstimmung geschlossen",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Herzlichen Glückwunsch, Ihre Stimme wurde abgegeben!</b> Sie können Ihre Stimmen unten jederzeit überprüfen und ändern.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Es sind keine Beiträge vorhanden.",
   "components.UI.IdeaSelect.selectIdea": "Beitrag auswählen",
   "containers.SiteMap.allProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",

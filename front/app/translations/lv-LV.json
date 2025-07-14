@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Iesniegts balsojums 🎉",
   "app.utils.votingMethodUtils.votesCast": "Nodotās balsis",
   "app.utils.votingMethodUtils.votingClosed": "Balsošana ir slēgta",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Apsveicam, jūsu balsojums ir iesniegts!</b> Savus balsojumus jebkurā brīdī varat pārbaudīt zemāk vai mainīt.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Ideju nav.",
   "components.UI.IdeaSelect.selectIdea": "Izvēlieties ideju",
   "containers.SiteMap.allProjects": "Visi projekti",

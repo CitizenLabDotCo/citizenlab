@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "ووٹ جمع کرایا گیا 🎉",
   "app.utils.votingMethodUtils.votesCast": "ووٹ ڈالے گئے۔",
   "app.utils.votingMethodUtils.votingClosed": "ووٹنگ بند",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>مبارک ہو، آپ کا ووٹ جمع کر دیا گیا ہے!</b> آپ نیچے کسی بھی وقت اپنے ووٹ چیک کر سکتے ہیں یا ان میں ترمیم کر سکتے ہیں۔",
   "components.UI.IdeaSelect.noIdeaAvailable": "کوئی آئیڈیاز دستیاب نہیں ہیں۔",
   "components.UI.IdeaSelect.selectIdea": "آئیڈیا منتخب کریں۔",
   "containers.SiteMap.allProjects": "تمام منصوبے",

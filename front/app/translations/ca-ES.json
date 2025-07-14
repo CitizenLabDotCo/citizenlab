@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Vot enviat 🎉",
   "app.utils.votingMethodUtils.votesCast": "Vots emesos",
   "app.utils.votingMethodUtils.votingClosed": "Votació tancada",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Enhorabona, el teu vot ha estat enviat!</b> Podeu consultar els vostres vots a continuació en qualsevol moment o modificar-los.",
   "components.UI.IdeaSelect.noIdeaAvailable": "No hi ha idees disponibles.",
   "components.UI.IdeaSelect.selectIdea": "Seleccioneu la idea",
   "containers.SiteMap.allProjects": "Tots els projectes",

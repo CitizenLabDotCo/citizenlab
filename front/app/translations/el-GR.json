@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Υποβληθείσα ψήφος 🎉",
   "app.utils.votingMethodUtils.votesCast": "Ψήφοι",
   "app.utils.votingMethodUtils.votingClosed": "Η ψηφοφορία έκλεισε",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Συγχαρητήρια, η ψήφος σας υποβλήθηκε!</b> Μπορείτε να ελέγξετε τις ψήφους σας παρακάτω ανά πάσα στιγμή ή να τις τροποποιήσετε.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Δεν υπάρχουν διαθέσιμες ιδέες.",
   "components.UI.IdeaSelect.selectIdea": "Επιλέξτε ιδέα",
   "containers.SiteMap.allProjects": "Όλα τα έργα",

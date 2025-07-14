@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Pleidlais wedi'i chyflwyno 🎉",
   "app.utils.votingMethodUtils.votesCast": "Pleidleisiau a fwriwyd",
   "app.utils.votingMethodUtils.votingClosed": "Caewyd y bleidlais",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Llongyfarchiadau, mae eich pleidlais wedi'i chyflwyno!</b> Gallwch wirio eich pleidleisiau isod unrhyw bryd neu eu haddasu.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Nid oes unrhyw syniadau ar gael.",
   "components.UI.IdeaSelect.selectIdea": "Dewiswch syniad",
   "containers.SiteMap.allProjects": "Pob prosiect",

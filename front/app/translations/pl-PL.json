@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Głos oddany 🎉",
   "app.utils.votingMethodUtils.votesCast": "Oddane głosy",
   "app.utils.votingMethodUtils.votingClosed": "Głosowanie zakończone",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Gratulacje, Twój głos został oddany!</b> Możesz sprawdzić swoje głosy poniżej w dowolnym momencie lub je zmodyfikować.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Nie ma dostępnych pomysłów.",
   "components.UI.IdeaSelect.selectIdea": "Wybierz pomysł",
   "containers.SiteMap.allProjects": "Wszystkie projekty",

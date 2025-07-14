@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Voto emitido 🎉",
   "app.utils.votingMethodUtils.votesCast": "Votos emitidos",
   "app.utils.votingMethodUtils.votingClosed": "Votación cerrada",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Enhorabuena, ¡tu voto ha sido enviado!</b> Puedes comprobar tus votos a continuación en cualquier momento o modificarlos.",
   "components.UI.IdeaSelect.noIdeaAvailable": "No hay ideas disponibles.",
   "components.UI.IdeaSelect.selectIdea": "Selecciona una idea",
   "containers.SiteMap.allProjects": "Todos los proyectos",

@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Vote presentéiert 🎉",
   "app.utils.votingMethodUtils.votesCast": "Stëmmen ofginn",
   "app.utils.votingMethodUtils.votingClosed": "Ofstëmmung zougemaach",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Gratulatioun, Äre Vote gouf ofginn!</b> Dir kënnt Är Stëmmen hei ënnen zu all Moment iwwerpréiwen oder se änneren.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Et gi keng Iddien verfügbar.",
   "components.UI.IdeaSelect.selectIdea": "Wielt Iddi",
   "containers.SiteMap.allProjects": "All Projeten",

@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Гласање послато 🎉",
   "app.utils.votingMethodUtils.votesCast": "Дати гласови",
   "app.utils.votingMethodUtils.votingClosed": "Гласање је затворено",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Честитамо, ваш глас је послат!</b> Можете проверити своје гласове испод у било ком тренутку или их изменити.",
   "components.UI.IdeaSelect.noIdeaAvailable": "There are no ideas available.",
   "components.UI.IdeaSelect.selectIdea": "Select idea",
   "containers.SiteMap.allProjects": "Сви пројекти",

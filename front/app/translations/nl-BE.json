@@ -2315,7 +2315,6 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Stem verzonden 🎉",
   "app.utils.votingMethodUtils.votesCast": "Uitgebrachte stemmen",
   "app.utils.votingMethodUtils.votingClosed": "Stemming gesloten",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Gefeliciteerd, je stem is uitgebracht!</b> Je kunt je stemmen hieronder op elk moment controleren of wijzigen.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Er zijn geen ideeën beschikbaar.",
   "components.UI.IdeaSelect.selectIdea": "Selecteer idee",
   "containers.SiteMap.allProjects": "Alle projecten",
