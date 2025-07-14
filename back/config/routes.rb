@@ -208,6 +208,7 @@ Rails.application.routes.draw do
           get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
           get 'community_monitor', action: 'community_monitor'
           get 'for_admin', action: 'index_for_admin'
+          get 'participant_counts', action: 'participant_counts'
         end
 
         resource :review, controller: 'project_reviews'
