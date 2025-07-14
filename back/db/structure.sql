@@ -306,6 +306,7 @@ DROP INDEX IF EXISTS public.index_files_on_uploader_id;
 DROP INDEX IF EXISTS public.index_files_on_size;
 DROP INDEX IF EXISTS public.index_files_on_name_gin_trgm;
 DROP INDEX IF EXISTS public.index_files_on_mime_type;
+DROP INDEX IF EXISTS public.index_files_on_category;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
 DROP INDEX IF EXISTS public.index_events_on_location_point;
 DROP INDEX IF EXISTS public.index_events_attendances_on_updated_at;
@@ -2428,7 +2429,8 @@ CREATE TABLE public.files (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     size integer,
-    mime_type character varying
+    mime_type character varying,
+    category character varying DEFAULT 'other'::character varying NOT NULL
 );
 
 
@@ -5214,6 +5216,13 @@ CREATE INDEX index_events_on_project_id ON public.events USING btree (project_id
 
 
 --
+-- Name: index_files_on_category; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_on_category ON public.files USING btree (category);
+
+
+--
 -- Name: index_files_on_mime_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7437,6 +7446,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250714073201'),
 ('20250708085259'),
 ('20250627113458'),
 ('20250626072615'),

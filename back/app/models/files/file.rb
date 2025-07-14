@@ -12,9 +12,11 @@
 #  updated_at                                  :datetime         not null
 #  size(in bytes)                              :integer
 #  mime_type                                   :string
+#  category                                    :string           default("other"), not null
 #
 # Indexes
 #
+#  index_files_on_category       (category)
 #  index_files_on_mime_type      (mime_type)
 #  index_files_on_name_gin_trgm  (name) USING gin
 #  index_files_on_size           (size)
@@ -27,6 +29,16 @@
 module Files
   class File < ApplicationRecord
     include PgSearch::Model
+
+    enum :category, {
+      meeting: 'meeting',
+      interview: 'interview',
+      strategic_plan: 'strategic_plan',
+      info_sheet: 'info_sheet',
+      policy: 'policy',
+      report: 'report',
+      other: 'other'
+    }, default: :other, validate: true
 
     belongs_to :uploader, class_name: 'User', optional: true
 
