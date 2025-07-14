@@ -12,6 +12,7 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 
+import useParticipantCounts from 'api/participant_counts/useParticipantCounts';
 import useProjectsMiniAdmin from 'api/projects_mini_admin/useProjectsMiniAdmin';
 
 import { PaginationWithoutPositioning } from 'components/Pagination';
@@ -36,6 +37,10 @@ const Table = () => {
     'page[size]': 10,
     'page[number]': currentPage,
   });
+
+  const projectIds = projects?.data.map((project) => project.id) ?? [];
+  const { data: test } = useParticipantCounts(projectIds);
+  console.log({ test });
 
   const lastPageLink = projects?.links.last;
   const lastPage = lastPageLink ? getPageNumberFromUrl(lastPageLink) ?? 1 : 1;
