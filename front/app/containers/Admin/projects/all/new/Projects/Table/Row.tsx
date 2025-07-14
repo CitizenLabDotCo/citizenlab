@@ -44,9 +44,10 @@ const StyledTd = styled(Td)`
 
 interface Props {
   project: ProjectMiniAdminData;
+  participantsCount?: number;
 }
 
-const Row = ({ project }: Props) => {
+const Row = ({ project, participantsCount }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const locale = useLocale();
@@ -116,8 +117,19 @@ const Row = ({ project }: Props) => {
           </Box>
         )}
       </StyledTd>
+      {COLUMN_VISIBILITY.participants && (
+        <Td background={colors.grey50} width="1px">
+          {participantsCount ? (
+            <Text m="0" fontSize="s" color="primary">
+              {participantsCount}
+            </Text>
+          ) : (
+            <Spinner size="16px" />
+          )}
+        </Td>
+      )}
       {COLUMN_VISIBILITY.currentPhase && (
-        <Td background={colors.grey50} width="140px">
+        <Td background={colors.grey50} width="1px">
           <CurrentPhase project={project} />
         </Td>
       )}
@@ -136,14 +148,14 @@ const Row = ({ project }: Props) => {
         </Td>
       )}
       {COLUMN_VISIBILITY.status && (
-        <Td background={colors.grey50} width="100px">
+        <Td background={colors.grey50} width="1px">
           <Text m="0" fontSize="s" color="primary">
             {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
           </Text>
         </Td>
       )}
       {COLUMN_VISIBILITY.visibility && (
-        <Td background={colors.grey50} width="100px">
+        <Td background={colors.grey50} width="1px">
           <Text m="0" fontSize="s" color="primary">
             {formatMessage(VISIBILITY_LABELS[visible_to])}
           </Text>

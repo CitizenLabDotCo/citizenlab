@@ -40,8 +40,7 @@ const Table = () => {
   });
 
   const projectIds = projects?.data.map((project) => project.id) ?? [];
-  const { data: test } = useParticipantCounts(projectIds);
-  console.log({ test });
+  const { data: participantsCounts } = useParticipantCounts(projectIds);
 
   const lastPageLink = projects?.links.last;
   const lastPage = lastPageLink ? getPageNumberFromUrl(lastPageLink) ?? 1 : 1;
@@ -58,6 +57,9 @@ const Table = () => {
         <Thead>
           <Tr background={colors.grey50}>
             <Th py="16px">{formatMessage(messages.project)}</Th>
+            {COLUMN_VISIBILITY.participants && (
+              <Th py="16px">{formatMessage(messages.participants)}</Th>
+            )}
             {COLUMN_VISIBILITY.currentPhase && (
               <Th py="16px">{formatMessage(messages.currentPhase)}</Th>
             )}
@@ -78,7 +80,15 @@ const Table = () => {
         </Thead>
         <Tbody>
           {projects?.data.map((project) => (
-            <Row project={project} key={project.id} />
+            <Row
+              key={project.id}
+              project={project}
+              participantsCount={
+                participantsCounts?.data.attributes.participant_counts[
+                  project.id
+                ]
+              }
+            />
           ))}
         </Tbody>
       </TableComponent>
