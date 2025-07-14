@@ -1105,7 +1105,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.groups": "Groups",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsLeft": "{months}mo left",
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "{months}mo to start",
-  "app.containers.Admin.projects.all.new.Projects.Table.participants": "Participants",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Pre-launch",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Project",
   "app.containers.Admin.projects.all.new.Projects.Table.projectEnd": "Proj. end",
