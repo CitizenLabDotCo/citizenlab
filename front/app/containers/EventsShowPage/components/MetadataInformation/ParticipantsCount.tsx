@@ -2,34 +2,39 @@ import React from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
+import { IEventData } from 'api/events/types';
 
-import messages from '../../messages';
+import useRegistrantCountMessage from 'components/EventCards/EventInformation/useRegistrantCountMessage';
 
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
 export interface Props {
-  count: number;
+  event: IEventData;
 }
 
-const ParticipantsCount = ({ count }: Props) => {
-  const { formatMessage } = useIntl();
+const ParticipantsCount = ({ event }: Props) => {
+  const registrantCountMessage = useRegistrantCountMessage(event);
+  const attendeesCount = event.attributes.attendees_count;
 
-  return (
-    <Container>
-      <StyledIcon name="user" ariaHidden />
-      <Content>
-        <Text
-          id="e2e-participants-count"
-          my="4px"
-          color="coolGrey600"
-          fontSize="s"
-        >
-          {formatMessage(messages.xParticipants, { count })}
-        </Text>
-      </Content>
-    </Container>
-  );
+  if (attendeesCount > 0) {
+    return (
+      <Container>
+        <StyledIcon name="user" ariaHidden />
+        <Content>
+          <Text
+            id="e2e-participants-count"
+            my="4px"
+            color="coolGrey600"
+            fontSize="s"
+          >
+            {registrantCountMessage}
+          </Text>
+        </Content>
+      </Container>
+    );
+  }
+
+  return null;
 };
 
 export default ParticipantsCount;
