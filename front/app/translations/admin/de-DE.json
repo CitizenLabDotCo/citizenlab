@@ -2206,7 +2206,7 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Bearbeiten Sie Transkripte, etc.",
   "app.containers.AdminPage.ProjectFiles.Modal.addFile": "Datei hinzufügen",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Aktionen",
-  "app.containers.AdminPage.ProjectFiles.addFiles": "Anhänge (max. 50MB)",
+  "app.containers.AdminPage.ProjectFiles.addFiles": "Dateien hinzufügen",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Hinzugefügt",
   "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Audio-Interviews, Meeting-Aufnahmen",
   "app.containers.AdminPage.ProjectFiles.audioFileExtensionDescription": "WAV, MP3",

@@ -2206,7 +2206,7 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Behandle udskrifter osv.",
   "app.containers.AdminPage.ProjectFiles.Modal.addFile": "Tilføj fil",
   "app.containers.AdminPage.ProjectFiles.actionsTableHeader": "Handlinger",
-  "app.containers.AdminPage.ProjectFiles.addFiles": "Vedhæftninger (max. 50MB)",
+  "app.containers.AdminPage.ProjectFiles.addFiles": "Tilføj filer",
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Tilføjet",
   "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Lydinterviews, optagelser fra rådhuset",
   "app.containers.AdminPage.ProjectFiles.audioFileExtensionDescription": "WAV, MP3",
