@@ -152,6 +152,7 @@ resource 'Files' do
             name: file.name,
             mime_type: 'application/pdf',
             category: file.category,
+            description_multiloc: {},
             created_at: file.created_at.iso8601(3),
             updated_at: file.updated_at.iso8601(3),
             size: 130
@@ -176,6 +177,7 @@ resource 'Files' do
       parameter :name, 'The name of the file', required: true
       parameter :content, 'The content of the file, encoded in Base64', required: true
       parameter :project, 'The project to which the file will be uploaded', required: false
+      parameter :description_multiloc, 'The description of the file, as a multiloc string', required: false
 
       parameter :category, <<~CATEGORY_DESC.squish, required: false
         The category of the file (values: #{Files::File.categories.values.join(', ')})
@@ -211,6 +213,7 @@ resource 'Files' do
             size: 1_645_987,
             mime_type: 'application/pdf',
             category: 'other',
+            description_multiloc: {},
             created_at: be_present,
             updated_at: be_present
           },
@@ -231,6 +234,19 @@ resource 'Files' do
 
         file = Files::File.find(response_data[:id])
         expect(file.category).to eq('meeting')
+      end
+
+      example 'Create a file with description_multiloc' do
+        description_multiloc = { 'en' => 'English description', 'fr-FR' => 'Description en français' }
+        do_request(file: { name: name, content: content, description_multiloc: description_multiloc })
+
+        assert_status 201
+
+        expect(response_data[:attributes][:description_multiloc])
+          .to eq(description_multiloc.symbolize_keys)
+
+        file = Files::File.find(response_data[:id])
+        expect(file.description_multiloc).to eq(description_multiloc)
       end
     end
   end

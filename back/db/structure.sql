@@ -2430,7 +2430,8 @@ CREATE TABLE public.files (
     updated_at timestamp(6) without time zone NOT NULL,
     size integer,
     mime_type character varying,
-    category character varying DEFAULT 'other'::character varying NOT NULL
+    category character varying DEFAULT 'other'::character varying NOT NULL,
+    description_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -7446,6 +7447,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250714155020'),
 ('20250714073201'),
 ('20250708085259'),
 ('20250627113458'),
