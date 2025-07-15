@@ -17,15 +17,28 @@ RSpec.describe Sluggable do
     end
 
     describe 'generate_slug' do
-      let(:test_model) do
-        Class.new(ApplicationRecord) do
-          include Sluggable
-          connection.create_table(:test_models, temporary: true) do |t|
-            t.jsonb :title_multiloc
-            t.string :slug
-          end
-          self.table_name = 'test_models'
-          slug from: proc { |it| it.title_multiloc }
+      before(:context) do
+        unless Object.const_defined?(:TempSluggableTestModel)
+          Object.const_set(:TempSluggableTestModel, Class.new(ApplicationRecord) do
+            include Sluggable
+            connection.create_table(:test_models, temporary: true) do |t|
+              t.jsonb :title_multiloc
+              t.string :slug
+            end
+            self.table_name = 'test_models'
+            slug from: proc { |it| it.title_multiloc }
+          end)
+        end
+      end
+
+      let(:test_model) { TempSluggableTestModel }
+
+      after(:all) do
+        if ActiveRecord::Base.connection.table_exists?(:test_models)
+          ActiveRecord::Base.connection.drop_table(:test_models)
+        end
+        if Object.const_defined?(:TempSluggableTestModel)
+          Object.send(:remove_const, :TempSluggableTestModel)
         end
       end
 

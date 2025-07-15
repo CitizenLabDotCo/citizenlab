@@ -70,6 +70,8 @@ class InvalidDataChecker
   def skip_class_for_inconsistent_data_checking?(claz)
     # Skip checking for less crucial classes that require
     # a lot of processing.
+    puts "claz: #{claz.inspect}" if claz.name.nil?
+
     return true if SKIP_CLASSES.include? claz.name
     return true if claz.name.starts_with? 'Notifications::'
 
