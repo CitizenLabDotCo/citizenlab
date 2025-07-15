@@ -19,14 +19,20 @@ const updatePhaseFile = async ({
 
 const useUpdatePhaseFile = () => {
   const queryClient = useQueryClient();
-  return useMutation<IPhaseFile, CLErrors, UpdatePhaseFileObject>({
-    mutationFn: updatePhaseFile,
+  return useMutation<
+    IPhaseFile,
+    CLErrors,
+    UpdatePhaseFileObject & { invalidate?: boolean }
+  >({
+    mutationFn: ({ invalidate: _invalidate, ...vars }) => updatePhaseFile(vars),
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: phaseFilesKeys.list({
-          phaseId: variables.phaseId,
-        }),
-      });
+      if (variables.invalidate !== false) {
+        queryClient.invalidateQueries({
+          queryKey: phaseFilesKeys.list({
+            phaseId: variables.phaseId,
+          }),
+        });
+      }
     },
   });
 };

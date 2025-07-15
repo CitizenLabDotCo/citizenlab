@@ -4,13 +4,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import phaseFilesKeys from './keys';
 
-const deletePhaseFile = ({
-  phaseId,
-  fileId,
-}: {
+type DeletePhaseFileArgs = {
   phaseId: string;
   fileId: string;
-}) =>
+  invalidate?: boolean;
+};
+
+const deletePhaseFile = ({ phaseId, fileId }: DeletePhaseFileArgs) =>
   fetcher({
     path: `/phases/${phaseId}/files/${fileId}`,
     action: 'delete',
@@ -19,14 +19,16 @@ const deletePhaseFile = ({
 const useDeletePhaseFile = () => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: deletePhaseFile,
+  return useMutation<unknown, unknown, DeletePhaseFileArgs>({
+    mutationFn: ({ invalidate: _invalidate, ...vars }) => deletePhaseFile(vars),
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: phaseFilesKeys.list({
-          phaseId: variables.phaseId,
-        }),
-      });
+      if (variables.invalidate !== false) {
+        queryClient.invalidateQueries({
+          queryKey: phaseFilesKeys.list({
+            phaseId: variables.phaseId,
+          }),
+        });
+      }
     },
   });
 };
