@@ -62,12 +62,19 @@ const FileAnalysis = () => {
       flexDirection="column"
       flex="1"
       minHeight="0"
-      maxHeight="92dvh"
+      maxHeight="100dvh"
       overflow="hidden"
       height="100%"
     >
       {/* Scrollable insights list */}
-      <Box flex="1" overflowY="auto" pr="8px" mb="16px" ref={insightsDivRef}>
+      <Box
+        mt="20px"
+        flex="1"
+        overflowY="auto"
+        pr="8px"
+        mb="16px"
+        ref={insightsDivRef}
+      >
         <Text fontSize="m" whiteSpace="pre-wrap">
           {/* TODO: Replace with real insights */}
           <Box
