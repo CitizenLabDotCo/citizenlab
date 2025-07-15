@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "Utiliza la IA para analizar archivos",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Tramitar expedientes académicos, etc.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Archivos adjuntos (máximo 50MB)",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Entrevistas sonoras, grabaciones del Ayuntamiento",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Elegir archivos",
   "app.containers.AdminPage.ProjectFiles.close": "Cerrar",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Confirmar y subir",

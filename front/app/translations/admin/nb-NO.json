@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "Bruk AI til å analysere filer",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Behandle utskrifter osv.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Legg til filer",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Lydintervjuer, opptak fra rådhuset",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Velg filer",
   "app.containers.AdminPage.ProjectFiles.close": "Lukk",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Bekreft og last opp",
