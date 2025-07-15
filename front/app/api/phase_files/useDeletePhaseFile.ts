@@ -22,7 +22,7 @@ const useDeletePhaseFile = () => {
   return useMutation<Omit<BaseResponseData, "included">, CLErrors, DeletePhaseFileArgs>(
     mutationFn: ({ invalidate: _invalidate, ...vars }) => deletePhaseFile(vars),
     onSuccess: (_data, variables) => {
-      if (variables.invalidate !== false) {
+      if (variables.invalidate) {
         queryClient.invalidateQueries({
           queryKey: phaseFilesKeys.list({
             phaseId: variables.phaseId,
