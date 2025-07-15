@@ -88,8 +88,12 @@ it:
       author_first_name: 'Jane'
       author_last_name: 'Sconosciuto'
       author_display_name: 'Sconosciuta'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
       project_title: 'Esempio di progetto'
       comment_body: 'Questo è un commento di esempio utilizzato per visualizzare l''anteprima del contenuto delle e-mail. Non si tratta di un contenuto reale.'
+      comment_deleted_reason: 'Il tuo commento di esempio è stato considerato inappropriato.'
       idea_title: 'Esempio di idea'
       proposal_title: 'Esempio di proposta'
     footer:
@@ -105,22 +109,22 @@ it:
     manual:
       preheader: 'Hai ricevuto una mail da %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'Il motivo per cui il tuo commento è stato cancellato:'
-      cta_view: 'Visualizza questa idea'
+      subject: 'Il tuo commento è stato cancellato dalla piattaforma di %{organizationName}'
+      preheader: 'Il tuo commento è stato cancellato'
+      title: '%{organizationName} cancellato il tuo commento'
       event_description: '%{organizationName} ha cancellato il commento che hai scritto su un''idea.'
-      main_header: '%{organizationName} ha cancellato il tuo commento'
+      cta_button: 'Visualizza questa idea'
+      reason: 'Il motivo per cui il tuo commento è stato cancellato:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Il tuo commento è stato considerato inappropriato'
       irrelevant_reason: 'Il tuo commento è stato considerato irrilevante per quel contesto'
       no_reason: 'Nessun motivo è stato specificato'
-      subject: 'Il tuo commento è stato cancellato dalla piattaforma di %{organizationName}'
-      preheader: 'Il tuo commento è stato cancellato'
     admin_digest:
       subject: 'Il tuo rapporto amministrativo settimanale di %{time}'
       preheader: 'Messaggi Amministrazione di %{organizationName}'
-      title_your_weekly_report: '%{firstName}, il tuo rapporto settimanale'
-      text_introduction: 'Abbiamo curato per te gli input che hanno generato più attività nell''ultima settimana. Scopri cosa sta succedendo sulla tua piattaforma!'
-      cta_visit_the_platform: 'Visita la tua piattaforma'
+      title: '%{firstName}Il tuo resoconto settimanale'
+      event_description: 'Abbiamo curato per te gli input che hanno generato il maggior numero di attività nell''ultima settimana. Scopri cosa sta succedendo sulla tua piattaforma!'
+      cta_button: 'Visita la tua piattaforma'
       new_users: 'Nuovi utenti'
       new_inputs: 'Nuovi ingressi'
       new_comments: 'Nuovi commenti'
@@ -131,10 +135,11 @@ it:
       today_by_author: 'Oggi da %{author}'
       x_days_ago_by_author: '%{x} giorni fa da %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Gestire la piattaforma'
-      message_you_became_administrator: 'Ti sono stati concessi i diritti di amministratore per la piattaforma di partecipazione di %{organizationName}.'
-      preheader: 'Ti sono garantiti i diritti di amministratore per la piattaforma di partecipazione di %{organizationName}'
       subject: 'Sei diventato un amministratore sulla piattaforma di %{organizationName}'
+      preheader: 'Ti sono garantiti i diritti di amministratore per la piattaforma di partecipazione di %{organizationName}'
+      title: 'Sei diventato un amministratore'
+      event_description: 'Ti sono stati concessi i diritti di amministratore per la piattaforma di partecipazione di %{organizationName}.'
+      cta_button: 'Gestisci la tua piattaforma'
       text_create_participatory_process: 'Come amministratore, puoi creare e configurare nuovi progetti di partecipazione. Puoi aggiungere nuove fasi usando la timeline. Ciascuna di queste fasi può avere il proprio comportamento per quanto riguarda la pubblicazione di idee, i commenti e il voto.'
       text_moderate_analyse_input: 'Una volta lanciati i progetti, arriveranno le prime idee. Riceverai rapporti settimanali con tutte le attività chiave in modo da rimanere in cima alle cose. La panoramica delle idee ti aiuterà a moderare l''input e a collaborare alla sua elaborazione.'
       text_platform_setup: 'Come amministratore puoi impostare la tua piattaforma di partecipazione. Scegli un logo, immagini e colori, scrivi un messaggio personale sulla tua home page, invia inviti, definisci cosa vuoi sapere dei tuoi utenti, ...'
@@ -142,26 +147,26 @@ it:
       title_moderate_analyse_input: 'Moderare e analizzare l''input'
       title_platform_setup: 'Imposta la tua piattaforma'
       title_what_can_you_do_administrator: 'Cosa puoi fare come amministratore?'
-      title_you_became_administrator: 'Sei diventato un amministratore'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} ha segnalato questo commento come spam'
+      preheader: 'Agisci su questo commento segnalato come spam'
+      title: '%{firstName} %{lastName} ha segnalato questo commento come spam'
+      cta_button: 'Commento alla recensione'
       by_author: 'da %{authorName}'
       commented: '%{authorName} ha commentato:'
-      cta_review_comment: 'Rivedi il commento'
       days_ago: '%{numberOfDays} giorni fa da'
       event_description: 'Il seguente commento pubblicato su <strong>''%{post}''</strong> è stato riportato:'
       inappropriate_content: 'Il commento è inappropriato o offensivo.'
-      preheader: 'Agisci su questo commento segnalato come spam'
       reported_this_because: '%{reporterFirstName} ha riportato questo perché:'
-      subject: '%{organizationName}: %{firstName} %{lastName} ha segnalato questo commento come spam'
-      title_comment_spam_report: '%{firstName} %{lastName} ha segnalato questo commento come spam'
       today: Oggi
       wrong_content: 'Il commento non è pertinente.'
       yesterday: Ieri
     community_monitor_report:
       subject: 'È disponibile un nuovo rapporto di monitoraggio della comunità'
+      preheader: 'È disponibile un nuovo rapporto di monitoraggio della comunità'
       title: 'È disponibile un nuovo rapporto di monitoraggio della comunità'
-      text_introduction: 'È stato creato un rapporto di monitoraggio della comunità per il trimestre precedente. Puoi accedervi cliccando sul pulsante qui sotto ed effettuando il login.'
-      cta_report_button: 'Visualizza il rapporto'
+      event_description: 'È stato creato un rapporto di monitoraggio della comunità per il trimestre precedente. Puoi accedervi cliccando sul pulsante qui sotto ed effettuando il login.'
+      cta_button: 'Visualizza il rapporto'
       report_name: 'Rapporto di monitoraggio della comunità'
     cosponsor_of_your_idea:
       cta_reply_to: 'Visualizza la tua proposta'
@@ -172,8 +177,8 @@ it:
     assignee_digest:
       subject: 'Idee che richiedono il vostro feedback: %{numberIdeas}'
       preheader: 'Messaggi Amministrazione di %{organizationName}'
-      title_your_weekly_report: '%{firstName}, l''input del cittadino è in attesa del tuo feedback'
-      cta_manage_your_input: 'Gestisci il tuo input'
+      title: '%{firstName}, il contributo dei cittadini è in attesa del tuo feedback'
+      cta_button: 'Gestisci i tuoi input'
       x_inputs_need_your_feedback: 'Gli input hanno bisogno del tuo feedback'
       title_assignment_past_week: 'Le ultime idee che ti sono state assegnate'
       title_no_assignment_past_week: 'Nessuna nuova idea assegnata la settimana scorsa'
@@ -250,8 +255,11 @@ it:
       today: Oggi
       yesterday: Ieri
     comment_on_idea_you_follow:
-      cta_reply_to: 'Rispondi a %{commentAuthor}'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} ha lasciato un commento su un''idea per %{organizationName}'
+      title: '%{authorName} ha commentato un input che segui'
       event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      cta_button: 'Rispondi a %{commentAuthor}'
       main_header:
         idea: '%{authorName} ha commentato un''idea che segui'
         question: '%{authorName} ha commentato una domanda che segui'
@@ -261,8 +269,6 @@ it:
         option: '%{authorName} ha commentato un''opzione che segui'
         proposal: '%{authorName} ha commentato una proposta che segui'
         petition: '%{authorName} ha commentato una petizione che segui'
-      subject: 'There''s a new comment on "%{input_title}"'
-      preheader: '%{authorName} ha lasciato un commento su un''idea per %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'Un nuovo input è stato pubblicato sulla tua piattaforma'
       event_description_publication: '%{authorName} ha inviato un nuovo contributo sulla tua piattaforma. Scoprilo subito, dai un feedback o cambia il suo stato!'
@@ -276,11 +282,11 @@ it:
       today: Oggi
       yesterday: Ieri
     comment_on_your_comment:
-      cta_reply_to: 'Rispondi a %{firstName}'
-      event_description: '%{authorNameFull} ha scritto una risposta al tuo commento su ''%{post}'' sulla piattaforma di partecipazione. Clicca il pulsante qui sotto per continuare la conversazione con %{authorName}.'
       subject: 'Hai ricevuto una risposta al tuo commento sulla piattaforma di %{organizationName}'
-      main_header: '%{authorName} ha risposto al tuo commento'
       preheader: '%{authorName} ha risposto al tuo commento sulla piattaforma di %{organizationName}'
+      title: '%{authorName} ha risposto al tuo commento'
+      event_description: '%{authorName} ha scritto una risposta al tuo commento su ''%{post}'' sulla piattaforma di partecipazione. Clicca sul pulsante qui sotto per continuare la conversazione con %{authorFirstName}.'
+      cta_button: 'Rispondi a %{authorFirstName}'
       replied: '%{authorFirstName} ha commentato:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'Visualizza il commento di %{firstName}'
