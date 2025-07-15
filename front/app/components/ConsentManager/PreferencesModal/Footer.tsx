@@ -10,6 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import { FormMode } from '../Container';
 import messages from '../messages';
+import { CategorizedDestinations } from '../typings';
 
 const ButtonContainer = ({ children }: { children: React.ReactNode }) => (
   <Box
@@ -29,10 +30,19 @@ const CancelButton = styled(ButtonWithLink)`
 interface Props {
   handleCancel: () => void;
   handleSave: (e: FormEvent<any>) => void;
-  mode: FormMode;
+  categorizedDestinations: CategorizedDestinations;
 }
 
-const Footer = ({ mode, handleCancel, handleSave }: Props) => {
+const Footer = ({
+  handleCancel,
+  handleSave,
+  categorizedDestinations,
+}: Props) => {
+  const noDestinations = Object.values(categorizedDestinations).every(
+    (array) => array.length === 0
+  );
+  const mode: FormMode = noDestinations ? 'noDestinations' : 'preferenceForm';
+
   return mode === 'preferenceForm' ? (
     <ButtonContainer>
       <CancelButton
