@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
+import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
 
 import phaseFilesKeys from './keys';
 
@@ -19,10 +20,14 @@ const deletePhaseFile = ({ phaseId, fileId }: DeletePhaseFileArgs) =>
 const useDeletePhaseFile = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<Omit<BaseResponseData, "included">, CLErrors, DeletePhaseFileArgs>(
+  return useMutation<
+    Omit<BaseResponseData, 'included'>,
+    CLErrors,
+    DeletePhaseFileArgs
+  >({
     mutationFn: ({ invalidate: _invalidate, ...vars }) => deletePhaseFile(vars),
     onSuccess: (_data, variables) => {
-      if (variables.invalidate) {
+      if (variables.invalidate !== false) {
         queryClient.invalidateQueries({
           queryKey: phaseFilesKeys.list({
             phaseId: variables.phaseId,
