@@ -19,7 +19,6 @@ RSpec.describe Sluggable do
     describe 'generate_slug' do
       # These disabled RuboCop rules are necessary to permit the successful creation and removal of a dynamic class,
       # the leakage of which is what the rubocop rules are trying to prevent.
-      # RuboCop:disable RSpec/BeforeAfterAll
       before(:context) do # rubocop:disable RSpec/BeforeAfterAll
         unless Object.const_defined?(:TempSluggableTestModel)
           Object.const_set(:TempSluggableTestModel, Class.new(ApplicationRecord) do
