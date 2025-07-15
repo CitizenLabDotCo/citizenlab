@@ -34,7 +34,6 @@ const PreferencesModal = ({
     <Modal
       opened={opened}
       close={onClose}
-      header={<FormattedMessage {...messages.title} />}
       footer={
         <Footer
           categorizedDestinations={categorizedDestinations}
@@ -42,6 +41,8 @@ const PreferencesModal = ({
           handleSave={handleSave}
         />
       }
+      closeOnClickOutside={false}
+      hideCloseButton
     >
       <Preferences
         onChange={updatePreference}
