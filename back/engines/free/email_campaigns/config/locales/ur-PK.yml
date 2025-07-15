@@ -88,8 +88,12 @@ ur:
       author_first_name: 'جین'
       author_last_name: 'ڈو'
       author_display_name: 'جین ڈو'
+      initiator_first_name: 'باب'
+      initiator_last_name: 'سمتھ'
+      initiator_display_name: 'باب سمتھ'
       project_title: 'مثال پروجیکٹ'
       comment_body: 'یہ ایک مثالی تبصرہ ہے جسے ای میلز کے مواد کا جائزہ لینے کے لیے استعمال کیا جاتا ہے۔ یہ حقیقی مواد نہیں ہے۔'
+      comment_deleted_reason: 'آپ کا مثالی تبصرہ نامناسب سمجھا گیا۔'
       idea_title: 'مثال آئیڈیا۔'
       proposal_title: 'مثال کی تجویز'
     footer:
@@ -105,22 +109,22 @@ ur:
     manual:
       preheader: 'آپ کے پاس %{organizationName}سے میل ہے۔'
     comment_deleted_by_admin:
-      reason: 'آپ کا تبصرہ حذف کرنے کی وجہ:'
-      cta_view: 'اس خیال کو دیکھیں'
+      subject: 'آپ کا تبصرہ %{organizationName}کے پلیٹ فارم سے حذف کر دیا گیا ہے۔'
+      preheader: 'آپ کا تبصرہ حذف کر دیا گیا ہے۔'
+      title: '%{organizationName} نے آپ کا تبصرہ حذف کر دیا۔'
       event_description: '%{organizationName} نے وہ تبصرہ حذف کر دیا جو آپ نے ایک خیال پر لکھا تھا۔'
-      main_header: '%{organizationName} نے آپ کا تبصرہ حذف کر دیا۔'
+      cta_button: 'اس خیال کو دیکھیں'
+      reason: 'آپ کا تبصرہ حذف کرنے کی وجہ:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'آپ کا تبصرہ نامناسب سمجھا گیا۔'
       irrelevant_reason: 'آپ کا تبصرہ اس سیاق و سباق کے لیے غیر متعلقہ سمجھا گیا۔'
       no_reason: 'کوئی وجہ نہیں بتائی گئی۔'
-      subject: 'آپ کا تبصرہ %{organizationName}کے پلیٹ فارم سے حذف کر دیا گیا ہے۔'
-      preheader: 'آپ کا تبصرہ حذف کر دیا گیا ہے۔'
     admin_digest:
       subject: '%{time}کی آپ کی ہفتہ وار ایڈمن رپورٹ'
       preheader: '%{organizationName}کا ایڈمن ڈائجسٹ'
-      title_your_weekly_report: '%{firstName}، آپ کی ہفتہ وار رپورٹ'
-      text_introduction: 'ہم نے آپ کے لیے وہ ان پٹ تیار کیا ہے جس نے پچھلے ہفتے کے دوران سب سے زیادہ سرگرمی پیدا کی ہے۔ معلوم کریں کہ آپ کے پلیٹ فارم پر کیا ہو رہا ہے!'
-      cta_visit_the_platform: 'اپنے پلیٹ فارم پر جائیں۔'
+      title: '%{firstName}، آپ کی ہفتہ وار رپورٹ'
+      event_description: 'ہم نے آپ کے لیے وہ ان پٹ تیار کیا ہے جس نے پچھلے ہفتے کے دوران سب سے زیادہ سرگرمی پیدا کی ہے۔ معلوم کریں کہ آپ کے پلیٹ فارم پر کیا ہو رہا ہے!'
+      cta_button: 'اپنے پلیٹ فارم پر جائیں۔'
       new_users: 'نئے صارفین'
       new_inputs: 'نئے ان پٹ'
       new_comments: 'نئے تبصرے'
@@ -131,10 +135,11 @@ ur:
       today_by_author: 'آج بذریعہ %{author}'
       x_days_ago_by_author: '%{x} دن پہلے بذریعہ %{author}'
     admin_rights_received:
-      cta_manage_platform: 'اپنے پلیٹ فارم کا نظم کریں۔'
-      message_you_became_administrator: 'آپ کو %{organizationName}کے شرکت کے پلیٹ فارم کے منتظم کے حقوق دیے گئے ہیں۔'
-      preheader: 'آپ کو %{organizationName}کے شرکت کے پلیٹ فارم کے منتظم کے حقوق دیئے گئے تھے۔'
       subject: 'آپ %{organizationName}کے پلیٹ فارم پر ایڈمنسٹریٹر بن گئے۔'
+      preheader: 'آپ کو %{organizationName}کے شرکت کے پلیٹ فارم کے منتظم کے حقوق دیئے گئے تھے۔'
+      title: 'آپ ایڈمنسٹریٹر بن گئے۔'
+      event_description: 'آپ کو %{organizationName}کے شرکت کے پلیٹ فارم کے منتظم کے حقوق دیے گئے ہیں۔'
+      cta_button: 'اپنے پلیٹ فارم کا نظم کریں۔'
       text_create_participatory_process: 'ایڈمنسٹریٹر کے طور پر، آپ شرکت کے نئے پروجیکٹس بنا اور ترتیب دے سکتے ہیں۔ آپ ٹائم لائن کا استعمال کرتے ہوئے نئے مراحل شامل کر سکتے ہیں۔ ان مراحل میں سے ہر ایک کا خیال پوسٹ کرنے، تبصرہ کرنے اور ووٹنگ کے حوالے سے اپنا طرز عمل ہو سکتا ہے۔'
       text_moderate_analyse_input: 'پروجیکٹ شروع ہونے کے بعد، پہلے آئیڈیاز سامنے آئیں گے۔ آپ کو تمام اہم سرگرمیوں کے ساتھ ہفتہ وار رپورٹس موصول ہوں گی تاکہ آپ سب سے اوپر رہیں۔ آئیڈیاز کا جائزہ آپ کو ان پٹ کو اعتدال میں لانے اور اس پر کارروائی کرنے میں تعاون کرنے میں مدد کرے گا۔'
       text_platform_setup: 'بطور منتظم آپ اپنا شرکت کا پلیٹ فارم ترتیب دے سکتے ہیں۔ لوگو، تصاویر اور رنگوں کا انتخاب کریں، اپنے ہوم پیج پر ذاتی پیغام لکھیں، دعوت نامے بھیجیں، اس بات کی وضاحت کریں کہ آپ اپنے صارفین کے بارے میں کیا جاننا چاہتے ہیں،...'
@@ -142,26 +147,26 @@ ur:
       title_moderate_analyse_input: 'ان پٹ کو معتدل اور تجزیہ کریں۔'
       title_platform_setup: 'اپنا پلیٹ فارم ترتیب دیں۔'
       title_what_can_you_do_administrator: 'آپ بطور منتظم کیا کر سکتے ہیں؟'
-      title_you_became_administrator: 'آپ ایڈمنسٹریٹر بن گئے۔'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} نے اس تبصرے کی بطور سپام اطلاع دی'
+      preheader: 'سپیم کے طور پر رپورٹ ہونے والے اس تبصرے پر عمل کریں۔'
+      title: '%{firstName} %{lastName} نے اس تبصرے کی بطور سپام اطلاع دی۔'
+      cta_button: 'تبصرہ کا جائزہ لیں۔'
       by_author: 'بذریعہ %{authorName}'
       commented: '%{authorName} تبصرہ کیا:'
-      cta_review_comment: 'تبصرہ کا جائزہ لیں۔'
       days_ago: '%{numberOfDays} دن پہلے'
       event_description: '<strong>''%{post}''</strong> پر پوسٹ کردہ درج ذیل تبصرے کی اطلاع ملی:'
       inappropriate_content: 'تبصرہ نامناسب یا ناگوار ہے۔'
-      preheader: 'سپیم کے طور پر رپورٹ ہونے والے اس تبصرے پر عمل کریں۔'
       reported_this_because: '%{reporterFirstName} نے اس کی اطلاع دی کیونکہ:'
-      subject: '%{organizationName}: %{firstName} %{lastName} نے اس تبصرے کی بطور سپام اطلاع دی'
-      title_comment_spam_report: '%{firstName} %{lastName} نے اس تبصرے کی بطور سپام اطلاع دی۔'
       today: آج
       wrong_content: 'تبصرہ متعلقہ نہیں ہے۔'
       yesterday: کل
     community_monitor_report:
       subject: 'کمیونٹی مانیٹر کی ایک نئی رپورٹ دستیاب ہے۔'
+      preheader: 'کمیونٹی مانیٹر کی ایک نئی رپورٹ دستیاب ہے۔'
       title: 'کمیونٹی مانیٹر کی ایک نئی رپورٹ دستیاب ہے۔'
-      text_introduction: 'پچھلی سہ ماہی کے لیے کمیونٹی مانیٹر رپورٹ بنائی گئی ہے۔ آپ نیچے دیئے گئے بٹن پر کلک کرکے اور لاگ ان کرکے اس تک رسائی حاصل کرسکتے ہیں۔'
-      cta_report_button: 'رپورٹ دیکھیں'
+      event_description: 'پچھلی سہ ماہی کے لیے کمیونٹی مانیٹر رپورٹ بنائی گئی ہے۔ آپ نیچے دیئے گئے بٹن پر کلک کرکے اور لاگ ان کرکے اس تک رسائی حاصل کرسکتے ہیں۔'
+      cta_button: 'رپورٹ دیکھیں'
       report_name: 'کمیونٹی مانیٹر رپورٹ'
     cosponsor_of_your_idea:
       cta_reply_to: 'اپنی تجویز دیکھیں'
@@ -172,8 +177,8 @@ ur:
     assignee_digest:
       subject: 'خیالات جن کے لیے آپ کے تاثرات درکار ہیں: %{numberIdeas}'
       preheader: '%{organizationName}کا تفویض کردہ ڈائجسٹ'
-      title_your_weekly_report: '%{firstName}، شہری ان پٹ آپ کے تاثرات کا منتظر ہے۔'
-      cta_manage_your_input: 'اپنے ان پٹ کا نظم کریں۔'
+      title: '%{firstName}، شہری ان پٹ آپ کے تاثرات کا منتظر ہے۔'
+      cta_button: 'اپنے ان پٹ کا نظم کریں۔'
       x_inputs_need_your_feedback: 'ان پٹ کو آپ کے تاثرات کی ضرورت ہے۔'
       title_assignment_past_week: 'آپ کو تفویض کردہ تازہ ترین آئیڈیاز'
       title_no_assignment_past_week: 'پچھلے ہفتے آپ کو کوئی نیا آئیڈیا تفویض نہیں کیا گیا۔'
@@ -250,8 +255,11 @@ ur:
       today: آج
       yesterday: کل
     comment_on_idea_you_follow:
-      cta_reply_to: '%{commentAuthor}کو جواب دیں۔'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} نے %{organizationName}کے لیے ایک خیال پر تبصرہ چھوڑا۔'
+      title: '%{authorName} نے ایک ان پٹ پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
       event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      cta_button: '%{commentAuthor}کو جواب دیں۔'
       main_header:
         idea: '%{authorName} نے ایک خیال پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         question: '%{authorName} نے اس سوال پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
@@ -261,8 +269,6 @@ ur:
         option: '%{authorName} نے ایک آپشن پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         proposal: '%{authorName} نے اس تجویز پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         petition: '%{authorName} نے آپ کی پیروی کی درخواست پر تبصرہ کیا۔'
-      subject: 'There''s a new comment on "%{input_title}"'
-      preheader: '%{authorName} نے %{organizationName}کے لیے ایک خیال پر تبصرہ چھوڑا۔'
     new_idea_for_admin:
       main_header_publication: 'آپ کے پلیٹ فارم پر ایک نیا ان پٹ شائع کیا گیا ہے۔'
       event_description_publication: '%{authorName} نے آپ کے پلیٹ فارم پر ایک نیا ان پٹ جمع کرایا ہے۔ اسے ابھی دریافت کریں، کچھ رائے دیں یا اس کی حیثیت تبدیل کریں!'
@@ -276,11 +282,11 @@ ur:
       today: آج
       yesterday: کل
     comment_on_your_comment:
-      cta_reply_to: '%{firstName}کو جواب دیں۔'
-      event_description: '%{authorNameFull} نے شرکت کے پلیٹ فارم پر ''%{post}'' پر آپ کے تبصرے کا جواب لکھا۔ %{authorName}کے ساتھ بات چیت جاری رکھنے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
       subject: 'آپ کو %{organizationName}کے پلیٹ فارم پر آپ کے تبصرے کا جواب موصول ہوا ہے۔'
-      main_header: '%{authorName} نے آپ کے تبصرے کا جواب دیا۔'
       preheader: '%{authorName} نے %{organizationName}کے پلیٹ فارم پر آپ کے تبصرے کا جواب دیا'
+      title: '%{authorName} نے آپ کے تبصرے کا جواب دیا۔'
+      event_description: '%{authorName} نے شرکت کے پلیٹ فارم پر ''%{post}'' پر آپ کے تبصرے کا جواب لکھا۔ %{authorFirstName}کے ساتھ بات چیت جاری رکھنے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
+      cta_button: '%{authorFirstName}کو جواب دیں۔'
       replied: '%{authorFirstName} نے جواب دیا:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: '%{firstName}کے ذریعے تبصرہ دیکھیں'
