@@ -1,10 +1,6 @@
 import React, { FormEvent } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import styled from 'styled-components';
-
-import ButtonWithLink from 'components/UI/ButtonWithLink';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -21,10 +17,6 @@ const ButtonContainer = ({ children }: { children: React.ReactNode }) => (
     {children}
   </Box>
 );
-
-const CancelButton = styled(ButtonWithLink)`
-  margin-right: 4px;
-`;
 
 interface Props {
   handleCancel: () => void;
@@ -46,35 +38,27 @@ const Footer = ({
 
   return mode === 'preferenceForm' ? (
     <ButtonContainer>
-      <CancelButton
+      <Button
+        mr="4px"
         onClick={handleCancel}
         className="integration-cancel"
-        buttonStyle="primary-inverse"
-        textColor={colors.primary}
-        textHoverColor={colors.primary}
+        buttonStyle="text"
       >
         <FormattedMessage {...messages.cancel} />
-      </CancelButton>
-      <ButtonWithLink
+      </Button>
+      <Button
         onClick={handleSave}
         buttonStyle="primary"
-        bgColor={colors.primary}
-        bgHoverColor={darken(0.1, colors.primary)}
         className="integration-save"
         id="e2e-preferences-save"
       >
         <FormattedMessage {...messages.save} />
-      </ButtonWithLink>
+      </Button>
     </ButtonContainer>
   ) : (
-    <ButtonWithLink
-      onClick={handleCancel}
-      buttonStyle="primary"
-      bgColor={colors.primary}
-      bgHoverColor={darken(0.1, colors.primary)}
-    >
+    <Button onClick={handleCancel} buttonStyle="primary">
       <FormattedMessage {...messages.close} />
-    </ButtonWithLink>
+    </Button>
   );
 };
 
