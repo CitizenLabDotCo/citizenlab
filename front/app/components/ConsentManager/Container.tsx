@@ -69,13 +69,12 @@ const Container = ({
         updatePreference={updatePreference}
       />
 
-      {isConsentRequired && (
-        <CookieModal
-          onAccept={accept}
-          onChangePreferences={openDialog}
-          onClose={reject}
-        />
-      )}
+      <CookieModal
+        opened={isConsentRequired}
+        onAccept={accept}
+        onChangePreferences={openDialog}
+        onClose={reject}
+      />
     </>
   );
 };

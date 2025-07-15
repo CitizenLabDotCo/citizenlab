@@ -1,6 +1,11 @@
 import React from 'react';
 
+import { Title } from '@citizenlab/cl2-component-library';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
 import { TCategory } from '../destinations';
+import messages from '../messages';
 import { CategorizedDestinations, IPreferences } from '../typings';
 
 import CategoryCard from './CategoryCard';
@@ -21,6 +26,9 @@ const Preferences = ({
 }: Props) => {
   return (
     <ContentContainer id="e2e-preference-dialog">
+      <Title>
+        <FormattedMessage {...messages.title} />
+      </Title>
       {Object.keys(categoryDestinations)
         .filter((category: TCategory) => {
           return categoryDestinations[category].length > 0;
