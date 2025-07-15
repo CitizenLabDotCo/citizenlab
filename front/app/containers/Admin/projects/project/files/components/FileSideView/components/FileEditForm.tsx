@@ -19,6 +19,8 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from '../messages';
 
+import { getFileExtensionString, getFileNameWithoutExtension } from './utils';
+
 type Props = {
   file: IFile;
 };
@@ -29,10 +31,8 @@ const FileEditForm = ({ file }: Props) => {
   const fileName = file.data.attributes.name;
 
   // Extract the file name and extension from the file object, so we can use it when we save.
-  const finalDotIndex = fileName.lastIndexOf('.');
-  const fileNameWithoutExtension = fileName.slice(0, finalDotIndex);
-  const fileExtensionString =
-    finalDotIndex !== -1 ? fileName.slice(finalDotIndex + 1) : '';
+  const fileNameWithoutExtension = getFileNameWithoutExtension(fileName);
+  const fileExtensionString = getFileExtensionString(fileName);
 
   // Setup for the file edit form
   const schema = object({
