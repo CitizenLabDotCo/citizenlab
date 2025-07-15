@@ -29,8 +29,6 @@ namespace :single_use do
                 puts "  ERROR! Failed to update phases for '#{search_value}': #{e.message}"
               end
             end
-          else
-            puts "  No phases found with '#{search_value}'"
           end
         end
       end
