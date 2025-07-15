@@ -88,8 +88,12 @@ fi:
       author_first_name: 'Jane'
       author_last_name: 'Naaras'
       author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
       project_title: 'Esimerkkiprojekti'
       comment_body: 'Tämä on esimerkkikommentti, jota käytetään sähköpostien sisällön esikatseluun. Tämä ei ole oikeaa sisältöä.'
+      comment_deleted_reason: 'Esimerkkikommenttiasi pidettiin sopimattomana.'
       idea_title: 'Esimerkki-idea'
       proposal_title: 'Esimerkkiehdotus'
     footer:
@@ -105,22 +109,22 @@ fi:
     manual:
       preheader: 'Sinulla on postia osoitteesta %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'Syy miksi kommenttisi poistettiin:'
-      cta_view: 'Katso tämä idea'
+      subject: 'Kommenttisi on poistettu alustalta %{organizationName}'
+      preheader: 'Kommenttisi on poistettu'
+      title: '%{organizationName} poisti kommenttisi'
       event_description: '%{organizationName} poisti ideasta kirjoittamasi kommentin.'
-      main_header: '%{organizationName} poisti kommenttisi'
+      cta_button: 'Näytä tämä idea'
+      reason: 'Syy miksi kommenttisi poistettiin:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Kommenttisi katsottiin sopimattomaksi'
       irrelevant_reason: 'Kommenttisi katsottiin epäolennaiseksi tässä kontekstissa'
       no_reason: 'Syytä ei kerrottu'
-      subject: 'Kommenttisi on poistettu alustalta %{organizationName}'
-      preheader: 'Kommenttisi on poistettu'
     admin_digest:
       subject: 'Viikoittainen järjestelmänvalvojaraporttisi %{time}'
       preheader: 'Järjestelmänvalvojan tiivistelmä kohteesta %{organizationName}'
-      title_your_weekly_report: '%{firstName}, viikkoraporttisi'
-      text_introduction: 'Olemme koonneet sinulle panoksen, joka on aiheuttanut eniten aktiivisuutta kuluneen viikon aikana. Ota selvää, mitä alustallasi tapahtuu!'
-      cta_visit_the_platform: 'Vieraile alustallasi'
+      title: '%{firstName}, viikoittainen raporttisi'
+      event_description: 'Olemme koonneet sinulle palautteen, joka on herättänyt eniten aktiivisuutta kuluneen viikon aikana. Ota selvää, mitä alustallasi tapahtuu!'
+      cta_button: 'Käy alustallasi'
       new_users: 'Uudet käyttäjät'
       new_inputs: 'Uudet sisääntulot'
       new_comments: 'Uusia kommentteja'
@@ -131,10 +135,11 @@ fi:
       today_by_author: 'Tänään %{author}'
       x_days_ago_by_author: '%{x} päivää sitten, kirjoittaja %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Hallinnoi alustaasi'
-      message_you_became_administrator: 'Sinulle on myönnetty järjestelmänvalvojan oikeudet osallistumisalustalle %{organizationName}.'
-      preheader: 'Sinulle myönnettiin järjestelmänvalvojan oikeudet osallistumisalustalle %{organizationName}'
       subject: 'Sinusta tuli järjestelmänvalvoja alustalla %{organizationName}'
+      preheader: 'Sinulle myönnettiin järjestelmänvalvojan oikeudet osallistumisalustalle %{organizationName}'
+      title: 'Sinusta tuli järjestelmänvalvoja'
+      event_description: 'Sinulle on myönnetty järjestelmänvalvojan oikeudet %{organizationName}osallistumisalustalle.'
+      cta_button: 'Hallitse alustaasi'
       text_create_participatory_process: 'Järjestelmänvalvojana voit luoda ja määrittää uusia osallistumisprojekteja. Voit lisätä uusia vaiheita käyttämällä aikajanaa. Jokaisella näistä vaiheista voi olla oma käyttäytymisensä idean julkaisemisen, kommentoimisen ja äänestämisen suhteen.'
       text_moderate_analyse_input: 'Kun projektit on käynnistetty, ensimmäiset ideat tulevat sisään. Saat viikoittain raportit kaikista tärkeimmistä toiminnoista, jotta pysyt ajan tasalla. Ideoiden yleiskatsauksen avulla voit moderoida syötteen ja tehdä yhteistyötä sen käsittelyssä.'
       text_platform_setup: 'Järjestelmänvalvojana voit määrittää osallistumisalustan. Valitse logo, kuvat ja värit, kirjoita kotisivullesi henkilökohtainen viesti, lähetä kutsuja, määrittele mitä haluat tietää käyttäjistäsi, ...'
@@ -142,26 +147,26 @@ fi:
       title_moderate_analyse_input: 'Moderoi ja analysoi syötettä'
       title_platform_setup: 'Aseta alustasi valmiiksi'
       title_what_can_you_do_administrator: 'Mitä voit tehdä järjestelmänvalvojana?'
-      title_you_became_administrator: 'Sinusta tuli järjestelmänvalvoja'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} ilmoitti tämän kommentin roskapostiksi'
+      preheader: 'Toimi tämän roskapostiksi ilmoitetun kommentin mukaan'
+      title: '%{firstName} %{lastName} ilmoitti tämän kommentin roskapostiksi'
+      cta_button: 'Arvostelun kommentti'
       by_author: 'kirjoittaja %{authorName}'
       commented: '%{authorName} kommentoi:'
-      cta_review_comment: 'Tarkista kommentti'
       days_ago: '%{numberOfDays} päivää sitten'
       event_description: 'Seuraava kommentti lähetetty <strong>''%{post}''</strong> raportoitiin:'
       inappropriate_content: 'Kommentti on sopimaton tai loukkaava.'
-      preheader: 'Toimi tämän roskapostiksi ilmoitetun kommentin mukaan'
       reported_this_because: '%{reporterFirstName} ilmoitti tästä, koska:'
-      subject: '%{organizationName}: %{firstName} %{lastName} ilmoitti tämän kommentin roskapostiksi'
-      title_comment_spam_report: '%{firstName} %{lastName} ilmoitti tämän kommentin roskapostiksi'
       today: Tänään
       wrong_content: 'Kommentti ei liity asiaan.'
       yesterday: Eilen
     community_monitor_report:
       subject: 'Uusi yhteisön valvontaraportti on saatavilla'
+      preheader: 'Uusi yhteisömonitoriraportti on saatavilla'
       title: 'Uusi yhteisön valvontaraportti on saatavilla'
-      text_introduction: 'Yhteisömonitoriraportti on luotu edelliseltä vuosineljännekseltä. Pääset siihen klikkaamalla alla olevaa painiketta ja kirjautumalla sisään.'
-      cta_report_button: 'Näytä raportti'
+      event_description: 'Edelliselle neljännekselle on luotu yhteisömonitorin raportti. Pääset siihen napsauttamalla alla olevaa painiketta ja kirjautumalla sisään.'
+      cta_button: 'Näytä raportti'
       report_name: 'Yhteisön valvontaraportti'
     cosponsor_of_your_idea:
       cta_reply_to: 'Katso ehdotuksesi'
@@ -172,8 +177,8 @@ fi:
     assignee_digest:
       subject: 'Palautteesi vaativat ideat: %{numberIdeas}'
       preheader: 'Vastaanotetun tiivistelmä %{organizationName}'
-      title_your_weekly_report: '%{firstName}, kansalaisten palaute odottaa palautettasi'
-      cta_manage_your_input: 'Muokkaa syötteitäsi'
+      title: '%{firstName}, kansalaisten palautetta odotetaan'
+      cta_button: 'Hallitse syötettäsi'
       x_inputs_need_your_feedback: 'syötteet tarvitsevat palautettasi'
       title_assignment_past_week: 'Uusimmat sinulle osoitetut ideat'
       title_no_assignment_past_week: 'Sinulle ei ole määrätty uusia ideoita viime viikolla'
@@ -250,8 +255,11 @@ fi:
       today: Tänään
       yesterday: Eilen
     comment_on_idea_you_follow:
-      cta_reply_to: 'Vastaa %{commentAuthor}'
+      subject: '"%{input_title}" on uusi kommentti'
+      preheader: '%{authorName} jätti kommentin ideaan %{organizationName}'
+      title: '%{authorName} kommentoi seuraamaasi viestiä'
       event_description: '%{authorNameFull} asetti reaktion kohtaan ''%{inputTitle}''. Napsauta alla olevaa painiketta jatkaaksesi keskustelua %{authorName}kanssa.'
+      cta_button: 'Vastaus käyttäjälle %{commentAuthor}'
       main_header:
         idea: '%{authorName} kommentoi ideaa, jota seuraat'
         question: '%{authorName} kommentoi kysymystä, jota seuraat'
@@ -261,8 +269,6 @@ fi:
         option: '%{authorName} kommentoi valitsemaasi vaihtoehtoa'
         proposal: '%{authorName} kommentoi ehdotusta, jota seuraat'
         petition: '%{authorName} kommentoi seuraamaasi vetoomusta'
-      subject: '"%{input_title}" on uusi kommentti'
-      preheader: '%{authorName} jätti kommentin ideaan %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'Uusi syöte on julkaistu alustallasi'
       event_description_publication: '%{authorName} on lähettänyt uuden syötteen alustallesi. Tutustu siihen nyt, anna palautetta tai muuta sen tilaa!'
@@ -276,11 +282,11 @@ fi:
       today: Tänään
       yesterday: Eilen
     comment_on_your_comment:
-      cta_reply_to: 'Vastaa %{firstName}'
-      event_description: '%{authorNameFull} kirjoitti vastauksen kommenttiisi "%{post}" osallistumisalustalla. Napsauta alla olevaa painiketta jatkaaksesi keskustelua %{authorName}kanssa.'
       subject: 'Olet saanut vastauksen kommenttiisi %{organizationName}alustalla'
-      main_header: '%{authorName} vastasi kommenttiisi'
       preheader: '%{authorName} vastasi kommenttiisi käyttäjän %{organizationName}alustalla'
+      title: '%{authorName} vastasi kommenttiisi'
+      event_description: '%{authorName} vastasi kommenttiisi aiheesta ''%{post}'' osallistumisalustalla. Klikkaa alla olevaa painiketta jatkaaksesi keskustelua käyttäjän %{authorFirstName}kanssa.'
+      cta_button: 'Vastaus käyttäjälle %{authorFirstName}'
       replied: '%{authorFirstName} vastasi:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'Näytä kommentti käyttäjältä %{firstName}'
