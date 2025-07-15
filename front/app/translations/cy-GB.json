@@ -114,8 +114,6 @@
   "app.components.ConsentManager.Banner.manage": "Rheoli",
   "app.components.ConsentManager.Banner.policyLink": "Polisi cwcis",
   "app.components.ConsentManager.Banner.reject": "Gwrthod",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Cadarnhau",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Os byddwch yn canslo, bydd eich dewisiadau yn cael eu colli.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Hysbysebu",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Rydym yn defnyddio hwn i bersonoli a mesur effeithiolrwydd ymgyrchoedd hysbysebu ein gwefan. Ni fyddwn yn dangos unrhyw hysbysebion ar y platfform hwn, ond efallai y bydd y gwasanaethau canlynol yn cynnig hysbyseb wedi'i bersonoli i chi yn seiliedig ar y tudalennau rydych chi'n ymweld â nhw ar ein gwefan.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Caniatáu",

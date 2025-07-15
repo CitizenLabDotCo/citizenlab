@@ -114,8 +114,6 @@
   "app.components.ConsentManager.Banner.manage": "Upravljajte",
   "app.components.ConsentManager.Banner.policyLink": "Deklaracija o kolačićima",
   "app.components.ConsentManager.Banner.reject": "Odbij",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Potvrdi",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Ukoliko prekinete, vaše preferencije neće biti sačuvane.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Oglašavanje",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Ovo koristimo kako bismo personalizovali oglašavanje na našem sajtu i merili njegovu efikasnost. Mi ne prikazujemo oglase, ali to na osnovu stranica koje na našem sajtu posećujete mogu učiniti sledeći servisi. ",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Dozvoli",

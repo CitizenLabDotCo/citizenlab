@@ -114,8 +114,6 @@
   "app.components.ConsentManager.Banner.manage": "Tvarkykite",
   "app.components.ConsentManager.Banner.policyLink": "Slapukų politika",
   "app.components.ConsentManager.Banner.reject": "Atmesti",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Patvirtinkite",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Jei atšauksite užsakymą, jūsų parinktys bus prarastos.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklama",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Naudojame tai, kad galėtume suasmeninti ir įvertinti mūsų svetainės reklamos kampanijų veiksmingumą. Šioje platformoje nerodysime jokios reklamos, tačiau toliau nurodytos paslaugos gali pasiūlyti jums asmeninę reklamą pagal jūsų aplankytus mūsų svetainės puslapius.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Leisti",

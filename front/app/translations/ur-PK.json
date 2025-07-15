@@ -114,8 +114,6 @@
   "app.components.ConsentManager.Banner.manage": "انتظام کریں۔",
   "app.components.ConsentManager.Banner.policyLink": "کوکی پالیسی",
   "app.components.ConsentManager.Banner.reject": "رد کرنا",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "تصدیق کریں۔",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "اگر آپ منسوخ کرتے ہیں تو آپ کی ترجیحات ضائع ہو جائیں گی۔",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "ایڈورٹائزنگ",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "ہم اس کا استعمال اپنی ویب سائٹ کی اشتہاری مہموں کی تاثیر کو ذاتی بنانے اور پیمائش کرنے کے لیے کرتے ہیں۔ ہم اس پلیٹ فارم پر کوئی اشتہار نہیں دکھائیں گے، لیکن درج ذیل سروسز آپ کو ہماری سائٹ پر جو صفحات ملاحظہ کرتی ہیں ان کی بنیاد پر آپ کو ذاتی نوعیت کا اشتہار پیش کر سکتی ہیں۔",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "اجازت دیں۔",

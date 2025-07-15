@@ -114,8 +114,6 @@
   "app.components.ConsentManager.Banner.manage": "Aqutsinerit",
   "app.components.ConsentManager.Banner.policyLink": "Cookiet pillugit politik",
   "app.components.ConsentManager.Banner.reject": "Reject",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Uppernarsaruk",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Taamaatikkukku salliusussaanerit asuliinnassaaq.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Ussassaarutit saqqummiussinerlu",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Nittartakkatsinni inunnut tulluussaaniarluta ussassaarinermillu pisariillisaaneq nalilerniarlugu Uani platformimi ussassaarutinik takutitsissanngilagut, kisianni kiffartuussinerit ilai nittartakkatsinni iserfigisatit malillugit inummut tulluussakkamik ussassaarsinnaavaatit.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Akuersineq",

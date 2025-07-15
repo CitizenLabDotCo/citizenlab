@@ -114,8 +114,6 @@
   "app.components.ConsentManager.Banner.manage": "Muokkaa",
   "app.components.ConsentManager.Banner.policyLink": "Evästekäytäntö",
   "app.components.ConsentManager.Banner.reject": "Hylkää",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Vahvistaa",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Jos peruutat, asetuksesi menetetään.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Mainonta",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Käytämme tätä mukauttaaksemme ja mitataksemme verkkosivustomme mainoskampanjoiden tehokkuutta. Emme näytä mainoksia tällä alustalla, mutta seuraavat palvelut voivat tarjota sinulle räätälöidyn mainoksen sivustollamme vierailemiesi sivujen perusteella.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Sallia",
