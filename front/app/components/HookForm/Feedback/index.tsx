@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Text, Title, Box } from '@citizenlab/cl2-component-library';
-import { FontSizesType } from 'component-library/utils/styleUtils';
+import { FontSize } from 'component-library/components/Title';
 import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
@@ -25,7 +25,7 @@ type FeedbackProps = {
   successMessage?: string;
   onlyShowErrors?: boolean;
   showErrorTitle?: boolean;
-  fontSize?: FontSizesType;
+  fontSize?: FontSize;
 };
 
 const Feedback = ({

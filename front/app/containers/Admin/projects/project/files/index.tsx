@@ -13,7 +13,7 @@ const ProjectFilesTab = () => {
     projectId: string;
   };
 
-  const [showInitialView, setShowInitialView] = useState<boolean>(false);
+  const [showNoFilesView, setShowNoFilesView] = useState<boolean>(false);
 
   // Try to fetch first file of the project, to determine if there are any files
   const { data: files, isLoading } = useFiles({
@@ -27,8 +27,8 @@ const ProjectFilesTab = () => {
   return (
     <Box mb="40px" p="44px">
       <Box>
-        {!projectHasFiles || showInitialView ? (
-          <NoFilesView setShowInitialView={setShowInitialView} />
+        {!projectHasFiles || showNoFilesView ? (
+          <NoFilesView setShowNoFilesView={setShowNoFilesView} />
         ) : (
           <FilesList />
         )}
