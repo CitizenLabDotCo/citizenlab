@@ -20,9 +20,8 @@ RSpec.describe Sluggable do
       # These disabled RuboCop rules are necessary to permit the successful creation and removal of a dynamic class,
       # the leakage of which is what the rubocop rules are trying to prevent.
       # RuboCop:disable RSpec/BeforeAfterAll
-      before(:context) do
+      before(:context) do # rubocop:disable RSpec/BeforeAfterAll
         unless Object.const_defined?(:TempSluggableTestModel)
-          # rubocop:disable RSpec/RemoveConst
           Object.const_set(:TempSluggableTestModel, Class.new(ApplicationRecord) do
             include Sluggable
             connection.create_table(:test_models, temporary: true) do |t|
@@ -32,15 +31,13 @@ RSpec.describe Sluggable do
             self.table_name = 'test_models'
             slug from: proc { |it| it.title_multiloc }
           end)
-          # rubocop:enable RSpec/RemoveConst
         end
       end
       # RuboCop:enable RSpec/BeforeAfterAll
 
       let(:test_model) { TempSluggableTestModel }
 
-      # RuboCop:disable RSpec/BeforeAfterAll
-      after(:all) do
+      after(:all) do # rubocop:disable RSpec/BeforeAfterAll
         if ActiveRecord::Base.connection.table_exists?(:test_models)
           ActiveRecord::Base.connection.drop_table(:test_models)
         end
