@@ -88,8 +88,12 @@ pa:
       author_first_name: 'ਜੇਨ'
       author_last_name: 'ਡੋ'
       author_display_name: 'ਜੇਨ ਡੋ'
+      initiator_first_name: 'ਬੌਬ'
+      initiator_last_name: 'ਸਮਿਥ'
+      initiator_display_name: 'ਬੌਬ ਸਮਿਥ'
       project_title: 'ਉਦਾਹਰਣ ਪ੍ਰੋਜੈਕਟ'
       comment_body: 'ਇਹ ਈਮੇਲਾਂ ਦੀ ਸਮੱਗਰੀ ਦੀ ਝਲਕ ਦੇਖਣ ਲਈ ਵਰਤੀ ਗਈ ਇੱਕ ਉਦਾਹਰਣ ਟਿੱਪਣੀ ਹੈ। ਇਹ ਅਸਲ ਸਮੱਗਰੀ ਨਹੀਂ ਹੈ।'
+      comment_deleted_reason: 'ਤੁਹਾਡੀ ਉਦਾਹਰਣ ਟਿੱਪਣੀ ਨੂੰ ਅਣਉਚਿਤ ਮੰਨਿਆ ਗਿਆ ਸੀ।'
       idea_title: 'ਉਦਾਹਰਨ ਵਿਚਾਰ'
       proposal_title: 'ਉਦਾਹਰਨ ਪ੍ਰਸਤਾਵ'
     footer:
@@ -105,22 +109,22 @@ pa:
     manual:
       preheader: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਤੋਂ ਮੇਲ ਹੈ'
     comment_deleted_by_admin:
-      reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਮਿਟਾਉਣ ਦਾ ਕਾਰਨ:'
-      cta_view: 'ਇਸ ਵਿਚਾਰ ਨੂੰ ਵੇਖੋ'
+      subject: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ਤੋਂ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
+      preheader: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
+      title: '%{organizationName} ਨੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾਈ'
       event_description: '%{organizationName} ਨੇ ਇੱਕ ਵਿਚਾਰ ''ਤੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਲਿਖੀ ਗਈ ਟਿੱਪਣੀ ਨੂੰ ਮਿਟਾ ਦਿੱਤਾ।'
-      main_header: '%{organizationName} ਨੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ'
+      cta_button: 'ਇਸ ਵਿਚਾਰ ਨੂੰ ਵੇਖੋ'
+      reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਮਿਟਾਉਣ ਦਾ ਕਾਰਨ:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਅਣਉਚਿਤ ਮੰਨਿਆ ਗਿਆ ਸੀ'
       irrelevant_reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਉਸ ਸੰਦਰਭ ਲਈ ਅਪ੍ਰਸੰਗਿਕ ਮੰਨਿਆ ਗਿਆ ਸੀ'
       no_reason: 'ਕੋਈ ਕਾਰਨ ਨਹੀਂ ਦੱਸਿਆ ਗਿਆ'
-      subject: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ਤੋਂ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
-      preheader: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
     admin_digest:
       subject: '%{time}ਦੀ ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਪ੍ਰਬੰਧਕ ਰਿਪੋਰਟ'
       preheader: '%{organizationName}ਦਾ ਐਡਮਿਨ ਡਾਇਜੈਸਟ'
-      title_your_weekly_report: '%{firstName}, ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਰਿਪੋਰਟ'
-      text_introduction: 'ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਉਹ ਇਨਪੁਟ ਤਿਆਰ ਕੀਤਾ ਹੈ ਜਿਸ ਨੇ ਪਿਛਲੇ ਹਫ਼ਤੇ ਸਭ ਤੋਂ ਵੱਧ ਗਤੀਵਿਧੀ ਜਨਰੇਟ ਕੀਤੀ ਹੈ। ਪਤਾ ਕਰੋ ਕਿ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਕੀ ਹੋ ਰਿਹਾ ਹੈ!'
-      cta_visit_the_platform: 'ਆਪਣੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਜਾਓ'
+      title: '%{firstName}, ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਰਿਪੋਰਟ'
+      event_description: 'ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਪਿਛਲੇ ਹਫ਼ਤੇ ਸਭ ਤੋਂ ਵੱਧ ਗਤੀਵਿਧੀ ਪੈਦਾ ਕਰਨ ਵਾਲੇ ਇਨਪੁਟ ਨੂੰ ਤਿਆਰ ਕੀਤਾ ਹੈ। ਪਤਾ ਕਰੋ ਕਿ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਕੀ ਹੋ ਰਿਹਾ ਹੈ!'
+      cta_button: 'ਆਪਣੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਜਾਓ'
       new_users: 'ਨਵੇਂ ਉਪਭੋਗਤਾ'
       new_inputs: 'ਨਵੇਂ ਇਨਪੁਟਸ'
       new_comments: 'ਨਵੀਆਂ ਟਿੱਪਣੀਆਂ'
@@ -131,10 +135,11 @@ pa:
       today_by_author: 'ਅੱਜ %{author}ਦੁਆਰਾ'
       x_days_ago_by_author: '%{x} ਦਿਨ ਪਹਿਲਾਂ %{author}ਦੁਆਰਾ'
     admin_rights_received:
-      cta_manage_platform: 'ਆਪਣੇ ਪਲੇਟਫਾਰਮ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
-      message_you_became_administrator: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ।'
-      preheader: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਸਨ'
       subject: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਪ੍ਰਸ਼ਾਸਕ ਬਣ ਗਏ ਹੋ'
+      preheader: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਸਨ'
+      title: 'ਤੁਸੀਂ ਪ੍ਰਸ਼ਾਸਕ ਬਣ ਗਏ।'
+      event_description: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਪ੍ਰਸ਼ਾਸਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ।'
+      cta_button: 'ਆਪਣੇ ਪਲੇਟਫਾਰਮ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
       text_create_participatory_process: 'ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਦੇ ਰੂਪ ਵਿੱਚ, ਤੁਸੀਂ ਨਵੇਂ ਭਾਗੀਦਾਰੀ ਪ੍ਰੋਜੈਕਟ ਬਣਾ ਅਤੇ ਸੰਰਚਿਤ ਕਰ ਸਕਦੇ ਹੋ। ਤੁਸੀਂ ਟਾਈਮਲਾਈਨ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਨਵੇਂ ਪੜਾਅ ਜੋੜ ਸਕਦੇ ਹੋ। ਵਿਚਾਰ ਪੋਸਟਿੰਗ, ਟਿੱਪਣੀ, ਅਤੇ ਵੋਟਿੰਗ ਦੇ ਸਬੰਧ ਵਿੱਚ ਇਹਨਾਂ ਪੜਾਵਾਂ ਵਿੱਚੋਂ ਹਰ ਇੱਕ ਦਾ ਆਪਣਾ ਵਿਹਾਰ ਹੋ ਸਕਦਾ ਹੈ।'
       text_moderate_analyse_input: 'ਇੱਕ ਵਾਰ ਪ੍ਰੋਜੈਕਟ ਸ਼ੁਰੂ ਹੋਣ ਤੋਂ ਬਾਅਦ, ਪਹਿਲੇ ਵਿਚਾਰ ਆਉਣਗੇ। ਤੁਹਾਨੂੰ ਸਾਰੀਆਂ ਮੁੱਖ ਗਤੀਵਿਧੀਆਂ ਦੇ ਨਾਲ ਹਫਤਾਵਾਰੀ ਰਿਪੋਰਟਾਂ ਪ੍ਰਾਪਤ ਹੋਣਗੀਆਂ ਤਾਂ ਜੋ ਤੁਸੀਂ ਚੀਜ਼ਾਂ ਦੇ ਸਿਖਰ ''ਤੇ ਰਹੋ। ਵਿਚਾਰਾਂ ਦੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਤੁਹਾਨੂੰ ਇਨਪੁਟ ਨੂੰ ਸੰਚਾਲਿਤ ਕਰਨ ਅਤੇ ਇਸਦੀ ਪ੍ਰਕਿਰਿਆ ਕਰਨ ਵਿੱਚ ਸਹਿਯੋਗ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰੇਗੀ।'
       text_platform_setup: 'ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਵਜੋਂ ਤੁਸੀਂ ਆਪਣਾ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਸੈਟ ਅਪ ਕਰ ਸਕਦੇ ਹੋ। ਇੱਕ ਲੋਗੋ, ਚਿੱਤਰ ਅਤੇ ਰੰਗ ਚੁਣੋ, ਆਪਣੇ ਹੋਮ ਪੇਜ ''ਤੇ ਇੱਕ ਨਿੱਜੀ ਸੁਨੇਹਾ ਲਿਖੋ, ਸੱਦੇ ਭੇਜੋ, ਪਰਿਭਾਸ਼ਿਤ ਕਰੋ ਕਿ ਤੁਸੀਂ ਆਪਣੇ ਉਪਭੋਗਤਾਵਾਂ ਬਾਰੇ ਕੀ ਜਾਣਨਾ ਚਾਹੁੰਦੇ ਹੋ, ...'
@@ -142,26 +147,26 @@ pa:
       title_moderate_analyse_input: 'ਇੰਪੁੱਟ ਦਾ ਸੰਚਾਲਨ ਅਤੇ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ'
       title_platform_setup: 'ਆਪਣਾ ਪਲੇਟਫਾਰਮ ਸੈੱਟ ਕਰੋ'
       title_what_can_you_do_administrator: 'ਤੁਸੀਂ ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਵਜੋਂ ਕੀ ਕਰ ਸਕਦੇ ਹੋ?'
-      title_you_became_administrator: 'ਤੁਸੀਂ ਪ੍ਰਸ਼ਾਸਕ ਬਣ ਗਏ'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} ਨੇ ਇਸ ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ'
+      preheader: 'ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤੀ ਗਈ ਇਸ ਟਿੱਪਣੀ ''ਤੇ ਕਾਰਵਾਈ ਕਰੋ'
+      title: '%{firstName} %{lastName} ਨੇ ਇਸ ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ'
+      cta_button: 'ਟਿੱਪਣੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
       by_author: '%{authorName}ਦੁਆਰਾ'
       commented: '%{authorName} ਨੇ ਟਿੱਪਣੀ ਕੀਤੀ:'
-      cta_review_comment: 'ਟਿੱਪਣੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
       days_ago: '%{numberOfDays} ਦਿਨ ਪਹਿਲਾਂ'
       event_description: '<strong>''%{post}''</strong> ''ਤੇ ਪੋਸਟ ਕੀਤੀ ਗਈ ਹੇਠ ਦਿੱਤੀ ਟਿੱਪਣੀ ਦੀ ਰਿਪੋਰਟ ਕੀਤੀ ਗਈ ਸੀ:'
       inappropriate_content: 'ਟਿੱਪਣੀ ਅਣਉਚਿਤ ਜਾਂ ਅਪਮਾਨਜਨਕ ਹੈ।'
-      preheader: 'ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤੀ ਗਈ ਇਸ ਟਿੱਪਣੀ ''ਤੇ ਕਾਰਵਾਈ ਕਰੋ'
       reported_this_because: '%{reporterFirstName} ਨੇ ਇਸਦੀ ਰਿਪੋਰਟ ਕੀਤੀ ਕਿਉਂਕਿ:'
-      subject: '%{organizationName}: %{firstName} %{lastName} ਨੇ ਇਸ ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ'
-      title_comment_spam_report: '%{firstName} %{lastName} ਨੇ ਇਸ ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ'
       today: ਅੱਜ
       wrong_content: 'ਟਿੱਪਣੀ ਢੁਕਵੀਂ ਨਹੀਂ ਹੈ।'
       yesterday: ਕੱਲ੍ਹ
     community_monitor_report:
       subject: 'ਇੱਕ ਨਵੀਂ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਉਪਲਬਧ ਹੈ।'
+      preheader: 'ਇੱਕ ਨਵੀਂ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਉਪਲਬਧ ਹੈ।'
       title: 'ਇੱਕ ਨਵੀਂ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਉਪਲਬਧ ਹੈ।'
-      text_introduction: 'ਪਿਛਲੀ ਤਿਮਾਹੀ ਲਈ ਇੱਕ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਬਣਾਈ ਗਈ ਹੈ। ਤੁਸੀਂ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰਕੇ ਅਤੇ ਲੌਗਇਨ ਕਰਕੇ ਇਸਨੂੰ ਐਕਸੈਸ ਕਰ ਸਕਦੇ ਹੋ।'
-      cta_report_button: 'ਰਿਪੋਰਟ ਵੇਖੋ'
+      event_description: 'ਪਿਛਲੀ ਤਿਮਾਹੀ ਲਈ ਇੱਕ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਬਣਾਈ ਗਈ ਹੈ। ਤੁਸੀਂ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰਕੇ ਅਤੇ ਲੌਗਇਨ ਕਰਕੇ ਇਸਨੂੰ ਐਕਸੈਸ ਕਰ ਸਕਦੇ ਹੋ।'
+      cta_button: 'ਰਿਪੋਰਟ ਵੇਖੋ'
       report_name: 'ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ'
     cosponsor_of_your_idea:
       cta_reply_to: 'ਆਪਣਾ ਪ੍ਰਸਤਾਵ ਦੇਖੋ'
@@ -172,8 +177,8 @@ pa:
     assignee_digest:
       subject: 'ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦੀ ਲੋੜ ਵਾਲੇ ਵਿਚਾਰ: %{numberIdeas}'
       preheader: '%{organizationName}ਦਾ ਸਪੁਰਦਗੀ ਡਾਇਜੈਸਟ'
-      title_your_weekly_report: '%{firstName}, ਨਾਗਰਿਕ ਇੰਪੁੱਟ ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ'
-      cta_manage_your_input: 'ਆਪਣੇ ਇੰਪੁੱਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
+      title: '%{firstName}, ਨਾਗਰਿਕਾਂ ਦੀ ਰਾਇ ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦੀ ਉਡੀਕ ਕਰ ਰਹੀ ਹੈ।'
+      cta_button: 'ਆਪਣੇ ਇਨਪੁੱਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
       x_inputs_need_your_feedback: 'ਇਨਪੁਟਸ ਨੂੰ ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦੀ ਲੋੜ ਹੈ'
       title_assignment_past_week: 'ਤੁਹਾਨੂੰ ਸੌਂਪੇ ਗਏ ਨਵੀਨਤਮ ਵਿਚਾਰ'
       title_no_assignment_past_week: 'ਪਿਛਲੇ ਹਫ਼ਤੇ ਤੁਹਾਨੂੰ ਕੋਈ ਨਵਾਂ ਵਿਚਾਰ ਨਹੀਂ ਸੌਂਪਿਆ ਗਿਆ'
@@ -250,8 +255,11 @@ pa:
       today: ਅੱਜ
       yesterday: ਕੱਲ੍ਹ
     comment_on_idea_you_follow:
-      cta_reply_to: '%{commentAuthor}ਨੂੰ ਜਵਾਬ ਦਿਓ'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} ਨੇ %{organizationName}ਲਈ ਇੱਕ ਵਿਚਾਰ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਛੱਡੀ'
+      title: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੇ ਗਏ ਇਨਪੁੱਟ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
       event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      cta_button: '%{commentAuthor}ਦਾ ਜਵਾਬ ਦਿਓ'
       main_header:
         idea: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਚਾਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
         question: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਸਵਾਲ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
@@ -261,8 +269,6 @@ pa:
         option: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਕਲਪ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
         proposal: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
         petition: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੀ ਪਟੀਸ਼ਨ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
-      subject: 'There''s a new comment on "%{input_title}"'
-      preheader: '%{authorName} ਨੇ %{organizationName}ਲਈ ਇੱਕ ਵਿਚਾਰ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਛੱਡੀ'
     new_idea_for_admin:
       main_header_publication: 'ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
       event_description_publication: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁਟ ਸਪੁਰਦ ਕੀਤਾ ਹੈ। ਇਸ ਨੂੰ ਹੁਣੇ ਖੋਜੋ, ਕੁਝ ਫੀਡਬੈਕ ਦਿਓ ਜਾਂ ਇਸਦੀ ਸਥਿਤੀ ਬਦਲੋ!'
@@ -276,11 +282,11 @@ pa:
       today: ਅੱਜ
       yesterday: ਕੱਲ੍ਹ
     comment_on_your_comment:
-      cta_reply_to: '%{firstName}ਨੂੰ ਜਵਾਬ ਦਿਓ'
-      event_description: '%{authorNameFull} ਨੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਲਿਖਿਆ। %{authorName}ਨਾਲ ਗੱਲਬਾਤ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
       subject: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਮਿਲਿਆ ਹੈ'
-      main_header: '%{authorName} ਨੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
       preheader: '%{authorName} ਨੇ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
+      title: '%{authorName} ਨੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
+      event_description: '%{authorName} ਨੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਲਿਖਿਆ। %{authorFirstName}ਨਾਲ ਗੱਲਬਾਤ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
+      cta_button: '%{authorFirstName}ਦਾ ਜਵਾਬ ਦਿਓ'
       replied: '%{authorFirstName} ਨੇ ਜਵਾਬ ਦਿੱਤਾ:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
