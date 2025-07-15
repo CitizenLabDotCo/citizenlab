@@ -13,7 +13,13 @@ const FileMetadata = ({ file }: Props) => {
   return (
     <Box mt="12px">
       <Box display="flex">
-        <Icon name="calendar" width="16px" m="0" fill={colors.textSecondary} />
+        <Icon
+          name="calendar"
+          width="16px"
+          m="0"
+          fill={colors.textSecondary}
+          aria-hidden
+        />
         <Text m="0" ml="8px" color="textSecondary">
           {new Date(file.data.attributes.created_at).toLocaleDateString()}
         </Text>

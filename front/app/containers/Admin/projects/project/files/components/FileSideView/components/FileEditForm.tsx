@@ -26,13 +26,13 @@ type Props = {
 const FileEditForm = ({ file }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: updateFile } = useUpdateFile();
+  const fileName = file.data.attributes.name;
 
   // Extract the file name and extension from the file object, so we can use it when we save.
-  const fileNameWithoutExtension = file.data.attributes.name.split('.')[0];
-  const fileExtensionString = file.data.attributes.name
-    .split('.')
-    .slice(1)
-    .join('.');
+  const finalDotIndex = fileName.lastIndexOf('.');
+  const fileNameWithoutExtension = fileName.slice(0, finalDotIndex);
+  const fileExtensionString =
+    finalDotIndex !== -1 ? fileName.slice(finalDotIndex + 1) : '';
 
   // Setup for the file edit form
   const schema = object({
@@ -67,6 +67,10 @@ const FileEditForm = ({ file }: Props) => {
           // TODO: Add category and description_multiloc once implemented
         },
       });
+
+      // Reset the form values after successful submission
+      const values = methods.getValues();
+      methods.reset(values);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
