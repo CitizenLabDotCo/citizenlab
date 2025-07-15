@@ -17,6 +17,8 @@ RSpec.describe Sluggable do
     end
 
     describe 'generate_slug' do
+      # These disabled RuboCop rules are necessary to permit the successful creation and removal of a dynamic class,
+      # the leakage of which is what the rubocop rules are trying to prevent.
       # RuboCop:disable RSpec/BeforeAfterAll # This hook is necessary for dynamic class lifecycle management
       # RuboCop:disable RSpec/RemoveConst # remove_const is required to unregister the dynamic class from ActiveRecord
       before(:context) do
