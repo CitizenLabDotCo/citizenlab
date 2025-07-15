@@ -9,20 +9,27 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
+import ContentContainer from 'components/ContentContainer';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-import messages from './messages';
+import messages from '../messages';
 
 interface Props {
+  opened: boolean;
   onAccept: () => void;
   onChangePreferences: () => void;
   onClose: () => void;
 }
 
-const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
+const CookieModal = ({
+  opened,
+  onAccept,
+  onChangePreferences,
+  onClose,
+}: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const [searchParams] = useSearchParams();
   const from = searchParams.get('from');
@@ -31,28 +38,18 @@ const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
 
   return (
     <Modal
-      opened={true}
+      opened={opened}
       close={onClose}
       closeOnClickOutside={false}
       hideCloseButton
-    >
-      <Box id="e2e-cookie-banner">
-        <Title fontSize={isSmallerThanPhone ? 'xl' : undefined}>
-          <FormattedMessage {...messages.modalTitle} />
-        </Title>
-        <Text id="cookie-banner-title">
-          <FormattedMessage
-            {...messages.modalDescription}
-            values={{
-              policyLink: (
-                <Link to="/pages/cookie-policy?from=cookie-modal">
-                  <FormattedMessage {...messages.policyLink} />
-                </Link>
-              ),
-            }}
-          />
-        </Text>
-        <Box display="flex" gap="8px" justifyContent="flex-end" mt="16px">
+      footer={
+        <Box
+          width="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+          gap="8px"
+        >
           <Button
             className="integration-open-modal"
             px="4px"
@@ -73,7 +70,25 @@ const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
             <FormattedMessage {...messages.accept} />
           </Button>
         </Box>
-      </Box>
+      }
+    >
+      <ContentContainer id="e2e-cookie-banner">
+        <Title fontSize={isSmallerThanPhone ? 'xl' : undefined}>
+          <FormattedMessage {...messages.modalTitle} />
+        </Title>
+        <Text>
+          <FormattedMessage
+            {...messages.modalDescription}
+            values={{
+              policyLink: (
+                <Link to="/pages/cookie-policy?from=cookie-modal">
+                  <FormattedMessage {...messages.policyLink} />
+                </Link>
+              ),
+            }}
+          />
+        </Text>
+      </ContentContainer>
     </Modal>
   );
 };
