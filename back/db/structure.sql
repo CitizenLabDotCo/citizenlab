@@ -307,6 +307,7 @@ DROP INDEX IF EXISTS public.index_files_on_size;
 DROP INDEX IF EXISTS public.index_files_on_name_gin_trgm;
 DROP INDEX IF EXISTS public.index_files_on_mime_type;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
+DROP INDEX IF EXISTS public.index_events_on_maximum_attendees;
 DROP INDEX IF EXISTS public.index_events_on_location_point;
 DROP INDEX IF EXISTS public.index_events_attendances_on_updated_at;
 DROP INDEX IF EXISTS public.index_events_attendances_on_event_id;
@@ -1521,7 +1522,8 @@ CREATE TABLE public.events (
     address_2_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     online_link character varying,
     attend_button_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    using_url character varying
+    using_url character varying,
+    maximum_attendees integer
 );
 
 
@@ -5208,6 +5210,13 @@ CREATE INDEX index_events_on_location_point ON public.events USING gist (locatio
 
 
 --
+-- Name: index_events_on_maximum_attendees; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_maximum_attendees ON public.events USING btree (maximum_attendees);
+
+
+--
 -- Name: index_events_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7438,6 +7447,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250715075008'),
 ('20250708085259'),
 ('20250702085136'),
 ('20250627113458'),
@@ -7446,6 +7456,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250624102147'),
 ('20250618151933'),
 ('20250616142444'),
+('20250611110008'),
 ('20250610112901'),
 ('20250609151800'),
 ('20250606074930'),
