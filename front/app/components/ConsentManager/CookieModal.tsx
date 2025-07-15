@@ -7,6 +7,7 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
 import Modal from 'components/UI/Modal';
 
@@ -23,6 +24,10 @@ interface Props {
 
 const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
+  const [searchParams] = useSearchParams();
+  const from = searchParams.get('from');
+
+  if (from === 'cookie-modal') return null;
 
   return (
     <Modal
@@ -40,7 +45,7 @@ const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
             {...messages.modalDescription}
             values={{
               policyLink: (
-                <Link to="/pages/cookie-policy">
+                <Link to="/pages/cookie-policy?from=cookie-modal">
                   <FormattedMessage {...messages.policyLink} />
                 </Link>
               ),
