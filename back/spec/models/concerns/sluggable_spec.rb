@@ -19,10 +19,10 @@ RSpec.describe Sluggable do
     describe 'generate_slug' do
       # These disabled RuboCop rules are necessary to permit the successful creation and removal of a dynamic class,
       # the leakage of which is what the rubocop rules are trying to prevent.
-      # RuboCop:disable RSpec/BeforeAfterAll # This hook is necessary for dynamic class lifecycle management
-      # RuboCop:disable RSpec/RemoveConst # remove_const is required to unregister the dynamic class from ActiveRecord
+      # RuboCop:disable RSpec/BeforeAfterAll
       before(:context) do
         unless Object.const_defined?(:TempSluggableTestModel)
+          # rubocop:disable RSpec/RemoveConst
           Object.const_set(:TempSluggableTestModel, Class.new(ApplicationRecord) do
             include Sluggable
             connection.create_table(:test_models, temporary: true) do |t|
@@ -32,25 +32,25 @@ RSpec.describe Sluggable do
             self.table_name = 'test_models'
             slug from: proc { |it| it.title_multiloc }
           end)
+          # rubocop:enable RSpec/RemoveConst
         end
       end
       # RuboCop:enable RSpec/BeforeAfterAll
-      # RuboCop:enable RSpec/RemoveConst
 
       let(:test_model) { TempSluggableTestModel }
 
-      # RuboCop:disable RSpec/BeforeAfterAll # This hook is necessary for dynamic class lifecycle management
-      # RuboCop:disable RSpec/RemoveConst # remove_const is required to unregister the dynamic class from ActiveRecord
+      # RuboCop:disable RSpec/BeforeAfterAll
       after(:all) do
         if ActiveRecord::Base.connection.table_exists?(:test_models)
           ActiveRecord::Base.connection.drop_table(:test_models)
         end
         if Object.const_defined?(:TempSluggableTestModel)
+          # rubocop:disable RSpec/RemoveConst
           Object.send(:remove_const, :TempSluggableTestModel)
+          # rubocop:enable RSpec/RemoveConst
         end
       end
       # RuboCop:enable RSpec/BeforeAfterAll
-      # RuboCop:enable RSpec/RemoveConst
 
       it 'does not set a slug when `slug` is not included in the class' do
         sluggable = create(sluggable_factories[:no_slug])
