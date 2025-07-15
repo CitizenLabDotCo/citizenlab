@@ -19,18 +19,18 @@ namespace :single_use do
           phases = Phase.where('EXISTS (SELECT 1 FROM jsonb_each_text(voting_term_singular_multiloc) WHERE LOWER(value) = LOWER(?))', search_value)
 
           if phases.any?
-            puts "Found #{phases.count} phases with '#{search_value}', setting vote_term to '#{term}'"
+            puts "..Found #{phases.count} phases with '#{search_value}', setting vote_term to '#{term}'"
 
             if execute
               begin
                 updated = phases.update_all(vote_term: term)
-                puts "Updated #{updated} phases to '#{term}'" if execute
+                puts "  OK: Updated #{updated} phases to '#{term}'" if execute
               rescue => e
-                puts "Failed to update phases for '#{search_value}': #{e.message}"
+                puts "  ERROR! Failed to update phases for '#{search_value}': #{e.message}"
               end
             end
           else
-            puts "No phases found with '#{search_value}'"
+            puts "  No phases found with '#{search_value}'"
           end
         end
       end
