@@ -2161,7 +2161,7 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Beskrivelse af begivenheden",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Rediger",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Rediger begivenhed",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExport1": "For at sende en e-mail til registranter direkte fra platformen skal administratorer oprette en brugergruppe på fanen {userTabLink} . {supportArticleLink}.",
+  "app.containers.AdminPage.ProjectEvents.eventAttendanceExport1": "For at sende e-mails til deltagere direkte fra platformen, skal platformens administratorer oprette en brugergruppe under fanen {userTabLink}. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Datoer for begivenheder",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Billede af begivenhed",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Alternativ tekst til begivenhedsbillede",
