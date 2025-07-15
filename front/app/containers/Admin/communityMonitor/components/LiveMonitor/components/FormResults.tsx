@@ -75,7 +75,7 @@ const FormResults = (props: Props) => {
                   m="0px"
                   fontSize="l"
                   fontWeight="bold"
-                  data-intercom-target={`community-monitor-main-theme-${index}`}
+                  className={`intercom-community-monitor-main-theme-${index}`}
                 >
                   <Icon
                     width="16px"

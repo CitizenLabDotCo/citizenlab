@@ -181,7 +181,7 @@ module EmailCampaigns
       nil
     end
 
-    def extra_mailgun_variables
+    def extra_mailgun_variables(_command)
       super || {}
     end
 

@@ -12,22 +12,18 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useCustomFields from 'api/custom_fields/useCustomFields';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import { IdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
 
-import useLocale from 'hooks/useLocale';
-
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { isNilOrError } from 'utils/helperUtils';
-import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
 import IdeasView from '../shared/IdeasView';
@@ -97,7 +93,6 @@ const IdeasWithFiltersSidebar = ({
   showViewToggle,
   inputTerm,
 }: Props) => {
-  const locale = useLocale();
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const smallerThanPhone = useBreakpoint('phone');
@@ -123,18 +118,12 @@ const IdeasWithFiltersSidebar = ({
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
   const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
 
-  // Determine if location field enabled (for view button visibility and fetching idea markers)
-  const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
-    phaseId: ideaQueryParameters.phase,
-    projectId,
-  });
-  const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
-    ? isFieldEnabled(
-        'location_description',
-        ideaCustomFieldsSchemas.data.attributes,
-        locale
-      )
-    : false;
+  const { data: customFields } = useCustomFields({ projectId });
+
+  const locationEnabled = customFields?.find(
+    (field) => field.key === 'location_description'
+  )?.enabled;
+
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(

@@ -11,7 +11,7 @@ fi
 
 # Create PR title
 today=$(date +%Y-%m-%d)
-release_count=$(gh pr list --state all --search "Release $today in:title" | wc -l)
+release_count=$(gh pr list --state all --search "Release $today in:title" | grep "Release $today" |wc -l)
 release_number=$((release_count + 1))
 pr_title="Release $today ($release_number)"
 

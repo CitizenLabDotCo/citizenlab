@@ -31,7 +31,12 @@ const SortableProjectList = ({
   const { mutate: reorderAdminPublication } = useReorderAdminPublication();
   const { formatMessage } = useIntl();
 
-  function handleReorderAdminPublication(itemId: string, newOrder: number) {
+  function handleReorderAdminPublication(
+    itemId: string,
+    newOrderIndex: number
+  ) {
+    if (!adminPublications) return;
+    const newOrder = adminPublications[newOrderIndex].attributes.ordering;
     reorderAdminPublication({ id: itemId, ordering: newOrder });
   }
 

@@ -37,11 +37,7 @@ const SurveyForm = ({
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const {
-    data: draftIdea,
-    isLoading,
-    refetch,
-  } = useDraftIdeaByPhaseId(phaseId);
+  const { data: draftIdea, isLoading } = useDraftIdeaByPhaseId(phaseId);
 
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
@@ -54,17 +50,23 @@ const SurveyForm = ({
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
   const lastPageNumber = nestedPagesData.length - 1;
+  const onSubmit = async ({
+    formValues,
+    isSubmitPage,
+  }: {
+    formValues: FormValues;
+    isSubmitPage: boolean;
+  }) => {
+    const anonymousUser =
+      !authUser || phase?.data.attributes.allow_anonymous_participation;
 
-  const onSubmit = async (formValues: FormValues) => {
-    const isSubmitPage = currentPageNumber === nestedPagesData.length - 2;
-    const draftIdea = await refetch(); // Refetch the draft idea to ensure we have the latest data
-
-    if (!authUser && !isSubmitPage) {
-      // If the user is not authenticated and is not on the submit page, do not save the draft idea
+    // If the user is anonymous and is not on the submit page, do not save the draft idea
+    if (anonymousUser && !isSubmitPage) {
       return;
     }
+
     // The back-end initially returns a draft idea without an ID
-    if (!draftIdea.data?.data.id) {
+    if (!draftIdea?.data.id) {
       // If the user is an admin or project moderator, we allow them to post to a specific phase
       const phase_ids =
         project && phaseId && canModerateProject(project.data, authUser)
@@ -81,7 +83,7 @@ const SurveyForm = ({
       updateSearchParams({ idea_id: isSubmitPage ? idea.data.id : undefined });
     } else {
       await updateIdea({
-        id: draftIdea.data.data.id,
+        id: draftIdea.data.id,
         requestBody: {
           ...formValues,
           project_id: projectId,
@@ -89,14 +91,12 @@ const SurveyForm = ({
         },
       });
       updateSearchParams({
-        idea_id: isSubmitPage ? draftIdea.data.data.id : undefined,
+        idea_id: isSubmitPage ? draftIdea.data.id : undefined,
       });
     }
-
+    clearDraftIdea(phaseId);
     if (isSubmitPage) {
       trackEventByName(tracks.surveyFormSubmitted);
-      // Form has been submitted, clear the draft idea
-      return clearDraftIdea(phaseId);
     }
   };
 

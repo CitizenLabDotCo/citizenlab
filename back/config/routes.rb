@@ -344,6 +344,8 @@ Rails.application.routes.draw do
           patch 'reorder', on: :member
         end
       end
+
+      resources :files, only: %i[create index show destroy], controller: 'files/files'
     end
   end
 

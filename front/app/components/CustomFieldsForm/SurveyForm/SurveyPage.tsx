@@ -49,9 +49,15 @@ type SurveyPage = {
   participationMethod?: ParticipationMethod;
   ideaId?: string;
   projectId: string;
-  onSubmit: (formValues: FormValues) => Promise<void>;
+  onSubmit: ({
+    formValues,
+    isSubmitPage,
+  }: {
+    formValues: FormValues;
+    isSubmitPage: boolean;
+  }) => Promise<void>;
   phase?: IPhaseData;
-  defaultValues?: any;
+  defaultValues?: FormValues;
   customFields: IFlatCustomField[];
 };
 
@@ -123,7 +129,10 @@ const SurveyPage = ({
 
     try {
       setShowFormFeedback(false);
-      await onSubmit(formValues);
+      await onSubmit({
+        formValues,
+        isSubmitPage: nextPageNumber === lastPageNumber,
+      });
       // Go to the next page
       if (currentPageNumber < lastPageNumber) {
         setCurrentPageNumber(nextPageNumber);
@@ -161,6 +170,7 @@ const SurveyPage = ({
 
   const anonimizeSurveySubmissions =
     phase?.attributes.allow_anonymous_participation;
+
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form">

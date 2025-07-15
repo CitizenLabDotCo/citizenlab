@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
@@ -17,14 +17,51 @@ import ProjectCards from './ProjectCards';
 import ProjectDrawer from './ProjectDrawer';
 import SortAndReset from './SortAndReset';
 import UpsellNudge from './UpsellNudge';
+import useCountryCodeSupportedInProjectLibrary from './useCountryCodeSupportedInProjectLibrary';
+import { useRansackParam, setRansackParam } from './utils';
 
 const InspirationHub = () => {
-  const projectLibraryEnabled = useFeatureFlag({
-    name: 'project_library',
-    onlyCheckEnabled: true,
-  });
+  const [initialCountryCodeSet, setInitialCountryCodeSet] = useState(false);
+  const { status, countryCode } = useCountryCodeSupportedInProjectLibrary();
 
-  if (!projectLibraryEnabled) return <UpsellNudge />;
+  const pinCountryCode = useRansackParam('q[pin_country_code_eq]');
+  const tenantCountryCode = useRansackParam('q[tenant_country_code_in]');
+
+  useEffect(() => {
+    // If the initial country code is already set, we don't need to do anything.
+    if (initialCountryCodeSet) return;
+
+    // If the country code is supported, we set the ransack params
+    if (status === 'supported') {
+      // But only if they are not already set. Otherwise, we are
+      // overwriting them, which is not what we want.
+      if (!pinCountryCode) {
+        setRansackParam('q[pin_country_code_eq]', countryCode);
+      }
+
+      if (!tenantCountryCode || tenantCountryCode.length === 0) {
+        setRansackParam('q[tenant_country_code_in]', [countryCode]);
+      }
+
+      setInitialCountryCodeSet(true);
+    }
+  }, [
+    status,
+    countryCode,
+    initialCountryCodeSet,
+    pinCountryCode,
+    tenantCountryCode,
+  ]);
+
+  if (status === 'loading') {
+    return null;
+  }
+
+  // If the countryCode is supported, but the param is not set yet,
+  // we wait for it to be set.
+  if (status === 'supported' && !initialCountryCodeSet) {
+    return null;
+  }
 
   return (
     <Box>
@@ -85,4 +122,15 @@ const InspirationHub = () => {
   );
 };
 
-export default InspirationHub;
+const InspirationHubWrapper = () => {
+  const projectLibraryEnabled = useFeatureFlag({
+    name: 'project_library',
+    onlyCheckEnabled: true,
+  });
+
+  if (!projectLibraryEnabled) return <UpsellNudge />;
+
+  return <InspirationHub />;
+};
+
+export default InspirationHubWrapper;

@@ -482,7 +482,7 @@ const PhaseParticipationConfig = ({
           <UserActions
             submission_enabled={submission_enabled || false}
             commenting_enabled={commenting_enabled || false}
-            reacting_enabled={reacting_enabled || false}
+            reacting_enabled={false} // The ability to configure number of likes is irrelevant for common ground
             togglePostingEnabled={togglePostingEnabled}
             toggleCommentingEnabled={toggleCommentingEnabled}
             toggleReactingEnabled={toggleReactingEnabled}

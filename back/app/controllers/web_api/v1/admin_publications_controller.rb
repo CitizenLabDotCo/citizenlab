@@ -71,6 +71,14 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   end
 
   def reorder
+    # The 'ordering' parameter should be a number representing the target
+    # position of the admin_publication in the list of its siblings.
+    # It is NOT an index! It indicates which item it should replace based on the
+    # value of the 'ordering' attribute.
+    # So for example, AdminPublication.pluck(:id, :ordering) could return something like
+    # [['a', 2], ['b', 3], ['c', 4]]
+    # To then move 'a' to the position of 'b', you would do
+    # web_api/v1/admin_publications/a/reorder?ordering=3
     if @admin_publication.insert_at(permitted_attributes(@admin_publication)[:ordering])
       SideFxAdminPublicationService.new.after_update(@admin_publication, current_user)
       render json: WebApi::V1::AdminPublicationSerializer.new(

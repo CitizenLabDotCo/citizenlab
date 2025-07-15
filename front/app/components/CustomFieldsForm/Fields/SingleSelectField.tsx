@@ -45,13 +45,16 @@ const SingleSelectField = ({
 
   const options = useMemo(() => {
     if (question.key === 'u_domicile') {
-      return (areas?.data || []).map((area) => ({
-        value: area.id,
-        label: localize(area.attributes.title_multiloc),
-      }));
+      return [
+        ...(areas?.data || []).map((area) => ({
+          value: area.id,
+          label: localize(area.attributes.title_multiloc),
+        })),
+        { value: 'outside', label: formatMessage(messages.otherArea) },
+      ];
     }
     return extractOptions(question, localize, question.random_option_ordering);
-  }, [question, localize, areas]);
+  }, [question, localize, areas, formatMessage]);
 
   return (
     <>
