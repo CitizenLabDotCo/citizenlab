@@ -24,6 +24,8 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../../../messages';
 
+import { convertFilterValuesToString } from './utils';
+
 const Summary = ({
   summaryId,
   analysisId,
@@ -136,7 +138,7 @@ const Summary = ({
             buttonStyle="secondary-outlined"
             icon="eye"
             linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
-              { ...filters, phase_id: phaseId }
+              { ...convertFilterValuesToString(filters), phase_id: phaseId }
             )}`}
           >
             {formatMessage(messages.explore)}
