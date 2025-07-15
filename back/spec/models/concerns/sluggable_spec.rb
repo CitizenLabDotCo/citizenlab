@@ -17,6 +17,8 @@ RSpec.describe Sluggable do
     end
 
     describe 'generate_slug' do
+      # RuboCop:disable RSpec/BeforeAfterAll # This hook is necessary for dynamic class lifecycle management
+      # RuboCop:disable RSpec/RemoveConst # remove_const is required to unregister the dynamic class from ActiveRecord
       before(:context) do
         unless Object.const_defined?(:TempSluggableTestModel)
           Object.const_set(:TempSluggableTestModel, Class.new(ApplicationRecord) do
@@ -30,9 +32,13 @@ RSpec.describe Sluggable do
           end)
         end
       end
+      # RuboCop:enable RSpec/BeforeAfterAll
+      # RuboCop:enable RSpec/RemoveConst
 
       let(:test_model) { TempSluggableTestModel }
 
+      # RuboCop:disable RSpec/BeforeAfterAll # This hook is necessary for dynamic class lifecycle management
+      # RuboCop:disable RSpec/RemoveConst # remove_const is required to unregister the dynamic class from ActiveRecord
       after(:all) do
         if ActiveRecord::Base.connection.table_exists?(:test_models)
           ActiveRecord::Base.connection.drop_table(:test_models)
@@ -41,6 +47,8 @@ RSpec.describe Sluggable do
           Object.send(:remove_const, :TempSluggableTestModel)
         end
       end
+      # RuboCop:enable RSpec/BeforeAfterAll
+      # RuboCop:enable RSpec/RemoveConst
 
       it 'does not set a slug when `slug` is not included in the class' do
         sluggable = create(sluggable_factories[:no_slug])
