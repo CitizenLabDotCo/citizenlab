@@ -49,6 +49,7 @@
 #  manual_voters_amount             :integer
 #  manual_voters_last_updated_by_id :uuid
 #  manual_voters_last_updated_at    :datetime
+#  vote_term                        :string           default("vote")
 #
 # Indexes
 #
