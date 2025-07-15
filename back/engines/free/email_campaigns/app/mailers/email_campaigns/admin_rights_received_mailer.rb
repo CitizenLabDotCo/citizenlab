@@ -2,24 +2,26 @@
 
 module EmailCampaigns
   class AdminRightsReceivedMailer < ApplicationMailer
-    protected
+    include EditableWithPreview
 
-    def subject
-      format_message('subject', values: { organizationName: organization_name })
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    private
-
-    def header_title
-      format_message('title_you_became_administrator')
+    def substitution_variables
+      {
+        organizationName: organization_name
+      }
     end
 
-    def header_message
-      format_message('message_you_became_administrator', values: { organizationName: organization_name })
-    end
-
-    def preheader
-      format_message('preheader', values: { organizationName: organization_name })
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          organization_name: data.organization_name
+        }
+      }
     end
   end
 end
