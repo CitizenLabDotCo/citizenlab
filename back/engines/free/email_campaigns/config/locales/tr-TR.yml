@@ -88,8 +88,12 @@ tr:
       author_first_name: 'Jane'
       author_last_name: 'Doe'
       author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
       project_title: 'Örnek proje'
       comment_body: 'Bu, e-postaların içeriğini önizlemek için kullanılan örnek bir yorumdur. Bu gerçek içerik değildir.'
+      comment_deleted_reason: 'Örnek yorumunuz uygunsuz olarak değerlendirilmiştir.'
       idea_title: 'Örnek Fikir'
       proposal_title: 'Örnek Teklif'
     footer:
@@ -105,22 +109,22 @@ tr:
     manual:
       preheader: '%{organizationName}adresinden postanız var.'
     comment_deleted_by_admin:
-      reason: 'Yorumunuzun silinme nedeni:'
-      cta_view: 'Bu fikri görüntüle'
+      subject: 'Yorumunuz %{organizationName} platformundan silindi'
+      preheader: 'Yorumunuz silindi'
+      title: '%{organizationName} yorumunuzu sildim'
       event_description: '%{organizationName} bir fikir hakkında yazdığınız yorumu sildi.'
-      main_header: '%{organizationName} yorumunuzu sildi'
+      cta_button: 'Bu fikri görüntüleyin'
+      reason: 'Yorumunuzun silinme nedeni:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Yorumunuz uygunsuz bulundu'
       irrelevant_reason: 'Yorumunuz konuyla alakasız bulundu'
       no_reason: 'Neden belirtilmedi'
-      subject: 'Yorumunuz %{organizationName} platformundan silindi'
-      preheader: 'Yorumunuz silindi'
     admin_digest:
       subject: '%{time} için haftalık yönetici raporunuz'
       preheader: '%{organizationName} ile ilgili yönetici özeti'
-      title_your_weekly_report: '%{firstName}, haftalık raporunuz'
-      text_introduction: 'Geçtiğimiz hafta en fazla etkinlik üreten girdileri derledik. Platformunuzda neler olduğunu öğrenin.'
-      cta_visit_the_platform: 'Platformunuzu ziyaret edin'
+      title: '%{firstName}haftalık raporunuz'
+      event_description: 'Geçtiğimiz hafta boyunca en çok etkinlik yaratan girdileri sizin için derledik. Platformunuzda neler olduğunu öğrenin!'
+      cta_button: 'Platformunuzu ziyaret edin'
       new_users: 'Yeni kullanıcılar'
       new_inputs: 'Yeni girişler'
       new_comments: 'Yeni yorumlar'
@@ -131,10 +135,11 @@ tr:
       today_by_author: '%{author} tarafından bugün'
       x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
     admin_rights_received:
-      cta_manage_platform: 'Platformunuzu yönetin'
-      message_you_became_administrator: '%{organizationName} katılım platformu için yönetici hakları aldınız.'
-      preheader: '%{organizationName} katılım platformu için yönetici hakları almıştınız'
       subject: '%{organizationName} platformunda yönetici oldunuz'
+      preheader: '%{organizationName} katılım platformu için yönetici hakları almıştınız'
+      title: 'Yönetici oldunuz'
+      event_description: 'Size %{organizationName}katılım platformu için yönetici hakları verilmiştir.'
+      cta_button: 'Platformunuzu yönetin'
       text_create_participatory_process: 'Yönetici olarak yeni katılım projeleri oluşturabilir ve yapılandırabilirsiniz. Zaman çizelgesini kullanarak yeni aşamalar ekleyebilirsiniz. Bu aşamaların her biri fikir yayınlama, yorum yapma ve oylama ile ilgili farklı davranışlar gösterebilir.'
       text_moderate_analyse_input: 'Projeler başlatıldıktan sonra fikirler ulaşmaya başlar. Her şeyden haberdar olmanız için tüm önemli faaliyetleri içeren haftalık raporlar alırsınız. Fikirlere genel bakış, girdileri yönetmenize ve onları işlerken iş birliği yapmanıza yardımcı olacaktır.'
       text_platform_setup: 'Yönetici olarak kendi katılım platformunuzu ayarlayabilirsiniz. Bir logo, görseller ve renkler seçin, ana sayfanıza kişisel bir mesaj yazın, davetiyeler gönderin, kullanıcılarınız hakkında bilmek istediklerinizi tanımlayın vb.'
@@ -142,26 +147,26 @@ tr:
       title_moderate_analyse_input: 'Girdileri yönetme ve analiz etme'
       title_platform_setup: 'Platformu ayarlama'
       title_what_can_you_do_administrator: 'Yönetici olarak neler yapabilirsiniz?'
-      title_you_became_administrator: 'Yönetici oldunuz'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} bu yorumu spam olarak bildirdi'
+      preheader: 'Yorumun spam olarak bildirilmesi ile ilgili işlem'
+      title: '%{firstName} %{lastName} bu yorumu spam olarak bildirdi'
+      cta_button: 'Yorumu gözden geçirin'
       by_author: '%{authorName} tarafından'
       commented: '%{authorName} yorum yaptı:'
-      cta_review_comment: 'Yorumu inceleyin'
       days_ago: '%{numberOfDays} gün önce'
       event_description: '<strong>''%{post}''</strong> hakkında yayınlanan şu yorum bildirildi:'
       inappropriate_content: 'Yorum uygunsuz veya küçük düşürücü.'
-      preheader: 'Yorumun spam olarak bildirilmesi ile ilgili işlem'
       reported_this_because: '%{reporterFirstName} bunu bildirdi:'
-      subject: '%{organizationName}: %{firstName} %{lastName} bu yorumu spam olarak bildirdi'
-      title_comment_spam_report: '%{firstName} %{lastName} bu yorumu spam olarak bildirdi'
       today: Bugün
       wrong_content: 'Bu yorum konuyla alakasız.'
       yesterday: Dün
     community_monitor_report:
       subject: 'Yeni bir toplum izleme raporu hazırlandı'
+      preheader: 'Yeni bir toplum izleme raporu hazırlandı'
       title: 'Yeni bir toplum izleme raporu hazırlandı'
-      text_introduction: 'Bir önceki çeyrek için bir topluluk izleme raporu oluşturulmuştur. Aşağıdaki butona tıklayıp giriş yaparak rapora erişebilirsiniz.'
-      cta_report_button: 'Raporu görüntüle'
+      event_description: 'Bir önceki çeyrek için bir topluluk izleme raporu oluşturulmuştur. Aşağıdaki butona tıklayıp giriş yaparak rapora erişebilirsiniz.'
+      cta_button: 'Raporu görüntüle'
       report_name: 'Topluluk gözlemci raporu'
     cosponsor_of_your_idea:
       cta_reply_to: 'Teklifinizi görüntüleyin'
@@ -172,8 +177,8 @@ tr:
     assignee_digest:
       subject: 'Geri bildiriminizi gerektiren fikir sayısı: %{numberIdeas}'
       preheader: '%{organizationName} için atanan özeti'
-      title_your_weekly_report: '%{firstName}, vatandaş girdisi geri bildiriminizi bekliyor'
-      cta_manage_your_input: 'Girdilerinizi yönetin'
+      title: '%{firstName}, vatandaş girdisi geri bildiriminizi bekliyor'
+      cta_button: 'Girdilerinizi yönetin'
       x_inputs_need_your_feedback: 'girdilerin geri bildiriminize ihtiyacı var'
       title_assignment_past_week: 'Size atanan en son fikirler'
       title_no_assignment_past_week: 'Geçen hafta size yeni fikir atanmadı'
@@ -250,8 +255,11 @@ tr:
       today: Bugün
       yesterday: Dün
     comment_on_idea_you_follow:
-      cta_reply_to: 'Yanıtla %{commentAuthor}'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} %{organizationName}için bir fikir üzerine bir yorum bıraktı'
+      title: '%{authorName} takip ettiğiniz bir girdiye yorum yaptı'
       event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      cta_button: 'Yanıtla %{commentAuthor}'
       main_header:
         idea: '%{authorName} takip ettiğiniz bir fikir hakkında yorum yaptı'
         question: '%{authorName} takip ettiğiniz bir soruya yorum yaptı'
@@ -261,8 +269,6 @@ tr:
         option: '%{authorName} takip ettiğiniz bir seçenek hakkında yorum yaptı'
         proposal: '%{authorName} takip ettiğiniz bir teklif hakkında yorum yaptı'
         petition: '%{authorName} takip ettiğiniz bir dilekçeye yorum yaptı'
-      subject: 'There''s a new comment on "%{input_title}"'
-      preheader: '%{authorName} %{organizationName}için bir fikir üzerine bir yorum bıraktı'
     new_idea_for_admin:
       main_header_publication: 'Platformunuzda yeni bir girdi yayınlandı'
       event_description_publication: '%{authorName} platformunuza yeni bir girdi gönderdi. Şimdi keşfedin, geri bildirimde bulunun veya durumunu değiştirin!'
@@ -276,11 +282,11 @@ tr:
       today: Bugün
       yesterday: Dün
     comment_on_your_comment:
-      cta_reply_to: '%{firstName} yorumunu yanıtlayın'
-      event_description: '%{authorNameFull} katılım platformundaki ''%{post}'' ile ilgili yorumunuza yanıt yazdı. %{authorName} ile sohbete devam etmek için aşağıdaki düğmeye tıklayın.'
       subject: '%{organizationName} platformundaki yorumunuz hakkında bir yanıt aldınız'
-      main_header: '%{authorName} yorumunuzu yanıtladı'
       preheader: '%{authorName} %{organizationName} platformundaki yorumunuzu yanıtladı'
+      title: '%{authorName} yorumunuza cevap verdi'
+      event_description: '%{authorName} katılım platformunda ''%{post}'' hakkındaki yorumunuza bir cevap yazdı. %{authorFirstName}ile sohbete devam etmek için aşağıdaki butona tıklayınız.'
+      cta_button: 'Yanıtla %{authorFirstName}'
       replied: '%{authorFirstName} yanıtı:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'Yorumu görüntüle %{firstName}'
