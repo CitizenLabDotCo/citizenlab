@@ -25,7 +25,7 @@ namespace :single_use do
               begin
                 updated = phases.update_all(vote_term: term)
                 puts "  OK: Updated #{updated} phases to '#{term}'" if execute
-              rescue => e
+              rescue StandardError => e
                 puts "  ERROR! Failed to update phases for '#{search_value}': #{e.message}"
               end
             end
