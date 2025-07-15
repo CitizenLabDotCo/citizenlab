@@ -8,6 +8,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import { FormMode } from '../Container';
 import messages from '../messages';
 
 const ButtonContainer = ({ children }: { children: React.ReactNode }) => (
@@ -26,40 +27,13 @@ const CancelButton = styled(ButtonWithLink)`
 `;
 
 interface Props {
-  handleCancelBack: () => void;
-  handleCancelConfirm: () => void;
   handleCancel: () => void;
   handleSave: (e: FormEvent<any>) => void;
-  mode: 'preferenceForm' | 'noDestinations' | 'cancelling';
+  mode: FormMode;
 }
 
-const Footer = ({
-  mode,
-  handleCancelBack,
-  handleCancelConfirm,
-  handleCancel,
-  handleSave,
-}: Props) => {
-  return mode === 'cancelling' ? (
-    <ButtonContainer>
-      <CancelButton
-        onClick={handleCancelBack}
-        buttonStyle="primary-inverse"
-        textColor={colors.primary}
-        textHoverColor={colors.primary}
-      >
-        <FormattedMessage {...messages.back} />
-      </CancelButton>
-      <ButtonWithLink
-        onClick={handleCancelConfirm}
-        buttonStyle="primary"
-        bgColor={colors.primary}
-        bgHoverColor={darken(0.1, colors.primary)}
-      >
-        <FormattedMessage {...messages.confirm} />
-      </ButtonWithLink>
-    </ButtonContainer>
-  ) : mode === 'preferenceForm' ? (
+const Footer = ({ mode, handleCancel, handleSave }: Props) => {
+  return mode === 'preferenceForm' ? (
     <ButtonContainer>
       <CancelButton
         onClick={handleCancel}
