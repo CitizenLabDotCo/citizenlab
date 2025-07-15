@@ -16,13 +16,13 @@ const ProjectFilesTab = () => {
   const [showInitialView, setShowInitialView] = useState<boolean>(false);
 
   // Try to fetch first file of the project, to determine if there are any files
-  const { data: files } = useFiles({
+  const { data: files, isLoading } = useFiles({
     pageNumber: 1,
     pageSize: 1,
     project: [projectId],
   });
 
-  const projectHasFiles = !(files?.data.length === 0);
+  const projectHasFiles = !isLoading && !(files?.data.length === 0);
 
   return (
     <Box mb="40px" p="44px">

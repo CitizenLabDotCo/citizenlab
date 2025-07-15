@@ -15,7 +15,7 @@ import messages from '../messages';
 
 import FileDropzone from './components/FileDropzone';
 import FileUploadActions from './components/FileUploadActions';
-import InformationSection from './components/InformationSection/index.tsx';
+import InformationSection from './components/InformationSection/index';
 import SelectedFile from './components/SelectedFile';
 import { FileWithMeta, UploadStatus } from './types';
 

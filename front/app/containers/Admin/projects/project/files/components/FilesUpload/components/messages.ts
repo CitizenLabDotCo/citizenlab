@@ -19,7 +19,7 @@ export default defineMessages({
     defaultMessage: 'File type',
   },
   informationPoint1Title: {
-    id: 'app.containers.AdminPage.ProjectFiles.audioFileDescription',
+    id: 'app.containers.AdminPage.ProjectFiles.informationPoint1Title',
     defaultMessage: 'Audio interviews, Town Hall recordings',
   },
   informationPoint1Description: {
