@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.downloadFile',
     defaultMessage: 'Download file',
   },
+  couldNotLoadMarkdown: {
+    id: 'app.containers.AdminPage.ProjectFiles.couldNotLoadMarkdown',
+    defaultMessage: 'Could not load markdown file.',
+  },
 });
