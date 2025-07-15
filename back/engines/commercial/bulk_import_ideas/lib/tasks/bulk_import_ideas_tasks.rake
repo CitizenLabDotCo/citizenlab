@@ -21,6 +21,13 @@ namespace :bulk_import do
 
         parser = BulkImportIdeas::Parsers::EngagementHqXlsxParser.new(file_path)
 
+        # TODO: It's creating blank users
+
+        # parser.idea_fields
+
+        # binding.pry
+        # break
+
         # Whilst in dev, we want to destroy the existing project first
         Project.find_by(slug: parser.project[:slug])&.destroy
 
@@ -42,21 +49,29 @@ namespace :bulk_import do
         CustomField.create!(input_type: 'page', page_layout: 'default', resource: form)
 
         # Create the form fields based on the content
-        parser.idea_fields.each do |column|
-          CustomField.create!(column.merge(resource: form))
+        select_types = %w[select multiselect]
+        parser.idea_fields.each do |field|
+          custom_field = CustomField.create!(field.except(:options).merge(resource: form))
+          if select_types.include? field[:input_type]
+            # If the field is a select type, we need to create options
+            field[:options].each do |option|
+              CustomFieldOption.create!(option.merge(custom_field: custom_field))
+            end
+          end
         end
 
         # End page
         CustomField.create!(input_type: 'page', page_layout: 'default', key: 'form_end', resource: form)
 
         # Import the ideas
-        parser.add_details(phase, import_user, locale)
+        parser.add_context(phase, import_user, locale)
         import_service = BulkImportIdeas::Importers::IdeaImporter.new(import_user, locale)
         ideas = import_service.import(parser.parse_rows(nil))
         ideas.each do |idea|
           idea.update!(publication_status: 'published') # Is there a method that imports to published anyway?
         end
 
+        Rails.logger.info "Created project '#{project.title_multiloc['en']}' with slug '#{project.slug}'"
         Rails.logger.info "Created form with #{form.custom_fields.count} fields"
         Rails.logger.info "Imported #{ideas.count} ideas"
       end

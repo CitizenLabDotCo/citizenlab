@@ -4,13 +4,19 @@ module BulkImportIdeas::Parsers
   class EngagementHqXlsxParser < IdeaXlsxFileParser
     IGNORED_COLUMNS = [
       'Login (Screen name)',
-      'Contributor Summary (Signup form Qs - Detailed breakup on the right > )'
+      'Contributor Summary (Signup form Qs - Detailed breakup on the right > )',
+      'Usertype',
+      'Login',
+      'Response ID'
+    ]
+
+    SPECIAL_COLUMNS = [
+      'Email address',
+      'Date Published (dd-mm-yyyy)',
+      'Permission'
     ]
 
     USER_COLUMNS = [
-      'Usertype',
-      'Login',
-      'Email',
       'Postal Code',
       'Do you represent a Guelph business?'
     ]
@@ -18,10 +24,23 @@ module BulkImportIdeas::Parsers
     def initialize(xlsx_file_path)
       workbook = RubyXL::Parser.parse_buffer(open(xlsx_file_path).read)
       @worksheet = workbook.worksheets[0]
+      @idea_columns = []
+      @user_columns = []
+      @idea_rows = generate_idea_rows
+
+      # TODO: Set up the field types here, so it's done just once
     end
 
-    # These would normally be set on initialize
-    def add_details(phase, import_user, locale)
+    # Override methods
+    def parse_rows(file)
+      xlsx_ideas = @idea_rows.map { |idea| { pdf_pages: [1], fields: idea } }
+      ideas_to_idea_rows(xlsx_ideas, file)
+    end
+
+    # New methods for EngagementHQ specific data extraction
+
+    # NOTE: These would normally be set on initialize in other classes
+    def add_context(phase, import_user, locale)
       @import_user = import_user
       @phase = phase
       @project = phase.project
@@ -29,36 +48,32 @@ module BulkImportIdeas::Parsers
       @personal_data_enabled = false
     end
 
-    # Override methods
-    def parse_rows(file)
-      xlsx_ideas = idea_rows.map { |idea| { pdf_pages: [1], fields: idea } }
-      ideas_to_idea_rows(xlsx_ideas, file)
-    end
-
-    # New methods for EngagementHQ specific data extraction
     def project
       {
-        title_multiloc: locales.index_with do |_locale|
-          @worksheet.sheet_data[0][3].value
-        end,
+        title_multiloc: multiloc(@worksheet.sheet_data[0][3].value),
         slug: SlugService.new.slugify(@worksheet.sheet_data[0][3].value)
       }
     end
 
     def phase
       {
-        title_multiloc: locales.index_with do |_locale|
-          @worksheet.sheet_data[0][3].value
-        end,
+        title_multiloc: multiloc(@worksheet.sheet_data[0][3].value),
         start_at: Date.parse(@worksheet.sheet_data[0][7].value),
         end_at: Date.parse(@worksheet.sheet_data[0][10].value)
       }
     end
 
-    # Create user fields (not users)
-    # Then import the ideas which should use the user fields and not create new fiels
+    def idea_fields
+      generate_fields(@idea_columns)
+    end
 
-    def idea_rows
+    def user_fields
+      generate_fields(@user_columns)
+    end
+
+    private
+
+    def generate_idea_rows
       data = []
       @worksheet.drop(4).each do |row|
         # Exit if column D (date column) is empty (ie the data rows have ended)
@@ -66,65 +81,139 @@ module BulkImportIdeas::Parsers
 
         row_data = []
         row&.cells&.each do |cell|
-          header = column_header(cell.column)
-          next if cell.column < 3 || IGNORED_COLUMNS.include?(header) # Skip columns before the 4th column or if ignored
+          next if cell.column < 3 # Skip columns before the 4th column
+          next unless cell.value.present? # Skip empty cells
 
-          row_data << [column_header(cell.column), cell.value] if cell.value
+          header = column_header(cell.column)
+          next unless header # Skip if header is nil
+
+          row_data << [header, cell.value]
         end
-        row_data << %w[Permission X]
+        row_data << %w[Permission X] # Add in permission - Is this needed?
         data << row_data.to_h
       end
+      data
+    end
 
-      # Now change some of the keys to match the expected format
-      data.map do |row|
-        row.transform_keys do |key|
-          case key
-          when 'Email' then 'Email address'
-          when 'Date of contribution' then 'Date Published (dd-mm-yyyy)'
-          else key
-          end
+    def column_header(col_index)
+      row_index = col_index == 3 ? 2 : 3 # Data column header is on different row!
+      column_name = @worksheet[row_index][col_index]&.value
+
+      return nil if column_name.nil? || IGNORED_COLUMNS.include?(column_name)
+
+      # Change some names to match our import format
+      name_map = {
+        'Email' => 'Email address',
+        'Date of contribution' => 'Date Published (dd-mm-yyyy)'
+      }
+      column_name = name_map[column_name] if name_map.key?(column_name)
+
+      # Add the column to the appropriate list
+      if SPECIAL_COLUMNS.exclude?(column_name)
+        if USER_COLUMNS.include?(column_name)
+          @user_columns << column_name unless @user_columns.include?(column_name)
+        else
+          @idea_columns << column_name unless @idea_columns.include?(column_name)
         end
       end
+      column_name
     end
 
-    def idea_fields
-      rows = idea_rows.map { |record| record.except('Email address', 'Date Published (dd-mm-yyyy)') }
-      rows.first.keys.map do |column_name|
-        {
-          title_multiloc: locales.index_with do |_locale|
-            column_name
-          end,
-          input_type: 'text'
+    def generate_fields(columns)
+      columns.map do |column_name|
+        fields = {
+          title_multiloc: multiloc(column_name),
+          input_type: input_type(column_name),
+          required: required?(column_name)
+        }
+        select = select_field(column_name)
+        fields[:options] = select[:options] unless select.nil?
+        fields
+      end
+    end
+
+    def multiloc(text)
+      locales.index_with { |_locale| text } # Same text assigned to all locales
+    end
+
+    def required?(column_name)
+      return false if USER_COLUMNS.include?(column_name) # Probably easier to assume these are not required
+
+      rows = @idea_rows.pluck(column_name)
+      rows_not_empty = rows.compact.reject(&:empty?)
+      rows.count == rows_not_empty.count
+    end
+
+    def input_type(column_name)
+
+      matrix = matrix_field(column_name)
+
+      # Select or Multiselect field?
+      select = select_field(column_name)
+      return select[:type] unless select.nil?
+
+
+
+      'text'
+    end
+
+    def select_field(column_name)
+      values = @idea_rows.pluck(column_name).compact.reject(&:empty?)
+
+      # Detect single select field
+      unique_ratio = values.size / values.uniq.size.to_f
+      if unique_ratio > 10 # Probably needs to be relational to the size of the data
+        return {
+          type: 'select',
+          options: values.uniq.map { |value| { title_multiloc: multiloc(value), key: SlugService.new.slugify(value) } }
         }
       end
-    end
 
-    # Get just the users that need importing
-    def users
-      users = idea_rows.select { |row| row['Usertype'] == 'User' }
+      # Detect multiselect field
+      split_values = values.map { |value| value.split(/[,;]/).map(&:strip) }.flatten
+      unique_ratio = split_values.size / split_values.uniq.size.to_f
+      if unique_ratio > 10
 
-      # Only keep the columns that are in USER_COLUMNS
-      users.map do |user|
-        user.select { |key, _value| USER_COLUMNS.include?(key) }
+        # Update values to ensure semicolons for multiselect
+        @idea_rows = @idea_rows.map do |row|
+          row[column_name] = row[column_name].split(/[,;]/).map(&:strip).join('; ') if row[column_name]
+          row
+        end
+
+        return {
+          type: 'multiselect',
+          options: split_values.uniq.map { |value| { title_multiloc: multiloc(value), key: SlugService.new.slugify(value) } }
+        }
       end
+
+      nil
     end
 
-    private
+    # TODO: Complete this once we can import matrix fields via XLSX
+    def matrix_field(column_name)
+      values = @idea_rows.pluck(column_name).compact.reject(&:empty?)
+      matches = values.first.scan(/([^:]+)\s*:\s*([^,]+)(?:,\s*|$)/)
+      if matches.any?
+        # binding.pry if column_name.start_with?('How well does concept')
+        # Matrix fields stored as {"yeahhh_3w8": 1, "this_one_ptu": 3, "another_one_i8n": 2}
+        # Need to create the matrix statements
+        # Need to add the linear_scale_1 etc labels
+        # How do we handle the order?
+        # Suggest similar format in our XLSX import - User friendly : Not at all; Aesthetically pleasing : Very well; Convenient : Not at all; Unobtrusive : Very well;
+        return {
+          type: 'matrix',
+          statements: matches.map do |statement|
+            {
+              title_multiloc: multiloc(statement[0].strip),
+              key: SlugService.new.slugify(statement[0].strip),
+            }
+          end,
+          labels: {}
+        }
+      end
 
-    # Data column header on different row!
-    def column_header(col_index)
-      row_index = col_index == 3 ? 2 : 3
-      @worksheet[row_index][col_index]&.value
+      nil
     end
-
-    # def find_cell_with_text(text)
-    #   @worksheet.sheet_data.rows.each_with_index do |row, row_index|
-    #     row.cells.each_with_index do |cell, col_index|
-    #       return { row: row_index, col: col_index } if cell&.value == text
-    #     end
-    #   end
-    #   nil
-    # end
 
     def locales
       @locales ||= AppConfiguration.instance.settings.dig('core', 'locales')
