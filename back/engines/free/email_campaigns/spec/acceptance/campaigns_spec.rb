@@ -198,6 +198,32 @@ resource 'Campaigns' do
           total: 5
         })
       end
+
+      describe do
+        let(:campaign) { create(:project_phase_started_campaign, context: nil, enabled: true) }
+
+        example 'Get conflicting campaigns', document: false do
+          conflicting1 = create(:project_phase_started_campaign, context: create(:phase), enabled: false)
+          _matching = create(:project_phase_started_campaign, context: create(:phase), enabled: true)
+          conflicting2 = create(:project_phase_started_campaign, context: create(:phase), enabled: false)
+
+          do_request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :relationships, :conflicting_contexts, :data)).to match_array [
+            {
+              id: conflicting1.context_id,
+              type: 'phase'
+            },
+            {
+              id: conflicting2.context_id,
+              type: 'phase'
+            }
+          ]
+          expect(json_response[:included].pluck(:id)).to match_array [conflicting1.context_id, conflicting2.context_id]
+        end
+      end
     end
 
     get '/web_api/v1/campaigns/:id/preview' do

@@ -40,11 +40,10 @@ module EmailCampaigns
     include Disableable
     include Trackable
     include LifecycleStageRestrictable
+    include ContextConfigurable
     allow_lifecycle_stages only: ['active']
 
     recipient_filter :filter_notification_recipient
-
-    validates :context_type, inclusion: { in: ['Phase'], allow_blank: true }
 
     def mailer_class
       ProjectPhaseStartedMailer
@@ -80,8 +79,8 @@ module EmailCampaigns
       'email_campaigns.admin_labels.trigger.project_phase_changes'
     end
 
-    def self.supports_context?(context)
-      context.is_a?(Phase)
+    def self.supported_context
+      Phase
     end
 
     def generate_commands(recipient:, activity:, time: nil)

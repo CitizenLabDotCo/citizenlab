@@ -121,12 +121,18 @@ module EmailCampaigns
 
     # We specify the namespace for the serializer(s), because if we just use polymorphic: true
     # jsonapi-serializer will look for the serializer(s) in the same namespace as this serializer, which will fail.
-    belongs_to :context, serializer: proc { |object|
-      "::WebApi::V1::#{object.class.name}Serializer".constantize
+    belongs_to :context, serializer: proc { |context|
+      "::WebApi::V1::#{context.class.name}Serializer".constantize
     }
 
     has_many :groups, serializer: ::WebApi::V1::GroupSerializer, if: proc { |object|
       recipient_configurable? object
+    }
+
+    has_many :conflicting_contexts, serializer: proc { |campaign|
+      "::WebApi::V1::#{campaign.class.name}Serializer".constantize
+    }, if: proc { |campaign|
+      campaign.context.blank? && context_configurable?(campaign)
     }
 
     def self.disableable?(object)
@@ -143,6 +149,10 @@ module EmailCampaigns
 
     def self.content_configurable?(object)
       object.class.included_modules.include?(ContentConfigurable)
+    end
+
+    def self.context_configurable?(object)
+      object.class.included_modules.include?(ContextConfigurable)
     end
 
     def self.previewable?(object)
