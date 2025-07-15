@@ -85,11 +85,17 @@ ca:
         "6": "Setmanalment, els dissabtes a les %{hourOfDay}"
       quarterly: "Trimestral, el primer dia del trimestre"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Daina'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Daina'
+      author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Projecte d''exemple'
       comment_body: 'Aquest és un exemple de comentari que s''utilitza per previsualitzar el contingut dels correus electrònics. Això no és contingut real.'
+      comment_deleted_reason: 'El teu comentari d''exemple s''ha considerat inadequat.'
       idea_title: 'Idea d''exemple'
+      proposal_title: 'Proposta d''exemple'
     footer:
       "link_privacy_policy": "Política de privacitat"
       "link_terms_conditions": "Termes i Condicions"
@@ -103,22 +109,22 @@ ca:
     manual:
       preheader: 'Tens correu de %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'El motiu pel qual s''ha suprimit el teu comentari:'
-      cta_view: 'Mira aquesta idea'
+      subject: 'El teu comentari s''ha eliminat de la plataforma de %{organizationName}'
+      preheader: 'El teu comentari s''ha suprimit'
+      title: '%{organizationName} ha esborrat el teu comentari'
       event_description: '%{organizationName} ha suprimit el comentari que vas escriure sobre una idea.'
-      main_header: '%{organizationName} ha suprimit el teu comentari'
+      cta_button: 'Veure aquesta idea'
+      reason: 'El motiu pel qual s''ha suprimit el teu comentari:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'El teu comentari s''ha considerat inadequat'
       irrelevant_reason: 'El teu comentari es va considerar irrellevant per a aquest context'
       no_reason: 'No s''ha especificat cap motiu'
-      subject: 'El teu comentari s''ha eliminat de la plataforma de %{organizationName}'
-      preheader: 'El teu comentari s''ha suprimit'
     admin_digest:
       subject: 'El vostre informe d''administració setmanal de %{time}'
       preheader: 'Resum d''administració de %{organizationName}'
-      title_your_weekly_report: '%{firstName}, el teu informe setmanal'
-      text_introduction: 'Hem seleccionat per a tu l''entrada que ha generat més activitat durant la setmana passada. Descobreix què passa a la teva plataforma!'
-      cta_visit_the_platform: 'Visiteu la vostra plataforma'
+      title: '%{firstName}, el vostre informe setmanal'
+      event_description: 'Hem seleccionat per a vosaltres les aportacions que han generat més activitat durant la setmana passada. Descobriu què està passant a la vostra plataforma!'
+      cta_button: 'Visita la teva plataforma'
       new_users: 'Usuaris nous'
       new_inputs: 'Noves entrades'
       new_comments: 'Nous comentaris'
@@ -129,10 +135,11 @@ ca:
       today_by_author: 'Avui a les %{author}'
       x_days_ago_by_author: 'fa %{x} dies per %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Gestiona la teva plataforma'
-      message_you_became_administrator: 'Se t''han concedit drets d''administrador per a la plataforma de participació de %{organizationName}.'
-      preheader: 'Se''t van concedir drets d''administrador per a la plataforma de participació de %{organizationName}'
       subject: 'T''has convertit en administrador a la plataforma de %{organizationName}'
+      preheader: 'Se''t van concedir drets d''administrador per a la plataforma de participació de %{organizationName}'
+      title: 'Vas esdevenir administrador/a'
+      event_description: 'Se us han atorgat drets d''administrador per a la plataforma de participació de %{organizationName}.'
+      cta_button: 'Gestiona la teva plataforma'
       text_create_participatory_process: 'Com a administrador, podeu crear i configurar nous projectes de participació. Podeu afegir noves fases mitjançant la línia de temps. Cadascuna d''aquestes fases pot tenir el seu propi comportament pel que fa a la publicació d''idees, comentaris i votacions.'
       text_moderate_analyse_input: 'Un cop engegats els projectes, apareixeran les primeres idees. Rebreu informes setmanals amb totes les activitats clau per estar al corrent de les coses. La visió general d''idees us ajudarà a moderar l''entrada i col·laborar en el seu processament.'
       text_platform_setup: 'Com a administrador, podeu configurar la vostra plataforma de participació. Tria un logotip, imatges i colors, escriu un missatge personal a la teva pàgina d''inici, envia invitacions, defineix què vols saber dels teus usuaris,...'
@@ -140,26 +147,26 @@ ca:
       title_moderate_analyse_input: 'Moderar i analitzar l''entrada'
       title_platform_setup: 'Configura la teva plataforma'
       title_what_can_you_do_administrator: 'Què pots fer com a administrador?'
-      title_you_became_administrator: 'T''has convertit en administrador'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} ha informat aquest comentari com a correu brossa'
+      preheader: 'Actueu en funció d''aquest comentari informat com a correu brossa'
+      title: '%{firstName} %{lastName} ha informat d''aquest comentari com a correu brossa'
+      cta_button: 'Comentari de la revisió'
       by_author: 'per %{authorName}'
       commented: '%{authorName} ha comentat:'
-      cta_review_comment: 'Revisa el comentari'
       days_ago: 'fa %{numberOfDays} dies'
       event_description: 'S''ha informat del següent comentari publicat el <strong>''%{post}''</strong>:'
       inappropriate_content: 'El comentari és inadequat o ofensiu.'
-      preheader: 'Actueu en funció d''aquest comentari informat com a correu brossa'
       reported_this_because: '%{reporterFirstName} ho han informat perquè:'
-      subject: '%{organizationName}: %{firstName} %{lastName} ha informat aquest comentari com a correu brossa'
-      title_comment_spam_report: '%{firstName} %{lastName} ha informat aquest comentari com a correu brossa'
       today: Avui
       wrong_content: 'El comentari no és rellevant.'
       yesterday: Ahir
     community_monitor_report:
       subject: 'Hi ha disponible un nou informe de monitor de la comunitat'
+      preheader: 'Hi ha disponible un nou informe de monitorització comunitària'
       title: 'Hi ha disponible un nou informe de monitor de la comunitat'
-      text_introduction: 'S''ha elaborat un informe del monitor comunitari del trimestre anterior. Podeu accedir-hi fent clic al botó següent i iniciant sessió.'
-      cta_report_button: 'Veure informe'
+      event_description: 'S''ha creat un informe de monitorització comunitària per al trimestre anterior. Podeu accedir-hi fent clic al botó següent i iniciant la sessió.'
+      cta_button: 'Veure l''informe'
       report_name: 'Informe del monitor comunitari'
     cosponsor_of_your_idea:
       cta_reply_to: 'Consulta la teva proposta'
@@ -170,8 +177,8 @@ ca:
     assignee_digest:
       subject: 'Idees que requereixen la vostra opinió: %{numberIdeas}'
       preheader: 'Resum del cessionari de %{organizationName}'
-      title_your_weekly_report: '%{firstName}, l''aportació del ciutadà està esperant els vostres comentaris'
-      cta_manage_your_input: 'Gestiona la teva entrada'
+      title: '%{firstName}, els ciutadans esperen els vostres comentaris'
+      cta_button: 'Gestiona la teva entrada'
       x_inputs_need_your_feedback: 'les entrades necessiten els vostres comentaris'
       title_assignment_past_week: 'Últimes idees que t''han assignat'
       title_no_assignment_past_week: 'La setmana passada no us van assignar idees noves'
@@ -248,8 +255,11 @@ ca:
       today: Avui
       yesterday: Ahir
     comment_on_idea_you_follow:
-      cta_reply_to: 'Respon a %{commentAuthor}'
+      subject: 'Hi ha un comentari nou a "%{input_title}"'
+      preheader: '%{authorName} va deixar un comentari sobre una idea per a %{organizationName}'
+      title: '%{authorName} ha comentat una entrada que segueixes'
       event_description: '%{authorNameFull} va fer una reacció a la teva idea "%{inputTitle}". Feu clic al botó següent per continuar la conversa amb %{authorName}.'
+      cta_button: 'Respon a %{commentAuthor}'
       main_header:
         idea: '%{authorName} ha comentat una idea que segueixes'
         question: '%{authorName} ha comentat una pregunta que segueixes'
@@ -259,8 +269,6 @@ ca:
         option: '%{authorName} ha comentat una opció que segueixes'
         proposal: '%{authorName} ha comentat una proposta que segueixes'
         petition: '%{authorName} ha comentat una petició que segueixes'
-      subject: 'Hi ha un comentari nou a "%{input_title}"'
-      preheader: '%{authorName} va deixar un comentari sobre una idea per a %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'S''ha publicat una nova entrada a la vostra plataforma'
       event_description_publication: '%{authorName} ha enviat una entrada nova a la teva plataforma. Descobriu-lo ara, feu-ne un comentari o canvieu-ne l''estat!'
@@ -274,11 +282,11 @@ ca:
       today: Avui
       yesterday: Ahir
     comment_on_your_comment:
-      cta_reply_to: 'Respon a %{firstName}'
-      event_description: '%{authorNameFull} ha escrit una resposta al teu comentari a "%{post}" a la plataforma de participació. Feu clic al botó següent per continuar la conversa amb %{authorName}.'
       subject: 'Heu rebut una resposta al vostre comentari a la plataforma de %{organizationName}'
-      main_header: '%{authorName} han respost al teu comentari'
       preheader: '%{authorName} ha respost al teu comentari a la plataforma de %{organizationName}'
+      title: '%{authorName} ha respost al teu comentari'
+      event_description: '%{authorName} ha escrit una resposta al teu comentari a ''%{post}'' a la plataforma de participació. Fes clic al botó següent per continuar la conversa amb %{authorFirstName}.'
+      cta_button: 'Respon a %{authorFirstName}'
       replied: '%{authorFirstName} va respondre:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'Veure comentari per %{firstName}'
