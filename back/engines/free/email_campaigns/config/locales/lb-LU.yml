@@ -88,8 +88,12 @@ lb:
       author_first_name: 'Jane'
       author_last_name: 'Hinde'
       author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Schmitz'
+      initiator_display_name: 'Bob Smith'
       project_title: 'Beispillprojet'
       comment_body: 'Dëst ass e Beispillkommentar, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.'
+      comment_deleted_reason: 'Äre Beispillkommentar gouf als onpassend ugesinn.'
       idea_title: 'Beispill Iddi'
       proposal_title: 'Beispillvirschlag'
     footer:
@@ -105,22 +109,22 @@ lb:
     manual:
       preheader: 'Dir hutt Mail vun %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'De Grond, firwat Äre Kommentar geläscht gouf:'
-      cta_view: 'Dës Iddi ukucken'
+      subject: 'Äre Kommentar gouf vun der Plattform vun %{organizationName} geläscht'
+      preheader: 'Äre Kommentar gouf geläscht'
+      title: '%{organizationName} Äre Kommentar geläscht'
       event_description: '%{organizationName} huet de Kommentar geläscht, deen Dir zu dëser Iddi geschriwwen hutt.'
-      main_header: '%{organizationName} huet Äre Kommentar geläscht'
+      cta_button: 'Kuckt dës Iddi'
+      reason: 'De Grond, firwat Äre Kommentar geläscht gouf:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Äre Kommentar gouf als net ugemiess ageschat'
       irrelevant_reason: 'Äre Kommentar gouf als net relevant fir dëse Kontext betruecht'
       no_reason: 'Et gouf kee Grond uginn'
-      subject: 'Äre Kommentar gouf vun der Plattform vun %{organizationName} geläscht'
-      preheader: 'Äre Kommentar gouf geläscht'
     admin_digest:
       subject: 'Äre wëchentleche Bericht als Administrateur vun %{time}'
       preheader: 'Bericht vun der Woch vun %{organizationName}'
-      title_your_weekly_report: '%{firstName}, Äre wéchentleche Bericht'
-      text_introduction: 'Hei eng Auswiel vun de Bäiträg mat der meeschter Aktivitéit aus der leschter Woch. Fannt eraus wat op Ärer Plattform geschitt! !'
-      cta_visit_the_platform: 'Besicht Är Plattform'
+      title: '%{firstName}, Äre Wochenbericht'
+      event_description: 'Mir hunn fir Iech déi Input zesummegestallt, déi an der leschter Woch am meeschten Aktivitéit generéiert hunn. Fannt eraus, wat op Ärer Plattform lass ass!'
+      cta_button: 'Besicht Är Plattform'
       new_users: 'Nei Benotzer'
       new_inputs: 'Nei Input'
       new_comments: 'Nei Kommentaren'
@@ -131,10 +135,11 @@ lb:
       today_by_author: 'Haut vun %{author}'
       x_days_ago_by_author: 'Virun %{x} Deeg vum %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Verwalten Är Plattform'
-      message_you_became_administrator: 'Dir krut Administratorrechter fir d''participativ Plattform vum %{organizationName}.'
-      preheader: 'Dir krut Administratorrechter fir d''participativ Plattform vum %{organizationName}'
       subject: 'Dir sidd en Administrateur vun der Bedeelegungsplattform vun %{organizationName} ginn'
+      preheader: 'Dir krut Administratorrechter fir d''participativ Plattform vum %{organizationName}'
+      title: 'Dir sidd Administrateur ginn'
+      event_description: 'Dir hutt Administrateurrechter fir d''Participatiounsplattform vun %{organizationName}kritt.'
+      cta_button: 'Verwalt Är Plattform'
       text_create_participatory_process: 'Als Administrateur kënnt Dir nei participativ Projeten uleeën an upassen. Dir kënnt nei Phasen an der Zäitlinn dobäimaachen. Jiddereng vun dëse Phasen ka bezüglech dem Verëffentleche vun Iddien, Kommentéieren an Ofstëmmen hiert eegent Verhalen hunn.'
       text_moderate_analyse_input: "Esoubal d’Projeten ulafen, kommen déi éischt Iddien eran. Dir kritt wéchentlech Berichter mat den Haaptaktivitéiten, sou datt Dir den Iwwersiicht behaalt, wat sech deet. \nDen Iddien-Manager am Backoffice vun Ärer Plattform erméiglecht et Iech ze gesi wat fir Iddien am meeschte positiv wéi negativ Stëmme kritt huet."
       text_platform_setup: 'Als Administrateur kënnt Dir d''participativ Plattform upassen. Wielt e Logo, Biller, Faarwen, schreift e personaliséierte Message op der Startsäit, verschéckt Invitatiounen a leet fest wat genee dir vun Äre Benotzer wësse wëllt...'
@@ -142,26 +147,26 @@ lb:
       title_moderate_analyse_input: 'Moderéiert an analyséiert d’Bäiträg'
       title_platform_setup: 'Riicht Är Plattform an'
       title_what_can_you_do_administrator: 'Wat kënnt Dir als Administrateur maachen?'
-      title_you_became_administrator: 'Dir sidd Administrateur ginn'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} huet dëse Kommentar als Spam gemellt'
+      preheader: 'Reagéiert op dëse Kommentar, deen als Spam gemellt gouf'
+      title: '%{firstName} %{lastName} huet dëse Kommentar als Spam gemellt'
+      cta_button: 'Kommentar iwwerpréiwen'
       by_author: 'vun %{authorName}'
       commented: '%{authorName} huet kommentéiert:'
-      cta_review_comment: 'Kommentar iwwerpréiwen'
       days_ago: 'Virun %{numberOfDays} Deeg'
       event_description: 'De folgende Kommentar, deen op <strong>''%{post}''</strong> gepost gouf, gouf gemellt:'
       inappropriate_content: 'De Kommentar ass net ugemiess oder beleedegend.'
-      preheader: 'Reagéiert op dëse Kommentar, deen als Spam gemellt gouf'
       reported_this_because: '%{reporterFirstName} huet dëst gemellt, well:'
-      subject: '%{organizationName}: %{firstName} %{lastName} huet dëse Kommentar als Spam gemellt'
-      title_comment_spam_report: '%{firstName} %{lastName} huet dëse Kommentar als Spam gemellt'
       today: Haut
       wrong_content: 'De Kommentar ass net relevant.'
       yesterday: Gëschter
     community_monitor_report:
       subject: 'En neie Communautéitsmonitor Bericht ass verfügbar'
+      preheader: 'E neie Gemeinschaftsmonitorbericht ass verfügbar'
       title: 'En neie Communautéitsmonitor Bericht ass verfügbar'
-      text_introduction: 'E Communautéitsmonitor Bericht gouf fir de leschte Quartal erstallt. Dir kënnt et zougräifen andeems Dir op de Knäppchen hei drënner klickt an aloggen.'
-      cta_report_button: 'Kuckt de Bericht'
+      event_description: 'E Gemeinschaftsmonitorbericht gouf fir dat lescht Quartal erstallt. Dir kënnt drop zougräifen andeems Dir op de Knäppchen hei ënnendrënner klickt an Iech umellt.'
+      cta_button: 'Rapport ukucken'
       report_name: 'Communautéit Monitor Rapport'
     cosponsor_of_your_idea:
       cta_reply_to: 'Kuckt Är Propositioun'
@@ -172,8 +177,8 @@ lb:
     assignee_digest:
       subject: 'Iddien, déi Äre Feedback erfuerderen: %{numberIdeas}'
       preheader: 'Iwwersiicht vun den Elementer déi Iech zougewise goufen %{organizationName}'
-      title_your_weekly_report: '%{firstName}, de Bäitrag vun de Benotzer waart op Äre Feedback'
-      cta_manage_your_input: 'Är Bäiträg verwalten'
+      title: '%{firstName}, d''Meenung vun de Bierger waart op Äert Feedback'
+      cta_button: 'Verwalt Är Input'
       x_inputs_need_your_feedback: 'Input brauch Äre Feedback'
       title_assignment_past_week: 'Neist Iddien, déi Iech zougewise goufen'
       title_no_assignment_past_week: 'D''lescht Woch goufen Iech keng nei Iddien zougewisen'
@@ -250,8 +255,11 @@ lb:
       today: Haut
       yesterday: Gëschter
     comment_on_idea_you_follow:
-      cta_reply_to: 'Äntwert op %{commentAuthor}'
+      subject: 'Et gëtt en neie Kommentar zu "%{input_title}"'
+      preheader: '%{authorName} huet e Kommentar op eng Iddi fir %{organizationName}'
+      title: '%{authorName} huet e Kommentar zu engem Input kommentéiert, deen Dir folgt'
       event_description: '%{authorNameFull} huet eng Reaktioun op ''%{inputTitle}'' gesat. Klickt op de Knäppchen hei ënnen fir d''Gespréich mat %{authorName}weiderzemaachen.'
+      cta_button: 'Äntwert op %{commentAuthor}'
       main_header:
         idea: '%{authorName} kommentéiert eng Iddi déi Dir verfollegt'
         question: '%{authorName} kommentéiert eng Fro déi Dir verfollegt'
@@ -261,8 +269,6 @@ lb:
         option: '%{authorName} kommentéiert eng Optioun déi Dir verfollegt'
         proposal: '%{authorName} kommentéiert eng Propositioun déi Dir verfollegt'
         petition: '%{authorName} kommentéiert eng Petitioun déi Dir verfollegt'
-      subject: 'Et gëtt en neie Kommentar zu "%{input_title}"'
-      preheader: '%{authorName} huet e Kommentar op eng Iddi fir %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'En neien Input gouf op Ärer Plattform publizéiert'
       event_description_publication: '%{authorName} huet en neien Input op Ärer Plattform ofginn. Entdeckt et elo, gitt e Feedback oder ännert säi Status!'
@@ -276,11 +282,11 @@ lb:
       today: Haut
       yesterday: Gëschter
     comment_on_your_comment:
-      cta_reply_to: 'Äntwert %{firstName}'
-      event_description: '%{authorNameFull} huet eng Äntwert zu Ärem Kommentar zu ''%{post}'' op der participativer Plattform geschriwwen. Klickt hei ënnendrënner fir d’Gespréich mam %{authorName} weiderzeféieren.'
       subject: 'Dir hutt eng Äntwert op Äre Kommentar op der Plattform %{organizationName} kritt'
-      main_header: '%{authorName} huet op Äre Kommentar geäntwert'
       preheader: '%{authorName} huet op de Kommentar op der Plattform %{organizationName} geäntwert'
+      title: '%{authorName} huet op Äre Kommentar geäntwert'
+      event_description: '%{authorName} huet eng Äntwert op Äre Kommentar op ''%{post}'' op der Participatiounsplattform geschriwwen. Klickt op de Knäppchen hei ënnendrënner fir d''Gespréich mat %{authorFirstName}weiderzeféieren.'
+      cta_button: 'Äntwert op %{authorFirstName}'
       replied: '%{authorFirstName} huet geäntwert:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
