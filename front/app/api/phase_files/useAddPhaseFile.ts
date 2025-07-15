@@ -28,8 +28,8 @@ const useAddPhaseFile = () => {
     AddPhaseFileObject & { invalidate?: boolean }
   >({
     mutationFn: ({ invalidate: _invalidate, ...vars }) => addPhaseFile(vars),
-    onSuccess: (_data, variables) => {
-      if (variables.invalidate !== false) {
+    onSuccess: (_data, { invalidate = true, ...variables }) => {
+      if (invalidate) {
         queryClient.invalidateQueries({
           queryKey: phaseFilesKeys.list({
             phaseId: variables.phaseId,
