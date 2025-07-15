@@ -32,7 +32,7 @@ export function useSyncPhaseFiles() {
             base64: file.base64 || '',
             ordering: index,
             name: file.name,
-            invalidate: false, // Prevents re-fetching the list after each update
+            invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
           })
         );
 
@@ -43,7 +43,7 @@ export function useSyncPhaseFiles() {
           deletePhaseFile({
             phaseId,
             fileId: file.id,
-            invalidate: false, // Prevents re-fetching the list after each update
+            invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
           })
         );
 
@@ -65,7 +65,7 @@ export function useSyncPhaseFiles() {
           file: {
             ordering: file.ordering,
           },
-          invalidate: false, // Prevents re-fetching the list after each update
+          invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
         })
       );
 
