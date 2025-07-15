@@ -19,8 +19,6 @@ interface Props {
   saveConsent: () => void;
 }
 
-export type FormMode = 'preferenceForm' | 'noDestinations';
-
 const Container = ({
   preferences,
   categorizedDestinations,
@@ -58,17 +56,10 @@ const Container = ({
     setIsDialogOpen(false);
   };
 
-  const noDestinations = Object.values(categorizedDestinations).every(
-    (array) => array.length === 0
-  );
-
-  const mode: FormMode = noDestinations ? 'noDestinations' : 'preferenceForm';
-
   return (
     <>
       <PreferencesModal
         opened={isDialogOpen}
-        mode={mode}
         categorizedDestinations={categorizedDestinations}
         preferences={preferences}
         handleCancel={handleCancel}

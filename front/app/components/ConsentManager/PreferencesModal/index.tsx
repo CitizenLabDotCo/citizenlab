@@ -4,7 +4,6 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { FormMode } from '../Container';
 import { TCategory } from '../destinations';
 import messages from '../messages';
 import { CategorizedDestinations, IPreferences } from '../typings';
@@ -14,7 +13,6 @@ import Preferences from './Preferences';
 
 interface Props {
   opened: boolean;
-  mode: FormMode;
   categorizedDestinations: CategorizedDestinations;
   preferences: IPreferences;
   onClose: () => void;
@@ -25,7 +23,6 @@ interface Props {
 
 const PreferencesModal = ({
   opened,
-  mode,
   categorizedDestinations,
   preferences,
   onClose,
@@ -40,7 +37,7 @@ const PreferencesModal = ({
       header={<FormattedMessage {...messages.title} />}
       footer={
         <Footer
-          mode={mode}
+          categorizedDestinations={categorizedDestinations}
           handleCancel={handleCancel}
           handleSave={handleSave}
         />
