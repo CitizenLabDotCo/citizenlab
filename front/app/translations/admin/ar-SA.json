@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "استخدم الذكاء الاصطناعي لتحليل الملفات",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "معالجة النصوص، وما إلى ذلك.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "إضافة الملفات",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "المقابلات الصوتية وتسجيلات قاعة المدينة",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "اختيار الملفات",
   "app.containers.AdminPage.ProjectFiles.close": "يغلق",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "تأكيد وتحميل",

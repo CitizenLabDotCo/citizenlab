@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "Käytä tekoälyä tiedostojen analysointiin",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Prosessiselvitykset jne.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Lisää tiedostoja",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Äänihaastattelut, kaupungintalon tallenteet",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Valitse tiedostot",
   "app.containers.AdminPage.ProjectFiles.close": "Lähellä",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Vahvista ja lataa",

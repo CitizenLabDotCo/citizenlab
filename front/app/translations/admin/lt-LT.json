@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "Naudokite AI failams analizuoti",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Apdoroti nuorašus ir kt.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Pridėti failus",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Garso interviu, rotušės įrašai",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Pasirinkite failus",
   "app.containers.AdminPage.ProjectFiles.close": "Uždaryti",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Patvirtinkite ir įkelkite",

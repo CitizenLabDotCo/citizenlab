@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "Defnyddiwch AI i ddadansoddi ffeiliau",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Trawsgrifiadau proses, ac ati.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Ychwanegu ffeiliau",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Cyfweliadau sain, recordiadau Neuadd y Dref",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Dewiswch ffeiliau",
   "app.containers.AdminPage.ProjectFiles.close": "Cau",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Cadarnhau a llwytho i fyny",

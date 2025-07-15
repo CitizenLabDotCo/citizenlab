@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "Brug AI til at analysere filer",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Behandle udskrifter osv.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Vedhæftninger (max. 50MB)",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Lydinterviews, optagelser fra rådhuset",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Vælg filer",
   "app.containers.AdminPage.ProjectFiles.close": "Luk",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Bekræft og upload",

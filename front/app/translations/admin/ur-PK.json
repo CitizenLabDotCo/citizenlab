@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "فائلوں کا تجزیہ کرنے کے لیے AI کا استعمال کریں۔",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "پروسیس ٹرانسکرپٹس، وغیرہ",
   "app.containers.AdminPage.ProjectFiles.addFiles": "فائلیں شامل کریں۔",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "آڈیو انٹرویوز، ٹاؤن ہال کی ریکارڈنگ",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "فائلوں کا انتخاب کریں۔",
   "app.containers.AdminPage.ProjectFiles.close": "بند",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "تصدیق کریں اور اپ لوڈ کریں۔",

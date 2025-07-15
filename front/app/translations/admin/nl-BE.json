@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "AI gebruiken om bestanden te analyseren",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Transcripties verwerken, enz.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Bijlagen (max. 50MB)",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Audio-interviews, opnames van in het stadhuis",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Bestanden kiezen",
   "app.containers.AdminPage.ProjectFiles.close": "Sluiten",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Bevestigen en uploaden",

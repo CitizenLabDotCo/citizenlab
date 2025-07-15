@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "AI izmantošana failu analīzei",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Apstrādāt transkripcijas u. c.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Pievienot failus",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Audio intervijas, rātsnama ieraksti",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Izvēlieties failus",
   "app.containers.AdminPage.ProjectFiles.close": "Aizvērt",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Apstipriniet un augšupielādējiet",
