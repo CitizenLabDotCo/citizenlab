@@ -7,7 +7,6 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import Modal from 'components/UI/Modal';
 
@@ -22,22 +21,15 @@ interface Props {
   onClose: () => void;
 }
 
-const StyledModal = styled(Modal)`
-  .modalcontent {
-    margin-top: 200px;
-  }
-`;
-
 const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
   return (
-    <StyledModal
+    <Modal
       opened={true}
       close={onClose}
       closeOnClickOutside={false}
       hideCloseButton
-      width="600px"
     >
       <Box id="e2e-cookie-banner">
         <Title fontSize={isSmallerThanPhone ? 'xl' : undefined}>
@@ -77,7 +69,7 @@ const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
           </Button>
         </Box>
       </Box>
-    </StyledModal>
+    </Modal>
   );
 };
 
