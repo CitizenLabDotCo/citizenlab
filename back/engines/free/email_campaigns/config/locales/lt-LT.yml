@@ -85,11 +85,17 @@ lt:
         "6": "Kas savaitę, šeštadieniais %{hourOfDay}"
       quarterly: "Kas ketvirtį, pirmąją ketvirčio dieną"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Doe'
-      display_name: 'Nepažįstama moteris'
+      author_first_name: 'Jane'
+      author_last_name: 'Doe'
+      author_display_name: 'Nepažįstama moteris'
+      initiator_first_name: 'Bobas'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bobas Smithas'
+      project_title: 'Projekto pavyzdys'
       comment_body: 'Tai pavyzdinis komentaras, naudojamas el. laiškų turiniui peržiūrėti. Tai nėra tikrasis turinys.'
+      comment_deleted_reason: 'Jūsų pavyzdžio komentaras buvo laikomas netinkamu.'
       idea_title: 'Idėjos pavyzdys'
+      proposal_title: 'Pasiūlymo pavyzdys'
     footer:
       "link_privacy_policy": "Privatumo politika"
       "link_terms_conditions": "Taisyklės ir sąlygos"
@@ -103,22 +109,22 @@ lt:
     manual:
       preheader: 'Jūs turite laišką iš %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'Priežastis, kodėl jūsų komentaras buvo ištrintas:'
-      cta_view: 'Peržiūrėti šią idėją'
+      subject: 'Jūsų komentaras buvo ištrintas iš %{organizationName}platformos'
+      preheader: 'Jūsų komentaras buvo ištrintas'
+      title: '%{organizationName} ištrinti savo komentarą'
       event_description: '%{organizationName} ištrynė komentarą, kurį parašėte dėl idėjos.'
-      main_header: '%{organizationName} ištrinti savo komentarą'
+      cta_button: 'Peržiūrėti šią idėją'
+      reason: 'Priežastis, kodėl jūsų komentaras buvo ištrintas:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Jūsų komentaras buvo laikomas netinkamu'
       irrelevant_reason: 'Jūsų komentaras buvo laikomas nesusijusiu su šiuo kontekstu'
       no_reason: 'Priežastis nenurodyta'
-      subject: 'Jūsų komentaras buvo ištrintas iš %{organizationName}platformos'
-      preheader: 'Jūsų komentaras buvo ištrintas'
     admin_digest:
       subject: 'Jūsų savaitinė administratoriaus ataskaita %{time}'
       preheader: 'Administratoriaus suvestinė %{organizationName}'
-      title_your_weekly_report: '%{firstName}, jūsų savaitinė ataskaita'
-      text_introduction: 'Atrinkome jums informaciją, kuri per pastarąją savaitę sulaukė didžiausio susidomėjimo. Sužinokite, kas vyksta jūsų platformoje!'
-      cta_visit_the_platform: 'Apsilankykite savo platformoje'
+      title: '%{firstName}, jūsų savaitinė ataskaita'
+      event_description: 'Atrinkome jums informaciją, kuri per pastarąją savaitę sulaukė didžiausio susidomėjimo. Sužinokite, kas vyksta jūsų platformoje!'
+      cta_button: 'Apsilankykite savo platformoje'
       new_users: 'Nauji naudotojai'
       new_inputs: 'Nauji įvesties duomenys'
       new_comments: 'Nauji komentarai'
@@ -129,10 +135,11 @@ lt:
       today_by_author: 'Šiandien pagal %{author}'
       x_days_ago_by_author: '%{x} prieš keletą dienų parašė %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Valdykite savo platformą'
-      message_you_became_administrator: 'Jums suteiktos administratoriaus teisės dalyvauti %{organizationName}platformoje.'
-      preheader: 'Jums suteiktos administratoriaus teisės dalyvauti %{organizationName}platformoje.'
       subject: 'Tapote %{organizationName}platformos administratoriumi.'
+      preheader: 'Jums suteiktos administratoriaus teisės dalyvauti %{organizationName}platformoje.'
+      title: 'Tapote administratoriumi'
+      event_description: 'Jums suteiktos administratoriaus teisės dalyvauti %{organizationName}platformoje.'
+      cta_button: 'Valdykite savo platformą'
       text_create_participatory_process: 'Kaip administratorius galite kurti ir konfigūruoti naujus dalyvavimo projektus. Naujus etapus galite pridėti naudodami laiko juostą. Kiekvienas iš šių etapų gali turėti savo elgseną, susijusią su idėjų skelbimu, komentavimu ir balsavimu.'
       text_moderate_analyse_input: 'Pradėjus įgyvendinti projektus, atsiras pirmųjų idėjų. Kas savaitę gausite ataskaitas su visais svarbiausiais veiksmais, kad būtumėte nuolat informuoti. Idėjų apžvalga padės jums moderuoti informaciją ir bendradarbiauti ją apdorojant.'
       text_platform_setup: 'Kaip administratorius galite nustatyti savo dalyvavimo platformą. Pasirinkite logotipą, paveikslėlius ir spalvas, pagrindiniame puslapyje parašykite asmeninę žinutę, išsiųskite kvietimus, apibrėžkite, ką norite žinoti apie savo naudotojus, ...'
@@ -140,26 +147,26 @@ lt:
       title_moderate_analyse_input: 'Vidutiniškai apdoroti ir analizuoti įvesties duomenis'
       title_platform_setup: 'Nustatykite savo platformą'
       title_what_can_you_do_administrator: 'Ką galite padaryti kaip administratorius?'
-      title_you_became_administrator: 'Tapote administratoriumi'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} pranešė apie šį komentarą kaip šlamštą'
+      preheader: 'Veikti šį komentarą, apie kurį pranešta kaip apie šlamštą'
+      title: '%{firstName} %{lastName} pranešė apie šį komentarą kaip šlamštą'
+      cta_button: 'Peržiūros komentaras'
       by_author: 'pagal %{authorName}'
       commented: '%{authorName} komentavo:'
-      cta_review_comment: 'Peržiūros komentaras'
       days_ago: '%{numberOfDays} prieš keletą dienų'
       event_description: 'Buvo pranešta apie šį komentarą, paskelbtą tinklalapyje <strong>"%{post}"</strong>:'
       inappropriate_content: 'Komentaras yra netinkamas arba įžeidžiantis.'
-      preheader: 'Veikti šį komentarą, apie kurį pranešta kaip apie šlamštą'
       reported_this_because: '%{reporterFirstName} pranešė apie tai, nes:'
-      subject: '%{organizationName}: %{firstName} %{lastName} pranešė apie šį komentarą kaip šlamštą'
-      title_comment_spam_report: '%{firstName} %{lastName} pranešė apie šį komentarą kaip šlamštą'
       today: Šiandien
       wrong_content: 'Šis komentaras nėra aktualus.'
       yesterday: Vakar
     community_monitor_report:
       subject: 'Pateikta nauja bendruomenės stebėsenos ataskaita'
+      preheader: 'Pateikta nauja bendruomenės stebėsenos ataskaita'
       title: 'Pateikta nauja bendruomenės stebėsenos ataskaita'
-      text_introduction: 'Sukurta praėjusio ketvirčio bendruomenės stebėsenos ataskaita. Ją galite pasiekti spustelėję toliau esantį mygtuką ir prisijungę.'
-      cta_report_button: 'Peržiūrėti ataskaitą'
+      event_description: 'Sukurta praėjusio ketvirčio bendruomenės stebėsenos ataskaita. Ją galite pasiekti spustelėję toliau esantį mygtuką ir prisijungę.'
+      cta_button: 'Peržiūrėti ataskaitą'
       report_name: 'Bendrijos stebėtojo ataskaita'
     cosponsor_of_your_idea:
       cta_reply_to: 'Peržiūrėkite savo pasiūlymą'
@@ -170,8 +177,8 @@ lt:
     assignee_digest:
       subject: 'Įvesties duomenys, apie kuriuos reikia jūsų atsiliepimų: %{numberIdeas}'
       preheader: 'Perleidėjo suvestinė %{organizationName}'
-      title_your_weekly_report: '%{firstName}, piliečių indėlis laukia jūsų atsiliepimų'
-      cta_manage_your_input: 'Tvarkykite savo įvestį'
+      title: '%{firstName}, piliečių indėlis laukia jūsų atsiliepimų'
+      cta_button: 'Tvarkykite savo įvestį'
       x_inputs_need_your_feedback: 'įvesties reikia jūsų atsiliepimų'
       title_assignment_past_week: 'Naujausi jums priskirti įvesties duomenys'
       title_no_assignment_past_week: 'Praėjusią savaitę jums nebuvo priskirta naujų įvesties duomenų'
@@ -248,8 +255,11 @@ lt:
       today: Šiandien
       yesterday: Vakar
     comment_on_idea_you_follow:
-      cta_reply_to: 'Atsakyti į %{commentAuthor}'
+      subject: 'Yra naujas komentaras "%{input_title}"'
+      preheader: '%{authorName} paliko komentarą apie idėją %{organizationName}'
+      title: '%{authorName} pakomentavo įvestį, kurią sekate'
       event_description: '%{authorNameFull} pateikė reakciją į "%{inputTitle}". Spustelėkite toliau esantį mygtuką, kad tęstumėte pokalbį su %{authorName}.'
+      cta_button: 'Atsakyti į %{commentAuthor}'
       main_header:
         idea: '%{authorName} pakomentavo idėją, kurią sekate'
         question: '%{authorName} pakomentavo klausimą, kurį sekate'
@@ -259,8 +269,6 @@ lt:
         option: '%{authorName} pakomentavo parinktį, kurią sekate'
         proposal: '%{authorName} pakomentavo pasiūlymą, kurį sekate'
         petition: '%{authorName} pakomentavo peticiją, kurią sekate'
-      subject: 'Yra naujas komentaras "%{input_title}"'
-      preheader: '%{authorName} paliko komentarą apie idėją %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'Jūsų platformoje paskelbta nauja įvestis'
       event_description_publication: '%{authorName} pateikė naują įvestį į jūsų platformą. Atraskite jį dabar, pateikite atsiliepimus arba pakeiskite jo statusą!'
@@ -274,11 +282,11 @@ lt:
       today: Šiandien
       yesterday: Vakar
     comment_on_your_comment:
-      cta_reply_to: 'Atsakyti į %{firstName}'
-      event_description: '%{authorNameFull} parašė atsakymą į jūsų komentarą "%{post}" dalyvavimo platformoje. Spustelėkite toliau esantį mygtuką, kad tęstumėte pokalbį su %{authorName}.'
       subject: 'Gavote atsakymą į savo komentarą %{organizationName}platformoje.'
-      main_header: '%{authorName} atsakė į jūsų komentarą'
       preheader: '%{authorName} atsakė į Jūsų komentarą apie %{organizationName}''s platformą'
+      title: '%{authorName} atsakė į jūsų komentarą'
+      event_description: '%{authorName} parašė atsakymą į jūsų komentarą "%{post}" dalyvavimo platformoje. Spustelėkite toliau esantį mygtuką, kad tęstumėte pokalbį su %{authorFirstName}.'
+      cta_button: 'Atsakyti į %{authorFirstName}'
       replied: '%{authorFirstName} atsakė:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'Peržiūrėti komentarą %{firstName}'
