@@ -49,11 +49,6 @@ export default defineMessages({
     defaultMessage:
       '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them.',
   },
-  votingSubmittedInstructionsContinuous: {
-    id: 'app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous',
-    defaultMessage:
-      '<b>Congratulations, your vote has been submitted!</b> You can check your votes below at any point or modify them.',
-  },
   budgets: {
     id: 'app.utils.votingMethodUtils.budgets',
     defaultMessage: 'Budgets',
@@ -109,11 +104,6 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate',
     defaultMessage:
       '<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point.',
-  },
-  budgetingSubmittedInstructionsContinuous: {
-    id: 'app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous',
-    defaultMessage:
-      '<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point or modify them.',
   },
   budgetParticipationEnded1: {
     id: 'app.utils.votingMethodUtils.budgetParticipationEnded1',
