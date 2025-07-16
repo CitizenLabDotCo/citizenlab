@@ -99,9 +99,14 @@ class BaseImageUploader < BaseUploader
   # can have an effect on the image rendering. It also recompresses the image. Overall, it
   # seems to remove vibrancy from the image.
   def strip
-    manipulate! do |img|
-      img.strip
-      img
-    end
+    # manipulate! do |img|
+    #   img.strip
+    #   img
+    # end
+
+    # puts "check exif tool version: #{`exiftool -ver`}"
+
+    # Strip all metadata except ICC profile using exiftool
+    system("exiftool -all= --icc_profile:all -overwrite_original #{Shellwords.escape(@file.path)}")
   end
 end
