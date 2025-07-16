@@ -1298,8 +1298,7 @@ CREATE TABLE public.projects (
     followers_count integer DEFAULT 0 NOT NULL,
     preview_token character varying NOT NULL,
     header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
-    hidden boolean DEFAULT false NOT NULL,
-    unlisted boolean DEFAULT false NOT NULL
+    hidden boolean DEFAULT false NOT NULL
 );
 
 
@@ -7461,7 +7460,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250714073201'),
 ('20250708085259'),
 ('20250702085136'),
-('20250630142000'),
 ('20250627113458'),
 ('20250626072615'),
 ('20250624134747'),
