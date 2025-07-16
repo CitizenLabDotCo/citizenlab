@@ -37,12 +37,7 @@ const Table = () => {
     fetchNextPage,
     hasNextPage,
     status,
-  } = useInfiniteProjectFoldersAdmin(
-    {
-      ...params,
-    },
-    PAGE_SIZE
-  );
+  } = useInfiniteProjectFoldersAdmin(params, PAGE_SIZE);
 
   const folders = useMemo(
     () => data?.pages.flatMap((page) => page.data) ?? [],
