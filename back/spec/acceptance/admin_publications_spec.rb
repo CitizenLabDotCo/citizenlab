@@ -118,7 +118,7 @@ resource 'AdminPublication' do
       end
 
       example 'Does not include inlisted projects if include_unlisted is false', document: false do
-        unlisted_project = create(:project, unlisted: true)
+        unlisted_project = create(:project, listed: false)
 
         do_request include_unlisted: false
         assert_status 200
