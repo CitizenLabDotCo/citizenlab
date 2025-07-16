@@ -121,8 +121,6 @@
   "app.components.ConsentManager.Banner.manage": "Zarządzaj",
   "app.components.ConsentManager.Banner.policyLink": "Polityka ciasteczek",
   "app.components.ConsentManager.Banner.reject": "Odrzuć",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Potwierdź",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Jeśli anulujesz, Twoje preferencje zostaną utracone.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklama",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Wykorzystujemy to do personalizacji i pomiaru skuteczności kampanii reklamowych naszej strony internetowej. Nie pokażemy żadnej reklamy na tej platformie, ale poniższe usługi mogą zaoferować Ci spersonalizowaną reklamę w oparciu o strony, które odwiedzasz na naszej stronie.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Zezwól",
