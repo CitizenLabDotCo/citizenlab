@@ -145,7 +145,6 @@ module BulkImportIdeas::Parsers
     # @param [Hash] idea_row - comes from #ideas_to_idea_rows
     def process_custom_form_fields(fields, idea_row)
       merged_fields = merge_idea_with_form_fields(fields)
-      multi_select_types = %w[multiselect multiselect_image]
       custom_fields = {}
       merged_fields.each do |field|
         next if field[:key].nil? || field[:value].nil?
