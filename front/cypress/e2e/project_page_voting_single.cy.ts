@@ -69,21 +69,20 @@ describe('Project with single voting phase', () => {
     cy.apiRemoveUser(userId);
   });
 
-  it('shows the idea cards', () => {
-    cy.get('#e2e-ideas-list');
-  });
-
-  it('hides the idea sorting options', () => {
+  it('shows/hides things correctly', () => {
+    // it shows the idea cards
+    cy.get('#e2e-ideas-list').should('be.visible');
+    // it hides the idea sorting options
     cy.get('.e2e-filter-selector-button').should('not.exist');
   });
 
   it('can allocate votes to ideas and show how many votes are left', () => {
     cy.contains('Cast your vote');
     cy.contains('How to vote');
-    cy.contains('5 / 5');
+    cy.dataCy('project-cta-bar-top').contains('5 out of 5 votes left');
 
     cy.get('#e2e-voting-submit-button')
-      .should('exist')
+      .should('be.visible')
       .should('have.class', 'disabled');
 
     cy.get('#e2e-ideas-container')
@@ -94,10 +93,10 @@ describe('Project with single voting phase', () => {
     cy.wait(1000);
 
     cy.get('#e2e-voting-submit-button')
-      .should('exist')
+      .should('be.visible')
       .should('not.have.class', 'disabled');
 
-    cy.contains('4 / 5');
+    cy.dataCy('project-cta-bar-top').contains('4 out of 5 votes left');
   });
 
   it('can submit the votes', () => {
@@ -105,7 +104,7 @@ describe('Project with single voting phase', () => {
     cy.visit(`/en/projects/${projectSlug}`);
     cy.wait('@basketRequest');
     cy.get('#e2e-voting-submit-button')
-      .should('exist')
+      .should('be.visible')
       .should('not.have.class', 'disabled');
     cy.wait(4000);
     cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
@@ -120,19 +119,19 @@ describe('Project with single voting phase', () => {
 
   it('can modify and remove the votes', () => {
     cy.get('#e2e-modify-votes')
-      .should('exist')
-      .should('contain', 'Modify your vote')
+      .should('be.visible')
+      .should('contain', 'Modify your submission')
       .click();
     cy.wait(1000);
 
-    cy.get('#e2e-ideas-container')
-      .find('.e2e-single-vote-button button')
+    cy.get('.e2e-single-vote-button button')
+      .should('be.visible')
       .should('have.class', 'primary')
       .click()
       .should('have.class', 'primary-outlined');
 
     cy.get('#e2e-voting-submit-button')
-      .should('exist')
+      .should('be.visible')
       .should('have.class', 'disabled');
   });
 

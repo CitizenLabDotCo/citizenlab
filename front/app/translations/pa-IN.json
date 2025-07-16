@@ -15,24 +15,31 @@
   "app.components.AssignBudgetControl.add": "ਸ਼ਾਮਲ ਕਰੋ",
   "app.components.AssignBudgetControl.added": "ਜੋੜਿਆ ਗਿਆ",
   "app.components.AssignMultipleVotesControl.addVote": "ਵੋਟ ਸ਼ਾਮਲ ਕਰੋ",
-  "app.components.AssignMultipleVotesControl.maxVotesPerIdeaReached": "ਤੁਸੀਂ ਪ੍ਰਤੀ ਵਿਚਾਰ {maxVotes} ਵੋਟਾਂ ਦੀ ਅਧਿਕਤਮ ਸੰਖਿਆ 'ਤੇ ਪਹੁੰਚ ਗਏ ਹੋ",
-  "app.components.AssignMultipleVotesControl.maxVotesReached": "ਤੁਸੀਂ ਆਪਣੀਆਂ ਸਾਰੀਆਂ ਵੋਟਾਂ ਦੀ ਵਰਤੋਂ ਕੀਤੀ ਹੈ",
+  "app.components.AssignMultipleVotesControl.maxCreditsInTotalReached": "ਤੁਸੀਂ ਆਪਣੇ ਸਾਰੇ ਕ੍ਰੈਡਿਟ ਵੰਡ ਦਿੱਤੇ ਹਨ।",
+  "app.components.AssignMultipleVotesControl.maxCreditsPerInputReached": "ਤੁਸੀਂ ਇਸ ਵਿਕਲਪ ਲਈ ਵੱਧ ਤੋਂ ਵੱਧ ਕ੍ਰੈਡਿਟ ਵੰਡ ਦਿੱਤੇ ਹਨ।",
+  "app.components.AssignMultipleVotesControl.maxPointsInTotalReached": "ਤੁਸੀਂ ਆਪਣੇ ਸਾਰੇ ਅੰਕ ਵੰਡ ਦਿੱਤੇ ਹਨ।",
+  "app.components.AssignMultipleVotesControl.maxPointsPerInputReached": "ਤੁਸੀਂ ਇਸ ਵਿਕਲਪ ਲਈ ਵੱਧ ਤੋਂ ਵੱਧ ਅੰਕ ਵੰਡ ਦਿੱਤੇ ਹਨ।",
+  "app.components.AssignMultipleVotesControl.maxTokensInTotalReached": "ਤੁਸੀਂ ਆਪਣੇ ਸਾਰੇ ਟੋਕਨ ਵੰਡ ਦਿੱਤੇ ਹਨ।",
+  "app.components.AssignMultipleVotesControl.maxTokensPerInputReached": "ਤੁਸੀਂ ਇਸ ਵਿਕਲਪ ਲਈ ਟੋਕਨਾਂ ਦੀ ਵੱਧ ਤੋਂ ਵੱਧ ਗਿਣਤੀ ਵੰਡ ਦਿੱਤੀ ਹੈ।",
+  "app.components.AssignMultipleVotesControl.maxVotesInTotalReached": "ਤੁਸੀਂ ਆਪਣੀਆਂ ਸਾਰੀਆਂ ਵੋਟਾਂ ਵੰਡ ਦਿੱਤੀਆਂ ਹਨ।",
+  "app.components.AssignMultipleVotesControl.maxVotesPerInputReached1": "ਤੁਸੀਂ ਇਸ ਵਿਕਲਪ ਲਈ ਵੱਧ ਤੋਂ ਵੱਧ ਵੋਟਾਂ ਵੰਡ ਦਿੱਤੀਆਂ ਹਨ।",
   "app.components.AssignMultipleVotesControl.numberManualVotes2": "{manualVotes, plural, one {(1 ਔਫਲਾਈਨ ਸਮੇਤ)} other {(# ਔਫਲਾਈਨ ਸਮੇਤ)}}",
   "app.components.AssignMultipleVotesControl.phaseNotActive": "ਵੋਟਿੰਗ ਉਪਲਬਧ ਨਹੀਂ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਪੜਾਅ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ।",
   "app.components.AssignMultipleVotesControl.removeVote": "ਵੋਟ ਹਟਾਓ",
   "app.components.AssignMultipleVotesControl.select": "ਚੁਣੋ",
-  "app.components.AssignMultipleVotesControl.vote": "ਵੋਟ ਕਰੋ",
-  "app.components.AssignMultipleVotesControl.votes": "ਵੋਟਾਂ",
-  "app.components.AssignMultipleVotesControl.votesSubmitted": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਕਰਵਾ ਚੁੱਕੇ ਹੋ। ਆਪਣੀਆਂ ਵੋਟਾਂ ਬਦਲਣ ਲਈ \"ਆਪਣੀ ਵੋਟ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
-  "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਕਰਵਾ ਚੁੱਕੇ ਹੋ। ਆਪਣੀਆਂ ਵੋਟਾਂ ਬਦਲਣ ਲਈ, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਵਾਪਸ ਜਾਓ ਅਤੇ \"ਆਪਣੀ ਵੋਟ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
-  "app.components.AssignMultipleVotesControl.xVotes2": "{votes, plural, one {{singular}} other {{plural}}}",
-  "app.components.AssignVoteControl.maxVotesReached": "ਤੁਸੀਂ ਵੱਧ ਤੋਂ ਵੱਧ ਵੋਟਾਂ ਦੀ ਗਿਣਤੀ 'ਤੇ ਪਹੁੰਚ ਗਏ ਹੋ ਜੋ ਤੁਸੀਂ ਸਪੁਰਦ ਕਰ ਸਕਦੇ ਹੋ।",
+  "app.components.AssignMultipleVotesControl.votesSubmitted1": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣੀ ਵੋਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤੀ ਹੈ। ਇਸਨੂੰ ਸੋਧਣ ਲਈ, \"ਆਪਣੀ ਜਮ੍ਹਾਂ ਰਕਮ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
+  "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage1": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣੀ ਵੋਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤੀ ਹੈ। ਇਸਨੂੰ ਸੋਧਣ ਲਈ, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਵਾਪਸ ਜਾਓ ਅਤੇ \"ਆਪਣੀ ਜਮ੍ਹਾਂ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
+  "app.components.AssignMultipleVotesControl.xCredits1": "{votes, plural, one {ਕ੍ਰੈਡਿਟ} other {ਕ੍ਰੈਡਿਟ}}",
+  "app.components.AssignMultipleVotesControl.xPoints1": "{votes, plural, one {ਪੁਆਇੰਟ} other {ਪੁਆਇੰਟ}}",
+  "app.components.AssignMultipleVotesControl.xTokens1": "{votes, plural, one {ਟੋਕਨ} other {ਟੋਕਨ}}",
+  "app.components.AssignMultipleVotesControl.xVotes3": "{votes, plural, one {ਵੋਟ} other {ਵੋਟਾਂ}}",
+  "app.components.AssignVoteControl.maxVotesReached1": "ਤੁਸੀਂ ਆਪਣੀਆਂ ਸਾਰੀਆਂ ਵੋਟਾਂ ਵੰਡ ਦਿੱਤੀਆਂ ਹਨ।",
   "app.components.AssignVoteControl.phaseNotActive": "ਵੋਟਿੰਗ ਉਪਲਬਧ ਨਹੀਂ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਪੜਾਅ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ।",
   "app.components.AssignVoteControl.select": "ਚੁਣੋ",
   "app.components.AssignVoteControl.selected2": "ਚੁਣਿਆ ਗਿਆ",
   "app.components.AssignVoteControl.voteForAtLeastOne": "ਘੱਟੋ-ਘੱਟ 1 ਵਿਕਲਪ ਲਈ ਵੋਟ ਕਰੋ",
-  "app.components.AssignVoteControl.votesSubmitted": "ਤੁਸੀਂ ਆਪਣੀ {votes, plural, one {ਵੋਟ} other {ਵੋਟ}}ਜਮ੍ਹਾ ਕਰ ਚੁੱਕੇ ਹੋ। ਆਪਣੀ {votes, plural, one {ਵੋਟ} other {ਵੋਟਾਂ}}ਨੂੰ ਬਦਲਣ ਲਈ \"ਆਪਣੀ ਵੋਟ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
-  "app.components.AssignVoteControl.votesSubmittedIdeaPage": "ਤੁਸੀਂ ਆਪਣੀ {votes, plural, one {ਵੋਟ} other {ਵੋਟ}}ਜਮ੍ਹਾ ਕਰ ਚੁੱਕੇ ਹੋ। ਆਪਣੀ {votes, plural, one {ਵੋਟ} other {ਵੋਟਾਂ ਨੂੰ ਬਦਲਣ ਲਈ}}, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਵਾਪਸ ਜਾਓ ਅਤੇ \"ਆਪਣੀ ਵੋਟ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
+  "app.components.AssignVoteControl.votesSubmitted1": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣੀ ਵੋਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤੀ ਹੈ। ਇਸਨੂੰ ਸੋਧਣ ਲਈ, \"ਆਪਣੀ ਜਮ੍ਹਾਂ ਰਕਮ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
+  "app.components.AssignVoteControl.votesSubmittedIdeaPage1": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣੀ ਵੋਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤੀ ਹੈ। ਇਸਨੂੰ ਸੋਧਣ ਲਈ, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਵਾਪਸ ਜਾਓ ਅਤੇ \"ਆਪਣੀ ਜਮ੍ਹਾਂ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.components.AuthProviders.continue": "ਜਾਰੀ ਰੱਖੋ",
   "app.components.AuthProviders.continueWithAzure": "{azureProviderName}ਨਾਲ ਜਾਰੀ ਰੱਖੋ",
   "app.components.AuthProviders.continueWithFacebook": "Facebook ਦੇ ਨਾਲ ਜਾਰੀ ਰੱਖੋ",
@@ -318,14 +325,14 @@
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "ਤੁਸੀਂ {votesCast}ਖਰਚ ਕੀਤਾ, ਜੋ {votesLimit}ਦੀ ਸੀਮਾ ਤੋਂ ਵੱਧ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀ ਟੋਕਰੀ ਵਿੱਚੋਂ ਕੁਝ ਆਈਟਮਾਂ ਹਟਾਓ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft1": "{budgetLeft} / {totalBudget} ਖੱਬੇ",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1": "ਆਪਣੀ ਟੋਕਰੀ ਜਮ੍ਹਾਂ ਕਰਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਘੱਟੋ-ਘੱਟ {votesMinimum} ਖਰਚ ਕਰਨ ਦੀ ਲੋੜ ਹੈ।",
-  "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕਿ ਤੁਸੀਂ ਆਪਣਾ {votesTerm}ਸਪੁਰਦ ਕਰ ਸਕੋ, ਤੁਹਾਨੂੰ ਵੋਟ ਪਾਉਣ ਦੀ ਲੋੜ ਹੈ।",
+  "app.components.ParticipationCTABars.VotingCTABar.noVotesCast4": "ਸਪੁਰਦ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਘੱਟੋ-ਘੱਟ ਇੱਕ ਵਿਕਲਪ ਚੁਣਨ ਦੀ ਲੋੜ ਹੈ।",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕਿ ਤੁਸੀਂ ਇਸਨੂੰ ਜਮ੍ਹਾਂ ਕਰ ਸਕੋ, ਤੁਹਾਨੂੰ ਆਪਣੀ ਟੋਕਰੀ ਵਿੱਚ ਕੁਝ ਜੋੜਨ ਦੀ ਲੋੜ ਹੈ।",
-  "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "ਵਿਕਲਪ ਦੇਖੋ",
-  "app.components.ParticipationCTABars.VotingCTABar.stillHaveVotesLeft": "ਤੁਹਾਡੇ ਕੋਲ ਅਜੇ ਵੀ {votesLeft} {votesTerm} ਵੰਡਣ ਲਈ ਬਾਕੀ ਹੈ।",
-  "app.components.ParticipationCTABars.VotingCTABar.stillHaveVotesLeftDescription": "ਤੁਸੀਂ ਅਜੇ ਵੀ ਵੱਖ-ਵੱਖ ਵਿਕਲਪਾਂ ਵਿੱਚ ਹੋਰ {votesTerm} ਵੰਡ ਸਕਦੇ ਹੋ, ਕੀ ਤੁਸੀਂ ਯਕੀਨਨ ਸਬਮਿਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
+  "app.components.ParticipationCTABars.VotingCTABar.numberOfCreditsLeft": "{votesLeft, plural, =0 {ਕੋਈ ਕ੍ਰੈਡਿਟ ਨਹੀਂ ਬਚਿਆ} other {# {totalNumberOfVotes, plural, one {ਵਿੱਚੋਂ 1 ਕ੍ਰੈਡਿਟ} other {# ਕ੍ਰੈਡਿਟ}} ਬਾਕੀ}}",
+  "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {ਕੋਈ ਅੰਕ ਨਹੀਂ ਬਚੇ} other {# {totalNumberOfVotes, plural, one {ਵਿੱਚੋਂ 1 ਅੰਕ} other {# ਅੰਕ}} ਬਾਕੀ}}",
+  "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {ਕੋਈ ਟੋਕਨ ਨਹੀਂ ਬਚਿਆ} other {# {totalNumberOfVotes, plural, one {ਵਿੱਚੋਂ 1 ਟੋਕਨ} other {# ਟੋਕਨ}} ਬਾਕੀ}}",
+  "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {ਕੋਈ ਵੋਟ ਨਹੀਂ ਬਚੀ} other {# {totalNumberOfVotes, plural, one {ਵਿੱਚੋਂ 1 ਵੋਟ} other {# ਵੋਟਾਂ}} ਬਾਕੀ}}",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# ਵੋਟਾਂ} one {# ਵੋਟ} other {# ਵੋਟਾਂ}} ਕਾਸਟ",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "ਤੁਸੀਂ {votesCast} ਵੋਟਾਂ ਪਾਈਆਂ, ਜੋ {votesLimit}ਦੀ ਸੀਮਾ ਤੋਂ ਵੱਧ ਗਈਆਂ। ਕਿਰਪਾ ਕਰਕੇ ਕੁਝ ਵੋਟਾਂ ਹਟਾਓ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
-  "app.components.ParticipationCTABars.VotingCTABar.votesLeft2": "{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} left",
   "app.components.ParticipationCTABars.addInput": "ਇਨਪੁੱਟ ਸ਼ਾਮਲ ਕਰੋ",
   "app.components.ParticipationCTABars.allocateBudget": "ਆਪਣਾ ਬਜਟ ਨਿਰਧਾਰਤ ਕਰੋ",
   "app.components.ParticipationCTABars.budgetSubmitSuccess": "ਤੁਹਾਡਾ ਬਜਟ ਸਫਲਤਾਪੂਰਵਕ ਜਮ੍ਹਾਂ ਹੋ ਗਿਆ ਹੈ।",
@@ -535,7 +542,7 @@
   "app.components.Sharing.shareViaWhatsApp": "ਵਟਸਐਪ ਰਾਹੀਂ ਸਾਂਝਾ ਕਰੋ",
   "app.components.SideModal.closeButtonAria": "ਬੰਦ ਕਰੋ",
   "app.components.StatusModule.futurePhase": "ਤੁਸੀਂ ਇੱਕ ਪੜਾਅ ਦੇਖ ਰਹੇ ਹੋ ਜੋ ਅਜੇ ਸ਼ੁਰੂ ਨਹੀਂ ਹੋਇਆ ਹੈ। ਪੜਾਅ ਸ਼ੁਰੂ ਹੋਣ 'ਤੇ ਤੁਸੀਂ ਭਾਗ ਲੈਣ ਦੇ ਯੋਗ ਹੋਵੋਗੇ।",
-  "app.components.StatusModule.modifyYourSubmission": "ਆਪਣੇ {submissionTerm}ਨੂੰ ਸੋਧੋ",
+  "app.components.StatusModule.modifyYourSubmission1": "ਆਪਣੀ ਸਪੁਰਦਗੀ ਨੂੰ ਸੋਧੋ",
   "app.components.StatusModule.submittedUntil3": "ਤੱਕ ਤੁਹਾਡੀ ਵੋਟ ਜਮ੍ਹਾਂ ਹੋ ਸਕਦੀ ਹੈ",
   "app.components.TopicsPicker.numberOfSelectedTopics": "ਚੁਣੇ ਗਏ {numberOfSelectedTopics, plural, =0 {ਜ਼ੀਰੋ ਟੈਗ} one {ਇੱਕ ਟੈਗ} other {# ਟੈਗ}}. {selectedTopicNames}",
   "app.components.UI.FullscreenImage.expandImage": "ਚਿੱਤਰ ਦਾ ਵਿਸਤਾਰ ਕਰੋ",
@@ -578,9 +585,12 @@
   "app.components.VoteControl.budgetingNotPossible": "ਤੁਹਾਡੇ ਬਜਟ ਵਿੱਚ ਬਦਲਾਅ ਕਰਨਾ ਇਸ ਸਮੇਂ ਸੰਭਵ ਨਹੀਂ ਹੈ।",
   "app.components.VoteControl.budgetingNotVerified": "ਜਾਰੀ ਰੱਖਣ ਲਈ ਕਿਰਪਾ ਕਰਕੇ {verifyAccountLink} ।",
   "app.components.VoteInputs._shared.currencyLeft1": "ਤੁਹਾਡੇ ਕੋਲ {budgetLeft} / {totalBudget} ਬਾਕੀ ਹੈ",
-  "app.components.VoteInputs._shared.votesLeft4": "ਤੁਹਾਡੇ ਕੋਲ {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} ਖੱਬੇ।",
-  "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣਾ ਬਜਟ ਪੇਸ਼ ਕਰ ਚੁੱਕੇ ਹੋ। ਆਪਣਾ ਬਜਟ ਬਦਲਣ ਲਈ \"ਆਪਣੇ ਬਜਟ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
-  "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣਾ ਬਜਟ ਪੇਸ਼ ਕਰ ਚੁੱਕੇ ਹੋ। ਆਪਣਾ ਬਜਟ ਬਦਲਣ ਲਈ, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਵਾਪਸ ਜਾਓ ਅਤੇ \"ਆਪਣੇ ਬਜਟ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
+  "app.components.VoteInputs._shared.numberOfCreditsLeft": "ਤੁਹਾਡੇ ਕੋਲ {votesLeft, plural, =0 {ਕੋਈ ਕ੍ਰੈਡਿਟ ਨਹੀਂ ਬਚਿਆ ਹੈ} other {# {totalNumberOfVotes, plural, one {ਵਿੱਚੋਂ 1 ਕ੍ਰੈਡਿਟ} other {# ਕ੍ਰੈਡਿਟ}} ਬਾਕੀ ਹਨ}}।",
+  "app.components.VoteInputs._shared.numberOfPointsLeft": "ਤੁਹਾਡੇ ਕੋਲ {votesLeft, plural, =0 {ਕੋਈ ਅੰਕ ਨਹੀਂ ਬਚੇ ਹਨ} other {# {totalNumberOfVotes, plural, one {ਵਿੱਚੋਂ 1 ਅੰਕ} other {# ਅੰਕ}} ਬਾਕੀ ਹਨ}}।",
+  "app.components.VoteInputs._shared.numberOfTokensLeft": "ਤੁਹਾਡੇ ਕੋਲ {votesLeft, plural, =0 {ਕੋਈ ਟੋਕਨ ਨਹੀਂ ਬਚਿਆ ਹੈ} other {# {totalNumberOfVotes, plural, one {ਵਿੱਚੋਂ 1 ਟੋਕਨ} other {# ਟੋਕਨ}} ਬਾਕੀ ਹਨ}}।",
+  "app.components.VoteInputs._shared.numberOfVotesLeft": "ਤੁਹਾਡੇ ਕੋਲ {votesLeft, plural, =0 {ਕੋਈ ਵੋਟ ਨਹੀਂ ਬਚੀ ਹੈ} other {# {totalNumberOfVotes, plural, one {ਵਿੱਚੋਂ 1 ਵੋਟ} other {# ਵੋਟਾਂ}} ਬਾਕੀ ਹਨ}}।",
+  "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted1": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਹੈ। ਇਸਨੂੰ ਸੋਧਣ ਲਈ, \"ਆਪਣੀ ਜਮ੍ਹਾਂ ਰਕਮ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
+  "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਹੈ। ਇਸਨੂੰ ਸੋਧਣ ਲਈ, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਵਾਪਸ ਜਾਓ ਅਤੇ \"ਆਪਣੀ ਜਮ੍ਹਾਂ ਰਕਮ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "ਬਜਟ ਉਪਲਬਧ ਨਹੀਂ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਪੜਾਅ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ।",
   "app.components.VoteInputs.single.youHaveVotedForX2": "ਤੁਸੀਂ {votes, plural, =0 {# ਵਿਕਲਪਾਂ ਲਈ ਵੋਟ ਕੀਤੀ ਹੈ} one {# ਵਿਕਲਪ} other {# ਵਿਕਲਪ}}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "ਇਸਦਾ ਮਤਲਬ ਹੈ ਕਿ ਤੁਸੀਂ ਇਸ ਇਨਪੁਟ ਨਾਲ ਸੰਬੰਧਿਤ ਸਾਰਾ ਡਾਟਾ ਗੁਆ ਦੇਵੋਗੇ, ਜਿਵੇਂ ਕਿ ਟਿੱਪਣੀਆਂ, ਪ੍ਰਤੀਕਰਮਾਂ ਅਤੇ ਵੋਟਾਂ। ਇਸ ਕਾਰਵਾਈ ਨੂੰ ਅਣਕੀਤਾ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
@@ -2300,7 +2310,6 @@
   "app.utils.participationMethodConfig.voting.votingNotPermitted": "ਤੁਹਾਨੂੰ ਵੋਟ ਪਾਉਣ ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਹੈ।",
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "ਵੋਟ ਪਾਉਣ ਲਈ ਤੁਹਾਨੂੰ ਲੌਗ ਇਨ ਜਾਂ ਰਜਿਸਟਰ ਕਰਨਾ ਪਵੇਗਾ।",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "ਵੋਟ ਪਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਆਪਣੇ ਖਾਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ।",
-  "app.utils.votingMethodUtils.budget": "ਬਜਟ",
   "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>ਬਜਟ ਪੇਸ਼ ਕਰਨਾ {endDate}ਨੂੰ ਬੰਦ ਹੋ ਗਿਆ।</b> ਭਾਗੀਦਾਰਾਂ ਕੋਲ ਕੁੱਲ <b>{maxBudget} ਹਰ ਇੱਕ ਨੂੰ {optionCount} ਵਿਕਲਪਾਂ ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਸੀ।</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "ਬਜਟ ਪੇਸ਼ ਕੀਤਾ",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "ਬਜਟ ਪੇਸ਼ ਕੀਤਾ ਗਿਆ 🎉",
@@ -2315,20 +2324,26 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "ਤੁਹਾਡੇ ਕੋਲ {optionCount} ਵਿਕਲਪਾਂ</b>ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਕੁੱਲ <b>{maxBudget} ਹਨ।",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੇ ਵਿਕਲਪਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਉਹਨਾਂ ਨੂੰ <b>{endDate}</b>ਤੋਂ ਪਹਿਲਾਂ ਸੋਧ ਸਕਦੇ ਹੋ।",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੇ ਵਿਕਲਪਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ।",
-  "app.utils.votingMethodUtils.budgets": "ਬਜਟ",
   "app.utils.votingMethodUtils.castYourVote": "ਆਪਣੀ ਵੋਟ ਪਾਓ",
-  "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea2": "ਤੁਸੀਂ ਪ੍ਰਤੀ ਵਿਕਲਪ ਵੱਧ ਤੋਂ ਵੱਧ {maxVotes} {voteTerm} ਜੋੜ ਸਕਦੇ ਹੋ।",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxCreditsPerIdea1": "ਤੁਸੀਂ ਪ੍ਰਤੀ ਵਿਕਲਪ ਵੱਧ ਤੋਂ ਵੱਧ {maxVotes, plural, one {# ਕ੍ਰੈਡਿਟ} other {# ਕ੍ਰੈਡਿਟ}} ਜੋੜ ਸਕਦੇ ਹੋ।",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxPointsPerIdea1": "ਤੁਸੀਂ ਪ੍ਰਤੀ ਵਿਕਲਪ ਵੱਧ ਤੋਂ ਵੱਧ {maxVotes, plural, one {# ਅੰਕ} other {# ਅੰਕ}} ਜੋੜ ਸਕਦੇ ਹੋ।",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxTokensPerIdea1": "ਤੁਸੀਂ ਪ੍ਰਤੀ ਵਿਕਲਪ ਵੱਧ ਤੋਂ ਵੱਧ {maxVotes, plural, one {# ਟੋਕਨ} other {# ਟੋਕਨ}} ਜੋੜ ਸਕਦੇ ਹੋ।",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea4": "ਤੁਸੀਂ ਪ੍ਰਤੀ ਵਿਕਲਪ ਵੱਧ ਤੋਂ ਵੱਧ {maxVotes, plural, one {# ਵੋਟ} other {# ਵੋਟਾਂ}} ਜੋੜ ਸਕਦੇ ਹੋ।",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": "ਇੱਕ ਵਾਰ ਜਦੋਂ ਤੁਸੀਂ ਪੂਰਾ ਕਰ ਲੈਂਦੇ ਹੋ, ਤਾਂ ਆਪਣੀ ਵੋਟ ਪਾਉਣ ਲਈ \"ਸਬਮਿਟ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2": "\"ਚੁਣੋ\" 'ਤੇ ਟੈਪ ਕਰਕੇ ਆਪਣੇ ਪਸੰਦੀਦਾ ਵਿਕਲਪਾਂ ਨੂੰ ਚੁਣੋ।",
-  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes": "ਤੁਹਾਡੇ ਕੋਲ {optionCount} ਵਿਕਲਪਾਂ</b>ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਕੁੱਲ <b>{totalVotes} {voteTerm} ਹਨ।",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalCredits2": "ਤੁਹਾਡੇ ਕੋਲ ਕੁੱਲ <b>{totalVotes, plural, one {# ਕ੍ਰੈਡਿਟ} other {# ਕ੍ਰੈਡਿਟ}} {optionCount, plural, one {# ਵਿਕਲਪ} other {# ਵਿਕਲਪ}}</b>ਵਿੱਚ ਵੰਡਣ ਲਈ ਹਨ।",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPoints2": "ਤੁਹਾਡੇ ਕੋਲ ਕੁੱਲ <b>{totalVotes, plural, one {# ਅੰਕ} other {# ਅੰਕ}} {optionCount, plural, one {# ਵਿਕਲਪ} other {# ਵਿਕਲਪ}}</b>ਵਿੱਚ ਵੰਡਣ ਲਈ ਹਨ।",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalTokens2": "ਤੁਹਾਡੇ ਕੋਲ ਕੁੱਲ <b>{totalVotes, plural, one {# ਟੋਕਨ} other {# ਟੋਕਨ}} {optionCount, plural, one {# ਵਿਕਲਪ} other {# ਵਿਕਲਪ}}</b>ਵਿੱਚ ਵੰਡਣ ਲਈ ਹਨ।",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes3": "ਤੁਹਾਡੇ ਕੋਲ ਕੁੱਲ <b>{totalVotes, plural, one {# ਵੋਟ} other {# ਵੋਟਾਂ}} {optionCount, plural, one {# ਵਿਕਲਪ} other {# ਵਿਕਲਪ}}</b>ਵਿੱਚ ਵੰਡਣ ਲਈ ਹਨ।",
   "app.utils.votingMethodUtils.finalResults": "ਅੰਤਿਮ ਨਤੀਜੇ",
   "app.utils.votingMethodUtils.finalTally": "ਅੰਤਮ ਗਿਣਤੀ",
   "app.utils.votingMethodUtils.howToParticipate": "ਕਿਵੇਂ ਭਾਗ ਲੈਣਾ ਹੈ",
   "app.utils.votingMethodUtils.howToVote": "ਵੋਟ ਕਿਵੇਂ ਪਾਉਣੀ ਹੈ",
-  "app.utils.votingMethodUtils.midSentenceVote": "ਵੋਟ",
-  "app.utils.votingMethodUtils.midSentenceVotes": "ਵੋਟਾਂ",
-  "app.utils.votingMethodUtils.multipleVotingEnded": "<b>{endDate}ਨੂੰ ਵੋਟਿੰਗ ਬੰਦ ਹੋਈ।</b> ਭਾਗੀਦਾਰਾਂ ਕੋਲ <b>{maxVotes} {voteTerm} ਹਰੇਕ ਨੂੰ {optionCount} ਵਿਕਲਪਾਂ ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਸੀ।</b>",
-  "app.utils.votingMethodUtils.numberOfVotes": "{numberOfVotes} {numberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}",
+  "app.utils.votingMethodUtils.multipleVotingEnded1": "ਵੋਟਿੰਗ <b>{endDate}ਨੂੰ ਬੰਦ ਹੋ ਗਈ।</b>",
+  "app.utils.votingMethodUtils.numberOfCredits": "{numberOfVotes, plural, =0 {0 ਕ੍ਰੈਡਿਟ} one {1 ਕ੍ਰੈਡਿਟ} other {# ਕ੍ਰੈਡਿਟ}}",
+  "app.utils.votingMethodUtils.numberOfPoints": "{numberOfVotes, plural, =0 {0 ਅੰਕ} one {1 ਅੰਕ} other {# ਅੰਕ}}",
+  "app.utils.votingMethodUtils.numberOfTokens": "{numberOfVotes, plural, =0 {0 ਟੋਕਨ} one {1 ਟੋਕਨ} other {# ਟੋਕਨ}}",
+  "app.utils.votingMethodUtils.numberOfVotes1": "{numberOfVotes, plural, =0 {0 ਵੋਟਾਂ} one {1 ਵੋਟ} other {# ਵੋਟਾਂ}}",
   "app.utils.votingMethodUtils.results": "ਨਤੀਜੇ",
   "app.utils.votingMethodUtils.singleVotingEnded": "<b>{endDate}ਨੂੰ ਵੋਟਿੰਗ ਬੰਦ ਹੋਈ।</b> ਭਾਗੀਦਾਰ <b> {maxVotes} ਵਿਕਲਪਾਂ ਲਈ ਵੋਟ ਦੇ ਸਕਦੇ ਹਨ।</b>",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "\"ਵੋਟ\" 'ਤੇ ਟੈਪ ਕਰਕੇ ਆਪਣੇ ਪਸੰਦੀਦਾ ਵਿਕਲਪਾਂ ਦੀ ਚੋਣ ਕਰੋ",
@@ -2344,14 +2359,12 @@
   "app.utils.votingMethodUtils.submittedBudgetsCountText2": "ਲੋਕਾਂ ਨੇ ਆਪਣੇ ਬਜਟ ਆਨਲਾਈਨ ਜਮ੍ਹਾ ਕਰਵਾਏ",
   "app.utils.votingMethodUtils.submittedVoteCountText2": "ਵਿਅਕਤੀ ਨੇ ਆਪਣੀ ਵੋਟ ਆਨਲਾਈਨ ਜਮ੍ਹਾ ਕਰਵਾਈ",
   "app.utils.votingMethodUtils.submittedVotesCountText2": "ਲੋਕਾਂ ਨੇ ਆਪਣੀਆਂ ਵੋਟਾਂ ਆਨਲਾਈਨ ਜਮ੍ਹਾਂ ਕਰਵਾਈਆਂ",
-  "app.utils.votingMethodUtils.vote": "ਵੋਟ ਕਰੋ",
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "ਵੋਟ ਸਪੁਰਦ ਕੀਤੀ ਗਈ 🎉",
-  "app.utils.votingMethodUtils.votes": "ਵੋਟਾਂ",
   "app.utils.votingMethodUtils.votesCast": "ਵੋਟਾਂ ਪਾਈਆਂ",
   "app.utils.votingMethodUtils.votingClosed": "ਵੋਟਿੰਗ ਬੰਦ",
-  "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>ਤੁਹਾਡੀਆਂ ਵੋਟਾਂ ਦੀ ਗਿਣਤੀ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ</b> ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ \"ਸਬਮਿਟ\" 'ਤੇ ਕਲਿੱਕ ਨਹੀਂ ਕਰਦੇ",
-  "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡੀ ਵੋਟ ਸਪੁਰਦ ਕਰ ਦਿੱਤੀ ਗਈ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੀਆਂ ਵੋਟਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ <b>{endDate}</b>ਤੋਂ ਪਹਿਲਾਂ ਉਹਨਾਂ ਨੂੰ ਸੋਧ ਸਕਦੇ ਹੋ।",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡੀ ਵੋਟ ਸਪੁਰਦ ਕਰ ਦਿੱਤੀ ਗਈ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੀਆਂ ਵੋਟਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਉਹਨਾਂ ਨੂੰ ਸੋਧ ਸਕਦੇ ਹੋ।",
+  "app.utils.votingMethodUtils.votingPreSubmissionWarning1": "<b>ਤੁਹਾਡੀ ਵੋਟ</b> ਉਦੋਂ ਤੱਕ ਨਹੀਂ ਗਿਣੀ ਜਾਵੇਗੀ ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ \"ਸਬਮਿਟ\" 'ਤੇ ਕਲਿੱਕ ਨਹੀਂ ਕਰਦੇ।",
+  "app.utils.votingMethodUtils.votingSubmittedInstructions1": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡੀ ਵੋਟ ਜਮ੍ਹਾਂ ਹੋ ਗਈ ਹੈ!</b> ਤੁਸੀਂ <b>{endDate}</b>ਤੋਂ ਪਹਿਲਾਂ ਆਪਣੀ ਜਮ੍ਹਾਂ ਰਕਮ ਦੀ ਜਾਂਚ ਜਾਂ ਸੋਧ ਕਰ ਸਕਦੇ ਹੋ।",
+  "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate1": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡੀ ਵੋਟ ਜਮ੍ਹਾਂ ਹੋ ਗਈ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੀ ਜਮ੍ਹਾਂ ਰਕਮ ਦੀ ਜਾਂਚ ਜਾਂ ਸੋਧ ਕਰ ਸਕਦੇ ਹੋ।",
   "components.UI.IdeaSelect.noIdeaAvailable": "ਕੋਈ ਵਿਚਾਰ ਉਪਲਬਧ ਨਹੀਂ ਹਨ।",
   "components.UI.IdeaSelect.selectIdea": "ਵਿਚਾਰ ਚੁਣੋ",
   "containers.SiteMap.allProjects": "ਸਾਰੇ ਪ੍ਰੋਜੈਕਟ",
