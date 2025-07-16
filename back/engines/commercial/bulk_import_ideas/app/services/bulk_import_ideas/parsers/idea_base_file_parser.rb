@@ -156,10 +156,7 @@ module BulkImportIdeas::Parsers
         else
           # Custom fields
           value = field[:value]
-          if value.is_a?(Array)
-            value = value.compact if multi_select_types.include?(field[:input_type])
-            value = value.compact.first if field[:input_type] == 'select'
-          end
+          value = value.first if field[:input_type] == 'select' && value.is_a?(Array)
           custom_fields[field[:key].to_sym] = value if value.present?
         end
       end
@@ -176,7 +173,7 @@ module BulkImportIdeas::Parsers
             option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name] == value.strip }
             option[:key] if option
           end
-          field[:value] = options
+          field[:value] = options.compact.uniq
         else
           field[:value] = []
         end
