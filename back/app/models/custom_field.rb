@@ -274,7 +274,8 @@ class CustomField < ApplicationRecord
     build_in_types = %w[text_multiloc html_multiloc image_files files topic_ids]
     ideation_types = ParticipationMethod::Ideation::ALLOWED_EXTRA_FIELD_TYPES
     native_survey_types = ParticipationMethod::NativeSurvey::ALLOWED_EXTRA_FIELD_TYPES
-    all_input_types = build_in_types + ideation_types + native_survey_types
+    user_field_types = %w[checkbox date] # Only when 'user_fields_in_form' is enabled
+    all_input_types = build_in_types + ideation_types + native_survey_types + user_field_types
 
     all_input_types.include? input_type
   end
@@ -288,7 +289,7 @@ class CustomField < ApplicationRecord
   end
 
   def pdf_importable?
-    ignore_field_types = %w[page date files topic_ids image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types = %w[page checkbox files topic_ids image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
     printable? && ignore_field_types.exclude?(input_type)
   end
 
