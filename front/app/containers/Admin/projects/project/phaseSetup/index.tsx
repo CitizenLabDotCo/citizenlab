@@ -234,12 +234,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     event.preventDefault();
     if (!formData) return;
 
-    const { isValidated, errors } = validate(
-      formData,
-      phases,
-      formatMessage,
-      tenantLocales
-    );
+    const { isValidated, errors } = validate(formData, phases, formatMessage);
 
     setValidationErrors(errors);
 
