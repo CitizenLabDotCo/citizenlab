@@ -1294,7 +1294,7 @@
   "app.containers.EventsShow.online2": "Online møde",
   "app.containers.EventsShow.onlineLinkIconAltText": "Link til online-møde",
   "app.containers.EventsShow.registered": "registreret",
-  "app.containers.EventsShow.registrantCount": "{attendeesCount, plural, =0 {0 deltagere} one {1 deltager} other {#deltagere}}",
+  "app.containers.EventsShow.registrantCount": "{attendeesCount, plural, =0 {0 deltagere} one {1 deltager} other {# deltagere}}",
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} deltagere",
   "app.containers.EventsShow.registrantsIconAltText": "Deltagere",
   "app.containers.EventsShow.socialMediaSharingMessage": "Deltag i dette arrangement: {eventTitle}",
