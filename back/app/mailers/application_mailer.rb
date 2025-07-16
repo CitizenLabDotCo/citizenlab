@@ -113,9 +113,14 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def mailgun_headers
-    {
+    headers = {
       'X-Mailgun-Variables' => mailgun_variables.to_json
     }
+    if headers['X-Mailgun-Variables']['cl_delivery_id'].present?
+      headers
+    else
+      headers.merge('X-Mailgun-Track' => 'no')
+    end
   end
 
   def mailgun_variables
