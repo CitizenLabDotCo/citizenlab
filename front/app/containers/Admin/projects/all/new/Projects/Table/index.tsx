@@ -1,6 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { useInView } from 'react-intersection-observer';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import React, { useMemo } from 'react';
 import {
   Box,
   Table as TableComponent,
@@ -13,28 +11,14 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { useParams } from '../utils';
 import Row from './Row';
 import messages from './messages';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-import { ProjectsMiniAdmin, Parameters } from 'api/projects_mini_admin/types';
+import { useInfiniteProjectsMiniAdmin } from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
+import { useInfiniteScroll } from 'hooks/useInfiniteScroll';
 
 const PAGE_SIZE = 10;
-
-const fetchProjectsMiniAdmin = async (
-  queryParameters: Parameters
-): Promise<ProjectsMiniAdmin> =>
-  fetcher<ProjectsMiniAdmin>({
-    path: '/projects/for_admin',
-    action: 'get',
-    queryParams: {
-      ...queryParameters,
-      'page[size]': queryParameters['page[size]'] ?? PAGE_SIZE,
-      'page[number]': queryParameters['page[number]'] ?? 1,
-    },
-  });
 
 const Table = () => {
   const { formatMessage } = useIntl();
@@ -42,52 +26,30 @@ const Table = () => {
 
   const {
     data,
-    isFetching,
+    isLoading,
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
     status,
-  } = useInfiniteQuery(
-    ['projects', params, sort],
-    ({ pageParam = 1 }) =>
-      fetchProjectsMiniAdmin({
-        ...params,
-        sort: sort ?? 'phase_starting_or_ending_soon',
-        'page[size]': PAGE_SIZE,
-        'page[number]': pageParam,
-      }),
+  } = useInfiniteProjectsMiniAdmin(
     {
-      getNextPageParam: (lastPage) => {
-        const nextLink = lastPage.links.next;
-        return nextLink ? getPageNumberFromUrl(nextLink) : undefined;
-      },
-    }
+      ...params,
+      sort: sort ?? 'phase_starting_or_ending_soon',
+    },
+    PAGE_SIZE
   );
 
-  // flatten all pages' data
   const projects = useMemo(
     () => data?.pages.flatMap((page) => page.data) ?? [],
     [data?.pages]
   );
 
-  // one‐time‐per‐entry guard
-  const didFetchRef = useRef(false);
-
-  // sentinel for “load more”
-  const { ref: loadMoreRef, inView } = useInView({
-    rootMargin: '0px 0px 100px 0px', // fire when 100px from bottom
-    threshold: 0, // any pixel visible is enough
+  const { loadMoreRef } = useInfiniteScroll({
+    isLoading: isFetchingNextPage,
+    hasNextPage: !!hasNextPage,
+    onLoadMore: fetchNextPage,
+    rootMargin: '0px 0px 100px 0px',
   });
-
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage && !didFetchRef.current) {
-      didFetchRef.current = true;
-      fetchNextPage();
-    } else if (!inView) {
-      // reset when it leaves view so next entry can fetch again
-      didFetchRef.current = false;
-    }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages]);
 
   const getSentinelMessage = () => {
     if (isFetchingNextPage) {
@@ -134,7 +96,7 @@ const Table = () => {
         {sentinelMessage && formatMessage(sentinelMessage)}
       </Box>
 
-      {(isFetching || status === 'loading') && (
+      {(isLoading || isFetchingNextPage) && (
         <Box
           w="100%"
           p="4px"
