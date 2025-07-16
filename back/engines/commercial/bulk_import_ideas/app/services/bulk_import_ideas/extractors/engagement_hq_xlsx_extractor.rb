@@ -33,8 +33,6 @@ module BulkImportIdeas::Extractors
       @idea_columns = []
       @user_columns = []
       @idea_rows = generate_idea_rows
-
-      # TODO: Set up the field types here, so it's done just once
     end
 
     attr_reader :idea_rows
@@ -73,7 +71,7 @@ module BulkImportIdeas::Extractors
         row_data = []
         row&.cells&.each do |cell|
           next if cell.column < 3 # Skip columns before the 4th column
-          next unless cell.value.present? # Skip empty cells
+          next if cell.value.blank? # Skip empty cells
 
           header = column_header(cell.column)
           next unless header # Skip if header is nil
@@ -107,21 +105,18 @@ module BulkImportIdeas::Extractors
       column_name
     end
 
+    # TODO: Need to detect 'Other' fields
+    # TODO: Detect long vs short text fields
+    # TODO: Detect number fields
     def generate_fields(columns)
       columns.map do |column_name|
-        fields = {
+        {
           title_multiloc: multiloc(column_name),
-          input_type: input_type(column_name),
           required: required?(column_name)
-        }
-        select = select_field(column_name)
-        fields[:options] = select[:options] unless select.nil?
-        fields
+        }.merge(
+          field_attributes(column_name)
+        )
       end
-    end
-
-    def multiloc(text)
-      locales.index_with { |_locale| text } # Same text assigned to all locales
     end
 
     def required?(column_name)
@@ -132,27 +127,26 @@ module BulkImportIdeas::Extractors
       rows.count == rows_not_empty.count
     end
 
-    def input_type(column_name)
-
-      matrix = matrix_field(column_name)
+    def field_attributes(column_name)
+      # Is this a matrix field?
+      matrix = matrix_field_attributes(column_name)
+      return matrix unless matrix.nil?
 
       # Select or Multiselect field?
-      select = select_field(column_name)
-      return select[:type] unless select.nil?
+      select = select_field_attributes(column_name)
+      return select unless select.nil?
 
-
-
-      'text'
+      { input_type: 'text' }
     end
 
-    def select_field(column_name)
+    def select_field_attributes(column_name)
       values = @idea_rows.pluck(column_name).compact.reject(&:empty?)
 
       # Detect single select field
       unique_ratio = values.size / values.uniq.size.to_f
       if unique_ratio > 10 # Probably needs to be relational to the size of the data
         return {
-          type: 'select',
+          input_type: 'select',
           options: values.uniq.map { |value| { title_multiloc: multiloc(value), key: SlugService.new.slugify(value) } }
         }
       end
@@ -161,15 +155,11 @@ module BulkImportIdeas::Extractors
       split_values = values.map { |value| value.split(/[,;]/).map(&:strip) }.flatten
       unique_ratio = split_values.size / split_values.uniq.size.to_f
       if unique_ratio > 10
-
         # Update values to ensure semicolons for multiselect
-        @idea_rows = @idea_rows.map do |row|
-          row[column_name] = row[column_name].split(/[,;]/).map(&:strip).join('; ') if row[column_name]
-          row
-        end
+        update_delimiters(column_name)
 
         return {
-          type: 'multiselect',
+          input_type: 'multiselect',
           options: split_values.uniq.map { |value| { title_multiloc: multiloc(value), key: SlugService.new.slugify(value) } }
         }
       end
@@ -177,30 +167,60 @@ module BulkImportIdeas::Extractors
       nil
     end
 
-    # TODO: Complete this once we can import matrix fields via XLSX
-    def matrix_field(column_name)
+    def matrix_field_attributes(column_name)
+      matrix_regex = /([^:]+)\s*:\s*([^,]+)(?:,\s*|$)/
       values = @idea_rows.pluck(column_name).compact.reject(&:empty?)
-      matches = values.first.scan(/([^:]+)\s*:\s*([^,]+)(?:,\s*|$)/)
+      matches = values.first.scan(matrix_regex) # Test the first value, so we can determine if it's a matrix field
       if matches.any?
-        # binding.pry if column_name.start_with?('How well does concept')
-        # Matrix fields stored as {"yeahhh_3w8": 1, "this_one_ptu": 3, "another_one_i8n": 2}
-        # Need to create the matrix statements
-        # Need to add the linear_scale_1 etc labels
-        # How do we handle the order?
-        # Suggest similar format in our XLSX import - User friendly : Not at all; Aesthetically pleasing : Very well; Convenient : Not at all; Unobtrusive : Very well;
+        labels = []
+        statements = []
+        values.each do |value|
+          matches = value.scan(matrix_regex)
+          matches.each do |statement|
+            statements << statement[0].strip
+            labels << statement[1].strip
+          end
+        end
+
+        labels = labels.uniq
+        statements = statements.uniq
+
+        # Update values to ensure semicolons instead of commas
+        update_delimiters(column_name)
+
+        # TODO: Order the statements negative to positive using GPT maybe?
+
         return {
-          type: 'matrix',
-          statements: matches.map do |statement|
+          input_type: 'matrix_linear_scale',
+          maximum: labels.size,
+          statements: statements.map do |statement|
             {
-              title_multiloc: multiloc(statement[0].strip),
-              key: SlugService.new.slugify(statement[0].strip),
+              title_multiloc: multiloc(statement),
+              key: SlugService.new.slugify(statement)
             }
-          end,
-          labels: {}
-        }
+          end
+        }.merge(
+          # Add the labels here
+          (1..labels.size).to_h do |i|
+            attr_name = :"linear_scale_label_#{i}_multiloc"
+            [attr_name, multiloc(labels[i - 1])]
+          end
+        )
       end
 
       nil
+    end
+
+    def multiloc(text)
+      locales.index_with { |_locale| text } # Same text assigned to all locales
+    end
+
+    # Update values to ensure semicolons for multiselect, matrix fields, etc.
+    def update_delimiters(column_name)
+      @idea_rows = @idea_rows.map do |row|
+        row[column_name] = row[column_name].split(/[,;]/).map(&:strip).join('; ') if row[column_name]
+        row
+      end
     end
 
     def locales

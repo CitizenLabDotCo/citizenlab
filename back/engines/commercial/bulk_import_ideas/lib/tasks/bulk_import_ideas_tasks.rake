@@ -51,11 +51,19 @@ namespace :bulk_import do
         # Create the form fields based on the content
         select_types = %w[select multiselect]
         extractor.idea_custom_fields.each do |field|
-          custom_field = CustomField.create!(field.except(:options).merge(resource: form))
+          custom_field = CustomField.create!(field.except(:options, :statements).merge(resource: form))
           if select_types.include? field[:input_type]
             # If the field is a select type, we need to create options
             field[:options].each do |option|
               CustomFieldOption.create!(option.merge(custom_field: custom_field))
+            end
+          elsif field[:input_type] == 'matrix_linear_scale'
+            field[:statements].each do |statement|
+              CustomFieldMatrixStatement.create!(
+                title_multiloc: statement[:title_multiloc],
+                key: statement[:key],
+                custom_field: custom_field
+              )
             end
           end
         end
