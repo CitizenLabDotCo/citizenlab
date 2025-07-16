@@ -14,7 +14,7 @@ import {
 
 import useInfiniteProjectFoldersAdmin from 'api/project_folders_mini/useInfiniteProjectFoldersAdmin';
 
-import { useInfiniteScroll } from 'hooks/useInfiniteScroll';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 import { useIntl } from 'utils/cl-intl';
 

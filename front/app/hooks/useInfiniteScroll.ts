@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { useInView } from 'react-intersection-observer';
 
-export interface UseInfiniteScrollOptions {
+interface UseInfiniteScrollOptions {
   /** Are we already loading more? */
   isLoading: boolean;
   /** Do we still have more pages? */
@@ -15,7 +15,7 @@ export interface UseInfiniteScrollOptions {
   threshold?: number;
 }
 
-export const useInfiniteScroll = ({
+const useInfiniteScroll = ({
   isLoading,
   hasNextPage,
   onLoadMore,
@@ -37,3 +37,5 @@ export const useInfiniteScroll = ({
 
   return { loadMoreRef: ref };
 };
+
+export default useInfiniteScroll;

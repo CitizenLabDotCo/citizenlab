@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 
 import { Box, colors, Spinner, Text } from '@citizenlab/cl2-component-library';
 
-import { useInfiniteProjectsMiniAdmin } from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
+import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
 
-import { useInfiniteScroll } from 'hooks/useInfiniteScroll';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import useLocalize from 'hooks/useLocalize';
 
 import Centerer from 'components/UI/Centerer';

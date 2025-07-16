@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+
 import {
   Box,
   Table as TableComponent,
@@ -10,13 +11,17 @@ import {
   stylingConsts,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
-import { useParams } from '../utils';
-import Row from './Row';
-import messages from './messages';
 
-import { useInfiniteProjectsMiniAdmin } from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
-import { useInfiniteScroll } from 'hooks/useInfiniteScroll';
+import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
+
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { useParams } from '../utils';
+
+import messages from './messages';
+import Row from './Row';
 
 const PAGE_SIZE = 10;
 

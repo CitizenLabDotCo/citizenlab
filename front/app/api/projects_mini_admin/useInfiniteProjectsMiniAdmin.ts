@@ -25,7 +25,7 @@ const fetchPage = async (
   });
 };
 
-export const useInfiniteProjectsMiniAdmin = (
+const useInfiniteProjectsMiniAdmin = (
   params: Omit<Parameters, 'page[number]' | 'page[size]'>,
   pageSize: number = DEFAULT_PAGE_SIZE
 ) => {
@@ -42,3 +42,5 @@ export const useInfiniteProjectsMiniAdmin = (
     }
   );
 };
+
+export default useInfiniteProjectsMiniAdmin;
