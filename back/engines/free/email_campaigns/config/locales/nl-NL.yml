@@ -24,8 +24,8 @@ nl:
       "mention_in_official_feedback": Vermelding in een update
       "mention_in_internal_comment": Vermelding in een interne reactie
       "new_comment_for_admin": Nieuwe reactie in een project dat ik modereer
-      "new_idea_for_admin_published": Nieuwe gepubliceerde input in een project dat ik modereer
-      "new_idea_for_admin_prescreening": Nieuwe input die goedkeuring vereist in een project I matig
+      "new_idea_for_admin_published": Nieuwe gepubliceerde contributie in een project dat ik modereer
+      "new_idea_for_admin_prescreening": Nieuwe bijdrage die goedkeuring vereist in een project dat ik modereer
       "official_feedback_on_idea_you_follow": Update over een idee dat je volgt
       "password_reset": Herstel wachtwoord
       "project_moderation_rights_received": Projectbeheerdersrechten ontvangen
@@ -97,9 +97,9 @@ nl:
       comment_body: 'Dit is een voorbeeldreactie die wordt gebruikt om een voorvertoning van inhoud van e-mails te laten zien. Dit is niet de echte inhoud.'
       comment_deleted_reason: 'Je voorbeeldcommentaar werd als ongepast beschouwd.'
       idea_title: 'Voorbeeldidee'
-      idea_body: 'Dit is voorbeeldinhoud die wordt gebruikt om de inhoud van e-mails te bekijken. Dit is geen echte inhoud.'
-      event_title: 'Voorbeeld evenement'
-      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      idea_body: 'Dit is voorbeeld-idee dat wordt gebruikt voor de voorvertoning van e-mails. Dit is geen echte inhoud.'
+      event_title: 'Voorbeeldactiviteit'
+      event_address1: 'Voorbeeldstraat 10, Voorbeeldhoven, Zuid-Voorbeeldland'
       event_address2: 'Kamer 3a, boven'
       proposal_title: 'Voorbeeldvoorstel'
     footer:
@@ -177,7 +177,7 @@ nl:
     cosponsor_of_your_idea:
       subject: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
       preheader: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
-      title: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
+      title: '%{cosponsorName} heeft je uitnodiging om je voorstel te ondersteunen geaccepteerd'
       event_description: 'Gefeliciteerd! %{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd.'
       cta_button: 'Bekijk je voorstel'
     assignee_digest:
@@ -203,12 +203,12 @@ nl:
     invitation_to_cosponsor_idea:
       subject: 'Je bent uitgenodigd om een voorstel te steunen'
       preheader: 'Je bent uitgenodigd om het voorstel van %{authorName} te steunen'
-      title: 'Je bent uitgenodigd om een voorstel te steunen'
+      title: 'Je bent uitgenodigd om een voorstel te ondersteunen'
       event_description: '%{authorName} heeft een nieuw voorstel gemaakt en wil graag dat jij het steunt.'
       event_description_cosponsoring: 'Ondersteuner zijn van een voorstel betekent dat <strong>jouw naam wordt weergegeven</strong> met de namen van andere ondersteuners van het voorstel.'
       event_description_before_action: 'Om het voorstel te zien en de uitnodiging te accepteren, moet je ingelogd zijn met je account.'
       event_description_action: 'Klik hieronder om het voorstel te lezen.'
-      cta_button: 'Steun dit voorstel'
+      cta_button: 'Ondersteun dit voorstel'
     invite_reminder:
       subject: 'Reminder: registreer je op het participatieplatform van %{organizationName}'
       preheader: 'Werk mee aan de toekomst van %{organizationName}.'
@@ -277,7 +277,7 @@ nl:
         petition: '%{authorName} heeft gereageerd op een petitie die je volgt'
     new_idea_for_admin_published:
       subject: 'Er is een nieuwe bijdrage gepubliceerd op je platform'
-      preheader: '%{authorName} heeft een nieuwe invoer op je platform gepubliceerd'
+      preheader: '%{authorName} heeft een nieuwe bijdrage op je platform gepubliceerd'
       title: 'Er is een nieuwe bijdrage gepubliceerd op je platform'
       event_description: '%{authorName} heeft een nieuwe bijdrage ingediend op jouw platform. Ontdek het nu, geef feedback of verander de status!'
       cta_button: 'Geef %{authorName} feedback'
@@ -286,7 +286,7 @@ nl:
       yesterday: Gisteren
     new_idea_for_admin_prescreening:
       subject: 'Een bijdrage vereist je beoordeling'
-      preheader: '%{authorName} heeft een nieuwe invoer op je platform gepubliceerd'
+      preheader: '%{authorName} heeft een nieuwe bijdrage op je platform gepubliceerd'
       title: 'Een bijdrage vereist je beoordeling'
       cta_button: 'Bekijk de bijdrage'
       event_description: '%{authorName} heeft een nieuwe bijdrage op je platform ingediend.'
@@ -337,7 +337,7 @@ nl:
       subject: 'Er is officiële feedback geplaatst op "%{input_title}"'
       preheader: 'Er is een update over een idee dat je volgt'
     mention_in_official_feedback:
-      cta_button: 'Antwoord op %{organizationName}'
+      cta_button: 'Beantwoord %{organizationName}'
       event_description: '%{organizationName} heeft je genoemd in hun feedback op het idee ''%{post}''. Klik op onderstaande link om in gesprek te gaan met %{organizationName}'
       title: 'Je bent genoemd'
       subject: '%{organizationName} noemde je in hun feedback'
@@ -449,7 +449,7 @@ nl:
         question: 'Je vraag is gepubliceerd'
         contribution: 'Je bijdrage is gepubliceerd'
         project: 'Je project is gepubliceerd'
-        issue: 'Je reactie is gepubliceerd'
+        issue: 'Je stelling is gepubliceerd'
         option: 'Je optie is gepubliceerd'
         proposal: 'Je voorstel is gepubliceerd'
         petition: 'Je petitie is gepubliceerd'
@@ -525,7 +525,7 @@ nl:
           online_link: 'Online link'
           description: 'Beschrijving'
           project: 'Projecten'
-      cta_button: 'Bekijk het evenement'
+      cta_button: 'Bekijk de activiteit'
       cta_add_to_calendar: 'Toevoegen aan je kalender'
     voting_phase_started:
       subject: '%{organizationName}: De stemmingsfase is begonnen voor %{projectName}'
