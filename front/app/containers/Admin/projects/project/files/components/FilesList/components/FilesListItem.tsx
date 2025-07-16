@@ -16,7 +16,7 @@ import UserName from 'components/UI/UserName';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from '../../messages';
 
 const StyledBox = styled(Box)`
   display: flex;

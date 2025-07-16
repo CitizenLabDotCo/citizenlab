@@ -16,8 +16,6 @@ import useVoting from 'api/baskets_ideas/useVoting';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-import useLocalize from 'hooks/useLocalize';
-
 import { triggerPostActionEvents } from 'containers/App/events';
 
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -76,7 +74,6 @@ const CTAButton = ({ phase, project }: Props) => {
   const formatCurrency = useFormatCurrency();
   const theme = useTheme();
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
   const [processing, setProcessing] = useState(false);
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState<boolean>(false);
 
@@ -138,7 +135,6 @@ const CTAButton = ({ phase, project }: Props) => {
     project.attributes.action_descriptors.voting.disabled_reason;
   const disabledExplanation = getVoteSubmissionDisabledExplanation(
     formatMessage,
-    localize,
     phase,
     permissionsDisabledReason,
     numberOfVotesCast,
@@ -146,7 +142,7 @@ const CTAButton = ({ phase, project }: Props) => {
   );
 
   return (
-    <>
+    <Box width="100%">
       <Tooltip
         disabled={!disabledExplanation}
         placement="bottom"
@@ -161,6 +157,7 @@ const CTAButton = ({ phase, project }: Props) => {
             onClick={handleSubmitOnClick}
             fontWeight="500"
             id="e2e-voting-submit-button"
+            dataCy="e2e-voting-submit-button"
             textHoverColor={theme.colors.black}
             padding="6px 12px"
             fontSize="14px"
@@ -183,7 +180,7 @@ const CTAButton = ({ phase, project }: Props) => {
           <FormattedMessage {...messages.budgetSubmitSuccess} />
         )}
       </ScreenReaderOnly>
-    </>
+    </Box>
   );
 };
 

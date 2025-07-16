@@ -87,5 +87,39 @@ RSpec.describe Files::FileFinder do
         it { is_expected.to be_empty }
       end
     end
+
+    context 'with category filter' do
+      let_it_be(:meeting_file) { create(:file, :meeting) }
+      let_it_be(:report_file) { create(:file, :report) }
+      let_it_be(:policy_file) { create(:file, :policy) }
+
+      context 'when category is a single category' do
+        let(:params) { { category: 'meeting' } }
+
+        it 'returns files with that category' do
+          expect(results).to contain_exactly(meeting_file)
+        end
+      end
+
+      context 'when category is multiple categories' do
+        let(:params) { { category: %w[meeting report] } }
+
+        it 'returns files with any of those categories' do
+          expect(results).to contain_exactly(meeting_file, report_file)
+        end
+      end
+
+      context 'when category is empty array' do
+        let(:params) { { category: [] } }
+
+        it { is_expected.to be_empty }
+      end
+
+      context 'when category does not exist' do
+        let(:params) { { category: 'nonexistent' } }
+
+        it { is_expected.to be_empty }
+      end
+    end
   end
 end

@@ -2,24 +2,32 @@
 
 module EmailCampaigns
   class InvitationToCosponsorIdeaMailer < ApplicationMailer
-    protected
+    include EditableWithPreview
 
-    def subject
-      format_message('subject')
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def header_title
-      format_message('main_header')
+    def substitution_variables
+      {
+        authorName: event&.idea_author_name
+      }
     end
 
-    private
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          idea_title_multiloc: data.idea.title_multiloc,
+          idea_body_multiloc: data.idea.body_multiloc,
+          idea_author_name: data.author.display_name,
+          idea_url: data.idea.url,
+          idea_image_medium_url: data.placeholder_image_url
+        }
+      }
 
-    def header_message
-      format_message('event_description', values: { authorName: event.idea_author_name })
-    end
-
-    def preheader
-      format_message('preheader', values: { authorName: event.idea_author_name })
+      # TODO: Merge the event description values into one editable field
     end
   end
 end

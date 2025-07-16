@@ -2,8 +2,7 @@ import React from 'react';
 
 import { IIdeaData } from 'api/ideas/types';
 import { IPhase } from 'api/phases/types';
-
-import useLocalize from 'hooks/useLocalize';
+import { getPhaseVoteTermMessage } from 'api/phases/utils';
 
 import assignMultipleVotesInputMessages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/messages';
 
@@ -20,7 +19,6 @@ interface Props {
 
 const VotingProgressBar = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
 
   const onlineIdeaVotes = idea.attributes.votes_count;
   const offlineIdeaVotes = idea.attributes.manual_votes_amount;
@@ -37,15 +35,12 @@ const VotingProgressBar = ({ phase, idea }: Props) => {
     ? roundPercentage(offlineIdeaVotes, totalPhaseVotes)
     : 0;
 
-  // Voting term
-  const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
-    phase.data.attributes;
-  const votingTermSingular =
-    localize(voting_term_singular_multiloc) ||
-    formatMessage(assignMultipleVotesInputMessages.vote).toLowerCase();
-  const votingTermPlural =
-    localize(voting_term_plural_multiloc) ||
-    formatMessage(assignMultipleVotesInputMessages.votes).toLowerCase();
+  const xVotesMessage = getPhaseVoteTermMessage(phase.data, {
+    vote: assignMultipleVotesInputMessages.xVotes,
+    point: assignMultipleVotesInputMessages.xPoints,
+    token: assignMultipleVotesInputMessages.xTokens,
+    credit: assignMultipleVotesInputMessages.xCredits,
+  });
   const tooltip = formatMessage(messages.votingTooltip);
 
   return (
@@ -55,11 +50,9 @@ const VotingProgressBar = ({ phase, idea }: Props) => {
       tooltip={tooltip}
     >
       {`${totalVotesPercentage}% • ${totalIdeaVotes} ${formatMessage(
-        assignMultipleVotesInputMessages.xVotes,
+        xVotesMessage,
         {
           votes: totalIdeaVotes,
-          singular: votingTermSingular,
-          plural: votingTermPlural,
         }
       )} ${
         offlineIdeaVotes > 0
