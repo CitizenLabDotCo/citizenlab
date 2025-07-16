@@ -114,7 +114,7 @@ const CsvFilePreview = ({ url, fileSize }: Props) => {
     // Prevent text selection of the table content during drag
     const preventSelection = (event: Event) => event.preventDefault();
 
-    // Attach the event liteners
+    // Attach the event listeners
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('selectstart', preventSelection);

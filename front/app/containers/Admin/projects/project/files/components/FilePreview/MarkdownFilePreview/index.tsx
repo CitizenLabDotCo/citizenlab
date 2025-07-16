@@ -23,6 +23,7 @@ const MarkdownFilePreview = ({ url }: Props) => {
         if (result.ok) {
           return result.text();
         }
+        setError(true);
         return;
       })
       .then(setMarkdown)

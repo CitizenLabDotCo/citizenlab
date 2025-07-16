@@ -6,7 +6,11 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-const DownloadFileButton = ({ url }) => {
+type Props = {
+  url: string;
+};
+
+const DownloadFileButton = ({ url }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Box display="flex">
