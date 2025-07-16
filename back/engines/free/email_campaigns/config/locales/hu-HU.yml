@@ -24,7 +24,8 @@ hu:
       "mention_in_official_feedback": Említse meg a frissítésben
       "mention_in_internal_comment": Említse meg egy belső megjegyzésben
       "new_comment_for_admin": Új megjegyzés egy általam moderált projektben
-      "new_idea_for_admin": Új bemenet egy általam moderált projektben
+      "new_idea_for_admin_published": Új közzétett hozzászólás egy általam moderált projektben
+      "new_idea_for_admin_prescreening": Új bemenet, amely jóváhagyást igényel egy moderált projektben
       "official_feedback_on_idea_you_follow": Frissítse a követett bemenetet
       "password_reset": Jelszó visszaállítása
       "project_moderation_rights_received": A projekt moderálási jogai megkapták
@@ -92,9 +93,14 @@ hu:
       initiator_last_name: 'Kovács'
       initiator_display_name: 'Bob Smith'
       project_title: 'Példaprojekt'
+      phase_title: 'Példa fázis'
       comment_body: 'Ez egy példa a hozzászólásra, amelyet e-mailek tartalmának előnézetére használnak. Ez nem valós tartalom.'
       comment_deleted_reason: 'A példaként említett hozzászólásodat nem megfelelőnek ítélték.'
       idea_title: 'Példaötlet'
+      idea_body: 'Ez egy példa az e-mailek tartalmának előnézetére használt ötlettartalomra. Ez nem valós tartalom.'
+      event_title: 'Példa esemény'
+      event_address1: '10 Example utca, Exampleton, Exampleshire'
+      event_address2: '3a szoba, emelet'
       proposal_title: 'Példaajánlat'
     footer:
       "link_privacy_policy": "Adatvédelmi szabályzat"
@@ -169,11 +175,11 @@ hu:
       cta_button: 'Jelentés megtekintése'
       report_name: 'Közösségi megfigyelő jelentés'
     cosponsor_of_your_idea:
-      cta_reply_to: 'Tekintse meg ajánlatát'
-      event_description: 'Gratulálok! %{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát.'
-      main_header: '%{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát'
       subject: '%{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát'
       preheader: '%{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát'
+      title: '%{cosponsorName} elfogadta a javaslatod társtámogatóként való meghívását'
+      event_description: 'Gratulálok! %{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát.'
+      cta_button: 'Tekintse meg ajánlatát'
     assignee_digest:
       subject: 'Visszajelzést igénylő bemenetek: %{numberIdeas}'
       preheader: 'A %{organizationName}hozzárendelt kivonata'
@@ -187,36 +193,36 @@ hu:
       x_days_ago_by_author: '%{x} napja, %{author}'
       title_successful_past_week: 'Önhöz rendelve, amely elérte a küszöböt'
     idea_marked_as_spam:
-      cta_review: 'Tekintse át'
-      report_inappropriate_offensive_content: 'Ezt a tartalmat nem helyénvalónak vagy sértőnek tartom.'
-      report_not_an_idea: 'Ez a tartalom nem releváns és nem tartozik ide.'
       subject: 'Spamjelentése van a %{organizationName}platformon'
       preheader: 'Cselekedjen a spamjelentés alapján'
+      title: '%{firstName} %{lastName} jelentett spam'
+      cta_button: 'Véleményezés'
+      report_inappropriate_offensive_content: 'Ezt a tartalmat nem helyénvalónak vagy sértőnek tartom.'
+      report_not_an_idea: 'Ez a tartalom nem releváns és nem tartozik ide.'
       reported_this_because: '%{reporterFirstName} jelentette ezt, mert:'
-      title_spam_report: '%{firstName} %{lastName} spamet jelentett'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'Támogatja ezt a javaslatot'
+      subject: 'Önt felkérték egy javaslat társszponzorálására'
+      preheader: 'Önt meghívták, hogy támogassa a %{authorName}javaslatát'
+      title: 'Meghívtak egy javaslat társtámogatójának'
       event_description: '%{authorName} új javaslatot hozott létre, és szeretné, ha társszponzorálná.'
       event_description_cosponsoring: 'Egy ajánlat társszponzorálása azt jelenti, hogy <strong>az Ön neve</strong> jelenik meg a javaslat többi társszponzorának nevével együtt.'
       event_description_before_action: 'Az ajánlat megtekintéséhez és a meghívás elfogadásához be kell jelentkeznie fiókjába.'
       event_description_action: 'Az ajánlat elolvasásához kattintson az alábbi gombra.'
-      main_header: 'Önt felkérték egy javaslat társszponzorálására'
-      subject: 'Önt felkérték egy javaslat társszponzorálására'
-      preheader: 'Önt meghívták, hogy támogassa a %{authorName}javaslatát'
+      cta_button: 'Támogasd ezt a javaslatot'
     invite_reminder:
-      cta_accept_invitation: 'Fogadja el a meghívást'
-      invitation_header: 'Meghívása függőben van'
-      preheader: '%{organizationName} néhány napja meghívót küldött Önnek, hogy csatlakozzon a részvételi platformjukhoz.'
-      invitation_expiry_message: 'Ez a meghívó körülbelül %{expiryDaysRemaining} napon belül lejár.'
       subject: 'Függőben lévő meghívó a %{organizationName}részvételi platformjára'
+      preheader: '%{organizationName} néhány napja meghívót küldött Önnek, hogy csatlakozzon a részvételi platformjukhoz.'
+      title: 'A meghívója függőben van'
+      cta_button: 'Fogadd el a meghívást'
+      invitation_expiry_message: 'Ez a meghívó körülbelül %{expiryDaysRemaining} napon belül lejár.'
     invite_received:
-      added_a_message: '%{organizationName} a következő üzenetet írta:'
-      cta_accept_invitation: 'Fogadja el a meghívást'
-      invitation_header: 'Meghívták!'
-      invitation_header_message: '%{organizationName} meghívott a részvételi platformjukra.'
-      invitation_expiry_message: 'Ez a meghívó %{expiryDays} napon belül lejár.'
       preheader: '%{organizationName} meghívót küldött Önnek, hogy csatlakozzon a részvételi platformjukhoz.'
       subject: 'Meghívják, hogy csatlakozzon a %{organizationName}platformjához'
+      title: 'Meghívottak vagyunk!'
+      event_description: '%{organizationName} meghívott téged a részvételi platformjára.'
+      cta_button: 'Fogadd el a meghívást'
+      added_a_message: '%{organizationName} a következő üzenetet írta:'
+      invitation_expiry_message: 'Ez a meghívó %{expiryDays} napon belül lejár.'
     mention_in_comment:
       cta_reply_to: 'Válasz %{commentAuthor}'
       event_description: '%{commentAuthorFull} megemlített téged a ''%{post}'' ötlethez fűzött megjegyzésében. Kattintson az alábbi linkre, hogy belépjen a beszélgetésbe %{commentAuthor}-vel'
@@ -224,17 +230,17 @@ hu:
       subject: 'Valaki megemlítette Önt a %{organizationName}platformján'
       preheader: '%{commentAuthor} megemlített egy megjegyzésben'
     mention_in_internal_comment:
-      cta_reply_to: '%{firstName}megjegyzésének megtekintése'
+      cta_button: '%{firstName}hozzászólásának megtekintése'
       event_description: '%{authorNameFull} megemlített téged egy belső megjegyzésben.'
       subject: '%{firstName} megemlített téged egy belső megjegyzésben.'
-      main_header: '%{firstName} megemlített téged egy belső megjegyzésben.'
+      title: '%{firstName} megemlített téged egy belső hozzászólásban.'
       preheader: '%{authorNameFull} megemlített téged egy belső megjegyzésben.'
     moderator_digest:
       subject: '"%{project_title}" heti vezetői jelentése'
       preheader: 'A %{organizationName}projektmenedzseri kivonata'
-      title_your_weekly_report: '%{firstName}, a heti jelentés'
-      text_introduction: 'Összegyűjtöttük Önnek azt a bemenetet, amely a legtöbb tevékenységet generálta az elmúlt héten. Tudja meg, mi történik a projektjével!'
-      cta_manage: 'Kezelje projektjét'
+      title: '%{firstName}, a heti jelentésed'
+      event_description: 'Összegyűjtöttük azokat a hozzászólásokat, amelyek az elmúlt héten a legtöbb aktivitást generálták. Tudd meg, mi újság a projekteddel!'
+      cta_button: 'Projekt kezelése'
       new_users: 'Új felhasználók'
       new_ideas: 'Új ötletek'
       new_comments: 'Új megjegyzések'
@@ -246,10 +252,10 @@ hu:
       x_days_ago_by_author: '%{x} napja, %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} hozzászólt:'
-      cta_reply_to: '%{commentAuthor}megjegyzésének megtekintése'
+      cta_button: '%{authorFirstName}hozzászólásának megtekintése'
       days_ago: '%{numberOfDays} napja'
       event_description: '%{authorName} új megjegyzést fűzött a platformjához.'
-      main_header: '%{firstName}, új megjegyzést tettek közzé az Ön platformján'
+      title: '%{firstName}, új hozzászólás érkezett a platformodon'
       subject: 'Új megjegyzést tettek közzé %{organizationName}platformján'
       preheader: '%{authorName} megjegyzést írt'
       today: Ma
@@ -269,16 +275,23 @@ hu:
         option: '%{authorName} megjegyzést fűzött egy általad követett lehetőséghez'
         proposal: '%{authorName} megjegyzést fűzött egy Ön által követett javaslathoz'
         petition: '%{authorName} megjegyzést fűzött egy Ön által követett petícióhoz'
-    new_idea_for_admin:
-      main_header_publication: 'Új bemenetet tettek közzé a platformján'
-      event_description_publication: '%{authorName} új bevitelt küldött az Ön platformjára. Fedezze fel most, adjon visszajelzést, vagy módosítsa az állapotát!'
-      cta_publication: 'Visszajelzés küldése a %{authorName}címre'
-      main_header_prescreening: 'A bemenet ellenőrzését igényli'
-      event_description_prescreening: '%{authorName} új bevitelt küldött az Ön platformjára.'
-      input_not_visible_prescreening: '<b>A bemenet nem lesz látható</b> , amíg nem módosítja az állapotát.'
-      cta_prescreening: 'Tekintse át a bevitelt'
-      days_ago: '%{numberOfDays} napja'
-      preheader: '%{authorName} új bemenetet tett közzé a platformján'
+    new_idea_for_admin_published:
+      subject: 'Új bejegyzés jelent meg a platformodon.'
+      preheader: '%{authorName} új bejegyzést tett közzé a platformodon'
+      title: 'Új bejegyzés jelent meg a platformodon.'
+      event_description: '%{authorName} új bejegyzést küldött a platformodon. Fedezd fel most, adj visszajelzést, vagy módosítsd az állapotát!'
+      cta_button: 'Visszajelzés küldése %{authorName}-nak'
+      days_ago: '%{numberOfDays} nappal ezelőtt'
+      today: Ma
+      yesterday: Tegnap
+    new_idea_for_admin_prescreening:
+      subject: 'A bemenethez felülvizsgálat szükséges'
+      preheader: '%{authorName} új bejegyzést tett közzé a platformodon'
+      title: 'A bemenethez felülvizsgálat szükséges'
+      cta_button: 'Tekintse át a bemenetet'
+      event_description: '%{authorName} új bejegyzést küldött a platformodon.'
+      input_not_visible: '<b>A bemenet nem lesz látható</b> amíg nem módosítod az állapotát.'
+      days_ago: '%{numberOfDays} nappal ezelőtt'
       today: Ma
       yesterday: Tegnap
     comment_on_your_comment:
@@ -289,34 +302,34 @@ hu:
       cta_button: 'Válasz %{authorFirstName}-nak'
       replied: '%{authorFirstName} válaszolt:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: '%{firstName}megjegyzésének megtekintése'
+      cta_button: '%{firstName}hozzászólásának megtekintése'
       event_description: '%{authorNameFull} megjegyzést fűzött a belső megjegyzésedhez.'
       subject: 'Megjegyzés érkezett a(z) „%{post}” című belső megjegyzéséhez'
-      main_header: 'Megjegyzés érkezett a(z) „%{post}” című belső megjegyzéséhez'
-      preheader: '%{authorName} válaszolt az Ön belső megjegyzésére a következőhöz: "%{post}"'
+      title: 'Kaptál egy hozzászólást a(z) ''%{post}'' bejegyzéshez tartozó belső hozzászólásodhoz.'
+      preheader: '%{authorNameFull} válaszolt a belső hozzászólásodra a(z) ''%{post}'' témában'
     internal_comment_on_idea_assigned_to_you:
-      cta_reply_to: '%{firstName}megjegyzésének megtekintése'
+      cta_button: '%{firstName}hozzászólásának megtekintése'
       event_description: '%{authorNameFull} belső megjegyzést fűzött egy Önhöz rendelt bemenethez.'
       subject: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-      main_header: 'Új belső megjegyzés a következőhöz: ''%{post}'''
+      title: 'Új belső hozzászólás a következőhöz: ''%{post}'''
       preheader: 'Új belső megjegyzés a következőhöz: ''%{post}'''
     internal_comment_on_idea_you_commented_internally_on:
-      cta_reply_to: '%{firstName}megjegyzésének megtekintése'
+      cta_button: '%{firstName}hozzászólásának megtekintése'
       event_description: '%{authorNameFull} belső megjegyzést fűzött egy olyan bemenethez, amelyhez Ön belsőleg megjegyzést fűzött.'
       subject: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-      main_header: 'Új belső megjegyzés a következőhöz: ''%{post}'''
+      title: 'Új belső hozzászólás a következőhöz: ''%{post}'''
       preheader: 'Új belső megjegyzés a következőhöz: ''%{post}'''
     internal_comment_on_idea_you_moderate:
-      cta_reply_to: '%{firstName}megjegyzésének megtekintése'
+      cta_button: '%{firstName}hozzászólásának megtekintése'
       event_description: '%{authorNameFull} belső megjegyzést fűzött egy bemenethez egy Ön által kezelt projektben vagy mappában.'
       subject: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-      main_header: 'Új belső megjegyzés a következőhöz: ''%{post}'''
+      title: 'Új belső hozzászólás a következőhöz: ''%{post}'''
       preheader: 'Új belső megjegyzés a következőhöz: ''%{post}'''
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_reply_to: '%{firstName}megjegyzésének megtekintése'
+      cta_button: '%{firstName}hozzászólásának megtekintése'
       event_description: '%{authorNameFull} belső megjegyzést fűzött egy nem felügyelt projekt hozzá nem rendelt bemenetéhez.'
       subject: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-      main_header: 'Új belső megjegyzés a következőhöz: ''%{post}'''
+      title: 'Új belső hozzászólás a következőhöz: ''%{post}'''
       preheader: 'Új belső megjegyzés a következőhöz: ''%{post}'''
     official_feedback_on_idea_you_follow:
       header_message: 'A %{feedback_author_name} frissítést adott a következőhöz: ''%{input_title}''.'
@@ -324,11 +337,11 @@ hu:
       subject: 'A hivatalos visszajelzés a következő helyen jelent meg: "%{input_title}"'
       preheader: 'Frissítés érkezett az Ön által követett bemenethez'
     mention_in_official_feedback:
-      cta_reply_to: 'Válasz %{organizationName}'
+      cta_button: 'Válasz %{organizationName}-nak'
       event_description: '%{organizationName} megemlített téged a „%{post}” ötlettel kapcsolatos visszajelzésében. Kattintson az alábbi linkre, hogy belépjen a beszélgetésbe %{organizationName}-vel'
-      main_header: 'Téged emlegettek'
+      title: 'Megemlítettek téged'
       subject: '%{organizationName} megemlítette Önt visszajelzésében'
-      preheader: '%{commentAuthor} megemlítette Önt visszajelzésében'
+      preheader: '%{organizationName} megemlített téged a visszajelzésedben'
     project_moderation_rights_received:
       cta_manage_project: 'A projekt kezelése'
       message_you_became_moderator: 'A %{organizationName} részvételi platformjának adminisztrátora éppen a következő projekt projektvezetőjévé tette:'
@@ -428,16 +441,18 @@ hu:
       message_welcome: 'Gratulálunk, sikeresen regisztráltál a %{organizationName}részvételi platformjára. Most már felfedezheti a platformot, és hallathatja hangját. Profilképet és rövid leírást is hozzáadhat, hogy elmondhassa másoknak, ki vagy.'
       preheader: 'Íme, mit tehet a %{organizationName}platformon'
     idea_published:
-      subject:
+      subject: 'Az ötleted megjelent'
+      preheader: '%{firstName}, gratulálunk, hogy hozzászólását közzétette a %{organizationName}platformon. Most gyűjtsön támogatást.'
+      title: 'Ezt a bejegyzést küldted: „%{input_title}”'
+      input_type_subject:
         idea: 'Az ötleted megjelent'
-        question: 'Kérdését közzétettük'
-        contribution: 'Hozzájárulásod megjelent'
-        project: 'A projektjét közzétették'
-        issue: 'Az Ön problémája megjelent'
-        option: 'Az Ön opcióját közzétettük'
-        proposal: 'Az Ön javaslata megjelent'
-        petition: 'Petícióját közzétették'
-      main_header: 'Ön közzétette: "%{input_title}"'
+        question: 'A kérdésed megjelent'
+        contribution: 'A hozzászólásod megjelent'
+        project: 'A projekted megjelent'
+        issue: 'A számod megjelent'
+        option: 'A lehetőséged közzétéve'
+        proposal: 'Javaslatát közzétettük'
+        petition: 'A petícióját közzétettük'
       header_message: 'Gondoskodjunk róla, hogy elolvassák.'
       message_get_votes: 'Érjen el több embert'
       action_published_idea: 'Közzétett'
@@ -449,7 +464,6 @@ hu:
       send_email: email
       action_share_link: 'Oszd meg bármelyik csatornán a %{link}másolásával'
       link: link
-      preheader: '%{firstName}, gratulálunk, hogy hozzászólását közzétette a %{organizationName}platformon. Most gyűjtsön támogatást.'
     your_input_in_screening:
       main_header:
         idea: 'Az Ön ötlete itt található: "%{prescreening_status_title}"'
@@ -473,10 +487,10 @@ hu:
     native_survey_not_submitted:
       subject: '%{organizationName}: Majdnem kész! Nyújtsa be válaszait'
       preheader: 'Nem töltötte ki a felmérésre adott válaszát a %{organizationName}részvételi platformján'
-      title_native_survey_not_submitted: 'Majdnem megvan! Nyújtsa be válaszait'
-      body_native_survey_not_submitted: 'Elkezdted megosztani a válaszaidat a %{phaseTitle} oldalon, de nem küldted be őket. A beküldés a következő napon zárul: %{phaseEndDate}. Kattintson az alábbi gombra, hogy ott folytassa, ahol abbahagyta.'
-      body_native_survey_not_submitted_no_date: 'Elkezdted megosztani a válaszaidat a %{phaseTitle} oldalon, de nem küldted be őket. Kattintson az alábbi gombra, hogy ott folytassa, ahol abbahagyta.'
-      cta_complete_your_survey_response: 'Folytassa a felmérésre adott válaszát'
+      title: 'Majdnem kész! Küldd be a válaszaidat'
+      event_description: 'Elkezdted megosztani a válaszaidat a %{phaseTitle} oldalon, de nem küldted be őket. Kattints az alábbi gombra, hogy ott folytasd, ahol abbahagytad.'
+      cta_button: 'Folytassa a kérdőívre adott válaszait'
+      submissions_close: 'A beküldési határidő %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Ön nem adta le szavazatát'
       preheader: 'Nem adtad le szavazatodat a %{organizationName}részvételi platformján'
@@ -503,7 +517,7 @@ hu:
     event_registration_confirmation:
       subject: "Benne vagy! Regisztrációját a(z) \"%{eventTitle}\" számára megerősítették"
       preheader: "%{firstName}, köszönjük, hogy regisztráltál a %{eventTitle}számára"
-      header_message: "%{firstName}, köszönjük a regisztrációt"
+      title: "%{firstName}, köszönjük a regisztrációt"
       event_details:
         labels:
           date: 'Dátum'
@@ -511,7 +525,7 @@ hu:
           online_link: 'Online link'
           description: 'Leírás'
           project: 'Projekt'
-      cta_go_to_event: 'Tekintse meg az eseményt'
+      cta_button: 'Tekintse meg az eseményt'
       cta_add_to_calendar: 'Add hozzá a naptáradhoz'
     voting_phase_started:
       subject: '%{organizationName}: A szavazási szakasz elkezdődött a %{projectName}számára'
