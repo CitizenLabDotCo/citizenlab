@@ -17,17 +17,36 @@ RSpec.describe Sluggable do
     end
 
     describe 'generate_slug' do
-      let(:test_model) do
-        Class.new(ApplicationRecord) do
-          include Sluggable
-          connection.create_table(:test_models, temporary: true) do |t|
-            t.jsonb :title_multiloc
-            t.string :slug
-          end
-          self.table_name = 'test_models'
-          slug from: proc { |it| it.title_multiloc }
+      # These disabled RuboCop rules are necessary to permit the successful creation and removal of a dynamic class,
+      # the leakage of which is what the rubocop rules are trying to prevent.
+      before(:context) do # rubocop:disable RSpec/BeforeAfterAll
+        unless Object.const_defined?(:TempSluggableTestModel)
+          Object.const_set(:TempSluggableTestModel, Class.new(ApplicationRecord) do
+            include Sluggable
+            connection.create_table(:test_models, temporary: true) do |t|
+              t.jsonb :title_multiloc
+              t.string :slug
+            end
+            self.table_name = 'test_models'
+            slug from: proc { |it| it.title_multiloc }
+          end)
         end
       end
+      # RuboCop:enable RSpec/BeforeAfterAll
+
+      let(:test_model) { TempSluggableTestModel }
+
+      after(:all) do # rubocop:disable RSpec/BeforeAfterAll
+        if ActiveRecord::Base.connection.table_exists?(:test_models)
+          ActiveRecord::Base.connection.drop_table(:test_models)
+        end
+        if Object.const_defined?(:TempSluggableTestModel)
+          # rubocop:disable RSpec/RemoveConst
+          Object.send(:remove_const, :TempSluggableTestModel)
+          # rubocop:enable RSpec/RemoveConst
+        end
+      end
+      # RuboCop:enable RSpec/BeforeAfterAll
 
       it 'does not set a slug when `slug` is not included in the class' do
         sluggable = create(sluggable_factories[:no_slug])
