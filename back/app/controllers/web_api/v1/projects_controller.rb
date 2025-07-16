@@ -11,11 +11,11 @@ class WebApi::V1::ProjectsController < ApplicationController
     policy_context[:include_hidden] = true if params[:include_hidden] == 'true'
 
     # By default, this endpoint will remove unlisted projects that the user cannot moderate.
-    # But if the `remove_all_unlisted` parameter is set to 'true', it will 
+    # But if the `remove_all_unlisted` parameter is set to 'true', it will
     # even remove all unlisted projects.
     policy_context[:remove_unlisted] = if params[:remove_all_unlisted] == 'true'
       'remove_all_unlisted' else
-      'remove_unlisted_that_user_cannot_moderate' end
+                              'remove_unlisted_that_user_cannot_moderate' end
 
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
@@ -134,7 +134,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Else: Returns all non-draft projects that are visible to user, for the areas user follows or for all-areas.
   # Ordered by created_at, newest first.
   def index_for_areas
-   # In this widget, we always want to remove all unlisted projects,
+    # In this widget, we always want to remove all unlisted projects,
     # even those that the user can moderate.
     policy_context[:remove_unlisted] = 'remove_all_unlisted'
 
@@ -172,7 +172,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def index_for_admin
-    # In this endpoint, we only want to remove unlisted projects 
+    # In this endpoint, we only want to remove unlisted projects
     # that the user cannot moderate.
     policy_context[:remove_unlisted] = 'remove_unlisted_that_user_cannot_moderate'
 
