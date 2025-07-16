@@ -3,16 +3,20 @@ import React, { useEffect, useState } from 'react';
 import { Spinner, Box, Text, Divider } from '@citizenlab/cl2-component-library';
 import ReactMarkdown from 'react-markdown';
 
+import { IFileData } from 'api/files/types';
+
 import { useIntl } from 'utils/cl-intl';
 
 import DownloadFileButton from '../../DownloadFileButton';
 import messages from '../messages';
 
 type Props = {
-  url: string;
+  file: IFileData;
 };
 
-const MarkdownFilePreview = ({ url }: Props) => {
+const MarkdownFilePreview = ({ file }: Props) => {
+  const url = file.attributes.content.url;
+
   const { formatMessage } = useIntl();
   const [markdown, setMarkdown] = useState<string | undefined>(undefined);
   const [error, setError] = useState(false);
@@ -36,7 +40,7 @@ const MarkdownFilePreview = ({ url }: Props) => {
         <Text color="error">
           {formatMessage(messages.couldNotLoadMarkdown)}
         </Text>
-        <DownloadFileButton url={url} />
+        <DownloadFileButton file={file} />
       </Box>
     );
   }

@@ -14,6 +14,8 @@ import {
 import Papa from 'papaparse';
 import styled from 'styled-components';
 
+import { IFileData } from 'api/files/types';
+
 import { useIntl } from 'utils/cl-intl';
 
 import DownloadFileButton from '../../DownloadFileButton';
@@ -23,8 +25,7 @@ const MAX_ROWS = 50; // Default max rows to read from the CSV (helps with perfor
 const MAX_FILE_SIZE_MB = 2; // Max file size in MB we will allow previews for (helps with performance)
 
 type Props = {
-  url: string;
-  fileSize?: number; // in bytes
+  file: IFileData;
 };
 
 const ScrollableTableContainer = styled(Box)`
@@ -39,7 +40,10 @@ const ScrollableTableContainer = styled(Box)`
   }
 `;
 
-const CsvFilePreview = ({ url, fileSize }: Props) => {
+const CsvFilePreview = ({ file }: Props) => {
+  const url = file.attributes.content.url;
+  const fileSize = file.attributes.size; // Size in bytes
+
   const { formatMessage } = useIntl();
 
   const [rows, setRows] = useState<string[][]>([]);
@@ -55,7 +59,7 @@ const CsvFilePreview = ({ url, fileSize }: Props) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const fileSizeMB = fileSize ? fileSize / (1024 * 1024) : 0;
-  const isTooLarge = fileSize !== undefined && fileSizeMB > MAX_FILE_SIZE_MB;
+  const isTooLarge = fileSizeMB > MAX_FILE_SIZE_MB;
 
   useEffect(() => {
     if (isTooLarge) {
@@ -145,7 +149,7 @@ const CsvFilePreview = ({ url, fileSize }: Props) => {
         <Text fontStyle="italic" color="coolGrey600">
           {formatMessage(messageKey, messageProps)}
         </Text>
-        <DownloadFileButton url={url} />
+        <DownloadFileButton file={file} />
       </Box>
     );
   }
@@ -165,7 +169,7 @@ const CsvFilePreview = ({ url, fileSize }: Props) => {
         >
           {formatMessage(messages.csvPreviewLimit)}
         </Text>
-        <DownloadFileButton url={url} />
+        <DownloadFileButton file={file} />
       </Box>
 
       <Box

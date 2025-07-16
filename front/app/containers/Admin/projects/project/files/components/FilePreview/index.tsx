@@ -93,13 +93,11 @@ const FilePreview = ({ file }: Props) => {
       case 'text/csv':
       case 'application/csv':
       case 'text/comma-separated-values':
-        return (
-          <CsvFilePreview url={fileUrl} fileSize={file.data.attributes.size} />
-        );
+        return <CsvFilePreview file={file.data} />;
 
       // Markdown
       case 'text/markdown':
-        return <MarkdownFilePreview url={fileUrl} />;
+        return <MarkdownFilePreview file={file.data} />;
 
       // EPUB
       case 'application/epub+zip':
@@ -114,7 +112,7 @@ const FilePreview = ({ file }: Props) => {
             <Text fontSize="s" color="coolGrey600" fontStyle="italic">
               {formatMessage(messages.previewNotSupported)}
             </Text>
-            <DownloadFileButton url={fileUrl} />
+            <DownloadFileButton file={file.data} />
           </Box>
         );
     }

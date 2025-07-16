@@ -15,6 +15,7 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import UserName from 'components/UI/UserName';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { saveFileToDisk } from 'utils/fileUtils';
 
 import messages from '../../messages';
 
@@ -53,7 +54,7 @@ const FilesListItem = ({
   };
 
   const downloadFileHandler = (_fileId: string) => () => {
-    window.open(file.attributes.content.url, '_blank');
+    saveFileToDisk(file);
   };
 
   const deleteFileHandler = (fileId: string) => () => {

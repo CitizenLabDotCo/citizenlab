@@ -2,22 +2,25 @@ import React from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
+import { IFileData } from 'api/files/types';
+
 import { useIntl } from 'utils/cl-intl';
+import { saveFileToDisk } from 'utils/fileUtils';
 
 import messages from '../messages';
 
 type Props = {
-  url: string;
+  file: IFileData;
 };
 
-const DownloadFileButton = ({ url }: Props) => {
+const DownloadFileButton = ({ file }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Box display="flex">
       <Button
         mt="12px"
         buttonStyle="admin-dark"
-        onClick={() => window.open(url, '_blank')}
+        onClick={() => saveFileToDisk(file)}
         text={formatMessage(messages.downloadFile)}
         fontSize="s"
         p="4px 8px"
