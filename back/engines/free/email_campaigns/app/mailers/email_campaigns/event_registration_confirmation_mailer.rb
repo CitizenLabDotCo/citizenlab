@@ -65,7 +65,7 @@ module EmailCampaigns
       timezone = AppConfiguration.timezone
 
       start_at = I18n.l(
-        timezone.at(event&.event_attributes&.start_at),
+        timezone.at(event_details&.start_at),
         format: :short, locale: locale.locale_sym
       )
 

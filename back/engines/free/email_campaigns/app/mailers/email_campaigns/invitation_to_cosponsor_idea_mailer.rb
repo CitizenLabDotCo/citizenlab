@@ -23,7 +23,7 @@ module EmailCampaigns
           idea_body_multiloc: data.idea.body_multiloc,
           idea_author_name: data.author.display_name,
           idea_url: data.idea.url,
-          idea_image_medium_url: data.idea.url # TODO: Replace with actual image URL if available
+          idea_image_medium_url: data.placeholder_image_url
         }
       }
 
