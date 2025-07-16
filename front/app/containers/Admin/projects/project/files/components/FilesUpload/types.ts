@@ -9,5 +9,5 @@ export type FileWithMeta = {
   file: File;
   status: UploadStatus;
   error?: string;
-  semanticType?: string; // TODO: Replace with actual SemanticFileType when ready
+  category?: string; // TODO: Replace with actual category type when ready
 };

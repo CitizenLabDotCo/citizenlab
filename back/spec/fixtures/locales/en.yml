@@ -43,6 +43,7 @@ en:
       line_print_description: 'Please draw a route on the map below.'
       polygon_print_description: 'Please draw a shape on the map below.'
       select_print_description: 'Only choose one option.'
+      date_print_description: 'Please write a date in the format YYYY-MM-DD.'
   custom_fields:
     ideas:
       title:

@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'Clear all participation data from this project',
   },
   dataDescription: {
-    id: 'app.containers.AdminPage.Project.data.descriptionText',
+    id: 'app.containers.AdminPage.Project.data.descriptionText1',
     defaultMessage:
-      'Clear ideas, comments, votes, reactions, survey responses, poll responses, volunteers and event attendees. In the case of voting phases, this action will clear the votes but not the options.',
+      'Clear ideas, comments, votes, reactions, survey responses, poll responses, volunteers and event registrants. In the case of voting phases, this action will clear the votes but not the options.',
   },
   resetParticipationData: {
     id: 'app.containers.AdminPage.Project.resetParticipationData',
