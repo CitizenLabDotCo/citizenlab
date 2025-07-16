@@ -5,8 +5,25 @@ class BaseImageUploader < BaseUploader
 
   ALLOWED_TYPES = %w[jpg jpeg gif png webp]
 
+  ICC_PII_TAGS_TO_REMOVE = [
+    "ProfileDescription",
+    "ProfileCopyright",
+    "ProfileManufacturer",
+    "ProfileModel",
+    "ProfileCreator",
+    "ProfileDateTime",
+    "ProfileID",
+    "PrimaryPlatform",
+    "DeviceMfgDesc",
+    "DeviceModelDesc",
+    "MeasurementObserver",
+    "ViewingCondDesc",
+    "ScreeningDesc",
+    "Technology"
+  ].freeze
+
   # Using process at the class level applies it to all versions, including the original.
-  process :auto_orient
+  # process :auto_orient
   process :strip
 
   # We're not caching, since the external image optimization process will
@@ -83,14 +100,6 @@ class BaseImageUploader < BaseUploader
     img.extent "#{target_width}x#{target_height}" if current_width != target_width || current_height != target_height
   end
 
-  # Auto-orient the image based on EXIF data, before we strip the metadata.
-  def auto_orient
-    manipulate! do |img|
-      img.auto_orient
-      img
-    end
-  end
-
   # Strip the image of any profiles, comments or these PNG chunks: bKGD,cHRM,EXIF,gAMA,
   # iCCP,iTXt,sRGB,tEXt,zCCP,zTXt,date.
   # (https://imagemagick.org/script/command-line-options.php#strip)
@@ -99,14 +108,7 @@ class BaseImageUploader < BaseUploader
   # can have an effect on the image rendering. It also recompresses the image. Overall, it
   # seems to remove vibrancy from the image.
   def strip
-    # manipulate! do |img|
-    #   img.strip
-    #   img
-    # end
-
-    # puts "check exif tool version: #{`exiftool -ver`}"
-
-    # Strip all metadata except ICC profile using exiftool
-    system("exiftool -all= --icc_profile:all -overwrite_original #{Shellwords.escape(@file.path)}")
+    # Keep only ICC profile and orientation/rotation metadata
+    system("exiftool -all= -tagsFromFile @ -icc_profile -orientation -rotation -overwrite_original #{Shellwords.escape(@file.path)}")
   end
 end
