@@ -10,7 +10,7 @@ export default defineMessages({
     defaultMessage: 'File preview',
   },
   downloadFile: {
-    id: 'app.containers.AdminPage.ProjectFiles.downloadFile',
+    id: 'app.containers.AdminPage.ProjectFiles.filePreview.downloadFile',
     defaultMessage: 'Download file',
   },
   couldNotLoadMarkdown: {
