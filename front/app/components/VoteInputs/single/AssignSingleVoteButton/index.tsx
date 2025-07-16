@@ -133,8 +133,7 @@ const AssignSingleVoteButton = ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (basket?.data?.attributes.submitted_at) {
       return formatMessage(
-        onIdeaPage ? messages.votesSubmittedIdeaPage : messages.votesSubmitted,
-        { votes: numberOfVotesCast ?? 0 }
+        onIdeaPage ? messages.votesSubmittedIdeaPage1 : messages.votesSubmitted1
       );
     }
 

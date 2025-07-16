@@ -39,7 +39,7 @@ const Container = styled(Box)`
   ${defaultCardStyle};
 `;
 
-const participationMethodMessage: Record<
+export const participationMethodMessage: Record<
   ParticipationMethod,
   MessageDescriptor
 > = {
@@ -53,6 +53,7 @@ const participationMethodMessage: Record<
   document_annotation: messages.documentPhase,
   native_survey: messages.inPlatformSurveyPhase,
   community_monitor_survey: messages.inPlatformSurveyPhase,
+  common_ground: messages.commonGroundPhase,
 };
 
 interface Props {

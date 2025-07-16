@@ -8,6 +8,7 @@ import { CLError, RHFErrors } from 'typings';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import Error, {
+  ErrorProps,
   findErrorMessage,
   getApiErrorValues,
   TFieldName,
@@ -24,7 +25,11 @@ type FeedbackProps = {
   onlyShowErrors?: boolean;
 };
 
-const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
+const Feedback = ({
+  successMessage,
+  onlyShowErrors,
+  ...errorProps
+}: FeedbackProps & ErrorProps) => {
   const { formatMessage } = useIntl();
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
   const { data: appConfiguration } = useAppConfiguration();
@@ -109,6 +114,7 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
           {errorMessageIsShown && (
             <Error
               marginBottom="12px"
+              {...errorProps}
               text={
                 <>
                   {formContextErrors.submissionError ? (

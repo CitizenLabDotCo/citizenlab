@@ -16,6 +16,7 @@ import styled, { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
@@ -67,7 +68,16 @@ const MultiSelectCheckboxControl = ({
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
-      <Box display="block" id="e2e-multiselect-control">
+      <Box
+        display="block"
+        id="e2e-multiselect-control"
+        as="fieldset"
+        border="none"
+        p="0px"
+      >
+        <ScreenReaderOnly>
+          <legend>{getLabel(uischema, schema, path)}</legend>
+        </ScreenReaderOnly>
         <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
           {getInstructionMessage({
             minItems,

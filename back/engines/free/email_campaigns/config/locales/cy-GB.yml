@@ -84,6 +84,12 @@ cy:
         "5": "Yn wythnosol, ar ddydd Gwener am %{hourOfDay}"
         "6": "Yn wythnosol, ar ddydd Sadwrn am %{hourOfDay}"
       quarterly: "Chwarterol, ar y dydd cyntaf o'r chwarter"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Iâr'
+      display_name: 'Jane Doe'
+      comment_body: 'Dyma sylw enghreifftiol a ddefnyddir ar gyfer rhagolwg cynnwys negeseuon e-bost. Nid cynnwys go iawn yw hwn.'
+      idea_title: 'Syniad Enghraifft'
     footer:
       "link_privacy_policy": "Polisi Preifatrwydd"
       "link_terms_conditions": "Telerau ac Amodau"

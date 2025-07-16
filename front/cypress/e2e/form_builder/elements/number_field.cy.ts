@@ -86,13 +86,13 @@ describe('Form builder number field', () => {
     );
 
     // Try entering text that isn't a number
-    cy.get(`*[id^="properties${questionTitle}"]`)
+    cy.get(`*[id^="${questionTitle}"]`)
       .clear()
       .type('Test text', { force: true });
     cy.get('.e2e-error-message');
 
     // Enter a number
-    cy.get(`*[id^="properties${questionTitle}"]`).type('45', { force: true });
+    cy.get(`*[id^="${questionTitle}"]`).type('45', { force: true });
     cy.get('.e2e-error-message').should('have.length', 0);
 
     // Save survey response

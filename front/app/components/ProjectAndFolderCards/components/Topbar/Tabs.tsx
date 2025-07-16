@@ -27,7 +27,7 @@ const PublicationFilterTabs = ({
   availableTabs,
   onChangeTab,
 }: Props) => {
-  const tabData: TabData<true> = {
+  const tabData: TabData = {
     published: {
       label: messages.published,
       count: statusCounts.published || 0,

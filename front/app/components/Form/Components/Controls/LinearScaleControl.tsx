@@ -226,9 +226,9 @@ const LinearScaleControl = ({
             </>
           ) : (
             // Show labels as list underneath the buttons when more than 3 labels OR on mobile devices
-            <Box maxWidth={'100%'}>
+            <Box maxWidth={'100%'} as="ol">
               {labelsFromSchema.map((label, index) => (
-                <Box display="flex" key={`${path}-${index}`}>
+                <Box display="flex" key={`${path}-${index}`} as="li" p="0px">
                   {label && (
                     <>
                       <Text

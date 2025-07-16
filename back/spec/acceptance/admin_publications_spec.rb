@@ -348,7 +348,7 @@ resource 'AdminPublication' do
 
       let!(:projects) do
         Array.new(3) do |i|
-          create(:project, admin_publication_attributes: { publication_status: 'published', ordering: i })
+          create(:project, admin_publication_attributes: { publication_status: 'published', ordering: i + 1 })
         end
       end
 

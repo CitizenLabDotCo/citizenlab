@@ -27,9 +27,9 @@ module Files
 
       # Allow creation only if the user moderates all associated projects.
       #
-      # Note: w (instead of +record.projects+)
-      # because +record.files_projects+ may not be persisted yet, which can cause issues
-      # with some SQL queries.
+      # Note: Getting the projects by querying `Project` directly instead of using
+      # `record.projects` because +record.files_projects+ may not be persisted yet
+      # (since this is a `create` action), which can cause issues with some SQL queries.
       projects = Project.where(id: record.project_ids)
       return false if projects.empty?
 

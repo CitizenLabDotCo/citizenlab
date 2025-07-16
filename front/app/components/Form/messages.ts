@@ -47,6 +47,14 @@ export default defineMessages({
     id: 'app.components.form.backToProject',
     defaultMessage: 'Back to project',
   },
+  backToInputManager: {
+    id: 'app.components.form.backToInputManager',
+    defaultMessage: 'Back to input manager',
+  },
+  viewYourInput: {
+    id: 'app.utils.IdeasNewPage.viewYourInput',
+    defaultMessage: 'View your input',
+  },
   viewYourIdea: {
     id: 'app.utils.IdeasNewPage.viewYourIdea',
     defaultMessage: 'View your idea',

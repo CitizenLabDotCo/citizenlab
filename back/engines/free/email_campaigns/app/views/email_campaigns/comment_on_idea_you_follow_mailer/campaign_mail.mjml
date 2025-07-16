@@ -14,7 +14,7 @@
 </mj-section>
 
 <!-- CTA button -->
-<%= render partial: 'application/cta_button', locals: { href: event.comment_url, message: format_message('cta_reply_to', values: {commentAuthor: event.initiating_user_first_name&.capitalize}) } %>
+<%= render partial: 'application/cta_button', locals: { href: event.comment_url, message: cta_button_text } %>
 
 <% if AppConfiguration.instance.feature_activated?('follow') %>
   <%= render 'email_campaigns/follow/card' %>

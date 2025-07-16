@@ -74,4 +74,8 @@ export default defineMessages({
     id: 'app.components.Admin.Campaigns.project',
     defaultMessage: 'Project',
   },
+  subject: {
+    id: 'app.components.Admin.Campaigns.subject',
+    defaultMessage: 'Subject',
+  },
 });

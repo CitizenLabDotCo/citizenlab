@@ -84,6 +84,12 @@ pa:
         "5": "ਹਫਤਾਵਾਰੀ, ਸ਼ੁੱਕਰਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
         "6": "ਹਫਤਾਵਾਰੀ, ਸ਼ਨੀਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
       quarterly: "ਤਿਮਾਹੀ, ਤਿਮਾਹੀ ਦੇ ਪਹਿਲੇ ਦਿਨ"
+    preview_data:
+      first_name: 'ਜੇਨ'
+      last_name: 'ਡੋ'
+      display_name: 'ਜੇਨ ਡੋ'
+      comment_body: 'ਇਹ ਈਮੇਲਾਂ ਦੀ ਸਮੱਗਰੀ ਦੀ ਝਲਕ ਦੇਖਣ ਲਈ ਵਰਤੀ ਗਈ ਇੱਕ ਉਦਾਹਰਣ ਟਿੱਪਣੀ ਹੈ। ਇਹ ਅਸਲ ਸਮੱਗਰੀ ਨਹੀਂ ਹੈ।'
+      idea_title: 'ਉਦਾਹਰਨ ਵਿਚਾਰ'
     footer:
       "link_privacy_policy": "ਪਰਾਈਵੇਟ ਨੀਤੀ"
       "link_terms_conditions": "ਨਿਯਮ ਅਤੇ ਸ਼ਰਤਾਂ"

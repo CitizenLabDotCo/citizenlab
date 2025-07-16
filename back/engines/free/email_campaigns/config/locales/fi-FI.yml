@@ -84,6 +84,12 @@ fi:
         "5": "Viikoittain, perjantaisin kello %{hourOfDay}"
         "6": "Viikoittain lauantaisin kello %{hourOfDay}"
       quarterly: "Neljännesvuosittain, neljänneksen ensimmäisenä päivänä"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Naaras'
+      display_name: 'Jane Doe'
+      comment_body: 'Tämä on esimerkkikommentti, jota käytetään sähköpostien sisällön esikatseluun. Tämä ei ole oikeaa sisältöä.'
+      idea_title: 'Esimerkki-idea'
     footer:
       "link_privacy_policy": "Tietosuojakäytäntö"
       "link_terms_conditions": "käyttöehdot"

@@ -26,7 +26,7 @@ resource 'Idea Custom Fields' do
     }
   end
 
-  patch 'web_api/v1/admin/phases/:phase_id/custom_fields/update_all' do
+  patch 'web_api/v1/phases/:phase_id/custom_fields/update_all' do
     parameter :custom_fields, type: :array
     with_options scope: 'custom_fields[]' do
       parameter :id, 'The ID of an existing custom field to update. When the ID is not provided, a new field is created.', required: false
@@ -3313,7 +3313,7 @@ resource 'Idea Custom Fields' do
             'changed',
             User.first,
             kind_of(Integer),
-            payload: { save_type: 'manual', pages: 2, fields: 2, params_size: 1411, form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
+            payload: { save_type: 'manual', pages: 2, fields: 2, params_size: 1405, form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
             project_id: custom_form.project_id
           ).exactly(1).times
       end

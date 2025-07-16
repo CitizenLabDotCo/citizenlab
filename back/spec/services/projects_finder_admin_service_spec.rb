@@ -99,6 +99,88 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.filter_participation_states' do
+    # Project that has not started yet
+    let!(:not_started_project) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today + 10.days, project: project)
+      project
+    end
+
+    # Project with current data collection phase
+    let!(:collecting_data_project) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 20.days, end_at: Time.zone.today - 11.days, project: project, participation_method: 'information')
+      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'ideation')
+      project
+    end
+
+    # Project with current information phase
+    let!(:information_phase_project) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 20.days, end_at: Time.zone.today - 11.days, project: project, participation_method: 'ideation')
+      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'information')
+      create(:phase, start_at: Time.zone.today + 11.days, end_at: nil, project: project, participation_method: 'ideation')
+      project
+    end
+
+    # Project that is completely in the past
+    let!(:past_project) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 20.days, project: project)
+      project
+    end
+
+    # Project that has a gap between phases, and right now we're in the gap
+    let!(:gap_project) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 20.days, project: project)
+      create(:phase, start_at: Time.zone.today + 10.days, end_at: Time.zone.today + 20.days, project: project)
+      project
+    end
+
+    it 'returns all projects when no participation states specified' do
+      result = described_class.filter_participation_states(Project.all, {})
+      expect(result.pluck(:id).sort).to match_array([
+        not_started_project.id,
+        collecting_data_project.id,
+        information_phase_project.id,
+        past_project.id,
+        gap_project.id
+      ].sort)
+    end
+
+    it 'returns not_started projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['not_started'] })
+      expect(result.pluck(:id)).to eq([not_started_project.id])
+    end
+
+    it 'returns collecting_data projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['collecting_data'] })
+      expect(result.pluck(:id)).to eq([collecting_data_project.id])
+    end
+
+    it 'returns informing projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['informing'] })
+      expect(result.pluck(:id)).to eq([information_phase_project.id])
+    end
+
+    it 'returns past projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['past'] })
+      expect(result.pluck(:id)).to eq([past_project.id])
+    end
+
+    it 'returns collecting_data and past projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: %w[collecting_data past] })
+      expect(result.pluck(:id).sort).to match_array([collecting_data_project.id, past_project.id].sort)
+    end
+
+    it 'returns not_started, collecting_data, informing and past projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: %w[not_started collecting_data informing past] })
+      expect(result.pluck(:id).sort).to match_array([not_started_project.id, collecting_data_project.id, information_phase_project.id, past_project.id].sort)
+    end
+  end
+
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }

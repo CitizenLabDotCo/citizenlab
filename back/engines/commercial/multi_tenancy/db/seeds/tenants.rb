@@ -522,6 +522,10 @@ module MultiTenancy
             project_planning: {
               enabled: false,
               allowed: false
+            },
+            customised_automated_emails: {
+              enabled: true,
+              allowed: true
             }
           })
         )

@@ -11,12 +11,14 @@ module BulkImportIdeas::Exporters
       return false unless up?
 
       payload = {
-        'index.html': Faraday::Multipart::FilePart.new(
+        'preferCssPageSize' => true,
+        'generateDocumentOutline' => true,
+        'generateTaggedPdf' => true,
+        'index.html' => Faraday::Multipart::FilePart.new(
           StringIO.new(html),
-          'text/html',
+          'text/html; charset=utf-8',
           'index.html'
-        ),
-        preferCssPageSize: true
+        )
       }
       url = "#{@api_url}/forms/chromium/convert/html"
 
@@ -26,8 +28,11 @@ module BulkImportIdeas::Exporters
       end
       response = conn.post(url, payload)
 
-      output_pdf = Tempfile.new('gotenberg.pdf')
-      output_pdf.write(response.body.force_encoding('UTF-8'))
+      output_pdf = Tempfile.new(['gotenberg', '.pdf'])
+      output_pdf.binmode
+      output_pdf.write(response.body)
+      output_pdf.rewind
+
       output_pdf
     end
 

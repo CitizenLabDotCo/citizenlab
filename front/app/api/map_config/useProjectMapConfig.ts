@@ -17,6 +17,7 @@ const useProjectMapConfig = (projectId?: string) => {
     queryKey: mapConfigKeys.item({ projectId }),
     queryFn: () => fetchMapConfig({ projectId }),
     enabled: !!projectId,
+    cacheTime: 0, // Disable caching to always fetch the latest map config. Otherwise, it causes problems in the map page view.
   });
 };
 

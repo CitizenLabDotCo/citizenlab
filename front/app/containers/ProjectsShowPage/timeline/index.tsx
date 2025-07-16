@@ -23,6 +23,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import { isValidPhase } from '../phaseParam';
 
+import CommonGroundTabs from './CommonGround/CommonGroundTabs';
 import PhaseIdeas from './Ideas';
 import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
 import PhaseNavigation from './PhaseNavigation';
@@ -154,6 +155,12 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <VotingResults
               phaseId={selectedPhaseId}
               votingMethod={votingMethod}
+            />
+          )}
+          {participationMethod === 'common_ground' && (
+            <CommonGroundTabs
+              phaseId={selectedPhase.id}
+              project={project.data}
             />
           )}
         </ContentContainer>

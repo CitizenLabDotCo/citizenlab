@@ -17,12 +17,12 @@ const fetch = ({
 }) => {
   if (projectId) {
     return fetcher<IIdeaCustomField>({
-      path: `/admin/projects/${projectId}/custom_fields/${customFieldId}`,
+      path: `/projects/${projectId}/custom_fields/${customFieldId}`,
       action: 'get',
     });
   } else {
     return fetcher<IIdeaCustomField>({
-      path: `/admin/phases/${phaseId}/custom_fields/${customFieldId}`,
+      path: `/phases/${phaseId}/custom_fields/${customFieldId}`,
       action: 'get',
     });
   }

@@ -137,9 +137,10 @@ context 'criipto verification' do
     expect(user.identities.first).to have_attributes({
       provider: 'criipto',
       user_id: user.id,
-      uid: '410a77ec-4f85-46e4-aaef-bdbbd1a951f2',
-      auth_hash: nil
+      uid: '410a77ec-4f85-46e4-aaef-bdbbd1a951f2'
     })
+    expect(user.identities.first.auth_hash['credentials']).not_to be_present
+    expect(user.identities.first.auth_hash.keys).to eq %w[uid info extra provider]
   end
 
   it 'successfully verifies a user' do

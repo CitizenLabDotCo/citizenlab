@@ -8,6 +8,8 @@ import useCampaigns from 'api/campaigns/useCampaigns';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import EditModal from 'containers/Admin/messaging/AutomatedEmails/EditModal';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -39,6 +41,9 @@ const AutomatedEmails = () => {
   const [exampleModalCampaignId, setExampleModalCampaignId] = useState<
     string | null
   >(null);
+  const [editModalCampaignId, setEditModalCampaignId] = useState<string | null>(
+    null
+  );
 
   const groupedCampaigns = useMemo(
     () =>
@@ -65,6 +70,10 @@ const AutomatedEmails = () => {
     setExampleModalCampaignId(campaignId);
   };
 
+  const handleOnClickEdit = (campaignId: string) => () => {
+    setEditModalCampaignId(campaignId);
+  };
+
   return (
     <Box className="intercom-messaging-automated-emails-page">
       <Box mb="28px">
@@ -82,6 +91,7 @@ const AutomatedEmails = () => {
               key={subGroupedCampaignsEntry[0]}
               subGroupedCampaignsEntry={subGroupedCampaignsEntry}
               onClickViewExample={handleOnClickViewExample}
+              onClickEdit={handleOnClickEdit}
             />
           )
         )}
@@ -92,6 +102,12 @@ const AutomatedEmails = () => {
           onClose={() => setExampleModalCampaignId(null)}
         />
       )}
+      {editModalCampaignId && (
+        <EditModal
+          campaignId={editModalCampaignId}
+          onClose={() => setEditModalCampaignId(null)}
+        />
+      )}
     </Box>
   );
 };
@@ -99,10 +115,12 @@ const AutomatedEmails = () => {
 type CampaignsGroupProps = {
   subGroupedCampaignsEntry: SubGroupedCampaignsEntry;
   onClickViewExample: (campaignId: string) => () => void;
+  onClickEdit: (campaignId: string) => () => void;
 };
 const CampaignsGroup = ({
   subGroupedCampaignsEntry: [recipient_role, group],
   onClickViewExample,
+  onClickEdit,
 }: CampaignsGroupProps) => (
   <Box mb="30px">
     <Title color="primary" variant="h3" mt="20px">
@@ -113,6 +131,7 @@ const CampaignsGroup = ({
         key={groupedCampaignsEntry[0]}
         groupedCampaignsEntry={groupedCampaignsEntry}
         onClickViewExample={onClickViewExample}
+        onClickEdit={onClickEdit}
       />
     ))}
   </Box>
@@ -121,10 +140,12 @@ const CampaignsGroup = ({
 type CampaignsSubGroupProps = {
   groupedCampaignsEntry: GroupedCampaignsEntry;
   onClickViewExample: (campaignId: string) => () => void;
+  onClickEdit: (campaignId: string) => () => void;
 };
 const CampaignsSubGroup = ({
   groupedCampaignsEntry: [content_type, campaigns],
   onClickViewExample,
+  onClickEdit,
 }: CampaignsSubGroupProps) => (
   <Box>
     <Title color="primary" variant="h4" mt="24px">
@@ -135,6 +156,7 @@ const CampaignsSubGroup = ({
         campaign={campaign}
         key={campaign.id}
         onClickViewExample={onClickViewExample(campaign.id)}
+        onClickEdit={onClickEdit(campaign.id)}
       />
     ))}
   </Box>

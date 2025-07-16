@@ -21,4 +21,24 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Search.search',
     defaultMessage: 'Search project',
   },
+  participationStates: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates',
+    defaultMessage: 'Participation state',
+  },
+  notStarted: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted',
+    defaultMessage: 'Not started',
+  },
+  collectingData: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.collectingData',
+    defaultMessage: 'Collecting data',
+  },
+  informing: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.informing',
+    defaultMessage: 'Informing',
+  },
+  past: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past',
+    defaultMessage: 'Past',
+  },
 });

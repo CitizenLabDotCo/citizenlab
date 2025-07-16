@@ -84,6 +84,12 @@ lv:
         "5": "Ik nedēļu, piektdienās %{hourOfDay}"
         "6": "Ik nedēļu sestdienās %{hourOfDay}"
       quarterly: "Ceturkšņa ceturksnis, ceturkšņa pirmajā dienā"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Doe'
+      display_name: 'Džeina Doe'
+      comment_body: 'Šis ir komentāra piemērs, ko izmanto e-pasta vēstuļu satura priekšskatīšanai. Tas nav īsts saturs.'
+      idea_title: 'Piemērs Ideja'
     footer:
       "link_privacy_policy": "Privātuma politika"
       "link_terms_conditions": "Noteikumi un nosacījumi"

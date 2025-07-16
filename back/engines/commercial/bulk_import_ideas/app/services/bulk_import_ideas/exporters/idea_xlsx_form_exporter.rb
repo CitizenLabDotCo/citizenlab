@@ -28,8 +28,12 @@ module BulkImportIdeas::Exporters
           field.options.map { |o| custom_field_service.handle_title(o, @locale) }.join '; '
         when 'topic_ids'
           @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
-        when 'number', 'linear_scale'
+        when 'number', 'linear_scale', 'rating'
           field.maximum || 3
+        when 'checkbox'
+          'X'
+        when 'date'
+          Time.zone.today.strftime('%d-%m-%Y')
         else
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
         end

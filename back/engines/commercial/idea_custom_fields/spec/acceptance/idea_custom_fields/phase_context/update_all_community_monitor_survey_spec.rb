@@ -7,7 +7,7 @@ resource 'Idea Custom Fields' do
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
   before { header 'Content-Type', 'application/json' }
 
-  patch 'web_api/v1/admin/phases/:phase_id/custom_fields/update_all' do
+  patch 'web_api/v1/phases/:phase_id/custom_fields/update_all' do
     parameter :custom_fields, type: :array
     with_options scope: 'custom_fields[]' do
       parameter :id, 'The ID of an existing custom field to update. When the ID is not provided, a new field is created.', required: false

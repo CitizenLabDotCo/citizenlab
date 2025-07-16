@@ -84,6 +84,12 @@ nb:
         "5": "Ukentlig, på fredager på %{hourOfDay}"
         "6": "Ukentlig, på lørdager på %{hourOfDay}"
       quarterly: "Kvartalsvis, på den første dagen i kvartalet"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Doe'
+      display_name: 'Jane Doe'
+      comment_body: 'Dette er et eksempel på en kommentar som brukes til forhåndsvisning av innholdet i e-poster. Dette er ikke ekte innhold.'
+      idea_title: 'Eksempel på idé'
     footer:
       "link_privacy_policy": "Personvernerklæring"
       "link_terms_conditions": "Vilkår og betingelser"

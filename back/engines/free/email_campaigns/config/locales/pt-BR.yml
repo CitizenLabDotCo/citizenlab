@@ -84,6 +84,12 @@ pt:
         "5": "Semanalmente, às sextas-feiras às %{hourOfDay}"
         "6": "Semanalmente, aos sábados às %{hourOfDay}"
       quarterly: "Trimestralmente, no primeiro dia do trimestre"
+    preview_data:
+      first_name: 'Jane'
+      last_name: 'Doe'
+      display_name: 'Jane Doe'
+      comment_body: 'Este é um exemplo de comentário usado para visualizar o conteúdo de e-mails. Não se trata de conteúdo real.'
+      idea_title: 'Ideia de exemplo'
     footer:
       "link_privacy_policy": "Política de Privacidade"
       "link_terms_conditions": "Termos e condições"

@@ -334,6 +334,15 @@ export default defineMessages({
     defaultMessage:
       'Enter a valid link. Make sure the link starts with https://',
   },
+  maximum_attendees_greater_than_attendees_count: {
+    id: 'app.errors.maximum_attendees_greater_than_attendees_count1',
+    defaultMessage:
+      'The maximum number of registrants must be greater than or equal to the current number of registrants.',
+  },
+  maximum_attendees_greater_than: {
+    id: 'app.errors.maximum_attendees_greater_than1',
+    defaultMessage: 'The maximum number of registrants must be greater than 0.',
+  },
   title_multiloc_includes_banned_words: {
     id: 'app.errors.title_multiloc_includes_banned_words',
     defaultMessage:

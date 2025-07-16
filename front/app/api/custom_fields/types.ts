@@ -9,10 +9,11 @@ import customFieldsKeys from './keys';
 export type CustomFieldsKeys = Keys<typeof customFieldsKeys>;
 
 export interface ICustomFieldsParameters {
-  projectId: string;
+  projectId?: string;
   phaseId?: string;
   inputTypes?: ICustomFieldInputType[];
   copy?: boolean;
+  publicFields?: boolean;
 }
 
 export type ICustomFieldInputType =
@@ -39,7 +40,9 @@ export type ICustomFieldInputType =
   | 'line'
   | 'polygon'
   | 'cosponsor_ids'
-  | 'sentiment_linear_scale';
+  | 'sentiment_linear_scale'
+  | 'checkbox'
+  | 'date';
 
 export type IOptionsType = {
   id?: string;

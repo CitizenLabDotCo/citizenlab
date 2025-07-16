@@ -84,6 +84,12 @@ ar:
         "5": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
         "6": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
       quarterly: "ربع سنوي، في اليوم الأول من الربع"
+    preview_data:
+      first_name: 'جين'
+      last_name: 'ظبية'
+      display_name: 'جين دو'
+      comment_body: 'هذا مثال لتعليق يُستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقيًا.'
+      idea_title: 'فكرة مثال'
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"

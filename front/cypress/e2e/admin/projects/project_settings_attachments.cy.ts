@@ -98,7 +98,6 @@ describe('Project attachments settings', () => {
         .children()
         .children()
         .then((files) => {
-          console.log({ files });
           expect(files[0].innerText).to.contain('example.txt');
           expect(files[1].innerText).to.contain('example.pdf');
         });
@@ -140,7 +139,6 @@ describe('Project attachments settings', () => {
         .children()
         .children()
         .then((files) => {
-          console.log({ files });
           expect(files[0].innerText).to.contain('icon.png');
           expect(files[1].innerText).to.contain('example.txt');
           expect(files[2].innerText).to.contain('example.pdf');

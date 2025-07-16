@@ -45,6 +45,7 @@ const MultiSelectField = ({
           name={question.key}
           options={options}
           scrollErrorIntoView={scrollErrorIntoView}
+          title={localize(question.title_multiloc)}
         />
       )}
       {value?.includes('other') && (

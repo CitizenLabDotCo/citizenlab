@@ -22,8 +22,7 @@ module EmailCampaigns
 
     def create
       campaigns_recipient = Delivery.find_by(
-        user_id: params[:'event-data'][:'user-variables'][:cl_user_id],
-        campaign_id: params[:'event-data'][:'user-variables'][:cl_campaign_id]
+        id: params[:'event-data'][:'user-variables'][:cl_delivery_id]
       )
       if campaigns_recipient
         target_status = MAILGUN_STATUS_MAPPING[params[:'event-data'][:event]]
@@ -39,6 +38,12 @@ module EmailCampaigns
           head :not_acceptable
         end
       else
+        # If this error is never reported to Sentry, we can remove this in August 2025, together
+        # with the ErrorReporter call in extra_mailgun_variables in the Trackable concern.
+        ErrorReporter.report_msg(
+          'No delivery found for delivery ID passed in Mailgun hook!',
+          extra: { user_variables: params[:'event-data'][:'user-variables'] }
+        )
         # We haven't sent out this mail
         head :not_acceptable
       end

@@ -10,14 +10,16 @@ import HorizontalScroll from 'components/HorizontalScroll';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
-const Tab = styled.button<{ active: boolean }>`
+const Tab = styled.button<{ active: boolean; fullWidth: boolean }>`
   box-sizing: content-box;
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: ${({ fullWidth }) => (fullWidth ? 'center' : 'flex-start')};
   font-size: ${fontSizes.l}px;
   padding: 21px 15px;
   white-space: nowrap;
+  flex: ${({ fullWidth }) => (fullWidth ? 1 : 'unset')};
 
   border-bottom: ${({ active, theme }) =>
     active
@@ -51,22 +53,23 @@ const CountText = styled.span`
   `}
 `;
 
-// If ShowCount is true, then each element should have a count otherwise it should be optional
-export type TabData<ShowCount extends boolean> = {
-  [key: string]: ShowCount extends true
-    ? { label: MessageDescriptor; count: number }
-    : { label: MessageDescriptor; count?: number };
+export type TabData = {
+  [key: string]: {
+    label: MessageDescriptor;
+    count?: number;
+  };
 };
 
 interface Props<ShowCount extends boolean> {
   currentTab: string;
   availableTabs: string[];
-  tabData: TabData<ShowCount>;
+  tabData: TabData;
   onChangeTab: (tab: string) => void;
   getTabId?: (tab: string) => string;
   getTabPanelId?: (tab: string) => string;
   getScreenReaderTextForTab?: (tab: string, count?: number) => JSX.Element;
   showCount: ShowCount;
+  fullWidth?: boolean;
 }
 
 export const getDefaultTabId = (tab: string) => `tab-${tab}`;
@@ -81,6 +84,7 @@ const Tabs = <ShowCount extends boolean>({
   getTabId = getDefaultTabId,
   getTabPanelId = getDefaultTabPanelId,
   showCount,
+  fullWidth = false,
 }: Props<ShowCount>) => {
   const tabsRef = useRef({});
 
@@ -113,6 +117,7 @@ const Tabs = <ShowCount extends boolean>({
           tabIndex={currentTab === tab ? 0 : -1}
           aria-controls={getTabPanelId(tab)}
           active={currentTab === tab}
+          fullWidth={fullWidth}
           key={tab}
           onClick={handleClickTab(tab)}
           onKeyDown={handleKeyDownTab}
@@ -120,7 +125,9 @@ const Tabs = <ShowCount extends boolean>({
         >
           <div aria-hidden>
             <FormattedMessage {...tabData[tab].label} />
-            {showCount && <CountText>({tabData[tab].count})</CountText>}
+            {showCount && typeof tabData[tab].count === 'number' && (
+              <CountText>({tabData[tab].count})</CountText>
+            )}
           </div>
 
           {getScreenReaderTextForTab && (

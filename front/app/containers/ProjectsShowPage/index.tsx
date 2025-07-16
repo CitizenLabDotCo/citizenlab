@@ -116,7 +116,7 @@ const ProjectsShowPage = ({ project }: Props) => {
   }, [mounted, loading, scrollToStatusModule, scrollToIdeas]);
 
   return (
-    <main>
+    <main id="e2e-project-page">
       <Container
         background={
           // TODO: Fix this the next time the file is edited.
@@ -127,7 +127,7 @@ const ProjectsShowPage = ({ project }: Props) => {
         {loading ? (
           <FullPageSpinner />
         ) : (
-          <ContentWrapper id="e2e-project-page">
+          <ContentWrapper>
             <ProjectHeader projectId={projectId} />
             <ProjectCTABar projectId={projectId} />
 

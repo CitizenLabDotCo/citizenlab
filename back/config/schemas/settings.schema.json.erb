@@ -1373,12 +1373,12 @@
       "user_fields_in_surveys": {
         "type": "object",
         "title": "User fields in surveys",
-        "description": "Allow surveys to embed user fields directly in the survey form, instead of asking through registration. DO NOT ENABLE EXCEPT ON TEST PLATFORMS. Currently in live test on community monitor.",
+        "description": "Allow surveys to embed user fields directly in the survey form, instead of asking through registration.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -1457,6 +1457,18 @@
         "type": "object",
         "title": "Project planning",
         "description": "New back office projects overview [DO NOT ENABLE]",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "customised_automated_emails": {
+        "type": "object",
+        "title": "Customised automated emails",
+        "description": "Override text of the default emails and preview [DO NOT ENABLE]",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

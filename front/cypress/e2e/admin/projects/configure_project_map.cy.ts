@@ -68,11 +68,16 @@ describe('Configure a project-level map', () => {
     // ESRI WEB MAP UPLOAD
     cy.dataCy('e2e-web-map-upload-btn').click();
     // Test invalid portal ID (error should show)
-    cy.get('#e2e-portal-id-input').click().clear().type('invalidID');
+    cy.get('#e2e-portal-id-input')
+      .should('be.visible')
+      .click()
+      .clear()
+      .type('invalidID');
     cy.dataCy('e2e-web-map-import-btn').click();
-    cy.get('#e2e-web-map-error').should('exist');
+    cy.get('#e2e-web-map-error').should('be.visible');
     // Test valid portal id
     cy.get('#e2e-portal-id-input')
+      .should('be.visible')
       .click()
       .clear()
       .type('ce88f9dba8d748a4bf3aa8d6c8027d2e');
@@ -84,7 +89,7 @@ describe('Configure a project-level map', () => {
     // Test invalid URL (error should show)
     cy.get('#e2e-feature-layer-url-input').click().clear().type('invalidURL');
     cy.dataCy('e2e-feature-layer-import-btn').click();
-    cy.get('#e2e-feature-layer-error').should('exist');
+    cy.get('#e2e-feature-layer-error').should('be.visible');
     // Test valid URL
     cy.get('#e2e-feature-layer-url-input')
       .click()

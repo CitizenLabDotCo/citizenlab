@@ -21,13 +21,9 @@ import FieldTypeSwitcher from '../FieldTypeSwitcher';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
-  formHasSubmissions: boolean;
 };
 
-const ContentSettings = ({
-  field,
-  formHasSubmissions,
-}: ContentSettingsProps) => {
+const ContentSettings = ({ field }: ContentSettingsProps) => {
   const locales = useAppConfigurationLocales();
   const { watch } = useFormContext();
   const lockedAttributes = field.constraints?.locks;
@@ -52,10 +48,7 @@ const ContentSettings = ({
     <Box mt="16px">
       {!isFieldGrouping && (
         <>
-          <FieldTypeSwitcher
-            field={field}
-            formHasSubmissions={formHasSubmissions}
-          />
+          <FieldTypeSwitcher field={field} />
           {!lockedAttributes?.title_multiloc && (
             <SectionField>
               <InputMultilocWithLocaleSwitcher

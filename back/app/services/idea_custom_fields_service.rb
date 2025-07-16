@@ -224,15 +224,16 @@ class IdeaCustomFieldsService
   def add_user_fields(fields)
     return fields unless @participation_method.user_fields_in_form?
 
+    phase = @custom_form.participation_context
+    permission = phase.permissions.find_by(action: 'posting_idea')
+    user_fields = Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
+
+    return fields unless user_fields.any?
+
     fields = fields.to_a # sometimes array passed in, sometimes active record relations
 
     # Remove the last page so we can add it back later
     last_page = fields.pop if fields.last.form_end_page?
-
-    # Get the user fields from the permission (returns platform defaults if they don't exist)
-    phase = @custom_form.participation_context
-    permission = phase.permissions.find_by(action: 'posting_idea')
-    user_fields = Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
 
     # TODO: Hide any user fields that are locked for the user through the verification method
 

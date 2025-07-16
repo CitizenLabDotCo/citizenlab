@@ -104,13 +104,26 @@ const CLPageLayout = memo(
       pageTypeElements[0],
     ]);
     const [scrollToError, setScrollToError] = useState(false);
-    const { slug, ideaId: idea_id } = useParams<{
+
+    // This component is also accessible from the admin side via the idea edit preview in the input manager,
+    // which follows a different URL structure:
+    // Admin URL format: /admin/projects/:projectId/phases/:phaseId/ideas
+    // We need to support both the public and admin URL structures.
+    const {
+      slug,
+      ideaId: idea_id,
+      phaseId: phaseFromAdminUrl,
+      projectId: projectIdFromAdminUrl,
+    } = useParams<{
       slug?: string;
       ideaId?: string;
+      phaseId?: string;
+      projectId?: string;
     }>();
     const ideaId = searchParams.get('idea_id') || idea_id;
     const { data: idea } = useIdeaById(ideaId ?? undefined);
-    const projectId = idea?.data.relationships.project.data.id;
+    const projectId =
+      idea?.data.relationships.project.data.id || projectIdFromAdminUrl;
     const projectById = useProjectById(projectId);
     const projectBySlug = useProjectBySlug(slug);
     const project = projectById.data ?? projectBySlug.data;
@@ -134,11 +147,13 @@ const CLPageLayout = memo(
     const { data: phases } = usePhases(project?.data.id);
     const phaseIdFromSearchParams = searchParams.get('phase_id');
     const phaseId =
-      phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
+      phaseIdFromSearchParams ||
+      getCurrentPhase(phases?.data)?.id ||
+      phaseFromAdminUrl;
     const { data: phase } = usePhase(phaseId);
-    const supportsNativeSurvey = methodSupportsNativeSurvey(
-      phase?.data.attributes.participation_method
-    );
+    const participationMethod = phase?.data.attributes.participation_method;
+    const supportsNativeSurvey =
+      methodSupportsNativeSurvey(participationMethod);
     const allowAnonymousPosting =
       phase?.data.attributes.allow_anonymous_participation;
 
@@ -549,9 +564,7 @@ const CLPageLayout = memo(
                       showIdeaId && (
                         <SubmissionReference
                           inputId={ideaId}
-                          participationMethod={
-                            phase?.data.attributes.participation_method
-                          }
+                          participationMethod={participationMethod}
                         />
                       )}
                   </Box>
@@ -608,6 +621,7 @@ const CLPageLayout = memo(
               pageVariant={pageVariant}
               phases={phases?.data}
               currentPhase={phase?.data}
+              project={project}
               pageButtonLabelMultiloc={
                 currentPage.options.page_button_label_multiloc
               }

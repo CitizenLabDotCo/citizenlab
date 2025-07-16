@@ -73,7 +73,7 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
     end
   end
 
-  describe 'before_send_hooks' do
+  describe 'filter_hooks' do
     let(:campaign) { build(:user_digest_campaign) }
 
     let_it_be(:activity) { create(:activity) }
