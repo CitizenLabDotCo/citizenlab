@@ -29,10 +29,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label',
     defaultMessage: 'Participation method',
   },
-  participationMethodAll: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.all',
-    defaultMessage: 'All methods',
-  },
   participationMethodIdeation: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation',
     defaultMessage: 'Ideation',
