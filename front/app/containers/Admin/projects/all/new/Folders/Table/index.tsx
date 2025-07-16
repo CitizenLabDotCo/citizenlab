@@ -18,6 +18,7 @@ import { useInfiniteScroll } from 'hooks/useInfiniteScroll';
 
 import { useIntl } from 'utils/cl-intl';
 
+import projectMessages from '../../Projects/Table/messages';
 import { useParams } from '../utils';
 
 import messages from './messages';
@@ -57,10 +58,10 @@ const Table = () => {
 
   const getSentinelMessage = () => {
     if (isFetchingNextPage) {
-      return messages.loadingMore;
+      return projectMessages.loadingMore;
     }
     if (hasNextPage) {
-      return messages.scrollDownToLoadMore;
+      return projectMessages.scrollDownToLoadMore;
     }
 
     if (status === 'success') {
