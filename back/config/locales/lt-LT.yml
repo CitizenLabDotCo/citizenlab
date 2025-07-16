@@ -343,6 +343,7 @@ lt:
       line_print_description: 'Žemiau pateiktame žemėlapyje nubraižykite maršrutą.'
       polygon_print_description: 'Žemiau esančiame žemėlapyje nubrėžkite figūrą.'
       select_print_description: 'Pasirinkite tik vieną parinktį.'
+      date_print_description: 'Įrašykite datą formatu YYYYY-MM-DD.'
   project_copy:
     title_suffix: 'Kopijuoti'
   confirmations_mailer:
