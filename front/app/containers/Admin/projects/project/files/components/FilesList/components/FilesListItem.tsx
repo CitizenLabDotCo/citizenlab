@@ -53,7 +53,7 @@ const FilesListItem = ({
   };
 
   const downloadFileHandler = (_fileId: string) => () => {
-    // TODO: Logic to handle file downloading.
+    window.open(file.attributes.content.url, '_blank');
   };
 
   const deleteFileHandler = (fileId: string) => () => {

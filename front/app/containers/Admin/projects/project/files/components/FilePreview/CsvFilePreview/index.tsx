@@ -156,7 +156,13 @@ const CsvFilePreview = ({ url, fileSize }: Props) => {
   return (
     <>
       <Box>
-        <Text m="0px" mt="24px" color="coolGrey600" fontStyle="italic" size="s">
+        <Text
+          m="0px"
+          mt="24px"
+          color="coolGrey600"
+          fontStyle="italic"
+          fontSize="s"
+        >
           {formatMessage(messages.csvPreviewLimit)}
         </Text>
         <DownloadFileButton url={url} />
