@@ -117,10 +117,10 @@ resource 'AdminPublication' do
         expect(response_data.pluck(:id)).to include unlisted_project.admin_publication.id
       end
 
-      example 'Does not include inlisted projects if include_unlisted is false', document: false do
+      example 'Does not include unlisted projects if remove_all_unlisted is true', document: false do
         unlisted_project = create(:project, listed: false)
 
-        do_request include_unlisted: false
+        do_request remove_all_unlisted: true
         assert_status 200
         expect(response_data.size).to eq 10
         expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
@@ -716,13 +716,13 @@ resource 'AdminPublication' do
         expect(response_data.pluck(:id)).not_to include unlisted_project.admin_publication.id
       end
 
-      example 'Unlisted projects user can moderate are excluded if include_unlisted is false', document: false do
+      example 'Unlisted projects user can moderate are excluded if remove_all_unlisted is true', document: false do
         unlisted_project_user_moderates = create(:project, listed: false)
 
         moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
         @moderator.update!(roles: moderator_roles)
 
-        do_request include_unlisted: false
+        do_request remove_all_unlisted: true
         assert_status 200
         expect(response_data.size).to eq 7
       end
@@ -812,7 +812,7 @@ resource 'AdminPublication' do
         expect(response_ids).not_to include unlisted_project.admin_publication.id
       end
 
-      example 'Does not include unlisted projects user can moderate if include_unlisted is false', document: false do
+      example 'Does not include unlisted projects user can moderate if remove_all_unlisted is true', document: false do
         unlisted_project_user_moderates = create(
           :project,
           listed: false,
@@ -822,7 +822,7 @@ resource 'AdminPublication' do
           }
         )
 
-        do_request include_unlisted: false
+        do_request remove_all_unlisted: true
         assert_status 200
         expect(response_data.size).to eq 18
         expect(response_ids).not_to include unlisted_project_user_moderates.admin_publication.id

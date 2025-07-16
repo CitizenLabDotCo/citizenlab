@@ -28,7 +28,7 @@ const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
     publicationStatusFilter: ['draft', 'published', 'archived'],
     rootLevelOnly: true,
     removeNotAllowedParents: true,
-    include_unlisted: false,
+    remove_all_unlisted: true,
   });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();

@@ -6,7 +6,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
   def index
     # By default, this endpoint will remove unlisted projects that the user cannot moderate.
-    policy_context[:remove_unlisted] = params[:include_unlisted] == 'false'
+    policy_context[:remove_unlisted] = params[:remove_all_unlisted] == 'true'
       ? 'remove_all_unlisted'
       : 'remove_unlisted_that_user_cannot_moderate'
 

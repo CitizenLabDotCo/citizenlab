@@ -1201,8 +1201,8 @@ resource 'Projects' do
           expect(json_response[:data].size).to eq(@projects.size)
         end
 
-        example 'Does not return unlisted projects if include_unlisted is false', document: false do
-          do_request include_unlisted: false
+        example 'Does not return unlisted projects if remove_all_unlisted is true', document: false do
+          do_request remove_all_unlisted: true
           assert_status 200
           expect(json_response[:data].size).to eq(@projects.size - 1)
         end

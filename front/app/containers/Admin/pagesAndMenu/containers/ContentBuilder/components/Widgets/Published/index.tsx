@@ -28,7 +28,7 @@ const Published = ({ titleMultiloc }: Props) => {
       rootLevelOnly: true,
       removeNotAllowedParents: true,
       include_publications: true,
-      include_unlisted: false,
+      remove_all_unlisted: true,
     });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();

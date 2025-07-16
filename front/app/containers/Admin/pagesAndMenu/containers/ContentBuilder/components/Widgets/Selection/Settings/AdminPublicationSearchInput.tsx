@@ -33,7 +33,6 @@ const AdminPublicationSearchInput = ({
     search,
     publicationStatusFilter: ['published', 'archived'],
     pageSize: 6,
-    include_unlisted: true,
   });
 
   const handleInputChange = (searchTerm: string) => {

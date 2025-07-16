@@ -30,7 +30,7 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
 
   const { data } = useAdminPublications({
     publicationStatusFilter: publicationStatuses,
-    include_unlisted: false,
+    remove_all_unlisted: true,
   });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();

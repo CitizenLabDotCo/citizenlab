@@ -44,7 +44,7 @@ export interface Props {
   canModerate?: boolean;
   projectIds?: string[];
   includeHidden?: boolean;
-  includeUnlisted?: boolean;
+  removeAllUnlisted?: boolean;
 }
 
 export interface QueryParameters {
@@ -56,7 +56,7 @@ export interface QueryParameters {
   filter_can_moderate?: boolean;
   filter_ids?: string[];
   include_hidden?: boolean;
-  include_unlisted?: boolean;
+  remove_all_unlisted?: boolean;
 }
 
 // Responses

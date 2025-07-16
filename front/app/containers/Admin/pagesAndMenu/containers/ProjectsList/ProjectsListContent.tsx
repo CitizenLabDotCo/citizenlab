@@ -37,7 +37,7 @@ const ProjectsListContent = ({ customPage }: Props) => {
     areaIds,
     publicationStatusFilter: ['published', 'archived'],
     onlyProjects: true,
-    include_unlisted: false,
+    remove_all_unlisted: true,
   });
 
   const adminPublicationsList = data?.pages.map((page) => page.data).flat();
