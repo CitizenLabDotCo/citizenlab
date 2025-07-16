@@ -122,7 +122,9 @@ const FilePreview = ({ file }: Props) => {
 
   return (
     <Box>
-      <Label>{formatMessage(messages.filePreviewLabel)}</Label>
+      <Box>
+        <Label>{formatMessage(messages.filePreviewLabel)}</Label>
+      </Box>
       {getFilePreviewByType()}
     </Box>
   );

@@ -10,7 +10,6 @@ import {
   Spinner,
   Text,
   Box,
-  Button,
 } from '@citizenlab/cl2-component-library';
 import Papa from 'papaparse';
 import styled from 'styled-components';
@@ -27,9 +26,10 @@ type Props = {
   maxFileSizeMB?: number;
 };
 
-const StyledBox = styled(Box)`
+const ScrollableTableContainer = styled(Box)`
   transform: rotateX(180deg);
   cursor: grab;
+  user-select: none; /* Prevent text selection */
 
   &:active {
     cursor: grabbing;
@@ -50,8 +50,10 @@ const CsvFilePreview = ({
 
   // Drag-to-scroll state
   const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  const [dragState, setDragState] = useState({
+    clickLocation: 0,
+    scrollLeft: 0,
+  });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const fileSizeMB = fileSize ? fileSize / (1024 * 1024) : 0;
@@ -72,6 +74,7 @@ const CsvFilePreview = ({
           preview: maxRows,
           skipEmptyLines: true,
         });
+
         if (result.errors.length > 0) {
           setFileReadError(true);
         } else {
@@ -82,100 +85,71 @@ const CsvFilePreview = ({
       .finally(() => setLoadingFile(false));
   }, [url, maxRows, isTooLarge]);
 
-  // Drag-to-scroll handlers
+  // Drag-to-scroll functionality
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollContainerRef.current) return;
 
     setIsDragging(true);
-    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
-    setScrollLeft(scrollContainerRef.current.scrollLeft);
+    setDragState({
+      clickLocation: e.pageX - scrollContainerRef.current.offsetLeft, // Where the user clicked when starting to drag
+      scrollLeft: scrollContainerRef.current.scrollLeft, // How far the table has already been scrolled horizontally
+    });
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !scrollContainerRef.current) return;
-
-    e.preventDefault();
-    const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 1; // Multiply by 2 for faster scrolling
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
-
-  // Add global mouse events for when mouse leaves the container while dragging
   useEffect(() => {
-    const handleGlobalMouseUp = () => {
-      setIsDragging(false);
-    };
+    if (!isDragging) return;
 
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      if (!isDragging || !scrollContainerRef.current) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!scrollContainerRef.current) return;
 
       e.preventDefault();
-      const x = e.pageX - scrollContainerRef.current.offsetLeft;
-      const walk = (x - startX) * 2;
-      scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+      const x = e.pageX - scrollContainerRef.current.offsetLeft; // Current mouse position relative to the container
+      const moveDistance = (x - dragState.clickLocation) * 2; // Multiply by 2 for faster scrolling
+      scrollContainerRef.current.scrollLeft =
+        dragState.scrollLeft - moveDistance;
     };
 
-    if (isDragging) {
-      document.addEventListener('mouseup', handleGlobalMouseUp);
-      document.addEventListener('mousemove', handleGlobalMouseMove);
-    }
+    const handleMouseUp = () => setIsDragging(false);
+
+    // Prevent text selection during drag
+    const preventSelection = (e: Event) => e.preventDefault();
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('selectstart', preventSelection);
 
     return () => {
-      document.removeEventListener('mouseup', handleGlobalMouseUp);
-      document.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('selectstart', preventSelection);
     };
-  }, [isDragging, startX, scrollLeft]);
+  }, [isDragging, dragState]);
 
+  // Loading state
   if (loadingFile) {
     return <Spinner />;
   }
 
-  // If the file is too large, display a warning and download option
-  if (isTooLarge) {
-    return (
-      <Box py="12px">
-        <Text fontStyle="italic" color="coolGrey600">
-          {formatMessage(messages.csvPreviewTooLarge, {
-            size: maxFileSizeMB,
-          })}
-        </Text>
-        <Box display="flex">
-          <Button
-            mt="12px"
-            buttonStyle="admin-dark"
-            onClick={() => window.open(url, '_blank')}
-            text={formatMessage(messages.downloadFile)}
-            fontSize="s"
-            p="4px 8px"
-          />
-        </Box>
-      </Box>
-    );
-  }
+  // Error states and file too large
+  if (isTooLarge || fileReadError || rows.length === 0) {
+    const messageKey = isTooLarge
+      ? messages.csvPreviewTooLarge
+      : messages.csvPreviewError;
 
-  // If there was an error reading the file or if no rows were parsed,
-  // display an error message and a download button.
-  if (fileReadError || rows.length === 0) {
+    const messageProps = isTooLarge ? { size: maxFileSizeMB } : undefined;
+
     return (
       <Box py="12px">
         <Text fontStyle="italic" color="coolGrey600">
-          {formatMessage(messages.csvPreviewError)}
+          {formatMessage(messageKey, messageProps)}
         </Text>
         <DownloadFileButton url={url} />
       </Box>
     );
   }
 
-  const headers = rows[0];
-  const dataRows = rows.slice(1);
+  // Successful data load - render table
+  const [headers, ...dataRows] = rows;
 
   return (
     <>
@@ -183,28 +157,17 @@ const CsvFilePreview = ({
         <Text m="0px" mt="24px" color="coolGrey600" fontStyle="italic">
           {formatMessage(messages.csvPreviewLimit)}
         </Text>
-        <Box display="flex">
-          <Button
-            mt="12px"
-            buttonStyle="admin-dark"
-            onClick={() => window.open(url, '_blank')}
-            text={formatMessage(messages.downloadFile)}
-            fontSize="s"
-            p="4px 8px"
-          />
-        </Box>
+        <DownloadFileButton url={url} />
       </Box>
+
       <Box
         mt="30px"
         overflowX="auto"
         transform="rotateX(180deg)"
         ref={scrollContainerRef}
         onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
       >
-        <StyledBox>
+        <ScrollableTableContainer>
           <Table innerBorders={{ bodyRows: true }}>
             <Thead>
               <Tr>
@@ -223,7 +186,7 @@ const CsvFilePreview = ({
               ))}
             </Tbody>
           </Table>
-        </StyledBox>
+        </ScrollableTableContainer>
       </Box>
     </>
   );
