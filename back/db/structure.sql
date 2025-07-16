@@ -303,9 +303,11 @@ DROP INDEX IF EXISTS public.index_files_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_file_id_and_project_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_file_id;
 DROP INDEX IF EXISTS public.index_files_on_uploader_id;
+DROP INDEX IF EXISTS public.index_files_on_tsvector;
 DROP INDEX IF EXISTS public.index_files_on_size;
 DROP INDEX IF EXISTS public.index_files_on_name_gin_trgm;
 DROP INDEX IF EXISTS public.index_files_on_mime_type;
+DROP INDEX IF EXISTS public.index_files_on_description_multiloc_text_gin_trgm_ops;
 DROP INDEX IF EXISTS public.index_files_on_category;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
 DROP INDEX IF EXISTS public.index_events_on_maximum_attendees;
@@ -2434,7 +2436,8 @@ CREATE TABLE public.files (
     size integer,
     mime_type character varying,
     category character varying DEFAULT 'other'::character varying NOT NULL,
-    description_multiloc jsonb DEFAULT '{}'::jsonb
+    description_multiloc jsonb DEFAULT '{}'::jsonb,
+    tsvector tsvector GENERATED ALWAYS AS ((setweight(to_tsvector('simple'::regconfig, (COALESCE(name, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('simple'::regconfig, COALESCE((description_multiloc)::text, ''::text)), 'B'::"char"))) STORED
 );
 
 
@@ -5234,6 +5237,13 @@ CREATE INDEX index_files_on_category ON public.files USING btree (category);
 
 
 --
+-- Name: index_files_on_description_multiloc_text_gin_trgm_ops; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_on_description_multiloc_text_gin_trgm_ops ON public.files USING gin (((description_multiloc)::text) shared_extensions.gin_trgm_ops);
+
+
+--
 -- Name: index_files_on_mime_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5252,6 +5262,13 @@ CREATE INDEX index_files_on_name_gin_trgm ON public.files USING gin (name shared
 --
 
 CREATE INDEX index_files_on_size ON public.files USING btree (size);
+
+
+--
+-- Name: index_files_on_tsvector; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_on_tsvector ON public.files USING gin (tsvector);
 
 
 --
@@ -7458,6 +7475,7 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20250715075008'),
+('20250714165020'),
 ('20250714155020'),
 ('20250714073201'),
 ('20250708085259'),
