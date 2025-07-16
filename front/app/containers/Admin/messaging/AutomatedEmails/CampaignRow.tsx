@@ -9,6 +9,7 @@ import {
 
 import useAddCampaign from 'api/campaigns/useAddCampaign';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -63,6 +64,15 @@ const CampaignRow = ({
   });
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
 
+  const conflictingContexts =
+    campaign.relationships.conflicting_contexts?.data || [];
+
+  // Fetch phase details for each conflicting context
+  const conflictingPhases = conflictingContexts.map((context) => {
+    const { data: phase } = usePhase(context.id);
+    return phase;
+  });
+
   return (
     <ListItem p="8px 0">
       <Box display="flex" alignItems="center">
@@ -102,6 +112,16 @@ const CampaignRow = ({
           )}
         </Box>
       </Box>
+      {conflictingPhases.length > 0 && (
+        <Box mt="8px">
+          <p>
+            Conflicting phases:{' '}
+            {conflictingPhases
+              .map((phase) => phase?.data.attributes.title_multiloc.en)
+              .join(', ')}
+          </p>
+        </Box>
+      )}
     </ListItem>
   );
 };

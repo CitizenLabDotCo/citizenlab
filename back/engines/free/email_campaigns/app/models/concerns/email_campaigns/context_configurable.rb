@@ -8,8 +8,14 @@ module EmailCampaigns
       validates :context_type, inclusion: { in: proc { |record| record.class.supported_context.name }, allow_blank: true }
     end
 
-    def self.supports_context?(context)
-      context.is_a?(supported_context)
+    class_methods do
+      def supports_context?(context)
+        context.is_a?(supported_context)
+      end
+
+      def supported_context
+        raise NotImplementedError, "#{name} must implement the supported_context class method"
+      end
     end
 
     def conflicting_contexts
