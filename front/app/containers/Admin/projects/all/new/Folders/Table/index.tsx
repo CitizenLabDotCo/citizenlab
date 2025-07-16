@@ -11,15 +11,12 @@ import {
   stylingConsts,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { MiniProjectFolders, Parameters } from 'api/project_folders_mini/types';
+import useInfiniteProjectFoldersAdmin from 'api/project_folders_mini/useInfiniteProjectFoldersAdmin';
 
 import { useInfiniteScroll } from 'hooks/useInfiniteScroll';
 
 import { useIntl } from 'utils/cl-intl';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import { useParams } from '../utils';
 
@@ -27,19 +24,6 @@ import messages from './messages';
 import Row from './Row';
 
 const PAGE_SIZE = 10;
-
-const fetchProjectFoldersAdmin = async (
-  queryParams: Parameters
-): Promise<MiniProjectFolders> =>
-  fetcher<MiniProjectFolders>({
-    path: '/project_folders/for_admin',
-    action: 'get',
-    queryParams: {
-      ...queryParams,
-      'page[number]': queryParams['page[number]'] ?? 1,
-      'page[size]': queryParams['page[size]'] ?? PAGE_SIZE,
-    },
-  });
 
 const Table = () => {
   const { formatMessage } = useIntl();
@@ -52,20 +36,11 @@ const Table = () => {
     fetchNextPage,
     hasNextPage,
     status,
-  } = useInfiniteQuery(
-    ['projectFolders', params],
-    ({ pageParam = 1 }) =>
-      fetchProjectFoldersAdmin({
-        ...params,
-        'page[number]': pageParam,
-        'page[size]': PAGE_SIZE,
-      }),
+  } = useInfiniteProjectFoldersAdmin(
     {
-      getNextPageParam: (lastPage) => {
-        const nextLink = lastPage.links?.next;
-        return nextLink ? getPageNumberFromUrl(nextLink) : undefined;
-      },
-    }
+      ...params,
+    },
+    PAGE_SIZE
   );
 
   const folders = useMemo(
