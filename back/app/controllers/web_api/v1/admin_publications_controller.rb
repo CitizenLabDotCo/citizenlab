@@ -5,9 +5,10 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   before_action :set_admin_publication, only: %i[reorder show]
 
   def index
-    # Make include_unlisted available to the policy scope.
-    policy_context[:apply_listed_scope] = true
-    policy_context[:include_unlisted] = params[:include_unlisted] != 'false'
+    # By default, this endpoint will remove unlisted projects that the user cannot moderate.
+    policy_context[:remove_unlisted] = params[:include_unlisted] == 'false'
+      ? 'remove_all_unlisted'
+      : 'remove_unlisted_that_user_cannot_moderate'
 
     admin_publications = policy_scope(AdminPublication.includes(:parent))
     admin_publications = admin_publication_filterer.filter(admin_publications, params.merge(current_user: current_user))

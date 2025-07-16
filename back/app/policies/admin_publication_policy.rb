@@ -20,11 +20,11 @@ class AdminPublicationPolicy < ApplicationPolicy
           scope = scope.not_hidden
         end
 
-        if context[:apply_listed_scope]
+        if context[:remove_unlisted]
           scope = ProjectPolicy.apply_listed_scope(
             scope,
             user,
-            context[:include_unlisted] != false
+            context[:remove_unlisted]
           )
         end
 
