@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 
 import { useIntl } from 'utils/cl-intl';
 
+import DownloadFileButton from '../../DownloadFileButton';
 import messages from '../messages';
 
 type Props = {
@@ -30,7 +31,12 @@ const MarkdownFilePreview = ({ url }: Props) => {
 
   if (error) {
     return (
-      <Text color="error">{formatMessage(messages.couldNotLoadMarkdown)}</Text>
+      <Box>
+        <Text color="error">
+          {formatMessage(messages.couldNotLoadMarkdown)}
+        </Text>
+        <DownloadFileButton url={url} />
+      </Box>
     );
   }
 

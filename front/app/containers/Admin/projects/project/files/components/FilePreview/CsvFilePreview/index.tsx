@@ -19,8 +19,8 @@ import { useIntl } from 'utils/cl-intl';
 import DownloadFileButton from '../../DownloadFileButton';
 import messages from '../messages';
 
-const MAX_ROWS = 50; // Default max rows to read from CSV
-const MAX_FILE_SIZE_MB = 2; // Default max file size in MB
+const MAX_ROWS = 50; // Default max rows to read from the CSV (helps with performance)
+const MAX_FILE_SIZE_MB = 2; // Max file size in MB we will allow previews for (helps with performance)
 
 type Props = {
   url: string;
@@ -32,7 +32,7 @@ const ScrollableTableContainer = styled(Box)`
     180deg
   ); /* Rotation to allow the X scroll bar on the top */
   cursor: grab;
-  user-select: none; /* Prevent text selection in the table when draging to scroll */
+  user-select: none; /* Prevent text selection in the table when dragging to scroll */
 
   &:active {
     cursor: grabbing;
@@ -66,7 +66,7 @@ const CsvFilePreview = ({ url, fileSize }: Props) => {
     fetch(url)
       .then((res) => res.text())
       .then((csvText) => {
-        // Parse the CSV text using PapaParse.
+        // Parse the CSV text using Papa Parse.
         // We only read a limited number of rows to avoid performance issues.
         const result = Papa.parse<string[]>(csvText, {
           preview: MAX_ROWS,
@@ -97,14 +97,14 @@ const CsvFilePreview = ({ url, fileSize }: Props) => {
   useEffect(() => {
     if (!isDragging) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (event: MouseEvent) => {
       if (!scrollContainerRef.current) return;
 
-      e.preventDefault();
+      event.preventDefault();
 
       // Calculate the new scroll position based on mouse movement
-      const x = e.pageX - scrollContainerRef.current.offsetLeft; // Current mouse position relative to the container
-      const moveDistance = (x - dragState.clickLocation) * 2; // Multiply by 2 for faster scrolling
+      const mouseX = event.pageX - scrollContainerRef.current.offsetLeft; // Current mouse position relative to the container
+      const moveDistance = (mouseX - dragState.clickLocation) * 2; // Multiply by 2 for faster scrolling
       scrollContainerRef.current.scrollLeft =
         dragState.scrollLeft - moveDistance;
     };
@@ -112,7 +112,7 @@ const CsvFilePreview = ({ url, fileSize }: Props) => {
     const handleMouseUp = () => setIsDragging(false);
 
     // Prevent text selection of the table content during drag
-    const preventSelection = (e: Event) => e.preventDefault();
+    const preventSelection = (event: Event) => event.preventDefault();
 
     // Attach the event liteners
     document.addEventListener('mousemove', handleMouseMove);
