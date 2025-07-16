@@ -20,7 +20,12 @@ import {
 import { updatePointDataAndDisplay } from './pointUtils';
 
 export type MapInputType = 'point' | 'line' | 'polygon';
-export type EsriGeometryType = 'point' | 'polygon' | 'polyline' | 'multipoint';
+export type EsriGeometryType =
+  | 'point'
+  | 'polygon'
+  | 'polyline'
+  | 'multipoint'
+  | nullish;
 
 // reverseGeocodeAndSave
 // Description: Reverse geocodes a point and saves the address
@@ -65,10 +70,10 @@ export const getUserInputPoints = (
   // We store all user input data in it's own graphics layer
   const userGraphicsLayer = getUserInputGraphicsLayer(mapView);
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  userGraphicsLayer?.graphics?.forEach((graphic) => {
-    if (graphic.geometry.type === 'point') {
+  userGraphicsLayer?.graphics.forEach((graphic) => {
+    // ES Lint not correctly identifying the "Nullish" type here
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (graphic.geometry?.type === 'point') {
       // We want just a list of the points
       filteredGraphics.push(graphic);
     }
@@ -77,7 +82,7 @@ export const getUserInputPoints = (
   return filteredGraphics.map((graphic) => {
     const point = graphic.geometry as __esri.Point;
     return [point.longitude, point.latitude];
-  });
+  }) as number[][];
 };
 
 // checkCoordinateErrors

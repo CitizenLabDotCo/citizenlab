@@ -217,7 +217,10 @@ const EsriMap = ({
         });
 
         // If the WebMap has reference layers, save them in state
-        setReferenceLayers(map.basemap.referenceLayers);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (map.basemap) {
+          setReferenceLayers(map.basemap.referenceLayers);
+        }
       });
     }
   }, [layers, map, mapView, referenceLayers]);

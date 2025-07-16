@@ -44,7 +44,7 @@ export const handleMapClickMultipoint = (
   const currentPointCoordinates = getUserInputPoints(mapView);
 
   // Update the form data
-  currentPointCoordinates.push([newPoint[0], newPoint[1]]);
+  currentPointCoordinates.push([newPoint[0] || 0, newPoint[1] || 0]);
   handleMultiPointChange?.(currentPointCoordinates);
 };
 
@@ -81,9 +81,13 @@ export const setupPointDrag = ({
         // Get the first element under the mouse click
         const clickedElement = response.results[0];
         if (
-          clickedElement.layer.title === 'User Input' &&
+          // ES Lint not correctly identifying the "Nullish" type here
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          clickedElement.layer?.title === 'User Input' &&
           clickedElement.type === 'graphic' &&
-          clickedElement.graphic.geometry.type === 'point'
+          // ES Lint not correctly identifying the "Nullish" type here
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          clickedElement.graphic.geometry?.type === 'point'
         ) {
           event.stopPropagation();
           pointBeingDragged.current = clickedElement.graphic;
@@ -148,7 +152,10 @@ export const setupPointDrag = ({
             );
 
             if (
-              longitude === pointBeingDragged.current?.geometry['longitude'] &&
+              longitude ===
+                // ES Lint not correctly identifying the "Nullish" type here
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                pointBeingDragged.current?.geometry?.['longitude'] &&
               latitude === pointBeingDragged.current.geometry['latitude']
             ) {
               // This is the original point the user tried to drag, so
@@ -203,7 +210,10 @@ export const generateLinePreview = ({
 
   const indexOfDragPoint = currentDataCoordinates.findIndex(
     (coordinates: number[][]) =>
-      coordinates[0] === pointBeingDragged.current?.geometry['longitude'] &&
+      coordinates[0] ===
+        // ES Lint not correctly identifying the "Nullish" type here
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        pointBeingDragged.current?.geometry?.['longitude'] &&
       coordinates[1] === pointBeingDragged.current.geometry['latitude']
   );
 
@@ -212,33 +222,34 @@ export const generateLinePreview = ({
 
   // Create a line graphic connecting the drag point preview to any previous or next points
   const linePreviewPath: number[][] = [];
+  if (projectedPoint.longitude && projectedPoint.latitude) {
+    if (
+      indexOfDragPoint > 0 &&
+      indexOfDragPoint < currentDataCoordinates.length - 1
+    ) {
+      // Dragging a middle point
+      linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint - 1]);
+      linePreviewPath.push([projectedPoint.longitude, projectedPoint.latitude]);
+      linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint + 1]);
+    } else if (indexOfDragPoint === 0) {
+      // Dragging the first point
+      if (inputType === 'polygon') {
+        // Connect the line to the last point if we're forming a polygon
+        linePreviewPath.push(
+          currentDataCoordinates?.[currentDataCoordinates.length - 1]
+        );
+      }
+      linePreviewPath.push([projectedPoint.longitude, projectedPoint.latitude]);
 
-  if (
-    indexOfDragPoint > 0 &&
-    indexOfDragPoint < currentDataCoordinates.length - 1
-  ) {
-    // Dragging a middle point
-    linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint - 1]);
-    linePreviewPath.push([projectedPoint.longitude, projectedPoint.latitude]);
-    linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint + 1]);
-  } else if (indexOfDragPoint === 0) {
-    // Dragging the first point
-    if (inputType === 'polygon') {
-      // Connect the line to the last point if we're forming a polygon
-      linePreviewPath.push(
-        currentDataCoordinates?.[currentDataCoordinates.length - 1]
-      );
-    }
-    linePreviewPath.push([projectedPoint.longitude, projectedPoint.latitude]);
-
-    linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint + 1]);
-  } else if (indexOfDragPoint === currentDataCoordinates.length - 1) {
-    // Dragging the last point
-    linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint - 1]);
-    linePreviewPath.push([projectedPoint.longitude, projectedPoint.latitude]);
-    if (inputType === 'polygon') {
-      // Connect the line to the first point if we're forming a polygon
-      linePreviewPath.push(currentDataCoordinates?.[0]);
+      linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint + 1]);
+    } else if (indexOfDragPoint === currentDataCoordinates.length - 1) {
+      // Dragging the last point
+      linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint - 1]);
+      linePreviewPath.push([projectedPoint.longitude, projectedPoint.latitude]);
+      if (inputType === 'polygon') {
+        // Connect the line to the first point if we're forming a polygon
+        linePreviewPath.push(currentDataCoordinates?.[0]);
+      }
     }
   }
 

@@ -132,10 +132,10 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
             coordinates: [
               // TODO: Fix this the next time the file is edited.
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              initialMapCenter?.latitude,
+              initialMapCenter?.latitude || 0,
               // TODO: Fix this the next time the file is edited.
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              initialMapCenter?.longitude,
+              initialMapCenter?.longitude || 0,
             ],
           },
         }}
