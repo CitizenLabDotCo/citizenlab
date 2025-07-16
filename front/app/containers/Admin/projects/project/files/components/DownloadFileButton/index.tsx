@@ -28,8 +28,8 @@ const DownloadFileButton = ({ file, variant = 'button-text' }: Props) => {
       <Box display="flex">
         <Tooltip content={formatMessage(messages.downloadFile)}>
           <IconButton
-            mt="2px"
-            iconHeight="24px"
+            mt="3px"
+            iconHeight="22px"
             iconName="download"
             onClick={() => saveFileToDisk(file)}
             a11y_buttonActionMessage={formatMessage(messages.downloadFile)}

@@ -122,7 +122,7 @@ const FilePreview = ({ file }: Props) => {
     <Box>
       <Box>
         <Label>
-          {formatMessage(messages.filePreviewLabel)}{' '}
+          {formatMessage(messages.filePreviewLabel)}
           <DownloadFileButton file={file.data} variant="icon" />
         </Label>
       </Box>
