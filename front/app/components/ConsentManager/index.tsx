@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
@@ -34,16 +34,6 @@ const ConsentManager = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
 
-  const resetPreferences = useCallback(() => {
-    setPreferences(
-      getCurrentPreferences(
-        appConfiguration?.data,
-        authUser?.data,
-        cookieConsent
-      )
-    );
-  }, [appConfiguration, authUser, cookieConsent]);
-
   useEffect(() => {
     const cookieConsent = getConsent();
     setCookieConsent(cookieConsent);
@@ -66,49 +56,53 @@ const ConsentManager = () => {
     );
   }, [appConfiguration?.data, authUser?.data]);
 
-  const updatePreference = useCallback(
-    (category: TCategory, value: boolean) => {
-      setPreferences((preferences) => ({
-        ...preferences,
-        [category]: value,
-      }));
-    },
-    []
-  );
+  const resetPreferences = () => {
+    setPreferences(
+      getCurrentPreferences(
+        appConfiguration?.data,
+        authUser?.data,
+        cookieConsent
+      )
+    );
+  };
 
-  const saveConsent = useCallback(
-    (newPreferences: IPreferences) => {
-      if (isNilOrError(appConfiguration)) return;
-      const newChoices: ISavedDestinations = {};
+  const updatePreference = (category: TCategory, value: boolean) => {
+    setPreferences((preferences) => ({
+      ...preferences,
+      [category]: value,
+    }));
+  };
 
-      getActiveDestinations(appConfiguration.data, authUser?.data).forEach(
-        (config) => {
-          newChoices[config.key] =
-            newPreferences[getCategory(appConfiguration.data, config)];
-        }
-      );
+  const saveConsent = (newPreferences: IPreferences) => {
+    if (isNilOrError(appConfiguration)) return;
+    const newChoices: ISavedDestinations = {};
 
-      setConsent({
-        ...newPreferences,
-        savedChoices: {
-          ...cookieConsent?.savedChoices,
-          ...newChoices,
-        },
-      });
+    getActiveDestinations(appConfiguration.data, authUser?.data).forEach(
+      (config) => {
+        newChoices[config.key] =
+          newPreferences[getCategory(appConfiguration.data, config)];
+      }
+    );
 
-      eventEmitter.emit<ISavedDestinations>(
-        'destinationConsentChanged',
-        newChoices
-      );
+    setConsent({
+      ...newPreferences,
+      savedChoices: {
+        ...cookieConsent?.savedChoices,
+        ...newChoices,
+      },
+    });
 
-      setCookieConsent(getConsent());
-    },
-    [appConfiguration, authUser, cookieConsent?.savedChoices]
-  );
+    eventEmitter.emit<ISavedDestinations>(
+      'destinationConsentChanged',
+      newChoices
+    );
+
+    setCookieConsent(getConsent());
+  };
 
   const onSaveConsent = () => saveConsent(preferences);
 
-  const accept = useCallback(() => {
+  const accept = () => {
     const newPreferences: IPreferences = {};
 
     allCategories().forEach((category) => {
@@ -118,9 +112,9 @@ const ConsentManager = () => {
 
     setPreferences(newPreferences);
     saveConsent(newPreferences);
-  }, [preferences, saveConsent]);
+  };
 
-  const reject = useCallback(() => {
+  const reject = () => {
     const newPreferences = {
       advertising: false,
       analytics: false,
@@ -129,47 +123,42 @@ const ConsentManager = () => {
 
     setPreferences(newPreferences);
     saveConsent(newPreferences);
-  }, [saveConsent]);
+  };
 
-  const toggleDefault = useCallback(
-    (modalOpened: boolean) => {
-      const newPreferences: IPreferences = {};
-      const modalIsCurrentlyOpening = !modalOpened;
+  const toggleDefault = (modalOpened: boolean) => {
+    const newPreferences: IPreferences = {};
+    const modalIsCurrentlyOpening = !modalOpened;
 
-      // If modal is currently opening: overwrite undefined preferences with false
-      if (modalIsCurrentlyOpening) {
-        allCategories().forEach((category) => {
-          newPreferences[category] =
-            preferences[category] === undefined ? false : preferences[category];
-        });
-      }
+    // If modal is currently opening: overwrite undefined preferences with false
+    if (modalIsCurrentlyOpening) {
+      allCategories().forEach((category) => {
+        newPreferences[category] =
+          preferences[category] === undefined ? false : preferences[category];
+      });
+    }
 
-      // If modal is currently closing: overwrite false preferences with undefined
-      if (!modalIsCurrentlyOpening) {
-        allCategories().forEach((category) => {
-          newPreferences[category] =
-            preferences[category] === false ? undefined : preferences[category];
-        });
-      }
+    // If modal is currently closing: overwrite false preferences with undefined
+    if (!modalIsCurrentlyOpening) {
+      allCategories().forEach((category) => {
+        newPreferences[category] =
+          preferences[category] === false ? undefined : preferences[category];
+      });
+    }
 
-      setPreferences(newPreferences);
-    },
-    [preferences]
+    setPreferences(newPreferences);
+  };
+
+  const activeDestinations = getActiveDestinations(
+    appConfiguration?.data,
+    authUser?.data
   );
-
-  const activeDestinations = useMemo(
-    () => getActiveDestinations(appConfiguration?.data, authUser?.data),
-    [appConfiguration, authUser]
+  const activeCategorizedDestinations = categorizeDestinations(
+    appConfiguration?.data,
+    activeDestinations
   );
-
-  const activeCategorizedDestinations = useMemo(
-    () => categorizeDestinations(appConfiguration?.data, activeDestinations),
-    [appConfiguration, activeDestinations]
-  );
-
-  const isConsentRequired = useMemo(
-    () => getConsentRequired(cookieConsent, activeDestinations),
-    [cookieConsent, activeDestinations]
+  const isConsentRequired = getConsentRequired(
+    cookieConsent,
+    activeDestinations
   );
 
   return (

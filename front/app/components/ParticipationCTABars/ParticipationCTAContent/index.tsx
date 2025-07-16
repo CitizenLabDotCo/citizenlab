@@ -69,6 +69,7 @@ const ParticipationCTAContent = ({
         move the id in ProjectCTABar.
       */
       id="project-cta-bar-top"
+      data-cy="project-cta-bar-top"
     >
       <Box display="flex" width="100%" maxWidth={`${maxPageWidth}px`}>
         <TimeIndicator

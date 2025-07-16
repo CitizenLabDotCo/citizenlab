@@ -345,6 +345,7 @@ cy:
       line_print_description: 'Lluniwch lwybr ar y map isod.'
       polygon_print_description: 'Lluniwch siâp ar y map isod.'
       select_print_description: 'Dewiswch un opsiwn yn unig.'
+      date_print_description: 'Ysgrifennwch ddyddiad yn y fformat BBBB-MM-DD.'
   project_copy:
     title_suffix: 'Copi'
   confirmations_mailer:
