@@ -1298,7 +1298,8 @@ CREATE TABLE public.projects (
     followers_count integer DEFAULT 0 NOT NULL,
     preview_token character varying NOT NULL,
     header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
-    hidden boolean DEFAULT false NOT NULL
+    hidden boolean DEFAULT false NOT NULL,
+    listed boolean DEFAULT true NOT NULL
 );
 
 
@@ -7456,6 +7457,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250716141100'),
 ('20250715075008'),
 ('20250714073201'),
 ('20250708085259'),
