@@ -18,4 +18,16 @@ export default defineMessages({
     defaultMessage:
       '{numberOfProjects, plural, one {# project} other {# projects}}',
   },
+  loadingMore: {
+    id: 'app.containers.Admin.projects.all.new.Folders.Table.loadingMore',
+    defaultMessage: 'Loading more…',
+  },
+  scrollDownToLoadMore: {
+    id: 'app.containers.Admin.projects.all.new.Folders.Table.scrollDownToLoadMore',
+    defaultMessage: 'Scroll down to load more',
+  },
+  allFoldersHaveLoaded: {
+    id: 'app.containers.Admin.projects.all.new.Folders.Table.allFoldersHaveLoaded',
+    defaultMessage: 'All folders have been loaded',
+  },
 });
