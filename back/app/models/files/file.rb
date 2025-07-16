@@ -75,6 +75,8 @@ module Files
   class File < ApplicationRecord
     include PgSearch::Model
 
+    attribute :ai_processing_allowed, :boolean, default: false
+
     enum :category, {
       meeting: 'meeting',
       interview: 'interview',

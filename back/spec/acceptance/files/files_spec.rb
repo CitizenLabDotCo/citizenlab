@@ -177,12 +177,10 @@ resource 'Files' do
     with_options scope: :file do
       parameter :name, 'The name of the file', required: true
       parameter :content, 'The content of the file, encoded in Base64', required: true
-      parameter :project, 'The project to which the file will be uploaded', required: false
-      parameter :description_multiloc, 'The description of the file, as a multiloc string', required: false
-
-      parameter :category, <<~CATEGORY_DESC.squish, required: false
-        The category of the file (values: #{Files::File.categories.values.join(', ')})
-      CATEGORY_DESC
+      parameter :project, 'The project to which the file will be uploaded'
+      parameter :description_multiloc, 'The description of the file, as a multiloc string'
+      parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file (defaults to false)'
+      parameter :category, "The category of the file (values: #{Files::File.categories.values.join(', ')})"
     end
 
     let(:name) { 'afvalkalender.pdf' }
@@ -249,6 +247,27 @@ resource 'Files' do
 
         file = Files::File.find(response_data[:id])
         expect(file.description_multiloc).to eq(description_multiloc)
+      end
+
+      example 'Create a file with ai_processing_allowed set to true', document: false do
+        do_request(file: { name: name, content: content, ai_processing_allowed: true })
+
+        assert_status 201
+
+        expect(response_data[:attributes][:ai_processing_allowed]).to be true
+
+        file = Files::File.find(response_data[:id])
+        expect(file.ai_processing_allowed).to be true
+      end
+
+      example 'casts ai_processing_allowed to boolean', document: false do
+        do_request(file: { name: name, content: content, ai_processing_allowed: 'whatever' })
+        assert_status 201
+        expect(response_data[:attributes][:ai_processing_allowed]).to be true
+
+        do_request(file: { name: name, content: content, ai_processing_allowed: 'off' })
+        assert_status 201
+        expect(response_data[:attributes][:ai_processing_allowed]).to be false
       end
     end
   end

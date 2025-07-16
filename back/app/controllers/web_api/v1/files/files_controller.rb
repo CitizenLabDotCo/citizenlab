@@ -56,12 +56,14 @@ class WebApi::V1::Files::FilesController < ApplicationController
   private
 
   def create_params
-    {
-      content_by_content: params.require(:file).permit(:content, :name),
-      uploader_id: current_user.id,
-      category: params.dig(:file, :category),
-      description_multiloc: params.dig(:file, :description_multiloc)
-    }.compact
+    params.require(:file).permit(
+      :category,
+      :ai_processing_allowed,
+      description_multiloc: CL2_SUPPORTED_LOCALES
+    ).tap do |create_params|
+      create_params[:content_by_content] = params.require(:file).permit(:content, :name)
+      create_params[:uploader_id] = current_user.id
+    end
   end
 
   def finder_params
