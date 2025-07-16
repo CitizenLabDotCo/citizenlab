@@ -168,11 +168,11 @@ describe BulkImportIdeas::Importers::IdeaImporter do
           body_multiloc: { 'en' => 'My idea description' },
           project_id: project.id,
           user_email: 'userimport@citizenlab.co',
-          published_at: '01/01/2021'
+          published_at: 'BAD DATE FORMAT'
         }
       ]
       expect { service.import idea_rows }.to raise_error(
-        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_publication_date_invalid_format', params: { value: '01/01/2021', row: nil }))
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_publication_date_invalid_format', params: { value: 'BAD DATE FORMAT', row: nil }))
       )
 
       idea_rows = [
@@ -181,11 +181,11 @@ describe BulkImportIdeas::Importers::IdeaImporter do
           body_multiloc: { 'en' => 'My idea description' },
           project_id: project.id,
           user_email: 'userimport@citizenlab.co',
-          published_at: '01-13-2021'
+          published_at: '30-30-2021'
         }
       ]
       expect { service.import idea_rows }.to raise_error(
-        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_publication_date_invalid_format', params: { value: '01-13-2021', row: nil }))
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_publication_date_invalid_format', params: { value: '30-30-2021', row: nil }))
       )
     end
 
