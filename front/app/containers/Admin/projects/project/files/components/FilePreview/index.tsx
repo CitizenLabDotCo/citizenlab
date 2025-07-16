@@ -121,7 +121,10 @@ const FilePreview = ({ file }: Props) => {
   return (
     <Box>
       <Box>
-        <Label>{formatMessage(messages.filePreviewLabel)}</Label>
+        <Label>
+          {formatMessage(messages.filePreviewLabel)}{' '}
+          <DownloadFileButton file={file.data} variant="icon" />
+        </Label>
       </Box>
       {getFilePreviewByType()}
     </Box>

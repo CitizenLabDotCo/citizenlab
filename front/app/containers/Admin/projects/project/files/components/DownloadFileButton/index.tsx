@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  colors,
+  IconButton,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 
 import { IFileData } from 'api/files/types';
 
@@ -11,10 +17,28 @@ import messages from '../messages';
 
 type Props = {
   file: IFileData;
+  variant?: 'button-text' | 'icon';
 };
 
-const DownloadFileButton = ({ file }: Props) => {
+const DownloadFileButton = ({ file, variant = 'button-text' }: Props) => {
   const { formatMessage } = useIntl();
+
+  if (variant === 'icon') {
+    return (
+      <Box display="flex">
+        <Tooltip content={formatMessage(messages.downloadFile)}>
+          <IconButton
+            mt="2px"
+            iconHeight="24px"
+            iconName="download"
+            onClick={() => saveFileToDisk(file)}
+            a11y_buttonActionMessage={formatMessage(messages.downloadFile)}
+            iconColor={colors.coolGrey600}
+          />
+        </Tooltip>
+      </Box>
+    );
+  }
   return (
     <Box display="flex">
       <Button
