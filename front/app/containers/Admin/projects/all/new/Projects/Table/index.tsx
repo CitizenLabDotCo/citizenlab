@@ -80,12 +80,7 @@ const Table = () => {
   });
 
   useEffect(() => {
-    console.log(
-      `[InfiniteScroll] inView=${inView} | pages=${data?.pages.length} | isFetchingNextPage=${isFetchingNextPage} | hasNextPage=${hasNextPage}`
-    );
-
     if (inView && hasNextPage && !isFetchingNextPage && !didFetchRef.current) {
-      console.log('🔽 Sentinel entered view — fetching next page');
       didFetchRef.current = true;
       fetchNextPage();
     } else if (!inView) {
@@ -94,21 +89,21 @@ const Table = () => {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages]);
 
-  const getVisibilityMessageDescriptor = () => {
+  const getSentinelMessage = () => {
     if (isFetchingNextPage) {
       return messages.loadingMore;
     }
     if (hasNextPage) {
       return messages.scrollDownToLoadMore;
     }
-    // Only show "All loaded" if the query is done and we actually have projects.
+    // Only show "All loaded" if the query is done
     if (status === 'success' && !hasNextPage) {
       return messages.allProjectsLoaded;
     }
 
     return null;
   };
-  const visibilityMessageDescriptor = getVisibilityMessageDescriptor();
+  const sentinelMessage = getSentinelMessage();
 
   return (
     <Box position="relative" w="100%" h="100%">
@@ -136,9 +131,9 @@ const Table = () => {
       </TableComponent>
 
       {/* sentinel */}
-      {visibilityMessageDescriptor && (
+      {sentinelMessage && (
         <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
-          {formatMessage(visibilityMessageDescriptor)}
+          {formatMessage(sentinelMessage)}
         </Box>
       )}
 
