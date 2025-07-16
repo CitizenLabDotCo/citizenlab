@@ -85,11 +85,17 @@ hu:
         "6": "Hetente, szombatonként %{hourOfDay}-kor"
       quarterly: "Negyedévenként, a negyedév első napján"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Dámvadtehén'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Dámvadtehén'
+      author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Kovács'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Példaprojekt'
       comment_body: 'Ez egy példa a hozzászólásra, amelyet e-mailek tartalmának előnézetére használnak. Ez nem valós tartalom.'
+      comment_deleted_reason: 'A példaként említett hozzászólásodat nem megfelelőnek ítélték.'
       idea_title: 'Példaötlet'
+      proposal_title: 'Példaajánlat'
     footer:
       "link_privacy_policy": "Adatvédelmi szabályzat"
       "link_terms_conditions": "Általános Szerződési Feltételek"
@@ -103,22 +109,22 @@ hu:
     manual:
       preheader: 'Önnek levelei vannak a %{organizationName}feladótól'
     comment_deleted_by_admin:
-      reason: 'A hozzászólásod törlésének oka:'
-      cta_view: 'Tekintse meg ezt az ötletet'
+      subject: 'Megjegyzését töröltük a %{organizationName}platformjáról'
+      preheader: 'A hozzászólásod törölve lett'
+      title: '%{organizationName} törölte a hozzászólásodat'
       event_description: '%{organizationName} törölte egy ötlethez írt megjegyzését.'
-      main_header: '%{organizationName} törölte a megjegyzésedet'
+      cta_button: 'Tekintse meg ezt az ötletet'
+      reason: 'A hozzászólásod törlésének oka:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Az Ön megjegyzése nem megfelelő'
       irrelevant_reason: 'Az Ön megjegyzése nem volt releváns ebben a kontextusban'
       no_reason: 'Nem adtak meg okot'
-      subject: 'Megjegyzését töröltük a %{organizationName}platformjáról'
-      preheader: 'A hozzászólásod törölve lett'
     admin_digest:
       subject: 'A %{time}heti rendszergazdai jelentése'
       preheader: 'A %{organizationName}rendszergazdai kivonata'
-      title_your_weekly_report: '%{firstName}, a heti jelentés'
-      text_introduction: 'Összegyűjtöttük Önnek azt a bemenetet, amely a legtöbb tevékenységet generálta az elmúlt héten. Tudja meg, mi történik a platformján!'
-      cta_visit_the_platform: 'Látogassa meg platformját'
+      title: '%{firstName}, a heti jelentésed'
+      event_description: 'Összegyűjtöttük azokat a hozzászólásokat, amelyek a legtöbb aktivitást generálták az elmúlt héten. Tudd meg, mi történik a platformodon!'
+      cta_button: 'Látogassa meg platformját'
       new_users: 'Új felhasználók'
       new_inputs: 'Új bemenetek'
       new_comments: 'Új megjegyzések'
@@ -129,10 +135,11 @@ hu:
       today_by_author: 'Ma %{author}'
       x_days_ago_by_author: '%{x} napja, %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Kezelje platformját'
-      message_you_became_administrator: 'Rendszergazdai jogokat kapott a %{organizationName}részvételi platformjához.'
-      preheader: 'Rendszergazdai jogokat kapott a %{organizationName}részvételi platformjához'
       subject: 'Ön rendszergazda lett a %{organizationName}platformon'
+      preheader: 'Rendszergazdai jogokat kapott a %{organizationName}részvételi platformjához'
+      title: 'Ön adminisztrátor lett'
+      event_description: 'Rendszergazdai jogokat kapott a %{organizationName}részvételi platformjához.'
+      cta_button: 'Kezeld a platformodat'
       text_create_participatory_process: 'Rendszergazdaként új részvételi projekteket hozhat létre és konfigurálhat. Az idővonal segítségével új fázisokat adhat hozzá. Ezen fázisok mindegyikének megvan a maga viselkedése az ötletek közzététele, kommentálása és szavazása tekintetében.'
       text_moderate_analyse_input: 'A projektek elindítása után megérkeznek az első ötletek. Hetente jelentést fog kapni az összes kulcsfontosságú tevékenységről, hogy naprakész legyen a dolgokkal. Az ötletek áttekintése segít moderálni a bemenetet és együttműködni annak feldolgozásában.'
       text_platform_setup: 'Rendszergazdaként beállíthatja részvételi platformját. Válasszon logót, képeket és színeket, írjon személyes üzenetet a kezdőlapjára, küldjön meghívókat, határozza meg, mit szeretne tudni a felhasználókról, ...'
@@ -140,26 +147,26 @@ hu:
       title_moderate_analyse_input: 'Moderálja és elemezze a bemenetet'
       title_platform_setup: 'Állítsa be a platformot'
       title_what_can_you_do_administrator: 'Mit tehet rendszergazdaként?'
-      title_you_became_administrator: 'Adminisztrátor lettél'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} spamként jelentette ezt a megjegyzést'
+      preheader: 'Cselekedjen a spamként bejelentett megjegyzés alapján'
+      title: '%{firstName} %{lastName} spamként jelentette ezt a hozzászólást'
+      cta_button: 'Véleményezési megjegyzés'
       by_author: 'készítette: %{authorName}'
       commented: '%{authorName} hozzászólt:'
-      cta_review_comment: 'Tekintse át a megjegyzést'
       days_ago: '%{numberOfDays} napja'
       event_description: 'A <strong>''%{post}''</strong> oldalon közzétett következő megjegyzést jelentették:'
       inappropriate_content: 'A megjegyzés nem helyénvaló vagy sértő.'
-      preheader: 'Cselekedjen a spamként bejelentett megjegyzés alapján'
       reported_this_because: '%{reporterFirstName} jelentette ezt, mert:'
-      subject: '%{organizationName}: %{firstName} %{lastName} spamként jelentette ezt a megjegyzést'
-      title_comment_spam_report: '%{firstName} %{lastName} spamként jelentette ezt a megjegyzést'
       today: Ma
       wrong_content: 'A megjegyzés nem releváns.'
       yesterday: Tegnap
     community_monitor_report:
       subject: 'Elérhető egy új közösségfigyelő jelentés'
+      preheader: 'Új közösségi monitor jelentés érhető el'
       title: 'Elérhető egy új közösségfigyelő jelentés'
-      text_introduction: 'Közösségi megfigyelő jelentés készült az előző negyedévről. Az alábbi gombra kattintva és bejelentkezve érheti el.'
-      cta_report_button: 'Jelentés megtekintése'
+      event_description: 'Elkészült egy közösségi monitor jelentés az előző negyedévről. Az alábbi gombra kattintva és bejelentkezéssel érheti el.'
+      cta_button: 'Jelentés megtekintése'
       report_name: 'Közösségi megfigyelő jelentés'
     cosponsor_of_your_idea:
       cta_reply_to: 'Tekintse meg ajánlatát'
@@ -170,8 +177,8 @@ hu:
     assignee_digest:
       subject: 'Visszajelzést igénylő bemenetek: %{numberIdeas}'
       preheader: 'A %{organizationName}hozzárendelt kivonata'
-      title_your_weekly_report: '%{firstName}, az állampolgárok visszajelzésére várunk'
-      cta_manage_your_input: 'Kezelje a bevitelt'
+      title: '%{firstName}, a lakossági visszajelzésekre várunk'
+      cta_button: 'Bevitel kezelése'
       x_inputs_need_your_feedback: 'a bemenetekhez visszajelzésre van szükség'
       title_assignment_past_week: 'Az Önhöz rendelt legújabb bemenetek'
       title_no_assignment_past_week: 'A múlt héten nem lettek hozzárendelve új bemenetek'
@@ -248,8 +255,11 @@ hu:
       today: Ma
       yesterday: Tegnap
     comment_on_idea_you_follow:
-      cta_reply_to: 'Válasz %{commentAuthor}'
+      subject: 'Új megjegyzés érkezett a következőhöz: "%{input_title}"'
+      preheader: '%{authorName} megjegyzést írt egy ötlethez a következőhöz: %{organizationName}'
+      title: '%{authorName} hozzászólást fűzött egy bejegyzéshez, amit követsz'
       event_description: '%{authorNameFull} reakciót adott a ''%{inputTitle}''-re. Kattintson az alábbi gombra a beszélgetés folytatásához %{authorName}.'
+      cta_button: 'Válasz %{commentAuthor}-nak'
       main_header:
         idea: '%{authorName} megjegyzést fűzött egy Ön által követett ötlethez'
         question: '%{authorName} megjegyzést fűzött egy Ön által követett kérdéshez'
@@ -259,8 +269,6 @@ hu:
         option: '%{authorName} megjegyzést fűzött egy általad követett lehetőséghez'
         proposal: '%{authorName} megjegyzést fűzött egy Ön által követett javaslathoz'
         petition: '%{authorName} megjegyzést fűzött egy Ön által követett petícióhoz'
-      subject: 'Új megjegyzés érkezett a következőhöz: "%{input_title}"'
-      preheader: '%{authorName} megjegyzést írt egy ötlethez a következőhöz: %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'Új bemenetet tettek közzé a platformján'
       event_description_publication: '%{authorName} új bevitelt küldött az Ön platformjára. Fedezze fel most, adjon visszajelzést, vagy módosítsa az állapotát!'
@@ -274,11 +282,11 @@ hu:
       today: Ma
       yesterday: Tegnap
     comment_on_your_comment:
-      cta_reply_to: 'Válasz %{firstName}'
-      event_description: '%{authorNameFull} válaszolt az Ön megjegyzésére a részvételi platformon: ''%{post}''. Kattintson az alábbi gombra a beszélgetés folytatásához %{authorName}.'
       subject: 'Válasz érkezett megjegyzésére a %{organizationName}platformon'
-      main_header: '%{authorName} válaszolt a megjegyzésedre'
       preheader: '%{authorName} válaszolt a megjegyzésedre %{organizationName}platformján'
+      title: '%{authorName} válaszolt a hozzászólásodra'
+      event_description: '%{authorName} válaszolt a hozzászólásodra a(z) ''%{post}'' témában a részvételi platformon. Kattints az alábbi gombra a beszélgetés folytatásához %{authorFirstName}felhasználóval.'
+      cta_button: 'Válasz %{authorFirstName}-nak'
       replied: '%{authorFirstName} válaszolt:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: '%{firstName}megjegyzésének megtekintése'

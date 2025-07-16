@@ -85,11 +85,17 @@ sv:
         "6": "Veckovis på lördagar %{hourOfDay}"
       quarterly: "Kvartalsvis, den första dagen i kvartalet"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Doe'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Doe'
+      author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Exempel på projekt'
       comment_body: 'Detta är ett exempel på en kommentar som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll.'
+      comment_deleted_reason: 'Ditt exempel på kommentar ansågs vara olämplig.'
       idea_title: 'Exempel Idé'
+      proposal_title: 'Exempel på förslag'
     footer:
       "link_privacy_policy": "Sekretesspolicy"
       "link_terms_conditions": "Villkor"
@@ -103,22 +109,22 @@ sv:
     manual:
       preheader: 'Du har e-post från %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'Anledningen till att din kommentar togs bort:'
-      cta_view: 'Se den här idén'
+      subject: 'Din kommentar har tagits bort från plattformen för %{organizationName}'
+      preheader: 'Din kommentar har tagits bort'
+      title: '%{organizationName} raderade din kommentar'
       event_description: '%{organizationName} tog bort kommentaren du skrev för en idé.'
-      main_header: '%{organizationName} tog bort din kommentar'
+      cta_button: 'Visa denna idé'
+      reason: 'Anledningen till att din kommentar togs bort:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Din kommentar ansågs vara olämplig'
       irrelevant_reason: 'Din kommentar ansågs vara irrelevant för sammanhanget'
       no_reason: 'Ingen orsak angavs'
-      subject: 'Din kommentar har tagits bort från plattformen för %{organizationName}'
-      preheader: 'Din kommentar har tagits bort'
     admin_digest:
       subject: 'Din veckovisa administratörsrapport för %{time}'
       preheader: 'Administratörssammanfattning för %{organizationName}'
-      title_your_weekly_report: '%{firstName}, din veckorapport'
-      text_introduction: 'Vi har sammanställt de indata som har skapat mest aktivitet under den senaste veckan. Ta reda på vad som händer på din plattform!'
-      cta_visit_the_platform: 'Besök din plattform'
+      title: '%{firstName}, din veckorapport'
+      event_description: 'Vi har sammanställt de inlägg som har genererat mest aktivitet under den senaste veckan. Ta reda på vad som händer på din plattform!'
+      cta_button: 'Besök din plattform'
       new_users: 'Nya användare'
       new_inputs: 'Nya inmatningar'
       new_comments: 'Nya kommentarer'
@@ -129,10 +135,11 @@ sv:
       today_by_author: 'Idag av %{author}'
       x_days_ago_by_author: '%{x} dagar sedan av %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Hantera din plattform'
-      message_you_became_administrator: 'Du har beviljats administratörsrättigheter för plattformen för deltagande för %{organizationName}.'
-      preheader: 'Du beviljades administratörsrättigheter för plattformen för deltagande för %{organizationName}'
       subject: 'Du blev administratör på plattformen för %{organizationName}'
+      preheader: 'Du beviljades administratörsrättigheter för plattformen för deltagande för %{organizationName}'
+      title: 'Du blev administratör'
+      event_description: 'Du har beviljats administratörsrättigheter för deltagarplattformen på %{organizationName}.'
+      cta_button: 'Hantera din plattform'
       text_create_participatory_process: 'Som administratör kan du skapa och konfigurera nya deltagandeprojekt. Du kan lägga till nya faser med tidslinjen. Var och en av dessa faser kan ha sitt eget beteende när det gäller att publicera idéer, kommentera och rösta.'
       text_moderate_analyse_input: 'När projekt har lanserats kommer de första idéerna in. Du kommer att få veckorapporter med alla nyckelaktiviteter så att du håller koll på saker. Idéöversikten hjälper dig moderera indata och samarbeta för att bearbeta dem.'
       text_platform_setup: 'Som administratör kan du konfigurera din plattform för deltagande. Välj logotyp, bilder och färger, skriv ett personligt meddelande på din startsida, skicka inbjudningar, definiera vad du vill veta om dina användare, ...'
@@ -140,26 +147,26 @@ sv:
       title_moderate_analyse_input: 'Moderera och analysera indata'
       title_platform_setup: 'Konfigurerar din plattform'
       title_what_can_you_do_administrator: 'Vad kan du göra som administratör?'
-      title_you_became_administrator: 'Du blev administratör'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} rapporterade den här kommentaren som skräppost'
+      preheader: 'Agera på den här kommentaren som rapporterats som skräppost'
+      title: '%{firstName} %{lastName} rapporterade denna kommentar som skräppost'
+      cta_button: 'Kommentar till recension'
       by_author: 'av %{authorName}'
       commented: '%{authorName} kommenterade:'
-      cta_review_comment: 'Granska kommentar'
       days_ago: '%{numberOfDays} dagar sedan'
       event_description: 'Följande kommentar som publicerats på <strong>%{post}</strong> rapporterades:'
       inappropriate_content: 'Kommentaren är olämplig eller stötande.'
-      preheader: 'Agera på den här kommentaren som rapporterats som skräppost'
       reported_this_because: '%{reporterFirstName} rapporterade det här eftersom:'
-      subject: '%{organizationName}: %{firstName} %{lastName} rapporterade den här kommentaren som skräppost'
-      title_comment_spam_report: '%{firstName} %{lastName} rapporterade den här kommentaren som skräppost'
       today: I dag
       wrong_content: 'Kommentaren är inte relevant.'
       yesterday: I går
     community_monitor_report:
       subject: 'En ny rapport om övervakning av samhället finns tillgänglig'
+      preheader: 'En ny rapport om övervakning av samhället finns tillgänglig'
       title: 'En ny rapport om övervakning av samhället finns tillgänglig'
-      text_introduction: 'En community monitor-rapport har skapats för föregående kvartal. Du kan komma åt den genom att klicka på knappen nedan och logga in.'
-      cta_report_button: 'Visa rapport'
+      event_description: 'En community monitor-rapport har skapats för föregående kvartal. Du kan komma åt den genom att klicka på knappen nedan och logga in.'
+      cta_button: 'Visa rapport'
       report_name: 'Rapport från gemenskapens övervakare'
     cosponsor_of_your_idea:
       cta_reply_to: 'Se ditt förslag'
@@ -170,8 +177,8 @@ sv:
     assignee_digest:
       subject: 'Idéer som kräver din återkoppling: %{numberIdeas}'
       preheader: 'Sammanfattning av tilldelad person för %{organizationName}'
-      title_your_weekly_report: '%{firstName}, indata från medborgare väntar på din återkoppling'
-      cta_manage_your_input: 'Hantera dina indata'
+      title: '%{firstName}, medborgarinflytande väntar på din feedback'
+      cta_button: 'Hantera din input'
       x_inputs_need_your_feedback: 'inmatningar behöver din feedback'
       title_assignment_past_week: 'De senaste idéerna som tilldelats dig'
       title_no_assignment_past_week: 'Inga nya idéer tilldelades dig förra veckan'
@@ -248,8 +255,11 @@ sv:
       today: I dag
       yesterday: I går
     comment_on_idea_you_follow:
-      cta_reply_to: 'Svara %{commentAuthor}'
+      subject: 'Det finns en ny kommentar på "%{input_title}"'
+      preheader: '%{authorName} lämnade en kommentar till en idé för %{organizationName}'
+      title: '%{authorName} kommenterade en ingång som du följer'
       event_description: '%{authorNameFull} skickade en kommentar på ''%{inputTitle}''. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
+      cta_button: 'Svara till %{commentAuthor}'
       main_header:
         idea: '%{authorName} kommenterat en idé som du följer'
         question: '%{authorName} har kommenterat ett förslag som du följer'
@@ -259,8 +269,6 @@ sv:
         option: '%{authorName} kommenterade ett alternativ som du följer'
         proposal: '%{authorName} kommenterat ett förslag som du följer'
         petition: '%{authorName} kommenterat en petition som du följer'
-      subject: 'Det finns en ny kommentar på "%{input_title}"'
-      preheader: '%{authorName} lämnade en kommentar till en idé för %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'Ett nytt inlägg har publicerats på din plattform'
       event_description_publication: '%{authorName} har lämnat in ett nytt inlägg på din plattform. Upptäck det nu, ge feedback eller ändra dess status!'
@@ -274,11 +282,11 @@ sv:
       today: I dag
       yesterday: I går
     comment_on_your_comment:
-      cta_reply_to: 'Svara %{firstName}'
-      event_description: '%{authorNameFull} skrev ett svar på din kommentar för %{post} på involveringsplattformen. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
       subject: 'Du har fått svar på din kommentar på plattformen för %{organizationName}'
-      main_header: '%{authorName} svarade på din kommentar'
       preheader: '%{authorName} svarade på din kommentar på %{organizationName}s plattform'
+      title: '%{authorName} svarade på din kommentar'
+      event_description: '%{authorName} skrev ett svar på din kommentar till ''%{post}'' på deltagarplattformen. Klicka på knappen nedan för att fortsätta konversationen med %{authorFirstName}.'
+      cta_button: 'Svara till %{authorFirstName}'
       replied: '%{authorFirstName} svarade:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'Visa kommentar från %{firstName}'

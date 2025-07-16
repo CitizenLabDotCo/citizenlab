@@ -85,11 +85,17 @@ el:
         "6": "Εβδομαδιαίως, τα Σάββατα %{hourOfDay}"
       quarterly: "Τριμηνιαία, την πρώτη ημέρα του τριμήνου"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Doe'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Doe'
+      author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Παράδειγμα έργου'
       comment_body: 'Αυτό είναι ένα παράδειγμα σχολίου που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.'
+      comment_deleted_reason: 'Το σχόλιο του παραδείγματός σας θεωρήθηκε ακατάλληλο.'
       idea_title: 'Παράδειγμα ιδέας'
+      proposal_title: 'Παράδειγμα πρότασης'
     footer:
       "link_privacy_policy": "Πολιτική απορρήτου"
       "link_terms_conditions": "Όροι & Προϋποθέσεις"
@@ -103,22 +109,22 @@ el:
     manual:
       preheader: 'Λάβατε μια ενημέρωση από το %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'Ο λόγος για τον οποίο διαγράφηκε το σχόλιό σας:'
-      cta_view: 'Δείτε αυτή την ιδέα'
+      subject: 'Το σχόλιό σας έχει διαγραφεί από την πλατφόρμα του %{organizationName}'
+      preheader: 'Το σχόλιό σας έχει διαγραφεί'
+      title: '%{organizationName} διέγραψε το σχόλιό σας'
       event_description: '%{organizationName} διέγραψα το σχόλιο που γράψατε για μια ιδέα.'
-      main_header: '%{organizationName} διέγραψε το σχόλιό σας'
+      cta_button: 'Δείτε αυτή την ιδέα'
+      reason: 'Ο λόγος για τον οποίο διαγράφηκε το σχόλιό σας:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Το σχόλιό σας θεωρήθηκε ακατάλληλο'
       irrelevant_reason: 'Το σχόλιό σας θεωρήθηκε άσχετο με το συγκεκριμένο πλαίσιο'
       no_reason: 'Δεν προσδιορίστηκε λόγος'
-      subject: 'Το σχόλιό σας έχει διαγραφεί από την πλατφόρμα του %{organizationName}'
-      preheader: 'Το σχόλιό σας έχει διαγραφεί'
     admin_digest:
       subject: 'Η εβδομαδιαία διοικητική σας έκθεση του %{time}'
       preheader: 'Admin digest του %{organizationName}'
-      title_your_weekly_report: '%{firstName}, η εβδομαδιαία έκθεσή σας'
-      text_introduction: 'Επιμεληθήκαμε για εσάς τις πληροφορίες που προκάλεσαν τη μεγαλύτερη δραστηριότητα την τελευταία εβδομάδα. Μάθετε τι συμβαίνει στην πλατφόρμα σας!'
-      cta_visit_the_platform: 'Επισκεφθείτε την πλατφόρμα σας'
+      title: '%{firstName}, η εβδομαδιαία έκθεσή σας'
+      event_description: 'Επιμεληθήκαμε για εσάς τις πληροφορίες που προκάλεσαν τη μεγαλύτερη δραστηριότητα την τελευταία εβδομάδα. Μάθετε τι συμβαίνει στην πλατφόρμα σας!'
+      cta_button: 'Επισκεφθείτε την πλατφόρμα σας'
       new_users: 'Νέοι χρήστες'
       new_inputs: 'Νέες καταχωρήσεις'
       new_comments: 'Νέα σχόλια'
@@ -129,10 +135,11 @@ el:
       today_by_author: 'Σήμερα από %{author}'
       x_days_ago_by_author: '%{x} πριν από μέρες από %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Διαχειριστείτε την πλατφόρμα σας'
-      message_you_became_administrator: 'Σας έχουν χορηγηθεί δικαιώματα διαχειριστή για την πλατφόρμα συμμετοχής %{organizationName}.'
-      preheader: 'Σας χορηγήθηκαν δικαιώματα διαχειριστή για την πλατφόρμα συμμετοχής του %{organizationName}'
       subject: 'Έγινες διαχειριστής στην πλατφόρμα %{organizationName}'
+      preheader: 'Σας χορηγήθηκαν δικαιώματα διαχειριστή για την πλατφόρμα συμμετοχής του %{organizationName}'
+      title: 'Έγινες διαχειριστής'
+      event_description: 'Σας έχουν χορηγηθεί δικαιώματα διαχειριστή για την πλατφόρμα συμμετοχής %{organizationName}.'
+      cta_button: 'Διαχειριστείτε την πλατφόρμα σας'
       text_create_participatory_process: 'Ως διαχειριστής, μπορείτε να δημιουργήσετε και να διαμορφώσετε νέα έργα συμμετοχής. Μπορείτε να προσθέσετε νέες φάσεις χρησιμοποιώντας το χρονοδιάγραμμα. Κάθε μία από αυτές τις φάσεις μπορεί να έχει τη δική της συμπεριφορά όσον αφορά την ανάρτηση ιδεών, τον σχολιασμό και την ψηφοφορία.'
       text_moderate_analyse_input: 'Μόλις ξεκινήσουν τα έργα, θα έρθουν οι πρώτες ιδέες. Θα λαμβάνετε εβδομαδιαίες αναφορές με όλες τις βασικές δραστηριότητες, ώστε να παραμένετε στην κορυφή των πραγμάτων. Η επισκόπηση των ιδεών θα σας βοηθήσει να μετριάσετε τις εισροές και να συνεργαστείτε για την επεξεργασία τους.'
       text_platform_setup: 'Ως διαχειριστής μπορείτε να ρυθμίσετε την πλατφόρμα συμμετοχής σας. Επιλέξτε ένα λογότυπο, εικόνες και χρώματα, γράψτε ένα προσωπικό μήνυμα στην αρχική σας σελίδα, στείλτε προσκλήσεις, ορίστε τι θέλετε να γνωρίζετε από τους χρήστες σας, ...'
@@ -140,26 +147,26 @@ el:
       title_moderate_analyse_input: 'Μετριοποίηση και ανάλυση των εισροών'
       title_platform_setup: 'Ρυθμίστε την πλατφόρμα σας'
       title_what_can_you_do_administrator: 'Τι μπορείτε να κάνετε ως διαχειριστής;'
-      title_you_became_administrator: 'Έγινες διαχειριστής'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} ανέφερε αυτό το σχόλιο ως spam'
+      preheader: 'Ενεργήστε μετά από αυτό το σχόλιο που αναφέρθηκε ως spam'
+      title: '%{firstName} %{lastName} ανέφερε αυτό το σχόλιο ως spam'
+      cta_button: 'Σχόλιο αναθεώρησης'
       by_author: 'από %{authorName}'
       commented: '%{authorName} σχολίασε:'
-      cta_review_comment: 'Σχόλιο αναθεώρησης'
       days_ago: '%{numberOfDays} ημέρες πριν'
       event_description: 'Αναφέρθηκε το ακόλουθο σχόλιο που δημοσιεύθηκε στο <strong>''%{post}''</strong>:'
       inappropriate_content: 'Το σχόλιο είναι ακατάλληλο ή προσβλητικό.'
-      preheader: 'Ενεργήστε μετά από αυτό το σχόλιο που αναφέρθηκε ως spam'
       reported_this_because: '%{reporterFirstName} το ανέφερε αυτό επειδή:'
-      subject: '%{organizationName}: %{firstName} %{lastName} ανέφερε αυτό το σχόλιο ως spam'
-      title_comment_spam_report: '%{firstName} %{lastName} ανέφερε αυτό το σχόλιο ως spam'
       today: Σήμερα
       wrong_content: 'Το σχόλιο δεν είναι σχετικό.'
       yesterday: Χθες
     community_monitor_report:
       subject: 'Μια νέα έκθεση παρακολούθησης της κοινότητας είναι διαθέσιμη'
+      preheader: 'Μια νέα έκθεση παρακολούθησης της κοινότητας είναι διαθέσιμη'
       title: 'Μια νέα έκθεση παρακολούθησης της κοινότητας είναι διαθέσιμη'
-      text_introduction: 'Για το προηγούμενο τρίμηνο έχει δημιουργηθεί μια έκθεση παρακολούθησης της κοινότητας. Μπορείτε να έχετε πρόσβαση σε αυτήν κάνοντας κλικ στο παρακάτω κουμπί και συνδεόμενοι.'
-      cta_report_button: 'Προβολή έκθεσης'
+      event_description: 'Για το προηγούμενο τρίμηνο έχει δημιουργηθεί μια έκθεση παρακολούθησης της κοινότητας. Μπορείτε να έχετε πρόσβαση σε αυτήν κάνοντας κλικ στο παρακάτω κουμπί και συνδεόμενοι.'
+      cta_button: 'Προβολή έκθεσης'
       report_name: 'Έκθεση κοινοτικού παρατηρητή'
     cosponsor_of_your_idea:
       cta_reply_to: 'Δείτε την πρότασή σας'
@@ -170,8 +177,8 @@ el:
     assignee_digest:
       subject: 'Ιδέες που απαιτούν τα σχόλιά σας: %{numberIdeas}'
       preheader: 'Ψηφίδα παραλήπτη της ιστοσελίδας %{organizationName}'
-      title_your_weekly_report: '%{firstName}, η συμβολή των πολιτών περιμένει τα σχόλιά σας'
-      cta_manage_your_input: 'Διαχειριστείτε τις εισροές σας'
+      title: '%{firstName}, η συμβολή των πολιτών περιμένει τα σχόλιά σας'
+      cta_button: 'Διαχειριστείτε τις εισροές σας'
       x_inputs_need_your_feedback: 'οι προτάσεις χρειάζονται τα σχόλιά σας'
       title_assignment_past_week: 'Τελευταίες ιδέες που σας έχουν ανατεθεί'
       title_no_assignment_past_week: 'Δεν σας ανατέθηκαν νέες ιδέες την περασμένη εβδομάδα'
@@ -248,8 +255,11 @@ el:
       today: Σήμερα
       yesterday: Χθες
     comment_on_idea_you_follow:
-      cta_reply_to: 'Απαντήστε στο %{commentAuthor}'
+      subject: 'Υπάρχει ένα νέο σχόλιο στο "%{input_title}"'
+      preheader: '%{authorName} άφησε ένα σχόλιο σε μια ιδέα για το %{organizationName}'
+      title: '%{authorName} σχολίασε μια εισαγωγή που ακολουθείτε'
       event_description: '%{authorNameFull} αντέδρασε στην ιδέα σας ''%{inputTitle}''. Κάντε κλικ στον παρακάτω σύνδεσμο για να συνεχίσετε τη συζήτηση με τον %{authorName}.'
+      cta_button: 'Απάντηση στο %{commentAuthor}'
       main_header:
         idea: '%{authorName} σχολίασε μια ιδέα που ακολουθείτε'
         question: '%{authorName} σχολίασε μια ερώτηση που ακολουθείτε'
@@ -259,8 +269,6 @@ el:
         option: '%{authorName} σχολίασε μια επιλογή που ακολουθείτε'
         proposal: '%{authorName} σχολίασε μια πρόταση που ακολουθείτε'
         petition: '%{authorName} σχολίασε ένα αίτημα που ακολουθείτε'
-      subject: 'Υπάρχει ένα νέο σχόλιο στο "%{input_title}"'
-      preheader: '%{authorName} άφησε ένα σχόλιο σε μια ιδέα για το %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'Μια νέα καταχώρηση έχει αναρτηθεί στην πλατφόρμα σας'
       event_description_publication: '%{authorName} δημοσίευσε μια νέα πρόταση στην πλατφόρμα σας. Ανακαλύψτε την τώρα, δώστε κάποια σχόλια ή αλλάξτε την κατάστασή της!'
@@ -274,11 +282,11 @@ el:
       today: Σήμερα
       yesterday: Χθες
     comment_on_your_comment:
-      cta_reply_to: 'Απάντηση στο %{firstName}'
-      event_description: '%{authorNameFull} έγραψε μια απάντηση στο σχόλιό σας στο ''%{post}'' στην πλατφόρμα συμμετοχής. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
       subject: 'Λάβατε απάντηση στο σχόλιό σας στην πλατφόρμα %{organizationName}'
-      main_header: '%{authorName} απάντησε στο σχόλιό σας'
       preheader: '%{authorName} απάντησε στο σχόλιό σας στο %{organizationName}''s platform'
+      title: '%{authorName} απάντησε στο σχόλιό σας'
+      event_description: '%{authorName} έγραψε μια απάντηση στο σχόλιό σας στο ''%{post}'' στην πλατφόρμα συμμετοχής. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorFirstName}.'
+      cta_button: 'Απάντηση στο %{authorFirstName}'
       replied: '%{authorFirstName} απάντησε:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'Προβολή σχολίου από %{firstName}'

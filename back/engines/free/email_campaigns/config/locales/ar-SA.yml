@@ -85,11 +85,17 @@ ar:
         "6": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
       quarterly: "ربع سنوي، في اليوم الأول من الربع"
     preview_data:
-      first_name: 'جين'
-      last_name: 'ظبية'
-      display_name: 'جين دو'
+      author_first_name: 'جين'
+      author_last_name: 'ظبية'
+      author_display_name: 'جين دو'
+      initiator_first_name: 'بوب'
+      initiator_last_name: 'سميث'
+      initiator_display_name: 'بوب سميث'
+      project_title: 'مشروع مثال'
       comment_body: 'هذا مثال لتعليق يُستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقيًا.'
+      comment_deleted_reason: 'لقد تم اعتبار تعليقك المثالى غير مناسب.'
       idea_title: 'فكرة مثال'
+      proposal_title: 'مثال على الاقتراح'
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
@@ -103,22 +109,22 @@ ar:
     manual:
       preheader: 'لديك بريد من %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'سبب حذف تعليقك:'
-      cta_view: 'اعرض هذه الفكرة'
+      subject: 'تم حذف تعليقك على المنصة الخاصة بـ %{organizationName}'
+      preheader: 'تم حذف تعليقك'
+      title: '%{organizationName} تم حذف تعليقك'
       event_description: 'حذف %{organizationName} التعليق الذي كتبته على فكرة.'
-      main_header: 'حذف %{organizationName} تعليقك'
+      cta_button: 'عرض هذه الفكرة'
+      reason: 'سبب حذف تعليقك:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'تم اعتبار تعليقك غير لائق'
       irrelevant_reason: 'تم اعتبار تعليقك غير ذي صلة بذاك السياق'
       no_reason: 'السبب غير محدد'
-      subject: 'تم حذف تعليقك على المنصة الخاصة بـ %{organizationName}'
-      preheader: 'تم حذف تعليقك'
     admin_digest:
       subject: 'تقرير المسؤول الأسبوعي الخاص بك لـ%{time}'
       preheader: 'ملخص المسؤول لـ %{organizationName}'
-      title_your_weekly_report: '%{firstName}، تقريرك الأسبوعي'
-      text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.\nاكتشف ما يحدث على منصتك!"
-      cta_visit_the_platform: 'زُر منصتك'
+      title: '%{firstName}، تقريرك الأسبوعي'
+      event_description: 'لقد جمعنا لك المشاركات التي حظيت بأكبر قدر من التفاعل خلال الأسبوع الماضي. اكتشف ما يحدث على منصتك!'
+      cta_button: 'قم بزيارة منصتك'
       new_users: 'المستخدمون الجُدد'
       new_inputs: 'مدخلات جديدة'
       new_comments: 'التعليقات الجديدة'
@@ -129,10 +135,11 @@ ar:
       today_by_author: 'اليوم بواسطة %{author}'
       x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
     admin_rights_received:
-      cta_manage_platform: 'إدارة النظام الأساسي الخاص بك'
-      message_you_became_administrator: 'لقد مُنحت حقوق المسؤول عن منصة المشاركة الخاصة بـ %{organizationName}.'
-      preheader: 'تم منحك حقوق المسؤول عن منصة المشاركة الخاصة بـ %{organizationName}'
       subject: 'لقد أصبحت المسؤول عن المنصة الخاصة بـ%{organizationName}'
+      preheader: 'تم منحك حقوق المسؤول عن منصة المشاركة الخاصة بـ %{organizationName}'
+      title: 'لقد أصبحت مديرا'
+      event_description: 'لقد تم منحك حقوق المسؤول لمنصة المشاركة الخاصة بـ %{organizationName}.'
+      cta_button: 'إدارة منصتك'
       text_create_participatory_process: 'بصفتك مسؤولًا، يمكنك إنشاء وتهيئة مشاريع المشاركة الجديدة. يمكنك أيضًا إضافة مراحل جديدة باستخدام الجدول الزمني. كل واحدة من هذه المراحل لديها سلوكها الخاص فيما يتعلق بنشر الأفكار، والتعليق عليها، والتصويت لها.'
       text_moderate_analyse_input: 'بمجرد إطلاق المشاريع، ستبدأ الأفكار بالتدفق. ستستلم تقارير أسبوعية حول جميع الأنشطة الرئيسية حتى تبقى على اطلاع تام بكافة المُجريات. ستساعدك النظرة العامة على الأفكار في تنسيق المُدخلات والتعاون في معالجتها.'
       text_platform_setup: 'بصفتك مسؤولًا ستتمكن من إعداد منصة المشاركة الخاصة بك. اختر شعارًا، وصورًا، وألوانًا، واكتب رسالة شخصية على صفحتك الرئيسية، وأرسل الدعوات، وحدّد الأمور التي ترغب في معرفتها حول المستخدمين لديك، ...'
@@ -140,26 +147,26 @@ ar:
       title_moderate_analyse_input: 'قم بالإشراف على المُدخلات وتحليلها'
       title_platform_setup: 'قم بإعداد منصتك'
       title_what_can_you_do_administrator: 'ما الذي يمكنك القيام به بصفتك مسؤولًا؟'
-      title_you_became_administrator: 'لقد أصبحت المسؤول'
     comment_marked_as_spam:
+      subject: 'أبلغ %{organizationName}: %{firstName}%{lastName} عن هذا التعليق كـ "مزعج"'
+      preheader: 'التصرف بناءً على هذا التعليق والذي أُبلغ عنه كـ "مزعج"'
+      title: '%{firstName} %{lastName} أبلغ عن هذا التعليق على أنه بريد عشوائي'
+      cta_button: 'تعليق المراجعة'
       by_author: 'بواسطة %{authorName}'
       commented: 'علّق %{authorName}:'
-      cta_review_comment: 'مراجعة التعليق'
       days_ago: 'قبل %{numberOfDays} يوم'
       event_description: 'تم الإبلاغ عن التعليق التالي والذي تم نشره على <strong>%{post}</strong>:'
       inappropriate_content: 'التعليق غير لائق أو مسيء.'
-      preheader: 'التصرف بناءً على هذا التعليق والذي أُبلغ عنه كـ "مزعج"'
       reported_this_because: 'قام %{reporterFirstName} بالإبلاغ لأن:'
-      subject: 'أبلغ %{organizationName}: %{firstName}%{lastName} عن هذا التعليق كـ "مزعج"'
-      title_comment_spam_report: 'أبلغ %{firstName} %{lastName} عن هذا التعليق كـ "مزعج"'
       today: اليوم
       wrong_content: 'التعليق غير ذي صلة.'
       yesterday: الأمس
     community_monitor_report:
       subject: 'تقرير مراقبة المجتمع الجديد متاح الآن'
+      preheader: 'تقرير مراقبة المجتمع الجديد متاح الآن'
       title: 'تقرير مراقبة المجتمع الجديد متاح الآن'
-      text_introduction: 'تم إنشاء تقرير مراقبة المجتمع للربع السابق. يمكنك الوصول إليه بالنقر على الزر أدناه وتسجيل الدخول.'
-      cta_report_button: 'عرض التقرير'
+      event_description: 'تم إنشاء تقرير مراقبة المجتمع للربع السابق. يمكنك الوصول إليه بالنقر على الزر أدناه وتسجيل الدخول.'
+      cta_button: 'عرض التقرير'
       report_name: 'تقرير مراقبة المجتمع'
     cosponsor_of_your_idea:
       cta_reply_to: 'عرض اقتراحك'
@@ -170,8 +177,8 @@ ar:
     assignee_digest:
       subject: 'أفكار بانتظار ملاحظاتك: %{numberIdeas}'
       preheader: 'ملخص التعيين لـ %{organizationName}'
-      title_your_weekly_report: '%{firstName}، مُدخلات المواطنين بانتظار ملاحظاتك'
-      cta_manage_your_input: 'إدارة مُدخلاتك'
+      title: '%{firstName}، مدخلات المواطن في انتظار تعليقاتك'
+      cta_button: 'إدارة مدخلاتك'
       x_inputs_need_your_feedback: 'المدخلات تحتاج إلى ملاحظاتك'
       title_assignment_past_week: 'آخر الأفكار المعيّنة إليك'
       title_no_assignment_past_week: 'لم يتم تعيين أي أفكار جديدة إليك في الأسبوع الماضي'
@@ -248,8 +255,11 @@ ar:
       today: اليوم
       yesterday: الأمس
     comment_on_idea_you_follow:
-      cta_reply_to: 'الرد على %{commentAuthor}'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} ترك تعليقًا على فكرة لـ %{organizationName}'
+      title: '%{authorName} علق على المدخلات التي تتابعها'
       event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      cta_button: 'الرد على %{commentAuthor}'
       main_header:
         idea: '%{authorName} علق على فكرة تتابعها'
         question: '%{authorName} علق على سؤال تتابعه'
@@ -259,8 +269,6 @@ ar:
         option: '%{authorName} علق على الخيار الذي تتبعه'
         proposal: '%{authorName} علق على الاقتراح الذي تتابعه'
         petition: '%{authorName} علق على العريضة التي تتابعها'
-      subject: 'There''s a new comment on "%{input_title}"'
-      preheader: '%{authorName} ترك تعليقًا على فكرة لـ %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'تم نشر مدخلات جديدة على منصتك'
       event_description_publication: 'لقد أرسل %{authorName} مدخلاً جديدًا إلى منصتك. اكتشفه الآن، أو قدم بعض الملاحظات أو غيّر حالته!'
@@ -274,11 +282,11 @@ ar:
       today: اليوم
       yesterday: الأمس
     comment_on_your_comment:
-      cta_reply_to: 'الرد على %{firstName}'
-      event_description: 'كتب %{authorNameFull} ردًا على تعليقك على ''%{post}'' على منصة المشاركة. انقر الزر أدناه لمتابعة الحوار مع %{authorName}.'
       subject: 'لديك رد على تعليقك على منصة %{organizationName}'
-      main_header: 'ردّ %{authorName} على تعليقك'
       preheader: 'رد %{authorName} على تعليقك على منصة %{organizationName}'
+      title: '%{authorName} رد على تعليقك'
+      event_description: 'ردّ %{authorName} على تعليقك على ''%{post}'' على منصة المشاركة. انقر على الزر أدناه لمواصلة المحادثة مع %{authorFirstName}.'
+      cta_button: 'الرد على %{authorFirstName}'
       replied: 'كتب %{authorFirstName}:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'عرض تعليق %{firstName}'

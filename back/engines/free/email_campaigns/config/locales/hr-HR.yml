@@ -85,11 +85,17 @@ hr:
         "6": "Tjedno, subotom u %{hourOfDay}"
       quarterly: "Tromjesečno, prvog dana tromjesečja"
     preview_data:
-      first_name: 'Jana'
-      last_name: 'Srna'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jana'
+      author_last_name: 'Srna'
+      author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Primjer projekta'
       comment_body: 'Ovo je primjer komentara koji se koristi za pregled sadržaja e-poruka. Ovo nije stvarni sadržaj.'
+      comment_deleted_reason: 'Vaš primjer komentara smatran je neprikladnim.'
       idea_title: 'Primjer ideje'
+      proposal_title: 'Primjer prijedloga'
     footer:
       "link_privacy_policy": "Pravila o privatnosti"
       "link_terms_conditions": "Uvjeti korištenja"
@@ -103,22 +109,22 @@ hr:
     manual:
       preheader: 'Imate poštu od %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'Razlog zašto je vaš komentar izbrisan:'
-      cta_view: 'Pogledajte ovu objavu'
+      subject: 'Vaš komentar je izbrisan s platforme %{organizationName}'
+      preheader: 'Vaš je komentar izbrisan'
+      title: '%{organizationName} izbrisao/la si komentar'
       event_description: 'Vaš komentar o ideji je izbrisan od strane %{organizationName}.'
-      main_header: '%{organizationName} je izbrisao vaš komentar'
+      cta_button: 'Pogledajte ovu ideju'
+      reason: 'Razlog zašto je vaš komentar izbrisan:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Vaš je komentar ocijenjen kao neprikladan'
       irrelevant_reason: 'Vaš se komentar smatra nerelevantnim za traženi kontekst'
       no_reason: 'Nije naveden nijedan razlog'
-      subject: 'Vaš komentar je izbrisan s platforme %{organizationName}'
-      preheader: 'Vaš je komentar izbrisan'
     admin_digest:
       subject: 'Vaš tjedni administrativni izvještaj od %{time}'
       preheader: 'Administratorski izvještaj %{organizationName}'
-      title_your_weekly_report: '%{firstName}, vaš tjedni izvještaj'
-      text_introduction: 'Odabrali smo objave koje su bile najpopularnije tijekom prethodnog tjedna. Budite u toku s događanjima na vašoj platformi!'
-      cta_visit_the_platform: 'Posjetite svoju platformu'
+      title: '%{firstName}, vaše tjedno izvješće'
+      event_description: 'Prikupili smo za vas unose koji su generirali najviše aktivnosti tijekom proteklog tjedna. Saznajte što se događa na vašoj platformi!'
+      cta_button: 'Posjetite svoju platformu'
       new_users: 'Novi korisnici'
       new_inputs: 'Novi ulazi'
       new_comments: 'Novi komentari'
@@ -129,10 +135,11 @@ hr:
       today_by_author: 'Danas od autora %{author}'
       x_days_ago_by_author: 'prije %{x} dana od %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Upravljajte svojom platformom'
-      message_you_became_administrator: 'Dodijeljena su vam administratorska prava za platformu za sudjelovanje %{organizationName}.'
-      preheader: 'Dodijeljena su vam administratorska prava za platformu za sudjelovanje %{organizationName}'
       subject: 'Postali ste administrator na %{organizationName} platformi'
+      preheader: 'Dodijeljena su vam administratorska prava za platformu za sudjelovanje %{organizationName}'
+      title: 'Postali ste administrator'
+      event_description: 'Dodijeljena su vam administratorska prava za platformu za sudjelovanje %{organizationName}.'
+      cta_button: 'Upravljajte svojom platformom'
       text_create_participatory_process: 'Kao administrator, možete kreirati i konfigurirati nove projekte sudjelovanja. Možete dodati nove faze pomoću vremenske trake. Svaka od ovih faza može imati vlastita pravila u vezi s objavljivanjem ideja, komentiranjem i glasovanjem.'
       text_moderate_analyse_input: 'Nakon što se projekti pokrenu, prve ideje će se pojaviti. Primat ćete tjedna izvješća sa svim ključnim aktivnostima kako biste bili u tijeku. Pregled ideja pomoći će vam moderirati unos i surađivati na njegovoj obradi.'
       text_platform_setup: 'Kao administrator možete postaviti svoju platformu za sudjelovanje. Odaberite logotip, slike i boje, napišite osobnu poruku na svoju početnu stranicu, pošaljite pozivnice, definirajte što želite znati o svojim korisnicima, ...'
@@ -140,26 +147,26 @@ hr:
       title_moderate_analyse_input: 'Moderirajte i analizirajte unos'
       title_platform_setup: 'Postavite svoju platformu'
       title_what_can_you_do_administrator: 'Što možete raditi kao administrator?'
-      title_you_became_administrator: 'Postali ste administrator'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} je prijavio/la ovaj komentar kao neželjen'
+      preheader: 'Reagirajte na komentar koji je prijavljen kao neželjen'
+      title: '%{firstName} %{lastName} prijavio/la je ovaj komentar kao neželjenu poštu'
+      cta_button: 'Pregled komentara'
       by_author: 'od %{authorName}'
       commented: '%{authorName} je komentirao/la:'
-      cta_review_comment: 'Pregledajte komentar'
       days_ago: 'Prije %{numberOfDays} dana'
       event_description: 'Prijavljen je komentar objavljen na <strong>''%{post}''</strong>:'
       inappropriate_content: 'Komentar je neprimjeren ili uvredljiv.'
-      preheader: 'Reagirajte na komentar koji je prijavljen kao neželjen'
       reported_this_because: '%{reporterFirstName} je prijavio/la ovo jer:'
-      subject: '%{organizationName}: %{firstName} %{lastName} je prijavio/la ovaj komentar kao neželjen'
-      title_comment_spam_report: '%{firstName} %{lastName} je prijavio/la ovaj komentar kao neželjen'
       today: Danas
       wrong_content: 'Komentar nije relevantan.'
       yesterday: Jučer
     community_monitor_report:
       subject: 'Dostupno je novo izvješće o praćenju zajednice'
+      preheader: 'Dostupno je novo izvješće monitora zajednice'
       title: 'Dostupno je novo izvješće o praćenju zajednice'
-      text_introduction: 'Za prethodni kvartal izrađeno je izvješće o praćenju zajednice. Možete mu pristupiti klikom na gumb ispod i prijavom.'
-      cta_report_button: 'Pogledaj izvješće'
+      event_description: 'Izvješće o monitoru zajednice kreirano je za prethodni kvartal. Možete mu pristupiti klikom na donji gumb i prijavom.'
+      cta_button: 'Prikaži izvješće'
       report_name: 'Izvješće monitora zajednice'
     cosponsor_of_your_idea:
       cta_reply_to: 'Pogledajte svoj prijedlog'
@@ -170,8 +177,8 @@ hr:
     assignee_digest:
       subject: 'Objave za koje su potrebne vaše povratne informacije: %{numberIdeas}'
       preheader: 'Sažetak primatelja %{organizationName}'
-      title_your_weekly_report: '%{firstName}, unos korisnika čeka na vaše povratne informacije'
-      cta_manage_your_input: 'Upravljajte svojim unosom'
+      title: '%{firstName}, građani čekaju vaše povratne informacije'
+      cta_button: 'Upravljajte svojim unosom'
       x_inputs_need_your_feedback: 'unose trebaju vaše povratne informacije'
       title_assignment_past_week: 'Najnovije ideje dodijeljene vama'
       title_no_assignment_past_week: 'Prethodnog tjedna nije vam dodijeljena nijedna nova ideja'
@@ -248,8 +255,11 @@ hr:
       today: Danas
       yesterday: Jučer
     comment_on_idea_you_follow:
-      cta_reply_to: 'Odgovorite na %{commentAuthor}'
+      subject: 'Postoji novi komentar na "%{input_title}"'
+      preheader: '%{authorName} je ostavilo komentar na ideju za %{organizationName}'
+      title: '%{authorName} komentirao/la je unos koji pratite'
       event_description: '%{authorNameFull} je postavio reakciju na ''%{inputTitle}''. Pritisnite donji gumb za nastavak razgovora s %{authorName}.'
+      cta_button: 'Odgovor na %{commentAuthor}'
       main_header:
         idea: '%{authorName} je komentirao ideju koju slijedite'
         question: '%{authorName} komentirao je pitanje koje pratiš'
@@ -259,8 +269,6 @@ hr:
         option: '%{authorName} komentirao je opciju koju slijedite'
         proposal: '%{authorName} komentirao je prijedlog koji pratiš'
         petition: '%{authorName} komentirao je peticiju koju pratite'
-      subject: 'Postoji novi komentar na "%{input_title}"'
-      preheader: '%{authorName} je ostavilo komentar na ideju za %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'Novi unos je objavljen na vašoj platformi'
       event_description_publication: '%{authorName} je poslao novi unos na vašoj platformi. Otkrijte ga sada, dajte povratne informacije ili promijenite status!'
@@ -274,11 +282,11 @@ hr:
       today: Danas
       yesterday: Jučer
     comment_on_your_comment:
-      cta_reply_to: 'Odgovorite %{firstName}'
-      event_description: '%{authorNameFull} je napisao/la odgovor na vaš komentar u okviru objave ''%{post}'' na platformi za sudjelovanje. Kliknite na gumb u nastavku kako biste nastavili razgovor s %{authorName}.'
       subject: 'Dobili ste odgovor na svoj komentar na %{organizationName} platformi '
-      main_header: '%{authorName} je odgovorio/la na vaš komentar'
       preheader: '%{authorName} je odgovorio/la na vaš komentar na platformi %{organizationName}'
+      title: '%{authorName} odgovorio/la je na tvoj komentar'
+      event_description: '%{authorName} je napisao/la odgovor na vaš komentar na ''%{post}'' na platformi za sudjelovanje. Kliknite gumb ispod za nastavak razgovora s %{authorFirstName}.'
+      cta_button: 'Odgovor na %{authorFirstName}'
       replied: '%{authorFirstName} je odgovorio/la:'
     internal_comment_on_your_internal_comment:
       cta_reply_to: 'Pogledaj komentar od %{firstName}'
