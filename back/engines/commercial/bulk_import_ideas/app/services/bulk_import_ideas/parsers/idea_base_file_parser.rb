@@ -156,8 +156,10 @@ module BulkImportIdeas::Parsers
         else
           # Custom fields
           value = field[:value]
-          value = value.compact if multi_select_types.include?(field[:input_type])
-          value = value.compact.first if field[:input_type] == 'select' && value.is_a?(Array)
+          if value.is_a?(Array)
+            value = value.compact if multi_select_types.include?(field[:input_type])
+            value = value.compact.first if field[:input_type] == 'select'
+          end
           custom_fields[field[:key].to_sym] = value if value.present?
         end
       end
@@ -175,6 +177,8 @@ module BulkImportIdeas::Parsers
             option[:key] if option
           end
           field[:value] = options
+        else
+          field[:value] = []
         end
       elsif %w[number linear_scale sentiment_linear_scale rating].include?(field[:input_type]) && field[:value].present?
         field[:value] = field[:value].to_i
