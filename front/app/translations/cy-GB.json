@@ -319,7 +319,7 @@
   "app.components.ParticipationCTABars.VotingCTABar.stillHaveVotesLeftDescription": "Gallwch barhau i ddosbarthu mwy {votesTerm} ymhlith gwahanol opsiynau, a ydych yn siŵr eich bod am gyflwyno?",
   "app.components.ParticipationCTABars.VotingCTABar.votesCast": "{votes, plural, =0 {# pleidlais} one {# pleidlais} other {# pleidlais}} a fwriwyd",
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "Rydych chi'n bwrw {votesCast} pleidleisiau, sy'n fwy na'r terfyn o {votesLimit}. Tynnwch rai pleidleisiau a cheisiwch eto.",
-  "app.components.ParticipationCTABars.VotingCTABar.votesLeft2": "{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} left",
+  "app.components.ParticipationCTABars.VotingCTABar.votesLeft2": "{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} chwith",
   "app.components.ParticipationCTABars.addInput": "Ychwanegu mewnbwn",
   "app.components.ParticipationCTABars.allocateBudget": "Neilltuwch eich cyllideb",
   "app.components.ParticipationCTABars.budgetSubmitSuccess": "Mae'ch cyllideb wedi'i chyflwyno'n llwyddiannus.",
