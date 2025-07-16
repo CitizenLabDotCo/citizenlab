@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useMemo, useRef } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import {
   Box,
   Table as TableComponent,
@@ -11,43 +12,110 @@ import {
   stylingConsts,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-
-import useProjectsMiniAdmin from 'api/projects_mini_admin/useProjectsMiniAdmin';
-
-import { PaginationWithoutPositioning } from 'components/Pagination';
-
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-
 import { useParams } from '../utils';
-
-import messages from './messages';
 import Row from './Row';
+import messages from './messages';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+import { ProjectsMiniAdmin, Parameters } from 'api/projects_mini_admin/types';
+
+const PAGE_SIZE = 10;
+
+const fetchProjectsMiniAdmin = async (
+  queryParameters: Parameters
+): Promise<ProjectsMiniAdmin> =>
+  fetcher<ProjectsMiniAdmin>({
+    path: '/projects/for_admin',
+    action: 'get',
+    queryParams: {
+      ...queryParameters,
+      'page[size]': queryParameters['page[size]'] ?? PAGE_SIZE,
+      'page[number]': queryParameters['page[number]'] ?? 1,
+    },
+  });
 
 const Table = () => {
   const { formatMessage } = useIntl();
-  const [currentPage, setCurrentPage] = useState(1);
-
   const { sort, ...params } = useParams();
 
-  const { data: projects, isFetching } = useProjectsMiniAdmin({
-    ...params,
-    sort: sort ?? 'phase_starting_or_ending_soon',
-    'page[size]': 10,
-    'page[number]': currentPage,
+  const {
+    data,
+    isFetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    status,
+  } = useInfiniteQuery(
+    ['projects', params, sort],
+    ({ pageParam = 1 }) =>
+      fetchProjectsMiniAdmin({
+        ...params,
+        sort: sort ?? 'phase_starting_or_ending_soon',
+        'page[size]': PAGE_SIZE,
+        'page[number]': pageParam,
+      }),
+    {
+      getNextPageParam: (lastPage) => {
+        const nextLink = lastPage.links.next;
+        return nextLink ? getPageNumberFromUrl(nextLink) : undefined;
+      },
+    }
+  );
+
+  // flatten all pages' data
+  const projects = useMemo(
+    () => data?.pages.flatMap((page) => page.data) ?? [],
+    [data?.pages]
+  );
+
+  // one‐time‐per‐entry guard
+  const didFetchRef = useRef(false);
+
+  // sentinel for “load more”
+  const { ref: loadMoreRef, inView } = useInView({
+    rootMargin: '0px 0px 100px 0px', // fire when 100px from bottom
+    threshold: 0, // any pixel visible is enough
   });
 
-  const lastPageLink = projects?.links.last;
-  const lastPage = lastPageLink ? getPageNumberFromUrl(lastPageLink) ?? 1 : 1;
+  useEffect(() => {
+    console.log(
+      `[InfiniteScroll] inView=${inView} | pages=${data?.pages.length} | isFetchingNextPage=${isFetchingNextPage} | hasNextPage=${hasNextPage}`
+    );
+
+    if (inView && hasNextPage && !isFetchingNextPage && !didFetchRef.current) {
+      console.log('🔽 Sentinel entered view — fetching next page');
+      didFetchRef.current = true;
+      fetchNextPage();
+    } else if (!inView) {
+      // reset when it leaves view so next entry can fetch again
+      didFetchRef.current = false;
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage, data?.pages]);
+
+  const getVisibilityMessageDescriptor = () => {
+    if (isFetchingNextPage) {
+      return messages.loadingMore;
+    }
+    if (hasNextPage) {
+      return messages.scrollDownToLoadMore;
+    }
+    // Only show "All loaded" if the query is done and we actually have projects.
+    if (status === 'success' && !hasNextPage) {
+      return messages.allProjectsLoaded;
+    }
+
+    return null;
+  };
+  const visibilityMessageDescriptor = getVisibilityMessageDescriptor();
 
   return (
     <Box position="relative" w="100%" h="100%">
       <TableComponent
         border={`1px solid ${colors.grey300}`}
         borderRadius={stylingConsts.borderRadius}
-        innerBorders={{
-          bodyRows: true,
-        }}
+        innerBorders={{ bodyRows: true }}
       >
         <Thead>
           <Tr background={colors.grey50}>
@@ -61,28 +129,26 @@ const Table = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {projects?.data.map((project) => (
-            <Row project={project} key={project.id} />
+          {projects.map((project) => (
+            <Row key={project.id} project={project} />
           ))}
         </Tbody>
       </TableComponent>
-      {lastPage > 1 && (
-        <Box mt="12px">
-          <PaginationWithoutPositioning
-            currentPage={currentPage}
-            totalPages={lastPage}
-            loadPage={setCurrentPage}
-          />
+
+      {/* sentinel */}
+      {visibilityMessageDescriptor && (
+        <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
+          {formatMessage(visibilityMessageDescriptor)}
         </Box>
       )}
-      {isFetching && (
+
+      {(isFetching || status === 'loading') && (
         <Box
           position="absolute"
           w="100%"
+          h="100%"
           top="0"
           left="0"
-          right="0"
-          bottom="0"
           bgColor="white"
           display="flex"
           alignItems="center"
