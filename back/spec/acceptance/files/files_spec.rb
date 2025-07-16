@@ -153,6 +153,7 @@ resource 'Files' do
             mime_type: 'application/pdf',
             category: file.category,
             description_multiloc: {},
+            ai_processing_allowed: false,
             created_at: file.created_at.iso8601(3),
             updated_at: file.updated_at.iso8601(3),
             size: 130
@@ -214,6 +215,7 @@ resource 'Files' do
             mime_type: 'application/pdf',
             category: 'other',
             description_multiloc: {},
+            ai_processing_allowed: false,
             created_at: be_present,
             updated_at: be_present
           },

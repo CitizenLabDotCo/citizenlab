@@ -4,17 +4,18 @@
 #
 # Table name: files
 #
-#  id                                          :uuid             not null, primary key
-#  name                                        :string
-#  content                                     :string
-#  uploader_id(the user who uploaded the file) :uuid
-#  created_at                                  :datetime         not null
-#  updated_at                                  :datetime         not null
-#  size(in bytes)                              :integer
-#  mime_type                                   :string
-#  category                                    :string           default("other"), not null
-#  description_multiloc                        :jsonb
-#  tsvector                                    :tsvector
+#  id                                                                           :uuid             not null, primary key
+#  name                                                                         :string
+#  content                                                                      :string
+#  uploader_id(the user who uploaded the file)                                  :uuid
+#  created_at                                                                   :datetime         not null
+#  updated_at                                                                   :datetime         not null
+#  size(in bytes)                                                               :integer
+#  mime_type                                                                    :string
+#  category                                                                     :string           default("other"), not null
+#  description_multiloc                                                         :jsonb
+#  tsvector                                                                     :tsvector
+#  ai_processing_allowed(whether consent was given to process the file with AI) :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -97,6 +98,7 @@ module Files
     validates :content, presence: true
     validates :size, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
     validates :description_multiloc, multiloc: { presence: false }
+    validates :ai_processing_allowed, inclusion: { in: [true, false] }
 
     before_save :update_metadata
 
