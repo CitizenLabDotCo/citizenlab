@@ -11,7 +11,7 @@ interface Props {
   onChange: () => void;
 }
 
-const UnlistedInput = ({ listed, onChange }: Props) => {
+const ListingStatusToggle = ({ listed, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -46,4 +46,4 @@ const UnlistedInput = ({ listed, onChange }: Props) => {
   );
 };
 
-export default UnlistedInput;
+export default ListingStatusToggle;

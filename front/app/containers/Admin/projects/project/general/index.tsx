@@ -56,6 +56,7 @@ import { fragmentId as folderFragmentId } from '../projectHeader/LinkToFolderSet
 
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
+import ListingStatusToggle from './components/ListingStatusToggle';
 import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
@@ -67,7 +68,6 @@ import {
   StyledSectionField,
 } from './components/styling';
 import TopicInputs from './components/TopicInputs';
-import UnlistedInput from './components/UnlistedInput';
 import messages from './messages';
 import validateTitle from './utils/validateTitle';
 
@@ -568,7 +568,7 @@ const AdminProjectsProjectGeneral = () => {
           />
 
           {isNewProject && (
-            <UnlistedInput
+            <ListingStatusToggle
               listed={!!projectAttrs.listed}
               onChange={handleUnlistedOnChange}
             />

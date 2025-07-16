@@ -9,7 +9,7 @@ import { SubSectionTitle } from 'components/admin/Section';
 
 import { useIntl } from 'utils/cl-intl';
 
-import UnlistedInput from '../../general/components/UnlistedInput';
+import ListingStatusToggle from '../../general/components/ListingStatusToggle';
 
 import messages from './messages';
 
@@ -34,7 +34,7 @@ const ProjectUnlisted = ({ projectId }: Props) => {
         {formatMessage(messages.shouldProjectBeListed)}
       </SubSectionTitle>
       <Box mt="-12px" mb="40px">
-        <UnlistedInput
+        <ListingStatusToggle
           listed={listed}
           onChange={() => {
             updateProject({ projectId, listed: !listed });
