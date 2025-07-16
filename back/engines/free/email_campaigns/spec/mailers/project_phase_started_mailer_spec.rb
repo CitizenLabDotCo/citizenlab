@@ -32,20 +32,59 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
       expect(mail.from).to all(end_with('@citizenlab.co'))
     end
 
-    it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
+    it 'includes the header' do
+      expect(mail_body(mail)).to have_tag('div') do
+        with_tag 'h1' do
+          with_text(/A new phase started for project 'Renew West Parc'/)
+        end
+        with_tag 'p' do
+          with_text(/This project entered a new phase on the platform of Liege. Click on the link below to learn more!/)
+        end
+      end
     end
 
-    it 'assigns cta url' do
-      expect(mail.body.encoded).to match(command.dig(:event_payload, :phase_url))
-    end
-
-    it 'includes the project title' do
-      expect(mail.body.encoded).to match(project.title_multiloc['en'])
+    it 'includes the CTA' do
+      expect(mail_body(mail)).to have_tag('a', with: { href: "http://example.org/en/projects/#{project.slug}/1" }) do
+        with_text(/Discover this new phase/)
+      end
     end
 
     it 'includes the unfollow url' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: project, user: recipient)))
+      expect(mail_body(mail)).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: project, user: recipient)))
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ phaseTitle }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' },
+          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Liege'
+      end
+
+      it 'includes the header' do
+        expect(mail_body(mail)).to have_tag('div') do
+          with_tag 'h1' do
+            with_text(/NEW TITLE FOR Idea phase/)
+          end
+          with_tag 'p' do
+            with_text(/NEW BODY TEXT/)
+          end
+        end
+      end
+
+      it 'can customise the CTA' do
+        expect(mail_body(mail)).to have_tag('a', with: { href: "http://example.org/en/projects/#{project.slug}/1" }) do
+          with_text(/CLICK THE BUTTON/)
+        end
+      end
     end
   end
 end

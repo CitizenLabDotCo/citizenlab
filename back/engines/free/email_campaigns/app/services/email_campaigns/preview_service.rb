@@ -1,7 +1,7 @@
 module EmailCampaigns
   class PreviewService
     PreviewUser = Struct.new(:first_name, :last_name, :display_name, :display_name_multiloc)
-    PreviewContentItem = Struct.new(:id, :title_multiloc, :body_multiloc, :url, :deleted_reason)
+    PreviewContentItem = Struct.new(:id, :title_multiloc, :body_multiloc, :description_preview_multiloc, :url, :deleted_reason)
     PreviewEvent = Struct.new(:id, :title_multiloc, :address1, :address2_multiloc)
     PreviewData = Struct.new(:idea, :project, :phase, :comment, :proposal, :event, :author, :initiator, :organization_name, :placeholder_image_url)
 
@@ -23,6 +23,7 @@ module EmailCampaigns
         project: PreviewContentItem.new(
           id: SecureRandom.uuid,
           title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.project_title'),
+          description_preview_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.project_description_preview'),
           url: "/#{recipient.locale}/projects/example-project"
         ),
         phase: PreviewContentItem.new(
