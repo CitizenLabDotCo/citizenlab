@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
@@ -12,9 +12,10 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useInView } from 'react-intersection-observer';
 
 import { MiniProjectFolders, Parameters } from 'api/project_folders_mini/types';
+
+import { useInfiniteScroll } from 'hooks/useInfiniteScroll';
 
 import { useIntl } from 'utils/cl-intl';
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -42,8 +43,7 @@ const fetchProjectFoldersAdmin = async (
 
 const Table = () => {
   const { formatMessage } = useIntl();
-  const { ...params } = useParams();
-  const didFetchRef = useRef(false);
+  const params = useParams();
 
   const {
     data,
@@ -68,26 +68,17 @@ const Table = () => {
     }
   );
 
-  // flatten pages into one list
   const folders = useMemo(
     () => data?.pages.flatMap((page) => page.data) ?? [],
     [data?.pages]
   );
 
-  // sentinel
-  const { ref: loadMoreRef, inView } = useInView({
+  const { loadMoreRef } = useInfiniteScroll({
+    isLoading: isFetchingNextPage,
+    hasNextPage: !!hasNextPage,
+    onLoadMore: fetchNextPage,
     rootMargin: '0px 0px 100px 0px',
-    threshold: 0,
   });
-
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage && !didFetchRef.current) {
-      didFetchRef.current = true;
-      fetchNextPage();
-    } else if (!inView) {
-      didFetchRef.current = false;
-    }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const getSentinelMessage = () => {
     if (isFetchingNextPage) {
@@ -96,7 +87,7 @@ const Table = () => {
     if (hasNextPage) {
       return messages.scrollDownToLoadMore;
     }
-    // Only show "All loaded" if the query is done
+
     if (status === 'success') {
       return messages.allFoldersHaveLoaded;
     }
