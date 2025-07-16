@@ -69,8 +69,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.scrollDownToLoadMore',
     defaultMessage: 'Scroll down to load more',
   },
-  allProjectsLoaded: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.allProjectsLoaded',
-    defaultMessage: 'All projects loaded',
+  allProjectsHaveLoaded: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded',
+    defaultMessage: 'All projects have been loaded',
   },
 });
