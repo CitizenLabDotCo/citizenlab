@@ -1,18 +1,23 @@
 import React, { useMemo } from 'react';
+
 import { Box, colors, Spinner, Text } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
-import useLocalize from 'hooks/useLocalize';
-import { useParams } from '../Projects/utils';
-import Filters from '../Projects/Filters';
-import Centerer from 'components/UI/Centerer';
 
 import { useInfiniteProjectsMiniAdmin } from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
 
-import ProjectGanttChart from './ProjectGanttChart';
-import { GanttItem } from 'components/UI/GanttChart/types';
-import messages from './messages';
-import projectMessages from '../Projects/Table/messages';
 import { useInfiniteScroll } from 'hooks/useInfiniteScroll';
+import useLocalize from 'hooks/useLocalize';
+
+import Centerer from 'components/UI/Centerer';
+import { GanttItem } from 'components/UI/GanttChart/types';
+
+import { useIntl } from 'utils/cl-intl';
+
+import Filters from '../Projects/Filters';
+import projectMessages from '../Projects/Table/messages';
+import { useParams } from '../Projects/utils';
+
+import messages from './messages';
+import ProjectGanttChart from './ProjectGanttChart';
 
 const PAGE_SIZE = 10;
 
@@ -34,21 +39,14 @@ const Timeline = () => {
   const localize = useLocalize();
   const params = useParams();
 
-  const {
-    data,
-    isLoading,
-    isFetching,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    status,
-  } = useInfiniteProjectsMiniAdmin(
-    {
-      ...params,
-      sort: params.sort ?? 'phase_starting_or_ending_soon',
-    },
-    PAGE_SIZE
-  );
+  const { data, isLoading, isFetching, isError, fetchNextPage, hasNextPage } =
+    useInfiniteProjectsMiniAdmin(
+      {
+        ...params,
+        sort: params.sort ?? 'phase_starting_or_ending_soon',
+      },
+      PAGE_SIZE
+    );
 
   const allProjects = useMemo(
     () => data?.pages.flatMap((page) => page.data) ?? [],
@@ -95,12 +93,8 @@ const Timeline = () => {
     if (hasNextPage) {
       return projectMessages.scrollDownToLoadMore;
     }
-    // Only show "All loaded" if the query is done
-    if (status === 'success' && !hasNextPage) {
-      return projectMessages.allProjectsHaveLoaded;
-    }
 
-    return null;
+    return projectMessages.allProjectsHaveLoaded;
   };
   const sentinelMessage = getSentinelMessage();
 
@@ -124,7 +118,7 @@ const Timeline = () => {
       </Box>
 
       <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
-        {sentinelMessage && formatMessage(sentinelMessage)}
+        {formatMessage(sentinelMessage)}
       </Box>
     </Box>
   );

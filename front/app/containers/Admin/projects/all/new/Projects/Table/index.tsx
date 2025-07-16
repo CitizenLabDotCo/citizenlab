@@ -59,7 +59,7 @@ const Table = () => {
       return messages.scrollDownToLoadMore;
     }
     // Only show "All loaded" if the query is done
-    if (status === 'success' && !hasNextPage) {
+    if (status === 'success') {
       return messages.allProjectsHaveLoaded;
     }
 
