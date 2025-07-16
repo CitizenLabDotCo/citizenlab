@@ -16,7 +16,7 @@ module BulkImportIdeas::Exporters
         'generateTaggedPdf' => true,
         'index.html' => Faraday::Multipart::FilePart.new(
           StringIO.new(html),
-          'text/html',
+          'text/html; charset=utf-8',
           'index.html'
         )
       }
@@ -28,8 +28,11 @@ module BulkImportIdeas::Exporters
       end
       response = conn.post(url, payload)
 
-      output_pdf = Tempfile.new('gotenberg.pdf')
-      output_pdf.write(response.body.force_encoding('UTF-8'))
+      output_pdf = Tempfile.new(['gotenberg', '.pdf'])
+      output_pdf.binmode
+      output_pdf.write(response.body)
+      output_pdf.rewind
+
       output_pdf
     end
 

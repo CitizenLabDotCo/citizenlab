@@ -12,6 +12,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import {
   IFlatCustomField,
+  IFlatCustomFieldWithIndex,
   LogicType,
   QuestionRuleType,
 } from 'api/custom_fields/types';
@@ -24,29 +25,24 @@ import { isRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
 
+import usePages from './usePages';
+
 type QuestionRuleInputProps = {
-  fieldId: string;
+  field: IFlatCustomFieldWithIndex;
   validationError: string | undefined;
   answer: { key: string | number | undefined; label: string | undefined };
-  name: string;
-  pages:
-    | {
-        value: string | undefined;
-        label: string;
-      }[]
-    | undefined;
 };
 
 export const QuestionRuleInput = ({
-  fieldId,
-  pages,
-  name,
+  field,
   answer,
   validationError,
 }: QuestionRuleInputProps) => {
+  const fieldId = field.temp_id || field.id;
+  const name = `customFields.${field.index}`;
+  const pages = usePages(field);
   const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
-  const field: IFlatCustomField = watch(name);
   const logic: LogicType = field.logic;
   const rules = logic.rules;
   const fields: IFlatCustomField[] = watch('customFields');
@@ -200,25 +196,21 @@ export const QuestionRuleInput = ({
                     width="320px"
                     data-cy="e2e-rule-input-select"
                   >
-                    {pages && (
-                      <Select
-                        value={selectedPage}
-                        options={pages}
-                        label={
-                          <Text
-                            mb="0px"
-                            margin="0px"
-                            color="coolGrey600"
-                            fontSize="s"
-                          >
-                            <FormattedMessage
-                              {...messages.goToPageInputLabel}
-                            />
-                          </Text>
-                        }
-                        onChange={onSelectionChange}
-                      />
-                    )}
+                    <Select
+                      value={selectedPage}
+                      options={pages}
+                      label={
+                        <Text
+                          mb="0px"
+                          margin="0px"
+                          color="coolGrey600"
+                          fontSize="s"
+                        >
+                          <FormattedMessage {...messages.goToPageInputLabel} />
+                        </Text>
+                      }
+                      onChange={onSelectionChange}
+                    />
                   </Box>
                   <Box ml="auto" flexGrow={0} flexShrink={0}>
                     <ButtonWithLink

@@ -126,7 +126,7 @@ const Bullet = styled.span`
   margin-right: 8px;
 `;
 
-export interface Props {
+export interface ErrorProps {
   marginTop?: string;
   marginBottom?: string;
   showIcon?: boolean;
@@ -179,6 +179,7 @@ export interface TFieldNameMap {
   banner_cta_button_multiloc: 'banner_cta_button_multiloc';
   banner_cta_button_url: 'banner_cta_button_url';
   tag_name: 'tag_name';
+  maximum_attendees: 'maximum_attendees';
 }
 
 export type TFieldName = TFieldNameMap[keyof TFieldNameMap];
@@ -219,7 +220,7 @@ export const getApiErrorValues = (
   return payload ? { ...payload, ...values } : values;
 };
 
-const Error = (props: Props) => {
+const Error = (props: ErrorProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
 

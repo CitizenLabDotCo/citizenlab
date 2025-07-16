@@ -99,13 +99,13 @@ module EmailCampaigns
       return unless commands.any?
 
       commands.each do |command|
-        process_command(campaign, command.merge({ recipient: recipient }))
+        process_command(campaign, command)
       end
     end
 
     def preview_email(campaign, recipient)
       command = if campaign.manual?
-        generate_commands(campaign, recipient).first&.merge(recipient: recipient)
+        generate_commands(campaign, recipient).first
       else
         campaign.mailer_class.preview_command(recipient:)
       end
@@ -148,7 +148,6 @@ module EmailCampaigns
     def assign_campaigns_command(campaigns_with_recipients, options)
       campaigns_with_recipients.flat_map do |(recipient, campaign)|
         generate_commands(campaign, recipient, options)
-          .map { |command| command.merge(recipient: recipient) }
           .zip([campaign].cycle)
       end
     end
@@ -186,8 +185,7 @@ module EmailCampaigns
       campaign.generate_commands(recipient:, **options).map do |command|
         command.merge(
           recipient: recipient,
-          time: Time.zone.now,
-          delivery_id: SecureRandom.uuid
+          time: Time.zone.now
         )
       end
     end

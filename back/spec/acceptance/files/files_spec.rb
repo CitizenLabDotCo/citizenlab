@@ -11,6 +11,11 @@ resource 'Files' do
   get 'web_api/v1/files' do
     parameter :uploader, 'Filter files by uploader user ID(s)', type: %i[string array]
     parameter :project, 'Filter files by project ID(s)', type: %i[string array]
+    parameter :search, 'Filter files by searching in filename'
+
+    parameter :category, <<~CATEGORY_DESC.squish, type: %i[string array], required: false
+      Filter files by category (values: #{Files::File.categories.values.join(', ')})
+    CATEGORY_DESC
 
     parameter :sort, <<~SORT_DESC.squish, required: false
       Sort order. Comma-separated list of attributes. Prefix with "-" to sort in descending order.
@@ -19,8 +24,8 @@ resource 'Files' do
 
     let_it_be(:files) do
       [
-        create(:file, name: 'a.pdf', created_at: 2.days.ago),
-        create(:file, name: 'b.pdf', created_at: 1.day.ago)
+        create(:file, name: 'report-a.pdf', created_at: 2.days.ago),
+        create(:file, name: 'report-b.pdf', created_at: 1.day.ago)
       ]
     end
 
@@ -64,6 +69,38 @@ resource 'Files' do
         end
       end
 
+      describe 'when searching filenames' do
+        example 'Search for files by filename', document: false do
+          file = create(:file, name: 'very-specific-filename.pdf')
+
+          do_request(search: 'very-specific-filename')
+
+          assert_status 200
+          expect(response_ids).to eq [file.id]
+        end
+      end
+
+      describe 'when filtering by category' do
+        let_it_be(:meeting_files) { create_pair(:file, :meeting) }
+        let_it_be(:report_file) { create(:file, :report) }
+
+        example 'List files for a specific category', document: false do
+          do_request(category: 'meeting')
+
+          assert_status 200
+          expect(response_ids).to match_array(meeting_files.map(&:id))
+        end
+
+        example 'List files for multiple categories', document: false do
+          do_request(category: %w[meeting report])
+
+          assert_status 200
+
+          expected_ids = meeting_files.map(&:id) << report_file.id
+          expect(response_ids).to match_array(expected_ids)
+        end
+      end
+
       describe 'sorting' do
         example 'Lists files sorted by creation date in descending order by default', document: false do
           do_request
@@ -75,7 +112,8 @@ resource 'Files' do
           do_request sort: 'name,-created_at'
           expect(response_ids).to eq(files.map(&:id))
 
-          new_file = create(:file, name: 'a.pdf')
+          # Same name as an existing file, but created later.
+          new_file = create(:file, name: 'report-a.pdf')
           do_request sort: '-name,created_at'
 
           expected_files = [files.last, files.first, new_file]
@@ -112,10 +150,11 @@ resource 'Files' do
           type: 'file',
           attributes: {
             name: file.name,
+            mime_type: 'application/pdf',
+            category: file.category,
             created_at: file.created_at.iso8601(3),
             updated_at: file.updated_at.iso8601(3),
-            size: 130,
-            mime_type: 'application/pdf'
+            size: 130
           },
           relationships: {
             uploader: { data: { id: file.uploader_id, type: 'user' } },
@@ -137,6 +176,10 @@ resource 'Files' do
       parameter :name, 'The name of the file', required: true
       parameter :content, 'The content of the file, encoded in Base64', required: true
       parameter :project, 'The project to which the file will be uploaded', required: false
+
+      parameter :category, <<~CATEGORY_DESC.squish, required: false
+        The category of the file (values: #{Files::File.categories.values.join(', ')})
+      CATEGORY_DESC
     end
 
     let(:name) { 'afvalkalender.pdf' }
@@ -160,8 +203,34 @@ resource 'Files' do
 
         assert_status 201
 
+        expect(response_data).to match(
+          id: be_present,
+          type: 'file',
+          attributes: {
+            name: name,
+            size: 1_645_987,
+            mime_type: 'application/pdf',
+            category: 'other',
+            created_at: be_present,
+            updated_at: be_present
+          },
+          relationships: {
+            uploader: { data: { id: admin.id, type: 'user' } },
+            projects: { data: [{ id: project, type: 'project' }] }
+          }
+        )
+
         file = Files::File.find(response_data[:id])
         expect(file.project_ids).to contain_exactly(project)
+      end
+
+      example 'Create a file with category' do
+        do_request(file: { name: name, content: content, category: 'meeting' })
+
+        assert_status 201
+
+        file = Files::File.find(response_data[:id])
+        expect(file.category).to eq('meeting')
       end
     end
   end

@@ -304,8 +304,11 @@ DROP INDEX IF EXISTS public.index_files_projects_on_file_id_and_project_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_file_id;
 DROP INDEX IF EXISTS public.index_files_on_uploader_id;
 DROP INDEX IF EXISTS public.index_files_on_size;
+DROP INDEX IF EXISTS public.index_files_on_name_gin_trgm;
 DROP INDEX IF EXISTS public.index_files_on_mime_type;
+DROP INDEX IF EXISTS public.index_files_on_category;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
+DROP INDEX IF EXISTS public.index_events_on_maximum_attendees;
 DROP INDEX IF EXISTS public.index_events_on_location_point;
 DROP INDEX IF EXISTS public.index_events_attendances_on_updated_at;
 DROP INDEX IF EXISTS public.index_events_attendances_on_event_id;
@@ -687,6 +690,7 @@ DROP FUNCTION IF EXISTS public.que_validate_tags(tags_array jsonb);
 DROP EXTENSION IF EXISTS vector;
 DROP EXTENSION IF EXISTS "uuid-ossp";
 DROP EXTENSION IF EXISTS postgis;
+DROP EXTENSION IF EXISTS pg_trgm;
 DROP EXTENSION IF EXISTS pgcrypto;
 DROP SCHEMA IF EXISTS shared_extensions;
 DROP SCHEMA IF EXISTS public;
@@ -723,6 +727,20 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA shared_extensions;
 --
 
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
+--
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA shared_extensions;
+
+
+--
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
 
 
 --
@@ -1506,7 +1524,8 @@ CREATE TABLE public.events (
     address_2_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     online_link character varying,
     attend_button_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    using_url character varying
+    using_url character varying,
+    maximum_attendees integer
 );
 
 
@@ -1670,7 +1689,8 @@ CREATE TABLE public.phases (
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
     similarity_enabled boolean DEFAULT true NOT NULL,
-    user_fields_in_form boolean DEFAULT false NOT NULL
+    user_fields_in_form boolean DEFAULT false NOT NULL,
+    vote_term character varying DEFAULT 'vote'::character varying
 );
 
 
@@ -2413,7 +2433,8 @@ CREATE TABLE public.files (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     size integer,
-    mime_type character varying
+    mime_type character varying,
+    category character varying DEFAULT 'other'::character varying NOT NULL
 );
 
 
@@ -5192,6 +5213,13 @@ CREATE INDEX index_events_on_location_point ON public.events USING gist (locatio
 
 
 --
+-- Name: index_events_on_maximum_attendees; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_maximum_attendees ON public.events USING btree (maximum_attendees);
+
+
+--
 -- Name: index_events_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5199,10 +5227,24 @@ CREATE INDEX index_events_on_project_id ON public.events USING btree (project_id
 
 
 --
+-- Name: index_files_on_category; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_on_category ON public.files USING btree (category);
+
+
+--
 -- Name: index_files_on_mime_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_files_on_mime_type ON public.files USING btree (mime_type);
+
+
+--
+-- Name: index_files_on_name_gin_trgm; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_on_name_gin_trgm ON public.files USING gin (name shared_extensions.gin_trgm_ops);
 
 
 --
@@ -7415,12 +7457,18 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250715075008'),
+('20250714073201'),
+('20250708085259'),
+('20250702085136'),
 ('20250630142000'),
+('20250627113458'),
 ('20250626072615'),
 ('20250624134747'),
 ('20250624102147'),
 ('20250618151933'),
 ('20250616142444'),
+('20250611110008'),
 ('20250610112901'),
 ('20250609151800'),
 ('20250606074930'),

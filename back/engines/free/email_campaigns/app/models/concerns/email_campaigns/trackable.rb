@@ -24,26 +24,26 @@ module EmailCampaigns
         &.sent_at
     end
 
-    def extra_mailgun_variables
-      if !@command
-        ErrorReporter.report_msg('No command in extra_mailgun_variables!')
-        @command = {}
+    def extra_mailgun_variables(command)
+      if !command[:delivery_id]
+        # This can be removed in August 2025. It seems like the delivery_id is always included now,
+        # but somehow the Mailgun header is also called when the delivery_id is not set yet. But if
+        # the error in MailgunEventsController is not raised, then all should be fine.
+        ErrorReporter.report_msg(
+          'No delivery ID in Mailgun variables!',
+          extra: { command: command, campaign: self }
+        )
       end
-      if !@command[:delivery_id]
-        ErrorReporter.report_msg('No delivery ID in extra_mailgun_variables!')
-      end
-      { 'cl_delivery_id' => @command[:delivery_id] }
+      { 'cl_delivery_id' => command[:delivery_id] }
     end
 
     private
 
     def generate_delivery_id(command)
-      @command = command
-      command[:delivery_id] ||= SecureRandom.uuid
+      command[:delivery_id] = SecureRandom.uuid
     end
 
     def save_delivery(command)
-      ErrorReporter.report_msg('No delivery ID in save_delivery!') if !command[:delivery_id]
       deliveries.create(
         id: command[:delivery_id],
         delivery_status: 'sent',

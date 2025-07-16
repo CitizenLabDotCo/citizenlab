@@ -1,4 +1,5 @@
 import { first, last, sortBy } from 'lodash-es';
+import { MessageDescriptor } from 'react-intl';
 import { SupportedLocale } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -8,7 +9,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { hasTextInSpecifiedLocale } from 'utils/locale';
 
-import { IPhaseData } from './types';
+import { IPhaseData, VoteTerm } from './types';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
@@ -147,6 +148,14 @@ export function getInputTerm(
     return getLatestRelevantPhase(phases)?.attributes.input_term || 'idea';
   }
   return 'idea';
+}
+
+export function getPhaseVoteTermMessage(
+  phase: IPhaseData,
+  voteTermMessages: { [key in VoteTerm]: MessageDescriptor }
+) {
+  const voteTermMessageKey: VoteTerm = phase.attributes.vote_term || 'vote';
+  return voteTermMessages[voteTermMessageKey];
 }
 
 export const INPUT_TERMS = [

@@ -1,5 +1,6 @@
 <html>
 <head>
+  <meta charset="UTF-8">
   <title><%= form_title %></title>
 
   <% if font_config %>
@@ -283,6 +284,13 @@
                 <div class="line"></div>
               <% end %>
               <img alt="" src="<%= field[:map_url] %>">
+            </div>
+
+          <% elsif field[:format] == :checkbox %>
+            <div class="options">
+                <div class="select">
+                  <div><input type="checkbox" class="checkbox"></div>
+                </div>
             </div>
 
           <% else %>

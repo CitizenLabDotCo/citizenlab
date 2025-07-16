@@ -40,7 +40,7 @@ const Select = ({ name, scrollErrorIntoView, ...rest }: Props) => {
               {...field}
               {...rest}
               onChange={(option) => {
-                setValue(name, option.value);
+                setValue(name, option.value, { shouldDirty: true });
                 trigger(name);
               }}
             />

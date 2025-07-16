@@ -15,6 +15,7 @@ import {
   IUpdatedPhaseProperties,
   ParticipationMethod,
   TSurveyService,
+  VoteTerm,
   VotingMethod,
 } from 'api/phases/types';
 
@@ -115,7 +116,6 @@ const PhaseParticipationConfig = ({
       // as its starting point.
       ...defaultParticipationConfig,
       participation_method,
-
       ...(ideation ? ideationDefaultConfig : {}),
       ...(voting ? votingDefaultConfig : {}),
       ...(survey ? surveyDefaultConfig : {}),
@@ -310,32 +310,21 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const handleVoteTermPluralChange = (
-    voting_term_plural_multiloc: Multiloc
-  ) => {
-    updateFormData((state) => ({
-      ...state,
-      voting_term_plural_multiloc,
-    }));
-    setValidationErrors((errors) => ({ ...errors, voteTermError: undefined }));
-  };
-
-  const handleVoteTermSingularChange = (
-    voting_term_singular_multiloc: Multiloc
-  ) => {
-    updateFormData((state) => ({
-      ...state,
-      voting_term_singular_multiloc,
-    }));
-    setValidationErrors((errors) => ({ ...errors, voteTermError: undefined }));
-  };
-
   const handleInputTermChange = (option: IOption) => {
     const input_term: InputTerm = option.value;
 
     updateFormData((state) => ({
       ...state,
       input_term,
+    }));
+  };
+
+  const handleVoteTermChange = (option: IOption) => {
+    const voteTerm: VoteTerm = option.value;
+
+    updateFormData((state) => ({
+      ...state,
+      vote_term: voteTerm,
     }));
   };
 
@@ -426,8 +415,6 @@ const PhaseParticipationConfig = ({
     voting_min_total,
     voting_max_total,
     voting_max_votes_per_idea,
-    voting_term_singular_multiloc,
-    voting_term_plural_multiloc,
     survey_service,
     survey_embed_url,
     poll_anonymous,
@@ -442,6 +429,7 @@ const PhaseParticipationConfig = ({
     similarity_threshold_title,
     similarity_threshold_body,
     user_fields_in_form,
+    vote_term: voteTerm,
   } = formData;
 
   const showSurveys =
@@ -482,7 +470,7 @@ const PhaseParticipationConfig = ({
           <UserActions
             submission_enabled={submission_enabled || false}
             commenting_enabled={commenting_enabled || false}
-            reacting_enabled={reacting_enabled || false}
+            reacting_enabled={false} // The ability to configure number of likes is irrelevant for common ground
             togglePostingEnabled={togglePostingEnabled}
             toggleCommentingEnabled={toggleCommentingEnabled}
             toggleReactingEnabled={toggleReactingEnabled}
@@ -506,8 +494,6 @@ const PhaseParticipationConfig = ({
             autoshare_results_enabled={autoshare_results_enabled}
             handleVotingMinTotalChange={handleVotingMinTotalChange}
             handleVotingMaxTotalChange={handleVotingMaxTotalChange}
-            handleVoteTermPluralChange={handleVoteTermPluralChange}
-            handleVoteTermSingularChange={handleVoteTermSingularChange}
             toggleCommentingEnabled={toggleCommentingEnabled}
             toggleAutoshareResultsEnabled={toggleAutoshareResultsEnabled}
             apiErrors={apiErrors}
@@ -516,14 +502,14 @@ const PhaseParticipationConfig = ({
             handleIdeasDisplayChange={handleIdeasDisplayChange}
             handleVotingMethodOnChange={handleVotingMethodOnChange}
             voting_max_votes_per_idea={voting_max_votes_per_idea}
-            voting_term_plural_multiloc={voting_term_plural_multiloc}
-            voting_term_singular_multiloc={voting_term_singular_multiloc}
             handleMaxVotesPerOptionAmountChange={handleVotingMaxPerIdeaChange}
             similarity_enabled={similarity_enabled}
             similarity_threshold_title={similarity_threshold_title}
             similarity_threshold_body={similarity_threshold_body}
             handleSimilarityEnabledChange={handleSimilarityEnabledChange}
             handleThresholdChange={handleThresholdChange}
+            handleVoteTermChange={handleVoteTermChange}
+            voteTerm={voteTerm}
           />
         )}
 

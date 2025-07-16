@@ -40,12 +40,12 @@ module IdeaCustomFields
       fields = if params[:copy] == 'true'
         service.duplicate_all_fields
       elsif params[:public_fields] == 'true'
-        service.enabled_fields.select { |field| IdeaCustomFieldPolicy.new(current_user, field).show? }
+        service.enabled_fields.select { |field| IdeaCustomFieldPolicy.new(pundit_user, field).show? }
       elsif @custom_form.custom_field_ids.present?
         authorized_ids = IdeaCustomFieldPolicy::Scope.new(pundit_user, @custom_form.custom_fields, @custom_form).resolve.ids
         service.all_fields.select { |field| authorized_ids.include? field.id }
       else
-        service.all_fields.select { |field| IdeaCustomFieldPolicy.new(current_user, field).show? }
+        service.all_fields.select { |field| IdeaCustomFieldPolicy.new(pundit_user, field).show? }
       end
       fields = fields.filter(&:support_free_text_value?) if params[:support_free_text_value].present?
       fields = fields.filter { |field| params[:input_types].include?(field.input_type) } if params[:input_types].present?
