@@ -11,7 +11,7 @@ module EmailCampaigns
     def substitution_variables
       {
         organizationName: organization_name,
-        projectName: localize_for_recipient(event.project_title_multiloc),
+        projectName: localize_for_recipient(event&.project_title_multiloc),
         phaseTitle: localize_for_recipient(event&.phase_title_multiloc)
       }
     end
