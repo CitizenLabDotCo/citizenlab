@@ -13,9 +13,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     # By default, this endpoint will remove unlisted projects that the user cannot moderate.
     # But if the `remove_all_unlisted` parameter is set to 'true', it will 
     # even remove all unlisted projects.
-    policy_context[:remove_unlisted] = params[:remove_all_unlisted] == 'true'
-      ? 'remove_all_unlisted'
-      : 'remove_unlisted_that_user_cannot_moderate'
+    policy_context[:remove_unlisted] = if params[:remove_all_unlisted] == 'true'
+      'remove_all_unlisted' else
+      'remove_unlisted_that_user_cannot_moderate' end
 
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
