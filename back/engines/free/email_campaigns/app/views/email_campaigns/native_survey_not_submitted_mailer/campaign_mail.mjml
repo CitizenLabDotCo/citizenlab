@@ -1,2 +1,12 @@
+<mj-raw><% if survey_end_date %></mj-raw>
+  <mj-section padding="0 25px">
+    <mj-column>
+      <mj-text>
+        <p><%= survey_end_date %></p>
+      </mj-text>
+    </mj-column>
+  </mj-section>
+<mj-raw><% end %></mj-raw>
+
 <!-- CTA button -->
-<%= render partial: 'application/cta_button', locals: { href: event.survey_url, message: format_message('cta_complete_your_survey_response') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.survey_url, message: cta_button_text } %>

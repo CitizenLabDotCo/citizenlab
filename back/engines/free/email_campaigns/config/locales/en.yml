@@ -24,7 +24,8 @@ en:
       "mention_in_official_feedback": Mention in an update
       "mention_in_internal_comment": Mention in an internal comment
       "new_comment_for_admin": New comment in a project I moderate
-      "new_idea_for_admin": New input in a project I moderate
+      "new_idea_for_admin_published": New published input in a project I moderate
+      "new_idea_for_admin_prescreening": New input requiring approval in a project I moderate
       "official_feedback_on_idea_you_follow": Update on an input that you follow
       "password_reset": Password reset
       "project_moderation_rights_received": Project moderation rights received
@@ -92,6 +93,7 @@ en:
       initiator_last_name: 'Smith'
       initiator_display_name: 'Bob Smith'
       project_title: 'Example project'
+      phase_title: 'Example phase'
       comment_body: 'This is an example comment used for previewing the content of emails. This is not real content.'
       comment_deleted_reason: 'Your example comment was considered inappropriate.'
       idea_title: 'Example Idea'
@@ -236,9 +238,9 @@ en:
     moderator_digest:
       subject: 'Weekly manager report of "%{project_title}"'
       preheader: 'Project manager digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, your weekly report'
-      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
-      cta_manage: 'Manage your project'
+      title: '%{firstName}, your weekly report'
+      event_description: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
+      cta_button: 'Manage your project'
       new_users: 'New users'
       new_ideas: 'New ideas'
       new_comments: 'New comments'
@@ -250,10 +252,10 @@ en:
       x_days_ago_by_author: '%{x} days ago by %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} commented:'
-      cta_reply_to: 'View %{commentAuthor}''s comment'
+      cta_button: 'View %{authorFirstName}''s comment'
       days_ago: '%{numberOfDays} days ago'
       event_description: '%{authorName} added a new comment on your platform.'
-      main_header: '%{firstName}, a new comment has been posted on your platform'
+      title: '%{firstName}, a new comment has been posted on your platform'
       subject: 'A new comment has been posted on %{organizationName}''s platform'
       preheader: '%{authorName} left a comment'
       today: Today
@@ -273,16 +275,23 @@ en:
         option: '%{authorName} commented on an option you follow'
         proposal: '%{authorName} commented on a proposal you follow'
         petition: '%{authorName} commented on a petition you follow'
-    new_idea_for_admin:
-      main_header_publication: 'A new input has been published on your platform'
-      event_description_publication: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
-      cta_publication: 'Give feedback to %{authorName}'
-      main_header_prescreening: 'An input requires your review'
-      event_description_prescreening: '%{authorName} has submitted a new input on your platform.'
-      input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
-      cta_prescreening: 'Review the input'
-      days_ago: '%{numberOfDays} days ago'
+    new_idea_for_admin_published:
+      subject: 'A new input has been published on your platform'
       preheader: '%{authorName} published a new input on your platform'
+      title: 'A new input has been published on your platform'
+      event_description: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
+      cta_button: 'Give feedback to %{authorName}'
+      days_ago: '%{numberOfDays} days ago'
+      today: Today
+      yesterday: Yesterday
+    new_idea_for_admin_prescreening:
+      subject: 'An input requires your review'
+      preheader: '%{authorName} published a new input on your platform'
+      title: 'An input requires your review'
+      cta_button: 'Review the input'
+      event_description: '%{authorName} has submitted a new input on your platform.'
+      input_not_visible: '<b>The input won''t be visible</b> until you modify its status.'
+      days_ago: '%{numberOfDays} days ago'
       today: Today
       yesterday: Yesterday
     comment_on_your_comment:
@@ -328,11 +337,11 @@ en:
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:
-      cta_reply_to: 'Reply to %{organizationName}'
+      cta_button: 'Reply to %{organizationName}'
       event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
-      main_header: 'You have been mentioned'
+      title: 'You have been mentioned'
       subject: '%{organizationName} mentioned you in their feedback'
-      preheader: '%{commentAuthor} mentioned you in feedback'
+      preheader: '%{organizationName} mentioned you in feedback'
     project_moderation_rights_received:
       cta_manage_project: 'Manage this project'
       message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
@@ -478,10 +487,10 @@ en:
     native_survey_not_submitted:
       subject: '%{organizationName}: Almost there! Submit your answers'
       preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
-      title_native_survey_not_submitted: 'Almost there! Submit your answers'
-      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
-      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
-      cta_complete_your_survey_response: 'Resume your survey response'
+      title: 'Almost there! Submit your answers'
+      event_description: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
+      cta_button: 'Resume your survey response'
+      submissions_close: 'Submissions will close on %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
