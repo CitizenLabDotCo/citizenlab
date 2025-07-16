@@ -40,7 +40,7 @@ const fetchProjectFoldersAdmin = async (
     },
   });
 
-const Table: React.FC = () => {
+const Table = () => {
   const { formatMessage } = useIntl();
   const { ...params } = useParams();
   const didFetchRef = useRef(false);
