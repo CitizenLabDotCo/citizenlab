@@ -8,7 +8,7 @@ class ProjectPolicy < ApplicationPolicy
       if include_unlisted
         return scope
       else
-        return scope.where(unlisted: false)
+        return scope.where(listed: true)
       end
     end
 
@@ -20,19 +20,19 @@ class ProjectPolicy < ApplicationPolicy
         scope = scope.joins(:admin_publication)
 
         return scope.where(
-          '(projects.unlisted = FALSE) OR ' \
-          '(projects.unlisted = TRUE AND projects.id IN (?)) OR ' \
-          '(projects.unlisted = TRUE AND admin_publications.parent_id IN (?))',
+          '(projects.listed = TRUE) OR ' \
+          '(projects.listed = FALSE AND projects.id IN (?)) OR ' \
+          '(projects.listed = FALSE AND admin_publications.parent_id IN (?))',
           user.moderatable_project_ids,
           AdminPublication.where(publication_id: user.moderated_project_folder_ids).select(:id)
         )
       else
-        return scope.where(unlisted: false)
+        return scope.where(listed: true)
       end
     end
 
     # Other: always return only listed projects.
-    scope.where(unlisted: false)
+    scope.where(listed: true)
   end
 
   class Scope < ApplicationPolicy::Scope
@@ -193,7 +193,7 @@ class ProjectPolicy < ApplicationPolicy
       :header_bg,
       :visible_to,
       :include_all_areas,
-      :unlisted,
+      :listed,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,

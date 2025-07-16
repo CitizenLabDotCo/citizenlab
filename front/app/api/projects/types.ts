@@ -95,7 +95,7 @@ export interface IProjectAttributes {
   folder_id?: string | null;
   action_descriptors: ActionDescriptors;
   uses_content_builder: boolean;
-  unlisted: boolean;
+  listed: boolean;
 }
 
 export type ActionDescriptors = {
@@ -204,5 +204,5 @@ export interface IUpdatedProjectProperties {
   topic_ids?: string[];
   include_all_areas?: boolean;
   folder_id?: string | null;
-  unlisted?: boolean;
+  listed?: boolean;
 }

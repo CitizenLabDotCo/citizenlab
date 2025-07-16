@@ -109,7 +109,7 @@ resource 'AdminPublication' do
       end
 
       example 'Includes unlisted projects', document: false do
-        unlisted_project = create(:project, unlisted: true)
+        unlisted_project = create(:project, listed: false)
 
         do_request
         assert_status 200
@@ -703,8 +703,8 @@ resource 'AdminPublication' do
       end
 
       example 'Unlisted projects that user can moderate are included', document: false do
-        unlisted_project_user_moderates = create(:project, unlisted: true)
-        unlisted_project = create(:project, unlisted: true)
+        unlisted_project_user_moderates = create(:project, listed: false)
+        unlisted_project = create(:project, listed: false)
 
         moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
         @moderator.update!(roles: moderator_roles)
@@ -717,7 +717,7 @@ resource 'AdminPublication' do
       end
 
       example 'Unlisted projects user can moderate are excluded if include_unlisted is false', document: false do
-        unlisted_project_user_moderates = create(:project, unlisted: true)
+        unlisted_project_user_moderates = create(:project, listed: false)
 
         moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: unlisted_project_user_moderates.id }
         @moderator.update!(roles: moderator_roles)
@@ -796,14 +796,14 @@ resource 'AdminPublication' do
       example 'Includes unlisted projects in folder user can moderate', document: false do
         unlisted_project_user_moderates = create(
           :project,
-          unlisted: true,
+          listed: false,
           admin_publication_attributes: {
             publication_status: 'published',
             parent_id: project_folder.admin_publication.id
           }
         )
 
-        unlisted_project = create(:project, unlisted: true)
+        unlisted_project = create(:project, listed: false)
 
         do_request
         assert_status 200
@@ -815,7 +815,7 @@ resource 'AdminPublication' do
       example 'Does not include unlisted projects user can moderate if include_unlisted is false', document: false do
         unlisted_project_user_moderates = create(
           :project,
-          unlisted: true,
+          listed: false,
           admin_publication_attributes: {
             publication_status: 'published',
             parent_id: project_folder.admin_publication.id

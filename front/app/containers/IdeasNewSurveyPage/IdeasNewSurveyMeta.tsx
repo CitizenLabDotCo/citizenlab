@@ -33,7 +33,7 @@ const IdeasNewSurveyMeta = ({ project, surveyTitle }: Props) => {
       <meta name="title" content={title} />
       <meta property="og:title" content={title} />
       <meta property="og:url" content={location.href} />
-      {project.data.attributes.unlisted && (
+      {project.data.attributes.listed && (
         <meta name="robots" content="noindex" />
       )}
     </Helmet>

@@ -18,7 +18,7 @@ module Seo
         :'admin_publications.publication_type', :'admin_publications.publication_id'
       ).includes(:admin_publication)
         .where(visible_to: 'public', admin_publications: { publication_status: statuses })
-        .where(unlisted: false)
+        .where(listed: true)
       @folders = Pundit.policy_scope(nil, ProjectFolders::Folder).select(
         :'project_folders_folders.id', :'project_folders_folders.slug',
         :'project_folders_folders.updated_at', :'admin_publications.publication_status',

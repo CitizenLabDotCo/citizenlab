@@ -73,7 +73,7 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
     end
 
     it 'does not include ideas from unlisted projects' do
-      unlisted_project = create(:project, unlisted: true)
+      unlisted_project = create(:project, listed: false)
       unlisted_idea = create(:idea, project: unlisted_project, published_at: Time.now - 1.hour)
 
       command = campaign.generate_commands(recipient: user).first

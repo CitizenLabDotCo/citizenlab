@@ -40,7 +40,7 @@ resource 'Phases' do
       end
 
       example 'List all phases of unlisted project', document: false do
-        @project.update!(unlisted: true)
+        @project.update!(listed: false)
         Permissions::PermissionsUpdateService.new.update_all_permissions
         do_request
         assert_status 200

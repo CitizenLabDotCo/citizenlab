@@ -468,7 +468,7 @@ const AdminProjectsProjectGeneral = () => {
   const handleUnlistedOnChange = () => {
     setProjectAttributesDiff((projectAttributesDiff) => ({
       ...projectAttributesDiff,
-      unlisted: !projectAttrs.unlisted,
+      listed: !projectAttrs.listed,
     }));
     setSubmitState('enabled');
   };
@@ -569,7 +569,7 @@ const AdminProjectsProjectGeneral = () => {
 
           {isNewProject && (
             <UnlistedInput
-              listed={projectAttrs.unlisted !== true}
+              listed={!!projectAttrs.listed}
               onChange={handleUnlistedOnChange}
             />
           )}

@@ -1193,7 +1193,7 @@ resource 'Projects' do
       end
 
       context 'When unlisted projects exist' do
-        before { @projects << create(:project, unlisted: true) }
+        before { @projects << create(:project, listed: false) }
 
         example 'Returns unlisted projects by default', document: false do
           do_request
@@ -1839,7 +1839,7 @@ resource 'Projects' do
   get 'web_api/v1/projects/finished_or_archived' do
     before do
       @listed_archived_project = create(:project_with_past_phases, admin_publication_attributes: { publication_status: 'archived' })
-      @unlisted_archived_project = create(:project_with_past_phases, unlisted: true, admin_publication_attributes: { publication_status: 'archived' })
+      @unlisted_archived_project = create(:project_with_past_phases, listed: false, admin_publication_attributes: { publication_status: 'archived' })
     end
 
     example 'Returns only listed projects' do
@@ -1853,8 +1853,8 @@ resource 'Projects' do
     context 'when moderator' do
       before do
         @listed_projects = create_list(:project, 5)
-        @unlisted_projects = create_list(:project, 4, unlisted: true)
-        @unlisted_projects_user_moderates = create_list(:project, 2, unlisted: true)
+        @unlisted_projects = create_list(:project, 4, listed: false)
+        @unlisted_projects_user_moderates = create_list(:project, 2, listed: false)
 
         @moderator = create(:project_moderator, projects: @unlisted_projects_user_moderates)
 

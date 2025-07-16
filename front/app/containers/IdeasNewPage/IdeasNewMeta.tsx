@@ -61,7 +61,7 @@ const IdeasNewMeta = () => {
       <meta property="og:title" content={ideasIndexTitle} />
       <meta property="og:description" content={ideasIndexDescription} />
       <meta property="og:url" content={location.href} />
-      {project?.data.attributes.unlisted && (
+      {project && project.data.attributes.listed && (
         <meta name="robots" content="noindex" />
       )}
     </Helmet>

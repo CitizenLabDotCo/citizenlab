@@ -14,7 +14,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :created_at,
     :updated_at,
     :header_bg_alt_text_multiloc,
-    :unlisted
+    :listed
   )
 
   attribute :folder_id do |project|

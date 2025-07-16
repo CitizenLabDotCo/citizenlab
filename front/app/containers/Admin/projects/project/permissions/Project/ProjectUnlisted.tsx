@@ -26,7 +26,7 @@ const ProjectUnlisted = ({ projectId }: Props) => {
     return null;
   }
 
-  const { unlisted } = project.data.attributes;
+  const { listed } = project.data.attributes;
 
   return (
     <Box>
@@ -35,9 +35,9 @@ const ProjectUnlisted = ({ projectId }: Props) => {
       </SubSectionTitle>
       <Box mt="-12px" mb="40px">
         <UnlistedInput
-          listed={!unlisted}
+          listed={listed}
           onChange={() => {
-            updateProject({ projectId, unlisted: !unlisted });
+            updateProject({ projectId, listed: !listed });
           }}
         />
       </Box>

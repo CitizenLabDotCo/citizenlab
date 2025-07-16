@@ -74,7 +74,7 @@ module Notifications
       initiator_id = activity.user_id
       project = activity.item
 
-      return [] if project.unlisted?
+      return [] unless project.listed?
 
       followers = Follower.where(followable: project.topics).or(Follower.where(followable: project.areas))
       followers = followers.or(Follower.where(followable: project.folder)) if project.in_folder?
