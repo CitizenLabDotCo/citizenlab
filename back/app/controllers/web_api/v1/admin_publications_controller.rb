@@ -9,8 +9,10 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     # But if the `remove_all_unlisted` parameter is set to 'true', it will
     # even remove all unlisted projects.
     policy_context[:remove_unlisted] = if params[:remove_all_unlisted] == 'true'
-      'remove_all_unlisted' else
-                              'remove_unlisted_that_user_cannot_moderate' end
+      'remove_all_unlisted'
+    else
+      'remove_unlisted_that_user_cannot_moderate'
+    end
 
     admin_publications = policy_scope(AdminPublication.includes(:parent))
     admin_publications = admin_publication_filterer.filter(admin_publications, params.merge(current_user: current_user))
