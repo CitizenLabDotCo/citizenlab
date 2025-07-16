@@ -43,6 +43,21 @@ class WebApi::V1::Files::FilesController < ApplicationController
     end
   end
 
+  def update
+    file = authorize(Files::File.find(params[:id]))
+
+    side_fx.before_update(file, current_user)
+    if file.update(update_params)
+      side_fx.after_update(file, current_user)
+      render json: WebApi::V1::FileV2Serializer.new(
+        file,
+        params: jsonapi_serializer_params
+      ).serializable_hash
+    else
+      render json: { errors: file.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     file = authorize(Files::File.find(params[:id]))
 
@@ -64,6 +79,15 @@ class WebApi::V1::Files::FilesController < ApplicationController
       create_params[:content_by_content] = params.require(:file).permit(:content, :name)
       create_params[:uploader_id] = current_user.id
     end
+  end
+
+  def update_params
+    params.require(:file).permit(
+      :name,
+      :category,
+      :ai_processing_allowed,
+      description_multiloc: CL2_SUPPORTED_LOCALES
+    )
   end
 
   def finder_params

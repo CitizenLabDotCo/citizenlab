@@ -292,4 +292,84 @@ resource 'Files' do
       end
     end
   end
+
+  patch '/web_api/v1/files/:id' do
+    with_options scope: :file do
+      parameter :name, 'The name of the file'
+      parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file'
+      parameter :description_multiloc, 'The description of the file, as a multiloc string'
+      parameter :category, "The category of the file (values: #{Files::File.categories.values.join(', ')})"
+    end
+
+    let(:project) { create(:project) }
+    let(:file) { create(:file, :meeting, projects: [project]) }
+
+    # Parameters
+    let(:id) { file.id }
+    let(:name) { "updated-#{file.name}" }
+    let(:category) { 'other' }
+    let(:ai_processing_allowed) { !file.ai_processing_allowed }
+    let(:description_multiloc) { { 'en' => 'Updated description' } }
+
+    shared_examples 'update_file' do |document: false|
+      example 'Update a file', document: document do
+        do_request
+        assert_status 200
+
+        expect(response_data[:attributes].with_indifferent_access).to include(
+          name: name,
+          category: category,
+          ai_processing_allowed: ai_processing_allowed,
+          description_multiloc: description_multiloc
+        )
+
+        file.reload
+        expect(file.name).to eq name
+        expect(file.category).to eq category
+        expect(file.ai_processing_allowed).to eq ai_processing_allowed
+        expect(file.description_multiloc).to eq description_multiloc
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      include_examples 'update_file', document: true
+
+      example '[error] Update with invalid category', document: false do
+        do_request(file: { category: 'invalid_category' })
+
+        assert_status 422
+        expect(response_body).to include('category')
+      end
+    end
+
+    context 'when moderator of associated project' do
+      before do
+        moderator = create(:project_moderator, projects: [project])
+        header_token_for(moderator)
+      end
+
+      include_examples 'update_file'
+    end
+
+    context 'when moderator of other project' do
+      before do
+        moderator = create(:project_moderator)
+        header_token_for(moderator)
+      end
+
+      include_examples 'unauthorized'
+    end
+
+    context 'when regular user' do
+      before { resident_header_token }
+
+      include_examples 'unauthorized'
+    end
+
+    context 'when visitor' do
+      include_examples 'unauthorized'
+    end
+  end
 end
