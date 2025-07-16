@@ -2190,7 +2190,7 @@
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Titel und Daten",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Projektveranstaltungen",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Name der Veranstaltung",
-  "app.containers.AdminPage.ProjectEvents.toggleCustomAttendanceButtonLabel": "Verknüpfen Sie den Button mit einer externen URL",
+  "app.containers.AdminPage.ProjectEvents.toggleCustomAttendanceButtonLabel": "Button mit einer externen URL verknüpfen",
   "app.containers.AdminPage.ProjectEvents.toggleCustomAttendanceButtonTooltip": "Standardmäßig wird der plattforminterne Teilnahme-Button angezeigt, über die Nutzer*innen sich für eine Veranstaltung anmelden können. Sie können dies ändern und stattdessen auf eine externe URL verweisen.",
   "app.containers.AdminPage.ProjectEvents.usersTabLink": "/admin/users",
   "app.containers.AdminPage.ProjectEvents.usersTabLinkText": "Nutzer*innen",
