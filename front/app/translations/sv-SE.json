@@ -121,8 +121,6 @@
   "app.components.ConsentManager.Banner.manage": "Hantera",
   "app.components.ConsentManager.Banner.policyLink": "Policy webbkakor",
   "app.components.ConsentManager.Banner.reject": "Avvisa",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Bekräfta",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Om du avbryter, kommer dina inställningar att gå förlorade.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklam",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Vi använder detta för att anpassa och mäta effektiviteten av reklamkampanjer på vår webbplats. Vi kommer inte att visa någon reklam på denna plattform, men följande tjänster kan erbjuda dig en personlig annons baserat på de sidor du besöker på vår plats.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Tillåta",
