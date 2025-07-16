@@ -28,11 +28,11 @@ module EmailCampaigns
 
       @campaigns = paginate @campaigns
 
-      render json: linked_json(@campaigns, WebApi::V1::CampaignSerializer, params: jsonapi_serializer_params)
+      render json: linked_json(@campaigns, WebApi::V1::CampaignSerializer, params: jsonapi_serializer_params, include: %i[conflicting_contexts])
     end
 
     def show
-      render json: WebApi::V1::CampaignSerializer.new(@campaign, params: jsonapi_serializer_params).serializable_hash
+      render json: WebApi::V1::CampaignSerializer.new(@campaign, params: jsonapi_serializer_params, include: %i[conflicting_contexts]).serializable_hash
     end
 
     def create

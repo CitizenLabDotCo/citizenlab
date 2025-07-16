@@ -39,14 +39,13 @@ module EmailCampaigns
     recipient_filter :project_participants_and_followers
 
     validates :context, presence: true
-    validates :context_type, inclusion: { in: ['Project'] }
 
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.project_participants'
     end
 
-    def self.supports_context?(context)
-      context.is_a?(Project)
+    def self.supported_context
+      Project
     end
 
     private
