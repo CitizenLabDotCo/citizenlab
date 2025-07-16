@@ -168,11 +168,11 @@ describe BulkImportIdeas::Importers::IdeaImporter do
           body_multiloc: { 'en' => 'My idea description' },
           project_id: project.id,
           user_email: 'userimport@citizenlab.co',
-          published_at: '01/01/2021'
+          published_at: 'BAD DATE FORMAT'
         }
       ]
       expect { service.import idea_rows }.to raise_error(
-        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_publication_date_invalid_format', params: { value: '01/01/2021', row: nil }))
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_publication_date_invalid_format', params: { value: 'BAD DATE FORMAT', row: nil }))
       )
 
       idea_rows = [
@@ -181,11 +181,11 @@ describe BulkImportIdeas::Importers::IdeaImporter do
           body_multiloc: { 'en' => 'My idea description' },
           project_id: project.id,
           user_email: 'userimport@citizenlab.co',
-          published_at: '01-13-2021'
+          published_at: '30-30-2021'
         }
       ]
       expect { service.import idea_rows }.to raise_error(
-        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_publication_date_invalid_format', params: { value: '01-13-2021', row: nil }))
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_publication_date_invalid_format', params: { value: '30-30-2021', row: nil }))
       )
     end
 
@@ -242,7 +242,7 @@ describe BulkImportIdeas::Importers::IdeaImporter do
     end
 
     context 'surveys' do
-      it 'can import surveys with' do
+      it 'can import surveys' do
         project = create(:single_phase_native_survey_project)
         create(:custom_form, participation_context: project.phases.first)
 
@@ -258,6 +258,39 @@ describe BulkImportIdeas::Importers::IdeaImporter do
 
         expect(Idea.count).to eq 1
         expect(User.count).to eq 2
+      end
+
+      it 'can import surveys with embedded user custom fields but does not update user whilst in draft' do
+        project = create(:single_phase_native_survey_project)
+        custom_form = create(:custom_form, participation_context: project.phases.first)
+        create(:custom_field_text, resource: custom_form, key: 'text_field')
+        create(:custom_field_gender, :with_options)
+
+        idea_rows = [
+          {
+            title_multiloc: {},
+            body_multiloc: {},
+            creation_phase_id: project.phases.first.id,
+            project_id: project.id,
+            custom_field_values: {
+              text_field: 'Some text',
+              u_gender: 'male'
+            },
+            user_email: 'surveyimport@citizenlab.co'
+          }
+        ]
+
+        service.import idea_rows
+
+        expect(Idea.count).to eq 1
+        expect(User.count).to eq 2
+
+        expect(Idea.first.publication_status).to eq 'draft'
+        expect(Idea.first.custom_field_values).to eq({
+          'text_field' => 'Some text',
+          'u_gender' => 'male'
+        })
+        expect(User.order(:created_at).last.custom_field_values).to eq({})
       end
     end
 

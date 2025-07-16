@@ -28,8 +28,14 @@ module BulkImportIdeas::Exporters
           field.options.map { |o| custom_field_service.handle_title(o, @locale) }.join '; '
         when 'topic_ids'
           @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
-        when 'number', 'linear_scale'
+        when 'number', 'linear_scale', 'rating'
           field.maximum || 3
+        when 'checkbox'
+          'X'
+        when 'date'
+          Time.zone.today.strftime('%d-%m-%Y')
+        when 'matrix_linear_scale'
+          format_matrix_field(field)
         else
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
         end
@@ -96,6 +102,20 @@ module BulkImportIdeas::Exporters
     end
 
     private
+
+    def format_matrix_field(field)
+      multiloc_service = MultilocService.new
+
+      labels = (1..field.maximum).map do |i|
+        attr_name = :"linear_scale_label_#{i}_multiloc"
+        I18n.with_locale(@locale) { multiloc_service.t(field[attr_name]) }
+      end.compact_blank
+
+      field.matrix_statements.map.with_index do |statement, i|
+        statement_title = I18n.with_locale(@locale) { multiloc_service.t(statement.title_multiloc) }
+        "#{statement_title}: #{labels[i % labels.length]}"
+      end.join('; ')
+    end
 
     def form_fields
       @form_fields ||= IdeaCustomFieldsService.new(@participation_method.custom_form).xlsx_importable_fields
