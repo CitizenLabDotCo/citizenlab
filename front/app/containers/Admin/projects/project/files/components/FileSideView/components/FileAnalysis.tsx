@@ -37,7 +37,7 @@ const FileAnalysis = () => {
 
   // Setup for analysis question form
   const schema = object({
-    analysis_question: string(),
+    analysis_question: string().required(),
   });
 
   const methods = useForm({
@@ -112,7 +112,13 @@ const FileAnalysis = () => {
               alignItems="center"
               gap="20px"
             >
-              <Button icon="stars" size="s" buttonStyle="primary" type="submit">
+              <Button
+                icon="stars"
+                size="s"
+                buttonStyle="primary"
+                type="submit"
+                disabled={methods.formState.isSubmitting}
+              >
                 {formatMessage(messages.askButton)}
               </Button>
             </Box>

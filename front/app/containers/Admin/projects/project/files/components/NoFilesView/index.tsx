@@ -7,9 +7,9 @@ import FilesUpload from '../FilesUpload';
 import FeatureDescription from './components/FeatureDescription';
 
 type Props = {
-  setShowInitialView?: (value: boolean) => void;
+  setShowNoFilesView?: (value: boolean) => void;
 };
-const NoFilesView = ({ setShowInitialView }: Props) => {
+const NoFilesView = ({ setShowNoFilesView }: Props) => {
   return (
     <Box display="flex" justifyContent="center" mt="40px">
       <Box
@@ -20,7 +20,7 @@ const NoFilesView = ({ setShowInitialView }: Props) => {
         gap="32px"
       >
         <Box>
-          <FilesUpload setShowInitialView={setShowInitialView} />
+          <FilesUpload setShowNoFilesView={setShowNoFilesView} />
         </Box>
         <Box width="400px">
           <FeatureDescription />

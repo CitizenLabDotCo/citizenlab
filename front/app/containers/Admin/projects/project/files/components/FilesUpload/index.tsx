@@ -15,20 +15,21 @@ import messages from '../messages';
 
 import FileDropzone from './components/FileDropzone';
 import FileUploadActions from './components/FileUploadActions';
-import InformationSection from './components/InformationSection/index.tsx';
+import InformationSection from './components/InformationSection/index';
 import SelectedFile from './components/SelectedFile';
 import { FileWithMeta, UploadStatus } from './types';
+import { countFilesWithStatus } from './utils';
 
 type Props = {
   setModalOpen?: (open: boolean) => void;
-  setShowInitialView?: (value: boolean) => void;
+  setShowNoFilesView?: (value: boolean) => void;
 };
 
 const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_FILES = 35;
 
-const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
+const FilesUpload = ({ setModalOpen, setShowNoFilesView }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
 
@@ -70,9 +71,9 @@ const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
   const handleUpload = () => {
     setHasStartedUploading(true);
 
-    // If uploading for the first time, this keeps the initial view visible
-    // until the upload is complete and the user clicks "Done".
-    setShowInitialView?.(true);
+    // If uploading for the first time, this keeps the initial "no files" UI visible
+    // until the upload is complete AND the user clicks "Done".
+    setShowNoFilesView?.(true);
 
     // Update the status of all queued files to 'uploading'.
     // This then triggers the upload process to start in the "SelectedFile" components.
@@ -86,11 +87,6 @@ const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
   const finishedUploading =
     hasStartedUploading &&
     fileList.every(({ status }) => FINISHED_STATUSES.includes(status));
-
-  // Function to count files with a specific status
-  const countFilesWithStatus = (status: UploadStatus) => {
-    return fileList.filter((file) => file.status === status).length;
-  };
 
   return (
     <>
@@ -139,8 +135,8 @@ const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
               setFileList([]);
               setHasStartedUploading(false);
               setModalOpen?.(false);
-              // If we're on the initial view, this will close it and open the full file list view.
-              setShowInitialView?.(false);
+              // If we're on the initial "No Files" UI view, this will close it and open the full file list view.
+              setShowNoFilesView?.(false);
             }}
           />
           {/* Upload summary (# uploaded and # errors) */}
@@ -148,10 +144,10 @@ const FilesUpload = ({ setModalOpen, setShowInitialView }: Props) => {
             <Box display="flex" justifyContent="center">
               <Text m="0px" mt="8px" color="coolGrey600" fontSize="s">
                 {formatMessage(messages.uploadSummary, {
-                  numberOfFiles: countFilesWithStatus('uploaded'),
+                  numberOfFiles: countFilesWithStatus(fileList, 'uploaded'),
                   numberOfErrors:
-                    countFilesWithStatus('error') +
-                    countFilesWithStatus('too_large'),
+                    countFilesWithStatus(fileList, 'error') +
+                    countFilesWithStatus(fileList, 'too_large'),
                 })}
               </Text>
             </Box>

@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "Dosyaları analiz etmek için yapay zekayı kullanın",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Transkriptleri vb. işleyin.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Dosya ekleme",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Sesli görüşmeler, Belediye Binası kayıtları",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Dosyaları seçin",
   "app.containers.AdminPage.ProjectFiles.close": "Kapat",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Onaylayın ve yükleyin",

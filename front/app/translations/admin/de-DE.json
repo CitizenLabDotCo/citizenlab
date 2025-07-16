@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "Verwenden Sie AI zum Analysieren von Dateien",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Bearbeiten Sie Transkripte, etc.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Anhänge (max. 50MB)",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Audio-Interviews, Meeting-Aufnahmen",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Dateien auswählen",
   "app.containers.AdminPage.ProjectFiles.close": "Schließen",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Bestätigen und hochladen",

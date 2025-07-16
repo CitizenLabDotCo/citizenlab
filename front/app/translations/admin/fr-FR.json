@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "Utilisez l'IA pour analyser les fichiers",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Traiter les transcriptions, etc.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Pièces jointes (max. 50Mo)",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Interviews audio, enregistrements de la mairie",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Choisissez les fichiers",
   "app.containers.AdminPage.ProjectFiles.close": "Fermer",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Confirmer et télécharger",

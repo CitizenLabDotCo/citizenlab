@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "Använd AI för att analysera filer",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Behandla utskrifter etc.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Lägg till filer",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Ljudintervjuer, inspelningar från stadshuset",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Välj filer",
   "app.containers.AdminPage.ProjectFiles.close": "Nära",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Bekräfta och ladda upp",

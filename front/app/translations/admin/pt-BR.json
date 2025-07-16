@@ -2205,7 +2205,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles": "Use a IA para analisar arquivos",
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Processar transcrições, etc.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Adicionar arquivos",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Entrevistas em áudio, gravações da prefeitura",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Selecionar arquivos",
   "app.containers.AdminPage.ProjectFiles.close": "Fechar",
   "app.containers.AdminPage.ProjectFiles.confirmAndUploadFiles": "Confirmar e fazer upload",

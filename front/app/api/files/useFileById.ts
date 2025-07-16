@@ -20,5 +20,4 @@ const useFileById = (id?: string | null) => {
   });
 };
 
-// ts-prune-ignore-next
 export default useFileById;
