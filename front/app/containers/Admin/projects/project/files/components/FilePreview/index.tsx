@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { Box, Button, Label, Text } from '@citizenlab/cl2-component-library';
+import { Box, Label, Text } from '@citizenlab/cl2-component-library';
 
 import { IFile } from 'api/files/types';
 
 import { useIntl } from 'utils/cl-intl';
 
+import DownloadFileButton from '../DownloadFileButton';
+
+import CsvFilePreview from './CsvFilePreview';
 import IframePreview from './IframeFilePreview';
 import ImageFilePreview from './ImageFilePreview';
 import MarkdownFilePreview from './MarkdownFilePreview';
@@ -66,7 +69,7 @@ const FilePreview = ({ file }: Props) => {
 
       // PDF
       case 'application/pdf':
-        return <IframePreview url={fileUrl} title="PDF preview" height={500} />;
+        return <IframePreview url={fileUrl} title="PDF preview" height={700} />;
 
       // Plain text & simple code formats
       case 'text/plain':
@@ -77,18 +80,21 @@ const FilePreview = ({ file }: Props) => {
       case 'application/x-yaml':
       case 'text/x-yaml':
         return (
-          <IframePreview url={fileUrl} title="Text preview" height={400} />
+          <IframePreview url={fileUrl} title="Text preview" height={700} />
         );
 
       // HTML
       case 'text/html':
         return (
-          <IframePreview
-            url={fileUrl}
-            title="HTML preview"
-            height={500}
-            sandbox=""
-          />
+          <IframePreview url={fileUrl} title="HTML preview" height={700} />
+        );
+
+      // CSV
+      case 'text/csv':
+      case 'application/csv':
+      case 'text/comma-separated-values':
+        return (
+          <CsvFilePreview url={fileUrl} fileSize={file.data.attributes.size} />
         );
 
       // Markdown
@@ -98,25 +104,17 @@ const FilePreview = ({ file }: Props) => {
       // EPUB
       case 'application/epub+zip':
         return (
-          <IframePreview url={fileUrl} title="EPUB preview" height={500} />
+          <IframePreview url={fileUrl} title="EPUB preview" height={700} />
         );
 
-      // Default fallback (download only)
+      // Default fallback: Download button
       default:
         return (
           <Box pt="4px">
             <Text fontSize="s" color="coolGrey600" fontStyle="italic">
               {formatMessage(messages.previewNotSupported)}
             </Text>
-            <Box display="flex">
-              <Button
-                buttonStyle="admin-dark"
-                onClick={() => window.open(fileUrl, '_blank')}
-                text={formatMessage(messages.downloadFile)}
-                fontSize="s"
-                p="4px 8px"
-              />
-            </Box>
+            <DownloadFileButton url={fileUrl} />
           </Box>
         );
     }
