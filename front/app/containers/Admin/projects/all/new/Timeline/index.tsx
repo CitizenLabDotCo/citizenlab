@@ -90,6 +90,7 @@ const Timeline = () => {
     if (isFetching) {
       return projectMessages.loadingMore;
     }
+
     if (hasNextPage) {
       return projectMessages.scrollDownToLoadMore;
     }

@@ -30,9 +30,7 @@ const useInfiniteProjectsMiniAdmin = (
   pageSize: number = DEFAULT_PAGE_SIZE
 ) => {
   return useInfiniteQuery<ProjectsMiniAdmin, CLErrors>(
-    // key: drop page info so pages vary only by pageParam
     miniProjectsKeys.list(params),
-    // fetcher: given pageParam
     ({ pageParam = 1 }) => fetchPage(params, pageParam, pageSize),
     {
       getNextPageParam: (lastPage) => {

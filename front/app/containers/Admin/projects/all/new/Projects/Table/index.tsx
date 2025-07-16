@@ -60,10 +60,11 @@ const Table = () => {
     if (isFetchingNextPage) {
       return messages.loadingMore;
     }
+
     if (hasNextPage) {
       return messages.scrollDownToLoadMore;
     }
-    // Only show "All loaded" if the query is done
+
     if (status === 'success') {
       return messages.allProjectsHaveLoaded;
     }

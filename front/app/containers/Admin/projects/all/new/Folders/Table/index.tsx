@@ -55,6 +55,7 @@ const Table = () => {
     if (isFetchingNextPage) {
       return projectMessages.loadingMore;
     }
+
     if (hasNextPage) {
       return projectMessages.scrollDownToLoadMore;
     }
