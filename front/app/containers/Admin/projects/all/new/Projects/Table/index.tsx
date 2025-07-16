@@ -98,7 +98,7 @@ const Table = () => {
     }
     // Only show "All loaded" if the query is done
     if (status === 'success' && !hasNextPage) {
-      return messages.allProjectsLoaded;
+      return messages.allProjectsHaveLoaded;
     }
 
     return null;
@@ -130,7 +130,6 @@ const Table = () => {
         </Tbody>
       </TableComponent>
 
-      {/* sentinel */}
       {sentinelMessage && (
         <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
           {formatMessage(sentinelMessage)}
@@ -139,16 +138,11 @@ const Table = () => {
 
       {(isFetching || status === 'loading') && (
         <Box
-          position="absolute"
           w="100%"
-          h="100%"
-          top="0"
-          left="0"
-          bgColor="white"
+          p="4px"
           display="flex"
           alignItems="center"
           justifyContent="center"
-          opacity={0.7}
         >
           <Spinner />
         </Box>
