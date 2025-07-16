@@ -23,6 +23,7 @@ export interface IEventData {
     created_at: string;
     updated_at: string;
     attendees_count: number;
+    maximum_attendees: number | null;
     attend_button_multiloc?: Multiloc;
     using_url?: RouteType;
     online_link?: string | null;
@@ -84,6 +85,7 @@ export interface IEventProperties {
   online_link?: string;
   attend_button_multiloc?: Multiloc;
   using_url?: RouteType;
+  maximum_attendees?: number | null;
 }
 
 export interface IAddEventProperties {

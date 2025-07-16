@@ -242,7 +242,7 @@ describe BulkImportIdeas::Importers::IdeaImporter do
     end
 
     context 'surveys' do
-      it 'can import surveys with' do
+      it 'can import surveys' do
         project = create(:single_phase_native_survey_project)
         create(:custom_form, participation_context: project.phases.first)
 
@@ -258,6 +258,39 @@ describe BulkImportIdeas::Importers::IdeaImporter do
 
         expect(Idea.count).to eq 1
         expect(User.count).to eq 2
+      end
+
+      it 'can import surveys with embedded user custom fields but does not update user whilst in draft' do
+        project = create(:single_phase_native_survey_project)
+        custom_form = create(:custom_form, participation_context: project.phases.first)
+        create(:custom_field_text, resource: custom_form, key: 'text_field')
+        create(:custom_field_gender, :with_options)
+
+        idea_rows = [
+          {
+            title_multiloc: {},
+            body_multiloc: {},
+            creation_phase_id: project.phases.first.id,
+            project_id: project.id,
+            custom_field_values: {
+              text_field: 'Some text',
+              u_gender: 'male'
+            },
+            user_email: 'surveyimport@citizenlab.co'
+          }
+        ]
+
+        service.import idea_rows
+
+        expect(Idea.count).to eq 1
+        expect(User.count).to eq 2
+
+        expect(Idea.first.publication_status).to eq 'draft'
+        expect(Idea.first.custom_field_values).to eq({
+          'text_field' => 'Some text',
+          'u_gender' => 'male'
+        })
+        expect(User.order(:created_at).last.custom_field_values).to eq({})
       end
     end
 

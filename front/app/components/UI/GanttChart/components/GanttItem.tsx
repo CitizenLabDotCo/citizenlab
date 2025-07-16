@@ -90,6 +90,8 @@ const GanttItem = ({
       disabled={!renderItemTooltip}
       theme="dark"
       followCursor="initial"
+      zIndex={9999}
+      appendTo={typeof window !== 'undefined' ? () => document.body : undefined}
     >
       <Box
         position="absolute"
