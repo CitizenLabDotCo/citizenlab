@@ -130,11 +130,9 @@ const Table = () => {
         </Tbody>
       </TableComponent>
 
-      {sentinelMessage && (
-        <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
-          {formatMessage(sentinelMessage)}
-        </Box>
-      )}
+      <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
+        {sentinelMessage && formatMessage(sentinelMessage)}
+      </Box>
 
       {(isFetching || status === 'loading') && (
         <Box
