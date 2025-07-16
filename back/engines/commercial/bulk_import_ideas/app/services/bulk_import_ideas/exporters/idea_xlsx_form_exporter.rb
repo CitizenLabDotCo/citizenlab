@@ -107,9 +107,9 @@ module BulkImportIdeas::Exporters
       multiloc_service = MultilocService.new
 
       labels = (1..field.maximum).map do |i|
-        attr_name = "linear_scale_label_#{i}_multiloc".to_sym
+        attr_name = :"linear_scale_label_#{i}_multiloc"
         I18n.with_locale(@locale) { multiloc_service.t(field[attr_name]) }
-      end.reject(&:blank?)
+      end.compact_blank
 
       field.matrix_statements.map.with_index do |statement, i|
         statement_title = I18n.with_locale(@locale) { multiloc_service.t(statement.title_multiloc) }
