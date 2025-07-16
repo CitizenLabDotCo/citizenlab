@@ -11,6 +11,8 @@ RSpec.describe Files::File do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:content) }
     it { is_expected.to validate_numericality_of(:size).is_greater_than_or_equal_to(0).allow_nil }
+    it { is_expected.to validate_inclusion_of(:category).in_array(described_class.categories.keys) }
+    it { is_expected.to validate_presence_of(:category).with_message('is not included in the list') }
   end
 
   describe 'associations' do
@@ -101,5 +103,17 @@ RSpec.describe Files::File do
       results = described_class.search('nonexistent')
       expect(results).to be_empty
     end
+  end
+
+  it 'category defaults to "other" when no category is specified' do
+    file = build(:file)
+    expect(file.category).to eq('other')
+    expect(file).to be_valid
+  end
+
+  it 'provides predicate methods for categories' do
+    file = create(:file, category: 'meeting')
+    expect(file.meeting?).to be true
+    expect(file.report?).to be false
   end
 end
