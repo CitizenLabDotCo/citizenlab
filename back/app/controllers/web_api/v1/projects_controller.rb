@@ -349,6 +349,18 @@ class WebApi::V1::ProjectsController < ApplicationController
     ).serializable_hash
   end
 
+  def participant_counts
+    projects = policy_scope(Project)
+      .where(id: params[:project_ids])
+
+    authorize projects, :participant_counts?
+
+    participant_counts = ParticipantsService.new
+      .projects_participants_counts(projects)
+
+    render json: raw_json({ participant_counts: participant_counts })
+  end
+
   private
 
   def sidefx
