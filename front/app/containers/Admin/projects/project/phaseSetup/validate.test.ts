@@ -1,5 +1,3 @@
-import { SupportedLocale } from 'typings';
-
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 
 import validate from './validate';
@@ -42,12 +40,7 @@ describe('validate', () => {
       voting_max_votes_per_idea: 1,
       // baskets_count: 0,
       // votes_count: 0,
-      voting_term_singular_multiloc: {
-        'nl-BE': 'stem',
-      },
-      voting_term_plural_multiloc: {
-        'nl-BE': 'stemmen',
-      },
+      vote_term: 'vote',
       description_multiloc: {
         'nl-BE':
           '<p>Alle ingediende foto\'s van "verborgen parels" in Boom worden hier getoond.</p><p>Je kan nu 3 stemmen uitbrengen op jouw favoriete foto.</p><p>De 10 foto\'s met de meeste stemmen worden tentoongesteld in de bibliotheek.</p><p>jgerwogj</p>',
@@ -59,9 +52,7 @@ describe('validate', () => {
 
     const formatMessage = () => 'some message';
 
-    const locales: SupportedLocale[] = ['nl-BE'];
-
-    const result = validate(formData, { data: [] }, formatMessage, locales);
+    const result = validate(formData, { data: [] }, formatMessage);
 
     expect(result.isValidated).toBe(true);
   });

@@ -165,9 +165,9 @@ const AdminProjectEventsIndex = () => {
                         </Title>
                         <Text m="0px">
                           {event.attributes.attendees_count === 1 ? (
-                            <FormattedMessage {...messages.attendee} />
+                            <FormattedMessage {...messages.registrant} />
                           ) : (
-                            <FormattedMessage {...messages.attendees} />
+                            <FormattedMessage {...messages.registrants} />
                           )}
                         </Text>
                       </Box>
@@ -185,7 +185,7 @@ const AdminProjectEventsIndex = () => {
                         icon="download"
                         onClick={() => handleAttendeesExport(event)}
                       >
-                        <FormattedMessage {...messages.exportAttendees} />
+                        <FormattedMessage {...messages.exportRegistrants} />
                       </ButtonWithLink>
                       <ButtonWithLink
                         buttonStyle="secondary-outlined"
