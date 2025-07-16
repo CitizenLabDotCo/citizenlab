@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module BulkImportIdeas::Parsers
-  class EngagementHqXlsxParser < IdeaXlsxFileParser
+module BulkImportIdeas::Extractors
+  class EngagementHqXlsxExtractor
     IGNORED_COLUMNS = [
       'Login (Screen name)',
       'Contributor Summary (Signup form Qs - Detailed breakup on the right > )',
@@ -21,6 +21,12 @@ module BulkImportIdeas::Parsers
       'Do you represent a Guelph business?'
     ]
 
+    # Names of columns to change to match our import format
+    COLUMN_MAP = {
+      'Email' => 'Email address',
+      'Date of contribution' => 'Date Published (dd-mm-yyyy)'
+    }
+
     def initialize(xlsx_file_path)
       workbook = RubyXL::Parser.parse_buffer(open(xlsx_file_path).read)
       @worksheet = workbook.worksheets[0]
@@ -31,22 +37,7 @@ module BulkImportIdeas::Parsers
       # TODO: Set up the field types here, so it's done just once
     end
 
-    # Override methods
-    def parse_rows(file)
-      xlsx_ideas = @idea_rows.map { |idea| { pdf_pages: [1], fields: idea } }
-      ideas_to_idea_rows(xlsx_ideas, file)
-    end
-
-    # New methods for EngagementHQ specific data extraction
-
-    # NOTE: These would normally be set on initialize in other classes
-    def add_context(phase, import_user, locale)
-      @import_user = import_user
-      @phase = phase
-      @project = phase.project
-      @locale = locale || locales.first # Default locale for any new users created
-      @personal_data_enabled = false
-    end
+    attr_reader :idea_rows
 
     def project
       {
@@ -63,11 +54,11 @@ module BulkImportIdeas::Parsers
       }
     end
 
-    def idea_fields
+    def idea_custom_fields
       generate_fields(@idea_columns)
     end
 
-    def user_fields
+    def user_custom_fields
       generate_fields(@user_columns)
     end
 
@@ -89,8 +80,9 @@ module BulkImportIdeas::Parsers
 
           row_data << [header, cell.value]
         end
-        row_data << %w[Permission X] # Add in permission - Is this needed?
-        data << row_data.to_h
+        row_data = row_data.to_h
+        row_data['Permission'] = 'X' if row_data['Email address'].present? # Add in permission where email is present
+        data << row_data
       end
       data
     end
@@ -102,11 +94,7 @@ module BulkImportIdeas::Parsers
       return nil if column_name.nil? || IGNORED_COLUMNS.include?(column_name)
 
       # Change some names to match our import format
-      name_map = {
-        'Email' => 'Email address',
-        'Date of contribution' => 'Date Published (dd-mm-yyyy)'
-      }
-      column_name = name_map[column_name] if name_map.key?(column_name)
+      column_name = COLUMN_MAP[column_name] if COLUMN_MAP.key?(column_name)
 
       # Add the column to the appropriate list
       if SPECIAL_COLUMNS.exclude?(column_name)

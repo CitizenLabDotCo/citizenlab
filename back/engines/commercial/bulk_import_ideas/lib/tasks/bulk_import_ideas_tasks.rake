@@ -19,7 +19,7 @@ namespace :bulk_import do
       Dir.glob('tmp/import_files/*').each do |file_path|
         Rails.logger.info "Parsing file: #{file_path}"
 
-        parser = BulkImportIdeas::Parsers::EngagementHqXlsxParser.new(file_path)
+        extractor = BulkImportIdeas::Extractors::EngagementHqXlsxExtractor.new(file_path)
 
         # TODO: It's creating blank users
 
@@ -29,11 +29,11 @@ namespace :bulk_import do
         # break
 
         # Whilst in dev, we want to destroy the existing project first
-        Project.find_by(slug: parser.project[:slug])&.destroy
+        Project.find_by(slug: extractor.project[:slug])&.destroy
 
         # Create a new project & phase in the tenant
-        project = Project.create!(parser.project)
-        phase = Phase.create!(parser.phase.merge(
+        project = Project.create!(extractor.project)
+        phase = Phase.create!(extractor.phase.merge(
           project: project,
           campaigns_settings: { project_phase_started: true },
           participation_method: 'native_survey',
@@ -50,7 +50,7 @@ namespace :bulk_import do
 
         # Create the form fields based on the content
         select_types = %w[select multiselect]
-        parser.idea_fields.each do |field|
+        extractor.idea_custom_fields.each do |field|
           custom_field = CustomField.create!(field.except(:options).merge(resource: form))
           if select_types.include? field[:input_type]
             # If the field is a select type, we need to create options
@@ -64,9 +64,10 @@ namespace :bulk_import do
         CustomField.create!(input_type: 'page', page_layout: 'default', key: 'form_end', resource: form)
 
         # Import the ideas
-        parser.add_context(phase, import_user, locale)
+        xlsx_data_parser = BulkImportIdeas::Parsers::IdeaXlsxDataParser.new(import_user, locale, phase.id, false)
         import_service = BulkImportIdeas::Importers::IdeaImporter.new(import_user, locale)
-        ideas = import_service.import(parser.parse_rows(nil))
+        idea_rows = xlsx_data_parser.parse_rows(extractor.idea_rows)
+        ideas = import_service.import(idea_rows)
         ideas.each do |idea|
           idea.update!(publication_status: 'published') # Is there a method that imports to published anyway?
         end
