@@ -183,7 +183,7 @@ nl-BE:
     assignee_digest:
       subject: 'Aantal ideeën die je feedback nodig hebben: %{numberIdeas}'
       preheader: 'Overzicht van %{organizationName}'
-      title: '%{firstName}, de input van de burgers wacht op je feedback'
+      title: '%{firstName}, bijdragen van burgers wachten op je feedback'
       cta_button: 'Beheer bijdragen'
       x_inputs_need_your_feedback: 'bijdragen hebben je feedback nodig'
       title_assignment_past_week: 'Ideeën die recent aan jou werden toegewezen'
@@ -263,7 +263,7 @@ nl-BE:
     comment_on_idea_you_follow:
       subject: 'Er is een nieuwe reactie op "%{input_title}"'
       preheader: '%{authorName} heeft een reactie achtergelaten op een idee voor %{organizationName}'
-      title: '%{authorName} commentaar op een invoer die je volgt'
+      title: '%{authorName} reageerde op een bijdrage die je volgt'
       event_description: '%{authorNameFull} heeft een reactie geplaatst op ''%{inputTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
       cta_button: 'Reageer op %{commentAuthor}'
       main_header:
@@ -297,7 +297,7 @@ nl-BE:
     comment_on_your_comment:
       subject: 'Je hebt een reactie gekregen in een gesprek op het platform van %{organizationName}'
       preheader: '%{authorName} antwoordde op je reactie op het platform van %{organizationName}'
-      title: '%{authorName} antwoordde op je reactie'
+      title: '%{authorName} reageerde op je reactie'
       event_description: '%{authorName} schreef een antwoord op je reactie op ''%{post}'' op het participatieplatform. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorFirstName}.'
       cta_button: 'Reageer op %{authorFirstName}'
       replied: '%{authorFirstName} reageerde:'
