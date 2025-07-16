@@ -19,29 +19,27 @@ import { useIntl } from 'utils/cl-intl';
 import DownloadFileButton from '../../DownloadFileButton';
 import messages from '../messages';
 
+const MAX_ROWS = 50; // Default max rows to read from CSV
+const MAX_FILE_SIZE_MB = 2; // Default max file size in MB
+
 type Props = {
   url: string;
   fileSize?: number; // in bytes
-  maxRows?: number;
-  maxFileSizeMB?: number;
 };
 
 const ScrollableTableContainer = styled(Box)`
-  transform: rotateX(180deg);
+  transform: rotateX(
+    180deg
+  ); /* Rotation to allow the X scroll bar on the top */
   cursor: grab;
-  user-select: none; /* Prevent text selection */
+  user-select: none; /* Prevent text selection in the table when draging to scroll */
 
   &:active {
     cursor: grabbing;
   }
 `;
 
-const CsvFilePreview = ({
-  url,
-  fileSize,
-  maxRows = 50,
-  maxFileSizeMB = 2,
-}: Props) => {
+const CsvFilePreview = ({ url, fileSize }: Props) => {
   const { formatMessage } = useIntl();
 
   const [rows, setRows] = useState<string[][]>([]);
@@ -57,7 +55,7 @@ const CsvFilePreview = ({
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const fileSizeMB = fileSize ? fileSize / (1024 * 1024) : 0;
-  const isTooLarge = fileSize !== undefined && fileSizeMB > maxFileSizeMB;
+  const isTooLarge = fileSize !== undefined && fileSizeMB > MAX_FILE_SIZE_MB;
 
   useEffect(() => {
     if (isTooLarge) {
@@ -71,7 +69,7 @@ const CsvFilePreview = ({
         // Parse the CSV text using PapaParse.
         // We only read a limited number of rows to avoid performance issues.
         const result = Papa.parse<string[]>(csvText, {
-          preview: maxRows,
+          preview: MAX_ROWS,
           skipEmptyLines: true,
         });
 
@@ -83,7 +81,7 @@ const CsvFilePreview = ({
       })
       .catch(() => setFileReadError(true))
       .finally(() => setLoadingFile(false));
-  }, [url, maxRows, isTooLarge]);
+  }, [url, isTooLarge]);
 
   // Drag-to-scroll functionality
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -103,6 +101,8 @@ const CsvFilePreview = ({
       if (!scrollContainerRef.current) return;
 
       e.preventDefault();
+
+      // Calculate the new scroll position based on mouse movement
       const x = e.pageX - scrollContainerRef.current.offsetLeft; // Current mouse position relative to the container
       const moveDistance = (x - dragState.clickLocation) * 2; // Multiply by 2 for faster scrolling
       scrollContainerRef.current.scrollLeft =
@@ -111,13 +111,15 @@ const CsvFilePreview = ({
 
     const handleMouseUp = () => setIsDragging(false);
 
-    // Prevent text selection during drag
+    // Prevent text selection of the table content during drag
     const preventSelection = (e: Event) => e.preventDefault();
 
+    // Attach the event liteners
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('selectstart', preventSelection);
 
+    // Cleanup function to remove event listeners
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
@@ -136,7 +138,7 @@ const CsvFilePreview = ({
       ? messages.csvPreviewTooLarge
       : messages.csvPreviewError;
 
-    const messageProps = isTooLarge ? { size: maxFileSizeMB } : undefined;
+    const messageProps = isTooLarge ? { size: MAX_FILE_SIZE_MB } : undefined;
 
     return (
       <Box py="12px">
@@ -163,7 +165,7 @@ const CsvFilePreview = ({
       <Box
         mt="30px"
         overflowX="auto"
-        transform="rotateX(180deg)"
+        transform="rotateX(180deg)" // Rotation to allow the X scroll bar on the top
         ref={scrollContainerRef}
         onMouseDown={handleMouseDown}
       >
@@ -171,16 +173,16 @@ const CsvFilePreview = ({
           <Table innerBorders={{ bodyRows: true }}>
             <Thead>
               <Tr>
-                {headers.map((cell, index) => (
-                  <Th key={`header-${index}`}>{cell}</Th>
+                {headers.map((columnTitle, index) => (
+                  <Th key={`header-${index}`}>{columnTitle}</Th>
                 ))}
               </Tr>
             </Thead>
             <Tbody>
               {dataRows.map((row, rowIndex) => (
                 <Tr key={`row-${rowIndex}`}>
-                  {row.map((cell, colIndex) => (
-                    <Td key={`cell-${rowIndex}-${colIndex}`}>{cell}</Td>
+                  {row.map((cellContent, colIndex) => (
+                    <Td key={`cell-${rowIndex}-${colIndex}`}>{cellContent}</Td>
                   ))}
                 </Tr>
               ))}
