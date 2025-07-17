@@ -5,21 +5,21 @@ class BaseImageUploader < BaseUploader
 
   ALLOWED_TYPES = %w[jpg jpeg gif png webp]
 
-  ICC_PII_TAGS_TO_REMOVE = [
-    'ProfileDescription',
-    'ProfileCopyright',
-    'ProfileManufacturer',
-    'ProfileModel',
-    'ProfileCreator',
-    'ProfileDateTime',
-    'ProfileID',
-    'PrimaryPlatform',
-    'DeviceMfgDesc',
-    'DeviceModelDesc',
-    'MeasurementObserver',
-    'ViewingCondDesc',
-    'ScreeningDesc',
-    'Technology'
+  ICC_PII_TAGS_TO_REMOVE = %w[
+    ProfileDescription
+    ProfileCopyright
+    ProfileManufacturer
+    ProfileModel
+    ProfileCreator
+    ProfileDateTime
+    ProfileID
+    PrimaryPlatform
+    DeviceMfgDesc
+    DeviceModelDesc
+    MeasurementObserver
+    ViewingCondDesc
+    ScreeningDesc
+    Technology
   ].freeze
 
   # Using process at the class level applies it to all versions, including the original.
@@ -99,8 +99,8 @@ class BaseImageUploader < BaseUploader
     img.extent "#{target_width}x#{target_height}" if current_width != target_width || current_height != target_height
   end
 
-  # Strip the image of EXIF metadata, except ICC color profile and orientation/rotation metadata.
+  # Strip the image of EXIF metadata, except ICC color profile and orientation metadata.
   def strip
-    system("exiftool -all= -tagsFromFile @ -icc_profile -orientation -rotation -overwrite_original #{Shellwords.escape(@file.path)}")
+    system("exiftool -all= -tagsFromFile @ -icc_profile -orientation -overwrite_original #{Shellwords.escape(@file.path)}")
   end
 end

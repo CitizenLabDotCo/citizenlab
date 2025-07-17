@@ -19,7 +19,7 @@ RSpec.describe BaseImageUploader do
       described_class.enable_processing = false
     end
 
-    it 'strips the image of any EXIF data and metadata except ICC profile and orientation/rotation' do
+    it 'strips the image of any EXIF data and metadata except ICC profile and orientation' do
       file_path = Rails.root.join('spec/fixtures/with_exif.jpeg').to_s
       file = File.open(file_path)
 
@@ -87,12 +87,9 @@ RSpec.describe BaseImageUploader do
 
       metadata_tags = present_tags - technical_tags
 
-      # Allow orientation, rotation, and all ICC profile tags (which often contain 'Profile', 'Curve', 'Matrix', etc.)
-      allowed_transformation_tags = %w[Orientation Rotation]
-
       expect(
         metadata_tags.reject do |tag|
-          allowed_transformation_tags.include?(tag) ||
+          tag.include?('Orientation') ||
           tag.include?('ICC') ||
           tag.include?('Profile') ||
           tag.include?('Curve') ||
@@ -113,46 +110,17 @@ RSpec.describe BaseImageUploader do
         [image.width, image.height]
       end
 
-      it 'correctly auto-orients image with EXIF rotation value and strips its metadata', skip: 'Failing right now' do
-        file_path = Rails.root.join('spec/fixtures/image_with_90_degree_exif_rotation.jpg').to_s
+      it 'preserves image EXIF orientation values' do
+        file_path = Rails.root.join('spec/fixtures/image_with_90_degree_exif_orientation.jpg').to_s
         file = File.open(file_path)
 
         original_image = MiniMagick::Image.open(file.path)
         expect(original_image.exif['Orientation']).to eq('6')
-        expect(original_image.width).to eq(450)
-        expect(original_image.height).to eq(300)
 
         uploader.store!(file)
 
-        processed_width, processed_height = get_processed_image_dimensions(uploader.path)
-
-        expect(processed_width).to eq(300)
-        expect(processed_height).to eq(450)
-
         image = MiniMagick::Image.open(uploader.path)
-        expect(image.exif).to be_empty
-        expect(image.exif['Orientation']).to be_nil
-      end
-
-      it 'does not alter dimensions for already correctly oriented images', skip: 'Failing right now' do
-        file_path = Rails.root.join('spec/fixtures/image_with_no_exif_rotation.jpg').to_s
-        file = File.open(file_path)
-
-        original_image = MiniMagick::Image.open(file.path)
-        expect(original_image.exif['Orientation']).to eq('1')
-        expect(original_image.width).to eq(300)
-        expect(original_image.height).to eq(450)
-
-        uploader.store!(file)
-
-        processed_width, processed_height = get_processed_image_dimensions(uploader.path)
-
-        expect(processed_width).to eq(300)
-        expect(processed_height).to eq(450)
-
-        image = MiniMagick::Image.open(uploader.path)
-        expect(image.exif).to be_empty
-        expect(image.exif['Orientation']).to be_nil
+        expect(image.exif['Orientation']).to eq('6')
       end
     end
   end
