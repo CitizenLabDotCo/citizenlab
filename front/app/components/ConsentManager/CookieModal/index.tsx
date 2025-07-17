@@ -1,20 +1,9 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  Title,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
-
-import ContentContainer from 'components/ContentContainer';
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-
-import messages from '../messages';
+import Footer from '../InitialScreen/Footer';
+import MainContent from '../InitialScreen/MainContent';
 
 interface Props {
   onAccept: () => void;
@@ -23,8 +12,6 @@ interface Props {
 }
 
 const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
-  const isSmallerThanPhone = useBreakpoint('phone');
-
   return (
     <Modal
       opened
@@ -32,52 +19,14 @@ const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
       closeOnClickOutside={false}
       hideCloseButton
       footer={
-        <Box
-          width="100%"
-          display="flex"
-          alignItems="center"
-          justifyContent="flex-end"
-          gap="8px"
-        >
-          <Button
-            className="integration-open-modal"
-            px="4px"
-            buttonStyle="text"
-            onClick={onChangePreferences}
-          >
-            <FormattedMessage {...messages.manage} />
-          </Button>
-          <Button buttonStyle="primary" onClick={onClose}>
-            <FormattedMessage {...messages.reject} />
-          </Button>
-          <Button
-            className="e2e-accept-cookies-btn"
-            buttonStyle="primary"
-            onClick={onAccept}
-            autoFocus
-          >
-            <FormattedMessage {...messages.accept} />
-          </Button>
-        </Box>
+        <Footer
+          onAccept={onAccept}
+          onChangePreferences={onChangePreferences}
+          onClose={onClose}
+        />
       }
     >
-      <ContentContainer id="e2e-cookie-banner">
-        <Title fontSize={isSmallerThanPhone ? 'xl' : undefined}>
-          <FormattedMessage {...messages.modalTitle} />
-        </Title>
-        <Text>
-          <FormattedMessage
-            {...messages.modalDescription}
-            values={{
-              policyLink: (
-                <Link to="/pages/cookie-policy?from=cookie-modal">
-                  <FormattedMessage {...messages.policyLink} />
-                </Link>
-              ),
-            }}
-          />
-        </Text>
-      </ContentContainer>
+      <MainContent />
     </Modal>
   );
 };
