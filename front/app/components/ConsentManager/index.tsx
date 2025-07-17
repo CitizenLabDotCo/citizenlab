@@ -187,11 +187,6 @@ const ConsentManager = () => {
     setScreen('preferences');
   };
 
-  const closeDialog = () => {
-    toggleDefault(true);
-    setScreen('initial');
-  };
-
   useObserveEvent('openConsentManager', openDialog);
 
   const handleSave = (e: FormEvent) => {
