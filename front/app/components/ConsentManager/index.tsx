@@ -1,5 +1,7 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 
+import { useSearchParams } from 'react-router-dom';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -33,10 +35,33 @@ const ConsentManager = () => {
   const [cookieConsent, setCookieConsent] = useState<IConsentCookie | null>(
     null
   );
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  const from = searchParams.get('from');
+
+  const [screen, setScreen] = useState<'initial' | 'preferences' | null>(null);
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
+  const activeDestinations = getActiveDestinations(
+    appConfiguration?.data,
+    authUser?.data
+  );
+  const activeCategorizedDestinations = categorizeDestinations(
+    appConfiguration?.data,
+    activeDestinations
+  );
+  const isConsentRequired = getConsentRequired(
+    cookieConsent,
+    activeDestinations
+  );
+
+  useEffect(() => {
+    if (isConsentRequired) {
+      setScreen('initial');
+    } else {
+      setScreen(null);
+    }
+  }, [isConsentRequired]);
 
   useEffect(() => {
     const cookieConsent = getConsent();
@@ -152,12 +177,12 @@ const ConsentManager = () => {
 
   const openDialog = () => {
     toggleDefault(false);
-    setIsDialogOpen(true);
+    setScreen('preferences');
   };
 
   const closeDialog = () => {
     toggleDefault(true);
-    setIsDialogOpen(false);
+    setScreen('initial');
   };
 
   useObserveEvent('openConsentManager', openDialog);
@@ -165,45 +190,34 @@ const ConsentManager = () => {
   const handleSave = (e: FormEvent) => {
     e.preventDefault();
 
-    setIsDialogOpen(false);
+    setScreen(null);
     saveConsent(preferences);
   };
 
   const handleCancel = () => {
     resetPreferences();
-    setIsDialogOpen(false);
+    setScreen('initial');
   };
-
-  const activeDestinations = getActiveDestinations(
-    appConfiguration?.data,
-    authUser?.data
-  );
-  const activeCategorizedDestinations = categorizeDestinations(
-    appConfiguration?.data,
-    activeDestinations
-  );
-  const isConsentRequired = getConsentRequired(
-    cookieConsent,
-    activeDestinations
-  );
 
   return (
     <>
-      <CookieModal
-        opened={isConsentRequired}
-        onAccept={accept}
-        onChangePreferences={openDialog}
-        onClose={reject}
-      />
-      <PreferencesModal
-        opened={isDialogOpen}
-        categorizedDestinations={activeCategorizedDestinations}
-        preferences={preferences}
-        handleCancel={handleCancel}
-        handleSave={handleSave}
-        onClose={closeDialog}
-        updatePreference={updatePreference}
-      />
+      {screen === 'initial' && from !== 'cookie-modal' && (
+        <CookieModal
+          onAccept={accept}
+          onChangePreferences={openDialog}
+          onClose={reject}
+        />
+      )}
+      {screen === 'preferences' && (
+        <PreferencesModal
+          categorizedDestinations={activeCategorizedDestinations}
+          preferences={preferences}
+          handleCancel={handleCancel}
+          handleSave={handleSave}
+          onClose={closeDialog}
+          updatePreference={updatePreference}
+        />
+      )}
     </>
   );
 };
