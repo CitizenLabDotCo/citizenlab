@@ -6,20 +6,20 @@ class BaseImageUploader < BaseUploader
   ALLOWED_TYPES = %w[jpg jpeg gif png webp]
 
   ICC_PII_TAGS_TO_REMOVE = [
-    "ProfileDescription",
-    "ProfileCopyright",
-    "ProfileManufacturer",
-    "ProfileModel",
-    "ProfileCreator",
-    "ProfileDateTime",
-    "ProfileID",
-    "PrimaryPlatform",
-    "DeviceMfgDesc",
-    "DeviceModelDesc",
-    "MeasurementObserver",
-    "ViewingCondDesc",
-    "ScreeningDesc",
-    "Technology"
+    'ProfileDescription',
+    'ProfileCopyright',
+    'ProfileManufacturer',
+    'ProfileModel',
+    'ProfileCreator',
+    'ProfileDateTime',
+    'ProfileID',
+    'PrimaryPlatform',
+    'DeviceMfgDesc',
+    'DeviceModelDesc',
+    'MeasurementObserver',
+    'ViewingCondDesc',
+    'ScreeningDesc',
+    'Technology'
   ].freeze
 
   # Using process at the class level applies it to all versions, including the original.
@@ -67,7 +67,7 @@ class BaseImageUploader < BaseUploader
   end
 
   def gif_safe_transform!
-    MiniMagick::Tool::Convert.new do |image| # Calls imagemagick's "convert" command
+    MiniMagick::Tool::Convert.new do |image| # Calls imagemagick's 'convert' command
       image << @file.path
       image.coalesce # Remove optimizations so each layer shows the full image.
 

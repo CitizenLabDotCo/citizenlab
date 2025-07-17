@@ -3,6 +3,7 @@
 require 'carrierwave/test/matchers'
 require 'rails_helper'
 require 'mini_magick'
+require 'English'
 
 RSpec.describe BaseImageUploader do
   let(:uploader) do
@@ -29,17 +30,18 @@ RSpec.describe BaseImageUploader do
 
       image = MiniMagick::Image.open(uploader.file.path)
 
-      allowed_exif_keys = [
-        'Orientation',
-        'ResolutionUnit',
-        'XResolution',
-        'YCbCrPositioning',
-        'YResolution'
+      allowed_exif_keys = %w[
+        Orientation
+        ResolutionUnit
+        XResolution
+        YCbCrPositioning
+        YResolution
       ]
       expect(image.exif.keys - allowed_exif_keys).to be_empty
 
       exiftool_output = `exiftool #{Shellwords.escape(uploader.file.path)}`
-      expect($?.success?).to be true
+      # Check the command executed successfully
+      expect($CHILD_STATUS.success?).to be true
 
       # Tags that are  technical/structural image metadata,
       # not user-supplied or privacy-sensitive metadata
@@ -75,14 +77,22 @@ RSpec.describe BaseImageUploader do
         'YResolution'
       ]
 
-      present_tags = exiftool_output.lines.map { |l| l.split(':').first.strip }.uniq
-      present_tags.reject! { |tag| tag.empty? || tag == uploader.file.path.split('/').last }
+      present_tags = exiftool_output.lines.map do |l|
+        l.split(':').first.strip
+      end.uniq
+
+      present_tags.reject! do |tag|
+        tag.empty? || tag == uploader.file.path.split('/').last
+      end
+
       metadata_tags = present_tags - technical_tags
 
       # Allow orientation, rotation, and all ICC profile tags (which often contain 'Profile', 'Curve', 'Matrix', etc.)
+      allowed_transformation_tags = %w[Orientation Rotation]
+
       expect(
-        metadata_tags.reject { |tag|
-          ['Orientation', 'Rotation'].include?(tag) ||
+        metadata_tags.reject do |tag|
+          allowed_transformation_tags.include?(tag) ||
           tag.include?('ICC') ||
           tag.include?('Profile') ||
           tag.include?('Curve') ||
@@ -90,10 +100,10 @@ RSpec.describe BaseImageUploader do
           tag.include?('Color Space') ||
           tag.include?('Illuminant') ||
           tag.include?('CMM') ||
-          tag.include?('Device') || # Device tags are often related to color profiles
+          tag.include?('Device') ||
           tag.include?('Rendering') ||
           tag.include?('Adaptation')
-        }
+        end
       ).to be_empty
     end
 
