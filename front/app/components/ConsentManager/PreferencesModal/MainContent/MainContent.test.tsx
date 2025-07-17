@@ -2,10 +2,10 @@ import React from 'react';
 
 import { fireEvent, render } from 'utils/testUtils/rtl';
 
-import { CategorizedDestinations } from '../typings';
+import { CategorizedDestinations } from '../../typings';
 
 // component to test
-import Preferences from './Preferences';
+import MainContent from '.';
 
 // mock utilities
 
@@ -30,7 +30,7 @@ describe('<Preferences />', () => {
 
   it('renders correctly when there are destinations', () => {
     const { container } = render(
-      <Preferences
+      <MainContent
         onChange={onChange}
         categoryDestinations={categoryDestinations}
         preferences={preferences}
@@ -43,7 +43,7 @@ describe('<Preferences />', () => {
 
   it('renders correctly when there are no destinations', () => {
     const { container } = render(
-      <Preferences
+      <MainContent
         onChange={onChange}
         categoryDestinations={{
           analytics: [],
@@ -60,7 +60,7 @@ describe('<Preferences />', () => {
 
   it('is possible to change preference for analytics cookies', () => {
     const { container } = render(
-      <Preferences
+      <MainContent
         onChange={onChange}
         categoryDestinations={categoryDestinations}
         preferences={preferences}
