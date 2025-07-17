@@ -39,6 +39,7 @@ const Footer = ({
             onClick={handleCancel}
             className="integration-cancel"
             buttonStyle="text"
+            data-testid="e2e-preferences-cancel"
           >
             <FormattedMessage {...messages.cancel} />
           </Button>
