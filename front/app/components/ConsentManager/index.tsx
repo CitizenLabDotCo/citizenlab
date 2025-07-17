@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
+import useObserveEvent from 'hooks/useObserveEvent';
+
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
+import Banner from './Banner';
 import {
   getConsent,
   IConsentCookie,
   ISavedDestinations,
   setConsent,
 } from './consent';
-import Container from './Container';
 import { allCategories, TCategory } from './destinations';
+import PreferencesModal from './PreferencesModal';
 import { IPreferences } from './typings';
 import {
   getCurrentPreferences,
@@ -30,6 +33,7 @@ const ConsentManager = () => {
   const [cookieConsent, setCookieConsent] = useState<IConsentCookie | null>(
     null
   );
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
@@ -100,8 +104,6 @@ const ConsentManager = () => {
     setCookieConsent(getConsent());
   };
 
-  const onSaveConsent = () => saveConsent(preferences);
-
   const accept = () => {
     const newPreferences: IPreferences = {};
 
@@ -148,6 +150,30 @@ const ConsentManager = () => {
     setPreferences(newPreferences);
   };
 
+  const openDialog = () => {
+    toggleDefault(false);
+    setIsDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    toggleDefault(true);
+    setIsDialogOpen(false);
+  };
+
+  useObserveEvent('openConsentManager', openDialog);
+
+  const handleSave = (e: FormEvent) => {
+    e.preventDefault();
+
+    setIsDialogOpen(false);
+    saveConsent(preferences);
+  };
+
+  const handleCancel = () => {
+    resetPreferences();
+    setIsDialogOpen(false);
+  };
+
   const activeDestinations = getActiveDestinations(
     appConfiguration?.data,
     authUser?.data
@@ -162,17 +188,24 @@ const ConsentManager = () => {
   );
 
   return (
-    <Container
-      accept={accept}
-      reject={reject}
-      onToggleModal={toggleDefault}
-      updatePreference={updatePreference}
-      resetPreferences={resetPreferences}
-      saveConsent={onSaveConsent}
-      isConsentRequired={isConsentRequired}
-      preferences={preferences}
-      categorizedDestinations={activeCategorizedDestinations}
-    />
+    <>
+      {isConsentRequired && (
+        <Banner
+          onAccept={accept}
+          onChangePreferences={openDialog}
+          onClose={reject}
+        />
+      )}
+      <PreferencesModal
+        opened={isDialogOpen}
+        categorizedDestinations={activeCategorizedDestinations}
+        preferences={preferences}
+        handleCancel={handleCancel}
+        handleSave={handleSave}
+        onClose={closeDialog}
+        updatePreference={updatePreference}
+      />
+    </>
   );
 };
 
