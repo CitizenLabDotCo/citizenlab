@@ -23,7 +23,6 @@ class BaseImageUploader < BaseUploader
   ].freeze
 
   # Using process at the class level applies it to all versions, including the original.
-  # process :auto_orient
   process :strip
 
   # We're not caching, since the external image optimization process will
@@ -100,15 +99,8 @@ class BaseImageUploader < BaseUploader
     img.extent "#{target_width}x#{target_height}" if current_width != target_width || current_height != target_height
   end
 
-  # Strip the image of any profiles, comments or these PNG chunks: bKGD,cHRM,EXIF,gAMA,
-  # iCCP,iTXt,sRGB,tEXt,zCCP,zTXt,date.
-  # (https://imagemagick.org/script/command-line-options.php#strip)
-  #
-  # It is a bit heavy-handed and removes a lot of things, including colour profiles which
-  # can have an effect on the image rendering. It also recompresses the image. Overall, it
-  # seems to remove vibrancy from the image.
+  # Strip the image of EXIF metadata, except ICC color profile and orientation/rotation metadata.
   def strip
-    # Keep only ICC profile and orientation/rotation metadata
     system("exiftool -all= -tagsFromFile @ -icc_profile -orientation -rotation -overwrite_original #{Shellwords.escape(@file.path)}")
   end
 end

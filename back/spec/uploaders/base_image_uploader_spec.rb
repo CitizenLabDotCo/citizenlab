@@ -18,7 +18,7 @@ RSpec.describe BaseImageUploader do
       described_class.enable_processing = false
     end
 
-    it 'strips the image of any EXIF data and metadata except ICC profile and orientation/rotation', skip: 'Failing right now' do
+    it 'strips the image of any EXIF data and metadata except ICC profile and orientation/rotation' do
       file_path = Rails.root.join('spec/fixtures/with_exif.jpeg').to_s
       file = File.open(file_path)
 
@@ -44,35 +44,35 @@ RSpec.describe BaseImageUploader do
       # Tags that are  technical/structural image metadata,
       # not user-supplied or privacy-sensitive metadata
       technical_tags = [
-        "Bits Per Sample",
-        "Color Components",
-        "Directory",
-        "Encoding Process",
-        "Exif Byte Order",
-        "ExifTool Version Number",
-        "File Access Date/Time",
-        "File Inode Change Date/Time",
-        "File Modification Date/Time",
-        "File Name",
-        "File Permissions",
-        "File Size",
-        "File Type",
-        "File Type Extension",
-        "Image Height",
-        "Image Size",
-        "Image Width",
-        "Media White Point",
-        "Megapixels",
-        "MIME Type",
-        "Primary Platform",
-        "Resolution Unit",
-        "X Resolution",
-        "XResolution",
-        "Y Cb Cr Sub Sampling",
-        "Y Cb Cr Positioning",
-        "Y Resolution",
-        "YCbCrPositioning",
-        "YResolution"
+        'Bits Per Sample',
+        'Color Components',
+        'Directory',
+        'Encoding Process',
+        'Exif Byte Order',
+        'ExifTool Version Number',
+        'File Access Date/Time',
+        'File Inode Change Date/Time',
+        'File Modification Date/Time',
+        'File Name',
+        'File Permissions',
+        'File Size',
+        'File Type',
+        'File Type Extension',
+        'Image Height',
+        'Image Size',
+        'Image Width',
+        'Media White Point',
+        'Megapixels',
+        'MIME Type',
+        'Primary Platform',
+        'Resolution Unit',
+        'X Resolution',
+        'XResolution',
+        'Y Cb Cr Sub Sampling',
+        'Y Cb Cr Positioning',
+        'Y Resolution',
+        'YCbCrPositioning',
+        'YResolution'
       ]
 
       present_tags = exiftool_output.lines.map { |l| l.split(':').first.strip }.uniq
@@ -90,9 +90,8 @@ RSpec.describe BaseImageUploader do
           tag.include?('Color Space') ||
           tag.include?('Illuminant') ||
           tag.include?('CMM') ||
-          tag.include?('Device') ||
+          tag.include?('Device') || # Device tags are often related to color profiles
           tag.include?('Rendering') ||
-          tag.include?('Copyright') ||
           tag.include?('Adaptation')
         }
       ).to be_empty
