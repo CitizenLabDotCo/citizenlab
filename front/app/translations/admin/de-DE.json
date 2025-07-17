@@ -951,7 +951,7 @@
   "app.containers.Admin.messaging.newProjectPhaseModal.turnOn": "Ja, einschalten",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.FollowedItems.thisWidgetShows": "Dieses Widget zeigt jedem Nutzenden die Projekte an, <b>die er oder sie bevorzugt folgt</b>. Dazu gehören Projekte, denen sie folgen, sowie Projekte, bei denen sie Beiträgen folgen, und Projekte, die sich auf Themen oder Bereiche beziehen, an denen sie interessiert sind.",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.noData2": "Dieses Widget wird den Nutzenden nur angezeigt, wenn es Projekte gibt, an denen sie teilnehmen können. Wenn Sie diese Meldung sehen, bedeutet das, dass Sie (der Admin) im Moment an keinem Projekt teilnehmen können. Diese Meldung wird auf der eigentlichen Homepage nicht angezeigt.",
-  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.openToParticipation": "Offen für Beteiligung",
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.openToParticipation": "Jetzt mitmachen",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.thisWidgetWillShowcase": "Dieses Widget zeigt Projekte an, bei denen Nutzende derzeit <b>eine Aktion durchführen</b> können <b>, um sich zu beteiligen</b>.",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.title": "Titel",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.defaultTitle": "Für Dich",
