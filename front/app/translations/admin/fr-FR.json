@@ -2209,7 +2209,7 @@
   "app.containers.AdminPage.ProjectFiles.addedTableHeader": "Ajouté",
   "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Interviews audio, enregistrements de la mairie",
   "app.containers.AdminPage.ProjectFiles.audioFileExtensionDescription": "WAV, MP3",
-  "app.containers.AdminPage.ProjectFiles.chooseFiles": "Choisissez les fichiers",
+  "app.containers.AdminPage.ProjectFiles.chooseFiles": "Choisir des fichiers",
   "app.containers.AdminPage.ProjectFiles.confirmDelete": "Êtes-vous sûr de vouloir supprimer ce fichier ?",
   "app.containers.AdminPage.ProjectFiles.deleteFile2": "Supprimer le fichier",
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Télécharger le fichier",
