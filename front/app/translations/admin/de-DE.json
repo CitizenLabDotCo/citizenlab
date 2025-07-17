@@ -2231,7 +2231,7 @@
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Ziehen Sie beliebige Dateien per Drag & Drop hierher oder",
   "app.containers.AdminPage.ProjectFiles.fileDescriptionLabel": "Beschreibung",
   "app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot": "Der Dateiname darf keinen Punkt enthalten.",
-  "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Datei Name",
+  "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Dateiname",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "Der Dateiname ist erforderlich.",
   "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Dateivorschau",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Diese Datei kann nicht hochgeladen werden, da sie die maximale Größe von 50 MB überschreitet.",
