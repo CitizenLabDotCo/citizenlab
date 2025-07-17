@@ -389,7 +389,6 @@ resource 'Phases' do
           let(:voting_max_votes_per_idea) { 5 }
           let(:vote_term) { 'point' }
 
-
           example_request 'Create a voting (multiple voting) phase' do
             assert_status 201
             expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
