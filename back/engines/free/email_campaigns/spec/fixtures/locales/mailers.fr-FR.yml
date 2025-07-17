@@ -353,9 +353,9 @@ fr:
       title_added_as_folderadmin: 'Vous êtes à présent gestionnaire de dossiers'
       x_projects: '%{numberOfProjects} projets'
     project_phase_started:
-      cta_view_phase: 'Découvrez cette nouvelle phase'
+      cta_button: 'Découvrez cette nouvelle phase'
       event_description: 'Ce projet est entré dans une nouvelle phase sur la plate-forme de %{organizationName}. Cliquez sur le lien ci-dessous pour en savoir plus !'
-      main_header: 'Une nouvelle phase a commencé pour le projet ''%{projectName}'''
+      title: 'Une nouvelle phase a commencé pour le projet ''%{projectName}'''
       subtitle: 'À propos de ''%{projectName}'''
       new_phase: 'Ce projet est entré dans la phase ''%{phaseTitle}'''
       subject: '%{projectName} est entré.e dans une nouvelle phase'
