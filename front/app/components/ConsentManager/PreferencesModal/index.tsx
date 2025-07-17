@@ -9,7 +9,6 @@ import Footer from './Footer';
 import Preferences from './Preferences';
 
 interface Props {
-  opened: boolean;
   categorizedDestinations: CategorizedDestinations;
   preferences: IPreferences;
   onClose: () => void;
@@ -19,7 +18,6 @@ interface Props {
 }
 
 const PreferencesModal = ({
-  opened,
   categorizedDestinations,
   preferences,
   onClose,
@@ -29,7 +27,7 @@ const PreferencesModal = ({
 }: Props) => {
   return (
     <Modal
-      opened={opened}
+      opened
       close={onClose}
       footer={
         <Footer
