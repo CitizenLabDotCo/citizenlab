@@ -48,9 +48,7 @@ const FileEditForm = ({ file }: Props) => {
     defaultValues: {
       name: fileNameWithoutExtension || '',
       category: file.data.attributes.category,
-      description_multiloc: {
-        en: 'This is a sample AI-generated description for this file. It contains a few sentences describing the contents of this file. It can also be edited manually by the user.',
-      }, // TODO: Replace with actual default value once description is implemented.
+      description_multiloc: file.data.attributes.description_multiloc,
     },
     resolver: yupResolver(schema),
   });
@@ -63,7 +61,7 @@ const FileEditForm = ({ file }: Props) => {
           // Join the file name back with the extension before persisting.
           name: `${methods.getValues('name')}.${fileExtensionString}`,
           category: methods.getValues('category') || 'other',
-          // TODO: Add category and description_multiloc once implemented
+          description_multiloc: methods.getValues('description_multiloc'),
         },
       });
 

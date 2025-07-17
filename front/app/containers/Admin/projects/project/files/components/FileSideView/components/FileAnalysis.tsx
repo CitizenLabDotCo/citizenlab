@@ -75,22 +75,20 @@ const FileAnalysis = () => {
         mb="16px"
         ref={insightsDivRef}
       >
-        <Text fontSize="m" whiteSpace="pre-wrap">
-          {/* TODO: Replace with real insights */}
-          <Box
-            bgColor={colors.grey100}
-            borderRadius={stylingConsts.borderRadius}
-            p="16px"
-          >
-            <Text m="0px" color="textPrimary">
-              {`This is a sample AI-generated insight created to demonstrate how the system analyzes the contents of this file. It represents the kind of summary or observation that might be produced after reviewing key themes, recurring patterns, or notable trends within the file’s content. Once the file has been processed, this area will display useful insights that can help users quickly understand the main points, areas of concern, or opportunities highlighted in the material.`}
-            </Text>
-            <Box display="flex" justifyContent="flex-end">
-              {/* TODO; Make this a clickable icon button for deleting the insight. */}
-              <Icon width="20px" fill={colors.coolGrey600} name="delete" />
-            </Box>
+        <Box
+          bgColor={colors.grey100}
+          borderRadius={stylingConsts.borderRadius}
+          p="16px"
+        >
+          {/* TODO: Remove sample once BE implemented. */}
+          <Text m="0px" color="textPrimary" fontSize="m" whiteSpace="pre-wrap">
+            {`This is a sample AI-generated insight created to demonstrate how the system analyzes the contents of this file. It represents the kind of summary or observation that might be produced after reviewing key themes, recurring patterns, or notable trends within the file’s content. Once the file has been processed, this area will display useful insights that can help users quickly understand the main points, areas of concern, or opportunities highlighted in the material.`}
+          </Text>
+          <Box display="flex" justifyContent="flex-end">
+            {/* TODO: Make this a clickable icon button for deleting the insight. */}
+            <Icon width="20px" fill={colors.coolGrey600} name="delete" />
           </Box>
-        </Text>
+        </Box>
       </Box>
 
       {/* Question form anchored to bottom */}

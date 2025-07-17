@@ -21,6 +21,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.dragAndDropFiles2',
     defaultMessage: 'Drag and drop any files here or',
   },
+  allowAiProcessing: {
+    id: 'app.containers.AdminPage.ProjectFiles.allowAiProcessing',
+    defaultMessage:
+      'Allow advanced analytics of these files using AI processing.',
+  },
   searchFiles: {
     id: 'app.containers.AdminPage.ProjectFiles.searchFiles',
     defaultMessage: 'Search files',
@@ -125,8 +130,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.strategic_plan',
     defaultMessage: 'Strategic plan',
   },
-  information: {
-    id: 'app.containers.AdminPage.ProjectFiles.information',
+  info_sheet: {
+    id: 'app.containers.AdminPage.ProjectFiles.info_sheet',
     defaultMessage: 'Information',
   },
   policy: {

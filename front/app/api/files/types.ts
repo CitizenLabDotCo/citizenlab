@@ -10,7 +10,7 @@ export const FILE_CATEGORIES = [
   'meeting',
   'interview',
   'strategic_plan',
-  'information',
+  'info_sheet',
   'policy',
   'report',
   'other',
@@ -23,6 +23,7 @@ export interface IAddFileProperties {
   project?: string;
   name: string;
   category: FileCategory;
+  ai_processing_allowed?: boolean;
 }
 
 export interface IUpdateFileProperties {
@@ -92,6 +93,7 @@ export interface IFileAttributes {
   mime_type: string;
   size: number; // in bytes,
   category: FileCategory;
+  description_multiloc: Multiloc;
   created_at: string;
   updated_at: string;
   deleted_at: string | null;

@@ -58,6 +58,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
           project: projectId,
           name: file.name,
           category: formData.category || 'other', // Default to 'other' if no category is selected
+          ai_processing_allowed: fileMeta.ai_processing_allowed,
         });
         onStatusUpdate({
           status: 'uploaded',
@@ -69,7 +70,14 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
         handleHookFormSubmissionError(error, methods.setError);
       }
     },
-    [file, addFile, projectId, onStatusUpdate, methods.setError]
+    [
+      file,
+      addFile,
+      projectId,
+      fileMeta.ai_processing_allowed,
+      onStatusUpdate,
+      methods.setError,
+    ]
   );
 
   // Handle form submission (trigger file upload)
