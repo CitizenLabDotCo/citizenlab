@@ -59,7 +59,7 @@ const AssignSingleVoteBox = memo(({ ideaId, phase }: Props) => {
           justifyContent="center"
         >
           <FormattedMessage
-            {...messages.votesLeft}
+            {...messages.numberOfVotesLeft}
             values={{
               votesLeft: votesLeft.toLocaleString(),
               totalNumberOfVotes: voting_max_total.toLocaleString(),

@@ -17,7 +17,7 @@ import FileSideView from '../FileSideView';
 import messages from '../messages';
 import UploadFileButtonWithModal from '../UploadFileButtonWithModal';
 
-import FilesListItem from './FilesListItem';
+import FilesListItem from './components/FilesListItem';
 
 const FilesList = () => {
   const { formatMessage } = useIntl();

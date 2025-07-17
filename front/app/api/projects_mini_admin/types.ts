@@ -41,11 +41,11 @@ export type ProjectMiniAdminData = {
     visible_to: Visibility;
   };
   relationships: {
-    current_phase?: {
-      data: IRelationship | null;
-    };
     folder?: {
       data: IRelationship | null;
+    };
+    phases?: {
+      data: IRelationship[];
     };
   };
 };

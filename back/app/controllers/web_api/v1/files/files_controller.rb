@@ -58,14 +58,15 @@ class WebApi::V1::Files::FilesController < ApplicationController
   def create_params
     {
       content_by_content: params.require(:file).permit(:content, :name),
-      uploader_id: current_user.id
-    }
+      uploader_id: current_user.id,
+      category: params.dig(:file, :category)
+    }.compact
   end
 
   def finder_params
     params.permit(
-      :search, :uploader, :project,
-      uploader: [], project: []
+      :search, :uploader, :project, :category,
+      uploader: [], project: [], category: []
     ).to_h.symbolize_keys
   end
 

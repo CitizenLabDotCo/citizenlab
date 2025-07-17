@@ -157,7 +157,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectMiniAdminSerializer,
       params: jsonapi_serializer_params,
-      include: %i[current_phase]
+      include: %i[phases]
     )
   end
 
@@ -347,6 +347,18 @@ class WebApi::V1::ProjectsController < ApplicationController
       params: jsonapi_serializer_params.merge(request: request),
       include: %i[current_phase]
     ).serializable_hash
+  end
+
+  def participant_counts
+    projects = policy_scope(Project)
+      .where(id: params[:project_ids])
+
+    authorize projects, :participant_counts?
+
+    participant_counts = ParticipantsService.new
+      .projects_participants_counts(projects)
+
+    render json: raw_json({ participant_counts: participant_counts })
   end
 
   private

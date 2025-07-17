@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 import { Box, colors, Spinner, Text } from '@citizenlab/cl2-component-library';
 
+import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
 
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
@@ -60,6 +61,14 @@ const Timeline = () => {
     rootMargin: '0px 0px 200px 0px',
   });
 
+  const projectsById = allProjects.reduce(
+    (acc, project) => ({
+      ...acc,
+      [project.id]: project,
+    }),
+    {} as Record<string, ProjectMiniAdminData>
+  );
+
   if (isLoading) {
     return (
       <Centerer>
@@ -103,7 +112,10 @@ const Timeline = () => {
     <Box>
       <Filters />
       <Box position="relative" mt="16px">
-        <ProjectGanttChart projects={projectsGanttData} />
+        <ProjectGanttChart
+          ganttItems={projectsGanttData}
+          projectsById={projectsById}
+        />
 
         {isFetching && (
           <Box
