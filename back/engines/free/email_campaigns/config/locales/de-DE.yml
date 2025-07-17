@@ -24,8 +24,8 @@ de:
       "mention_in_official_feedback": Erwähnung in einem offiziellen Update
       "mention_in_internal_comment": Erwähnung in einem internen Kommentar
       "new_comment_for_admin": Neuer Kommentar zu einem Projekt, das ich moderiere
-      "new_idea_for_admin_published": Neu veröffentlichte Beiträge in einem von mir moderierten Projekt
-      "new_idea_for_admin_prescreening": Neue genehmigungspflichtige Eingaben in einem Projekt I moderieren
+      "new_idea_for_admin_published": Neuer Beitrag in einem Projekt, das ich moderiere
+      "new_idea_for_admin_prescreening": Neuer Beitrag, der in einem von mir moderierten Projekt genehmigt werden muss
       "official_feedback_on_idea_you_follow": Offizielles Update zu einer Idee, der Sie folgen
       "password_reset": Zurücksetzen des Passworts
       "project_moderation_rights_received": Projektmanagementrechte erhalten
@@ -89,17 +89,17 @@ de:
       author_first_name: 'Erika'
       author_last_name: 'Mustermann'
       author_display_name: 'Erika Mustermann'
-      initiator_first_name: 'Bob'
-      initiator_last_name: 'Smith'
-      initiator_display_name: 'Bob Smith'
+      initiator_first_name: 'Max'
+      initiator_last_name: 'Mustermann'
+      initiator_display_name: 'Max Mustermann'
       project_title: 'Beispielprojekt'
-      phase_title: 'Beispiel Phase'
+      phase_title: 'Beispielphase'
       comment_body: 'Dies ist ein Beispielkommentar, der für die Vorschau des Inhalts von E-Mails verwendet wird. Dies ist kein echter Inhalt.'
       comment_deleted_reason: 'Ihr Beispielkommentar wurde als unangemessen betrachtet.'
       idea_title: 'Beispiel-Idee'
       idea_body: 'Dies ist ein Beispiel für einen Inhalt, der für die Vorschau des Inhalts von E-Mails verwendet wird. Dies ist kein echter Inhalt.'
-      event_title: 'Beispiel Ereignis'
-      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_title: 'Beispiel-Veranstaltung'
+      event_address1: 'Beispielstraße 10, Beispiel-Stadt, Beispiel-Land'
       event_address2: 'Zimmer 3a, Obergeschoss'
       proposal_title: 'Beispiel-Vorschlag'
     footer:
@@ -119,7 +119,7 @@ de:
       preheader: 'Ihr Kommentar wurde gelöscht'
       title: '%{organizationName} hat Ihren Kommentar gelöscht'
       event_description: '%{organizationName} den Kommentar, den Sie zu einer Idee geschrieben haben, gelöscht.'
-      cta_button: 'Zur Plattform'
+      cta_button: 'Beitrag anzeigen'
       reason: 'Der Grund, warum Ihr Kommentar gelöscht wurde:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Ihr Kommentar wurde als unangemessen eingeschätzt'
@@ -128,7 +128,7 @@ de:
     admin_digest:
       subject: 'Ihr wöchentlicher Admin-Bericht vom %{time}'
       preheader: 'Adminzusammenfassung für %{organizationName}'
-      title: '%{firstName}, Ihr wöchentlicher Bericht'
+      title: '%{firstName}, dein Wochenbericht'
       event_description: 'Wir haben für Sie die Beiträge zusammengestellt, die in der vergangenen Woche die meiste Aktivität hatten. Finden Sie heraus, was auf Ihrer Plattform passiert ist!'
       cta_button: 'Zur Plattform'
       new_users: 'Neue BenutzerInnen'
@@ -145,7 +145,7 @@ de:
       preheader: 'Ihnen wurde ein Admin-Zugang für die Beteiligungsplattform %{organizationName} gewährt'
       title: 'Sie sind nun Admin'
       event_description: 'Ihnen wurden ein Admin-Zugang für die Beteiligungsplattform %{organizationName} gewährt.'
-      cta_button: 'Verwalten Sie Ihre Plattform'
+      cta_button: 'Plattform verwalten'
       text_create_participatory_process: 'Als Admin können Sie neue Beteiligungsprojekte erstellen und konfigurieren. Über die Zeitleiste können Sie neue Phasen hinzufügen. Jede dieser Phasen kann ihr eigenes Verhalten in Bezug auf das Posten von Ideen, das Kommentieren und das Abstimmen haben.'
       text_moderate_analyse_input: 'Sobald die Projekte angelaufen sind, werden die ersten Ideen eintreffen. Sie erhalten wöchentliche Berichte mit allen wichtigen Aktivitäten, damit Sie den Überblick behalten. Die Ideenübersicht hilft Ihnen, den Input zu moderieren und zu bearbeiten.'
       text_platform_setup: 'Als Admin können Sie Ihre Beteiligungsplattform einrichten. Wählen Sie ein Logo, Bilder und Farben, schreiben Sie eine persönliche Nachricht auf Ihre Homepage, verschicken Sie Einladungen, legen Sie fest, was Sie von Ihren Nutzer:innen wissen wollen, ...'
@@ -183,8 +183,8 @@ de:
     assignee_digest:
       subject: 'Ideen, die Ihr Feedback erfordern: %{numberIdeas}'
       preheader: 'Übersicht der Beauftragten von %{organizationName}'
-      title: '%{firstName}, Ideen warten auf Ihr Feedback'
-      cta_button: 'Verwalten der Beiträge'
+      title: '%{firstName}, Beiträge warten auf dein Feedback'
+      cta_button: 'Beiträge verwalten'
       x_inputs_need_your_feedback: 'Beiträge, die Feedback benötigen'
       title_assignment_past_week: 'Letzte Ihnen zugewiesene Ideen'
       title_no_assignment_past_week: 'Ihnen wurden letzte Woche keine neuen Ideen zugewiesen'
@@ -208,11 +208,11 @@ de:
       event_description_cosponsoring: 'Unterstützer*in eines Vorschlags zu sein bedeutet <strong>, dass Ihr Name zusammen mit den Namen der anderen Unterstützer*innen des Vorschlags angezeigt wird</strong>.'
       event_description_before_action: 'Um den Vorschlag zu sehen und die Einladung anzunehmen, müssen Sie in Ihrem Konto eingeloggt sein.'
       event_description_action: 'Klicken Sie auf den Button unten, um den Vorschlag zu lesen.'
-      cta_button: 'Unterstützen Sie diesen Vorschlag'
+      cta_button: 'Vorschlag unterstützen'
     invite_reminder:
       subject: 'Ausstehende Einladung für die Beteiligungsplattform %{organizationName}'
       preheader: '%{organizationName} hat Ihnen vor einigen Tagen eine Einladung zur Teilnahme an ihrer Beteiligungsplattform geschickt.'
-      title: 'Ihre Einladung steht noch aus'
+      title: 'Einladung steht noch aus'
       cta_button: 'Einladung annehmen'
       invitation_expiry_message: 'Diese Einladung läuft in etwa %{expiryDaysRemaining} Tagen ab.'
     invite_received:
@@ -238,9 +238,9 @@ de:
     moderator_digest:
       subject: 'Ihr wöchentlicher Projektmanagementbericht von %{project_title}'
       preheader: 'Projektmanagement-Zusammenfassung von %{organizationName}'
-      title: '%{firstName}, Ihr wöchentlicher Bericht'
+      title: '%{firstName}, dein Wochenbericht'
       event_description: 'Wir haben für Sie die Beiträge zusammengestellt, die in der vergangenen Woche die meiste Aktivität hatten. Finden Sie heraus, was auf Ihrer Plattform passiert ist!'
-      cta_button: 'Verwalten Sie Ihr Projekt'
+      cta_button: 'Projekt verwalten'
       new_users: 'Neue Nutzer*innen'
       new_ideas: 'Neue Ideen'
       new_comments: 'Neue Kommentare'
@@ -252,7 +252,7 @@ de:
       x_days_ago_by_author: 'Vor %{x} Tagen von %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} hat kommentiert:'
-      cta_button: 'Sehen Sie sich den Kommentar von %{authorFirstName} an'
+      cta_button: 'Kommentar von %{authorFirstName} ansehen'
       days_ago: 'vor %{numberOfDays} Tagen'
       event_description: '%{authorName} hat einen neuen Kommentar zu Ihrer Plattform hinzugefügt.'
       title: '%{firstName}, ein neuer Kommentar wurde auf Ihrer Plattform veröffentlicht'
@@ -263,7 +263,7 @@ de:
     comment_on_idea_you_follow:
       subject: 'Es gibt einen neuen Kommentar zu "%{input_title}"'
       preheader: '%{authorName} hinterließ einen Kommentar zu einer Idee für %{organizationName}'
-      title: '%{authorName} einen Beitrag kommentiert, dem Sie folgen'
+      title: '%{authorName} hat einen Beitrag kommentiert, dem Sie folgen'
       event_description: '%{authorNameFull} hat eine Reaktion auf ''%{inputTitle}'' abgegeben. Klicken Sie auf den Button unten, um das Gespräch mit %{authorName} fortzusetzen.'
       cta_button: 'Antworten Sie auf %{commentAuthor}'
       main_header:
@@ -314,7 +314,7 @@ de:
       title: 'Neuer interner Kommentar zu ''%{post}'''
       preheader: '''%{post}'' hat einen neuen internen Kommentar'
     internal_comment_on_idea_you_commented_internally_on:
-      cta_button: 'Kommentar anzeigen von %{firstName}'
+      cta_button: 'Kommentar von %{firstName} anzeigen'
       event_description: '%{authorNameFull} hat intern einen Beitrag kommentiert, den Sie intern kommentiert haben.'
       subject: '''%{post}'' hat einen neuen internen Kommentar'
       title: 'Neuer interner Kommentar zu ''%{post}'''
@@ -441,7 +441,7 @@ de:
       message_welcome: 'Sie haben sich erfolgreich auf der Beteiligungsplattform %{organizationName} registriert. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.'
       preheader: 'Das können Sie auf der Plattform von %{organizationName} tun:'
     idea_published:
-      subject: 'Ihre Idee wurde veröffentlicht'
+      subject: 'Dein Beitrag wurde veröffentlicht'
       preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner Idee auf der Plattform von %{organizationName}. Suche dir jetzt Unterstützung für deine Idee.'
       title: 'Sie haben "%{input_title}" gepostet.'
       input_type_subject:
@@ -488,7 +488,7 @@ de:
       subject: '%{organizationName}: Fast geschafft! Reichen Sie Ihre Antworten ein'
       preheader: 'Sie haben Ihre Umfrageantwort nicht auf der Teilnahmeplattform von %{organizationName}ausgefüllt.'
       title: 'Fast geschafft! Reichen Sie Ihre Antworten ein'
-      event_description: 'Sie haben begonnen, Ihre Antworten zu %{phaseTitle} zu teilen, haben sie aber nicht abgeschickt. Klicken Sie auf den BUtton unten, um dort fortzufahren, wo Sie aufgehört haben.'
+      event_description: 'Sie haben begonnen, Ihre Antworten zu %{phaseTitle} zu teilen, haben sie aber nicht abgeschickt. Klicken Sie auf den Button unten, um dort fortzufahren, wo Sie aufgehört haben.'
       cta_button: 'Beantwortung der Umfrage fortsetzen'
       submissions_close: 'Einsendeschluss ist %{phaseEndDate}.'
     voting_basket_not_submitted:
