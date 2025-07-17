@@ -1,5 +1,6 @@
 import { Multiloc, Pagination, ILinks, IRelationship } from 'typings';
 
+import { ParticipationMethod } from 'api/phases/types';
 import { PublicationStatus, Visibility } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -14,6 +15,7 @@ export type Parameters = {
   end_at?: string;
   participation_states?: ParticipationState[];
   folder_ids?: string[];
+  participation_methods?: ParticipationMethod[];
   sort:
     | 'recently_viewed'
     | 'phase_starting_or_ending_soon'

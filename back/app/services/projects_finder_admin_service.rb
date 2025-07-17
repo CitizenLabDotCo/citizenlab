@@ -10,6 +10,7 @@ class ProjectsFinderAdminService
     projects = search(projects, params)
     projects = filter_date(projects, params)
     projects = filter_participation_states(projects, params)
+    projects = filter_current_phase_participation_method(projects, params)
 
     # Apply sorting
     if params[:sort] == 'recently_viewed'
@@ -217,5 +218,23 @@ class ProjectsFinderAdminService
     end
 
     scope.where(conditions.map { |c| "(#{c})" }.join(' OR '))
+  end
+
+  # Filter projects by the participation method of their current phase
+  def self.filter_current_phase_participation_method(scope, params = {})
+    participation_methods = params[:participation_methods]
+    return scope if participation_methods.blank?
+
+    participation_methods = Array(participation_methods)
+
+    project_ids = scope.pluck(:id)
+    project_ids_with_matching_phase = project_ids.select do |project_id|
+      project = Project.includes(:phases, :admin_publication).find_by(id: project_id)
+      next false unless project
+
+      current_phase = TimelineService.new.current_phase(project)
+      current_phase && participation_methods.include?(current_phase.participation_method)
+    end
+    scope.where(id: project_ids_with_matching_phase)
   end
 end

@@ -204,6 +204,39 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.filter_current_phase_participation_method' do
+    let!(:project_ideation) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'ideation')
+      project
+    end
+    let!(:project_voting) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'voting', voting_method: 'single_voting')
+      project
+    end
+    let!(:project_information) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'information')
+      project
+    end
+
+    it 'returns all projects when no participation_methods specified' do
+      result = described_class.filter_current_phase_participation_method(Project.all, {})
+      expect(result.pluck(:id)).to match_array([project_ideation.id, project_voting.id, project_information.id])
+    end
+
+    it 'filters projects by a single participation method' do
+      result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: ['ideation'] })
+      expect(result.pluck(:id)).to eq([project_ideation.id])
+    end
+
+    it 'filters projects by multiple participation methods' do
+      result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: %w[ideation voting] })
+      expect(result.pluck(:id)).to match_array([project_ideation.id, project_voting.id])
+    end
+  end
+
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }
