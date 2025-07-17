@@ -1,4 +1,4 @@
-import React, { FormEvent, useState, useCallback } from 'react';
+import React, { FormEvent, useState } from 'react';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
@@ -31,76 +31,37 @@ const Container = ({
   saveConsent,
 }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isCancelling, setIsCancelling] = useState(false);
 
-  const openDialog = useCallback(() => {
+  const openDialog = () => {
     onToggleModal(false);
     setIsDialogOpen(true);
-  }, [onToggleModal]);
+  };
 
-  const closeDialog = useCallback(() => {
+  const closeDialog = () => {
     onToggleModal(true);
     setIsDialogOpen(false);
-  }, [onToggleModal]);
+  };
 
   useObserveEvent('openConsentManager', openDialog);
 
-  const handleSave = useCallback(
-    (e: FormEvent) => {
-      e.preventDefault();
+  const handleSave = (e: FormEvent) => {
+    e.preventDefault();
 
-      setIsDialogOpen(false);
-      saveConsent();
-    },
-    [saveConsent]
-  );
-
-  const handleCancel = useCallback(() => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const isEmpty = Object.values(preferences).every((e) => e === undefined);
-
-    // Only show the cancel confirmation if there's unconsented destinations...
-    // or if the user made a choice and we want to confirm aborting it
-    if (isConsentRequired && !isEmpty) {
-      setIsCancelling(true);
-    } else {
-      setIsDialogOpen(false);
-      resetPreferences();
-    }
-  }, [preferences, isConsentRequired, resetPreferences]);
-
-  const handleCancelBack = useCallback(() => {
-    setIsCancelling(false);
-  }, []);
-
-  const handleCancelConfirm = useCallback(() => {
-    setIsCancelling(false);
     setIsDialogOpen(false);
+    saveConsent();
+  };
 
+  const handleCancel = () => {
     resetPreferences();
-  }, [resetPreferences]);
-
-  const noDestinations = Object.values(categorizedDestinations).every(
-    (array) => array.length === 0
-  );
-
-  const mode = noDestinations
-    ? 'noDestinations'
-    : !isCancelling
-    ? 'preferenceForm'
-    : 'cancelling';
+    setIsDialogOpen(false);
+  };
 
   return (
     <>
       <PreferencesModal
         opened={isDialogOpen}
-        mode={mode}
         categorizedDestinations={categorizedDestinations}
         preferences={preferences}
-        isCancelling={isCancelling}
-        handleCancelBack={handleCancelBack}
-        handleCancelConfirm={handleCancelConfirm}
         handleCancel={handleCancel}
         handleSave={handleSave}
         onClose={closeDialog}

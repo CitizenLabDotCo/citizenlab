@@ -121,8 +121,6 @@
   "app.components.ConsentManager.Banner.manage": "Yönet",
   "app.components.ConsentManager.Banner.policyLink": "Çerez politikası",
   "app.components.ConsentManager.Banner.reject": "Reddet",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Onayla",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "İptal ederseniz tercihleriniz kaydedilmez.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklam",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Bunu web sitemizin reklam kampanyalarını kişiselleştirmek ve bu kampanyaların etki düzeyini ölçmek için kullanırız. Bu platformda reklam göstermeyiz ancak ilgili hizmetler sitemizde ziyaret ettiğiniz sayfaları temel alarak size kişiselleştirilmiş reklamlar sunabilir.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "İzin ver",

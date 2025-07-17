@@ -121,8 +121,6 @@
   "app.components.ConsentManager.Banner.manage": "Administrar",
   "app.components.ConsentManager.Banner.policyLink": "Política de cookies",
   "app.components.ConsentManager.Banner.reject": "Rechaza",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Confirmar",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Si cancelas, se perderán tus preferencias.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Publicidad",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Usamos esto para personalizar y medir la efectividad de campañas de nuestro sitio Web. No mostramos ningún tipo de publicidad en esta plataforma, pero los siguientes servicios pueden ofrecer un anuncio personalizado basado en las páginas que visitas en nuestro sitio.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Permitir",
