@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import useProjectFolders from 'api/project_folders/useProjectFolders';
 
@@ -20,13 +20,24 @@ interface Props {
 const Folders = ({ folderIds, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { data } = useProjectFolders({});
+
+  // Disabled by default because we want only make the request when the user opens the dropdown
+  // This prevents unnecessary requests when the component is mounted but the user doesn't interact with it
+  const { data, isLoading, refetch } = useProjectFolders({}, false);
+  const hasFetchedRef = useRef(false);
 
   const folderOptions: IFilterSelectorValue[] =
     data?.data.map((folder) => ({
       value: folder.id,
       text: localize(folder.attributes.title_multiloc),
     })) ?? [];
+
+  const handleOpen = () => {
+    if (!hasFetchedRef.current) {
+      refetch();
+      hasFetchedRef.current = true;
+    }
+  };
 
   return (
     <FilterSelector
@@ -37,6 +48,8 @@ const Folders = ({ folderIds, onChange }: Props) => {
       multipleSelectionAllowed
       selected={folderIds}
       filterSelectorStyle="text"
+      isLoading={isLoading}
+      onOpen={handleOpen}
     />
   );
 };
