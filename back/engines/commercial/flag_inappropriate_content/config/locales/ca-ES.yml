@@ -5,11 +5,12 @@ ca:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Inappropriate content flagged - admins
     inappropriate_content_flagged:
-      subject: 'A post on your platform has been flagged for review'
-      header_title: 'A post on your platform has been flagged for review'
-      comment_author: '%{authorName} commented:'
-      idea_author: '%{authorName} submitted a post:'
-      initiative_author: '%{authorName} submitted a proposal:'
-      this_post_was_flagged: >
-        <p>This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.</p><p>If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.</p>
-      cta_review_post: 'Review post'
+      subject: 'A post has been flagged for review'
+      header_title: 'A post has been flagged for review'
+      author_wrote: '%{authorName} ha escrit:'
+      preheader: 'S''ha marcat una publicació a la teva plataforma perquè la revisi'
+      automatically_flagged: >
+        Aquesta publicació s'ha detectat automàticament com a contingut potencialment inadequat. T'enviem aquesta notificació perquè puguis revisar la publicació d'acord amb les teves pròpies directrius de moderació.
+      how_to_review: >
+        Si la publicació no conté contingut inadequat, podeu eliminar l'avís mitjançant la vostra plataforma a la pestanya Activitat del tauler d'administració.
+      cta_review: 'Revisió'
