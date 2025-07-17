@@ -215,6 +215,7 @@ resource 'Files' do
             category: 'other',
             description_multiloc: {},
             ai_processing_allowed: false,
+            content: { url: be_present },
             created_at: be_present,
             updated_at: be_present
           },
