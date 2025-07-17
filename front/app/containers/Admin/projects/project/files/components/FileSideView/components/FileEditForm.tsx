@@ -39,7 +39,7 @@ const FileEditForm = ({ file }: Props) => {
     name: string()
       .matches(/^[^.]*$/, formatMessage(messages.fileNameCannotContainDot))
       .required(formatMessage(messages.fileNameRequired)),
-    category: string().oneOf(FILE_CATEGORIES).notRequired(),
+    category: string().oneOf(FILE_CATEGORIES).required(),
     description_multiloc: object().notRequired(),
   });
 

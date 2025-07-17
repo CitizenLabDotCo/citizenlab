@@ -121,6 +121,7 @@ const FilesUpload = ({ setModalOpen, setShowNoFilesView }: Props) => {
               checked={allowAiProcessing}
               onChange={(event) => {
                 setAllowAiProcessing(event.target.checked);
+                // Update the AI processing flag for all files in the list
                 setFileList((prev) =>
                   prev.map((file) => ({
                     ...file,

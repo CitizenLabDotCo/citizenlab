@@ -40,7 +40,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
 
   // Setup for React hook form
   const schema = object({
-    category: string().oneOf(FILE_CATEGORIES).nullable().notRequired(),
+    category: string().oneOf(FILE_CATEGORIES).nullable().notRequired(), // Will default to 'other' if not selected
   });
   const methods = useForm({
     mode: 'onBlur',
