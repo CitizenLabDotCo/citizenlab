@@ -302,7 +302,7 @@ resource 'Files' do
     end
 
     let(:project) { create(:project) }
-    let(:file) { create(:file, :meeting, projects: [project]) }
+    let(:file) { create(:file, :meeting, :with_description, projects: [project]) }
 
     # Parameters
     let(:id) { file.id }
