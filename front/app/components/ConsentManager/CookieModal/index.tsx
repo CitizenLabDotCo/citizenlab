@@ -7,7 +7,6 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import ContentContainer from 'components/ContentContainer';
 import Modal from 'components/UI/Modal';
@@ -18,27 +17,17 @@ import Link from 'utils/cl-router/Link';
 import messages from '../messages';
 
 interface Props {
-  opened: boolean;
   onAccept: () => void;
   onChangePreferences: () => void;
   onClose: () => void;
 }
 
-const CookieModal = ({
-  opened,
-  onAccept,
-  onChangePreferences,
-  onClose,
-}: Props) => {
+const CookieModal = ({ onAccept, onChangePreferences, onClose }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [searchParams] = useSearchParams();
-  const from = searchParams.get('from');
-
-  if (from === 'cookie-modal') return null;
 
   return (
     <Modal
-      opened={opened}
+      opened
       close={onClose}
       closeOnClickOutside={false}
       hideCloseButton
