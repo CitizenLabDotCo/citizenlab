@@ -112,11 +112,7 @@ const FileEditForm = ({ file }: Props) => {
               </Button>
             </Box>
 
-            <Feedback
-              successMessage={formatMessage(
-                messages.saveFileMetadataSuccessMessage
-              )}
-            />
+            <Feedback marginTop="16px" onlyShowErrors={true} />
           </Box>
         )}
       </form>
