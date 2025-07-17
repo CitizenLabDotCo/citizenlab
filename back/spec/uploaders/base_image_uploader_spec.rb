@@ -44,7 +44,11 @@ RSpec.describe BaseImageUploader do
       expect($CHILD_STATUS.success?).to be true
 
       # Tags that are  technical/structural image metadata,
-      # not user-supplied or privacy-sensitive metadata
+      # not user-supplied or privacy-sensitive metadata.
+      # The command exiftool -all=, used to strip metadata in BaseImageUploader,
+      # is designed to remove most metadata tags. However, it cannot remove
+      # fundamental file system information or core image characteristics that
+      # are inherent to the file's existence and structure.
       technical_tags = [
         'Bits Per Sample',
         'Color Components',
