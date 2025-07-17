@@ -10,22 +10,21 @@ module BulkImportIdeas::Extractors
       'Response ID'
     ]
 
-    SPECIAL_COLUMNS = [
-      'Email address',
-      'Date Published (dd-mm-yyyy)',
-      'Permission'
-    ]
-
     USER_COLUMNS = [
       'Postal Code',
       'Do you represent a Guelph business?'
     ]
 
-    # Names of columns to change to match our import format
-    COLUMN_MAP = {
+    # Names of special columns to change to match our import format
+    SPECIAL_COLUMN_MAP = {
       'Email' => 'Email address',
       'Date of contribution' => 'Date Published (dd-mm-yyyy)'
     }
+
+    # Columns not detected as select but should be forced to be
+    FORCE_SELECT_COLUMNS = [
+      'Do you represent a Guelph business?'
+    ]
 
     def initialize(xlsx_file_path)
       workbook = RubyXL::Parser.parse_buffer(open(xlsx_file_path).read)
@@ -57,7 +56,7 @@ module BulkImportIdeas::Extractors
     end
 
     def user_custom_fields
-      generate_fields(@user_columns)
+      generate_fields(@user_columns, fixed_key: true)
     end
 
     private
@@ -92,10 +91,10 @@ module BulkImportIdeas::Extractors
       return nil if column_name.nil? || IGNORED_COLUMNS.include?(column_name)
 
       # Change some names to match our import format
-      column_name = COLUMN_MAP[column_name] if COLUMN_MAP.key?(column_name)
+      column_name = SPECIAL_COLUMN_MAP[column_name] if SPECIAL_COLUMN_MAP.key?(column_name)
 
       # Add the column to the appropriate list
-      if SPECIAL_COLUMNS.exclude?(column_name)
+      if SPECIAL_COLUMN_MAP.values.exclude?(column_name)
         if USER_COLUMNS.include?(column_name)
           @user_columns << column_name unless @user_columns.include?(column_name)
         else
@@ -105,17 +104,16 @@ module BulkImportIdeas::Extractors
       column_name
     end
 
-    # TODO: Need to detect 'Other' fields
-    # TODO: Detect long vs short text fields
-    # TODO: Detect number fields
-    def generate_fields(columns)
+    def generate_fields(columns, fixed_key: false)
       columns.map do |column_name|
-        {
+        attributes = {
           title_multiloc: multiloc(column_name),
-          required: required?(column_name)
+          required: required?(column_name),
         }.merge(
           field_attributes(column_name)
         )
+        attributes[:key] = generate_key(column_name) if fixed_key
+        attributes
       end
     end
 
@@ -130,13 +128,22 @@ module BulkImportIdeas::Extractors
     def field_attributes(column_name)
       # Is this a matrix field?
       matrix = matrix_field_attributes(column_name)
-      return matrix unless matrix.nil?
+      return matrix if matrix
 
       # Select or Multiselect field?
       select = select_field_attributes(column_name)
-      return select unless select.nil?
+      return select if select
 
-      { input_type: 'text' }
+      # Otherwise, it's a text field
+      text_field_attributes(column_name)
+    end
+
+    def text_field_attributes(column_name)
+      values = @idea_rows.pluck(column_name).compact.reject(&:empty?)
+      max_length = values.max_by(&:length).length
+      input_type = max_length > 100 ? 'multiline_text' : 'text'
+
+      { input_type: input_type }
     end
 
     def select_field_attributes(column_name)
@@ -144,10 +151,10 @@ module BulkImportIdeas::Extractors
 
       # Detect single select field
       unique_ratio = values.size / values.uniq.size.to_f
-      if unique_ratio > 10 # Probably needs to be relational to the size of the data
+      if unique_ratio > 10 || FORCE_SELECT_COLUMNS.include?(column_name) # Probably needs to be relational to the size of the data
         return {
           input_type: 'select',
-          options: values.uniq.map { |value| { title_multiloc: multiloc(value), key: SlugService.new.slugify(value) } }
+          options: values.uniq.map { |value| { title_multiloc: multiloc(value), key: generate_key(value) } }
         }
       end
 
@@ -160,7 +167,7 @@ module BulkImportIdeas::Extractors
 
         return {
           input_type: 'multiselect',
-          options: split_values.uniq.map { |value| { title_multiloc: multiloc(value), key: SlugService.new.slugify(value) } }
+          options: split_values.uniq.map { |value| { title_multiloc: multiloc(value), key: generate_key(value) } }
         }
       end
 
@@ -182,13 +189,11 @@ module BulkImportIdeas::Extractors
           end
         end
 
-        labels = labels.uniq
+        labels = order_by_sentiment(labels.uniq)
         statements = statements.uniq
 
         # Update values to ensure semicolons instead of commas
         update_delimiters(column_name)
-
-        # TODO: Order the statements negative to positive using GPT maybe?
 
         return {
           input_type: 'matrix_linear_scale',
@@ -196,7 +201,7 @@ module BulkImportIdeas::Extractors
           statements: statements.map do |statement|
             {
               title_multiloc: multiloc(statement),
-              key: SlugService.new.slugify(statement)
+              key: generate_key(statement)
             }
           end
         }.merge(
@@ -211,8 +216,15 @@ module BulkImportIdeas::Extractors
       nil
     end
 
-    def multiloc(text)
-      locales.index_with { |_locale| text } # Same text assigned to all locales
+    # TODO: Order the statements negative to positive using GPT maybe?
+    def order_by_sentiment(values)
+      # This method is a placeholder for any future logic to order values by sentiment
+      # Currently, it just returns the values as they are
+      values
+    end
+
+    def multiloc(str)
+      locales.index_with { |_locale| str } # Same text assigned to all locales
     end
 
     # Update values to ensure semicolons for multiselect, matrix fields, etc.
@@ -221,6 +233,10 @@ module BulkImportIdeas::Extractors
         row[column_name] = row[column_name].split(/[,;]/).map(&:strip).join('; ') if row[column_name]
         row
       end
+    end
+
+    def generate_key(str)
+      str.parameterize.tr('-', '_')
     end
 
     def locales

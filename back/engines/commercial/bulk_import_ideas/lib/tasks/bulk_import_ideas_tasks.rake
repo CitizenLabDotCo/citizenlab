@@ -21,26 +21,33 @@ namespace :bulk_import do
 
         extractor = BulkImportIdeas::Extractors::EngagementHqXlsxExtractor.new(file_path)
 
-        # TODO: It's creating blank users
-
-        # parser.idea_fields
-
-        # binding.pry
-        # break
+        # TODO: WHY IS IT STILL creating blank users
+        # TODO: Also not doubel creating user fields
 
         # Whilst in dev, we want to destroy the existing project first
         Project.find_by(slug: extractor.project[:slug])&.destroy
+        # next
 
-        # Create a new project & phase in the tenant
+        # Create a new draft project & phase in the tenant
         project = Project.create!(extractor.project)
         phase = Phase.create!(extractor.phase.merge(
           project: project,
           campaigns_settings: { project_phase_started: true },
           participation_method: 'native_survey',
           native_survey_title_multiloc: { en: 'Survey' },
-          native_survey_button_multiloc: { en: 'Take the Survey' }
+          native_survey_button_multiloc: { en: 'Take the Survey' },
+          user_fields_in_form: true
         ))
         Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
+
+        # Create any user fields if they don't already exist
+        # TODO: Does not seem to be importing the user data
+        extractor.user_custom_fields.each do |field|
+          next if CustomField.find_by(key: field[:key])
+
+          # Create the user custom fields
+          CustomField.create!(field.except(:options, :statements).merge(resource_type: 'User'))
+        end
 
         # Create the form and form fields
         form = CustomForm.create!(participation_context: phase)
@@ -73,9 +80,10 @@ namespace :bulk_import do
 
         # Import the ideas
         xlsx_data_parser = BulkImportIdeas::Parsers::IdeaXlsxDataParser.new(import_user, locale, phase.id, false)
-        import_service = BulkImportIdeas::Importers::IdeaImporter.new(import_user, locale)
+        import_service = BulkImportIdeas::Importers::IdeaImporter.new(import_user, locale, create_empty_users: false)
         idea_rows = xlsx_data_parser.parse_rows(extractor.idea_rows)
         ideas = import_service.import(idea_rows)
+        # break
         ideas.each do |idea|
           idea.update!(publication_status: 'published') # Is there a method that imports to published anyway?
         end
@@ -83,6 +91,7 @@ namespace :bulk_import do
         Rails.logger.info "Created project '#{project.title_multiloc['en']}' with slug '#{project.slug}'"
         Rails.logger.info "Created form with #{form.custom_fields.count} fields"
         Rails.logger.info "Imported #{ideas.count} ideas"
+
       end
     end
   end

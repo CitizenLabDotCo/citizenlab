@@ -74,10 +74,14 @@ module BulkImportIdeas::Importers
     end
 
     def add_author(idea_row, idea_attributes)
+      pp "EMAIL_1: '#{idea_row[:user_email]}'"
       author = nil
       if idea_row[:user_email].present? || idea_row[:user_first_name].present?
         author = idea_row[:user_email].present? ? User.find_by_cimail(idea_row[:user_email]) : nil
-        unless author
+        if !author && (idea_row[:user_email].present? || @create_empty_users)
+
+          pp "EMAIL_2: #{idea_row[:user_email]}"
+
           user_params = {
             locale: @locale,
             first_name: idea_row[:user_first_name],
