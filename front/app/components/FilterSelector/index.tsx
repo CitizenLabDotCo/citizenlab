@@ -1,6 +1,6 @@
 import React, { useState, KeyboardEvent, useMemo } from 'react';
 
-import { Box, media, isRtl, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 import {
   isArray,
   find,
