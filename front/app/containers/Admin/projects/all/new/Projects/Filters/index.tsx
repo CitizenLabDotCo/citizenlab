@@ -10,6 +10,7 @@ import Status from '../../_shared/Status';
 import { useParam, setParam } from '../utils';
 
 import Dates from './Dates';
+import Folders from './Folders';
 import messages from './messages';
 import ParticipationStates from './ParticipationStates';
 import Sort from './Sort';
@@ -20,6 +21,8 @@ const Filters = () => {
   const statuses = useParam('status') ?? [];
   const participationStates = useParam('participation_states') ?? [];
   const searchValue = useParam('search');
+  const folderIdsParam = useParam('folder_ids');
+  const folderIds = Array.isArray(folderIdsParam) ? folderIdsParam : [];
 
   return (
     <Box
@@ -42,6 +45,10 @@ const Filters = () => {
           onChange={(publicationStatuses) => {
             setParam('status', publicationStatuses);
           }}
+        />
+        <Folders
+          folderIds={folderIds}
+          onChange={(value) => setParam('folder_ids', value)}
         />
         <ParticipationStates
           mr="8px"
