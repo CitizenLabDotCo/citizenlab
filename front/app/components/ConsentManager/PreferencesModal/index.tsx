@@ -6,7 +6,7 @@ import { TCategory } from '../destinations';
 import { CategorizedDestinations, IPreferences } from '../typings';
 
 import Footer from './Footer';
-import Preferences from './Preferences';
+import MainContent from './MainContent';
 
 interface Props {
   categorizedDestinations: CategorizedDestinations;
@@ -29,6 +29,8 @@ const PreferencesModal = ({
     <Modal
       opened
       close={onClose}
+      closeOnClickOutside={false}
+      hideCloseButton
       footer={
         <Footer
           categorizedDestinations={categorizedDestinations}
@@ -36,10 +38,8 @@ const PreferencesModal = ({
           handleSave={handleSave}
         />
       }
-      closeOnClickOutside={false}
-      hideCloseButton
     >
-      <Preferences
+      <MainContent
         onChange={updatePreference}
         categoryDestinations={categorizedDestinations}
         preferences={preferences}
