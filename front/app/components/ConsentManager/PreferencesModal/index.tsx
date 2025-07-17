@@ -2,10 +2,7 @@ import React, { FormEvent } from 'react';
 
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import { TCategory } from '../destinations';
-import messages from '../messages';
 import { CategorizedDestinations, IPreferences } from '../typings';
 
 import Footer from './Footer';
