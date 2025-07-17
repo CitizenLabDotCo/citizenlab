@@ -60,18 +60,12 @@ const ConsentManager = () => {
   );
 
   useEffect(() => {
-    if (isConsentRequired) {
-      setScreen('initial');
-    } else {
-      setScreen(null);
-    }
-  }, [isConsentRequired]);
-
-  useEffect(() => {
     if (from === 'cookie-modal') {
       setScreen(null);
     } else if (isConsentRequired) {
       setScreen('initial');
+    } else {
+      setScreen(null);
     }
   }, [from, isConsentRequired]);
 
@@ -234,7 +228,7 @@ const ConsentManager = () => {
           {screen === 'preferences' && (
             <PreferencesModalFooter
               categorizedDestinations={activeCategorizedDestinations}
-              handleCancel={reject}
+              handleCancel={handleCancel}
               handleSave={handleSave}
             />
           )}
