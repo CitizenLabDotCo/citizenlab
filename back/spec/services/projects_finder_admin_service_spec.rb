@@ -181,6 +181,29 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.filter_by_folder_ids' do
+    let!(:folder1) { create(:project_folder) }
+    let!(:folder2) { create(:project_folder) }
+    let!(:project_in_folder1) { create(:project, folder: folder1) }
+    let!(:project_in_folder2) { create(:project, folder: folder2) }
+    let!(:project_without_folder) { create(:project) }
+
+    it 'returns projects in the specified folder' do
+      result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [folder1.id] })
+      expect(result.pluck(:id)).to match_array([project_in_folder1.id])
+    end
+
+    it 'returns projects in any of the specified folders' do
+      result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [folder1.id, folder2.id] })
+      expect(result.pluck(:id)).to match_array([project_in_folder1.id, project_in_folder2.id])
+    end
+
+    it 'returns all projects if folder_ids is blank' do
+      result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [] })
+      expect(result.pluck(:id)).to include(project_in_folder1.id, project_in_folder2.id, project_without_folder.id)
+    end
+  end
+
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }
