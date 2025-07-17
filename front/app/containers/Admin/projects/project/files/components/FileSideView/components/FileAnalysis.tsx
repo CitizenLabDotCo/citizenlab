@@ -18,7 +18,7 @@ import TextArea from 'components/HookForm/TextArea';
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-import messages from '../messages';
+import messages from '../../messages';
 
 const FileAnalysis = () => {
   const { formatMessage } = useIntl();

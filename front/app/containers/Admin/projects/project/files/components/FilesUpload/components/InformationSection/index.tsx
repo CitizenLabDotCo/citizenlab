@@ -7,7 +7,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import messages from '../messages';
+import messages from '../../../messages';
 
 import InformationItem from './components/InformationItem';
 

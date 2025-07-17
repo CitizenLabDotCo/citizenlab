@@ -68,4 +68,109 @@ export default defineMessages({
     defaultMessage:
       '{numberOfFiles, plural, one {# file} other {# files}} uploaded successfully, {numberOfErrors, plural, one {# error} other {# errors}}.',
   },
+  fileSizeError: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileSizeError2',
+    defaultMessage:
+      'This file will not be uploaded, as it exceeds the maximum limit of 50 MB.',
+  },
+  upload: {
+    id: 'app.containers.AdminPage.ProjectFiles.upload',
+    defaultMessage: 'Upload',
+  },
+  done: {
+    id: 'app.containers.AdminPage.ProjectFiles.done',
+    defaultMessage: 'Done',
+  },
+  selectFileType: {
+    id: 'app.containers.AdminPage.ProjectFiles.selectFileType',
+    defaultMessage: 'File type',
+  },
+  informationPoint1Title: {
+    id: 'app.containers.AdminPage.ProjectFiles.informationPoint1Title',
+    defaultMessage: 'Audio interviews, Town Hall recordings',
+  },
+  informationPoint1Description: {
+    id: 'app.containers.AdminPage.ProjectFiles.informationPoint1Description',
+    defaultMessage: 'E.g. WAV, MP3',
+  },
+  informationPoint2Title: {
+    id: 'app.containers.AdminPage.ProjectFiles.informationPoint2Title',
+    defaultMessage: 'Reports, informational documents',
+  },
+  informationPoint2Description: {
+    id: 'app.containers.AdminPage.ProjectFiles.informationPoint2Description',
+    defaultMessage: 'E.g. PDF, DOCX, PPTX',
+  },
+  informationPoint3Title: {
+    id: 'app.containers.AdminPage.ProjectFiles.informationPoint3Title',
+    defaultMessage: 'Images',
+  },
+  informationPoint3Description: {
+    id: 'app.containers.AdminPage.ProjectFiles.informationPoint3Description',
+    defaultMessage: 'E.g. PNG, JPG',
+  },
+  retryUpload: {
+    id: 'app.containers.AdminPage.ProjectFiles.retryUpload',
+    defaultMessage: 'Retry upload',
+  },
+  meeting: {
+    id: 'app.containers.AdminPage.ProjectFiles.meeting',
+    defaultMessage: 'Meeting',
+  },
+  interview: {
+    id: 'app.containers.AdminPage.ProjectFiles.interview',
+    defaultMessage: 'Interview',
+  },
+  strategic_plan: {
+    id: 'app.containers.AdminPage.ProjectFiles.strategic_plan',
+    defaultMessage: 'Strategic plan',
+  },
+  information: {
+    id: 'app.containers.AdminPage.ProjectFiles.information',
+    defaultMessage: 'Information',
+  },
+  policy: {
+    id: 'app.containers.AdminPage.ProjectFiles.policy',
+    defaultMessage: 'Policy',
+  },
+  report: {
+    id: 'app.containers.AdminPage.ProjectFiles.report',
+    defaultMessage: 'Report',
+  },
+  other: {
+    id: 'app.containers.AdminPage.ProjectFiles.other',
+    defaultMessage: 'Other',
+  },
+  save: {
+    id: 'app.containers.AdminPage.ProjectFiles.save',
+    defaultMessage: 'Save',
+  },
+  fileNameLabel: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileNameLabel',
+    defaultMessage: 'File Name',
+  },
+  saveFileMetadataSuccessMessage: {
+    id: 'app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage',
+    defaultMessage: 'File updated successfully.',
+  },
+  categoryLabel: {
+    id: 'app.containers.AdminPage.ProjectFiles.categoryLabel',
+    defaultMessage: 'Category',
+  },
+  fileNameCannotContainDot: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot',
+    defaultMessage: 'File name may not contain a dot.',
+  },
+  fileNameRequired: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileNameRequired',
+    defaultMessage: 'File name is required.',
+  },
+  fileDescriptionLabel: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileDescriptionLabel',
+    defaultMessage: 'Description',
+  },
+  askButton: {
+    id: 'app.containers.AdminPage.ProjectFiles.askButton',
+    defaultMessage: 'Ask',
+  },
 });
