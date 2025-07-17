@@ -58,6 +58,8 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
       create(:custom_field_option, custom_field: image_multiselect_field, key: 'this', title_multiloc: { 'en' => 'Image1' })
       create(:custom_field_option, custom_field: image_multiselect_field, key: 'that', title_multiloc: { 'en' => 'Image2' })
 
+      create(:custom_field_matrix_linear_scale, resource: custom_form, key: 'matrix_field', title_multiloc: { 'en' => 'Matrix field' })
+
       # These will not be exported as we don't support their import via XLSX. Included here to document this fact.
       create(:custom_field_point, resource: custom_form, key: 'point_field', title_multiloc: { 'en' => 'Point field' })
       create(:custom_field_line, resource: custom_form, key: 'line_field', title_multiloc: { 'en' => 'Line field' })
@@ -85,7 +87,8 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
         'Select field',
         'Type your answer',
         'Multi select field',
-        'Image select field'
+        'Image select field',
+        'Matrix field'
       ])
     end
 
@@ -105,7 +108,7 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
         row = xlsx_hash[0]
 
         # form fields
-        expect(row.keys.count).to eq 17
+        expect(row.keys.count).to eq 18
         expect(row['First name(s)']).to eq 'Bill'
         expect(row['Last name']).to eq 'Test'
         expect(row['Email address']).to eq 'bill@govocal.com'
@@ -120,6 +123,7 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
         expect(row['Type your answer']).to eq 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
         expect(row['Multi select field']).to eq 'This; That'
         expect(row['Image select field']).to eq 'Image1; Image2'
+        expect(row['Matrix field']).to eq 'We should send more animals into space: Strongly disagree; We should ride our bicycles more often: Strongly agree'
         # user fields in form
         expect(row['gender']).to eq 'Male'
         expect(row['I want to join the army']).to eq 'X'
