@@ -5,23 +5,6 @@ class BaseImageUploader < BaseUploader
 
   ALLOWED_TYPES = %w[jpg jpeg gif png webp]
 
-  ICC_PII_TAGS_TO_REMOVE = %w[
-    ProfileDescription
-    ProfileCopyright
-    ProfileManufacturer
-    ProfileModel
-    ProfileCreator
-    ProfileDateTime
-    ProfileID
-    PrimaryPlatform
-    DeviceMfgDesc
-    DeviceModelDesc
-    MeasurementObserver
-    ViewingCondDesc
-    ScreeningDesc
-    Technology
-  ].freeze
-
   # Using process at the class level applies it to all versions, including the original.
   process :strip
 
