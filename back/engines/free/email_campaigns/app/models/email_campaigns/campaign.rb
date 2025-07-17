@@ -233,7 +233,7 @@ module EmailCampaigns
 
     def fallback_to_global(attribute)
       value = self[attribute]
-      return value unless value.blank? && context
+      return value unless value.blank? && context && global_campaign
 
       global_campaign&.send(attribute)
     end

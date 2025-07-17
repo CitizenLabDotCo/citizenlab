@@ -33,7 +33,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
     end
 
     it 'renders the reply to email' do
-      expect(mail.reply_to).to eq ['notifications@citizenlab.co']
+      expect(mail.reply_to).to eq [ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')]
     end
 
     it 'includes the header' do
@@ -85,7 +85,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
         end
 
         it 'renders the reply to email' do
-          expect(mail.reply_to).to eq ['notifications@citizenlab.co']
+          expect(mail.reply_to).to eq [ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@citizenlab.co')]
         end
 
         it 'can customize the header' do
