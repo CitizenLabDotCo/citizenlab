@@ -89,9 +89,9 @@ fr-BE:
       author_first_name: 'Jeanne'
       author_last_name: 'Dupont'
       author_display_name: 'Jeanne Dupont'
-      initiator_first_name: 'Bob'
-      initiator_last_name: 'Smith'
-      initiator_display_name: 'Bob Smith'
+      initiator_first_name: 'Thomas'
+      initiator_last_name: 'Dupont'
+      initiator_display_name: 'Thomas Dupont'
       project_title: 'Exemple de projet'
       phase_title: 'Exemple de phase'
       comment_body: 'Il s''agit d''un exemple de commentaire utilisé pour prévisualiser le contenu des courriels. Il ne s''agit pas d''un contenu réel.'
@@ -213,14 +213,14 @@ fr-BE:
       subject: 'Une invitation en attente pour la plate-forme de participation de %{organizationName}'
       preheader: 'Il y a quelques jours, %{organizationName} vous a invité à rejoindre sa plateforme de participation.'
       title: 'Votre invitation est toujours en attente !'
-      cta_button: 'Accepter votre invitation'
+      cta_button: 'Accepter l''invitation'
       invitation_expiry_message: 'Cette invitation expire dans environ %{expiryDaysRemaining} jours.'
     invite_received:
       preheader: '%{organizationName} vous a envoyé une invitation à rejoindre leur plateforme de participation.'
       subject: 'Vous avez reçu une invitation pour rejoindre la plateforme de %{organizationName}'
       title: 'Vous venez de recevoir une invitation !'
       event_description: '%{organizationName} vous a invité.e à rejoindre sa plateforme de participation.'
-      cta_button: 'Accepter votre invitation'
+      cta_button: 'Accepter l''invitation'
       added_a_message: '%{organizationName} a écrit le message suivant :'
       invitation_expiry_message: 'Cette invitation expire dans %{expiryDays} jours.'
     mention_in_comment:
@@ -252,7 +252,7 @@ fr-BE:
       x_days_ago_by_author: 'Il y a %{x} jours par %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} a commenté :'
-      cta_button: 'Vérifier le commentaire %{authorFirstName}'
+      cta_button: 'Voir le commentaire de %{authorFirstName}'
       days_ago: 'Il y a %{numberOfDays} jours'
       event_description: '%{authorName} a écrit un commentaire sur votre plateforme. N''hésitez pas à joindre à la discussion et à poursuivre la conversation !'
       title: '%{firstName}, un nouveau commentaire a été posté sur votre plate-forme'
@@ -263,7 +263,7 @@ fr-BE:
     comment_on_idea_you_follow:
       subject: 'Il y a un nouveau commentaire sur « %{input_title} »'
       preheader: '%{authorName} a publié un commentaire sur une idée pour %{organizationName}'
-      title: '%{authorName} commenté une entrée que vous suivez'
+      title: '%{authorName} a commenté une contribution qui vous suivez'
       event_description: '%{authorNameFull} a réagi à « %{inputTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
       cta_button: 'Répondre à %{commentAuthor}'
       main_header:
@@ -287,7 +287,7 @@ fr-BE:
     new_idea_for_admin_prescreening:
       subject: 'Une contribution requiert votre approbation'
       preheader: '%{authorName} a publié une nouvelle contribution sur votre plateforme'
-      title: 'Une contribution requiert votre approbation'
+      title: 'Une contribution nécessite votre approbation'
       cta_button: 'Examiner la contribution'
       event_description: '%{authorName} a soumis une nouvelle contribution sur votre plateforme.'
       input_not_visible: '<b>La contribution ne sera pas visible</b> tant que vous n''aurez pas modifié son statut.'
@@ -489,8 +489,8 @@ fr-BE:
       preheader: 'Vous n''avez pas terminé votre réponse à l''enquête sur la plateforme de participation de %{organizationName}'
       title: 'Vous y êtes presque ! Envoyez vos réponses'
       event_description: 'Vous avez commencé à répondre à l''enquête sur %{phaseTitle}, mais vous n''avez pas soumis vos réponses. Cliquez sur le bouton ci-dessous pour reprendre là où vous vous êtes arrêté.'
-      cta_button: 'Continuer l''enquête'
-      submissions_close: 'La date limite de dépôt des candidatures est fixée à %{phaseEndDate}.'
+      cta_button: 'Reprendre l''enquête'
+      submissions_close: 'Les soumissions seront clôturées le %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}Vous n''avez pas soumis vos votes'
       preheader: 'Vous n''avez pas soumis vos votes sur la plateforme de participation de %{organizationName}'
