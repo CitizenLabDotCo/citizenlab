@@ -88,9 +88,9 @@ fr-BE:
       author_first_name: 'Jeanne'
       author_last_name: 'Dupont'
       author_display_name: 'Jeanne Dupont'
-      initiator_first_name: 'Bob'
-      initiator_last_name: 'Smith'
-      initiator_display_name: 'Bob Smith'
+      initiator_first_name: 'Thomas'
+      initiator_last_name: 'Dupont'
+      initiator_display_name: 'Thomas Dupont'
       project_title: 'Exemple de projet'
       comment_body: 'Il s''agit d''un exemple de commentaire utilisé pour prévisualiser le contenu des courriels. Il ne s''agit pas d''un contenu réel.'
       comment_deleted_reason: 'Votre exemple de commentaire a été jugé inapproprié.'
@@ -257,7 +257,7 @@ fr-BE:
     comment_on_idea_you_follow:
       subject: 'Il y a un nouveau commentaire sur « %{input_title} »'
       preheader: '%{authorName} a publié un commentaire sur une idée pour %{organizationName}'
-      title: '%{authorName} commenté une entrée que vous suivez'
+      title: '%{authorName} a commenté une contribution qui vous suivez'
       event_description: '%{authorNameFull} a réagi à « %{inputTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
       cta_button: 'Répondre à %{commentAuthor}'
       main_header:
