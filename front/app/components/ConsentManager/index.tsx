@@ -7,6 +7,8 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
+import Modal from 'components/UI/Modal';
+
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -16,9 +18,11 @@ import {
   ISavedDestinations,
   setConsent,
 } from './consent';
-import CookieModal from './CookieModal';
 import { allCategories, TCategory } from './destinations';
-import PreferencesModal from './PreferencesModal';
+import InitialScreenFooter from './InitialScreen/Footer';
+import InitialScreenMainContent from './InitialScreen/MainContent';
+import PreferencesModalFooter from './PreferencesModal/Footer';
+import PreferencesModalMainContent from './PreferencesModal/MainContent';
 import { IPreferences } from './typings';
 import {
   getCurrentPreferences,
@@ -62,6 +66,14 @@ const ConsentManager = () => {
       setScreen(null);
     }
   }, [isConsentRequired]);
+
+  useEffect(() => {
+    if (from === 'cookie-modal') {
+      setScreen(null);
+    } else if (isConsentRequired) {
+      setScreen('initial');
+    }
+  }, [from, isConsentRequired]);
 
   useEffect(() => {
     const cookieConsent = getConsent();
@@ -150,6 +162,7 @@ const ConsentManager = () => {
 
     setPreferences(newPreferences);
     saveConsent(newPreferences);
+    setScreen(null);
   };
 
   const toggleDefault = (modalOpened: boolean) => {
@@ -196,29 +209,49 @@ const ConsentManager = () => {
 
   const handleCancel = () => {
     resetPreferences();
-    setScreen('initial');
+    setScreen(null);
   };
 
+  if (screen === null) {
+    return null;
+  }
+
   return (
-    <>
-      {screen === 'initial' && from !== 'cookie-modal' && (
-        <CookieModal
-          onAccept={accept}
-          onChangePreferences={openDialog}
-          onClose={reject}
-        />
-      )}
-      {screen === 'preferences' && (
-        <PreferencesModal
-          categorizedDestinations={activeCategorizedDestinations}
-          preferences={preferences}
-          handleCancel={handleCancel}
-          handleSave={handleSave}
-          onClose={closeDialog}
-          updatePreference={updatePreference}
-        />
-      )}
-    </>
+    <Modal
+      opened
+      closeOnClickOutside={false}
+      hideCloseButton
+      close={reject}
+      footer={
+        <>
+          {screen === 'initial' && (
+            <InitialScreenFooter
+              onAccept={accept}
+              onChangePreferences={openDialog}
+              onClose={reject}
+            />
+          )}
+          {screen === 'preferences' && (
+            <PreferencesModalFooter
+              categorizedDestinations={activeCategorizedDestinations}
+              handleCancel={reject}
+              handleSave={handleSave}
+            />
+          )}
+        </>
+      }
+    >
+      <>
+        {screen === 'initial' && <InitialScreenMainContent />}
+        {screen === 'preferences' && (
+          <PreferencesModalMainContent
+            onChange={updatePreference}
+            categoryDestinations={activeCategorizedDestinations}
+            preferences={preferences}
+          />
+        )}
+      </>
+    </Modal>
   );
 };
 
