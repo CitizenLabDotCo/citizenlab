@@ -26,19 +26,19 @@ module EmailCampaigns
 
     # For customisable regions we merge in the defaults for multilocs.
     def subject_multiloc
-      merge_default_region_values(:subject_multiloc)
+      merge_default_region_values(super, :subject_multiloc)
     end
 
     def title_multiloc
-      merge_default_region_values(:title_multiloc)
+      merge_default_region_values(super, :title_multiloc)
     end
 
     def intro_multiloc
-      merge_default_region_values(:intro_multiloc)
+      merge_default_region_values(super, :intro_multiloc)
     end
 
     def button_text_multiloc
-      merge_default_region_values(:button_text_multiloc)
+      merge_default_region_values(super, :button_text_multiloc)
     end
 
     # Methods to proxy mailer methods
@@ -91,15 +91,14 @@ module EmailCampaigns
       process_images(:intro_multiloc)
     end
 
-    def merge_default_region_values(region_key)
-      values = self[region_key]
-      return values if manual?
+    def merge_default_region_values(value, region_key)
+      return value if manual?
 
       region = editable_regions.find { |r| r[:key] == region_key }
-      return values if region.nil?
+      return value if region.nil?
 
       allow_blank_locales = region[:allow_blank_locales]
-      region[:default_value_multiloc].merge(values) do |_, default, saved|
+      region[:default_value_multiloc].merge(value) do |_, default, saved|
         saved.blank? && !allow_blank_locales ? default : saved
       end
     end

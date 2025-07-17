@@ -7,9 +7,8 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:project) { create(:project_with_phases) }
     let_it_be(:phase) { project.phases.first }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::ProjectPhaseStarted.create! }
     let_it_be(:notification) { create(:project_phase_started, recipient: recipient, project: project, phase: phase) }
-    let_it_be(:command) do
+    let(:command) do
       activity = create(:activity, item: notification, action: 'created')
       create(:project_phase_started_campaign).generate_commands(
         activity: activity,
@@ -17,8 +16,9 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
       ).first.merge({ recipient: recipient })
     end
 
-    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
-    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
+    let(:campaign) { create(:project_phase_started_campaign) }
+    let(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let(:mail) { mailer.campaign_mail.deliver_now }
 
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
@@ -30,6 +30,10 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
 
     it 'renders the sender email' do
       expect(mail.from).to all(end_with('@citizenlab.co'))
+    end
+
+    it 'renders the reply to email' do
+      expect(mail.reply_to).to eq ['notifications@citizenlab.co']
     end
 
     it 'includes the header' do
@@ -54,35 +58,80 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
     end
 
     context 'with custom text' do
-      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-      before do
-        campaign.update!(
-          subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
+      let!(:global_campaign) do
+        create(
+          :project_phase_started_campaign,
+          subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },
           title_multiloc: { 'en' => 'NEW TITLE FOR {{ phaseTitle }}' },
+          button_text_multiloc: { 'en' => 'CLICK THE GLOBAL BUTTON' }
+        )
+      end
+      let!(:context_campaign) do
+        create(
+          :project_phase_started_campaign,
+          context: phase,
+          subject_multiloc: { 'en' => 'Custom Context Subject - {{ organizationName }}' },
           intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' },
-          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
+          button_text_multiloc: { 'en' => 'CLICK THE CONTEXT BUTTON' },
+          reply_to: 'noreply@govocal.com'
         )
       end
 
-      it 'can customise the subject' do
-        expect(mail.subject).to eq 'Custom Subject - Liege'
-      end
+      context 'on a global campaign' do
+        let(:campaign) { global_campaign }
 
-      it 'includes the header' do
-        expect(mail_body(mail)).to have_tag('div') do
-          with_tag 'h1' do
-            with_text(/NEW TITLE FOR Idea phase/)
+        it 'can customise the subject' do
+          expect(mail.subject).to eq 'Custom Global Subject - Liege'
+        end
+
+        it 'renders the reply to email' do
+          expect(mail.reply_to).to eq ['notifications@citizenlab.co']
+        end
+
+        it 'can customize the header' do
+          expect(mail_body(mail)).to have_tag('div') do
+            with_tag 'h1' do
+              with_text(/NEW TITLE FOR Idea phase/)
+            end
+            with_tag 'p' do
+              with_text(/This project entered a new phase on the platform of Liege. Click on the link below to learn more!/)
+            end
           end
-          with_tag 'p' do
-            with_text(/NEW BODY TEXT/)
+        end
+
+        it 'can customise the CTA' do
+          expect(mail_body(mail)).to have_tag('a', with: { href: "http://example.org/en/projects/#{project.slug}/1" }) do
+            with_text(/CLICK THE GLOBAL BUTTON/)
           end
         end
       end
 
-      it 'can customise the CTA' do
-        expect(mail_body(mail)).to have_tag('a', with: { href: "http://example.org/en/projects/#{project.slug}/1" }) do
-          with_text(/CLICK THE BUTTON/)
+      context 'on a context campaign' do
+        let(:campaign) { context_campaign }
+
+        it 'can customise the subject' do
+          expect(mail.subject).to eq 'Custom Context Subject - Liege'
+        end
+
+        it 'can customize the reply to email' do
+          expect(mail.reply_to).to eq ['noreply@govocal.com']
+        end
+
+        it 'can customize the header and fall back to global customzations' do
+          expect(mail_body(mail)).to have_tag('div') do
+            with_tag 'h1' do
+              with_text(/NEW TITLE FOR Idea phase/)
+            end
+            with_tag 'p' do
+              with_text(/NEW BODY TEXT/)
+            end
+          end
+        end
+
+        it 'can customise the CTA' do
+          expect(mail_body(mail)).to have_tag('a', with: { href: "http://example.org/en/projects/#{project.slug}/1" }) do
+            with_text(/CLICK THE CONTEXT BUTTON/)
+          end
         end
       end
     end

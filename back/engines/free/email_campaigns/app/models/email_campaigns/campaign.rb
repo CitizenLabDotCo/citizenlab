@@ -109,6 +109,26 @@ module EmailCampaigns
       false
     end
 
+    def reply_to
+      fallback_to_global(:reply_to)
+    end
+
+    def subject_multiloc
+      fallback_to_global(:subject_multiloc)
+    end
+
+    def title_multiloc
+      fallback_to_global(:title_multiloc)
+    end
+
+    def intro_multiloc
+      fallback_to_global(:intro_multiloc)
+    end
+
+    def button_text_multiloc
+      fallback_to_global(:button_text_multiloc)
+    end
+
     def apply_recipient_filters(activity: nil, time: nil)
       current_class = self.class
 
@@ -207,9 +227,15 @@ module EmailCampaigns
       errors.add(:base, :no_recipients, message: "Can't send a campaign without recipients")
     end
 
-    # Will be used to fall back on custom copy from the global campaign.
     def global_campaign
       @global_campaign ||= !manual? && self.class.find_by(context: nil, type: self.class.name)
+    end
+
+    def fallback_to_global(attribute)
+      value = self[attribute]
+      return value unless value.blank? && context
+
+      global_campaign&.send(attribute)
     end
   end
 end
