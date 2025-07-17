@@ -59,7 +59,8 @@ class WebApi::V1::Files::FilesController < ApplicationController
     {
       content_by_content: params.require(:file).permit(:content, :name),
       uploader_id: current_user.id,
-      category: params.dig(:file, :category)
+      category: params.dig(:file, :category),
+      description_multiloc: params.dig(:file, :description_multiloc)
     }.compact
   end
 
