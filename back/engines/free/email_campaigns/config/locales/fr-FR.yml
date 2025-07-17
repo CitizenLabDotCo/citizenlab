@@ -489,7 +489,7 @@ fr:
       preheader: 'Vous n''avez pas terminé votre réponse à l''enquête sur la plateforme de participation de %{organizationName}'
       title: 'Vous y êtes presque ! Envoyez vos réponses'
       event_description: 'Vous avez commencé à répondre à l''enquête sur %{phaseTitle}, mais vous n''avez pas soumis vos réponses. Cliquez sur le bouton ci-dessous pour reprendre là où vous vous êtes arrêté.'
-      cta_button: 'Continuer l''enquête'
+      cta_button: 'Reprendre l''enquête'
       submissions_close: 'La date limite de dépôt des candidatures est fixée à %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}Vous n''avez pas soumis vos votes'
