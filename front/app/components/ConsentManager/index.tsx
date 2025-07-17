@@ -8,13 +8,13 @@ import useObserveEvent from 'hooks/useObserveEvent';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
-import Banner from './Banner';
 import {
   getConsent,
   IConsentCookie,
   ISavedDestinations,
   setConsent,
 } from './consent';
+import CookieModal from './CookieModal';
 import { allCategories, TCategory } from './destinations';
 import PreferencesModal from './PreferencesModal';
 import { IPreferences } from './typings';
@@ -189,13 +189,12 @@ const ConsentManager = () => {
 
   return (
     <>
-      {isConsentRequired && (
-        <Banner
-          onAccept={accept}
-          onChangePreferences={openDialog}
-          onClose={reject}
-        />
-      )}
+      <CookieModal
+        opened={isConsentRequired}
+        onAccept={accept}
+        onChangePreferences={openDialog}
+        onClose={reject}
+      />
       <PreferencesModal
         opened={isDialogOpen}
         categorizedDestinations={activeCategorizedDestinations}
