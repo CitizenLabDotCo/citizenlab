@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  whoCanFindThisProject: {
+    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.whoCanFindThisProject',
+    defaultMessage: 'Who can find this project?',
+  },
+  selectHowDiscoverableProjectIs: {
+    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.selectHowDiscoverableProjectIs',
+    defaultMessage: 'Select how discoverable this project is.',
+  },
   public: {
     id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.public',
     defaultMessage: 'Public',
