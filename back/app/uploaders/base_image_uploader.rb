@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'open3'
+
 class BaseImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
@@ -84,6 +86,70 @@ class BaseImageUploader < BaseUploader
 
   # Strip the image of EXIF metadata, except ICC color profile and orientation metadata.
   def strip
-    system("exiftool -all= -tagsFromFile @ -icc_profile -orientation -overwrite_original #{Shellwords.escape(@file.path)}")
+    command = 'exiftool'
+    args = [
+      '-all=',
+      '-tagsFromFile', '@',
+      '-icc_profile',
+      '-orientation',
+      '-overwrite_original',
+      @file.path
+    ]
+
+    stdout, stderr, status = execute_command(command, *args)
+
+    unless status.success?
+      ErrorReporter.report_msg(
+        "Exiftool command failed during image stripping.",
+        extra: {
+          file_path: @file.path,
+          exiftool_command: "#{command} #{args.join(' ')}",
+          exiftool_stdout: stdout,
+          exiftool_stderr: stderr,
+          exiftool_exit_status: status.exitstatus,
+          exiftool_error_signal: status.termsig
+        }
+      )
+      raise "Image stripping failed for #{@file.path}: #{stderr}"
+    end
+  end
+
+  private
+
+  # Helper method to execute external commands safely and capture output/status,
+  # with error handling and reporting.
+  def execute_command(command, *args)
+    stdout_str, stderr_str, status = nil # Initialize for rescue blocks
+
+    begin
+      stdout_str, stderr_str, status = Open3.capture3(command, *args)
+    rescue Errno::ENOENT => e
+      ErrorReporter.report_msg(
+        "External command not found.",
+        extra: {
+          command_attempted: "#{command} #{args.join(' ')}",
+          error_message: e.message,
+          file_path: @file.path,
+          environment_path: ENV['PATH']
+        }
+      )
+      raise "Command not found: '#{command}'. Is it installed and in PATH?"
+    rescue StandardError => e
+      ErrorReporter.report_msg(
+        "An unexpected error occurred executing external command.",
+        extra: {
+          command_attempted: "#{command} #{args.join(' ')}",
+          error_message: e.message,
+          error_class: e.class.name,
+          file_path: @file.path,
+          stdout_captured: stdout_str,
+          stderr_captured: stderr_str,
+          backtrace: e.backtrace.first(10)
+        }
+      )
+      raise # Re-raise the original error
+    end
+
+    [stdout_str, stderr_str, status] # Return all three values
   end
 end
