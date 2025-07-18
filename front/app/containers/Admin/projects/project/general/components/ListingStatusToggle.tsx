@@ -15,15 +15,17 @@ const ListingStatusToggle = ({ listed, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box>
+    <Box mt="24px">
       <Radio
         name="public"
         value={true}
         currentValue={listed}
         label={
           <Box>
-            <Text fontWeight="bold">{formatMessage(messages.public)}</Text>
-            <Text>
+            <Text color="primary" fontWeight="bold" mt="-1px" mb="0">
+              {formatMessage(messages.public)}
+            </Text>
+            <Text color="primary" fontSize="s" mt="4px" mb="0px">
               {formatMessage(messages.thisProjectIsVisibleToEveryone)}
             </Text>
           </Box>
@@ -36,8 +38,10 @@ const ListingStatusToggle = ({ listed, onChange }: Props) => {
         currentValue={listed}
         label={
           <Box>
-            <Text fontWeight="bold">{formatMessage(messages.hidden)}</Text>
-            <Text color="textSecondary">
+            <Text color="primary" fontWeight="bold" mt="-1px" mb="0">
+              {formatMessage(messages.hidden)}
+            </Text>
+            <Text color="primary" fontSize="s" mt="4px" mb="0px">
               {formatMessage(messages.thisProjectWillBeHidden)}
               <ul>
                 <li>{formatMessage(messages.notVisible)}</li>
