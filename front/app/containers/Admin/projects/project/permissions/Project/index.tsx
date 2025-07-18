@@ -26,8 +26,8 @@ const ProjectPermissions = () => {
       <SectionDescription>
         <FormattedMessage {...messages.projectVisibilitySubtitle} />
       </SectionDescription>
-      <ProjectVisibility projectId={projectId} />
       <ProjectUnlisted projectId={projectId} />
+      <ProjectVisibility projectId={projectId} />
       <Outlet
         id="app.containers.Admin.project.edit.permissions.moderatorRights"
         projectId={projectId}
