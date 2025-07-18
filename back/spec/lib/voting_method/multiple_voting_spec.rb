@@ -90,9 +90,8 @@ RSpec.describe VotingMethod::MultipleVoting do
   describe '#supports_serializing?' do
     it 'returns true for voting attributes' do
       %i[
-        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
-        voting_term_singular_multiloc voting_term_plural_multiloc votes_count total_votes_amount
-        autoshare_results_enabled
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea
+        baskets_count votes_count total_votes_amount autoshare_results_enabled
       ].each do |attribute|
         expect(voting_method.supports_serializing?(attribute)).to be true
       end
