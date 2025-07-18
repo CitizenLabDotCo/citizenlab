@@ -8,11 +8,11 @@ import messages from '../messages';
 
 interface Props {
   onAccept: () => void;
-  onChangePreferences: () => void;
+  openPreferencesScreen: () => void;
   onClose: () => void;
 }
 
-const Footer = ({ onAccept, onChangePreferences, onClose }: Props) => {
+const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
   return (
     <Box
       width="100%"
@@ -25,7 +25,7 @@ const Footer = ({ onAccept, onChangePreferences, onClose }: Props) => {
         className="integration-open-modal"
         px="4px"
         buttonStyle="text"
-        onClick={onChangePreferences}
+        onClick={openPreferencesScreen}
       >
         <FormattedMessage {...messages.manage} />
       </Button>
