@@ -106,11 +106,26 @@ resource 'FileAttachments' do
     let_it_be(:file_attachment) { create(:file_attachment, attachable: project) }
     let_it_be(:legacy_file) { create(:project_file, project: project) }
 
-    example 'Delete a file attachment by id' do
-      do_request(id: file_attachment.id)
-      assert_status 200
-      expect { Files::FileAttachment.find(file_attachment.id) }
-        .to raise_error(ActiveRecord::RecordNotFound)
+    context 'when this is the only attachment of the file' do
+      example 'Delete a file attachment by id (and the file)' do
+        do_request(id: file_attachment.id)
+
+        assert_status 200
+        expect { file_attachment.file.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when there are other attachments of the file' do
+      let!(:other_attachment) { create(:file_attachment, file: file_attachment.file) }
+
+      example 'Delete a file attachment by id' do
+        do_request(id: file_attachment.id)
+
+        assert_status 200
+        expect { file_attachment.file.reload }.not_to raise_error
+        expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
 
     example 'Delete a legacy file by id' do
@@ -141,6 +156,7 @@ resource 'FileAttachments' do
         expect { do_request }
           .to change(Files::File, :count).by(1)
           .and(change(Files::FileAttachment, :count).by(1))
+          .and(change(Files::FilesProject, :count).by(1))
           .and not_change(ProjectFile, :count)
 
         assert_status 201
@@ -160,6 +176,9 @@ resource 'FileAttachments' do
             updated_at: be_present
           }
         )
+
+        attachment = Files::FileAttachment.find(response_data[:id])
+        expect(attachment.file.projects).to contain_exactly(project)
       end
     end
 

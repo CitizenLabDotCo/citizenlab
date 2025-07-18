@@ -114,7 +114,16 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def destroy
-    @file.destroy!
+    file = if @file.is_a?(Files::FileAttachment)
+      # If this is the last attachment for the underlying file, delete the file.
+      # Otherwise, just delete the attachment.
+      # TODO: To be reworked to avoid race conditions.
+      @file.file.attachment_ids == [@file.id] ? @file.file : @file
+    else
+      @file
+    end
+
+    file.destroy!
     SideFxFileService.new.after_destroy(file)
 
     head :ok
@@ -176,6 +185,10 @@ class WebApi::V1::FilesController < ApplicationController
       content_by_content: file_params.dig(:file_by_content).slice(:content, :name),
       uploader: current_user
     )
+
+    if (project = @container.try(:project))
+      files_file.files_projects.build(project: project)
+    end
 
     Files::FileAttachment.new(
       file: files_file,
