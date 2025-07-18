@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin do
-  let(:campaign) { build(:new_idea_for_admin_campaign) }
+RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdminPublished do
+  let(:campaign) { build(:new_idea_for_admin_published_campaign) }
 
   describe 'NewIdeaForAdmin Campaign default factory' do
     it { expect(campaign).to be_valid }
@@ -63,6 +63,20 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin do
 
       input_published = create(:activity, item: input, action: 'published')
       expect(campaign.apply_recipient_filters(activity: input_published).count).to eq 0
+    end
+  end
+
+  describe '#filter' do
+    let(:idea) { create(:idea, publication_status: 'submitted') }
+    let(:activity) {  create(:activity, item: idea, action: 'submitted') }
+
+    it 'returns false when idea is not published' do
+      expect(campaign.run_filter_hooks(activity: activity)).to be_falsy
+    end
+
+    it 'returns true when idea is published' do
+      idea.update(publication_status: 'published')
+      expect(campaign.run_filter_hooks(activity: activity)).to be_truthy
     end
   end
 

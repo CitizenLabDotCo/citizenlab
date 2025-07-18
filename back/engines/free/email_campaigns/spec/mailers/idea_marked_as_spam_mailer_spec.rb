@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::IdeaMarkedAsSpamMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::IdeaMarkedAsSpam.create! }
-    let_it_be(:initiating_user) { create(:user) }
+    let_it_be(:initiating_user) { create(:user, first_name: 'Monty', last_name: 'McMonty') }
     let_it_be(:idea) { create(:idea, author: recipient) }
     let_it_be(:command) do
       {
@@ -44,16 +44,40 @@ RSpec.describe EmailCampaigns::IdeaMarkedAsSpamMailer do
     end
 
     it 'assigns reporter\'s name' do
-      expect(mail.body.encoded).to match(initiating_user.first_name)
+      expect(mail_body(mail)).to include(initiating_user.first_name)
     end
 
     it 'assigns the reason' do
-      expect(mail.body.encoded).to match('This content is not an idea and does not belong here.')
+      expect(mail_body(mail)).to include('This content is not relevant and does not belong here.')
     end
 
     it 'assigns go to idea CTA' do
       idea_url = Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
-      expect(mail.body.encoded).to match(idea_url)
+      expect(mail_body(mail)).to include(idea_url)
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ firstName }} {{ lastName }}' },
+          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Liege'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE FOR Monty McMonty')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail_body(mail)).to include('CLICK THE BUTTON')
+      end
     end
   end
 end

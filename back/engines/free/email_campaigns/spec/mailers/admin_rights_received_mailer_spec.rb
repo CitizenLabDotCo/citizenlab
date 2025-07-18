@@ -33,11 +33,35 @@ RSpec.describe EmailCampaigns::AdminRightsReceivedMailer do
     end
 
     it 'assigns the message box title (title_what_can_you_do_administrator)' do
-      expect(mail.body.encoded).to match('What can you do as an administrator?')
+      expect(mail_body(mail)).to match('What can you do as an administrator?')
     end
 
     it 'assigns moderate CTA' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
+      expect(mail_body(mail)).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
+    end
+
+    context 'when editable regions are customised' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom subject for {{organizationName}}' },
+          title_multiloc: { 'en' => 'CUSTOM TITLE' },
+          intro_multiloc: { 'en' => '<b>CUSTOM BODY TEXT</b>' }
+        )
+      end
+
+      it 'renders the customised subject' do
+        expect(mail.subject).to eq('Custom subject for Liege')
+      end
+
+      it 'renders the customised title' do
+        expect(mail_body(mail)).to include('CUSTOM TITLE')
+      end
+
+      it 'renders the customised intro as html' do
+        expect(mail_body(mail)).to include('<b>CUSTOM BODY TEXT</b>')
+      end
     end
   end
 end

@@ -420,15 +420,7 @@ nl-BE:
       message_welcome: 'Leuk dat je je hebt geregistreerd op het participatieplatform van %{organizationName}. Je kan het platform nu ontdekken en je stem laten horen. Je kan ook een profielfoto en een korte beschrijving toevoegen om anderen te vertellen wie je bent.'
       preheader: 'Hier is wat je kan doen op het platform van %{organizationName}'
     idea_published:
-      subject:
-        idea: 'Je idee is gepubliceerd'
-        question: 'Je vraag is gepubliceerd'
-        contribution: 'Je bijdrage is gepubliceerd'
-        project: 'Je project is gepubliceerd'
-        issue: 'Je reactie is gepubliceerd'
-        option: 'Je optie is gepubliceerd'
-        proposal: 'Je voorstel is gepubliceerd'
-        petition: 'Je petitie is gepubliceerd'
+      subject: 'Je idee is gepubliceerd'
       main_header: 'Je hebt "%{input_title}" geplaatst'
       header_message: 'Laten we ervoor zorgen dat het gelezen wordt.'
       message_get_votes: 'Bereik meer mensen met je idee:'

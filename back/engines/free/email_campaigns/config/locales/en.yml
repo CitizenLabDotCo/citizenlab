@@ -24,7 +24,8 @@ en:
       "mention_in_official_feedback": Mention in an update
       "mention_in_internal_comment": Mention in an internal comment
       "new_comment_for_admin": New comment in a project I moderate
-      "new_idea_for_admin": New input in a project I moderate
+      "new_idea_for_admin_published": New published input in a project I moderate
+      "new_idea_for_admin_prescreening": New input requiring approval in a project I moderate
       "official_feedback_on_idea_you_follow": Update on an input that you follow
       "password_reset": Password reset
       "project_moderation_rights_received": Project moderation rights received
@@ -85,11 +86,22 @@ en:
         "6": "Weekly, on Saturdays at %{hourOfDay}"
       quarterly: "Quarterly, on the first day of the quarter"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Doe'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Doe'
+      author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Example project'
+      phase_title: 'Example phase'
       comment_body: 'This is an example comment used for previewing the content of emails. This is not real content.'
+      comment_deleted_reason: 'Your example comment was considered inappropriate.'
       idea_title: 'Example Idea'
+      idea_body: 'This is some example idea content used for previewing the content of emails. This is not real content.'
+      event_title: 'Example Event'
+      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_address2: 'Room 3a, Upstairs'
+      proposal_title: 'Example Proposal'
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
@@ -103,22 +115,22 @@ en:
     manual:
       preheader: 'You have mail from %{organizationName}' 
     comment_deleted_by_admin:
-      reason: 'The reason why your comment was deleted:'
-      cta_view: 'View this idea'
+      subject: 'Your comment has been deleted from the platform of %{organizationName}'
+      preheader: 'Your comment has been deleted'
+      title: '%{organizationName} deleted your comment'
       event_description: '%{organizationName} deleted the comment you wrote on an idea.'
-      main_header: '%{organizationName} deleted your comment'
+      cta_button: 'View this idea'
+      reason: 'The reason why your comment was deleted:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Your comment was considered to be inappropriate'
       irrelevant_reason: 'Your comment was considered to be irrelevant for that context'
       no_reason: 'No reason was specified'
-      subject: 'Your comment has been deleted from the platform of %{organizationName}'
-      preheader: 'Your comment has been deleted'
     admin_digest:
       subject: 'Your weekly admin report of %{time}'
       preheader: 'Admin digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, your weekly report'
-      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening on your platform!'
-      cta_visit_the_platform: 'Visit your platform'
+      title: '%{firstName}, your weekly report'
+      event_description: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening on your platform!'
+      cta_button: 'Visit your platform'
       new_users: 'New users'
       new_inputs: 'New inputs'
       new_comments: 'New comments'
@@ -129,10 +141,11 @@ en:
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Manage your platform'
-      message_you_became_administrator: 'You have been granted administrator rights for the participation platform of %{organizationName}.'
-      preheader: 'You were granted administrator rights for the participation platform of %{organizationName}'
       subject: 'You became an administrator on the platform of %{organizationName}'
+      preheader: 'You were granted administrator rights for the participation platform of %{organizationName}'
+      title: 'You became an administrator'
+      event_description: 'You have been granted administrator rights for the participation platform of %{organizationName}.'
+      cta_button: 'Manage your platform'
       text_create_participatory_process: 'As an administrator, you can create and configure new participation projects. You can add new phases using the timeline. Each of these phases can have its own behaviour with regards to idea posting, commenting, and voting.'
       text_moderate_analyse_input: 'Once projects are launched, the first ideas will come in. You will receive weekly reports with all key activities so that you stay on top of things. The ideas overview will help you moderate the input and collaborate on processing it.'
       text_platform_setup: 'As an administrator you can set up your participation platform. Choose a logo, images and colors, write a personal message on your home page, send out invitations, define what you want to know of your users, ...'
@@ -140,38 +153,38 @@ en:
       title_moderate_analyse_input: 'Moderate and analyse the input'
       title_platform_setup: 'Set your platform up'
       title_what_can_you_do_administrator: 'What can you do as an administrator?'
-      title_you_became_administrator: 'You became an administrator'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} reported this comment as spam'
+      preheader: 'Act upon this comment reported as spam'
+      title: '%{firstName} %{lastName} reported this comment as spam'
+      cta_button: 'Review comment'
       by_author: 'by %{authorName}'
       commented: '%{authorName} commented:'
-      cta_review_comment: 'Review comment'
       days_ago: '%{numberOfDays} days ago'
       event_description: 'The following comment posted on <strong>''%{post}''</strong> was reported:'
       inappropriate_content: 'The comment is inappropriate or offensive.'
-      preheader: 'Act upon this comment reported as spam'
       reported_this_because: '%{reporterFirstName} reported this because:'
-      subject: '%{organizationName}: %{firstName} %{lastName} reported this comment as spam'
-      title_comment_spam_report: '%{firstName} %{lastName} reported this comment as spam'
       today: Today
       wrong_content: 'The comment is not relevant.'
       yesterday: Yesterday
     community_monitor_report:
       subject: 'A new community monitor report is available'
+      preheader: 'A new community monitor report is available'
       title: 'A new community monitor report is available'
-      text_introduction: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
-      cta_report_button: 'View report'
+      event_description: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
+      cta_button: 'View report'
       report_name: 'Community monitor report'
     cosponsor_of_your_idea:
-      cta_reply_to: 'View your proposal'
-      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
-      main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
       subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
       preheader: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      title: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
+      cta_button: 'View your proposal'
     assignee_digest:
       subject: 'Inputs requiring your feedback: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, citizen input is awaiting your feedback'
-      cta_manage_your_input: 'Manage your input'
+      title: '%{firstName}, citizen input is awaiting your feedback'
+      cta_button: 'Manage your input'
       x_inputs_need_your_feedback: 'inputs need your feedback'
       title_assignment_past_week: 'Latest inputs assigned to you'
       title_no_assignment_past_week: 'No new inputs assigned to you last week'
@@ -180,36 +193,36 @@ en:
       x_days_ago_by_author: '%{x} days ago by %{author}'
       title_successful_past_week: 'Assigned to you that reached the threshold'
     idea_marked_as_spam:
-      cta_review: 'Review'
-      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
-      report_not_an_idea: 'This content is not relevant and does not belong here.'
       subject: 'You have a spam report on the platform of %{organizationName}'
       preheader: 'Act upon this spam report'
+      title: '%{firstName} %{lastName} reported spam'
+      cta_button: 'Review'
+      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
+      report_not_an_idea: 'This content is not relevant and does not belong here.'
       reported_this_because: '%{reporterFirstName} reported this because:'
-      title_spam_report: '%{firstName} %{lastName} reported spam'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'Co-sponsor this proposal'
+      subject: 'You have been invited to co-sponsor a proposal'
+      preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
+      title: 'You have been invited to co-sponsor a proposal'
       event_description: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
       event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
       event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
       event_description_action: 'Click below to read the proposal.'
-      main_header: 'You have been invited to co-sponsor a proposal'
-      subject: 'You have been invited to co-sponsor a proposal'
-      preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
+      cta_button: 'Co-sponsor this proposal'
     invite_reminder:
-      cta_accept_invitation: 'Accept your invitation'
-      invitation_header: 'Your invitation is pending'
-      preheader: '%{organizationName} sent you an invite to join their participation platform some days ago.'
-      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
       subject: 'Pending invitation for the participation platform of %{organizationName}'
+      preheader: '%{organizationName} sent you an invite to join their participation platform some days ago.'
+      title: 'Your invitation is pending'
+      cta_button: 'Accept your invitation'
+      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
     invite_received:
-      added_a_message: '%{organizationName} wrote the following message:'
-      cta_accept_invitation: 'Accept your invitation'
-      invitation_header: 'You are invited!'
-      invitation_header_message: '%{organizationName} invited you to their participation platform.'
-      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
       preheader: '%{organizationName} sent you an invite to join their participation platform.'
       subject: 'You are invited to join the platform of %{organizationName}'
+      title: 'You are invited!'
+      event_description: '%{organizationName} invited you to their participation platform.'
+      cta_button: 'Accept your invitation'
+      added_a_message: '%{organizationName} wrote the following message:'
+      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
     mention_in_comment:
       cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{commentAuthorFull} has mentioned you in his comment on the idea ''%{post}‘. Click the link below to enter the conversation with %{commentAuthor}'
@@ -217,17 +230,17 @@ en:
       subject: 'Someone mentioned you on the platform of %{organizationName}'
       preheader: '%{commentAuthor} mentioned you in a comment'
     mention_in_internal_comment:
-      cta_reply_to: 'View comment by %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} mentioned you in an internal comment.'
       subject: '%{firstName} mentioned you in an internal comment.'
-      main_header: '%{firstName} mentioned you in an internal comment.'
+      title: '%{firstName} mentioned you in an internal comment.'
       preheader: '%{authorNameFull} mentioned you in an internal comment.'
     moderator_digest:
       subject: 'Weekly manager report of "%{project_title}"'
       preheader: 'Project manager digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, your weekly report'
-      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
-      cta_manage: 'Manage your project'
+      title: '%{firstName}, your weekly report'
+      event_description: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
+      cta_button: 'Manage your project'
       new_users: 'New users'
       new_ideas: 'New ideas'
       new_comments: 'New comments'
@@ -239,17 +252,20 @@ en:
       x_days_ago_by_author: '%{x} days ago by %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} commented:'
-      cta_reply_to: 'View %{commentAuthor}''s comment'
+      cta_button: 'View %{authorFirstName}''s comment'
       days_ago: '%{numberOfDays} days ago'
       event_description: '%{authorName} added a new comment on your platform.'
-      main_header: '%{firstName}, a new comment has been posted on your platform'
+      title: '%{firstName}, a new comment has been posted on your platform'
       subject: 'A new comment has been posted on %{organizationName}''s platform'
       preheader: '%{authorName} left a comment'
       today: Today
       yesterday: Yesterday
     comment_on_idea_you_follow:
-      cta_reply_to: 'Reply to %{commentAuthor}'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} left a comment on an idea for %{organizationName}'
+      title: '%{authorName} commented on an input you follow'
       event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      cta_button: 'Reply to %{commentAuthor}'
       main_header:
         idea: '%{authorName} commented on an idea you follow'
         question: '%{authorName} commented on a question you follow'
@@ -259,56 +275,61 @@ en:
         option: '%{authorName} commented on an option you follow'
         proposal: '%{authorName} commented on a proposal you follow'
         petition: '%{authorName} commented on a petition you follow'
-      subject: 'There''s a new comment on "%{input_title}"'
-      preheader: '%{authorName} left a comment on an idea for %{organizationName}'
-    new_idea_for_admin:
-      main_header_publication: 'A new input has been published on your platform'
-      event_description_publication: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
-      cta_publication: 'Give feedback to %{authorName}'
-      main_header_prescreening: 'An input requires your review'
-      event_description_prescreening: '%{authorName} has submitted a new input on your platform.'
-      input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
-      cta_prescreening: 'Review the input'
-      days_ago: '%{numberOfDays} days ago'
+    new_idea_for_admin_published:
+      subject: 'A new input has been published on your platform'
       preheader: '%{authorName} published a new input on your platform'
+      title: 'A new input has been published on your platform'
+      event_description: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
+      cta_button: 'Give feedback to %{authorName}'
+      days_ago: '%{numberOfDays} days ago'
+      today: Today
+      yesterday: Yesterday
+    new_idea_for_admin_prescreening:
+      subject: 'An input requires your review'
+      preheader: '%{authorName} published a new input on your platform'
+      title: 'An input requires your review'
+      cta_button: 'Review the input'
+      event_description: '%{authorName} has submitted a new input on your platform.'
+      input_not_visible: '<b>The input won''t be visible</b> until you modify its status.'
+      days_ago: '%{numberOfDays} days ago'
       today: Today
       yesterday: Yesterday
     comment_on_your_comment:
-      cta_reply_to: 'Reply to %{firstName}'
-      event_description: '%{authorNameFull} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorName}.'
       subject: 'You have received a reply on your comment on the platform of %{organizationName}'
-      main_header: '%{authorName} replied to your comment'
       preheader: '%{authorName} replied to your comment on %{organizationName}''s platform'
+      title: '%{authorName} replied to your comment'
+      event_description: '%{authorName} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorFirstName}.'
+      cta_button: 'Reply to %{authorFirstName}'
       replied: '%{authorFirstName} replied:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: 'View comment by %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented on your internal comment.'
       subject: 'You have received a comment on your internal comment on ''%{post}'''
-      main_header: 'You have received a comment on your internal comment on ''%{post}'''
-      preheader: '%{authorName} replied to your internal comment on ''%{post}'''
+      title: 'You have received a comment on your internal comment on ''%{post}'''
+      preheader: '%{authorNameFull} replied to your internal comment on ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
-      cta_reply_to: 'View comment by %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an input assigned to you.'
       subject: 'New internal comment on ''%{post}'''
-      main_header: 'New internal comment on ''%{post}'''
+      title: 'New internal comment on ''%{post}'''
       preheader: 'New internal comment on ''%{post}'''
     internal_comment_on_idea_you_commented_internally_on:
-      cta_reply_to: 'View comment by %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an input you commented internally on.'
       subject: 'New internal comment on ''%{post}'''
-      main_header: 'New internal comment on ''%{post}'''
+      title: 'New internal comment on ''%{post}'''
       preheader: 'New internal comment on ''%{post}'''
     internal_comment_on_idea_you_moderate:
-      cta_reply_to: 'View comment by %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an input in a project or folder you manage.'
       subject: 'New internal comment on ''%{post}'''
-      main_header: 'New internal comment on ''%{post}'''
+      title: 'New internal comment on ''%{post}'''
       preheader: 'New internal comment on ''%{post}'''
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_reply_to: 'View comment by %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an unassigned input in an unmanaged project.'
       subject: 'New internal comment on ''%{post}'''
-      main_header: 'New internal comment on ''%{post}'''
+      title: 'New internal comment on ''%{post}'''
       preheader: 'New internal comment on ''%{post}'''
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
@@ -316,11 +337,11 @@ en:
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:
-      cta_reply_to: 'Reply to %{organizationName}'
+      cta_button: 'Reply to %{organizationName}'
       event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
-      main_header: 'You have been mentioned'
+      title: 'You have been mentioned'
       subject: '%{organizationName} mentioned you in their feedback'
-      preheader: '%{commentAuthor} mentioned you in feedback'
+      preheader: '%{organizationName} mentioned you in feedback'
     project_moderation_rights_received:
       cta_manage_project: 'Manage this project'
       message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
@@ -420,7 +441,10 @@ en:
       message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
       preheader: 'Here''s what you can do on the platform of %{organizationName}'
     idea_published:
-      subject:
+      subject: 'Your idea has been published'
+      preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
+      title: 'You posted "%{input_title}"'
+      input_type_subject:
         idea: 'Your idea has been published'
         question: 'Your question has been published'
         contribution: 'Your contribution has been published'
@@ -429,7 +453,6 @@ en:
         option: 'Your option has been published'
         proposal: 'Your proposal has been published'
         petition: 'Your petition has been published'
-      main_header: 'You posted "%{input_title}"'
       header_message: 'Let''s make sure it gets read.'
       message_get_votes: 'Reach more people'
       action_published_idea: 'Published'
@@ -441,7 +464,6 @@ en:
       send_email: email
       action_share_link: 'Share it via any channel by copying the %{link}'
       link: link
-      preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
     your_input_in_screening:
       main_header: 
         idea: 'Your idea is in "%{prescreening_status_title}"'
@@ -465,10 +487,10 @@ en:
     native_survey_not_submitted:
       subject: '%{organizationName}: Almost there! Submit your answers'
       preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
-      title_native_survey_not_submitted: 'Almost there! Submit your answers'
-      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
-      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
-      cta_complete_your_survey_response: 'Resume your survey response'
+      title: 'Almost there! Submit your answers'
+      event_description: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
+      cta_button: 'Resume your survey response'
+      submissions_close: 'Submissions will close on %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
@@ -495,7 +517,7 @@ en:
     event_registration_confirmation:
       subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
       preheader: "%{firstName}, thanks for registering for %{eventTitle}"
-      header_message: "%{firstName}, thanks for registering for"
+      title: "%{firstName}, thanks for registering for"
       event_details:
         labels:
           date: 'Date'
@@ -503,7 +525,7 @@ en:
           online_link: 'Online link'
           description: 'Description'
           project: 'Project'
-      cta_go_to_event: 'View the event'
+      cta_button: 'View the event'
       cta_add_to_calendar: 'Add to your calendar'
     voting_phase_started:
       subject: '%{organizationName}: The voting phase started for %{projectName}'
