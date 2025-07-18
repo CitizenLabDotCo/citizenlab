@@ -11,7 +11,7 @@ interface Props {
   onChange: () => void;
 }
 
-const ListingStatusToggle = ({ listed, onChange }: Props) => {
+const ProjectDiscoverabilityRadios = ({ listed, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -58,4 +58,4 @@ const ListingStatusToggle = ({ listed, onChange }: Props) => {
   );
 };
 
-export default ListingStatusToggle;
+export default ProjectDiscoverabilityRadios;

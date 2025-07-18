@@ -56,9 +56,9 @@ import { fragmentId as folderFragmentId } from '../projectHeader/LinkToFolderSet
 
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
-import ListingStatusToggle from './components/ListingStatusToggle';
 import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
+import ProjectDiscoverabilityRadios from './components/ProjectDiscoverabilityRadios';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import ProjectNameInput from './components/ProjectNameInput';
@@ -568,7 +568,7 @@ const AdminProjectsProjectGeneral = () => {
           />
 
           {isNewProject && (
-            <ListingStatusToggle
+            <ProjectDiscoverabilityRadios
               listed={!!projectAttrs.listed}
               onChange={handleUnlistedOnChange}
             />

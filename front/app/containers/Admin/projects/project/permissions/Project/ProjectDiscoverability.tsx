@@ -3,13 +3,13 @@ import React from 'react';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import ListingStatusToggle from '../../general/components/ListingStatusToggle';
+import ProjectDiscoverabilityRadios from '../../general/components/ProjectDiscoverabilityRadios';
 
 interface Props {
   projectId: string;
 }
 
-const ProjectUnlisted = ({ projectId }: Props) => {
+const ProjectDiscoverability = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { mutate: updateProject } = useUpdateProject();
 
@@ -20,7 +20,7 @@ const ProjectUnlisted = ({ projectId }: Props) => {
   const { listed } = project.data.attributes;
 
   return (
-    <ListingStatusToggle
+    <ProjectDiscoverabilityRadios
       listed={listed}
       onChange={() => {
         updateProject({ projectId, listed: !listed });
@@ -29,4 +29,4 @@ const ProjectUnlisted = ({ projectId }: Props) => {
   );
 };
 
-export default ProjectUnlisted;
+export default ProjectDiscoverability;
