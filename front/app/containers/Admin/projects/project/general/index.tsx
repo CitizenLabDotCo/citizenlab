@@ -568,10 +568,14 @@ const AdminProjectsProjectGeneral = () => {
           />
 
           {isNewProject && (
-            <ProjectDiscoverabilityRadios
-              listed={!!projectAttrs.listed}
-              onChange={handleUnlistedOnChange}
-            />
+            <Box mt="40px">
+              <ProjectDiscoverabilityRadios
+                listed={
+                  projectAttrs.listed === undefined ? true : projectAttrs.listed
+                }
+                onChange={handleUnlistedOnChange}
+              />
+            </Box>
           )}
 
           <GeographicAreaInputs

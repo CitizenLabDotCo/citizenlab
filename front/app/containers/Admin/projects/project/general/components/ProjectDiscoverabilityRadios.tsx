@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Box, Text, Radio, Title } from '@citizenlab/cl2-component-library';
+import { Box, Text, Radio } from '@citizenlab/cl2-component-library';
+
+import { SubSectionTitle } from 'components/admin/Section';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -16,10 +18,10 @@ const ProjectDiscoverabilityRadios = ({ listed, onChange }: Props) => {
 
   return (
     <Box>
-      <Title variant="h3" color="primary" mb="0">
+      <SubSectionTitle>
         {formatMessage(messages.whoCanFindThisProject)}
-      </Title>
-      <Text color="primary" fontSize="s" mb="20px" mt="8px">
+      </SubSectionTitle>
+      <Text color="primary" fontSize="s" mb="20px" mt="-12px">
         {formatMessage(messages.selectHowDiscoverableProjectIs)}
       </Text>
       <Box>
