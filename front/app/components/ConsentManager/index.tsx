@@ -39,10 +39,9 @@ const ConsentManager = () => {
   const [cookieConsent, setCookieConsent] = useState<IConsentCookie | null>(
     null
   );
+  const [screen, setScreen] = useState<'initial' | 'preferences' | null>(null);
   const [searchParams] = useSearchParams();
   const from = searchParams.get('from');
-
-  const [screen, setScreen] = useState<'initial' | 'preferences' | null>(null);
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
@@ -182,21 +181,21 @@ const ConsentManager = () => {
     setPreferences(newPreferences);
   };
 
-  const openDialog = () => {
+  const openPreferencesScreen = () => {
     toggleDefault(false);
     setScreen('preferences');
   };
 
-  useObserveEvent('openConsentManager', openDialog);
+  useObserveEvent('openConsentManager', openPreferencesScreen);
 
-  const handleSave = (e: FormEvent) => {
+  const savePreferences = (e: FormEvent) => {
     e.preventDefault();
 
-    setScreen(null);
     saveConsent(preferences);
+    setScreen(null);
   };
 
-  const handleCancel = () => {
+  const cancelPrefencesScreen = () => {
     resetPreferences();
     setScreen(null);
   };
@@ -216,30 +215,28 @@ const ConsentManager = () => {
           {screen === 'initial' && (
             <InitialScreenFooter
               onAccept={accept}
-              onChangePreferences={openDialog}
+              openPreferencesScreen={openPreferencesScreen}
               onClose={reject}
             />
           )}
           {screen === 'preferences' && (
             <PreferencesModalFooter
               categorizedDestinations={activeCategorizedDestinations}
-              handleCancel={handleCancel}
-              handleSave={handleSave}
+              handleCancel={cancelPrefencesScreen}
+              handleSave={savePreferences}
             />
           )}
         </>
       }
     >
-      <>
-        {screen === 'initial' && <InitialScreenMainContent />}
-        {screen === 'preferences' && (
-          <PreferencesModalMainContent
-            onChange={updatePreference}
-            categoryDestinations={activeCategorizedDestinations}
-            preferences={preferences}
-          />
-        )}
-      </>
+      {screen === 'initial' && <InitialScreenMainContent />}
+      {screen === 'preferences' && (
+        <PreferencesModalMainContent
+          onChange={updatePreference}
+          categoryDestinations={activeCategorizedDestinations}
+          preferences={preferences}
+        />
+      )}
     </Modal>
   );
 };
