@@ -246,6 +246,8 @@ class User < ApplicationRecord
   end
 
   def authenticate(unencrypted_password)
+    return self if force_password_change? # User will not actually be authenticated, but will be able to change their password
+
     if no_password?
       # Allow authentication without password - but only if confirmation is required on the user
       unencrypted_password.empty? && confirmation_required? ? self : false
@@ -254,6 +256,10 @@ class User < ApplicationRecord
 
       BCrypt::Password.new(password_digest).is_password?(unencrypted_password) && self
     end
+  end
+
+  def force_password_change?
+    no_password? && force_password_change
   end
 
   # User has no password

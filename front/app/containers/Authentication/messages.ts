@@ -46,6 +46,10 @@ export default defineMessages({
     id: 'app.containers.SignIn.signInError',
     defaultMessage: 'No account was found for the provided credentials',
   },
+  forcePasswordChange: {
+    id: 'app.containers.SignIn.forcePasswordChange',
+    defaultMessage: 'You need to reset your password. Click here to reset.',
+  },
   emailTakenAndUserCanBeVerified: {
     id: 'app.containers.AuthProviders.emailTakenAndUserCanBeVerified',
     defaultMessage:

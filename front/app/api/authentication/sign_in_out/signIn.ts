@@ -49,7 +49,11 @@ export async function getAndSetToken({
   })
     .then((response) => response.json())
     .then((data) => {
-      setJwt(data.jwt, rememberMe, tokenLifetime);
+      if (data.error) {
+        throw new Error(data.error);
+      } else {
+        setJwt(data.jwt, rememberMe, tokenLifetime);
+      }
     });
 }
 

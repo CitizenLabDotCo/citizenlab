@@ -103,7 +103,11 @@ const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
         return;
       }
 
-      setError('sign_in_failed');
+      const errorType =
+        e.message === 'force_password_change'
+          ? 'force_password_change'
+          : 'sign_in_failed';
+      setError(errorType);
     }
   };
 

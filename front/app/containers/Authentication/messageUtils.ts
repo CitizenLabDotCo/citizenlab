@@ -83,6 +83,7 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
     messages.nemlogInUnderMinimumAgeVerificationFailed,
   resending_code_failed: errorMessages.resending_code_failed,
   verification_taken: errorMessages.verification_taken,
+  force_password_change: messages.forcePasswordChange,
 };
 
 type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';
