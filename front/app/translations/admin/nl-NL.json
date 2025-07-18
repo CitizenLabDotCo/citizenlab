@@ -1150,7 +1150,7 @@
   "app.containers.Admin.projects.project.general.components.UnlistedInput.onlyAccessible": "Alleen toegankelijk via directe URL",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.public": "Openbaar",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.selectHowDiscoverableProjectIs": "Selecteer hoe vindbaar dit project is.",
-  "app.containers.Admin.projects.project.general.components.UnlistedInput.thisProjectIsVisibleToEveryone": "Dit project is zichtbaar voor iedereen die toegang heeft en verschijnt op de startpagina en in de widgets.",
+  "app.containers.Admin.projects.project.general.components.UnlistedInput.thisProjectIsVisibleToEveryone": "Dit project is zichtbaar voor iedereen die toegang heeft, en verschijnt op de startpagina en in de widgets.",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.thisProjectWillBeHidden": "Dit project blijft verborgen voor het grote publiek en is alleen zichtbaar voor degenen die de link hebben.",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.whoCanFindThisProject": "Wie kan dit project vinden?",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Open AI-analyse",
