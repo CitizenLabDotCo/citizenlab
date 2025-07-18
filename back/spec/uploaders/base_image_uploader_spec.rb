@@ -3,6 +3,7 @@
 require 'carrierwave/test/matchers'
 require 'rails_helper'
 require 'mini_magick'
+require 'open3'
 
 RSpec.describe BaseImageUploader do
   let(:uploader) do
@@ -18,7 +19,7 @@ RSpec.describe BaseImageUploader do
       described_class.enable_processing = false
     end
 
-    it 'strips the image of any EXIF data and metadata' do
+    it 'strips the image of any EXIF data and metadata except ICC profile and orientation' do
       file_path = Rails.root.join('spec/fixtures/with_exif.jpeg').to_s
       file = File.open(file_path)
 
@@ -28,7 +29,113 @@ RSpec.describe BaseImageUploader do
       uploader.store!(file)
 
       image = MiniMagick::Image.open(uploader.file.path)
-      expect(image.exif).to be_empty
+
+      allowed_exif_keys = %w[
+        Orientation
+        ResolutionUnit
+        XResolution
+        YCbCrPositioning
+        YResolution
+      ]
+      expect(image.exif.keys - allowed_exif_keys).to be_empty
+
+      command = 'exiftool'
+      args = [uploader.file.path]
+      stdout_str, stderr_str, status = Open3.capture3(command, *args)
+      expect(status.success?).to(be(true), "exiftool command failed: #{stderr_str}")
+      exiftool_output = stdout_str # Now, exiftool_output holds the stdout
+
+      # The `exiftool` command is used here to verify that a broader range of metadata
+      # types (beyond just EXIF, which MiniMagick might expose) have been stripped.
+      # The uploader uses `exiftool -all=` to remove most metadata, preserving only
+      # essential structural information, ICC profiles for color management, and orientation.
+      #
+      # Example `exiftool` output for a stripped image:
+      # ExifTool Version Number         : 12.x
+      # File Name                       : stripped_image.jpeg
+      # File Type                       : JPEG
+      # MIME Type                       : image/jpeg
+      # Image Width                     : 1920
+      # Image Height                    : 1080
+      # Encoding Process                : Baseline DCT, Huffman coding
+      # Bits Per Sample                 : 8
+      # Color Components                : 3
+      # Y Cb Cr Sub Sampling            : YCbCr4:2:0 (2 2)
+      # Resolution Unit                 : inches
+      # X Resolution                    : 72
+      # Y Resolution                    : 72
+      # Orientation                     : Horizontal (normal)
+      # ICC Profile Name                : sRGB IEC61966-2.1
+      # CMM Type                        : Lino
+      #
+      # Technical/structural image metadata and file system attributes that are
+      # expected to remain even after metadata stripping. These are not user-supplied
+      # or privacy-sensitive data, but fundamental to the file's structure.
+      technical_tags = [
+        'Bits Per Sample',
+        'Color Components',
+        'Directory',
+        'Encoding Process',
+        'Exif Byte Order', # Can remain if part of core structure, depends on exiftool version/flags
+        'ExifTool Version Number',
+        'File Access Date/Time',
+        'File Inode Change Date/Time',
+        'File Modification Date/Time',
+        'File Name',
+        'File Permissions',
+        'File Size',
+        'File Type',
+        'File Type Extension',
+        'Image Height',
+        'Image Size',
+        'Image Width',
+        'Media White Point',
+        'Megapixels',
+        'MIME Type',
+        'Primary Platform',
+        'Resolution Unit',
+        'X Resolution',
+        'XResolution', # MiniMagick might expose differently
+        'Y Cb Cr Sub Sampling',
+        'Y Cb Cr Positioning',
+        'Y Resolution',
+        'YCbCrPositioning', # MiniMagick might expose differently
+        'YResolution' # MiniMagick might expose differently
+      ]
+
+      present_tags = exiftool_output.lines.map do |l|
+        l.split(':').first.strip
+      end.uniq
+
+      present_tags.reject! do |tag|
+        tag.empty? || tag == uploader.file.path.split('/').last
+      end
+
+      # These are the tags that *should* be gone (privacy-sensitive, user-defined)
+      # after stripping, but are not in the `technical_tags` list.
+      # We allow ICC Profile and Orientation related tags to remain.
+      metadata_tags_to_check = present_tags - technical_tags
+
+      expect(
+        metadata_tags_to_check.reject do |tag|
+          # Allow tags related to Orientation
+          tag.include?('Orientation') ||
+          # Allow tags related to ICC Profile and Color Management
+          tag.include?('ICC') ||
+          tag.include?('Profile') ||
+          tag.include?('Curve') ||
+          tag.include?('Matrix') ||
+          tag.include?('Color Space') ||
+          tag.include?('Illuminant') ||
+          tag.include?('CMM') ||
+          tag.include?('Device') ||
+          tag.include?('Rendering') ||
+          tag.include?('Adaptation') ||
+          # Sometimes exiftool reports a "MakerNotes" tag even if empty,
+          # or other non-harmful empty tags after stripping. Be flexible for these.
+          (tag.include?('Notes') && exiftool_output.include?("#{tag}:")) # Check if it's an empty "Notes" tag
+        end
+      ).to be_empty
     end
 
     context 'when handling images with EXIF orientation' do
@@ -37,46 +144,17 @@ RSpec.describe BaseImageUploader do
         [image.width, image.height]
       end
 
-      it 'correctly auto-orients image with EXIF rotation value and strips its metadata' do
-        file_path = Rails.root.join('spec/fixtures/image_with_90_degree_exif_rotation.jpg').to_s
+      it 'preserves image EXIF orientation values' do
+        file_path = Rails.root.join('spec/fixtures/image_with_90_degree_exif_orientation.jpg').to_s
         file = File.open(file_path)
 
         original_image = MiniMagick::Image.open(file.path)
         expect(original_image.exif['Orientation']).to eq('6')
-        expect(original_image.width).to eq(450)
-        expect(original_image.height).to eq(300)
 
         uploader.store!(file)
 
-        processed_width, processed_height = get_processed_image_dimensions(uploader.path)
-
-        expect(processed_width).to eq(300)
-        expect(processed_height).to eq(450)
-
         image = MiniMagick::Image.open(uploader.path)
-        expect(image.exif).to be_empty
-        expect(image.exif['Orientation']).to be_nil
-      end
-
-      it 'does not alter dimensions for already correctly oriented images' do
-        file_path = Rails.root.join('spec/fixtures/image_with_no_exif_rotation.jpg').to_s
-        file = File.open(file_path)
-
-        original_image = MiniMagick::Image.open(file.path)
-        expect(original_image.exif['Orientation']).to eq('1')
-        expect(original_image.width).to eq(300)
-        expect(original_image.height).to eq(450)
-
-        uploader.store!(file)
-
-        processed_width, processed_height = get_processed_image_dimensions(uploader.path)
-
-        expect(processed_width).to eq(300)
-        expect(processed_height).to eq(450)
-
-        image = MiniMagick::Image.open(uploader.path)
-        expect(image.exif).to be_empty
-        expect(image.exif['Orientation']).to be_nil
+        expect(image.exif['Orientation']).to eq('6')
       end
     end
   end

@@ -37,6 +37,8 @@ RUN apt-get update                                        \
    jpegoptim                                              \
    optipng                                                \
    pngquant                                               \
+   # Used to selectively strip EXIF metadata from images
+   libimage-exiftool-perl                                 \
    # jemalloc
    libjemalloc2                                           \
    # tiktoken_ruby

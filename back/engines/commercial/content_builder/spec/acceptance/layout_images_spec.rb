@@ -12,7 +12,7 @@ resource 'ContentBuilderLayoutImages' do
     with_options scope: :layout_image do
       parameter :image, 'The base64 encoded image.', required: true
     end
-    let(:image) { png_image_as_base64 'image13.png' }
+    let(:image) { png_image_as_base64 'image13.jpg' }
 
     context 'when not authorized' do
       example_request '[error] Try to create a layout for a project without authorization' do

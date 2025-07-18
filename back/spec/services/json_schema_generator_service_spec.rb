@@ -370,10 +370,10 @@ RSpec.describe JsonSchemaGeneratorService do
                 const: 'image_option',
                 title: 'Image option',
                 image: hash_including(
-                  fb: end_with('.png'),
-                  small: end_with('.png'),
-                  medium: end_with('.png'),
-                  large: end_with('.png')
+                  fb: end_with('.jpg'),
+                  small: end_with('.jpg'),
+                  medium: end_with('.jpg'),
+                  large: end_with('.jpg')
                 )
               }
             ]
