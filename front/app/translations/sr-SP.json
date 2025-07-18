@@ -121,8 +121,6 @@
   "app.components.ConsentManager.Banner.manage": "Управљајте",
   "app.components.ConsentManager.Banner.policyLink": "Декларација о колачићима",
   "app.components.ConsentManager.Banner.reject": "Одбиј",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Потврди",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Ако откажете, ваше поставке ће бити изгубљене.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Оглашавање",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Користимо ово да персонализујемо и меримо ефикасност рекламних кампања наше веб странице. Нећемо приказивати никакво оглашавање на овој платформи, али следеће услуге вам могу понудити персонализовани оглас на основу страница које посећујете на нашем сајту.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Дозволи",

@@ -150,13 +150,14 @@ resource 'Files' do
           type: 'file',
           attributes: {
             name: file.name,
+            description_multiloc: {},
+            content: { url: file.content.url },
+            ai_processing_allowed: false,
             mime_type: 'application/pdf',
             category: file.category,
-            description_multiloc: {},
-            ai_processing_allowed: false,
+            size: 130,
             created_at: file.created_at.iso8601(3),
-            updated_at: file.updated_at.iso8601(3),
-            size: 130
+            updated_at: file.updated_at.iso8601(3)
           },
           relationships: {
             uploader: { data: { id: file.uploader_id, type: 'user' } },
@@ -204,16 +205,21 @@ resource 'Files' do
 
         assert_status 201
 
+        file = Files::File.find(response_data[:id])
+        # It has been correctly associated with the project
+        expect(file.project_ids).to contain_exactly(project)
+
         expect(response_data).to match(
           id: be_present,
           type: 'file',
           attributes: {
             name: name,
-            size: 1_645_987,
-            mime_type: 'application/pdf',
-            category: 'other',
+            content: { url: file.content.url },
             description_multiloc: {},
             ai_processing_allowed: false,
+            mime_type: 'application/pdf',
+            category: 'other',
+            size: 1_645_987,
             created_at: be_present,
             updated_at: be_present
           },
@@ -222,9 +228,6 @@ resource 'Files' do
             projects: { data: [{ id: project, type: 'project' }] }
           }
         )
-
-        file = Files::File.find(response_data[:id])
-        expect(file.project_ids).to contain_exactly(project)
       end
 
       example 'Create a file with category' do

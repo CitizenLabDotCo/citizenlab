@@ -93,8 +93,7 @@ module Files
     has_many :projects, through: :files_projects
 
     # TODO: Maybe reconsider the name of this column.
-    # TODO: Using temporarily the ProjectFolders::FileUploader
-    mount_base64_file_uploader :content, ::ProjectFolders::FileUploader
+    mount_base64_file_uploader :content, FileUploader
 
     validates :name, presence: true
     validates :content, presence: true
@@ -109,6 +108,7 @@ module Files
       against: %i[name description_multiloc],
       using: {
         # tsearch completely ignores the :against option bc a pre-computed tsvector is used
+        # (The tsvector type represents a document in a form optimized for text search.)
         tsearch: { tsvector_column: 'tsvector' },
         # TODO: Trigram search is currently performed directly on the JSONB column
         #   (description_multiloc), which isn't ideal, as converting it to text also

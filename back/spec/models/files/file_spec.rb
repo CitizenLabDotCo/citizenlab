@@ -15,6 +15,11 @@ RSpec.describe Files::File do
     it { is_expected.to validate_presence_of(:category).with_message('is not included in the list') }
     it { is_expected.to validate_inclusion_of(:ai_processing_allowed).in_array([true, false]) }
 
+    it 'is valid for all file extensions' do
+      file = build(:file, name: 'filename.unknown_ext')
+      expect(file).to be_valid
+    end
+
     describe 'description_multiloc' do
       it 'accepts valid multiloc hash' do
         file.description_multiloc = { 'en' => 'English description', 'fr-FR' => 'Description française' }

@@ -121,8 +121,6 @@
   "app.components.ConsentManager.Banner.manage": "Beaarbechten",
   "app.components.ConsentManager.Banner.policyLink": "Cookie-Richtlinnen",
   "app.components.ConsentManager.Banner.reject": "Refuséieren",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Bestätegen",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Wann Dir ofbriecht, ginn Är Preferenze verluer.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Cookië fir Publicitéit",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Mir benotzen dëst fir d'Effektivitéit vu Reklammekampagne vun eiser Websäit ze moossen an ze personaliséieren. Mir weise keng Reklamm op dëser Plattform. Allerdéngs kennen, baséierend op de Säiten déi Dir op eisem Site besicht, Ennerkontrakter (sous-traitant)  Iech personaliséiert Reklammen ubidden.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Erlaben",

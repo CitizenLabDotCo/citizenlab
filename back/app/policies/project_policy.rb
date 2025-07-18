@@ -139,6 +139,10 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def participant_counts?
+    user&.admin? || user&.project_moderator? || user&.project_folder_moderator?
+  end
+
   def shared_permitted_attributes
     shared = [
       :slug,

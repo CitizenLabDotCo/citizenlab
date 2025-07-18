@@ -121,8 +121,6 @@
   "app.components.ConsentManager.Banner.manage": "Administrer",
   "app.components.ConsentManager.Banner.policyLink": "Retningslinjer for informasjonskapsler",
   "app.components.ConsentManager.Banner.reject": "Avvis",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Bekreft",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Hvis du avbryter, vil preferansene dine gå tapt.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklame",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Vi bruker dette til å tilpasse og måle effektiviteten av reklamekampanjer på nettstedet vårt. Vi viser ingen reklame på denne plattformen, men følgende tjenester kan tilby deg en personlig tilpasset annonse basert på sidene du besøker på nettstedet vårt.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Tillat",
