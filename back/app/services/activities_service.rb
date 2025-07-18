@@ -90,6 +90,9 @@ class ActivitiesService
       next if idea.updated_at > now - 1.day
       next if idea.creation_phase.ends_before?(now)
 
+      # Is there survey already submitted by the same author in the same phase?
+      next if Idea.find_by(author_id: idea.author_id, creation_phase: idea.creation_phase, publication_status: 'published')
+
       LogActivityJob.perform_later(idea, 'survey_not_submitted', nil, now)
     end
   end
