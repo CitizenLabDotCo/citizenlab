@@ -197,10 +197,17 @@ describe ProjectsFinderAdminService do
       create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'information')
       project
     end
+    let!(:project_ideation_future) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today + 10.days, end_at: Time.zone.today + 20.days, project: project, participation_method: 'ideation')
+      project
+    end
 
     it 'returns all projects when no participation_methods specified' do
       result = described_class.filter_current_phase_participation_method(Project.all, {})
-      expect(result.pluck(:id)).to match_array([project_ideation.id, project_voting.id, project_information.id])
+      expect(result.pluck(:id)).to match_array([
+        project_ideation.id, project_voting.id, project_information.id, project_ideation_future.id
+      ])
     end
 
     it 'filters projects by a single participation method' do
