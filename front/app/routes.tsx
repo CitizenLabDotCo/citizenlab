@@ -128,6 +128,7 @@ type citizenRouteTypes =
   | `/${citizenRoutes.pages}/accessibility-statement`
   | `/${citizenRoutes.pages}/${string}`
   | `/${citizenRoutes.passwordRecovery}`
+  | `/${citizenRoutes.passwordRecovery}?force=true`
   | `/${citizenRoutes.resetPassword}`
   | `/${citizenRoutes.subscriptionEnded}`
   | `/${citizenRoutes.emailSettings}`

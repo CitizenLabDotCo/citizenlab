@@ -20,6 +20,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { isValidEmail } from 'utils/validate';
 
 import messages from './messages';
+// import { useSearchParams } from 'react-router-dom';
 
 interface Props {}
 
@@ -103,6 +104,11 @@ class PasswordRecovery extends React.PureComponent<
   };
 
   render() {
+    // TODO: Need to find a way to refactor this component as a functional
+    // const [searchParams] = useSearchParams();
+    // const forceReset = searchParams.get('force');
+    const forceReset = true;
+
     const { formatMessage } = this.props.intl;
     const { email, emailError, submitError, processing, success } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
@@ -111,6 +117,9 @@ class PasswordRecovery extends React.PureComponent<
     const subtitle = formatMessage(messages.subtitle);
     const emailPlaceholder = formatMessage(messages.emailPlaceholder);
     const resetPassword = formatMessage(messages.resetPassword);
+    const forceResetMessage = forceReset
+      ? formatMessage(messages.forceResetMessage) + ' '
+      : '';
 
     // Showing the same message for success and submission error because we don't want to give away information about whether an email address is registered or not
     const feedbackMessage =
@@ -132,7 +141,10 @@ class PasswordRecovery extends React.PureComponent<
         <main>
           <StyledContentContainer>
             <Title style={{ marginBottom: '15px' }}>{title}</Title>
-            <Subtitle>{subtitle}</Subtitle>
+            <Subtitle>
+              {forceResetMessage}
+              {subtitle}
+            </Subtitle>
             <Form onSubmit={this.handleOnSubmit}>
               <FormLabel htmlFor="email" labelMessage={messages.emailLabel} />
               <StyledInput

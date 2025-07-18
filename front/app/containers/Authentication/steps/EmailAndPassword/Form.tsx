@@ -29,6 +29,7 @@ import containerMessages from '../../messages';
 import tracks from '../../tracks';
 import TextLink from '../_components/TextLink';
 import sharedMessages from '../messages';
+import clHistory from 'utils/cl-router/history';
 
 interface Props {
   loading: boolean;
@@ -103,11 +104,13 @@ const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
         return;
       }
 
-      const errorType =
-        e.message === 'force_password_change'
-          ? 'force_password_change'
-          : 'sign_in_failed';
-      setError(errorType);
+      if (e.message === 'force_password_change') {
+        closeModal();
+        clHistory.push(`/password-recovery?force=true`);
+        return;
+      }
+
+      setError('sign_in_failed');
     }
   };
 

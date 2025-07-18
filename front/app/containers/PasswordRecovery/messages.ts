@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.PasswordRecovery.title',
     defaultMessage: 'Forgot your password?',
   },
+  forceResetMessage: {
+    id: 'app.containers.PasswordRecovery.forceResetMessage',
+    defaultMessage: 'Your password has expired and needs to be reset.',
+  },
   subtitle: {
     id: 'app.containers.PasswordRecovery.subtitle',
     defaultMessage: 'Enter your email below to receive a password reset link.',
