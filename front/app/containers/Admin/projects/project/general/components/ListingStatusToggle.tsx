@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Toggle, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Radio } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -16,32 +16,40 @@ const ListingStatusToggle = ({ listed, onChange }: Props) => {
 
   return (
     <Box>
-      <Toggle
-        checked={listed}
+      <Radio
+        name="public"
+        value={true}
+        currentValue={listed}
         label={
-          <Text fontWeight="semi-bold" color="primary">
-            {listed
-              ? formatMessage(messages.listed)
-              : formatMessage(messages.unlisted)}
-          </Text>
+          <Box>
+            <Text fontWeight="bold">{formatMessage(messages.public)}</Text>
+            <Text>
+              {formatMessage(messages.thisProjectIsVisibleToEveryone)}
+            </Text>
+          </Box>
         }
         onChange={onChange}
       />
-      {listed ? (
-        <Text mt="0" color="textSecondary">
-          {formatMessage(messages.thisProjectWillBeListed)}
-        </Text>
-      ) : (
-        <Text mt="0" color="textSecondary">
-          {formatMessage(messages.thisProjectWillStayHidden)}
-          <ul>
-            <li>{formatMessage(messages.notVisible)}</li>
-            <li>{formatMessage(messages.notIndexed)}</li>
-            <li>{formatMessage(messages.emailNotifications)}</li>
-            <li>{formatMessage(messages.onlyAccessible)}</li>
-          </ul>
-        </Text>
-      )}
+      <Radio
+        name="hidden"
+        value={false}
+        currentValue={listed}
+        label={
+          <Box>
+            <Text fontWeight="bold">{formatMessage(messages.hidden)}</Text>
+            <Text color="textSecondary">
+              {formatMessage(messages.thisProjectWillBeHidden)}
+              <ul>
+                <li>{formatMessage(messages.notVisible)}</li>
+                <li>{formatMessage(messages.notIndexed)}</li>
+                <li>{formatMessage(messages.emailNotifications)}</li>
+                <li>{formatMessage(messages.onlyAccessible)}</li>
+              </ul>
+            </Text>
+          </Box>
+        }
+        onChange={onChange}
+      />
     </Box>
   );
 };

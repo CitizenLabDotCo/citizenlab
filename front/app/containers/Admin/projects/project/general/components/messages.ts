@@ -1,15 +1,23 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  thisProjectWillBeListed: {
-    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.thisProjectWillBeListed',
-    defaultMessage:
-      'This project will be listed normally on the homepage and widgets.',
+  public: {
+    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.public',
+    defaultMessage: 'Public',
   },
-  thisProjectWillStayHidden: {
-    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.thisProjectWillStayHidden',
+  hidden: {
+    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.hidden',
+    defaultMessage: 'Hidden',
+  },
+  thisProjectIsVisibleToEveryone: {
+    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.thisProjectIsVisibleToEveryone',
     defaultMessage:
-      'This project will stay hidden from the wider public unless you share the link.',
+      'This project is visible to everyone who has access, and will appear on the homepage and in the widgets.',
+  },
+  thisProjectWillBeHidden: {
+    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.thisProjectWillBeHidden',
+    defaultMessage:
+      'This project will be hidden from the wider public, and will only be visible to those who have the link.',
   },
   notVisible: {
     id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.notVisible',
@@ -26,13 +34,5 @@ export default defineMessages({
   onlyAccessible: {
     id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.onlyAccessible',
     defaultMessage: 'Only accessible via direct URL',
-  },
-  listed: {
-    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.listed',
-    defaultMessage: 'Listed',
-  },
-  unlisted: {
-    id: 'app.containers.Admin.projects.project.general.components.UnlistedInput.unlisted',
-    defaultMessage: 'Unlisted',
   },
 });
