@@ -17,9 +17,6 @@ describe('validate', () => {
       // created_at: "2024-08-29T14:22:12.260Z",
       // updated_at: "2024-09-03T11:57:23.901Z",
       // ideas_count: 0,
-      campaigns_settings: {
-        project_phase_started: true,
-      },
       participation_method: 'voting',
       submission_enabled: true,
       commenting_enabled: true,

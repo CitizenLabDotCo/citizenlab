@@ -3,14 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaign do
-  describe 'validate context_id' do
-    it 'is invalid if context_id is present && skip_context_absence is false' do
-      campaign = build(:invite_received_campaign, context_id: SecureRandom.uuid)
-      expect(campaign.send(:skip_context_absence?)).to be false
-      expect(campaign).to be_invalid
-    end
-  end
-
   describe '#apply_recipient_filters' do
     let(:campaign) { create(:invite_received_campaign) }
     let(:invite) { create(:invite) }
@@ -24,6 +16,22 @@ RSpec.describe EmailCampaigns::Campaign do
       result = campaign.apply_recipient_filters(activity: activity2)
       expect(result).not_to include invitee
       expect(result.count).to eq 0
+    end
+  end
+
+  describe '#activity_context' do
+    let(:campaign) { create(:comment_on_your_comment_campaign) }
+    let(:notification_activity) { create(:activity, item: create(:notification)) }
+    let(:area_activity) { create(:activity, item: create(:area)) }
+
+    EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.each do |campaign_class|
+      it 'does not raise errors when implemented' do
+        expect do
+          campaign = campaign_class.new
+          campaign.activity_context(notification_activity)
+          campaign.activity_context(area_activity)
+        end.not_to raise_error
+      end
     end
   end
 end

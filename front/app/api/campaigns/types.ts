@@ -59,6 +59,9 @@ export interface ICampaignData {
     author: {
       data: IRelationship;
     };
+    context?: {
+      data?: IRelationship;
+    };
     groups: {
       data: IRelationship[];
     };
@@ -156,18 +159,22 @@ export type CampaignName =
   | AdminModeratorCampaignName;
 
 export interface QueryParameters {
-  campaignNames?: CampaignName[];
+  manual?: boolean;
   withoutCampaignNames?: CampaignName[];
   pageSize?: number;
   pageNumber?: number;
+  projectId?: string;
+  phaseId?: string;
 }
 
 export interface CampaignAdd {
   campaign_name: string;
+  enabled?: boolean;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
   sender: string;
   reply_to?: string;
   group_ids?: string[];
-  context_id?: string;
+  projectId?: string;
+  phaseId?: string;
 }

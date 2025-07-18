@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.phaseAccessRights',
     defaultMessage: 'Access rights',
   },
+  phaseEmails: {
+    id: 'app.containers.AdminPage.ProjectEdit.phaseEmails',
+    defaultMessage: 'Emails',
+  },
   pollTab: {
     id: 'app.containers.AdminPage.ProjectEdit.pollTab',
     defaultMessage: 'Poll',

@@ -1,7 +1,5 @@
 import { IRelationship, Multiloc } from 'typings';
 
-import { CampaignName } from 'api/campaigns/types';
-
 import { Keys } from 'utils/cl-react-query/types';
 
 import phasesKeys from './keys';
@@ -38,7 +36,6 @@ export interface IPhaseAttributes {
   description_multiloc: Multiloc;
   start_at: string;
   end_at: string | null;
-  campaigns_settings: { [key in CampaignName]?: boolean };
   input_term: InputTerm;
   created_at: string;
   updated_at: string;
@@ -121,9 +118,6 @@ export interface IUpdatedPhaseProperties {
   poll_anonymous?: boolean;
   ideas_order?: IdeaSortMethod;
   document_annotation_embed_url?: string | null;
-  campaigns_settings?: {
-    [key in CampaignName]?: boolean;
-  };
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
   prescreening_enabled?: boolean | null;
