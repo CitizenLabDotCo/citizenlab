@@ -2,12 +2,6 @@ import { Multiloc, IRelationship, Pagination, ILinks } from 'typings';
 
 import { PublicationStatus } from 'api/projects/types';
 
-import { Keys } from 'utils/cl-react-query/types';
-
-import projectFoldersKeys from './keys';
-
-export type ProjectFoldersMiniKeys = Keys<typeof projectFoldersKeys>;
-
 export type Parameters = {
   status?: PublicationStatus[];
   managers?: string[];
