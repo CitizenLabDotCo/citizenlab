@@ -10,6 +10,7 @@ import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
@@ -90,6 +91,12 @@ const ProjectDescriptionBuilderToolbox = ({
           }
           icon="button"
           label={formatMessage(ButtonMultiloc.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-container"
+          component={<FileAttachment />}
+          icon="file"
+          label={formatMessage(FileAttachment.craft.custom.title)}
         />
         <DraggableElement
           id="e2e-draggable-image"
