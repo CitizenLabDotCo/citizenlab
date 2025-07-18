@@ -3,7 +3,7 @@
 require 'carrierwave/test/matchers'
 require 'rails_helper'
 require 'mini_magick'
-require 'English'
+require 'open3'
 
 RSpec.describe BaseImageUploader do
   let(:uploader) do
@@ -42,6 +42,12 @@ RSpec.describe BaseImageUploader do
       exiftool_output = `exiftool #{Shellwords.escape(uploader.file.path)}`
       # Check the command executed successfully
       expect($CHILD_STATUS.success?).to be true
+
+      command = 'exiftool'
+      args = [uploader.file.path]
+      stdout_str, stderr_str, status = Open3.capture3(command, *args)
+      expect(status.success?).to(be(true), "exiftool command failed: #{stderr_str}")
+      exiftool_output = stdout_str # Now, exiftool_output holds the stdout
 
       # The `exiftool` command is used here to verify that a broader range of metadata
       # types (beyond just EXIF, which MiniMagick might expose) have been stripped.
