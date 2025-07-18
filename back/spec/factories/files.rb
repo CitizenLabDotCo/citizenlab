@@ -38,5 +38,13 @@ FactoryBot.define do
     trait :other do
       category { 'other' }
     end
+
+    trait :with_description do
+      description_multiloc do
+        AppConfiguration.instance.settings('core', 'locales').index_with do |locale|
+          "Description in #{locale}"
+        end
+      end
+    end
   end
 end

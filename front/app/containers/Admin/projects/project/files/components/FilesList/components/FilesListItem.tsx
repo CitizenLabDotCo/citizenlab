@@ -95,6 +95,12 @@ const FilesListItem = ({
           <Text fontSize="s" color={'coolGrey500'} m="0px">
             •
           </Text>
+          <Text fontSize="s" color={'coolGrey500'} m="0px">
+            {formatMessage(messages[file.attributes.category])}
+          </Text>
+          <Text fontSize="s" color={'coolGrey500'} m="0px">
+            •
+          </Text>
           <UserName
             userId={file.relationships.uploader.data.id}
             fontSize={14}

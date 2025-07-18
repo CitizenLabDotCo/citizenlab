@@ -6,7 +6,7 @@ import { isEmpty } from 'lodash-es';
 import { FormProvider, useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 
-import { IFile } from 'api/files/types';
+import { FILE_CATEGORIES, IFile } from 'api/files/types';
 import useUpdateFile from 'api/files/useUpdateFile';
 
 import Feedback from 'components/HookForm/Feedback';
@@ -17,7 +17,7 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMult
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-import messages from '../messages';
+import messages from '../../messages';
 
 import { getFileExtensionString, getFileNameWithoutExtension } from './utils';
 
@@ -39,9 +39,7 @@ const FileEditForm = ({ file }: Props) => {
     name: string()
       .matches(/^[^.]*$/, formatMessage(messages.fileNameCannotContainDot))
       .required(formatMessage(messages.fileNameRequired)),
-    category: string()
-      .oneOf(['type_1', 'type_2', 'type_3', 'type_4']) // TODO: Replace with actual category types once implemented.
-      .notRequired(),
+    category: string().oneOf(FILE_CATEGORIES).required(),
     description_multiloc: object().notRequired(),
   });
 
@@ -49,10 +47,8 @@ const FileEditForm = ({ file }: Props) => {
     mode: 'onBlur',
     defaultValues: {
       name: fileNameWithoutExtension || '',
-      category: 'type_1', // TODO: Replace with actual default value once category is implemented.
-      description_multiloc: {
-        en: 'This is a sample AI-generated description for this file. It contains a few sentences describing the contents of this file. It can also be edited manually by the user.',
-      }, // TODO: Replace with actual default value once description is implemented.
+      category: file.data.attributes.category,
+      description_multiloc: file.data.attributes.description_multiloc,
     },
     resolver: yupResolver(schema),
   });
@@ -64,7 +60,8 @@ const FileEditForm = ({ file }: Props) => {
         file: {
           // Join the file name back with the extension before persisting.
           name: `${methods.getValues('name')}.${fileExtensionString}`,
-          // TODO: Add category and description_multiloc once implemented
+          category: methods.getValues('category') || 'other',
+          description_multiloc: methods.getValues('description_multiloc'),
         },
       });
 
@@ -90,13 +87,10 @@ const FileEditForm = ({ file }: Props) => {
           <Select
             name="category"
             label={formatMessage(messages.categoryLabel)}
-            options={[
-              // TODO: Replace with actual category types once implemented.
-              { value: 'type_1', label: 'Type 1' },
-              { value: 'type_2', label: 'Type 2' },
-              { value: 'type_3', label: 'Type 3' },
-              { value: 'type_4', label: 'Type 4' },
-            ]}
+            options={FILE_CATEGORIES.map((category) => ({
+              value: category,
+              label: formatMessage(messages[category]),
+            }))}
           />
 
           <TextAreaMultilocWithLocaleSwitcher
@@ -118,11 +112,7 @@ const FileEditForm = ({ file }: Props) => {
               </Button>
             </Box>
 
-            <Feedback
-              successMessage={formatMessage(
-                messages.saveFileMetadataSuccessMessage
-              )}
-            />
+            <Feedback marginTop="16px" onlyShowErrors={true} />
           </Box>
         )}
       </form>
