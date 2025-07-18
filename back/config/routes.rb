@@ -346,7 +346,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :files, only: %i[create index show destroy], controller: 'files/files'
+      resources :files, controller: 'files/files'
     end
   end
 
