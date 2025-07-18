@@ -199,17 +199,16 @@ class ProjectsFinderAdminService
 
   # Filter projects by the participation method of their current phase
   def self.filter_current_phase_participation_method(scope, params = {})
-    participation_methods = params[:participation_methods] ?? []
+    participation_methods = params[:participation_methods] || []
     return scope if participation_methods.blank?
 
-    project_ids = scope.pluck(:id)
-    project_ids_with_matching_phase = project_ids.select do |project_id|
-      project = Project.includes(:phases, :admin_publication).find_by(id: project_id)
-      next false unless project
+    current_phases_with_participation_methods = Phase
+      .where(participation_method: participation_methods)
+      .where("start_at <= current_date AND coalesce(end_at, 'infinity'::DATE) >= current_date")
 
-      current_phase = TimelineService.new.current_phase(project)
-      current_phase && participation_methods.include?(current_phase.participation_method)
-    end
+    project_ids_with_matching_phase = current_phases_with_participation_methods
+      .select(:project_id)
+
     scope.where(id: project_ids_with_matching_phase)
   end
 end
