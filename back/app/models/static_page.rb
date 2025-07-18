@@ -35,6 +35,8 @@
 #  index_static_pages_on_slug  (slug) UNIQUE
 #
 class StaticPage < ApplicationRecord
+  include Files::FileAttachable
+
   CODES = %w[about cookie-policy terms-and-conditions privacy-policy faq custom].freeze
   RESERVED_SLUGS = (CODES - %w[custom]).freeze
 
