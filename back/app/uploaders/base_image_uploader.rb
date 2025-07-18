@@ -100,7 +100,7 @@ class BaseImageUploader < BaseUploader
 
     unless status.success?
       ErrorReporter.report_msg(
-        "Exiftool command failed during image stripping.",
+        'Exiftool command failed during image stripping.',
         extra: {
           file_path: @file.path,
           exiftool_command: "#{command} #{args.join(' ')}",
@@ -125,18 +125,18 @@ class BaseImageUploader < BaseUploader
       stdout_str, stderr_str, status = Open3.capture3(command, *args)
     rescue Errno::ENOENT => e
       ErrorReporter.report_msg(
-        "External command not found.",
+        'External command not found.',
         extra: {
           command_attempted: "#{command} #{args.join(' ')}",
           error_message: e.message,
           file_path: @file.path,
-          environment_path: ENV['PATH']
+          environment_path: ENV.fetch('PATH')
         }
       )
       raise "Command not found: '#{command}'. Is it installed and in PATH?"
     rescue StandardError => e
       ErrorReporter.report_msg(
-        "An unexpected error occurred executing external command.",
+        'An unexpected error occurred executing external command.',
         extra: {
           command_attempted: "#{command} #{args.join(' ')}",
           error_message: e.message,
