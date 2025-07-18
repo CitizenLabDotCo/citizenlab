@@ -74,10 +74,14 @@ module BulkImportIdeas::Importers
     end
 
     def add_author(idea_row, idea_attributes)
+      pp "EMAIL_1: '#{idea_row[:user_email]}'"
       author = nil
       if idea_row[:user_email].present? || idea_row[:user_first_name].present?
         author = idea_row[:user_email].present? ? User.find_by_cimail(idea_row[:user_email]) : nil
-        unless author
+        if !author && (idea_row[:user_email].present? || @create_empty_users)
+
+          pp "EMAIL_2: #{idea_row[:user_email]}"
+
           user_params = {
             locale: @locale,
             first_name: idea_row[:user_first_name],
@@ -100,30 +104,22 @@ module BulkImportIdeas::Importers
     def add_published_at(idea_row, idea_attributes)
       return if idea_row[:published_at].blank?
 
-      if idea_row[:published_at].acts_like? :date
-        idea_attributes[:published_at] = idea_row[:published_at]
-        return
-      end
-
-      invalid_date_error = BulkImportIdeas::Error.new(
-        'bulk_import_publication_date_invalid_format',
-        value: idea_row[:published_at],
-        row: idea_row[:id]
-      )
-      raise invalid_date_error unless idea_row[:published_at].match? DATE_FORMAT_REGEX
-
       begin
-        published_at = date_with_time idea_row[:published_at]
+        published_at = idea_row[:published_at].acts_like?(:date) ? idea_row[:published_at] : DateTime.parse(idea_row[:published_at])
+        published_at = date_with_time published_at
       rescue StandardError => _e
-        raise invalid_date_error
+        raise BulkImportIdeas::Error.new(
+          'bulk_import_publication_date_invalid_format',
+          value: idea_row[:published_at],
+          row: idea_row[:id]
+        )
       end
 
       idea_attributes[:published_at] = published_at
     end
 
     # Add the current time to the date to ensure consistent sorting by published_at date
-    def date_with_time(date_string)
-      published_date = DateTime.parse date_string
+    def date_with_time(published_date)
       current_time = Time.now
       published_date.change(
         hour: current_time.hour,
