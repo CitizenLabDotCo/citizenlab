@@ -34,5 +34,24 @@ module Files
     validates :attachable_type, inclusion: { in: ATTACHABLE_TYPES }
 
     scope :ordered, -> { order(:position) }
+
+    after_destroy :destroy_orphaned_file
+
+    private
+
+    # If this is the last attachment for the underlying file, also delete the file, which
+    # is always the case currently as the application does not provide a way to attach the
+    # same file to multiple resources for now.
+    #
+    # This is a temporary implementation that maintains the existing behavior: the user
+    # expects the file to be removed from our servers if the attachment or the resource
+    # it's attached to is deleted. This is of particular importance for the files attached
+    # to ideas since they are typically uploaded by end users and not by admins. This will
+    # be reworked in the future to be less destructive.
+    def destroy_orphaned_file
+      return unless file.attachments.reload.empty?
+
+      file.destroy!
+    end
   end
 end

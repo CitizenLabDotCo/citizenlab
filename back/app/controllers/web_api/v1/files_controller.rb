@@ -115,7 +115,7 @@ class WebApi::V1::FilesController < ApplicationController
 
   def destroy
     @file.destroy!
-    SideFxFileService.new.after_destroy(file)
+    SideFxFileService.new.after_destroy(@file)
 
     head :ok
   rescue ActiveRecord::RecordNotDestroyed
@@ -176,6 +176,10 @@ class WebApi::V1::FilesController < ApplicationController
       content_by_content: file_params[:file_by_content].slice(:content, :name),
       uploader: current_user
     )
+
+    if (project = @container.try(:project))
+      files_file.files_projects.build(project: project)
+    end
 
     Files::FileAttachment.new(
       file: files_file,
