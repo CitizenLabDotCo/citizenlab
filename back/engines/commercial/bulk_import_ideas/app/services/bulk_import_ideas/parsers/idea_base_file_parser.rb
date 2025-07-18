@@ -145,7 +145,6 @@ module BulkImportIdeas::Parsers
     # @param [Hash] idea_row - comes from #ideas_to_idea_rows
     def process_custom_form_fields(fields, idea_row)
       merged_fields = merge_idea_with_form_fields(fields)
-      multi_select_types = %w[multiselect multiselect_image]
       custom_fields = {}
       merged_fields.each do |field|
         next if field[:key].nil? || field[:value].nil?
@@ -156,8 +155,7 @@ module BulkImportIdeas::Parsers
         else
           # Custom fields
           value = field[:value]
-          value = value.compact if multi_select_types.include?(field[:input_type])
-          value = value.compact.first if field[:input_type] == 'select' && value.is_a?(Array)
+          value = value.first if field[:input_type] == 'select' && value.is_a?(Array)
           custom_fields[field[:key].to_sym] = value if value.present?
         end
       end
@@ -174,7 +172,9 @@ module BulkImportIdeas::Parsers
             option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name] == value.strip }
             option[:key] if option
           end
-          field[:value] = options
+          field[:value] = options.compact.uniq
+        else
+          field[:value] = []
         end
       elsif %w[number linear_scale sentiment_linear_scale rating].include?(field[:input_type]) && field[:value].present?
         field[:value] = field[:value].to_i
