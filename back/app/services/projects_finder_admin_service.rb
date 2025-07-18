@@ -199,10 +199,8 @@ class ProjectsFinderAdminService
 
   # Filter projects by the participation method of their current phase
   def self.filter_current_phase_participation_method(scope, params = {})
-    participation_methods = params[:participation_methods]
+    participation_methods = params[:participation_methods] ?? []
     return scope if participation_methods.blank?
-
-    participation_methods = Array(participation_methods)
 
     project_ids = scope.pluck(:id)
     project_ids_with_matching_phase = project_ids.select do |project_id|
