@@ -25,6 +25,46 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates',
     defaultMessage: 'Participation state',
   },
+  participationMethodLabel: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label',
+    defaultMessage: 'Participation method',
+  },
+  participationMethodIdeation: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation',
+    defaultMessage: 'Ideation',
+  },
+  participationMethodVoting: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.voting',
+    defaultMessage: 'Voting',
+  },
+  participationMethodInformation: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information',
+    defaultMessage: 'Information',
+  },
+  participationMethodProposals: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.proposals',
+    defaultMessage: 'Proposals',
+  },
+  participationMethodNativeSurvey: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.native_survey',
+    defaultMessage: 'Native Survey',
+  },
+  participationMethodPoll: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.poll',
+    defaultMessage: 'Poll',
+  },
+  participationMethodVolunteering: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.volunteering',
+    defaultMessage: 'Volunteering',
+  },
+  participationMethodDocumentAnnotation: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.document_annotation',
+    defaultMessage: 'Document Annotation',
+  },
+  filterByCurrentPhaseMethod: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod',
+    defaultMessage: 'Filter by the current phase participation method',
+  },
   notStarted: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted',
     defaultMessage: 'Not started',
@@ -40,5 +80,9 @@ export default defineMessages({
   past: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past',
     defaultMessage: 'Past',
+  },
+  folders: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders',
+    defaultMessage: 'Folders',
   },
 });
