@@ -10,6 +10,7 @@ import { lighten } from 'polished';
 import styled from 'styled-components';
 
 import { IEventFileData } from 'api/event_files/types';
+import { IFileData } from 'api/files/types';
 import { IIdeaFileData } from 'api/idea_files/types';
 import { IPageFileData } from 'api/page_files/types';
 import { IPhaseFileData } from 'api/phase_files/types';
@@ -71,16 +72,40 @@ const FileSize = styled.span`
 `;
 
 interface Props {
-  file:
+  file?:
     | IProjectFileData
     | IPhaseFileData
     | IPageFileData
     | IEventFileData
     | IIdeaFileData;
+  fileNewType?: IFileData; // TODO: Rename this prop to "file" and remove the old one after planned refactoring & BE changes.
   className?: string;
 }
 
-const FileDisplay = ({ file, className }: Props) => {
+const FileDisplay = ({ file, fileNewType, className }: Props) => {
+  if (!isNilOrError(fileNewType)) {
+    const {
+      content: { url },
+      name,
+      size,
+    } = fileNewType.attributes;
+    return (
+      <Container className={className}>
+        <Paperclip name="paperclip" />
+        <FileDownloadLink
+          href={url}
+          download={name}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {name}
+        </FileDownloadLink>
+        <Spacer />
+        {size && <FileSize>({returnFileSize(size)})</FileSize>}
+      </Container>
+    );
+  }
+
   if (!isNilOrError(file)) {
     const {
       file: { url },

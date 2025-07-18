@@ -2235,7 +2235,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Uštedjeti",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Datoteka je uspješno ažurirana.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Pretraži datoteke",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Vrsta datoteke",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Možete prenijeti najviše {maxFiles} datoteka odjednom.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Nepoznato",
   "app.containers.AdminPage.ProjectFiles.upload": "Prenesi",
