@@ -20,13 +20,13 @@ namespace :bulk_import do
         Rails.logger.info "Parsing file: #{file_path}"
 
         extractor = BulkImportIdeas::Extractors::EngagementHqXlsxExtractor.new(file_path)
-
+        select_types = %w[select multiselect]
         # TODO: WHY IS IT STILL creating blank users
-        # TODO: Also not doubel creating user fields
+        # TODO: Business owner or operator outside of the Downtown - is appearing but has no selections
+        # TODO: Do you represent a Guelph business? NOT a select
 
         # Whilst in dev, we want to destroy the existing project first
         Project.find_by(slug: extractor.project[:slug])&.destroy
-        # next
 
         # Create a new draft project & phase in the tenant
         project = Project.create!(extractor.project)
@@ -41,12 +41,18 @@ namespace :bulk_import do
         Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
 
         # Create any user fields if they don't already exist
-        # TODO: Does not seem to be importing the user data
         extractor.user_custom_fields.each do |field|
+          CustomField.find_by(key: field[:key])&.destroy
           next if CustomField.find_by(key: field[:key])
 
           # Create the user custom fields
-          CustomField.create!(field.except(:options, :statements).merge(resource_type: 'User'))
+          custom_field = CustomField.create!(field.except(:options, :statements).merge(resource_type: 'User'))
+          if select_types.include? field[:input_type]
+            # If the field is a select type, we need to create options
+            field[:options].each do |option|
+              CustomFieldOption.create!(option.merge(custom_field: custom_field))
+            end
+          end
         end
 
         # Create the form and form fields
@@ -56,7 +62,6 @@ namespace :bulk_import do
         CustomField.create!(input_type: 'page', page_layout: 'default', resource: form)
 
         # Create the form fields based on the content
-        select_types = %w[select multiselect]
         extractor.idea_custom_fields.each do |field|
           custom_field = CustomField.create!(field.except(:options, :statements).merge(resource: form))
           if select_types.include? field[:input_type]

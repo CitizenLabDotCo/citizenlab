@@ -21,16 +21,12 @@ module BulkImportIdeas::Extractors
       'Date of contribution' => 'Date Published (dd-mm-yyyy)'
     }
 
-    # Columns not detected as select but should be forced to be
-    FORCE_SELECT_COLUMNS = [
-      'Do you represent a Guelph business?'
-    ]
-
     def initialize(xlsx_file_path)
       workbook = RubyXL::Parser.parse_buffer(open(xlsx_file_path).read)
       @worksheet = workbook.worksheets[0]
       @idea_columns = []
       @user_columns = []
+      @field_type_overrides = {} # For any column types that are not automatically detected
       @idea_rows = generate_idea_rows
     end
 
@@ -63,7 +59,11 @@ module BulkImportIdeas::Extractors
 
     def generate_idea_rows
       data = []
-      @worksheet.drop(4).each do |row|
+
+      # Are there any input type overrides in the sheet?
+      type_overrides = extract_input_type_overrides
+
+      @worksheet.drop(type_overrides ? 5 : 4).each do |row|
         # Exit if column D (date column) is empty (ie the data rows have ended)
         break if row[3].nil? || row[3].value.nil?
 
@@ -84,6 +84,24 @@ module BulkImportIdeas::Extractors
       data
     end
 
+    def extract_input_type_overrides
+      has_overrides = @worksheet.sheet_data[4][0].value == 'TYPE_OVERRIDES'
+      return false unless has_overrides
+
+      @worksheet.sheet_data[4].cells.each_with_index do |cell, col_index|
+        next if cell.nil? || cell.value.nil? || cell.value.empty?
+        next if cell.column < 3 # Skip columns before the 4th column
+
+        column_name = column_header(col_index)
+        next unless column_name # Skip if header is nil
+
+        # Store the input type override
+        @field_type_overrides[column_name] = cell.value.strip.downcase
+      end
+
+      has_overrides
+    end
+
     def column_header(col_index)
       row_index = col_index == 3 ? 2 : 3 # Data column header is on different row!
       column_name = @worksheet[row_index][col_index]&.value
@@ -93,19 +111,19 @@ module BulkImportIdeas::Extractors
       # Change some names to match our import format
       column_name = SPECIAL_COLUMN_MAP[column_name] if SPECIAL_COLUMN_MAP.key?(column_name)
 
-      # Add the column to the appropriate list
+      # Add the column to the appropriate array - using col_index to ensure correct order maintained
       if SPECIAL_COLUMN_MAP.values.exclude?(column_name)
         if USER_COLUMNS.include?(column_name)
-          @user_columns << column_name unless @user_columns.include?(column_name)
+          @user_columns[col_index] = column_name unless @user_columns.include?(column_name)
         else
-          @idea_columns << column_name unless @idea_columns.include?(column_name)
+          @idea_columns[col_index] = column_name unless @idea_columns.include?(column_name)
         end
       end
       column_name
     end
 
     def generate_fields(columns, fixed_key: false)
-      columns.map do |column_name|
+      columns.compact.map do |column_name|
         attributes = {
           title_multiloc: multiloc(column_name),
           required: required?(column_name),
@@ -146,28 +164,19 @@ module BulkImportIdeas::Extractors
       { input_type: input_type }
     end
 
+    # Note: Will not work if select options contain commas or semicolons
+    # TODO: Rewrite this - override stuff is messy
     def select_field_attributes(column_name)
       values = @idea_rows.pluck(column_name).compact.reject(&:empty?)
+      override_input_type = @field_type_overrides[column_name]
+      maybe_multiselect = values.uniq.any? { |value| value.include?(',') || value.include?(';') } unless override_input_type == 'select'
+      values = values.map { |value| value.split(/[,;]/).map(&:strip) }.flatten if maybe_multiselect
 
-      # Detect single select field
       unique_ratio = values.size / values.uniq.size.to_f
-      if unique_ratio > 10 || FORCE_SELECT_COLUMNS.include?(column_name) # Probably needs to be relational to the size of the data
+      if unique_ratio > 10 || %w[select multiselect].include?(override_input_type)
         return {
-          input_type: 'select',
+          input_type: override_input_type || (maybe_multiselect ? 'multiselect' : 'select'),
           options: values.uniq.map { |value| { title_multiloc: multiloc(value), key: generate_key(value) } }
-        }
-      end
-
-      # Detect multiselect field
-      split_values = values.map { |value| value.split(/[,;]/).map(&:strip) }.flatten
-      unique_ratio = split_values.size / split_values.uniq.size.to_f
-      if unique_ratio > 10
-        # Update values to ensure semicolons for multiselect
-        update_delimiters(column_name)
-
-        return {
-          input_type: 'multiselect',
-          options: split_values.uniq.map { |value| { title_multiloc: multiloc(value), key: generate_key(value) } }
         }
       end
 
@@ -216,11 +225,22 @@ module BulkImportIdeas::Extractors
       nil
     end
 
-    # TODO: Order the statements negative to positive using GPT maybe?
+    # Order the matrix labels negative to positive using GPT
     def order_by_sentiment(values)
-      # This method is a placeholder for any future logic to order values by sentiment
-      # Currently, it just returns the values as they are
-      values
+      gpt_mini = Analysis::LLM::GPT4oMini.new
+      prompt = <<~GPT_PROMPT
+      At the end of this message, you’ll find a list of strings delimited by ;. 
+      Return only the list, in the same format but ordered by sentiment, most negative first and most positive last
+
+      List of strings:
+      #{values.join(';')}
+      GPT_PROMPT
+      gpt_response = gpt_mini.chat(prompt)
+
+      new_values = gpt_response&.gsub('"', '')&.split(';')
+      return values if new_values.nil? || new_values.length != values.length
+
+      new_values
     end
 
     def multiloc(str)
