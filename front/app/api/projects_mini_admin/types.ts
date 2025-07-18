@@ -13,6 +13,7 @@ export type Parameters = {
   start_at?: string;
   end_at?: string;
   participation_states?: ParticipationState[];
+  folder_ids?: string[];
   sort:
     | 'recently_viewed'
     | 'phase_starting_or_ending_soon'

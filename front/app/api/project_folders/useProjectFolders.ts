@@ -15,7 +15,7 @@ const fetchProjectFolders = ({ ...queryParams }: IQueryParameters) =>
     },
   });
 
-const useProjectFolders = (queryParams: IQueryParameters) => {
+const useProjectFolders = (queryParams: IQueryParameters, enabled = true) => {
   return useQuery<
     IProjectFolders,
     CLErrors,
@@ -24,6 +24,7 @@ const useProjectFolders = (queryParams: IQueryParameters) => {
   >({
     queryKey: projectFoldersKeys.list(queryParams),
     queryFn: () => fetchProjectFolders(queryParams),
+    enabled,
   });
 };
 
