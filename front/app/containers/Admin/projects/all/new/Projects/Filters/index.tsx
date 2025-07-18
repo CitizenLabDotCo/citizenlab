@@ -31,7 +31,7 @@ const Filters = () => {
       alignItems="center"
     >
       <Box display="flex" alignItems="center" w="100%">
-        <Box width="100%" mr="12px" minWidth="300px">
+        <Box mr="12px" minWidth="300px">
           <Sort />
         </Box>
         <Manager
@@ -47,7 +47,7 @@ const Filters = () => {
             setParam('status', publicationStatuses);
           }}
         />
-        <Box width="100%">
+        <Box>
           <ParticipationStates
             participationStates={participationStates}
             onChange={(value) => {
@@ -55,7 +55,7 @@ const Filters = () => {
             }}
           />
         </Box>
-        <Box mr="8px" width="200%">
+        <Box mr="8px">
           <ParticipationMethods
             participationMethods={participationMethods}
             onChange={(value) => {
@@ -63,7 +63,7 @@ const Filters = () => {
             }}
           />
         </Box>
-        <Box width="100%" mr="12px">
+        <Box mr="12px">
           <Dates />
         </Box>
       </Box>
