@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.save',
     defaultMessage: 'Save',
   },
-  filePreviewLabel: {
-    id: 'app.containers.AdminPage.ProjectFiles.filePreviewLabel',
-    defaultMessage: 'File Preview',
-  },
   fileNameLabel: {
     id: 'app.containers.AdminPage.ProjectFiles.fileNameLabel',
     defaultMessage: 'File Name',

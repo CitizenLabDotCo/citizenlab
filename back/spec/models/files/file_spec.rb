@@ -13,6 +13,11 @@ RSpec.describe Files::File do
     it { is_expected.to validate_numericality_of(:size).is_greater_than_or_equal_to(0).allow_nil }
     it { is_expected.to validate_inclusion_of(:category).in_array(described_class.categories.keys) }
     it { is_expected.to validate_presence_of(:category).with_message('is not included in the list') }
+
+    it 'is valid for all file extensions' do
+      file = build(:file, name: 'filename.unknown_ext')
+      expect(file).to be_valid
+    end
   end
 
   describe 'associations' do

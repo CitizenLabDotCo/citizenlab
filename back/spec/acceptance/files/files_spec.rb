@@ -154,6 +154,7 @@ resource 'Files' do
             category: file.category,
             created_at: file.created_at.iso8601(3),
             updated_at: file.updated_at.iso8601(3),
+            content: { url: file.content.url },
             size: 130
           },
           relationships: {
