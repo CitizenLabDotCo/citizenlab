@@ -39,10 +39,6 @@ RSpec.describe BaseImageUploader do
       ]
       expect(image.exif.keys - allowed_exif_keys).to be_empty
 
-      exiftool_output = `exiftool #{Shellwords.escape(uploader.file.path)}`
-      # Check the command executed successfully
-      expect($CHILD_STATUS.success?).to be true
-
       command = 'exiftool'
       args = [uploader.file.path]
       stdout_str, stderr_str, status = Open3.capture3(command, *args)
