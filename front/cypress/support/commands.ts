@@ -199,6 +199,7 @@ function setLoginCookie(email: string, password: string) {
 
 function setAdminLoginCookie() {
   cy.setLoginCookie('admin@govocal.com', 'democracy2.0');
+  cy.setConsentCookie();
 }
 
 function setModeratorLoginCookie() {

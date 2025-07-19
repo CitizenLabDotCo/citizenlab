@@ -4,7 +4,7 @@ import { IUserData } from 'api/users/types';
 
 import eventEmitter from 'utils/eventEmitter';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
-import { fireEvent, render, act } from 'utils/testUtils/rtl';
+import { fireEvent, render, act, screen } from 'utils/testUtils/rtl';
 
 // mocked functions
 import { setConsent, IConsentCookie } from './consent';
@@ -102,9 +102,7 @@ describe('<ConsentManager />', () => {
       ).toBeInTheDocument();
 
       // closes
-      const closeButton = container.querySelectorAll(
-        '.e2e-modal-close-button'
-      )[0];
+      const closeButton = screen.getByTestId('e2e-preferences-cancel');
       fireEvent.click(closeButton);
       expect(
         container.querySelector('#e2e-preference-dialog')
@@ -122,37 +120,6 @@ describe('<ConsentManager />', () => {
         savedChoices: {
           matomo: true,
           google_analytics: true,
-        },
-      });
-    });
-
-    it('rejects all cookies except functional if banner is closed', () => {
-      const { container } = render(<ConsentManager />);
-      fireEvent.click(container.querySelector('.e2e-close-cookie-banner'));
-
-      expect(setConsent).toHaveBeenCalledWith({
-        functional: true,
-        analytics: false,
-        advertising: false,
-        savedChoices: {
-          matomo: false,
-          google_analytics: false,
-        },
-      });
-    });
-
-    it('rejects all cookies except functional if preference modal is opened and confirmed without changes', () => {
-      const { container } = render(<ConsentManager />);
-      fireEvent.click(container.querySelector('.integration-open-modal'));
-      fireEvent.click(container.querySelector('#e2e-preferences-save'));
-
-      expect(setConsent).toHaveBeenCalledWith({
-        functional: true,
-        analytics: false,
-        advertising: false,
-        savedChoices: {
-          matomo: false,
-          google_analytics: false,
         },
       });
     });

@@ -1,10 +1,14 @@
 import React from 'react';
 
-import { TCategory } from '../destinations';
-import { CategorizedDestinations, IPreferences } from '../typings';
+import { Title } from '@citizenlab/cl2-component-library';
 
-import CategoryCard from './CategoryCard';
-import ContentContainer from './ContentContainer';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { TCategory } from '../../destinations';
+import messages from '../../messages';
+import { CategorizedDestinations, IPreferences } from '../../typings';
+import CategoryCard from '../CategoryCard';
+import ContentContainer from '../ContentContainer';
 
 interface Props {
   onChange: (category: TCategory, value: boolean) => void;
@@ -14,13 +18,16 @@ interface Props {
 
 const doNothing = () => {};
 
-const Preferences = ({
+const MainContent = ({
   categoryDestinations,
   preferences,
   onChange,
 }: Props) => {
   return (
     <ContentContainer id="e2e-preference-dialog">
+      <Title>
+        <FormattedMessage {...messages.title} />
+      </Title>
       {Object.keys(categoryDestinations)
         .filter((category: TCategory) => {
           return categoryDestinations[category].length > 0;
@@ -48,4 +55,4 @@ const Preferences = ({
   );
 };
 
-export default Preferences;
+export default MainContent;

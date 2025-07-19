@@ -2,17 +2,13 @@ import React, { FormEvent } from 'react';
 
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import { TCategory } from '../destinations';
-import messages from '../messages';
 import { CategorizedDestinations, IPreferences } from '../typings';
 
 import Footer from './Footer';
-import Preferences from './Preferences';
+import MainContent from './MainContent';
 
 interface Props {
-  opened: boolean;
   categorizedDestinations: CategorizedDestinations;
   preferences: IPreferences;
   onClose: () => void;
@@ -22,7 +18,6 @@ interface Props {
 }
 
 const PreferencesModal = ({
-  opened,
   categorizedDestinations,
   preferences,
   onClose,
@@ -32,9 +27,10 @@ const PreferencesModal = ({
 }: Props) => {
   return (
     <Modal
-      opened={opened}
+      opened
       close={onClose}
-      header={<FormattedMessage {...messages.title} />}
+      closeOnClickOutside={false}
+      hideCloseButton
       footer={
         <Footer
           categorizedDestinations={categorizedDestinations}
@@ -43,7 +39,7 @@ const PreferencesModal = ({
         />
       }
     >
-      <Preferences
+      <MainContent
         onChange={updatePreference}
         categoryDestinations={categorizedDestinations}
         preferences={preferences}

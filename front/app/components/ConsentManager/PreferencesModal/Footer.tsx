@@ -1,30 +1,11 @@
 import React, { FormEvent } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import styled from 'styled-components';
-
-import ButtonWithLink from 'components/UI/ButtonWithLink';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 import { CategorizedDestinations } from '../typings';
-
-const ButtonContainer = ({ children }: { children: React.ReactNode }) => (
-  <Box
-    width="100%"
-    display="flex"
-    alignItems="center"
-    justifyContent="flex-end"
-  >
-    {children}
-  </Box>
-);
-
-const CancelButton = styled(ButtonWithLink)`
-  margin-right: 4px;
-`;
 
 interface Props {
   handleCancel: () => void;
@@ -44,37 +25,39 @@ const Footer = ({
   );
   const mode: FormMode = noDestinations ? 'noDestinations' : 'preferenceForm';
 
-  return mode === 'preferenceForm' ? (
-    <ButtonContainer>
-      <CancelButton
-        onClick={handleCancel}
-        className="integration-cancel"
-        buttonStyle="primary-inverse"
-        textColor={colors.primary}
-        textHoverColor={colors.primary}
-      >
-        <FormattedMessage {...messages.cancel} />
-      </CancelButton>
-      <ButtonWithLink
-        onClick={handleSave}
-        buttonStyle="primary"
-        bgColor={colors.primary}
-        bgHoverColor={darken(0.1, colors.primary)}
-        className="integration-save"
-        id="e2e-preferences-save"
-      >
-        <FormattedMessage {...messages.save} />
-      </ButtonWithLink>
-    </ButtonContainer>
-  ) : (
-    <ButtonWithLink
-      onClick={handleCancel}
-      buttonStyle="primary"
-      bgColor={colors.primary}
-      bgHoverColor={darken(0.1, colors.primary)}
+  return (
+    <Box
+      width="100%"
+      display="flex"
+      alignItems="center"
+      justifyContent="flex-end"
     >
-      <FormattedMessage {...messages.close} />
-    </ButtonWithLink>
+      {mode === 'preferenceForm' ? (
+        <>
+          <Button
+            mr="4px"
+            onClick={handleCancel}
+            className="integration-cancel"
+            buttonStyle="text"
+            data-testid="e2e-preferences-cancel"
+          >
+            <FormattedMessage {...messages.cancel} />
+          </Button>
+          <Button
+            onClick={handleSave}
+            buttonStyle="primary"
+            className="integration-save"
+            id="e2e-preferences-save"
+          >
+            <FormattedMessage {...messages.save} />
+          </Button>
+        </>
+      ) : (
+        <Button onClick={handleCancel} buttonStyle="primary">
+          <FormattedMessage {...messages.close} />
+        </Button>
+      )}
+    </Box>
   );
 };
 
