@@ -1858,7 +1858,6 @@
   "app.containers.SearchInput.searchLabel": "Search",
   "app.containers.SearchInput.searchPlaceholder": "Search",
   "app.containers.SearchInput.searchTerm": "Search term: {searchTerm}",
-  "app.containers.SignIn.forcePasswordChange": "You need to reset your password. Click here to reset.",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect is the solution proposed by the French state to secure and simplify the sign up to more than 700 online services.",
   "app.containers.SignIn.or": "Or",
   "app.containers.SignIn.signInError": "The provided information is not correct. Click 'Forgot Password?' to reset your password.",
