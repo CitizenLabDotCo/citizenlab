@@ -27,9 +27,10 @@ const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
     value: 'proposals',
     message: messages.participationMethodProposals,
   },
+  // Handles both native and external surveys
   {
-    value: 'native_survey',
-    message: messages.participationMethodNativeSurvey,
+    value: 'survey',
+    message: messages.participationMethodSurvey,
   },
   {
     value: 'poll',
@@ -41,7 +42,11 @@ const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
   },
   {
     value: 'document_annotation',
-    message: messages.participationMethodDocumentAnnotation,
+    message: messages.pMDocumentAnnotation,
+  },
+  {
+    value: 'common_ground',
+    message: messages.participationMethodDocumentCommonGround,
   },
 ];
 
@@ -58,6 +63,14 @@ const ParticipationMethods = ({ participationMethods, onChange }: Props) => {
     text: formatMessage(option.message),
   }));
 
+  const handleOnChange = (selected: string[]) => {
+    // if the value is survey, we send both native and external surveys
+    const updatedMethods = selected.includes('survey')
+      ? [...selected, 'native_survey', 'survey']
+      : selected;
+    onChange(updatedMethods as ParticipationMethod[]);
+  };
+
   return (
     <Tooltip
       content={
@@ -72,7 +85,7 @@ const ParticipationMethods = ({ participationMethods, onChange }: Props) => {
         multipleSelectionAllowed
         selected={participationMethods}
         values={options}
-        onChange={onChange}
+        onChange={handleOnChange}
       />
     </Tooltip>
   );

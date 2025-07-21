@@ -45,9 +45,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.proposals',
     defaultMessage: 'Proposals',
   },
-  participationMethodNativeSurvey: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.native_survey',
-    defaultMessage: 'Native Survey',
+  participationMethodSurvey: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.participationMethodSurvey',
+    defaultMessage: 'Survey',
   },
   participationMethodPoll: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.poll',
@@ -57,9 +57,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.volunteering',
     defaultMessage: 'Volunteering',
   },
-  participationMethodDocumentAnnotation: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.document_annotation',
-    defaultMessage: 'Document Annotation',
+  pMDocumentAnnotation: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.pMDocumentAnnotation',
+    defaultMessage: 'Document annotation',
+  },
+  participationMethodDocumentCommonGround: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.participationMethodDocumentCommonGround',
+    defaultMessage: 'Common ground',
   },
   filterByCurrentPhaseMethod: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod',
