@@ -53,6 +53,7 @@ import CommunityMonitorHealthScoreWidget from '../Widgets/CommunityMonitorHealth
 import IframeMultiloc from '../Widgets/IframeMultiloc';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
+import ProjectsTimelineWidget from '../Widgets/ProjectsTimelineWidget';
 import ProjectsWidget from '../Widgets/ProjectsWidget';
 import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
 import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
@@ -373,6 +374,18 @@ const ReportBuilderToolbox = ({
               }
               icon="projects"
               label={formatMessage(WIDGET_TITLES.ProjectsWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-projects-timeline-widget"
+              component={
+                <ProjectsTimelineWidget
+                  title={toMultiloc(WIDGET_TITLES.ProjectsTimelineWidget)}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.ProjectsTimelineWidget)}
             />
           </Section>
         </Box>
