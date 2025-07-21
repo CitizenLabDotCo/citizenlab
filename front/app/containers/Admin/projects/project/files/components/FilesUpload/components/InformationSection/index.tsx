@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  IconNames,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import messages from '../messages';
 
@@ -27,7 +22,7 @@ const informationPoints = [
     mainText: messages.informationPoint3Title,
     secondaryText: messages.informationPoint3Description,
   },
-];
+] as const;
 
 // InformationSection component displays a section with information about file uploading.
 const InformationSection = () => {
@@ -44,7 +39,7 @@ const InformationSection = () => {
       {informationPoints.map((feature, index) => (
         <InformationItem
           key={index}
-          iconName={feature.iconName as IconNames}
+          iconName={feature.iconName}
           mainText={feature.mainText}
           secondaryText={feature.secondaryText}
         />
