@@ -127,7 +127,7 @@ class ProjectsFinderAdminService
 
     overlapping_project_ids = Phase
       .group(:project_id)
-      .having("min(start_at) >= ? AND min(start_at) <= ?", min_start_date, max_start_date)
+      .having('min(start_at) >= ? AND min(start_at) <= ?', min_start_date, max_start_date)
       .select(:project_id)
 
     scope.where(id: overlapping_project_ids)
