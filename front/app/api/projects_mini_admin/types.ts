@@ -3,10 +3,6 @@ import { Multiloc, Pagination, ILinks, IRelationship } from 'typings';
 import { ParticipationMethod } from 'api/phases/types';
 import { PublicationStatus, Visibility } from 'api/projects/types';
 
-import { Keys } from 'utils/cl-react-query/types';
-
-import projectsMiniAdminKeys from './keys';
-
 export type Parameters = {
   status?: PublicationStatus[];
   managers?: string[];
@@ -26,8 +22,6 @@ export type ParticipationState =
   | 'collecting_data'
   | 'informing'
   | 'past';
-
-export type ProjectsMiniAdminKeys = Keys<typeof projectsMiniAdminKeys>;
 
 export type ProjectsMiniAdmin = {
   data: ProjectMiniAdminData[];

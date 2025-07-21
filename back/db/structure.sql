@@ -1300,7 +1300,8 @@ CREATE TABLE public.projects (
     followers_count integer DEFAULT 0 NOT NULL,
     preview_token character varying NOT NULL,
     header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
-    hidden boolean DEFAULT false NOT NULL
+    hidden boolean DEFAULT false NOT NULL,
+    listed boolean DEFAULT true NOT NULL
 );
 
 
@@ -2437,7 +2438,8 @@ CREATE TABLE public.files (
     mime_type character varying,
     category character varying DEFAULT 'other'::character varying NOT NULL,
     description_multiloc jsonb DEFAULT '{}'::jsonb,
-    tsvector tsvector GENERATED ALWAYS AS ((setweight(to_tsvector('simple'::regconfig, (COALESCE(name, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('simple'::regconfig, COALESCE((description_multiloc)::text, ''::text)), 'B'::"char"))) STORED
+    tsvector tsvector GENERATED ALWAYS AS ((setweight(to_tsvector('simple'::regconfig, (COALESCE(name, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('simple'::regconfig, COALESCE((description_multiloc)::text, ''::text)), 'B'::"char"))) STORED,
+    ai_processing_allowed boolean DEFAULT false NOT NULL
 );
 
 
@@ -2453,6 +2455,13 @@ COMMENT ON COLUMN public.files.uploader_id IS 'the user who uploaded the file';
 --
 
 COMMENT ON COLUMN public.files.size IS 'in bytes';
+
+
+--
+-- Name: COLUMN files.ai_processing_allowed; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.files.ai_processing_allowed IS 'whether consent was given to process the file with AI';
 
 
 --
@@ -7474,6 +7483,8 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250716141100'),
+('20250716102450'),
 ('20250715075008'),
 ('20250714165020'),
 ('20250714155020'),
