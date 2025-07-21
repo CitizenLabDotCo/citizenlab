@@ -104,6 +104,14 @@ describe ProjectsFinderAdminService do
     let!(:p2) { create_project(start_at: Time.zone.today - 10.days, end_at: Time.zone.today - 5.days) }
     let!(:p3) { create_project(start_at: Time.zone.today + 5.days, end_at: Time.zone.today + 10.days) }
     let!(:p4) { create_project(start_at: Time.zone.today + 1.day, end_at: nil) }
+    let!(:p5) do
+      create_project(
+        start_at: Time.zone.today - 50.days,
+        end_at: Time.zone.today - 5.days,
+        start_at2: Time.zone.today - 4.days,
+        end_at2: Time.zone.today + 3.days
+      )
+    end
 
     it 'filters projects by start date' do
       result = described_class.filter_start_date(Project.all, { min_start_date: Time.zone.today - 7.days, max_start_date: Time.zone.today + 3.days })
@@ -112,7 +120,7 @@ describe ProjectsFinderAdminService do
 
     it 'returns all projects when range is empty' do
       result = described_class.filter_start_date(Project.all, { min_start_date: nil, max_start_date: nil })
-      expect(result.pluck(:id).sort).to match_array([p1.id, p2.id, p3.id, p4.id])
+      expect(result.pluck(:id).sort).to match_array([p1.id, p2.id, p3.id, p4.id, p5.id])
     end
   end
 
