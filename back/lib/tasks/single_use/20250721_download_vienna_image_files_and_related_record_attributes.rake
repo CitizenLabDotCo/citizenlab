@@ -8,9 +8,9 @@ namespace :single_use do
   desc 'Save selected file records attributes and related s3 file paths to a json file'
   task :save_vienna_image_file_details, %i[date] => [:environment] do |_t, args|
     # Reduce logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
+    # dev_null = Logger.new('/dev/null')
+    # Rails.logger = dev_null
+    # ActiveRecord::Base.logger = dev_null
 
     cutoff_date = args[:date] ? Date.parse(args[:date]) : Time.zone.today
     image_extensions = %w[jpg jpeg png gif tiff]
@@ -78,10 +78,9 @@ namespace :single_use do
       puts "Total image file record details saved: #{total_images}"
     end
 
-    File.write(
-      Rails.root.join('tmp', "vienna_image_files_w_cuttoff_#{cutoff_date}.json"),
-      JSON.pretty_generate(file_details)
-    )
+    Rails.root.join('tmp', "vienna_image_files_w_cuttoff_#{cutoff_date}.json")
+      .write(JSON.pretty_generate(file_details))
+
     puts "Saved file details to tmp/vienna_image_files_w_cuttoff_#{cutoff_date}.json"
   end
 
