@@ -1,11 +1,8 @@
-import React from 'react';
-
+import React, { useState, useRef, useEffect } from 'react';
 import { Success } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
-import { WrappedComponentProps } from 'react-intl';
-
+import { useIntl } from 'react-intl';
 import sendPasswordResetMail from 'api/authentication/reset_password/sendPasswordResetEmail';
-
 import {
   StyledContentContainer,
   Title,
@@ -15,167 +12,127 @@ import {
   StyledInput,
 } from 'components/smallForm';
 import { FormLabel } from 'components/UI/FormComponents';
-
-import { injectIntl } from 'utils/cl-intl';
 import { isValidEmail } from 'utils/validate';
-
 import messages from './messages';
-// import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
-interface Props {}
+const PasswordRecovery = () => {
+  // Params are only passed when forcing a reset
+  const [searchParams] = useSearchParams();
+  const forceReset = searchParams.get('force');
+  const passedEmail = searchParams.get('email');
 
-type State = {
-  email: string | null;
-  emailError: boolean;
-  submitError: boolean;
-  processing: boolean;
-  success: boolean;
-};
+  const [email, setEmail] = useState<string | null>(passedEmail);
+  const [emailError, setEmailError] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const emailInputRef = useRef<HTMLInputElement | null>(null);
+  const { formatMessage } = useIntl();
 
-class PasswordRecovery extends React.PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  emailInputElement: HTMLInputElement | null;
-
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      email: null,
-      emailError: false,
-      submitError: false,
-      processing: false,
-      success: false,
-    };
-    this.emailInputElement = null;
-  }
-
-  componentDidMount() {
-    if (this.emailInputElement) {
-      this.emailInputElement.focus();
+  useEffect(() => {
+    if (emailInputRef.current) {
+      emailInputRef.current.focus();
     }
-  }
+  }, []);
 
-  validate = (email: string | null) => {
-    const emailError = !email || !isValidEmail(email);
-
-    if (emailError && this.emailInputElement) {
-      this.emailInputElement.focus();
+  const validate = (email: string | null) => {
+    const hasError = !email || !isValidEmail(email);
+    setEmailError(hasError);
+    if (hasError && emailInputRef.current) {
+      emailInputRef.current.focus();
     }
-
-    this.setState({ emailError });
-
-    return !emailError;
+    return !hasError;
   };
 
-  handleEmailOnChange = (value) => {
-    this.setState({
-      emailError: false,
-      submitError: false,
-      email: value,
-    });
+  const handleEmailOnChange = (value: string) => {
+    setEmailError(false);
+    setSubmitError(false);
+    setEmail(value);
   };
 
-  handleEmailInputSetRef = (element: HTMLInputElement) => {
-    this.emailInputElement = element;
-  };
-
-  handleOnSubmit = async (event) => {
-    const { email } = this.state;
-
+  const handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    if (this.validate(email) && email) {
+    if (validate(email) && email) {
       try {
-        this.setState({ processing: true, success: false });
+        setProcessing(true);
+        setSuccess(false);
         await sendPasswordResetMail(email);
-        this.setState({
-          email: null,
-          processing: false,
-          success: true,
-        });
-        /* setTimeout(() => this.setState({ success: false }), 8000); */
+        setEmail(null);
+        setProcessing(false);
+        setSuccess(true);
+        // setTimeout(() => setSuccess(false), 8000);
       } catch {
-        this.setState({ processing: false, success: false, submitError: true });
+        setProcessing(false);
+        setSuccess(false);
+        setSubmitError(true);
       }
     } else {
-      this.setState({ emailError: true });
+      setEmailError(true);
     }
   };
 
-  render() {
-    // TODO: Need to find a way to refactor this component as a functional
-    // const [searchParams] = useSearchParams();
-    // const forceReset = searchParams.get('force');
-    const forceReset = true;
+  const helmetTitle = formatMessage(messages.helmetTitle);
+  const helmetDescription = formatMessage(messages.helmetDescription);
+  const title = formatMessage(messages.title);
+  const subtitle = formatMessage(messages.subtitle);
+  const emailPlaceholder = formatMessage(messages.emailPlaceholder);
+  const resetPassword = formatMessage(messages.resetPassword);
+  const forceResetMessage = forceReset
+    ? formatMessage(messages.forceResetMessage) + ' '
+    : '';
 
-    const { formatMessage } = this.props.intl;
-    const { email, emailError, submitError, processing, success } = this.state;
-    const helmetTitle = formatMessage(messages.helmetTitle);
-    const helmetDescription = formatMessage(messages.helmetDescription);
-    const title = formatMessage(messages.title);
-    const subtitle = formatMessage(messages.subtitle);
-    const emailPlaceholder = formatMessage(messages.emailPlaceholder);
-    const resetPassword = formatMessage(messages.resetPassword);
-    const forceResetMessage = forceReset
-      ? formatMessage(messages.forceResetMessage) + ' '
-      : '';
-
-    // Showing the same message for success and submission error because we don't want to give away information about whether an email address is registered or not
-    const feedbackMessage =
-      success || submitError
-        ? formatMessage(messages.passwordResetSuccessMessage)
-        : null;
-    let errorMessage: string | null = null;
-
-    if (emailError) {
-      errorMessage = formatMessage(messages.emailError);
-    }
-
-    return (
-      <>
-        <Helmet
-          title={helmetTitle}
-          meta={[{ name: 'description', content: helmetDescription }]}
-        />
-        <main>
-          <StyledContentContainer>
-            <Title style={{ marginBottom: '15px' }}>{title}</Title>
-            <Subtitle>
-              {forceResetMessage}
-              {subtitle}
-            </Subtitle>
-            <Form onSubmit={this.handleOnSubmit}>
-              <FormLabel htmlFor="email" labelMessage={messages.emailLabel} />
-              <StyledInput
-                id="email"
-                type="email"
-                autocomplete="email"
-                value={email}
-                error={errorMessage}
-                placeholder={emailPlaceholder}
-                onChange={this.handleEmailOnChange}
-                setRef={this.handleEmailInputSetRef}
-              />
-
-              <StyledButton
-                size="m"
-                width="100%"
-                processing={processing}
-                text={resetPassword}
-                onClick={this.handleOnSubmit}
-                className="e2e-submit-reset"
-              />
-
-              {feedbackMessage && (
-                <Success text={feedbackMessage} className="e2e-success-reset" />
-              )}
-            </Form>
-          </StyledContentContainer>
-        </main>
-      </>
-    );
+  // Showing the same message for success and submission error because we don't want to give away information about whether an email address is registered or not
+  const feedbackMessage =
+    success || submitError
+      ? formatMessage(messages.passwordResetSuccessMessage)
+      : null;
+  let errorMessage: string | null = null;
+  if (emailError) {
+    errorMessage = formatMessage(messages.emailError);
   }
-}
 
-export default injectIntl(PasswordRecovery);
+  return (
+    <>
+      <Helmet
+        title={helmetTitle}
+        meta={[{ name: 'description', content: helmetDescription }]}
+      />
+      <main>
+        <StyledContentContainer>
+          <Title style={{ marginBottom: '15px' }}>{title}</Title>
+          <Subtitle>
+            {forceResetMessage}
+            {subtitle}
+          </Subtitle>
+          <Form onSubmit={handleOnSubmit}>
+            <FormLabel htmlFor="email" labelMessage={messages.emailLabel} />
+            <StyledInput
+              id="email"
+              type="email"
+              autocomplete="email"
+              value={email}
+              error={errorMessage}
+              placeholder={emailPlaceholder}
+              onChange={handleEmailOnChange}
+              setRef={(el) => void (emailInputRef.current = el)}
+            />
+            <StyledButton
+              size="m"
+              width="100%"
+              processing={processing}
+              text={resetPassword}
+              onClick={handleOnSubmit}
+              className="e2e-submit-reset"
+            />
+            {feedbackMessage && (
+              <Success text={feedbackMessage} className="e2e-success-reset" />
+            )}
+          </Form>
+        </StyledContentContainer>
+      </main>
+    </>
+  );
+};
+
+export default PasswordRecovery;

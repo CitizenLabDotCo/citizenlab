@@ -106,7 +106,7 @@ const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
 
       if (e.message === 'force_password_change') {
         closeModal();
-        clHistory.push(`/password-recovery?force=true`);
+        clHistory.push(`/password-recovery?force=true&email=${email}`);
         return;
       }
 

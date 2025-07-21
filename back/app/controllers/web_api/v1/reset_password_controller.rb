@@ -23,7 +23,7 @@ class WebApi::V1::ResetPasswordController < ApplicationController
     @user = User.not_invited
       .find_by(reset_password_token: reset_password_params[:token])
     if @user && ResetPasswordService.new.token_valid?(@user, reset_password_params[:token])
-      if @user.update(password: reset_password_params[:password], reset_password_token: nil)
+      if @user.update(password: reset_password_params[:password], reset_password_token: nil, force_password_change: false)
         render json: WebApi::V1::UserSerializer.new(
           @user,
           params: jsonapi_serializer_params

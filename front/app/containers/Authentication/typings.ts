@@ -18,8 +18,7 @@ export type ErrorCode =
   | 'email_taken_and_user_can_be_verified'
   | 'not_entitled_under_minimum_age'
   | 'verification_taken'
-  | 'resending_code_failed'
-  | 'force_password_change';
+  | 'resending_code_failed';
 
 export interface State {
   flow: 'signup' | 'signin';
