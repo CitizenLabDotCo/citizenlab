@@ -1,5 +1,6 @@
 import { Multiloc, Pagination, ILinks, IRelationship } from 'typings';
 
+import { ParticipationMethod } from 'api/phases/types';
 import { PublicationStatus, Visibility } from 'api/projects/types';
 
 export type Parameters = {
@@ -9,6 +10,7 @@ export type Parameters = {
   start_at?: string;
   end_at?: string;
   participation_states?: ParticipationState[];
+  participation_methods?: ParticipationMethod[];
   sort:
     | 'recently_viewed'
     | 'phase_starting_or_ending_soon'
