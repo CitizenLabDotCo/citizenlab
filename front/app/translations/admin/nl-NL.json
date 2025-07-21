@@ -1093,7 +1093,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Participatiemethode",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.pMDocumentAnnotation": "Feedback op een document",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.participationMethodDocumentCommonGround": "Raakvlakkenmethode",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.participationMethodSurvey": "Enquête",
+  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.participationMethodSurvey": "Vragenlijst",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.poll": "Peiling",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.proposals": "Voorstellen",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.volunteering": "Vrijwilligers zoeken",
