@@ -88,7 +88,7 @@ class ProjectsFinderAdminService
     locale = params[:locale] || 'en'
 
     scope.order(
-      Arel.sql("title_multiloc->>'#{locale}' ASC, created_at ASC, id ASC"
+      Arel.sql("projects.title_multiloc->>'#{locale}' ASC, projects.created_at ASC, projects.id ASC"
     ))
   end
 
