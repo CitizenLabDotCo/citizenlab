@@ -44,35 +44,45 @@ namespace :single_use do
       content_builder_layout_images = ContentBuilder::LayoutImage.where(updated_at: ...cutoff_date).count
       puts "ContentBuilder::LayoutImage count: #{content_builder_layout_images}"
       total_images += content_builder_layout_images
+
       custom_field_option_images = CustomFieldOptionImage.where(updated_at: ...cutoff_date).count
       puts "CustomFieldOptionImage count: #{custom_field_option_images}"
       total_images += custom_field_option_images
+
       event_images = EventImage.where(updated_at: ...cutoff_date).count
       puts "EventImage count: #{event_images}"
       total_images += event_images
+
       idea_images = IdeaImage.where(updated_at: ...cutoff_date).count
       puts "IdeaImage count: #{idea_images}"
       total_images += idea_images
       total_possibly_user_images += idea_images
+
       project_folders_images = ProjectFolders::Image.where(updated_at: ...cutoff_date).count
       puts "ProjectFolders::Image count: #{project_folders_images}"
       total_images += project_folders_images
+
       project_images = ProjectImage.where(updated_at: ...cutoff_date).count
       puts "ProjectImage count: #{project_images}"
       total_images += project_images
+
       project_header_bg_images = Project.where(updated_at: ...cutoff_date).where.not(header_bg: nil).count
       puts "Project header background images count: #{project_header_bg_images}"
       total_images += project_header_bg_images
+
       project_folders_header_bg_images = ProjectFolders::Folder.where(updated_at: ...cutoff_date).where.not(header_bg: nil).count
       puts "ProjectFolders header background images count: #{project_folders_header_bg_images}"
       total_images += project_folders_header_bg_images
+
       static_pages_header_bg_images = StaticPage.where(updated_at: ...cutoff_date).where.not(header_bg: nil).count
       puts "StaticPage header background images count: #{static_pages_header_bg_images}"
       total_images += static_pages_header_bg_images
+
       text_images = TextImage.where(updated_at: ...cutoff_date).count
       puts "TextImage count: #{text_images}"
       total_images += text_images
       total_possibly_user_images += text_images
+
       user_avatar_images = User.where(updated_at: ...cutoff_date).where.not(avatar: nil).count
       puts "User avatar images count: #{user_avatar_images}"
       total_images += user_avatar_images
