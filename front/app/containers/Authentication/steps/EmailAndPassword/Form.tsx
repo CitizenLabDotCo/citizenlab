@@ -19,6 +19,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
@@ -29,7 +30,6 @@ import containerMessages from '../../messages';
 import tracks from '../../tracks';
 import TextLink from '../_components/TextLink';
 import sharedMessages from '../messages';
-import clHistory from 'utils/cl-router/history';
 
 interface Props {
   loading: boolean;

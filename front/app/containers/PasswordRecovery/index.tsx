@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
+
 import { Success } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
-import { useIntl } from 'react-intl';
+import { useSearchParams } from 'react-router-dom';
+
 import sendPasswordResetMail from 'api/authentication/reset_password/sendPasswordResetEmail';
+
 import {
   StyledContentContainer,
   Title,
@@ -12,9 +15,11 @@ import {
   StyledInput,
 } from 'components/smallForm';
 import { FormLabel } from 'components/UI/FormComponents';
+
+import { useIntl } from 'utils/cl-intl';
 import { isValidEmail } from 'utils/validate';
+
 import messages from './messages';
-import { useSearchParams } from 'react-router-dom';
 
 const PasswordRecovery = () => {
   // Params are only passed when forcing a reset
@@ -61,7 +66,6 @@ const PasswordRecovery = () => {
         setEmail(null);
         setProcessing(false);
         setSuccess(true);
-        // setTimeout(() => setSuccess(false), 8000);
       } catch {
         setProcessing(false);
         setSuccess(false);
@@ -79,7 +83,7 @@ const PasswordRecovery = () => {
   const emailPlaceholder = formatMessage(messages.emailPlaceholder);
   const resetPassword = formatMessage(messages.resetPassword);
   const forceResetMessage = forceReset
-    ? formatMessage(messages.forceResetMessage) + ' '
+    ? `${formatMessage(messages.forceResetMessage)} `
     : '';
 
   // Showing the same message for success and submission error because we don't want to give away information about whether an email address is registered or not
