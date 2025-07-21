@@ -99,6 +99,23 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.filter_start_date' do
+    let!(:p1) { create_project(start_at: Time.zone.today - 5.days, end_at: Time.zone.today + 5.days) }
+    let!(:p2) { create_project(start_at: Time.zone.today - 10.days, end_at: Time.zone.today - 5.days) }
+    let!(:p3) { create_project(start_at: Time.zone.today + 5.days, end_at: Time.zone.today + 10.days) }
+    let!(:p4) { create_project(start_at: Time.zone.today + 1.day, end_at: nil) }
+
+    it 'filters projects by start date' do
+      result = described_class.filter_start_date(Project.all, { min_start_date: Time.zone.today - 7.days, max_start_date: Time.zone.today + 3.days })
+      expect(result.pluck(:id).sort).to match_array([p1.id, p4.id])
+    end
+
+    it 'returns all projects when range is empty' do
+      result = described_class.filter_start_date(Project.all, { min_start_date: nil, max_start_date: nil })
+      expect(result.pluck(:id).sort).to match_array([p1.id, p2.id, p3.id, p4.id])
+    end
+  end
+
   describe 'self.filter_participation_states' do
     # Project that has not started yet
     let!(:not_started_project) do

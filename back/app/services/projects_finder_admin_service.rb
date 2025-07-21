@@ -117,42 +117,27 @@ class ProjectsFinderAdminService
     scope.search_by_title(search)
   end
 
-  def self.filter_date(scope, params = {})
-    raw_start = params[:start_at]
-    raw_end = params[:end_at]
-    return scope if raw_start.blank? && raw_end.blank?
+  def self.filter_start_date(scope, params = {})
+    raw_min_start_date = params[:min_start_date]
+    raw_max_start_date = params[:max_start_date]
+    return scope if raw_min_start_date.blank? && raw_max_start_date.blank?
 
-    start_at = parse_date(raw_start)
-    end_at   = parse_date(raw_end)
+    min_start_date = parse_date(raw_min_start_date) || Date.new(1970, 1, 1)
+    max_start_date = parse_date(raw_max_start_date)
 
-    query_start_at = start_at || Date.new(1970, 1, 1)
-
-    overlapping_project_ids = if end_at.present?
+    overlapping_project_ids = if max_start_date.present?
       Phase.select(:project_id).where(
-        "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)",
-        query_start_at,
-        end_at
+        "start_at >= ? AND start_at <= ?",
+        min_start_date,
+        max_start_date
       )
     else
       Phase.select(:project_id).where(
-        "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, 'infinity')",
-        query_start_at
+        "start_at >= ?", min_start_date
       )
     end
 
     scope.where(id: overlapping_project_ids)
-  end
-
-  def self.parse_date(date_input)
-    return date_input if date_input.is_a?(Date) || date_input.is_a?(Time)
-
-    return nil if date_input.blank?
-
-    begin
-      Date.parse(date_input)
-    rescue ArgumentError
-      nil
-    end
   end
 
   def self.filter_participation_states(scope, params = {})
@@ -210,5 +195,19 @@ class ProjectsFinderAdminService
       .select(:project_id)
 
     scope.where(id: project_ids_with_matching_phase)
+  end
+
+  private
+
+  def self.parse_date(date_input)
+    return date_input if date_input.is_a?(Date) || date_input.is_a?(Time)
+
+    return nil if date_input.blank?
+
+    begin
+      Date.parse(date_input)
+    rescue ArgumentError
+      nil
+    end
   end
 end
