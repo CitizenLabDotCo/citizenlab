@@ -8,6 +8,8 @@ class ProjectsFinderAdminService
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
     projects = filter_date(projects, params)
+    projects = filter_participation_states(projects, params)
+    projects = filter_current_phase_participation_method(projects, params)
 
     # Apply sorting
     if params[:sort] == 'recently_viewed'
@@ -116,20 +118,97 @@ class ProjectsFinderAdminService
   end
 
   def self.filter_date(scope, params = {})
-    start_at = params[:start_at]
-    end_at = params[:end_at]
-    return scope if start_at.blank? && end_at.blank?
+    raw_start = params[:start_at]
+    raw_end = params[:end_at]
+    return scope if raw_start.blank? && raw_end.blank?
 
-    start_at ||= Date.new(1970, 1, 1)
-    end_at ||= DateTime::Infinity
+    start_at = parse_date(raw_start)
+    end_at   = parse_date(raw_end)
 
-    overlapping_project_ids = Phase
-      .select(:project_id)
-      .where(
+    query_start_at = start_at || Date.new(1970, 1, 1)
+
+    overlapping_project_ids = if end_at.present?
+      Phase.select(:project_id).where(
         "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)",
-        start_at, end_at
+        query_start_at,
+        end_at
       )
+    else
+      Phase.select(:project_id).where(
+        "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, 'infinity')",
+        query_start_at
+      )
+    end
 
     scope.where(id: overlapping_project_ids)
+  end
+
+  def self.parse_date(date_input)
+    return date_input if date_input.is_a?(Date) || date_input.is_a?(Time)
+
+    return nil if date_input.blank?
+
+    begin
+      Date.parse(date_input)
+    rescue ArgumentError
+      nil
+    end
+  end
+
+  def self.filter_participation_states(scope, params = {})
+    participation_states = params[:participation_states] || []
+    return scope if participation_states.blank?
+
+    today = Time.zone.today
+    conditions = []
+
+    if participation_states.include?('not_started')
+      # Projects with no phases that have started yet
+      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE start_at < '#{today}')"
+    end
+
+    if participation_states.include?('collecting_data')
+      # Projects with a current phase that is not 'information'
+      conditions << <<-SQL.squish
+        projects.id IN (
+          SELECT project_id FROM phases
+          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{today}', '#{today}')
+          AND participation_method != 'information'
+        )
+      SQL
+    end
+
+    if participation_states.include?('informing')
+      # Projects with a current phase that is 'information'
+      conditions << <<-SQL.squish
+        projects.id IN (
+          SELECT project_id FROM phases
+          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{today}', '#{today}')
+          AND participation_method = 'information'
+        )
+      SQL
+    end
+
+    if participation_states.include?('past')
+      # Projects with no phases that end in the future
+      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE coalesce(end_at, 'infinity'::DATE) >= '#{today}')"
+    end
+
+    scope.where(conditions.map { |c| "(#{c})" }.join(' OR '))
+  end
+
+  # Filter projects by the participation method of their current phase
+  def self.filter_current_phase_participation_method(scope, params = {})
+    participation_methods = params[:participation_methods] || []
+    return scope if participation_methods.blank?
+
+    current_phases_with_participation_methods = Phase
+      .where(participation_method: participation_methods)
+      .where("start_at <= current_date AND coalesce(end_at, 'infinity'::DATE) >= current_date")
+
+    project_ids_with_matching_phase = current_phases_with_participation_methods
+      .select(:project_id)
+
+    scope.where(id: project_ids_with_matching_phase)
   end
 end

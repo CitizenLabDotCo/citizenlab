@@ -19,7 +19,7 @@ module EmailCampaigns
     included do
       validates :enabled, inclusion: { in: [true, false] }
 
-      before_send :filter_enabled?
+      filter :filter_enabled?
     end
 
     def filter_enabled?(_options = {})

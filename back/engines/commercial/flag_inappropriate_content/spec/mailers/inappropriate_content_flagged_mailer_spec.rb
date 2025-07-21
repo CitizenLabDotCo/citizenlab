@@ -20,12 +20,14 @@ RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFla
         }
       }
     end
-
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
 
     before do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to eq('A post on your platform has been flagged for review')

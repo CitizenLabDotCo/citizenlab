@@ -7,11 +7,12 @@ RSpec.describe EmailCampaigns::ProjectReviewStateChangeMailer do
     let_it_be(:project_review) { create(:project_review) }
     let_it_be(:recipient) { project_review.reviewer }
     let_it_be(:event_payload) { { project_review_id: project_review.id } }
-    let_it_be(:mail) do
-      campaign = EmailCampaigns::Campaigns::ProjectReviewStateChange.create!
-      command = { recipient: recipient, event_payload: event_payload }
-      described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now
-    end
+    let_it_be(:command) { { recipient: recipient, event_payload: event_payload } }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::ProjectReviewStateChange.create! }
+    let_it_be(:mailer) { described_class.with(command:, campaign:) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
+
+    include_examples 'campaign delivery tracking'
 
     it 'has the correct subject' do
       project_title = project_review.project.title_multiloc['en']

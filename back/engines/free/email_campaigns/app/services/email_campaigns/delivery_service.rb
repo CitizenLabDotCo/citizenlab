@@ -99,13 +99,13 @@ module EmailCampaigns
       return unless commands.any?
 
       commands.each do |command|
-        process_command(campaign, command.merge({ recipient: recipient }))
+        process_command(campaign, command)
       end
     end
 
     def preview_email(campaign, recipient)
       command = if campaign.manual?
-        generate_commands(campaign, recipient).first&.merge(recipient: recipient)
+        generate_commands(campaign, recipient).first
       else
         campaign.mailer_class.preview_command(recipient:)
       end
@@ -126,7 +126,7 @@ module EmailCampaigns
     # * time: Time object when the sending command happened
     # * activity: Activity object which activity happened
     def apply_send_pipeline(campaign_candidates, options = {})
-      valid_campaigns           = filter_valid_campaigns_before_send(campaign_candidates, options)
+      valid_campaigns           = filter_campaigns(campaign_candidates, options)
       campaigns_with_recipients = assign_campaigns_recipients(valid_campaigns, options)
       campaigns_with_command    = assign_campaigns_command(campaigns_with_recipients, options)
 
@@ -134,8 +134,8 @@ module EmailCampaigns
       process_send_campaigns(campaigns_with_command)
     end
 
-    def filter_valid_campaigns_before_send(campaigns, options)
-      campaigns.select { |campaign| campaign.run_before_send_hooks(**options) }
+    def filter_campaigns(campaigns, options)
+      campaigns.select { |campaign| campaign.run_filter_hooks(**options) }
     end
 
     def assign_campaigns_recipients(campaigns, options)
@@ -148,13 +148,13 @@ module EmailCampaigns
     def assign_campaigns_command(campaigns_with_recipients, options)
       campaigns_with_recipients.flat_map do |(recipient, campaign)|
         generate_commands(campaign, recipient, options)
-          .map { |command| command.merge(recipient: recipient) }
           .zip([campaign].cycle)
       end
     end
 
     def process_send_campaigns(campaigns_with_command)
       campaigns_with_command.each do |(command, campaign)|
+        campaign.run_before_send_hooks(command)
         process_command(campaign, command)
         campaign.run_after_send_hooks(command)
       end
@@ -185,8 +185,7 @@ module EmailCampaigns
       campaign.generate_commands(recipient:, **options).map do |command|
         command.merge(
           recipient: recipient,
-          time: Time.zone.now,
-          delivery_id: SecureRandom.uuid # Needed to be included in the Mailgun headers, so Mailgun can update the delivery status
+          time: Time.zone.now
         )
       end
     end

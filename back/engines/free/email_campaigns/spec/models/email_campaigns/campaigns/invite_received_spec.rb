@@ -51,13 +51,13 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReceived do
     end
   end
 
-  describe '#before_send' do
+  describe '#filter' do
     let(:campaign) { create(:invite_received_campaign) }
     let(:invite) { create(:invite, send_invite_email: false) }
     let(:activity) { create(:activity, item: invite, action: 'created', user: invite.inviter) }
 
     it 'returns false when send_invite_email is false' do
-      expect(campaign.run_before_send_hooks(activity: activity)).to be_falsy
+      expect(campaign.run_filter_hooks(activity: activity)).to be_falsy
     end
   end
 end

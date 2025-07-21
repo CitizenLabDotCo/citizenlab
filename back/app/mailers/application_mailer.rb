@@ -119,11 +119,9 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def mailgun_variables
-    variables = {
+    {
       'cl_tenant_id' => app_configuration.id
     }
-    variables['cl_delivery_id'] = command[:delivery_id] if defined?(command) && command
-    variables
   end
 
   def email_address_with_name(email, name)

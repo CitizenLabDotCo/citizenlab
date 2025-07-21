@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
 import { useLocation } from 'react-router-dom';
 
@@ -9,18 +9,14 @@ import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInputSchema from 'hooks/useInputSchema';
 
-import { PageCategorization } from 'components/Form/typings';
+import SurveyTimeToComplete from 'components/SurveyTimeToComplete';
 import Modal from 'components/UI/Modal';
 
-import { useIntl } from 'utils/cl-intl';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
-import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
 
 import QuestionPreview from './components/QuestionPreview';
 import { triggerCommunityMonitorModal$ } from './events';
-import messages from './messages';
 import { isAllowedOnUrl } from './utils';
 
 type CommunityMonitorModalProps = {
@@ -30,7 +26,6 @@ type CommunityMonitorModalProps = {
 const CommunityMonitorModal = ({
   showModal = false,
 }: CommunityMonitorModalProps) => {
-  const { formatMessage } = useIntl();
   const location = useLocation();
 
   const { data: authUser } = useAuthUser();
@@ -60,7 +55,6 @@ const CommunityMonitorModal = ({
   });
   const phaseId = project?.data.relationships.current_phase?.data?.id;
   const { data: phase } = usePhase(phaseId);
-
   const isSurveyLive = phase?.data.attributes.submission_enabled;
 
   // Check if the user is allowed to take the survey (based on action_descriptors)
@@ -68,17 +62,6 @@ const CommunityMonitorModal = ({
     !hasSeenModal &&
     project?.data.attributes.action_descriptors.posting_idea.disabled_reason !==
       'posting_limited_max_reached';
-
-  // Get the survey schemas
-  const { schema, uiSchema, isLoading } = useInputSchema({
-    projectId: project?.data.id,
-    phaseId,
-  });
-
-  // Calculate estimated time to complete survey
-  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(
-    uiSchema as PageCategorization
-  );
 
   // Get the survey popup frequency, so we can show the modal at a certain rate
   const surveyPopupFrequency =
@@ -139,7 +122,7 @@ const CommunityMonitorModal = ({
     setModalOpened(false);
   };
 
-  if (isLoading) {
+  if (!project || !phaseId) {
     return null;
   }
 
@@ -147,35 +130,14 @@ const CommunityMonitorModal = ({
     <Modal opened={modalOpened} close={onClose} width="460px">
       <Box mt="40px">
         <QuestionPreview
-          projectSlug={project?.data.attributes.slug}
+          projectSlug={project.data.attributes.slug}
           phaseId={phaseId}
-          schema={schema}
-          uiSchema={uiSchema}
+          projectId={project.data.id}
           onClose={onClose}
         />
-        <Text textAlign="center" color="textSecondary" fontSize="s">
-          {formatMessage(messages.surveyDescription)}
-        </Text>
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Icon
-            my="auto"
-            height="14px"
-            fill={colors.teal}
-            m="0px"
-            name="clock-circle"
-          />
-          <Text
-            fontSize="s"
-            color="teal"
-            textAlign="center"
-            lineHeight="1"
-            m="0px"
-          >
-            {formatMessage(messages.xMinutesToComplete, {
-              minutes: estimatedMinutesToComplete,
-            })}
-          </Text>
-        </Box>
+      </Box>
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <SurveyTimeToComplete projectId={project.data.id} phaseId={phaseId} />
       </Box>
     </Modal>
   );

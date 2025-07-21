@@ -12,6 +12,7 @@ const customFieldsKeys = {
     phaseId?: string;
     inputTypes?: ICustomFieldInputType[];
     copy?: boolean;
+    publicFields?: boolean;
   }) => [{ ...baseKey, operation: 'list', parameters: params }],
 } satisfies QueryKeys;
 

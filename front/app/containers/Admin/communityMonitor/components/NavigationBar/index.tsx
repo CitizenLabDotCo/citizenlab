@@ -47,6 +47,7 @@ const NavigationBar = () => {
               label={tab.label}
               url={tab.url}
               active={isActive}
+              className={`intercom-community-monitor-${tab.name}-tab`}
             />
           );
         })}

@@ -71,9 +71,17 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
       command = campaign.generate_commands(recipient: user).first
       expect(command.dig(:tracked_content, :idea_ids)).not_to include response.id
     end
+
+    it 'does not include ideas from unlisted projects' do
+      unlisted_project = create(:project, listed: false)
+      unlisted_idea = create(:idea, project: unlisted_project, published_at: Time.now - 1.hour)
+
+      command = campaign.generate_commands(recipient: user).first
+      expect(command.dig(:tracked_content, :idea_ids)).not_to include unlisted_idea.id
+    end
   end
 
-  describe 'before_send_hooks' do
+  describe 'filter_hooks' do
     let(:campaign) { build(:user_digest_campaign) }
 
     let_it_be(:activity) { create(:activity) }

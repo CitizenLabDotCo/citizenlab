@@ -17,8 +17,6 @@ import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
 import useAuthUser from 'api/me/useAuthUser';
-import { ProjectLibraryCountries } from 'api/project_library_countries/types';
-import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { IUser } from 'api/users/types';
 
 import Outlet from 'components/Outlet';
@@ -31,7 +29,7 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import MenuItem from './MenuItem';
 import messages from './messages';
-import getDefaultNavItems, { NavItem } from './navItems';
+import defaultNavItems, { NavItem } from './navItems';
 import NotificationsPopup from './NotificationsPopup';
 import { SupportMenu } from './SupportMenu';
 import { UserMenu } from './UserMenu';
@@ -86,14 +84,9 @@ const getTopAndBottomNavItems = (navItems: NavItem[]) => {
 interface Props {
   authUser: IUser;
   appConfiguration: IAppConfiguration;
-  projectLibraryCountries?: ProjectLibraryCountries;
 }
 
-const Sidebar = ({
-  authUser,
-  appConfiguration,
-  projectLibraryCountries,
-}: Props) => {
+const Sidebar = ({ authUser }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
 
@@ -108,9 +101,7 @@ const Sidebar = ({
     isAdmin(authUser)
   );
 
-  const [navItems, setNavItems] = useState<NavItem[]>(() =>
-    getDefaultNavItems(appConfiguration, projectLibraryCountries)
-  );
+  const [navItems, setNavItems] = useState(defaultNavItems);
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
 
@@ -212,35 +203,12 @@ const Sidebar = ({
 const SidebarWrapper = () => {
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: projectLibraryCountries, error } = useProjectLibraryCountries();
 
-  // We need this because locally, you don't always want
-  // to have the project library running.
-  // This way, the sidebar will wait for the project library countries
-  // to be fetched before rendering, but it will still render
-  // the sidebar if the project library countries endpoint is not available
-  // (i.e. when it returns an error).
-  const shouldWaitForProjectLibraryCountries = () => {
-    if (projectLibraryCountries) return false;
-    if (error) return false;
-    return true;
-  };
-
-  if (
-    !authUser ||
-    !appConfiguration ||
-    shouldWaitForProjectLibraryCountries()
-  ) {
+  if (!authUser || !appConfiguration) {
     return null;
   }
 
-  return (
-    <Sidebar
-      authUser={authUser}
-      appConfiguration={appConfiguration}
-      projectLibraryCountries={projectLibraryCountries}
-    />
-  );
+  return <Sidebar authUser={authUser} appConfiguration={appConfiguration} />;
 };
 
 export default SidebarWrapper;

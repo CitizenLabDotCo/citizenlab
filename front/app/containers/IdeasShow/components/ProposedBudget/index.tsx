@@ -3,13 +3,10 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useCustomFields from 'api/custom_fields/useCustomFields';
 import useIdeaById from 'api/ideas/useIdeaById';
 
-import useLocale from 'hooks/useLocale';
-
 import { FormattedMessage } from 'utils/cl-intl';
-import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../../messages';
 
@@ -30,20 +27,13 @@ interface Props {
 }
 
 const ProposedBudget = ({ projectId, ideaId }: Props) => {
-  const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
-    projectId,
-    inputId: ideaId,
-  });
-  const locale = useLocale();
   const { data: idea } = useIdeaById(ideaId);
 
-  if (!ideaCustomFieldsSchema) return null;
+  const { data: customFields } = useCustomFields({ projectId });
 
-  const proposedBudgetEnabled = isFieldEnabled(
-    'proposed_budget',
-    ideaCustomFieldsSchema.data.attributes,
-    locale
-  );
+  const proposedBudgetEnabled = customFields?.find(
+    (field) => field.key === 'proposed_budget'
+  )?.enabled;
 
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

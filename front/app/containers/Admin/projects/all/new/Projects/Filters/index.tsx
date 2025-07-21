@@ -11,13 +11,17 @@ import { useParam, setParam } from '../utils';
 
 import Dates from './Dates';
 import messages from './messages';
+import ParticipationMethods from './ParticipationMethods';
+import ParticipationStates from './ParticipationStates';
 import Sort from './Sort';
 
 const Filters = () => {
   const { formatMessage } = useIntl();
   const managerIds = useParam('managers') ?? [];
-  const searchValue = useParam('search');
   const statuses = useParam('status') ?? [];
+  const participationStates = useParam('participation_states') ?? [];
+  const searchValue = useParam('search');
+  const participationMethods = useParam('participation_methods') ?? [];
 
   return (
     <Box
@@ -27,7 +31,9 @@ const Filters = () => {
       alignItems="center"
     >
       <Box display="flex" alignItems="center" w="100%">
-        <Sort mr="12px" />
+        <Box mr="12px" minWidth="300px">
+          <Sort />
+        </Box>
         <Manager
           managerIds={managerIds}
           onChange={(value) => {
@@ -35,13 +41,31 @@ const Filters = () => {
           }}
         />
         <Status
-          mr="8px"
+          mr="0px"
           values={statuses}
           onChange={(publicationStatuses) => {
             setParam('status', publicationStatuses);
           }}
         />
-        <Dates />
+        <Box>
+          <ParticipationStates
+            participationStates={participationStates}
+            onChange={(value) => {
+              setParam('participation_states', value);
+            }}
+          />
+        </Box>
+        <Box mr="8px">
+          <ParticipationMethods
+            participationMethods={participationMethods}
+            onChange={(value) => {
+              setParam('participation_methods', value);
+            }}
+          />
+        </Box>
+        <Box mr="12px">
+          <Dates />
+        </Box>
       </Box>
       <Search
         value={searchValue}

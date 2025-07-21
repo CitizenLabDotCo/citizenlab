@@ -71,18 +71,21 @@ const FormResults = (props: Props) => {
                 mt="30px"
                 key={index}
               >
-                <Box display="flex" alignItems="center">
-                  <Text m="0px" fontSize="l" fontWeight="bold">
-                    <Icon
-                      width="16px"
-                      name="dot"
-                      fill={categoryKey && categoryColors[categoryKey]}
-                      mr="4px"
-                      my="auto"
-                    />
-                    {localize(result.question)}
-                  </Text>
-                </Box>
+                <Text
+                  m="0px"
+                  fontSize="l"
+                  fontWeight="bold"
+                  className={`intercom-community-monitor-main-theme-${index}`}
+                >
+                  <Icon
+                    width="16px"
+                    name="dot"
+                    fill={categoryKey && categoryColors[categoryKey]}
+                    mr="4px"
+                    my="auto"
+                  />
+                  {localize(result.question)}
+                </Text>
               </Box>
             );
           } else if (result.inputType === 'sentiment_linear_scale') {

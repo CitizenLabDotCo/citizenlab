@@ -102,4 +102,92 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.budgetFieldLabel',
     defaultMessage: 'Budget',
   },
+  uploadShapefileInstructions: {
+    id: 'app.components.CustomFieldsForm.uploadShapefileInstructions',
+    defaultMessage: '* Upload a zip file containing one or more shapefiles.',
+  },
+  tapOnMapToAddOrType: {
+    id: 'app.components.CustomFieldsForm.tapOnMapToAddOrType',
+    defaultMessage:
+      'Tap on the map or type an address below to add your answer.',
+  },
+  tapOnMapMultipleToAdd: {
+    id: 'app.components.CustomFieldsForm.tapOnMapMultipleToAdd3',
+    defaultMessage: 'Tap on the map to add your answer.',
+  },
+  tapOnFullscreenMapToAddPoint: {
+    id: 'app.components.CustomFieldsForm.tapOnFullscreenMapToAddPoint',
+    defaultMessage: 'Tap on the map to draw.',
+  },
+  tapOnFullscreenMapToAdd: {
+    id: 'app.components.CustomFieldsForm.tapOnFullscreenMapToAdd4',
+    defaultMessage:
+      'Tap on the map to draw. Then, drag on points to move them.',
+  },
+  clickOnMapToAddOrType: {
+    id: 'app.components.CustomFieldsForm.clickOnMapToAddOrType',
+    defaultMessage:
+      'Click on the map or type an address below to add your answer.',
+  },
+  clickOnMapMultipleToAdd: {
+    id: 'app.components.CustomFieldsForm.clickOnMapMultipleToAdd3',
+    defaultMessage:
+      'Click on the map to draw. Then, drag on points to move them.',
+  },
+  minimumCoordinates: {
+    id: 'app.components.CustomFieldsForm.minimumCoordinates2',
+    defaultMessage: 'A minimum of {numPoints} map points is required.',
+  },
+  addressInputAriaLabel: {
+    id: 'app.components.CustomFieldsForm.addressInputAriaLabel',
+    defaultMessage: 'Address input',
+  },
+  addressInputPlaceholder: {
+    id: 'app.components.CustomFieldsForm.addressInputPlaceholder6',
+    defaultMessage: 'Enter an address...',
+  },
+  tapToAddAPoint: {
+    id: 'app.components.CustomFieldsForm.tapToAddAPoint',
+    defaultMessage: 'Tap to add a point',
+  },
+  tapToAddALine: {
+    id: 'app.components.CustomFieldsForm.tapToAddALine',
+    defaultMessage: 'Tap to add a line',
+  },
+  tapToAddAnArea: {
+    id: 'app.components.CustomFieldsForm.tapToAddAnArea',
+    defaultMessage: 'Tap to add an area',
+  },
+  back: {
+    id: 'app.components.CustomFieldsForm.back',
+    defaultMessage: 'Back',
+  },
+  confirm: {
+    id: 'app.components.CustomFieldsForm.confirm',
+    defaultMessage: 'Confirm',
+  },
+  removeAnswer: {
+    id: 'app.components.CustomFieldsForm.removeAnswer',
+    defaultMessage: 'Remove answer',
+  },
+  atLeastTwoPointsRequired: {
+    id: 'app.components.CustomFieldsForm.atLeastTwoPointsRequired',
+    defaultMessage: 'At least two points are required for a line.',
+  },
+  atLeastThreePointsRequired: {
+    id: 'app.components.CustomFieldsForm.atLeastThreePointsRequired',
+    defaultMessage: 'At least three points are required for a polygon.',
+  },
+  anonymousSurveyMessage: {
+    id: 'app.components.CustomFieldsForm.anonymousSurveyMessage2',
+    defaultMessage: 'All responses to this survey are anonymized.',
+  },
+  fileSizeLimit: {
+    id: 'app.components.CustomFieldsForm.fileSizeLimit',
+    defaultMessage: 'The file size limit is {maxFileSize} MB.',
+  },
+  otherArea: {
+    id: 'app.components.CustomFieldsForm.otherArea',
+    defaultMessage: 'Somewhere else',
+  },
 });

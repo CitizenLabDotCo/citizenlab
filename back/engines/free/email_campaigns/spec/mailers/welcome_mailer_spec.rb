@@ -8,9 +8,12 @@ RSpec.describe EmailCampaigns::WelcomeMailer do
     let_it_be(:campaign) { EmailCampaigns::Campaigns::Welcome.create! }
     let_it_be(:command) { { recipient: recipient } }
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('Welcome')

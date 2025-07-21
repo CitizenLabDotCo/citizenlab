@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useCallback } from 'react';
+import { useEffect, useMemo, useCallback, useRef } from 'react';
 
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -8,15 +8,11 @@ import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/event
 
 import eventEmitter from 'utils/eventEmitter';
 
-const useEsriMapPage = ({
-  project,
-  pages,
-  currentPageNumber,
-  draggableDivRef,
-  dragDividerRef,
-  localize,
-}) => {
-  const { data: projectMapConfig } = useProjectMapConfig(project?.data?.id);
+const useEsriMapPage = ({ project, pages, currentPageNumber, localize }) => {
+  const draggableDivRef = useRef<HTMLDivElement>(null);
+  const dragDividerRef = useRef<HTMLDivElement>(null);
+  const { data: projectMapConfig, isFetching: isFetchingProjectConfig } =
+    useProjectMapConfig(project?.data?.id);
   const mapConfigId =
     pages[currentPageNumber]?.page?.map_config_id || projectMapConfig?.data.id;
   const { data: fetchedMapConfig, isFetching: isFetchingMapConfig } =
@@ -31,13 +27,13 @@ const useEsriMapPage = ({
   // Emit event when page changes and map is fetched
   useEffect(() => {
     eventEmitter.emit(FORM_PAGE_CHANGE_EVENT);
-  }, [currentPageNumber, isFetchingMapConfig]);
+  }, [currentPageNumber, isFetchingMapConfig, isFetchingProjectConfig]);
 
   const onDragDivider = useCallback(
     (event) => {
       event.preventDefault();
       // Change the height of the map container to match the drag event
-      if (draggableDivRef?.current) {
+      if (draggableDivRef.current) {
         const clientY = event?.changedTouches?.[0]?.clientY;
         // Don't allow the div to be dragged outside bounds of page
         if (clientY > 0 && clientY < document.body.clientHeight - 180) {
@@ -64,6 +60,8 @@ const useEsriMapPage = ({
   return {
     mapConfig,
     mapLayers,
+    draggableDivRef,
+    dragDividerRef,
   };
 };
 

@@ -114,7 +114,10 @@ const SurveySettings = () => {
             {formatMessage(messages.survey)}
           </Title>
           <Box display="flex" justifyContent="center" alignItems="center">
-            <Box mr="16px">
+            <Box
+              mr="16px"
+              className="intercom-community-monitor-open-for-responses-toggle"
+            >
               <Toggle
                 checked={postingEnabled}
                 label={formatMessage(messages.openForResponses)}
@@ -145,6 +148,7 @@ const SurveySettings = () => {
                   : clHistory.push(editFormLink);
               }}
               data-cy="e2e-edit-survey-content"
+              className="intercom-community-monitor-edit-survey-content"
             >
               {formatMessage(messages.editSurvey)}
             </ButtonWithLink>

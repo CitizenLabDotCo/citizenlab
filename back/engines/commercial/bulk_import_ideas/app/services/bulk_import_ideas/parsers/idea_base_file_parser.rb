@@ -178,11 +178,28 @@ module BulkImportIdeas::Parsers
         end
       elsif %w[number linear_scale sentiment_linear_scale rating].include?(field[:input_type]) && field[:value].present?
         field[:value] = field[:value].to_i
+      elsif field[:input_type] == 'checkbox' && field[:value].present?
+        field[:value] = field[:value].downcase == 'x'
+      elsif field[:input_type] == 'date' && field[:value].present?
+        field[:value] = format_date(field[:value])
       else
         field[:value] = field[:value].to_s
       end
 
       field
+    end
+
+    def format_date(date)
+      return nil if date.blank?
+
+      parsed_date = begin
+        date.is_a?(Date) ? date : Date.parse(date)
+      rescue StandardError
+        nil
+      end
+      return nil unless parsed_date
+
+      parsed_date.strftime('%Y-%m-%d')
     end
 
     def fix_email_address(email)

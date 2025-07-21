@@ -41,7 +41,7 @@ module EmailCampaigns
     include LifecycleStageRestrictable
 
     # Without this, the campaign would be sent on every event and every schedule trigger
-    before_send :only_manual_send
+    filter :only_manual_send
 
     def mailer_class
       ManualCampaignMailer
