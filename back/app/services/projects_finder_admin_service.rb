@@ -12,11 +12,12 @@ class ProjectsFinderAdminService
     projects = filter_current_phase_participation_method(projects, params)
 
     # Apply sorting
-    if params[:sort] == 'recently_viewed'
+    case params[:sort]
+    when 'recently_viewed'
       sort_recently_viewed(projects, current_user)
-    elsif params[:sort] == 'phase_starting_or_ending_soon'
+    when 'phase_starting_or_ending_soon'
       sort_phase_starting_or_ending_soon(projects)
-    elsif params[:sort] == 'alphabetically'
+    when 'alphabetically'
       sort_alphabetically(projects, params)
     else
       projects.order('projects.created_at DESC, projects.id ASC')
@@ -88,8 +89,8 @@ class ProjectsFinderAdminService
     locale = params[:locale] || 'en'
 
     scope.order(
-      Arel.sql("projects.title_multiloc->>'#{locale}' ASC, projects.created_at ASC, projects.id ASC"
-    ))
+      Arel.sql("projects.title_multiloc->>'#{locale}' ASC, projects.created_at ASC, projects.id ASC")
+    )
   end
 
   # FILTERING METHODS
