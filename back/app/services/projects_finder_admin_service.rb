@@ -7,7 +7,7 @@ class ProjectsFinderAdminService
     projects = filter_status(scope, params)
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
-    projects = filter_date(projects, params)
+    projects = filter_start_date(projects, params)
     projects = filter_participation_states(projects, params)
     projects = filter_current_phase_participation_method(projects, params)
 

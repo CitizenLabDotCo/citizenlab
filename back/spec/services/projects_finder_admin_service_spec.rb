@@ -242,7 +242,7 @@ describe ProjectsFinderAdminService do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }
       let!(:p1) do
-        project = create_project(start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 5.days)
+        project = create_project(start_at: Time.zone.today - 40.days, end_at: Time.zone.today - 5.days)
         create_session(project, Time.zone.today - 20.days)
         project
       end
@@ -289,12 +289,11 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        start_period = Time.zone.today
-        end_period = Time.zone.today + 30.days
+        min_start_date = Time.zone.today - 35.days
 
         result = described_class.execute(
           Project.all,
-          { sort: 'recently_viewed', start_at: start_period, end_at: end_period },
+          { sort: 'recently_viewed', min_start_date: min_start_date, max_start_date: nil },
           current_user: user
         )
 
@@ -345,15 +344,14 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        start_period = Time.zone.today
-        end_period = Time.zone.today + 30.days
+        min_start_date = Time.zone.today
 
         result = described_class.execute(
           Project.all,
-          { sort: 'phase_starting_or_ending_soon', start_at: start_period, end_at: end_period }
+          { sort: 'phase_starting_or_ending_soon', min_start_date: min_start_date, end_at: nil }
         )
 
-        expect(result.pluck(:id)).to eq([p6, p5, p7, p3, p4, p2].pluck(:id))
+        expect(result.pluck(:id)).to eq([p6, p5, p7, p8].pluck(:id))
       end
     end
   end
