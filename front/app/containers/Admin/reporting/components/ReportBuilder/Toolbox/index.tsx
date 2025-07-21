@@ -19,6 +19,7 @@ import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
@@ -99,6 +100,7 @@ const ReportBuilderToolbox = ({
 
   const { data: phases } = usePhases(projectId);
   const { data: userFields } = useUserCustomFields({ inputTypes: ['select'] });
+  const projectPlanningEnabled = useFeatureFlag({ name: 'project_planning' });
 
   if (
     !appConfigurationLocales ||
@@ -375,18 +377,20 @@ const ReportBuilderToolbox = ({
               icon="projects"
               label={formatMessage(WIDGET_TITLES.ProjectsWidget)}
             />
-            <DraggableElement
-              id="e2e-draggable-projects-timeline-widget"
-              component={
-                <ProjectsTimelineWidget
-                  title={toMultiloc(WIDGET_TITLES.ProjectsTimelineWidget)}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.ProjectsTimelineWidget)}
-            />
+            {projectPlanningEnabled && (
+              <DraggableElement
+                id="e2e-draggable-projects-timeline-widget"
+                component={
+                  <ProjectsTimelineWidget
+                    title={toMultiloc(WIDGET_TITLES.ProjectsTimelineWidget)}
+                    startAt={undefined}
+                    endAt={chartEndDate}
+                  />
+                }
+                icon="chart-bar"
+                label={formatMessage(WIDGET_TITLES.ProjectsTimelineWidget)}
+              />
+            )}
           </Section>
         </Box>
         <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
