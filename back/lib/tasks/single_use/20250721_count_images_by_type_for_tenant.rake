@@ -78,7 +78,7 @@ namespace :single_use do
       puts "StaticPage header background images count: #{static_pages_header_bg_images}"
       total_images += static_pages_header_bg_images
 
-      text_images = TextImage.where(updated_at: ...cutoff_date).count
+      text_images = TextImage.where(imageable_type: 'Idea').where(updated_at: ...cutoff_date).count
       puts "TextImage count: #{text_images}"
       total_images += text_images
       total_possibly_user_images += text_images
