@@ -16,8 +16,7 @@ namespace :single_use do
     image_extensions = %w[jpg jpeg png gif tiff]
     total_images = 0
 
-    # tenant_host = 'mitgestalten.wien.gv.at'
-    tenant_host = 'localhost'
+    tenant_host = 'mitgestalten.wien.gv.at'
 
     file_details = { idea_images: [], text_images: [], users_with_avatar_images: [], idea_files: [] }
 
@@ -79,18 +78,19 @@ namespace :single_use do
       puts "Total image file record details saved: #{total_images}"
     end
 
-    File.open(Rails.root.join('tmp', "vienna_image_files_w_cuttoff_#{cutoff_date}.json"), 'w') do |file|
-      file.write(JSON.pretty_generate(file_details))
-    end
+    File.write(
+      Rails.root.join('tmp', "vienna_image_files_w_cuttoff_#{cutoff_date}.json"),
+      JSON.pretty_generate(file_details)
+    )
     puts "Saved file details to tmp/vienna_image_files_w_cuttoff_#{cutoff_date}.json"
   end
 
   desc 'Downloads image files from paths found in provided json file'
   task :download_vienna_image_files, %i[file_path] => [:environment] do |_t, args|
     # Reduce logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
+    # dev_null = Logger.new('/dev/null')
+    # Rails.logger = dev_null
+    # ActiveRecord::Base.logger = dev_null
 
     file_path = args[:file_path] if args[:file_path]
     file_contents = File.read(file_path)
@@ -98,7 +98,7 @@ namespace :single_use do
     total_downloaded_files = 0
     total_errored_downloads = 0
 
-    puts "n file details: #{file_details.values.map(&:count).sum}"
+    puts "n file details: #{file_details.values.sum(&:count)}"
 
     file_details.each do |collection|
       puts "Processing #{collection} files..."
@@ -110,12 +110,10 @@ namespace :single_use do
         file_name = details[:file_name]
 
         begin
-          File.open("tmp/#{file_name}", 'wb') do |file|
-            file.write(URI.open(file_path).read)
-          end
+          File.binwrite("tmp/#{file_name}", URI.open(file_path).read)
           puts "Downloaded file #{file_name}"
           total_downloaded_files += 1
-        rescue => e
+        rescue StandardError => e
           puts "ERROR downloading or saving #{file_name} from #{file_path}: #{e.class} - #{e.message}"
           total_errored_downloads += 1
         end
