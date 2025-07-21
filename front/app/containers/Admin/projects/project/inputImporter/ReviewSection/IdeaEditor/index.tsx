@@ -163,8 +163,8 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       await updateIdea({
         id: ideaId,
         requestBody: {
-          publication_status: 'published',
           ...ideaFormData,
+          publication_status: 'published',
           ...(userFormDataAction === 'remove-assigned-user'
             ? { author_id: null }
             : {}),
