@@ -1,12 +1,21 @@
 import React from 'react';
 
+import { Label } from '@citizenlab/cl2-component-library';
 import { format } from 'date-fns';
+import styled from 'styled-components';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
 import { useParam, setParam } from '../utils';
+
+import messages from './messages';
+
+const StyledLabel = styled(Label)`
+  flex-direction: column;
+`;
 
 const toDate = (str?: string) => {
   if (!str) return;
@@ -23,16 +32,19 @@ const Dates = () => {
   const toStr = useParam('max_start_date');
 
   return (
-    <DateRangePicker
-      selectedRange={{ from: toDate(fromStr), to: toDate(toStr) }}
-      onUpdateRange={({ from: fromDate, to: toDate }) => {
-        const from = toString(fromDate);
-        const to = toString(toDate);
+    <StyledLabel>
+      <FormattedMessage {...messages.projectStartDate} />
+      <DateRangePicker
+        selectedRange={{ from: toDate(fromStr), to: toDate(toStr) }}
+        onUpdateRange={({ from: fromDate, to: toDate }) => {
+          const from = toString(fromDate);
+          const to = toString(toDate);
 
-        setParam('min_start_date', from);
-        setParam('max_start_date', to);
-      }}
-    />
+          setParam('min_start_date', from);
+          setParam('max_start_date', to);
+        }}
+      />
+    </StyledLabel>
   );
 };
 
