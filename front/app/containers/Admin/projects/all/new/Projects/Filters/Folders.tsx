@@ -21,8 +21,8 @@ const Folders = ({ folderIds, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  // Disabled by default because we want only make the request when the user opens the dropdown
-  // This prevents unnecessary requests when the component is mounted but the user doesn't interact with it
+  // Disabled by default because we want to only make the request when the user opens the dropdown
+  // This prevents unnecessary requests when the component is mounted and the user doesn't interact with it
   const { data, isLoading, refetch } = useProjectFolders({}, false);
   const hasFetchedRef = useRef(false);
 
