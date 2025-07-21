@@ -82,6 +82,12 @@ class ProjectsFinderAdminService
       .order('soon_date ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
   end
 
+  def self.sort_alphabetically(scope, params)
+    locale = params[:locale] || 'en'
+
+    scope.order(Arel.sql("title_multiloc->>'#{locale}' ASC"))
+  end
+
   # FILTERING METHODS
   def self.filter_status(scope, params = {})
     status = params[:status] || []
