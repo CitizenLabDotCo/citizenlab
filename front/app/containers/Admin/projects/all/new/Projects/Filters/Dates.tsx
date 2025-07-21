@@ -19,8 +19,8 @@ const toString = (date?: Date) => {
 };
 
 const Dates = () => {
-  const fromStr = useParam('start_at');
-  const toStr = useParam('end_at');
+  const fromStr = useParam('min_start_date');
+  const toStr = useParam('max_start_date');
 
   return (
     <DateRangePicker
@@ -29,8 +29,8 @@ const Dates = () => {
         const from = toString(fromDate);
         const to = toString(toDate);
 
-        setParam('start_at', from);
-        setParam('end_at', to);
+        setParam('min_start_date', from);
+        setParam('max_start_date', to);
       }}
     />
   );

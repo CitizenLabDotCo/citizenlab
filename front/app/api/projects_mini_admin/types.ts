@@ -7,8 +7,8 @@ export type Parameters = {
   status?: PublicationStatus[];
   managers?: string[];
   search?: string;
-  start_at?: string;
-  end_at?: string;
+  min_start_date?: string;
+  max_start_date?: string;
   participation_states?: ParticipationState[];
   participation_methods?: ParticipationMethod[];
   sort:
