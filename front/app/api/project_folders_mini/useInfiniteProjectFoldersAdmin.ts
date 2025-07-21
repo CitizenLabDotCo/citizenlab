@@ -10,7 +10,7 @@ import { MiniProjectFolders, Parameters } from './types';
 const DEFAULT_PAGE_SIZE = 10;
 
 const fetchPage = async (
-  params: Omit<Parameters, 'page[number]' | 'page[size]'>,
+  params: Parameters,
   page: number,
   pageSize: number
 ): Promise<MiniProjectFolders> =>

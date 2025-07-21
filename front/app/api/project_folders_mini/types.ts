@@ -1,4 +1,4 @@
-import { Multiloc, IRelationship, Pagination, ILinks } from 'typings';
+import { Multiloc, IRelationship, ILinks } from 'typings';
 
 import { PublicationStatus } from 'api/projects/types';
 
@@ -6,7 +6,7 @@ export type Parameters = {
   status?: PublicationStatus[];
   managers?: string[];
   search?: string;
-} & Pagination;
+};
 
 export interface MiniProjectFolders {
   data: MiniProjectFolder[];
