@@ -125,11 +125,7 @@ class ProjectsFinderAdminService
     min_start_date = parse_date(raw_min_start_date) || Date.new(1970, 1, 1)
     max_start_date = parse_date(raw_max_start_date) || Date.new(2100, 1, 1)
 
-    overlapping_project_ids = Phase.select(:project_id).where(
-      "start_at >= ? AND start_at <= ?",
-      min_start_date,
-      max_start_date
-    )
+    overlapping_project_ids = Phase.select(:project_id).where(start_at: min_start_date..max_start_date)
 
     scope.where(id: overlapping_project_ids)
   end
@@ -190,8 +186,6 @@ class ProjectsFinderAdminService
 
     scope.where(id: project_ids_with_matching_phase)
   end
-
-  private
 
   def self.parse_date(date_input)
     return date_input if date_input.is_a?(Date) || date_input.is_a?(Time)
