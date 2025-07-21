@@ -87,7 +87,9 @@ class ProjectsFinderAdminService
   def self.sort_alphabetically(scope, params)
     locale = params[:locale] || 'en'
 
-    scope.order(Arel.sql("title_multiloc->>'#{locale}' ASC"))
+    scope.order(
+      Arel.sql("title_multiloc->>'#{locale}' ASC, created_at ASC, id ASC"
+    ))
   end
 
   # FILTERING METHODS
