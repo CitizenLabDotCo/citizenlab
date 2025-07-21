@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import { Image, Text } from '@citizenlab/cl2-component-library';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -283,11 +283,16 @@ const AuthProviders = memo<Props>(
         )}
         {rmUnifyLoginEnabled && (
           <StyledAuthProviderButton
-            icon="glowConnect"
             flow={flow}
             authProvider="rm_unify"
             onContinue={onSelectAuthProvider}
           >
+            <Image
+              alt="Glow"
+              width="50px"
+              mr="10px"
+              src="/assets/img/sso/glow_connect.png"
+            />
             <FormattedMessage
               {...messages.continueWithLoginMechanism}
               values={{

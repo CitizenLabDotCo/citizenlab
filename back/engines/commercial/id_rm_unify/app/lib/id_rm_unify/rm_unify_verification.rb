@@ -17,7 +17,7 @@ module IdRmUnify
     end
 
     def config_parameters
-      []
+      %i[enabled_for_verified_actions]
     end
 
     def config_parameters_schema
