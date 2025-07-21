@@ -25,6 +25,50 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates',
     defaultMessage: 'Participation state',
   },
+  participationMethodLabel: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label',
+    defaultMessage: 'Participation method',
+  },
+  participationMethodIdeation: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation',
+    defaultMessage: 'Ideation',
+  },
+  participationMethodVoting: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.voting',
+    defaultMessage: 'Voting',
+  },
+  participationMethodInformation: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information',
+    defaultMessage: 'Information',
+  },
+  participationMethodProposals: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.proposals',
+    defaultMessage: 'Proposals',
+  },
+  participationMethodSurvey: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.participationMethodSurvey',
+    defaultMessage: 'Survey',
+  },
+  participationMethodPoll: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.poll',
+    defaultMessage: 'Poll',
+  },
+  participationMethodVolunteering: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.volunteering',
+    defaultMessage: 'Volunteering',
+  },
+  pMDocumentAnnotation: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.pMDocumentAnnotation',
+    defaultMessage: 'Document annotation',
+  },
+  participationMethodDocumentCommonGround: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.participationMethodDocumentCommonGround',
+    defaultMessage: 'Common ground',
+  },
+  filterByCurrentPhaseMethod: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod',
+    defaultMessage: 'Filter by the current phase participation method',
+  },
   notStarted: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted',
     defaultMessage: 'Not started',

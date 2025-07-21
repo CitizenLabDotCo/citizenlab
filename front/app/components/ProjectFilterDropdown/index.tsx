@@ -34,6 +34,7 @@ const ProjectFilterDropdown = ({
   const { data: projects } = useProjects({
     publicationStatuses: ['published'],
     sort: 'new',
+    removeAllUnlisted: true,
   });
   const [searchParams] = useSearchParams();
   const projectIdsParam =
