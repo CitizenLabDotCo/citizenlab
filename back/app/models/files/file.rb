@@ -4,29 +4,88 @@
 #
 # Table name: files
 #
-#  id                                          :uuid             not null, primary key
-#  name                                        :string
-#  content                                     :string
-#  uploader_id(the user who uploaded the file) :uuid
-#  created_at                                  :datetime         not null
-#  updated_at                                  :datetime         not null
-#  size(in bytes)                              :integer
-#  mime_type                                   :string
+#  id                                                                           :uuid             not null, primary key
+#  name                                                                         :string
+#  content                                                                      :string
+#  uploader_id(the user who uploaded the file)                                  :uuid
+#  created_at                                                                   :datetime         not null
+#  updated_at                                                                   :datetime         not null
+#  size(in bytes)                                                               :integer
+#  mime_type                                                                    :string
+#  category                                                                     :string           default("other"), not null
+#  description_multiloc                                                         :jsonb
+#  tsvector                                                                     :tsvector
+#  ai_processing_allowed(whether consent was given to process the file with AI) :boolean          default(FALSE), not null
 #
 # Indexes
 #
-#  index_files_on_mime_type      (mime_type)
-#  index_files_on_name_gin_trgm  (name) USING gin
-#  index_files_on_size           (size)
-#  index_files_on_uploader_id    (uploader_id)
+#  index_files_on_category                                (category)
+#  index_files_on_description_multiloc_text_gin_trgm_ops  (((description_multiloc)::text) gin_trgm_ops) USING gin
+#  index_files_on_mime_type                               (mime_type)
+#  index_files_on_name_gin_trgm                           (name) USING gin
+#  index_files_on_size                                    (size)
+#  index_files_on_tsvector                                (tsvector) USING gin
+#  index_files_on_uploader_id                             (uploader_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (uploader_id => users.id)
 #
 module Files
+  # The Files::File model represents uploaded files in the system.
+  #
+  # = File categories
+  #
+  # This model implements a semantic typology for files through the +category+ attribute,
+  # allowing users to categorize files based on their content type or purpose.
+  #
+  #   file = Files::File.new(..., category: :meeting)
+  #   file.meeting?     # => true
+  #   file.category     # => 'meeting'
+  #
+  # == Available Categories
+  #
+  # [+meeting+]
+  #   The summary or minutes from an in-person meeting.
+  #
+  # [+interview+]
+  #   The summary or notes from a 1-on-1 interview.
+  #
+  # [+strategic_plan+]
+  #   An informational document that outlines how a project will achieve its goals
+  #   and objectives. These files typically include project roadmaps, implementation
+  #   strategies, resource allocation plans, timelines, and long-term vision statements.
+  #
+  # [+info_sheet+]
+  #   An informational document to give more context about a topic, project, or process.
+  #   These files serve as reference materials, fact sheets, or explanatory documents
+  #   that provide background information and additional details.
+  #
+  # [+policy+]
+  #   An official document with a policy proposal or established guidelines. These files
+  #   contain formal policies, regulations, procedures, or proposed changes to existing
+  #   governance structures and operational frameworks.
+  #
+  # [+report+]
+  #   A general writeup to share results or summarize a process.
+  #
+  # [+other+]
+  #   A catch-all category for files that don't fit into the specific categories above.
+  #
   class File < ApplicationRecord
     include PgSearch::Model
+
+    attribute :ai_processing_allowed, :boolean, default: false
+
+    enum :category, {
+      meeting: 'meeting',
+      interview: 'interview',
+      strategic_plan: 'strategic_plan',
+      info_sheet: 'info_sheet',
+      policy: 'policy',
+      report: 'report',
+      other: 'other'
+    }, default: :other, validate: true
 
     belongs_to :uploader, class_name: 'User', optional: true
 
@@ -34,19 +93,29 @@ module Files
     has_many :projects, through: :files_projects
 
     # TODO: Maybe reconsider the name of this column.
-    # TODO: Using temporarily the ProjectFolders::FileUploader
-    mount_base64_file_uploader :content, ::ProjectFolders::FileUploader
+    mount_base64_file_uploader :content, FileUploader
 
     validates :name, presence: true
     validates :content, presence: true
     validates :size, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
+    validates :description_multiloc, multiloc: { presence: false }
+    validates :ai_processing_allowed, inclusion: { in: [true, false] }
 
     before_save :update_metadata
 
     # It is not meant to be used directly. See `search` scope below.
     pg_search_scope :_pg_search_only,
-      against: [:name],
-      using: %i[tsearch trigram],
+      against: %i[name description_multiloc],
+      using: {
+        # tsearch completely ignores the :against option bc a pre-computed tsvector is used
+        # (The tsvector type represents a document in a form optimized for text search.)
+        tsearch: { tsvector_column: 'tsvector' },
+        # TODO: Trigram search is currently performed directly on the JSONB column
+        #   (description_multiloc), which isn't ideal, as converting it to text also
+        #   includes the keys. Research: Consider extracting descriptions into a separate
+        #   model with (locale, text) columns instead.
+        trigram: {}
+      },
       # For the ranking, trigram scores are only used to break ties between results that
       # have a tsearch score of 0. In other words, tsearch matches are always ranked
       # higher than trigram matches. (Both tsearch and trigram scores are in the range
