@@ -16,6 +16,8 @@ class ProjectsFinderAdminService
       sort_recently_viewed(projects, current_user)
     elsif params[:sort] == 'phase_starting_or_ending_soon'
       sort_phase_starting_or_ending_soon(projects)
+    elsif params[:sort] == 'alphabetically'
+      sort_alphabetically(projects, params)
     else
       projects.order('projects.created_at DESC, projects.id ASC')
     end
