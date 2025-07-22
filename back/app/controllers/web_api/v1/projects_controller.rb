@@ -182,7 +182,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     @projects = paginate projects
-    @projects = @projects.includes(:phases, :admin_publication)
+    @projects = @projects.includes(:phases, :admin_publication, :project_images)
 
     authorize @projects, :index_for_admin?
 

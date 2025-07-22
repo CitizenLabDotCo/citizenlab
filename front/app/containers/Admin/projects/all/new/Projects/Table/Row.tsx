@@ -7,6 +7,7 @@ import {
   Text,
   Spinner,
   colors,
+  Image,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -84,6 +85,15 @@ const Row = ({ project, participantsCount }: Props) => {
         }}
       >
         <Box display="flex" alignItems="center">
+          <Box>
+            <Image
+              src={'todo'}
+              alt={localize(title_multiloc)}
+              width="40px"
+              height="40px"
+              borderRadius="4px"
+            />
+          </Box>
           <Box>
             <Text m="0" fontSize="s" className="project-table-row-title">
               {localize(title_multiloc)}
