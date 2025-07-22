@@ -89,4 +89,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Dates.projectStartDate',
     defaultMessage: 'Project start date',
   },
+  folders: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders',
+    defaultMessage: 'Folders',
+  },
 });
