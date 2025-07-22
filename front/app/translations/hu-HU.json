@@ -118,7 +118,6 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Az irányelv elutasítása és a szalaghirdetés bezárása",
   "app.components.ConsentManager.Banner.close": "Közeli",
   "app.components.ConsentManager.Banner.manage": "Kezelése",
-  "app.components.ConsentManager.Banner.policyLink": "Cookie-szabályzat",
   "app.components.ConsentManager.Banner.reject": "Elutasít",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Hirdető",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Ezt arra használjuk, hogy személyre szabjuk és mérjük weboldalunk reklámkampányainak hatékonyságát. Ezen a platformon nem jelenítünk meg hirdetéseket, de a következő szolgáltatások személyre szabott hirdetést kínálhatnak Önnek az oldalunkon meglátogatott oldalak alapján.",

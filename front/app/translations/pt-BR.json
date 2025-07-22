@@ -118,7 +118,6 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Rejeitar a política e fechar a bandeira",
   "app.components.ConsentManager.Banner.close": "Fechar",
   "app.components.ConsentManager.Banner.manage": "Gerenciar   ",
-  "app.components.ConsentManager.Banner.policyLink": "Política de Cookies",
   "app.components.ConsentManager.Banner.reject": "Recusar",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Publicidade",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Usamos isto para personalizar e medir a eficácia das campanhas publicitárias do nosso site. Não mostraremos qualquer publicidade nesta plataforma, mas os seguintes serviços podem oferecer-lhe um anúncio personalizado com base nas páginas que visitar no nosso site.",
