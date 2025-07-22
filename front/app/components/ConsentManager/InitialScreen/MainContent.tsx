@@ -33,7 +33,7 @@ const MainContent = () => {
   return (
     <CookieModalContentContainer id="e2e-cookie-banner">
       <Icon name="cookie" fill={colors.primary} />
-      <Title fontSize={isSmallerThanPhone ? 'xl' : undefined}>
+      <Title as="h1" variant={isSmallerThanPhone ? 'h3' : 'h1'}>
         <FormattedMessage {...messages.cookieModalInitialScreenTitle} />
       </Title>
       <Text>
