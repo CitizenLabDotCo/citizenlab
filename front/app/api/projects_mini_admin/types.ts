@@ -10,6 +10,7 @@ export type Parameters = {
   start_at?: string;
   end_at?: string;
   participation_states?: ParticipationState[];
+  folder_ids?: string[];
   participation_methods?: ParticipationMethod[];
   sort:
     | 'recently_viewed'

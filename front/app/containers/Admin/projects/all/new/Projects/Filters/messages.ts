@@ -85,4 +85,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past',
     defaultMessage: 'Past',
   },
+  folders: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders',
+    defaultMessage: 'Folders',
+  },
 });
