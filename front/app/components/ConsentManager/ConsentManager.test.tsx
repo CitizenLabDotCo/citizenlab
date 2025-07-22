@@ -95,7 +95,7 @@ describe('<ConsentManager />', () => {
         container.querySelector('#e2e-preference-dialog')
       ).not.toBeInTheDocument();
 
-      fireEvent.click(screen.getByTestId('e2e-manage-preferences-btn'));
+      fireEvent.click(screen.getByTestId('manage-preferences-btn'));
 
       expect(
         container.querySelector('#e2e-preference-dialog')
@@ -126,7 +126,7 @@ describe('<ConsentManager />', () => {
 
     it('accepts only functional and analytics cookies if analytics is enabled in preference modal', () => {
       const { container } = render(<ConsentManager />);
-      fireEvent.click(screen.getByTestId('e2e-manage-preferences-btn'));
+      fireEvent.click(screen.getByTestId('manage-preferences-btn'));
       fireEvent.click(container.querySelector('#analytics-radio-true'));
       fireEvent.click(container.querySelector('#e2e-preferences-save'));
 
@@ -179,7 +179,7 @@ describe('<ConsentManager />', () => {
 
       act(() => eventEmitter.emit('openConsentManager'));
 
-      await user.click(screen.getByTestId('e2e-manage-preferences-btn'));
+      await user.click(screen.getByTestId('manage-preferences-btn'));
 
       expect(
         container.querySelector('#e2e-preference-dialog')

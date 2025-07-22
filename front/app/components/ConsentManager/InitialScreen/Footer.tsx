@@ -22,11 +22,11 @@ const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
       gap="8px"
     >
       <Button
-        className="integration-open-modal"
         px="4px"
         buttonStyle="text"
         onClick={openPreferencesScreen}
-        data-testid="e2e-manage-preferences-btn"
+        data-testid="manage-preferences-btn"
+        data-cy="e2e-manage-preferences-btn"
       >
         <FormattedMessage {...messages.manage} />
       </Button>
