@@ -244,6 +244,75 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.filter_visibility' do
+    let!(:public_project) { create(:project, visible_to: 'public', listed: true) }
+    let!(:groups_project) { create(:project, visible_to: 'groups', listed: true) }
+    let!(:admins_project) { create(:project, visible_to: 'admins', listed: true) }
+    let!(:unlisted_project) { create(:project, visible_to: 'public', listed: false) }
+    let!(:listed_project) { create(:project, visible_to: 'public', listed: true) }
+
+    # Create a scope that only includes the projects we created for this test
+    let(:test_projects) do
+      project_ids = [public_project.id, groups_project.id, admins_project.id, unlisted_project.id, listed_project.id]
+      Project.where(id: project_ids)
+    end
+
+    it 'returns all projects when no visibility specified' do
+      result = described_class.filter_visibility(test_projects, {})
+      expect(result.pluck(:id).sort).to match_array([
+        public_project.id, groups_project.id, admins_project.id, unlisted_project.id, listed_project.id
+      ].sort)
+    end
+
+    it 'filters projects by public visibility' do
+      result = described_class.filter_visibility(test_projects, { visibility: ['public'] })
+      # Only projects with visible_to: 'public' should be returned
+      # This includes both public_project and listed_project since both have visible_to: 'public'
+      # Also includes unlisted_project since it has visible_to: 'public' (even though listed: false)
+      expected_ids = [public_project.id, listed_project.id, unlisted_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'filters projects by groups visibility' do
+      result = described_class.filter_visibility(test_projects, { visibility: ['groups'] })
+      expect(result.pluck(:id)).to eq([groups_project.id])
+    end
+
+    it 'filters projects by admins visibility' do
+      result = described_class.filter_visibility(test_projects, { visibility: ['admins'] })
+      expect(result.pluck(:id)).to eq([admins_project.id])
+    end
+
+    it 'filters projects by unlisted status' do
+      result = described_class.filter_visibility(test_projects, { visibility: ['unlisted'] })
+      expect(result.pluck(:id)).to eq([unlisted_project.id])
+    end
+
+    it 'filters projects by multiple visibility types' do
+      result = described_class.filter_visibility(test_projects, { visibility: %w[public groups] })
+      # Projects with visible_to: 'public' OR visible_to: 'groups' should be returned
+      # This includes public_project, groups_project, listed_project, and unlisted_project
+      expected_ids = [public_project.id, groups_project.id, listed_project.id, unlisted_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'filters projects by visibility and unlisted status' do
+      result = described_class.filter_visibility(test_projects, { visibility: %w[public unlisted] })
+      # Projects with visible_to: 'public' OR listed: false should be returned
+      # This includes public_project, unlisted_project, and listed_project
+      expected_ids = [public_project.id, unlisted_project.id, listed_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'filters projects by all visibility types' do
+      result = described_class.filter_visibility(test_projects, { visibility: %w[public groups admins unlisted] })
+      expect(result.pluck(:id).sort).to match_array([public_project.id, groups_project.id, admins_project.id, unlisted_project.id, listed_project.id].sort)
+    end
+  end
+
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }
