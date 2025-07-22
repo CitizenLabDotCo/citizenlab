@@ -9,7 +9,6 @@ import {
   colors,
   Image,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useProjectImage from 'api/project_images/useProjectImage';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
@@ -30,15 +29,6 @@ import { VISIBILITY_LABELS } from '../constants';
 
 import CurrentPhase from './CurrentPhase';
 
-const StyledTd = styled(Td)`
-  &:hover {
-    cursor: pointer;
-    .project-table-row-title {
-      text-decoration: underline;
-    }
-  }
-`;
-
 interface Props {
   project: ProjectMiniAdminData;
   participantsCount?: number;
@@ -56,6 +46,8 @@ const Row = ({ project, participantsCount }: Props) => {
 
   const imageVersions = image?.data.attributes.versions;
   const imageUrl = imageVersions?.large ?? imageVersions?.medium;
+
+  const [hover, setHover] = useState<'none' | 'project' | 'folder'>('none');
 
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [isBeingCopyied, setIsBeingCopyied] = useState(false);
@@ -88,10 +80,17 @@ const Row = ({ project, participantsCount }: Props) => {
 
   return (
     <Tr>
-      <StyledTd
+      <Td
         background={colors.grey50}
+        onMouseEnter={() => setHover('project')}
+        onMouseLeave={() => setHover('none')}
         onClick={() => {
-          clHistory.push(`/admin/projects/${project.id}`);
+          hover === 'project'
+            ? clHistory.push(`/admin/projects/${project.id}`)
+            : clHistory.push(`/admin/projects/folders/${folderId}`);
+        }}
+        style={{
+          cursor: hover !== 'none' ? 'pointer' : 'default',
         }}
       >
         <Box display="flex" alignItems="center">
@@ -116,11 +115,22 @@ const Row = ({ project, participantsCount }: Props) => {
             )}
           </Box>
           <Box ml="8px">
-            <Text m="0" fontSize="s" className="project-table-row-title">
+            <Text
+              m="0"
+              fontSize="s"
+              textDecoration={hover === 'project' ? 'underline' : 'none'}
+            >
               {localize(title_multiloc)}
             </Text>
             {folder_title_multiloc && (
-              <Text m="0" fontSize="xs" color="textSecondary">
+              <Text
+                m="0"
+                fontSize="xs"
+                color="textSecondary"
+                textDecoration={hover === 'folder' ? 'underline' : 'none'}
+                onMouseEnter={() => setHover('folder')}
+                onMouseLeave={() => setHover('project')}
+              >
                 {localize(folder_title_multiloc)}
               </Text>
             )}
@@ -136,7 +146,7 @@ const Row = ({ project, participantsCount }: Props) => {
             <Error text={error} />
           </Box>
         )}
-      </StyledTd>
+      </Td>
       <Td background={colors.grey50} width="1px">
         {participantsCount !== undefined ? (
           <Text m="0" fontSize="s" textAlign="right" mr="12px">
