@@ -117,7 +117,7 @@ class ApplicationMailer < ActionMailer::Base
       'X-Mailgun-Variables' => mailgun_variables.to_json
     }
     return headers if mailgun_variables['cl_delivery_id'].present?
-     
+
     # Do not use the hook API for tracking if the delivery ID is not set.
     headers.merge('X-Mailgun-Track' => 'no')
   end
