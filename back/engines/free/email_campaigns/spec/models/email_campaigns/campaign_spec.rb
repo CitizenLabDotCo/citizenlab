@@ -34,4 +34,25 @@ RSpec.describe EmailCampaigns::Campaign do
       end
     end
   end
+
+  describe 'context' do
+    it 'deletes the associated campaigns on destroy' do
+      phase = create(:phase)
+      project = create(:project)
+      phase_campaigns = create_list(:project_phase_started_campaign, 2, context: phase)
+      project_campaign = create(:manual_project_participants_campaign, context: project)
+      global_campaign = create(:welcome_campaign)
+
+      expect { phase.destroy }.to change(described_class, :count).by(-2)
+      phase_campaigns.each do |campaign|
+        expect(described_class.exists?(campaign.id)).to be false
+      end
+      expect(described_class.exists?(project_campaign.id)).to be true
+      expect(described_class.exists?(global_campaign.id)).to be true
+
+      expect { project.destroy }.to change(described_class, :count).by(-1)
+      expect(described_class.exists?(project_campaign.id)).to be false
+      expect(described_class.exists?(global_campaign.id)).to be true
+    end
+  end
 end
