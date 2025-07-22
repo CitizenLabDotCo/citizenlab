@@ -1,19 +1,38 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useFiles from 'api/files/useFiles';
 
 import FilesList from './components/FilesList';
-import NoFilesView from './components/NoFilesView';
+import FirstUploadView from './components/FirstUploadView';
 
-const ProjectFilesTab = () => {
+type Props = {
+  projectHasFiles: boolean;
+};
+const ProjectFilesTab = ({ projectHasFiles }: Props) => {
+  const [showFirstUploadView, setShowFirstUploadView] = useState<boolean>(
+    !projectHasFiles
+  );
+
+  return (
+    <Box mb="40px" p="44px">
+      <Box>
+        {showFirstUploadView ? (
+          <FirstUploadView setShowFirstUploadView={setShowFirstUploadView} />
+        ) : (
+          <FilesList />
+        )}
+      </Box>
+    </Box>
+  );
+};
+
+const ProjectFilesTabWrapper = () => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-
-  const [showNoFilesView, setShowNoFilesView] = useState<boolean>(false);
 
   // Try to fetch first file of the project, to determine if there are any files
   const { data: files, isLoading } = useFiles({
@@ -24,17 +43,10 @@ const ProjectFilesTab = () => {
 
   const projectHasFiles = !isLoading && !(files?.data.length === 0);
 
-  return (
-    <Box mb="40px" p="44px">
-      <Box>
-        {!projectHasFiles || showNoFilesView ? (
-          <NoFilesView setShowNoFilesView={setShowNoFilesView} />
-        ) : (
-          <FilesList />
-        )}
-      </Box>
-    </Box>
-  );
+  if (isLoading) {
+    return <Spinner />;
+  }
+  return <ProjectFilesTab projectHasFiles={projectHasFiles} />;
 };
 
-export default ProjectFilesTab;
+export default ProjectFilesTabWrapper;
