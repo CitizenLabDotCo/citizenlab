@@ -1086,6 +1086,7 @@
   "app.containers.Admin.projects.all.new.Folders.Table.managers": "crwdns4747431:0crwdne4747431:0",
   "app.containers.Admin.projects.all.new.Folders.Table.numberOfProjects": "crwdns4747433:0numberOfProjects={numberOfProjects}crwdne4747433:0",
   "app.containers.Admin.projects.all.new.Folders.Table.status": "crwdns4747435:0crwdne4747435:0",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "crwdns4969335:0crwdne4969335:0",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "crwdns4969259:0crwdne4969259:0",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "crwdns4969261:0crwdne4969261:0",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "crwdns4969263:0crwdne4969263:0",
