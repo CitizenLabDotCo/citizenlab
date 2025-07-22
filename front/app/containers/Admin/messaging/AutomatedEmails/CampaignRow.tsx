@@ -39,7 +39,9 @@ const CampaignRow = ({
   const { mutate: addCampaign } = useAddCampaign();
   const { mutate: updateCampaign } = useUpdateCampaign();
   const toggleEnabled = () => {
-    if (hasContext && !campaign.relationships.context?.data?.id) {
+    const unpersistedContextCampaign =
+      hasContext && !campaign.relationships.context?.data?.id;
+    if (unpersistedContextCampaign) {
       addCampaign({
         phaseId,
         campaign_name: campaign.attributes.campaign_name,

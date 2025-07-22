@@ -13,13 +13,13 @@ const addCampaign = async ({
 }: CampaignAdd) => {
   let path = '/campaigns';
   if (projectId) {
-    path = `/projects/${projectId}/campaigns`;
+    path = `projects/${projectId}/campaigns`;
   } else if (phaseId) {
-    path = `/phases/${phaseId}/campaigns`;
+    path = `phases/${phaseId}/campaigns`;
   }
 
   return fetcher<ICampaign>({
-    path: path as `/${string}`,
+    path: `/${path}`,
     action: 'post',
     body: { campaign: requestBody },
   });
