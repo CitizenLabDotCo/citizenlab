@@ -5,9 +5,9 @@ namespace :single_use do
   desc 'Re-uploads user images to ensure metadata stripping is applied.'
   task :reupload_user_images, %i[host date] => [:environment] do |_t, args|
     # Reduce logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
+    # dev_null = Logger.new('/dev/null')
+    # Rails.logger = dev_null
+    # ActiveRecord::Base.logger = dev_null
 
     cutoff_date = args[:date] ? Date.parse(args[:date]) : Time.zone.today + 1.day
     total_images = 0
