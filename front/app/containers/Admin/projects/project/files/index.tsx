@@ -12,6 +12,11 @@ type Props = {
   projectHasFiles: boolean;
 };
 const ProjectFilesTab = ({ projectHasFiles }: Props) => {
+  // Note:
+  // This state is used to control the current view, so the user is presented
+  // with a specific "First Upload" UI view when no files have been uploaded yet, which
+  // includes some additional information about the feature.
+  // Once the user uploads files AND clicks "Done", this view will change into the full file list view.
   const [showFirstUploadView, setShowFirstUploadView] = useState<boolean>(
     !projectHasFiles
   );
@@ -34,7 +39,7 @@ const ProjectFilesTabWrapper = () => {
     projectId: string;
   };
 
-  // Try to fetch first file of the project, to determine if there are any files
+  // Try to fetch first file of the project, to determine if there are any files.
   const { data: files, isLoading } = useFiles({
     pageNumber: 1,
     pageSize: 1,
@@ -46,6 +51,7 @@ const ProjectFilesTabWrapper = () => {
   if (isLoading) {
     return <Spinner />;
   }
+
   return <ProjectFilesTab projectHasFiles={projectHasFiles} />;
 };
 

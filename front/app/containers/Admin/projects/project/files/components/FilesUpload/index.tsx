@@ -71,8 +71,8 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
   const handleUpload = () => {
     setHasStartedUploading(true);
 
-    // If uploading for the first time, this keeps the initial "first upload" UI visible
-    // until the upload is complete AND the user clicks "Done".
+    // If uploading for the first time, this keeps the initial "First Upload" view visible
+    // in the UI until the upload is complete AND the user clicks "Done".
     setShowFirstUploadView?.(true);
 
     // Update the status of all queued files to 'uploading'.
