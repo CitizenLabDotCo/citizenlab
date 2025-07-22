@@ -23,40 +23,36 @@ import InitialScreenFooter from './InitialScreen/Footer';
 import InitialScreenMainContent from './InitialScreen/MainContent';
 import PreferencesScreenFooter from './PreferencesScreen/Footer';
 import PreferencesScreenMainContent from './PreferencesScreen/MainContent';
-import { IPreferences } from './typings';
+import { CategorizedDestinations, IPreferences } from './typings';
 import {
   getCurrentPreferences,
   getActiveDestinations,
   getCategory,
-  categorizeDestinations,
   getConsentRequired,
+  categorizeDestinations,
 } from './utils';
 
-const ConsentManager = () => {
-  const [preferences, setPreferences] = useState<IPreferences>({
-    functional: true,
-  });
-  const [cookieConsent, setCookieConsent] = useState<IConsentCookie | null>(
-    null
-  );
+const ConsentManager = ({
+  isConsentRequired,
+  setPreferences,
+  preferences,
+  setCookieConsent,
+  cookieConsent,
+  activeCategorizedDestinations,
+}: {
+  isConsentRequired: boolean;
+  setPreferences: (preferences: IPreferences) => void;
+  preferences: IPreferences;
+  setCookieConsent: (cookieConsent: IConsentCookie | null) => void;
+  cookieConsent: IConsentCookie | null;
+  activeCategorizedDestinations: CategorizedDestinations;
+}) => {
   const [screen, setScreen] = useState<'initial' | 'preferences' | null>(null);
   const [searchParams] = useSearchParams();
   const from = searchParams.get('from');
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const activeDestinations = getActiveDestinations(
-    appConfiguration?.data,
-    authUser?.data
-  );
-  const activeCategorizedDestinations = categorizeDestinations(
-    appConfiguration?.data,
-    activeDestinations
-  );
-  const isConsentRequired = getConsentRequired(
-    cookieConsent,
-    activeDestinations
-  );
 
   useEffect(() => {
     if (from === 'cookie-modal') {
@@ -67,28 +63,6 @@ const ConsentManager = () => {
       setScreen(null);
     }
   }, [from, isConsentRequired]);
-
-  useEffect(() => {
-    const cookieConsent = getConsent();
-    setCookieConsent(cookieConsent);
-
-    const defaultPreferences = getCurrentPreferences(
-      appConfiguration?.data,
-      authUser?.data,
-      cookieConsent
-    );
-
-    if (defaultPreferences.functional === undefined) {
-      defaultPreferences.functional = true;
-    }
-
-    setPreferences(defaultPreferences);
-
-    eventEmitter.emit<ISavedDestinations>(
-      'destinationConsentChanged',
-      cookieConsent?.savedChoices || {}
-    );
-  }, [appConfiguration?.data, authUser?.data]);
 
   const resetPreferences = () => {
     setPreferences(
@@ -101,10 +75,10 @@ const ConsentManager = () => {
   };
 
   const updatePreference = (category: TCategory, value: boolean) => {
-    setPreferences((preferences) => ({
+    setPreferences({
       ...preferences,
       [category]: value,
-    }));
+    });
   };
 
   const saveConsent = (newPreferences: IPreferences) => {
@@ -233,4 +207,66 @@ const ConsentManager = () => {
   );
 };
 
-export default ConsentManager;
+export default () => {
+  const [preferences, setPreferences] = useState<IPreferences>({
+    functional: true,
+  });
+  const [cookieConsent, setCookieConsent] = useState<IConsentCookie | null>(
+    null
+  );
+  const [isConsentRequired, setIsConsentRequired] = useState<boolean>(false);
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: authUser } = useAuthUser();
+
+  useEffect(() => {
+    const cookieConsent = getConsent();
+    setCookieConsent(cookieConsent);
+
+    const defaultPreferences = getCurrentPreferences(
+      appConfiguration?.data,
+      authUser?.data,
+      cookieConsent
+    );
+
+    if (defaultPreferences.functional === undefined) {
+      defaultPreferences.functional = true;
+    }
+
+    setPreferences(defaultPreferences);
+
+    eventEmitter.emit<ISavedDestinations>(
+      'destinationConsentChanged',
+      cookieConsent?.savedChoices || {}
+    );
+  }, [appConfiguration?.data, authUser?.data]);
+
+  const activeDestinations = getActiveDestinations(
+    appConfiguration?.data,
+    authUser?.data
+  );
+
+  const activeCategorizedDestinations = categorizeDestinations(
+    appConfiguration?.data,
+    activeDestinations
+  );
+
+  useEffect(() => {
+    const isConsentRequired = getConsentRequired(
+      cookieConsent,
+      activeDestinations
+    );
+    setIsConsentRequired(isConsentRequired);
+  }, [cookieConsent, activeDestinations]);
+
+  return (
+    <ConsentManager
+      isConsentRequired={isConsentRequired}
+      cookieConsent={cookieConsent}
+      setCookieConsent={setCookieConsent}
+      preferences={preferences}
+      setPreferences={setPreferences}
+      activeCategorizedDestinations={activeCategorizedDestinations}
+    />
+  );
+};
