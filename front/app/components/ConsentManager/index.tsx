@@ -21,8 +21,8 @@ import {
 import { allCategories, TCategory } from './destinations';
 import InitialScreenFooter from './InitialScreen/Footer';
 import InitialScreenMainContent from './InitialScreen/MainContent';
-import PreferencesModalFooter from './PreferencesModal/Footer';
-import PreferencesModalMainContent from './PreferencesModal/MainContent';
+import PreferencesScreenFooter from './PreferencesScreen/Footer';
+import PreferencesScreenMainContent from './PreferencesScreen/MainContent';
 import { IPreferences } from './typings';
 import {
   getCurrentPreferences,
@@ -212,7 +212,7 @@ const ConsentManager = () => {
             />
           )}
           {screen === 'preferences' && (
-            <PreferencesModalFooter
+            <PreferencesScreenFooter
               categorizedDestinations={activeCategorizedDestinations}
               handleCancel={cancelPrefencesScreen}
               handleSave={savePreferences}
@@ -223,7 +223,7 @@ const ConsentManager = () => {
     >
       {screen === 'initial' && <InitialScreenMainContent />}
       {screen === 'preferences' && (
-        <PreferencesModalMainContent
+        <PreferencesScreenMainContent
           onChange={updatePreference}
           categoryDestinations={activeCategorizedDestinations}
           preferences={preferences}
