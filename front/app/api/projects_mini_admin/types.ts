@@ -4,6 +4,7 @@ import {
   ILinks,
   IRelationship,
   SupportedLocale,
+  ImageSizes,
 } from 'typings';
 
 import { ParticipationMethod } from 'api/phases/types';
@@ -48,6 +49,12 @@ export type ProjectMiniAdminData = {
     last_phase_end_date: string | null;
     current_phase_start_date: string | null;
     current_phase_end_date: string | null;
+    project_managers: {
+      id: string;
+      first_name?: string;
+      last_name?: string;
+      avatar: ImageSizes;
+    }[];
     publication_status: PublicationStatus;
     title_multiloc: Multiloc;
     visible_to: Visibility;
