@@ -35,6 +35,18 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
     object.folder&.title_multiloc
   end
 
+  attribute :project_managers do |object|
+    project_managers = User.project_manager(object.id)
+    project_managers.map do |manager|
+      {
+        id: manager.id,
+        first_name: manager.first_name,
+        last_name: manager.last_name,
+        avatar: manager.avatar.versions.to_h { |k, v| [k.to_s, v.url] }
+      }
+    end
+  end
+
   has_one :folder
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
