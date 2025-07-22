@@ -269,6 +269,17 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.sort_alphabetically' do
+    let!(:p3) { create(:project, title_multiloc: { 'en' => 'Gamma Project' }) }
+    let!(:p1) { create(:project, title_multiloc: { 'en' => 'Alpha Project' }) }
+    let!(:p2) { create(:project, title_multiloc: { 'en' => 'Beta Project' }) }
+
+    it 'sorts projects alphabetically by title' do
+      result = described_class.sort_alphabetically(Project.all, { locale: 'en', sort: 'alphabetically_asc' })
+      expect(result.pluck(:id)).to eq([p1.id, p2.id, p3.id])
+    end
+  end
+
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }

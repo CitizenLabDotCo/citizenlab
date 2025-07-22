@@ -13,6 +13,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created',
     defaultMessage: 'Recently created',
   },
+  alphabetically_asc: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc',
+    defaultMessage: 'Alphabetically (a-z)',
+  },
+  alphabetically_desc: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc',
+    defaultMessage: 'Alphabetically (z-a)',
+  },
   status: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.status',
     defaultMessage: 'Status',

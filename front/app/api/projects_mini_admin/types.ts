@@ -1,4 +1,10 @@
-import { Multiloc, Pagination, ILinks, IRelationship } from 'typings';
+import {
+  Multiloc,
+  Pagination,
+  ILinks,
+  IRelationship,
+  SupportedLocale,
+} from 'typings';
 
 import { ParticipationMethod } from 'api/phases/types';
 import { PublicationStatus, Visibility } from 'api/projects/types';
@@ -15,7 +21,10 @@ export type Parameters = {
   sort:
     | 'recently_viewed'
     | 'phase_starting_or_ending_soon'
-    | 'recently_created';
+    | 'recently_created'
+    | 'alphabetically_asc'
+    | 'alphabetically_desc';
+  locale: SupportedLocale;
 } & Pagination;
 
 export type ParticipationState =
