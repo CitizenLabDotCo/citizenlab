@@ -1105,6 +1105,8 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Beteiligungsstatus",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Abgeschlossen",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.search": "Projekt suchen",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Alphabetisch (a-z)",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Alphabetisch (z-a)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "Manager*in",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "Phase beginnt oder endet bald",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created": "Kürzlich erstellt",
