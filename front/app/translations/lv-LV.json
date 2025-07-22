@@ -118,7 +118,6 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Noraidīt politiku un aizvērt baneri",
   "app.components.ConsentManager.Banner.close": "Aizvērt",
   "app.components.ConsentManager.Banner.manage": "Pārvaldīt",
-  "app.components.ConsentManager.Banner.policyLink": "Sīkdatņu politika",
   "app.components.ConsentManager.Banner.reject": "Noraidīt",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklāma",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Mēs to izmantojam, lai personalizētu un mērītu mūsu vietnes reklāmas kampaņu efektivitāti. Šajā platformā mēs nerādīsim nekādas reklāmas, taču turpmāk minētie pakalpojumi var jums piedāvāt personalizētu reklāmu, pamatojoties uz jūsu apmeklētajām mūsu vietnes lapām.",

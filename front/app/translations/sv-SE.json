@@ -118,7 +118,6 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Avvisa policy och stäng banderoll",
   "app.components.ConsentManager.Banner.close": "Stäng",
   "app.components.ConsentManager.Banner.manage": "Hantera",
-  "app.components.ConsentManager.Banner.policyLink": "Policy webbkakor",
   "app.components.ConsentManager.Banner.reject": "Avvisa",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklam",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Vi använder detta för att anpassa och mäta effektiviteten av reklamkampanjer på vår webbplats. Vi kommer inte att visa någon reklam på denna plattform, men följande tjänster kan erbjuda dig en personlig annons baserat på de sidor du besöker på vår plats.",
