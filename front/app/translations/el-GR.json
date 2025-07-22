@@ -118,7 +118,6 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Απορρίψτε την πολιτική και κλείστε το πανό",
   "app.components.ConsentManager.Banner.close": "Κλείσιμο",
   "app.components.ConsentManager.Banner.manage": "Διαχείριση",
-  "app.components.ConsentManager.Banner.policyLink": "Πολιτική cookie",
   "app.components.ConsentManager.Banner.reject": "Απόρριψη",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Διαφήμιση",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Το χρησιμοποιούμε για την εξατομίκευση και τη μέτρηση της αποτελεσματικότητας των διαφημιστικών εκστρατειών του ιστότοπού μας. Δεν θα προβάλλουμε καμία διαφήμιση σε αυτή την πλατφόρμα, αλλά οι ακόλουθες υπηρεσίες ενδέχεται να σας προσφέρουν μια εξατομικευμένη διαφήμιση με βάση τις σελίδες που επισκέπτεστε στον ιστότοπό μας.",
