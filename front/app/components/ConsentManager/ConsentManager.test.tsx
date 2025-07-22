@@ -4,7 +4,7 @@ import { IUserData } from 'api/users/types';
 
 import eventEmitter from 'utils/eventEmitter';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
-import { fireEvent, render, act, screen, userEvent } from 'utils/testUtils/rtl';
+import { render, act, screen, userEvent } from 'utils/testUtils/rtl';
 
 // mocked functions
 import { setConsent, IConsentCookie } from './consent';
@@ -88,14 +88,14 @@ describe('<ConsentManager />', () => {
       expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
     });
 
-    it('opens and closes the preference modal', () => {
+    it('opens and closes the preference modal', async () => {
       // opens
+      const user = userEvent.setup();
       const { container } = render(<ConsentManager />);
       expect(
         container.querySelector('#e2e-preference-dialog')
       ).not.toBeInTheDocument();
-
-      fireEvent.click(screen.getByTestId('manage-preferences-btn'));
+      await user.click(screen.getByTestId('manage-preferences-btn'));
 
       expect(
         container.querySelector('#e2e-preference-dialog')
@@ -103,15 +103,17 @@ describe('<ConsentManager />', () => {
 
       // closes
       const closeButton = screen.getByTestId('e2e-preferences-cancel');
-      fireEvent.click(closeButton);
+
+      await user.click(closeButton);
       expect(
         container.querySelector('#e2e-preference-dialog')
       ).not.toBeInTheDocument();
     });
 
-    it('saves correct cookie if all cookies are accepted', () => {
+    it('saves correct cookie if all cookies are accepted', async () => {
+      const user = userEvent.setup();
       const { container } = render(<ConsentManager />);
-      fireEvent.click(container.querySelector('.e2e-accept-cookies-btn'));
+      await user.click(container.querySelector('.e2e-accept-cookies-btn'));
 
       expect(setConsent).toHaveBeenCalledWith({
         functional: true,
@@ -124,11 +126,12 @@ describe('<ConsentManager />', () => {
       });
     });
 
-    it('accepts only functional and analytics cookies if analytics is enabled in preference modal', () => {
+    it('accepts only functional and analytics cookies if analytics is enabled in preference modal', async () => {
+      const user = userEvent.setup();
       const { container } = render(<ConsentManager />);
-      fireEvent.click(screen.getByTestId('manage-preferences-btn'));
-      fireEvent.click(container.querySelector('#analytics-radio-true'));
-      fireEvent.click(container.querySelector('#e2e-preferences-save'));
+      await user.click(screen.getByTestId('manage-preferences-btn'));
+      await user.click(container.querySelector('#analytics-radio-true'));
+      await user.click(container.querySelector('#e2e-preferences-save'));
 
       expect(setConsent).toHaveBeenCalledWith({
         functional: true,
@@ -140,6 +143,39 @@ describe('<ConsentManager />', () => {
         },
       });
     });
+
+    it('rejects all cookies except functional if banner is closed', async () => {
+      const user = userEvent.setup();
+      render(<ConsentManager />);
+      await user.keyboard('[Escape]');
+
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: false,
+        advertising: false,
+        savedChoices: {
+          matomo: false,
+          google_analytics: false,
+        },
+      });
+    });
+
+    it('rejects all cookies except functional if preference modal is opened and confirmed without changes', async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ConsentManager />);
+      await user.click(screen.getByTestId('manage-preferences-btn'));
+      await user.click(container.querySelector('#e2e-preferences-save'));
+
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: false,
+        advertising: false,
+        savedChoices: {
+          matomo: false,
+          google_analytics: false,
+        },
+      });
+    });
   });
 
   describe('logged out, cookie exists', () => {
@@ -147,11 +183,11 @@ describe('<ConsentManager />', () => {
       mockAuthUser = null;
       mockCookie = {
         functional: true,
-        analytics: true,
+        analytics: false,
         advertising: false,
         savedChoices: {
-          matomo: true,
-          google_analytics: true,
+          matomo: false,
+          google_analytics: false,
         },
       };
     });
@@ -170,7 +206,7 @@ describe('<ConsentManager />', () => {
       ).not.toBeInTheDocument();
     });
 
-    it('still allows cookies to be changes through modal', async () => {
+    it('still allows cookies to be changed through modal', async () => {
       const { container } = render(<ConsentManager />);
       const user = userEvent.setup();
       expect(
@@ -185,16 +221,16 @@ describe('<ConsentManager />', () => {
         container.querySelector('#e2e-preference-dialog')
       ).toBeInTheDocument();
 
-      await user.click(container.querySelector('#analytics-radio-false'));
+      await user.click(container.querySelector('#analytics-radio-true'));
       await user.click(container.querySelector('#e2e-preferences-save'));
 
       expect(setConsent).toHaveBeenCalledWith({
         functional: true,
-        analytics: false,
+        analytics: true,
         advertising: false,
         savedChoices: {
-          matomo: false,
-          google_analytics: false,
+          matomo: true,
+          google_analytics: true,
         },
       });
     });
