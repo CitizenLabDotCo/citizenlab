@@ -22,14 +22,14 @@ import { countFilesWithStatus } from './utils';
 
 type Props = {
   setModalOpen?: (open: boolean) => void;
-  setShowNoFilesView?: (value: boolean) => void;
+  setShowFirstUploadView?: (value: boolean) => void;
 };
 
 const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_FILES = 35;
 
-const FilesUpload = ({ setModalOpen, setShowNoFilesView }: Props) => {
+const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
 
@@ -71,9 +71,9 @@ const FilesUpload = ({ setModalOpen, setShowNoFilesView }: Props) => {
   const handleUpload = () => {
     setHasStartedUploading(true);
 
-    // If uploading for the first time, this keeps the initial "no files" UI visible
-    // until the upload is complete AND the user clicks "Done".
-    setShowNoFilesView?.(true);
+    // If uploading for the first time, this keeps the initial "First Upload" view visible
+    // in the UI until the upload is complete AND the user clicks "Done".
+    setShowFirstUploadView?.(true);
 
     // Update the status of all queued files to 'uploading'.
     // This then triggers the upload process to start in the "SelectedFile" components.
@@ -135,8 +135,8 @@ const FilesUpload = ({ setModalOpen, setShowNoFilesView }: Props) => {
               setFileList([]);
               setHasStartedUploading(false);
               setModalOpen?.(false);
-              // If we're on the initial "No Files" UI view, this will close it and open the full file list view.
-              setShowNoFilesView?.(false);
+              // If we're on the initial "First Upload" UI view, this will close it and open the full file list view.
+              setShowFirstUploadView?.(false);
             }}
           />
           {/* Upload summary (# uploaded and # errors) */}
