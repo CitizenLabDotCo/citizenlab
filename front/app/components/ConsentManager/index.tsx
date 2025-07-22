@@ -158,31 +158,19 @@ const ConsentManager = () => {
     setScreen(null);
   };
 
-  const toggleDefault = (modalOpened: boolean) => {
+  const toggleDefault = () => {
     const newPreferences: IPreferences = {};
-    const modalIsCurrentlyOpening = !modalOpened;
 
-    // If modal is currently opening: overwrite undefined preferences with false
-    if (modalIsCurrentlyOpening) {
-      allCategories().forEach((category) => {
-        newPreferences[category] =
-          preferences[category] === undefined ? false : preferences[category];
-      });
-    }
-
-    // If modal is currently closing: overwrite false preferences with undefined
-    if (!modalIsCurrentlyOpening) {
-      allCategories().forEach((category) => {
-        newPreferences[category] =
-          preferences[category] === false ? undefined : preferences[category];
-      });
-    }
+    allCategories().forEach((category) => {
+      newPreferences[category] =
+        preferences[category] === undefined ? false : preferences[category];
+    });
 
     setPreferences(newPreferences);
   };
 
   const openPreferencesScreen = () => {
-    toggleDefault(false);
+    toggleDefault();
     setScreen('preferences');
   };
 
