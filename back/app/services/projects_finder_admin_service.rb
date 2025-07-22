@@ -11,6 +11,7 @@ class ProjectsFinderAdminService
     projects = filter_date(projects, params)
     projects = filter_participation_states(projects, params)
     projects = filter_current_phase_participation_method(projects, params)
+    projects = filter_visibility(projects, params)
 
     # Apply sorting
     if params[:sort] == 'recently_viewed'
@@ -233,5 +234,35 @@ class ProjectsFinderAdminService
       .select(:project_id)
 
     scope.where(id: project_ids_with_matching_phase)
+  end
+
+  # Filter projects by visibility and listed status
+  def self.filter_visibility(scope, params = {})
+    visibility = params[:visibility] || []
+    return scope if visibility.blank?
+
+    conditions = []
+
+    if visibility.include?('public')
+      conditions << 'projects.visible_to = \'public\''
+    end
+
+    if visibility.include?('groups')
+      conditions << 'projects.visible_to = \'groups\''
+    end
+
+    if visibility.include?('admins')
+      conditions << 'projects.visible_to = \'admins\''
+    end
+
+    if visibility.include?('unlisted')
+      conditions << 'projects.listed = false'
+    end
+
+    # If no visibility filters are selected, return all projects
+    return scope if conditions.empty?
+
+    # Use OR to include projects that match any of the selected criteria
+    scope.where(conditions.join(' OR '))
   end
 end
