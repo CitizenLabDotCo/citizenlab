@@ -89,4 +89,24 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders',
     defaultMessage: 'Folders',
   },
+  visibilityLabel: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label',
+    defaultMessage: 'Visibility',
+  },
+  visibilityPublic: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.public',
+    defaultMessage: 'Public',
+  },
+  visibilityGroups: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups',
+    defaultMessage: 'Groups',
+  },
+  visibilityAdmins: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins',
+    defaultMessage: 'Admins',
+  },
+  visibilityUnlisted: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.unlisted',
+    defaultMessage: 'Unlisted',
+  },
 });
