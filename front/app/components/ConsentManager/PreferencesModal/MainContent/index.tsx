@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  colors,
+  Icon,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -27,6 +32,7 @@ const MainContent = ({
 
   return (
     <CookieModalContentContainer id="e2e-preference-dialog">
+      <Icon name="cookie" fill={colors.primary} />
       <Title fontSize={isSmallerThanPhone ? 'xl' : undefined}>
         <FormattedMessage {...messages.title} />
       </Title>
