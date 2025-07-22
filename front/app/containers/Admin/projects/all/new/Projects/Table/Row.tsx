@@ -8,19 +8,16 @@ import {
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { format } from 'date-fns';
 import styled from 'styled-components';
 
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
-import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import ProjectMoreActionsMenu, {
   ActionType,
 } from 'containers/Admin/projects/components/ProjectRow/ProjectMoreActionsMenu';
 
-import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
@@ -50,7 +47,6 @@ interface Props {
 const Row = ({ project, participantsCount }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const locale = useLocale();
 
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [isBeingCopyied, setIsBeingCopyied] = useState(false);
@@ -68,7 +64,7 @@ const Row = ({ project, participantsCount }: Props) => {
   const formatDate = (date: string | null) => {
     const parsedDate = date ? parseBackendDateString(date) : undefined;
     if (!parsedDate) return '';
-    return format(parsedDate, 'P', { locale: getLocale(locale) });
+    return parsedDate.toLocaleDateString();
   };
 
   const folderId = project.relationships.folder?.data?.id;
