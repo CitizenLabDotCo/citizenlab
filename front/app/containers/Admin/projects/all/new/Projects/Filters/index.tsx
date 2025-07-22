@@ -15,6 +15,7 @@ import messages from './messages';
 import ParticipationMethods from './ParticipationMethods';
 import ParticipationStates from './ParticipationStates';
 import Sort from './Sort';
+import VisibilityFilter from './Visibility';
 
 const Filters = () => {
   const { formatMessage } = useIntl();
@@ -25,6 +26,7 @@ const Filters = () => {
   const folderIdsParam = useParam('folder_ids');
   const folderIds = Array.isArray(folderIdsParam) ? folderIdsParam : [];
   const participationMethods = useParam('participation_methods') ?? [];
+  const visibility = useParam('visibility') ?? [];
 
   return (
     <Box
@@ -88,6 +90,14 @@ const Filters = () => {
               participationMethods={participationMethods}
               onChange={(value) => {
                 setParam('participation_methods', value);
+              }}
+            />
+          </Box>
+          <Box mr="8px">
+            <VisibilityFilter
+              visibility={visibility}
+              onChange={(value) => {
+                setParam('visibility', value);
               }}
             />
           </Box>
