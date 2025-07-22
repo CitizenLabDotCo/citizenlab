@@ -133,7 +133,7 @@ const CurrentPhase = ({ project }: Props) => {
         {getCurrentPhaseText()}
       </Text>
       {subText !== undefined && (
-        <Text m="0" fontSize="s" color="textSecondary">
+        <Text m="0" fontSize="xs" color="textSecondary">
           {subText}
         </Text>
       )}
