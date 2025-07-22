@@ -118,7 +118,6 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Rebutja la política i tanca el banner",
   "app.components.ConsentManager.Banner.close": "Tancar",
   "app.components.ConsentManager.Banner.manage": "Gestionar",
-  "app.components.ConsentManager.Banner.policyLink": "Política de galetes",
   "app.components.ConsentManager.Banner.reject": "Rebutjar",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Publicitat",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Utilitzem això per personalitzar i mesurar l'eficàcia de les campanyes publicitàries del nostre lloc web. No mostrarem cap publicitat en aquesta plataforma, però els serveis següents poden oferir-vos un anunci personalitzat en funció de les pàgines que visiteu al nostre lloc.",
