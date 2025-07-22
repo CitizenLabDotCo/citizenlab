@@ -5,10 +5,12 @@ class ProjectsFinderAdminService
   def self.execute(scope, params = {}, current_user: nil)
     # Apply filters
     projects = filter_status(scope, params)
+    projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
     projects = filter_date(projects, params)
     projects = filter_participation_states(projects, params)
+    projects = filter_current_phase_participation_method(projects, params)
 
     # Apply sorting
     if params[:sort] == 'recently_viewed'
@@ -89,6 +91,28 @@ class ProjectsFinderAdminService
     scope
       .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
       .where(admin_publications: { publication_status: status })
+  end
+
+  def self.filter_by_folder_ids(scope, params = {})
+    folder_ids = params[:folder_ids] || []
+    return scope if folder_ids.blank?
+
+    scope
+      .joins(
+        'INNER JOIN admin_publications ON ' \
+        'admin_publications.publication_id = projects.id ' \
+        "AND admin_publications.publication_type = 'Project'"
+      )
+      .joins(
+        'INNER JOIN admin_publications AS parent_admin_publications ON ' \
+        'admin_publications.parent_id = parent_admin_publications.id'
+      )
+      .where(
+        parent_admin_publications: {
+          publication_id:   folder_ids,
+          publication_type: 'ProjectFolders::Folder'
+        }
+      )
   end
 
   def self.filter_project_manager(scope, params = {})
@@ -194,5 +218,20 @@ class ProjectsFinderAdminService
     end
 
     scope.where(conditions.map { |c| "(#{c})" }.join(' OR '))
+  end
+
+  # Filter projects by the participation method of their current phase
+  def self.filter_current_phase_participation_method(scope, params = {})
+    participation_methods = params[:participation_methods] || []
+    return scope if participation_methods.blank?
+
+    current_phases_with_participation_methods = Phase
+      .where(participation_method: participation_methods)
+      .where("start_at <= current_date AND coalesce(end_at, 'infinity'::DATE) >= current_date")
+
+    project_ids_with_matching_phase = current_phases_with_participation_methods
+      .select(:project_id)
+
+    scope.where(id: project_ids_with_matching_phase)
   end
 end

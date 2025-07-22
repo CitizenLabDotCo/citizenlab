@@ -150,12 +150,14 @@ resource 'Files' do
           type: 'file',
           attributes: {
             name: file.name,
+            description_multiloc: {},
+            content: { url: file.content.url },
+            ai_processing_allowed: false,
             mime_type: 'application/pdf',
             category: file.category,
+            size: 130,
             created_at: file.created_at.iso8601(3),
-            updated_at: file.updated_at.iso8601(3),
-            content: { url: file.content.url },
-            size: 130
+            updated_at: file.updated_at.iso8601(3)
           },
           relationships: {
             uploader: { data: { id: file.uploader_id, type: 'user' } },
@@ -176,11 +178,10 @@ resource 'Files' do
     with_options scope: :file do
       parameter :name, 'The name of the file', required: true
       parameter :content, 'The content of the file, encoded in Base64', required: true
-      parameter :project, 'The project to which the file will be uploaded', required: false
-
-      parameter :category, <<~CATEGORY_DESC.squish, required: false
-        The category of the file (values: #{Files::File.categories.values.join(', ')})
-      CATEGORY_DESC
+      parameter :project, 'The project to which the file will be uploaded'
+      parameter :description_multiloc, 'The description of the file, as a multiloc string'
+      parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file (defaults to false)'
+      parameter :category, "The category of the file (values: #{Files::File.categories.values.join(', ')})"
     end
 
     let(:name) { 'afvalkalender.pdf' }
@@ -204,14 +205,21 @@ resource 'Files' do
 
         assert_status 201
 
+        file = Files::File.find(response_data[:id])
+        # It has been correctly associated with the project
+        expect(file.project_ids).to contain_exactly(project)
+
         expect(response_data).to match(
           id: be_present,
           type: 'file',
           attributes: {
             name: name,
-            size: 1_645_987,
+            content: { url: file.content.url },
+            description_multiloc: {},
+            ai_processing_allowed: false,
             mime_type: 'application/pdf',
             category: 'other',
+            size: 1_645_987,
             created_at: be_present,
             updated_at: be_present
           },
@@ -220,9 +228,6 @@ resource 'Files' do
             projects: { data: [{ id: project, type: 'project' }] }
           }
         )
-
-        file = Files::File.find(response_data[:id])
-        expect(file.project_ids).to contain_exactly(project)
       end
 
       example 'Create a file with category' do
@@ -232,6 +237,40 @@ resource 'Files' do
 
         file = Files::File.find(response_data[:id])
         expect(file.category).to eq('meeting')
+      end
+
+      example 'Create a file with description_multiloc' do
+        description_multiloc = { 'en' => 'English description', 'fr-FR' => 'Description en français' }
+        do_request(file: { name: name, content: content, description_multiloc: description_multiloc })
+
+        assert_status 201
+
+        expect(response_data[:attributes][:description_multiloc])
+          .to eq(description_multiloc.symbolize_keys)
+
+        file = Files::File.find(response_data[:id])
+        expect(file.description_multiloc).to eq(description_multiloc)
+      end
+
+      example 'Create a file with ai_processing_allowed set to true', document: false do
+        do_request(file: { name: name, content: content, ai_processing_allowed: true })
+
+        assert_status 201
+
+        expect(response_data[:attributes][:ai_processing_allowed]).to be true
+
+        file = Files::File.find(response_data[:id])
+        expect(file.ai_processing_allowed).to be true
+      end
+
+      example 'casts ai_processing_allowed to boolean', document: false do
+        do_request(file: { name: name, content: content, ai_processing_allowed: 'whatever' })
+        assert_status 201
+        expect(response_data[:attributes][:ai_processing_allowed]).to be true
+
+        do_request(file: { name: name, content: content, ai_processing_allowed: 'off' })
+        assert_status 201
+        expect(response_data[:attributes][:ai_processing_allowed]).to be false
       end
     end
   end
@@ -254,6 +293,86 @@ resource 'Files' do
         assert_status 204
         expect { Files::File.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+  end
+
+  patch '/web_api/v1/files/:id' do
+    with_options scope: :file do
+      parameter :name, 'The name of the file'
+      parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file'
+      parameter :description_multiloc, 'The description of the file, as a multiloc string'
+      parameter :category, "The category of the file (values: #{Files::File.categories.values.join(', ')})"
+    end
+
+    let(:project) { create(:project) }
+    let(:file) { create(:file, :meeting, :with_description, projects: [project]) }
+
+    # Parameters
+    let(:id) { file.id }
+    let(:name) { "updated-#{file.name}" }
+    let(:category) { 'other' }
+    let(:ai_processing_allowed) { !file.ai_processing_allowed }
+    let(:description_multiloc) { { 'en' => 'Updated description' } }
+
+    shared_examples 'update_file' do |document: false|
+      example 'Update a file', document: document do
+        do_request
+        assert_status 200
+
+        expect(response_data[:attributes].with_indifferent_access).to include(
+          name: name,
+          category: category,
+          ai_processing_allowed: ai_processing_allowed,
+          description_multiloc: description_multiloc
+        )
+
+        file.reload
+        expect(file.name).to eq name
+        expect(file.category).to eq category
+        expect(file.ai_processing_allowed).to eq ai_processing_allowed
+        expect(file.description_multiloc).to eq description_multiloc
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      include_examples 'update_file', document: true
+
+      example '[error] Update with invalid category', document: false do
+        do_request(file: { category: 'invalid_category' })
+
+        assert_status 422
+        expect(response_body).to include('category')
+      end
+    end
+
+    context 'when moderator of associated project' do
+      before do
+        moderator = create(:project_moderator, projects: [project])
+        header_token_for(moderator)
+      end
+
+      include_examples 'update_file'
+    end
+
+    context 'when moderator of other project' do
+      before do
+        moderator = create(:project_moderator)
+        header_token_for(moderator)
+      end
+
+      include_examples 'unauthorized'
+    end
+
+    context 'when regular user' do
+      before { resident_header_token }
+
+      include_examples 'unauthorized'
+    end
+
+    context 'when visitor' do
+      include_examples 'unauthorized'
     end
   end
 end
