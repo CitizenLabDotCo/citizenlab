@@ -1105,6 +1105,8 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "ਭਾਗੀਦਾਰੀ ਸਥਿਤੀ",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "ਭੂਤਕਾਲ",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.search": "ਪ੍ਰੋਜੈਕਟ ਖੋਜੋ",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "ਵਰਣਮਾਲਾ ਕ੍ਰਮ ਵਿੱਚ (az)",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "ਵਰਣਮਾਲਾ ਕ੍ਰਮ ਵਿੱਚ (za)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "ਮੈਨੇਜਰ",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "ਪੜਾਅ ਜਲਦੀ ਸ਼ੁਰੂ ਹੋ ਰਿਹਾ ਹੈ ਜਾਂ ਖਤਮ ਹੋ ਰਿਹਾ ਹੈ",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created": "ਹਾਲ ਹੀ ਵਿੱਚ ਬਣਾਇਆ ਗਿਆ",
