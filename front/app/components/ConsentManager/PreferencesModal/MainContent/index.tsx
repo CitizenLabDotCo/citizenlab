@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Title } from '@citizenlab/cl2-component-library';
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -23,9 +23,11 @@ const MainContent = ({
   preferences,
   onChange,
 }: Props) => {
+  const isSmallerThanPhone = useBreakpoint('phone');
+
   return (
     <ContentContainer id="e2e-preference-dialog">
-      <Title>
+      <Title fontSize={isSmallerThanPhone ? 'xl' : undefined}>
         <FormattedMessage {...messages.title} />
       </Title>
       {Object.keys(categoryDestinations)
