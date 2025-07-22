@@ -118,7 +118,6 @@
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Atmesti politiką ir uždaryti reklaminį skydelį",
   "app.components.ConsentManager.Banner.close": "Uždaryti",
   "app.components.ConsentManager.Banner.manage": "Tvarkykite",
-  "app.components.ConsentManager.Banner.policyLink": "Slapukų politika",
   "app.components.ConsentManager.Banner.reject": "Atmesti",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklama",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Naudojame tai, kad galėtume suasmeninti ir įvertinti mūsų svetainės reklamos kampanijų veiksmingumą. Šioje platformoje nerodysime jokios reklamos, tačiau toliau nurodytos paslaugos gali pasiūlyti jums asmeninę reklamą pagal jūsų aplankytus mūsų svetainės puslapius.",
