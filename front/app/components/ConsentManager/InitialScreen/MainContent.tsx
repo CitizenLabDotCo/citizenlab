@@ -42,10 +42,7 @@ const MainContent = () => {
           values={{
             linkToCookiePolicy: (
               <TextLink
-            policyLink: (
-              <Link to="/pages/cookie-policy?from=cookie-modal">
-                <FormattedMessage {...messages.policyLink} />
-              </Link>
+                target="_blank"
                 to="/pages/cookie-policy?from=cookie-modal"
               >
                 <FormattedMessage {...messages.linkToCookiePolicyText} />
