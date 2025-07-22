@@ -26,7 +26,6 @@ import { parseBackendDateString } from 'utils/dateUtils';
 
 import { VISIBILITY_LABELS } from '../constants';
 
-import { COLUMN_VISIBILITY } from './constants';
 import CurrentPhase from './CurrentPhase';
 
 const StyledTd = styled(Td)`
@@ -107,43 +106,33 @@ const Row = ({ project, participantsCount }: Props) => {
           </Box>
         )}
       </StyledTd>
-      {COLUMN_VISIBILITY.participants && (
-        <Td background={colors.grey50} width="1px">
-          {participantsCount !== undefined ? (
-            <Text m="0" fontSize="s" textAlign="right" mr="12px">
-              {participantsCount}
-            </Text>
-          ) : (
-            <Spinner size="16px" />
-          )}
-        </Td>
-      )}
-      {COLUMN_VISIBILITY.phase && (
-        <Td background={colors.grey50} width="1px">
-          <CurrentPhase project={project} />
-        </Td>
-      )}
-      {COLUMN_VISIBILITY.projectStart && (
-        <Td background={colors.grey50} width="100px">
-          <Text m="0" fontSize="s">
-            {formatDate(first_phase_start_date)}
+      <Td background={colors.grey50} width="1px">
+        {participantsCount !== undefined ? (
+          <Text m="0" fontSize="s" textAlign="right" mr="12px">
+            {participantsCount}
           </Text>
-        </Td>
-      )}
-      {COLUMN_VISIBILITY.projectEnd && (
-        <Td background={colors.grey50} width="100px">
-          <Text m="0" fontSize="s">
-            {formatDate(last_phase_end_date)}
-          </Text>
-        </Td>
-      )}
-      {COLUMN_VISIBILITY.visibility && (
-        <Td background={colors.grey50} width="1px">
-          <Text m="0" fontSize="s">
-            {formatMessage(VISIBILITY_LABELS[visible_to])}
-          </Text>
-        </Td>
-      )}
+        ) : (
+          <Spinner size="16px" />
+        )}
+      </Td>
+      <Td background={colors.grey50} width="1px">
+        <CurrentPhase project={project} />
+      </Td>
+      <Td background={colors.grey50} width="100px">
+        <Text m="0" fontSize="s">
+          {formatDate(first_phase_start_date)}
+        </Text>
+      </Td>
+      <Td background={colors.grey50} width="100px">
+        <Text m="0" fontSize="s">
+          {formatDate(last_phase_end_date)}
+        </Text>
+      </Td>
+      <Td background={colors.grey50} width="1px">
+        <Text m="0" fontSize="s">
+          {formatMessage(VISIBILITY_LABELS[visible_to])}
+        </Text>
+      </Td>
       <Td background={colors.grey50} width="50px">
         <Box mr="12px">
           <ProjectMoreActionsMenu

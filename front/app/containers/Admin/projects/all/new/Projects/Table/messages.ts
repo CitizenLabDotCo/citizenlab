@@ -9,13 +9,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.phase',
     defaultMessage: 'Phase',
   },
-  projectStart: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.projectStart',
-    defaultMessage: 'Proj. start',
+  start: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.start',
+    defaultMessage: 'Start',
   },
-  projectEnd: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.projectEnd',
-    defaultMessage: 'Proj. end',
+  end: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.end',
+    defaultMessage: 'End',
   },
   status: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.status',

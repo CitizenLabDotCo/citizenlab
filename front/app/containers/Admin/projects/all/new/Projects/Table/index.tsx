@@ -23,7 +23,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import { useParams } from '../utils';
 
-import { COLUMN_VISIBILITY } from './constants';
 import messages from './messages';
 import Row from './Row';
 
@@ -98,23 +97,13 @@ const Table = () => {
         <Thead>
           <Tr background={colors.grey50}>
             <ColHeader>{formatMessage(messages.project)}</ColHeader>
-            {COLUMN_VISIBILITY.participants && (
-              <ColHeader>
-                <Icon name="users" height="16px" fill={colors.black} mr="8px" />
-              </ColHeader>
-            )}
-            {COLUMN_VISIBILITY.phase && (
-              <ColHeader>{formatMessage(messages.phase)}</ColHeader>
-            )}
-            {COLUMN_VISIBILITY.projectStart && (
-              <ColHeader>{formatMessage(messages.projectStart)}</ColHeader>
-            )}
-            {COLUMN_VISIBILITY.projectEnd && (
-              <ColHeader>{formatMessage(messages.projectEnd)}</ColHeader>
-            )}
-            {COLUMN_VISIBILITY.visibility && (
-              <ColHeader>{formatMessage(messages.visibility)}</ColHeader>
-            )}
+            <ColHeader>
+              <Icon name="users" height="16px" fill={colors.black} mr="8px" />
+            </ColHeader>
+            <ColHeader>{formatMessage(messages.phase)}</ColHeader>
+            <ColHeader>{formatMessage(messages.start)}</ColHeader>
+            <ColHeader>{formatMessage(messages.end)}</ColHeader>
+            <ColHeader>{formatMessage(messages.visibility)}</ColHeader>
             <Th />
           </Tr>
         </Thead>
