@@ -28,6 +28,7 @@ import { parseBackendDateString } from 'utils/dateUtils';
 import { VISIBILITY_LABELS } from '../constants';
 
 import CurrentPhase from './CurrentPhase';
+import Managers from './Managers';
 
 interface Props {
   project: ProjectMiniAdminData;
@@ -158,6 +159,9 @@ const Row = ({ project, participantsCount }: Props) => {
       </Td>
       <Td background={colors.grey50} width="1px">
         <CurrentPhase project={project} />
+      </Td>
+      <Td background={colors.grey50} width="140px">
+        <Managers project={project} />
       </Td>
       <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s">

@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.phase',
     defaultMessage: 'Phase',
   },
+  manager: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.manager',
+    defaultMessage: 'Manager',
+  },
   start: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.start',
     defaultMessage: 'Start',
@@ -72,5 +76,9 @@ export default defineMessages({
   allProjectsHaveLoaded: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded',
     defaultMessage: 'All projects have been loaded',
+  },
+  xManagers: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.xManagers',
+    defaultMessage: '{numberOfManagers} managers',
   },
 });

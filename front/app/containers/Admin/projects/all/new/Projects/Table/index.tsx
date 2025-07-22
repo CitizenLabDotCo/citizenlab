@@ -101,6 +101,7 @@ const Table = () => {
               <Icon name="users" height="16px" fill={colors.black} mr="8px" />
             </ColHeader>
             <ColHeader>{formatMessage(messages.phase)}</ColHeader>
+            <ColHeader>{formatMessage(messages.manager)}</ColHeader>
             <ColHeader>{formatMessage(messages.start)}</ColHeader>
             <ColHeader>{formatMessage(messages.end)}</ColHeader>
             <ColHeader>{formatMessage(messages.visibility)}</ColHeader>
