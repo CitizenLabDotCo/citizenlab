@@ -99,8 +99,8 @@ const Table = () => {
                 />
               </Th>
             )}
-            {COLUMN_VISIBILITY.currentPhase && (
-              <Th py="16px">{formatMessage(messages.currentPhase)}</Th>
+            {COLUMN_VISIBILITY.phase && (
+              <Th py="16px">{formatMessage(messages.phase)}</Th>
             )}
             {COLUMN_VISIBILITY.projectStart && (
               <Th py="16px">{formatMessage(messages.projectStart)}</Th>

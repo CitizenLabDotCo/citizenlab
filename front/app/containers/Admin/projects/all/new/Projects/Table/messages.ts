@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.project',
     defaultMessage: 'Project',
   },
-  currentPhase: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.currentPhase',
-    defaultMessage: 'Current phase',
+  phase: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.phase',
+    defaultMessage: 'Phase',
   },
   projectStart: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.projectStart',

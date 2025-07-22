@@ -130,7 +130,7 @@ const Row = ({ project, participantsCount }: Props) => {
           )}
         </Td>
       )}
-      {COLUMN_VISIBILITY.currentPhase && (
+      {COLUMN_VISIBILITY.phase && (
         <Td background={colors.grey50} width="1px">
           <CurrentPhase project={project} />
         </Td>
