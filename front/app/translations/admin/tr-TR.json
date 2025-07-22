@@ -1105,6 +1105,8 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Katılım durumu",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Geçmiş",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.search": "Proje arama",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Alfabetik olarak (a-z)",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Alfabetik olarak (z-a)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "Müdür",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "Yakında başlayacak veya bitecek aşamalar",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created": "Yakın zamanda oluşturuldu",
