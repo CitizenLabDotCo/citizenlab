@@ -3,13 +3,14 @@ require 'fileutils'
 # Re-uploads citizen images, to ensure the relatively new metadata stripping is
 # applied. Primarily for use with the Vienna tenant, but tenant is selectable
 # to enable testing on a demo.
+# Re-uploads user avatars, idea_images, and Idea text_images.
 namespace :single_use do
   desc 'Re-uploads user images to ensure metadata stripping is applied.'
   task :reupload_user_images, %i[host date] => [:environment] do |_t, args|
     # Reduce logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
+    # dev_null = Logger.new('/dev/null')
+    # Rails.logger = dev_null
+    # ActiveRecord::Base.logger = dev_null
 
     cutoff_date = args[:date] ? Date.parse(args[:date]) : Time.zone.today + 1.day
     total_images = 0

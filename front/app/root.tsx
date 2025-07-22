@@ -90,7 +90,13 @@ const mountApplication = () => {
   } finally {
     // We don't want to use StrictMode during E2E tests, since it causes test failures due to
     // some issues with the re-rendering & re-running of effects in the JSONForms and react-select libraries.
-    window.Cypress ? root.render(<Root />) : root.render(<Root />);
+    window.Cypress
+      ? root.render(<Root />)
+      : root.render(
+          <StrictMode>
+            <Root />
+          </StrictMode>
+        );
   }
 };
 
