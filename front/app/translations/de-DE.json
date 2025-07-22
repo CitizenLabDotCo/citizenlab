@@ -2334,7 +2334,7 @@
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalCredits2": "Sie haben insgesamt <b>{totalVotes, plural, one {# Guthaben} other {# Guthaben}} zum Aufteilen auf {optionCount, plural, one {# Optionen} other {# Optionen}}</b>.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPoints2": "Sie haben insgesamt <b>{totalVotes, plural, one {# Punkt} other {# Punkte}} zum Verteilen auf {optionCount, plural, one {# Optionen} other {# Optionen}}</b>.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalTokens2": "Sie haben insgesamt <b>{totalVotes, plural, one {# Token} other {# Token}} zum Verteilen auf {optionCount, plural, one {# Option} other {# Optionen}}</b>.",
-  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes3": "Sie haben insgesamt <b>{totalVotes, plural, one {# Stimme} other {# Stimmen}}, die Sie auf {optionCount, plural, one {# Optionen} other {# Optionen}}</b>verteilen können.",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes3": "Sie haben insgesamt <b>{totalVotes, plural, one {# Stimme} other {# Stimmen}}, die Sie auf {optionCount, plural, one {# Optionen} other {# Optionen}}</b> verteilen können.",
   "app.utils.votingMethodUtils.finalResults": "Endgültige Ergebnisse",
   "app.utils.votingMethodUtils.finalTally": "Endergebnis",
   "app.utils.votingMethodUtils.howToParticipate": "So nehmen Sie teil",
