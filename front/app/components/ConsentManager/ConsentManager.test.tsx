@@ -4,7 +4,7 @@ import { IUserData } from 'api/users/types';
 
 import eventEmitter from 'utils/eventEmitter';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
-import { fireEvent, render, act, screen } from 'utils/testUtils/rtl';
+import { fireEvent, render, act, screen, userEvent } from 'utils/testUtils/rtl';
 
 // mocked functions
 import { setConsent, IConsentCookie } from './consent';
@@ -95,7 +95,7 @@ describe('<ConsentManager />', () => {
         container.querySelector('#e2e-preference-dialog')
       ).not.toBeInTheDocument();
 
-      fireEvent.click(container.querySelector('.integration-open-modal'));
+      fireEvent.click(screen.getByTestId('e2e-manage-preferences-btn'));
 
       expect(
         container.querySelector('#e2e-preference-dialog')
@@ -126,7 +126,7 @@ describe('<ConsentManager />', () => {
 
     it('accepts only functional and analytics cookies if analytics is enabled in preference modal', () => {
       const { container } = render(<ConsentManager />);
-      fireEvent.click(container.querySelector('.integration-open-modal'));
+      fireEvent.click(screen.getByTestId('e2e-manage-preferences-btn'));
       fireEvent.click(container.querySelector('#analytics-radio-true'));
       fireEvent.click(container.querySelector('#e2e-preferences-save'));
 
@@ -170,19 +170,23 @@ describe('<ConsentManager />', () => {
       ).not.toBeInTheDocument();
     });
 
-    it('still allows cookies to be changes through modal', () => {
+    it('still allows cookies to be changes through modal', async () => {
       const { container } = render(<ConsentManager />);
+      const user = userEvent.setup();
       expect(
         container.querySelector('#e2e-preference-dialog')
       ).not.toBeInTheDocument();
 
       act(() => eventEmitter.emit('openConsentManager'));
+
+      await user.click(screen.getByTestId('e2e-manage-preferences-btn'));
+
       expect(
         container.querySelector('#e2e-preference-dialog')
       ).toBeInTheDocument();
 
-      fireEvent.click(container.querySelector('#analytics-radio-false'));
-      fireEvent.click(container.querySelector('#e2e-preferences-save'));
+      await user.click(container.querySelector('#analytics-radio-false'));
+      await user.click(container.querySelector('#e2e-preferences-save'));
 
       expect(setConsent).toHaveBeenCalledWith({
         functional: true,
