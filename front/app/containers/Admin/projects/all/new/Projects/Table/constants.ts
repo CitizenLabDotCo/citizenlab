@@ -2,7 +2,7 @@
 export const COLUMN_VISIBILITY = {
   participants: true,
   currentPhase: true,
-  projectStart: false,
+  projectStart: true,
   projectEnd: false,
   status: true,
   visibility: true,

@@ -25,6 +25,7 @@ const MULTISELECT_PARAMS = new Set<string>([
   'status',
   'managers',
   'participation_states',
+  'folder_ids',
   'participation_methods',
 ]);
 
@@ -48,10 +49,11 @@ export const PARAMS: (keyof Parameters)[] = [
   'status',
   'managers',
   'search',
-  'start_at',
-  'end_at',
+  'min_start_date',
+  'max_start_date',
   'sort',
   'participation_states',
+  'folder_ids',
   'participation_methods',
 ];
 

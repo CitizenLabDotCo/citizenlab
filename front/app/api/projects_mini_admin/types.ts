@@ -13,9 +13,10 @@ export type Parameters = {
   status?: PublicationStatus[];
   managers?: string[];
   search?: string;
-  start_at?: string;
-  end_at?: string;
+  min_start_date?: string;
+  max_start_date?: string;
   participation_states?: ParticipationState[];
+  folder_ids?: string[];
   participation_methods?: ParticipationMethod[];
   sort:
     | 'recently_viewed'
