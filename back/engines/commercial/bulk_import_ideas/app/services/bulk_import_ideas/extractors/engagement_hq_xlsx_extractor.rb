@@ -40,10 +40,12 @@ module BulkImportIdeas::Extractors
     end
 
     def phase
+      # Get the minimum and maximum dates from 'Date Published (dd-mm-yyyy)' as start and end dates
+      values = @idea_rows.pluck('Date Published (dd-mm-yyyy)').map { |d| Date.parse(d) }
       {
         title_multiloc: multiloc(@worksheet.sheet_data[0][3].value),
-        start_at: Date.parse(@worksheet.sheet_data[0][7].value),
-        end_at: Date.parse(@worksheet.sheet_data[0][10].value)
+        start_at: values.min,
+        end_at: values.max
       }
     end
 

@@ -96,7 +96,7 @@ namespace :bulk_import do
         Rails.logger.info "Created project '#{project.title_multiloc['en']}' with slug '#{project.slug}'"
         Rails.logger.info "Created form with #{form.custom_fields.count} fields"
         Rails.logger.info "Imported #{ideas.count} ideas"
-
+        break
       end
     end
   end
