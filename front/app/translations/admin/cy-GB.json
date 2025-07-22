@@ -1105,6 +1105,8 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Cyflwr cyfranogiad",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Gorffennol",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.search": "Chwilio am brosiect",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Yn nhrefn yr wyddor (az)",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Yn nhrefn yr wyddor (za)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "Rheolwr",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "Cyfnod yn dechrau neu'n dod i ben yn fuan",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created": "Wedi'i greu'n ddiweddar",
