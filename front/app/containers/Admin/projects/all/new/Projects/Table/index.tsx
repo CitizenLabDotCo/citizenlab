@@ -11,6 +11,7 @@ import {
   stylingConsts,
   Spinner,
   Icon,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 import useParticipantCounts from 'api/participant_counts/useParticipantCounts';
@@ -27,6 +28,14 @@ import messages from './messages';
 import Row from './Row';
 
 const PAGE_SIZE = 10;
+
+const ColHeader = ({ children }: { children: React.ReactNode }) => (
+  <Th py="16px">
+    <Text m="0" fontSize="s" fontWeight="bold">
+      {children}
+    </Text>
+  </Th>
+);
 
 const Table = () => {
   const { formatMessage } = useIntl();
@@ -88,31 +97,26 @@ const Table = () => {
       >
         <Thead>
           <Tr background={colors.grey50}>
-            <Th py="16px">{formatMessage(messages.project)}</Th>
+            <ColHeader>{formatMessage(messages.project)}</ColHeader>
             {COLUMN_VISIBILITY.participants && (
-              <Th py="16px">
-                <Icon
-                  name="users"
-                  height="16px"
-                  fill={colors.primary}
-                  mr="8px"
-                />
-              </Th>
+              <ColHeader>
+                <Icon name="users" height="16px" fill={colors.black} mr="8px" />
+              </ColHeader>
             )}
             {COLUMN_VISIBILITY.phase && (
-              <Th py="16px">{formatMessage(messages.phase)}</Th>
+              <ColHeader>{formatMessage(messages.phase)}</ColHeader>
             )}
             {COLUMN_VISIBILITY.projectStart && (
-              <Th py="16px">{formatMessage(messages.projectStart)}</Th>
+              <ColHeader>{formatMessage(messages.projectStart)}</ColHeader>
             )}
             {COLUMN_VISIBILITY.projectEnd && (
-              <Th py="16px">{formatMessage(messages.projectEnd)}</Th>
+              <ColHeader>{formatMessage(messages.projectEnd)}</ColHeader>
             )}
             {COLUMN_VISIBILITY.status && (
-              <Th py="16px">{formatMessage(messages.status)}</Th>
+              <ColHeader>{formatMessage(messages.status)}</ColHeader>
             )}
             {COLUMN_VISIBILITY.visibility && (
-              <Th py="16px">{formatMessage(messages.visibility)}</Th>
+              <ColHeader>{formatMessage(messages.visibility)}</ColHeader>
             )}
             <Th />
           </Tr>
