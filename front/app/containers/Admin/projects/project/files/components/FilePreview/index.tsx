@@ -8,6 +8,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import DownloadFileButton from '../DownloadFileButton';
 
+import AudioFilePreview from './AudioFilePreview';
 import CsvFilePreview from './CsvFilePreview';
 import IframePreview from './IframeFilePreview';
 import ImageFilePreview from './ImageFilePreview';
@@ -58,14 +59,7 @@ const FilePreview = ({ file }: Props) => {
       case 'audio/webm':
       case 'audio/x-mpeg':
       case 'audio/x-wav':
-        return (
-          <Box mt="24px">
-            <audio controls style={{ width: '100%' }}>
-              <source src={fileUrl} type={mimeType} />
-              {formatMessage(messages.previewNotSupported)}
-            </audio>
-          </Box>
-        );
+        return <AudioFilePreview url={fileUrl} mimeType={mimeType} />;
 
       // PDF
       case 'application/pdf':

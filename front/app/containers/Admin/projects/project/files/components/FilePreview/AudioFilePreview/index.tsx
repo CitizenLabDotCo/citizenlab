@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import axios from 'axios';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 type Props = {
   url: string;
+  mimeType: string;
 };
 
 type TranscriptResponse = {
@@ -17,25 +22,29 @@ type PollingResponse = {
   error?: string;
 };
 
-const VideoFilePreview: React.FC<Props> = ({ url }) => {
+const AudioFilePreview: React.FC<Props> = ({ url, mimeType }) => {
+  const { formatMessage } = useIntl();
+
   const [transcript, setTranscript] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const baseUrl = 'https://api.assemblyai.com';
-  const audioUrl = url;
 
   useEffect(() => {
     const headers = {
       authorization: '03c12127860b41079ed8b5070a8e3c0d',
     };
 
-    let shouldCancel = false; // ✅ Moved outside the async function
+    let shouldCancel = false;
 
     const fetchTranscript = async () => {
       try {
         const data = {
-          audio_url: audioUrl,
+          audio_url:
+            'https://raw.githubusercontent.com/amanda-anderson/resources/master/MultiSpeakerAudio.mp3',
           speech_model: 'universal',
+          speaker_labels: true,
+          auto_chapters: true,
         };
 
         const transcriptUrl = `${baseUrl}/v2/transcript`;
@@ -47,14 +56,13 @@ const VideoFilePreview: React.FC<Props> = ({ url }) => {
 
         const pollingEndpoint = `${baseUrl}/v2/transcript/${response.data.id}`;
 
-        while (true) {
-          if (shouldCancel) break;
-
+        while (shouldCancel === false) {
           const pollingRes = await axios.get<PollingResponse>(pollingEndpoint, {
             headers,
           });
 
           if (pollingRes.data.status === 'completed') {
+            console.log(pollingRes.data);
             setTranscript(pollingRes.data.text || '');
             break;
           } else if (pollingRes.data.status === 'error') {
@@ -78,31 +86,20 @@ const VideoFilePreview: React.FC<Props> = ({ url }) => {
     fetchTranscript();
 
     return () => {
-      shouldCancel = true; // ✅ Cleanup sets this
+      shouldCancel = true;
     };
-  }, []);
-
-  console.log({ transcript });
+  }, [url]);
 
   return (
     <Box mt="24px">
-      <video
-        src={url}
-        controls
-        style={{
-          width: '100%',
-          maxHeight: '500px',
-          borderRadius: stylingConsts.borderRadius,
-        }}
-      />
-      {transcript && <Box mt="16px">📝 Transcript: {transcript}</Box>}
-      {error && (
-        <Box mt="16px" color="red">
-          ⚠️ Error: {error}
-        </Box>
-      )}
+      <audio controls style={{ width: '100%' }}>
+        <source src={url} type={mimeType} />
+        {formatMessage(messages.previewNotSupported)}
+      </audio>
+      <Box mt="20px">{transcript}</Box>
+      {error}
     </Box>
   );
 };
 
-export default VideoFilePreview;
+export default AudioFilePreview;
