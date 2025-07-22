@@ -5,18 +5,18 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Banner.close',
     defaultMessage: 'Close',
   },
-  modalTitle: {
-    id: 'app.components.ConsentManager.Banner.title',
-    defaultMessage: 'Make participation better',
+  cookieModalInitialScreenTitle: {
+    id: 'app.components.ConsentManager.Banner.cookieModalInitialScreenTitle',
+    defaultMessage: 'Make your voice count',
   },
-  modalDescription: {
-    id: 'app.components.ConsentManager.Banner.description',
+  cookieModalInitialScreenDescription: {
+    id: 'app.components.ConsentManager.Banner.cookieModalInitialScreenDescription',
     defaultMessage:
-      'We use cookies to make this site work better and help more people participate. {policyLink}.',
+      'Cookies help us improve participation. {linkToCookiePolicy}.',
   },
-  policyLink: {
-    id: 'app.components.ConsentManager.Banner.policyLink',
-    defaultMessage: 'Cookie Policy',
+  linkToCookiePolicyText: {
+    id: 'app.components.ConsentManager.Banner.linkToCookiePolicyText',
+    defaultMessage: 'Read our cookie policy',
   },
   manage: {
     id: 'app.components.ConsentManager.Banner.manage',
