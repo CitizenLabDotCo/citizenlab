@@ -12,6 +12,7 @@ export type Parameters = {
   participation_states?: ParticipationState[];
   folder_ids?: string[];
   participation_methods?: ParticipationMethod[];
+  visibility?: (Visibility | 'unlisted')[];
   sort:
     | 'recently_viewed'
     | 'phase_starting_or_ending_soon'
