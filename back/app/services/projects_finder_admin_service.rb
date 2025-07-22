@@ -238,31 +238,27 @@ class ProjectsFinderAdminService
 
   # Filter projects by visibility and listed status
   def self.filter_visibility(scope, params = {})
-    visibility = params[:visibility] || []
-    return scope if visibility.blank?
+    visibility_params = Array(params[:visibility])
+    return scope if visibility_params.blank?
 
-    conditions = []
+    valid_visibilities = %w[public groups admins]
+    selected_visibilities = visibility_params & valid_visibilities
 
-    if visibility.include?('public')
-      conditions << 'projects.visible_to = \'public\''
+    conditions = scope.none
+
+    if selected_visibilities.present?
+      # This generates: WHERE "projects"."visible_to" IN ('public', 'groups', ...)
+      conditions = conditions.or(scope.where(visible_to: selected_visibilities))
     end
 
-    if visibility.include?('groups')
-      conditions << 'projects.visible_to = \'groups\''
+    if visibility_params.include?('unlisted')
+      # This generates: WHERE "projects"."listed" = false
+      conditions = conditions.or(scope.where(listed: false))
     end
 
-    if visibility.include?('admins')
-      conditions << 'projects.visible_to = \'admins\''
-    end
-
-    if visibility.include?('unlisted')
-      conditions << 'projects.listed = false'
-    end
-
-    # If no visibility filters are selected, return all projects
-    return scope if conditions.empty?
-
-    # Use OR to include projects that match any of the selected criteria
-    scope.where(conditions.join(' OR '))
+    # If `conditions` remains an empty relation (e.g., if visibility_params contained only invalid options),
+    # we should return the original, unfiltered scope.
+    # Otherwise, return the scope with the applied OR conditions.
+    conditions.any? ? conditions : scope
   end
 end
