@@ -36,7 +36,7 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :project_managers do |object|
-    project_managers = User.project_manager(object.id)
+    project_managers = User.project_moderator(object.id)
     project_managers.map do |manager|
       {
         id: manager.id,
