@@ -186,7 +186,11 @@ const ConsentManager = () => {
     setScreen('preferences');
   };
 
-  useObserveEvent('openConsentManager', openPreferencesScreen);
+  const openInitialScreen = () => {
+    setScreen('initial');
+  };
+
+  useObserveEvent('openConsentManager', openInitialScreen);
 
   const savePreferences = (e: FormEvent) => {
     e.preventDefault();
@@ -197,7 +201,7 @@ const ConsentManager = () => {
 
   const cancelPrefencesScreen = () => {
     resetPreferences();
-    setScreen(null);
+    setScreen('initial');
   };
 
   if (screen === null) {

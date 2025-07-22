@@ -26,6 +26,7 @@ const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
         px="4px"
         buttonStyle="text"
         onClick={openPreferencesScreen}
+        data-testid="e2e-manage-preferences-btn"
       >
         <FormattedMessage {...messages.manage} />
       </Button>
