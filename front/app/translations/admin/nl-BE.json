@@ -2242,8 +2242,6 @@
   "app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription": "Transcripties verwerken, enz.",
   "app.containers.AdminPage.ProjectFiles.addFiles": "Voeg bestanden toe",
   "app.containers.AdminPage.ProjectFiles.askButton": "Vraag",
-  "app.containers.AdminPage.ProjectFiles.audioFileDescription": "Audio-interviews, opnames van in het stadhuis",
-  "app.containers.AdminPage.ProjectFiles.audioFileExtensionDescription": "WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Categorie",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Bestanden kiezen",
   "app.containers.AdminPage.ProjectFiles.close": "Sluiten",
