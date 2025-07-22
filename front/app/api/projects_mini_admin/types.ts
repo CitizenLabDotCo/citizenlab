@@ -59,5 +59,11 @@ export type ProjectMiniAdminData = {
     phases?: {
       data: IRelationship[];
     };
+    project_images: {
+      data: {
+        id: string;
+        type: 'project_image';
+      }[];
+    };
   };
 };

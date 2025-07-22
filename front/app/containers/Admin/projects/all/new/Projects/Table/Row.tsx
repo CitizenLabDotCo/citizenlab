@@ -11,6 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useProjectImage from 'api/project_images/useProjectImage';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -46,6 +47,15 @@ interface Props {
 const Row = ({ project, participantsCount }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+
+  const imageId = project.relationships.project_images.data[0]?.id;
+  const { data: image } = useProjectImage({
+    projectId: project.id,
+    imageId,
+  });
+
+  const imageVersions = image?.data.attributes.versions;
+  const imageUrl = imageVersions?.large ?? imageVersions?.medium;
 
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [isBeingCopyied, setIsBeingCopyied] = useState(false);
@@ -85,16 +95,27 @@ const Row = ({ project, participantsCount }: Props) => {
         }}
       >
         <Box display="flex" alignItems="center">
-          <Box>
-            <Image
-              src={'todo'}
-              alt={localize(title_multiloc)}
-              width="40px"
-              height="40px"
-              borderRadius="4px"
-            />
+          <Box
+            width="32px"
+            height="32px"
+            display="flex"
+            position="relative"
+            overflow="hidden"
+            borderRadius="4px"
+          >
+            {imageUrl && (
+              <Image
+                src={imageUrl}
+                alt={localize(title_multiloc)}
+                position="absolute"
+                width="100%"
+                height="100%"
+                top="0"
+                left="0"
+              />
+            )}
           </Box>
-          <Box>
+          <Box ml="8px">
             <Text m="0" fontSize="s" className="project-table-row-title">
               {localize(title_multiloc)}
             </Text>
