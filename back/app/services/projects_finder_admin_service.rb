@@ -18,7 +18,7 @@ class ProjectsFinderAdminService
       sort_recently_viewed(projects, current_user)
     when 'phase_starting_or_ending_soon'
       sort_phase_starting_or_ending_soon(projects)
-    when 'alphabetically'
+    when 'alphabetically_asc', 'alphabetically_desc'
       sort_alphabetically(projects, params)
     else
       projects.order('projects.created_at DESC, projects.id ASC')
@@ -88,9 +88,10 @@ class ProjectsFinderAdminService
 
   def self.sort_alphabetically(scope, params)
     locale = params[:locale] || 'en'
+    direction = params[:sort] == 'alphabetically_desc' ? 'DESC' : 'ASC'
 
     scope.order(
-      Arel.sql("projects.title_multiloc->>'#{locale}' ASC, projects.created_at ASC, projects.id ASC")
+      Arel.sql("projects.title_multiloc->>'#{locale}' #{direction}, projects.created_at ASC, projects.id ASC")
     )
   end
 

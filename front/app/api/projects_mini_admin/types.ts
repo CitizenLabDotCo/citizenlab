@@ -22,7 +22,8 @@ export type Parameters = {
     | 'recently_viewed'
     | 'phase_starting_or_ending_soon'
     | 'recently_created'
-    | 'alphabetically';
+    | 'alphabetically_asc'
+    | 'alphabetically_desc';
   locale: SupportedLocale;
 } & Pagination;
 

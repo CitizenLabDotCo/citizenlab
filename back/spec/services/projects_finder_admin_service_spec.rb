@@ -275,7 +275,7 @@ describe ProjectsFinderAdminService do
     let!(:p2) { create(:project, title_multiloc: { 'en' => 'Beta Project' }) }
 
     it 'sorts projects alphabetically by title' do
-      result = described_class.sort_alphabetically(Project.all, { locale: 'en' })
+      result = described_class.sort_alphabetically(Project.all, { locale: 'en', sort: 'alphabetically_asc' })
       expect(result.pluck(:id)).to eq([p1.id, p2.id, p3.id])
     end
   end
