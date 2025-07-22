@@ -13,7 +13,8 @@ import CookieModalContentContainer from '../../CookieModalContentContainer';
 import { TCategory } from '../../destinations';
 import messages from '../../messages';
 import { CategorizedDestinations, IPreferences } from '../../typings';
-import CategoryCard from '../CategoryCard';
+
+import CategoryCard from './CategoryCard';
 
 interface Props {
   onChange: (category: TCategory, value: boolean) => void;
