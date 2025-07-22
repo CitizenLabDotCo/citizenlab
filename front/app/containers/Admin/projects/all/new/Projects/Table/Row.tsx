@@ -24,7 +24,6 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import { PUBLICATION_STATUS_LABELS } from '../../constants';
 import { VISIBILITY_LABELS } from '../constants';
 
 import { COLUMN_VISIBILITY } from './constants';
@@ -56,7 +55,7 @@ const Row = ({ project, participantsCount }: Props) => {
     first_phase_start_date,
     folder_title_multiloc,
     last_phase_end_date,
-    publication_status,
+    // publication_status,
     title_multiloc,
     visible_to,
   } = project.attributes;
@@ -87,12 +86,7 @@ const Row = ({ project, participantsCount }: Props) => {
       >
         <Box display="flex" alignItems="center">
           <Box>
-            <Text
-              m="0"
-              fontSize="s"
-              color="primary"
-              className="project-table-row-title"
-            >
+            <Text m="0" fontSize="s" className="project-table-row-title">
               {localize(title_multiloc)}
             </Text>
             {folder_title_multiloc && (
@@ -116,13 +110,7 @@ const Row = ({ project, participantsCount }: Props) => {
       {COLUMN_VISIBILITY.participants && (
         <Td background={colors.grey50} width="1px">
           {participantsCount !== undefined ? (
-            <Text
-              m="0"
-              fontSize="s"
-              color="primary"
-              textAlign="right"
-              mr="12px"
-            >
+            <Text m="0" fontSize="s" textAlign="right" mr="12px">
               {participantsCount}
             </Text>
           ) : (
@@ -137,28 +125,21 @@ const Row = ({ project, participantsCount }: Props) => {
       )}
       {COLUMN_VISIBILITY.projectStart && (
         <Td background={colors.grey50} width="100px">
-          <Text m="0" fontSize="s" color="primary">
+          <Text m="0" fontSize="s">
             {formatDate(first_phase_start_date)}
           </Text>
         </Td>
       )}
       {COLUMN_VISIBILITY.projectEnd && (
         <Td background={colors.grey50} width="100px">
-          <Text m="0" fontSize="s" color="primary">
+          <Text m="0" fontSize="s">
             {formatDate(last_phase_end_date)}
-          </Text>
-        </Td>
-      )}
-      {COLUMN_VISIBILITY.status && (
-        <Td background={colors.grey50} width="1px">
-          <Text m="0" fontSize="s" color="primary">
-            {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
           </Text>
         </Td>
       )}
       {COLUMN_VISIBILITY.visibility && (
         <Td background={colors.grey50} width="1px">
-          <Text m="0" fontSize="s" color="primary">
+          <Text m="0" fontSize="s">
             {formatMessage(VISIBILITY_LABELS[visible_to])}
           </Text>
         </Td>
@@ -169,6 +150,7 @@ const Row = ({ project, participantsCount }: Props) => {
             projectId={project.id}
             firstPublishedAt={project.attributes.first_published_at}
             folderId={folderId}
+            color={colors.black}
             setError={setError}
             setIsRunningAction={handleActionLoading}
           />

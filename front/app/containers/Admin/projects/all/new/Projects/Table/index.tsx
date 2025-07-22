@@ -112,9 +112,6 @@ const Table = () => {
             {COLUMN_VISIBILITY.projectEnd && (
               <ColHeader>{formatMessage(messages.projectEnd)}</ColHeader>
             )}
-            {COLUMN_VISIBILITY.status && (
-              <ColHeader>{formatMessage(messages.status)}</ColHeader>
-            )}
             {COLUMN_VISIBILITY.visibility && (
               <ColHeader>{formatMessage(messages.visibility)}</ColHeader>
             )}

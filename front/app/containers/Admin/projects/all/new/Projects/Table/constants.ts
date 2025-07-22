@@ -4,6 +4,5 @@ export const COLUMN_VISIBILITY = {
   phase: true,
   projectStart: true,
   projectEnd: false,
-  status: true,
   visibility: true,
 };
