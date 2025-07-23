@@ -2262,6 +2262,7 @@
   "app.containers.AdminPage.ProjectFiles.downloadFile": "Download file",
   "app.containers.AdminPage.ProjectFiles.downloadFullFile": "Download full file",
   "app.containers.AdminPage.ProjectFiles.dragAndDropFiles2": "Drag and drop any files here or",
+  "app.containers.AdminPage.ProjectFiles.editFile": "Edit file",
   "app.containers.AdminPage.ProjectFiles.fileDescriptionLabel": "Description",
   "app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot": "File name may not contain a dot.",
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "File Name",
