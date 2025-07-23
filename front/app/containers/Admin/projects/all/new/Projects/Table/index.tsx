@@ -102,9 +102,9 @@ const Table = () => {
             </ColHeader>
             <ColHeader>{formatMessage(messages.phase)}</ColHeader>
             <ColHeader>{formatMessage(messages.manager)}</ColHeader>
+            <ColHeader>{formatMessage(messages.visibility)}</ColHeader>
             <ColHeader>{formatMessage(messages.start)}</ColHeader>
             <ColHeader>{formatMessage(messages.end)}</ColHeader>
-            <ColHeader>{formatMessage(messages.visibility)}</ColHeader>
             <Th />
           </Tr>
         </Thead>

@@ -163,6 +163,11 @@ const Row = ({ project, participantsCount }: Props) => {
       <Td background={colors.grey50} width="140px">
         <Managers project={project} />
       </Td>
+      <Td background={colors.grey50} width="1px">
+        <Text m="0" fontSize="s">
+          {formatMessage(VISIBILITY_LABELS[visible_to])}
+        </Text>
+      </Td>
       <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s">
           {formatDate(first_phase_start_date)}
@@ -171,11 +176,6 @@ const Row = ({ project, participantsCount }: Props) => {
       <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s">
           {formatDate(last_phase_end_date)}
-        </Text>
-      </Td>
-      <Td background={colors.grey50} width="1px">
-        <Text m="0" fontSize="s">
-          {formatMessage(VISIBILITY_LABELS[visible_to])}
         </Text>
       </Td>
       <Td background={colors.grey50} width="50px">
