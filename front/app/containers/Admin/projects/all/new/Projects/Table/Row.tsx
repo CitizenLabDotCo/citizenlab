@@ -11,7 +11,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import useProjectImage from 'api/project_images/useProjectImage';
-import { PublicationStatus } from 'api/projects/types';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -21,33 +20,21 @@ import ProjectMoreActionsMenu, {
 } from 'containers/Admin/projects/components/ProjectRow/ProjectMoreActionsMenu';
 
 import Error from 'components/UI/Error';
-import GanttItemIconBar from 'components/UI/GanttChart/components/GanttItemIconBar';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import { getStatusColor } from '../../_shared/utils';
-import { VISIBILITY_LABELS } from '../constants';
-
 import CurrentPhase from './CurrentPhase';
 import Managers from './Managers';
-import messages from './messages';
+import Visibility from './Visibility';
 
 interface Props {
   project: ProjectMiniAdminData;
   participantsCount?: number;
 }
 
-const PUBLICATION_STATUSES: Record<PublicationStatus, MessageDescriptor> = {
-  draft: messages.draft,
-  published: messages.published,
-  archived: messages.archived,
-};
-
 const Row = ({ project, participantsCount }: Props) => {
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
 
   const imageId = project.relationships.project_images.data[0]?.id;
   const { data: image } = useProjectImage({
@@ -174,22 +161,10 @@ const Row = ({ project, participantsCount }: Props) => {
         <Managers project={project} />
       </Td>
       <Td background={colors.grey50} width="1px">
-        <Box display="flex">
-          <GanttItemIconBar
-            color={getStatusColor(publication_status)}
-            rowHeight={32}
-            ml="0"
-            mr="8px"
-          />
-          <Box>
-            <Text m="0" fontSize="s">
-              {formatMessage(PUBLICATION_STATUSES[publication_status])}
-            </Text>
-            <Text m="0" fontSize="xs" color="textSecondary">
-              {formatMessage(VISIBILITY_LABELS[visible_to])}
-            </Text>
-          </Box>
-        </Box>
+        <Visibility
+          publication_status={publication_status}
+          visible_to={visible_to}
+        />
       </Td>
       <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s">

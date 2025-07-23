@@ -1,0 +1,53 @@
+import React from 'react';
+
+import { Box, Text } from '@citizenlab/cl2-component-library';
+
+import {
+  PublicationStatus,
+  Visibility as VisibilityType,
+} from 'api/projects/types';
+
+import GanttItemIconBar from 'components/UI/GanttChart/components/GanttItemIconBar';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+
+import { getStatusColor } from '../../_shared/utils';
+import { VISIBILITY_LABELS } from '../constants';
+
+import messages from './messages';
+
+const PUBLICATION_STATUSES: Record<PublicationStatus, MessageDescriptor> = {
+  draft: messages.draft,
+  published: messages.published,
+  archived: messages.archived,
+};
+
+interface Props {
+  publication_status: PublicationStatus;
+  visible_to: VisibilityType;
+}
+
+const Visibility = ({ publication_status, visible_to }: Props) => {
+  const { formatMessage } = useIntl();
+
+  return (
+    <Box display="flex">
+      <GanttItemIconBar
+        color={getStatusColor(publication_status)}
+        rowHeight={32}
+        ml="0"
+        mr="8px"
+      />
+      <Box>
+        <Text m="0" fontSize="s">
+          {formatMessage(PUBLICATION_STATUSES[publication_status])}
+        </Text>
+        <Text m="0" fontSize="xs" color="textSecondary">
+          {formatMessage(VISIBILITY_LABELS[visible_to])}
+        </Text>
+      </Box>
+    </Box>
+  );
+};
+
+export default Visibility;
