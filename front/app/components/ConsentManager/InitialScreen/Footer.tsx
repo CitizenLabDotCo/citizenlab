@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import BaseFooter from '../BaseFooter';
 import messages from '../messages';
 
 interface Props {
@@ -14,13 +15,7 @@ interface Props {
 
 const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
   return (
-    <Box
-      width="100%"
-      display="flex"
-      alignItems="center"
-      justifyContent="flex-end"
-      gap="8px"
-    >
+    <BaseFooter>
       <Button
         px="4px"
         buttonStyle="text"
@@ -42,7 +37,7 @@ const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
       >
         <FormattedMessage {...messages.accept} />
       </Button>
-    </Box>
+    </BaseFooter>
   );
 };
 
