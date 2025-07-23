@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+# NOTE: Only supports native_survey phases at the moment
+
 module BulkImportIdeas::Extractors
-  class EngagementHqXlsxExtractor
+  class EngagementHqPhaseExtractor
     IGNORED_COLUMNS = [
       'Login (Screen name)',
       'Contributor Summary (Signup form Qs - Detailed breakup on the right > )',
@@ -21,33 +23,29 @@ module BulkImportIdeas::Extractors
       'Date of contribution' => 'Date Published (dd-mm-yyyy)'
     }
 
-    def initialize(xlsx_file_path)
+    def initialize(xlsx_file_path, worksheet_name)
       workbook = RubyXL::Parser.parse_buffer(open(xlsx_file_path).read)
-      @worksheet = workbook.worksheets[0]
+      @worksheet = workbook.worksheets.find { |sheet| sheet.sheet_name == worksheet_name }
       @idea_columns = []
       @user_columns = []
       @field_type_overrides = {} # For any column types that are not automatically detected
       @idea_rows = generate_idea_rows
     end
 
-    attr_reader :idea_rows
-
-    def project
-      {
-        title_multiloc: multiloc(@worksheet.sheet_data[0][3].value),
-        slug: SlugService.new.slugify(@worksheet.sheet_data[0][3].value)
-      }
-    end
-
     def phase
       # Get the minimum and maximum dates from 'Date Published (dd-mm-yyyy)' as start and end dates
-      values = @idea_rows.pluck('Date Published (dd-mm-yyyy)').map { |d| Date.parse(d) }
+      date_values = @idea_rows.pluck('Date Published (dd-mm-yyyy)').map { |d| Date.parse(d) }
       {
         title_multiloc: multiloc(@worksheet.sheet_data[0][3].value),
-        start_at: values.min,
-        end_at: values.max
+        start_at: date_values.min,
+        end_at: date_values.max,
+        idea_rows: @idea_rows,
+        idea_custom_fields: idea_custom_fields,
+        user_custom_fields: user_custom_fields
       }
     end
+
+    private
 
     def idea_custom_fields
       generate_fields(@idea_columns)
@@ -56,8 +54,6 @@ module BulkImportIdeas::Extractors
     def user_custom_fields
       generate_fields(@user_columns, fixed_key: true)
     end
-
-    private
 
     def generate_idea_rows
       data = []
@@ -128,7 +124,7 @@ module BulkImportIdeas::Extractors
       columns.compact.map do |column_name|
         attributes = {
           title_multiloc: multiloc(column_name),
-          required: required?(column_name),
+          required: required?(column_name)
         }.merge(
           field_attributes(column_name)
         )
@@ -140,12 +136,18 @@ module BulkImportIdeas::Extractors
     def required?(column_name)
       return false if USER_COLUMNS.include?(column_name) # Probably easier to assume these are not required
 
-      rows = @idea_rows.pluck(column_name)
-      rows_not_empty = rows.compact.reject(&:empty?)
-      rows.count == rows_not_empty.count
+      values = @idea_rows.pluck(column_name)
+      values_not_empty = remove_empty_array_values(values)
+      values.count == values_not_empty.count
     end
 
     def field_attributes(column_name)
+      # Is this a number field?
+      number = number_field_attributes(column_name)
+      return number if number
+
+      # If not a number field (or date?) then we need to ensure all values are strings
+
       # Is this a matrix field?
       matrix = matrix_field_attributes(column_name)
       return matrix if matrix
@@ -158,18 +160,29 @@ module BulkImportIdeas::Extractors
       text_field_attributes(column_name)
     end
 
+    # TODO: We could make this detect linear scale fields too
+    # TODO: Similar one for dates
+    def number_field_attributes(column_name)
+      values = @idea_rows.pluck(column_name).compact
+      return nil unless values.all?(Integer)
+
+      {
+        input_type: 'number'
+      }
+    end
+
     def text_field_attributes(column_name)
-      values = @idea_rows.pluck(column_name).compact.reject(&:empty?)
+      values = remove_empty_array_values(@idea_rows.pluck(column_name))
       max_length = values.max_by(&:length).length
       input_type = max_length > 100 ? 'multiline_text' : 'text'
 
       { input_type: input_type }
     end
 
-    # Note: Will not work if select options contain commas or semicolons
+    # NOTE: Will not work if select options contain commas or semicolons
     # TODO: Rewrite this - override stuff is messy
     def select_field_attributes(column_name)
-      values = @idea_rows.pluck(column_name).compact.reject(&:empty?)
+      values = remove_empty_array_values(@idea_rows.pluck(column_name))
       override_input_type = @field_type_overrides[column_name]
       maybe_multiselect = values.uniq.any? { |value| value.include?(',') || value.include?(';') } unless override_input_type == 'select'
       values = values.map { |value| value.split(/[,;]/).map(&:strip) }.flatten if maybe_multiselect
@@ -186,8 +199,9 @@ module BulkImportIdeas::Extractors
     end
 
     def matrix_field_attributes(column_name)
+      values = remove_empty_array_values(@idea_rows.pluck(column_name))
+
       matrix_regex = /([^:]+)\s*:\s*([^,]+)(?:,\s*|$)/
-      values = @idea_rows.pluck(column_name).compact.reject(&:empty?)
       matches = values.first.scan(matrix_regex) # Test the first value, so we can determine if it's a matrix field
       if matches.any?
         labels = []
@@ -199,6 +213,8 @@ module BulkImportIdeas::Extractors
             labels << statement[1].strip
           end
         end
+
+        return nil if labels.size > 11 # Cannot support more than 11 labels
 
         labels = order_by_sentiment(labels.uniq)
         statements = statements.uniq
@@ -231,15 +247,15 @@ module BulkImportIdeas::Extractors
     def order_by_sentiment(values)
       gpt_mini = Analysis::LLM::GPT4oMini.new
       prompt = <<~GPT_PROMPT
-      At the end of this message, you’ll find a list of strings delimited by ;. 
-      Return only the list, in the same format but ordered by sentiment, most negative first and most positive last
+        At the end of this message, you’ll find a list of strings delimited by ;. 
+        Return only the list, in the same format but ordered by sentiment, most negative first and most positive last
 
-      List of strings:
-      #{values.join(';')}
+        List of strings:
+        #{values.join(';')}
       GPT_PROMPT
       gpt_response = gpt_mini.chat(prompt)
 
-      new_values = gpt_response&.gsub('"', '')&.split(';')
+      new_values = gpt_response&.delete('"')&.split(';')
       return values if new_values.nil? || new_values.length != values.length
 
       new_values
@@ -259,6 +275,10 @@ module BulkImportIdeas::Extractors
 
     def generate_key(str)
       str.parameterize.tr('-', '_')
+    end
+
+    def remove_empty_array_values(array_values)
+      array_values.compact.reject { |value| value.is_a?(String) && value.empty? }
     end
 
     def locales
