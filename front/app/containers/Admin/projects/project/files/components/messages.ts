@@ -82,6 +82,10 @@ export default defineMessages({
     defaultMessage:
       'This file will not be uploaded, as it exceeds the maximum limit of 50 MB.',
   },
+  description: {
+    id: 'app.containers.AdminPage.ProjectFiles.description',
+    defaultMessage: 'Description',
+  },
   upload: {
     id: 'app.containers.AdminPage.ProjectFiles.upload',
     defaultMessage: 'Upload',
