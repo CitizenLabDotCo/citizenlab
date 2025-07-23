@@ -234,6 +234,34 @@ describe('<ConsentManager />', () => {
         },
       });
     });
+
+    it('accepting all cookies sends the right preferences and closes the modal, even when opened multiple times', async () => {
+      // This test is important because we can accept all cookies multiple times
+      // (e.g. after we launch the modal again from the platform footer).
+      // There used to be a bug where the modal would not close after accepting cookies for the second time.
+      // The function that dealt with "accept all" was also once implemented in a way that kept existing preferences
+      // (even if they were false).
+      const user = userEvent.setup();
+      const { container } = render(<ConsentManager />);
+      // Simulate opening the consent manager.
+      // We use events to trigger the modal from e.g. the platform footer.
+      act(() => eventEmitter.emit('openConsentManager'));
+      await user.click(screen.getByTestId('accept-cookies-btn'));
+
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: true,
+        advertising: true,
+        savedChoices: {
+          matomo: true,
+          google_analytics: true,
+        },
+      });
+
+      expect(
+        container.querySelector('#e2e-cookie-banner')
+      ).not.toBeInTheDocument();
+    });
   });
 
   describe('logged in, cookie exists', () => {
