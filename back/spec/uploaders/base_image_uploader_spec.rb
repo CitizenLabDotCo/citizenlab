@@ -75,8 +75,6 @@ RSpec.describe BaseImageUploader do
           File.open(fixture_file_with_exif)
         elsif RSpec.current_example.metadata[:description].include?('preserves image EXIF orientation')
           File.open(fixture_file_with_orientation)
-        else
-          nil
         end
       uploader.store!(file_to_upload) if file_to_upload
     end
