@@ -35,6 +35,7 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
 
   const [fileList, setFileList] = useState<FileWithMeta[]>([]);
   const [hasStartedUploading, setHasStartedUploading] = useState(false);
+  const [allowAiProcessing, setAllowAiProcessing] = useState(false);
   const [showMaxNumberFilesMessage, setShowMaxNumberFilesMessage] =
     useState(false);
 
@@ -117,11 +118,20 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
 
           <Box mt="20px">
             <CheckboxWithLabel
-              checked={false}
-              onChange={() => {}} // TODO: Implement onChange logic once BE implemented.
+              checked={allowAiProcessing}
+              onChange={(event) => {
+                setAllowAiProcessing(event.target.checked);
+                // Update the AI processing flag for all files in the list
+                setFileList((prev) =>
+                  prev.map((file) => ({
+                    ...file,
+                    ai_processing_allowed: event.target.checked,
+                  }))
+                );
+              }}
               label={
                 <Text ml="8px" m="0px" color="coolGrey600" fontSize="s">
-                  TODO: Add label once Product decides on copy.
+                  {formatMessage(messages.allowAiProcessing)}
                 </Text>
               }
             />

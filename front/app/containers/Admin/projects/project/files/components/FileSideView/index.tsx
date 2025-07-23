@@ -14,11 +14,11 @@ import SideModal from 'components/UI/SideModal';
 import { useIntl } from 'utils/cl-intl';
 
 import FilePreview from '../FilePreview';
+import messages from '../messages';
 
 import FileAnalysis from './components/FileAnalysis';
 import FileEditForm from './components/FileEditForm';
 import FileMetadata from './components/FileMetadata';
-import messages from './messages';
 
 type Props = {
   opened: boolean;
@@ -42,7 +42,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
             {/* Left scrollable section */}
             <Box width="55%" overflowY="auto" p="24px" pr="32px">
               <StatusLabel
-                text={formatMessage(messages.categoryLabel)}
+                text={formatMessage(messages[file.data.attributes.category])}
                 backgroundColor={colors.teal500}
                 h="16px"
               />
