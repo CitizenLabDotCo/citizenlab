@@ -162,6 +162,52 @@ describe ParticipantsService do
     end
   end
 
+  describe 'projects_participants_counts' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    it 'returns the count of participants' do
+      project1 = create(:project)
+      project2 = create(:project)
+      pp1, pp2, pp3, pp4 = create_list(:user, 4)
+
+      ## PROJECT 1 (8 participants)
+
+      # Create a bunch of ideas and comments with users (4 participants)
+      idea1 = create(:idea, project: project1, author: pp1) # 1
+      idea2 = create(:idea, project: project1, author: pp2) # 2
+      create(:comment, idea: idea1, author: pp3) # 3
+      create(:idea, project: project1) # 4
+      create(:comment, idea: idea2, author: pp1)
+
+      # Create two ideas and a comment, anonymous, but all for the same user (1 participant)
+      idea3 = create(:idea, project: project1, author: pp4, anonymous: true)
+      create(:idea, project: project1, author: pp4, anonymous: true)
+      create(:comment, idea: idea3, author: pp4, anonymous: true)
+
+      # Create another anonymous idea for another user (1 participant)
+      create(:idea, project: project1, anonymous: true)
+
+      # Add two ideas, not anonymous but no user_id or author_hash (2 participants)
+      create(:idea, project: project1, anonymous: false, author: nil)
+      create(:idea, project: project1, anonymous: false, author: nil)
+
+      ## PROJECT 2 (3 participants)
+
+      # Create a bunch of ideas (3 participants)
+      create(:idea, project: project2, author: pp1) # 1
+      create(:idea, project: project2, author: pp2) # 2
+      create(:idea, project: project2, author: pp3) # 3
+      create(:idea, project: project2, author: pp1) # duplicate of 1
+
+      expect(service.projects_participants_counts([project1, project2])).to eq({
+        project1.id => 8,
+        project2.id => 3
+      })
+    end
+  end
+
   describe 'folder_participants_count' do
     before_all do
       Analytics::PopulateDimensionsService.populate_types

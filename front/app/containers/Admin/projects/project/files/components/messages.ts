@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.chooseFiles',
     defaultMessage: 'Choose files',
   },
+  editFile: {
+    id: 'app.containers.AdminPage.ProjectFiles.editFile',
+    defaultMessage: 'Edit file',
+  },
   dragAndDropFiles: {
     id: 'app.containers.AdminPage.ProjectFiles.dragAndDropFiles2',
     defaultMessage: 'Drag and drop any files here or',

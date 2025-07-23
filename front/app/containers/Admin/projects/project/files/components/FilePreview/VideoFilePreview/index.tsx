@@ -1,106 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-import axios from 'axios';
 
 type Props = {
   url: string;
+  title?: string;
 };
 
-type TranscriptResponse = {
-  id: string;
-};
-
-type PollingResponse = {
-  status: 'queued' | 'processing' | 'completed' | 'error';
-  text?: string;
-  error?: string;
-};
-
-const VideoFilePreview: React.FC<Props> = ({ url }) => {
-  const [transcript, setTranscript] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const baseUrl = 'https://api.assemblyai.com';
-  const audioUrl = url;
-
-  useEffect(() => {
-    const headers = {
-      authorization: '03c12127860b41079ed8b5070a8e3c0d',
-    };
-
-    let shouldCancel = false; // ✅ Moved outside the async function
-
-    const fetchTranscript = async () => {
-      try {
-        const data = {
-          audio_url: audioUrl,
-          speech_model: 'universal',
-        };
-
-        const transcriptUrl = `${baseUrl}/v2/transcript`;
-        const response = await axios.post<TranscriptResponse>(
-          transcriptUrl,
-          data,
-          { headers }
-        );
-
-        const pollingEndpoint = `${baseUrl}/v2/transcript/${response.data.id}`;
-
-        while (true) {
-          if (shouldCancel) break;
-
-          const pollingRes = await axios.get<PollingResponse>(pollingEndpoint, {
-            headers,
-          });
-
-          if (pollingRes.data.status === 'completed') {
-            setTranscript(pollingRes.data.text || '');
-            break;
-          } else if (pollingRes.data.status === 'error') {
-            setError(`Transcription failed: ${pollingRes.data.error}`);
-            break;
-          }
-
-          await new Promise((resolve) => setTimeout(resolve, 3000));
-        }
-      } catch (err: unknown) {
-        if (!shouldCancel) {
-          if (axios.isAxiosError(err)) {
-            setError(err.message);
-          } else {
-            setError('Unknown error occurred.');
-          }
-        }
-      }
-    };
-
-    fetchTranscript();
-
-    return () => {
-      shouldCancel = true; // ✅ Cleanup sets this
-    };
-  }, []);
-
-  console.log({ transcript });
-
+const VideoFilePreview = ({ url, title }: Props) => {
   return (
     <Box mt="24px">
       <video
         src={url}
+        title={title}
         controls
+        preload="metadata"
         style={{
           width: '100%',
           maxHeight: '500px',
           borderRadius: stylingConsts.borderRadius,
         }}
       />
-      {transcript && <Box mt="16px">📝 Transcript: {transcript}</Box>}
-      {error && (
-        <Box mt="16px" color="red">
-          ⚠️ Error: {error}
-        </Box>
-      )}
     </Box>
   );
 };

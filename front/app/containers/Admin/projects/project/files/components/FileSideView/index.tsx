@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
   colors,
+  IconButton,
   StatusLabel,
   Title,
 } from '@citizenlab/cl2-component-library';
@@ -18,6 +19,7 @@ import messages from '../messages';
 
 import FileAnalysis from './components/FileAnalysis';
 import FileEditForm from './components/FileEditForm';
+import FileInfo from './components/FileInfo';
 import FileMetadata from './components/FileMetadata';
 
 type Props = {
@@ -29,6 +31,7 @@ type Props = {
 const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
   const { formatMessage } = useIntl();
   const { data: file } = useFileById(selectedFileId);
+  const [editingMetadata, setEditingMetadata] = useState(false);
 
   return (
     <SideModal
@@ -47,14 +50,35 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
                 h="16px"
               />
 
-              <Title variant="h2" color="textPrimary" mt="12px">
-                {file.data.attributes.name}
-              </Title>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                mt="16px"
+              >
+                <Title variant="h2" color="textPrimary" mt="12px">
+                  {file.data.attributes.name}
+                </Title>
+
+                <IconButton
+                  iconName="edit"
+                  iconColor={colors.coolGrey500}
+                  onClick={() => setEditingMetadata(!editingMetadata)}
+                  a11y_buttonActionMessage={formatMessage(messages.editFile)}
+                />
+              </Box>
 
               <Box>
                 <FileMetadata file={file} />
                 <Box mt="32px">
-                  <FileEditForm file={file} />
+                  {editingMetadata ? (
+                    <FileEditForm
+                      file={file}
+                      setEditingMetadata={setEditingMetadata}
+                    />
+                  ) : (
+                    <FileInfo file={file} />
+                  )}
                 </Box>
                 <Box mt="32px">
                   <FilePreview file={file} />
