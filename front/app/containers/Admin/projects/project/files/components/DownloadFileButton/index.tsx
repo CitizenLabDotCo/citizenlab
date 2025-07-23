@@ -40,7 +40,7 @@ const DownloadFileButton = ({ file, variant = 'button-text' }: Props) => {
     <Box display="flex">
       <Button
         mt="12px"
-        buttonStyle="admin-dark"
+        buttonStyle="admin-dark-outlined"
         onClick={() => saveFileToDisk(file)}
         text={formatMessage(messages.downloadFile)}
         fontSize="s"

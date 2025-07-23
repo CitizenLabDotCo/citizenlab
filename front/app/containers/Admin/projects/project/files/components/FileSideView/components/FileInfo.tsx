@@ -18,10 +18,16 @@ const FileInfo = ({ file }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
+  const description = localize(file.data.attributes.description_multiloc);
+
+  if (!description) {
+    return null;
+  }
+
   return (
     <>
       <Label>{formatMessage(messages.description)}</Label>
-      <Text>{localize(file.data.attributes.description_multiloc)}</Text>
+      <Text>{description}</Text>
     </>
   );
 };
