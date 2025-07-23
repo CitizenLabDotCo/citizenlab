@@ -125,6 +125,8 @@ export const AvatarBubbles = ({
         break;
     }
 
+    console.log({ avatarsToShow });
+
     if (avatarIds || context || avatarImagesCount > 0) {
       return (
         <OuterContainer bubbleSize={bubbleSize} className={className}>
