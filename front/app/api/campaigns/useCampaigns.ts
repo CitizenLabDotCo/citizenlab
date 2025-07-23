@@ -6,6 +6,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import campaignsKeys from './keys';
 import { ICampaignsData, QueryParameters, CampaignsKeys } from './types';
+import { getCampaignsContextPath } from './util';
 
 const fetchCampaigns = (filters: QueryParameters) => {
   const {
@@ -16,17 +17,8 @@ const fetchCampaigns = (filters: QueryParameters) => {
     projectId,
     phaseId,
   } = filters;
-
-  // Determine the base path based on context
-  let path = '/campaigns';
-  if (projectId) {
-    path = `/projects/${projectId}/campaigns`;
-  } else if (phaseId) {
-    path = `/phases/${phaseId}/campaigns`;
-  }
-
   return fetcher<ICampaignsData>({
-    path: path as `/${string}`,
+    path: `/${getCampaignsContextPath({ projectId, phaseId })}`,
     action: 'get',
     queryParams: {
       manual,

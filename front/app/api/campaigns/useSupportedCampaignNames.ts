@@ -3,6 +3,9 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
+import { CampaignContext } from './types';
+import { getCampaignsContextPath } from './util';
+
 interface ISupportedCampaignNamesData {
   data: {
     type: string;
@@ -10,33 +13,19 @@ interface ISupportedCampaignNamesData {
   };
 }
 
-const fetchSupportedCampaignNames = (projectId?: string, phaseId?: string) => {
-  let path: string;
-
-  if (phaseId) {
-    path = `/phases/${phaseId}/campaigns/supported_campaigns`;
-  } else if (projectId) {
-    path = `/projects/${projectId}/campaigns/supported_campaigns`;
-  } else {
-    path = '/campaigns/supported_campaigns';
-  }
-
+const fetchSupportedCampaignNames = (context: CampaignContext = {}) => {
   return fetcher<ISupportedCampaignNamesData>({
-    path: path as `/${string}`,
+    path: `/${getCampaignsContextPath(context)}/supported_campaigns`,
     action: 'get',
   });
 };
 
-const useSupportedCampaignNames = ({
-  projectId,
-  phaseId,
-}: {
-  projectId?: string;
-  phaseId?: string;
-} = {}): UseQueryResult<ISupportedCampaignNamesData, CLErrors> => {
+const useSupportedCampaignNames = (
+  context: CampaignContext = {}
+): UseQueryResult<ISupportedCampaignNamesData, CLErrors> => {
   return useQuery<ISupportedCampaignNamesData, CLErrors>({
-    queryKey: ['campaign', 'supported_campaigns', { projectId, phaseId }],
-    queryFn: () => fetchSupportedCampaignNames(projectId, phaseId),
+    queryKey: ['campaign', 'supported_campaigns', context],
+    queryFn: () => fetchSupportedCampaignNames(context),
   });
 };
 
