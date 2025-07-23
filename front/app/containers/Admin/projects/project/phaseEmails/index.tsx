@@ -4,7 +4,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useCampaigns from 'api/campaigns/useCampaigns';
-import useSupportedCampaignTypes from 'api/campaigns/useSupportedCampaignTypes';
+import useSupportedCampaignNames from 'api/campaigns/useSupportedCampaignNames';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -18,8 +18,8 @@ import messages from './messages';
 const AdminPhaseEmailWrapper = () => {
   const localize = useLocalize();
   const { phaseId } = useParams();
-  const supportedCampaignTypes =
-    useSupportedCampaignTypes({ phaseId }).data?.data.attributes || [];
+  const supportedCampaignNames =
+    useSupportedCampaignNames({ phaseId }).data?.data.attributes || [];
   const contextCampaigns = useCampaigns({
     ...(phaseId ? { phaseId } : {}),
     pageSize: 250,
@@ -32,8 +32,8 @@ const AdminPhaseEmailWrapper = () => {
       <Text color="coolGrey600" mt="0px" fontSize="m">
         <FormattedMessage {...messages.automatedEmailsDescription} />
       </Text>
-      {supportedCampaignTypes.length > 0 &&
-        supportedCampaignTypes.map((campaignType) => {
+      {supportedCampaignNames.length > 0 &&
+        supportedCampaignNames.map((campaignType) => {
           let campaign = contextCampaigns?.find(
             (campaign) => campaign.attributes.campaign_name === campaignType
           );
