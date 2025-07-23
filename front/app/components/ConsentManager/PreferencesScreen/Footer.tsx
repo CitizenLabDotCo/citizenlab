@@ -33,7 +33,6 @@ const Footer = ({
           <Button
             px="4px"
             onClick={handleCancel}
-            className="integration-cancel"
             buttonStyle="text"
             data-testid="e2e-preferences-cancel"
           >
@@ -42,8 +41,7 @@ const Footer = ({
           <Button
             onClick={handleSave}
             buttonStyle="primary"
-            className="integration-save"
-            id="e2e-preferences-save"
+            data-testid="preferences-save"
           >
             <FormattedMessage {...messages.save} />
           </Button>
