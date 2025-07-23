@@ -68,7 +68,7 @@ const Row = ({ project, participantsCount }: Props) => {
     first_phase_start_date,
     folder_title_multiloc,
     last_phase_end_date,
-    // publication_status,
+    publication_status,
     title_multiloc,
     visible_to,
   } = project.attributes;
@@ -176,16 +176,14 @@ const Row = ({ project, participantsCount }: Props) => {
       <Td background={colors.grey50} width="1px">
         <Box display="flex">
           <GanttItemIconBar
-            color={getStatusColor(project.attributes.publication_status)}
+            color={getStatusColor(publication_status)}
             rowHeight={32}
             ml="0"
             mr="8px"
           />
           <Box>
             <Text m="0" fontSize="s">
-              {formatMessage(
-                PUBLICATION_STATUSES[project.attributes.publication_status]
-              )}
+              {formatMessage(PUBLICATION_STATUSES[publication_status])}
             </Text>
             <Text m="0" fontSize="xs" color="textSecondary">
               {formatMessage(VISIBILITY_LABELS[visible_to])}
