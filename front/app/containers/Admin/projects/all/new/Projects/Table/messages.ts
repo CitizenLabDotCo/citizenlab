@@ -77,6 +77,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded',
     defaultMessage: 'All projects have been loaded',
   },
+  notAssigned: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.notAssigned',
+    defaultMessage: 'Not assigned',
+  },
   xManagers: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.xManagers',
     defaultMessage: '{numberOfManagers} managers',

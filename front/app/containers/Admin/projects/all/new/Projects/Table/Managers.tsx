@@ -27,7 +27,7 @@ const Managers = ({ project }: Props) => {
 
   const getFullName = (firstName?: string, lastName?: string) => {
     if (!firstName || !lastName) return 'No name';
-    return truncate(`${firstName} ${lastName}`, 12);
+    return truncate(`${firstName} ${lastName}`, 13);
   };
 
   if (managers.length === 0) {
@@ -41,7 +41,7 @@ const Managers = ({ project }: Props) => {
           mr="6px"
         />
         <Text m="0" fontSize="s" color="textPrimary">
-          Not assigned
+          {formatMessage(messages.notAssigned)}
         </Text>
       </Box>
     );
