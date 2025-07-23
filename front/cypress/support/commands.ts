@@ -495,8 +495,7 @@ function logout() {
 }
 
 function acceptCookies() {
-  cy.get('#e2e-cookie-banner');
-  cy.get('#e2e-cookie-banner .e2e-accept-cookies-btn').click();
+  cy.dataCy('e2e-accept-cookies-btn').should('be.visible').click();
   cy.wait(200);
 }
 
