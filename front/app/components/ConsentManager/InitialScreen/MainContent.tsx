@@ -22,10 +22,7 @@ const TextLink = styled(Link)`
 
 const MainContent = () => {
   return (
-    <BaseMainContent
-      id="e2e-cookie-banner"
-      titleMessage={messages.cookieModalInitialScreenTitle}
-    >
+    <BaseMainContent titleMessage={messages.cookieModalInitialScreenTitle}>
       <Text>
         <FormattedMessage
           {...messages.cookieModalInitialScreenDescription}

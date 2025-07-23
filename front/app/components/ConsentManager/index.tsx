@@ -198,6 +198,7 @@ const ConsentManager = () => {
 
   return (
     <Modal
+      data-testid="consent-manager"
       opened
       closeOnClickOutside={false}
       hideCloseButton

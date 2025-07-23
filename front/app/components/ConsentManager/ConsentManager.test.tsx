@@ -83,9 +83,9 @@ describe('<ConsentManager />', () => {
       mockCookie = null;
     });
 
-    it('renders banner', () => {
-      const { container } = render(<ConsentManager />);
-      expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
+    it('renders the modal', () => {
+      render(<ConsentManager />);
+      expect(screen.getByTestId('consent-manager')).toBeVisible();
     });
 
     it('opens and closes the preference modal', async () => {
@@ -126,7 +126,7 @@ describe('<ConsentManager />', () => {
       });
     });
 
-    it('rejects all cookies except functional if banner is closed', async () => {
+    it('rejects all cookies except functional if modal is closed', async () => {
       const user = userEvent.setup();
       render(<ConsentManager />);
       await user.keyboard('[Escape]');
@@ -192,11 +192,9 @@ describe('<ConsentManager />', () => {
       };
     });
 
-    it('does not render banner', () => {
-      const { container } = render(<ConsentManager />);
-      expect(
-        container.querySelector('#e2e-cookie-banner')
-      ).not.toBeInTheDocument();
+    it('does not render modal', () => {
+      render(<ConsentManager />);
+      expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
     });
 
     it('does not render the preference modal/screen (yet)', () => {
@@ -242,10 +240,11 @@ describe('<ConsentManager />', () => {
       // The function that dealt with "accept all" was also once implemented in a way that kept existing preferences
       // (even if they were false).
       const user = userEvent.setup();
-      const { container } = render(<ConsentManager />);
+      render(<ConsentManager />);
       // Simulate opening the consent manager.
       // We use events to trigger the modal from e.g. the platform footer.
       act(() => eventEmitter.emit('openConsentManager'));
+      expect(screen.getByTestId('consent-manager')).toBeVisible();
       await user.click(screen.getByTestId('accept-cookies-btn'));
 
       expect(setConsent).toHaveBeenCalledWith({
@@ -258,9 +257,7 @@ describe('<ConsentManager />', () => {
         },
       });
 
-      expect(
-        container.querySelector('#e2e-cookie-banner')
-      ).not.toBeInTheDocument();
+      expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
     });
   });
 
@@ -277,7 +274,7 @@ describe('<ConsentManager />', () => {
       };
     });
 
-    it('does not show banner if no new permissions required', () => {
+    it('does not show modal if no new permissions required', () => {
       mockAuthUser = {
         attributes: {
           roles: [],
@@ -285,21 +282,19 @@ describe('<ConsentManager />', () => {
         },
       } as any;
 
-      const { container } = render(<ConsentManager />);
-      expect(
-        container.querySelector('#e2e-cookie-banner')
-      ).not.toBeInTheDocument();
+      render(<ConsentManager />);
+      expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
     });
 
-    it('shows banner if new permissions required', () => {
+    it('shows modal if new permissions required', () => {
       mockAuthUser = {
         attributes: {
           roles: [{ type: 'admin' }],
         },
       } as any;
 
-      const { container } = render(<ConsentManager />);
-      expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
+      render(<ConsentManager />);
+      expect(screen.getByTestId('consent-manager')).toBeVisible();
     });
   });
 });
