@@ -61,7 +61,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
                 </Title>
 
                 <IconButton
-                  iconName="edit"
+                  iconName={editingMetadata ? 'close' : 'edit'}
                   iconColor={colors.coolGrey500}
                   onClick={() => setEditingMetadata(!editingMetadata)}
                   a11y_buttonActionMessage={formatMessage(messages.editFile)}
