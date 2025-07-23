@@ -34,10 +34,10 @@ const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
         <FormattedMessage {...messages.reject} />
       </Button>
       <Button
-        className="e2e-accept-cookies-btn"
         buttonStyle="primary"
         onClick={onAccept}
         autoFocus
+        data-testid="accept-cookies-btn"
         data-cy="e2e-accept-cookies-btn"
       >
         <FormattedMessage {...messages.accept} />

@@ -112,8 +112,8 @@ describe('<ConsentManager />', () => {
 
     it('saves correct cookie if all cookies are accepted', async () => {
       const user = userEvent.setup();
-      const { container } = render(<ConsentManager />);
-      await user.click(container.querySelector('.e2e-accept-cookies-btn'));
+      render(<ConsentManager />);
+      await user.click(screen.getByTestId('accept-cookies-btn'));
 
       expect(setConsent).toHaveBeenCalledWith({
         functional: true,
