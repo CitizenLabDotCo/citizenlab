@@ -1,19 +1,12 @@
 import React from 'react';
 
-import {
-  colors,
-  fontSizes,
-  Icon,
-  Text,
-  Title,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { colors, fontSizes, Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-import CookieModalContentContainer from '../CookieModalContentContainer';
+import BaseMainContent from '../BaseMainContent';
 import messages from '../messages';
 
 const TextLink = styled(Link)`
@@ -28,14 +21,11 @@ const TextLink = styled(Link)`
 `;
 
 const MainContent = () => {
-  const isSmallerThanPhone = useBreakpoint('phone');
-
   return (
-    <CookieModalContentContainer id="e2e-cookie-banner">
-      <Icon name="cookie" fill={colors.primary} />
-      <Title as="h1" variant={isSmallerThanPhone ? 'h3' : 'h1'}>
-        <FormattedMessage {...messages.cookieModalInitialScreenTitle} />
-      </Title>
+    <BaseMainContent
+      id="e2e-cookie-banner"
+      titleMessage={messages.cookieModalInitialScreenTitle}
+    >
       <Text>
         <FormattedMessage
           {...messages.cookieModalInitialScreenDescription}
@@ -51,7 +41,7 @@ const MainContent = () => {
           }}
         />
       </Text>
-    </CookieModalContentContainer>
+    </BaseMainContent>
   );
 };
 

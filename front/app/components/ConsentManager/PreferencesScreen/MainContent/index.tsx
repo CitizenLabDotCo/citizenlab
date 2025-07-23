@@ -1,15 +1,7 @@
 import React from 'react';
 
-import {
-  colors,
-  Icon,
-  Title,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import BaseMainContent from 'components/ConsentManager/BaseMainContent';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
-import CookieModalContentContainer from '../../CookieModalContentContainer';
 import { TCategory } from '../../destinations';
 import messages from '../../messages';
 import { CategorizedDestinations, IPreferences } from '../../typings';
@@ -29,14 +21,8 @@ const MainContent = ({
   preferences,
   onChange,
 }: Props) => {
-  const isSmallerThanPhone = useBreakpoint('phone');
-
   return (
-    <CookieModalContentContainer id="e2e-preference-dialog">
-      <Icon name="cookie" fill={colors.primary} />
-      <Title as="h1" variant={isSmallerThanPhone ? 'h3' : 'h1'}>
-        <FormattedMessage {...messages.title} />
-      </Title>
+    <BaseMainContent id="e2e-preference-dialog" titleMessage={messages.title}>
       {Object.keys(categoryDestinations)
         .filter((category: TCategory) => {
           return categoryDestinations[category].length > 0;
@@ -60,7 +46,7 @@ const MainContent = ({
         onChange={doNothing}
         disableUncheck={true}
       />
-    </CookieModalContentContainer>
+    </BaseMainContent>
   );
 };
 
