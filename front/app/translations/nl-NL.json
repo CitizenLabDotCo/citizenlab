@@ -117,7 +117,7 @@
   "app.components.ConsentManager.Banner.accept": "Accepteer",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Beleid afwijzen en banner sluiten",
   "app.components.ConsentManager.Banner.close": "Sluiten",
-  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription": "Cookies helpen ons de deelname te verbeteren. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription": "Cookies helpen ons om participatie te verbeteren. {linkToCookiePolicy}.",
   "app.components.ConsentManager.Banner.cookieModalInitialScreenTitle": "Laat je stem tellen",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Lees ons cookiebeleid",
   "app.components.ConsentManager.Banner.manage": "Beheren",
