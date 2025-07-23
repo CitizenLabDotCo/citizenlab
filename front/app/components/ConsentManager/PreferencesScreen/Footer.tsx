@@ -1,9 +1,10 @@
 import React, { FormEvent } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import BaseFooter from '../BaseFooter';
 import messages from '../messages';
 import { CategorizedDestinations } from '../typings';
 
@@ -26,16 +27,11 @@ const Footer = ({
   const mode: FormMode = noDestinations ? 'noDestinations' : 'preferenceForm';
 
   return (
-    <Box
-      width="100%"
-      display="flex"
-      alignItems="center"
-      justifyContent="flex-end"
-    >
+    <BaseFooter>
       {mode === 'preferenceForm' ? (
         <>
           <Button
-            mr="4px"
+            px="4px"
             onClick={handleCancel}
             className="integration-cancel"
             buttonStyle="text"
@@ -57,7 +53,7 @@ const Footer = ({
           <FormattedMessage {...messages.close} />
         </Button>
       )}
-    </Box>
+    </BaseFooter>
   );
 };
 
