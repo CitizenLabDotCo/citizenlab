@@ -86,7 +86,7 @@ const Tools = styled.span`
   font-weight: 500;
 `;
 
-type TConsentCategory = TCategory | 'required';
+type TConsentCategory = TCategory;
 
 interface Props {
   category: TConsentCategory;
@@ -149,15 +149,12 @@ const CategoryCard = ({
                   functional: messages.functional,
                   advertising: messages.advertising,
                   analytics: messages.analytics,
-                  required: messages.required,
                 }[category]}
               />
             </Title>
           </legend>
           <Radio
-            onChange={
-              category === 'required' ? undefined : handleChange(category, true)
-            }
+            onChange={handleChange(category, true)}
             currentValue={checked}
             value={true}
             name={category}
@@ -166,11 +163,7 @@ const CategoryCard = ({
             isRequired
           />
           <Radio
-            onChange={
-              category === 'required'
-                ? undefined
-                : handleChange(category, false)
-            }
+            onChange={handleChange(category, false)}
             currentValue={checked}
             value={false}
             name={category}
@@ -186,7 +179,6 @@ const CategoryCard = ({
             functional: messages.functionalPurpose,
             advertising: messages.advertisingPurpose,
             analytics: messages.analyticsPurpose,
-            required: messages.requiredPurpose,
           }[category]}
         />
         {destinations.length > 0 && (

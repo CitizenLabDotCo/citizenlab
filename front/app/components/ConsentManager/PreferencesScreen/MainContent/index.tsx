@@ -23,6 +23,14 @@ const MainContent = ({
 }: Props) => {
   return (
     <BaseMainContent id="e2e-preference-dialog" titleMessage={messages.title}>
+      <CategoryCard
+        key="functional"
+        category="functional"
+        destinations={[]}
+        checked={true}
+        onChange={doNothing}
+        disableUncheck={true}
+      />
       {Object.keys(categoryDestinations)
         .filter((category: TCategory) => {
           return categoryDestinations[category].length > 0;
@@ -38,14 +46,6 @@ const MainContent = ({
             />
           );
         })}
-      <CategoryCard
-        key={'required'}
-        category={'required'}
-        destinations={[]}
-        checked={true}
-        onChange={doNothing}
-        disableUncheck={true}
-      />
     </BaseMainContent>
   );
 };
