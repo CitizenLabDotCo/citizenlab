@@ -135,15 +135,15 @@ const ConsentManager = () => {
   };
 
   const accept = () => {
-    const newPreferences: IPreferences = {};
-
-    allCategories().forEach((category) => {
-      newPreferences[category] =
-        preferences[category] === undefined ? true : preferences[category];
-    });
+    const newPreferences: IPreferences = {
+      functional: true,
+      analytics: true,
+      advertising: true,
+    };
 
     setPreferences(newPreferences);
     saveConsent(newPreferences);
+    setScreen(null);
   };
 
   const reject = () => {
