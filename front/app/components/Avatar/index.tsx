@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import BoringAvatar from 'boring-avatars';
 import { lighten } from 'polished';
 import { RouteType } from 'routes';
@@ -8,14 +8,13 @@ import styled, { useTheme } from 'styled-components';
 
 import useUserById from 'api/users/useUserById';
 
-import FeatureFlag from 'components/FeatureFlag';
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
+import AvatarMarkup from './AvatarMarkup';
 import messages from './messages';
 
 export const Container = styled.div<{ size: number }>`
@@ -58,52 +57,6 @@ export const AvatarImage = styled.img<{
   }
 `;
 
-const AvatarIcon = styled(Icon)<{
-  size: number;
-  fillColor: string | undefined;
-  fillHoverColor: string | undefined;
-  paddingValue: number;
-  bgColor: string | undefined;
-  borderColor: string | undefined;
-  borderThickness: number;
-  borderHoverColor: string | undefined;
-}>`
-  flex: 0 0 ${({ size }) => size}px;
-  width: ${({ size }) => size}px;
-  height: ${({ size }) => size}px;
-  fill: ${({ fillColor }) => fillColor || ''};
-  padding: ${({ paddingValue }) => paddingValue}px;
-  border-radius: 50%;
-  border-style: ${({ borderThickness }) =>
-    borderThickness === 0 ? 'none' : 'solid'};
-  border-width: ${({ borderThickness }) => `${borderThickness}px`};
-  border-color: ${({ borderColor }) => borderColor || 'transparent'};
-  background: ${({ bgColor }) => bgColor || 'transparent'};
-
-  &.hasHoverEffect {
-    cursor: pointer;
-    transition: all 100ms ease-out;
-
-    &:hover {
-      border-color: ${({ borderHoverColor }) =>
-        borderHoverColor || 'transparent'};
-      fill: ${({ fillHoverColor }) => fillHoverColor || ''};
-    }
-  }
-`;
-
-const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
-  fill: ${({ fill }) => fill};
-  width: ${({ size }) => size}px;
-  height: ${({ size }) => size}px;
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-  border-radius: 50%;
-  background: #fff;
-  border: solid 2px #fff;
-`;
-
 export interface Props {
   userId: string | null;
   size: number;
@@ -113,18 +66,18 @@ export interface Props {
   borderColor?: string;
   bgColor?: string;
   className?: string;
-  showModeratorStyles?: boolean | null;
-  addVerificationBadge?: boolean | null;
+  showModeratorStyles?: boolean;
+  addVerificationBadge?: boolean;
   padding?: number;
   authorHash?: string;
 }
 
-const Avatar = memo(
+const AvatarOuter = memo(
   ({ isLinkToProfile, userId, authorHash, ...props }: Props) => {
     const { data: user } = useUserById(userId);
     if (isNilOrError(user)) {
       return (
-        <AvatarInner
+        <Avatar
           userId={userId}
           isLinkToProfile={isLinkToProfile}
           authorHash={authorHash}
@@ -148,7 +101,7 @@ const Avatar = memo(
               values={{ fullName: getFullName(user.data) }}
             />
           </ScreenReaderOnly>
-          <AvatarInner
+          <Avatar
             userId={userId}
             isLinkToProfile={isLinkToProfile}
             {...props}
@@ -158,16 +111,12 @@ const Avatar = memo(
     }
 
     return (
-      <AvatarInner
-        userId={userId}
-        isLinkToProfile={isLinkToProfile}
-        {...props}
-      />
+      <Avatar userId={userId} isLinkToProfile={isLinkToProfile} {...props} />
     );
   }
 );
 
-const AvatarInner = ({
+const Avatar = ({
   isLinkToProfile,
   showModeratorStyles,
   className,
@@ -227,53 +176,24 @@ const AvatarInner = ({
   const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
 
   return (
-    <Container aria-hidden className={className} size={containerSize}>
-      {avatarSrc ? (
-        <AvatarImage
-          className={`avatarImage ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
-          src={avatarSrc}
-          alt=""
-          size={containerSize}
-          borderThickness={borderThickness}
-          borderColor={borderColor}
-          borderHoverColor={
-            showModeratorStyles ? colors.red600 : borderHoverColor
-          }
-          bgColor={bgColor}
-          padding={paddingValue}
-        />
-      ) : (
-        <AvatarIcon
-          className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
-          name="user-circle"
-          size={containerSize}
-          fillColor={fillColor}
-          fillHoverColor={fillHoverColor}
-          borderThickness={borderThickness}
-          borderColor={borderColor}
-          borderHoverColor={
-            showModeratorStyles ? colors.red600 : borderHoverColor
-          }
-          bgColor={bgColor}
-          paddingValue={paddingValue}
-        />
-      )}
-
-      {showModeratorStyles && (
-        <BadgeIcon name="cl-favicon" size={badgeSize} fill={colors.red600} />
-      )}
-
-      {verified && addVerificationBadge && (
-        <FeatureFlag name="verification">
-          <BadgeIcon
-            name="check-circle"
-            size={badgeSize}
-            fill={colors.success}
-          />
-        </FeatureFlag>
-      )}
-    </Container>
+    <AvatarMarkup
+      className={className}
+      containerSize={containerSize}
+      avatarSrc={avatarSrc ?? undefined}
+      hasHoverEffect={hasHoverEffect}
+      borderThickness={borderThickness}
+      borderColor={borderColor}
+      borderHoverColor={borderHoverColor}
+      showModeratorStyles={showModeratorStyles}
+      bgColor={bgColor}
+      paddingValue={paddingValue}
+      fillColor={fillColor}
+      fillHoverColor={fillHoverColor}
+      badgeSize={badgeSize}
+      verified={verified}
+      addVerificationBadge={addVerificationBadge}
+    />
   );
 };
 
-export default Avatar;
+export default AvatarOuter;
