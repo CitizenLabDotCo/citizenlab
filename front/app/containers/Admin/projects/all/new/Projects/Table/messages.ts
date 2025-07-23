@@ -105,4 +105,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.nextPhase',
     defaultMessage: 'Next phase:',
   },
+  statusColon: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.statusColon',
+    defaultMessage: 'Status: ',
+  },
+  visibilityColon: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.visibilityColon',
+    defaultMessage: 'Visibility: ',
+  },
 });

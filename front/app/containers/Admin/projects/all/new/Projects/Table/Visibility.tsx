@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Tooltip, Box, Text } from '@citizenlab/cl2-component-library';
 
 import {
   PublicationStatus,
@@ -31,22 +31,64 @@ const Visibility = ({ publication_status, visible_to }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box display="flex">
-      <GanttItemIconBar
-        color={getStatusColor(publication_status)}
-        rowHeight={32}
-        ml="0"
-        mr="8px"
-      />
-      <Box>
-        <Text m="0" fontSize="s">
-          {formatMessage(PUBLICATION_STATUSES[publication_status])}
-        </Text>
-        <Text m="0" fontSize="xs" color="textSecondary">
-          {formatMessage(VISIBILITY_LABELS[visible_to])}
-        </Text>
+    <Tooltip
+      content={
+        <Box>
+          <Box>
+            <Text
+              m="0"
+              mr="4px"
+              fontSize="s"
+              display="inline-block"
+              fontWeight="bold"
+              color="white"
+            >
+              {formatMessage(messages.statusColon)}
+            </Text>
+            <Text m="0" fontSize="s" display="inline-block" color="white">
+              {formatMessage(PUBLICATION_STATUSES[publication_status])}
+            </Text>
+          </Box>
+          <Box mt="20px">
+            <Text
+              m="0"
+              mr="4px"
+              fontSize="s"
+              display="inline-block"
+              fontWeight="bold"
+              color="white"
+            >
+              {formatMessage(messages.visibilityColon)}
+            </Text>
+            {visible_to === 'groups' ? (
+              <></>
+            ) : (
+              <Text m="0" fontSize="s" color="white" display="inline-block">
+                {formatMessage(VISIBILITY_LABELS[visible_to])}
+              </Text>
+            )}
+          </Box>
+        </Box>
+      }
+      theme="dark"
+    >
+      <Box display="flex">
+        <GanttItemIconBar
+          color={getStatusColor(publication_status)}
+          rowHeight={32}
+          ml="0"
+          mr="8px"
+        />
+        <Box>
+          <Text m="0" fontSize="s" display="inline-block">
+            {formatMessage(PUBLICATION_STATUSES[publication_status])}
+          </Text>
+          <Text m="0" fontSize="xs" color="textSecondary">
+            {formatMessage(VISIBILITY_LABELS[visible_to])}
+          </Text>
+        </Box>
       </Box>
-    </Box>
+    </Tooltip>
   );
 };
 
