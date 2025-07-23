@@ -13,8 +13,22 @@ class AdminPublicationPolicy < ApplicationPolicy
 
     def scope_for_klass(klass)
       # If the publication is a project, we usually hide hidden projects
-      if klass == Project && !context[:include_hidden]
-        scope_for(klass).not_hidden
+      if klass == Project
+        scope = scope_for(klass)
+
+        if !context[:include_hidden]
+          scope = scope.not_hidden
+        end
+
+        if context[:remove_unlisted]
+          scope = ProjectPolicy.apply_listed_scope(
+            scope,
+            user,
+            context[:remove_unlisted]
+          )
+        end
+
+        scope
       else
         scope_for(klass)
       end

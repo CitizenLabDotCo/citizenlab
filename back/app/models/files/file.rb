@@ -108,6 +108,7 @@ module Files
       against: %i[name description_multiloc],
       using: {
         # tsearch completely ignores the :against option bc a pre-computed tsvector is used
+        # (The tsvector type represents a document in a form optimized for text search.)
         tsearch: { tsvector_column: 'tsvector' },
         # TODO: Trigram search is currently performed directly on the JSONB column
         #   (description_multiloc), which isn't ideal, as converting it to text also

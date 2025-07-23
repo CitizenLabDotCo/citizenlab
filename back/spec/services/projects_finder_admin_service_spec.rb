@@ -181,6 +181,69 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.filter_by_folder_ids' do
+    let!(:folder1) { create(:project_folder) }
+    let!(:folder2) { create(:project_folder) }
+    let!(:project_in_folder1) { create(:project, folder: folder1) }
+    let!(:project_in_folder2) { create(:project, folder: folder2) }
+    let!(:project_without_folder) { create(:project) }
+
+    it 'returns projects in the specified folder' do
+      result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [folder1.id] })
+      expect(result.pluck(:id)).to match_array([project_in_folder1.id])
+    end
+
+    it 'returns projects in any of the specified folders' do
+      result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [folder1.id, folder2.id] })
+      expect(result.pluck(:id)).to match_array([project_in_folder1.id, project_in_folder2.id])
+    end
+
+    it 'returns all projects if folder_ids is blank' do
+      result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [] })
+      expect(result.pluck(:id)).to include(project_in_folder1.id, project_in_folder2.id, project_without_folder.id)
+    end
+  end
+
+  describe 'self.filter_current_phase_participation_method' do
+    let!(:project_ideation) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'ideation')
+      project
+    end
+    let!(:project_voting) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'voting', voting_method: 'single_voting')
+      project
+    end
+    let!(:project_information) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today - 10.days, end_at: Time.zone.today + 10.days, project: project, participation_method: 'information')
+      project
+    end
+    let!(:project_ideation_future) do
+      project = create(:project)
+      create(:phase, start_at: Time.zone.today + 10.days, end_at: Time.zone.today + 20.days, project: project, participation_method: 'ideation')
+      project
+    end
+
+    it 'returns all projects when no participation_methods specified' do
+      result = described_class.filter_current_phase_participation_method(Project.all, {})
+      expect(result.pluck(:id)).to match_array([
+        project_ideation.id, project_voting.id, project_information.id, project_ideation_future.id
+      ])
+    end
+
+    it 'filters projects by a single participation method' do
+      result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: ['ideation'] })
+      expect(result.pluck(:id)).to eq([project_ideation.id])
+    end
+
+    it 'filters projects by multiple participation methods' do
+      result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: %w[ideation voting] })
+      expect(result.pluck(:id)).to match_array([project_ideation.id, project_voting.id])
+    end
+  end
+
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }
