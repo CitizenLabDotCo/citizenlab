@@ -60,7 +60,7 @@ const FileEditForm = ({ file }: Props) => {
         file: {
           // Join the file name back with the extension before persisting.
           name: `${methods.getValues('name')}.${fileExtensionString}`,
-          category: methods.getValues('category') || 'other',
+          category: methods.getValues('category'),
           description_multiloc: methods.getValues('description_multiloc'),
         },
       });
