@@ -2255,7 +2255,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot": "Ni all enw'r ffeil gynnwys dot.",
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Enw Ffeil",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "Mae angen enw ffeil.",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Rhagolwg Ffeil",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Ni fydd y ffeil hon yn cael ei huwchlwytho, gan ei bod yn fwy na'r terfyn uchaf o 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Llwythwyd pob ffeil i fyny'n llwyddiannus",
   "app.containers.AdminPage.ProjectFiles.maxFilesError": "Dim ond uchafswm o {maxFiles} ffeiliau y gallwch eu lanlwytho ar y tro.",

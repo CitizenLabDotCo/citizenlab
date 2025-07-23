@@ -2255,7 +2255,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot": "Tiedoston nimi ei saa sisältää pistettä.",
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Tiedoston nimi",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "Tiedoston nimi on pakollinen.",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Tiedoston esikatselu",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Tätä tiedostoa ei ladata, koska se ylittää 50 Mt:n enimmäiskoon.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Kaikki tiedostot ladattiin onnistuneesti",
   "app.containers.AdminPage.ProjectFiles.maxFilesError": "Voit ladata kerrallaan enintään {maxFiles} tiedostoa.",

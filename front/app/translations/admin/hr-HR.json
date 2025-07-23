@@ -2255,7 +2255,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot": "Naziv datoteke ne smije sadržavati točku.",
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Naziv datoteke",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "Naziv datoteke je obavezan.",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Pregled datoteke",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Ova datoteka neće biti prenesena jer prelazi maksimalno ograničenje od 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Sve datoteke su uspješno prenesene",
   "app.containers.AdminPage.ProjectFiles.maxFilesError": "Možete prenijeti najviše {maxFiles} datoteka odjednom.",

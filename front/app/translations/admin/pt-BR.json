@@ -2255,7 +2255,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot": "O nome do arquivo não pode conter um ponto.",
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Nome do arquivo",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "O nome do arquivo é obrigatório.",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Visualização do arquivo",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Esse arquivo não será carregado, pois excede o limite máximo de 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Todos os arquivos foram carregados com sucesso",
   "app.containers.AdminPage.ProjectFiles.maxFilesError": "Você só pode carregar um máximo de {maxFiles} arquivos por vez.",
