@@ -144,9 +144,9 @@ describe('<ConsentManager />', () => {
 
     it('rejects all cookies except functional if preference modal is opened and confirmed without changes', async () => {
       const user = userEvent.setup();
-      const { container } = render(<ConsentManager />);
+      render(<ConsentManager />);
       await user.click(screen.getByTestId('manage-preferences-btn'));
-      await user.click(container.querySelector('#e2e-preferences-save'));
+      await user.click(screen.getByTestId('preferences-save'));
 
       expect(setConsent).toHaveBeenCalledWith({
         functional: true,
@@ -159,12 +159,27 @@ describe('<ConsentManager />', () => {
       });
     });
 
+    it('accepts all cookies, and remembers choices without a page reload', async () => {
+      // This test is important because I removed setting of preferences after saving all cookies, thinking it was redundant.
+      // However, it turned out that the modal was not able to remember choices (without page refresh).
+      const user = userEvent.setup();
+      const { container } = render(<ConsentManager />);
+      await user.click(screen.getByTestId('accept-cookies-btn'));
+      expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
+      // Simulate opening the consent manager again.
+      // We use events to trigger the modal from e.g. the platform footer.
+      act(() => eventEmitter.emit('openConsentManager'));
+      await user.click(screen.getByTestId('manage-preferences-btn'));
+      // By default, this is set to false, so checking that it's true confirms that the modal remembers choices.
+      expect(container.querySelector('#analytics-radio-true')).toBeChecked();
+    });
+
     it('accepts only functional and analytics cookies if analytics is enabled in preference modal', async () => {
       const user = userEvent.setup();
       const { container } = render(<ConsentManager />);
       await user.click(screen.getByTestId('manage-preferences-btn'));
       await user.click(container.querySelector('#analytics-radio-true'));
-      await user.click(container.querySelector('#e2e-preferences-save'));
+      await user.click(screen.getByTestId('preferences-save'));
 
       expect(setConsent).toHaveBeenCalledWith({
         functional: true,
@@ -220,7 +235,7 @@ describe('<ConsentManager />', () => {
       ).toBeInTheDocument();
 
       await user.click(container.querySelector('#analytics-radio-true'));
-      await user.click(container.querySelector('#e2e-preferences-save'));
+      await user.click(screen.getByTestId('preferences-save'));
 
       expect(setConsent).toHaveBeenCalledWith({
         functional: true,

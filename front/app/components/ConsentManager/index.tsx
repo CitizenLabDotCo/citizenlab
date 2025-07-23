@@ -131,6 +131,8 @@ const ConsentManager = () => {
       advertising: true,
     };
 
+    // Setting preferences here is needed to ensure that the modal can reliably (and not by coincidence) remember choices after accepting all cookies.
+    // Otherwise, the modal would not be able to remember choices without a page reload.
     setPreferences(newPreferences);
     saveConsent(newPreferences);
     setScreen(null);
@@ -143,6 +145,8 @@ const ConsentManager = () => {
       functional: true,
     };
 
+    // Setting preferences here is needed to ensure that the modal can remember choices after rejecting all cookies.
+    // Otherwise, the modal may not be able to show correct choices without a page reload.
     setPreferences(newPreferences);
     saveConsent(newPreferences);
     setScreen(null);
