@@ -258,6 +258,64 @@ describe('<ConsentManager />', () => {
       });
 
       expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
+
+      act(() => eventEmitter.emit('openConsentManager'));
+      expect(screen.getByTestId('consent-manager')).toBeVisible();
+      await user.click(screen.getByTestId('accept-cookies-btn'));
+
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: true,
+        advertising: true,
+        savedChoices: {
+          matomo: true,
+          google_analytics: true,
+        },
+      });
+    });
+
+    it('rejecting all cookies sends the right preferences and closes the modal, even when opened multiple times', async () => {
+      // This test is important because we can reject all cookies multiple times
+      // (e.g. after we launch the modal again from the platform footer).
+      // There used to be a bug where the modal would not close after accepting all cookies for the second time.
+      // The function that dealt with "accept all" was also once implemented in a way that kept existing preferences
+      // (even if they were false).
+      // Hence we have a test for this when rejecting as well.
+      const user = userEvent.setup();
+      render(<ConsentManager />);
+      // Simulate opening the consent manager.
+      // We use events to trigger the modal from e.g. the platform footer.
+      act(() => eventEmitter.emit('openConsentManager'));
+      expect(screen.getByTestId('consent-manager')).toBeVisible();
+      await user.click(screen.getByTestId('reject-cookies-btn'));
+
+      expect(setConsent).toHaveBeenCalledWith({
+        // functional is always true
+        functional: true,
+        analytics: false,
+        advertising: false,
+        savedChoices: {
+          matomo: false,
+          google_analytics: false,
+        },
+      });
+      expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
+
+      act(() => eventEmitter.emit('openConsentManager'));
+      expect(screen.getByTestId('consent-manager')).toBeVisible();
+
+      await user.click(screen.getByTestId('reject-cookies-btn'));
+      expect(setConsent).toHaveBeenCalledWith({
+        // functional is always true
+        functional: true,
+        analytics: false,
+        advertising: false,
+        savedChoices: {
+          matomo: false,
+          google_analytics: false,
+        },
+      });
+      expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
     });
   });
 
