@@ -152,6 +152,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  rm_unify_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   nemlog_in_login?: {
     allowed: boolean;
     enabled: boolean;

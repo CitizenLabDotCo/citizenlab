@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import { Image, Text } from '@citizenlab/cl2-component-library';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -115,6 +115,10 @@ const AuthProviders = memo<Props>(
       useFeatureFlag({
         name: 'twoday_login',
       }) || providerForTest === 'twoday';
+    const rmUnifyLoginEnabled =
+      useFeatureFlag({
+        name: 'rm_unify_login',
+      }) || providerForTest === 'rm_unify';
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -158,6 +162,7 @@ const AuthProviders = memo<Props>(
       criiptoLoginEnabled ||
       keycloakLoginEnabled ||
       twodayLoginEnabled ||
+      rmUnifyLoginEnabled ||
       nemlogInLoginEnabled ||
       idAustriaLoginEnabled;
 
@@ -272,6 +277,26 @@ const AuthProviders = memo<Props>(
               {...messages.continueWithLoginMechanism}
               values={{
                 loginMechanismName: 'BankID eller Freja eID+',
+              }}
+            />
+          </StyledAuthProviderButton>
+        )}
+        {rmUnifyLoginEnabled && (
+          <StyledAuthProviderButton
+            flow={flow}
+            authProvider="rm_unify"
+            onContinue={onSelectAuthProvider}
+          >
+            <Image
+              alt="Glow"
+              width="50px"
+              mr="10px"
+              src="/assets/img/sso/glow_connect.png"
+            />
+            <FormattedMessage
+              {...messages.continueWithLoginMechanism}
+              values={{
+                loginMechanismName: 'Glow Connect',
               }}
             />
           </StyledAuthProviderButton>
