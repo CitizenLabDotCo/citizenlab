@@ -103,12 +103,11 @@ RSpec.describe BaseImageUploader do
         'YResolution' # MiniMagick might expose differently
       ]
 
-      present_tags = exiftool_output.lines.map do |l|
-        l.split(':').first.strip
-      end.uniq
+      filename = uploader.file.path.split('/').last
 
-      present_tags.reject! do |tag|
-        tag.empty? || tag == uploader.file.path.split('/').last
+      present_tags = exiftool_output.lines.filter_map do |l|
+        tag = l.split(':').first.strip
+        tag unless tag.empty? || tag == filename
       end
 
       # These are the tags that *should* be gone (privacy-sensitive, user-defined)
