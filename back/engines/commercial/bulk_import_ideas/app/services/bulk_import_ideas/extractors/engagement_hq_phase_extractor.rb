@@ -3,35 +3,17 @@
 # NOTE: Only supports native_survey phases at the moment
 
 module BulkImportIdeas::Extractors
-  class EngagementHqPhaseExtractor
-    IGNORED_COLUMNS = [
-      'Login (Screen name)',
-      'Contributor Summary (Signup form Qs - Detailed breakup on the right > )',
-      'Usertype',
-      'Login',
-      'Response ID'
-    ]
-
-    USER_COLUMNS = [
-      'Postal Code',
-      'Do you represent a Guelph business?'
-    ]
-
-    # Names of special columns to change to match our import format
-    SPECIAL_COLUMN_MAP = {
-      'Email' => 'Email address',
-      'Date of contribution' => 'Date Published (dd-mm-yyyy)'
-    }
-
-    def initialize(xlsx_file_path, worksheet_name)
+  class EngagementHqPhaseExtractor < BaseExtractor
+    def initialize(xlsx_file_path, worksheet_name, config)
       workbook = RubyXL::Parser.parse_buffer(open(xlsx_file_path).read)
       @worksheet = workbook.worksheets.find { |sheet| sheet.sheet_name == worksheet_name }
       @idea_columns = []
       @user_columns = []
-      @field_type_overrides = {} # For any column types that are not automatically detected
+      @config = config # any defined: ignored_columns, user_columns, renamed_columns, override_field_types
       @idea_rows = generate_idea_rows
     end
 
+    # Return a single phase with custom fields and idea rows
     def phase
       # Get the minimum and maximum dates from 'Date Published (dd-mm-yyyy)' as start and end dates
       date_values = @idea_rows.pluck('Date Published (dd-mm-yyyy)').map { |d| Date.parse(d) }
@@ -58,10 +40,7 @@ module BulkImportIdeas::Extractors
     def generate_idea_rows
       data = []
 
-      # Are there any input type overrides in the sheet?
-      type_overrides = extract_input_type_overrides
-
-      @worksheet.drop(type_overrides ? 5 : 4).each do |row|
+      @worksheet.drop(4).each do |row|
         # Exit if column D (date column) is empty (ie the data rows have ended)
         break if row[3].nil? || row[3].value.nil?
 
@@ -82,36 +61,19 @@ module BulkImportIdeas::Extractors
       data
     end
 
-    def extract_input_type_overrides
-      has_overrides = @worksheet.sheet_data[4][0].value == 'TYPE_OVERRIDES'
-      return false unless has_overrides
-
-      @worksheet.sheet_data[4].cells.each_with_index do |cell, col_index|
-        next if cell.nil? || cell.value.nil? || cell.value.empty?
-        next if cell.column < 3 # Skip columns before the 4th column
-
-        column_name = column_header(col_index)
-        next unless column_name # Skip if header is nil
-
-        # Store the input type override
-        @field_type_overrides[column_name] = cell.value.strip.downcase
-      end
-
-      has_overrides
-    end
-
     def column_header(col_index)
       row_index = col_index == 3 ? 2 : 3 # Data column header is on different row!
       column_name = @worksheet[row_index][col_index]&.value
 
-      return nil if column_name.nil? || IGNORED_COLUMNS.include?(column_name)
+      return nil if column_name.nil? || @config[:ignored_columns].include?(column_name)
 
       # Change some names to match our import format
-      column_name = SPECIAL_COLUMN_MAP[column_name] if SPECIAL_COLUMN_MAP.key?(column_name)
+      renamed_columns = @config[:renamed_columns] || {}
+      column_name = renamed_columns[column_name] if renamed_columns.key?(column_name)
 
       # Add the column to the appropriate array - using col_index to ensure correct order maintained
-      if SPECIAL_COLUMN_MAP.values.exclude?(column_name)
-        if USER_COLUMNS.include?(column_name)
+      if renamed_columns.values.exclude?(column_name)
+        if @config[:user_columns].include?(column_name)
           @user_columns[col_index] = column_name unless @user_columns.include?(column_name)
         else
           @idea_columns[col_index] = column_name unless @idea_columns.include?(column_name)
@@ -134,7 +96,7 @@ module BulkImportIdeas::Extractors
     end
 
     def required?(column_name)
-      return false if USER_COLUMNS.include?(column_name) # Probably easier to assume these are not required
+      return false if @config[:user_columns].include?(column_name) # Probably easier to assume these are not required
 
       values = @idea_rows.pluck(column_name)
       values_not_empty = remove_empty_array_values(values)
@@ -180,10 +142,10 @@ module BulkImportIdeas::Extractors
     end
 
     # NOTE: Will not work if select options contain commas or semicolons
-    # TODO: Rewrite this - override stuff is messy
+    # TODO: Rewrite this - override stuff is messy & only applicable to select fields right now
     def select_field_attributes(column_name)
       values = remove_empty_array_values(@idea_rows.pluck(column_name))
-      override_input_type = @field_type_overrides[column_name]
+      override_input_type = @config[:override_field_types][column_name]
       maybe_multiselect = values.uniq.any? { |value| value.include?(',') || value.include?(';') } unless override_input_type == 'select'
       values = values.map { |value| value.split(/[,;]/).map(&:strip) }.flatten if maybe_multiselect
 
@@ -261,28 +223,12 @@ module BulkImportIdeas::Extractors
       new_values
     end
 
-    def multiloc(str)
-      locales.index_with { |_locale| str } # Same text assigned to all locales
-    end
-
     # Update values to ensure semicolons for multiselect, matrix fields, etc.
     def update_delimiters(column_name)
       @idea_rows = @idea_rows.map do |row|
         row[column_name] = row[column_name].split(/[,;]/).map(&:strip).join('; ') if row[column_name]
         row
       end
-    end
-
-    def generate_key(str)
-      str.parameterize.tr('-', '_')
-    end
-
-    def remove_empty_array_values(array_values)
-      array_values.compact.reject { |value| value.is_a?(String) && value.empty? }
-    end
-
-    def locales
-      @locales ||= AppConfiguration.instance.settings.dig('core', 'locales')
     end
   end
 end
