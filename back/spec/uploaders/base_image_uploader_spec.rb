@@ -39,11 +39,8 @@ RSpec.describe BaseImageUploader do
       ]
       expect(image.exif.keys - allowed_exif_keys).to be_empty
 
-      command = 'exiftool'
-      args = [uploader.file.path]
-      stdout_str, stderr_str, status = Open3.capture3(command, *args)
-      expect(status.success?).to(be(true), "exiftool command failed: #{stderr_str}")
-      exiftool_output = stdout_str # Now, exiftool_output holds the stdout
+      exiftool_output, stderr_str, status = Open3.capture3('exiftool', uploader.file.path)
+      expect(status).to be_success, "exiftool command failed: #{stderr_str}"
 
       # The `exiftool` command is used here to verify that a broader range of metadata
       # types (beyond just EXIF, which MiniMagick might expose) have been stripped.
