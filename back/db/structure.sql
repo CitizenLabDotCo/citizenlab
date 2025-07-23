@@ -1433,7 +1433,8 @@ CREATE TABLE public.users (
     followings_count integer DEFAULT 0 NOT NULL,
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
-    last_active_at timestamp(6) without time zone
+    last_active_at timestamp(6) without time zone,
+    force_password_change boolean DEFAULT false NOT NULL
 );
 
 
@@ -7483,6 +7484,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250718153116'),
 ('20250716141100'),
 ('20250716102450'),
 ('20250715075008'),

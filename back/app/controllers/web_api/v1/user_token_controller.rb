@@ -6,6 +6,9 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   private
 
   def auth_token
+    # TODO: Need to check that SSO is unaffected
+    return { error: 'force_password_change' } if entity.force_password_change?
+
     payload = entity.to_token_payload
 
     unless auth_params[:remember_me] # default expiration is set in #to_token_payload and can also be used by 3rd party auth

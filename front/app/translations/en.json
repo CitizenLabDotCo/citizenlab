@@ -1683,6 +1683,7 @@
   "app.containers.PasswordRecovery.emailError": "This doesn't look like a valid email",
   "app.containers.PasswordRecovery.emailLabel": "Email",
   "app.containers.PasswordRecovery.emailPlaceholder": "My email address",
+  "app.containers.PasswordRecovery.forceResetMessage": "Your password has expired and needs to be reset.",
   "app.containers.PasswordRecovery.helmetDescription": "Reset your password page",
   "app.containers.PasswordRecovery.helmetTitle": "Reset your password",
   "app.containers.PasswordRecovery.passwordResetSuccessMessage": "If this email address is registered on the platform, a password reset link has been sent.",
