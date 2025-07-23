@@ -97,4 +97,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.archived',
     defaultMessage: 'Archived',
   },
+  currentPhase: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.currentPhase',
+    defaultMessage: 'Current phase:',
+  },
+  nextPhase: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.nextPhase',
+    defaultMessage: 'Next phase:',
+  },
 });
