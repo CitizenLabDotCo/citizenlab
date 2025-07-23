@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funktionell Cookien",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Dëst ass noutwenneg fir d'Basisfunktiounen vum Site ze erméiglechen an ze iwwerpréiwen. E puer vun den Toolen op dëser Lëscht kéinte fir Iech net gëllen. Fir weider Informatiounen liest wgl. eis Cookie-Richtlinnen.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Noutwenneg",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Fir eng funktionell Plattform ze hunn, späichere mir en Authentifizéierungs-Cookie wann dir Iech umellt souwéi d’Sprooch an däer Dir dës Plattform notzt. ",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Späicheren",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Tool",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Inhalt eropluede Verzichterklärung",

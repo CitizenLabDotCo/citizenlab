@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Функционални",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Ово је потребно да би се омогућиле и надгледале основне функционалности веб локације. Неки алати наведени овде се можда не односе на вас. Молимо прочитајте нашу политику колачића за више информација.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Гоогле менаџер ознака ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Потребан",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Да бисмо имали функционалну платформу, чувамо колачић за аутентификацију ако се региструјете и језик на којем користите ову платформу.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "сачувати",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Алати",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Одрицање одговорности за отпремање садржаја",

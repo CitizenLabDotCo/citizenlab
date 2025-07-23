@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Swyddogaethol",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Mae hyn yn ofynnol er mwyn galluogi a monitro swyddogaethau sylfaenol y wefan. Efallai na fydd rhai offer a restrir yma yn berthnasol i chi. Darllenwch ein polisi cwcis am ragor o wybodaeth.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Rheolwr Tagiau Google ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Angenrheidiol",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Er mwyn sicrhau platfform gweithredol, rydym ni'n cadw cwci dilysu os ydych chi'n cofrestru, a'r iaith rydych chi'n defnyddio'r platfform hwn ynddi.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Arbed",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Offer",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Ymwadiad uwchlwytho cynnwys",

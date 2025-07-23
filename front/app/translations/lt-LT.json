@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funkcinis",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Tai reikalinga norint įjungti ir stebėti pagrindines svetainės funkcijas. Kai kurie čia išvardyti įrankiai jums gali būti netaikomi. Daugiau informacijos rasite mūsų slapukų politikoje.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "\"Google Tag Manager\" ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Reikalinga",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Kad platforma veiktų, išsaugome autentifikavimo slapuką, jei užsiregistruojate, ir kalbą, kuria naudojatės šia platforma.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Išsaugoti",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Įrankiai",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Turinio įkėlimo atsakomybės apribojimas",

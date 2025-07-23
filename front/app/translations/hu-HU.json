@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funkcionális",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Ez szükséges a webhely alapvető funkcióinak engedélyezéséhez és ellenőrzéséhez. Előfordulhat, hogy néhány itt felsorolt eszköz nem vonatkozik Önre. Kérjük, további információkért olvassa el cookie-kra vonatkozó szabályzatunkat.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Címkekezelő ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Kívánt",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "A működőképes platform érdekében elmentünk egy hitelesítő cookie-t, ha regisztrál, és azt a nyelvet, amelyen ezt a platformot használja.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Megtakarítás",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Eszközök",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Tartalomfeltöltési felelősség kizárása",

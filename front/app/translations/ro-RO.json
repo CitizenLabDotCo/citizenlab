@@ -56,8 +56,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funcțional",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Acest lucru este necesar pentru a permite monitorizarea funcționalităților de bază ale site-ului. Unele instrumente enumerate aici s-ar putea să nu se aplice. Vă rugăm să citiți politica noastră cookie pentru mai multe informații.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Manager de etichete Google ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Obligatoriu",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Pentru a avea o platformă funcțională, salvăm un cookie de autentificare dacă vă înscrieți și limba în care utilizați această platformă.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Salvați",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Unelte",
   "app.components.ErrorBoundary.errorFormErrorFormEntry": "Unele câmpuri au fost invalide. Vă rugăm să corectați erorile și să încercați din nou.",

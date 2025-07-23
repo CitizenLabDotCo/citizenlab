@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funcional",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Això és necessari per habilitar i controlar les funcionalitats bàsiques del lloc web. És possible que algunes eines que s'enumeren aquí no s'apliquen al vostre cas. Si us plau, llegiu la nostra política de galetes per obtenir més informació.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Gestor d'etiquetes de Google ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Obligatori",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Per tenir una plataforma funcional, guardem una galeta d'autenticació si us registreu i l'idioma en què utilitzeu aquesta plataforma.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Desar",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Eines",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Exempció de responsabilitat de càrrega de contingut",

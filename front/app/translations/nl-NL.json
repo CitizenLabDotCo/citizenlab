@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Functioneel",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Deze zijn vereist om basisfunctionaliteiten van de website mogelijk te maken en te monitoren. Sommige van deze tools zijn mogelijks niet van toepassing op jou. Raadpleeg ons cookiebeleid voor meer informatie.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Vereist",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Om een functioneel platform te hebben, slaan we een authenticatie cookie op als je je aanmeldt, en de taal waarin je dit platform gebruikt.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Opslaan",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Tools",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Disclaimer voor het uploaden van content",

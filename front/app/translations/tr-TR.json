@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "İşlevsel",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Bu, web sitesinin temel işlevlerini etkinleştirmek ve izlemek için gereklidir. Burada belirtilen bazı araçlar sizin için geçerli olmayabilir. Daha fazla bilgi için lütfen çerez politikamıza bakın.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Zorunlu",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Bu platforma kaydolursanız, kullanım kolaylığını artırmak amacıyla, platformu kullanacağınız dili ve bir doğrulama çerezi kaydederiz.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Kaydet",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Araçlar",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "İçerik yükleme feragatnamesi",

@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funksjonell",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Dette er nødvendig for å aktivere og overvåke grunnleggende funksjoner på nettstedet. Noen av verktøyene som er oppført her, gjelder kanskje ikke for deg. Les retningslinjene våre for informasjonskapsler for mer informasjon.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Nødvendig",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "For å ha en funksjonell plattform lagrer vi en informasjonskapsel for autentisering hvis du registrerer deg, og språket du bruker denne plattformen på.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Lagre",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Verktøy",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Ansvarsfraskrivelse for opplasting av innhold",

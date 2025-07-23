@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "فنکشنل",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "ویب سائٹ کے بنیادی افعال کو فعال اور مانیٹر کرنے کے لیے یہ ضروری ہے۔ ہو سکتا ہے یہاں درج کچھ ٹولز آپ پر لاگو نہ ہوں۔ مزید معلومات کے لیے براہ کرم ہماری کوکی پالیسی پڑھیں۔",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "گوگل ٹیگ مینیجر ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "درکار ہے۔",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "ایک فعال پلیٹ فارم حاصل کرنے کے لیے، اگر آپ سائن اپ کرتے ہیں تو ہم ایک تصدیقی کوکی محفوظ کرتے ہیں، اور وہ زبان جس میں آپ یہ پلیٹ فارم استعمال کرتے ہیں۔",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "محفوظ کریں۔",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "اوزار",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "مواد اپ لوڈ ڈس کلیمر",

@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funzionale",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Questo è necessario per abilitare e monitorare le funzionalità di base del sito web. Alcuni strumenti elencati qui potrebbero non essere applicabili a te. Si prega di leggere la nostra politica sui cookie per ulteriori informazioni.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Richiesto",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Per avere una piattaforma funzionale, salviamo un cookie di autenticazione se ti iscrivi, e la lingua in cui usi questa piattaforma.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Salva",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Strumenti",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Esclusione di responsabilità per il caricamento dei contenuti",

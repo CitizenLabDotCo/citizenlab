@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funktionell",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Detta krävs för att aktivera och övervaka grundläggande funktioner på webbplatsen. Vissa verktyg som listas här kanske inte gäller dig. Läs vår cookiepolicy om du vill ha mer information.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Krävs",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "För att ha en funktionell plattform sparar vi en autentiseringscookie om du registrerar dig, samt språket som du använder den här plattformen på.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Spara",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Verktyg",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Ansvarsfriskrivning för uppladdning av innehåll",

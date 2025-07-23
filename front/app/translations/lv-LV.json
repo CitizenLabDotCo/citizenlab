@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funkcionālais",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Tas ir nepieciešams, lai iespējotu un uzraudzītu vietnes pamatfunkcijas. Daži šeit uzskaitītie rīki var uz jums neattiekties. Lai iegūtu plašāku informāciju, lūdzu, izlasiet mūsu sīkfailu politiku.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google tagu pārvaldnieks ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Obligāts",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Lai platforma darbotos, mēs saglabājam autentifikācijas sīkfailu, ja reģistrējaties, un valodu, kurā izmantojat šo platformu.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Saglabāt",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Rīki",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Satura augšupielādes atruna",

@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funkcionalni",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Ovo je neophodno dozvoliti kako bi se nadgledale osnovne funkcionalnosti web stranice. Pojedini alati koji su nabrojani ovde se ne moraju odnositi na vas. Molimo vas da pročitate našu deklaraciju o kolačićima za više informacija. ",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Obavezno",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Da bi platforma bila funkcionalna, ukoliko se registrujete čuvamo autentifikacioni kolačić, kao i odabrani jezik na kome koristite platformu.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Sačuvajte",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Alati",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Content upload disclaimer",

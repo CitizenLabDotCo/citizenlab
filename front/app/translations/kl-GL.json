@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Atorsinnaassusaa",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Pisariaqarpoq nittartakkami tunngaviusumik atortut atuutilersinniarlugit nakkutiginiarlugillu. Uani sakkussat atorneqartut ilai immaqa ilinnuunngillat. Paasissutissanik amerlanerusunik piniaruit cookiet pillugit politik takujuk.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Piumasaqaataavoq",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Nittartakkap atorneqarsinnaanissaanut, atuisunngoruit oqaatsillu nittartakkami atorusutatit nalunaarutigigukkit, cookienik akuerisanik toqqorsisarpugut.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Toqqoruk",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Sakkussat",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Content upload disclaimer",

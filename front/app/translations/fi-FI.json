@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Toimiva",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Tämä on tarpeen verkkosivuston perustoimintojen mahdollistamiseksi ja valvomiseksi. Jotkut tässä luetellut työkalut eivät välttämättä koske sinua. Lue evästekäytäntömme saadaksesi lisätietoja.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Edellytetään",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Toimivan alustan saamiseksi tallennamme todennusevästeen, jos rekisteröidyt, sekä kielen, jolla käytät tätä alustaa.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Tallenna",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Työkalut",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Sisällön lataamisen vastuuvapauslauseke",

@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "ਕਾਰਜਸ਼ੀਲ",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "ਵੈੱਬਸਾਈਟ ਦੀਆਂ ਬੁਨਿਆਦੀ ਕਾਰਜਕੁਸ਼ਲਤਾਵਾਂ ਨੂੰ ਸਮਰੱਥ ਅਤੇ ਨਿਗਰਾਨੀ ਕਰਨ ਲਈ ਇਹ ਲੋੜੀਂਦਾ ਹੈ। ਹੋ ਸਕਦਾ ਹੈ ਕਿ ਇੱਥੇ ਸੂਚੀਬੱਧ ਕੁਝ ਟੂਲ ਤੁਹਾਡੇ 'ਤੇ ਲਾਗੂ ਨਾ ਹੋਣ। ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ ਕਿਰਪਾ ਕਰਕੇ ਸਾਡੀ ਕੂਕੀ ਨੀਤੀ ਨੂੰ ਪੜ੍ਹੋ।",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "ਗੂਗਲ ਟੈਗ ਮੈਨੇਜਰ ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "ਲੋੜੀਂਦਾ ਹੈ",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "ਇੱਕ ਕਾਰਜਸ਼ੀਲ ਪਲੇਟਫਾਰਮ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ, ਜੇਕਰ ਤੁਸੀਂ ਸਾਈਨ ਅਪ ਕਰਦੇ ਹੋ, ਤਾਂ ਅਸੀਂ ਇੱਕ ਪ੍ਰਮਾਣਿਤ ਕੁਕੀ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਦੇ ਹਾਂ, ਅਤੇ ਉਹ ਭਾਸ਼ਾ ਜਿਸ ਵਿੱਚ ਤੁਸੀਂ ਇਸ ਪਲੇਟਫਾਰਮ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋ।",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "ਸੇਵ ਕਰੋ",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "ਸੰਦ",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "ਸਮੱਗਰੀ ਅਪਲੋਡ ਬੇਦਾਅਵਾ",

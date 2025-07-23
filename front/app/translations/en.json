@@ -133,8 +133,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Functional",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "This is required to enable and monitor basic functionalities of the website. Some tools listed here might not apply to you. Please read our cookie policy for more information.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Required",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "To have a functional platform, we save an authenticating cookie if you sign up, and the language in which you use this platform.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Save",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Tools",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Content upload disclaimer",

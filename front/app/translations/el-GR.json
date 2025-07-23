@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Λειτουργικό",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Αυτό είναι απαραίτητο για την ενεργοποίηση και την παρακολούθηση των βασικών λειτουργιών του ιστότοπου. Ορισμένα εργαλεία που αναφέρονται εδώ ενδέχεται να μην ισχύουν για εσάς. Παρακαλούμε διαβάστε την πολιτική μας για τα cookies για περισσότερες πληροφορίες.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "Απαιτείται",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Για να έχουμε μια λειτουργική πλατφόρμα, αποθηκεύουμε ένα cookie πιστοποίησης ταυτότητας εάν εγγραφείτε, καθώς και τη γλώσσα στην οποία χρησιμοποιείτε αυτή την πλατφόρμα.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Αποθήκευση",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Εργαλεία",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Αποποίηση ευθυνών ανάρτησης περιεχομένου",

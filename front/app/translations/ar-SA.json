@@ -130,8 +130,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "الوظائف",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "هذا مطلوب لتمكين ومراقبة الوظائف الأساسية للموقع. قد لا تنطبق بعض الأدوات المُدرجة هنا عليك. للمزيد من المعلومات يُرجى قراءة سياسة ملفات تعريف الارتباط الخاصة بنا.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "مدير علامات جوجل ({destinations})",
-  "app.components.ConsentManager.Modal.PreferencesDialog.required": "مطلوب",
-  "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "سنقوم بحفظ ملف تعريف ارتباط المصادقة إذا قمت بالتسجيل، بالإضافة إلى اللغة التي تستخدم بها هذه المنصة وذلك من أجل للحصول على منصة فعالة.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "حفظ",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "الأدوات",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "إخلاء المسؤولية عن تحميل المحتوى",
