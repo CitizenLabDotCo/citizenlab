@@ -38,6 +38,7 @@ const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
         buttonStyle="primary"
         onClick={onAccept}
         autoFocus
+        data-cy="e2e-accept-cookies-btn"
       >
         <FormattedMessage {...messages.accept} />
       </Button>
