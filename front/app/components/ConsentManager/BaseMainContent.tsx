@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import CookieModalContentContainer from './CookieModalContentContainer';
 
 interface Props {
-  id: string;
+  id?: string;
   titleMessage: { id: string; defaultMessage: string };
   children?: ReactNode;
 }

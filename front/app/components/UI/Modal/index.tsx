@@ -318,6 +318,7 @@ const ModalContentContainerSwitch = ({
 };
 
 interface Props {
+  'data-testid'?: string;
   opened: boolean;
   fixedHeight?: boolean;
   width?: number | string;
@@ -342,6 +343,7 @@ interface Props {
 }
 
 const Modal: React.FC<Props> = ({
+  'data-testid': dataTestId,
   opened,
   fixedHeight = false,
   width = 650,
@@ -464,6 +466,7 @@ const Modal: React.FC<Props> = ({
   return width ? (
     <CSSTransition
       classNames="modal"
+      data-testid={dataTestId}
       in={opened}
       timeout={
         smallerThanSmallTablet
