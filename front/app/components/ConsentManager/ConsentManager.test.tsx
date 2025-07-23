@@ -183,11 +183,11 @@ describe('<ConsentManager />', () => {
       mockAuthUser = null;
       mockCookie = {
         functional: true,
-        analytics: true,
+        analytics: false,
         advertising: false,
         savedChoices: {
-          matomo: true,
-          google_analytics: true,
+          matomo: false,
+          google_analytics: false,
         },
       };
     });
@@ -221,16 +221,16 @@ describe('<ConsentManager />', () => {
         container.querySelector('#e2e-preference-dialog')
       ).toBeInTheDocument();
 
-      await user.click(container.querySelector('#analytics-radio-false'));
+      await user.click(container.querySelector('#analytics-radio-true'));
       await user.click(container.querySelector('#e2e-preferences-save'));
 
       expect(setConsent).toHaveBeenCalledWith({
         functional: true,
-        analytics: false,
+        analytics: true,
         advertising: false,
         savedChoices: {
-          matomo: false,
-          google_analytics: false,
+          matomo: true,
+          google_analytics: true,
         },
       });
     });
