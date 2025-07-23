@@ -8,7 +8,6 @@ class WebApi::V1::FileV2Serializer < WebApi::V1::BaseSerializer
     :content,
     :description_multiloc,
     :category,
-    :content,
     :mime_type,
     :size,
     :ai_processing_allowed,
