@@ -72,5 +72,11 @@ export type ProjectMiniAdminData = {
         type: 'project_image';
       }[];
     };
+    groups: {
+      data: {
+        id: string;
+        type: 'group';
+      }[];
+    };
   };
 };

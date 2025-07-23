@@ -52,4 +52,6 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
 
   has_many :phases, serializer: WebApi::V1::PhaseSerializer
+
+  has_many :groups, serializer: WebApi::V1::GroupSerializer
 end
