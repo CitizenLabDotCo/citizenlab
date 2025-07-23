@@ -23,7 +23,7 @@ const BaseMainContent = ({ id, titleMessage, children }: Props) => {
   return (
     <CookieModalContentContainer id={id}>
       <Icon name="cookie" fill={colors.primary} />
-      <Title as="h1" variant={isSmallerThanPhone ? 'h3' : 'h1'}>
+      <Title as="h1" variant={isSmallerThanPhone ? 'h4' : 'h3'}>
         <FormattedMessage {...titleMessage} />
       </Title>
       {children}
