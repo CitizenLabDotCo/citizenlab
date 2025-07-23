@@ -24,8 +24,8 @@ da:
       "mention_in_official_feedback": Nævnelse i en opdatering
       "mention_in_internal_comment": Nævnes i en intern kommentar
       "new_comment_for_admin": Ny kommentar i et projekt jeg modererer
-      "new_idea_for_admin_published": Nyt offentliggjort input i et projekt, jeg modererer
-      "new_idea_for_admin_prescreening": Nyt input, der kræver godkendelse i et projekt I moderat
+      "new_idea_for_admin_published": Nyt offentliggjort input i et projekt jeg modererer
+      "new_idea_for_admin_prescreening": Nyt input, der kræver godkendelse i et projekt jeg modererer
       "official_feedback_on_idea_you_follow": Opdatering af en idé, som du følger
       "password_reset": Nulstilling af adgangskode
       "project_moderation_rights_received": Rettigheder til projektmoderering modtaget
@@ -99,7 +99,7 @@ da:
       idea_title: 'Eksempel på idé'
       idea_body: 'Dette er et eksempel på idéindhold, der bruges til forhåndsvisning af indholdet i e-mails. Det er ikke rigtigt indhold.'
       event_title: 'Eksempel på begivenhed'
-      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_address1: '10 Eksempelgade, Eksempelby, Eksemple'
       event_address2: 'Værelse 3a, ovenpå'
       proposal_title: 'Eksempel på forslag'
     footer:
