@@ -8,15 +8,18 @@ class ProjectsFinderAdminService
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
-    projects = filter_date(projects, params)
+    projects = filter_start_date(projects, params)
     projects = filter_participation_states(projects, params)
     projects = filter_current_phase_participation_method(projects, params)
 
     # Apply sorting
-    if params[:sort] == 'recently_viewed'
+    case params[:sort]
+    when 'recently_viewed'
       sort_recently_viewed(projects, current_user)
-    elsif params[:sort] == 'phase_starting_or_ending_soon'
+    when 'phase_starting_or_ending_soon'
       sort_phase_starting_or_ending_soon(projects)
+    when 'alphabetically_asc', 'alphabetically_desc'
+      sort_alphabetically(projects, params)
     else
       projects.order('projects.created_at DESC, projects.id ASC')
     end
@@ -83,6 +86,15 @@ class ProjectsFinderAdminService
       .order('soon_date ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
   end
 
+  def self.sort_alphabetically(scope, params)
+    locale = params[:locale] || 'en'
+    direction = params[:sort] == 'alphabetically_desc' ? 'DESC' : 'ASC'
+
+    scope.order(
+      Arel.sql("projects.title_multiloc->>'#{locale}' #{direction}, projects.created_at ASC, projects.id ASC")
+    )
+  end
+
   # FILTERING METHODS
   def self.filter_status(scope, params = {})
     status = params[:status] || []
@@ -140,42 +152,20 @@ class ProjectsFinderAdminService
     scope.search_by_title(search)
   end
 
-  def self.filter_date(scope, params = {})
-    raw_start = params[:start_at]
-    raw_end = params[:end_at]
-    return scope if raw_start.blank? && raw_end.blank?
+  def self.filter_start_date(scope, params = {})
+    raw_min_start_date = params[:min_start_date]
+    raw_max_start_date = params[:max_start_date]
+    return scope if raw_min_start_date.blank? && raw_max_start_date.blank?
 
-    start_at = parse_date(raw_start)
-    end_at   = parse_date(raw_end)
+    min_start_date = parse_date(raw_min_start_date) || Date.new(1970, 1, 1)
+    max_start_date = parse_date(raw_max_start_date) || Date.new(2100, 1, 1)
 
-    query_start_at = start_at || Date.new(1970, 1, 1)
-
-    overlapping_project_ids = if end_at.present?
-      Phase.select(:project_id).where(
-        "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)",
-        query_start_at,
-        end_at
-      )
-    else
-      Phase.select(:project_id).where(
-        "(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, 'infinity')",
-        query_start_at
-      )
-    end
+    overlapping_project_ids = Phase
+      .group(:project_id)
+      .having('min(start_at) >= ? AND min(start_at) <= ?', min_start_date, max_start_date)
+      .select(:project_id)
 
     scope.where(id: overlapping_project_ids)
-  end
-
-  def self.parse_date(date_input)
-    return date_input if date_input.is_a?(Date) || date_input.is_a?(Time)
-
-    return nil if date_input.blank?
-
-    begin
-      Date.parse(date_input)
-    rescue ArgumentError
-      nil
-    end
   end
 
   def self.filter_participation_states(scope, params = {})
@@ -233,5 +223,17 @@ class ProjectsFinderAdminService
       .select(:project_id)
 
     scope.where(id: project_ids_with_matching_phase)
+  end
+
+  def self.parse_date(date_input)
+    return date_input if date_input.is_a?(Date) || date_input.is_a?(Time)
+
+    return nil if date_input.blank?
+
+    begin
+      Date.parse(date_input)
+    rescue ArgumentError
+      nil
+    end
   end
 end
