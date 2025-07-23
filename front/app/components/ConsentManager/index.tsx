@@ -90,16 +90,6 @@ const ConsentManager = () => {
     );
   }, [appConfiguration?.data, authUser?.data]);
 
-  const resetPreferences = () => {
-    setPreferences(
-      getCurrentPreferences(
-        appConfiguration?.data,
-        authUser?.data,
-        cookieConsent
-      )
-    );
-  };
-
   const updatePreference = (category: TCategory, value: boolean) => {
     setPreferences((preferences) => ({
       ...preferences,
@@ -188,7 +178,14 @@ const ConsentManager = () => {
   };
 
   const cancelPrefencesScreen = () => {
-    resetPreferences();
+    // reset preferences to the current consent cookie
+    setPreferences(
+      getCurrentPreferences(
+        appConfiguration?.data,
+        authUser?.data,
+        cookieConsent
+      )
+    );
     setScreen('initial');
   };
 
