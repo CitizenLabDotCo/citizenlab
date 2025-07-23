@@ -25,7 +25,11 @@ const Footer = ({ onAccept, openPreferencesScreen, onClose }: Props) => {
       >
         <FormattedMessage {...messages.manage} />
       </Button>
-      <Button buttonStyle="primary" onClick={onClose}>
+      <Button
+        buttonStyle="primary"
+        onClick={onClose}
+        data-testid="reject-cookies-btn"
+      >
         <FormattedMessage {...messages.reject} />
       </Button>
       <Button
