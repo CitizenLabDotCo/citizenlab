@@ -58,6 +58,7 @@ const Filters = () => {
           alignItems="center"
           justifyContent="space-between"
           w="100%"
+          flexWrap="wrap"
         >
           <Box mr="12px" minWidth="300px">
             <Sort />
