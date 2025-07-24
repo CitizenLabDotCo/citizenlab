@@ -26,7 +26,8 @@ export interface IQueryParameters {
   exclude_projects_in_included_folders?: boolean;
   include_publications?: boolean;
   remove_all_unlisted?: boolean;
-  visibility?: (Visibility | 'unlisted')[];
+  visibility?: Visibility[];
+  discoverability?: ('listed' | 'unlisted')[];
 }
 
 export type AdminPublicationType = 'project' | 'folder';
