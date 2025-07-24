@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
 import { MiniProjectFolder } from 'api/project_folders_mini/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -21,6 +22,7 @@ import Error from 'components/UI/Error';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import RowImage from '../../_shared/RowImage';
 import { PUBLICATION_STATUS_LABELS } from '../../constants';
 
 import messages from './messages';
@@ -45,6 +47,11 @@ const Row = ({ folder }: Props) => {
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const { data: folderImage } = useProjectFolderImage({
+    folderId: folder.id,
+    imageId: folder.relationships.images.data[0]?.id,
+  });
+
   const moderators = folder.relationships.moderators.data;
   const { publication_status } = folder.attributes;
 
@@ -57,7 +64,11 @@ const Row = ({ folder }: Props) => {
         }}
       >
         <Box display="flex" alignItems="center">
-          <Box>
+          <RowImage
+            imageUrl={folderImage?.data.attributes.versions.small ?? undefined}
+            alt={localize(folder.attributes.title_multiloc)}
+          />
+          <Box ml="8px">
             <Text
               m="0"
               fontSize="s"
