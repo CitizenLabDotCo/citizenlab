@@ -196,6 +196,7 @@ describe('<ConsentManager />', () => {
   describe('logged out, cookie exists', () => {
     beforeEach(() => {
       mockAuthUser = null;
+      // This cookie is similar to the one set when rejecting all cookies.
       mockCookie = {
         functional: true,
         analytics: false,
