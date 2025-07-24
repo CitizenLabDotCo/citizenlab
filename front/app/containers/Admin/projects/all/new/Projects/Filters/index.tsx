@@ -10,6 +10,7 @@ import Status from '../../_shared/Status';
 import { useParam, setParam } from '../utils';
 
 import Dates from './Dates';
+import DiscoverabilityFilter from './Discoverability';
 import Folders from './Folders';
 import messages from './messages';
 import ParticipationMethods from './ParticipationMethods';
@@ -27,6 +28,7 @@ const Filters = () => {
   const folderIds = Array.isArray(folderIdsParam) ? folderIdsParam : [];
   const participationMethods = useParam('participation_methods') ?? [];
   const visibility = useParam('visibility') ?? [];
+  const discoverability = useParam('discoverability') ?? [];
 
   return (
     <Box
@@ -98,6 +100,14 @@ const Filters = () => {
               visibility={visibility}
               onChange={(value) => {
                 setParam('visibility', value);
+              }}
+            />
+          </Box>
+          <Box mr="8px">
+            <DiscoverabilityFilter
+              discoverability={discoverability}
+              onChange={(value) => {
+                setParam('discoverability', value);
               }}
             />
           </Box>
