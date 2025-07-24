@@ -22,7 +22,14 @@
 #
 module Files
   class FileAttachment < ApplicationRecord
-    ATTACHABLE_TYPES = %w[Phase Project Event Idea StaticPage].freeze
+    ATTACHABLE_TYPES = %w[
+      Phase
+      Project
+      ProjectFolders::Folder
+      Event
+      Idea
+      StaticPage
+    ].freeze
 
     belongs_to :file, class_name: 'Files::File', inverse_of: :attachments
     belongs_to :attachable, polymorphic: true
