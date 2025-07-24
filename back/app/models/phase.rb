@@ -398,3 +398,4 @@ end
 
 Phase.include(Analysis::Patches::Phase)
 Phase.include(ReportBuilder::Patches::Phase)
+Phase.include(EmailCampaigns::Extensions::Phase)
