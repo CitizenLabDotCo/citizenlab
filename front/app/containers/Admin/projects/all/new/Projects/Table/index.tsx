@@ -23,6 +23,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import { useParams } from '../utils';
 
+import EmptyRow from './EmptyRow';
 import messages from './messages';
 import Row from './Row';
 
@@ -109,6 +110,7 @@ const Table = () => {
           </Tr>
         </Thead>
         <Tbody>
+          {projects.length === 0 && <EmptyRow />}
           {projects.map((project) => (
             <Row
               key={project.id}
