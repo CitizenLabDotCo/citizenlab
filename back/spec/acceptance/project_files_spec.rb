@@ -137,7 +137,7 @@ resource 'ProjectFile' do
 
         # Verify attribute values and types
         expect(attributes[:name]).to eq('test-attachment.pdf')
-        expect(attributes[:ordering]).to be_a(Integer)
+        expect(attributes[:ordering]).to be_nil
         expect(attributes[:size]).to be_a(Integer)
         expect(attributes[:created_at]).to be_a(String)
         expect(attributes[:updated_at]).to be_a(String)

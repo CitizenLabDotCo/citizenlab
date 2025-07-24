@@ -312,7 +312,6 @@ DROP INDEX IF EXISTS public.index_files_on_description_multiloc_text_gin_trgm_op
 DROP INDEX IF EXISTS public.index_files_on_category;
 DROP INDEX IF EXISTS public.index_file_attachments_on_file_id;
 DROP INDEX IF EXISTS public.index_file_attachments_on_file_and_attachable;
-DROP INDEX IF EXISTS public.index_file_attachments_on_attachable_and_position;
 DROP INDEX IF EXISTS public.index_file_attachments_on_attachable;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
 DROP INDEX IF EXISTS public.index_events_on_maximum_attendees;
@@ -2439,7 +2438,7 @@ CREATE TABLE public.file_attachments (
     file_id uuid NOT NULL,
     attachable_type character varying NOT NULL,
     attachable_id uuid NOT NULL,
-    "position" integer NOT NULL,
+    "position" integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -5276,13 +5275,6 @@ CREATE INDEX index_file_attachments_on_attachable ON public.file_attachments USI
 
 
 --
--- Name: index_file_attachments_on_attachable_and_position; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_file_attachments_on_attachable_and_position ON public.file_attachments USING btree (attachable_type, attachable_id, "position");
-
-
---
 -- Name: index_file_attachments_on_file_and_attachable; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7549,6 +7541,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250724074646'),
 ('20250716141100'),
 ('20250716102450'),
 ('20250715075008'),

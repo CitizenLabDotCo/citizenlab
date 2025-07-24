@@ -73,7 +73,9 @@ resource 'FileAttachments' do
     end
 
     example 'Update the ordering of a file attachment by id' do
-      attachment1, attachment2 = create_pair(:file_attachment, attachable: project)
+      attachment1 = create(:file_attachment, attachable: project, position: 1)
+      attachment2 = create(:file_attachment, attachable: project, position: 2)
+
       expect(attachment1.position).to eq(1)
       expect(attachment2.position).to eq(2)
 
@@ -81,7 +83,10 @@ resource 'FileAttachments' do
       assert_status 200
       expect(response_data.dig(:attributes, :ordering)).to eq(1)
 
-      expect(attachment1.reload.position).to eq(2)
+      # The front-end has full control over the ordering of file attachments which can
+      # lead to inconsistencies. This will be reworked in the future.
+      # See ticket TAN-5126.
+      expect(attachment1.reload.position).to eq(1)
       expect(attachment2.reload.position).to eq(1)
     end
 
@@ -91,7 +96,7 @@ resource 'FileAttachments' do
       file = create(:project_file, project: project, ordering: 1)
       # This should not be taken into account. In principle, file attachments and legacy
       # files should not be mixed, but we're testing it anyway.
-      attachment = create(:file_attachment, attachable: project)
+      attachment = create(:file_attachment, attachable: project, position: 1)
 
       do_request(id: file.id, ordering: 2)
       assert_status 200
@@ -150,7 +155,7 @@ resource 'FileAttachments' do
     let(:file) { file_as_base64 name, 'application/pdf' }
 
     context 'when there are no legacy files' do
-      let!(:file_attachment) { create(:file_attachment, attachable: project) }
+      let!(:file_attachment) { create(:file_attachment, attachable: project, position: 1) }
 
       example 'Create a file as a file attachment' do
         expect { do_request }
@@ -158,11 +163,9 @@ resource 'FileAttachments' do
           .and(change(Files::FileAttachment, :count).by(1))
           .and(change(Files::FilesProject, :count).by(1))
           .and not_change(ProjectFile, :count)
+          .and not_change(file_attachment.reload, :position)
 
         assert_status 201
-
-        # The existing attachment should have been repositioned
-        expect(file_attachment.reload.position).to eq(2)
 
         expect(response_data).to match hash_including(
           id: be_present,
