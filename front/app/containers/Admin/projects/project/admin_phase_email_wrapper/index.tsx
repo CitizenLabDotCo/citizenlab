@@ -18,15 +18,17 @@ import messages from './messages';
 const AdminPhaseEmailWrapper = () => {
   const localize = useLocalize();
   const { phaseId } = useParams();
-  const supportedCampaignNames =
-    useSupportedCampaignNames({ phaseId }).data?.data.attributes || [];
+  const { data: supportedCampaigns } = useSupportedCampaignNames({ phaseId });
+  const supportedCampaignNames = supportedCampaigns?.data.attributes || [];
   const contextCampaigns = useCampaigns({
     ...(phaseId ? { phaseId } : {}),
     pageSize: 250,
   }).data?.pages.flatMap((page) => page.data);
-  const globalCampaigns = useCampaigns({ pageSize: 250 }).data?.pages.flatMap(
+  const { data: supportedCampaignsPages } = useCampaigns({ pageSize: 250 });
+  const globalCampaigns = supportedCampaignsPages?.pages.flatMap(
     (page) => page.data
   );
+
   return (
     <Box>
       <Text color="coolGrey600" mt="0px" fontSize="m">
@@ -49,7 +51,6 @@ const AdminPhaseEmailWrapper = () => {
                 campaign={stringifyCampaignFields(campaign, localize)}
                 key={campaign.id}
                 phaseId={phaseId}
-                // onClickViewExample={onClickViewExample(campaign.id)}
               />
             )
           );

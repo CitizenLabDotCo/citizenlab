@@ -8,10 +8,10 @@ export function getCampaignsContextPath({
   projectId,
   phaseId,
 }: CampaignContext) {
-  if (projectId) {
-    return `projects/${projectId}/campaigns`;
-  } else if (phaseId) {
+  if (phaseId) {
     return `phases/${phaseId}/campaigns`;
+  } else if (projectId) {
+    return `projects/${projectId}/campaigns`;
   }
   return 'campaigns';
 }
