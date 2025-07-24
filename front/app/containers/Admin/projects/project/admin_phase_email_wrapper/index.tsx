@@ -4,7 +4,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useCampaigns from 'api/campaigns/useCampaigns';
-import useSupportedCampaignTypes from 'api/campaigns/useSupportedCampaignTypes';
+import useSupportedCampaignNames from 'api/campaigns/useSupportedCampaignNames';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -18,22 +18,24 @@ import messages from './messages';
 const AdminPhaseEmailWrapper = () => {
   const localize = useLocalize();
   const { phaseId } = useParams();
-  const supportedCampaignTypes =
-    useSupportedCampaignTypes({ phaseId }).data?.data.attributes || [];
+  const { data: supportedCampaigns } = useSupportedCampaignNames({ phaseId });
+  const supportedCampaignNames = supportedCampaigns?.data.attributes || [];
   const contextCampaigns = useCampaigns({
     ...(phaseId ? { phaseId } : {}),
     pageSize: 250,
   }).data?.pages.flatMap((page) => page.data);
-  const globalCampaigns = useCampaigns({ pageSize: 250 }).data?.pages.flatMap(
+  const { data: supportedCampaignsPages } = useCampaigns({ pageSize: 250 });
+  const globalCampaigns = supportedCampaignsPages?.pages.flatMap(
     (page) => page.data
   );
+
   return (
     <Box>
       <Text color="coolGrey600" mt="0px" fontSize="m">
         <FormattedMessage {...messages.automatedEmailsDescription} />
       </Text>
-      {supportedCampaignTypes.length > 0 &&
-        supportedCampaignTypes.map((campaignType) => {
+      {supportedCampaignNames.length > 0 &&
+        supportedCampaignNames.map((campaignType) => {
           let campaign = contextCampaigns?.find(
             (campaign) => campaign.attributes.campaign_name === campaignType
           );
@@ -49,7 +51,6 @@ const AdminPhaseEmailWrapper = () => {
                 campaign={stringifyCampaignFields(campaign, localize)}
                 key={campaign.id}
                 phaseId={phaseId}
-                // onClickViewExample={onClickViewExample(campaign.id)}
               />
             )
           );

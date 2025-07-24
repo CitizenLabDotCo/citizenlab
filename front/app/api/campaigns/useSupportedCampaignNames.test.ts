@@ -4,7 +4,7 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
-import useSupportedCampaignTypes from './useSupportedCampaignTypes';
+import useSupportedCampaignNames from './useSupportedCampaignNames';
 
 const mockCampaignTypes = [
   'manual_project_participants',
@@ -12,15 +12,15 @@ const mockCampaignTypes = [
 ];
 const mockResponseData = {
   data: {
-    type: 'supported_campaign_types',
+    type: 'supported_campaign_names',
     attributes: mockCampaignTypes,
   },
 };
 
-const apiPathPhase = '*/phases/:phaseId/campaigns/supported_campaign_types';
+const apiPathPhase = '*/phases/:phaseId/campaigns/supported_campaign_names';
 const apiPathProject =
-  '*/projects/:projectId/campaigns/supported_campaign_types';
-const apiPathGlobal = '*/campaigns/supported_campaign_types';
+  '*/projects/:projectId/campaigns/supported_campaign_names';
+const apiPathGlobal = '*/campaigns/supported_campaign_names';
 
 const server = setupServer(
   http.get(apiPathPhase, () => {
@@ -34,14 +34,14 @@ const server = setupServer(
   })
 );
 
-describe('useSupportedCampaignTypes', () => {
+describe('useSupportedCampaignNames', () => {
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
   it('returns data correctly for phase context', async () => {
     const { result } = renderHook(
-      () => useSupportedCampaignTypes({ phaseId: 'phase-id' }),
+      () => useSupportedCampaignNames({ phaseId: 'phase-id' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -55,7 +55,7 @@ describe('useSupportedCampaignTypes', () => {
 
   it('returns data correctly for project context', async () => {
     const { result } = renderHook(
-      () => useSupportedCampaignTypes({ projectId: 'project-id' }),
+      () => useSupportedCampaignNames({ projectId: 'project-id' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -68,7 +68,7 @@ describe('useSupportedCampaignTypes', () => {
   });
 
   it('returns data correctly for global context', async () => {
-    const { result } = renderHook(() => useSupportedCampaignTypes(), {
+    const { result } = renderHook(() => useSupportedCampaignNames(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -86,7 +86,7 @@ describe('useSupportedCampaignTypes', () => {
     );
 
     const { result } = renderHook(
-      () => useSupportedCampaignTypes({ phaseId: 'phase-id' }),
+      () => useSupportedCampaignNames({ phaseId: 'phase-id' }),
       {
         wrapper: createQueryClientWrapper(),
       }

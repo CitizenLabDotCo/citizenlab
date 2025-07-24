@@ -161,7 +161,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/phases/:context_id/campaigns/supported_campaign_types' do
+    get '/web_api/v1/phases/:context_id/campaigns/supported_campaign_names' do
       let(:context_id) { create(:ideation_phase).id }
 
       example_request 'Lists all campaigns supported for an ideation phase' do

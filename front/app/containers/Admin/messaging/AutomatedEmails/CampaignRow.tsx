@@ -7,6 +7,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 
+import { CampaignContext } from 'api/campaigns/types';
 import useAddCampaign from 'api/campaigns/useAddCampaign';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
@@ -21,10 +22,8 @@ import messages from '../messages';
 import CampaignDescription from './CampaignDescription';
 import { CampaignData } from './types';
 
-type Props = {
+type Props = CampaignContext & {
   campaign: CampaignData;
-  phaseId?: string;
-  projectId?: string;
   onClickViewExample?: () => void;
 };
 
@@ -39,7 +38,9 @@ const CampaignRow = ({
   const { mutate: addCampaign } = useAddCampaign();
   const { mutate: updateCampaign } = useUpdateCampaign();
   const toggleEnabled = () => {
-    if (hasContext && !campaign.relationships.context?.data?.id) {
+    const unpersistedContextCampaign =
+      hasContext && !campaign.relationships.context?.data?.id;
+    if (unpersistedContextCampaign) {
       addCampaign({
         phaseId,
         campaign_name: campaign.attributes.campaign_name,
