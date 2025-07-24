@@ -25,5 +25,11 @@ export interface MiniProjectFolder {
     moderators: {
       data: IRelationship[];
     };
+    images: {
+      data: {
+        id: string;
+        type: 'image';
+      }[];
+    };
   };
 }

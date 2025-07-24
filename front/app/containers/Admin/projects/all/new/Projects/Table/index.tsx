@@ -11,7 +11,6 @@ import {
   stylingConsts,
   Spinner,
   Icon,
-  Text,
 } from '@citizenlab/cl2-component-library';
 
 import useParticipantCounts from 'api/participant_counts/useParticipantCounts';
@@ -21,6 +20,7 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 import { useIntl } from 'utils/cl-intl';
 
+import ColHeader from '../../_shared/ColHeader';
 import { useParams } from '../utils';
 
 import EmptyRow from './EmptyRow';
@@ -28,14 +28,6 @@ import messages from './messages';
 import Row from './Row';
 
 const PAGE_SIZE = 10;
-
-const ColHeader = ({ children }: { children: React.ReactNode }) => (
-  <Th py="16px">
-    <Text m="0" fontSize="s" fontWeight="bold">
-      {children}
-    </Text>
-  </Th>
-);
 
 const Table = () => {
   const { formatMessage } = useIntl();
