@@ -16,6 +16,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 
@@ -37,9 +38,10 @@ const CampaignRow = ({
   const { formatMessage } = useIntl();
   const { mutate: addCampaign } = useAddCampaign();
   const { mutate: updateCampaign } = useUpdateCampaign();
+  const unpersistedContextCampaign =
+    hasContext && !campaign.relationships.context?.data?.id;
+
   const toggleEnabled = () => {
-    const unpersistedContextCampaign =
-      hasContext && !campaign.relationships.context?.data?.id;
     if (unpersistedContextCampaign) {
       addCampaign({
         phaseId,
@@ -63,6 +65,29 @@ const CampaignRow = ({
     name: 'customised_automated_emails',
   });
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
+  const handleEditClick = () => {
+    if (unpersistedContextCampaign) {
+      addCampaign(
+        {
+          phaseId,
+          campaign_name: campaign.attributes.campaign_name,
+          enabled: campaign.attributes.enabled,
+          subject_multiloc: campaign.attributes.subject_multiloc,
+          body_multiloc: campaign.attributes.body_multiloc,
+          sender: campaign.attributes.sender,
+        },
+        {
+          onSuccess: (response) => {
+            clHistory.push(
+              `/admin/messaging/emails/automated/${response.data.id}/edit`
+            );
+          },
+        }
+      );
+    } else {
+      clHistory.push(`/admin/messaging/emails/automated/${campaign.id}/edit`);
+    }
+  };
 
   return (
     <ListItem p="8px 0">
@@ -92,7 +117,7 @@ const CampaignRow = ({
               >
                 <ButtonWithLink
                   icon="edit"
-                  linkTo={`/admin/messaging/emails/automated/${campaign.id}/edit`}
+                  onClick={handleEditClick}
                   disabled={!isEditable}
                   buttonStyle="secondary-outlined"
                 >
