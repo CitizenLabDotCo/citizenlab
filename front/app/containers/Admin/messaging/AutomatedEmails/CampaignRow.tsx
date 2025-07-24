@@ -61,9 +61,11 @@ const CampaignRow = ({
     }
   };
 
-  const isEditingEnabled = useFeatureFlag({
-    name: 'customised_automated_emails',
-  });
+  const isEditingEnabled =
+    useFeatureFlag({
+      name: 'customised_automated_emails',
+    }) &&
+    (!hasContext || campaign.attributes.enabled);
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
   const handleEditClick = () => {
     if (unpersistedContextCampaign) {
