@@ -23,10 +23,10 @@ import Error from 'components/UI/Error';
 import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
 
+import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
 
 import CurrentPhase from './CurrentPhase';
-import Managers from './Managers';
 import Visibility from './Visibility';
 
 interface Props {
@@ -141,7 +141,7 @@ const Row = ({ project, participantsCount }: Props) => {
         <CurrentPhase project={project} />
       </Td>
       <Td background={colors.grey50} width="140px">
-        <Managers project={project} />
+        <ManagerBubbles managers={project.attributes.project_managers} />
       </Td>
       <Td background={colors.grey50} width="140px">
         <Visibility project={project} />

@@ -1,8 +1,7 @@
 import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-
-import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
+import { ImageSizes } from 'typings';
 
 import { AvatarImageBubble } from 'components/AvatarBubbles';
 import { BubbleContainer } from 'components/AvatarBubbles/Containers';
@@ -11,19 +10,23 @@ import placeholderImage from 'components/AvatarBubbles/user.png';
 import { useIntl } from 'utils/cl-intl';
 import { truncate } from 'utils/textUtils';
 
-import messages from './messages';
+import messages from '../Projects/Table/messages';
+
+type Manager = {
+  first_name?: string;
+  last_name?: string;
+  avatar: ImageSizes;
+};
 
 interface Props {
-  project: ProjectMiniAdminData;
+  managers: Manager[];
 }
 
 const SIZE = 24;
 const OVERLAP = 12;
 
-const Managers = ({ project }: Props) => {
+const Managers = ({ managers }: Props) => {
   const { formatMessage } = useIntl();
-
-  const managers = project.attributes.project_managers;
 
   const getFullName = (firstName?: string, lastName?: string) => {
     if (!firstName || !lastName) return 'No name';
