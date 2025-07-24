@@ -170,6 +170,4 @@ export interface CampaignAdd {
   reply_to?: string;
   group_ids?: string[];
   context_id?: string;
-  projectId?: string;
-  phaseId?: string;
 }
