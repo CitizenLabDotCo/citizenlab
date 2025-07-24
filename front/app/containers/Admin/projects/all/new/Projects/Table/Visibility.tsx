@@ -107,6 +107,7 @@ const Visibility = ({ project }: Props) => {
                 {formatMessage(messages.xGroups, {
                   numberOfGroups: groupIds.length,
                 })}
+                {}
               </>
             ) : (
               <>{formatMessage(VISIBILITY_LABELS[visible_to])}</>

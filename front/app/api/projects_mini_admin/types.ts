@@ -43,12 +43,13 @@ export type ProjectMiniAdminData = {
   id: string;
   type: 'project_mini_admin';
   attributes: {
+    current_phase_start_date: string | null;
+    current_phase_end_date: string | null;
     first_phase_start_date: string | null;
     first_published_at: string | null;
     folder_title_multiloc: Multiloc | null;
     last_phase_end_date: string | null;
-    current_phase_start_date: string | null;
-    current_phase_end_date: string | null;
+    listed: boolean;
     project_managers: {
       id: string;
       first_name?: string;
