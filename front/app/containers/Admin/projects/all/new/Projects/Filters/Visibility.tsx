@@ -9,7 +9,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 const OPTIONS: {
-  value: Visibility | 'unlisted';
+  value: Visibility;
   message: MessageDescriptor;
 }[] = [
   {
@@ -24,15 +24,11 @@ const OPTIONS: {
     value: 'admins',
     message: messages.visibilityAdmins,
   },
-  {
-    value: 'unlisted',
-    message: messages.visibilityUnlisted,
-  },
 ];
 
 interface Props {
-  visibility: (Visibility | 'unlisted')[];
-  onChange: (values: (Visibility | 'unlisted')[]) => void;
+  visibility: Visibility[];
+  onChange: (values: Visibility[]) => void;
 }
 
 const VisibilityFilter = ({ visibility, onChange }: Props) => {
