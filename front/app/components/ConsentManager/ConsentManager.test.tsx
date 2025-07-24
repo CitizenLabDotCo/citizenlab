@@ -288,6 +288,8 @@ describe('<ConsentManager />', () => {
           google_analytics: true,
         },
       });
+      // Verify that the modal is closed after accepting cookies again.
+      expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
     });
 
     it('rejecting all cookies sends the right preferences and closes the modal, even when opened multiple times', async () => {
