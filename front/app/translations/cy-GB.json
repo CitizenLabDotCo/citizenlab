@@ -2104,6 +2104,7 @@
   "app.errors.email_taken": "Mae cyfrif gyda'r e-bost hwn eisoes yn bodoli. Gallwch fewngofnodi yn lle hynny.",
   "app.errors.email_taken_by_invite": "{value} eisoes yn cael ei gymryd gan wahoddiad sydd ar y gweill. Gwiriwch eich ffolder sbam neu cysylltwch â {supportEmail} os na allwch ddod o hyd iddo.",
   "app.errors.emails_duplicate": "Canfuwyd un neu fwy o werthoedd dyblyg ar gyfer y cyfeiriad e-bost {value} yn y rhes(au) canlynol: {rows}",
+  "app.errors.extension_whitelist_error": "Ni chefnogir fformat y ffeil y ceisiasoch ei huwchlwytho.",
   "app.errors.file_extension_whitelist_error": "Ni chefnogir fformat y ffeil y ceisioch ei uwchlwytho.",
   "app.errors.first_name_blank": "Ni all hwn fod yn wag",
   "app.errors.generics.blank": "Ni all hwn fod yn wag.",
