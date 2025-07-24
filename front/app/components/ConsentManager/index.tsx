@@ -125,11 +125,9 @@ const ConsentManager = () => {
   };
 
   const accept = () => {
-    const newPreferences: IPreferences = {
-      functional: true,
-      analytics: true,
-      advertising: true,
-    };
+    const newPreferences: IPreferences = Object.fromEntries(
+      allCategories().map((category) => [category, true])
+    );
 
     // Setting preferences here is needed to ensure that the modal can reliably (and not by coincidence) remember choices after accepting all cookies.
     // Otherwise, the modal would not be able to remember choices without a page reload.
@@ -139,11 +137,11 @@ const ConsentManager = () => {
   };
 
   const reject = () => {
-    const newPreferences = {
-      advertising: false,
-      analytics: false,
-      functional: true,
-    };
+    // Only set functional cookies to true, as these are always needed for the app to function correctly.
+    // Other categories will be set to false, as the user has rejected them.
+    const newPreferences: IPreferences = Object.fromEntries(
+      allCategories().map((category) => [category, category === 'functional'])
+    );
 
     // Setting preferences here is needed to ensure that the modal can remember choices after rejecting all cookies.
     // Otherwise, the modal may not be able to show correct choices without a page reload.
