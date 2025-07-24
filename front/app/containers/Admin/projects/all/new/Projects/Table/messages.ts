@@ -117,4 +117,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.xGroups',
     defaultMessage: '{numberOfGroups} groups',
   },
+  hidden: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.hidden',
+    defaultMessage: 'Hidden',
+  },
 });

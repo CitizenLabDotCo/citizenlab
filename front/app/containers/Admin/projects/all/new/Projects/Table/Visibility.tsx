@@ -32,7 +32,7 @@ const Visibility = ({ project }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const { publication_status, visible_to } = project.attributes;
+  const { publication_status, visible_to, listed } = project.attributes;
   const groupIds = project.relationships.groups.data.map((group) => group.id);
 
   const groupsData = useGroupsByIds(groupIds);
@@ -107,10 +107,13 @@ const Visibility = ({ project }: Props) => {
                 {formatMessage(messages.xGroups, {
                   numberOfGroups: groupIds.length,
                 })}
-                {}
+                {listed ? '' : ` • ${formatMessage(messages.hidden)}`}
               </>
             ) : (
-              <>{formatMessage(VISIBILITY_LABELS[visible_to])}</>
+              <>
+                {formatMessage(VISIBILITY_LABELS[visible_to])}
+                {listed ? '' : ` • ${formatMessage(messages.hidden)}`}
+              </>
             )}
           </Text>
         </Box>

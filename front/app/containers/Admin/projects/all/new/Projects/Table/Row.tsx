@@ -158,7 +158,7 @@ const Row = ({ project, participantsCount }: Props) => {
       <Td background={colors.grey50} width="140px">
         <Managers project={project} />
       </Td>
-      <Td background={colors.grey50} width="1px">
+      <Td background={colors.grey50} width="140px">
         <Visibility project={project} />
       </Td>
       <Td background={colors.grey50} width="100px">
