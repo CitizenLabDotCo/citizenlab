@@ -10,21 +10,21 @@ import {
 import { FormattedMessage } from 'utils/cl-intl';
 
 import CookieModalContentContainer from './CookieModalContentContainer';
+import messages from './messages';
 
 interface Props {
   id?: string;
-  titleMessage: { id: string; defaultMessage: string };
   children?: ReactNode;
 }
 
-const BaseMainContent = ({ id, titleMessage, children }: Props) => {
+const BaseMainContent = ({ id, children }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
   return (
     <CookieModalContentContainer id={id}>
       <Icon name="cookie" fill={colors.primary} />
       <Title as="h1" variant={isSmallerThanPhone ? 'h4' : 'h3'}>
-        <FormattedMessage {...titleMessage} />
+        <FormattedMessage {...messages.cookieModalTitle} />
       </Title>
       {children}
     </CookieModalContentContainer>

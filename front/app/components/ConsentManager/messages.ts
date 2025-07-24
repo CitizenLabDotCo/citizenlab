@@ -5,14 +5,14 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Banner.close',
     defaultMessage: 'Close',
   },
-  cookieModalInitialScreenTitle: {
-    id: 'app.components.ConsentManager.Banner.cookieModalInitialScreenTitle',
-    defaultMessage: 'Make your voice count',
+  cookieModalTitle: {
+    id: 'app.components.ConsentManager.Banner.cookieModalTitle',
+    defaultMessage: 'Your cookie preferences',
   },
   cookieModalInitialScreenDescription: {
-    id: 'app.components.ConsentManager.Banner.cookieModalInitialScreenDescription',
+    id: 'app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1',
     defaultMessage:
-      'Cookies help us improve participation. {linkToCookiePolicy}.',
+      'Accepting cookies helps us improve this platform. {linkToCookiePolicy}.',
   },
   linkToCookiePolicyText: {
     id: 'app.components.ConsentManager.Banner.linkToCookiePolicyText',
@@ -33,10 +33,6 @@ export default defineMessages({
   ariaButtonClose: {
     id: 'app.components.ConsentManager.Banner.ariaButtonClose2',
     defaultMessage: 'Reject policy and close banner',
-  },
-  title: {
-    id: 'app.components.ConsentManager.Modal.PreferencesDialog.title',
-    defaultMessage: 'Your cookie preferences',
   },
   back: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.back',
