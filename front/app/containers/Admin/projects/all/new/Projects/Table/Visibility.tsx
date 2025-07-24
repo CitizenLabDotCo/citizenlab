@@ -14,14 +14,15 @@ import GanttItemIconBar from 'components/UI/GanttChart/components/GanttItemIconB
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import { getStatusColor } from '../../_shared/utils';
+import parentMessages from '../../messages';
 import { VISIBILITY_LABELS } from '../constants';
 
 import messages from './messages';
 
 const PUBLICATION_STATUSES: Record<PublicationStatus, MessageDescriptor> = {
-  draft: messages.draft,
-  published: messages.published,
-  archived: messages.archived,
+  draft: parentMessages.draft,
+  published: parentMessages.published,
+  archived: parentMessages.archived,
 };
 
 interface Props {

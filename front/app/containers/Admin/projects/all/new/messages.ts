@@ -18,7 +18,7 @@ export default defineMessages({
     defaultMessage: 'Ordering',
   },
   draft: {
-    id: 'app.containers.Admin.projects.all.new.Projects.draft',
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.draft',
     defaultMessage: 'Draft',
   },
   published: {
