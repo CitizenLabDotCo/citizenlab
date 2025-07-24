@@ -7,7 +7,6 @@ import {
   Text,
   Spinner,
   colors,
-  Image,
 } from '@citizenlab/cl2-component-library';
 
 import useProjectImage from 'api/project_images/useProjectImage';
@@ -23,6 +22,8 @@ import Error from 'components/UI/Error';
 
 import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
+
+import RowImage from '../../_shared/RowImage';
 
 import CurrentPhase from './CurrentPhase';
 import Managers from './Managers';
@@ -90,26 +91,10 @@ const Row = ({ project, participantsCount }: Props) => {
         }}
       >
         <Box display="flex" alignItems="center">
-          <Box
-            width="32px"
-            height="32px"
-            display="flex"
-            position="relative"
-            overflow="hidden"
-            borderRadius="4px"
-          >
-            {imageUrl && (
-              <Image
-                src={imageUrl}
-                alt={localize(title_multiloc)}
-                position="absolute"
-                width="100%"
-                height="100%"
-                top="0"
-                left="0"
-              />
-            )}
-          </Box>
+          <RowImage
+            imageUrl={imageUrl ?? undefined}
+            alt={localize(title_multiloc)}
+          />
           <Box ml="8px">
             <Text
               m="0"
