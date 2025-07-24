@@ -14,7 +14,7 @@ type Props = {
   file: IFile;
 };
 
-const FileInfo = ({ file }: Props) => {
+const FileDescription = ({ file }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -32,4 +32,4 @@ const FileInfo = ({ file }: Props) => {
   );
 };
 
-export default FileInfo;
+export default FileDescription;

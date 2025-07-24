@@ -18,8 +18,8 @@ import FilePreview from '../FilePreview';
 import messages from '../messages';
 
 import FileAnalysis from './components/FileAnalysis';
+import FileDescription from './components/FileDescription';
 import FileEditForm from './components/FileEditForm';
-import FileInfo from './components/FileInfo';
 import FileMetadata from './components/FileMetadata';
 
 type Props = {
@@ -77,7 +77,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
                       setEditingMetadata={setEditingMetadata}
                     />
                   ) : (
-                    <FileInfo file={file} />
+                    <FileDescription file={file} />
                   )}
                 </Box>
                 <Box mt="32px">
