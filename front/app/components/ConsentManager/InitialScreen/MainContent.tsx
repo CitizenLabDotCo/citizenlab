@@ -22,7 +22,7 @@ const TextLink = styled(Link)`
 
 const MainContent = () => {
   return (
-    <BaseMainContent titleMessage={messages.cookieModalInitialScreenTitle}>
+    <BaseMainContent>
       <Text>
         <FormattedMessage
           {...messages.cookieModalInitialScreenDescription}

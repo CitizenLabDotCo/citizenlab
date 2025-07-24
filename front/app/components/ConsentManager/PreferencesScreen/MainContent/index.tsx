@@ -3,7 +3,6 @@ import React from 'react';
 import BaseMainContent from 'components/ConsentManager/BaseMainContent';
 
 import { TCategory } from '../../destinations';
-import messages from '../../messages';
 import { CategorizedDestinations, IPreferences } from '../../typings';
 
 import CategoryCard from './CategoryCard';
@@ -22,7 +21,7 @@ const MainContent = ({
   onChange,
 }: Props) => {
   return (
-    <BaseMainContent id="e2e-preference-dialog" titleMessage={messages.title}>
+    <BaseMainContent id="e2e-preference-dialog">
       {Object.keys(categoryDestinations)
         .filter((category: TCategory) => {
           return categoryDestinations[category].length > 0;
