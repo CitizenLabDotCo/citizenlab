@@ -246,21 +246,18 @@ class ProjectsFinderAdminService
     valid_visibilities = %w[public groups admins]
     selected_visibilities = visibility_params & valid_visibilities
 
-    conditions = scope.none
+    or_conditions = []
 
     if selected_visibilities.present?
-      # This generates: WHERE "projects"."visible_to" IN ('public', 'groups', ...)
-      conditions = conditions.or(scope.where(visible_to: selected_visibilities))
+      or_conditions << scope.klass.where(visible_to: selected_visibilities)
     end
 
     if visibility_params.include?('unlisted')
-      # This generates: WHERE "projects"."listed" = false
-      conditions = conditions.or(scope.where(listed: false))
+      or_conditions << scope.klass.where(listed: false)
     end
 
-    # If `conditions` remains an empty relation (e.g., if visibility_params contained only invalid options),
-    # we should return the original, unfiltered scope.
-    # Otherwise, return the scope with the applied OR conditions.
-    conditions.any? ? conditions : scope
+    return scope if or_conditions.empty?
+
+    scope.merge(or_conditions.reduce(:or))
   end
 end
