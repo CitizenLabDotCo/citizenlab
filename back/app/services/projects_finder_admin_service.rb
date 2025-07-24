@@ -12,6 +12,7 @@ class ProjectsFinderAdminService
     projects = filter_participation_states(projects, params)
     projects = filter_current_phase_participation_method(projects, params)
     projects = filter_visibility(projects, params)
+    projects = filter_discoverability(projects, params)
 
     # Apply sorting
     case params[:sort]
@@ -238,7 +239,7 @@ class ProjectsFinderAdminService
     end
   end
 
-  # Filter projects by visibility and listed status
+  # Filter projects by visibility (access rights)
   def self.filter_visibility(scope, params = {})
     visibility_params = Array(params[:visibility])
     return scope if visibility_params.blank?
@@ -246,18 +247,33 @@ class ProjectsFinderAdminService
     valid_visibilities = %w[public groups admins]
     selected_visibilities = visibility_params & valid_visibilities
 
-    or_conditions = []
+    return scope if selected_visibilities.blank?
 
-    if selected_visibilities.present?
-      or_conditions << scope.klass.where(visible_to: selected_visibilities)
+    scope.where(visible_to: selected_visibilities)
+  end
+
+  # Filter projects by discoverability (listed/unlisted status)
+  def self.filter_discoverability(scope, params = {})
+    discoverability_params = Array(params[:discoverability])
+    return scope if discoverability_params.blank?
+
+    valid_discoverabilities = %w[listed unlisted]
+    selected_discoverabilities = discoverability_params & valid_discoverabilities
+
+    return scope if selected_discoverabilities.blank?
+
+    conditions = []
+    
+    if selected_discoverabilities.include?('listed')
+      conditions << scope.klass.where(listed: true)
+    end
+    
+    if selected_discoverabilities.include?('unlisted')
+      conditions << scope.klass.where(listed: false)
     end
 
-    if visibility_params.include?('unlisted')
-      or_conditions << scope.klass.where(listed: false)
-    end
+    return scope if conditions.empty?
 
-    return scope if or_conditions.empty?
-
-    scope.merge(or_conditions.reduce(:or))
+    scope.merge(conditions.reduce(:or))
   end
 end
