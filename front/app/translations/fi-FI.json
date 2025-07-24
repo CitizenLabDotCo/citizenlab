@@ -2104,6 +2104,7 @@
   "app.errors.email_taken": "Tällä sähköpostiosoitteella on jo tili. Voit kirjautua sisään sen sijaan.",
   "app.errors.email_taken_by_invite": "{value} on jo varattu odottavaan kutsuun. Tarkista roskapostikansiosi tai ota yhteyttä {supportEmail} , jos et löydä sitä.",
   "app.errors.emails_duplicate": "Yksi tai useampi päällekkäinen arvo sähköpostiosoitteelle {value} löytyi seuraavilta riveiltä: {rows}",
+  "app.errors.extension_whitelist_error": "Ladattavan tiedoston muotoa ei tueta.",
   "app.errors.file_extension_whitelist_error": "Ladattavan tiedoston muotoa ei tueta.",
   "app.errors.first_name_blank": "Tämä ei voi olla tyhjä",
   "app.errors.generics.blank": "Tämä ei voi olla tyhjä.",

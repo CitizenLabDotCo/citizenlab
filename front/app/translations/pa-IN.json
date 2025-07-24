@@ -2104,6 +2104,7 @@
   "app.errors.email_taken": "ਇਸ ਈਮੇਲ ਵਾਲਾ ਖਾਤਾ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ। ਤੁਸੀਂ ਇਸ ਦੀ ਬਜਾਏ ਲੌਗਇਨ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.errors.email_taken_by_invite": "{value} ਪਹਿਲਾਂ ਹੀ ਇੱਕ ਲੰਬਿਤ ਸੱਦਾ ਦੁਆਰਾ ਲਿਆ ਗਿਆ ਹੈ। ਆਪਣੇ ਸਪੈਮ ਫੋਲਡਰ ਦੀ ਜਾਂਚ ਕਰੋ ਜਾਂ ਜੇਕਰ ਤੁਹਾਨੂੰ ਇਹ ਨਹੀਂ ਮਿਲਦਾ ਤਾਂ {supportEmail} ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.errors.emails_duplicate": "ਈਮੇਲ ਪਤੇ {value} ਲਈ ਇੱਕ ਜਾਂ ਇੱਕ ਤੋਂ ਵੱਧ ਡੁਪਲੀਕੇਟ ਮੁੱਲ ਹੇਠਾਂ ਦਿੱਤੀਆਂ ਕਤਾਰਾਂ ਵਿੱਚ ਮਿਲੇ ਹਨ: {rows}",
+  "app.errors.extension_whitelist_error": "ਤੁਹਾਡੇ ਦੁਆਰਾ ਅੱਪਲੋਡ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ ਗਈ ਫਾਈਲ ਦਾ ਫਾਰਮੈਟ ਸਮਰਥਿਤ ਨਹੀਂ ਹੈ।",
   "app.errors.file_extension_whitelist_error": "ਤੁਹਾਡੇ ਦੁਆਰਾ ਅੱਪਲੋਡ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ ਫਾਈਲ ਦਾ ਫਾਰਮੈਟ ਸਮਰਥਿਤ ਨਹੀਂ ਹੈ।",
   "app.errors.first_name_blank": "ਇਹ ਖਾਲੀ ਨਹੀਂ ਹੋ ਸਕਦਾ",
   "app.errors.generics.blank": "ਇਹ ਖਾਲੀ ਨਹੀਂ ਹੋ ਸਕਦਾ।",
