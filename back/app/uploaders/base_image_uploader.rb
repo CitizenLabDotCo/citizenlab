@@ -84,7 +84,8 @@ class BaseImageUploader < BaseUploader
     img.extent "#{target_width}x#{target_height}" if current_width != target_width || current_height != target_height
   end
 
-  # Strip the image of EXIF metadata, except ICC color profile and orientation metadata.
+  # Strip the image of EXIF metadata, except ICC color profile, orientation,
+  # and essential technical/structural metadata.
   def strip
     command = 'exiftool'
     args = [
