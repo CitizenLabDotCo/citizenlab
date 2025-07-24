@@ -117,8 +117,16 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins',
     defaultMessage: 'Admins',
   },
-  visibilityUnlisted: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.unlisted',
-    defaultMessage: 'Unlisted',
+  discoverabilityLabel: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.discoverabilityLabel',
+    defaultMessage: 'Discoverability',
+  },
+  discoverabilityPublic: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.public',
+    defaultMessage: 'Public',
+  },
+  discoverabilityHidden: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.hidden',
+    defaultMessage: 'Hidden',
   },
 });
