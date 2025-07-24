@@ -263,11 +263,11 @@ class ProjectsFinderAdminService
     return scope if selected_discoverabilities.blank?
 
     conditions = []
-    
+
     if selected_discoverabilities.include?('listed')
       conditions << scope.klass.where(listed: true)
     end
-    
+
     if selected_discoverabilities.include?('unlisted')
       conditions << scope.klass.where(listed: false)
     end

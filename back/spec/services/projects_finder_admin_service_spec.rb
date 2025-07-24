@@ -296,7 +296,7 @@ describe ProjectsFinderAdminService do
         groups_project.id,
         admins_project.id,
         listed_project.id,
-        unlisted_project.id,
+        unlisted_project.id
       ].sort)
     end
 
@@ -384,7 +384,7 @@ describe ProjectsFinderAdminService do
         public_project.id,
         hidden_project.id,
         groups_project.id,
-        groups_hidden_project.id,
+        groups_hidden_project.id
       ].sort)
     end
   end
