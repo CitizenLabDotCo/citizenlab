@@ -6,6 +6,7 @@ import {
   ListItem,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 
 import { CampaignContext } from 'api/campaigns/types';
 import useAddCampaign from 'api/campaigns/useAddCampaign';
@@ -68,26 +69,27 @@ const CampaignRow = ({
     (!hasContext || campaign.attributes.enabled);
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
   const handleEditClick = () => {
+    const link = hasContext
+      ? `/admin/projects/${projectId}/phases/${phaseId}/emails/${campaign.id}/edit`
+      : `/admin/messaging/emails/automated/${campaign.id}/edit`;
     if (unpersistedContextCampaign) {
       addCampaign(
         {
           phaseId,
-          campaign_name: campaign.attributes.campaign_name,
+          campaign_name: campaign.attributes.campaign_name, // TODO: Don't repeat subject_multiloc etc.
           enabled: campaign.attributes.enabled,
           subject_multiloc: campaign.attributes.subject_multiloc,
           body_multiloc: campaign.attributes.body_multiloc,
           sender: campaign.attributes.sender,
         },
         {
-          onSuccess: (response) => {
-            clHistory.push(
-              `/admin/messaging/emails/automated/${response.data.id}/edit`
-            );
+          onSuccess: () => {
+            clHistory.push(link as RouteType); // TODO: Find a way to avoid casting to RouteType
           },
         }
       );
     } else {
-      clHistory.push(`/admin/messaging/emails/automated/${campaign.id}/edit`);
+      clHistory.push(link as RouteType);
     }
   };
 
