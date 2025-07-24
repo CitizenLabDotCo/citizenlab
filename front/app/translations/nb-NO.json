@@ -2104,6 +2104,7 @@
   "app.errors.email_taken": "Det finnes allerede en konto med denne e-postadressen. Du kan logge inn i stedet.",
   "app.errors.email_taken_by_invite": "{value} er allerede opptatt av en ventende invitasjon. Sjekk søppelpostmappen din eller kontakt {supportEmail} hvis du ikke finner den.",
   "app.errors.emails_duplicate": "En eller flere dupliserte verdier for e-postadressen {value} ble funnet i følgende rad(er): {rows}",
+  "app.errors.extension_whitelist_error": "Formatet på filen du prøvde å laste opp, støttes ikke.",
   "app.errors.file_extension_whitelist_error": "Formatet på filen du prøvde å laste opp, støttes ikke.",
   "app.errors.first_name_blank": "Denne kan ikke være tom",
   "app.errors.generics.blank": "Denne kan ikke være tom.",
