@@ -2104,6 +2104,7 @@
   "app.errors.email_taken": "Ett konto med den här e-postadressen finns redan. Du kan logga in istället.",
   "app.errors.email_taken_by_invite": "{value} har redan tagits av en väntande inbjudan. Kontrollera din skräppostmapp eller kontakta {supportEmail} om du inte kan hitta den.",
   "app.errors.emails_duplicate": "Ett eller flera dubblettvärden för e-postadressen {value} hittades i följande rad(er): {rows}",
+  "app.errors.extension_whitelist_error": "Formatet på filen som du försökte ladda upp stöds inte.",
   "app.errors.file_extension_whitelist_error": "Formatet på filen du försökte ladda upp stöds inte.",
   "app.errors.first_name_blank": "Det här får inte vara tomt",
   "app.errors.generics.blank": "Detta får inte vara tomt.",
