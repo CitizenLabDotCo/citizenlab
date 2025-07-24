@@ -121,4 +121,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.hidden',
     defaultMessage: 'Hidden',
   },
+  public: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.public',
+    defaultMessage: 'Public',
+  },
+  discoverability: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.discoverability',
+    defaultMessage: 'Discoverability:',
+  },
 });

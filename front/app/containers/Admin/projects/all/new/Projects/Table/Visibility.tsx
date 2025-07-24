@@ -86,6 +86,21 @@ const Visibility = ({ project }: Props) => {
               </Text>
             )}
           </Box>
+          <Box mt="20px">
+            <Text
+              m="0"
+              mr="4px"
+              fontSize="s"
+              fontWeight="bold"
+              color="white"
+              display="inline-block"
+            >
+              {formatMessage(messages.discoverability)}
+            </Text>
+            <Text m="0" color="white" fontSize="s" display="inline-block">
+              {formatMessage(listed ? messages.public : messages.hidden)}
+            </Text>
+          </Box>
         </Box>
       }
       theme="dark"
