@@ -2255,7 +2255,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot": "ਫਾਈਲ ਨਾਮ ਵਿੱਚ ਬਿੰਦੀ ਨਹੀਂ ਹੋ ਸਕਦੀ।",
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "ਫਾਈਲ ਦਾ ਨਾਮ",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "ਫਾਈਲ ਨਾਮ ਲੋੜੀਂਦਾ ਹੈ।",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "ਫਾਈਲ ਝਲਕ",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "ਇਹ ਫਾਈਲ ਅੱਪਲੋਡ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ, ਕਿਉਂਕਿ ਇਹ 50 MB ਦੀ ਵੱਧ ਤੋਂ ਵੱਧ ਸੀਮਾ ਤੋਂ ਵੱਧ ਹੈ।",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "ਸਾਰੀਆਂ ਫਾਈਲਾਂ ਸਫਲਤਾਪੂਰਵਕ ਅੱਪਲੋਡ ਕੀਤੀਆਂ ਗਈਆਂ",
   "app.containers.AdminPage.ProjectFiles.maxFilesError": "ਤੁਸੀਂ ਇੱਕ ਸਮੇਂ ਵਿੱਚ ਵੱਧ ਤੋਂ ਵੱਧ {maxFiles} ਫਾਈਲਾਂ ਹੀ ਅਪਲੋਡ ਕਰ ਸਕਦੇ ਹੋ।",

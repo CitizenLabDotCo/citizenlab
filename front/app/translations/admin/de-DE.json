@@ -2255,7 +2255,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot": "Der Dateiname darf keinen Punkt enthalten.",
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Dateiname",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "Der Dateiname ist erforderlich.",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Dateivorschau",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Diese Datei kann nicht hochgeladen werden, da sie die maximale Größe von 50 MB überschreitet.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Alle Dateien erfolgreich hochgeladen",
   "app.containers.AdminPage.ProjectFiles.maxFilesError": "Sie können nur maximal {maxFiles} Dateien auf einmal hochladen.",

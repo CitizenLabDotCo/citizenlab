@@ -2255,7 +2255,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameCannotContainDot": "Filnavnet må ikke indeholde et punktum.",
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Filnavn",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "Filnavn er påkrævet.",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Forhåndsvisning af fil",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Denne fil vil ikke blive uploadet, da den overskrider den maksimale grænse på 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Alle filer er uploadet med succes",
   "app.containers.AdminPage.ProjectFiles.maxFilesError": "Du kan højst uploade {maxFiles} filer ad gangen.",
