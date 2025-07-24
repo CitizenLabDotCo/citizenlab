@@ -2104,6 +2104,7 @@
   "app.errors.email_taken": "crwdns215884:0crwdne215884:0",
   "app.errors.email_taken_by_invite": "crwdns215886:0{value}crwdnd215886:0{supportEmail}crwdne215886:0",
   "app.errors.emails_duplicate": "crwdns215888:0{value}crwdnd215888:0{rows}crwdne215888:0",
+  "app.errors.extension_whitelist_error": "crwdns4982903:0crwdne4982903:0",
   "app.errors.file_extension_whitelist_error": "crwdns215890:0crwdne215890:0",
   "app.errors.first_name_blank": "crwdns215892:0crwdne215892:0",
   "app.errors.generics.blank": "crwdns215894:0crwdne215894:0",
