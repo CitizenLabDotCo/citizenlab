@@ -133,7 +133,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Nødvendig",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "For å ha en funksjonell plattform lagrer vi en informasjonskapsel for autentisering hvis du registrerer deg, og språket du bruker denne plattformen på.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Lagre",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Dine preferanser for informasjonskapsler",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Verktøy",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Ansvarsfraskrivelse for opplasting av innhold",
   "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "Ved å laste opp innhold erklærer du at dette innholdet ikke bryter med noen bestemmelser eller tredjeparts rettigheter, for eksempel immaterielle rettigheter, personvernrettigheter, rettigheter til forretningshemmeligheter og så videre.",

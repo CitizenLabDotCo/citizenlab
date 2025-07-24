@@ -133,7 +133,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Απαιτείται",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Για να έχουμε μια λειτουργική πλατφόρμα, αποθηκεύουμε ένα cookie πιστοποίησης ταυτότητας εάν εγγραφείτε, καθώς και τη γλώσσα στην οποία χρησιμοποιείτε αυτή την πλατφόρμα.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Αποθήκευση",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Οι προτιμήσεις σας για τα cookies",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Εργαλεία",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Αποποίηση ευθυνών ανάρτησης περιεχομένου",
   "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "Ανεβάζοντας περιεχόμενο, δηλώνετε ότι αυτό το περιεχόμενο δεν παραβιάζει οποιουσδήποτε κανονισμούς ή δικαιώματα τρίτων, όπως δικαιώματα πνευματικής ιδιοκτησίας, δικαιώματα προστασίας προσωπικών δεδομένων, δικαιώματα εμπορικών μυστικών κ.ο.κ. Κατά συνέπεια, ανεβάζοντας αυτό το περιεχόμενο, αναλαμβάνετε την πλήρη και αποκλειστική ευθύνη για όλες τις άμεσες και έμμεσες ζημίες που προκύπτουν από το περιεχόμενο που ανεβάζετε. Επιπλέον, αναλαμβάνετε την υποχρέωση να αποζημιώσετε τον ιδιοκτήτη της πλατφόρμας και το Go Vocal από τυχόν αξιώσεις ή ευθύνες τρίτων έναντι τρίτων, καθώς και από κάθε σχετικό κόστος που θα προκύψει ή θα προκύψει από το περιεχόμενο που ανεβάσατε.",

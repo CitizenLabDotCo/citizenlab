@@ -46,7 +46,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Required",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "To have a functional platform, we save an authenticating cookie if you sign up, and the language in which you use this platform.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Save",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Your cookie preferences",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Tools",
   "app.components.ErrorBoundary.errorFormErrorFormEntry": "Some fields were invalid. Please correct the errors and try again.",
   "app.components.ErrorBoundary.errorFormErrorGeneric": "An unknown error occurred while submitting your report. Please try again.",

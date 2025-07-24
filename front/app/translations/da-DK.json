@@ -133,7 +133,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Påkrævet",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "For at have en funktionel platform gemmer vi en godkendende cookie, hvis du tilmelder dig, og det sprog, du bruger denne platform på.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Gem",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Dine cookie præferencer",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Værktøjer",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Ansvarsfraskrivelse for upload af indhold",
   "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "Ved at uploade indhold erklærer du, at dette indhold ikke krænker nogen regler eller rettigheder for tredjeparter, såsom intellektuelle ejendomsrettigheder, privatlivets fred, rettigheder til forretningshemmeligheder osv. Ved at uploade dette indhold forpligter du dig derfor til at bære det fulde og eksklusive ansvar for alle direkte og indirekte skader som følge af det uploadede indhold. Desuden forpligter du dig til at holde platformens ejer og Go Vocal skadesløs for alle krav fra tredjepart eller ansvar over for tredjepart, og alle tilknyttede omkostninger, der måtte opstå eller være resultatet af det indhold, du har uploadet.",

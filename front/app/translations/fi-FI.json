@@ -133,7 +133,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Edellytetään",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Toimivan alustan saamiseksi tallennamme todennusevästeen, jos rekisteröidyt, sekä kielen, jolla käytät tätä alustaa.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Tallenna",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Evästeasetuksesi",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Työkalut",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Sisällön lataamisen vastuuvapauslauseke",
   "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "Lataamalla sisältöä vakuutat, että tämä sisältö ei riko kolmansien osapuolten säädöksiä tai oikeuksia, kuten immateriaalioikeuksia, yksityisyysoikeuksia, oikeuksia liikesalaisuuksiin ja niin edelleen. Näin ollen lataamalla tämän sisällön sitoudut kantamaan täyden ja yksinomaisen vastuun kaikista välittömistä ja välillisistä vahingoista, jotka johtuvat ladatusta sisällöstä. Lisäksi sitoudut korvaamaan alustan omistajan ja Go Vocalin kaikista kolmansien osapuolien vaatimuksista tai vastuista kolmansia osapuolia kohtaan ja kaikista niihin liittyvistä kuluista, jotka syntyisivät lataamastasi sisällöstä.",
