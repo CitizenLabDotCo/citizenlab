@@ -12,6 +12,8 @@ import styled from 'styled-components';
 
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
 import { MiniProjectFolder } from 'api/project_folders_mini/types';
+import { IUser } from 'api/users/types';
+import useUsersWithIds from 'api/users/useUsersWithIds';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -22,11 +24,11 @@ import Error from 'components/UI/Error';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
 import { PUBLICATION_STATUS_LABELS } from '../../constants';
 
 import messages from './messages';
-import User from './User';
 
 const StyledTd = styled(Td)`
   &:hover {
@@ -52,7 +54,14 @@ const Row = ({ folder }: Props) => {
     imageId: folder.relationships.images.data[0]?.id,
   });
 
-  const moderators = folder.relationships.moderators.data;
+  const moderatorIds = folder.relationships.moderators.data.map(
+    (user) => user.id
+  );
+  const moderatorsData = useUsersWithIds(moderatorIds);
+  const moderators = moderatorsData
+    .map((result) => result.data)
+    .filter((user): user is IUser => !!user);
+
   const { publication_status } = folder.attributes;
 
   return (
@@ -96,18 +105,13 @@ const Row = ({ folder }: Props) => {
         )}
       </StyledTd>
       <Td background={colors.grey50} width="260px">
-        <Text m="0" fontSize="s" color="primary">
-          {moderators.map((moderator, index) => (
-            <>
-              <User userId={moderator.id} key={moderator.id} />
-              {index < moderators.length - 1 && (
-                <Box as="span" mr="0.25rem">
-                  ,
-                </Box>
-              )}
-            </>
-          ))}
-        </Text>
+        <ManagerBubbles
+          managers={moderators.map(({ data: { attributes } }) => ({
+            first_name: attributes.first_name ?? undefined,
+            last_name: attributes.last_name ?? undefined,
+            avatar: attributes.avatar,
+          }))}
+        />
       </Td>
       <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s" color="primary">
