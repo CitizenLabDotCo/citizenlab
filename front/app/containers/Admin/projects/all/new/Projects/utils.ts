@@ -28,6 +28,7 @@ const MULTISELECT_PARAMS = new Set<string>([
   'folder_ids',
   'participation_methods',
   'visibility',
+  'discoverability',
 ]);
 
 export const useParam = <ParamName extends keyof Parameters>(
@@ -57,6 +58,7 @@ export const PARAMS: (keyof Parameters)[] = [
   'folder_ids',
   'participation_methods',
   'visibility',
+  'discoverability',
 ];
 
 export const useParams = () => {
