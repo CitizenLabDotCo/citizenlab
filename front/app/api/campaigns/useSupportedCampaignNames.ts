@@ -15,7 +15,7 @@ interface ISupportedCampaignNamesData {
 
 const fetchSupportedCampaignNames = (context: CampaignContext = {}) => {
   return fetcher<ISupportedCampaignNamesData>({
-    path: `/${getCampaignsContextPath(context)}/supported_campaigns`,
+    path: `/${getCampaignsContextPath(context)}/supported_campaign_names`,
     action: 'get',
   });
 };
@@ -24,7 +24,7 @@ const useSupportedCampaignNames = (
   context: CampaignContext = {}
 ): UseQueryResult<ISupportedCampaignNamesData, CLErrors> => {
   return useQuery<ISupportedCampaignNamesData, CLErrors>({
-    queryKey: ['campaign', 'supported_campaigns', context],
+    queryKey: ['campaign', 'supported_campaign_names', context],
     queryFn: () => fetchSupportedCampaignNames(context),
   });
 };

@@ -12,14 +12,15 @@ const mockCampaignTypes = [
 ];
 const mockResponseData = {
   data: {
-    type: 'supported_campaigns',
+    type: 'supported_campaign_names',
     attributes: mockCampaignTypes,
   },
 };
 
-const apiPathPhase = '*/phases/:phaseId/campaigns/supported_campaigns';
-const apiPathProject = '*/projects/:projectId/campaigns/supported_campaigns';
-const apiPathGlobal = '*/campaigns/supported_campaigns';
+const apiPathPhase = '*/phases/:phaseId/campaigns/supported_campaign_names';
+const apiPathProject =
+  '*/projects/:projectId/campaigns/supported_campaign_names';
+const apiPathGlobal = '*/campaigns/supported_campaign_names';
 
 const server = setupServer(
   http.get(apiPathPhase, () => {
