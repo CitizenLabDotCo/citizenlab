@@ -431,7 +431,7 @@ resource 'Ideas' do
       end
 
       context 'Idea is not draft' do
-        let!(:idea) { create(:idea, project: phase.project, phases: [phase], creation_phase: phase, author: @user) }
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase], author: @user) }
 
         example '[empty idea] No draft ideas', document: false do
           do_request
@@ -536,9 +536,15 @@ resource 'Ideas' do
           current_idea = create(:idea, project:)
           create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: current_idea)
 
+          # Create another similar idea that should be included in results
+          another_similar_idea = create(:idea, project:)
+          create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: another_similar_idea)
+
+          # When editing current_idea, it should be excluded from results
+          # but other similar ideas should still be included
           do_request(idea: { id: current_idea.id })
           assert_status 200
-          expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
+          expect(json_parse(response_body)[:data].pluck(:id)).to include(idea_pizza.id, another_similar_idea.id)
           expect(json_parse(response_body)[:data].pluck(:id)).not_to include(current_idea.id)
         end
       end
