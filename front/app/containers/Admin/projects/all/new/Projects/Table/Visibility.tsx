@@ -2,10 +2,8 @@ import React from 'react';
 
 import { Tooltip, Box, Text } from '@citizenlab/cl2-component-library';
 
-import {
-  PublicationStatus,
-  Visibility as VisibilityType,
-} from 'api/projects/types';
+import { PublicationStatus } from 'api/projects/types';
+import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import GanttItemIconBar from 'components/UI/GanttChart/components/GanttItemIconBar';
 
@@ -23,12 +21,13 @@ const PUBLICATION_STATUSES: Record<PublicationStatus, MessageDescriptor> = {
 };
 
 interface Props {
-  publication_status: PublicationStatus;
-  visible_to: VisibilityType;
+  project: ProjectMiniAdminData;
 }
 
-const Visibility = ({ publication_status, visible_to }: Props) => {
+const Visibility = ({ project }: Props) => {
   const { formatMessage } = useIntl();
+
+  const { publication_status, visible_to } = project.attributes;
 
   return (
     <Tooltip
@@ -84,7 +83,15 @@ const Visibility = ({ publication_status, visible_to }: Props) => {
             {formatMessage(PUBLICATION_STATUSES[publication_status])}
           </Text>
           <Text m="0" fontSize="xs" color="textSecondary">
-            {formatMessage(VISIBILITY_LABELS[visible_to])}
+            {visible_to === 'groups' ? (
+              <>
+                {formatMessage(messages.xGroups, {
+                  numberOfGroups: project.relationships.groups.data.length,
+                })}
+              </>
+            ) : (
+              <>{formatMessage(VISIBILITY_LABELS[visible_to])}</>
+            )}
           </Text>
         </Box>
       </Box>

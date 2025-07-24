@@ -113,4 +113,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.visibilityColon',
     defaultMessage: 'Visibility: ',
   },
+  xGroups: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.xGroups',
+    defaultMessage: '{numberOfGroups} groups',
+  },
 });

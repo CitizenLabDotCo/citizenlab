@@ -55,9 +55,7 @@ const Row = ({ project, participantsCount }: Props) => {
     first_phase_start_date,
     folder_title_multiloc,
     last_phase_end_date,
-    publication_status,
     title_multiloc,
-    visible_to,
   } = project.attributes;
 
   const formatDate = (date: string | null) => {
@@ -161,10 +159,7 @@ const Row = ({ project, participantsCount }: Props) => {
         <Managers project={project} />
       </Td>
       <Td background={colors.grey50} width="1px">
-        <Visibility
-          publication_status={publication_status}
-          visible_to={visible_to}
-        />
+        <Visibility project={project} />
       </Td>
       <Td background={colors.grey50} width="100px">
         <Text m="0" fontSize="s">
