@@ -22,6 +22,8 @@ const OPTIONS = [
   },
   { value: 'recently_viewed', message: messages.recently_viewed },
   { value: 'recently_created', message: messages.recently_created },
+  { value: 'alphabetically_asc', message: messages.alphabetically_asc },
+  { value: 'alphabetically_desc', message: messages.alphabetically_desc },
 ] as const;
 
 const Sort = () => {

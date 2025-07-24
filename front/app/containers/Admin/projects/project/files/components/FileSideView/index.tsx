@@ -13,11 +13,12 @@ import SideModal from 'components/UI/SideModal';
 
 import { useIntl } from 'utils/cl-intl';
 
+import FilePreview from '../FilePreview';
+import messages from '../messages';
+
 import FileAnalysis from './components/FileAnalysis';
 import FileEditForm from './components/FileEditForm';
 import FileMetadata from './components/FileMetadata';
-import FilePreview from './components/FilePreview';
-import messages from './messages';
 
 type Props = {
   opened: boolean;
@@ -33,36 +34,47 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
     <SideModal
       opened={opened}
       close={() => setSideViewOpened(false)}
-      width="1100px"
+      width="1400px"
     >
-      <Box display="flex" p="24px" mt="24px" gap="32px" minHeight="96dvh">
-        <Box width="50%">
-          <StatusLabel
-            text={formatMessage(messages.categoryLabel)}
-            backgroundColor={colors.teal500}
-            h="16px"
-          />
+      <Box display="flex" height="100dvh" overflow="hidden">
+        {file?.data && (
+          <>
+            {/* Left scrollable section */}
+            <Box width="55%" overflowY="auto" p="24px" pr="32px">
+              <StatusLabel
+                text={formatMessage(messages[file.data.attributes.category])}
+                backgroundColor={colors.teal500}
+                h="16px"
+              />
 
-          <Title variant="h2" color="textPrimary" mt="12px">
-            {file?.data.attributes.name}
-          </Title>
+              <Title variant="h2" color="textPrimary" mt="12px">
+                {file.data.attributes.name}
+              </Title>
 
-          {file && (
-            <Box>
-              <FileMetadata file={file} />
-              <Box mt="32px">
-                <FileEditForm file={file} />
-              </Box>
-              <Box mt="32px">
-                <FilePreview file={file} />
+              <Box>
+                <FileMetadata file={file} />
+                <Box mt="32px">
+                  <FileEditForm file={file} />
+                </Box>
+                <Box mt="32px">
+                  <FilePreview file={file} />
+                </Box>
               </Box>
             </Box>
-          )}
-        </Box>
 
-        <Box width="50%" display="flex" flexDirection="column" minHeight="0">
-          {file && <FileAnalysis />}
-        </Box>
+            {/* Right fixed section */}
+            <Box
+              width="45%"
+              p="24px"
+              borderLeft={`1px solid ${colors.grey300}`}
+              display="flex"
+              flexDirection="column"
+              justifyContent="flex-start"
+            >
+              <FileAnalysis />
+            </Box>
+          </>
+        )}
       </Box>
     </SideModal>
   );

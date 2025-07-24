@@ -99,6 +99,31 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.filter_start_date' do
+    let!(:p1) { create_project(start_at: Time.zone.today - 5.days, end_at: Time.zone.today + 5.days) }
+    let!(:p2) { create_project(start_at: Time.zone.today - 10.days, end_at: Time.zone.today - 5.days) }
+    let!(:p3) { create_project(start_at: Time.zone.today + 5.days, end_at: Time.zone.today + 10.days) }
+    let!(:p4) { create_project(start_at: Time.zone.today + 1.day, end_at: nil) }
+    let!(:p5) do
+      create_project(
+        start_at: Time.zone.today - 50.days,
+        end_at: Time.zone.today - 5.days,
+        start_at2: Time.zone.today - 4.days,
+        end_at2: Time.zone.today + 3.days
+      )
+    end
+
+    it 'filters projects by start date' do
+      result = described_class.filter_start_date(Project.all, { min_start_date: Time.zone.today - 7.days, max_start_date: Time.zone.today + 3.days })
+      expect(result.pluck(:id).sort).to match_array([p1.id, p4.id])
+    end
+
+    it 'returns all projects when range is empty' do
+      result = described_class.filter_start_date(Project.all, { min_start_date: nil, max_start_date: nil })
+      expect(result.pluck(:id).sort).to match_array([p1.id, p2.id, p3.id, p4.id, p5.id])
+    end
+  end
+
   describe 'self.filter_participation_states' do
     # Project that has not started yet
     let!(:not_started_project) do
@@ -244,11 +269,22 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.sort_alphabetically' do
+    let!(:p3) { create(:project, title_multiloc: { 'en' => 'Gamma Project' }) }
+    let!(:p1) { create(:project, title_multiloc: { 'en' => 'Alpha Project' }) }
+    let!(:p2) { create(:project, title_multiloc: { 'en' => 'Beta Project' }) }
+
+    it 'sorts projects alphabetically by title' do
+      result = described_class.sort_alphabetically(Project.all, { locale: 'en', sort: 'alphabetically_asc' })
+      expect(result.pluck(:id)).to eq([p1.id, p2.id, p3.id])
+    end
+  end
+
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }
       let!(:p1) do
-        project = create_project(start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 5.days)
+        project = create_project(start_at: Time.zone.today - 40.days, end_at: Time.zone.today - 5.days)
         create_session(project, Time.zone.today - 20.days)
         project
       end
@@ -295,12 +331,11 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        start_period = Time.zone.today
-        end_period = Time.zone.today + 30.days
+        min_start_date = Time.zone.today - 35.days
 
         result = described_class.execute(
           Project.all,
-          { sort: 'recently_viewed', start_at: start_period, end_at: end_period },
+          { sort: 'recently_viewed', min_start_date: min_start_date, max_start_date: nil },
           current_user: user
         )
 
@@ -351,15 +386,14 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        start_period = Time.zone.today
-        end_period = Time.zone.today + 30.days
+        min_start_date = Time.zone.today
 
         result = described_class.execute(
           Project.all,
-          { sort: 'phase_starting_or_ending_soon', start_at: start_period, end_at: end_period }
+          { sort: 'phase_starting_or_ending_soon', min_start_date: min_start_date, end_at: nil }
         )
 
-        expect(result.pluck(:id)).to eq([p6, p5, p7, p3, p4, p2].pluck(:id))
+        expect(result.pluck(:id)).to eq([p6, p5, p7, p8].pluck(:id))
       end
     end
   end
