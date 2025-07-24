@@ -59,7 +59,7 @@ const Managers = ({ project }: Props) => {
             <AvatarImageBubble
               src={managers[0].avatar.medium ?? placeholderImage}
               alt={getFullName(managers[0].first_name, managers[0].last_name)}
-              overlap={12}
+              overlap={OVERLAP}
               index={0}
               size={SIZE}
             />
@@ -83,14 +83,14 @@ const Managers = ({ project }: Props) => {
           <AvatarImageBubble
             src={managers[0].avatar.medium ?? placeholderImage}
             alt={getFullName(managers[0].first_name, managers[0].last_name)}
-            overlap={12}
+            overlap={OVERLAP}
             index={0}
             size={SIZE}
           />
           <AvatarImageBubble
             src={managers[1].avatar.medium ?? placeholderImage}
             alt={getFullName(managers[1].first_name, managers[1].last_name)}
-            overlap={12}
+            overlap={OVERLAP}
             index={1}
             size={SIZE}
           />
