@@ -1,3 +1,5 @@
+import { FileCategory } from 'api/files/types';
+
 export type UploadStatus =
   | 'queued'
   | 'uploading'
@@ -9,5 +11,6 @@ export type FileWithMeta = {
   file: File;
   status: UploadStatus;
   error?: string;
-  category?: string; // TODO: Replace with actual category type when ready
+  category?: FileCategory;
+  ai_processing_allowed?: boolean;
 };

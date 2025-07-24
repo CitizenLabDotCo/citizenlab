@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import { GetFilesParameters } from 'api/files/types';
@@ -35,7 +35,11 @@ const FilesList = () => {
     project: [projectId],
   });
 
-  const { data: files } = useFiles({
+  const {
+    data: files,
+    isFetched,
+    isFetching,
+  } = useFiles({
     ...queryParameters,
   });
 
@@ -89,17 +93,18 @@ const FilesList = () => {
                 ))}
               </>
             )}
-            {numberOfFiles === 0 && (
+            {isFetching && (
+              <Box display="flex" width="100%" justifyContent="center">
+                <Spinner />
+              </Box>
+            )}
+            {numberOfFiles === 0 && isFetched && (
               <>
-                {queryParameters.search ? (
-                  <Box display="flex" width="100%" justifyContent="center">
-                    <Text color="coolGrey600">
-                      {formatMessage(messages.noFilesFound)}
-                    </Text>
-                  </Box>
-                ) : (
-                  <>TODO: Add UI for when no files have been uploaded</>
-                )}
+                <Box display="flex" width="100%" justifyContent="center">
+                  <Text color="coolGrey600">
+                    {formatMessage(messages.noFilesFound)}
+                  </Text>
+                </Box>
               </>
             )}
             {lastPage && lastPage > 1 && (
