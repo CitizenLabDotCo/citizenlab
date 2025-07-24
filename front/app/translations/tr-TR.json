@@ -133,7 +133,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Zorunlu",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Bu platforma kaydolursanız, kullanım kolaylığını artırmak amacıyla, platformu kullanacağınız dili ve bir doğrulama çerezi kaydederiz.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Kaydet",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Çerez tercihleriniz",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Araçlar",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "İçerik yükleme feragatnamesi",
   "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "İçerik yükleyerek, bu içeriğin herhangi bir düzenlemeyi veya fikri mülkiyet hakları, gizlilik hakları, ticari sırlara ilişkin haklar gibi üçüncü tarafların haklarını ihlal etmediğini beyan edersiniz. Sonuç olarak, bu içeriği yükleyerek, yüklenen içerikten kaynaklanan tüm doğrudan ve dolaylı zararlar için tam ve münhasır sorumluluk üstlenmeyi taahhüt edersiniz. Ayrıca, platform sahibini ve Go Vocal'i, yüklediğiniz içerikten doğacak veya sonuçlanacak her türlü üçüncü taraf taleplerine veya üçüncü taraflara karşı yükümlülüklere ve ilgili masraflara karşı tazmin etmeyi taahhüt edersiniz.",

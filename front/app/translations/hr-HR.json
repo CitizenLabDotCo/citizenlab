@@ -133,7 +133,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Potrebno",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Kako bi platforma bila funkcionalna, ukoliko se registrirate čuvat ćemo kolačić za autentifikaciju te odabrani jezik na kojem koristite platformu.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Spremi",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Vaše postavke kolačića",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Alati",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Odricanje od odgovornosti za prijenos sadržaja",
   "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "Učitavanjem sadržaja izjavljujete da taj sadržaj ne krši nikakve propise ili prava trećih strana, kao što su prava intelektualnog vlasništva, prava na privatnost, prava na poslovne tajne i tako dalje. Slijedom toga, učitavanjem ovog sadržaja preuzimate punu i isključivu odgovornost za svu izravnu i neizravnu štetu koja proizlazi iz učitanog sadržaja. Nadalje, obvezujete se obeštetiti vlasnika platforme i Go Vocal od bilo kakvih potraživanja ili odgovornosti trećih strana prema trećim stranama i svih povezanih troškova koji bi nastali ili proizašli iz sadržaja koji ste prenijeli.",

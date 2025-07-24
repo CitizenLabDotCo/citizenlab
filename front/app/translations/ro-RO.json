@@ -59,7 +59,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Obligatoriu",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Pentru a avea o platformă funcțională, salvăm un cookie de autentificare dacă vă înscrieți și limba în care utilizați această platformă.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Salvați",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Preferințele dvs. pentru cookie-uri",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Unelte",
   "app.components.ErrorBoundary.errorFormErrorFormEntry": "Unele câmpuri au fost invalide. Vă rugăm să corectați erorile și să încercați din nou.",
   "app.components.ErrorBoundary.errorFormErrorGeneric": "A apărut o eroare necunoscută în trimiterea raportului. Vă rugăm să încercați din nou.\n",

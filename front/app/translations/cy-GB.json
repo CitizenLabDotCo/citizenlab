@@ -133,7 +133,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Angenrheidiol",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Er mwyn sicrhau platfform gweithredol, rydym ni'n cadw cwci dilysu os ydych chi'n cofrestru, a'r iaith rydych chi'n defnyddio'r platfform hwn ynddi.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Arbed",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Eich dewisiadau cwci",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Offer",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Ymwadiad uwchlwytho cynnwys",
   "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "Trwy uwchlwytho cynnwys, rydych chi'n datgan nad yw'r cynnwys hwn yn torri unrhyw reoliadau na hawliau trydydd parti, megis hawliau eiddo deallusol, hawliau preifatrwydd, hawliau i gyfrinachau masnach, ac ati. O ganlyniad, trwy uwchlwytho'r cynnwys hwn, rydych yn ymrwymo i ysgwyddo atebolrwydd llawn ac unigryw am yr holl iawndal uniongyrchol ac anuniongyrchol sy'n deillio o'r cynnwys a uwchlwythwyd. Ar ben hynny, rydych yn ymrwymo i indemnio perchennog y platfform a Go Vocal yn erbyn unrhyw hawliadau neu rwymedigaethau trydydd parti yn erbyn trydydd partïon, ac unrhyw gostau cysylltiedig, a fyddai’n codi neu’n deillio o’r cynnwys y gwnaethoch ei uwchlwytho.",

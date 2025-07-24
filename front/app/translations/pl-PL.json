@@ -133,7 +133,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Wymagane",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Aby korzystać z platformy, po zarejestrowaniu się zapisujemy uwierzytelniający plik cookie oraz język, w którym użytkownik korzysta z platformy.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Zapisz",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Twoje preferencje dotyczące ciasteczek",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Narzędzia",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Zastrzeżenie dotyczące przesyłania treści",
   "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "Przesyłając treści, oświadczasz, że nie naruszają one żadnych przepisów ani praw osób trzecich, takich jak prawa własności intelektualnej, prawa do prywatności, prawa do tajemnic handlowych itp. W związku z tym, przesyłając te treści, zobowiązujesz się ponieść pełną i wyłączną odpowiedzialność za wszelkie bezpośrednie i pośrednie szkody wynikające z przesłanych treści. Ponadto zobowiązujesz się zwolnić właściciela platformy i Go Vocal z odpowiedzialności za wszelkie roszczenia osób trzecich lub zobowiązania wobec osób trzecich oraz wszelkie związane z tym koszty, które mogą powstać lub wynikać z przesłanych treści.",

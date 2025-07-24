@@ -133,7 +133,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Obligāts",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Lai platforma darbotos, mēs saglabājam autentifikācijas sīkfailu, ja reģistrējaties, un valodu, kurā izmantojat šo platformu.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Saglabāt",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Jūsu sīkfailu preferences",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Rīki",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Satura augšupielādes atruna",
   "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "Augšupielādējot saturu, jūs apliecināt, ka šis saturs nepārkāpj nekādus noteikumus vai trešo personu tiesības, piemēram, intelektuālā īpašuma tiesības, privātuma tiesības, tiesības uz komercnoslēpumiem u. tml. Līdz ar to, augšupielādējot šo saturu, jūs uzņematies pilnu un ekskluzīvu atbildību par visiem tiešajiem un netiešajiem zaudējumiem, kas radušies augšupielādētā satura dēļ. Turklāt jūs apņematies atbrīvot platformas īpašnieku un Go Vocal no jebkādām trešo personu prasībām vai saistībām pret trešām personām, kā arī no jebkādām saistītām izmaksām, kas varētu rasties vai rasties jūsu augšupielādētā satura dēļ.",

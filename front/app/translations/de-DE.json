@@ -133,7 +133,6 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Erforderlich",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Um eine funktionierende Plattform zu haben, speichern wir ein Authentifizierungs-Cookie, wenn Sie sich anmelden, und die Sprache, in der Sie diese Plattform nutzen.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Speichern",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Ihre Cookie-Einstellungen",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Werkzeug(e)",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Haftungsausschluss für das Hochladen von Inhalten",
   "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "Indem Sie Inhalte hochladen, erklären Sie, dass diese Inhalte keine Vorschriften oder Rechte Dritter verletzen, wie z.B. Rechte an geistigem Eigentum, Datenschutzrechte, Rechte an Geschäftsgeheimnissen usw. Indem Sie diese Inhalte hochladen, verpflichten Sie sich folglich, die volle und ausschließliche Haftung für alle direkten und indirekten Schäden zu übernehmen, die sich aus den hochgeladenen Inhalten ergeben. Darüber hinaus verpflichten Sie sich, den Eigentümer der Plattform und Go Vocal von jeglichen Ansprüchen Dritter oder Verbindlichkeiten gegenüber Dritten und allen damit verbundenen Kosten freizustellen, die aus den von Ihnen hochgeladenen Inhalten entstehen oder resultieren würden.",
