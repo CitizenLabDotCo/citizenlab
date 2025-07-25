@@ -69,7 +69,6 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Os modelos do Excel não incluirão perguntas de classificação, perguntas de matriz, perguntas de upload de arquivo e perguntas de entrada de mapeamento (Drop Pin, Draw Route, Draw Area, upload de arquivo ESRI), pois elas não são compatíveis com a importação em massa no momento.",
   "app.components.ProjectTemplatePreview.close": "Fechar",
   "app.components.ProjectTemplatePreview.createProject": "Criar um projeto",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Crie um projeto baseado no modelo '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Voltar",
   "app.components.ProjectTemplatePreview.goBackTo": "Volte para o {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Especialista do Go Vocal",

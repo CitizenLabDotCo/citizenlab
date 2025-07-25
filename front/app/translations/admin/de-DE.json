@@ -69,7 +69,6 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Die Excel-Vorlagen enthalten keine Ranking-Fragen, Matrix-Fragen, Dateiupload-Fragen und keine Fragen mit Kartierung (Pin setzen, Route zeichnen, Gebiet zeichnen, ESRI Datenupload), da diese derzeit für den Import nicht unterstützt werden.",
   "app.components.ProjectTemplatePreview.close": "Schließen",
   "app.components.ProjectTemplatePreview.createProject": "Projekt erstellen",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Erstellen Sie ein Projekt basierend auf der Vorlage '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Zurück",
   "app.components.ProjectTemplatePreview.goBackTo": "﻿Gehen Sie zurück zum {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLab-Experte",

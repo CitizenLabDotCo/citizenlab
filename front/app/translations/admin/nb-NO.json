@@ -69,7 +69,6 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-maler inkluderer ikke rangeringsspørsmål, matrisespørsmål, filopplastingsspørsmål og eventuelle kartleggingsspørsmål (Drop Pin, Draw Route, Draw Area, ESRI-filopplasting), ettersom disse ikke støttes for masseimport på nåværende tidspunkt.",
   "app.components.ProjectTemplatePreview.close": "Lukk",
   "app.components.ProjectTemplatePreview.createProject": "Opprett prosjekt",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Opprett et prosjekt basert på malen '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Gå tilbake",
   "app.components.ProjectTemplatePreview.goBackTo": "Gå tilbake til {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal-ekspert",
