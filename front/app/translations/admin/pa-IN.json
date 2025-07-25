@@ -69,7 +69,7 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "ਐਕਸਲ ਟੈਂਪਲੇਟਸ ਵਿੱਚ ਰੈਂਕਿੰਗ ਸਵਾਲ, ਮੈਟ੍ਰਿਕਸ ਸਵਾਲ, ਫਾਈਲ ਅਪਲੋਡ ਸਵਾਲ ਅਤੇ ਕੋਈ ਵੀ ਮੈਪਿੰਗ ਇਨਪੁੱਟ ਸਵਾਲ (ਡ੍ਰੌਪ ਪਿੰਨ, ਡਰਾਅ ਰੂਟ, ਡਰਾਅ ਏਰੀਆ, ESRI ਫਾਈਲ ਅਪਲੋਡ) ਸ਼ਾਮਲ ਨਹੀਂ ਹੋਣਗੇ ਕਿਉਂਕਿ ਇਹ ਇਸ ਸਮੇਂ ਥੋਕ ਆਯਾਤ ਲਈ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ।",
   "app.components.ProjectTemplatePreview.close": "ਬੰਦ ਕਰੋ",
   "app.components.ProjectTemplatePreview.createProject": "ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "ਟੈਮਪਲੇਟ '{templateTitle}' 'ਤੇ ਆਧਾਰਿਤ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ",
+  "app.components.ProjectTemplatePreview.createProjectBasedOn2": "''{templateTitle}'' ਟੈਂਪਲੇਟ ਦੇ ਆਧਾਰ 'ਤੇ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ।",
   "app.components.ProjectTemplatePreview.goBack": "ਵਾਪਸ ਜਾਓ",
   "app.components.ProjectTemplatePreview.goBackTo": "{goBackLink}'ਤੇ ਵਾਪਸ ਜਾਓ।",
   "app.components.ProjectTemplatePreview.govocalExpert": "ਵੋਕਲ ਮਾਹਰ ਜਾਓ",
