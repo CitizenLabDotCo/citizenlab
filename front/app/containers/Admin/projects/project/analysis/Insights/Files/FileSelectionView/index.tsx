@@ -6,6 +6,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { array, object, string } from 'yup';
 
+import useFiles from 'api/files/useFiles';
+
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -19,6 +21,11 @@ type Props = {
 
 const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
   const projectId = useParams<{ projectId: string }>().projectId;
+
+  const { data: files } = useFiles({
+    project: [projectId || ''],
+    enabled: !!projectId,
+  });
 
   const { formatMessage } = useIntl();
 
@@ -39,6 +46,12 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
     // TODO: Implement the logic to handle form submission
   };
 
+  const fileOptions =
+    files?.data.map((file) => ({
+      value: file.id,
+      label: file.attributes.name,
+    })) || [];
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)} />
@@ -56,14 +69,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
 
         <MultipleSelect
           name="file_ids"
-          options={[
-            {
-              value: 'test',
-              label:
-                'fniwefaflafneinflakjnfjkanfandfadbfabfkasnflasdnfjasdfklsadfasdkfaksdjfnaklsdfasdknf',
-            },
-            { value: 'test2', label: 'Test File 2' },
-          ]}
+          options={fileOptions}
           placeholder={formatMessage(messages.attachFiles)}
         />
 
