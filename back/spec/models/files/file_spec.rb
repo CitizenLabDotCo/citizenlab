@@ -253,6 +253,18 @@ RSpec.describe Files::File do
     end
   end
 
+  describe 'destroy!' do
+    # Destroying the last attachments the last attachment is also destroying the file.
+    # This test ensures that the callback does not fail because it was triggered by the
+    # file destroy callback.
+    it 'does not cause a circular dependency error' do
+      attachment = create(:file_attachment)
+      file = attachment.file
+
+      expect { file.destroy! }.not_to raise_error
+    end
+  end
+
   it 'category defaults to "other" when no category is specified' do
     file = build(:file)
     expect(file.category).to eq('other')
