@@ -69,7 +69,7 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "crwdns4760303:0crwdne4760303:0",
   "app.components.ProjectTemplatePreview.close": "crwdns209096:0crwdne209096:0",
   "app.components.ProjectTemplatePreview.createProject": "crwdns209098:0crwdne209098:0",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "crwdns209100:0{templateTitle}crwdne209100:0",
+  "app.components.ProjectTemplatePreview.createProjectBasedOn2": "crwdns4996297:0{templateTitle}crwdne4996297:0",
   "app.components.ProjectTemplatePreview.goBack": "crwdns209102:0crwdne209102:0",
   "app.components.ProjectTemplatePreview.goBackTo": "crwdns209104:0{goBackLink}crwdne209104:0",
   "app.components.ProjectTemplatePreview.govocalExpert": "crwdns2504048:0crwdne2504048:0",
