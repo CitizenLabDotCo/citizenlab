@@ -72,7 +72,7 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "لن تتضمن قوالب Excel أسئلة التصنيف، وأسئلة المصفوفة، وأسئلة تحميل الملفات وأي أسئلة إدخال تعيين (دبوس الإسقاط، مسار الرسم، منطقة الرسم، تحميل ملف ESRI) حيث لا يتم دعم هذه الأسئلة للاستيراد بالجملة في هذا الوقت.",
   "app.components.ProjectTemplatePreview.close": "إغلاق",
   "app.components.ProjectTemplatePreview.createProject": "أنشئ مشروعًا",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "أنشئ مشروعًا بناءً على القالب ''{templateTitle}''",
+  "app.components.ProjectTemplatePreview.createProjectBasedOn": "أنشئ مشروعًا بناءً على القالب '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "العودة",
   "app.components.ProjectTemplatePreview.goBackTo": "العودة إلى {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "خبير Go Vocal",
