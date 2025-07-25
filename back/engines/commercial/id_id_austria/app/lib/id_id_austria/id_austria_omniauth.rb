@@ -73,8 +73,7 @@ module IdIdAustria
     def split_first_name(first_name)
       return nil unless first_name
 
-      parts = first_name.split
-      parts.first
+      first_name.split.first
     end
   end
 end
