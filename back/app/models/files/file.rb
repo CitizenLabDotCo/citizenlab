@@ -89,6 +89,14 @@ module Files
 
     belongs_to :uploader, class_name: 'User', optional: true
 
+    before_save :update_metadata
+
+    # This callback is used to break the circular destroy dependency between the +File+
+    # and +FileAttachment+ models. It needs to be defined before the associations with
+    # +dependent: :destroy+ for associated records to be able to check whether the
+    # file is being destroyed.
+    around_destroy :mark_as_being_destroyed
+
     has_many :attachments, class_name: 'Files::FileAttachment', inverse_of: :file, dependent: :destroy
     has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
     has_many :projects, through: :files_projects
@@ -101,8 +109,6 @@ module Files
     validates :size, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
     validates :description_multiloc, multiloc: { presence: false }
     validates :ai_processing_allowed, inclusion: { in: [true, false] }
-
-    before_save :update_metadata
 
     # It is not meant to be used directly. See `search` scope below.
     pg_search_scope :_pg_search_only,
@@ -148,7 +154,18 @@ module Files
       from(all_matches).order('pg_search_rank DESC')
     }
 
+    def being_destroyed?
+      !!@being_destroyed
+    end
+
     private
+
+    def mark_as_being_destroyed
+      @being_destroyed = true
+      yield
+    ensure
+      @being_destroyed = false
+    end
 
     def update_metadata
       return unless content.present? && content_changed?

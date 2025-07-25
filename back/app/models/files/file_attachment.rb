@@ -58,7 +58,7 @@ module Files
     # to ideas since they are typically uploaded by end users and not by admins. This will
     # be reworked in the future to be less destructive.
     def destroy_orphaned_file
-      return unless file.attachments.reload.empty?
+      return if file.being_destroyed? || file.attachments.reload.present?
 
       file.destroy!
     end
