@@ -21,7 +21,7 @@ module BulkImportIdeas::Exporters
     def export
       html = ActionController::Base.new.render_to_string render_config
       gb = GotenbergClient.new
-      gb.render_to_pdf(html)
+      gb.render_html_to_pdf(html)
     end
 
     private
