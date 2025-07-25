@@ -69,7 +69,7 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Les modèles Excel n’incluent pas les questions de classement, les questions matricielles, les questions de téléchargement de fichiers et les questions cartographiques (placer un repère, dessiner un tracé, délimiter une zone, téléchargement de fichier ESRI), car elles ne sont actuellement pas prises en charge pour l’importation en masse.",
   "app.components.ProjectTemplatePreview.close": "Fermer",
   "app.components.ProjectTemplatePreview.createProject": "Créer un projet",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Créer un projet basé sur le modèle '{templateTitle}'.",
+  "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Créer un projet basé sur le modèle ''{templateTitle}''.",
   "app.components.ProjectTemplatePreview.goBack": "Retour",
   "app.components.ProjectTemplatePreview.goBackTo": "Retour à la page {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Expert Go Vocal",
