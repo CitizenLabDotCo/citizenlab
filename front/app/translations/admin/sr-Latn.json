@@ -69,7 +69,7 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel templates will not include Ranking questions, Matrix questions, File upload questions and any mapping input questions (Drop Pin, Draw Route, Draw Area, ESRI file upload) as these are not supported for bulk importing at this time.",
   "app.components.ProjectTemplatePreview.close": "Zatvori",
   "app.components.ProjectTemplatePreview.createProject": "Kreirajte projekat",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Kreirajte projekat na osnovu šablona '{templateTitle}'",
+  "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Create a project based on the template ''{templateTitle}''",
   "app.components.ProjectTemplatePreview.goBack": "Povratak nazad",
   "app.components.ProjectTemplatePreview.goBackTo": "Povratak na {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal ekspert",
