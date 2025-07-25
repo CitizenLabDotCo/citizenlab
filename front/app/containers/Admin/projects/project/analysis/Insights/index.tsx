@@ -12,7 +12,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
-import AddFileContext from './AddFileContextButton';
+import AddFileContext from './Files/AddFileContextButton';
+import FileSelectionView from './Files/FileSelectionView';
 import messages from './messages';
 import Question from './Question';
 import QuestionButton from './QuestionButton';
@@ -23,6 +24,7 @@ import Summary from './Summary';
 const Insights = () => {
   const { formatMessage } = useIntl();
   const [isQuestionInputOpen, setIsQuestionInputOpen] = useState(false);
+  const [isFileSelectionOpen, setIsFileSelectionOpen] = useState(false);
   const { analysisId } = useParams() as { analysisId: string };
   const { data: insights, isLoading } = useAnalysisInsights({
     analysisId,
@@ -48,6 +50,11 @@ const Insights = () => {
   const filteredInputsCount = filteredInputs?.pages[0].meta.filtered_count || 0;
   const applyInputsLimit = !largeSummariesAllowed && filteredInputsCount > 30;
 
+  if (isFileSelectionOpen) {
+    return (
+      <FileSelectionView setIsFileSelectionOpen={setIsFileSelectionOpen} />
+    );
+  }
   return (
     <Box display="flex" flexDirection="column" height="100%">
       <Box display="flex" gap="4px">
@@ -88,7 +95,7 @@ const Insights = () => {
           </Text>
         </Box>
 
-        <AddFileContext />
+        <AddFileContext setIsFileSelectionOpen={setIsFileSelectionOpen} />
       </Box>
 
       {isQuestionInputOpen && (
