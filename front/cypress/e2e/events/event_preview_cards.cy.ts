@@ -46,7 +46,7 @@ describe('Event preview cards on timeline project', () => {
 
   it('does not show the event previews when visiting active phase with no events', () => {
     cy.visit(`/en/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('#e2e-event-previews').should('not.exist');
   });
 
@@ -61,7 +61,7 @@ describe('Event preview cards on timeline project', () => {
       endDate: moment().add(4, 'day').toDate(),
     }).then(() => {
       cy.visit(`/en/projects/${projectSlug}`);
-      cy.acceptCookies();
+
       cy.get('#e2e-event-previews').should('exist');
 
       // No arrow buttons for lateral scrolling should exist
@@ -99,7 +99,7 @@ describe('Event preview cards on timeline project', () => {
           endDate: moment().add(1, 'day').toDate(),
         }).then(() => {
           cy.visit(`/en/projects/${projectSlug}`);
-          cy.acceptCookies();
+
           cy.get('#e2e-event-previews').should('exist');
           cy.get('.e2e-event-previews-scroll-right').should('exist');
           cy.get('.e2e-event-previews-scroll-left').should('exist');

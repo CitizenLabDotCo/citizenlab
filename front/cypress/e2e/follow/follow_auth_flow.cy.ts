@@ -46,6 +46,7 @@ describe('Follow: in auth flow', () => {
     signUp(email, password);
 
     cy.logout();
+    cy.acceptCookies();
 
     cy.get('#e2e-navbar-login-menu-item').click();
     cy.get('#e2e-authentication-modal').should('exist');

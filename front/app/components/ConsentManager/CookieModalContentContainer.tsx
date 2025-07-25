@@ -9,7 +9,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const ContentContainer = ({ children, ...props }: Props) => {
+const CookieModalContentContainer = ({ children, ...props }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
   return (
@@ -24,4 +24,4 @@ const ContentContainer = ({ children, ...props }: Props) => {
   );
 };
 
-export default ContentContainer;
+export default CookieModalContentContainer;

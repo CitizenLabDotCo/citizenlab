@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { TCategory } from '../destinations';
-import { CategorizedDestinations, IPreferences } from '../typings';
+import BaseMainContent from 'components/ConsentManager/BaseMainContent';
+
+import { TCategory } from '../../destinations';
+import { CategorizedDestinations, IPreferences } from '../../typings';
 
 import CategoryCard from './CategoryCard';
-import ContentContainer from './ContentContainer';
 
 interface Props {
   onChange: (category: TCategory, value: boolean) => void;
@@ -14,13 +15,13 @@ interface Props {
 
 const doNothing = () => {};
 
-const Preferences = ({
+const MainContent = ({
   categoryDestinations,
   preferences,
   onChange,
 }: Props) => {
   return (
-    <ContentContainer id="e2e-preference-dialog">
+    <BaseMainContent id="e2e-preference-dialog">
       {Object.keys(categoryDestinations)
         .filter((category: TCategory) => {
           return categoryDestinations[category].length > 0;
@@ -44,8 +45,8 @@ const Preferences = ({
         onChange={doNothing}
         disableUncheck={true}
       />
-    </ContentContainer>
+    </BaseMainContent>
   );
 };
 
-export default Preferences;
+export default MainContent;

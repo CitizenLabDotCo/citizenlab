@@ -1,14 +1,17 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 
+import { useSearchParams } from 'react-router-dom';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
+import Modal from 'components/UI/Modal';
+
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
-import Banner from './Banner';
 import {
   getConsent,
   IConsentCookie,
@@ -16,7 +19,10 @@ import {
   setConsent,
 } from './consent';
 import { allCategories, TCategory } from './destinations';
-import PreferencesModal from './PreferencesModal';
+import InitialScreenFooter from './InitialScreen/Footer';
+import InitialScreenMainContent from './InitialScreen/MainContent';
+import PreferencesScreenFooter from './PreferencesScreen/Footer';
+import PreferencesScreenMainContent from './PreferencesScreen/MainContent';
 import { IPreferences } from './typings';
 import {
   getCurrentPreferences,
@@ -33,10 +39,40 @@ const ConsentManager = () => {
   const [cookieConsent, setCookieConsent] = useState<IConsentCookie | null>(
     null
   );
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [screen, setScreen] = useState<'initial' | 'preferences' | null>(null);
+  const [searchParams] = useSearchParams();
+  const from = searchParams.get('from');
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
+  const activeDestinations = getActiveDestinations(
+    appConfiguration?.data,
+    authUser?.data
+  );
+  const activeCategorizedDestinations = categorizeDestinations(
+    appConfiguration?.data,
+    activeDestinations
+  );
+  const isConsentRequired = getConsentRequired(
+    cookieConsent,
+    activeDestinations
+  );
+
+  useEffect(() => {
+    /*
+      When we click the link to the cookie policy in the modal, 
+      we wouldn't be able to read the cookie policy without this, 
+      because the modal is on top of the page.
+      Search the codebase for 'from=cookie-modal' to see where this is used.
+    */
+    if (from === 'cookie-modal') {
+      setScreen(null);
+    } else if (isConsentRequired) {
+      setScreen('initial');
+    } else {
+      setScreen(null);
+    }
+  }, [from, isConsentRequired]);
 
   useEffect(() => {
     const cookieConsent = getConsent();
@@ -59,16 +95,6 @@ const ConsentManager = () => {
       cookieConsent?.savedChoices || {}
     );
   }, [appConfiguration?.data, authUser?.data]);
-
-  const resetPreferences = () => {
-    setPreferences(
-      getCurrentPreferences(
-        appConfiguration?.data,
-        authUser?.data,
-        cookieConsent
-      )
-    );
-  };
 
   const updatePreference = (category: TCategory, value: boolean) => {
     setPreferences((preferences) => ({
@@ -105,107 +131,111 @@ const ConsentManager = () => {
   };
 
   const accept = () => {
+    const newPreferences: IPreferences = Object.fromEntries(
+      allCategories().map((category) => [category, true])
+    );
+
+    // Setting preferences here is needed to ensure that the modal can reliably (and not by coincidence) remember choices after accepting all cookies.
+    // Otherwise, the modal would not be able to remember choices without a page reload.
+    setPreferences(newPreferences);
+    saveConsent(newPreferences);
+    setScreen(null);
+  };
+
+  const reject = () => {
+    // Only set functional cookies to true, as these are always needed for the app to function correctly.
+    // Other categories will be set to false, as the user has rejected them.
+    const newPreferences: IPreferences = Object.fromEntries(
+      allCategories().map((category) => [category, category === 'functional'])
+    );
+
+    // Setting preferences here is needed to ensure that the modal can remember choices after rejecting all cookies.
+    // Otherwise, the modal may not be able to show correct choices without a page reload.
+    setPreferences(newPreferences);
+    saveConsent(newPreferences);
+    setScreen(null);
+  };
+
+  const toggleDefault = () => {
     const newPreferences: IPreferences = {};
 
     allCategories().forEach((category) => {
       newPreferences[category] =
-        preferences[category] === undefined ? true : preferences[category];
+        preferences[category] === undefined ? false : preferences[category];
     });
 
     setPreferences(newPreferences);
-    saveConsent(newPreferences);
   };
 
-  const reject = () => {
-    const newPreferences = {
-      advertising: false,
-      analytics: false,
-      functional: true,
-    };
-
-    setPreferences(newPreferences);
-    saveConsent(newPreferences);
+  const openPreferencesScreen = () => {
+    toggleDefault();
+    setScreen('preferences');
   };
 
-  const toggleDefault = (modalOpened: boolean) => {
-    const newPreferences: IPreferences = {};
-    const modalIsCurrentlyOpening = !modalOpened;
-
-    // If modal is currently opening: overwrite undefined preferences with false
-    if (modalIsCurrentlyOpening) {
-      allCategories().forEach((category) => {
-        newPreferences[category] =
-          preferences[category] === undefined ? false : preferences[category];
-      });
-    }
-
-    // If modal is currently closing: overwrite false preferences with undefined
-    if (!modalIsCurrentlyOpening) {
-      allCategories().forEach((category) => {
-        newPreferences[category] =
-          preferences[category] === false ? undefined : preferences[category];
-      });
-    }
-
-    setPreferences(newPreferences);
+  const openInitialScreen = () => {
+    setScreen('initial');
   };
 
-  const openDialog = () => {
-    toggleDefault(false);
-    setIsDialogOpen(true);
-  };
+  useObserveEvent('openConsentManager', openInitialScreen);
 
-  const closeDialog = () => {
-    toggleDefault(true);
-    setIsDialogOpen(false);
-  };
-
-  useObserveEvent('openConsentManager', openDialog);
-
-  const handleSave = (e: FormEvent) => {
+  const savePreferences = (e: FormEvent) => {
     e.preventDefault();
 
-    setIsDialogOpen(false);
     saveConsent(preferences);
+    setScreen(null);
   };
 
-  const handleCancel = () => {
-    resetPreferences();
-    setIsDialogOpen(false);
+  const cancelPrefencesScreen = () => {
+    // reset preferences to the current consent cookie
+    setPreferences(
+      getCurrentPreferences(
+        appConfiguration?.data,
+        authUser?.data,
+        cookieConsent
+      )
+    );
+    setScreen('initial');
   };
 
-  const activeDestinations = getActiveDestinations(
-    appConfiguration?.data,
-    authUser?.data
-  );
-  const activeCategorizedDestinations = categorizeDestinations(
-    appConfiguration?.data,
-    activeDestinations
-  );
-  const isConsentRequired = getConsentRequired(
-    cookieConsent,
-    activeDestinations
-  );
+  if (screen === null) {
+    return null;
+  }
 
   return (
-    <>
-      {isConsentRequired && (
-        <Banner
-          onAccept={accept}
-          onChangePreferences={openDialog}
-          onClose={reject}
+    <Modal
+      data-testid="consent-manager"
+      opened
+      closeOnClickOutside={false}
+      hideCloseButton
+      close={reject}
+      footer={
+        <>
+          {screen === 'initial' && (
+            <InitialScreenFooter
+              onAccept={accept}
+              openPreferencesScreen={openPreferencesScreen}
+              onClose={reject}
+            />
+          )}
+          {screen === 'preferences' && (
+            <PreferencesScreenFooter
+              categorizedDestinations={activeCategorizedDestinations}
+              handleCancel={cancelPrefencesScreen}
+              handleSave={savePreferences}
+            />
+          )}
+        </>
+      }
+    >
+      {screen === 'initial' && <InitialScreenMainContent />}
+      {screen === 'preferences' && (
+        <PreferencesScreenMainContent
+          onChange={updatePreference}
+          categoryDestinations={activeCategorizedDestinations}
+          preferences={preferences}
         />
       )}
-      <PreferencesModal
-        opened={isDialogOpen}
-        categorizedDestinations={activeCategorizedDestinations}
-        preferences={preferences}
-        handleCancel={handleCancel}
-        handleSave={handleSave}
-        onClose={closeDialog}
-        updatePreference={updatePreference}
-      />
-    </>
+    </Modal>
   );
 };
 

@@ -59,7 +59,6 @@ describe('Form builder multiple choice choose multiple component', () => {
     const questionTitle = randomString();
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.acceptCookies();
 
     cy.dataCy('e2e-multiple-choice');
     cy.wait(2000);
@@ -92,7 +91,6 @@ describe('Form builder multiple choice choose multiple component', () => {
     const questionTitle = randomString();
     const otherAnswer = 'Walking';
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.acceptCookies();
 
     cy.dataCy('e2e-multiple-choice');
     cy.wait(2000);
