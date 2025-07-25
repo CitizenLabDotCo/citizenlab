@@ -37,7 +37,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
     <SideModal
       opened={opened}
       close={() => setSideViewOpened(false)}
-      width="1400px"
+      width="80dvw"
     >
       <Box display="flex" height="100dvh" overflow="hidden">
         {file?.data && (
