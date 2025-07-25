@@ -161,9 +161,21 @@ resource 'Files' do
           },
           relationships: {
             uploader: { data: { id: file.uploader_id, type: 'user' } },
-            projects: { data: [{ id: project.id, type: 'project' }] }
+            projects: { data: [{ id: project.id, type: 'project' }] },
+            preview: { data: nil }
           }
         )
+      end
+
+      example 'Get one file with preview' do
+        file_preview = create(:file_preview, file:)
+        do_request
+        assert_status 200
+        expect(response_data.dig(:relationships, :preview, :data)).to include(
+          id: file_preview.id,
+          type: 'file_preview'
+        )
+        expect(json_response_body[:included].map { |i| i[:id] }).to include(file_preview.id)
       end
     end
 
@@ -225,7 +237,8 @@ resource 'Files' do
           },
           relationships: {
             uploader: { data: { id: admin.id, type: 'user' } },
-            projects: { data: [{ id: project, type: 'project' }] }
+            projects: { data: [{ id: project, type: 'project' }] },
+            preview: { data: nil }
           }
         )
       end
