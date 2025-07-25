@@ -2267,7 +2267,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "فائل کا نام",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "فائل کا نام درکار ہے۔",
   "app.containers.AdminPage.ProjectFiles.filePreview.downloadFile": "فائل ڈاؤن لوڈ کریں۔",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "فائل کا پیش نظارہ",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "یہ فائل اپ لوڈ نہیں کی جائے گی، کیونکہ یہ 50 MB کی زیادہ سے زیادہ حد سے زیادہ ہے۔",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "تمام فائلیں کامیابی کے ساتھ اپ لوڈ ہو گئیں۔",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "معلومات",

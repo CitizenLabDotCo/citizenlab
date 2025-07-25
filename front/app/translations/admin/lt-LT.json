@@ -2267,7 +2267,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Failo pavadinimas",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "Būtina nurodyti failo pavadinimą.",
   "app.containers.AdminPage.ProjectFiles.filePreview.downloadFile": "Atsisiųsti failą",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Failo peržiūra",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Šis failas nebus įkeltas, nes viršija didžiausią 50 MB ribą.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Visi failai įkelti sėkmingai",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Informacija",

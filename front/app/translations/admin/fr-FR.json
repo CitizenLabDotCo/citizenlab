@@ -2267,7 +2267,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Nom du fichier",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "Le nom du fichier est obligatoire.",
   "app.containers.AdminPage.ProjectFiles.filePreview.downloadFile": "Télécharger le fichier",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Aperçu du fichier",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Ce fichier ne sera pas téléchargé, car il dépasse la limite maximale de 50 Mo.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Tous les fichiers ont été téléversés avec succès",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Information",
