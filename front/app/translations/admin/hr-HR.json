@@ -69,7 +69,6 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel predlošci neće uključivati pitanja o rangiranju, matrična pitanja, pitanja o prijenosu datoteka i bilo koja pitanja o unosu mapiranja (Ispuštanje pribadače, Crtanje rute, Crtanje područja, Prijenos ESRI datoteke) jer trenutno nije podržan skupni uvoz.",
   "app.components.ProjectTemplatePreview.close": "Zatvori",
   "app.components.ProjectTemplatePreview.createProject": "Kreiraj projekt",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Kreirajte projekt na temelju predloška '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Idi natrag",
   "app.components.ProjectTemplatePreview.goBackTo": "Povratak na {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Stručnjak za Go Vocal",

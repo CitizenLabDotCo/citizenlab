@@ -69,7 +69,6 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel veidnēs netiks iekļauti ranga jautājumi, matricas jautājumi, failu augšupielādes jautājumi un kartēšanas ievades jautājumi (Drop Pin, Draw Route, Draw Area, ESRI failu augšupielāde), jo pašlaik tie netiek atbalstīti masveida importēšanai.",
   "app.components.ProjectTemplatePreview.close": "Aizvērt",
   "app.components.ProjectTemplatePreview.createProject": "Izveidot projektu",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Izveidot projektu, pamatojoties uz veidni '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Atgriezties",
   "app.components.ProjectTemplatePreview.goBackTo": "Atgriezties atpakaļ uz {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal eksperts",

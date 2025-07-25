@@ -69,7 +69,6 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-mallarna innehåller inte frågor om rangordning, matrisfrågor, frågor om filuppladdning och frågor om kartdata (Drop Pin, Draw Route, Draw Area, ESRI-filuppladdning) eftersom dessa inte stöds för bulkimport i nuläget.",
   "app.components.ProjectTemplatePreview.close": "Stäng",
   "app.components.ProjectTemplatePreview.createProject": "Skapa projekt",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Skapa ett projekt baserat på mallen {templateTitle}",
   "app.components.ProjectTemplatePreview.goBack": "Gå tillbaka",
   "app.components.ProjectTemplatePreview.goBackTo": "Gå tillbaka till {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal-expert",
