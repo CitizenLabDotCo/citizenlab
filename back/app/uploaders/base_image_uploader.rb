@@ -5,7 +5,7 @@ require 'open3'
 class BaseImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
-  ALLOWED_TYPES = %w[jpg jpeg gif png webp]
+  ALLOWED_TYPES = %w[jpg jpeg gif png webp avif]
 
   # Using process at the class level applies it to all versions, including the original.
   process :strip
