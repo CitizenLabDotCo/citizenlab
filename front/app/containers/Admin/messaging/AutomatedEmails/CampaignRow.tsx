@@ -6,6 +6,7 @@ import {
   ListItem,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router';
 import { RouteType } from 'routes';
 
 import { CampaignContext } from 'api/campaigns/types';
@@ -37,6 +38,7 @@ const CampaignRow = ({
 }: Props) => {
   const hasContext = !!(phaseId || projectId);
   const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
   const { mutate: addCampaign } = useAddCampaign();
   const { mutate: updateCampaign } = useUpdateCampaign();
   const unpersistedContextCampaign =
@@ -69,9 +71,6 @@ const CampaignRow = ({
     (!hasContext || campaign.attributes.enabled);
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
   const handleEditClick = () => {
-    const link = hasContext
-      ? `/admin/projects/${projectId}/phases/${phaseId}/emails/${campaign.id}/edit`
-      : `/admin/messaging/emails/automated/${campaign.id}/edit`;
     if (unpersistedContextCampaign) {
       addCampaign(
         {
@@ -83,13 +82,15 @@ const CampaignRow = ({
           sender: campaign.attributes.sender,
         },
         {
-          onSuccess: () => {
-            clHistory.push(link as RouteType); // TODO: Find a way to avoid casting to RouteType
+          onSuccess: (addedCampaign) => {
+            clHistory.push(
+              `${pathname}/${addedCampaign.data.id}/edit` as RouteType
+            );
           },
         }
       );
     } else {
-      clHistory.push(link as RouteType);
+      clHistory.push(`${pathname}/${campaign.id}/edit` as RouteType);
     }
   };
 
