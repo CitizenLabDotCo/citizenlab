@@ -6,6 +6,8 @@ import {
   ListItem,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router';
+import { RouteType } from 'routes';
 
 import { CampaignContext } from 'api/campaigns/types';
 import useAddCampaign from 'api/campaigns/useAddCampaign';
@@ -16,6 +18,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 
@@ -35,11 +38,13 @@ const CampaignRow = ({
 }: Props) => {
   const hasContext = !!(phaseId || projectId);
   const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
   const { mutate: addCampaign } = useAddCampaign();
   const { mutate: updateCampaign } = useUpdateCampaign();
+  const unpersistedContextCampaign =
+    hasContext && !campaign.relationships.context?.data?.id;
+
   const toggleEnabled = () => {
-    const unpersistedContextCampaign =
-      hasContext && !campaign.relationships.context?.data?.id;
     if (unpersistedContextCampaign) {
       addCampaign({
         phaseId,
@@ -59,10 +64,35 @@ const CampaignRow = ({
     }
   };
 
-  const isEditingEnabled = useFeatureFlag({
-    name: 'customised_automated_emails',
-  });
+  const isEditingEnabled =
+    useFeatureFlag({
+      name: 'customised_automated_emails',
+    }) &&
+    (!hasContext || campaign.attributes.enabled);
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
+  const handleEditClick = () => {
+    if (unpersistedContextCampaign) {
+      addCampaign(
+        {
+          phaseId,
+          campaign_name: campaign.attributes.campaign_name, // TODO: Don't repeat subject_multiloc etc.
+          enabled: campaign.attributes.enabled,
+          subject_multiloc: campaign.attributes.subject_multiloc,
+          body_multiloc: campaign.attributes.body_multiloc,
+          sender: campaign.attributes.sender,
+        },
+        {
+          onSuccess: (addedCampaign) => {
+            clHistory.push(
+              `${pathname}/${addedCampaign.data.id}/edit` as RouteType
+            );
+          },
+        }
+      );
+    } else {
+      clHistory.push(`${pathname}/${campaign.id}/edit` as RouteType);
+    }
+  };
 
   return (
     <ListItem p="8px 0">
@@ -84,7 +114,7 @@ const CampaignRow = ({
               </ButtonWithLink>
             </Box>
           )}
-          {isEditingEnabled && !hasContext && (
+          {isEditingEnabled && (
             <Box ml="12px">
               <Tooltip
                 disabled={isEditable}
@@ -92,7 +122,7 @@ const CampaignRow = ({
               >
                 <ButtonWithLink
                   icon="edit"
-                  linkTo={`/admin/messaging/emails/automated/${campaign.id}/edit`}
+                  onClick={handleEditClick}
                   disabled={!isEditable}
                   buttonStyle="secondary-outlined"
                 >

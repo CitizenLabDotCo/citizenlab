@@ -17,7 +17,7 @@ import messages from './messages';
 
 const AdminPhaseEmailWrapper = () => {
   const localize = useLocalize();
-  const { phaseId } = useParams();
+  const { projectId, phaseId } = useParams();
   const { data: supportedCampaigns } = useSupportedCampaignNames({ phaseId });
   const supportedCampaignNames = supportedCampaigns?.data.attributes || [];
   const contextCampaigns = useCampaigns({
@@ -50,6 +50,7 @@ const AdminPhaseEmailWrapper = () => {
               <CampaignRow
                 campaign={stringifyCampaignFields(campaign, localize)}
                 key={campaign.id}
+                projectId={projectId}
                 phaseId={phaseId}
               />
             )

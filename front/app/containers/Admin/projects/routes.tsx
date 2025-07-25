@@ -75,6 +75,8 @@ const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
 const AdminProjectsData = lazy(() => import('./project/data'));
 
+const EmailsEdit = lazy(() => import('../messaging/Edit'));
+
 export function adminProjectsProjectPath(projectId: string): RouteType {
   return `/admin/projects/${projectId}`;
 }
@@ -486,6 +488,10 @@ const createAdminProjectsRoutes = () => {
                     <AdminPhaseEmails />
                   </PageLoading>
                 ),
+              },
+              {
+                path: ':phaseId/emails/:campaignId/edit',
+                element: <EmailsEdit campaignType="automated" />,
               },
               {
                 path: projectsRoutes.projectPhaseIdeas,
