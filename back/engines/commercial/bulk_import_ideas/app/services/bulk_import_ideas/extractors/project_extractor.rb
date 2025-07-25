@@ -19,6 +19,7 @@ module BulkImportIdeas::Extractors
         next unless title
 
         publication_status = row.cells[1].value || 'published'
+        description_html = row.cells[5].value || ''
 
         phase_file = row.cells[2].value
         phase_sheets = row.cells[3].value
@@ -34,6 +35,7 @@ module BulkImportIdeas::Extractors
 
         {
           title_multiloc: multiloc(title),
+          description_multiloc: multiloc(description_html),
           slug: SlugService.new.slugify(title),
           admin_publication_attributes: {
             publication_status: publication_status.downcase || 'draft'

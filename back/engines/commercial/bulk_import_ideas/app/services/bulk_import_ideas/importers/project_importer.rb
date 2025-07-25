@@ -20,6 +20,9 @@ module BulkImportIdeas::Importers
         project_attributes = project_data.except(:phases)
         project = Project.create!(project_attributes)
 
+        # Any images in the description need to be uploaded to our system and refs replaced
+        update_description_images(project)
+
         project_data[:phases].each do |phase_data|
           phase_attributes = phase_data.except(:idea_rows, :idea_custom_fields, :user_custom_fields)
           phase = Phase.create!(phase_attributes.merge(
@@ -92,6 +95,12 @@ module BulkImportIdeas::Importers
         end
       end
       imported_projects
+    end
+
+    private
+
+    def update_description_images(project)
+      project.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project))
     end
   end
 end
