@@ -64,6 +64,7 @@ ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_b0ef
 ALTER TABLE IF EXISTS ONLY public.analysis_tags DROP CONSTRAINT IF EXISTS fk_rails_afc2d02258;
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_ac7bc0a42f;
 ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS fk_rails_abbf8658b2;
+ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS fk_rails_ab74281536;
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails_aaf389f138;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a9aa810ecf;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_a7a91f1df3;
@@ -302,6 +303,7 @@ DROP INDEX IF EXISTS public.index_followers_followable_type_id_user_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_file_id_and_project_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_file_id;
+DROP INDEX IF EXISTS public.index_files_previews_on_file_id;
 DROP INDEX IF EXISTS public.index_files_on_uploader_id;
 DROP INDEX IF EXISTS public.index_files_on_tsvector;
 DROP INDEX IF EXISTS public.index_files_on_size;
@@ -494,6 +496,7 @@ ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS g
 ALTER TABLE IF EXISTS ONLY public.followers DROP CONSTRAINT IF EXISTS followers_pkey;
 ALTER TABLE IF EXISTS ONLY public.flag_inappropriate_content_inappropriate_content_flags DROP CONSTRAINT IF EXISTS flag_inappropriate_content_inappropriate_content_flags_pkey;
 ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS files_projects_pkey;
+ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS files_previews_pkey;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS files_pkey;
 ALTER TABLE IF EXISTS ONLY public.experiments DROP CONSTRAINT IF EXISTS experiments_pkey;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS events_pkey;
@@ -607,6 +610,7 @@ DROP TABLE IF EXISTS public.groups;
 DROP TABLE IF EXISTS public.followers;
 DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_flags;
 DROP TABLE IF EXISTS public.files_projects;
+DROP TABLE IF EXISTS public.files_previews;
 DROP TABLE IF EXISTS public.files;
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
@@ -2465,6 +2469,20 @@ COMMENT ON COLUMN public.files.ai_processing_allowed IS 'whether consent was giv
 
 
 --
+-- Name: files_previews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.files_previews (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    content character varying,
+    file_id uuid NOT NULL,
+    status character varying DEFAULT 'pending'::character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: files_projects; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3870,6 +3888,14 @@ ALTER TABLE ONLY public.experiments
 
 ALTER TABLE ONLY public.files
     ADD CONSTRAINT files_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: files_previews files_previews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.files_previews
+    ADD CONSTRAINT files_previews_pkey PRIMARY KEY (id);
 
 
 --
@@ -5285,6 +5311,13 @@ CREATE INDEX index_files_on_tsvector ON public.files USING gin (tsvector);
 --
 
 CREATE INDEX index_files_on_uploader_id ON public.files USING btree (uploader_id);
+
+
+--
+-- Name: index_files_previews_on_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_previews_on_file_id ON public.files_previews USING btree (file_id);
 
 
 --
@@ -7037,6 +7070,14 @@ ALTER TABLE ONLY public.memberships
 
 
 --
+-- Name: files_previews fk_rails_ab74281536; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.files_previews
+    ADD CONSTRAINT fk_rails_ab74281536 FOREIGN KEY (file_id) REFERENCES public.files(id);
+
+
+--
 -- Name: maps_layers fk_rails_abbf8658b2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7483,6 +7524,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250724190507'),
 ('20250716141100'),
 ('20250716102450'),
 ('20250715075008'),
