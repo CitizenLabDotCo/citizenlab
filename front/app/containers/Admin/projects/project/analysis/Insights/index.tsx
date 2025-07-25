@@ -12,6 +12,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
+import AddFileContext from './AddFileContextButton';
 import messages from './messages';
 import Question from './Question';
 import QuestionButton from './QuestionButton';
@@ -37,6 +38,7 @@ const Insights = () => {
   const { data: allInputs } = useInfiniteAnalysisInputs({
     analysisId,
   });
+
   const { data: filteredInputs } = useInfiniteAnalysisInputs({
     analysisId,
     queryParams: filters,
@@ -66,23 +68,27 @@ const Insights = () => {
         m="0"
         my="8px"
         display="flex"
-        justifyContent="center"
+        justifyContent="space-between"
         alignItems="center"
         gap="4px"
       >
-        {applyInputsLimit && (
-          <Icon name="alert-circle" fill={colors.orange500} />
-        )}
+        <Box>
+          {applyInputsLimit && (
+            <Icon name="alert-circle" fill={colors.orange500} />
+          )}
 
-        <Text
-          fontSize="s"
-          m="0"
-          variant="bodyXs"
-          color={applyInputsLimit ? 'orange500' : 'textSecondary'}
-        >
-          {`${filteredInputsCount} / ${inputsCount}`}{' '}
-          {formatMessage(messages.inputsSelected)}
-        </Text>
+          <Text
+            fontSize="s"
+            m="0"
+            variant="bodyXs"
+            color={applyInputsLimit ? 'orange500' : 'textSecondary'}
+          >
+            {`${filteredInputsCount} / ${inputsCount}`}{' '}
+            {formatMessage(messages.inputsSelected)}
+          </Text>
+        </Box>
+
+        <AddFileContext />
       </Box>
 
       {isQuestionInputOpen && (
