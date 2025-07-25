@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :event_image do
     event
-    image { Rails.root.join("spec/fixtures/image#{rand(20)}.png").open }
+    image { Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open }
   end
 end

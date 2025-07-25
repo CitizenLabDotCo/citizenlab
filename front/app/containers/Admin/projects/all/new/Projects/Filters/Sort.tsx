@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Select } from '@citizenlab/cl2-component-library';
+import { Select } from '@citizenlab/cl2-component-library';
 
 import { Parameters } from 'api/projects_mini_admin/types';
 
@@ -22,13 +22,11 @@ const OPTIONS = [
   },
   { value: 'recently_viewed', message: messages.recently_viewed },
   { value: 'recently_created', message: messages.recently_created },
+  { value: 'alphabetically_asc', message: messages.alphabetically_asc },
+  { value: 'alphabetically_desc', message: messages.alphabetically_desc },
 ] as const;
 
-interface Props {
-  mr?: string;
-}
-
-const Sort = ({ mr }: Props) => {
+const Sort = () => {
   const { formatMessage } = useIntl();
   const value = useParam('sort') ?? 'phase_starting_or_ending_soon';
 
@@ -38,16 +36,14 @@ const Sort = ({ mr }: Props) => {
   }));
 
   return (
-    <Box mr={mr}>
-      <Select
-        value={value}
-        options={options}
-        onChange={(option) => {
-          setParam('sort', option.value);
-        }}
-        mr="20px"
-      />
-    </Box>
+    <Select
+      value={value}
+      options={options}
+      onChange={(option) => {
+        setParam('sort', option.value);
+      }}
+      mr="20px"
+    />
   );
 };
 

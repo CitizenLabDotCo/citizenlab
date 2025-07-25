@@ -93,12 +93,4 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.cancel',
     defaultMessage: 'Cancel',
   },
-  confirmation: {
-    id: 'app.components.ConsentManager.Modal.CancelDialog.confirmation',
-    defaultMessage: 'If you cancel, your preferences will be lost.',
-  },
-  confirm: {
-    id: 'app.components.ConsentManager.Modal.CancelDialog.confirm',
-    defaultMessage: 'Confirm',
-  },
 });
