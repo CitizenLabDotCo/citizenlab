@@ -69,7 +69,7 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "ایکسل ٹیمپلیٹس میں درجہ بندی کے سوالات، میٹرکس کے سوالات، فائل اپ لوڈ کے سوالات اور کوئی بھی میپنگ ان پٹ سوالات (ڈراپ پن، ڈرا روٹ، ڈرا ایریا، ESRI فائل اپ لوڈ) شامل نہیں ہوں گے کیونکہ یہ اس وقت بلک امپورٹنگ کے لیے تعاون یافتہ نہیں ہیں۔",
   "app.components.ProjectTemplatePreview.close": "بند",
   "app.components.ProjectTemplatePreview.createProject": "پروجیکٹ بنائیں",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "ٹیمپلیٹ کی بنیاد پر ایک پروجیکٹ بنائیں '{templateTitle}'",
+  "app.components.ProjectTemplatePreview.createProjectBasedOn2": "ٹیمپلیٹ ''{templateTitle}'' کی بنیاد پر ایک پروجیکٹ بنائیں",
   "app.components.ProjectTemplatePreview.goBack": "واپس جاؤ",
   "app.components.ProjectTemplatePreview.goBackTo": "{goBackLink}پر واپس جائیں۔",
   "app.components.ProjectTemplatePreview.govocalExpert": "آواز کے ماہر پر جائیں۔",
