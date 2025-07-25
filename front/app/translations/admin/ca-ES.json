@@ -69,7 +69,7 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Les plantilles d'Excel no inclouen preguntes de classificació, preguntes de matriu, preguntes de càrrega de fitxers ni cap pregunta d'entrada de mapatge (col·locació de marcadors, dibuix de ruta, dibuix d'àrea, càrrega de fitxers ESRI), ja que actualment no són compatibles amb la importació massiva.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Crear projecte",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Crear un projecte basat en la plantilla '{templateTitle}'",
+  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Crear un projecte basat en la plantilla ''{templateTitle}''",
   "app.components.ProjectTemplatePreview.goBack": "Go back",
   "app.components.ProjectTemplatePreview.goBackTo": "Tornar a {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal expert",
