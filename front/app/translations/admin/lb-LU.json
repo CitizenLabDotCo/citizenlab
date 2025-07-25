@@ -72,7 +72,7 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-Virlagen enthalen keng Rankingfroen, Matrixfroen, Froen zum Eroplueden vun Dateien a Froen zum Mapping-Input (Drop Pin, Draw Route, Draw Area, ESRI Datei Upload), well dës am Moment net fir Masseimport ënnerstëtzt ginn.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Create project",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Create a project based on the template '{templateTitle}'",
+  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Erstellt e Projet baséiert op der Schabloun '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Go back",
   "app.components.ProjectTemplatePreview.goBackTo": "Go back to the {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal expert",
