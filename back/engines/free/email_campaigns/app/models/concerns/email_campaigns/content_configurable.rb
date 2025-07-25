@@ -17,7 +17,7 @@ module EmailCampaigns
       with_options unless: :manual? do
         validates :title_multiloc, multiloc: { presence: true }
         validates :intro_multiloc, multiloc: { presence: false, html: true }
-        validates :button_text_multiloc, multiloc: { presence: true, html: true }
+        validates :button_text_multiloc, multiloc: { presence: true }, if: :editable_button_text?
         before_validation :sanitize_intro_multiloc
         before_validation :reject_default_region_values
         after_save :process_intro_images
@@ -39,6 +39,19 @@ module EmailCampaigns
 
     def button_text_multiloc
       merge_default_region_values(:button_text_multiloc)
+    end
+
+    # Methods to proxy mailer methods
+    def editable_regions
+      @editable_regions ||= empty_mailer.editable_regions
+    end
+
+    def preview_command(recipient)
+      @preview_command ||= empty_mailer.preview_command(recipient)
+    end
+
+    def substitution_variables
+      @substitution_variables ||= empty_mailer.substitution_variables
     end
 
     private
@@ -82,7 +95,7 @@ module EmailCampaigns
       values = self[region_key]
       return values if manual?
 
-      region = mailer_class.editable_regions.find { |r| r[:key] == region_key }
+      region = editable_regions.find { |r| r[:key] == region_key }
       return values if region.nil?
 
       allow_blank_locales = region[:allow_blank_locales]
@@ -93,13 +106,20 @@ module EmailCampaigns
 
     # Reject default region values from the saved values, so that the defaults always remain the latest.
     def reject_default_region_values
-      regions = mailer_class.editable_regions
-      regions.each do |region|
+      editable_regions.each do |region|
         field = region[:key]
         self[field] = self[field].reject do |locale, value|
           value == region[:default_value_multiloc][locale]
         end
       end
+    end
+
+    def editable_button_text?
+      editable_regions.any? { |region| region[:key] == :button_text_multiloc }
+    end
+
+    def empty_mailer
+      @empty_mailer ||= mailer_class.new
     end
   end
 end

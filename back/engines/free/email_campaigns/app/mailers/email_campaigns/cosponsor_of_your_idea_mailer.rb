@@ -2,24 +2,31 @@
 
 module EmailCampaigns
   class CosponsorOfYourIdeaMailer < ApplicationMailer
-    protected
+    include EditableWithPreview
 
-    def subject
-      format_message('subject', values: { cosponsorName: event.idea_cosponsor_name })
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def header_title
-      format_message('main_header', values: { cosponsorName: event.idea_cosponsor_name })
+    def substitution_variables
+      {
+        cosponsorName: event&.idea_cosponsor_name
+      }
     end
 
-    private
-
-    def header_message
-      format_message('event_description', values: { cosponsorName: event.idea_cosponsor_name })
-    end
-
-    def preheader
-      format_message('preheader', values: { cosponsorName: event.idea_cosponsor_name })
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          idea_title_multiloc: data.idea.title_multiloc,
+          idea_body_multiloc: data.idea.title_multiloc,
+          idea_author_name: data.author.display_name,
+          idea_cosponsor_name: data.initiator.display_name,
+          idea_url: data.idea.url,
+          idea_image_medium_url: data.placeholder_image_url
+        }
+      }
     end
   end
 end

@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class VotingBasketSubmittedMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       project = Project.first
