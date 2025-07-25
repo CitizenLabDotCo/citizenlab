@@ -69,6 +69,7 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Excel-malleissa ei ole mukana ranking-kysymyksiä, matriisikysymyksiä, tiedostojen latauskysymyksiä tai kartoituskysymyksiä (pudotusnasta, reitin piirtäminen, alueen piirtäminen, ESRI-tiedostojen lataus), koska niitä ei tällä hetkellä tueta joukkotuonnissa.",
   "app.components.ProjectTemplatePreview.close": "kiinni",
   "app.components.ProjectTemplatePreview.createProject": "Luo projekti",
+  "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Luo projekti mallin ''{templateTitle}'' pohjalta",
   "app.components.ProjectTemplatePreview.goBack": "Mene takaisin",
   "app.components.ProjectTemplatePreview.goBackTo": "Palaa kohtaan {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLabin asiantuntija",

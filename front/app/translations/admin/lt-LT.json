@@ -69,6 +69,7 @@
   "app.components.FormSync.downloadExcelTemplateTooltip2": "Į \"Excel\" šablonus nebus įtraukti reitingavimo klausimai, matricos klausimai, failų įkėlimo klausimai ir bet kokie žemėlapių įvesties klausimai (\"Drop Pin\", \"Draw Route\", \"Draw Area\", ESRI failų įkėlimas), nes šiuo metu jie nepalaikomi masiniam importui.",
   "app.components.ProjectTemplatePreview.close": "Uždaryti",
   "app.components.ProjectTemplatePreview.createProject": "Sukurti projektą",
+  "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Sukurkite projektą pagal šabloną ''{templateTitle}''",
   "app.components.ProjectTemplatePreview.goBack": "Grįžti atgal",
   "app.components.ProjectTemplatePreview.goBackTo": "Grįžkite į {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Eiti Vokalo ekspertas",
