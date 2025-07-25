@@ -238,7 +238,7 @@ resource 'Files' do
           relationships: {
             uploader: { data: { id: admin.id, type: 'user' } },
             projects: { data: [{ id: project, type: 'project' }] },
-            preview: { data: nil }
+            preview: { data: nil } # pdf file doesn't generate a preview
           }
         )
       end
@@ -284,6 +284,15 @@ resource 'Files' do
         do_request(file: { name: name, content: content, ai_processing_allowed: 'off' })
         assert_status 201
         expect(response_data[:attributes][:ai_processing_allowed]).to be false
+      end
+
+      example 'create a file that supports a PDF preview', document: false do
+        do_request(file: { name: 'test.docx', content: file_as_base64('david.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') })
+        assert_status 201
+        expect(response_data[:relationships][:preview][:data]).to include({
+          id: kind_of(String),
+          type: 'file_preview'
+        })
       end
     end
   end

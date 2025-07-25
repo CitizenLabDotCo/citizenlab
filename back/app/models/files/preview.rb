@@ -10,8 +10,12 @@ module Files
 
     attribute :status, :string, default: 'pending'
     validates :status, presence: true, inclusion: { in: STATUSES }
-    validates :content, presence: true
+    validates :content, presence: true, if: :completed?
 
     mount_uploader :content, PreviewUploader
+
+    def completed?
+      status == 'completed'
+    end
   end
 end
