@@ -9,24 +9,6 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectPhaseStarted do
     it { expect(campaign).to be_valid }
   end
 
-  describe '#campaign_enabled_for_phase?' do
-    it 'returns false when campaign is disabled at phase level' do
-      phase = create(:phase, campaigns_settings: { project_phase_started: false })
-      notification = create(:project_phase_started, phase: phase)
-      notification_activity = create(:activity, item: notification, action: 'created')
-
-      expect(campaign.reload.send(:campaign_enabled_for_phase?, activity: notification_activity)).to be false
-    end
-
-    it 'returns true when campaign is enabled at phase level' do
-      phase = create(:phase, campaigns_settings: { project_phase_started: true })
-      notification = create(:project_phase_started, phase: phase)
-      notification_activity = create(:activity, item: notification, action: 'created')
-
-      expect(campaign.reload.send(:campaign_enabled_for_phase?, activity: notification_activity)).to be true
-    end
-  end
-
   describe '#generate_commands' do
     context 'phase is not a voting phase' do
       let(:project) { create(:project_with_current_phase) }
