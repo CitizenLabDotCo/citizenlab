@@ -17,6 +17,7 @@ export type ResolvedName =
   | 'MethodsUsedWidget'
   | 'ParticipationWidget'
   | 'ProjectsWidget'
+  | 'ProjectsTimelineWidget'
   | 'DeviceTypesWidget';
 
 export interface BaseParams {
@@ -38,6 +39,7 @@ export type ParametersLive =
   | MethodsUsedParams
   | ParticipationParams
   | ProjectsParams
+  | ProjectsTimelineParams
   | DeviceTypesParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
@@ -177,6 +179,11 @@ export interface ProjectsProps extends DateProps {
 
 interface ProjectsParams extends BaseParams {
   resolved_name: 'ProjectsWidget';
+  props: ProjectsProps;
+}
+
+interface ProjectsTimelineParams extends BaseParams {
+  resolved_name: 'ProjectsTimelineWidget';
   props: ProjectsProps;
 }
 

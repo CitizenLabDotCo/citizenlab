@@ -252,6 +252,13 @@ export const useProjects = (props: ProjectsProps = {}) => {
   });
 };
 
+export const useProjectsTimeline = (props: ProjectsProps = {}) => {
+  return useGraphDataUnits<ProjectsResponse>({
+    resolved_name: 'ProjectsTimelineWidget',
+    props,
+  });
+};
+
 export const useDeviceTypesLive = (props: DeviceTypesProps) => {
   return useGraphDataUnitsLive<DeviceTypesResponse>({
     resolved_name: 'DeviceTypesWidget',
