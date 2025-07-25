@@ -54,6 +54,7 @@ const SimilarIdeasList = ({
   const { data: ideas, isLoading } = useSimilarIdeas(
     {
       idea: {
+        id: ideaId,
         project_id: project?.data.id,
         ...((title || '').trim() && {
           title_multiloc: { [currentLocale]: title },
