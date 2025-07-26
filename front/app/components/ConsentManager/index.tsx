@@ -12,12 +12,7 @@ import Modal from 'components/UI/Modal';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
-import {
-  getConsent,
-  IConsentCookie,
-  ISavedDestinations,
-  setConsent,
-} from './consent';
+import { getConsent, ISavedDestinations, setConsent } from './consent';
 import { allCategories, TCategory } from './destinations';
 import InitialScreenFooter from './InitialScreen/Footer';
 import InitialScreenMainContent from './InitialScreen/MainContent';
@@ -29,16 +24,13 @@ import {
   getActiveDestinations,
   getCategory,
   categorizeDestinations,
-  getConsentRequired,
+  useConsentRequired,
 } from './utils';
 
 const ConsentManager = () => {
   const [preferences, setPreferences] = useState<IPreferences>({
     functional: true,
   });
-  const [cookieConsent, setCookieConsent] = useState<IConsentCookie | null>(
-    null
-  );
   const [screen, setScreen] = useState<'initial' | 'preferences' | null>(null);
   const [searchParams] = useSearchParams();
   const from = searchParams.get('from');
@@ -53,10 +45,8 @@ const ConsentManager = () => {
     appConfiguration?.data,
     activeDestinations
   );
-  const isConsentRequired = getConsentRequired(
-    cookieConsent,
-    activeDestinations
-  );
+
+  const isConsentRequired = useConsentRequired(activeDestinations);
 
   useEffect(() => {
     /*
@@ -75,13 +65,12 @@ const ConsentManager = () => {
   }, [from, isConsentRequired]);
 
   useEffect(() => {
-    const cookieConsent = getConsent();
-    setCookieConsent(cookieConsent);
+    const consent = getConsent();
 
     const defaultPreferences = getCurrentPreferences(
       appConfiguration?.data,
       authUser?.data,
-      cookieConsent
+      consent
     );
 
     if (defaultPreferences.functional === undefined) {
@@ -92,7 +81,7 @@ const ConsentManager = () => {
 
     eventEmitter.emit<ISavedDestinations>(
       'destinationConsentChanged',
-      cookieConsent?.savedChoices || {}
+      consent?.savedChoices || {}
     );
   }, [appConfiguration?.data, authUser?.data]);
 
@@ -114,10 +103,11 @@ const ConsentManager = () => {
       }
     );
 
+    const consent = getConsent();
     setConsent({
       ...newPreferences,
       savedChoices: {
-        ...cookieConsent?.savedChoices,
+        ...consent?.savedChoices,
         ...newChoices,
       },
     });
@@ -126,8 +116,6 @@ const ConsentManager = () => {
       'destinationConsentChanged',
       newChoices
     );
-
-    setCookieConsent(getConsent());
   };
 
   const accept = () => {
@@ -187,12 +175,9 @@ const ConsentManager = () => {
 
   const cancelPrefencesScreen = () => {
     // reset preferences to the current consent cookie
+    const consent = getConsent();
     setPreferences(
-      getCurrentPreferences(
-        appConfiguration?.data,
-        authUser?.data,
-        cookieConsent
-      )
+      getCurrentPreferences(appConfiguration?.data, authUser?.data, consent)
     );
     setScreen('initial');
   };
