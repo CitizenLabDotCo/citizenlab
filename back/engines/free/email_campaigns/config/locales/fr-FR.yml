@@ -24,7 +24,7 @@ fr:
       "mention_in_official_feedback": Mention dans une mise à jour
       "mention_in_internal_comment": Mention dans un commentaire interne
       "new_comment_for_admin": Nouveau commentaire dans un projet que je modère
-      "new_idea_for_admin_published": Nouvelle contribution publiée dans un projet que je modère
+      "new_idea_for_admin_published": Une nouvelle contribution a été publiée dans un projet que je modère
       "new_idea_for_admin_prescreening": Nouvelles données à approuver dans le cadre d'un projet I modéré
       "official_feedback_on_idea_you_follow": Mise à jour d'une idée que vous suivez
       "password_reset": Réinitialisation du mot de passe
@@ -97,9 +97,9 @@ fr:
       comment_body: 'Il s''agit d''un exemple de commentaire utilisé pour prévisualiser le contenu des courriels. Il ne s''agit pas d''un contenu réel.'
       comment_deleted_reason: 'Votre exemple de commentaire a été jugé inapproprié.'
       idea_title: 'Exemple d''idée'
-      idea_body: 'Il s''agit d''un exemple de contenu d''idée utilisé pour prévisualiser le contenu des courriels. Il ne s''agit pas d''un contenu réel.'
+      idea_body: 'Ceci est un exemple de contribution utilisée pour prévisualiser le contenu des e-mails. Il ne s''agit pas de contenu réel.'
       event_title: 'Exemple d''événement'
-      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_address1: '10, avenue des Champs-Fictifs, 75000 Exemple-sur-Mer'
       event_address2: 'Salle 3a, à l''étage'
       proposal_title: 'Exemple de proposition'
     footer:
@@ -285,7 +285,7 @@ fr:
       today: Aujourd'hui
       yesterday: Hier
     new_idea_for_admin_prescreening:
-      subject: 'Une contribution requiert votre approbation'
+      subject: 'Une contribution nécessite votre approbation'
       preheader: '%{authorName} a publié une nouvelle contribution sur votre plateforme'
       title: 'Une contribution nécessite votre approbation'
       cta_button: 'Examiner la contribution'
