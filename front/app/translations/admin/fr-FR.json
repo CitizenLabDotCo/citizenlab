@@ -1165,7 +1165,7 @@
   "app.containers.Admin.projects.project.general.components.UnlistedInput.emailNotifications": "Les notifications par e-mail sont envoyées uniquement aux participants",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.hidden": "Caché",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.notIndexed": "Non référencé par les moteurs de recherche",
-  "app.containers.Admin.projects.project.general.components.UnlistedInput.notVisible": "Non visible sur la page d'accueil ou sur les widgets",
+  "app.containers.Admin.projects.project.general.components.UnlistedInput.notVisible": "Non visible sur la page d'accueil ni dans les widgets",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.onlyAccessible": "Uniquement accessible via l'URL direct",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.public": "Public",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.selectHowDiscoverableProjectIs": "Sélectionnez le degré de découvrabilité de ce projet.",
