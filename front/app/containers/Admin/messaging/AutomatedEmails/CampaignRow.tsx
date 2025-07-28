@@ -43,7 +43,7 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
     if (unpersistedContextCampaign) {
       addCampaign({
         context,
-        campaign_name: campaign.attributes.campaign_name, // TODO: Don't repeat subject_multiloc etc.
+        campaign_name: campaign.attributes.campaign_name,
         enabled: !campaign.attributes.enabled,
       });
     } else {
@@ -67,7 +67,7 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
       addCampaign(
         {
           context,
-          campaign_name: campaign.attributes.campaign_name, // TODO: Don't repeat subject_multiloc etc.
+          campaign_name: campaign.attributes.campaign_name,
           enabled: campaign.attributes.enabled,
         },
         {
