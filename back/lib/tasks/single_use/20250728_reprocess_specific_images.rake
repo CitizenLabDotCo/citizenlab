@@ -1,6 +1,15 @@
 namespace :single_use do
-  desc 'Reprocesses ALL CarrierWave versions and the original image for a given model and mounted uploader.'
-  task :reprocess_images, %i[host date] => :environment do |_t, args|
+  # Reprocesses citizen images, to ensure the relatively new metadata stripping is
+  # applied. Primarily for use with the Vienna tenant, but tenant is selectable
+  # to enable testing on a demo.
+  # Reprocesses user avatars, idea_images, and Idea text_images.
+  # Optionally, a date can be specified to only reprocess images updated before that date.
+  # If no date is specified, it defaults to tomorrow's date, effectively giving no cutoff.
+  # Usage: `rake single_use:reprocess_citizen_images[host,date]`
+  # Example: `rake single_use:reprocess_citizen_images[simonssandbox.govocal.com,'2023-07-01']`
+  desc 'Reprocesses ALL CarrierWave versions and the original image for specific models and mounted uploader.'
+  task :reprocess_citizen_images, %i[host date] => :environment do |_t, args|
+    # Reduce logging when developing (to more closely match the production environment)
     # dev_null = Logger.new('/dev/null')
     # Rails.logger = dev_null
     # ActiveRecord::Base.logger = dev_null
@@ -22,7 +31,7 @@ namespace :single_use do
       end
     end
 
-    def reprocess_images(records, uploader_mount, model_name)
+    def reprocess_images(records, uploader_mount, model_name, tenant_host)
       total_reprocessed = 0
       errored_records = []
 
@@ -95,24 +104,24 @@ namespace :single_use do
       end
     end
 
-    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
+    Apartment::Tenant.switch(tenant_host.tr('.', '_')) do
       # Process IdeaImage records
       records = IdeaImage.where(updated_at: ...cutoff_date)
       puts "Found #{records.count} idea_images records to process."
 
-      reprocess_images(records, :image, 'IdeaImage')
+      reprocess_images(records, :image, 'IdeaImage', tenant_host)
 
       # Process TextImage records
       records = TextImage.where(imageable_type: 'Idea').where(updated_at: ...cutoff_date)
       puts "Found #{records.count} text_images records to process."
 
-      reprocess_images(records, :image, 'TextImage')
+      reprocess_images(records, :image, 'TextImage', tenant_host)
 
       # Process User records
       records = User.where.not(avatar: nil).where(updated_at: ...cutoff_date)
       puts "Found #{records.count} user records to process."
 
-      reprocess_images(records, :avatar, 'User')
+      reprocess_images(records, :avatar, 'User', tenant_host)
     end
 
     puts "\n--- Cleaning CarrierWave cached files ---"
