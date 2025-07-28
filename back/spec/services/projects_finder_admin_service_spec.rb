@@ -280,6 +280,115 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.filter_visibility' do
+    let!(:public_project) { create(:project, visible_to: 'public') }
+    let!(:groups_project) { create(:project, visible_to: 'groups') }
+    let!(:admins_project) { create(:project, visible_to: 'admins') }
+    let!(:listed_project) { create(:project, visible_to: 'public', listed: true) }
+    let!(:unlisted_project) { create(:project, visible_to: 'public', listed: false) }
+
+    let(:test_projects) { Project.where(id: [public_project.id, groups_project.id, admins_project.id, listed_project.id, unlisted_project.id]) }
+
+    it 'returns all projects when no visibility filter is applied' do
+      result = described_class.filter_visibility(test_projects, {})
+      expect(result.pluck(:id).sort).to match_array([
+        public_project.id,
+        groups_project.id,
+        admins_project.id,
+        listed_project.id,
+        unlisted_project.id
+      ].sort)
+    end
+
+    it 'filters projects by public visibility' do
+      result = described_class.filter_visibility(test_projects, { visibility: ['public'] })
+      # Only projects with visible_to: 'public' should be returned
+      # This includes both public_project and listed_project since both have visible_to: 'public'
+      # Also includes unlisted_project since it has visible_to: 'public' (even though listed: false)
+      expected_ids = [public_project.id, listed_project.id, unlisted_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'filters projects by groups visibility' do
+      result = described_class.filter_visibility(test_projects, { visibility: ['groups'] })
+      expect(result.pluck(:id)).to eq([groups_project.id])
+    end
+
+    it 'filters projects by admins visibility' do
+      result = described_class.filter_visibility(test_projects, { visibility: ['admins'] })
+      expect(result.pluck(:id)).to eq([admins_project.id])
+    end
+
+    it 'filters projects by multiple visibility types' do
+      result = described_class.filter_visibility(test_projects, { visibility: %w[public groups] })
+      # Projects with visible_to: 'public' OR visible_to: 'groups' should be returned
+      # This includes public_project, groups_project, listed_project, and unlisted_project
+      expected_ids = [public_project.id, groups_project.id, listed_project.id, unlisted_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'filters projects by all visibility types' do
+      result = described_class.filter_visibility(test_projects, { visibility: %w[public groups admins] })
+      expect(result.pluck(:id).sort).to match_array([public_project.id, groups_project.id, admins_project.id, listed_project.id, unlisted_project.id].sort)
+    end
+  end
+
+  describe 'self.filter_discoverability' do
+    let!(:public_project) { create(:project, visible_to: 'public', listed: true) }
+    let!(:hidden_project) { create(:project, visible_to: 'public', listed: false) }
+    let!(:groups_project) { create(:project, visible_to: 'groups', listed: true) }
+    let!(:groups_hidden_project) { create(:project, visible_to: 'groups', listed: false) }
+
+    let(:test_projects) { Project.where(id: [public_project.id, hidden_project.id, groups_project.id, groups_hidden_project.id]) }
+
+    it 'returns all projects when no discoverability filter is applied' do
+      result = described_class.filter_discoverability(test_projects, {})
+      expect(result.pluck(:id).sort).to match_array([
+        public_project.id,
+        hidden_project.id,
+        groups_project.id,
+        groups_hidden_project.id
+      ].sort)
+    end
+
+    it 'filters projects by listed discoverability' do
+      result = described_class.filter_discoverability(test_projects, { discoverability: ['listed'] })
+      # Only projects with listed: true should be returned
+      expected_ids = [public_project.id, groups_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'filters projects by unlisted discoverability' do
+      result = described_class.filter_discoverability(test_projects, { discoverability: ['unlisted'] })
+      # Only projects with listed: false should be returned
+      expected_ids = [hidden_project.id, groups_hidden_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'filters projects by multiple discoverability types' do
+      result = described_class.filter_discoverability(test_projects, { discoverability: %w[listed unlisted] })
+      # Projects with listed: true OR listed: false should be returned
+      # This includes all projects
+      expected_ids = [public_project.id, hidden_project.id, groups_project.id, groups_hidden_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'returns all projects for invalid discoverability value' do
+      result = described_class.filter_discoverability(test_projects, { discoverability: ['invalid'] })
+      expect(result.pluck(:id).sort).to match_array([
+        public_project.id,
+        hidden_project.id,
+        groups_project.id,
+        groups_hidden_project.id
+      ].sort)
+    end
+  end
+
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }
