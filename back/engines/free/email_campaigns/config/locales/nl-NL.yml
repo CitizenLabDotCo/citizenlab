@@ -341,7 +341,7 @@ nl:
       event_description: '%{organizationName} heeft je genoemd in hun feedback op het idee ''%{post}''. Klik op onderstaande link om in gesprek te gaan met %{organizationName}'
       title: 'Je bent genoemd'
       subject: '%{organizationName} noemde je in hun feedback'
-      preheader: '%{organizationName} heeft je genoemd in feedback'
+      preheader: '%{organizationName} heeft je vermeld in feedback'
     project_moderation_rights_received:
       cta_manage_project: 'Beheer dit project'
       message_you_became_moderator: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project:'
