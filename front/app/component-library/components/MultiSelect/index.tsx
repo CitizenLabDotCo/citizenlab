@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 
 import InputContainer from 'component-library/utils/containers/InputContainer';
 
@@ -11,18 +11,23 @@ interface Props {
 
 const MultiSelect = ({ title }: Props) => {
   const [opened, setOpened] = useState(false);
+  const selectorId = useId();
 
   return (
     <Box>
       <Box>
-        <InputContainer onClick={() => setOpened(!opened)}>
+        <InputContainer id={selectorId} onClick={() => setOpened(!opened)}>
           {title}
         </InputContainer>
       </Box>
       <Dropdown
         opened={opened}
         onClickOutside={() => setOpened(false)}
-        content={<div>Dropdown content</div>}
+        content={
+          <Box role="group" aria-labelledby={selectorId}>
+            <li>Test</li>
+          </Box>
+        }
       />
     </Box>
   );
