@@ -33,6 +33,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class Event < ApplicationRecord
+  include Files::FileAttachable
   include GeoJsonHelpers
 
   belongs_to :project

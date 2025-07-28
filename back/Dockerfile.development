@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       libpq-dev            \
       file                 \
       imagemagick          \
+      ca-certificates      \
       curl                 \
       git                  \
       optipng              \

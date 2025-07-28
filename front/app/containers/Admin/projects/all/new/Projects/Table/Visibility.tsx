@@ -46,6 +46,10 @@ const Visibility = ({ project }: Props) => {
     .map((group) => localize(group.attributes.title_multiloc))
     .join(', ');
 
+  const hiddenStatusText = !listed
+    ? ` • ${formatMessage(messages.hidden)}`
+    : '';
+
   return (
     <Tooltip
       content={
@@ -123,12 +127,12 @@ const Visibility = ({ project }: Props) => {
                 {formatMessage(messages.xGroups, {
                   numberOfGroups: groupIds.length,
                 })}
-                {listed ? '' : ` • ${formatMessage(messages.hidden)}`}
+                {hiddenStatusText}
               </>
             ) : (
               <>
                 {formatMessage(VISIBILITY_LABELS[visible_to])}
-                {listed ? '' : ` • ${formatMessage(messages.hidden)}`}
+                {hiddenStatusText}
               </>
             )}
           </Text>
