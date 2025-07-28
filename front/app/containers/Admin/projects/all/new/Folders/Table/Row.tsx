@@ -83,7 +83,7 @@ const Row = ({ folder }: Props) => {
             <Text
               m="0"
               fontSize="s"
-              color="primary"
+              color="black"
               className="project-table-row-title"
             >
               {localize(folder.attributes.title_multiloc)}
@@ -123,7 +123,7 @@ const Row = ({ folder }: Props) => {
             ml="0"
             mr="8px"
           />
-          <Text m="0" fontSize="s" color="primary">
+          <Text m="0" fontSize="s" color="black">
             {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
           </Text>
         </Box>
@@ -132,6 +132,7 @@ const Row = ({ folder }: Props) => {
         <Box mr="12px">
           <FolderMoreActionsMenu
             folderId={folder.id}
+            color={colors.black}
             setError={setError}
             setIsRunningAction={setIsBeingDeleted}
           />

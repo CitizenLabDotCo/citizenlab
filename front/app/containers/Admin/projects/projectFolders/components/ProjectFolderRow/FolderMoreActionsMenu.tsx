@@ -15,12 +15,14 @@ import messages from './messages';
 
 export interface Props {
   folderId: string;
+  color?: string;
   setError: (error: string | null) => void;
   setIsRunningAction?: (isLoading: boolean) => void;
 }
 
 const FolderMoreActionsMenu = ({
   folderId,
+  color,
   setError,
   setIsRunningAction,
 }: Props) => {
@@ -79,7 +81,7 @@ const FolderMoreActionsMenu = ({
         ml="1rem"
         data-testid="folderMoreActionsMenu"
       >
-        <MoreActionsMenu showLabel={false} actions={actions} />
+        <MoreActionsMenu showLabel={false} actions={actions} color={color} />
       </Box>
     );
   }
