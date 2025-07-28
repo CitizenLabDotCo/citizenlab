@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -103,7 +105,13 @@ function getConsentRequired(
   return isConsentRequired;
 }
 
-export function useConsentRequired(activeDestinations: IDestinationConfig[]) {
+export function useConsentRequired() {
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: authUser } = useAuthUser();
+  const activeDestinations = getActiveDestinations(
+    appConfiguration?.data,
+    authUser?.data
+  );
   const [isConsentRequired, setIsConsentRequired] = useState(() => {
     // Initialize with the actual cookie value to prevent flash
     const cookieConsent = getConsent();
