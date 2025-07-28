@@ -1,10 +1,14 @@
-# lib/tasks/image_reprocessing.rake
 namespace :single_use do
   desc 'Reprocesses ALL CarrierWave versions and the original image for a given model and mounted uploader.'
-  task :reprocess_images, %i[host] => :environment do |_t, args|
+  task :reprocess_images, %i[host date] => :environment do |_t, args|
     # dev_null = Logger.new('/dev/null')
     # Rails.logger = dev_null
     # ActiveRecord::Base.logger = dev_null
+
+    tenant_host = args[:host]
+    cutoff_date = args[:date] ? Date.parse(args[:date]) : Time.zone.today + 1.day
+
+    puts "date: #{cutoff_date.inspect}"
 
     puts "Overriding `#{BaseImageUploader.name}#filename` to prevent renaming during reprocessing..."
 
@@ -18,7 +22,7 @@ namespace :single_use do
       end
     end
 
-    def reprocess_images(records, uploader_mount, model_name, tenant_host_for_logs)
+    def reprocess_images(records, uploader_mount, model_name)
       total_reprocessed = 0
       errored_records = []
 
@@ -53,7 +57,7 @@ namespace :single_use do
             model_name: model_name,
             record_id: record.id,
             uploader_mount: uploader_mount,
-            tenant: tenant_host_for_logs,
+            tenant: tenant_host,
             error_message: e.message,
             backtrace: e.backtrace.first(5).join("\n")
           }
@@ -67,7 +71,7 @@ namespace :single_use do
             model_name: model_name,
             record_id: record.id,
             uploader_mount: uploader_mount,
-            tenant: tenant_host_for_logs,
+            tenant: tenant_host,
             error_message: e.message,
             backtrace: e.backtrace.first(5).join("\n")
           }
@@ -79,32 +83,40 @@ namespace :single_use do
         CarrierWave.clean_cached_files!
         puts "  [Batch Complete] Cleared CarrierWave cache after #{total_reprocessed} images."
       end
+
+      puts "\n--- Reprocessing Complete ---"
+      puts "Successfully reprocessed images: #{total_reprocessed}"
+
+      if errored_records.any?
+        puts "Records with errors: #{errored_records.count}"
+        errored_records.each do |error_info|
+          puts "  ID: #{error_info[:id]}, Error: #{error_info[:error]}"
+        end
+      end
+    end
+
+    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
+      # Process IdeaImage records
+      records = IdeaImage.where(updated_at: ...cutoff_date)
+      puts "Found #{records.count} idea_images records to process."
+
+      reprocess_images(records, :image, 'IdeaImage')
+
+      # Process TextImage records
+      records = TextImage.where(imageable_type: 'Idea').where(updated_at: ...cutoff_date)
+      puts "Found #{records.count} text_images records to process."
+
+      reprocess_images(records, :image, 'TextImage')
+
+      # Process User records
+      records = User.where.not(avatar: nil).where(updated_at: ...cutoff_date)
+      puts "Found #{records.count} user records to process."
+
+      reprocess_images(records, :avatar, 'User')
     end
 
     puts "\n--- Cleaning CarrierWave cached files ---"
     CarrierWave.clean_cached_files!
     puts '  CarrierWave temporary cached files cleaned.'
-
-    puts "\n--- Reprocessing Complete ---"
-    puts "Successfully reprocessed images: #{total_reprocessed}"
-
-    if errored_records.any?
-      puts "Records with errors: #{errored_records.count}"
-      errored_records.each do |error_info|
-        puts "  ID: #{error_info[:id]}, Error: #{error_info[:error]}"
-      end
-    end
-
-    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      records = IdeaImage.all
-      puts "Found #{records.count} idea_images records to process."
-
-      reprocess_images(records, :image, 'IdeaImage', tenant_host)
-
-      records = TextImage.where(imageable_type: 'Idea')
-      puts "Found #{records.count} text_images records to process."
-
-      reprocess_images(records, :image, 'TextImage', tenant_host)
-    end
   end
 end
