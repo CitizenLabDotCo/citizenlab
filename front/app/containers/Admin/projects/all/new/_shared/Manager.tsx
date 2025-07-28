@@ -23,10 +23,13 @@ const Manager = ({ managerIds, mr = '0px', onChange }: Props) => {
   });
 
   const options =
-    managers?.data.map((manager) => ({
+    managers?.data.map((manager, i) => ({
       value: manager.id,
       text: getFullName(manager),
+      disabled: i === 1,
     })) ?? [];
+
+  console.log({ options });
 
   return (
     <FilterSelector

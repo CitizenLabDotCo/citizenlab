@@ -35,16 +35,6 @@ const CheckboxListItem = styled.li<{ disabled?: boolean }>`
       color: ${colors.white};
     }
   }
-
-  ${({ disabled }) =>
-    disabled
-      ? `
-    pointer-events: none;
-    opacity: 0.7;
-    background: ${colors.background};
-    cursor: not-allowed;
-  `
-      : ''}
 `;
 
 interface Props {
@@ -90,8 +80,7 @@ const DropdownContent = ({
         return (
           <CheckboxListItem
             key={option.value}
-            disabled={option.disabled}
-            tabIndex={option.disabled ? -1 : 0}
+            tabIndex={0}
             role="checkbox"
             aria-checked={checked}
             onKeyDown={handleKeydown(option.value)}
@@ -104,7 +93,6 @@ const DropdownContent = ({
                   {option.label}
                 </Text>
               }
-              disabled={option.disabled}
               onChange={handleCheckboxClick(option.value)}
             />
           </CheckboxListItem>
