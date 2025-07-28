@@ -48,7 +48,7 @@ module MultiTenancy
           native_survey_title_multiloc: { 'en' => 'Survey' },
           native_survey_button_multiloc: { 'en' => 'Take the survey' }
         )
-        project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+        project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
       end
 
       def create_archived_project
@@ -56,7 +56,7 @@ module MultiTenancy
           title_multiloc: { 'en' => 'Archived project' },
           description_multiloc: runner.rand_description_multiloc,
           slug: 'archived-project',
-          header_bg: Rails.root.join('spec/fixtures/image6.png').open,
+          header_bg: Rails.root.join('spec/fixtures/image6.jpg').open,
           allowed_input_topics: Topic.all,
           admin_publication_attributes: { publication_status: 'archived' }
         )
@@ -67,7 +67,7 @@ module MultiTenancy
           start_at: Time.zone.today - 30.days,
           end_at: Time.zone.today - 11.days
         )
-        project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+        project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
       end
 
       def create_random_projects
@@ -76,7 +76,7 @@ module MultiTenancy
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             description_multiloc: runner.rand_description_multiloc,
             description_preview_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
-            header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+            header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open,
             visible_to: %w[admins groups public public public][rand(5)],
             areas: Array.new(rand(3)) { rand(Area.count) }.uniq.map { |offset| Area.offset(offset).first },
             allowed_input_topics: Topic.all.shuffle.take(rand(Topic.count) + 1),
@@ -89,7 +89,7 @@ module MultiTenancy
 
           project.save!
 
-          project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+          project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
 
           if rand(5) == 0
             rand(1..3).times do

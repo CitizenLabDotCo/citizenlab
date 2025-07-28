@@ -119,7 +119,9 @@ const EditCampaignForm = ({
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-        <h2>Edit</h2>
+        <h2>
+          <FormattedMessage {...messages.editButtonLabel} />
+        </h2>
         <StyledSection>
           <SectionField>
             <Input
@@ -162,7 +164,7 @@ const EditCampaignForm = ({
             type="submit"
             processing={isLoading}
           >
-            Save
+            <FormattedMessage {...messages.formSave} />
           </Button>
         </Box>
       </form>

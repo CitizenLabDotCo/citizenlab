@@ -15,6 +15,7 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import UserName from 'components/UI/UserName';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { saveFileToDisk } from 'utils/fileUtils';
 
 import messages from '../../messages';
 
@@ -53,7 +54,7 @@ const FilesListItem = ({
   };
 
   const downloadFileHandler = (_fileId: string) => () => {
-    // TODO: Logic to handle file downloading.
+    saveFileToDisk(file);
   };
 
   const deleteFileHandler = (fileId: string) => () => {
@@ -90,6 +91,12 @@ const FilesListItem = ({
         <Box display="flex" gap="4px">
           <Text fontSize="s" color={'coolGrey500'} m="0px">
             {new Date(file.attributes.created_at).toLocaleDateString()}
+          </Text>
+          <Text fontSize="s" color={'coolGrey500'} m="0px">
+            •
+          </Text>
+          <Text fontSize="s" color={'coolGrey500'} m="0px">
+            {formatMessage(messages[file.attributes.category])}
           </Text>
           <Text fontSize="s" color={'coolGrey500'} m="0px">
             •

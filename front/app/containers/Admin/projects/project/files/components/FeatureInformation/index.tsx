@@ -4,7 +4,6 @@ import {
   Box,
   colors,
   Divider,
-  IconNames,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
@@ -32,7 +31,7 @@ const mainFeatures = [
     mainText: messages.addFilesToSensemaking,
     secondaryText: messages.addFilesToSensemakingDescription,
   },
-];
+] as const;
 
 const FeatureInformation = () => {
   return (
@@ -48,7 +47,7 @@ const FeatureInformation = () => {
       {mainFeatures.map((feature, index) => (
         <FeatureInformationItem
           key={index}
-          iconName={feature.iconName as IconNames}
+          iconName={feature.iconName}
           mainText={feature.mainText}
           secondaryText={feature.secondaryText}
         />

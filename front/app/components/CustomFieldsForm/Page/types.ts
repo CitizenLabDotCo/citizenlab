@@ -3,7 +3,7 @@ import { Multiloc } from 'typings';
 import { IdeaPublicationStatus } from 'api/ideas/types';
 
 export interface FormValues {
-  title_multiloc: Multiloc;
+  title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
   author_id?: string;
   idea_images_attributes?: { image: string }[];
