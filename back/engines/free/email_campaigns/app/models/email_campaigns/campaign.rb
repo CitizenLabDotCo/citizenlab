@@ -49,6 +49,7 @@ module EmailCampaigns
     before_validation :set_enabled, on: :create
 
     validate :validate_recipients, on: :send
+    validates :context_id, uniqueness: { scope: :type }, if: :unique_campaigns_per_context?
 
     scope :manual, -> { where type: DeliveryService.new.manual_campaign_types }
     scope :automatic, -> { where.not(type: DeliveryService.new.manual_campaign_types) }
@@ -217,6 +218,10 @@ module EmailCampaigns
         serializer: serializer,
         adapter: :json
       }).serializable_hash
+    end
+
+    def unique_campaigns_per_context?
+      true
     end
 
     private

@@ -81,12 +81,6 @@ const Edit = ({ campaignType }: EditProps) => {
 
   const goBack = () => {
     clHistory.goBack();
-    // TODO: Go back to phase page
-    // clHistory.push(
-    //   campaignType === 'custom'
-    //     ? `/admin/messaging/emails/custom/${campaign.data.id}`
-    //     : '/admin/messaging/emails/automated'
-    // );
   };
 
   return (

@@ -67,6 +67,12 @@ module EmailCampaigns
       true
     end
 
+    protected
+
+    def unique_campaigns_per_context?
+      false
+    end
+
     private
 
     def only_manual_send(activity: nil, time: nil)

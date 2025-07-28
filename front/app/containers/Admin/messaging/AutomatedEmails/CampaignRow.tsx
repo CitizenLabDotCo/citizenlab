@@ -45,9 +45,6 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
         context,
         campaign_name: campaign.attributes.campaign_name, // TODO: Don't repeat subject_multiloc etc.
         enabled: !campaign.attributes.enabled,
-        subject_multiloc: campaign.attributes.subject_multiloc,
-        body_multiloc: campaign.attributes.body_multiloc,
-        sender: campaign.attributes.sender,
       });
     } else {
       updateCampaign({
@@ -72,9 +69,6 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
           context,
           campaign_name: campaign.attributes.campaign_name, // TODO: Don't repeat subject_multiloc etc.
           enabled: campaign.attributes.enabled,
-          subject_multiloc: campaign.attributes.subject_multiloc,
-          body_multiloc: campaign.attributes.body_multiloc,
-          sender: campaign.attributes.sender,
         },
         {
           onSuccess: (addedCampaign) => {

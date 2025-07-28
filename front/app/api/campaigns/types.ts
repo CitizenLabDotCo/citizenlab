@@ -170,9 +170,9 @@ export interface CampaignAdd {
   campaign_name: string;
   context?: CampaignContext;
   enabled?: boolean;
-  subject_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  sender: string;
+  subject_multiloc?: Multiloc;
+  body_multiloc?: Multiloc;
+  sender?: string;
   reply_to?: string;
   group_ids?: string[];
 }
