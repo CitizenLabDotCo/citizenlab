@@ -13,13 +13,13 @@ module EmailCampaigns
     end
 
     def recipient_user
-      @user ||= User.first
+      @user ||= User.not_admin.order(:created_at).first
       @user.locale = params[:locale] || :en
       @user
     end
 
     def recipient_admin
-      @user ||= User.admin.first
+      @user ||= User.admin.order(:created_at).first
       @user.locale = params[:locale] || :en
       @user
     end
