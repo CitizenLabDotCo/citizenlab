@@ -58,7 +58,7 @@ const StyledInput = styled(Input)`
   `}
 `;
 
-const IconContainer = styled.div<{ inputSize?: InputSize }>`
+export const IconContainer = styled.div<{ inputSize?: InputSize }>`
   position: absolute;
   right: 10px;
   top: ${({ inputSize }) => (inputSize === 'small' ? '7px' : '10px')};

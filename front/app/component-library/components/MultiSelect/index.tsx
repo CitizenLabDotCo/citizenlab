@@ -25,7 +25,10 @@ interface Props {
   selected?: string[];
   options: Option[];
   isLoading?: boolean;
+  searchValue?: string;
+  searchPlaceholder?: string;
   onChange: (values: string[]) => void;
+  onSearch?: (searchTerm: string) => void;
 }
 
 const MultiSelect = ({
@@ -33,7 +36,10 @@ const MultiSelect = ({
   selected = [],
   options,
   isLoading = false,
+  searchValue,
+  searchPlaceholder,
   onChange,
+  onSearch,
 }: Props) => {
   const [opened, setOpened] = useState(false);
   const [hover, setHover] = useState(false);
@@ -82,7 +88,10 @@ const MultiSelect = ({
             options={options}
             selected={selected}
             isLoading={isLoading}
+            searchValue={searchValue}
+            searchPlaceholder={searchPlaceholder}
             onChange={onChange}
+            onSearch={onSearch}
           />
         }
       />

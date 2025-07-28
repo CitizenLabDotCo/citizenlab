@@ -17,7 +17,7 @@ export const Default: Story = {
     options: [
       { value: 'apple', label: 'Apple' },
       { value: 'banana', label: 'Banana' },
-      { value: 'coconut', label: 'Coconut', disabled: true },
+      { value: 'coconut', label: 'Coconut' },
       { value: 'durian', label: 'Durian' },
       { value: 'elderberry', label: 'Elderberry' },
       { value: 'fig', label: 'Fig' },
@@ -39,5 +39,22 @@ export const Loading: Story = {
     options: [],
     isLoading: true,
     onChange: () => {},
+  },
+};
+
+export const Search: Story = {
+  args: {
+    title: 'Searchable options',
+    selected: [],
+    options: [
+      { value: 'apple', label: 'Apple' },
+      { value: 'banana', label: 'Banana' },
+      { value: 'coconut', label: 'Coconut' },
+      { value: 'durian', label: 'Durian' },
+    ],
+    searchValue: 'Lorem',
+    searchPlaceholder: 'Search fruits...',
+    onChange: (values) => console.log('Selected values:', values),
+    onSearch: (searchTerm) => console.log('Search term:', searchTerm),
   },
 };

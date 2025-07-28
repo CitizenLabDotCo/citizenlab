@@ -8,6 +8,7 @@ import CheckboxWithLabel from '../CheckboxWithLabel';
 import Spinner from '../Spinner';
 import Text from '../Text';
 
+import SearchInput from './SearchInput';
 import { Option } from './typings';
 
 const CheckboxListItem = styled.li<{ disabled?: boolean }>`
@@ -42,7 +43,10 @@ interface Props {
   options: Option[];
   selected: string[];
   isLoading: boolean;
+  searchValue?: string;
+  searchPlaceholder?: string;
   onChange: (values: string[]) => void;
+  onSearch?: (searchTerm: string) => void;
 }
 
 const DropdownContent = ({
@@ -50,7 +54,10 @@ const DropdownContent = ({
   options,
   selected,
   isLoading,
+  searchValue,
+  searchPlaceholder,
   onChange,
+  onSearch,
 }: Props) => {
   const handleCheckboxClick = (value: string) => () => {
     const selectedClone = [...selected];
@@ -74,6 +81,14 @@ const DropdownContent = ({
 
   return (
     <Box role="group" aria-labelledby={selectorId}>
+      {onSearch && (
+        <SearchInput
+          value={searchValue}
+          placeholder={searchPlaceholder}
+          onSearch={onSearch}
+        />
+      )}
+
       {options.map((option) => {
         const checked = selected.includes(option.value);
 
