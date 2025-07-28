@@ -2267,7 +2267,7 @@
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "File Name",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "File name is required.",
   "app.containers.AdminPage.ProjectFiles.filePreview.downloadFile": "Download file",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "File Preview",
+  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Vista prèvia del fitxer",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "This file will not be uploaded, as it exceeds the maximum limit of 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "All files uploaded successfully",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Information",
