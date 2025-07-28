@@ -45,7 +45,7 @@ interface Props {
   id?: string;
   disabled?: boolean;
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const InputContainer = ({ id, disabled = false, children, onClick }: Props) => {
@@ -57,7 +57,7 @@ const InputContainer = ({ id, disabled = false, children, onClick }: Props) => {
       onClick={(e) => {
         if (disabled) return;
         e.preventDefault();
-        onClick();
+        onClick?.();
       }}
     >
       {children}
