@@ -55,5 +55,6 @@ export const Search: Story = {
     searchValue: 'Lorem',
     searchPlaceholder: 'Search fruits...',
     onChange: () => {},
+    onSearch: () => {},
   },
 };
