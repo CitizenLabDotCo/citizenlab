@@ -254,7 +254,6 @@ class ProjectsFinderAdminService
   # Filter projects by discoverability (listed/unlisted status)
   def self.filter_discoverability(scope, params = {})
     discoverability_params = Array(params[:discoverability])
-    return scope if discoverability_params.blank?
 
     valid_discoverabilities = %w[listed unlisted]
     selected_discoverabilities = discoverability_params & valid_discoverabilities
