@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { colors } from '../../utils/styleUtils';
 import Box from '../Box';
 import CheckboxWithLabel from '../CheckboxWithLabel';
+import Text from '../Text';
 
 import { Option } from './typings';
 
@@ -29,7 +30,7 @@ const CheckboxListItem = styled.li<{ disabled?: boolean }>`
   &:focus,
   &.selected {
     background: ${(props) => props.theme.colors.tenantPrimary};
-    label {
+    label > span {
       color: ${colors.white};
     }
   }
@@ -72,7 +73,7 @@ const DropdownContent = ({
   };
 
   const handleKeydown = (value: string) => (event: React.KeyboardEvent) => {
-    if (event.key === 'Space') {
+    if (event.code === 'Space') {
       event.preventDefault();
       handleCheckboxClick(value)();
     }
@@ -93,7 +94,11 @@ const DropdownContent = ({
             <CheckboxWithLabel
               tabIndex={-1}
               checked={checked}
-              label={option.label}
+              label={
+                <Text as="span" color="textSecondary" fontSize="base" m="0">
+                  {option.label}
+                </Text>
+              }
               disabled={option.disabled}
               onChange={handleCheckboxClick(option.value)}
             />

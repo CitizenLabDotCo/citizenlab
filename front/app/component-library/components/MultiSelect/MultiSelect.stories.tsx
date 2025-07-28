@@ -24,7 +24,6 @@ export const Default: Story = {
       { value: 'grape', label: 'Grape' },
       { value: 'honeydew', label: 'Honeydew' },
       { value: 'indian_fig', label: 'Indian fig' },
-      { value: 'lemon', label: 'Lemon' },
       { value: 'jackfruit', label: 'Jackfruit' },
       { value: 'kiwi', label: 'Kiwi' },
       { value: 'lemon', label: 'Lemon' },
