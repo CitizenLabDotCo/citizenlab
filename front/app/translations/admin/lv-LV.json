@@ -2274,7 +2274,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Faila nosaukums",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "Faila nosaukums ir obligāts.",
   "app.containers.AdminPage.ProjectFiles.filePreview.downloadFile": "Lejupielādēt failu",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Failu priekšskatījums",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Šis fails netiks augšupielādēts, jo tas pārsniedz maksimālo ierobežojumu - 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Visi faili augšupielādēti veiksmīgi",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Informācija",

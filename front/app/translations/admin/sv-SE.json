@@ -2274,7 +2274,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Filens namn",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "Filnamnet är obligatoriskt.",
   "app.containers.AdminPage.ProjectFiles.filePreview.downloadFile": "Ladda ner fil",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Förhandsgranskning av fil",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Den här filen kommer inte att laddas upp, eftersom den överskrider maxgränsen på 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Alla filer har laddats upp framgångsrikt",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Information om",

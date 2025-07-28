@@ -2274,7 +2274,6 @@
   "app.containers.AdminPage.ProjectFiles.fileNameLabel": "Nazwa pliku",
   "app.containers.AdminPage.ProjectFiles.fileNameRequired": "Nazwa pliku jest wymagana.",
   "app.containers.AdminPage.ProjectFiles.filePreview.downloadFile": "Pobierz plik",
-  "app.containers.AdminPage.ProjectFiles.filePreviewLabel": "Podgląd pliku",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Ten plik nie zostanie przesłany, ponieważ przekracza maksymalny limit 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Wszystkie pliki zostały przesłane pomyślnie",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Informacje",
