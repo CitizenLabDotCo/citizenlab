@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     title: 'Fruit basket',
-    selected: ['apple'],
+    selected: ['longan'],
     options: [
       { value: 'apple', label: 'Apple' },
       { value: 'banana', label: 'Banana' },
@@ -26,7 +26,7 @@ export const Default: Story = {
       { value: 'indian_fig', label: 'Indian fig' },
       { value: 'jackfruit', label: 'Jackfruit' },
       { value: 'kiwi', label: 'Kiwi' },
-      { value: 'lemon', label: 'Lemon' },
+      { value: 'longan', label: 'Looooooooooooooooooooooooooooongan' },
     ],
     onChange: () => {},
   },

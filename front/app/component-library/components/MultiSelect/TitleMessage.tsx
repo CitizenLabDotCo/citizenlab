@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { truncate } from 'utils/textUtils';
+
 import { Option } from './typings';
 
 interface Props {
@@ -17,11 +19,7 @@ const TitleMessage = ({ title, selected, options }: Props) => {
     const selectedOption = options.find(
       (option) => option.value === selected[0]
     );
-    return (
-      <>
-        {title}: {selectedOption?.label ?? ''}
-      </>
-    );
+    return <>{`${title}: ${truncate(selectedOption?.label ?? '', 15)}`}</>;
   }
 
   return (
