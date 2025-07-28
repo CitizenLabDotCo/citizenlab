@@ -190,7 +190,7 @@ export const defaultCardHoverStyle = css`
 `;
 
 export const defaultOutline = css`
-  border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
+  border: 1px solid ${(props) => props.theme.colors.tenantPrimary};
 `;
 
 export const defaultInputStyle = css`
