@@ -16,7 +16,7 @@ const StyledBox = styled(Box)`
   background-color: ${colors.white};
 
   &:hover {
-    background-color: ${colors.grey100};
+    background-color: ${colors.grey200};
   }
 `;
 
@@ -55,7 +55,7 @@ const MultiSelect = ({
               <StyledBox
                 as="button"
                 position="absolute"
-                top="0"
+                top="-1px"
                 right="0"
                 mr="-8px"
                 borderRadius="16px"
