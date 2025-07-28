@@ -1,9 +1,36 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import Box from '../Box';
 import CheckboxWithLabel from '../CheckboxWithLabel';
 
 import { Option } from './typings';
+
+const CheckboxListItem = styled.li`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0px;
+  margin-bottom: 8px;
+  padding: 8px;
+  list-style: none;
+  background: #fff;
+  border-radius: ${(props) => props.theme.borderRadius};
+  cursor: pointer;
+  transition: all 80ms ease-out;
+  padding: 0 10px;
+
+  &.last {
+    margin-bottom: 0px;
+  }
+
+  &:hover,
+  &:focus,
+  &.selected {
+    background: ${(props) => props.theme.colors.tenantSecondary};
+  }
+`;
 
 interface Props {
   selectorId: string;
@@ -41,14 +68,15 @@ const DropdownContent = ({
         const checked = selected.includes(option.value);
 
         return (
-          <CheckboxWithLabel
-            key={option.value}
-            checked={checked}
-            label={option.label}
-            disabled={option.disabled}
-            mb="8px"
-            onChange={handleCheckboxClick(option.value)}
-          />
+          <CheckboxListItem key={option.value} tabIndex={0}>
+            <CheckboxWithLabel
+              tabIndex={-1}
+              checked={checked}
+              label={option.label}
+              disabled={option.disabled}
+              onChange={handleCheckboxClick(option.value)}
+            />
+          </CheckboxListItem>
         );
       })}
     </Box>
