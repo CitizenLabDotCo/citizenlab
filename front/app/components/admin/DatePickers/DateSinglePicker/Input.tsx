@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, InputContainer } from '@citizenlab/cl2-component-library';
+import { Box, InputContainer, Icon } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,6 +22,7 @@ const Input = ({ id, disabled, selectedDate, onClick }: Props) => {
       <Box mr="8px">
         {selectedDate ? selectedDate.toLocaleDateString() : selectDate}
       </Box>
+      <Icon name="calendar" height="18px" />
     </InputContainer>
   );
 };

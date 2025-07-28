@@ -2,7 +2,6 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import Icon from '../../components/Icon';
 import { defaultInputStyle, colors, fontSizes } from '../styleUtils';
 
 const Container = styled.button<{ disabled: boolean }>`
@@ -61,7 +60,6 @@ const InputContainer = ({ id, disabled = false, children, onClick }: Props) => {
       }}
     >
       {children}
-      <Icon name="calendar" height="18px" />
     </Container>
   );
 };

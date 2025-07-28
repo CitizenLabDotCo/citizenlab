@@ -34,6 +34,7 @@ const Input = ({ selectedRange, selectedRangeIsOpenEnded, onClick }: Props) => {
           ? selectedRange.to.toLocaleDateString()
           : selectDate}
       </Box>
+      <Icon name="calendar" height="18px" />
     </InputContainer>
   );
 };
