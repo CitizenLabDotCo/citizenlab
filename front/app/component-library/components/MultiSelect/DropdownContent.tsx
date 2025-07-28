@@ -12,14 +12,13 @@ const CheckboxListItem = styled.li`
   display: flex;
   align-items: center;
   margin: 0px;
-  margin-bottom: 8px;
-  padding: 8px;
+  margin-bottom: 4px;
+  padding: 8px 8px;
   list-style: none;
   background: #fff;
   border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   transition: all 80ms ease-out;
-  padding: 0 10px;
 
   &.last {
     margin-bottom: 0px;
@@ -28,7 +27,7 @@ const CheckboxListItem = styled.li`
   &:hover,
   &:focus,
   &.selected {
-    background: ${(props) => props.theme.colors.tenantSecondary};
+    background: ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 
@@ -58,8 +57,11 @@ const DropdownContent = ({
     onChange(selectedClone);
   };
 
-  const handleKeydown = (event: React.KeyboardEvent) => {
-    console.log(event);
+  const handleKeydown = (value: string) => (event: React.KeyboardEvent) => {
+    if (event.key === 'Space') {
+      event.preventDefault();
+      handleCheckboxClick(value)();
+    }
   };
 
   return (
@@ -68,7 +70,11 @@ const DropdownContent = ({
         const checked = selected.includes(option.value);
 
         return (
-          <CheckboxListItem key={option.value} tabIndex={0}>
+          <CheckboxListItem
+            key={option.value}
+            tabIndex={option.disabled ? -1 : 0}
+            onKeyDown={handleKeydown(option.value)}
+          >
             <CheckboxWithLabel
               tabIndex={-1}
               checked={checked}
