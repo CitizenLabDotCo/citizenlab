@@ -1,8 +1,8 @@
 import React from 'react';
 
-import useUsers from 'api/users/useUsers';
+import { MultiSelect } from '@citizenlab/cl2-component-library';
 
-import FilterSelector from 'components/FilterSelector';
+import useUsers from 'api/users/useUsers';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
@@ -25,18 +25,16 @@ const Manager = ({ managerIds, mr = '0px', onChange }: Props) => {
   const options =
     managers?.data.map((manager) => ({
       value: manager.id,
-      text: getFullName(manager),
+      label: getFullName(manager),
     })) ?? [];
 
   return (
-    <FilterSelector
-      multipleSelectionAllowed
+    <MultiSelect
       selected={managerIds}
-      values={options}
+      options={options}
       mr={mr}
       onChange={onChange}
       title={formatMessage(messages.manager)}
-      name="manager-select"
     />
   );
 };
