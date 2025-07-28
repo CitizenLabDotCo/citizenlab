@@ -44,9 +44,7 @@ const getSignificantDuration = (start: Date, end: Date) => {
 
 const getNextPhase = (phases: IPhaseData[], currentPhase?: IPhaseData) => {
   if (!currentPhase) {
-    // Need this ugly type cast because typescript is too dumb
-    // to understand that arrays can be empty
-    const firstPhase = phases[0] as IPhaseData | undefined;
+    const firstPhase = phases.length > 0 ? phases[0] : undefined;
     if (!firstPhase) return;
 
     const firstPhaseInFuture =
