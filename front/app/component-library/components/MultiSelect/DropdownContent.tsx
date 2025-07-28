@@ -8,7 +8,7 @@ import CheckboxWithLabel from '../CheckboxWithLabel';
 
 import { Option } from './typings';
 
-const CheckboxListItem = styled.li`
+const CheckboxListItem = styled.li<{ disabled?: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
@@ -33,6 +33,16 @@ const CheckboxListItem = styled.li`
       color: ${colors.white};
     }
   }
+
+  ${({ disabled }) =>
+    disabled
+      ? `
+    pointer-events: none;
+    opacity: 0.7;
+    background: ${colors.background};
+    cursor: not-allowed;
+  `
+      : ''}
 `;
 
 interface Props {
@@ -76,6 +86,7 @@ const DropdownContent = ({
         return (
           <CheckboxListItem
             key={option.value}
+            disabled={option.disabled}
             tabIndex={option.disabled ? -1 : 0}
             onKeyDown={handleKeydown(option.value)}
           >
