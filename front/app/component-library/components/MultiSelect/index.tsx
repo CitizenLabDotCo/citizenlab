@@ -4,8 +4,9 @@ import InputContainer from 'component-library/utils/containers/InputContainer';
 import { IOption } from 'typings';
 
 import Box from '../Box';
-import CheckboxWithLabel from '../CheckboxWithLabel';
 import Dropdown from '../Dropdown';
+
+import DropdownContent from './DropdownContent';
 
 interface Props {
   title: string | JSX.Element;
@@ -14,7 +15,7 @@ interface Props {
   onChange?: (value: string) => void;
 }
 
-const MultiSelect = ({ title, selected, options }: Props) => {
+const MultiSelect = ({ title, selected = [], options }: Props) => {
   const [opened, setOpened] = useState(false);
   const selectorId = useId();
 
@@ -29,22 +30,11 @@ const MultiSelect = ({ title, selected, options }: Props) => {
         opened={opened}
         onClickOutside={() => setOpened(false)}
         content={
-          <Box role="group" aria-labelledby={selectorId}>
-            {options.map((option) => {
-              const checked = !!selected?.includes(option.value);
-
-              return (
-                <CheckboxWithLabel
-                  key={option.value}
-                  checked={checked}
-                  label={option.label}
-                  disabled={option.disabled}
-                  mb="8px"
-                  onChange={() => {}} // TODO
-                />
-              );
-            })}
-          </Box>
+          <DropdownContent
+            selectorId={selectorId}
+            options={options}
+            selected={selected}
+          />
         }
       />
     </Box>
