@@ -28,7 +28,7 @@ export const Default: Story = {
       { value: 'kiwi', label: 'Kiwi' },
       { value: 'lemon', label: 'Lemon' },
     ],
-    onChange: (values) => console.log('Selected values:', values),
+    onChange: () => {},
   },
 };
 
@@ -54,7 +54,6 @@ export const Search: Story = {
     ],
     searchValue: 'Lorem',
     searchPlaceholder: 'Search fruits...',
-    onChange: (values) => console.log('Selected values:', values),
-    onSearch: (searchTerm) => console.log('Search term:', searchTerm),
+    onChange: () => {},
   },
 };
