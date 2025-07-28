@@ -92,6 +92,8 @@ const DropdownContent = ({
             key={option.value}
             disabled={option.disabled}
             tabIndex={option.disabled ? -1 : 0}
+            role="checkbox"
+            aria-checked={checked}
             onKeyDown={handleKeydown(option.value)}
           >
             <CheckboxWithLabel
