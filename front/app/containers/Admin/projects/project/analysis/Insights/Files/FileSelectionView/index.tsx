@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
-import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { array, object, string } from 'yup';
 
@@ -48,9 +48,24 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const onFormSubmit = async () => {
+  // Watch for changes in file_ids
+  const watchedFileIds = useWatch({
+    control: methods.control,
+    name: 'file_ids',
+  });
+
+  const onFormSubmit = useCallback(async () => {
     // TODO: Implement the logic to handle form submission
-  };
+    // eslint-disable-next-line no-console
+    console.log('Form submitted with file_ids:', watchedFileIds);
+  }, [watchedFileIds]);
+
+  // Auto-submit when file_ids changes
+  useEffect(() => {
+    if (watchedFileIds.length > 0) {
+      methods.handleSubmit(onFormSubmit)();
+    }
+  }, [watchedFileIds, methods, onFormSubmit]);
 
   const fileOptions =
     files?.data.map((file) => ({
@@ -65,7 +80,8 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
       const newValues = [...currentFiles, ...newFileIds];
       methods.setValue(
         'file_ids',
-        newValues.filter((id) => id !== undefined)
+        newValues.filter((id) => id !== undefined),
+        { shouldDirty: true }
       );
     },
     [methods]
@@ -96,17 +112,6 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
             showInformationSection={false}
             afterUpload={updateSelectedFiles}
           />
-        </Box>
-        <Box display="flex" justifyContent="flex-end" mt="16px">
-          <Button
-            disabled={
-              !methods.formState.isDirty || methods.formState.isSubmitting
-            }
-            buttonStyle="admin-dark"
-            type="submit"
-          >
-            {formatMessage(messages.save)}
-          </Button>
         </Box>
       </Box>
     </FormProvider>
