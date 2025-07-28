@@ -259,11 +259,11 @@ class ProjectsFinderAdminService
     selected_discoverabilities = discoverability_params & valid_discoverabilities
 
     return scope if selected_discoverabilities.blank? || selected_discoverabilities.length == 2
-    
+
     if selected_discoverabilities.include?('listed')
-      return scope.where(listed: true)
+      scope.where(listed: true)
     else
-      return scope.where(listed:false)
+      scope.where(listed: false)
     end
   end
 end
