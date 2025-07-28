@@ -46,6 +46,7 @@ import InputMultilocWithLocaleSwitcher, {
 import Label from './components/Label';
 import ListItem from './components/ListItem';
 import LocaleSwitcher from './components/LocaleSwitcher';
+import MultiSelect from './components/MultiSelect';
 import Quote from './components/Quote';
 import Radio, { Props as RadioProps } from './components/Radio';
 import SearchInput, {
@@ -203,4 +204,5 @@ export {
   Divider,
   Quote,
   InputContainer,
+  MultiSelect,
 };
