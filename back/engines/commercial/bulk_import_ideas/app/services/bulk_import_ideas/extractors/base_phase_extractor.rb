@@ -4,30 +4,44 @@
 
 module BulkImportIdeas::Extractors
   class BasePhaseExtractor < BaseExtractor
-    def initialize(xlsx_file_path, worksheet_name, config)
+    def initialize(xlsx_file_path, worksheet_name, config = {}, attributes = {})
       workbook = RubyXL::Parser.parse_buffer(open(xlsx_file_path).read)
       @worksheet = workbook.worksheets.find { |sheet| sheet.sheet_name == worksheet_name }
       @idea_columns = []
       @user_columns = []
-      @config = config || {} # any defined: ignored_columns, user_columns, renamed_columns, override_field_types
+      @participation_method = participation_method
+      @attributes = attributes
+      @config = config # any defined: ignored_columns, user_columns, renamed_columns, override_field_types
       @idea_rows = generate_idea_rows
     end
 
     # Return a single phase with custom fields and idea rows
     def phase
-      # Get the minimum and maximum dates from 'Date Published (dd-mm-yyyy)' as start and end dates
+      title = @attributes[:title].present? ? @attributes[:title] : phase_title
+      description = @attributes[:description]
+
+      # Get the minimum and maximum dates from 'Date Published (dd-mm-yyyy)' as start and end dates, if not provided
       date_values = @idea_rows.pluck('Date Published (dd-mm-yyyy)').map { |d| Date.parse(d) }
+      start_at = @attributes[:start_at].presence || date_values.min
+      end_at = @attributes[:end_at].presence || date_values.max
       {
-        title_multiloc: multiloc(phase_title),
-        start_at: date_values.min,
-        end_at: date_values.max,
+        title_multiloc: multiloc(title),
+        description_multiloc: multiloc(description),
+        start_at: start_at,
+        end_at: end_at,
         idea_rows: @idea_rows,
         idea_custom_fields: idea_custom_fields,
         user_custom_fields: user_custom_fields
-      }
+      }.merge(
+        participation_method_attributes
+      )
     end
 
     private
+
+    def participation_method
+      'native_survey'
+    end
 
     def phase_title
       @worksheet.sheet_name
@@ -49,6 +63,7 @@ module BulkImportIdeas::Extractors
       start_row, end_row = ideas_row_range
       @worksheet.each_with_index do |row, row_index|
         next if row_index < start_row || row_index > end_row # Skip rows outside the defined range
+        next if ignore_row?(row) # Skip rows that should be ignored
 
         row_data = []
         row&.cells&.each do |cell|
@@ -236,6 +251,20 @@ module BulkImportIdeas::Extractors
       return values if new_values.nil? || new_values.length != values.length
 
       new_values
+    end
+
+    def ignore_row?(row)
+      false
+    end
+
+    def participation_method_attributes
+      {
+        participation_method: 'native_survey',
+        campaigns_settings: { project_phase_started: true },
+        native_survey_title_multiloc: { en: 'Survey' },
+        native_survey_button_multiloc: { en: 'Take the Survey' },
+        user_fields_in_form: true
+      }
     end
   end
 end

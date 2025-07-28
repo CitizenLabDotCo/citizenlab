@@ -3,7 +3,7 @@
 # NOTE: Only supports native_survey phases at the moment
 
 module BulkImportIdeas::Extractors
-  class EngagementHqPhaseExtractor < BasePhaseExtractor
+  class EngagementHqSurveyPhaseExtractor < BasePhaseExtractor
 
     private
 
@@ -24,7 +24,7 @@ module BulkImportIdeas::Extractors
     end
 
     def header_row_index(col_index)
-      col_index == 3 ? 2 : 3 # Data column header is on different row!
+      col_index == 3 ? 2 : 3 # Date column header is on different row!
     end
 
     def reformat_multiselect_values(column_name)

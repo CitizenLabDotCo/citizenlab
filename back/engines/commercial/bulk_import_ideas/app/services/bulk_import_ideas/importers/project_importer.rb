@@ -17,22 +17,26 @@ module BulkImportIdeas::Importers
         Project.find_by(slug: project_data[:slug])&.destroy
 
         # Create a new project only visible to admins
-        project_attributes = project_data.except(:phases)
+        project_attributes = project_data.except(:phases, :thumbnail_url)
         project = Project.create!(project_attributes)
 
         # Any images in the description need to be uploaded to our system and refs replaced
         update_description_images(project)
 
+        # Create the project thumbnail image if it exists
+        thumbnail_url = project_data[:thumbnail_url]
+        if thumbnail_url.present?
+          ProjectImage.create!(
+            remote_image_url: thumbnail_url,
+            project: project,
+            alt_text_multiloc: project_data[:title_multiloc]
+          )
+        end
+
         project_data[:phases].each do |phase_data|
           phase_attributes = phase_data.except(:idea_rows, :idea_custom_fields, :user_custom_fields)
-          phase = Phase.create!(phase_attributes.merge(
-            project: project,
-            campaigns_settings: { project_phase_started: true },
-            participation_method: 'native_survey',
-            native_survey_title_multiloc: { en: 'Survey' },
-            native_survey_button_multiloc: { en: 'Take the Survey' },
-            user_fields_in_form: true
-          ))
+          phase = Phase.create!(phase_attributes.merge(project: project))
+          update_description_images(phase)
           Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
 
           # Create any user fields if they don't already exist
@@ -41,6 +45,7 @@ module BulkImportIdeas::Importers
             next if CustomField.find_by(key: field[:key])
 
             # Create the user custom fields
+            # TODO: Check they don't already exist
             custom_field = CustomField.create!(field.except(:options, :statements).merge(resource_type: 'User'))
             if SELECT_TYPES.include? field[:input_type]
               # If the field is a select type, we need to create options
@@ -91,16 +96,26 @@ module BulkImportIdeas::Importers
           Rails.logger.info "Created project phase for: '#{project.title_multiloc['en']}' with slug '#{project.slug}'"
           Rails.logger.info "Created form with #{form.custom_fields.count} fields"
           Rails.logger.info "Imported #{ideas.count} ideas"
-          imported_projects << project
         end
+
+        # Remove the idea import records for this project - not needed here
+        BulkImportIdeas::IdeaImport.where(idea: project.ideas).delete_all
+
+        imported_projects << project
       end
       imported_projects
     end
 
     private
 
-    def update_description_images(project)
-      project.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project))
+    def update_description_images(record)
+      record.update!(
+        description_multiloc: TextImageService.new.swap_data_images_multiloc(
+          record.description_multiloc,
+          field: :description_multiloc,
+          imageable: record
+        )
+      )
     end
   end
 end

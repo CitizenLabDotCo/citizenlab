@@ -5,8 +5,11 @@ module BulkImportIdeas::Extractors
   class BaseExtractor
     private
 
+    # Return a single locale multiloc - import only supports one locale at the moment
     def multiloc(str)
-      locales.index_with { |_locale| str } # Same text assigned to all locales
+      return {} if str.blank?
+
+      { locale => str }
     end
 
     def generate_key(str)
@@ -17,8 +20,8 @@ module BulkImportIdeas::Extractors
       array_values.compact.reject { |value| value.is_a?(String) && value.empty? }
     end
 
-    def locales
-      @locales ||= AppConfiguration.instance.settings.dig('core', 'locales')
+    def locale
+      @locale ||= AppConfiguration.instance.settings.dig('core', 'locales').first
     end
   end
 end
