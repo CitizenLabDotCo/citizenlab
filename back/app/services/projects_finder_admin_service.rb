@@ -242,7 +242,6 @@ class ProjectsFinderAdminService
   # Filter projects by visibility (access rights)
   def self.filter_visibility(scope, params = {})
     visibility_params = Array(params[:visibility])
-    return scope if visibility_params.blank?
 
     valid_visibilities = %w[public groups admins]
     selected_visibilities = visibility_params & valid_visibilities
