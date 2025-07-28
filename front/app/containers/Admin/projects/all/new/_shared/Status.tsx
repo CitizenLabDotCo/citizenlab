@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { PublicationStatus } from 'api/projects/types';
+import { MultiSelect } from '@citizenlab/cl2-component-library';
 
-import FilterSelector from 'components/FilterSelector';
+import { PublicationStatus } from 'api/projects/types';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -11,7 +11,7 @@ import messages from '../Projects/Filters/messages';
 
 type Option = {
   value: PublicationStatus;
-  text: string;
+  label: string;
 };
 
 const OPTIONS = [
@@ -31,18 +31,16 @@ const Status = ({ values, mr, onChange }: Props) => {
 
   const options: Option[] = OPTIONS.map((option) => ({
     value: option.value,
-    text: formatMessage(option.message),
+    label: formatMessage(option.message),
   }));
 
   return (
-    <FilterSelector
-      multipleSelectionAllowed
+    <MultiSelect
       selected={values}
-      values={options}
+      options={options}
       mr={mr}
       onChange={onChange}
       title={formatMessage(messages.status)}
-      name="manager-select"
     />
   );
 };

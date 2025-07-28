@@ -59,8 +59,8 @@ const DropdownContent = ({
   searchPlaceholder,
   onChange,
   onSearch,
-  onEscape,
-}: Props) => {
+}: // onEscape,
+Props) => {
   const handleCheckboxClick = (value: string) => () => {
     const selectedClone = [...selected];
 
@@ -83,7 +83,7 @@ const DropdownContent = ({
     if (event.code === 'Escape') {
       event.preventDefault();
       event.stopPropagation();
-      onEscape();
+      // onEscape();
     }
   };
 
