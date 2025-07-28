@@ -24,7 +24,8 @@ nb:
       "mention_in_official_feedback": Nevn i en oppdatering
       "mention_in_internal_comment": Nevn i en intern kommentar
       "new_comment_for_admin": Ny kommentar i et prosjekt jeg modererer
-      "new_idea_for_admin": Nye innspill i et prosjekt jeg leder
+      "new_idea_for_admin_published": Nye publiserte innspill i et prosjekt jeg leder
+      "new_idea_for_admin_prescreening": Ny input som krever godkjenning i et prosjekt jeg modererer
       "official_feedback_on_idea_you_follow": Oppdatering på et innspill som du følger
       "password_reset": Tilbakestilling av passord
       "project_moderation_rights_received": Mottatte rettigheter til prosjektmoderering
@@ -92,9 +93,14 @@ nb:
       initiator_last_name: 'Smith'
       initiator_display_name: 'Bob Smith'
       project_title: 'Eksempel på prosjekt'
+      phase_title: 'Eksempel på fase'
       comment_body: 'Dette er et eksempel på en kommentar som brukes til forhåndsvisning av innholdet i e-poster. Dette er ikke ekte innhold.'
       comment_deleted_reason: 'Kommentaren din ble vurdert som upassende.'
       idea_title: 'Eksempel på idé'
+      idea_body: 'Dette er et eksempel på idéinnhold som brukes til forhåndsvisning av innholdet i e-poster. Dette er ikke ekte innhold.'
+      event_title: 'Eksempel på hendelse'
+      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_address2: 'Rom 3a, ovenpå'
       proposal_title: 'Eksempel på forslag'
     footer:
       "link_privacy_policy": "Personvernerklæring"
@@ -169,11 +175,11 @@ nb:
       cta_button: 'Vis rapport'
       report_name: 'Rapport fra fellesskapsovervåkeren'
     cosponsor_of_your_idea:
-      cta_reply_to: 'Se forslaget ditt'
-      event_description: 'Gratulerer! %{cosponsorName} har takket ja til invitasjonen om å være medsponsor for forslaget ditt.'
-      main_header: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
       subject: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
       preheader: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
+      title: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
+      event_description: 'Gratulerer! %{cosponsorName} har takket ja til invitasjonen om å være medsponsor for forslaget ditt.'
+      cta_button: 'Se forslaget ditt'
     assignee_digest:
       subject: 'Innspill som krever din tilbakemelding: %{numberIdeas}'
       preheader: 'Mottakerens sammendrag av %{organizationName}'
@@ -187,36 +193,36 @@ nb:
       x_days_ago_by_author: '%{x} dager siden av %{author}'
       title_successful_past_week: 'Tildelt deg som nådde terskelverdien'
     idea_marked_as_spam:
-      cta_review: 'Anmeldelse'
-      report_inappropriate_offensive_content: 'Jeg finner dette innholdet upassende eller støtende.'
-      report_not_an_idea: 'Dette innholdet er ikke relevant og hører ikke hjemme her.'
       subject: 'Du har en spam-rapport på plattformen til %{organizationName}'
       preheader: 'Gjør noe med denne spam-rapporten'
+      title: '%{firstName} %{lastName} rapportert spam'
+      cta_button: 'Anmeldelse'
+      report_inappropriate_offensive_content: 'Jeg finner dette innholdet upassende eller støtende.'
+      report_not_an_idea: 'Dette innholdet er ikke relevant og hører ikke hjemme her.'
       reported_this_because: '%{reporterFirstName} rapporterte dette fordi:'
-      title_spam_report: '%{firstName} %{lastName} rapportert spam'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'Vær med på å støtte dette forslaget'
+      subject: 'Du er invitert til å være medsponsor for et forslag'
+      preheader: 'Du er invitert til å støtte forslaget fra %{authorName}'
+      title: 'Du er invitert til å være medsponsor for et forslag'
       event_description: '%{authorName} har laget et nytt forslag og vil gjerne at du støtter det.'
       event_description_cosponsoring: 'Hvis du er medsponsor for et forslag, betyr det at <strong>navnet ditt vil vises</strong> sammen med navnene til de andre medsponsorene av forslaget.'
       event_description_before_action: 'Du må være logget inn på kontoen din for å kunne se forslaget og godta invitasjonen.'
       event_description_action: 'Klikk nedenfor for å lese forslaget.'
-      main_header: 'Du er invitert til å være medsponsor for et forslag'
-      subject: 'Du er invitert til å være medsponsor for et forslag'
-      preheader: 'Du er invitert til å støtte forslaget fra %{authorName}'
+      cta_button: 'Vær med på å støtte dette forslaget'
     invite_reminder:
-      cta_accept_invitation: 'Godta invitasjonen din'
-      invitation_header: 'Invitasjonen din venter'
-      preheader: '%{organizationName} sendte deg en invitasjon til å bli med på plattformen deres for noen dager siden.'
-      invitation_expiry_message: 'Denne invitasjonen utløper om ca. %{expiryDaysRemaining} dager.'
       subject: 'Inviteres til å delta på plattformen %{organizationName}'
+      preheader: '%{organizationName} sendte deg en invitasjon til å bli med på plattformen deres for noen dager siden.'
+      title: 'Invitasjonen din venter'
+      cta_button: 'Godta invitasjonen din'
+      invitation_expiry_message: 'Denne invitasjonen utløper om ca. %{expiryDaysRemaining} dager.'
     invite_received:
-      added_a_message: '%{organizationName} skrev følgende melding:'
-      cta_accept_invitation: 'Godta invitasjonen din'
-      invitation_header: 'Du er invitert!'
-      invitation_header_message: '%{organizationName} inviterte deg til deres plattform for deltakelse.'
-      invitation_expiry_message: 'Denne invitasjonen utløper om %{expiryDays} dager.'
       preheader: '%{organizationName} har sendt deg en invitasjon til å bli med på plattformen deres.'
       subject: 'Du er invitert til å bli med på plattformen %{organizationName}'
+      title: 'Du er invitert!'
+      event_description: '%{organizationName} inviterte deg til deres plattform for deltakelse.'
+      cta_button: 'Godta invitasjonen din'
+      added_a_message: '%{organizationName} skrev følgende melding:'
+      invitation_expiry_message: 'Denne invitasjonen utløper om %{expiryDays} dager.'
     mention_in_comment:
       cta_reply_to: 'Svar til %{commentAuthor}'
       event_description: '%{commentAuthorFull} har nevnt deg i sin kommentar til ideen ''%{post}''. Klikk på lenken nedenfor for å delta i samtalen med %{commentAuthor}'
@@ -224,17 +230,17 @@ nb:
       subject: 'Noen nevnte deg på plattformen til %{organizationName}'
       preheader: '%{commentAuthor} nevnte deg i en kommentar'
     mention_in_internal_comment:
-      cta_reply_to: 'Se kommentar fra %{firstName}'
+      cta_button: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} nevnte deg i en intern kommentar.'
       subject: '%{firstName} nevnte deg i en intern kommentar.'
-      main_header: '%{firstName} nevnte deg i en intern kommentar.'
+      title: '%{firstName} nevnte deg i en intern kommentar.'
       preheader: '%{authorNameFull} nevnte deg i en intern kommentar.'
     moderator_digest:
       subject: 'Ukentlig lederrapport fra "%{project_title}"'
       preheader: 'Prosjektlederens sammendrag av %{organizationName}'
-      title_your_weekly_report: '%{firstName}, din ukentlige rapport'
-      text_introduction: 'Vi har samlet de innspillene som har generert mest aktivitet den siste uken. Finn ut hva som skjer med prosjektet ditt!'
-      cta_manage: 'Administrer prosjektet ditt'
+      title: '%{firstName}, din ukentlige rapport'
+      event_description: 'Vi har samlet de innspillene som har generert mest aktivitet den siste uken. Finn ut hva som skjer med prosjektet ditt!'
+      cta_button: 'Administrer prosjektet ditt'
       new_users: 'Nye brukere'
       new_ideas: 'Nye ideer'
       new_comments: 'Nye kommentarer'
@@ -246,10 +252,10 @@ nb:
       x_days_ago_by_author: '%{x} dager siden av %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} kommenterte:'
-      cta_reply_to: 'Se %{commentAuthor} sin kommentar'
+      cta_button: 'Se %{authorFirstName}''s kommentar'
       days_ago: '%{numberOfDays} dager siden'
       event_description: '%{authorName} la til en ny kommentar på plattformen din.'
-      main_header: '%{firstName}, en ny kommentar har blitt lagt ut på plattformen din'
+      title: '%{firstName}, en ny kommentar har blitt lagt ut på plattformen din'
       subject: 'En ny kommentar har blitt lagt ut på medvirkningsplattformen til %{organizationName}'
       preheader: '%{authorName} la igjen en kommentar'
       today: I dag
@@ -269,16 +275,23 @@ nb:
         option: '%{authorName} kommenterte et alternativ du følger'
         proposal: '%{authorName} kommenterte et forslag du følger'
         petition: '%{authorName} kommenterte en underskriftskampanje du følger'
-    new_idea_for_admin:
-      main_header_publication: 'Et nytt innspill har blitt publisert på plattformen din'
-      event_description_publication: '%{authorName} har sendt inn et nytt innspill på plattformen din. Oppdag det nå, gi tilbakemelding eller endre status!'
-      cta_publication: 'Gi tilbakemelding til %{authorName}'
-      main_header_prescreening: 'Et innspill krever din vurdering'
-      event_description_prescreening: '%{authorName} har sendt inn et nytt innspill på plattformen din.'
-      input_not_visible_prescreening: '<b>Inndataene vil ikke være synlige</b> før du endrer statusen.'
-      cta_prescreening: 'Gå gjennom inndataene'
+    new_idea_for_admin_published:
+      subject: 'Et nytt innspill har blitt publisert på plattformen din'
+      preheader: '%{authorName} publisert en ny inngang på plattformen din'
+      title: 'Et nytt innspill har blitt publisert på plattformen din'
+      event_description: '%{authorName} har sendt inn et nytt innspill på plattformen din. Oppdag det nå, gi tilbakemelding eller endre status!'
+      cta_button: 'Gi tilbakemelding til %{authorName}'
       days_ago: '%{numberOfDays} dager siden'
-      preheader: '%{authorName} har publisert et nytt innspill på plattformen din'
+      today: I dag
+      yesterday: I går
+    new_idea_for_admin_prescreening:
+      subject: 'Et innspill krever din vurdering'
+      preheader: '%{authorName} publisert en ny inngang på plattformen din'
+      title: 'Et innspill krever din vurdering'
+      cta_button: 'Gå gjennom inndataene'
+      event_description: '%{authorName} har sendt inn et nytt innspill på plattformen din.'
+      input_not_visible: '<b>Inndataene vil ikke være synlige</b> før du endrer statusen.'
+      days_ago: '%{numberOfDays} dager siden'
       today: I dag
       yesterday: I går
     comment_on_your_comment:
@@ -289,34 +302,34 @@ nb:
       cta_button: 'Svar til %{authorFirstName}'
       replied: '%{authorFirstName} svarte:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: 'Se kommentar fra %{firstName}'
+      cta_button: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} kommenterte den interne kommentaren din.'
       subject: 'Du har mottatt en kommentar til din interne kommentar på ''%{post}'''
-      main_header: 'Du har mottatt en kommentar til din interne kommentar på ''%{post}'''
-      preheader: '%{authorName} svarte på din interne kommentar på ''%{post}'''
+      title: 'Du har mottatt en kommentar til din interne kommentar på ''%{post}'''
+      preheader: '%{authorNameFull} svarte på din interne kommentar på ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
-      cta_reply_to: 'Se kommentar fra %{firstName}'
+      cta_button: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} kommenterte internt på et innspill du har fått tildelt.'
       subject: 'Ny intern kommentar på ''%{post}'''
-      main_header: 'Ny intern kommentar på ''%{post}'''
+      title: 'Ny intern kommentar på ''%{post}'''
       preheader: 'Ny intern kommentar på ''%{post}'''
     internal_comment_on_idea_you_commented_internally_on:
-      cta_reply_to: 'Se kommentar fra %{firstName}'
+      cta_button: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} har kommentert internt på et innspill du har kommentert internt på.'
       subject: 'Ny intern kommentar på ''%{post}'''
-      main_header: 'Ny intern kommentar på ''%{post}'''
+      title: 'Ny intern kommentar på ''%{post}'''
       preheader: 'Ny intern kommentar på ''%{post}'''
     internal_comment_on_idea_you_moderate:
-      cta_reply_to: 'Se kommentar fra %{firstName}'
+      cta_button: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} kommenterte internt på et innspill i et prosjekt eller en mappe du administrerer.'
       subject: 'Ny intern kommentar på ''%{post}'''
-      main_header: 'Ny intern kommentar på ''%{post}'''
+      title: 'Ny intern kommentar på ''%{post}'''
       preheader: 'Ny intern kommentar på ''%{post}'''
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_reply_to: 'Se kommentar fra %{firstName}'
+      cta_button: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} kommenterte internt på en ikke-tildelt innspill i et ikke-administrert prosjekt.'
       subject: 'Ny intern kommentar på ''%{post}'''
-      main_header: 'Ny intern kommentar på ''%{post}'''
+      title: 'Ny intern kommentar på ''%{post}'''
       preheader: 'Ny intern kommentar på ''%{post}'''
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} ga en oppdatering på ''%{input_title}''.'
@@ -324,11 +337,11 @@ nb:
       subject: 'Offisiell tilbakemelding ble lagt ut på "%{input_title}"'
       preheader: 'Det er en oppdatering på et innspill du følger'
     mention_in_official_feedback:
-      cta_reply_to: 'Svar til %{organizationName}'
+      cta_button: 'Svar til %{organizationName}'
       event_description: '%{organizationName} nevnte deg i sin tilbakemelding på ideen ''%{post}''. Klikk på lenken nedenfor for å delta i samtalen med %{organizationName}'
-      main_header: 'Du har blitt nevnt'
+      title: 'Du har blitt nevnt'
       subject: '%{organizationName} nevnte deg i tilbakemeldingen sin'
-      preheader: '%{commentAuthor} nevnte deg i tilbakemeldingen'
+      preheader: '%{organizationName} nevnte deg i tilbakemeldingen'
     project_moderation_rights_received:
       cta_manage_project: 'Administrer dette prosjektet'
       message_you_became_moderator: 'En administrator av medvirkningsplattformen til %{organizationName} har nettopp gjort deg til prosjektleder for følgende prosjekt:'
@@ -428,7 +441,10 @@ nb:
       message_welcome: 'Gratulerer, du har registrert deg på medvirkningsplattformen %{organizationName}. Du kan nå oppdage plattformen og gjøre din stemme hørt. Du kan også legge til et profilbilde og en kort beskrivelse for å fortelle andre hvem du er.'
       preheader: 'Her er hva du kan gjøre på plattformen %{organizationName}'
     idea_published:
-      subject:
+      subject: 'Ideen din har blitt publisert'
+      preheader: '%{firstName}, gratulerer med å ha lagt ut ditt innspill på plattformen til %{organizationName}. Nå kan du samle støtte.'
+      title: 'Du postet "%{input_title}"'
+      input_type_subject:
         idea: 'Ideen din har blitt publisert'
         question: 'Spørsmålet ditt har blitt publisert'
         contribution: 'Ditt bidrag har blitt publisert'
@@ -437,7 +453,6 @@ nb:
         option: 'Alternativet ditt har blitt publisert'
         proposal: 'Forslaget ditt har blitt publisert'
         petition: 'Din underskriftskampanje har blitt publisert'
-      main_header: 'Du postet "%{input_title}"'
       header_message: 'La oss sørge for at den blir lest.'
       message_get_votes: 'Nå ut til flere mennesker'
       action_published_idea: 'Publisert'
@@ -449,7 +464,6 @@ nb:
       send_email: e-post
       action_share_link: 'Del den via hvilken som helst kanal ved å kopiere %{link}'
       link: lenke
-      preheader: '%{firstName}, gratulerer med å ha lagt ut ditt innspill på plattformen til %{organizationName}. Nå kan du samle støtte.'
     your_input_in_screening:
       main_header:
         idea: 'Ideen din er i "%{prescreening_status_title}"'
@@ -473,10 +487,10 @@ nb:
     native_survey_not_submitted:
       subject: '%{organizationName}: Nesten i mål! Send inn svarene dine'
       preheader: 'Du fullførte ikke undersøkelsen på medvirkningsplattformen til %{organizationName}'
-      title_native_survey_not_submitted: 'Nesten i mål! Send inn svarene dine'
-      body_native_survey_not_submitted: 'Du begynte å dele svarene dine på %{phaseTitle}, men sendte dem ikke inn. Innleveringene stenger på %{phaseEndDate}. Klikk på knappen nedenfor for å fortsette der du slapp.'
-      body_native_survey_not_submitted_no_date: 'Du begynte å dele svarene dine på %{phaseTitle}, men sendte dem ikke inn. Klikk på knappen nedenfor for å fortsette der du slapp.'
-      cta_complete_your_survey_response: 'Fortsett å svare på undersøkelsen'
+      title: 'Nesten i mål! Send inn svarene dine'
+      event_description: 'Du begynte å dele svarene dine på %{phaseTitle} , men sendte dem ikke inn. Klikk på knappen nedenfor for å fortsette der du slapp.'
+      cta_button: 'Fortsett å svare på undersøkelsen'
+      submissions_close: 'Innleveringsfristen går ut på %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Du har ikke sendt inn dine stemmer'
       preheader: 'Du har ikke avgitt stemme på medvirkningsplattformen til %{organizationName}'
@@ -503,7 +517,7 @@ nb:
     event_registration_confirmation:
       subject: "Du er inne! Din registrering for \"%{eventTitle}\" er bekreftet"
       preheader: "%{firstName}, takk for at du registrerte deg for %{eventTitle}"
-      header_message: "%{firstName}, takk for at du registrerte deg for"
+      title: "%{firstName}, takk for at du registrerte deg for"
       event_details:
         labels:
           date: 'Dato'
@@ -511,7 +525,7 @@ nb:
           online_link: 'Online link'
           description: 'Beskrivelse'
           project: 'Prosjekt'
-      cta_go_to_event: 'Se arrangementet'
+      cta_button: 'Se arrangementet'
       cta_add_to_calendar: 'Legg til i kalenderen din'
     voting_phase_started:
       subject: '%{organizationName}: Avstemningsfasen startet for %{projectName}'
