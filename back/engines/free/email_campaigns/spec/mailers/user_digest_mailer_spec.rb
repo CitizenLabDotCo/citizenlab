@@ -77,7 +77,6 @@ RSpec.describe EmailCampaigns::UserDigestMailer do
     end
 
     describe 'when sent to users with a different locale set for each' do
-      let_it_be(:campaign) { EmailCampaigns::Campaigns::UserDigest.create! }
       let_it_be(:event_payload) do
         {
           notifications_count: 2,

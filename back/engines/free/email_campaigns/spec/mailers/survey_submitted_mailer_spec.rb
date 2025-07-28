@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::SurveySubmittedMailer do
     let_it_be(:input) { create(:idea, author: recipient, project: project, creation_phase: project.phases.first) }
     let_it_be(:command) do
       activity = create(:activity, item: input, action: 'published')
-      create(:survey_submitted_campaign).generate_commands(
+      campaign.generate_commands(
         activity: activity,
         recipient: recipient
       ).first.merge({ recipient: recipient })

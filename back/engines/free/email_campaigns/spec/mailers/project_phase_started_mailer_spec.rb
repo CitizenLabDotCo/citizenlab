@@ -8,15 +8,15 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
     let_it_be(:project) { create(:project_with_phases) }
     let_it_be(:phase) { project.phases.first }
     let_it_be(:notification) { create(:project_phase_started, recipient: recipient, project: project, phase: phase) }
+
+    let(:campaign) { create(:project_phase_started_campaign) }
     let(:command) do
       activity = create(:activity, item: notification, action: 'created')
-      create(:project_phase_started_campaign).generate_commands(
+      campaign.generate_commands(
         activity: activity,
         recipient: recipient
       ).first.merge({ recipient: recipient })
     end
-
-    let(:campaign) { create(:project_phase_started_campaign) }
     let(:mailer) { described_class.with(command: command, campaign: campaign) }
     let(:mail) { mailer.campaign_mail.deliver_now }
 

@@ -59,7 +59,7 @@ RSpec.describe EmailCampaigns::Campaign do
 
     it 'does not support multiple campaigns of the same type per context for automated campaigns' do
       phase = create(:phase)
-      phase_campaign = create(:project_phase_started_campaign, context: phase)
+      create(:project_phase_started_campaign, context: phase)
 
       expect do
         create(:project_phase_started_campaign, context: phase)
@@ -68,7 +68,7 @@ RSpec.describe EmailCampaigns::Campaign do
 
     it 'supports multiple campaigns of the same type per context for manual campaigns' do
       context = create(:project)
-      manual_campaign = create(:manual_project_participants_campaign, context:)
+      create(:manual_project_participants_campaign, context:)
 
       expect do
         create(:manual_project_participants_campaign, context: context)
