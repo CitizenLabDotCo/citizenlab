@@ -44,6 +44,7 @@ interface Props {
   id?: string;
   disabled?: boolean;
   children: React.ReactNode;
+  className?: string;
   onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
@@ -53,6 +54,7 @@ const InputContainer = ({
   id,
   disabled = false,
   children,
+  className,
   onClick,
   onMouseEnter,
   onMouseLeave,
@@ -60,7 +62,7 @@ const InputContainer = ({
   return (
     <Container
       id={id}
-      className="e2e-date-phase-picker-input"
+      className={className}
       disabled={disabled}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

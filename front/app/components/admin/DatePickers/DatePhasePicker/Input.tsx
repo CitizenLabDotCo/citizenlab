@@ -20,7 +20,7 @@ const Input = ({ selectedRange, selectedRangeIsOpenEnded, onClick }: Props) => {
   const selectDate = formatMessage(sharedMessages.selectDate);
 
   return (
-    <InputContainer onClick={onClick}>
+    <InputContainer className="e2e-date-phase-picker-input" onClick={onClick}>
       <Box mr="8px">
         {selectedRange.from
           ? selectedRange.from.toLocaleDateString()
