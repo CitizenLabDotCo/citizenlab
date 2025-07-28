@@ -94,6 +94,15 @@ const MultiSelect = ({
             searchPlaceholder={searchPlaceholder}
             onChange={onChange}
             onSearch={onSearch}
+            onEscape={() => {
+              // On press escape: move focus back
+              // to the input and close the dropdown.
+              // Only works after timeout for some reason
+              setTimeout(() => {
+                document.getElementById(selectorId)?.focus();
+                setOpened(false);
+              }, 100);
+            }}
           />
         }
       />
