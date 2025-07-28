@@ -5,7 +5,6 @@ import Box from '../Box';
 import Icon from '../Icon';
 import IconButton from '../IconButton';
 import Input from '../Input';
-import { IconContainer } from '../SearchInput';
 
 interface Props {
   value?: string;
@@ -22,7 +21,7 @@ const SearchInput = ({ value, placeholder, onSearch }: Props) => {
         type="text"
         onChange={onSearch}
       />
-      <IconContainer>
+      <Box position="absolute" right="8px" top="11px">
         {value && value.length > 0 ? (
           <IconButton
             iconName="close"
@@ -35,7 +34,7 @@ const SearchInput = ({ value, placeholder, onSearch }: Props) => {
         ) : (
           <Icon name="search" fill={colors.textSecondary} />
         )}
-      </IconContainer>
+      </Box>
     </Box>
   );
 };
