@@ -76,6 +76,7 @@ import Toggle from './components/Toggle';
 import Tooltip, { TooltipProps } from './components/Tooltip';
 import useBreakpoint from './hooks/useBreakpoint';
 import useWindowSize from './hooks/useWindowSize';
+import InputContainer from './utils/containers/InputContainer';
 import {
   viewportWidths,
   media,
@@ -201,4 +202,5 @@ export {
   Shimmer,
   Divider,
   Quote,
+  InputContainer,
 };

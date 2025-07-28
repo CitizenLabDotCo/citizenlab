@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { Icon, Box } from '@citizenlab/cl2-component-library';
+import { Icon, Box, InputContainer } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
-import InputContainer from '../_shared/InputContainer';
 import sharedMessages from '../_shared/messages';
 import { DateRange } from '../_shared/typings';
 
