@@ -490,7 +490,7 @@ da:
       title: 'Så er vi der næsten! Indsend dine svar'
       event_description: 'Du er begyndt at dele dine svar på %{phaseTitle} , men har ikke sendt dem. Klik på knappen nedenfor for at fortsætte, hvor du slap.'
       cta_button: 'Fortsæt din besvarelse af undersøgelsen'
-      submissions_close: 'Der lukkes for indsendelser på %{phaseEndDate}.'
+      submissions_close: 'Der lukkes for indsendelser den %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Du har ikke indsendt dine stemmer'
       preheader: 'Du har ikke afgivet din stemme på borgerinddragelsesplatformen fra %{organizationName}'
