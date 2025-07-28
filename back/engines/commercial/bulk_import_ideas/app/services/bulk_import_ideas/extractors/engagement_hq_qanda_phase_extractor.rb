@@ -19,7 +19,7 @@ module BulkImportIdeas::Extractors
     end
 
     def ideas_col_range
-      [3, @worksheet[0].size - 1] # Start from column 4 (index 3) to the last column
+      [3, @worksheet[4].size - 1] # Start from column 4 (index 3) to the last column index of header row
     end
 
     def header_row_index(col_index)
