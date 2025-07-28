@@ -6,7 +6,7 @@ const baseKey = {
   type: 'file',
 };
 
-const filePreviewsKeys = {
+const filesKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
   list: (parameters: QueryParameters) => [
@@ -22,4 +22,4 @@ const filePreviewsKeys = {
   ],
 } satisfies QueryKeys;
 
-export default filePreviewsKeys;
+export default filesKeys;
