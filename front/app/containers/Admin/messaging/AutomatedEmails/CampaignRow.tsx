@@ -32,7 +32,7 @@ type Props = CampaignContext & {
 
 const CampaignRow = ({
   campaign,
-  phaseId,
+  phaseId, // TODO: Context type parameter
   projectId,
   onClickViewExample,
 }: Props) => {
@@ -46,6 +46,7 @@ const CampaignRow = ({
 
   const toggleEnabled = () => {
     if (unpersistedContextCampaign) {
+      // TODO: Deal with all types of context
       addCampaign({
         phaseId,
         campaign_name: campaign.attributes.campaign_name,
@@ -72,6 +73,7 @@ const CampaignRow = ({
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
   const handleEditClick = () => {
     if (unpersistedContextCampaign) {
+      // TODO: Deal with all types of context
       addCampaign(
         {
           phaseId,
