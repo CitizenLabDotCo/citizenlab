@@ -31,16 +31,14 @@ namespace :single_use do
       define_method(:filename) do
         current_db_value = model.read_attribute(mounted_as)
 
+        # If no existing filename is present in the DB, this will return nil.
+        # This will cause uploader.file.present? to be false,
+        # leading to skipping in the main Rake task loop.
+        # We explicitly do NOT generate a new UUID here, as this task
+        # is for reprocessing existing files, not creating new ones.
         if current_db_value.present?
           # If a file path exists in the DB, reuse its filename to ensure stability.
           File.basename(current_db_value.to_s)
-        else
-          # If no existing filename is present in the DB, return nil.
-          # This will cause uploader.file.present? to be false,
-          # leading to skipping in the main Rake task loop.
-          # We explicitly do NOT generate a new UUID here, as this task
-          # is for reprocessing existing files, not creating new ones.
-          nil
         end
       end
     end
