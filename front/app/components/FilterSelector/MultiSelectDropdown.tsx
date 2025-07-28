@@ -8,6 +8,7 @@ import {
   Button,
   useBreakpoint,
   Icon,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { includes, isNil } from 'lodash-es';
 import styled from 'styled-components';
@@ -85,6 +86,7 @@ export interface SelectorProps {
   textColor?: string;
   currentTitle: string | JSX.Element;
   handleKeyDown?: (event: KeyboardEvent) => void;
+  isLoading?: boolean;
 }
 
 interface Props extends SelectorProps {
@@ -117,6 +119,7 @@ const MultiSelectDropdown = ({
   textColor,
   currentTitle,
   handleKeyDown,
+  isLoading,
 }: Props) => {
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
   const [focusedIndex, setFocusedIndex] = useState(-1);
@@ -240,6 +243,7 @@ const MultiSelectDropdown = ({
                 );
               })}
             </List>
+            {isLoading && <Spinner />}
           </Box>
         }
       />

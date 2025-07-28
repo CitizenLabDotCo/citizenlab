@@ -19,7 +19,6 @@ const Manager = ({ managerIds, mr = '0px', onChange }: Props) => {
   const { formatMessage } = useIntl();
   const { data: managers } = useUsers({
     pageSize: 500,
-    can_admin: true,
     can_moderate: true,
   });
 

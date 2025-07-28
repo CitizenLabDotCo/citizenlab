@@ -27,6 +27,7 @@ module MultiTenancy
           prescreening_enabled
           expire_days_limit
           reacting_threshold
+          vote_term
         ]
 
         attribute(:start_at) { |phase| serialize_timestamp(phase.start_at) }
