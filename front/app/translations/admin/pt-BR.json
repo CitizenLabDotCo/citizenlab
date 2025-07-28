@@ -2295,7 +2295,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Salvar",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Arquivo atualizado com sucesso.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Pesquisar arquivos",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Tipo de arquivo",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Plano estratégico",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Você só pode carregar um máximo de {maxFiles} arquivos por vez.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Desconhecido",

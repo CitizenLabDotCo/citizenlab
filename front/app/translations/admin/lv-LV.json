@@ -2295,7 +2295,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Saglabāt",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Faili ir veiksmīgi atjaunināti.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Meklēšanas faili",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Faila tips",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Stratēģiskais plāns",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Vienlaikus varat augšupielādēt ne vairāk kā {maxFiles} failus.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Nezināms",
