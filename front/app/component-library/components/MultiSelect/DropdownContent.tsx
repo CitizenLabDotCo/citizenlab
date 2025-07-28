@@ -47,7 +47,6 @@ interface Props {
   searchPlaceholder?: string;
   onChange: (values: string[]) => void;
   onSearch?: (searchTerm: string) => void;
-  onEscape: () => void;
 }
 
 const DropdownContent = ({
@@ -59,8 +58,7 @@ const DropdownContent = ({
   searchPlaceholder,
   onChange,
   onSearch,
-}: // onEscape,
-Props) => {
+}: Props) => {
   const handleCheckboxClick = (value: string) => () => {
     const selectedClone = [...selected];
 
@@ -78,12 +76,6 @@ Props) => {
     if (event.code === 'Space') {
       event.preventDefault();
       handleCheckboxClick(value)();
-    }
-
-    if (event.code === 'Escape') {
-      event.preventDefault();
-      event.stopPropagation();
-      // onEscape();
     }
   };
 
