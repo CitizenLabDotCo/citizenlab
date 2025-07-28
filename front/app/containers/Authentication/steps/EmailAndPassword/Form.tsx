@@ -19,6 +19,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
@@ -100,6 +101,12 @@ const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
+        return;
+      }
+
+      if (e.message === 'force_password_change') {
+        closeModal();
+        clHistory.push(`/password-recovery?force=true&email=${email}`);
         return;
       }
 
