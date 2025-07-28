@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { colors } from '../../utils/styleUtils';
 import Box from '../Box';
 import CheckboxWithLabel from '../CheckboxWithLabel';
+import Spinner from '../Spinner';
 import Text from '../Text';
 
 import { Option } from './typings';
@@ -50,6 +51,7 @@ interface Props {
   selectorId: string;
   options: Option[];
   selected: string[];
+  isLoading: boolean;
   onChange: (values: string[]) => void;
 }
 
@@ -57,6 +59,7 @@ const DropdownContent = ({
   selectorId,
   options,
   selected,
+  isLoading,
   onChange,
 }: Props) => {
   const handleCheckboxClick = (value: string) => () => {
@@ -105,6 +108,11 @@ const DropdownContent = ({
           </CheckboxListItem>
         );
       })}
+      {isLoading && (
+        <Box my="8px">
+          <Spinner />
+        </Box>
+      )}
     </Box>
   );
 };

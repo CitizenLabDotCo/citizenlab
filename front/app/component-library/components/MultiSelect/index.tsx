@@ -13,10 +13,17 @@ interface Props {
   title: string | JSX.Element;
   selected?: string[];
   options: Option[];
+  isLoading?: boolean;
   onChange: (values: string[]) => void;
 }
 
-const MultiSelect = ({ title, selected = [], options, onChange }: Props) => {
+const MultiSelect = ({
+  title,
+  selected = [],
+  options,
+  isLoading = false,
+  onChange,
+}: Props) => {
   const [opened, setOpened] = useState(false);
   const selectorId = useId();
 
@@ -35,6 +42,7 @@ const MultiSelect = ({ title, selected = [], options, onChange }: Props) => {
             selectorId={selectorId}
             options={options}
             selected={selected}
+            isLoading={isLoading}
             onChange={onChange}
           />
         }

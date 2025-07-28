@@ -31,3 +31,13 @@ export const Default: Story = {
     onChange: (values) => console.log('Selected values:', values),
   },
 };
+
+export const Loading: Story = {
+  args: {
+    title: 'Loading options',
+    selected: [],
+    options: [],
+    isLoading: true,
+    onChange: () => {},
+  },
+};
