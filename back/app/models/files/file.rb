@@ -92,9 +92,10 @@ module Files
     before_save :update_metadata
 
     # This callback is used to break the circular destroy dependency between the +File+
-    # and +FileAttachment+ models. It needs to be defined before the associations with
-    # +dependent: :destroy+ for associated records to be able to check whether the
-    # file is being destroyed.
+    # and +FileAttachment+ models (and more specifically with the
+    # +FileAttachment#destroy_orphaned_file+ callback). It needs to be defined before the
+    # associations with +dependent: :destroy+ for associated records to be able to check
+    # whether the file is being destroyed.
     around_destroy :mark_as_being_destroyed
 
     has_many :attachments, class_name: 'Files::FileAttachment', inverse_of: :file, dependent: :destroy
