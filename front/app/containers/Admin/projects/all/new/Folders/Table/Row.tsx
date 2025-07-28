@@ -20,12 +20,14 @@ import useLocalize from 'hooks/useLocalize';
 import FolderMoreActionsMenu from 'containers/Admin/projects/projectFolders/components/ProjectFolderRow/FolderMoreActionsMenu';
 
 import Error from 'components/UI/Error';
+import GanttItemIconBar from 'components/UI/GanttChart/components/GanttItemIconBar';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
+import { getStatusColor } from '../../_shared/utils';
 import { PUBLICATION_STATUS_LABELS } from '../../constants';
 
 import messages from './messages';
@@ -114,9 +116,17 @@ const Row = ({ folder }: Props) => {
         />
       </Td>
       <Td background={colors.grey50} width="100px">
-        <Text m="0" fontSize="s" color="primary">
-          {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
-        </Text>
+        <Box display="flex">
+          <GanttItemIconBar
+            color={getStatusColor(publication_status)}
+            rowHeight={32}
+            ml="0"
+            mr="8px"
+          />
+          <Text m="0" fontSize="s" color="primary">
+            {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
+          </Text>
+        </Box>
       </Td>
       <Td background={colors.grey50} width="40px">
         <Box mr="12px">
