@@ -1,21 +1,23 @@
 import React, { useId, useState } from 'react';
 
 import InputContainer from 'component-library/utils/containers/InputContainer';
-import { IOption } from 'typings';
 
 import Box from '../Box';
 import Dropdown from '../Dropdown';
 
 import DropdownContent from './DropdownContent';
+import { Option } from './typings';
+
+const NOOP = () => {};
 
 interface Props {
   title: string | JSX.Element;
-  selected?: any[];
-  options: IOption[];
-  onChange?: (value: string) => void;
+  selected?: string[];
+  options: Option[];
+  onChange?: (values: string[]) => void;
 }
 
-const MultiSelect = ({ title, selected = [], options }: Props) => {
+const MultiSelect = ({ title, selected = [], options, onChange }: Props) => {
   const [opened, setOpened] = useState(false);
   const selectorId = useId();
 
@@ -34,6 +36,7 @@ const MultiSelect = ({ title, selected = [], options }: Props) => {
             selectorId={selectorId}
             options={options}
             selected={selected}
+            onChange={onChange ?? NOOP}
           />
         }
       />
