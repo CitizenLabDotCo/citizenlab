@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,11 +8,13 @@ import { array, object, string } from 'yup';
 
 import useFiles from 'api/files/useFiles';
 
+import FilesUpload from 'containers/Admin/projects/project/files/components/FilesUpload';
+import { FileWithMeta } from 'containers/Admin/projects/project/files/components/FilesUpload/types';
+
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import GoBackButton from 'components/UI/GoBackButton';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 type Props = {
@@ -20,8 +22,10 @@ type Props = {
 };
 
 const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
-  const projectId = useParams<{ projectId: string }>().projectId;
+  const [filesUploadedFromSensemaking, setFilesUploadedFromSensemaking] =
+    useState<FileWithMeta[]>([]);
 
+  const projectId = useParams<{ projectId: string }>().projectId;
   const { data: files } = useFiles({
     project: [projectId || ''],
     enabled: !!projectId,
@@ -52,6 +56,18 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
       label: file.attributes.name,
     })) || [];
 
+  useEffect(() => {
+    // Add any new filesUploadedFromSensemaking to the existing selected files
+    if (filesUploadedFromSensemaking.length > 0) {
+      const newFileIds = filesUploadedFromSensemaking.map((file) => file.id);
+      const currentValues = methods.getValues('file_ids');
+      const updatedValues = [...currentValues, ...newFileIds];
+
+      // Update the form state with the new file IDs
+      methods.setValue('file_ids', updatedValues);
+    }
+  }, [filesUploadedFromSensemaking, methods]);
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)} />
@@ -72,22 +88,22 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
           options={fileOptions}
           placeholder={formatMessage(messages.attachFiles)}
         />
-
-        {/*  TODO: Make this into a file uploader as well, so users don't need to go to the Files tab. */}
         <Box mt="16px">
-          <FormattedMessage
-            {...messages.addFilesTabMessageWithLink}
-            values={{
-              filesTab: (
-                <Link to={`/admin/projects/${projectId}/files`} target="_blank">
-                  <FormattedMessage {...messages.filesTab} />
-                </Link>
-              ),
-            }}
+          <FilesUpload
+            showInformationSection={false}
+            setUploadedFilesList={setFilesUploadedFromSensemaking}
           />
         </Box>
         <Box display="flex" justifyContent="flex-end" mt="16px">
-          <Button type="submit">{formatMessage(messages.save)}</Button>
+          <Button
+            disabled={
+              !methods.formState.isDirty || methods.formState.isSubmitting
+            }
+            buttonStyle="admin-dark"
+            type="submit"
+          >
+            {formatMessage(messages.save)}
+          </Button>
         </Box>
       </Box>
     </FormProvider>
