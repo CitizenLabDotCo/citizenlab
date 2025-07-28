@@ -14,4 +14,6 @@ class WebApi::V1::FolderMiniSerializer < WebApi::V1::BaseSerializer
   has_many :moderators, serializer: ::WebApi::V1::UserSerializer do |object, params|
     params.dig(:moderators_per_folder, object.id) || []
   end
+
+  has_many :images, serializer: ::WebApi::V1::ImageSerializer
 end

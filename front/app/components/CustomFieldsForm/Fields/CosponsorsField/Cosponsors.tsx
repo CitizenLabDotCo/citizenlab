@@ -4,7 +4,7 @@ import { MentionItem } from 'react-mentions';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IUser } from 'api/users/types';
-import useUsersWithIds from 'api/users/useUsersByIds';
+import useUsersWithIds from 'api/users/useUsersWithIds';
 
 import messages from 'components/Form/Components/Controls/messages';
 import MentionsTextArea from 'components/UI/MentionsTextArea';

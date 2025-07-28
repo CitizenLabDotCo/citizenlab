@@ -5,7 +5,6 @@ import {
   Button,
   colors,
   IconButton,
-  Tooltip,
 } from '@citizenlab/cl2-component-library';
 
 import { IFileData } from 'api/files/types';
@@ -26,16 +25,14 @@ const DownloadFileButton = ({ file, variant = 'button-text' }: Props) => {
   if (variant === 'icon') {
     return (
       <Box display="flex">
-        <Tooltip content={formatMessage(messages.downloadFile)}>
-          <IconButton
-            mt="3px"
-            iconHeight="22px"
-            iconName="download"
-            onClick={() => saveFileToDisk(file)}
-            a11y_buttonActionMessage={formatMessage(messages.downloadFile)}
-            iconColor={colors.coolGrey600}
-          />
-        </Tooltip>
+        <IconButton
+          mt="3px"
+          iconHeight="22px"
+          iconName="download"
+          onClick={() => saveFileToDisk(file)}
+          a11y_buttonActionMessage={formatMessage(messages.downloadFile)}
+          iconColor={colors.coolGrey600}
+        />
       </Box>
     );
   }
@@ -43,7 +40,7 @@ const DownloadFileButton = ({ file, variant = 'button-text' }: Props) => {
     <Box display="flex">
       <Button
         mt="12px"
-        buttonStyle="admin-dark"
+        buttonStyle="admin-dark-outlined"
         onClick={() => saveFileToDisk(file)}
         text={formatMessage(messages.downloadFile)}
         fontSize="s"

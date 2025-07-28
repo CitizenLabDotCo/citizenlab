@@ -18,6 +18,7 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 import { useIntl } from 'utils/cl-intl';
 
+import ColHeader from '../../_shared/ColHeader';
 import projectMessages from '../../Projects/Table/messages';
 import { useParams } from '../utils';
 
@@ -77,9 +78,9 @@ const Table = () => {
       >
         <Thead>
           <Tr background={colors.grey50}>
-            <Th py="16px">{formatMessage(messages.folder)}</Th>
-            <Th py="16px">{formatMessage(messages.managers)}</Th>
-            <Th py="16px">{formatMessage(messages.status)}</Th>
+            <ColHeader>{formatMessage(messages.folder)}</ColHeader>
+            <ColHeader>{formatMessage(messages.managers)}</ColHeader>
+            <ColHeader>{formatMessage(messages.status)}</ColHeader>
             <Th />
           </Tr>
         </Thead>
