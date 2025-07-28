@@ -22,6 +22,8 @@ RUN apt-get update                                        \
    build-essential                                        \
    curl                                                   \
    lsb-release                                            \
+   # Ensure a recent and comprehensive set of CA certificates is installed
+   ca-certificates                                        \
    # Required to install git dependencies in Gemfile and by bundle-audit
    git                                                    \
    libgeos-dev                                            \
@@ -37,6 +39,8 @@ RUN apt-get update                                        \
    jpegoptim                                              \
    optipng                                                \
    pngquant                                               \
+   # Used to selectively strip EXIF metadata from images
+   libimage-exiftool-perl                                 \
    # jemalloc
    libjemalloc2                                           \
    # tiktoken_ruby

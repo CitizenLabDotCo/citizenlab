@@ -3,7 +3,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
     before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]
-    skip_after_action :verify_authorized, only: %i[supported_campaign_types]
+    skip_after_action :verify_authorized, only: %i[supported_campaign_names]
 
     def index
       @campaigns = CampaignPolicy::Scope.new(pundit_user, Campaign, campaign_context)
@@ -145,11 +145,11 @@ module EmailCampaigns
       render json: raw_json(EmailCampaigns::Delivery.status_counts(@campaign.id))
     end
 
-    def supported_campaign_types
-      supported_campaigns = DeliveryService::CAMPAIGN_CLASSES.select do |claz|
+    def supported_campaign_names
+      campaigns = DeliveryService::CAMPAIGN_CLASSES.select do |claz|
         claz.supports_context?(campaign_context)
       end
-      render json: raw_json(supported_campaigns.map(&:campaign_name))
+      render json: raw_json(campaigns.map(&:campaign_name))
     end
 
     private

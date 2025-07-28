@@ -26,7 +26,7 @@ resource 'Events' do
         assert_status 200
 
         expect(json_response_body[:events].size).to eq(page_size)
-        expect(json_response_body[:events].first.keys).to match_array(%i[id project_id title title_multiloc description description_multiloc location location_multiloc location_point attendees_count start_at end_at created_at updated_at])
+        expect(json_response_body[:events].first.keys).to match_array(%i[id project_id title title_multiloc description description_multiloc location location_multiloc location_point attendees_count maximum_attendees start_at end_at created_at updated_at])
 
         total_pages = (events.size.to_f / page_size).ceil
         expect(json_response_body[:meta]).to eq({ total_pages: total_pages, current_page: 1 })

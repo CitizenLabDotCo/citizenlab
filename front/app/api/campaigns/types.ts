@@ -161,16 +161,14 @@ export type CampaignName =
   | RegisterUserCampaignName
   | AdminModeratorCampaignName;
 
-export interface QueryParameters {
+export interface QueryParameters extends CampaignContext {
   manual?: boolean;
   withoutCampaignNames?: CampaignName[];
   pageSize?: number;
   pageNumber?: number;
-  projectId?: string;
-  phaseId?: string;
 }
 
-export interface CampaignAdd {
+export interface CampaignAdd extends CampaignContext {
   campaign_name: string;
   enabled?: boolean;
   subject_multiloc: Multiloc;
@@ -178,6 +176,9 @@ export interface CampaignAdd {
   sender: string;
   reply_to?: string;
   group_ids?: string[];
-  projectId?: string;
-  phaseId?: string;
 }
+
+export type CampaignContext = {
+  phaseId?: string;
+  projectId?: string;
+};
