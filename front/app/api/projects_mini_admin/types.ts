@@ -1,22 +1,32 @@
-import { Multiloc, Pagination, ILinks, IRelationship } from 'typings';
+import {
+  Multiloc,
+  Pagination,
+  ILinks,
+  IRelationship,
+  SupportedLocale,
+} from 'typings';
 
+import { ParticipationMethod } from 'api/phases/types';
 import { PublicationStatus, Visibility } from 'api/projects/types';
-
-import { Keys } from 'utils/cl-react-query/types';
-
-import projectsMiniAdminKeys from './keys';
 
 export type Parameters = {
   status?: PublicationStatus[];
   managers?: string[];
   search?: string;
-  start_at?: string;
-  end_at?: string;
+  min_start_date?: string;
+  max_start_date?: string;
   participation_states?: ParticipationState[];
+  folder_ids?: string[];
+  participation_methods?: ParticipationMethod[];
+  visibility?: Visibility[];
+  discoverability?: ('listed' | 'unlisted')[];
   sort:
     | 'recently_viewed'
     | 'phase_starting_or_ending_soon'
-    | 'recently_created';
+    | 'recently_created'
+    | 'alphabetically_asc'
+    | 'alphabetically_desc';
+  locale: SupportedLocale;
 } & Pagination;
 
 export type ParticipationState =
@@ -24,8 +34,6 @@ export type ParticipationState =
   | 'collecting_data'
   | 'informing'
   | 'past';
-
-export type ProjectsMiniAdminKeys = Keys<typeof projectsMiniAdminKeys>;
 
 export type ProjectsMiniAdmin = {
   data: ProjectMiniAdminData[];
@@ -47,11 +55,11 @@ export type ProjectMiniAdminData = {
     visible_to: Visibility;
   };
   relationships: {
-    current_phase?: {
-      data: IRelationship | null;
-    };
     folder?: {
       data: IRelationship | null;
+    };
+    phases?: {
+      data: IRelationship[];
     };
   };
 };

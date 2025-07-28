@@ -102,6 +102,8 @@ interface Props extends DefaultProps {
   minWidth?: string;
   mr?: string;
   ml?: string;
+  isLoading?: boolean;
+  onOpen?: () => void;
 }
 
 const FilterSelector = ({
@@ -128,6 +130,8 @@ const FilterSelector = ({
   filterSelectorStyle = 'text',
   mr,
   ml,
+  isLoading,
+  onOpen,
 }: Props) => {
   const baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   const [opened, setOpened] = useState(false);
@@ -165,7 +169,13 @@ const FilterSelector = ({
   };
 
   const toggleValuesList = () => {
-    setOpened((current) => !current);
+    setOpened((current) => {
+      const willOpen = !current;
+      if (willOpen && onOpen) {
+        onOpen();
+      }
+      return willOpen;
+    });
   };
 
   const closeExpanded = () => {
@@ -247,6 +257,7 @@ const FilterSelector = ({
           onChange={selectionChange}
           selectorId={selectorId}
           name={name}
+          isLoading={isLoading}
           {...sharedProps}
         />
       ) : (

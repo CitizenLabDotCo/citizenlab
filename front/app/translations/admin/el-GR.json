@@ -18,7 +18,6 @@
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Δημιουργία έργου",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Δημιουργήστε ένα έργο με βάση το πρότυπο '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Go back",
   "app.components.ProjectTemplatePreview.goBackTo": "Επιστρέψτε στο {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Θέλετε να χρησιμοποιήσετε αυτό το πρότυπο για το δικό σας έργο συμμετοχής;",

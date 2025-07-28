@@ -10,9 +10,13 @@ import Status from '../../_shared/Status';
 import { useParam, setParam } from '../utils';
 
 import Dates from './Dates';
+import DiscoverabilityFilter from './Discoverability';
+import Folders from './Folders';
 import messages from './messages';
+import ParticipationMethods from './ParticipationMethods';
 import ParticipationStates from './ParticipationStates';
 import Sort from './Sort';
+import VisibilityFilter from './Visibility';
 
 const Filters = () => {
   const { formatMessage } = useIntl();
@@ -20,45 +24,102 @@ const Filters = () => {
   const statuses = useParam('status') ?? [];
   const participationStates = useParam('participation_states') ?? [];
   const searchValue = useParam('search');
+  const folderIdsParam = useParam('folder_ids');
+  const folderIds = Array.isArray(folderIdsParam) ? folderIdsParam : [];
+  const participationMethods = useParam('participation_methods') ?? [];
+  const visibility = useParam('visibility') ?? [];
+  const discoverability = useParam('discoverability') ?? [];
 
   return (
     <Box
       display="flex"
-      flexDirection="row"
-      justifyContent="space-between"
-      alignItems="center"
+      flexDirection="column"
+      justifyContent="flex-end"
+      gap="16px"
     >
-      <Box display="flex" alignItems="center" w="100%">
-        <Sort mr="12px" />
-        <Manager
-          managerIds={managerIds}
-          onChange={(value) => {
-            setParam('managers', value);
-          }}
-        />
-        <Status
-          mr="0px"
-          values={statuses}
-          onChange={(publicationStatuses) => {
-            setParam('status', publicationStatuses);
-          }}
-        />
-        <ParticipationStates
-          mr="8px"
-          participationStates={participationStates}
-          onChange={(value) => {
-            setParam('participation_states', value);
-          }}
-        />
+      <Box
+        minWidth="300px"
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="center"
+      >
         <Dates />
+        <Box mr="12px" minWidth="300px">
+          <Sort />
+        </Box>
+        <Search
+          value={searchValue}
+          placeholder={formatMessage(messages.search)}
+          onChange={(search) => {
+            setParam('search', search);
+          }}
+        />
       </Box>
-      <Search
-        value={searchValue}
-        placeholder={formatMessage(messages.search)}
-        onChange={(search) => {
-          setParam('search', search);
-        }}
-      />
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        w="100%"
+      >
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          w="100%"
+          flexWrap="wrap"
+        >
+          <Manager
+            managerIds={managerIds}
+            onChange={(value) => {
+              setParam('managers', value);
+            }}
+          />
+          <Status
+            mr="0px"
+            values={statuses}
+            onChange={(publicationStatuses) => {
+              setParam('status', publicationStatuses);
+            }}
+          />
+          <Folders
+            folderIds={folderIds}
+            onChange={(value) => setParam('folder_ids', value)}
+          />
+          <Box>
+            <ParticipationStates
+              participationStates={participationStates}
+              onChange={(value) => {
+                setParam('participation_states', value);
+              }}
+            />
+          </Box>
+          <Box mr="8px">
+            <ParticipationMethods
+              participationMethods={participationMethods}
+              onChange={(value) => {
+                setParam('participation_methods', value);
+              }}
+            />
+          </Box>
+          <Box mr="8px">
+            <VisibilityFilter
+              visibility={visibility}
+              onChange={(value) => {
+                setParam('visibility', value);
+              }}
+            />
+          </Box>
+          <Box mr="8px">
+            <DiscoverabilityFilter
+              discoverability={discoverability}
+              onChange={(value) => {
+                setParam('discoverability', value);
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 };

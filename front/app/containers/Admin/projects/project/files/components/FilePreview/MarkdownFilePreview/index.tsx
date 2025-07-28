@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Spinner, Box, Text, Divider } from '@citizenlab/cl2-component-library';
+import { Spinner, Box, Text } from '@citizenlab/cl2-component-library';
 import ReactMarkdown from 'react-markdown';
 
 import { IFileData } from 'api/files/types';
@@ -22,16 +22,38 @@ const MarkdownFilePreview = ({ file }: Props) => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch(url) // Fetch markdown file content
-      .then((result) => {
-        if (result.ok) {
-          return result.text();
+    // AbortController to cancel fetch if component unmounts
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const fetchMarkdown = async () => {
+      try {
+        const response = await fetch(url, { signal });
+        if (!response.ok) {
+          throw new Error('Failed to fetch markdown file');
         }
-        setError(true);
-        return;
-      })
-      .then(setMarkdown)
-      .catch(() => setError(true));
+        const text = await response.text();
+        setMarkdown(text);
+      } catch (err) {
+        // Don't set error state if the request was aborted
+        if (err.name !== 'AbortError') {
+          setError(true);
+        }
+      }
+    };
+
+    fetchMarkdown();
+
+    // Set up timeout to abort after 5 seconds
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+    }, 5000);
+
+    // Cleanup function
+    return () => {
+      controller.abort(); // Cancel the fetch
+      clearTimeout(timeoutId); // Cancel the timeout
+    };
   }, [url]);
 
   if (error) {
@@ -51,7 +73,6 @@ const MarkdownFilePreview = ({ file }: Props) => {
 
   return (
     <Box mt="24px">
-      <Divider />
       <Box mt="28px">
         <ReactMarkdown>{markdown}</ReactMarkdown>
       </Box>
