@@ -33,7 +33,7 @@ class WebApi::V1::FoldersController < ApplicationController
     project_folders = policy_scope(ProjectFolders::Folder)
     project_folders = FoldersFinderAdminService.execute(project_folders, params)
     project_folders = paginate project_folders
-    project_folders = project_folders.includes(:admin_publication)
+    project_folders = project_folders.includes(:admin_publication, :images)
 
     authorize project_folders
 
@@ -58,7 +58,7 @@ class WebApi::V1::FoldersController < ApplicationController
         visible_children_count_by_parent_id: visible_children_count_by_parent_id,
         moderators_per_folder: moderators_per_folder
       ),
-      include: [:moderators]
+      include: %i[moderators images]
     )
   end
 
