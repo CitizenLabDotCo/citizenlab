@@ -24,7 +24,7 @@ type Props = {
   setModalOpen?: (open: boolean) => void;
   setShowFirstUploadView?: (value: boolean) => void;
   showInformationSection?: boolean;
-  setUploadedFilesList?: (files: FileWithMeta[]) => void;
+  afterUpload?: (uploadedFiles: FileWithMeta[]) => void;
 };
 
 const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
@@ -35,7 +35,7 @@ const FilesUpload = ({
   setModalOpen,
   setShowFirstUploadView,
   showInformationSection = true,
-  setUploadedFilesList,
+  afterUpload,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
@@ -100,11 +100,11 @@ const FilesUpload = ({
     if (finishedUploading) {
       // If the upload is finished, return the list of successfully uploaded files
       // to the parent component, if this callback is provided.
-      if (setUploadedFilesList) {
+      if (afterUpload) {
         const successfullyUploadedFiles = fileList.filter(
           (file) => file.status === 'uploaded'
         );
-        setUploadedFilesList(successfullyUploadedFiles);
+        afterUpload(successfullyUploadedFiles);
       }
     }
   }, [
@@ -112,7 +112,7 @@ const FilesUpload = ({
     finishedUploading,
     setModalOpen,
     setShowFirstUploadView,
-    setUploadedFilesList,
+    afterUpload,
   ]);
 
   return (

@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.files.attachFiles',
     defaultMessage: 'Attach files',
   },
+  attachFilesFromProject: {
+    id: 'app.containers.AdminPage.projects.project.analysis.files.attachFilesFromProject',
+    defaultMessage: 'Attach files from project',
+  },
   attachFilesTooltip: {
     id: 'app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip',
     defaultMessage:

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback } from 'react';
 
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,14 +17,12 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+
 type Props = {
   setIsFileSelectionOpen: (isOpen: boolean) => void;
 };
 
 const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
-  const [filesUploadedFromSensemaking, setFilesUploadedFromSensemaking] =
-    useState<FileWithMeta[]>([]);
-
   const projectId = useParams<{ projectId: string }>().projectId;
   const { data: files } = useFiles({
     project: [projectId || ''],
@@ -35,10 +33,14 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
 
   // React Hook Form setup
   const schema = object({
-    file_ids: array().of(string()).notRequired(),
+    file_ids: array().of(string().required()).default([]),
   });
 
-  const methods = useForm({
+  type FormData = {
+    file_ids: string[];
+  };
+
+  const methods = useForm<FormData>({
     mode: 'onBlur',
     defaultValues: {
       file_ids: [],
@@ -56,17 +58,18 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
       label: file.attributes.name,
     })) || [];
 
-  useEffect(() => {
-    // Add any new filesUploadedFromSensemaking to the existing selected files
-    if (filesUploadedFromSensemaking.length > 0) {
-      const newFileIds = filesUploadedFromSensemaking.map((file) => file.id);
-      const currentValues = methods.getValues('file_ids');
-      const updatedValues = [...currentValues, ...newFileIds];
-
-      // Update the form state with the new file IDs
-      methods.setValue('file_ids', updatedValues);
-    }
-  }, [filesUploadedFromSensemaking, methods]);
+  const updateSelectedFiles = useCallback(
+    (uploadedFiles: FileWithMeta[]) => {
+      const currentFiles = methods.getValues('file_ids');
+      const newFileIds = uploadedFiles.map((file) => file.id);
+      const newValues = [...currentFiles, ...newFileIds];
+      methods.setValue(
+        'file_ids',
+        newValues.filter((id) => id !== undefined)
+      );
+    },
+    [methods]
+  );
 
   return (
     <FormProvider {...methods}>
@@ -86,12 +89,12 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
         <MultipleSelect
           name="file_ids"
           options={fileOptions}
-          placeholder={formatMessage(messages.attachFiles)}
+          placeholder={formatMessage(messages.attachFilesFromProject)}
         />
         <Box mt="16px">
           <FilesUpload
             showInformationSection={false}
-            setUploadedFilesList={setFilesUploadedFromSensemaking}
+            afterUpload={updateSelectedFiles}
           />
         </Box>
         <Box display="flex" justifyContent="flex-end" mt="16px">
