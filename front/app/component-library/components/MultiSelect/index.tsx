@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import InputContainer from '../../utils/containers/InputContainer';
 import { colors } from '../../utils/styleUtils';
-import Box from '../Box';
+import Box, { BoxMarginProps } from '../Box';
 import Dropdown from '../Dropdown';
 import Icon from '../Icon';
 
@@ -20,7 +20,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-interface Props {
+type Props = {
   title: string | JSX.Element;
   selected?: string[];
   options: Option[];
@@ -29,7 +29,7 @@ interface Props {
   searchPlaceholder?: string;
   onChange: (values: string[]) => void;
   onSearch?: (searchTerm: string) => void;
-}
+} & BoxMarginProps;
 
 const MultiSelect = ({
   title,
@@ -40,6 +40,7 @@ const MultiSelect = ({
   searchPlaceholder,
   onChange,
   onSearch,
+  ...boxProps
 }: Props) => {
   const [opened, setOpened] = useState(false);
   const [hover, setHover] = useState(false);
@@ -47,7 +48,7 @@ const MultiSelect = ({
   const selectorId = useId();
 
   return (
-    <Box>
+    <Box {...boxProps}>
       <Box>
         <InputContainer
           id={selectorId}
