@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { colors } from '../../utils/styleUtils';
 import Box from '../Box';
 import CheckboxWithLabel from '../CheckboxWithLabel';
 
@@ -28,6 +29,9 @@ const CheckboxListItem = styled.li`
   &:focus,
   &.selected {
     background: ${(props) => props.theme.colors.tenantPrimary};
+    label {
+      color: ${colors.white};
+    }
   }
 `;
 
