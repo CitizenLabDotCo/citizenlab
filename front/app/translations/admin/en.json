@@ -2848,6 +2848,7 @@
   "app.containers.AdminPage.projects.project.analysis.files.addFilesTabMessageWithLink": "You can add additional files in the {filesTab}.",
   "app.containers.AdminPage.projects.project.analysis.files.attachFiles": "Attach files",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesDescription": "The AI will consider these files when providing answers:",
+  "app.containers.AdminPage.projects.project.analysis.files.attachFilesFromProject": "Attach files from project",
   "app.containers.AdminPage.projects.project.analysis.files.attachFilesTooltip": "Attach files to provide additional context to the AI to support analysis.",
   "app.containers.AdminPage.projects.project.analysis.files.filesTab": "Files tab",
   "app.containers.AdminPage.projects.project.analysis.files.filesTabLink": "Files tab",
