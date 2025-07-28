@@ -77,12 +77,10 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
     (uploadedFiles: FileWithMeta[]) => {
       const currentFiles = methods.getValues('file_ids');
       const newFileIds = uploadedFiles.map((file) => file.id);
-      const newValues = [...currentFiles, ...newFileIds];
-      methods.setValue(
-        'file_ids',
-        newValues.filter((id) => id !== undefined),
-        { shouldDirty: true }
+      const newValues: string[] = [...currentFiles, ...newFileIds].filter(
+        (id) => id !== undefined
       );
+      methods.setValue('file_ids', newValues, { shouldDirty: true });
     },
     [methods]
   );
