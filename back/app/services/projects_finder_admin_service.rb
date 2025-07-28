@@ -258,20 +258,12 @@ class ProjectsFinderAdminService
     valid_discoverabilities = %w[listed unlisted]
     selected_discoverabilities = discoverability_params & valid_discoverabilities
 
-    return scope if selected_discoverabilities.blank?
-
-    conditions = []
-
+    return scope if selected_discoverabilities.blank? || selected_discoverabilities.length == 2
+    
     if selected_discoverabilities.include?('listed')
-      conditions << scope.klass.where(listed: true)
+      return scope.where(listed: true)
+    else
+      return scope.where(listed:false)
     end
-
-    if selected_discoverabilities.include?('unlisted')
-      conditions << scope.klass.where(listed: false)
-    end
-
-    return scope if conditions.empty?
-
-    scope.merge(conditions.reduce(:or))
   end
 end
