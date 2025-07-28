@@ -19,7 +19,11 @@ const TitleMessage = ({ title, selected, options }: Props) => {
     const selectedOption = options.find(
       (option) => option.value === selected[0]
     );
-    return <>{`${title}: ${truncate(selectedOption?.label ?? '', 15)}`}</>;
+    return (
+      <>
+        {title}: {truncate(selectedOption?.label ?? '', 15)}
+      </>
+    );
   }
 
   return (
