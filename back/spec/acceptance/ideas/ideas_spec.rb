@@ -542,7 +542,7 @@ resource 'Ideas' do
 
           # When editing current_idea, it should be excluded from results
           # but other similar ideas should still be included
-          do_request(idea: { 
+          do_request(idea: {
             id: current_idea.id,
             title_multiloc: { 'en' => 'My similar idea' },
             body_multiloc: { 'en' => 'This is the body of my similar idea' }
