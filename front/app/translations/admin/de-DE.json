@@ -386,7 +386,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.everyone": "Alle",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.externalSurveyPhase": "Phase für externe Umfrage",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.ideationPhase": "Phase für Ideenfindung",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.inPlatformSurveyPhase": "Phase für erweiterte Umfrage auf der Plattform",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.inPlatformSurveyPhase": "Umfrage-Phase",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.informationPhase": "Informationsphase",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.mixedRights": "Gemischte Rechte",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.noEndDate": "Kein Enddatum",
