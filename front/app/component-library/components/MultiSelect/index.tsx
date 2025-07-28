@@ -52,6 +52,7 @@ const MultiSelect = ({
       <Box>
         <InputContainer
           id={selectorId}
+          className={opened ? 'focus' : ''}
           onClick={() => setOpened(!opened)}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
