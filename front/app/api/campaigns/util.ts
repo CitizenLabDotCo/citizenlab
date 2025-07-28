@@ -7,7 +7,7 @@ export function isDraft(campaign: ICampaignData) {
 export function getCampaignsContextPath({
   projectId,
   phaseId,
-}: CampaignContext) {
+}: CampaignContext = {}) {
   if (phaseId) {
     return `phases/${phaseId}/campaigns`;
   } else if (projectId) {

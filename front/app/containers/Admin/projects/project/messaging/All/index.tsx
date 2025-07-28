@@ -29,7 +29,7 @@ const CustomEmails = () => {
   const { projectId } = useParams() as { projectId: string };
   const [currentPage, setCurrentPage] = useState(1);
   const { data: campaigns, fetchNextPage } = useCampaigns({
-    projectId,
+    context: { projectId },
     pageSize: 10,
   });
 

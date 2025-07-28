@@ -25,31 +25,25 @@ import messages from '../messages';
 import CampaignDescription from './CampaignDescription';
 import { CampaignData } from './types';
 
-type Props = CampaignContext & {
+type Props = {
   campaign: CampaignData;
+  context?: CampaignContext;
   onClickViewExample?: () => void;
 };
 
-const CampaignRow = ({
-  campaign,
-  phaseId, // TODO: Context type parameter
-  projectId,
-  onClickViewExample,
-}: Props) => {
-  const hasContext = !!(phaseId || projectId);
+const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const { mutate: addCampaign } = useAddCampaign();
   const { mutate: updateCampaign } = useUpdateCampaign();
   const unpersistedContextCampaign =
-    hasContext && !campaign.relationships.context?.data?.id;
+    context && !campaign.relationships.context?.data?.id;
 
   const toggleEnabled = () => {
     if (unpersistedContextCampaign) {
-      // TODO: Deal with all types of context
       addCampaign({
-        phaseId,
-        campaign_name: campaign.attributes.campaign_name,
+        context,
+        campaign_name: campaign.attributes.campaign_name, // TODO: Don't repeat subject_multiloc etc.
         enabled: !campaign.attributes.enabled,
         subject_multiloc: campaign.attributes.subject_multiloc,
         body_multiloc: campaign.attributes.body_multiloc,
@@ -69,14 +63,13 @@ const CampaignRow = ({
     useFeatureFlag({
       name: 'customised_automated_emails',
     }) &&
-    (!hasContext || campaign.attributes.enabled);
+    (!context || campaign.attributes.enabled);
   const isEditable = (campaign.attributes.editable_regions || []).length > 0;
   const handleEditClick = () => {
     if (unpersistedContextCampaign) {
-      // TODO: Deal with all types of context
       addCampaign(
         {
-          phaseId,
+          context,
           campaign_name: campaign.attributes.campaign_name, // TODO: Don't repeat subject_multiloc etc.
           enabled: campaign.attributes.enabled,
           subject_multiloc: campaign.attributes.subject_multiloc,

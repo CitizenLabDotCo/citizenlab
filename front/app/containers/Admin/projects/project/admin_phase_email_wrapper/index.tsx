@@ -50,7 +50,7 @@ const AdminPhaseEmailWrapper = () => {
               <CampaignRow
                 campaign={stringifyCampaignFields(campaign, localize)}
                 key={campaign.id}
-                phaseId={phaseId}
+                context={{ phaseId }}
               />
             )
           );
