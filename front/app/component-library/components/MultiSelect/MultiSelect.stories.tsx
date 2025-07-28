@@ -12,13 +12,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    title: 'Multi-select',
-    selected: ['option-1'],
+    title: 'Fruit basket',
+    selected: ['apple'],
     options: [
-      { value: 'option-1', label: 'Option 1' },
-      { value: 'option-2', label: 'Option 2' },
-      { value: 'option-3', label: 'Option 3', disabled: true },
-      { value: 'option-4', label: 'Option 4' },
+      { value: 'apple', label: 'Apple' },
+      { value: 'banana', label: 'Banana' },
+      { value: 'coconut', label: 'Coconut', disabled: true },
+      { value: 'durian', label: 'Durian' },
     ],
+    onChange: (values) => console.log('Selected values:', values),
   },
 };

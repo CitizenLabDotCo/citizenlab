@@ -6,15 +6,14 @@ import Box from '../Box';
 import Dropdown from '../Dropdown';
 
 import DropdownContent from './DropdownContent';
+import TitleMessage from './TitleMessage';
 import { Option } from './typings';
-
-const NOOP = () => {};
 
 interface Props {
   title: string | JSX.Element;
   selected?: string[];
   options: Option[];
-  onChange?: (values: string[]) => void;
+  onChange: (values: string[]) => void;
 }
 
 const MultiSelect = ({ title, selected = [], options, onChange }: Props) => {
@@ -25,7 +24,7 @@ const MultiSelect = ({ title, selected = [], options, onChange }: Props) => {
     <Box>
       <Box>
         <InputContainer id={selectorId} onClick={() => setOpened(!opened)}>
-          {title}
+          <TitleMessage title={title} selected={selected} options={options} />
         </InputContainer>
       </Box>
       <Dropdown
@@ -36,7 +35,7 @@ const MultiSelect = ({ title, selected = [], options, onChange }: Props) => {
             selectorId={selectorId}
             options={options}
             selected={selected}
-            onChange={onChange ?? NOOP}
+            onChange={onChange}
           />
         }
       />
