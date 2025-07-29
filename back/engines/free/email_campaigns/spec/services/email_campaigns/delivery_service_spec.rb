@@ -97,6 +97,18 @@ describe EmailCampaigns::DeliveryService do
         .exactly(1).times
     end
 
+    it 'doesn\'t raise errors while processing all types of campaigns' do
+      activities = [activity, create(:activity, item: create(:area))]
+      campaign.destroy!
+      service.campaign_classes.each do |klaz|
+        factory_type = :"#{klaz.name.demodulize.underscore}_campaign"
+        create(factory_type)
+      end
+      activities.each do |activity|
+        expect { service.send_on_activity(activity) }.not_to raise_error
+      end
+    end
+
     context 'on project_phase_upcoming notification' do
       let!(:campaign) { create(:project_phase_upcoming_campaign) }
       let(:notification) { create(:project_phase_upcoming) }
