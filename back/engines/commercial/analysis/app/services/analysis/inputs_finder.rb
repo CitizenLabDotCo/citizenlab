@@ -50,6 +50,7 @@ module Analysis
       scope = inputs
       if params[:input_custom_field_no_empty_values] && analysis.main_custom_field_id
         scope = scope.where.not("ideas.custom_field_values->>'#{analysis.main_custom_field.key}' IS NULL")
+          .where("regexp_replace(custom_field_values->>'#{analysis.main_custom_field.key}', '[[:space:]]+', '', 'g') != ''")
       end
       scope
     end
