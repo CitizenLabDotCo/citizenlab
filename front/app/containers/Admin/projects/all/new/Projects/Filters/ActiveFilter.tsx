@@ -63,9 +63,15 @@ interface Props {
   filterType: FilterType;
   config: FilterConfig;
   onRemove: () => void;
+  canRemove?: boolean;
 }
 
-const ActiveFilter = ({ filterType, config, onRemove }: Props) => {
+const ActiveFilter = ({
+  filterType,
+  config,
+  onRemove,
+  canRemove = true,
+}: Props) => {
   const [FilterComponent, setFilterComponent] =
     useState<React.ComponentType<FilterComponentProps> | null>(null);
 
@@ -149,6 +155,7 @@ const ActiveFilter = ({ filterType, config, onRemove }: Props) => {
       borderColor="grey300"
       borderRadius="4px"
       background="white"
+      py="10px"
     >
       {FilterComponent && (
         <Box flex="1">
@@ -156,14 +163,16 @@ const ActiveFilter = ({ filterType, config, onRemove }: Props) => {
         </Box>
       )}
 
-      <Button
-        buttonStyle="text"
-        icon="close"
-        onClick={onRemove}
-        text=""
-        iconSize="16px"
-        px="0px"
-      />
+      {canRemove && (
+        <Button
+          buttonStyle="text"
+          icon="close"
+          onClick={onRemove}
+          text=""
+          iconSize="16px"
+          p="0px"
+        />
+      )}
     </Box>
   );
 };
