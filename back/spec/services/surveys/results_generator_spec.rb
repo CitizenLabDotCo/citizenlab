@@ -110,8 +110,8 @@ RSpec.describe Surveys::ResultsGenerator do
       # Documenting the behavior for 'empty' text fields explicitly.
       it 'does not return count empty text responses' do
         text_answers = project.phases.first.ideas
-                       .where(Arel.sql("custom_field_values ? '#{text_field.key}'"))
-                       .pluck(Arel.sql("custom_field_values->>'#{text_field.key}'"))
+          .where(Arel.sql("custom_field_values ? '#{text_field.key}'"))
+          .pluck(Arel.sql("custom_field_values->>'#{text_field.key}'"))
 
         expect(text_answers).to include('', "   \n")
         expect(generated_results[:results][1][:textResponses].pluck(:answer)).not_to include('', "   \n")
