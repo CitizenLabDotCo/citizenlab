@@ -16,7 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 import { getStatusColor } from '../_shared/utils';
 import Filters from '../Projects/Filters';
 import projectMessages from '../Projects/Table/messages';
-import { useParams } from '../Projects/utils';
+import { useParams } from '../_shared/FilterBar/Filters/params';
 
 import messages from './messages';
 import ProjectGanttChart from './ProjectGanttChart';

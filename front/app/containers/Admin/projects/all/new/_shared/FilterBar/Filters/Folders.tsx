@@ -10,7 +10,7 @@ import FilterSelector, {
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
+import messages from '../messages';
 
 interface Props {
   value: string[];

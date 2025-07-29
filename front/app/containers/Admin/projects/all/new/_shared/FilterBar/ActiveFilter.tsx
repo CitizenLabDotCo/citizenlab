@@ -4,9 +4,8 @@ import { Box, colors, Icon } from '@citizenlab/cl2-component-library';
 
 import { Parameters } from 'api/projects_mini_admin/types';
 
-import { useParam, setParam } from '../utils';
-
 import { FilterType } from './DynamicFilters';
+import { useParam, setParam } from './Filters/params';
 
 export interface FilterComponentProps {
   value: string[];
@@ -44,7 +43,7 @@ const ActiveFilter = ({ config, onRemove, canRemove = true }: Props) => {
     } = {
       manager: () => import('./Filters/Manager'),
       status: () => import('./Filters/Status'),
-      folders: () => import('./Folders'),
+      folders: () => import('./Filters/Folders'),
       participation_states: () => import('./Filters/ParticipationStates'),
       participation_methods: () => import('./Filters/ParticipationMethods'),
       visibility: () => import('./Filters/Visibility'),

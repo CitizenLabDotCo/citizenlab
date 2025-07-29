@@ -9,14 +9,16 @@ import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
 
+import { useParam, setParam } from './params';
+
 interface Props {
-  value: string[];
   mr?: string;
-  onChange: (value: string[]) => void;
 }
 
-const Manager = ({ value, mr = '0px', onChange }: Props) => {
+const Manager = ({ mr = '0px' }: Props) => {
   const { formatMessage } = useIntl();
+  const managerIds = useParam('managers') ?? [];
+
   const { data: managers } = useUsers({
     pageSize: 500,
     can_moderate: true,
@@ -31,10 +33,12 @@ const Manager = ({ value, mr = '0px', onChange }: Props) => {
   return (
     <FilterSelector
       multipleSelectionAllowed
-      selected={value}
+      selected={managerIds}
       values={options}
       mr={mr}
-      onChange={onChange}
+      onChange={(managerIds) => {
+        setParam('managers', managerIds);
+      }}
       title={formatMessage(messages.manager)}
       name="manager-select"
     />
