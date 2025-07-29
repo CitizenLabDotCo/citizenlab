@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { Parameters } from 'api/projects_mini_admin/types';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
 import sharedMessages from '../../_shared/messages';
@@ -44,12 +44,59 @@ type FilterComponentProps =
       onChange: (discoverability: string[]) => void;
     };
 
-interface FilterConfig {
+export interface FilterConfig {
   type: FilterType;
   label: string;
-  paramKey: string;
+  paramKey: keyof Parameters;
   component: React.ComponentType<FilterComponentProps>;
 }
+
+const getFilterConfigs = (
+  formatMessage: (message: MessageDescriptor) => string
+): FilterConfig[] => [
+  {
+    type: 'manager',
+    label: formatMessage(sharedMessages.manager),
+    paramKey: 'managers',
+    component: () => null,
+  },
+  {
+    type: 'status',
+    label: formatMessage(messages.status),
+    paramKey: 'status',
+    component: () => null,
+  },
+  {
+    type: 'folders',
+    label: formatMessage(messages.folders),
+    paramKey: 'folder_ids',
+    component: () => null,
+  },
+  {
+    type: 'participation_states',
+    label: formatMessage(messages.participationStates),
+    paramKey: 'participation_states',
+    component: () => null,
+  },
+  {
+    type: 'participation_methods',
+    label: formatMessage(messages.participationMethodLabel),
+    paramKey: 'participation_methods',
+    component: () => null,
+  },
+  {
+    type: 'visibility',
+    label: formatMessage(messages.visibilityLabel),
+    paramKey: 'visibility',
+    component: () => null,
+  },
+  {
+    type: 'discoverability',
+    label: formatMessage(messages.discoverabilityLabel),
+    paramKey: 'discoverability',
+    component: () => null,
+  },
+];
 
 const DynamicFilters = () => {
   const { formatMessage } = useIntl();
@@ -75,51 +122,10 @@ const DynamicFilters = () => {
       activeFilters[0] === 'manager') ||
     (isUserAdmin && activeFilters.length === 0)
   );
-
-  const FILTER_CONFIGS: FilterConfig[] = [
-    {
-      type: 'manager',
-      label: formatMessage(sharedMessages.manager),
-      paramKey: 'managers',
-      component: () => null,
-    },
-    {
-      type: 'status',
-      label: formatMessage(messages.status),
-      paramKey: 'status',
-      component: () => null,
-    },
-    {
-      type: 'folders',
-      label: formatMessage(messages.folders),
-      paramKey: 'folder_ids',
-      component: () => null,
-    },
-    {
-      type: 'participation_states',
-      label: formatMessage(messages.participationStates),
-      paramKey: 'participation_states',
-      component: () => null,
-    },
-    {
-      type: 'participation_methods',
-      label: formatMessage(messages.participationMethodLabel),
-      paramKey: 'participation_methods',
-      component: () => null,
-    },
-    {
-      type: 'visibility',
-      label: formatMessage(messages.visibilityLabel),
-      paramKey: 'visibility',
-      component: () => null,
-    },
-    {
-      type: 'discoverability',
-      label: formatMessage(messages.discoverabilityLabel),
-      paramKey: 'discoverability',
-      component: () => null,
-    },
-  ];
+  const filterConfigs = useMemo(
+    () => getFilterConfigs(formatMessage),
+    [formatMessage]
+  );
 
   // Initialize filters from URL only once on mount
   useEffect(() => {
@@ -271,7 +277,7 @@ const DynamicFilters = () => {
   };
 
   const handleRemoveFilter = (filterType: FilterType) => {
-    const config = FILTER_CONFIGS.find((c) => c.type === filterType);
+    const config = filterConfigs.find((c) => c.type === filterType);
 
     // Simple role-based check: project managers can't remove manager filter
     const isUserProjectManager = isModerator(authUser) && !isAdmin(authUser);
@@ -292,14 +298,14 @@ const DynamicFilters = () => {
 
     // Clear all parameters
     activeFilters.forEach((filterType) => {
-      const config = FILTER_CONFIGS.find((c) => c.type === filterType);
+      const config = filterConfigs.find((c) => c.type === filterType);
       if (config) {
         setParam(config.paramKey as keyof Parameters, []);
       }
     });
   };
 
-  const availableFilters = FILTER_CONFIGS.filter(
+  const availableFilters = filterConfigs.filter(
     (config) => !activeFilters.includes(config.type)
   );
 
@@ -330,7 +336,7 @@ const DynamicFilters = () => {
 
         {/* Dynamic Filters */}
         {activeFilters.map((filterType) => {
-          const config = FILTER_CONFIGS.find((c) => c.type === filterType);
+          const config = filterConfigs.find((c) => c.type === filterType);
           if (!config) return null;
 
           // Simple role-based check for remove button visibility
