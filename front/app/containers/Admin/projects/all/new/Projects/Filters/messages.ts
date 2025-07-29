@@ -129,4 +129,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.hidden',
     defaultMessage: 'Hidden',
   },
+  addFilter: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.addFilter',
+    defaultMessage: 'Add filter',
+  },
+  clear: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.clear',
+    defaultMessage: 'Clear',
+  },
 });
