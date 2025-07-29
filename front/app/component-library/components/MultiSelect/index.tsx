@@ -29,6 +29,7 @@ export type Props = {
   searchPlaceholder?: string;
   onChange: (values: string[]) => void;
   onSearch?: (searchTerm: string) => void;
+  onOpen?: () => void;
   a11y_clearbuttonActionMessage: string;
   a11y_clearSearchButtonActionMessage: string;
 } & BoxMarginProps;
@@ -43,6 +44,7 @@ const MultiSelect = ({
   searchPlaceholder,
   onChange,
   onSearch,
+  onOpen,
   a11y_clearbuttonActionMessage,
   a11y_clearSearchButtonActionMessage,
   ...boxProps
@@ -61,7 +63,12 @@ const MultiSelect = ({
         <InputContainer
           id={selectorId}
           className={opened ? 'focus' : ''}
-          onClick={() => setOpened(!opened)}
+          onClick={() => {
+            if (!opened) {
+              onOpen?.();
+            }
+            setOpened(!opened);
+          }}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           onFocus={() => setFocused(true)}

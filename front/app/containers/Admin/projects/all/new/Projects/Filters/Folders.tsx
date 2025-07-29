@@ -4,9 +4,7 @@ import useProjectFolders from 'api/project_folders/useProjectFolders';
 
 import useLocalize from 'hooks/useLocalize';
 
-import FilterSelector, {
-  IFilterSelectorValue,
-} from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -26,10 +24,10 @@ const Folders = ({ folderIds, onChange }: Props) => {
   const { data, isLoading, refetch } = useProjectFolders({}, false);
   const hasFetchedRef = useRef(false);
 
-  const folderOptions: IFilterSelectorValue[] =
+  const folderOptions =
     data?.data.map((folder) => ({
       value: folder.id,
-      text: localize(folder.attributes.title_multiloc),
+      label: localize(folder.attributes.title_multiloc),
     })) ?? [];
 
   const handleOpen = () => {
@@ -40,14 +38,11 @@ const Folders = ({ folderIds, onChange }: Props) => {
   };
 
   return (
-    <FilterSelector
+    <MultiSelect
       title={formatMessage(messages.folders)}
-      name="folders"
-      values={folderOptions}
+      options={folderOptions}
       onChange={onChange}
-      multipleSelectionAllowed
       selected={folderIds}
-      filterSelectorStyle="text"
       isLoading={isLoading}
       onOpen={handleOpen}
     />
