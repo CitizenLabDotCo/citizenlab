@@ -9,7 +9,7 @@ import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
 
-import { useParam, setParam } from './params';
+import { useParam, setParam } from '../../params';
 
 interface Props {
   mr?: string;

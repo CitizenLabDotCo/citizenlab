@@ -10,7 +10,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import { setParam, useParam } from './params';
+import { setParam, useParam } from '../../params';
 
 const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
   {

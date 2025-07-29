@@ -5,7 +5,7 @@ import { Box, colors, Icon } from '@citizenlab/cl2-component-library';
 import { Parameters } from 'api/projects_mini_admin/types';
 
 import { FilterType } from './DynamicFilters';
-import { useParam, setParam } from './Filters/params';
+import { useParam, setParam } from '../params';
 
 export interface FilterComponentProps {
   value: string[];

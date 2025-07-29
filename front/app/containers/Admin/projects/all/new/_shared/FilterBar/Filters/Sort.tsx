@@ -8,7 +8,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import { setParam, useParam } from './params';
+import { setParam, useParam } from '../../params';
 
 type Option = {
   value: Parameters['sort'];

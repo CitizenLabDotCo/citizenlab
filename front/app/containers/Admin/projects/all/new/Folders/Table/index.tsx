@@ -19,8 +19,8 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import { useIntl } from 'utils/cl-intl';
 
 import ColHeader from '../../_shared/ColHeader';
+import { useParams } from '../../_shared/params';
 import projectMessages from '../../Projects/Table/messages';
-import { useParams } from '../utils';
 
 import messages from './messages';
 import Row from './Row';

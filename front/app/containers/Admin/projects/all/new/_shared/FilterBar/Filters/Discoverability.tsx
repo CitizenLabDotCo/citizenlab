@@ -8,7 +8,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import { useParam, setParam } from './params';
+import { useParam, setParam } from '../../params';
 
 const OPTIONS: {
   value: Discoverability;

@@ -10,7 +10,7 @@ import { parseBackendDateString } from 'utils/dateUtils';
 
 import messages from '../messages';
 
-import { useParam, setParam } from './params';
+import { useParam, setParam } from '../../params';
 
 const toDate = (str?: string) => {
   if (!str) return;

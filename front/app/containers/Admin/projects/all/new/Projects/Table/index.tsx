@@ -21,7 +21,7 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import { useIntl } from 'utils/cl-intl';
 
 import ColHeader from '../../_shared/ColHeader';
-import { useParams } from '../../_shared/FilterBar/Filters/params';
+import { useParams } from '../../_shared/params';
 
 import EmptyRow from './EmptyRow';
 import messages from './messages';

@@ -17,7 +17,7 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import { PARAMS as FOLDER_PARAMS } from './Folders/utils';
 import messages from './messages';
-import { PARAMS as PROJECT_PARAMS } from './_shared/FilterBar/Filters/params';
+import { PARAMS as PROJECT_PARAMS } from './_shared/params';
 
 interface TabProps {
   message: MessageDescriptor;

@@ -6,9 +6,8 @@ import FilterSelector from 'components/FilterSelector';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import { setParam, useParam } from '../../params';
 import messages from '../messages';
-
-import { setParam, useParam } from './params';
 
 const OPTIONS: {
   value: Visibility;

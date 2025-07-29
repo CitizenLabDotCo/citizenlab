@@ -4,7 +4,7 @@ import { colors } from '@citizenlab/cl2-component-library';
 
 import SearchInput from 'components/UI/SearchInput';
 
-import { useParam, setParam } from './params';
+import { useParam, setParam } from '../../params';
 
 interface Props {
   placeholder: string;
