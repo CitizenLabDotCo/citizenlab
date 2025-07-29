@@ -7,9 +7,10 @@ lb:
     inappropriate_content_flagged:
       subject: 'E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt'
       header_title: 'E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt'
-      comment_author: '%{authorName} huet kommentéiert:'
-      idea_author: '%{authorName} huet e Bäitrag gepost:'
-      initiative_author: '%{authorName} huet e Virschlag agereecht:'
-      this_post_was_flagged: >
-        <p>Dëse Post gouf automatesch als méiglecherweis net ugemiessenen Inhalt ausgemaach. Mir schécken Iech dës Benoriichtegung, fir datt Dir de Post entspriechend Ären eegene Moderatiounsrichtlinnen iwwerpréiwe kënnt.</p><p>Wann de Post keen net ugemiessenen Inhalt enthält, kënnt Dir d'Warnung iwwer Är Plattform am Reiter Aktivitéit am Verwaltungspanel läschen.</p>
-      cta_review_post: 'Bäitrag iwwerpréiwen'
+      author_wrote: '%{authorName} huet geschriwwen:'
+      preheader: 'E Post op Ärer Plattform gouf fir Iwwerpréiwung markéiert'
+      automatically_flagged: >
+        Dëse Post gouf automatesch festgestallt als potenziell onpassend Inhalt. Mir schécken Iech dës Notifikatioun fir datt Dir de Post am Aklang mat Ären eegene Moderatiounsrichtlinnen iwwerpréift.
+      how_to_review: >
+        Wann de Post keen onpassend Inhalt enthält, kënnt Dir d'Warnung iwwer Är Plattform an der Aktivitéit Tab an der Admin Panel ewechhuelen.
+      cta_review: 'Iwwerpréiwung'
