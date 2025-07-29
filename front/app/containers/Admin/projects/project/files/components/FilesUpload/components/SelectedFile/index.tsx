@@ -119,7 +119,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
                   ? 'disabled'
                   : 'textSecondary'
               }
-              maxWidth="320px"
+              maxWidth="280px"
               overflow="hidden"
               textOverflow="ellipsis"
               whiteSpace="nowrap"

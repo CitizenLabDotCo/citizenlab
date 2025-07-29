@@ -114,6 +114,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
           <FilesUpload
             showInformationSection={false}
             afterUpload={updateSelectedFiles}
+            showTitle={false}
           />
         </Box>
       </Box>

@@ -24,6 +24,7 @@ type Props = {
   setModalOpen?: (open: boolean) => void;
   setShowFirstUploadView?: (value: boolean) => void;
   showInformationSection?: boolean;
+  showTitle?: boolean;
   afterUpload?: (uploadedFiles: FileWithMeta[]) => void;
 };
 
@@ -36,6 +37,7 @@ const FilesUpload = ({
   setShowFirstUploadView,
   showInformationSection = true,
   afterUpload,
+  showTitle = true,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
@@ -121,9 +123,12 @@ const FilesUpload = ({
     <>
       {fileList.length > 0 ? (
         <>
-          <Title fontWeight="semi-bold" color="coolGrey700" variant="h3">
-            {formatMessage(messages.confirmAndUploadFiles)}
-          </Title>
+          {showTitle && (
+            <Title fontWeight="semi-bold" color="coolGrey700" variant="h3">
+              {formatMessage(messages.confirmAndUploadFiles)}
+            </Title>
+          )}
+
           <Box maxHeight="300px" overflowY="auto" overflowX="hidden" mt="20px">
             {fileList.map((item, index) => (
               <SelectedFile
