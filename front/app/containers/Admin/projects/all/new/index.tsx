@@ -20,12 +20,8 @@ const AdminProjectsListNew = () => {
       <Header />
       <Tabs />
       <Box mt="20px">
-        <Box display={tab === null ? 'block' : 'none'}>
-          <Projects />
-        </Box>
-        <Box display={tab === 'folders' ? 'block' : 'none'}>
-          <Folders />
-        </Box>
+        {tab === null && <Projects />}
+        {tab === 'folders' && <Folders />}
         {tab === 'timeline' && <Timeline />}
         {tab === 'ordering' && (
           <Box>
