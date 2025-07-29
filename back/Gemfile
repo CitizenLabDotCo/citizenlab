@@ -138,6 +138,9 @@ gem 'pdf-reader'
 gem 'faraday'
 gem 'faraday-multipart'
 
+# AI
+gem 'ruby_llm', '1.3.2beta1' # using a pre-release version to include this fix: https://github.com/crmne/ruby_llm/pull/250
+
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an
 # "undefined method 'mailgun_settings=' for ActionMailer::Base:Class"
