@@ -33,6 +33,7 @@ export type Props = {
   a11y_clearSearchButtonActionMessage: string;
 } & BoxMarginProps;
 
+/** @deprecated Please use components/UI/MultiSelect instead */
 const MultiSelect = ({
   title,
   selected = [],

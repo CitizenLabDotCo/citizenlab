@@ -207,5 +207,7 @@ export {
   Divider,
   Quote,
   InputContainer,
+
+  /** @deprecated Please use components/UI/MultiSelect instead */
   MultiSelect,
 };
