@@ -233,7 +233,7 @@ module EmailCampaigns
     end
 
     def global_campaign
-      @global_campaign ||= !manual? && self.class.find_by(context: nil, type: self.class.name)
+      @global_campaign ||= !manual? && context && self.class.find_by(context: nil, type: self.class.name)
     end
 
     def fallback_to_global(attribute)
