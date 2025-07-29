@@ -14,7 +14,7 @@ import messages from './messages';
 
 interface Props {
   value: string[];
-  onChange: (values: string[]) => void;
+  onChange: (value: string[]) => void;
 }
 
 const Folders = ({ value, onChange }: Props) => {

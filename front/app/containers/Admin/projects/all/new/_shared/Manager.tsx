@@ -12,7 +12,7 @@ import messages from './messages';
 interface Props {
   value: string[];
   mr?: string;
-  onChange: (managers: string[]) => void;
+  onChange: (value: string[]) => void;
 }
 
 const Manager = ({ value, mr = '0px', onChange }: Props) => {
