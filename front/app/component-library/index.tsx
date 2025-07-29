@@ -100,6 +100,7 @@ import {
   Color,
   isRtl,
 } from './utils/styleUtils';
+import { truncate } from './utils/textUtils';
 import { IGraphPoint, IOption, Locale } from './utils/typings';
 
 export type {
@@ -185,6 +186,7 @@ export {
   remCalc,
   calculateContrastRatio,
   hexToRgb,
+  truncate,
   Table,
   Thead,
   Tbody,
