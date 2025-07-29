@@ -7,7 +7,7 @@ import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { render, act, screen, userEvent } from 'utils/testUtils/rtl';
 
 // mocked functions
-import { setConsent, IConsentCookie } from './consent';
+import { IConsentCookie, setConsent } from './consent';
 import { registerDestination } from './destinations';
 
 import ConsentManager from '.';
@@ -49,7 +49,10 @@ jest.mock('api/app_configuration/useAppConfiguration', () => () => {
 let mockCookie: IConsentCookie | null = null;
 jest.mock('./consent', () => ({
   getConsent: jest.fn(() => mockCookie),
-  setConsent: jest.fn(),
+  setConsent: jest.fn((consent: IConsentCookie | null) => {
+    // Access mockCookie from parent scope through closure
+    mockCookie = consent;
+  }),
 }));
 
 // add destinations for testing
