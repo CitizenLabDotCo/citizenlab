@@ -8,11 +8,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-interface Props {
-  value: ParticipationState[];
-  mr?: string;
-  onChange: (value: ParticipationState[]) => void;
-}
+import { setParam, useParam } from './params';
 
 const OPTIONS: { value: ParticipationState; message: MessageDescriptor }[] = [
   {
@@ -33,7 +29,12 @@ const OPTIONS: { value: ParticipationState; message: MessageDescriptor }[] = [
   },
 ];
 
-const ParticipationStates = ({ value, mr, onChange }: Props) => {
+interface Props {
+  mr?: string;
+}
+
+const ParticipationStates = ({ mr }: Props) => {
+  const participationStates = useParam('participation_states') ?? [];
   const { formatMessage } = useIntl();
 
   const options = OPTIONS.map((option) => ({
@@ -44,12 +45,17 @@ const ParticipationStates = ({ value, mr, onChange }: Props) => {
   return (
     <FilterSelector
       multipleSelectionAllowed
-      selected={value}
+      selected={participationStates}
       values={options}
       mr={mr}
-      onChange={onChange}
       title={formatMessage(messages.participationStates)}
       name="participation-states-select"
+      onChange={(participationStates) => {
+        setParam(
+          'participation_states',
+          participationStates as ParticipationState[]
+        );
+      }}
     />
   );
 };
