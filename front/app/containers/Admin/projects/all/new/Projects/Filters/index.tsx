@@ -4,31 +4,17 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
-import Manager from '../../_shared/Manager';
 import Search from '../../_shared/Search';
-import Status from '../../_shared/Status';
 import { useParam, setParam } from '../utils';
 
 import Dates from './Dates';
-import DiscoverabilityFilter from './Discoverability';
-import Folders from './Folders';
+import DynamicFilters from './DynamicFilters';
 import messages from './messages';
-import ParticipationMethods from './ParticipationMethods';
-import ParticipationStates from './ParticipationStates';
 import Sort from './Sort';
-import VisibilityFilter from './Visibility';
 
 const Filters = () => {
   const { formatMessage } = useIntl();
-  const managerIds = useParam('managers') ?? [];
-  const statuses = useParam('status') ?? [];
-  const participationStates = useParam('participation_states') ?? [];
   const searchValue = useParam('search');
-  const folderIdsParam = useParam('folder_ids');
-  const folderIds = Array.isArray(folderIdsParam) ? folderIdsParam : [];
-  const participationMethods = useParam('participation_methods') ?? [];
-  const visibility = useParam('visibility') ?? [];
-  const discoverability = useParam('discoverability') ?? [];
 
   return (
     <Box
@@ -55,71 +41,8 @@ const Filters = () => {
           }}
         />
       </Box>
-      <Box
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center"
-        w="100%"
-      >
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          w="100%"
-          flexWrap="wrap"
-        >
-          <Manager
-            managerIds={managerIds}
-            onChange={(value) => {
-              setParam('managers', value);
-            }}
-          />
-          <Status
-            mr="0px"
-            values={statuses}
-            onChange={(publicationStatuses) => {
-              setParam('status', publicationStatuses);
-            }}
-          />
-          <Folders
-            folderIds={folderIds}
-            onChange={(value) => setParam('folder_ids', value)}
-          />
-          <Box>
-            <ParticipationStates
-              participationStates={participationStates}
-              onChange={(value) => {
-                setParam('participation_states', value);
-              }}
-            />
-          </Box>
-          <Box mr="8px">
-            <ParticipationMethods
-              participationMethods={participationMethods}
-              onChange={(value) => {
-                setParam('participation_methods', value);
-              }}
-            />
-          </Box>
-          <Box mr="8px">
-            <VisibilityFilter
-              visibility={visibility}
-              onChange={(value) => {
-                setParam('visibility', value);
-              }}
-            />
-          </Box>
-          <Box mr="8px">
-            <DiscoverabilityFilter
-              discoverability={discoverability}
-              onChange={(value) => {
-                setParam('discoverability', value);
-              }}
-            />
-          </Box>
-        </Box>
-      </Box>
+
+      <DynamicFilters />
     </Box>
   );
 };
