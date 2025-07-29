@@ -5,6 +5,7 @@ import {
   Button,
   Dropdown,
   DropdownListItem,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
@@ -32,6 +33,20 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
     onAddFilter(filterType);
     setIsOpen(false);
   };
+
+  // If no filters are available, show a disabled button with tooltip
+  if (availableFilters.length === 0) {
+    return (
+      <Tooltip content={formatMessage(messages.noMoreFilters)}>
+        <Button
+          buttonStyle="text"
+          icon="plus"
+          text={formatMessage(messages.addFilter)}
+          disabled
+        />
+      </Tooltip>
+    );
+  }
 
   return (
     <Box position="relative">
