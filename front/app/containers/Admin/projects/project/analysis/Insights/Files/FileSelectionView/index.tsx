@@ -55,10 +55,8 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
   });
 
   const onFormSubmit = useCallback(async () => {
-    // TODO: Implement the logic to handle form submission
-    // eslint-disable-next-line no-console
-    console.log('Form submitted with file_ids:', watchedFileIds);
-  }, [watchedFileIds]);
+    // TODO: Implement the logic to handle form submission.
+  }, []);
 
   // Auto-submit when file_ids changes
   useEffect(() => {
