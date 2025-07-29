@@ -4,7 +4,7 @@ import { Box, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -60,7 +60,7 @@ const ParticipationMethods = ({ participationMethods, onChange }: Props) => {
 
   const options = OPTIONS.map((option) => ({
     value: option.value,
-    text: formatMessage(option.message),
+    label: formatMessage(option.message),
   }));
 
   const handleOnChange = (selected: string[]) => {
@@ -79,12 +79,10 @@ const ParticipationMethods = ({ participationMethods, onChange }: Props) => {
         </Box>
       }
     >
-      <FilterSelector
-        name="participation-methods-select"
+      <MultiSelect
         title={formatMessage(messages.participationMethodLabel)}
-        multipleSelectionAllowed
         selected={participationMethods}
-        values={options}
+        options={options}
         onChange={handleOnChange}
       />
     </Tooltip>
