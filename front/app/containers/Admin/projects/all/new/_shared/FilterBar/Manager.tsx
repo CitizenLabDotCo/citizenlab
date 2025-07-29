@@ -7,7 +7,7 @@ import FilterSelector from 'components/FilterSelector';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import messages from './messages';
+import messages from '../messages';
 
 interface Props {
   value: string[];

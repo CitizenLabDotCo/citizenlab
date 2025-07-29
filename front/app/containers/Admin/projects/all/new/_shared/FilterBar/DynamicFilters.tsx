@@ -8,7 +8,7 @@ import { Parameters } from 'api/projects_mini_admin/types';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
-import sharedMessages from '../../_shared/messages';
+import sharedMessages from '../messages';
 import { useParam, setParam } from '../utils';
 
 import ActiveFilter, { FilterComponentProps } from './ActiveFilter';

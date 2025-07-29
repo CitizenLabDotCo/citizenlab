@@ -42,8 +42,8 @@ const ActiveFilter = ({ config, onRemove, canRemove = true }: Props) => {
         default: ComponentType<FilterComponentProps>;
       }>;
     } = {
-      manager: () => import('../../_shared/Manager'),
-      status: () => import('../../_shared/Status'),
+      manager: () => import('./Manager'),
+      status: () => import('./Status'),
       folders: () => import('./Folders'),
       participation_states: () => import('./ParticipationStates'),
       participation_methods: () => import('./ParticipationMethods'),
