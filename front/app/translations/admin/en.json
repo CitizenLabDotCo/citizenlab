@@ -1119,6 +1119,8 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "Groups",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label": "Visibility",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.public": "Public",
+  "app.containers.Admin.projects.all.new.Projects.Filters.addFilter": "Add filter",
+  "app.containers.Admin.projects.all.new.Projects.Filters.clear": "Clear",
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "Admins",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "All projects have been loaded",
   "app.containers.Admin.projects.all.new.Projects.Table.anyone": "Anyone",
