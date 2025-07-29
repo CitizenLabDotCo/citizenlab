@@ -96,6 +96,8 @@ const FilesUpload = ({
     hasStartedUploading &&
     fileList.every(({ status }) => FINISHED_STATUSES.includes(status));
 
+  const aiCheckboxDisabled = hasStartedUploading || finishedUploading;
+
   useEffect(() => {
     if (finishedUploading) {
       // If the upload is finished, return the list of successfully uploaded files
@@ -145,7 +147,11 @@ const FilesUpload = ({
           <Box mt="20px">
             <CheckboxWithLabel
               checked={allowAiProcessing}
+              disabled={hasStartedUploading || finishedUploading}
               onChange={(event) => {
+                // If the checkbox is disabled, do not allow changes
+                if (aiCheckboxDisabled) return;
+
                 setAllowAiProcessing(event.target.checked);
                 // Update the AI processing flag for all files in the list
                 setFileList((prev) =>

@@ -77,9 +77,17 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
     (uploadedFiles: FileWithMeta[]) => {
       const currentFiles = methods.getValues('file_ids');
       const newFileIds = uploadedFiles.map((file) => file.id);
-      const newValues: string[] = [...currentFiles, ...newFileIds].filter(
-        (id) => id !== undefined
+
+      // Filter out any file IDs that are already selected
+      const filteredNewFileIds = newFileIds.filter(
+        (id) => id && !currentFiles.includes(id)
       );
+
+      // Update the form state with the new file IDs
+      const newValues: string[] = [
+        ...currentFiles,
+        ...filteredNewFileIds,
+      ].filter((id) => id !== undefined);
       methods.setValue('file_ids', newValues, { shouldDirty: true });
     },
     [methods]
