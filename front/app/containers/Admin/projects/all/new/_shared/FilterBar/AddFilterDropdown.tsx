@@ -10,22 +10,20 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
-import { Parameter } from '../params';
-
+import { FilterKey, FILTER_CONFIG } from './constants';
 import messages from './Filters/messages';
-import { FilterConfig } from './typings';
 
 interface Props {
-  availableFilters: FilterConfig[];
-  onAddFilter: (filterKey: Parameter) => void;
+  availableFilters: FilterKey[];
+  onAddFilter: (filterKey: FilterKey) => void;
 }
 
 const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
   const { formatMessage } = useIntl();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleAddFilter = (filterType: Parameter) => {
-    onAddFilter(filterType);
+  const handleAddFilter = (filterKey: FilterKey) => {
+    onAddFilter(filterKey);
     setIsOpen(false);
   };
 
@@ -57,12 +55,12 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
         onClickOutside={() => setIsOpen(false)}
         content={
           <Box>
-            {availableFilters.map((filter, index) => (
+            {availableFilters.map((filterKey, index) => (
               <DropdownListItem
                 key={index}
-                onClick={() => handleAddFilter(filter.key)}
+                onClick={() => handleAddFilter(filterKey)}
               >
-                {filter.label}
+                {formatMessage(FILTER_CONFIG[filterKey])}
               </DropdownListItem>
             ))}
           </Box>
