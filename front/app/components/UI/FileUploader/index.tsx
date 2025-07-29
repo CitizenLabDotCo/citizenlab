@@ -90,8 +90,10 @@ const FileUploader = ({
         ordering: index,
       }));
 
-      // Call parent callback with the updated files
-      onFileReorder?.(updatedFiles);
+      // Schedule parent callback for next tick to avoid render conflicts
+      setTimeout(() => {
+        onFileReorder?.(updatedFiles);
+      }, 0);
 
       return updatedFiles;
     });
