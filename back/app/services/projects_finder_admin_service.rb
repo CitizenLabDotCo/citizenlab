@@ -11,6 +11,8 @@ class ProjectsFinderAdminService
     projects = filter_start_date(projects, params)
     projects = filter_participation_states(projects, params)
     projects = filter_current_phase_participation_method(projects, params)
+    projects = filter_visibility(projects, params)
+    projects = filter_discoverability(projects, params)
 
     # Apply sorting
     case params[:sort]
@@ -234,6 +236,34 @@ class ProjectsFinderAdminService
       Date.parse(date_input)
     rescue ArgumentError
       nil
+    end
+  end
+
+  # Filter projects by visibility (access rights)
+  def self.filter_visibility(scope, params = {})
+    visibility_params = Array(params[:visibility])
+
+    valid_visibilities = %w[public groups admins]
+    selected_visibilities = visibility_params & valid_visibilities
+
+    return scope if selected_visibilities.blank?
+
+    scope.where(visible_to: selected_visibilities)
+  end
+
+  # Filter projects by discoverability (listed/unlisted status)
+  def self.filter_discoverability(scope, params = {})
+    discoverability_params = Array(params[:discoverability])
+
+    valid_discoverabilities = %w[listed unlisted]
+    selected_discoverabilities = discoverability_params & valid_discoverabilities
+
+    return scope if selected_discoverabilities.blank? || selected_discoverabilities.length == 2
+
+    if selected_discoverabilities.include?('listed')
+      scope.where(listed: true)
+    else
+      scope.where(listed: false)
     end
   end
 end

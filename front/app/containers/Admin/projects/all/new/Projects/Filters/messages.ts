@@ -101,4 +101,32 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders',
     defaultMessage: 'Folders',
   },
+  visibilityLabel: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label',
+    defaultMessage: 'Visibility',
+  },
+  visibilityPublic: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.public',
+    defaultMessage: 'Public',
+  },
+  visibilityGroups: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups',
+    defaultMessage: 'Groups',
+  },
+  visibilityAdmins: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins',
+    defaultMessage: 'Admins',
+  },
+  discoverabilityLabel: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.discoverabilityLabel',
+    defaultMessage: 'Discoverability',
+  },
+  discoverabilityPublic: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.public',
+    defaultMessage: 'Public',
+  },
+  discoverabilityHidden: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.hidden',
+    defaultMessage: 'Hidden',
+  },
 });
