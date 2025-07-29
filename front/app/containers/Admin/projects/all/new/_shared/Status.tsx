@@ -21,12 +21,12 @@ const OPTIONS = [
 ] as const;
 
 interface Props {
-  values: PublicationStatus[];
+  value: PublicationStatus[];
   mr?: string;
   onChange: (value: PublicationStatus[]) => void;
 }
 
-const Status = ({ values, mr, onChange }: Props) => {
+const Status = ({ value, mr, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   const options: Option[] = OPTIONS.map((option) => ({
@@ -37,7 +37,7 @@ const Status = ({ values, mr, onChange }: Props) => {
   return (
     <FilterSelector
       multipleSelectionAllowed
-      selected={values}
+      selected={value}
       values={options}
       mr={mr}
       onChange={onChange}

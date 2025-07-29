@@ -27,11 +27,11 @@ const OPTIONS: {
 ];
 
 interface Props {
-  values: Visibility[];
+  value: Visibility[];
   onChange: (values: Visibility[]) => void;
 }
 
-const VisibilityFilter = ({ values, onChange }: Props) => {
+const VisibilityFilter = ({ value, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   const options = OPTIONS.map((option) => ({
@@ -44,7 +44,7 @@ const VisibilityFilter = ({ values, onChange }: Props) => {
       title={formatMessage(messages.visibilityLabel)}
       name="visibility-filter"
       values={options}
-      selected={values}
+      selected={value}
       onChange={onChange}
       multipleSelectionAllowed={true}
     />

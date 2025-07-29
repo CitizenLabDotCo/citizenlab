@@ -9,8 +9,8 @@ import { useParam, setParam } from '../utils';
 import { FilterType } from './DynamicFilters';
 
 export interface FilterComponentProps {
-  values: string[];
-  onChange: (values: string[]) => void;
+  value: string[];
+  onChange: (value: string[]) => void;
 }
 
 interface FilterConfig {
@@ -92,7 +92,7 @@ const ActiveFilter = ({ config, onRemove, canRemove = true }: Props) => {
     >
       {FilterComponent && (
         <Box flex="1">
-          <FilterComponent values={currentValue} onChange={handleChange} />
+          <FilterComponent value={currentValue} onChange={handleChange} />
         </Box>
       )}
 

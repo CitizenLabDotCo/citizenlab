@@ -51,11 +51,11 @@ const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
 ];
 
 interface Props {
-  values: ParticipationMethod[];
-  onChange: (values: ParticipationMethod[]) => void;
+  value: ParticipationMethod[];
+  onChange: (value: ParticipationMethod[]) => void;
 }
 
-const ParticipationMethods = ({ values, onChange }: Props) => {
+const ParticipationMethods = ({ value, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   const options = OPTIONS.map((option) => ({
@@ -83,7 +83,7 @@ const ParticipationMethods = ({ values, onChange }: Props) => {
         name="participation-methods-select"
         title={formatMessage(messages.participationMethodLabel)}
         multipleSelectionAllowed
-        selected={values}
+        selected={value}
         values={options}
         onChange={handleOnChange}
       />

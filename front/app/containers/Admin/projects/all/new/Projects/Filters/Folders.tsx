@@ -13,11 +13,11 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  values: string[];
+  value: string[];
   onChange: (values: string[]) => void;
 }
 
-const Folders = ({ values, onChange }: Props) => {
+const Folders = ({ value, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
@@ -46,7 +46,7 @@ const Folders = ({ values, onChange }: Props) => {
       values={folderOptions}
       onChange={onChange}
       multipleSelectionAllowed
-      selected={values}
+      selected={value}
       filterSelectorStyle="text"
       isLoading={isLoading}
       onOpen={handleOpen}
