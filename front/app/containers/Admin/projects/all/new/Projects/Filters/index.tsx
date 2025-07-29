@@ -7,10 +7,8 @@ import { useIntl } from 'utils/cl-intl';
 import Search from '../../_shared/Search';
 import { useParam, setParam } from '../utils';
 
-import Dates from './Dates';
 import DynamicFilters from './DynamicFilters';
 import messages from './messages';
-import Sort from './Sort';
 
 const Filters = () => {
   const { formatMessage } = useIntl();
@@ -29,10 +27,6 @@ const Filters = () => {
         justifyContent="flex-end"
         alignItems="center"
       >
-        <Dates />
-        <Box mr="12px" minWidth="300px">
-          <Sort />
-        </Box>
         <Search
           value={searchValue}
           placeholder={formatMessage(messages.search)}
