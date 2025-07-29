@@ -76,17 +76,15 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
       const currentFiles = methods.getValues('file_ids');
       const newFileIds = uploadedFiles
         .map((file) => file.id)
-        .filter((fileId) => fileId !== undefined);
+        .filter((fileId): fileId is string => fileId !== undefined); // Type predicate
 
       // Filter out any file IDs that are already selected
       const filteredNewFiles = newFileIds.filter(
-        (id) => id && !currentFiles.includes(id)
+        (id) => !currentFiles.includes(id) // id is now guaranteed to be string
       );
 
       // Update the form state with the new file IDs
-      const newValues: string[] = [...currentFiles, ...filteredNewFiles].filter(
-        (id) => id !== undefined
-      );
+      const newValues: string[] = [...currentFiles, ...filteredNewFiles];
       methods.setValue('file_ids', newValues, { shouldDirty: true });
     },
     [methods]
