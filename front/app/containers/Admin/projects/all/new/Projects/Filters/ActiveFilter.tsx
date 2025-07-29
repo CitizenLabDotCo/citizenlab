@@ -8,49 +8,10 @@ import { useParam, setParam } from '../utils';
 
 import { FilterType } from './DynamicFilters';
 
-interface ManagerProps {
-  managerIds: string[];
-  onChange: (managers: string[]) => void;
-}
-
-interface StatusProps {
+export interface FilterComponentProps {
   values: string[];
   onChange: (values: string[]) => void;
 }
-
-interface FoldersProps {
-  folderIds: string[];
-  onChange: (folderIds: string[]) => void;
-}
-
-interface ParticipationStatesProps {
-  participationStates: string[];
-  onChange: (participationStates: string[]) => void;
-}
-
-interface ParticipationMethodsProps {
-  participationMethods: string[];
-  onChange: (participationMethods: string[]) => void;
-}
-
-interface VisibilityProps {
-  visibility: string[];
-  onChange: (visibility: string[]) => void;
-}
-
-interface DiscoverabilityProps {
-  discoverability: string[];
-  onChange: (discoverability: string[]) => void;
-}
-
-export type FilterComponentProps =
-  | ManagerProps
-  | StatusProps
-  | FoldersProps
-  | ParticipationStatesProps
-  | ParticipationMethodsProps
-  | VisibilityProps
-  | DiscoverabilityProps;
 
 interface FilterConfig {
   type: FilterType;
@@ -60,56 +21,49 @@ interface FilterConfig {
 }
 
 interface Props {
-  filterType: FilterType;
   config: FilterConfig;
   onRemove: () => void;
   canRemove?: boolean;
 }
 
-const ActiveFilter = ({
-  filterType,
-  config,
-  onRemove,
-  canRemove = true,
-}: Props) => {
+const ActiveFilter = ({ config, onRemove, canRemove = true }: Props) => {
   const [FilterComponent, setFilterComponent] =
     useState<ComponentType<FilterComponentProps> | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   // Get the current value for this filter
   const currentValue = (useParam(config.paramKey) ?? []) as string[];
+  const filterType = config.type;
 
   // Dynamically load the filter component
   useEffect(() => {
+    const componentLoaders: {
+      [K in FilterType]?: () => Promise<{
+        default: ComponentType<FilterComponentProps>;
+      }>;
+    } = {
+      manager: () => import('../../_shared/Manager'),
+      status: () => import('../../_shared/Status'),
+      folders: () => import('./Folders'),
+      participation_states: () => import('./ParticipationStates'),
+      participation_methods: () => import('./ParticipationMethods'),
+      visibility: () => import('./Visibility'),
+      discoverability: () => import('./Discoverability'),
+    };
+
     const loadComponent = async () => {
+      const loader = componentLoaders[filterType];
+      if (!loader) {
+        console.error(
+          `No component loader found for filter type: ${filterType}`
+        );
+        setFilterComponent(null);
+        return;
+      }
+
       try {
-        let component: ComponentType<FilterComponentProps> | null = null;
-        switch (filterType) {
-          case 'manager':
-            component = (await import('../../_shared/Manager')).default;
-            break;
-          case 'status':
-            component = (await import('../../_shared/Status')).default;
-            break;
-          case 'folders':
-            component = (await import('./Folders')).default;
-            break;
-          case 'participation_states':
-            component = (await import('./ParticipationStates')).default;
-            break;
-          case 'participation_methods':
-            component = (await import('./ParticipationMethods')).default;
-            break;
-          case 'visibility':
-            component = (await import('./Visibility')).default;
-            break;
-          case 'discoverability':
-            component = (await import('./Discoverability')).default;
-            break;
-          default:
-            component = null;
-        }
-        setFilterComponent(() => component);
+        const loadedComponent = (await loader()).default;
+        setFilterComponent(() => loadedComponent);
       } catch (error) {
         console.error('Failed to load filter component:', error);
       }
@@ -120,30 +74,6 @@ const ActiveFilter = ({
 
   const handleChange = (value: string[]) => {
     setParam(config.paramKey, value);
-  };
-
-  const getFilterProps = (
-    filterType: FilterType,
-    currentValue: string[]
-  ): FilterComponentProps => {
-    switch (filterType) {
-      case 'manager':
-        return { managerIds: currentValue, onChange: handleChange };
-      case 'status':
-        return { values: currentValue, onChange: handleChange };
-      case 'folders':
-        return { folderIds: currentValue, onChange: handleChange };
-      case 'participation_states':
-        return { participationStates: currentValue, onChange: handleChange };
-      case 'participation_methods':
-        return { participationMethods: currentValue, onChange: handleChange };
-      case 'visibility':
-        return { visibility: currentValue, onChange: handleChange };
-      case 'discoverability':
-        return { discoverability: currentValue, onChange: handleChange };
-      default:
-        throw new Error(`Unknown filter type: ${filterType}`);
-    }
   };
 
   return (
@@ -162,7 +92,7 @@ const ActiveFilter = ({
     >
       {FilterComponent && (
         <Box flex="1">
-          <FilterComponent {...getFilterProps(filterType, currentValue)} />
+          <FilterComponent values={currentValue} onChange={handleChange} />
         </Box>
       )}
 

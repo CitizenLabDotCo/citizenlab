@@ -10,12 +10,12 @@ import { getFullName } from 'utils/textUtils';
 import messages from './messages';
 
 interface Props {
-  managerIds: string[];
+  values: string[];
   mr?: string;
   onChange: (managers: string[]) => void;
 }
 
-const Manager = ({ managerIds, mr = '0px', onChange }: Props) => {
+const Manager = ({ values, mr = '0px', onChange }: Props) => {
   const { formatMessage } = useIntl();
   const { data: managers } = useUsers({
     pageSize: 500,
@@ -31,7 +31,7 @@ const Manager = ({ managerIds, mr = '0px', onChange }: Props) => {
   return (
     <FilterSelector
       multipleSelectionAllowed
-      selected={managerIds}
+      selected={values}
       values={options}
       mr={mr}
       onChange={onChange}

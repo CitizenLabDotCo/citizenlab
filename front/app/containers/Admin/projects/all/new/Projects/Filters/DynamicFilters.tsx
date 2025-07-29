@@ -318,16 +318,16 @@ const DynamicFilters = () => {
 
         {/* Dynamic Filters */}
         {activeFilters.map((filterType) => {
-          const config = filterConfigs.find((c) => c.type === filterType);
+          const config = filterConfigs.find(
+            (filterConfig) => filterConfig.type === filterType
+          );
           if (!config) return null;
 
-          // Simple role-based check for remove button visibility
           const canRemove = !(filterType === 'manager' && isUserProjectManager);
 
           return (
             <ActiveFilter
               key={filterType}
-              filterType={filterType}
               config={config}
               onRemove={() => handleRemoveFilter(filterType)}
               canRemove={canRemove}

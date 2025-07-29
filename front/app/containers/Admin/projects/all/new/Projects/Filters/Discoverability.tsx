@@ -21,14 +21,14 @@ const OPTIONS: {
 ];
 
 interface Props {
-  discoverability: ('listed' | 'unlisted')[];
+  values: ('listed' | 'unlisted')[];
   onChange: (values: ('listed' | 'unlisted')[]) => void;
 }
 
-const DiscoverabilityFilter = ({ discoverability, onChange }: Props) => {
+const DiscoverabilityFilter = ({ values, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
-  const values = OPTIONS.map((option) => ({
+  const options = OPTIONS.map((option) => ({
     text: formatMessage(option.message),
     value: option.value,
   }));
@@ -37,8 +37,8 @@ const DiscoverabilityFilter = ({ discoverability, onChange }: Props) => {
     <FilterSelector
       title={formatMessage(messages.discoverabilityLabel)}
       name="discoverability-filter"
-      values={values}
-      selected={discoverability}
+      values={options}
+      selected={values}
       onChange={onChange}
       multipleSelectionAllowed
     />

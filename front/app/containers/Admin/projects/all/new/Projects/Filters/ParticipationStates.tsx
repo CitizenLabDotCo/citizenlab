@@ -9,9 +9,9 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  participationStates: ParticipationState[];
+  values: ParticipationState[];
   mr?: string;
-  onChange: (participationStates: ParticipationState[]) => void;
+  onChange: (values: ParticipationState[]) => void;
 }
 
 const OPTIONS: { value: ParticipationState; message: MessageDescriptor }[] = [
@@ -33,7 +33,7 @@ const OPTIONS: { value: ParticipationState; message: MessageDescriptor }[] = [
   },
 ];
 
-const ParticipationStates = ({ participationStates, mr, onChange }: Props) => {
+const ParticipationStates = ({ values, mr, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   const options = OPTIONS.map((option) => ({
@@ -44,7 +44,7 @@ const ParticipationStates = ({ participationStates, mr, onChange }: Props) => {
   return (
     <FilterSelector
       multipleSelectionAllowed
-      selected={participationStates}
+      selected={values}
       values={options}
       mr={mr}
       onChange={onChange}
