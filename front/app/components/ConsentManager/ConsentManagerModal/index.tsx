@@ -96,6 +96,10 @@ const ConsentManagerModal = () => {
     );
   };
 
+  const onClose = () => {
+    removeModal('consent-manager');
+  };
+
   const accept = () => {
     const newPreferences: IPreferences = Object.fromEntries(
       allCategories().map((category) => [category, true])
@@ -105,7 +109,7 @@ const ConsentManagerModal = () => {
     // Otherwise, the modal would not be able to remember choices without a page reload.
     setPreferences(newPreferences);
     saveConsent(newPreferences);
-    removeModal('consent-manager');
+    onClose();
   };
 
   const reject = () => {
@@ -119,7 +123,7 @@ const ConsentManagerModal = () => {
     // Otherwise, the modal may not be able to show correct choices without a page reload.
     setPreferences(newPreferences);
     saveConsent(newPreferences);
-    removeModal('consent-manager');
+    onClose();
   };
 
   const toggleDefault = () => {
@@ -142,7 +146,7 @@ const ConsentManagerModal = () => {
     e.preventDefault();
 
     saveConsent(preferences);
-    removeModal('consent-manager');
+    onClose();
   };
 
   const cancelPrefencesScreen = () => {
