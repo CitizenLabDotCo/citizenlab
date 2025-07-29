@@ -66,7 +66,15 @@ const DynamicFilters = () => {
   const visibilityParam = useParam('visibility');
   const discoverabilityParam = useParam('discoverability');
 
-  const isUserProjectManager = isModerator(authUser) && !isAdmin(authUser);
+  const isUserAdmin = isAdmin(authUser);
+  const isUserModerator = isModerator(authUser);
+  const isUserProjectManager = isUserModerator && !isUserAdmin;
+  const showClearButton = !(
+    (isUserProjectManager &&
+      activeFilters.length === 1 &&
+      activeFilters[0] === 'manager') ||
+    (isUserAdmin && activeFilters.length === 0)
+  );
 
   const FILTER_CONFIGS: FilterConfig[] = [
     {
@@ -297,9 +305,6 @@ const DynamicFilters = () => {
 
   // For project managers, always include the manager filter if not already present
   useEffect(() => {
-    const isUserAdmin = isAdmin(authUser);
-    const isUserModerator = isModerator(authUser);
-    const isUserProjectManager = isUserModerator && !isUserAdmin;
     if (isUserProjectManager && !activeFilters.includes('manager')) {
       setActiveFilters([...activeFilters, 'manager']);
       // Pre-populate with current user's ID
@@ -307,7 +312,7 @@ const DynamicFilters = () => {
         setParam('managers', [authUser.data.id]);
       }
     }
-  }, [authUser, activeFilters]);
+  }, [isUserProjectManager, authUser, activeFilters]);
 
   return (
     <Box display="flex" flexDirection="column" gap="16px">
@@ -346,7 +351,7 @@ const DynamicFilters = () => {
           availableFilters={availableFilters}
           onAddFilter={handleAddFilter}
         />
-        {activeFilters.length > 0 && (
+        {showClearButton && (
           <Button
             buttonStyle="text"
             onClick={handleClearAll}
