@@ -36,7 +36,7 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
   return (
     <Box position="relative">
       <Button
-        buttonStyle="secondary"
+        buttonStyle="text"
         icon="plus"
         onClick={() => setIsOpen(!isOpen)}
         text={formatMessage(messages.addFilter)}
