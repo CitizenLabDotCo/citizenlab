@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { MultiSelect } from '@citizenlab/cl2-component-library';
-
 import useUsers from 'api/users/useUsers';
+
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';

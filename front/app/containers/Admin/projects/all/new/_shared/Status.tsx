@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { MultiSelect } from '@citizenlab/cl2-component-library';
-
 import { PublicationStatus } from 'api/projects/types';
+
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { useIntl } from 'utils/cl-intl';
 
