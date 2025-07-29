@@ -64,10 +64,15 @@ describe('Survey question logic', () => {
 
     // Set first answer to go straight to ending
     cy.dataCy('e2e-add-rule-button').first().click();
+    cy.dataCy('e2e-rule-input-select').first().should('be.visible');
+    cy.wait(1000);
     cy.dataCy('e2e-rule-input-select').first().find('select').select('Ending');
+    cy.wait(1000);
+    cy.dataCy('e2e-rule-input-select').first().should('be.visible');
 
     // Set no answer to go to page 3
     cy.dataCy('e2e-add-rule-button').eq(2).click();
+
     cy.dataCy('e2e-rule-input-select').eq(1).find('select').select('Page 3');
 
     // Save again
