@@ -81,7 +81,7 @@ RSpec.describe Surveys::AverageGenerator do
       end
 
       it 'handles string values' do
-        values = ['1', '2', '3', '4', '5']
+        values = %w[1 2 3 4 5]
         expect(generator.send(:calculate_average, values)).to eq(3.0)
       end
     end
