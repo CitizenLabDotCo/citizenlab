@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
@@ -44,9 +44,11 @@ const FileUploader = ({
   dataCy,
 }: Props) => {
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
+  // Track if we're currently dragging to prevent conflicts
+  const isDragging = useRef(false);
 
   useEffect(() => {
-    if (initialFiles) {
+    if (initialFiles && !isDragging.current) {
       setFiles(initialFiles);
     }
   }, [initialFiles]);
@@ -69,22 +71,35 @@ const FileUploader = ({
     };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    // Create a working copy of the files array
-    const filesCopy = [...files];
+    isDragging.current = true;
 
-    // Remove the file from its original position and store it
-    const [movedFile] = filesCopy.splice(fromIndex, 1);
+    // Use functional update to ensure we have the latest state
+    setFiles((currentFiles) => {
+      // Create a working copy of the current files array
+      const filesCopy = [...currentFiles];
 
-    // Insert the file at its new position
-    filesCopy.splice(toIndex, 0, movedFile);
+      // Remove the file from its original position and store it
+      const [movedFile] = filesCopy.splice(fromIndex, 1);
 
-    filesCopy.forEach((file, index) => {
-      file.ordering = index;
+      // Insert the file at its new position
+      filesCopy.splice(toIndex, 0, movedFile);
+
+      // Update ordering on the copies, not the originals
+      const updatedFiles = filesCopy.map((file, index) => ({
+        ...file,
+        ordering: index,
+      }));
+
+      // Call parent callback with the updated files
+      onFileReorder?.(updatedFiles);
+
+      return updatedFiles;
     });
+  };
 
-    // Update state and notify parent component about the change
-    setFiles(filesCopy);
-    onFileReorder?.(filesCopy);
+  // Reset dragging flag when drag ends
+  const handleDragEnd = () => {
+    isDragging.current = false;
   };
 
   const fileNames = files.map((file) => file.name).join(', ');
@@ -104,33 +119,36 @@ const FileUploader = ({
       />
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 
-      <List key={files.length} className="files-list e2e-files-list">
-        {files.map((file: FileType, index: number) =>
-          enableDragAndDrop ? (
+      <List className="files-list e2e-files-list">
+        {files.map((file: FileType, index: number) => {
+          const stableKey = file.id || `${file.name}-${index}`;
+
+          return enableDragAndDrop ? (
             <SortableRow
-              key={`item-${file.name}`}
+              key={stableKey}
               id={file.id || file.name}
               index={index}
               moveRow={handleDragRow}
+              dropRow={handleDragEnd}
               isLastItem={index === files.length - 1}
             >
               <Box w="100%">
                 <FileDisplay
-                  key={`item-${file.name}`}
+                  key={stableKey}
                   onDeleteClick={handleFileOnRemove(file)}
                   file={file}
                 />
               </Box>
             </SortableRow>
           ) : (
-            <Box key={`item-${file.name}`} w="100%">
+            <Box key={stableKey} w="100%">
               <FileDisplay
                 onDeleteClick={handleFileOnRemove(file)}
                 file={file}
               />
             </Box>
-          )
-        )}
+          );
+        })}
       </List>
 
       <ScreenReaderOnly aria-live="polite">
