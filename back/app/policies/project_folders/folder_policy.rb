@@ -17,7 +17,7 @@ module ProjectFolders
     end
 
     def index_for_admin?
-      user&.admin? || user&.project_folder_moderator? || user&.project_moderator?
+      user&.admin? || user&.project_folder_moderator?
     end
 
     def show?
