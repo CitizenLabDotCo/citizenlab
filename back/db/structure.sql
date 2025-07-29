@@ -1677,7 +1677,6 @@ CREATE TABLE public.phases (
     voting_term_plural_multiloc jsonb DEFAULT '{}'::jsonb,
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
-    campaigns_settings jsonb DEFAULT '{}'::jsonb,
     native_survey_title_multiloc jsonb DEFAULT '{}'::jsonb,
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
     expire_days_limit integer,
@@ -7484,6 +7483,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250729181738'),
 ('20250716141100'),
 ('20250716102450'),
 ('20250715075008'),
