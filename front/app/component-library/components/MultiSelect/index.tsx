@@ -29,6 +29,8 @@ type Props = {
   searchPlaceholder?: string;
   onChange: (values: string[]) => void;
   onSearch?: (searchTerm: string) => void;
+  a11y_clearbuttonActionMessage: string;
+  a11y_clearSearchButtonActionMessage: string;
 } & BoxMarginProps;
 
 const MultiSelect = ({
@@ -40,6 +42,8 @@ const MultiSelect = ({
   searchPlaceholder,
   onChange,
   onSearch,
+  a11y_clearbuttonActionMessage,
+  a11y_clearSearchButtonActionMessage,
   ...boxProps
 }: Props) => {
   const [opened, setOpened] = useState(false);
@@ -75,7 +79,15 @@ const MultiSelect = ({
                   onChange([]);
                 }}
               >
-                <Icon name="close" height="14px" width="19px" m="0" mt="-2px" />
+                <Icon
+                  name="close"
+                  height="14px"
+                  width="19px"
+                  m="0"
+                  mt="-2px"
+                  ariaHidden={false}
+                  title={a11y_clearbuttonActionMessage}
+                />
               </StyledBox>
             )}
           </Box>
@@ -94,6 +106,9 @@ const MultiSelect = ({
             searchPlaceholder={searchPlaceholder}
             onChange={onChange}
             onSearch={onSearch}
+            a11y_clearSearchButtonActionMessage={
+              a11y_clearSearchButtonActionMessage
+            }
           />
         }
       />
