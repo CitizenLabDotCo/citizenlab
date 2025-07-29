@@ -20,7 +20,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-type Props = {
+export type Props = {
   title: string | JSX.Element;
   selected?: string[];
   options: Option[];
