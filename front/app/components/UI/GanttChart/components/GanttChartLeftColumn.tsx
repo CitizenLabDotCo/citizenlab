@@ -9,13 +9,9 @@ import GanttItemIconBar from './GanttItemIconBar';
 
 interface GanttChartLeftColumnProps {
   items: GanttItem[];
-  onItemLabelClick?: (item: GanttItem) => void;
 }
 
-const GanttChartLeftColumn = ({
-  items,
-  onItemLabelClick,
-}: GanttChartLeftColumnProps) => {
+const GanttChartLeftColumn = ({ items }: GanttChartLeftColumnProps) => {
   return (
     <Box
       width={`${leftColumnWidth}px`}
@@ -35,20 +31,45 @@ const GanttChartLeftColumn = ({
           display="flex"
           bg={colors.white}
         >
-          <Button
-            buttonStyle="text"
-            textDecorationHover="underline"
-            justify="left"
-            onClick={
-              onItemLabelClick ? () => onItemLabelClick(item) : undefined
-            }
-          >
+          {item.onClick ? (
+            <Button
+              buttonStyle="text"
+              textDecorationHover="underline"
+              justify="left"
+              px="12px"
+              onClick={item.onClick}
+            >
+              <Box
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="center"
+                height="100%"
+                maxWidth={`${leftColumnWidth - 32}px`}
+              >
+                <GanttItemIconBar
+                  color={item.color}
+                  icon={item.icon}
+                  rowHeight={rowHeight}
+                  mr="8px"
+                />
+                <Text
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                  variant="bodyS"
+                  overflow="hidden"
+                >
+                  {item.title}
+                </Text>
+              </Box>
+            </Button>
+          ) : (
             <Box
               display="flex"
               justifyContent="flex-start"
               alignItems="center"
               height="100%"
               maxWidth={`${leftColumnWidth - 32}px`}
+              px="12px"
             >
               <GanttItemIconBar
                 color={item.color}
@@ -65,7 +86,7 @@ const GanttChartLeftColumn = ({
                 {item.title}
               </Text>
             </Box>
-          </Button>
+          )}
         </Box>
       ))}
     </Box>
