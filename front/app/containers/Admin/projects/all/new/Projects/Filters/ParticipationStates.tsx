@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ParticipationState } from 'api/projects_mini_admin/types';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -38,18 +38,16 @@ const ParticipationStates = ({ participationStates, mr, onChange }: Props) => {
 
   const options = OPTIONS.map((option) => ({
     value: option.value,
-    text: formatMessage(option.message),
+    label: formatMessage(option.message),
   }));
 
   return (
-    <FilterSelector
-      multipleSelectionAllowed
+    <MultiSelect
       selected={participationStates}
-      values={options}
+      options={options}
       mr={mr}
       onChange={onChange}
       title={formatMessage(messages.participationStates)}
-      name="participation-states-select"
     />
   );
 };
