@@ -12,12 +12,10 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-interface Props {
-  value: string[];
-  onChange: (value: string[]) => void;
-}
+import { useParam, setParam } from './params';
 
-const Folders = ({ value, onChange }: Props) => {
+const Folders = () => {
+  const folderIds = useParam('folder_ids') ?? [];
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
@@ -44,12 +42,14 @@ const Folders = ({ value, onChange }: Props) => {
       title={formatMessage(messages.folders)}
       name="folders"
       values={folderOptions}
-      onChange={onChange}
       multipleSelectionAllowed
-      selected={value}
+      selected={folderIds}
       filterSelectorStyle="text"
       isLoading={isLoading}
       onOpen={handleOpen}
+      onChange={(folderIds) => {
+        setParam('folder_ids', folderIds);
+      }}
     />
   );
 };

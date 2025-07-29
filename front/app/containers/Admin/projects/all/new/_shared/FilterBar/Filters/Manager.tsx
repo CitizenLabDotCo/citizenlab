@@ -16,8 +16,8 @@ interface Props {
 }
 
 const Manager = ({ mr = '0px' }: Props) => {
-  const { formatMessage } = useIntl();
   const managerIds = useParam('managers') ?? [];
+  const { formatMessage } = useIntl();
 
   const { data: managers } = useUsers({
     pageSize: 500,

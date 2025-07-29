@@ -23,9 +23,9 @@ const toString = (date?: Date) => {
 };
 
 const Dates = () => {
-  const { formatMessage } = useIntl();
   const fromStr = useParam('min_start_date');
   const toStr = useParam('max_start_date');
+  const { formatMessage } = useIntl();
 
   return (
     <Tooltip content={formatMessage(messages.projectStartDate)}>
