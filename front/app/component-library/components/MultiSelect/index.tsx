@@ -56,7 +56,7 @@ const MultiSelect = ({
 
   return (
     <Box {...boxProps}>
-      <Box>
+      <Box position="relative">
         <InputContainer
           id={selectorId}
           className={opened ? 'focus' : ''}
@@ -64,43 +64,44 @@ const MultiSelect = ({
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
         >
-          <Box position="relative">
-            <TitleMessage title={title} selected={selected} options={options} />
-            {showClearButton && (
-              <StyledBox
-                as="button"
-                position="absolute"
-                top="-1px"
-                right="0"
-                mr="-8px"
-                borderRadius="16px"
-                border={`1px solid ${colors.borderLight}`}
-                p="0px"
-                cursor="pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onChange([]);
-                }}
-              >
-                <Icon
-                  name="close"
-                  height="14px"
-                  width="19px"
-                  m="0"
-                  mt="-2px"
-                  ariaHidden={false}
-                  title={a11y_clearbuttonActionMessage}
-                />
-              </StyledBox>
-            )}
-          </Box>
+          <TitleMessage title={title} selected={selected} options={options} />
         </InputContainer>
+        {showClearButton && (
+          <StyledBox
+            as="button"
+            tabIndex={0}
+            position="absolute"
+            top="calc(50% - 10px)"
+            right="8px"
+            borderRadius="16px"
+            border={`1px solid ${colors.borderLight}`}
+            p="0px"
+            cursor="pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange([]);
+            }}
+            onBlur={() => setFocused(false)}
+          >
+            <Icon
+              name="close"
+              height="14px"
+              width="19px"
+              m="0"
+              mt="-2px"
+              ariaHidden={false}
+              title={a11y_clearbuttonActionMessage}
+            />
+          </StyledBox>
+        )}
       </Box>
       <Dropdown
         opened={opened}
-        onClickOutside={() => setOpened(false)}
+        onClickOutside={() => {
+          setOpened(false);
+          setFocused(false);
+        }}
         content={
           <DropdownContent
             selectorId={selectorId}
