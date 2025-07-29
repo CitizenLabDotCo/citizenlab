@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
+import { Parameters } from 'api/projects_mini_admin/types';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
@@ -25,16 +26,29 @@ export type FilterType =
   | 'visibility'
   | 'discoverability';
 
+type FilterComponentProps =
+  | { managerIds: string[]; onChange: (managers: string[]) => void }
+  | { values: string[]; onChange: (values: string[]) => void }
+  | { folderIds: string[]; onChange: (folderIds: string[]) => void }
+  | {
+      participationStates: string[];
+      onChange: (participationStates: string[]) => void;
+    }
+  | {
+      participationMethods: string[];
+      onChange: (participationMethods: string[]) => void;
+    }
+  | { visibility: string[]; onChange: (visibility: string[]) => void }
+  | {
+      discoverability: string[];
+      onChange: (discoverability: string[]) => void;
+    };
+
 interface FilterConfig {
   type: FilterType;
   label: string;
   paramKey: string;
-  component: React.ComponentType<any>;
-  removable?: boolean;
-  roleRestrictions?: {
-    admin?: boolean;
-    projectManager?: boolean;
-  };
+  component: React.ComponentType<FilterComponentProps>;
 }
 
 const DynamicFilters = () => {
@@ -52,58 +66,50 @@ const DynamicFilters = () => {
   const visibilityParam = useParam('visibility');
   const discoverabilityParam = useParam('discoverability');
 
+  const isUserProjectManager = isModerator(authUser) && !isAdmin(authUser);
+
   const FILTER_CONFIGS: FilterConfig[] = [
     {
       type: 'manager',
       label: formatMessage(sharedMessages.manager),
       paramKey: 'managers',
       component: () => null,
-      removable: true,
-      roleRestrictions: {
-        projectManager: false, // Project managers can't remove manager filter
-      },
     },
     {
       type: 'status',
       label: formatMessage(messages.status),
       paramKey: 'status',
       component: () => null,
-      removable: true,
     },
     {
       type: 'folders',
       label: formatMessage(messages.folders),
       paramKey: 'folder_ids',
       component: () => null,
-      removable: true,
     },
     {
       type: 'participation_states',
       label: formatMessage(messages.participationStates),
       paramKey: 'participation_states',
       component: () => null,
-      removable: true,
     },
     {
       type: 'participation_methods',
       label: formatMessage(messages.participationMethodLabel),
       paramKey: 'participation_methods',
       component: () => null,
-      removable: true,
     },
     {
       type: 'visibility',
       label: formatMessage(messages.visibilityLabel),
       paramKey: 'visibility',
       component: () => null,
-      removable: true,
     },
     {
       type: 'discoverability',
       label: formatMessage(messages.discoverabilityLabel),
       paramKey: 'discoverability',
       component: () => null,
-      removable: true,
     },
   ];
 
@@ -259,23 +265,16 @@ const DynamicFilters = () => {
   const handleRemoveFilter = (filterType: FilterType) => {
     const config = FILTER_CONFIGS.find((c) => c.type === filterType);
 
-    // Check role-based restrictions
-    if (config?.roleRestrictions) {
-      const isUserAdmin = isAdmin(authUser);
-      const isUserProjectManager = isModerator(authUser) && !isUserAdmin;
-
-      if (
-        isUserProjectManager &&
-        config.roleRestrictions.projectManager === false
-      ) {
-        return; // Project managers can't remove this filter
-      }
+    // Simple role-based check: project managers can't remove manager filter
+    const isUserProjectManager = isModerator(authUser) && !isAdmin(authUser);
+    if (filterType === 'manager' && isUserProjectManager) {
+      return; // Project managers can't remove manager filter
     }
 
     setActiveFilters(activeFilters.filter((f) => f !== filterType));
     // Clear the parameter when removing the filter
     if (config) {
-      setParam(config.paramKey as any, []);
+      setParam(config.paramKey as keyof Parameters, []);
     }
   };
 
@@ -287,7 +286,7 @@ const DynamicFilters = () => {
     activeFilters.forEach((filterType) => {
       const config = FILTER_CONFIGS.find((c) => c.type === filterType);
       if (config) {
-        setParam(config.paramKey as any, []);
+        setParam(config.paramKey as keyof Parameters, []);
       }
     });
   };
@@ -296,12 +295,11 @@ const DynamicFilters = () => {
     (config) => !activeFilters.includes(config.type)
   );
 
-  // Determine which default filters to show based on user role
-  const isUserAdmin = isAdmin(authUser);
-  const isUserProjectManager = isModerator(authUser) && !isUserAdmin;
-
   // For project managers, always include the manager filter if not already present
   useEffect(() => {
+    const isUserAdmin = isAdmin(authUser);
+    const isUserModerator = isModerator(authUser);
+    const isUserProjectManager = isUserModerator && !isUserAdmin;
     if (isUserProjectManager && !activeFilters.includes('manager')) {
       setActiveFilters([...activeFilters, 'manager']);
       // Pre-populate with current user's ID
@@ -309,11 +307,10 @@ const DynamicFilters = () => {
         setParam('managers', [authUser.data.id]);
       }
     }
-  }, [isUserProjectManager, authUser, activeFilters]);
+  }, [authUser, activeFilters]);
 
   return (
     <Box display="flex" flexDirection="column" gap="16px">
-      {/* Active Filters Row */}
       <Box
         display="flex"
         flexDirection="row"
@@ -331,19 +328,8 @@ const DynamicFilters = () => {
           const config = FILTER_CONFIGS.find((c) => c.type === filterType);
           if (!config) return null;
 
-          // Determine if this filter can be removed based on role restrictions
-          let canRemove = true;
-          if (config.roleRestrictions) {
-            const isUserAdmin = isAdmin(authUser);
-            const isUserProjectManager = isModerator(authUser) && !isUserAdmin;
-
-            if (
-              isUserProjectManager &&
-              config.roleRestrictions.projectManager === false
-            ) {
-              canRemove = false; // Project managers can't remove this filter
-            }
-          }
+          // Simple role-based check for remove button visibility
+          const canRemove = !(filterType === 'manager' && isUserProjectManager);
 
           return (
             <ActiveFilter
@@ -356,20 +342,17 @@ const DynamicFilters = () => {
           );
         })}
 
-        {/* Add Filter and Clear Controls */}
-        <Box display="flex" flexDirection="row" alignItems="center" gap="12px">
-          <AddFilterDropdown
-            availableFilters={availableFilters}
-            onAddFilter={handleAddFilter}
+        <AddFilterDropdown
+          availableFilters={availableFilters}
+          onAddFilter={handleAddFilter}
+        />
+        {activeFilters.length > 0 && (
+          <Button
+            buttonStyle="text"
+            onClick={handleClearAll}
+            text={formatMessage(messages.clear)}
           />
-          {activeFilters.length > 0 && (
-            <Button
-              buttonStyle="text"
-              onClick={handleClearAll}
-              text={formatMessage(messages.clear)}
-            />
-          )}
-        </Box>
+        )}
       </Box>
     </Box>
   );
