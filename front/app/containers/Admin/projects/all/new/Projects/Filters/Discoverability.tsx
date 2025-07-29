@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -29,18 +29,16 @@ const DiscoverabilityFilter = ({ discoverability, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   const values = OPTIONS.map((option) => ({
-    text: formatMessage(option.message),
+    label: formatMessage(option.message),
     value: option.value,
   }));
 
   return (
-    <FilterSelector
+    <MultiSelect
       title={formatMessage(messages.discoverabilityLabel)}
-      name="discoverability-filter"
-      values={values}
+      options={values}
       selected={discoverability}
       onChange={onChange}
-      multipleSelectionAllowed
     />
   );
 };
