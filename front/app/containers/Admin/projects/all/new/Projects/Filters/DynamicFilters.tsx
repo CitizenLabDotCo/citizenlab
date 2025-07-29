@@ -19,11 +19,57 @@ export type FilterType =
   | 'visibility'
   | 'discoverability';
 
+// Define specific prop types for each filter component
+interface ManagerProps {
+  managerIds: string[];
+  onChange: (managers: string[]) => void;
+}
+
+interface StatusProps {
+  values: string[];
+  onChange: (values: string[]) => void;
+}
+
+interface FoldersProps {
+  folderIds: string[];
+  onChange: (folderIds: string[]) => void;
+}
+
+interface ParticipationStatesProps {
+  participationStates: string[];
+  onChange: (participationStates: string[]) => void;
+}
+
+interface ParticipationMethodsProps {
+  participationMethods: string[];
+  onChange: (participationMethods: string[]) => void;
+}
+
+interface VisibilityProps {
+  visibility: string[];
+  onChange: (visibility: string[]) => void;
+}
+
+interface DiscoverabilityProps {
+  discoverability: string[];
+  onChange: (discoverability: string[]) => void;
+}
+
+// Union type for all filter component props
+type FilterComponentProps =
+  | ManagerProps
+  | StatusProps
+  | FoldersProps
+  | ParticipationStatesProps
+  | ParticipationMethodsProps
+  | VisibilityProps
+  | DiscoverabilityProps;
+
 interface FilterConfig {
   type: FilterType;
   label: string;
   paramKey: string;
-  component: React.ComponentType<any>;
+  component: React.ComponentType<FilterComponentProps>;
 }
 
 const DynamicFilters = () => {
@@ -147,7 +193,6 @@ const DynamicFilters = () => {
   );
 };
 
-// New component to render the actual filter component
 const ActiveFilterComponent = ({
   filterType,
   config,
@@ -158,7 +203,7 @@ const ActiveFilterComponent = ({
   onRemove: () => void;
 }) => {
   const [FilterComponent, setFilterComponent] =
-    useState<React.ComponentType<any> | null>(null);
+    useState<React.ComponentType<FilterComponentProps> | null>(null);
 
   // Get the current value for this filter
   const currentValue = useParam(config.paramKey as any) ?? [];
@@ -202,28 +247,31 @@ const ActiveFilterComponent = ({
     loadComponent();
   }, [filterType]);
 
-  const handleChange = (value: any) => {
+  const handleChange = (value: string[]) => {
     setParam(config.paramKey as any, value);
   };
 
-  const getFilterProps = (filterType: FilterType, currentValue: any) => {
+  const getFilterProps = (
+    filterType: FilterType,
+    currentValue: string[]
+  ): FilterComponentProps => {
     switch (filterType) {
       case 'manager':
-        return { managerIds: currentValue };
+        return { managerIds: currentValue, onChange: handleChange };
       case 'status':
-        return { values: currentValue };
+        return { values: currentValue, onChange: handleChange };
       case 'folders':
-        return { folderIds: currentValue };
+        return { folderIds: currentValue, onChange: handleChange };
       case 'participation_states':
-        return { participationStates: currentValue };
+        return { participationStates: currentValue, onChange: handleChange };
       case 'participation_methods':
-        return { participationMethods: currentValue };
+        return { participationMethods: currentValue, onChange: handleChange };
       case 'visibility':
-        return { visibility: currentValue };
+        return { visibility: currentValue, onChange: handleChange };
       case 'discoverability':
-        return { discoverability: currentValue };
+        return { discoverability: currentValue, onChange: handleChange };
       default:
-        return {};
+        throw new Error(`Unknown filter type: ${filterType}`);
     }
   };
 
@@ -240,10 +288,7 @@ const ActiveFilterComponent = ({
     >
       {FilterComponent && (
         <Box flex="1">
-          <FilterComponent
-            {...getFilterProps(filterType, currentValue)}
-            onChange={handleChange}
-          />
+          <FilterComponent {...getFilterProps(filterType, currentValue)} />
         </Box>
       )}
 
