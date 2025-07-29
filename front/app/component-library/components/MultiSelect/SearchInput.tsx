@@ -10,9 +10,15 @@ interface Props {
   value?: string;
   placeholder?: string;
   onSearch?: (searchTerm: string) => void;
+  a11y_clearSearchButtonActionMessage: string;
 }
 
-const SearchInput = ({ value, placeholder, onSearch }: Props) => {
+const SearchInput = ({
+  value,
+  placeholder,
+  onSearch,
+  a11y_clearSearchButtonActionMessage,
+}: Props) => {
   return (
     <Box mb="8px" position="relative">
       <Input
@@ -28,7 +34,7 @@ const SearchInput = ({ value, placeholder, onSearch }: Props) => {
             onClick={() => onSearch?.('')}
             iconColor={colors.textSecondary}
             iconColorOnHover="#000"
-            a11y_buttonActionMessage={''}
+            a11y_buttonActionMessage={a11y_clearSearchButtonActionMessage}
             p="0"
           />
         ) : (
