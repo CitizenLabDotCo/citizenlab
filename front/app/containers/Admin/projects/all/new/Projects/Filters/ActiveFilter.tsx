@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box, colors, Icon } from '@citizenlab/cl2-component-library';
 
 import { useParam, setParam } from '../utils';
 
@@ -153,8 +153,8 @@ const ActiveFilter = ({
       alignItems="center"
       p="4px 12px"
       border="1px solid"
-      borderColor="grey300"
-      borderRadius="4px"
+      borderColor={colors.grey700}
+      borderRadius="3px"
       background="white"
       py="10px"
       onMouseEnter={() => setIsHovered(true)}
@@ -178,7 +178,7 @@ const ActiveFilter = ({
           justifyContent="center"
           background="grey100"
           border="1px solid"
-          borderColor="grey300"
+          borderColor={colors.grey700}
           cursor="pointer"
           onClick={onRemove}
           aria-label="Remove filter"
