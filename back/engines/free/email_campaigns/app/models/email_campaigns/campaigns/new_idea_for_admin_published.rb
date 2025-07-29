@@ -42,6 +42,8 @@ module EmailCampaigns
     private
 
     def published_only?(activity:, time: nil)
+      return false if !activity.item.is_a?(::Idea)
+
       activity.item.published?
     end
   end
