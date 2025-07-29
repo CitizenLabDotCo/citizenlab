@@ -6,7 +6,8 @@ import React, {
   useCallback,
 } from 'react';
 
-import ModalRenderer, { ModalId } from './ModalRenderer';
+import ModalRenderer from './ModalRenderer';
+import { ModalId } from './modals/modalRegistry';
 
 interface ModalQueueContextType {
   queueModal: (id: ModalId) => void;
@@ -94,12 +95,4 @@ const useModalQueue = (): ModalQueueContextType => {
   return context;
 };
 
-const MODAL_PRIORITIES = {
-  CRITICAL: 100,
-  HIGH: 50,
-  MEDIUM: 25,
-  LOW: 10,
-  BACKGROUND: 1,
-} as const;
-
-export { ModalQueueProvider, useModalQueue, MODAL_PRIORITIES };
+export { ModalQueueProvider, useModalQueue };

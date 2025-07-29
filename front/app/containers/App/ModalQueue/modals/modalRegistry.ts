@@ -1,0 +1,36 @@
+import { lazy } from 'react';
+
+const ConsentManagerModal = lazy(
+  () => import('components/ConsentManager/ConsentManagerModal')
+);
+const UserSessionRecordingModal = lazy(
+  () => import('./UserSessionRecording/Modal')
+);
+
+const MODAL_PRIORITIES = {
+  100: 'CRITICAL',
+  50: 'HIGH',
+  25: 'MEDIUM',
+  10: 'LOW',
+  1: 'BACKGROUND',
+} as const;
+
+type ModalPriority = keyof typeof MODAL_PRIORITIES;
+
+export type ModalId = 'consent-modal' | 'user-session-recording';
+
+const modalRegistry: Record<
+  ModalId,
+  { component: React.FC<any>; priority: ModalPriority }
+> = {
+  'consent-modal': {
+    component: ConsentManagerModal,
+    priority: 100,
+  },
+  'user-session-recording': {
+    component: UserSessionRecordingModal,
+    priority: 50,
+  },
+};
+
+export default modalRegistry;
