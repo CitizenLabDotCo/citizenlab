@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
 import sharedMessages from '../../_shared/messages';
-import { setParam } from '../utils';
+import { useParam, setParam } from '../utils';
 
 import ActiveFilter from './ActiveFilter';
 import AddFilterDropdown from './AddFilterDropdown';
@@ -30,6 +30,16 @@ interface FilterConfig {
 const DynamicFilters = () => {
   const { formatMessage } = useIntl();
   const [activeFilters, setActiveFilters] = useState<FilterType[]>([]);
+  const [hasInitializedFromUrl, setHasInitializedFromUrl] = useState(false);
+
+  // Get all URL parameters at the component level
+  const managersParam = useParam('managers');
+  const statusParam = useParam('status');
+  const folderIdsParam = useParam('folder_ids');
+  const participationStatesParam = useParam('participation_states');
+  const participationMethodsParam = useParam('participation_methods');
+  const visibilityParam = useParam('visibility');
+  const discoverabilityParam = useParam('discoverability');
 
   const FILTER_CONFIGS: FilterConfig[] = [
     {
@@ -75,6 +85,151 @@ const DynamicFilters = () => {
       component: () => null,
     },
   ];
+
+  // Initialize filters from URL only once on mount
+  useEffect(() => {
+    if (!hasInitializedFromUrl) {
+      const filtersFromUrl: FilterType[] = [];
+
+      // Check each parameter and add corresponding filter if it has values
+      if (
+        managersParam &&
+        Array.isArray(managersParam) &&
+        managersParam.length > 0
+      ) {
+        filtersFromUrl.push('manager');
+      }
+      if (statusParam && Array.isArray(statusParam) && statusParam.length > 0) {
+        filtersFromUrl.push('status');
+      }
+      if (
+        folderIdsParam &&
+        Array.isArray(folderIdsParam) &&
+        folderIdsParam.length > 0
+      ) {
+        filtersFromUrl.push('folders');
+      }
+      if (
+        participationStatesParam &&
+        Array.isArray(participationStatesParam) &&
+        participationStatesParam.length > 0
+      ) {
+        filtersFromUrl.push('participation_states');
+      }
+      if (
+        participationMethodsParam &&
+        Array.isArray(participationMethodsParam) &&
+        participationMethodsParam.length > 0
+      ) {
+        filtersFromUrl.push('participation_methods');
+      }
+      if (
+        visibilityParam &&
+        Array.isArray(visibilityParam) &&
+        visibilityParam.length > 0
+      ) {
+        filtersFromUrl.push('visibility');
+      }
+      if (
+        discoverabilityParam &&
+        Array.isArray(discoverabilityParam) &&
+        discoverabilityParam.length > 0
+      ) {
+        filtersFromUrl.push('discoverability');
+      }
+
+      if (filtersFromUrl.length > 0) {
+        setActiveFilters(filtersFromUrl);
+      }
+      setHasInitializedFromUrl(true);
+    }
+  }, [
+    hasInitializedFromUrl,
+    managersParam,
+    statusParam,
+    folderIdsParam,
+    participationStatesParam,
+    participationMethodsParam,
+    visibilityParam,
+    discoverabilityParam,
+  ]);
+
+  // Sync active filters with URL parameters (but don't override manual additions)
+  useEffect(() => {
+    if (hasInitializedFromUrl) {
+      const currentFiltersFromUrl: FilterType[] = [];
+
+      // Check each parameter and add corresponding filter if it has values
+      if (
+        managersParam &&
+        Array.isArray(managersParam) &&
+        managersParam.length > 0
+      ) {
+        currentFiltersFromUrl.push('manager');
+      }
+      if (statusParam && Array.isArray(statusParam) && statusParam.length > 0) {
+        currentFiltersFromUrl.push('status');
+      }
+      if (
+        folderIdsParam &&
+        Array.isArray(folderIdsParam) &&
+        folderIdsParam.length > 0
+      ) {
+        currentFiltersFromUrl.push('folders');
+      }
+      if (
+        participationStatesParam &&
+        Array.isArray(participationStatesParam) &&
+        participationStatesParam.length > 0
+      ) {
+        currentFiltersFromUrl.push('participation_states');
+      }
+      if (
+        participationMethodsParam &&
+        Array.isArray(participationMethodsParam) &&
+        participationMethodsParam.length > 0
+      ) {
+        currentFiltersFromUrl.push('participation_methods');
+      }
+      if (
+        visibilityParam &&
+        Array.isArray(visibilityParam) &&
+        visibilityParam.length > 0
+      ) {
+        currentFiltersFromUrl.push('visibility');
+      }
+      if (
+        discoverabilityParam &&
+        Array.isArray(discoverabilityParam) &&
+        discoverabilityParam.length > 0
+      ) {
+        currentFiltersFromUrl.push('discoverability');
+      }
+
+      // Merge current active filters with URL-based filters
+      const mergedFilters = [
+        ...new Set([...activeFilters, ...currentFiltersFromUrl]),
+      ];
+
+      // Only update if there's a difference to avoid unnecessary re-renders
+      if (
+        JSON.stringify(mergedFilters.sort()) !==
+        JSON.stringify(activeFilters.sort())
+      ) {
+        setActiveFilters(mergedFilters);
+      }
+    }
+  }, [
+    hasInitializedFromUrl,
+    activeFilters,
+    managersParam,
+    statusParam,
+    folderIdsParam,
+    participationStatesParam,
+    participationMethodsParam,
+    visibilityParam,
+    discoverabilityParam,
+  ]);
 
   const handleAddFilter = (filterType: FilterType) => {
     if (!activeFilters.includes(filterType)) {
