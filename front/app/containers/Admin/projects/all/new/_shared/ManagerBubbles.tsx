@@ -10,7 +10,7 @@ import placeholderImage from 'components/AvatarBubbles/user.png';
 import { useIntl } from 'utils/cl-intl';
 import { truncate } from 'utils/textUtils';
 
-import messages from '../Projects/Table/messages';
+import messages from './messages';
 
 type Manager = {
   first_name?: string;
