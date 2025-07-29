@@ -26,7 +26,7 @@ const Filters = () => {
     >
       <Box display="flex" alignItems="center" w="100%">
         <Manager
-          managerIds={managerIds}
+          values={managerIds}
           mr="8px"
           onChange={(value) => {
             setParam('managers', value);
