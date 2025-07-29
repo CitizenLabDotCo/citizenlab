@@ -1,4 +1,4 @@
-import React, { ComponentType, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -10,27 +10,21 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
-import { FilterComponentProps } from './ActiveFilter';
-import { FilterType } from './DynamicFilters';
-import messages from './messages';
+import { Parameter } from '../params';
 
-interface FilterConfig {
-  type: FilterType;
-  label: string;
-  paramKey: string;
-  component: ComponentType<FilterComponentProps>;
-}
+import messages from './messages';
+import { FilterConfig } from './typings';
 
 interface Props {
   availableFilters: FilterConfig[];
-  onAddFilter: (filterType: FilterType) => void;
+  onAddFilter: (filterKey: Parameter) => void;
 }
 
 const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
   const { formatMessage } = useIntl();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleAddFilter = (filterType: FilterType) => {
+  const handleAddFilter = (filterType: Parameter) => {
     onAddFilter(filterType);
     setIsOpen(false);
   };
@@ -66,7 +60,7 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
             {availableFilters.map((filter, index) => (
               <DropdownListItem
                 key={index}
-                onClick={() => handleAddFilter(filter.type)}
+                onClick={() => handleAddFilter(filter.key)}
               >
                 {filter.label}
               </DropdownListItem>

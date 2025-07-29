@@ -4,15 +4,13 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
-import Search from './Filters/Search';
-import { useParam, setParam } from '../utils';
-
 import DynamicFilters from './DynamicFilters';
+import Search from './Filters/Search';
+import Sort from './Filters/Sort';
 import messages from './messages';
 
 const Filters = () => {
   const { formatMessage } = useIntl();
-  const searchValue = useParam('search');
 
   return (
     <Box
@@ -21,21 +19,8 @@ const Filters = () => {
       justifyContent="flex-end"
       gap="16px"
     >
-      <Box
-        minWidth="300px"
-        display="flex"
-        justifyContent="flex-end"
-        alignItems="center"
-      >
-        <Search
-          value={searchValue}
-          placeholder={formatMessage(messages.search)}
-          onChange={(search) => {
-            setParam('search', search);
-          }}
-        />
-      </Box>
-
+      <Search placeholder={formatMessage(messages.search)} />
+      <Sort />
       <DynamicFilters />
     </Box>
   );

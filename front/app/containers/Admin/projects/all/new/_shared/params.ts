@@ -7,7 +7,9 @@ import { Parameters } from 'api/projects_mini_admin/types';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-export const PARAMS: (keyof Parameters)[] = [
+export type Parameter = keyof Parameters;
+
+export const PARAMS: Parameter[] = [
   'status',
   'managers',
   'search',
@@ -29,9 +31,9 @@ const MULTISELECT_PARAMS = new Set<string>([
   'participation_methods',
   'visibility',
   'discoverability',
-] satisfies (keyof Parameters)[]);
+] satisfies Parameter[]);
 
-export const setParam = <ParamName extends keyof Parameters>(
+export const setParam = <ParamName extends Parameter>(
   paramName: ParamName,
   paramValue: Parameters[ParamName]
 ) => {
@@ -45,7 +47,7 @@ export const setParam = <ParamName extends keyof Parameters>(
   }
 };
 
-export const useParam = <ParamName extends keyof Parameters>(
+export const useParam = <ParamName extends Parameter>(
   paramName: ParamName
 ): Parameters[ParamName] | undefined => {
   const [searchParams] = useSearchParams();
