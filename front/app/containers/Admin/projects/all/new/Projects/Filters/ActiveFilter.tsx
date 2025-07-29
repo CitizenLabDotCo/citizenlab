@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 
 import { useParam, setParam } from '../utils';
 
@@ -74,6 +74,7 @@ const ActiveFilter = ({
 }: Props) => {
   const [FilterComponent, setFilterComponent] =
     useState<React.ComponentType<FilterComponentProps> | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   // Get the current value for this filter
   const currentValue = useParam(config.paramKey as any) ?? [];
@@ -156,6 +157,8 @@ const ActiveFilter = ({
       borderRadius="4px"
       background="white"
       py="10px"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {FilterComponent && (
         <Box flex="1">
@@ -163,15 +166,26 @@ const ActiveFilter = ({
         </Box>
       )}
 
-      {canRemove && (
-        <Button
-          buttonStyle="text"
-          icon="close"
+      {canRemove && isHovered && (
+        <Box
+          as="button"
+          type="button"
+          borderRadius="50%"
+          width="20px"
+          height="20px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          background="grey100"
+          border="1px solid"
+          borderColor="grey300"
+          cursor="pointer"
           onClick={onRemove}
-          text=""
-          iconSize="16px"
-          p="0px"
-        />
+          aria-label="Remove filter"
+          p="2px"
+        >
+          <Icon name="close" />
+        </Box>
       )}
     </Box>
   );
