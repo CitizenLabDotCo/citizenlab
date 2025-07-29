@@ -24,8 +24,8 @@ es:
       "mention_in_official_feedback": Mención en una actualización
       "mention_in_internal_comment": Mención en un comentario interno
       "new_comment_for_admin": Nuevo comentario en un proyecto moderado por mí
-      "new_idea_for_admin_published": Nueva aportación publicada en un proyecto que modero
-      "new_idea_for_admin_prescreening": Nueva aportación que requiere aprobación en un proyecto I moderado
+      "new_idea_for_admin_published": Nuevo aporte publicado en un proyecto que modero
+      "new_idea_for_admin_prescreening": Nuevo aporte que requiere aprobación en un proyecto que modero
       "official_feedback_on_idea_you_follow": Actualización de una idea que sigues
       "password_reset": Restablecimiento de contraseña
       "project_moderation_rights_received": Derechos de moderación del proyecto recibidos
@@ -87,19 +87,19 @@ es:
       quarterly: "Trimestralmente, el primer día del trimestre"
     preview_data:
       author_first_name: 'Jane'
-      author_last_name: 'Doe'
-      author_display_name: 'Jane Doe'
-      initiator_first_name: 'Bob'
-      initiator_last_name: 'Smith'
-      initiator_display_name: 'Bob Smith'
+      author_last_name: 'Rodríguez'
+      author_display_name: 'María Rodríguez'
+      initiator_first_name: 'María'
+      initiator_last_name: 'Pérez'
+      initiator_display_name: 'Juan Pérez'
       project_title: 'Ejemplo de proyecto'
       phase_title: 'Fase de ejemplo'
       comment_body: 'Este es un comentario de ejemplo utilizado para previsualizar el contenido de los correos electrónicos. No es contenido real.'
       comment_deleted_reason: 'Tu comentario de ejemplo se consideró inapropiado.'
       idea_title: 'Ejemplo de idea'
       idea_body: 'Este es un contenido idea de ejemplo utilizado para previsualizar el contenido de los correos electrónicos. No es contenido real.'
-      event_title: 'Ejemplo de acontecimiento'
-      event_address1: 'Calle del Ejemplo 10, Exampleton, Exampleshire'
+      event_title: 'Evento de ejemplo'
+      event_address1: 'Calle del Ejemplo 10, Ejemplaria, San Ejemplo'
       event_address2: 'Habitación 3a, Arriba'
       proposal_title: 'Ejemplo de propuesta'
     footer:
@@ -263,7 +263,7 @@ es:
     comment_on_idea_you_follow:
       subject: 'Hay un nuevo comentario en "%{input_title}"'
       preheader: '%{authorName} ha dejado un comentario sobre una idea para %{organizationName}'
-      title: '%{authorName} comentaste una entrada que sigues'
+      title: '%{authorName} comentó en un aporte que sigues'
       event_description: '%{authorNameFull} ha reaccionado a ''%{inputTitle}''. Haz clic en el botón de abajo para continuar la conversación con %{authorName}.'
       cta_button: 'Responder a %{commentAuthor}'
       main_header:
@@ -341,7 +341,7 @@ es:
       event_description: '%{organizationName} te ha mencionado en su comentario sobre la idea ''%{post}''. Haga clic en el siguiente enlace para entrar en la conversación con %{organizationName}'
       title: 'Has sido mencionado'
       subject: '%{organizationName} te mencionó en sus comentarios'
-      preheader: '%{organizationName} te mencionó en sus comentarios'
+      preheader: '%{organizationName} te mencionó en una actualización oficial'
     project_moderation_rights_received:
       cta_manage_project: 'Gestionar este proyecto'
       message_you_became_moderator: 'Un administrador de la plataforma de participación %{organizationName} acaba de nombrarte administrador de proyecto del siguiente proyecto:'
@@ -490,7 +490,7 @@ es:
       title: '¡Ya casi está! Envía tus respuestas'
       event_description: 'Empezaste a compartir tus respuestas en %{phaseTitle} pero no las enviaste. Haz clic en el botón de abajo para continuar donde lo dejaste.'
       cta_button: 'Reanuda tu respuesta a la encuesta'
-      submissions_close: 'Las solicitudes se cerrarán en %{phaseEndDate}.'
+      submissions_close: 'La admisión de respuestas se cerrará en %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}No has enviado tus votos'
       preheader: 'No enviaste tus votos en la plataforma de participación de %{organizationName}'
