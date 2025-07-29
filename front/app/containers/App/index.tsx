@@ -53,9 +53,11 @@ import { isAdmin, isModerator } from 'utils/permissions/roles';
 import CommunityMonitorModal from './CommunityMonitorModal';
 import messages from './messages';
 import Meta from './Meta';
-import { ModalQueueProvider } from './ModalManager';
-import UserSessionRecordingModal from './UserSessionRecordingModal';
+import { ModalQueueProvider } from './ModalQueue';
 
+const UserSessionRecordingModalManager = lazy(
+  () => import('./ModalQueue/modals/UserSessionRecording/Manager')
+);
 const ConsentManager = lazy(() => import('components/ConsentManager'));
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
@@ -343,7 +345,9 @@ const App = ({ children }: Props) => {
             minHeight="100vh"
           >
             <Meta />
-            <UserSessionRecordingModal />
+            <ErrorBoundary>
+              <UserSessionRecordingModalManager />
+            </ErrorBoundary>
             <CommunityMonitorModal />
             <ErrorBoundary>
               <Suspense fallback={null}>
