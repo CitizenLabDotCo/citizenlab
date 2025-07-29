@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
 
-import useAuthUser from 'api/me/useAuthUser';
 import useEventImage from 'api/event_images/useEventImage';
 import { IEventData } from 'api/events/types';
+import useAuthUser from 'api/me/useAuthUser';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
