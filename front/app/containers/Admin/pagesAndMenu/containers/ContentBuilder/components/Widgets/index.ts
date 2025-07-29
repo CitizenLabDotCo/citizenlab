@@ -5,6 +5,9 @@ import AccordionMultiloc, {
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import FileAttachment, {
+  fileAttachmentTitle,
+} from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import IframeMultiloc, {
   iframeTitle,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
@@ -52,6 +55,7 @@ export const WIDGETS = {
   AccordionMultiloc,
   ButtonMultiloc,
   IframeMultiloc,
+  FileAttachment,
   ImageMultiloc,
   ThreeColumn,
   TwoColumn,
@@ -88,6 +92,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ButtonMultiloc: buttonMultilocTitle,
   IframeMultiloc: iframeTitle,
   ImageMultiloc: imageMultilocTitle,
+  FileAttachment: fileAttachmentTitle,
   ThreeColumn: threeColumnTitle,
   TwoColumn: twoColumnTitle,
   WhiteSpace: whiteSpaceTitle,
@@ -128,6 +133,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   // Shared widgets
   'ButtonMultiloc',
   'IframeMultiloc',
+  'FileAttachment',
 
   // Homepage builder widgets
   'Areas',
