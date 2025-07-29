@@ -14,9 +14,9 @@ import { GanttItem } from 'components/UI/GanttChart/types';
 import { useIntl } from 'utils/cl-intl';
 
 import FilterBar from '../_shared/FilterBar';
+import sharedMessages from '../_shared/messages';
 import { useParams } from '../_shared/params';
 import { getStatusColor } from '../_shared/utils';
-import projectMessages from '../Projects/Table/messages';
 
 import messages from './messages';
 import ProjectGanttChart from './ProjectGanttChart';
@@ -85,14 +85,14 @@ const Timeline = () => {
 
   const getSentinelMessage = () => {
     if (isFetching) {
-      return projectMessages.loadingMore;
+      return sharedMessages.loadingMore;
     }
 
     if (hasNextPage) {
-      return projectMessages.scrollDownToLoadMore;
+      return sharedMessages.scrollDownToLoadMore;
     }
 
-    return projectMessages.allProjectsHaveLoaded;
+    return sharedMessages.allProjectsHaveLoaded;
   };
   const sentinelMessage = getSentinelMessage();
 

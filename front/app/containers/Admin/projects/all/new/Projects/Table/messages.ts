@@ -65,18 +65,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.yearsToStart',
     defaultMessage: '{years}y to start',
   },
-  loadingMore: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.loadingMore',
-    defaultMessage: 'Loading more…',
-  },
-  scrollDownToLoadMore: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.scrollDownToLoadMore',
-    defaultMessage: 'Scroll down to load more',
-  },
-  allProjectsHaveLoaded: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded',
-    defaultMessage: 'All projects have been loaded',
-  },
   currentPhase: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.currentPhase',
     defaultMessage: 'Current phase:',
