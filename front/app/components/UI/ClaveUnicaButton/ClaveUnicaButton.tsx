@@ -1,8 +1,7 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import { Icon } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 // CSS extracted from the official Clave Unica button
 // https://drive.google.com/file/d/1-aBGu5XEjHD1LYcqOZP_mUg4ekFLDv6v/view
@@ -65,7 +64,7 @@ const ClaveUnicaButton = ({ disabled, message, onClick }: Props) => {
         id="e2e-clave_unica-button"
         className={disabled ? 'disabled' : undefined}
       >
-        <Icon name="claveUnica" fill="#fff" width="24px" height="24px"></Icon>
+        <Icon name="claveUnica" fill="#fff" width="24px" height="24px" />
 
         {/* This text should be always like that and should not be translated
         according to the guideline https://drive.google.com/file/d/1-aBGu5XEjHD1LYcqOZP_mUg4ekFLDv6v/view */}
