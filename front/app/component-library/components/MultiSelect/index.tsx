@@ -48,8 +48,11 @@ const MultiSelect = ({
 }: Props) => {
   const [opened, setOpened] = useState(false);
   const [hover, setHover] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   const selectorId = useId();
+
+  const showClearButton = selected.length > 0 && (hover || focused);
 
   return (
     <Box {...boxProps}>
@@ -60,10 +63,12 @@ const MultiSelect = ({
           onClick={() => setOpened(!opened)}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
         >
           <Box position="relative">
             <TitleMessage title={title} selected={selected} options={options} />
-            {selected.length > 0 && hover && (
+            {showClearButton && (
               <StyledBox
                 as="button"
                 position="absolute"
