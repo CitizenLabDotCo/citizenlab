@@ -9,6 +9,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
@@ -22,6 +23,7 @@ import Error from 'components/UI/Error';
 
 import clHistory from 'utils/cl-router/history';
 import { parseBackendDateString } from 'utils/dateUtils';
+import { canModerateProjectByIds } from 'utils/permissions/rules/projectPermissions';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
@@ -36,6 +38,7 @@ interface Props {
 
 const Row = ({ project, participantsCount }: Props) => {
   const localize = useLocalize();
+  const { data: authUser } = useAuthUser();
 
   const imageId = project.relationships.project_images.data[0]?.id;
   const { data: image } = useProjectImage({
@@ -67,11 +70,31 @@ const Row = ({ project, participantsCount }: Props) => {
 
   const folderId = project.relationships.folder?.data?.id;
 
+  const userCanModerateProject = authUser
+    ? canModerateProjectByIds({
+        projectId: project.id,
+        folderId,
+        user: authUser,
+      })
+    : false;
+
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
       setIsBeingCopyied(isRunning);
     } else {
       setIsBeingDeleted(isRunning);
+    }
+  };
+
+  const handleClick = () => {
+    if (!userCanModerateProject) {
+      return;
+    }
+
+    if (hover === 'project') {
+      clHistory.push(`/admin/projects/${project.id}`);
+    } else {
+      clHistory.push(`/admin/projects/folders/${folderId}`);
     }
   };
 
@@ -81,13 +104,12 @@ const Row = ({ project, participantsCount }: Props) => {
         background={colors.grey50}
         onMouseEnter={() => setHover('project')}
         onMouseLeave={() => setHover('none')}
-        onClick={() => {
-          hover === 'project'
-            ? clHistory.push(`/admin/projects/${project.id}`)
-            : clHistory.push(`/admin/projects/folders/${folderId}`);
-        }}
+        onClick={handleClick}
         style={{
-          cursor: hover !== 'none' ? 'pointer' : 'default',
+          cursor:
+            userCanModerateProject && hover !== 'none'
+              ? 'pointer'
+              : 'not-allowed',
         }}
       >
         <Box display="flex" alignItems="center">
@@ -99,7 +121,11 @@ const Row = ({ project, participantsCount }: Props) => {
             <Text
               m="0"
               fontSize="s"
-              textDecoration={hover === 'project' ? 'underline' : 'none'}
+              textDecoration={
+                userCanModerateProject && hover === 'project'
+                  ? 'underline'
+                  : 'none'
+              }
             >
               {localize(title_multiloc)}
             </Text>
@@ -108,7 +134,11 @@ const Row = ({ project, participantsCount }: Props) => {
                 m="0"
                 fontSize="xs"
                 color="textSecondary"
-                textDecoration={hover === 'folder' ? 'underline' : 'none'}
+                textDecoration={
+                  userCanModerateProject && hover === 'folder'
+                    ? 'underline'
+                    : 'none'
+                }
                 onMouseEnter={() => setHover('folder')}
                 onMouseLeave={() => setHover('project')}
               >
