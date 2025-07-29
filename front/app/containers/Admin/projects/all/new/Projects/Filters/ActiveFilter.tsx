@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { ComponentType, useState, useEffect } from 'react';
 
 import { Box, colors, Icon } from '@citizenlab/cl2-component-library';
+
+import { Parameters } from 'api/projects_mini_admin/types';
 
 import { useParam, setParam } from '../utils';
 
 import { FilterType } from './DynamicFilters';
 
-// Define specific prop types for each filter component
 interface ManagerProps {
   managerIds: string[];
   onChange: (managers: string[]) => void;
@@ -42,8 +43,7 @@ interface DiscoverabilityProps {
   onChange: (discoverability: string[]) => void;
 }
 
-// Union type for all filter component props
-type FilterComponentProps =
+export type FilterComponentProps =
   | ManagerProps
   | StatusProps
   | FoldersProps
@@ -55,8 +55,8 @@ type FilterComponentProps =
 interface FilterConfig {
   type: FilterType;
   label: string;
-  paramKey: string;
-  component: React.ComponentType<FilterComponentProps>;
+  paramKey: keyof Parameters;
+  component: ComponentType<FilterComponentProps>;
 }
 
 interface Props {
@@ -73,17 +73,17 @@ const ActiveFilter = ({
   canRemove = true,
 }: Props) => {
   const [FilterComponent, setFilterComponent] =
-    useState<React.ComponentType<FilterComponentProps> | null>(null);
+    useState<ComponentType<FilterComponentProps> | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   // Get the current value for this filter
-  const currentValue = useParam(config.paramKey as any) ?? [];
+  const currentValue = (useParam(config.paramKey) ?? []) as string[];
 
   // Dynamically load the filter component
-  React.useEffect(() => {
+  useEffect(() => {
     const loadComponent = async () => {
       try {
-        let component;
+        let component: ComponentType<FilterComponentProps> | null = null;
         switch (filterType) {
           case 'manager':
             component = (await import('../../_shared/Manager')).default;
@@ -119,7 +119,7 @@ const ActiveFilter = ({
   }, [filterType]);
 
   const handleChange = (value: string[]) => {
-    setParam(config.paramKey as any, value);
+    setParam(config.paramKey, value);
   };
 
   const getFilterProps = (

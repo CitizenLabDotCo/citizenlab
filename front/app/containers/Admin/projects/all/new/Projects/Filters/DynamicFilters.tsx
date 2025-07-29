@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { ComponentType, useState, useEffect, useMemo } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
@@ -11,7 +11,7 @@ import { isAdmin, isModerator } from 'utils/permissions/roles';
 import sharedMessages from '../../_shared/messages';
 import { useParam, setParam } from '../utils';
 
-import ActiveFilter from './ActiveFilter';
+import ActiveFilter, { FilterComponentProps } from './ActiveFilter';
 import AddFilterDropdown from './AddFilterDropdown';
 import Dates from './Dates';
 import messages from './messages';
@@ -26,29 +26,11 @@ export type FilterType =
   | 'visibility'
   | 'discoverability';
 
-type FilterComponentProps =
-  | { managerIds: string[]; onChange: (managers: string[]) => void }
-  | { values: string[]; onChange: (values: string[]) => void }
-  | { folderIds: string[]; onChange: (folderIds: string[]) => void }
-  | {
-      participationStates: string[];
-      onChange: (participationStates: string[]) => void;
-    }
-  | {
-      participationMethods: string[];
-      onChange: (participationMethods: string[]) => void;
-    }
-  | { visibility: string[]; onChange: (visibility: string[]) => void }
-  | {
-      discoverability: string[];
-      onChange: (discoverability: string[]) => void;
-    };
-
 export interface FilterConfig {
   type: FilterType;
   label: string;
   paramKey: keyof Parameters;
-  component: React.ComponentType<FilterComponentProps>;
+  component: ComponentType<FilterComponentProps>;
 }
 
 const getFilterConfigs = (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ComponentType, useState } from 'react';
 
 import {
   Box,
@@ -10,6 +10,7 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
+import { FilterComponentProps } from './ActiveFilter';
 import { FilterType } from './DynamicFilters';
 import messages from './messages';
 
@@ -17,7 +18,7 @@ interface FilterConfig {
   type: FilterType;
   label: string;
   paramKey: string;
-  component: React.ComponentType<any>;
+  component: ComponentType<FilterComponentProps>;
 }
 
 interface Props {
