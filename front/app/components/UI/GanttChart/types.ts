@@ -20,6 +20,8 @@ export type GanttItem = {
   };
   icon?: IconNames;
   color?: string;
+  // Optional click handler for this specific item
+  onClick?: () => void;
 };
 
 export type ViewBounds = {
@@ -34,5 +36,4 @@ export type GanttChartProps = {
   items: GanttItem[];
   renderItemTooltip?: (item: GanttItem) => ReactNode;
   showTodayLine?: boolean;
-  onItemLabelClick?: (item: GanttItem) => void;
 };
