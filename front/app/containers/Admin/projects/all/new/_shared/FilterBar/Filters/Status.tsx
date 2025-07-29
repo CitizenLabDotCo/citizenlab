@@ -8,7 +8,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import { PUBLICATION_STATUS_LABELS } from '../../../constants';
 import { useParam, setParam } from '../../params';
-import messages from '../messages';
+
+import messages from './messages';
 
 type Option = {
   value: PublicationStatus;

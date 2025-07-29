@@ -7,9 +7,9 @@ import FilterSelector from 'components/FilterSelector';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import messages from '../../messages';
-
 import { useParam, setParam } from '../../params';
+
+import messages from './messages';
 
 interface Props {
   mr?: string;

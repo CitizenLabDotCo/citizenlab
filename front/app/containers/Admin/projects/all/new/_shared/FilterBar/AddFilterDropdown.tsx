@@ -12,7 +12,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import { Parameter } from '../params';
 
-import messages from './messages';
+import messages from './Filters/messages';
 import { FilterConfig } from './typings';
 
 interface Props {
