@@ -91,13 +91,21 @@ const generateYupValidationSchema = ({
       case 'text':
       case 'multiline_text':
       case 'date': {
+        let fieldSchema = string();
+
+        if (required) {
+          fieldSchema = fieldSchema
+            .required(fieldRequired)
+            .trim() // Removes leading/trailing whitespace before validation
+            .min(1, fieldRequired); // Ensures at least one character after trimming
+        }
+
         if (key === 'location_description') {
-          schema[key] =
-            required && enabled
-              ? string().required(fieldRequired).nullable()
-              : string().nullable();
+          schema[key] = enabled
+            ? fieldSchema.nullable()
+            : fieldSchema.nullable();
         } else {
-          schema[key] = required ? string().required(fieldRequired) : string();
+          schema[key] = fieldSchema;
         }
         break;
       }
