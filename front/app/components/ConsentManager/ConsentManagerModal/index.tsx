@@ -3,7 +3,7 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-import { useModalQueue } from 'containers/App/ModalManager';
+import { useModalQueue } from 'containers/App/ModalQueue';
 
 import Modal from 'components/UI/Modal';
 
@@ -97,7 +97,7 @@ const ConsentManagerModal = () => {
   };
 
   const onClose = () => {
-    removeModal('consent-manager');
+    removeModal('consent-modal');
   };
 
   const accept = () => {

@@ -6,16 +6,11 @@ import React, {
   useCallback,
 } from 'react';
 
-import ModalRenderer from './ModalRenderer';
-
-interface Modal {
-  component: React.FC<any>;
-  id: string;
-}
+import ModalRenderer, { ModalId } from './ModalRenderer';
 
 interface ModalQueueContextType {
-  queueModal: (id: string, component: React.FC<any>) => void;
-  removeModal: (id: string) => void;
+  queueModal: (id: ModalId) => void;
+  removeModal: (id: ModalId) => void;
 }
 
 const ModalQueueContext = createContext<ModalQueueContextType | undefined>(
@@ -23,8 +18,8 @@ const ModalQueueContext = createContext<ModalQueueContextType | undefined>(
 );
 
 interface ModalQueueState {
-  queue: Modal[];
-  currentModal: Modal | null;
+  queue: ModalId[];
+  currentModalId: ModalId | null;
 }
 
 const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
@@ -32,26 +27,26 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
     (
       state: ModalQueueState,
       action:
-        | { type: 'QUEUE_MODAL'; modal: Modal }
-        | { type: 'REMOVE_MODAL'; modalId: string }
+        | { type: 'QUEUE_MODAL'; modalId: ModalId }
+        | { type: 'REMOVE_MODAL'; modalId: ModalId }
     ): ModalQueueState => {
       switch (action.type) {
         case 'QUEUE_MODAL': {
           return {
             ...state,
-            queue: [...state.queue, action.modal],
-            currentModal: action.modal,
+            queue: [...state.queue, action.modalId],
+            currentModalId: action.modalId,
           };
         }
 
         case 'REMOVE_MODAL': {
           const filteredQueue = state.queue.filter(
-            (m) => m.id !== action.modalId
+            (modalId) => modalId !== action.modalId
           );
           return {
             ...state,
             queue: filteredQueue,
-            currentModal: filteredQueue[0] || null,
+            currentModalId: filteredQueue[0] || null,
           };
         }
 
@@ -61,19 +56,19 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
     },
     {
       queue: [],
-      currentModal: null,
+      currentModalId: null,
     }
   );
 
-  const queueModal = useCallback((id: string, component: React.FC<any>) => {
+  const queueModal = useCallback((modalId: ModalId) => {
     dispatch({
       type: 'QUEUE_MODAL',
-      modal: { id, component },
+      modalId,
     });
   }, []);
 
-  const removeModal = useCallback((id: string) => {
-    dispatch({ type: 'REMOVE_MODAL', modalId: id });
+  const removeModal = useCallback((modalId: ModalId) => {
+    dispatch({ type: 'REMOVE_MODAL', modalId });
   }, []);
 
   return (
@@ -84,7 +79,7 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-      <ModalRenderer modal={state.currentModal} />
+      <ModalRenderer modalId={state.currentModalId} />
     </ModalQueueContext.Provider>
   );
 };

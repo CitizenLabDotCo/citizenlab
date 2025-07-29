@@ -4,9 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
-import { useModalQueue } from 'containers/App/ModalManager';
+import { useModalQueue } from 'containers/App/ModalQueue';
 
-import ConsentManagerModal from './ConsentManagerModal';
 import { useConsentRequired } from './utils';
 
 const ConsentManager = () => {
@@ -25,14 +24,14 @@ const ConsentManager = () => {
       Search the codebase for 'from=cookie-modal' to see where this is used.
     */
     if (from === 'cookie-modal') {
-      removeModal('consent-manager');
+      removeModal('consent-modal');
     } else if (isConsentRequired) {
-      queueModal('consent-manager', ConsentManagerModal);
+      queueModal('consent-modal');
     }
   }, [from, isConsentRequired, queueModal, removeModal]);
 
   useObserveEvent('openConsentManager', () => {
-    queueModal('consent-manager', ConsentManagerModal);
+    queueModal('consent-modal');
   });
 
   return null;
