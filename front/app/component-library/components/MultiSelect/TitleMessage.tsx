@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { truncate } from 'utils/textUtils';
+import { truncate } from '../../utils/textUtils';
 
 import { Option } from './typings';
 

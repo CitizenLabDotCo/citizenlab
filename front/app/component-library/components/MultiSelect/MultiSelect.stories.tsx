@@ -29,6 +29,8 @@ export const Default: Story = {
       { value: 'longan', label: 'Looooooooooooooooooooooooooooongan' },
     ],
     onChange: () => {},
+    a11y_clearbuttonActionMessage: 'Clear selection',
+    a11y_clearSearchButtonActionMessage: 'Clear search',
   },
 };
 
@@ -39,6 +41,8 @@ export const Loading: Story = {
     options: [],
     isLoading: true,
     onChange: () => {},
+    a11y_clearbuttonActionMessage: 'Clear selection',
+    a11y_clearSearchButtonActionMessage: 'Clear search',
   },
 };
 
@@ -56,5 +60,7 @@ export const Search: Story = {
     searchPlaceholder: 'Search fruits...',
     onChange: () => {},
     onSearch: () => {},
+    a11y_clearbuttonActionMessage: 'Clear selection',
+    a11y_clearSearchButtonActionMessage: 'Clear search',
   },
 };

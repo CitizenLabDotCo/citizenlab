@@ -48,6 +48,8 @@ interface Props {
   onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 const InputContainer = ({
@@ -58,6 +60,8 @@ const InputContainer = ({
   onClick,
   onMouseEnter,
   onMouseLeave,
+  onFocus,
+  onBlur,
 }: Props) => {
   return (
     <Container
@@ -71,6 +75,8 @@ const InputContainer = ({
         e.preventDefault();
         onClick?.();
       }}
+      onFocus={onFocus}
+      onBlur={onBlur}
     >
       {children}
     </Container>

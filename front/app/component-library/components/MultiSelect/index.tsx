@@ -20,7 +20,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-type Props = {
+export type Props = {
   title: string | JSX.Element;
   selected?: string[];
   options: Option[];
@@ -29,8 +29,11 @@ type Props = {
   searchPlaceholder?: string;
   onChange: (values: string[]) => void;
   onSearch?: (searchTerm: string) => void;
+  a11y_clearbuttonActionMessage: string;
+  a11y_clearSearchButtonActionMessage: string;
 } & BoxMarginProps;
 
+/** @deprecated Please use components/UI/MultiSelect instead */
 const MultiSelect = ({
   title,
   selected = [],
@@ -40,50 +43,66 @@ const MultiSelect = ({
   searchPlaceholder,
   onChange,
   onSearch,
+  a11y_clearbuttonActionMessage,
+  a11y_clearSearchButtonActionMessage,
   ...boxProps
 }: Props) => {
   const [opened, setOpened] = useState(false);
   const [hover, setHover] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   const selectorId = useId();
 
+  const showClearButton = selected.length > 0 && (hover || focused);
+
   return (
     <Box {...boxProps}>
-      <Box>
+      <Box position="relative">
         <InputContainer
           id={selectorId}
           className={opened ? 'focus' : ''}
           onClick={() => setOpened(!opened)}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
+          onFocus={() => setFocused(true)}
         >
-          <Box position="relative">
-            <TitleMessage title={title} selected={selected} options={options} />
-            {selected.length > 0 && hover && (
-              <StyledBox
-                as="button"
-                position="absolute"
-                top="-1px"
-                right="0"
-                mr="-8px"
-                borderRadius="16px"
-                border={`1px solid ${colors.borderLight}`}
-                p="0px"
-                cursor="pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onChange([]);
-                }}
-              >
-                <Icon name="close" height="14px" width="19px" m="0" mt="-2px" />
-              </StyledBox>
-            )}
-          </Box>
+          <TitleMessage title={title} selected={selected} options={options} />
         </InputContainer>
+        {showClearButton && (
+          <StyledBox
+            as="button"
+            tabIndex={0}
+            position="absolute"
+            top="calc(50% - 10px)"
+            right="8px"
+            borderRadius="16px"
+            border={`1px solid ${colors.borderLight}`}
+            p="0px"
+            cursor="pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange([]);
+            }}
+            onBlur={() => setFocused(false)}
+          >
+            <Icon
+              name="close"
+              height="14px"
+              width="19px"
+              m="0"
+              mt="-2px"
+              ariaHidden={false}
+              title={a11y_clearbuttonActionMessage}
+            />
+          </StyledBox>
+        )}
       </Box>
       <Dropdown
         opened={opened}
-        onClickOutside={() => setOpened(false)}
+        onClickOutside={() => {
+          setOpened(false);
+          setFocused(false);
+        }}
         content={
           <DropdownContent
             selectorId={selectorId}
@@ -94,6 +113,9 @@ const MultiSelect = ({
             searchPlaceholder={searchPlaceholder}
             onChange={onChange}
             onSearch={onSearch}
+            a11y_clearSearchButtonActionMessage={
+              a11y_clearSearchButtonActionMessage
+            }
           />
         }
       />

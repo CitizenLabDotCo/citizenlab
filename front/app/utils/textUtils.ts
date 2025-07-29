@@ -1,14 +1,10 @@
+import { truncate } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
+
+export { truncate };
 
 export function capitalize(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-export function truncate(str: string, length?: number) {
-  if (typeof length === 'number' && str.length > length) {
-    return `${str.substring(0, length - 3)}...`;
-  }
-  return str;
 }
 
 export const truncateMultiloc = (

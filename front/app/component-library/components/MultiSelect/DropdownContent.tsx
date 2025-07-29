@@ -47,6 +47,7 @@ interface Props {
   searchPlaceholder?: string;
   onChange: (values: string[]) => void;
   onSearch?: (searchTerm: string) => void;
+  a11y_clearSearchButtonActionMessage: string;
 }
 
 const DropdownContent = ({
@@ -58,6 +59,7 @@ const DropdownContent = ({
   searchPlaceholder,
   onChange,
   onSearch,
+  a11y_clearSearchButtonActionMessage,
 }: Props) => {
   const handleCheckboxClick = (value: string) => () => {
     const selectedClone = [...selected];
@@ -86,6 +88,9 @@ const DropdownContent = ({
           value={searchValue}
           placeholder={searchPlaceholder}
           onSearch={onSearch}
+          a11y_clearSearchButtonActionMessage={
+            a11y_clearSearchButtonActionMessage
+          }
         />
       )}
 
