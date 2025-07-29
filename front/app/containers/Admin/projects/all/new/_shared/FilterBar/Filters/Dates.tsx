@@ -8,9 +8,8 @@ import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import { useParam, setParam } from '../utils';
-
-import messages from './messages';
+import { useParam, setParam } from '../../utils';
+import messages from '../messages';
 
 const toDate = (str?: string) => {
   if (!str) return;

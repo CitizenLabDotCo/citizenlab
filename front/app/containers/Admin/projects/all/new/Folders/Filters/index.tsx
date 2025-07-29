@@ -4,9 +4,9 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
-import Manager from '../../_shared/FilterBar/Manager';
-import Search from '../../_shared/Search';
-import Status from '../../_shared/FilterBar/Status';
+import Manager from '../../_shared/FilterBar/Filters/Manager';
+import Search from '../../_shared/FilterBar/Filters/Search';
+import Status from '../../_shared/FilterBar/Filters/Status';
 import { useParam, setParam } from '../utils';
 
 import messages from './messages';

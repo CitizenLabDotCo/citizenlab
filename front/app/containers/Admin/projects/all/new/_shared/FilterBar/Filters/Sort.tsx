@@ -6,9 +6,9 @@ import { Parameters } from 'api/projects_mini_admin/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { setParam, useParam } from '../utils';
+import { setParam, useParam } from '../../utils';
 
-import messages from './messages';
+import messages from '../messages';
 
 type Option = {
   value: Parameters['sort'];

@@ -13,9 +13,9 @@ import { useParam, setParam } from '../utils';
 
 import ActiveFilter, { FilterComponentProps } from './ActiveFilter';
 import AddFilterDropdown from './AddFilterDropdown';
-import Dates from './Dates';
+import Dates from './Filters/Dates';
 import messages from './messages';
-import Sort from './Sort';
+import Sort from './Filters/Sort';
 
 export type FilterType =
   | 'manager'

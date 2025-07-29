@@ -42,13 +42,13 @@ const ActiveFilter = ({ config, onRemove, canRemove = true }: Props) => {
         default: ComponentType<FilterComponentProps>;
       }>;
     } = {
-      manager: () => import('./Manager'),
-      status: () => import('./Status'),
+      manager: () => import('./Filters/Manager'),
+      status: () => import('./Filters/Status'),
       folders: () => import('./Folders'),
-      participation_states: () => import('./ParticipationStates'),
-      participation_methods: () => import('./ParticipationMethods'),
-      visibility: () => import('./Visibility'),
-      discoverability: () => import('./Discoverability'),
+      participation_states: () => import('./Filters/ParticipationStates'),
+      participation_methods: () => import('./Filters/ParticipationMethods'),
+      visibility: () => import('./Filters/Visibility'),
+      discoverability: () => import('./Filters/Discoverability'),
     };
 
     const loadComponent = async () => {
