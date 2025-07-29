@@ -49,12 +49,13 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
   }
 
   return (
-    <Box position="relative">
+    <Box display="flex" justifyContent="center">
       <Button
         buttonStyle="text"
         icon="plus"
         onClick={() => setIsOpen(!isOpen)}
         text={formatMessage(messages.addFilter)}
+        iconSize="20px"
       />
       <Dropdown
         opened={isOpen}
