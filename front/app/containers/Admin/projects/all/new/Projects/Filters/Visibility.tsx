@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Visibility } from 'api/projects/types';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -34,19 +34,17 @@ interface Props {
 const VisibilityFilter = ({ visibility, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
-  const values = OPTIONS.map((option) => ({
-    text: formatMessage(option.message),
+  const options = OPTIONS.map((option) => ({
+    label: formatMessage(option.message),
     value: option.value,
   }));
 
   return (
-    <FilterSelector
+    <MultiSelect
       title={formatMessage(messages.visibilityLabel)}
-      name="visibility-filter"
-      values={values}
+      options={options}
       selected={visibility}
       onChange={onChange}
-      multipleSelectionAllowed={true}
     />
   );
 };
