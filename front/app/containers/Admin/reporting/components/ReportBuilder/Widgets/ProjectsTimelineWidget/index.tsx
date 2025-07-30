@@ -22,9 +22,16 @@ const ProjectsTimelineWidget = ({
 ProjectsTimelineWidget.craft = {
   props: {
     title: {},
-    startAt: undefined,
-    endAt: undefined,
-    publicationStatus: undefined,
+    publicationStatuses: ['published'],
+    defaultTimeRange: 'year',
+    showTodayLine: true,
+    colorByStatus: true,
+    participationStates: [],
+    visibility: [],
+    discoverability: [],
+    managers: [],
+    folderIds: [],
+    participationMethods: [],
   },
   related: {
     settings: Settings,
