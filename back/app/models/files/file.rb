@@ -101,6 +101,7 @@ module Files
     has_many :attachments, class_name: 'Files::FileAttachment', inverse_of: :file, dependent: :destroy
     has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
     has_many :projects, through: :files_projects
+    has_one :preview, class_name: 'Files::Preview', dependent: :destroy, inverse_of: :file
 
     # TODO: Maybe reconsider the name of this column.
     mount_base64_file_uploader :content, FileUploader
