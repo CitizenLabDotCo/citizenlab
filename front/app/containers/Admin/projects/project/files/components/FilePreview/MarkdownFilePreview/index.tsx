@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Spinner, Box, Text, Divider } from '@citizenlab/cl2-component-library';
+import { Spinner, Box, Text } from '@citizenlab/cl2-component-library';
 import ReactMarkdown from 'react-markdown';
 
 import { IFileData } from 'api/files/types';
@@ -73,7 +73,6 @@ const MarkdownFilePreview = ({ file }: Props) => {
 
   return (
     <Box mt="24px">
-      <Divider />
       <Box mt="28px">
         <ReactMarkdown>{markdown}</ReactMarkdown>
       </Box>

@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'Preview not yet supported for this file type.',
   },
   filePreviewLabel: {
-    id: 'app.containers.AdminPage.ProjectFiles.filePreviewLabel',
-    defaultMessage: 'File preview',
+    id: 'app.containers.AdminPage.ProjectFiles.filePreviewLabel2',
+    defaultMessage: 'Preview',
   },
   downloadFile: {
     id: 'app.containers.AdminPage.ProjectFiles.filePreview.downloadFile',
