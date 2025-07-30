@@ -526,6 +526,10 @@ module MultiTenancy
             customised_automated_emails: {
               enabled: true,
               allowed: true
+            },
+            customised_automated_context_emails: {
+              enabled: true,
+              allowed: true
             }
           })
         )
