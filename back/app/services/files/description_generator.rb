@@ -9,16 +9,24 @@ module Files
     class DescriptionGenerationError < StandardError; end
     class LLMError < DescriptionGenerationError; end
 
-    # Update multilingual descriptions for a file
-    #
-    # @raise [UnsupportedFileTypeError] if file type is not supported
-    # @raise [FileReadError] if file cannot be read
-    # @raise [LLMError] if LLM API call fails
+    delegate :generate_descriptions?, to: :class
+
+    # Generate and update the descriptions for the given file
+    # @return [Boolean] true if descriptions were updated, false if not.
     def generate_descriptions!(file)
+      return false unless generate_descriptions?(file)
+
       validate_file!(file)
       descriptions = generate_descriptions(file, configured_locales)
-      # TODO: only update the descriptions if it's empty.
-      file.update!(description_multiloc: descriptions)
+
+      file.with_lock do
+        # Only add descriptions if the file still does not have any descriptions.
+        # "still" because the descriptions could have been added while the descriptions
+        # were being generated.
+        next false if file.description_multiloc.present?
+
+        file.update!(description_multiloc: descriptions)
+      end
     end
 
     private
