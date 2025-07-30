@@ -50,7 +50,6 @@ let mockCookie: IConsentCookie | null = null;
 jest.mock('./consent', () => ({
   getConsent: jest.fn(() => mockCookie),
   setConsent: jest.fn((consent: IConsentCookie | null) => {
-    // Access mockCookie from parent scope through closure
     mockCookie = consent;
   }),
 }));
