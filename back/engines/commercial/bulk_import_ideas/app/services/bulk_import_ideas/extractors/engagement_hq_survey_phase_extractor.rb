@@ -4,7 +4,6 @@
 
 module BulkImportIdeas::Extractors
   class EngagementHqSurveyPhaseExtractor < BasePhaseExtractor
-
     private
 
     def phase_title

@@ -2,7 +2,6 @@
 
 module BulkImportIdeas::Extractors
   class EngagementHqQandaPhaseExtractor < BasePhaseExtractor
-
     private
 
     # TODO: Shares a lot with SurveyPhaseExtractor, consider refactoring to share code
@@ -23,7 +22,7 @@ module BulkImportIdeas::Extractors
     end
 
     def header_row_index(col_index)
-      col_index == 3 || col_index == 4 ? 2 : 3 # Date & Q&A question column headers are on different row!
+      [3, 4].include?(col_index) ? 2 : 3 # Date & Q&A question column headers are on different row!
     end
 
     def ignore_row?(row)

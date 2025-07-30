@@ -17,18 +17,13 @@ module BulkImportIdeas::Extractors
 
     # Return a single phase with custom fields and idea rows
     def phase
-      title = @attributes[:title].present? ? @attributes[:title] : phase_title
+      title = @attributes[:title].presence || phase_title
       description = @attributes[:description]
-
-      # Get the minimum and maximum dates from 'Date Published (dd-mm-yyyy)' as start and end dates, if not provided
-      date_values = @idea_rows.pluck('Date Published (dd-mm-yyyy)').map { |d| Date.parse(d) }
-      start_at = @attributes[:start_at].presence || date_values.min
-      end_at = @attributes[:end_at].presence || date_values.max
       {
         title_multiloc: multiloc(title),
         description_multiloc: multiloc(description),
-        start_at: start_at,
-        end_at: end_at,
+        start_at: @attributes[:start_at],
+        end_at: @attributes[:end_at],
         idea_rows: @idea_rows,
         idea_custom_fields: idea_custom_fields,
         user_custom_fields: user_custom_fields
@@ -103,7 +98,7 @@ module BulkImportIdeas::Extractors
       column_name
     end
 
-    def header_row_index(col_index)
+    def header_row_index(_col_index)
       0
     end
 
@@ -268,7 +263,7 @@ module BulkImportIdeas::Extractors
           List of strings:
           #{@idea_rows.take(10).pluck(column_name).join(';;')}
         GPT_PROMPT
-        gpt_response = gpt_mini.chat(prompt)
+        gpt_mini.chat(prompt)
 
         # Cache these responses for a day to avoid hitting the API when things have not changed
 
@@ -276,7 +271,7 @@ module BulkImportIdeas::Extractors
       end
     end
 
-    def ignore_row?(row)q
+    def ignore_row?(_row)
       false
     end
 

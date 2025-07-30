@@ -9,13 +9,11 @@ module BulkImportIdeas::Importers
       projects.each do |project_data|
         Rails.logger.info "Importing project: #{project_data[:slug]}"
 
-        # TODO: Business owner or operator outside of the Downtown - is appearing but has no selections
-        # TODO: Do you represent a Guelph business? NOT a select
-        project = create_project(project_data)
+        project = find_or_create_project(project_data)
 
-        # Create each phase
-        project_data[:phases].each do |phase_data|
-          phase = create_phase(project, phase_data.except(:idea_rows, :idea_custom_fields, :user_custom_fields))
+        # Create each phase (if there are any)
+        project_data[:phases]&.each do |phase_data|
+          phase = find_or_create_phase(project, phase_data.except(:idea_rows, :idea_custom_fields, :user_custom_fields))
 
           # Create any user fields if they don't already exist
           create_user_fields(phase_data[:user_custom_fields])
@@ -26,7 +24,7 @@ module BulkImportIdeas::Importers
           # Import the ideas
           ideas = import_ideas(phase.id, phase_data[:idea_rows])
 
-          Rails.logger.info "Created '#{phase.participation_method}' phase for: '#{project.title_multiloc['en']}' with slug '#{project.slug}'"
+          Rails.logger.info "Created '#{phase.participation_method}' phase called '#{phase.title_multiloc[@locale]}' for: '#{project.title_multiloc[@locale]}' with slug '#{project.slug}'"
           Rails.logger.info "Created form with #{form.custom_fields.count} fields" if form
           Rails.logger.info "Imported #{ideas.count} ideas"
         end
@@ -41,31 +39,34 @@ module BulkImportIdeas::Importers
 
     private
 
-    def create_project(project_data)
-      # Whilst in dev, we want to destroy the existing project first
-      Project.find_by(slug: project_data[:slug])&.destroy
+    def find_or_create_project(project_data)
+      if project_data[:id]
+        Project.find(project_data[:id])
+      else
+        # Whilst in dev, we want to destroy the existing project first
+        Project.find_by(slug: project_data[:slug])&.destroy
 
-      # Create a new project only visible to admins
-      project_attributes = project_data.except(:phases, :thumbnail_url)
-      project = Project.create!(project_attributes)
+        # Create a new project only visible to admins
+        project_attributes = project_data.except(:phases, :thumbnail_url)
+        project = Project.create!(project_attributes)
 
-      # Any images in the description need to be uploaded to our system and refs replaced
-      update_description_images(project)
+        # Any images in the description need to be uploaded to our system and refs replaced
+        update_description_images(project)
 
-      # Create the project thumbnail image if it exists
-      thumbnail_url = project_data[:thumbnail_url]
-      if thumbnail_url.present?
-        ProjectImage.create!(
-          remote_image_url: thumbnail_url,
-          project: project,
-          alt_text_multiloc: project_data[:title_multiloc]
-        )
+        # Create the project thumbnail image if it exists
+        thumbnail_url = project_data[:thumbnail_url]
+        if thumbnail_url.present?
+          ProjectImage.create!(
+            remote_image_url: thumbnail_url,
+            project: project,
+            alt_text_multiloc: project_data[:title_multiloc]
+          )
+        end
+        project
       end
-
-      project
     end
 
-    def create_phase(project, phase_attributes)
+    def find_or_create_phase(project, phase_attributes)
       phase = Phase.create!(phase_attributes.merge(project: project))
       update_description_images(phase)
       Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
@@ -75,11 +76,8 @@ module BulkImportIdeas::Importers
     def create_user_fields(user_custom_fields)
       # Create any user fields if they don't already exist
       user_custom_fields.each do |field|
-        CustomField.find_by(key: field[:key])&.destroy
         next if CustomField.find_by(key: field[:key])
 
-        # Create the user custom fields
-        # TODO: Check they don't already exist
         custom_field = CustomField.create!(field.except(:options, :statements).merge(resource_type: 'User'))
         if SELECT_TYPES.include? field[:input_type]
           # If the field is a select type, we need to create options
@@ -93,6 +91,8 @@ module BulkImportIdeas::Importers
     def create_form(phase, idea_custom_fields)
       # Assumption is that methods other than native survey will only use the default form so we do not need to create a custom form
       return nil if phase.participation_method != 'native_survey'
+
+      # TODO: Destroy the existing form if it exists
 
       # Create the form and form fields
       form = CustomForm.create!(participation_context: phase)
@@ -124,9 +124,11 @@ module BulkImportIdeas::Importers
       form
     end
 
-    def import_ideas(phase_id, phase_idea_rows)
+    def import_ideas(phase, phase_idea_rows)
+      # TODO: Destroy the existing ideas if they exist
+
       # Import the ideas
-      xlsx_data_parser = BulkImportIdeas::Parsers::IdeaXlsxDataParser.new(@import_user, @locale, phase_id, false)
+      xlsx_data_parser = BulkImportIdeas::Parsers::IdeaXlsxDataParser.new(@import_user, @locale, phase.id, false)
       import_service = BulkImportIdeas::Importers::IdeaImporter.new(@import_user, @locale)
       idea_rows = xlsx_data_parser.parse_rows(phase_idea_rows)
       ideas = import_service.import(idea_rows)

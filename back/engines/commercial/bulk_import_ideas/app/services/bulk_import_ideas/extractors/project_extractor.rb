@@ -7,33 +7,38 @@ module BulkImportIdeas::Extractors
       @workbook = RubyXL::Parser.parse_buffer(open("#{xlsx_file_path}/projects.xlsx").read)
     end
 
-    # TODO: Choose the correct parser based on what we put in the XLSX file.
-
     # Return a list of projects, with phases and content
     def projects
       projects = @workbook.worksheets[0].drop(1).map do |row|
-        title = row.cells[0]&.value
+        next if row.cells[5]&.value&.downcase == 'no' # Skip projects that we have marked as 'no' in the 'Import' column
 
+        title = row.cells[0]&.value
         next unless title
 
         publication_status = row.cells[1].value || 'published'
         description_html = row.cells[2].value || ''
         thumbnail_url = row.cells[3]&.value
+        id = row.cells[4]&.value # Project ID - in case we need to update an existing project
 
-        # Extract phases
-        phases = phase_details[title].map do |phase|
-          # TODO: Do try catch here to handle missing files / classes
-          klass_name = "BulkImportIdeas::Extractors::#{phase[:type]}PhaseExtractor"
-          extractor = klass_name.constantize.new(
-            "#{@xlsx_file_path}/inputs/#{phase[:file]}",
-            phase[:tab],
-            config,
-            phase[:attributes],
-          )
-          extractor.phase
+        # Extract phases (if there are any)
+        phases = phase_details[title]&.map do |phase|
+          returned_phase = information_phase(phase[:attributes]) # Information phase is default when no type is specified
+          unless phase[:type].nil?
+            # TODO: Do try catch here to handle missing files / classes
+            klass_name = "BulkImportIdeas::Extractors::#{phase[:type]}PhaseExtractor"
+            extractor = klass_name.constantize.new(
+              phase[:file],
+              phase[:tab],
+              config,
+              phase[:attributes]
+            )
+            returned_phase = extractor.phase
+          end
+          returned_phase
         end
 
         {
+          id: id,
           title_multiloc: multiloc(title),
           description_multiloc: multiloc(description_html),
           slug: SlugService.new.slugify(title),
@@ -58,18 +63,32 @@ module BulkImportIdeas::Extractors
 
         phases[project_title] ||= []
         phases[project_title] << {
-          file: row.cells[2].value,
-          tab: row.cells[3].value,
-          type: row.cells[4].value,
+          file: row.cells[5]&.value.present? ? "#{@xlsx_file_path}/inputs/#{row.cells[5].value}" : nil,
+          tab: row.cells[6]&.value,
+          type: row.cells[7]&.value.presence || nil,
           attributes: {
             title: row.cells[1].value,
-            description: row.cells[7].value,
-            start_at: row.cells[5].value,
-            end_at: row.cells[6].value
+            description: row.cells[2].value,
+            start_at: row.cells[3]&.value.presence || nil,
+            end_at: row.cells[4]&.value.presence || nil
           }
         }
       end
       phases
+    end
+
+    def information_phase(phase_attributes)
+      {
+        title_multiloc: multiloc(phase_attributes[:title]),
+        description_multiloc: multiloc(phase_attributes[:description]),
+        start_at: phase_attributes[:start_at],
+        end_at: phase_attributes[:end_at],
+        participation_method: 'information',
+        campaigns_settings: { project_phase_started: true },
+        idea_custom_fields: [],
+        user_custom_fields: [],
+        idea_rows: []
+      }
     end
 
     # Extracts any additional field configuration from the second worksheet of the XLSX file.

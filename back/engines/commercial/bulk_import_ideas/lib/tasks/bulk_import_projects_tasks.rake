@@ -21,7 +21,7 @@ namespace :bulk_import do
 
       if File.exist? import_zip
         # Remove previous files if they exist
-        FileUtils.rm_rf(import_path) if Dir.exist?(import_path)
+        FileUtils.rm_rf(import_path)
 
         # Unzip the import file - named for the tenant_schema
         unzip_import_file(import_zip, upload_path)
@@ -35,7 +35,7 @@ namespace :bulk_import do
         # Logout what we are importing
         projects.each do |project|
           Rails.logger.info "IMPORTING PROJECT: #{project[:title_multiloc][locale]}"
-          project[:phases].each do |phase|
+          project[:phases]&.each do |phase|
             Rails.logger.info "  PHASE: #{phase[:title_multiloc][locale]}"
             Rails.logger.info "    Start: #{phase[:start_at]}, End: #{phase[:end_at]}"
             Rails.logger.info "    Participation Method: #{phase[:participation_method]}"
