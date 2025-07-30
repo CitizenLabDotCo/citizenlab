@@ -1,13 +1,18 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { first } from 'lodash-es';
 import moment from 'moment';
 import { Multiloc } from 'typings';
 
-import { useProjectsTimeline } from 'api/graph_data_units';
-import { ProjectReportsPublicationStatus } from 'api/graph_data_units/requestTypes';
-import { IProjectData } from 'api/projects/types';
+import { ParticipationMethod } from 'api/phases/types';
+import { PublicationStatus, Visibility } from 'api/projects/types';
+import {
+  ProjectMiniAdminData,
+  ParticipationState,
+} from 'api/projects_mini_admin/types';
+import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
+
+import { getStatusColor } from 'containers/Admin/projects/all/new/_shared/utils';
 
 import GanttChart from 'components/UI/GanttChart';
 import { GanttItem } from 'components/UI/GanttChart/types';
@@ -16,32 +21,71 @@ export interface ProjectsTimelineCardProps {
   title?: Multiloc;
   startAt?: string;
   endAt?: string | null;
-  publicationStatuses?: ProjectReportsPublicationStatus[];
+  publicationStatuses?: PublicationStatus[];
+  defaultTimeRange?: 'month' | 'quarter' | 'year' | 'multiyear';
+  showTodayLine?: boolean;
+  participationStates?: ParticipationState[];
+  visibility?: Visibility[];
+  discoverability?: ('listed' | 'unlisted')[];
+  managers?: string[];
+  folderIds?: string[];
+  participationMethods?: ParticipationMethod[];
 }
 
 const ProjectsTimelineCard = ({
   startAt,
   endAt,
-  publicationStatuses,
+  publicationStatuses = ['published'],
+  defaultTimeRange = 'year',
+  showTodayLine = true,
+  participationStates = [],
+  visibility = [],
+  discoverability = [],
+  managers = [],
+  folderIds = [],
+  participationMethods = [],
 }: ProjectsTimelineCardProps) => {
-  const { data: response } = useProjectsTimeline({
-    start_at: startAt,
-    end_at: endAt,
-    publication_statuses: publicationStatuses,
+  const { data: response, isLoading } = useInfiniteProjectsMiniAdmin({
+    status: publicationStatuses,
+    participation_states: participationStates,
+    visibility,
+    discoverability,
+    managers,
+    folder_ids: folderIds,
+    participation_methods: participationMethods,
+    min_start_date: startAt || undefined,
+    max_start_date: endAt || undefined,
+    sort: 'phase_starting_or_ending_soon',
   });
-  if (!response) return null;
 
-  const projects = response.data.attributes.projects;
-  const projectsById: Record<string, IProjectData> = {};
+  if (isLoading || !response) return null;
+
+  const allProjects = response.pages.flatMap((page) => page.data);
+  const projectsById: Record<string, ProjectMiniAdminData> = {};
   const ganttItems: GanttItem[] = [];
 
-  for (const project of projects) {
+  for (const project of allProjects) {
     projectsById[project.id] = project;
+
+    // Use phase dates for better Gantt chart representation
+    const startDate =
+      project.attributes.first_phase_start_date ||
+      project.attributes.first_published_at;
+    const endDate = project.attributes.last_phase_end_date;
+
     ganttItems.push({
       id: project.id,
       title: project.attributes.title_multiloc.en || '',
-      start: project.attributes.created_at,
-      end: project.attributes.updated_at,
+      start: startDate,
+      end: endDate,
+      folder: project.attributes.folder_title_multiloc?.en,
+      color: getStatusColor(project.attributes.publication_status),
+      highlight: project.attributes.current_phase_start_date
+        ? {
+            start: project.attributes.current_phase_start_date,
+            end: project.attributes.current_phase_end_date,
+          }
+        : undefined,
     });
   }
 
@@ -59,9 +103,11 @@ const ProjectsTimelineCard = ({
   if (!minDate || !maxDate) return null;
 
   return (
-    <Box>
-      <GanttChart items={ganttItems} />
-    </Box>
+    <GanttChart
+      items={ganttItems}
+      showTodayLine={showTodayLine}
+      chartTitle={defaultTimeRange}
+    />
   );
 };
 
