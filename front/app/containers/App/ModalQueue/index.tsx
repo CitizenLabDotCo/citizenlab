@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import ModalRenderer from './ModalRenderer';
- import modalRegistry, { ModalId } from './modals/modalRegistry';
+import modalRegistry, { ModalId } from './modals/modalRegistry';
 
 interface ModalQueueContextType {
   queueModal: (modalId: ModalId) => void;
@@ -44,9 +44,23 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
     ): ModalQueueState => {
       switch (action.type) {
         case 'QUEUE_MODAL': {
+          const existingModalIndex = state.queue.findIndex(
+            (modal) => modal.modalId === action.modal.modalId
+          );
+
+          let newQueue: Modal[];
+
+          if (existingModalIndex >= 0) {
+            // Replace existing modal
+            newQueue = [...state.queue];
+            newQueue[existingModalIndex] = action.modal;
+          } else {
+            // Add new modal
+            newQueue = [...state.queue, action.modal];
+          }
 
           // Sort by priority and determine current modal
-          const sortedQueue = sortModalsByPriority([...state.queue, action.modal]);
+          const sortedQueue = sortModalsByPriority(newQueue);
 
           return {
             queue: sortedQueue,
