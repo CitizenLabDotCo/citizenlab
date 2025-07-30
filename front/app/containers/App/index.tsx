@@ -345,25 +345,19 @@ const App = ({ children }: Props) => {
             <Meta />
             <ErrorBoundary>
               <UserSessionRecordingModalManager />
-            </ErrorBoundary>
-            <CommunityMonitorModal />
-            <ErrorBoundary>
-              <Suspense fallback={null}>
-                <UserDeletedModal
-                  modalOpened={userDeletedSuccessfullyModalOpened}
-                  closeUserDeletedModal={closeUserDeletedModal}
-                  userSuccessfullyDeleted={userSuccessfullyDeleted}
-                />
-              </Suspense>
+              <ConsentManager />
+              <CommunityMonitorModal />
+              <UserDeletedModal
+                modalOpened={userDeletedSuccessfullyModalOpened}
+                closeUserDeletedModal={closeUserDeletedModal}
+                userSuccessfullyDeleted={userSuccessfullyDeleted}
+              />
             </ErrorBoundary>
             <ErrorBoundary>
               <Authentication />
             </ErrorBoundary>
             <ErrorBoundary>
               <div id="modal-portal" />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <ConsentManager />
             </ErrorBoundary>
             {showFrontOfficeNavbar() && (
               <ErrorBoundary>
