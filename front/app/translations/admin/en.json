@@ -51,7 +51,7 @@
   "app.components.Admin.ImageCropper.cropSentenceThree": "3:1 on mobile (only the area between the dotted lines is shown)",
   "app.components.Admin.ImageCropper.cropSentenceTwo": "{aspect} on desktop (full width shown)",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.infoLinkText2": "recommended ratio",
+  "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Header text for registered users",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Add Events to navigation bar",
