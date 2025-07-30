@@ -102,7 +102,6 @@ class ProjectsFinderAdminService
 
   # FILTERING METHODS
   def self.filter_moderatable(scope, current_user)
-    binding.pry
     return scope if current_user.admin?
 
     moderatable_project_ids = current_user.moderatable_project_ids
