@@ -54,7 +54,6 @@ const Settings = () => {
     sort: node.data.props.sort || 'phase_starting_or_ending_soon',
   }));
 
-  // Fetch managers and folders data
   const { data: managersData } = useUsers({
     pageSize: 500,
     can_moderate: true,
@@ -227,7 +226,6 @@ const Settings = () => {
     },
   ];
 
-  // Prepare manager and folder options
   const managerOptions: IOption[] =
     managersData?.data.map((manager) => ({
       value: manager.id,
