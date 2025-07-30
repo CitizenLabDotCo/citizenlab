@@ -32,6 +32,8 @@ ProjectsTimelineWidget.craft = {
     managers: [],
     folderIds: [],
     participationMethods: [],
+    sort: 'phase_starting_or_ending_soon',
+    numberOfProjects: 10,
   },
   related: {
     settings: Settings,
