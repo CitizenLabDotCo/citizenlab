@@ -54,7 +54,7 @@ import { isAdmin, isModerator } from 'utils/permissions/roles';
 import messages from './messages';
 import Meta from './Meta';
 import { ModalQueueProvider } from './ModalQueue';
-import CommunityMonitorModal from './ModalQueue/modals/CommunityMonitorModal';
+import CommunityMonitorModal from './ModalQueue/modals/CommunityMonitor';
 import UserSessionRecordingModalManager from './ModalQueue/modals/UserSessionRecording/ModalManager';
 
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
