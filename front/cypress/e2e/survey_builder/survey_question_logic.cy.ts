@@ -20,7 +20,7 @@ describe('Survey question logic', () => {
     }
   });
 
-  it.only('allows setting logic for select question', () => {
+  it('allows setting logic for select question', () => {
     cy.setAdminLoginCookie();
     cy.intercept('GET', `/web_api/v1/phases/${phaseId}/custom_fields**`).as(
       'getCustomFields'
@@ -75,7 +75,7 @@ describe('Survey question logic', () => {
       .first()
       .find('select')
       .select('Ending', { force: true });
-    cy.wait(1000);
+    cy.wait(3000);
     cy.dataCy('e2e-rule-input-select').first().should('be.visible');
 
     // Set no answer to go to page 3
@@ -86,10 +86,13 @@ describe('Survey question logic', () => {
 
     // Save again
     cy.get('form').submit();
+    cy.wait(1000);
     cy.get('[data-testid="feedbackSuccessMessage"]');
+    cy.wait(1000);
 
     // Take survey and make sure it works as expected
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.reload();
 
     cy.acceptCookies();
     cy.get('[data-testid="radio-container"]').first();
