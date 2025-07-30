@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text, Select } from '@citizenlab/cl2-component-library';
+import { Box, Text, Select, Input } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
@@ -39,6 +39,7 @@ const Settings = () => {
     folderIds,
     participationMethods,
     sort,
+    numberOfProjects,
   } = useNode((node) => ({
     publicationStatuses: node.data.props.publicationStatuses?.length
       ? node.data.props.publicationStatuses
@@ -52,6 +53,7 @@ const Settings = () => {
     folderIds: node.data.props.folderIds || [],
     participationMethods: node.data.props.participationMethods || [],
     sort: node.data.props.sort || 'phase_starting_or_ending_soon',
+    numberOfProjects: node.data.props.numberOfProjects || 10,
   }));
 
   const { data: managersData } = useUsers({
@@ -119,6 +121,12 @@ const Settings = () => {
   const handleSortChange = ({ value }: IOption) => {
     setProp((props: ProjectsTimelineCardProps) => {
       props.sort = value;
+    });
+  };
+
+  const handleNumberOfProjectsChange = (value: string) => {
+    setProp((props: ProjectsTimelineCardProps) => {
+      props.numberOfProjects = parseInt(value, 10);
     });
   };
 
@@ -348,6 +356,18 @@ const Settings = () => {
           value={sort}
           options={sortOptions}
           onChange={handleSortChange}
+        />
+      </Box>
+
+      {/* Number of Projects */}
+      <Box mb="20px">
+        <Text variant="bodyM" color="textSecondary" mb="5px">
+          {formatMessage(messages.numberOfProjects)}
+        </Text>
+        <Input
+          type="number"
+          value={numberOfProjects.toString()}
+          onChange={handleNumberOfProjectsChange}
         />
       </Box>
     </Box>
