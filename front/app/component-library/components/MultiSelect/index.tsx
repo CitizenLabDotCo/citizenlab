@@ -13,10 +13,10 @@ import TitleMessage from './TitleMessage';
 import { Option } from './typings';
 
 const StyledBox = styled(Box)`
-  background-color: ${colors.white};
-
   &:hover {
-    background-color: ${colors.grey200};
+    svg {
+      fill: ${colors.grey700};
+    }
   }
 `;
 
@@ -50,7 +50,7 @@ const MultiSelect = ({
   ...boxProps
 }: Props) => {
   const [opened, setOpened] = useState(false);
-  const [hover, setHover] = useState(false);
+  const [hover, setHover] = useState<'trigger' | 'clear'>();
   const [focused, setFocused] = useState(false);
 
   const selectorId = useId();
@@ -64,8 +64,8 @@ const MultiSelect = ({
           id={selectorId}
           className={opened ? 'focus' : ''}
           onClick={() => setOpened(!opened)}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
+          onMouseEnter={() => setHover('trigger')}
+          onMouseLeave={() => setHover(undefined)}
           onFocus={() => setFocused(true)}
         >
           <TitleMessage title={title} selected={selected} options={options} />
@@ -74,6 +74,7 @@ const MultiSelect = ({
           <StyledBox
             as="button"
             type="button"
+            bgColor={colors.white}
             position="absolute"
             top="calc(50% - 10px)"
             right="8px"
@@ -91,9 +92,13 @@ const MultiSelect = ({
               e.stopPropagation();
               onClear();
             }}
-            onBlur={() => setFocused(false)}
+            onMouseEnter={() => setHover('clear')}
+            onMouseLeave={() => setHover('trigger')}
+            onBlur={() => {
+              setFocused(false);
+            }}
           >
-            <Icon name="close" />
+            <Icon name="close" fill="black" />
           </StyledBox>
         )}
       </Box>
