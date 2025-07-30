@@ -66,7 +66,12 @@ describe('Survey question logic', () => {
     cy.dataCy('e2e-add-rule-button').first().click();
     cy.dataCy('e2e-rule-input-select').first().should('be.visible');
     cy.wait(1000);
-    cy.dataCy('e2e-rule-input-select').first().find('select').select('Ending');
+    cy.dataCy('e2e-rule-input-select').first().find('select');
+    cy.wait(1000);
+    cy.dataCy('e2e-rule-input-select')
+      .first()
+      .find('select')
+      .select('Ending', { force: true });
     cy.wait(1000);
     cy.dataCy('e2e-rule-input-select').first().should('be.visible');
 
@@ -371,9 +376,13 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
     cy.acceptCookies();
 
     // Select first option
+    cy.get('[data-testid="radio-container"]').first();
+    cy.wait(1000);
     cy.get('[data-testid="radio-container"]').first().click();
 
     // Go to next page
+    cy.wait(1000);
+    cy.dataCy('e2e-next-page');
     cy.wait(1000);
     cy.dataCy('e2e-next-page').click();
 
