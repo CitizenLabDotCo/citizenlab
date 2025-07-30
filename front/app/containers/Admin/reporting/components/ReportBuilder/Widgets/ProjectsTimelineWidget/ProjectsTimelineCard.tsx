@@ -38,6 +38,7 @@ export interface ProjectsTimelineCardProps {
     | 'recently_created'
     | 'alphabetically_asc'
     | 'alphabetically_desc';
+  numberOfProjects?: number;
 }
 
 const ProjectsTimelineCard = ({
@@ -52,20 +53,24 @@ const ProjectsTimelineCard = ({
   folderIds = [],
   participationMethods = [],
   sort = 'phase_starting_or_ending_soon',
+  numberOfProjects = 10,
 }: ProjectsTimelineCardProps) => {
   const { formatMessage } = useIntl();
-  const { data, isLoading, isFetching } = useInfiniteProjectsMiniAdmin({
-    status: publicationStatuses,
-    participation_states: participationStates,
-    visibility,
-    discoverability,
-    managers,
-    folder_ids: folderIds,
-    participation_methods: participationMethods,
-    min_start_date: startAt || undefined,
-    max_start_date: endAt || undefined,
-    sort,
-  });
+  const { data, isLoading, isFetching } = useInfiniteProjectsMiniAdmin(
+    {
+      status: publicationStatuses,
+      participation_states: participationStates,
+      visibility,
+      discoverability,
+      managers,
+      folder_ids: folderIds,
+      participation_methods: participationMethods,
+      min_start_date: startAt || undefined,
+      max_start_date: endAt || undefined,
+      sort,
+    },
+    numberOfProjects
+  );
 
   const allProjects = useMemo(
     () => data?.pages.flatMap((page) => page.data) ?? [],
