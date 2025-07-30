@@ -45,8 +45,16 @@ module EmailCampaigns
 
     recipient_filter :filter_notification_recipient
 
+    validates :context_type, inclusion: { in: ['Phase'], allow_blank: true }
+
     def activity_triggers
       { 'Notifications::CommentOnIdeaYouFollow' => { 'created' => true } }
+    end
+
+    def activity_context(activity)
+      return nil if !activity.item.is_a?(::Notification)
+
+      activity.item.idea&.phases&.last
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
@@ -71,6 +79,10 @@ module EmailCampaigns
 
     def self.trigger_multiloc_key
       'email_campaigns.admin_labels.trigger.user_comments'
+    end
+
+    def self.supports_context?(context)
+      context.is_a?(Phase)
     end
 
     def generate_commands(recipient:, activity:, time: nil)
