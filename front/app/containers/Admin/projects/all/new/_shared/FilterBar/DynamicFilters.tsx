@@ -44,6 +44,10 @@ const DynamicFilters = () => {
     setActiveFilters([]);
   };
 
+  const availableFilters = FILTER_KEYS.filter(
+    (key) => !activeFilters.includes(key)
+  );
+
   return (
     <Box display="flex" flexDirection="column" gap="16px">
       <Box
