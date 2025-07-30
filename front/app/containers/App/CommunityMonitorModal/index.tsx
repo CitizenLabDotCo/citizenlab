@@ -22,39 +22,36 @@ import { isAllowedOnUrl } from './utils';
 const CommunityMonitorModal = () => {
   const location = useLocation();
 
+  // Data fetching hooks
   const { data: authUser } = useAuthUser();
-  const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser);
-
-  const isDevelopmentOrCI =
-    process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
-
-  // If the user is on a custom page or the homepage, we can show the modal
-  const allowedOnUrl = isAllowedOnUrl(location.pathname);
-
   // Check if the community monitor is enabled
   const isCommunityMonitorEnabled = useFeatureFlag({
     name: 'community_monitor',
   });
-
-  // Check if we have already stored a cookie, indicating the user has seen the modal
-  const hasSeenModal = get('community_monitor_modal_seen');
-
-  const [modalOpened, setModalOpened] = useState(false);
-
   // Get the community monitor project/phase & check if the survey is currently open
   const { data: project } = useCommunityMonitorProject({
     enabled: isCommunityMonitorEnabled,
   });
   const phaseId = project?.data.relationships.current_phase?.data?.id;
   const { data: phase } = usePhase(phaseId);
-  const isSurveyLive = phase?.data.attributes.submission_enabled;
 
+  // State
+  const [modalOpened, setModalOpened] = useState(false);
+
+  // Variables to calculate if the modal should be shown
+  const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser);
+  const isDevelopmentOrCI =
+    process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
+  // If the user is on a custom page or the homepage, we can show the modal
+  const allowedOnUrl = isAllowedOnUrl(location.pathname);
+  // Check if we have already stored a cookie, indicating the user has seen the modal
+  const hasSeenModal = get('community_monitor_modal_seen');
+  const isSurveyLive = phase?.data.attributes.submission_enabled;
   // Check if the user is allowed to take the survey (based on action_descriptors)
   const userPermittedToTakeSurvey =
     !hasSeenModal &&
     project?.data.attributes.action_descriptors.posting_idea.disabled_reason !==
       'posting_limited_max_reached';
-
   // Get the survey popup frequency, so we can show the modal at a certain rate
   const surveyPopupFrequency =
     typeof phase?.data.attributes.survey_popup_frequency === 'number'
