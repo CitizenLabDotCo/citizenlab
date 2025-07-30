@@ -7,6 +7,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import { useParams, setParam } from '../params';
 
+import ActiveFilter from './ActiveFilter';
 import AddFilterDropdown from './AddFilterDropdown';
 import { FILTER_KEYS, FilterKey } from './constants';
 import messages from './messages';
@@ -60,10 +61,9 @@ const DynamicFilters = () => {
         {activeFilters.map((filterKey) => {
           return (
             <ActiveFilter
-              key={filterType}
-              config={config}
-              onRemove={() => handleRemoveFilter(filterType)}
-              canRemove={canRemove}
+              key={filterKey}
+              filterKey={filterKey}
+              onRemove={handleRemoveFilter}
             />
           );
         })}
