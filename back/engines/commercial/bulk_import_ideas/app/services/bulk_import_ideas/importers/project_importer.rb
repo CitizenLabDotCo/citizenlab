@@ -2,6 +2,8 @@
 
 module BulkImportIdeas::Importers
   class ProjectImporter < BaseImporter
+    attr_reader :import_log
+
     SELECT_TYPES = %w[select multiselect].freeze
 
     # Import all the projects
@@ -33,8 +35,15 @@ module BulkImportIdeas::Importers
       @import_log
     end
 
-    private
+    def import_async(projects)
+      import_id = SecureRandom.uuid
+      projects.each do |project_data|
+        BulkImportIdeas::ProjectImportJob.perform_later(project_data, import_id, @import_user, @locale)
+      end
+      import_id
+    end
 
+    # Import a single project
     def import_project(project_data)
       log "Importing project: #{project_data[:slug]}"
       project = nil
@@ -64,6 +73,8 @@ module BulkImportIdeas::Importers
       end
       project
     end
+
+    private
 
     def find_or_create_project(project_data)
       if project_data[:id]

@@ -33,21 +33,22 @@ namespace :bulk_import do
 
         # Extract & import projects, phases and content from the xlsx files in the ZIP
         project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(import_path)
-
-        # Upload the source file
-        source_file = project_extractor.upload_source_file(
-          Base64.encode64(File.read(import_zip))
-        )
-
-        binding.pry
-        break
-
         projects = project_extractor.projects
 
         importer = BulkImportIdeas::Importers::ProjectImporter.new(import_user, locale)
-        project_import_log = preview_only ? importer.preview(projects) : importer.import(projects)
-        project_import_log.each do |log_message|
-          Rails.logger.info log_message
+        if preview_only
+          importer.preview(projects).each do |log_message|
+            Rails.logger.info log_message
+          end
+        else
+          num_projects = projects.count
+          import_id = importer.import_async(projects)
+          Rails.logger.info "Projects import started with ID: #{import_id}"
+          while BulkImportIdeas::ProjectImport.where(import_id: import_id).count < num_projects
+            Rails.logger.info "Waiting for projects to be imported... (#{BulkImportIdeas::ProjectImport.where(import_id: import_id).count}/#{num_projects})"
+            sleep 5
+          end
+          Rails.logger.info "COMPLETE"
         end
       else
         Rails.logger.error("FILE #{import_zip} does not exist")
