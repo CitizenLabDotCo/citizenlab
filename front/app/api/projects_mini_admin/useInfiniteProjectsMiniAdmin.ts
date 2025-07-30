@@ -1,6 +1,8 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import useLocale from 'hooks/useLocale';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -26,12 +28,15 @@ const fetchPage = async (
 };
 
 const useInfiniteProjectsMiniAdmin = (
-  params: Omit<Parameters, 'page[number]' | 'page[size]'>,
+  params: Omit<Parameters, 'page[number]' | 'page[size]' | 'locale'>,
   pageSize: number = DEFAULT_PAGE_SIZE
 ) => {
+  const locale = useLocale();
+  const paramsWithLocale = { ...params, locale };
+
   return useInfiniteQuery<ProjectsMiniAdmin, CLErrors>(
-    miniProjectsKeys.list(params),
-    ({ pageParam = 1 }) => fetchPage(params, pageParam, pageSize),
+    miniProjectsKeys.list(paramsWithLocale),
+    ({ pageParam = 1 }) => fetchPage(paramsWithLocale, pageParam, pageSize),
     {
       getNextPageParam: (lastPage) => {
         const nextLink = lastPage.links.next;

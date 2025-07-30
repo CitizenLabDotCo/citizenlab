@@ -32,7 +32,7 @@ module MultiTenancy
           })
 
           [1, 1, 2, 2, 3][rand(5)].times do |_i|
-            idea.idea_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+            idea.idea_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
           end
           if rand(5) == 0
             rand(1..3).times do

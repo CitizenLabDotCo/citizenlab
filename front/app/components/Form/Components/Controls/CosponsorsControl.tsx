@@ -12,7 +12,7 @@ import { WrappedComponentProps } from 'react-intl';
 import { MentionItem } from 'react-mentions';
 
 import { IUser } from 'api/users/types';
-import useUsersWithIds from 'api/users/useUsersByIds';
+import useUsersWithIds from 'api/users/useUsersWithIds';
 
 import { FormLabel } from 'components/UI/FormComponents';
 import MentionsTextArea from 'components/UI/MentionsTextArea';

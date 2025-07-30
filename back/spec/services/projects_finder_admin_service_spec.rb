@@ -99,6 +99,31 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.filter_start_date' do
+    let!(:p1) { create_project(start_at: Time.zone.today - 5.days, end_at: Time.zone.today + 5.days) }
+    let!(:p2) { create_project(start_at: Time.zone.today - 10.days, end_at: Time.zone.today - 5.days) }
+    let!(:p3) { create_project(start_at: Time.zone.today + 5.days, end_at: Time.zone.today + 10.days) }
+    let!(:p4) { create_project(start_at: Time.zone.today + 1.day, end_at: nil) }
+    let!(:p5) do
+      create_project(
+        start_at: Time.zone.today - 50.days,
+        end_at: Time.zone.today - 5.days,
+        start_at2: Time.zone.today - 4.days,
+        end_at2: Time.zone.today + 3.days
+      )
+    end
+
+    it 'filters projects by start date' do
+      result = described_class.filter_start_date(Project.all, { min_start_date: Time.zone.today - 7.days, max_start_date: Time.zone.today + 3.days })
+      expect(result.pluck(:id).sort).to match_array([p1.id, p4.id])
+    end
+
+    it 'returns all projects when range is empty' do
+      result = described_class.filter_start_date(Project.all, { min_start_date: nil, max_start_date: nil })
+      expect(result.pluck(:id).sort).to match_array([p1.id, p2.id, p3.id, p4.id, p5.id])
+    end
+  end
+
   describe 'self.filter_participation_states' do
     # Project that has not started yet
     let!(:not_started_project) do
@@ -244,11 +269,131 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.sort_alphabetically' do
+    let!(:p3) { create(:project, title_multiloc: { 'en' => 'Gamma Project' }) }
+    let!(:p1) { create(:project, title_multiloc: { 'en' => 'Alpha Project' }) }
+    let!(:p2) { create(:project, title_multiloc: { 'en' => 'Beta Project' }) }
+
+    it 'sorts projects alphabetically by title' do
+      result = described_class.sort_alphabetically(Project.all, { locale: 'en', sort: 'alphabetically_asc' })
+      expect(result.pluck(:id)).to eq([p1.id, p2.id, p3.id])
+    end
+  end
+
+  describe 'self.filter_visibility' do
+    let!(:public_project) { create(:project, visible_to: 'public') }
+    let!(:groups_project) { create(:project, visible_to: 'groups') }
+    let!(:admins_project) { create(:project, visible_to: 'admins') }
+    let!(:listed_project) { create(:project, visible_to: 'public', listed: true) }
+    let!(:unlisted_project) { create(:project, visible_to: 'public', listed: false) }
+
+    let(:test_projects) { Project.where(id: [public_project.id, groups_project.id, admins_project.id, listed_project.id, unlisted_project.id]) }
+
+    it 'returns all projects when no visibility filter is applied' do
+      result = described_class.filter_visibility(test_projects, {})
+      expect(result.pluck(:id).sort).to match_array([
+        public_project.id,
+        groups_project.id,
+        admins_project.id,
+        listed_project.id,
+        unlisted_project.id
+      ].sort)
+    end
+
+    it 'filters projects by public visibility' do
+      result = described_class.filter_visibility(test_projects, { visibility: ['public'] })
+      # Only projects with visible_to: 'public' should be returned
+      # This includes both public_project and listed_project since both have visible_to: 'public'
+      # Also includes unlisted_project since it has visible_to: 'public' (even though listed: false)
+      expected_ids = [public_project.id, listed_project.id, unlisted_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'filters projects by groups visibility' do
+      result = described_class.filter_visibility(test_projects, { visibility: ['groups'] })
+      expect(result.pluck(:id)).to eq([groups_project.id])
+    end
+
+    it 'filters projects by admins visibility' do
+      result = described_class.filter_visibility(test_projects, { visibility: ['admins'] })
+      expect(result.pluck(:id)).to eq([admins_project.id])
+    end
+
+    it 'filters projects by multiple visibility types' do
+      result = described_class.filter_visibility(test_projects, { visibility: %w[public groups] })
+      # Projects with visible_to: 'public' OR visible_to: 'groups' should be returned
+      # This includes public_project, groups_project, listed_project, and unlisted_project
+      expected_ids = [public_project.id, groups_project.id, listed_project.id, unlisted_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'filters projects by all visibility types' do
+      result = described_class.filter_visibility(test_projects, { visibility: %w[public groups admins] })
+      expect(result.pluck(:id).sort).to match_array([public_project.id, groups_project.id, admins_project.id, listed_project.id, unlisted_project.id].sort)
+    end
+  end
+
+  describe 'self.filter_discoverability' do
+    let!(:public_project) { create(:project, visible_to: 'public', listed: true) }
+    let!(:hidden_project) { create(:project, visible_to: 'public', listed: false) }
+    let!(:groups_project) { create(:project, visible_to: 'groups', listed: true) }
+    let!(:groups_hidden_project) { create(:project, visible_to: 'groups', listed: false) }
+
+    let(:test_projects) { Project.where(id: [public_project.id, hidden_project.id, groups_project.id, groups_hidden_project.id]) }
+
+    it 'returns all projects when no discoverability filter is applied' do
+      result = described_class.filter_discoverability(test_projects, {})
+      expect(result.pluck(:id).sort).to match_array([
+        public_project.id,
+        hidden_project.id,
+        groups_project.id,
+        groups_hidden_project.id
+      ].sort)
+    end
+
+    it 'filters projects by listed discoverability' do
+      result = described_class.filter_discoverability(test_projects, { discoverability: ['listed'] })
+      # Only projects with listed: true should be returned
+      expected_ids = [public_project.id, groups_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'filters projects by unlisted discoverability' do
+      result = described_class.filter_discoverability(test_projects, { discoverability: ['unlisted'] })
+      # Only projects with listed: false should be returned
+      expected_ids = [hidden_project.id, groups_hidden_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'filters projects by multiple discoverability types' do
+      result = described_class.filter_discoverability(test_projects, { discoverability: %w[listed unlisted] })
+      # Projects with listed: true OR listed: false should be returned
+      # This includes all projects
+      expected_ids = [public_project.id, hidden_project.id, groups_project.id, groups_hidden_project.id].sort
+      actual_ids = result.pluck(:id).sort
+      expect(actual_ids).to match_array(expected_ids)
+    end
+
+    it 'returns all projects for invalid discoverability value' do
+      result = described_class.filter_discoverability(test_projects, { discoverability: ['invalid'] })
+      expect(result.pluck(:id).sort).to match_array([
+        public_project.id,
+        hidden_project.id,
+        groups_project.id,
+        groups_hidden_project.id
+      ].sort)
+    end
+  end
+
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
       let!(:user) { create(:user) }
       let!(:p1) do
-        project = create_project(start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 5.days)
+        project = create_project(start_at: Time.zone.today - 40.days, end_at: Time.zone.today - 5.days)
         create_session(project, Time.zone.today - 20.days)
         project
       end
@@ -295,12 +440,11 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        start_period = Time.zone.today
-        end_period = Time.zone.today + 30.days
+        min_start_date = Time.zone.today - 35.days
 
         result = described_class.execute(
           Project.all,
-          { sort: 'recently_viewed', start_at: start_period, end_at: end_period },
+          { sort: 'recently_viewed', min_start_date: min_start_date, max_start_date: nil },
           current_user: user
         )
 
@@ -351,15 +495,14 @@ describe ProjectsFinderAdminService do
       end
 
       it 'filters overlapping period' do
-        start_period = Time.zone.today
-        end_period = Time.zone.today + 30.days
+        min_start_date = Time.zone.today
 
         result = described_class.execute(
           Project.all,
-          { sort: 'phase_starting_or_ending_soon', start_at: start_period, end_at: end_period }
+          { sort: 'phase_starting_or_ending_soon', min_start_date: min_start_date, end_at: nil }
         )
 
-        expect(result.pluck(:id)).to eq([p6, p5, p7, p3, p4, p2].pluck(:id))
+        expect(result.pluck(:id)).to eq([p6, p5, p7, p8].pluck(:id))
       end
     end
   end
