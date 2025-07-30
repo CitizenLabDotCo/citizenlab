@@ -29,11 +29,7 @@ const OPTIONS: { value: ParticipationState; message: MessageDescriptor }[] = [
   },
 ];
 
-interface Props {
-  mr?: string;
-}
-
-const ParticipationStates = ({ mr }: Props) => {
+const ParticipationStates = () => {
   const participationStates = useParam('participation_states') ?? [];
   const { formatMessage } = useIntl();
 
@@ -47,7 +43,6 @@ const ParticipationStates = ({ mr }: Props) => {
       multipleSelectionAllowed
       selected={participationStates}
       values={options}
-      mr={mr}
       title={formatMessage(messages.participationStates)}
       name="participation-states-select"
       onChange={(participationStates) => {
