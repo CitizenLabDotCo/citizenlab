@@ -11,3 +11,13 @@ export const FILTER_CONFIG = {
 } as const;
 
 export type FilterKey = keyof typeof FILTER_CONFIG;
+
+export const FILTER_KEYS: FilterKey[] = [
+  'managers',
+  'status',
+  'folder_ids',
+  'participation_states',
+  'participation_methods',
+  'visibility',
+  'discoverability',
+];

@@ -133,10 +133,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters',
     defaultMessage: 'No more filters to add',
   },
-  clear: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.clear',
-    defaultMessage: 'Clear',
-  },
   manager: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager',
     defaultMessage: 'Manager',
