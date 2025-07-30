@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
@@ -57,48 +57,31 @@ const CommunityMonitorModal = () => {
     typeof phase?.data.attributes.survey_popup_frequency === 'number'
       ? phase.data.attributes.survey_popup_frequency
       : 100; // Default to 100% if not set
+  const shouldShowModalBase =
+    !isAdminOrModerator &&
+    isCommunityMonitorEnabled &&
+    isSurveyLive &&
+    userPermittedToTakeSurvey &&
+    Math.random() < surveyPopupFrequency / 100 &&
+    !isDevelopmentOrCI;
 
-  const shouldShowModal = useCallback(
-    (overrideAllowdOnUrl?: boolean) => {
-      const show =
-        !isAdminOrModerator &&
-        (allowedOnUrl || overrideAllowdOnUrl) && // After certain actions or for admin preview, we can ovverride this check
-        isCommunityMonitorEnabled &&
-        isSurveyLive &&
-        userPermittedToTakeSurvey &&
-        Math.random() < surveyPopupFrequency / 100 &&
-        !isDevelopmentOrCI;
-
-      return show;
-    },
-    [
-      isAdminOrModerator,
-      allowedOnUrl,
-      isCommunityMonitorEnabled,
-      isSurveyLive,
-      userPermittedToTakeSurvey,
-      surveyPopupFrequency,
-      isDevelopmentOrCI,
-    ]
-  );
-
-  // Display the modal if it should be shown
+  // Show modal on initial load if conditions are met (including URL check)
   useEffect(() => {
-    if (shouldShowModal()) {
+    if (shouldShowModalBase && allowedOnUrl) {
       setModalOpened(true);
     }
-  }, [shouldShowModal]);
+  }, [shouldShowModalBase, allowedOnUrl]);
 
   // Listen for any action that triggers the community monitor modal
   useEffect(() => {
     const subscription = triggerCommunityMonitorModal$.subscribe((event) => {
-      event.eventValue['preview']
-        ? setModalOpened(true) // If the admin is triggering a preview, we open the modal directly
-        : shouldShowModal(true) && setModalOpened(true); // Otherwise, we check first if we should show it
+      if (event.eventValue['preview'] || shouldShowModalBase) {
+        setModalOpened(true);
+      }
     });
 
     return () => subscription.unsubscribe();
-  }, [shouldShowModal]);
+  }, [shouldShowModalBase]);
 
   const onClose = () => {
     // Set cookie expiration date to 3 months from today
