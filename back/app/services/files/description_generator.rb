@@ -106,10 +106,23 @@ module Files
     end
 
     class << self
+      # Enqueue a job to generate descriptions for the given file if it meets the
+      # eligibility criteria. Additionally, there's a unique constraint (defined on the
+      # +job_trackers+ table) that prevents multiple jobs *with tracking* from being
+      # enqueued for the same file. This helps keep the definition of generation process
+      # status simpler for the initial implementation. To retry a job (which we currently
+      # do not support in the product), the existing tracker must be deleted first.
+      #
+      # @param file [Files::File] The file to generate descriptions for
+      # @return [Boolean] true if a job was enqueued, false otherwise.
       def enqueue_job(file)
-        return unless generate_descriptions?(file)
+        return false unless generate_descriptions?(file)
 
-        Files::DescriptionGenerationJob.perform_later(file)
+        Files::DescriptionGenerationJob.with_tracking.perform_later(file)
+        true
+      rescue PG::UniqueViolation
+        Rails.logger.info('Description generation job already exists for file.', file_id: file.id)
+        false
       end
 
       def generate_descriptions?(file)

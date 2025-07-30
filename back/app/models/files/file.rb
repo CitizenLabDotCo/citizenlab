@@ -103,6 +103,15 @@ module Files
     has_many :projects, through: :files_projects
     has_one :preview, class_name: 'Files::Preview', dependent: :destroy, inverse_of: :file
 
+    has_one(
+      :desc_generation_job,
+      -> { where(root_job_type: 'Files::DescriptionGenerationJob') },
+      class_name: 'Jobs::Tracker',
+      as: :context,
+      inverse_of: :context,
+      dependent: :destroy
+    )
+
     # TODO: Maybe reconsider the name of this column.
     mount_base64_file_uploader :content, FileUploader
 
@@ -155,6 +164,17 @@ module Files
       all_matches = "(#{exact_matches.to_sql} UNION #{pg_search_matches.to_sql}) AS files"
       from(all_matches).order('pg_search_rank DESC')
     }
+
+    def description_generation_status
+      status = desc_generation_job&.status
+
+      # TODO: Improve the tracker interface to make this simpler.
+      if status == :completed
+        desc_generation_job.error_count.positive? ? :failed : :completed
+      else
+        status
+      end
+    end
 
     def being_destroyed?
       !!@being_destroyed

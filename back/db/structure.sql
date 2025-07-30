@@ -416,6 +416,7 @@ DROP INDEX IF EXISTS public.index_activities_on_item_type_and_item_id;
 DROP INDEX IF EXISTS public.index_activities_on_action;
 DROP INDEX IF EXISTS public.index_activities_on_acted_at;
 DROP INDEX IF EXISTS public.inappropriate_content_flags_flaggable;
+DROP INDEX IF EXISTS public.idx_on_context_type_context_id_root_job_type_d5d424e7c3;
 DROP INDEX IF EXISTS public.i_v_user;
 DROP INDEX IF EXISTS public.i_v_timestamp;
 DROP INDEX IF EXISTS public.i_v_referrer_type;
@@ -4587,6 +4588,13 @@ CREATE INDEX i_v_user ON public.analytics_fact_visits USING btree (dimension_use
 
 
 --
+-- Name: idx_on_context_type_context_id_root_job_type_d5d424e7c3; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_context_type_context_id_root_job_type_d5d424e7c3 ON public.jobs_trackers USING btree (context_type, context_id, root_job_type) WHERE ((root_job_type)::text = 'Files::DescriptionGenerationJob'::text);
+
+
+--
 -- Name: inappropriate_content_flags_flaggable; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7582,6 +7590,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250730150828'),
 ('20250724190507'),
 ('20250724074646'),
 ('20250716141100'),
