@@ -26,14 +26,14 @@ const UserSessionRecordingModal = () => {
   const { formatMessage } = useIntl();
 
   const onAccept = () => {
-    removeModal('user-session-recording');
-    eventEmitter.emit('user_session_recording_accepted', true);
     set('user_session_recording_modal', 'true');
+    eventEmitter.emit('user_session_recording_accepted', true);
+    removeModal('user-session-recording');
   };
 
   const onClose = () => {
-    removeModal('user-session-recording');
     set('user_session_recording_modal', 'true');
+    removeModal('user-session-recording');
   };
 
   return (
