@@ -28,6 +28,9 @@ describe('Survey question logic', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
     cy.wait('@getCustomFields', { timeout: 10000 });
 
+    cy.dataCy('e2e-field-row').first();
+    cy.wait(5000);
+
     cy.dataCy('e2e-field-row').should('have.length', 3);
 
     // Add a new page
