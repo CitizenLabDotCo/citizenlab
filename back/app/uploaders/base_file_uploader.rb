@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
 class BaseFileUploader < BaseUploader
-  after :store, :generate_preview
-
-  def generate_preview(_file)
-    Files::PreviewService.new.enqueue_preview(model)
-  end
-
   def extension_allowlist
     %w[avi csv doc docx key mkv mp3 mp4 numbers odp ods odt pages pdf ppt pptx txt xls xlsx] +
       BaseImageUploader::ALLOWED_TYPES
