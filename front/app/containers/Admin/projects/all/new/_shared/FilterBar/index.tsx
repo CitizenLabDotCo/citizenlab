@@ -16,8 +16,8 @@ const Filters = () => {
     <Box
       display="flex"
       flexDirection="row"
-      gap="16px"
-      height="52px"
+      flexWrap="wrap"
+      gap="8px"
       alignItems="center"
     >
       <Search placeholder={formatMessage(messages.search)} />
