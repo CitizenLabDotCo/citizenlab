@@ -1416,6 +1416,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.managers": "Managers",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.no": "No",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.noProjectsFound": "No projects found for the specified filters",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.numberOfProjects": "Number of projects",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.projects": "Projects",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.projectsTimeline": "Projects Timeline",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.publicationStatus": "Publication status",
