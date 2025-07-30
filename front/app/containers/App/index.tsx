@@ -55,7 +55,7 @@ import CommunityMonitorModal from './CommunityMonitorModal';
 import messages from './messages';
 import Meta from './Meta';
 import { ModalQueueProvider } from './ModalQueue';
-import UserSessionRecordingModalManager from './ModalQueue/modals/UserSessionRecording/Manager';
+import UserSessionRecordingModalManager from './ModalQueue/modals/UserSessionRecording/ModalManager';
 
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
