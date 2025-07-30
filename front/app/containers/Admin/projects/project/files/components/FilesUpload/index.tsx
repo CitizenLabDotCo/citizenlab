@@ -26,6 +26,7 @@ type Props = {
   showInformationSection?: boolean;
   showTitle?: boolean;
   afterUpload?: (uploadedFiles: FileWithMeta[]) => void;
+  onFileSelect?: () => void;
 };
 
 const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
@@ -38,6 +39,7 @@ const FilesUpload = ({
   showInformationSection = true,
   afterUpload,
   showTitle = true,
+  onFileSelect,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
@@ -57,6 +59,8 @@ const FilesUpload = ({
     multiple: true,
     validator: () => null, // Allow all file types to be uploaded.
     onDrop: (acceptedFiles) => {
+      onFileSelect?.();
+
       // First check if user is trying to drop more than the maximum allowed files
       if (acceptedFiles.length > MAX_FILES) {
         // If so, show message to the user and do not proceed with the upload

@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { CLErrors, UploadFile } from 'typings';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import FilesUpload from 'containers/Admin/projects/project/files/components/FilesUpload';
 
 import { List } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Error from 'components/UI/Error';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import Modal from '../Modal';
+
+import SelectExistingFile from './components/SelectExistingFile';
 import FileDisplay, { FileType } from './FileDisplay';
 import FileInput from './FileInput';
 import messages from './messages';
@@ -43,7 +50,14 @@ const FileUploader = ({
   maxSizeMb,
   dataCy,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
+  const [showSelectExistingFiles, setShowSelectExistingFiles] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const isDataRepositoryEnabled = useFeatureFlag({
+    name: 'data_repository',
+  });
 
   useEffect(() => {
     if (initialFiles) {
@@ -88,60 +102,97 @@ const FileUploader = ({
   };
 
   const fileNames = files.map((file) => file.name).join(', ');
-  const content = (
-    <Box
-      className={className}
-      key={id}
-      data-cy="e2e-file-uploader-container"
-      w="100%"
-    >
-      <FileInput
-        onAdd={handleFileOnAdd}
-        id={id}
-        multiple={multiple}
-        maxSizeMb={maxSizeMb}
-        dataCy={dataCy}
-      />
-      <Error fieldName="file" apiErrors={apiErrors?.file} />
 
-      <List key={files.length} className="files-list e2e-files-list">
-        {files.map((file: FileType, index: number) =>
-          enableDragAndDrop ? (
-            <SortableRow
-              key={`item-${file.name}`}
-              id={file.id || file.name}
-              index={index}
-              moveRow={handleDragRow}
-              isLastItem={index === files.length - 1}
+  const content = (
+    <>
+      <Box
+        className={className}
+        key={id}
+        data-cy="e2e-file-uploader-container"
+        w="100%"
+      >
+        {isDataRepositoryEnabled ? (
+          <>
+            <Button
+              mt="12px"
+              icon="file-add"
+              buttonStyle="secondary-outlined"
+              onClick={() => setIsModalOpen(true)}
             >
-              <Box w="100%">
+              {formatMessage(messages.clickToSelectAFile)}
+            </Button>
+          </>
+        ) : (
+          <FileInput
+            onAdd={handleFileOnAdd}
+            id={id}
+            multiple={multiple}
+            maxSizeMb={maxSizeMb}
+            dataCy={dataCy}
+          />
+        )}
+        <Error fieldName="file" apiErrors={apiErrors?.file} />
+
+        <List key={files.length} className="files-list e2e-files-list">
+          {files.map((file: FileType, index: number) =>
+            enableDragAndDrop ? (
+              <SortableRow
+                key={`item-${file.name}-${file.id}-row`}
+                id={file.id || file.name}
+                index={index}
+                moveRow={handleDragRow}
+                isLastItem={index === files.length - 1}
+              >
+                <Box w="100%">
+                  <FileDisplay
+                    key={`item-${file.name}-${file.id}`}
+                    onDeleteClick={handleFileOnRemove(file)}
+                    file={file}
+                  />
+                </Box>
+              </SortableRow>
+            ) : (
+              <Box key={`item-${file.name}-${file.id}`} w="100%">
                 <FileDisplay
-                  key={`item-${file.name}`}
                   onDeleteClick={handleFileOnRemove(file)}
                   file={file}
                 />
               </Box>
-            </SortableRow>
-          ) : (
-            <Box key={`item-${file.name}`} w="100%">
-              <FileDisplay
-                onDeleteClick={handleFileOnRemove(file)}
-                file={file}
-              />
-            </Box>
-          )
-        )}
-      </List>
+            )
+          )}
+        </List>
 
-      <ScreenReaderOnly aria-live="polite">
-        <FormattedMessage
-          {...(files.length > 0
-            ? messages.a11y_filesToBeUploaded
-            : messages.a11y_noFiles)}
-          values={{ fileNames }}
-        />
-      </ScreenReaderOnly>
-    </Box>
+        <ScreenReaderOnly aria-live="polite">
+          <FormattedMessage
+            {...(files.length > 0
+              ? messages.a11y_filesToBeUploaded
+              : messages.a11y_noFiles)}
+            values={{ fileNames }}
+          />
+        </ScreenReaderOnly>
+      </Box>
+      <Modal
+        opened={isModalOpen}
+        close={() => {
+          setIsModalOpen(false);
+          // Reset the state to show the select existing files view
+          setShowSelectExistingFiles(true);
+        }}
+      >
+        <Box mt="20px">
+          {showSelectExistingFiles && (
+            <SelectExistingFile setFiles={setFiles} attachedFiles={files} />
+          )}
+          <FilesUpload
+            showInformationSection={false}
+            showTitle={false}
+            onFileSelect={() => {
+              setShowSelectExistingFiles(false);
+            }}
+          />
+        </Box>
+      </Modal>
+    </>
   );
 
   return enableDragAndDrop ? (
