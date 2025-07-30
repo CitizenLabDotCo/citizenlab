@@ -19,6 +19,7 @@ ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_ra
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_f1d8986d29;
 ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS fk_rails_f09b1bc4cd;
+ALTER TABLE IF EXISTS ONLY public.file_attachments DROP CONSTRAINT IF EXISTS fk_rails_f06e641e03;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
@@ -311,6 +312,9 @@ DROP INDEX IF EXISTS public.index_files_on_name_gin_trgm;
 DROP INDEX IF EXISTS public.index_files_on_mime_type;
 DROP INDEX IF EXISTS public.index_files_on_description_multiloc_text_gin_trgm_ops;
 DROP INDEX IF EXISTS public.index_files_on_category;
+DROP INDEX IF EXISTS public.index_file_attachments_on_file_id;
+DROP INDEX IF EXISTS public.index_file_attachments_on_file_and_attachable;
+DROP INDEX IF EXISTS public.index_file_attachments_on_attachable;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
 DROP INDEX IF EXISTS public.index_events_on_maximum_attendees;
 DROP INDEX IF EXISTS public.index_events_on_location_point;
@@ -498,6 +502,7 @@ ALTER TABLE IF EXISTS ONLY public.flag_inappropriate_content_inappropriate_conte
 ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS files_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS files_previews_pkey;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS files_pkey;
+ALTER TABLE IF EXISTS ONLY public.file_attachments DROP CONSTRAINT IF EXISTS file_attachments_pkey;
 ALTER TABLE IF EXISTS ONLY public.experiments DROP CONSTRAINT IF EXISTS experiments_pkey;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS events_pkey;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS events_attendances_pkey;
@@ -612,6 +617,7 @@ DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_fla
 DROP TABLE IF EXISTS public.files_projects;
 DROP TABLE IF EXISTS public.files_previews;
 DROP TABLE IF EXISTS public.files;
+DROP TABLE IF EXISTS public.file_attachments;
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
 DROP TABLE IF EXISTS public.event_files;
@@ -2428,6 +2434,21 @@ CREATE TABLE public.experiments (
 
 
 --
+-- Name: file_attachments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.file_attachments (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    file_id uuid NOT NULL,
+    attachable_type character varying NOT NULL,
+    attachable_id uuid NOT NULL,
+    "position" integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: files; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3883,6 +3904,14 @@ ALTER TABLE ONLY public.experiments
 
 
 --
+-- Name: file_attachments file_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.file_attachments
+    ADD CONSTRAINT file_attachments_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: files files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5262,6 +5291,27 @@ CREATE INDEX index_events_on_maximum_attendees ON public.events USING btree (max
 --
 
 CREATE INDEX index_events_on_project_id ON public.events USING btree (project_id);
+
+
+--
+-- Name: index_file_attachments_on_attachable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_file_attachments_on_attachable ON public.file_attachments USING btree (attachable_type, attachable_id);
+
+
+--
+-- Name: index_file_attachments_on_file_and_attachable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_file_attachments_on_file_and_attachable ON public.file_attachments USING btree (file_id, attachable_type, attachable_id);
+
+
+--
+-- Name: index_file_attachments_on_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_file_attachments_on_file_id ON public.file_attachments USING btree (file_id);
 
 
 --
@@ -7438,6 +7488,14 @@ ALTER TABLE ONLY public.idea_files
 
 
 --
+-- Name: file_attachments fk_rails_f06e641e03; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.file_attachments
+    ADD CONSTRAINT fk_rails_f06e641e03 FOREIGN KEY (file_id) REFERENCES public.files(id);
+
+
+--
 -- Name: custom_field_bins fk_rails_f09b1bc4cd; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7525,6 +7583,7 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20250724190507'),
+('20250724074646'),
 ('20250716141100'),
 ('20250716102450'),
 ('20250715075008'),
@@ -7532,6 +7591,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250714155020'),
 ('20250714073201'),
 ('20250708085259'),
+('20250703120000'),
 ('20250702085136'),
 ('20250627113458'),
 ('20250626072615'),
