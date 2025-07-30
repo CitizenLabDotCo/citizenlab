@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
+import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
 import { first } from 'lodash-es';
 import moment from 'moment';
 import { Multiloc } from 'typings';
@@ -48,7 +49,7 @@ const ProjectsTimelineCard = ({
   participationMethods = [],
 }: ProjectsTimelineCardProps) => {
   const { formatMessage } = useIntl();
-  const { data: response, isLoading } = useInfiniteProjectsMiniAdmin({
+  const { data, isLoading, isFetching } = useInfiniteProjectsMiniAdmin({
     status: publicationStatuses,
     participation_states: participationStates,
     visibility,
@@ -61,9 +62,29 @@ const ProjectsTimelineCard = ({
     sort: 'phase_starting_or_ending_soon',
   });
 
-  if (isLoading || !response) return null;
+  const allProjects = useMemo(
+    () => data?.pages.flatMap((page) => page.data) ?? [],
+    [data?.pages]
+  );
 
-  const allProjects = response.pages.flatMap((page) => page.data);
+  if (isLoading || isFetching) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" py="40px">
+        <Spinner />
+      </Box>
+    );
+  }
+
+  if (allProjects.length === 0) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" py="40px">
+        <Text variant="bodyL" color="textSecondary">
+          {formatMessage(messages.noProjectsFound)}
+        </Text>
+      </Box>
+    );
+  }
+
   const projectsById: Record<string, ProjectMiniAdminData> = {};
   const ganttItems: GanttItem[] = [];
 
@@ -103,7 +124,15 @@ const ProjectsTimelineCard = ({
     )
   )?.end;
 
-  if (!minDate || !maxDate) return null;
+  if (!minDate || !maxDate) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" py="40px">
+        <Text variant="bodyL" color="textSecondary">
+          {formatMessage(messages.noProjectsFound)}
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <GanttChart

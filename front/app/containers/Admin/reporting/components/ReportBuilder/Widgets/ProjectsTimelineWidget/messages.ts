@@ -153,4 +153,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.folders',
     defaultMessage: 'Folders',
   },
+  noProjectsFound: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.noProjectsFound',
+    defaultMessage: 'No projects found for the specified filters',
+  },
 });
