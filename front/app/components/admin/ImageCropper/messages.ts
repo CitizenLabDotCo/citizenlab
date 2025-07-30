@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   infoLinkText: {
-    id: 'app.components.Admin.ImageCropper.infoLinkText2',
+    id: 'app.components.Admin.ImageCropper.infoLinkText',
     defaultMessage: 'recommended ratio',
   },
   imageSupportPageURL: {
