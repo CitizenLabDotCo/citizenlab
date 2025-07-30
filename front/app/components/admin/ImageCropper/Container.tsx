@@ -39,15 +39,19 @@ const Container = ({
                 />
               </Text>
             </li>
-            <li>
-              <Text>
-                <FormattedMessage {...messages.cropSentenceThree} />
-              </Text>
-            </li>
+            {show3x1MobileCropLines && (
+              <li>
+                <Text>
+                  <FormattedMessage {...messages.cropSentenceThree} />
+                </Text>
+              </li>
+            )}
           </ul>
-          <Text>
-            <FormattedMessage {...messages.cropSentenceFour} />
-          </Text>
+          {show3x1MobileCropLines && (
+            <Text>
+              <FormattedMessage {...messages.cropSentenceFour} />
+            </Text>
+          )}
           <Text>
             <FormattedMessage
               {...messages.cropSentenceFive}
