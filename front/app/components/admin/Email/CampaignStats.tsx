@@ -106,6 +106,15 @@ const CampaignStats = ({ campaignId, className }: Props) => {
           </GraphCardCount>
           <GraphCardTitle>
             <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
+            {status === 'opened' && (
+              <IconTooltip
+                content={
+                  <FormattedMessage
+                    {...messages.deliveryStatus_openedTooltip}
+                  />
+                }
+              />
+            )}
             {status === 'clicked' && (
               <IconTooltip
                 content={
