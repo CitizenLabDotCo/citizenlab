@@ -1,4 +1,4 @@
-import { triggerCommunityMonitorModal } from './ModalQueue/modals/CommunityMonitorModal/events';
+import { triggerCommunityMonitorModal } from './ModalQueue/modals/CommunityMonitor/events';
 
 type TriggerPostActionEventsParams = {
   preview?: boolean;
