@@ -29,7 +29,6 @@ const Settings = () => {
   const {
     actions: { setProp },
     publicationStatuses,
-    defaultTimeRange,
     showTodayLine,
     participationStates,
     visibility,
@@ -41,7 +40,6 @@ const Settings = () => {
     publicationStatuses: node.data.props.publicationStatuses?.length
       ? node.data.props.publicationStatuses
       : ['published'],
-    defaultTimeRange: node.data.props.defaultTimeRange || 'year',
     showTodayLine: node.data.props.showTodayLine ?? true,
     colorByStatus: node.data.props.colorByStatus ?? true,
     participationStates: node.data.props.participationStates || [],
@@ -64,12 +62,6 @@ const Settings = () => {
     const selectedStatuses = options.map((option) => option.value);
     setProp((props: ProjectsTimelineCardProps) => {
       props.publicationStatuses = selectedStatuses;
-    });
-  };
-
-  const handleTimeRangeChange = ({ value }: IOption) => {
-    setProp((props: ProjectsTimelineCardProps) => {
-      props.defaultTimeRange = value;
     });
   };
 
@@ -124,13 +116,6 @@ const Settings = () => {
   const publicationStatusOptions: IOption[] = [
     { value: 'published', label: formatMessage(messages.published) },
     { value: 'archived', label: formatMessage(messages.archived) },
-  ];
-
-  const timeRangeOptions: IOption[] = [
-    { value: 'month', label: formatMessage(messages.month) },
-    { value: 'quarter', label: formatMessage(messages.quarter) },
-    { value: 'year', label: formatMessage(messages.year) },
-    { value: 'multiyear', label: formatMessage(messages.multiyear) },
   ];
 
   const booleanOptions: IOption[] = [
@@ -267,18 +252,6 @@ const Settings = () => {
           value={discoverability}
           options={discoverabilityOptions}
           onChange={handleDiscoverabilityChange}
-        />
-      </Box>
-
-      {/* Timeline View Options */}
-      <Box mb="20px">
-        <Text variant="bodyM" color="textSecondary" mb="5px">
-          {formatMessage(messages.defaultTimeRange)}
-        </Text>
-        <Select
-          value={defaultTimeRange}
-          options={timeRangeOptions}
-          onChange={handleTimeRangeChange}
         />
       </Box>
 
