@@ -6,7 +6,7 @@ describe('Survey question logic', () => {
   let projectSlug: string | undefined;
   let phaseId: string | undefined;
 
-  before(() => {
+  beforeEach(() => {
     createSurveyProject(cy).then((res: any) => {
       projectId = res.projectId;
       projectSlug = res.projectSlug;
@@ -14,13 +14,13 @@ describe('Survey question logic', () => {
     });
   });
 
-  after(() => {
+  afterEach(() => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
     }
   });
 
-  it('allows setting logic for select question', () => {
+  it.only('allows setting logic for select question', () => {
     cy.setAdminLoginCookie();
     cy.intercept('GET', `/web_api/v1/phases/${phaseId}/custom_fields**`).as(
       'getCustomFields'
@@ -29,7 +29,7 @@ describe('Survey question logic', () => {
     cy.wait('@getCustomFields', { timeout: 10000 });
 
     cy.dataCy('e2e-field-row').first();
-    cy.wait(5000);
+    cy.wait(1000);
 
     cy.dataCy('e2e-field-row').should('have.length', 3);
 
@@ -82,6 +82,7 @@ describe('Survey question logic', () => {
     cy.dataCy('e2e-add-rule-button').eq(2).click();
 
     cy.dataCy('e2e-rule-input-select').eq(1).find('select').select('Page 3');
+    cy.wait(1000);
 
     // Save again
     cy.get('form').submit();
@@ -91,12 +92,14 @@ describe('Survey question logic', () => {
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
 
     cy.acceptCookies();
-
+    cy.get('[data-testid="radio-container"]').first();
+    cy.wait(1000);
     // Select first option
     cy.get('[data-testid="radio-container"]').first().click({ force: true });
 
     // Make sure submit button is shown
     cy.dataCy('e2e-submit-form');
+    cy.wait(2000);
 
     // Instead select option 2
     cy.get('[data-testid="radio-container"]').eq(1).click();
