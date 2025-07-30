@@ -7,47 +7,63 @@ import React, {
 } from 'react';
 
 import ModalRenderer from './ModalRenderer';
-import { ModalId } from './modals/modalRegistry';
+ import modalRegistry, { ModalId } from './modals/modalRegistry';
 
 interface ModalQueueContextType {
-  queueModal: (id: ModalId) => void;
-  removeModal: (id: ModalId) => void;
+  queueModal: (modalId: ModalId) => void;
+  removeModal: (modalId: ModalId) => void;
 }
 
 const ModalQueueContext = createContext<ModalQueueContextType | undefined>(
   undefined
 );
 
+type Modal = {
+  modalId: ModalId;
+  priority: number; // Higher number means higher priority
+};
+
 interface ModalQueueState {
-  queue: ModalId[];
+  queue: Modal[];
   currentModalId: ModalId | null;
 }
+
+const sortModalsByPriority = (modals: Modal[]): Modal[] => {
+  return [...modals].sort((a, b) => {
+    return b.priority - a.priority; // Higher priority first
+  });
+};
 
 const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(
     (
       state: ModalQueueState,
       action:
-        | { type: 'QUEUE_MODAL'; modalId: ModalId }
+        | { type: 'QUEUE_MODAL'; modal: Modal }
         | { type: 'REMOVE_MODAL'; modalId: ModalId }
     ): ModalQueueState => {
       switch (action.type) {
         case 'QUEUE_MODAL': {
+
+          // Sort by priority and determine current modal
+          const sortedQueue = sortModalsByPriority([...state.queue, action.modal]);
+
           return {
-            ...state,
-            queue: [...state.queue, action.modalId],
-            currentModalId: action.modalId,
+            queue: sortedQueue,
+            currentModalId:
+              sortedQueue.length > 0 ? sortedQueue[0].modalId : null,
           };
         }
 
         case 'REMOVE_MODAL': {
           const filteredQueue = state.queue.filter(
-            (modalId) => modalId !== action.modalId
+            (modal) => modal.modalId !== action.modalId
           );
+
           return {
-            ...state,
             queue: filteredQueue,
-            currentModalId: filteredQueue[0] || null,
+            currentModalId:
+              filteredQueue.length > 0 ? filteredQueue[0].modalId : null,
           };
         }
 
@@ -62,9 +78,11 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const queueModal = useCallback((modalId: ModalId) => {
+    const priority = modalRegistry[modalId].priority;
+
     dispatch({
       type: 'QUEUE_MODAL',
-      modalId,
+      modal: { modalId, priority },
     });
   }, []);
 
