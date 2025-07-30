@@ -29,6 +29,7 @@ export const Default: Story = {
       { value: 'longan', label: 'Looooooooooooooooooooooooooooongan' },
     ],
     onChange: () => {},
+    onClear: () => {},
     a11y_clearbuttonActionMessage: 'Clear selection',
     a11y_clearSearchButtonActionMessage: 'Clear search',
   },

@@ -29,6 +29,7 @@ export type Props = {
   searchPlaceholder?: string;
   onChange: (values: string[]) => void;
   onSearch?: (searchTerm: string) => void;
+  onClear?: () => void;
   a11y_clearbuttonActionMessage: string;
   a11y_clearSearchButtonActionMessage: string;
 } & BoxMarginProps;
@@ -43,6 +44,7 @@ const MultiSelect = ({
   searchPlaceholder,
   onChange,
   onSearch,
+  onClear,
   a11y_clearbuttonActionMessage,
   a11y_clearSearchButtonActionMessage,
   ...boxProps
@@ -53,7 +55,7 @@ const MultiSelect = ({
 
   const selectorId = useId();
 
-  const showClearButton = selected.length > 0 && (hover || focused);
+  const showClearButton = onClear && selected.length > 0 && (hover || focused);
 
   return (
     <Box {...boxProps}>
@@ -71,29 +73,27 @@ const MultiSelect = ({
         {showClearButton && (
           <StyledBox
             as="button"
-            tabIndex={0}
+            type="button"
             position="absolute"
             top="calc(50% - 10px)"
             right="8px"
-            borderRadius="16px"
+            borderRadius="50%"
+            width="20px"
+            height="20px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
             border={`1px solid ${colors.borderLight}`}
             p="0px"
             cursor="pointer"
+            aria-label={a11y_clearbuttonActionMessage}
             onClick={(e) => {
               e.stopPropagation();
-              onChange([]);
+              onClear();
             }}
             onBlur={() => setFocused(false)}
           >
-            <Icon
-              name="close"
-              height="14px"
-              width="19px"
-              m="0"
-              mt="-2px"
-              ariaHidden={false}
-              title={a11y_clearbuttonActionMessage}
-            />
+            <Icon name="close" />
           </StyledBox>
         )}
       </Box>
