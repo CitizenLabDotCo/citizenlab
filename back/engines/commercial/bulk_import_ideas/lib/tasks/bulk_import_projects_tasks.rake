@@ -19,6 +19,9 @@ namespace :bulk_import do
       import_path = "#{upload_path}/#{tenant.schema_name}"
       import_zip = "#{import_path}.zip"
 
+      source_file =
+
+
       if File.exist? import_zip
         # Remove previous files if they exist
         FileUtils.rm_rf(import_path)
@@ -30,28 +33,22 @@ namespace :bulk_import do
 
         # Extract & import projects, phases and content from the xlsx files in the ZIP
         project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(import_path)
+
+        # Upload the source file
+        source_file = project_extractor.upload_source_file(
+          Base64.encode64(File.read(import_zip))
+        )
+
+        binding.pry
+        break
+
         projects = project_extractor.projects
 
-        # Logout what we are importing
-        projects.each do |project|
-          Rails.logger.info "IMPORTING PROJECT: #{project[:title_multiloc][locale]}"
-          project[:phases]&.each do |phase|
-            Rails.logger.info "  PHASE: #{phase[:title_multiloc][locale]}"
-            Rails.logger.info "    Start: #{phase[:start_at]}, End: #{phase[:end_at]}"
-            Rails.logger.info "    Participation Method: #{phase[:participation_method]}"
-            Rails.logger.info "    Ideas: #{phase[:idea_rows].count}"
-            Rails.logger.info "    Idea Custom Fields: #{phase[:idea_custom_fields].count}"
-            phase[:idea_custom_fields]&.each do |field|
-              Rails.logger.info "        Field: #{field[:title_multiloc][locale]} (#{field[:input_type]})"
-            end
-            Rails.logger.info "    User Custom Fields: #{phase[:user_custom_fields].count}"
-          end
+        importer = BulkImportIdeas::Importers::ProjectImporter.new(import_user, locale)
+        project_import_log = preview_only ? importer.preview(projects) : importer.import(projects)
+        project_import_log.each do |log_message|
+          Rails.logger.info log_message
         end
-
-        break if preview_only
-
-        imported_projects = BulkImportIdeas::Importers::ProjectImporter.new(import_user, locale).import(projects)
-        Rails.logger.info "IMPORTED #{imported_projects.count} projects"
       else
         Rails.logger.error("FILE #{import_zip} does not exist")
       end
