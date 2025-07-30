@@ -54,7 +54,7 @@ import { isAdmin, isModerator } from 'utils/permissions/roles';
 import messages from './messages';
 import Meta from './Meta';
 import { ModalQueueProvider } from './ModalQueue';
-import CommunityMonitorModal from './ModalQueue/modals/CommunityMonitor/Modal';
+import CommunityMonitorModalManager from './ModalQueue/modals/CommunityMonitor/ModalManager';
 import UserSessionRecordingModalManager from './ModalQueue/modals/UserSessionRecording/ModalManager';
 
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
@@ -346,7 +346,7 @@ const App = ({ children }: Props) => {
             <ErrorBoundary>
               <UserSessionRecordingModalManager />
               <ConsentManager />
-              <CommunityMonitorModal />
+              <CommunityMonitorModalManager />
               <UserDeletedModal
                 modalOpened={userDeletedSuccessfullyModalOpened}
                 closeUserDeletedModal={closeUserDeletedModal}
