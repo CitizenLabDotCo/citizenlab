@@ -6,6 +6,7 @@ import GanttChart from 'components/UI/GanttChart';
 import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
 import ProjectTooltip from './ProjectTooltip';
@@ -18,6 +19,10 @@ interface Props {
 const ProjectGanttChart = ({ ganttItems, projectsById }: Props) => {
   const { formatMessage } = useIntl();
 
+  const onItemLabelClick = (ganttItem: GanttItem) => {
+    clHistory.push(`/admin/projects/${ganttItem.id}`);
+  };
+
   return (
     <GanttChart
       items={ganttItems}
@@ -25,6 +30,7 @@ const ProjectGanttChart = ({ ganttItems, projectsById }: Props) => {
         <ProjectTooltip ganttItem={ganttItem} projectsById={projectsById} />
       )}
       chartTitle={formatMessage(messages.project)}
+      onItemLabelClick={onItemLabelClick}
     />
   );
 };
