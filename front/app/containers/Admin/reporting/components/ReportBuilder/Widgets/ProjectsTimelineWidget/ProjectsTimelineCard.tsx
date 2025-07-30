@@ -17,12 +17,15 @@ import { getStatusColor } from 'containers/Admin/projects/all/new/_shared/utils'
 import GanttChart from 'components/UI/GanttChart';
 import { GanttItem } from 'components/UI/GanttChart/types';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
 export interface ProjectsTimelineCardProps {
   title?: Multiloc;
   startAt?: string;
   endAt?: string | null;
   publicationStatuses?: PublicationStatus[];
-  defaultTimeRange?: 'month' | 'quarter' | 'year' | 'multiyear';
   showTodayLine?: boolean;
   participationStates?: ParticipationState[];
   visibility?: Visibility[];
@@ -36,7 +39,6 @@ const ProjectsTimelineCard = ({
   startAt,
   endAt,
   publicationStatuses = ['published'],
-  defaultTimeRange = 'year',
   showTodayLine = true,
   participationStates = [],
   visibility = [],
@@ -45,6 +47,7 @@ const ProjectsTimelineCard = ({
   folderIds = [],
   participationMethods = [],
 }: ProjectsTimelineCardProps) => {
+  const { formatMessage } = useIntl();
   const { data: response, isLoading } = useInfiniteProjectsMiniAdmin({
     status: publicationStatuses,
     participation_states: participationStates,
@@ -106,7 +109,7 @@ const ProjectsTimelineCard = ({
     <GanttChart
       items={ganttItems}
       showTodayLine={showTodayLine}
-      chartTitle={defaultTimeRange}
+      chartTitle={formatMessage(messages.projects)}
     />
   );
 };

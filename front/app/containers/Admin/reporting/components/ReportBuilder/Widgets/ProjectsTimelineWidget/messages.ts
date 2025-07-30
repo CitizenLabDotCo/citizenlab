@@ -85,6 +85,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.multiyear',
     defaultMessage: 'Multi-year',
   },
+  projects: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.projects',
+    defaultMessage: 'Projects',
+  },
   showProjectBars: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.showProjectBars',
     defaultMessage: 'Show project bars',
