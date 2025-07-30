@@ -348,6 +348,7 @@ Rails.application.routes.draw do
 
       resources :files, controller: 'files/files' do
         get 'preview', on: :member, to: 'files/previews#show'
+        get 'transcript', on: :member, to: 'files/transcripts#show'
       end
     end
   end

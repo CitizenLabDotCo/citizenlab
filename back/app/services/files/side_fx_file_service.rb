@@ -7,5 +7,6 @@ class Files::SideFxFileService < BaseSideFxService
     super
 
     Files::PreviewService.new.enqueue_preview(file)
+    Files::TranscriptService.new(file).enqueue_transcript
   end
 end
