@@ -3,9 +3,11 @@ class ProjectsFinderAdminService
 
   # EXECUTION
   def self.execute(scope, params = {}, current_user: nil)
+    projects = scope
+
     # Apply filters
-    projects = filter_moderatable(scope, current_user)
-    projects = filter_status(scope, params)
+    projects = filter_moderatable(projects, current_user)
+    projects = filter_status(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
@@ -100,6 +102,7 @@ class ProjectsFinderAdminService
 
   # FILTERING METHODS
   def self.filter_moderatable(scope, current_user)
+    binding.pry
     return scope if current_user.admin?
 
     moderatable_project_ids = current_user.moderatable_project_ids
