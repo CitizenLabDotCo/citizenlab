@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -50,37 +50,31 @@ const DynamicFilters = () => {
   );
 
   return (
-    <Box display="flex" flexDirection="column" gap="16px">
-      <Box
-        display="flex"
-        flexDirection="row"
-        flexWrap="wrap"
-        gap="8px"
-        alignItems="center"
-      >
-        {activeFilters.map((filterKey) => {
-          return (
-            <ActiveFilter
-              key={filterKey}
-              filterKey={filterKey}
-              onRemove={handleRemoveFilter}
-            />
-          );
-        })}
-
-        <AddFilterDropdown
-          availableFilters={availableFilters}
-          onAddFilter={handleAddFilter}
-        />
-        {showClearButton && (
-          <Button
-            buttonStyle="text"
-            onClick={handleClearAll}
-            text={formatMessage(messages.clear)}
+    <>
+      {activeFilters.map((filterKey) => {
+        return (
+          <ActiveFilter
+            key={filterKey}
+            filterKey={filterKey}
+            onRemove={handleRemoveFilter}
           />
-        )}
-      </Box>
-    </Box>
+        );
+      })}
+
+      <AddFilterDropdown
+        availableFilters={availableFilters}
+        onAddFilter={handleAddFilter}
+      />
+      {showClearButton && (
+        <Button
+          buttonStyle="text"
+          onClick={handleClearAll}
+          text={formatMessage(messages.clear)}
+          m="0"
+          ml="-16px"
+        />
+      )}
+    </>
   );
 };
 

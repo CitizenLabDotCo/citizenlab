@@ -15,9 +15,10 @@ const Filters = () => {
   return (
     <Box
       display="flex"
-      flexDirection="column"
-      justifyContent="flex-end"
+      flexDirection="row"
       gap="16px"
+      height="52px"
+      alignItems="center"
     >
       <Search placeholder={formatMessage(messages.search)} />
       <Sort />

@@ -36,6 +36,8 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
           icon="plus"
           text={formatMessage(messages.addFilter)}
           disabled
+          m="0"
+          ml="-16px"
         />
       </Tooltip>
     );
@@ -49,6 +51,8 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
         onClick={() => setIsOpen(!isOpen)}
         text={formatMessage(messages.addFilter)}
         iconSize="20px"
+        m="0"
+        ml="-16px"
       />
       <Dropdown
         opened={isOpen}
