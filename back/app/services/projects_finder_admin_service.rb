@@ -98,6 +98,13 @@ class ProjectsFinderAdminService
   end
 
   # FILTERING METHODS
+  def self.filter_moderatable(scope, current_user)
+    return scope if current_user.admin?
+
+    # TODO: Implement filtering for moderatable projects based on user roles
+    scope
+  end
+
   def self.filter_status(scope, params = {})
     status = params[:status] || []
     return scope if status.blank?
