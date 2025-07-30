@@ -19,13 +19,7 @@ import QuestionPreview from './components/QuestionPreview';
 import { triggerCommunityMonitorModal$ } from './events';
 import { isAllowedOnUrl } from './utils';
 
-type CommunityMonitorModalProps = {
-  showModal?: boolean;
-};
-
-const CommunityMonitorModal = ({
-  showModal = false,
-}: CommunityMonitorModalProps) => {
+const CommunityMonitorModal = () => {
   const location = useLocation();
 
   const { data: authUser } = useAuthUser();
@@ -45,9 +39,7 @@ const CommunityMonitorModal = ({
   // Check if we have already stored a cookie, indicating the user has seen the modal
   const hasSeenModal = get('community_monitor_modal_seen');
 
-  const [modalOpened, setModalOpened] = useState(
-    hasSeenModal ? false : showModal // If the user has seen the modal already, don't show it again.
-  );
+  const [modalOpened, setModalOpened] = useState(false);
 
   // Get the community monitor project/phase & check if the survey is currently open
   const { data: project } = useCommunityMonitorProject({
