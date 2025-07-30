@@ -101,8 +101,22 @@ class ProjectsFinderAdminService
   def self.filter_moderatable(scope, current_user)
     return scope if current_user.admin?
 
-    # TODO: Implement filtering for moderatable projects based on user roles
+    moderatable_project_ids = current_user.moderatable_project_ids
+    moderated_folder_admin_publication_ids = AdminPublication.where(
+      publication_id: current_user.moderated_project_folder_ids,
+      publication_type: 'ProjectFolders::Folder'
+    ).pluck(:id)
+
     scope
+      .joins(
+        'INNER JOIN admin_publications ON admin_publications.publication_id = projects.id ' \
+        "AND admin_publications.publication_type = 'Project'"
+      )
+      .where(
+        'projects.id IN (:project_ids) OR admin_publications.parent_id IN (:folder_admin_pub_ids)',
+        project_ids: moderatable_project_ids,
+        folder_admin_pub_ids: moderated_folder_admin_publication_ids
+      )
   end
 
   def self.filter_status(scope, params = {})
