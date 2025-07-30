@@ -6,6 +6,7 @@ const ConsentManagerModal = lazy(
 const UserSessionRecordingModal = lazy(
   () => import('./UserSessionRecording/Modal')
 );
+const CommunityMonitorModal = lazy(() => import('./CommunityMonitor/Modal'));
 
 const MODAL_PRIORITIES = {
   100: 'CRITICAL',
@@ -17,7 +18,10 @@ const MODAL_PRIORITIES = {
 
 type ModalPriority = keyof typeof MODAL_PRIORITIES;
 
-export type ModalId = 'consent-modal' | 'user-session-recording';
+export type ModalId =
+  | 'consent-modal'
+  | 'user-session-recording'
+  | 'community-monitor';
 
 const modalRegistry: Record<
   ModalId,
@@ -30,6 +34,10 @@ const modalRegistry: Record<
   'user-session-recording': {
     component: UserSessionRecordingModal,
     priority: 50,
+  },
+  'community-monitor': {
+    component: CommunityMonitorModal,
+    priority: 25,
   },
 };
 
