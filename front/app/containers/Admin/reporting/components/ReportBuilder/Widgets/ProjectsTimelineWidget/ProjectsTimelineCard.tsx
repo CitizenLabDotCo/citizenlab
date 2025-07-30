@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 
 import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
-import { first } from 'lodash-es';
-import moment from 'moment';
 import { Multiloc } from 'typings';
 
 import { ParticipationMethod } from 'api/phases/types';
@@ -111,27 +109,6 @@ const ProjectsTimelineCard = ({
           }
         : undefined,
     });
-  }
-
-  const minDate = first(
-    ganttItems.sort((a, b) =>
-      moment(a.start as string).diff(moment(b.start as string))
-    )
-  )?.start;
-  const maxDate = first(
-    ganttItems.sort((a, b) =>
-      moment(b.end as string).diff(moment(a.end as string))
-    )
-  )?.end;
-
-  if (!minDate || !maxDate) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" py="40px">
-        <Text variant="bodyL" color="textSecondary">
-          {formatMessage(messages.noProjectsFound)}
-        </Text>
-      </Box>
-    );
   }
 
   return (
