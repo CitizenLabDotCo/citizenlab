@@ -91,6 +91,8 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
     }
   );
 
+  // Wrapping with useCallback to prevent endless re-renders
+  // when we use these functions via the useModalQueue hook in a child component's useEffect for example.
   const queueModal = useCallback((modalId: ModalId) => {
     const priority = modalRegistry[modalId].priority;
 
@@ -100,6 +102,8 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
+  // Wrapping with useCallback to prevent endless re-renders
+  // when we use these functions via the useModalQueue hook in a child component's useEffect for example.
   const removeModal = useCallback((modalId: ModalId) => {
     dispatch({ type: 'REMOVE_MODAL', modalId });
   }, []);
