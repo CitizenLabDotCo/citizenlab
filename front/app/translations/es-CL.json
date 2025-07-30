@@ -117,7 +117,7 @@
   "app.components.ConsentManager.Banner.accept": "Aceptar",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Rechazar política y cerrar banner",
   "app.components.ConsentManager.Banner.close": "Cerrar",
-  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Aceptar cookies nos ayuda a mejorar esta plataforma. {linkToCookiePolicy}.",
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescription1": "Las cookies nos ayudan a mejorar esta plataforma. {linkToCookiePolicy}.",
   "app.components.ConsentManager.Banner.cookieModalTitle": "Sus preferencias de cookies",
   "app.components.ConsentManager.Banner.linkToCookiePolicyText": "Lee nuestra política de cookies",
   "app.components.ConsentManager.Banner.manage": "Administrar",
