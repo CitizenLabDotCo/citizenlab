@@ -33,6 +33,37 @@ describe ProjectsFinderAdminService do
     project
   end
 
+  describe 'self.filter_moderatable' do
+    let!(:folder1) { create(:project_folder) }
+    let!(:folder2) { create(:project_folder) }
+    let!(:project_in_folder1) { create(:project, folder: folder1) }
+    let!(:project_in_folder2) { create(:project, folder: folder2) }
+    let!(:project_without_folder) { create(:project) }
+
+    let!(:user) { create(:user, roles: [
+      { 'type' => 'project_moderator', project_id: project_without_folder.id },
+      { 'type' => 'project_folder_moderator', project_folder_id: folder1.id }
+    ]) }
+
+    it 'returns all projects for admin user' do
+      admin_user = create(:admin)
+      result = described_class.filter_moderatable(Project.all, admin_user)
+      expect(result.pluck(:id)).to match_array([
+        project_in_folder1.id,
+        project_in_folder2.id,
+        project_without_folder.id
+      ])
+    end
+
+    it 'returns projects user can moderate if not admin' do
+      result = described_class.filter_moderatable(Project.all, user)
+      expect(result.pluck(:id)).to match_array([
+        project_without_folder.id,
+        project_in_folder1.id
+      ])
+    end
+  end
+
   describe 'self.filter_status' do
     let!(:draft_project) do
       project = create(:project)
