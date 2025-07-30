@@ -4,6 +4,7 @@ class ProjectsFinderAdminService
   # EXECUTION
   def self.execute(scope, params = {}, current_user: nil)
     # Apply filters
+    projects = filter_moderatable(scope, current_user)
     projects = filter_status(scope, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)

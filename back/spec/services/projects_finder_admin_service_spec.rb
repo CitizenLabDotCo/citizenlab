@@ -515,7 +515,8 @@ describe ProjectsFinderAdminService do
       it 'sorts projects by phases starting or ending soon' do
         result = described_class.execute(
           Project.all,
-          { sort: 'phase_starting_or_ending_soon' }
+          { sort: 'phase_starting_or_ending_soon' },
+          current_user: create(:admin)
         )
 
         expect(result.pluck(:id)).to eq([
@@ -530,7 +531,8 @@ describe ProjectsFinderAdminService do
 
         result = described_class.execute(
           Project.all,
-          { sort: 'phase_starting_or_ending_soon', min_start_date: min_start_date, end_at: nil }
+          { sort: 'phase_starting_or_ending_soon', min_start_date: min_start_date, end_at: nil },
+          current_user: create(:admin)
         )
 
         expect(result.pluck(:id)).to eq([p6, p5, p7, p8].pluck(:id))
