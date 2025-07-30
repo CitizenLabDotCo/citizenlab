@@ -9,6 +9,8 @@ import useUsers from 'api/users/useUsers';
 
 import useLocalize from 'hooks/useLocalize';
 
+import projectFilterMessages from 'containers/Admin/projects/all/new/Projects/Filters/messages';
+
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
@@ -36,6 +38,7 @@ const Settings = () => {
     managers,
     folderIds,
     participationMethods,
+    sort,
   } = useNode((node) => ({
     publicationStatuses: node.data.props.publicationStatuses?.length
       ? node.data.props.publicationStatuses
@@ -48,6 +51,7 @@ const Settings = () => {
     managers: node.data.props.managers || [],
     folderIds: node.data.props.folderIds || [],
     participationMethods: node.data.props.participationMethods || [],
+    sort: node.data.props.sort || 'phase_starting_or_ending_soon',
   }));
 
   // Fetch managers and folders data
@@ -113,6 +117,12 @@ const Settings = () => {
     });
   };
 
+  const handleSortChange = ({ value }: IOption) => {
+    setProp((props: ProjectsTimelineCardProps) => {
+      props.sort = value;
+    });
+  };
+
   const publicationStatusOptions: IOption[] = [
     { value: 'published', label: formatMessage(messages.published) },
     { value: 'archived', label: formatMessage(messages.archived) },
@@ -124,16 +134,34 @@ const Settings = () => {
   ];
 
   const participationStateOptions: IOption[] = [
-    { value: 'not_started', label: formatMessage(messages.notStarted) },
-    { value: 'collecting_data', label: formatMessage(messages.collectingData) },
-    { value: 'informing', label: formatMessage(messages.informing) },
-    { value: 'past', label: formatMessage(messages.past) },
+    {
+      value: 'not_started',
+      label: formatMessage(projectFilterMessages.notStarted),
+    },
+    {
+      value: 'collecting_data',
+      label: formatMessage(projectFilterMessages.collectingData),
+    },
+    {
+      value: 'informing',
+      label: formatMessage(projectFilterMessages.informing),
+    },
+    { value: 'past', label: formatMessage(projectFilterMessages.past) },
   ];
 
   const visibilityOptions: IOption[] = [
-    { value: 'public', label: formatMessage(messages.public) },
-    { value: 'groups', label: formatMessage(messages.groups) },
-    { value: 'admins', label: formatMessage(messages.admins) },
+    {
+      value: 'public',
+      label: formatMessage(projectFilterMessages.visibilityPublic),
+    },
+    {
+      value: 'groups',
+      label: formatMessage(projectFilterMessages.visibilityGroups),
+    },
+    {
+      value: 'admins',
+      label: formatMessage(projectFilterMessages.visibilityAdmins),
+    },
   ];
 
   const discoverabilityOptions: IOption[] = [
@@ -142,16 +170,61 @@ const Settings = () => {
   ];
 
   const participationMethodOptions: IOption[] = [
-    { value: 'ideation', label: formatMessage(messages.ideation) },
-    { value: 'voting', label: formatMessage(messages.voting) },
-    { value: 'information', label: formatMessage(messages.information) },
-    { value: 'survey', label: formatMessage(messages.survey) },
-    { value: 'poll', label: formatMessage(messages.poll) },
+    {
+      value: 'ideation',
+      label: formatMessage(projectFilterMessages.participationMethodIdeation),
+    },
+    {
+      value: 'voting',
+      label: formatMessage(projectFilterMessages.participationMethodVoting),
+    },
+    {
+      value: 'information',
+      label: formatMessage(
+        projectFilterMessages.participationMethodInformation
+      ),
+    },
+    {
+      value: 'survey',
+      label: formatMessage(projectFilterMessages.participationMethodSurvey),
+    },
+    {
+      value: 'poll',
+      label: formatMessage(projectFilterMessages.participationMethodPoll),
+    },
     {
       value: 'document_annotation',
-      label: formatMessage(messages.documentAnnotation),
+      label: formatMessage(projectFilterMessages.pMDocumentAnnotation),
     },
-    { value: 'volunteering', label: formatMessage(messages.volunteering) },
+    {
+      value: 'volunteering',
+      label: formatMessage(
+        projectFilterMessages.participationMethodVolunteering
+      ),
+    },
+  ];
+
+  const sortOptions: IOption[] = [
+    {
+      value: 'phase_starting_or_ending_soon',
+      label: formatMessage(projectFilterMessages.phase_starting_or_ending_soon),
+    },
+    {
+      value: 'recently_viewed',
+      label: formatMessage(projectFilterMessages.recently_viewed),
+    },
+    {
+      value: 'recently_created',
+      label: formatMessage(projectFilterMessages.recently_created),
+    },
+    {
+      value: 'alphabetically_asc',
+      label: formatMessage(projectFilterMessages.alphabetically_asc),
+    },
+    {
+      value: 'alphabetically_desc',
+      label: formatMessage(projectFilterMessages.alphabetically_desc),
+    },
   ];
 
   // Prepare manager and folder options
@@ -210,7 +283,7 @@ const Settings = () => {
       {/* Participation States */}
       <Box mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
-          {formatMessage(messages.participationStates)}
+          {formatMessage(projectFilterMessages.participationStates)}
         </Text>
         <MultipleSelect
           value={participationStates}
@@ -222,7 +295,7 @@ const Settings = () => {
       {/* Participation Methods */}
       <Box mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
-          {formatMessage(messages.participationMethods)}
+          {formatMessage(projectFilterMessages.participationMethodLabel)}
         </Text>
         <MultipleSelect
           value={participationMethods}
@@ -234,7 +307,7 @@ const Settings = () => {
       {/* Visibility */}
       <Box mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
-          {formatMessage(messages.visibility)}
+          {formatMessage(projectFilterMessages.visibilityLabel)}
         </Text>
         <MultipleSelect
           value={visibility}
@@ -267,6 +340,18 @@ const Settings = () => {
       </Box>
 
       <DateRangeInput />
+
+      {/* Sort by */}
+      <Box mb="20px">
+        <Text variant="bodyM" color="textSecondary" mb="5px">
+          {formatMessage(messages.sort)}
+        </Text>
+        <Select
+          value={sort}
+          options={sortOptions}
+          onChange={handleSortChange}
+        />
+      </Box>
     </Box>
   );
 };

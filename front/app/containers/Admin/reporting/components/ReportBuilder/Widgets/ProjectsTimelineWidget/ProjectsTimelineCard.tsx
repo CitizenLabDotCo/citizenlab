@@ -32,6 +32,12 @@ export interface ProjectsTimelineCardProps {
   managers?: string[];
   folderIds?: string[];
   participationMethods?: ParticipationMethod[];
+  sort?:
+    | 'recently_viewed'
+    | 'phase_starting_or_ending_soon'
+    | 'recently_created'
+    | 'alphabetically_asc'
+    | 'alphabetically_desc';
 }
 
 const ProjectsTimelineCard = ({
@@ -45,6 +51,7 @@ const ProjectsTimelineCard = ({
   managers = [],
   folderIds = [],
   participationMethods = [],
+  sort = 'phase_starting_or_ending_soon',
 }: ProjectsTimelineCardProps) => {
   const { formatMessage } = useIntl();
   const { data, isLoading, isFetching } = useInfiniteProjectsMiniAdmin({
@@ -57,7 +64,7 @@ const ProjectsTimelineCard = ({
     participation_methods: participationMethods,
     min_start_date: startAt || undefined,
     max_start_date: endAt || undefined,
-    sort: 'phase_starting_or_ending_soon',
+    sort,
   });
 
   const allProjects = useMemo(
@@ -89,7 +96,6 @@ const ProjectsTimelineCard = ({
   for (const project of allProjects) {
     projectsById[project.id] = project;
 
-    // Use phase dates for better Gantt chart representation
     const startDate =
       project.attributes.first_phase_start_date ||
       project.attributes.first_published_at;
