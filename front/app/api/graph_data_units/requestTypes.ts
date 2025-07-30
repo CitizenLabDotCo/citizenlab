@@ -182,9 +182,16 @@ interface ProjectsParams extends BaseParams {
   props: ProjectsProps;
 }
 
+export interface ProjectsTimelineProps extends ProjectsProps {
+  participation_states?: string[];
+  visibility?: string[];
+  discoverability?: string[];
+  managers?: string[];
+}
+
 interface ProjectsTimelineParams extends BaseParams {
   resolved_name: 'ProjectsTimelineWidget';
-  props: ProjectsProps;
+  props: ProjectsTimelineProps;
 }
 
 export interface DeviceTypesProps extends DateProps, ProjectId {
