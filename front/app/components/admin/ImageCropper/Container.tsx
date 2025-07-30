@@ -42,19 +42,19 @@ const Container = ({
             {show3x1MobileCropLines && (
               <li>
                 <Text>
-                  <FormattedMessage {...messages.cropSentenceThree} />
+                  <FormattedMessage {...messages.cropSentenceMobileRatio} />
                 </Text>
               </li>
             )}
           </ul>
           {show3x1MobileCropLines && (
             <Text>
-              <FormattedMessage {...messages.cropSentenceFour} />
+              <FormattedMessage {...messages.cropSentenceMobileCrop} />
             </Text>
           )}
           <Text>
             <FormattedMessage
-              {...messages.cropSentenceFive}
+              {...messages.cropFinalSentence}
               values={{
                 link: (
                   <a

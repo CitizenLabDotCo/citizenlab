@@ -18,18 +18,18 @@ export default defineMessages({
     id: 'app.components.Admin.ImageCropper.cropSentenceTwo',
     defaultMessage: '{aspect} on desktop (full width shown)',
   },
-  cropSentenceThree: {
-    id: 'app.components.Admin.ImageCropper.cropSentenceThree',
+  cropSentenceMobileRatio: {
+    id: 'app.components.Admin.ImageCropper.cropSentenceMobileRatio',
     defaultMessage:
       '3:1 on mobile (only the area between the dotted lines is shown)',
   },
-  cropSentenceFour: {
-    id: 'app.components.Admin.ImageCropper.cropSentenceFour',
+  cropSentenceMobileCrop: {
+    id: 'app.components.Admin.ImageCropper.cropSentenceMobileCrop',
     defaultMessage:
       "Keep key content inside the dotted lines to ensure it's always visible.",
   },
-  cropSentenceFive: {
-    id: 'app.components.Admin.ImageCropper.cropSentenceFive',
+  cropFinalSentence: {
+    id: 'app.components.Admin.ImageCropper.cropFinalSentence',
     defaultMessage: 'See also: {link}.',
   },
 });
