@@ -34,6 +34,7 @@ import {
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
+import ConsentManager from 'components/ConsentManager';
 import ErrorBoundary from 'components/ErrorBoundary';
 
 import { trackPage } from 'utils/analytics';
@@ -54,11 +55,8 @@ import CommunityMonitorModal from './CommunityMonitorModal';
 import messages from './messages';
 import Meta from './Meta';
 import { ModalQueueProvider } from './ModalQueue';
+import UserSessionRecordingModalManager from './ModalQueue/modals/UserSessionRecording/Manager';
 
-const UserSessionRecordingModalManager = lazy(
-  () => import('./ModalQueue/modals/UserSessionRecording/Manager')
-);
-const ConsentManager = lazy(() => import('components/ConsentManager'));
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 
@@ -365,9 +363,7 @@ const App = ({ children }: Props) => {
               <div id="modal-portal" />
             </ErrorBoundary>
             <ErrorBoundary>
-              <Suspense fallback={null}>
-                <ConsentManager />
-              </Suspense>
+              <ConsentManager />
             </ErrorBoundary>
             {showFrontOfficeNavbar() && (
               <ErrorBoundary>
