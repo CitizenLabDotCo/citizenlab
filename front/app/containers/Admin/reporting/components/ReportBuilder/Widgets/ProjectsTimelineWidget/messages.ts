@@ -61,4 +61,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.sort',
     defaultMessage: 'Sort by',
   },
+  numberOfProjects: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.numberOfProjects',
+    defaultMessage: 'Number of projects',
+  },
 });
