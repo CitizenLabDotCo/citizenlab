@@ -43,7 +43,7 @@ namespace :single_use do
 
           uploader.cache_stored_file!
           uploader.retrieve_from_cache!(uploader.cache_name)
-          uploader.recreate_versions!
+          uploader.store!(uploader.file)
 
           puts '  Recreated all versions and re-processed original.'
 
@@ -74,11 +74,8 @@ namespace :single_use do
         )
       end
 
-      # Clear cache every 10 images
-      if (total_reprocessed % 10).zero? && total_reprocessed > 0
-        CarrierWave.clean_cached_files!
-        puts "  [Batch Complete] Cleared CarrierWave cache after #{total_reprocessed} images."
-      end
+      CarrierWave.clean_cached_files!
+      puts "  [Batch Complete] Cleared CarrierWave cache after #{total_reprocessed} images."
 
       puts "\n--- Reprocessing Complete ---"
       puts "Successfully reprocessed images: #{total_reprocessed}"
