@@ -424,7 +424,7 @@ describe ProjectsFinderAdminService do
 
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
-      let!(:user) { create(:user) }
+      let!(:user) { create(:admin) }
       let!(:p1) do
         project = create_project(start_at: Time.zone.today - 40.days, end_at: Time.zone.today - 5.days)
         create_session(project, Time.zone.today - 20.days)
