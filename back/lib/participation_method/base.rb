@@ -132,6 +132,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_vote_term?
+      false
+    end
+
     def supports_inputs_without_author?
       true
     end

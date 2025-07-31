@@ -3,15 +3,16 @@ import React from 'react';
 import {
   Input,
   Box,
-  Error,
   IconTooltip,
+  Select,
 } from '@citizenlab/cl2-component-library';
-import { Multiloc, CLErrors } from 'typings';
+import { CLErrors, IOption } from 'typings';
+
+import { VoteTerm } from 'api/phases/types';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import { VotingAmountInputError } from '../../../shared/styling';
 import messages from '../messages';
@@ -22,30 +23,39 @@ interface Props {
   apiErrors: CLErrors | null | undefined;
   maxTotalVotesError?: string;
   maxVotesPerOptionError?: string;
-  voteTermError?: string;
-  voting_term_plural_multiloc?: Multiloc | null;
-  voting_term_singular_multiloc?: Multiloc | null;
   handleMaxVotingAmountChange: (newMaxTotalVote: string | null) => void;
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
-  handleVoteTermPluralChange: (termMultiloc: Multiloc) => void;
-  handleVoteTermSingularChange: (termMultiloc: Multiloc) => void;
+  handleVoteTermChange: (option: IOption) => void;
+  voteTerm?: VoteTerm;
 }
 
 const MultipleVotingInputs = ({
   voting_max_total,
   voting_max_votes_per_idea,
-  voting_term_plural_multiloc,
-  voting_term_singular_multiloc,
   handleMaxVotingAmountChange,
   handleMaxVotesPerOptionAmountChange,
-  handleVoteTermPluralChange,
-  handleVoteTermSingularChange,
   apiErrors,
   maxTotalVotesError,
   maxVotesPerOptionError,
-  voteTermError,
+  handleVoteTermChange,
+  voteTerm,
 }: Props) => {
   const { formatMessage } = useIntl();
+
+  const getVoteTermOptions = (): IOption[] => {
+    const voteTerms: VoteTerm[] = ['vote', 'point', 'token', 'credit'];
+    const voteTermLabels: Record<VoteTerm, MessageDescriptor> = {
+      vote: messages.voteTerm,
+      point: messages.pointTerm,
+      token: messages.tokenTerm,
+      credit: messages.creditTerm,
+    };
+
+    return voteTerms.map((voteTerm) => ({
+      value: voteTerm,
+      label: formatMessage(voteTermLabels[voteTerm]),
+    }));
+  };
 
   return (
     <>
@@ -57,31 +67,12 @@ const MultipleVotingInputs = ({
           />
         </SubSectionTitle>
         <Box maxWidth="300px">
-          <Box mb="24px">
-            <InputMultilocWithLocaleSwitcher
-              label={'Singular'}
-              type={'text'}
-              valueMultiloc={voting_term_singular_multiloc}
-              placeholder={formatMessage(
-                messages.voteCalledPlaceholderSingular
-              )}
-              onChange={handleVoteTermSingularChange}
-            />
-          </Box>
-
-          <InputMultilocWithLocaleSwitcher
-            label={'Plural'}
-            type={'text'}
-            valueMultiloc={voting_term_plural_multiloc}
-            placeholder={formatMessage(messages.voteCalledPlaceholderPlural)}
-            onChange={handleVoteTermPluralChange}
+          <Select
+            value={voteTerm}
+            options={getVoteTermOptions()}
+            onChange={handleVoteTermChange}
           />
         </Box>
-        {voteTermError && (
-          <Box mt="4px" maxWidth="400px">
-            <Error text={voteTermError} />
-          </Box>
-        )}
       </SectionField>
 
       <SectionField>
