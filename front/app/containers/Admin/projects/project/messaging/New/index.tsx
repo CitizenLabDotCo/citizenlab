@@ -21,7 +21,7 @@ const New = () => {
   const { isLoading, mutateAsync: createCampaign } = useAddCampaign();
   const handleSubmit = async (values: FormValues) => {
     const response = await createCampaign({
-      projectId,
+      context: { projectId },
       campaign_name: 'manual_project_participants',
       ...values,
     });

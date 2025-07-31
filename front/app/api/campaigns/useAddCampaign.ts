@@ -7,13 +7,9 @@ import campaignsKeys from './keys';
 import { ICampaign, CampaignAdd } from './types';
 import { getCampaignsContextPath } from './util';
 
-const addCampaign = async ({
-  projectId,
-  phaseId,
-  ...requestBody
-}: CampaignAdd) => {
+const addCampaign = async ({ context, ...requestBody }: CampaignAdd) => {
   return fetcher<ICampaign>({
-    path: `/${getCampaignsContextPath({ projectId, phaseId })}`,
+    path: `/${getCampaignsContextPath(context)}`,
     action: 'post',
     body: { campaign: requestBody },
   });
