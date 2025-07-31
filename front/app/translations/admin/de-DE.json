@@ -2308,6 +2308,7 @@
   "app.containers.AdminPage.ProjectFiles.filePreviewLabel2": "Vorschau",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Diese Datei kann nicht hochgeladen werden, da sie die maximale Größe von 50 MB überschreitet.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Alle Dateien erfolgreich hochgeladen",
+  "app.containers.AdminPage.ProjectFiles.generatingPreview": "Vorschau wird generiert...",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Informationen",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Description": "z.B. WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Title": "Audio-Interviews, Meeting-Aufnahmen",
