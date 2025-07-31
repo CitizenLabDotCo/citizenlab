@@ -7,7 +7,7 @@ class ApplicationPolicy
   EXCLUDED_POLICY_MODEL_NAME_PATTERNS = [
     # Pattern for Shoulda::Matchers temporary models (like 'Projecu')
     /^Shoulda::Matchers::ActiveRecord::Uniqueness::TestModels::/,
-    /^AnonymousClass/, # Catches common forms of anonymous classes if their name method behaves this way
+    /^AnonymousClass/ # Catches common forms of anonymous classes if their name method behaves this way
   ].freeze
 
   module Helpers
@@ -30,7 +30,7 @@ class ApplicationPolicy
         # 2. Check against our EXCLUDED_POLICY_MODEL_NAME_PATTERNS.
         # This catches "Projecu" and similar temporary models.
         if EXCLUDED_POLICY_MODEL_NAME_PATTERNS.any? { |pattern| target_scope_or_klass.name.match?(pattern) }
-          Rails.logger.debug "DEBUG: ApplicationPolicy::Helpers#scope_for: Skipping excluded temporary model by pattern: #{target_scope_or_klass.name.inspect}"
+          Rails.logger.debug { "DEBUG: ApplicationPolicy::Helpers#scope_for: Skipping excluded temporary model by pattern: #{target_scope_or_klass.name.inspect}" }
           return target_scope_or_klass.none # Return an empty ActiveRecord::Relation
         end
 
@@ -38,7 +38,7 @@ class ApplicationPolicy
       # (e.g., it's already an ActiveRecord::Relation instance, which is fine)
       # Or if it's a Class but not an ActiveRecord descendant (e.g., a simple Ruby class that doesn't need policy scoping)
       elsif target_scope_or_klass.is_a?(Class) && target_scope_or_klass.name.blank?
-        Rails.logger.debug "DEBUG: ApplicationPolicy::Helpers#scope_for: Skipping anonymous/blank-named class: #{target_scope_or_klass.inspect}"
+        Rails.logger.debug { "DEBUG: ApplicationPolicy::Helpers#scope_for: Skipping anonymous/blank-named class: #{target_scope_or_klass.inspect}" }
         return [] # Return an empty array for anonymous classes
       end
 
