@@ -31,11 +31,20 @@ class WebApi::V1::FoldersController < ApplicationController
 
   def index_for_admin
     project_folders = policy_scope(ProjectFolders::Folder)
-    project_folders = FoldersFinderAdminService.execute(project_folders, params)
-    project_folders = paginate project_folders
-    project_folders = project_folders.includes(:admin_publication)
 
     authorize project_folders
+
+    # The authorize statement above ensures that we only allow
+    # admins or folder managers.
+    # If the current user is not an admin, but only a folder manager,
+    # we filter the folders to only those that the user moderates.
+    if !current_user.admin?
+      params[:managers] = [current_user.id]
+    end
+
+    project_folders = FoldersFinderAdminService.execute(project_folders, params)
+    project_folders = paginate project_folders
+    project_folders = project_folders.includes(:admin_publication, :images)
 
     moderators_per_folder = User
       .where("roles @> '[{\"type\":\"project_folder_moderator\"}]'")
@@ -58,7 +67,7 @@ class WebApi::V1::FoldersController < ApplicationController
         visible_children_count_by_parent_id: visible_children_count_by_parent_id,
         moderators_per_folder: moderators_per_folder
       ),
-      include: [:moderators]
+      include: %i[moderators images]
     )
   end
 

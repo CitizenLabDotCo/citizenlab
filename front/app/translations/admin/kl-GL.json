@@ -11,7 +11,6 @@
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Qupperneq Hjem brugerdefiner-itut immikkoortinneqarpoq",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Suliassaq pilersiguk",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Suliniut pilersiguk najoqqutassaq '{templateTitle}' atorlugu",
   "app.components.ProjectTemplatePreview.goBack": "Go back",
   "app.components.ProjectTemplatePreview.goBackTo": "Uunga {goBackLink} uterit.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Peqataanermut suliami una immersugassaq atussaviuk?",

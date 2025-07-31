@@ -18,7 +18,7 @@ import {
 } from 'api/custom_fields/types';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import Error from 'components/UI/Error';
+import ErrorComponent from 'components/UI/Error';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isRuleValid } from 'utils/yup/validateLogic';
@@ -235,7 +235,7 @@ export const QuestionRuleInput = ({
               )}
               {validationError && ruleIsInvalid && (
                 <Box mb="12px" data-cy="e2e-rule-input-error">
-                  <Error
+                  <ErrorComponent
                     marginTop="8px"
                     marginBottom="8px"
                     text={validationError}

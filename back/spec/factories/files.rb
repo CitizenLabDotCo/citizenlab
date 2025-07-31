@@ -10,5 +10,41 @@ FactoryBot.define do
     rescue Errno::ENOENT
       Rails.root.join('spec/fixtures/minimal_pdf.pdf').open
     end
+
+    trait :meeting do
+      category { 'meeting' }
+    end
+
+    trait :interview do
+      category { 'interview' }
+    end
+
+    trait :strategic_plan do
+      category { 'strategic_plan' }
+    end
+
+    trait :info_sheet do
+      category { 'info_sheet' }
+    end
+
+    trait :policy do
+      category { 'policy' }
+    end
+
+    trait :report do
+      category { 'report' }
+    end
+
+    trait :other do
+      category { 'other' }
+    end
+
+    trait :with_description do
+      description_multiloc do
+        AppConfiguration.instance.settings('core', 'locales').index_with do |locale|
+          "Description in #{locale}"
+        end
+      end
+    end
   end
 end

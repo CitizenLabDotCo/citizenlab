@@ -1,7 +1,5 @@
 import React, { FormEvent } from 'react';
 
-import { Title } from '@citizenlab/cl2-component-library';
-
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -10,19 +8,14 @@ import { TCategory } from '../destinations';
 import messages from '../messages';
 import { CategorizedDestinations, IPreferences } from '../typings';
 
-import ContentContainer from './ContentContainer';
 import Footer from './Footer';
 import Preferences from './Preferences';
 
 interface Props {
   opened: boolean;
-  mode: 'preferenceForm' | 'noDestinations' | 'cancelling';
-  isCancelling: boolean;
   categorizedDestinations: CategorizedDestinations;
   preferences: IPreferences;
   onClose: () => void;
-  handleCancelBack: () => void;
-  handleCancelConfirm: () => void;
   handleCancel: () => void;
   handleSave: (e: FormEvent) => void;
   updatePreference: (category: TCategory, value: boolean) => void;
@@ -30,14 +23,10 @@ interface Props {
 
 const PreferencesModal = ({
   opened,
-  mode,
-  isCancelling,
   categorizedDestinations,
   preferences,
   onClose,
-  handleCancelBack,
   handleCancel,
-  handleCancelConfirm,
   handleSave,
   updatePreference,
 }: Props) => {
@@ -48,34 +37,17 @@ const PreferencesModal = ({
       header={<FormattedMessage {...messages.title} />}
       footer={
         <Footer
-          mode={mode}
-          handleCancelBack={handleCancelBack}
-          handleCancelConfirm={handleCancelConfirm}
+          categorizedDestinations={categorizedDestinations}
           handleCancel={handleCancel}
           handleSave={handleSave}
         />
       }
     >
-      {!isCancelling ? (
-        <Preferences
-          onChange={updatePreference}
-          categoryDestinations={categorizedDestinations}
-          preferences={preferences}
-        />
-      ) : (
-        <ContentContainer
-          role="dialog"
-          aria-modal
-          // aria-labelledby helps screen readers find
-          // the title of the dialog
-          // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/dialog_role
-          aria-labelledby="consent-manager-preferences-title"
-        >
-          <Title variant="h5" as="h1" id="consent-manager-preferences-title">
-            <FormattedMessage {...messages.confirmation} />
-          </Title>
-        </ContentContainer>
-      )}
+      <Preferences
+        onChange={updatePreference}
+        categoryDestinations={categorizedDestinations}
+        preferences={preferences}
+      />
     </Modal>
   );
 };
