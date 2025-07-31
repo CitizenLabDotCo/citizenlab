@@ -4,18 +4,20 @@ import { colors } from '@citizenlab/cl2-component-library';
 
 import SearchInput from 'components/UI/SearchInput';
 
+import { useParam, setParam } from '../../params';
+
 interface Props {
-  value?: string;
   placeholder: string;
-  onChange: (value: string | undefined) => void;
 }
 
-const Search = ({ value, placeholder, onChange }: Props) => {
+const Search = ({ placeholder }: Props) => {
+  const searchValue = useParam('search');
+
   return (
     <SearchInput
-      defaultValue={value}
+      defaultValue={searchValue}
       onChange={(search) => {
-        onChange(search ?? undefined);
+        setParam('search', search ?? undefined);
       }}
       a11y_numberOfSearchResults={0}
       placeholder={placeholder}

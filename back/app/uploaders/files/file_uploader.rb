@@ -2,6 +2,12 @@
 
 module Files
   class FileUploader < BaseFileUploader
+    after :store, :generate_preview
+
+    def generate_preview(_file)
+      Files::PreviewService.new.enqueue_preview(model)
+    end
+
     def extension_allowlist
       # All file types are allowed.
     end

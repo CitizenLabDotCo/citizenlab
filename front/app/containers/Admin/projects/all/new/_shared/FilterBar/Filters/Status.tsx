@@ -6,8 +6,10 @@ import FilterSelector from 'components/FilterSelector';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { PUBLICATION_STATUS_LABELS } from '../constants';
-import messages from '../Projects/Filters/messages';
+import { PUBLICATION_STATUS_LABELS } from '../../constants';
+import { useParam, setParam } from '../../params';
+
+import messages from './messages';
 
 type Option = {
   value: PublicationStatus;
@@ -21,13 +23,12 @@ const OPTIONS = [
 ] as const;
 
 interface Props {
-  values: PublicationStatus[];
   mr?: string;
-  onChange: (value: PublicationStatus[]) => void;
 }
 
-const Status = ({ values, mr, onChange }: Props) => {
+const Status = ({ mr }: Props) => {
   const { formatMessage } = useIntl();
+  const statuses = useParam('status') ?? [];
 
   const options: Option[] = OPTIONS.map((option) => ({
     value: option.value,
@@ -37,10 +38,12 @@ const Status = ({ values, mr, onChange }: Props) => {
   return (
     <FilterSelector
       multipleSelectionAllowed
-      selected={values}
+      selected={statuses}
       values={options}
       mr={mr}
-      onChange={onChange}
+      onChange={(statuses) => {
+        setParam('status', statuses as PublicationStatus[]);
+      }}
       title={formatMessage(messages.status)}
       name="manager-select"
     />
