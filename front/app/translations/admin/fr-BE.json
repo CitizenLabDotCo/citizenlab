@@ -2293,6 +2293,7 @@
   "app.containers.AdminPage.ProjectFiles.filePreviewLabel2": "Aperçu",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Ce fichier dépasse la taille maximale de 50 Mo.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Tous les fichiers ont été téléversés avec succès",
+  "app.containers.AdminPage.ProjectFiles.generatingPreview": "Générer un aperçu...",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Information",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Description": "Ex. WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Title": "Entretiens audio, enregistrements de conseils municipaux",
