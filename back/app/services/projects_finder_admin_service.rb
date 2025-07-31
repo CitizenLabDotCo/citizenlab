@@ -5,6 +5,7 @@ class ProjectsFinderAdminService
   def self.execute(scope, params = {}, current_user: nil)
     # Apply filters
     projects = filter_status(scope, params)
+    projects = filter_review_state(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
@@ -105,6 +106,20 @@ class ProjectsFinderAdminService
     scope
       .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
       .where(admin_publications: { publication_status: status })
+  end
+
+  def self.filter_review_state(scope, params = {})
+    review_state = params[:review_state]
+    return scope if review_state.blank?
+
+    case review_state
+    when 'approved'
+      scope.joins(:review).where.not(project_reviews: { approved_at: nil })
+    when 'pending'
+      scope.joins(:review).where(project_reviews: { approved_at: nil })
+    else
+      scope
+    end
   end
 
   def self.filter_by_folder_ids(scope, params = {})
