@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Discoverability } from 'api/projects_mini_admin/types';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -24,25 +24,28 @@ const OPTIONS: {
   },
 ];
 
-const DiscoverabilityFilter = () => {
+interface Props {
+  onClear: () => void;
+}
+
+const DiscoverabilityFilter = ({ onClear }: Props) => {
   const value = useParam('discoverability') ?? [];
   const { formatMessage } = useIntl();
 
   const options = OPTIONS.map((option) => ({
-    text: formatMessage(option.message),
+    label: formatMessage(option.message),
     value: option.value,
   }));
 
   return (
-    <FilterSelector
+    <MultiSelect
       title={formatMessage(messages.discoverabilityLabel)}
-      name="discoverability-filter"
-      values={options}
+      options={options}
       selected={value}
       onChange={(discoverability) => {
         setParam('discoverability', discoverability as Discoverability[]);
       }}
-      multipleSelectionAllowed
+      onClear={onClear}
     />
   );
 };

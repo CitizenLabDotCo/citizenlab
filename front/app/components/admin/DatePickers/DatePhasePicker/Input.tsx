@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { Icon, Box } from '@citizenlab/cl2-component-library';
+import { Icon, Box, InputContainer } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
-import InputContainer from '../_shared/InputContainer';
 import sharedMessages from '../_shared/messages';
 import { DateRange } from '../_shared/typings';
 
@@ -21,7 +20,7 @@ const Input = ({ selectedRange, selectedRangeIsOpenEnded, onClick }: Props) => {
   const selectDate = formatMessage(sharedMessages.selectDate);
 
   return (
-    <InputContainer onClick={onClick}>
+    <InputContainer className="e2e-date-phase-picker-input" onClick={onClick}>
       <Box mr="8px">
         {selectedRange.from
           ? selectedRange.from.toLocaleDateString()
@@ -35,6 +34,7 @@ const Input = ({ selectedRange, selectedRangeIsOpenEnded, onClick }: Props) => {
           ? selectedRange.to.toLocaleDateString()
           : selectDate}
       </Box>
+      <Icon name="calendar" height="18px" />
     </InputContainer>
   );
 };
