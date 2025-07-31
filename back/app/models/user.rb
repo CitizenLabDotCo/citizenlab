@@ -35,6 +35,7 @@
 #  onboarding                          :jsonb            not null
 #  unique_code                         :string
 #  last_active_at                      :datetime
+#  force_password_change               :boolean          default(FALSE), not null
 #
 # Indexes
 #
