@@ -20,7 +20,11 @@ class ApplicationPolicy
     end
 
     def scope_for(target_scope_or_klass)
-      (filtered_scope = handle_excluded_models(target_scope_or_klass)) and return filtered_scope if Rails.env.test?
+      if Rails.env.test?
+         filtered_scope = handle_excluded_models(target_scope_or_klass)
+
+         return filtered_scope if filtered_scope
+      end
 
       Pundit.policy_scope!(user_context, target_scope_or_klass)
     end
