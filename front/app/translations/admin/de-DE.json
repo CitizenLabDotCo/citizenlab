@@ -1421,7 +1421,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.projectsTimeline": "Zeitleiste der Projekte",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.publicationStatus": "Veröffentlichungsstatus",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.published": "Veröffentlicht",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.showTodayLine": "Linie heute anzeigen",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.showTodayLine": "Heute-Linie anzeigen",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.sort": "Sortieren nach",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.unlisted": "Ungelistet",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.yes": "Ja",
