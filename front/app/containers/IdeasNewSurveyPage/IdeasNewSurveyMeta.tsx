@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
 
+import { IProject } from 'api/projects/types';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import { useIntl } from 'utils/cl-intl';
@@ -12,9 +14,10 @@ import messages from './messages';
 
 interface Props {
   surveyTitle: string;
+  project: IProject;
 }
 
-const IdeasNewSurveyMeta = ({ surveyTitle }: Props) => {
+const IdeasNewSurveyMeta = ({ project, surveyTitle }: Props) => {
   const { formatMessage } = useIntl();
   const locales = useAppConfigurationLocales();
   const { location } = window;
@@ -30,6 +33,9 @@ const IdeasNewSurveyMeta = ({ surveyTitle }: Props) => {
       <meta name="title" content={title} />
       <meta property="og:title" content={title} />
       <meta property="og:url" content={location.href} />
+      {project.data.attributes.listed && (
+        <meta name="robots" content="noindex" />
+      )}
     </Helmet>
   );
 };

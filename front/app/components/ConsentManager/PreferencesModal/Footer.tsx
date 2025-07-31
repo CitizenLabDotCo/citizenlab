@@ -9,6 +9,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
+import { CategorizedDestinations } from '../typings';
 
 const ButtonContainer = ({ children }: { children: React.ReactNode }) => (
   <Box
@@ -26,40 +27,24 @@ const CancelButton = styled(ButtonWithLink)`
 `;
 
 interface Props {
-  handleCancelBack: () => void;
-  handleCancelConfirm: () => void;
   handleCancel: () => void;
   handleSave: (e: FormEvent<any>) => void;
-  mode: 'preferenceForm' | 'noDestinations' | 'cancelling';
+  categorizedDestinations: CategorizedDestinations;
 }
 
+type FormMode = 'preferenceForm' | 'noDestinations';
+
 const Footer = ({
-  mode,
-  handleCancelBack,
-  handleCancelConfirm,
   handleCancel,
   handleSave,
+  categorizedDestinations,
 }: Props) => {
-  return mode === 'cancelling' ? (
-    <ButtonContainer>
-      <CancelButton
-        onClick={handleCancelBack}
-        buttonStyle="primary-inverse"
-        textColor={colors.primary}
-        textHoverColor={colors.primary}
-      >
-        <FormattedMessage {...messages.back} />
-      </CancelButton>
-      <ButtonWithLink
-        onClick={handleCancelConfirm}
-        buttonStyle="primary"
-        bgColor={colors.primary}
-        bgHoverColor={darken(0.1, colors.primary)}
-      >
-        <FormattedMessage {...messages.confirm} />
-      </ButtonWithLink>
-    </ButtonContainer>
-  ) : mode === 'preferenceForm' ? (
+  const noDestinations = Object.values(categorizedDestinations).every(
+    (array) => array.length === 0
+  );
+  const mode: FormMode = noDestinations ? 'noDestinations' : 'preferenceForm';
+
+  return mode === 'preferenceForm' ? (
     <ButtonContainer>
       <CancelButton
         onClick={handleCancel}

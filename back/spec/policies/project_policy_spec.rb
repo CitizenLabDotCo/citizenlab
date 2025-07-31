@@ -475,4 +475,121 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:copy)   }
     end
   end
+
+  context 'on a public but unlisted timeline project' do
+    let!(:project) { create(:single_phase_ideation_project, listed: false) }
+    let(:context) { { remove_unlisted: 'remove_unlisted_that_user_cannot_moderate' } }
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it { is_expected.to     permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:copy)                  }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+
+      it 'should not index the project' do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a resident' do
+      let(:user) { create(:user) }
+
+      it { is_expected.to     permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:copy)                  }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+
+      it 'should not index the project' do
+        expect(scope.resolve.size).to eq 0
+      end
+
+      it 'should include the user in the users that have access' do
+        expect(inverse_scope.resolve).to include(user)
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it { is_expected.to permit(:show)                  }
+      it { is_expected.to permit(:create)                }
+      it { is_expected.to permit(:copy)                  }
+      it { is_expected.to permit(:update)                }
+      it { is_expected.to permit(:reorder)               }
+      it { is_expected.to permit(:refresh_preview_token) }
+      it { is_expected.to permit(:destroy)               }
+      it { is_expected.to permit(:index_xlsx)            }
+      it { is_expected.to permit(:votes_by_user_xlsx)    }
+      it { is_expected.to permit(:votes_by_input_xlsx)   }
+
+      it 'should index the project' do
+        expect(scope.resolve.size).to eq 1
+      end
+
+      it 'should include the user in the users that have access' do
+        expect(inverse_scope.resolve).to include(user)
+      end
+    end
+
+    context 'for a moderator of the project' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to permit(:show)                  }
+      it { is_expected.not_to permit(:create)            }
+      it { is_expected.to permit(:copy)                  }
+      it { is_expected.to permit(:update)                }
+      it { is_expected.to permit(:reorder)               }
+      it { is_expected.to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)           }
+      it { is_expected.to permit(:index_xlsx)            }
+      it { is_expected.to permit(:votes_by_user_xlsx)    }
+      it { is_expected.to permit(:votes_by_input_xlsx)   }
+
+      it 'indexes the project' do
+        expect(scope.resolve.size).to eq 1
+      end
+
+      it 'includes the user in the users that have access' do
+        expect(inverse_scope.resolve).to include(user)
+      end
+    end
+
+    context 'for a moderator of another project' do
+      let(:user) { create(:project_moderator, projects: [create(:project)]) }
+
+      it { is_expected.to permit(:show)                      }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:copy)                  }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+
+      it 'should not index the project' do
+        expect(scope.resolve.size).to eq 1
+        expect(scope.resolve).not_to include(project)
+      end
+
+      it 'should include the user in the users that have access' do
+        expect(inverse_scope.resolve).to include(user)
+      end
+    end
+  end
 end

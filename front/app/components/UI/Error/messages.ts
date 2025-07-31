@@ -144,6 +144,11 @@ export default defineMessages({
     defaultMessage:
       'The format of the file you tried to upload is not supported.',
   },
+  extension_whitelist_error: {
+    id: 'app.errors.extension_whitelist_error',
+    defaultMessage:
+      'The format of the file you tried to upload is not supported.',
+  },
   cant_change_after_first_response: {
     id: 'app.errors.cant_change_after_first_response',
     defaultMessage:

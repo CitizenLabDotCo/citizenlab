@@ -23,18 +23,19 @@ module BulkImportIdeas::Patches::Idea
         # TODO: What if there is another idea with the same user id - update the next idea import with user created true? So there is always one?
 
         # Create an anonymous author if no author supplied
-        new_author_created = false
-        if author.nil?
-          new_author = User.new(unique_code: SecureRandom.uuid, locale: idea_import.locale)
-          new_author.save!
-          self.author = new_author
-          new_author_created = true
-        end
+        # TODO: Can we remove this? Don't know why it was needed
+        # new_author_created = false
+        # if author.nil?
+        #   new_author = User.new(unique_code: SecureRandom.uuid, locale: idea_import.locale)
+        #   new_author.save!
+        #   self.author = new_author
+        #   new_author_created = true
+        # end
 
         idea_import.update!(
           approved_at: Time.now,
-          user_created: new_author_created || idea_import&.user_created,
-          user_consent: !new_author_created,
+          # user_created: new_author_created || idea_import&.user_created,
+          # user_consent: !new_author_created,
           content_changes: changes.except('publication_status', 'published_at', 'submitted_at', 'updated_at')
         )
       end

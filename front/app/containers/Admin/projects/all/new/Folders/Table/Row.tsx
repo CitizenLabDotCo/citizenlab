@@ -10,21 +10,27 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
 import { MiniProjectFolder } from 'api/project_folders_mini/types';
+import { IUser } from 'api/users/types';
+import useUsersWithIds from 'api/users/useUsersWithIds';
 
 import useLocalize from 'hooks/useLocalize';
 
 import FolderMoreActionsMenu from 'containers/Admin/projects/projectFolders/components/ProjectFolderRow/FolderMoreActionsMenu';
 
 import Error from 'components/UI/Error';
+import GanttItemIconBar from 'components/UI/GanttChart/components/GanttItemIconBar';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import { PUBLICATION_STATUS_LABELS } from '../../constants';
+import { PUBLICATION_STATUS_LABELS } from '../../_shared/constants';
+import ManagerBubbles from '../../_shared/ManagerBubbles';
+import RowImage from '../../_shared/RowImage';
+import { getStatusColor } from '../../_shared/utils';
 
 import messages from './messages';
-import User from './User';
 
 const StyledTd = styled(Td)`
   &:hover {
@@ -45,7 +51,19 @@ const Row = ({ folder }: Props) => {
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const moderators = folder.relationships.moderators.data;
+  const { data: folderImage } = useProjectFolderImage({
+    folderId: folder.id,
+    imageId: folder.relationships.images.data[0]?.id,
+  });
+
+  const moderatorIds = folder.relationships.moderators.data.map(
+    (user) => user.id
+  );
+  const moderatorsData = useUsersWithIds(moderatorIds);
+  const moderators = moderatorsData
+    .map((result) => result.data)
+    .filter((user): user is IUser => !!user);
+
   const { publication_status } = folder.attributes;
 
   return (
@@ -57,11 +75,15 @@ const Row = ({ folder }: Props) => {
         }}
       >
         <Box display="flex" alignItems="center">
-          <Box>
+          <RowImage
+            imageUrl={folderImage?.data.attributes.versions.small ?? undefined}
+            alt={localize(folder.attributes.title_multiloc)}
+          />
+          <Box ml="8px">
             <Text
               m="0"
               fontSize="s"
-              color="primary"
+              color="black"
               className="project-table-row-title"
             >
               {localize(folder.attributes.title_multiloc)}
@@ -85,28 +107,32 @@ const Row = ({ folder }: Props) => {
         )}
       </StyledTd>
       <Td background={colors.grey50} width="260px">
-        <Text m="0" fontSize="s" color="primary">
-          {moderators.map((moderator, index) => (
-            <>
-              <User userId={moderator.id} key={moderator.id} />
-              {index < moderators.length - 1 && (
-                <Box as="span" mr="0.25rem">
-                  ,
-                </Box>
-              )}
-            </>
-          ))}
-        </Text>
+        <ManagerBubbles
+          managers={moderators.map(({ data: { attributes } }) => ({
+            first_name: attributes.first_name ?? undefined,
+            last_name: attributes.last_name ?? undefined,
+            avatar: attributes.avatar,
+          }))}
+        />
       </Td>
       <Td background={colors.grey50} width="100px">
-        <Text m="0" fontSize="s" color="primary">
-          {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
-        </Text>
+        <Box display="flex">
+          <GanttItemIconBar
+            color={getStatusColor(publication_status)}
+            rowHeight={32}
+            ml="0"
+            mr="8px"
+          />
+          <Text m="0" fontSize="s" color="black">
+            {formatMessage(PUBLICATION_STATUS_LABELS[publication_status])}
+          </Text>
+        </Box>
       </Td>
       <Td background={colors.grey50} width="40px">
         <Box mr="12px">
           <FolderMoreActionsMenu
             folderId={folder.id}
+            color={colors.black}
             setError={setError}
             setIsRunningAction={setIsBeingDeleted}
           />

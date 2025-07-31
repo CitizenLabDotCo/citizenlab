@@ -1,4 +1,7 @@
+import { MessageDescriptor } from 'react-intl';
+
 import { IPhaseData } from 'api/phases/types';
+import { getPhaseVoteTermMessage } from 'api/phases/utils';
 
 import { isPhaseActive } from 'utils/projectUtils';
 
@@ -15,8 +18,8 @@ export const getMinusButtonDisabledMessage = (
 
   if (basketSubmitted) {
     return onIdeaPage
-      ? messages.votesSubmittedIdeaPage
-      : messages.votesSubmitted;
+      ? messages.votesSubmittedIdeaPage1
+      : messages.votesSubmitted1;
   }
   return undefined;
 };
@@ -27,17 +30,32 @@ export const getPlusButtonDisabledMessage = (
   maxVotesPerIdeaReached: boolean,
   phase: IPhaseData,
   onIdeaPage?: boolean
-) => {
+): MessageDescriptor | null => {
   if (!isPhaseActive(phase)) {
     return messages.phaseNotActive;
   }
 
   if (basketSubmitted) {
     return onIdeaPage
-      ? messages.votesSubmittedIdeaPage
-      : messages.votesSubmitted;
+      ? messages.votesSubmittedIdeaPage1
+      : messages.votesSubmitted1;
   }
-  if (!userHasVotesLeft) return messages.maxVotesReached;
-  if (maxVotesPerIdeaReached) return messages.maxVotesPerIdeaReached;
-  return undefined;
+
+  if (!userHasVotesLeft) {
+    return getPhaseVoteTermMessage(phase, {
+      vote: messages.maxVotesInTotalReached,
+      point: messages.maxPointsInTotalReached,
+      token: messages.maxTokensInTotalReached,
+      credit: messages.maxCreditsInTotalReached,
+    });
+  }
+  if (maxVotesPerIdeaReached) {
+    return getPhaseVoteTermMessage(phase, {
+      vote: messages.maxVotesPerInputReached,
+      point: messages.maxPointsPerInputReached,
+      token: messages.maxTokensPerInputReached,
+      credit: messages.maxCreditsPerInputReached,
+    });
+  }
+  return null;
 };

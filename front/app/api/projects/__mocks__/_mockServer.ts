@@ -36,6 +36,7 @@ export const project1: IProjectData = {
         'https://demo.stg.govocal.com/uploads/c7e20cb9-f253-4c0c-aea1-e6e3c23c04c7/project/header_bg/be3f645b-3e1d-4afc-b91b-d68c4dc0100b/large_header_bg.jpeg',
     },
     header_bg_alt_text_multiloc: {},
+    listed: true,
     action_descriptors: {
       posting_idea: {
         enabled: true,
@@ -180,6 +181,7 @@ export const project2: IProjectData = {
       large: null,
     },
     header_bg_alt_text_multiloc: {},
+    listed: true,
     action_descriptors: {
       posting_idea: {
         enabled: true,
@@ -327,6 +329,7 @@ const votingProject: IProject = {
         large: null,
       },
       header_bg_alt_text_multiloc: {},
+      listed: true,
       action_descriptors: {
         posting_idea: {
           enabled: false,

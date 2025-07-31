@@ -46,7 +46,7 @@ resource 'EventImage' do
         parameter :alt_text_multiloc, 'The alt text in multiple locales', required: false
       end
       ValidationErrorHelper.new.error_fields(self, IdeaImage)
-      let(:image) { png_image_as_base64 'image13.png' }
+      let(:image) { png_image_as_base64 'image13.jpg' }
       let(:ordering) { 1 }
       let(:alt_text_multiloc) { { 'en' => 'A cute puppy' } }
 
@@ -66,7 +66,7 @@ resource 'EventImage' do
         parameter :alt_text_multiloc, 'The updated alt text in multiple locales', required: false
       end
       ValidationErrorHelper.new.error_fields(self, EventImage)
-      let(:image) { png_image_as_base64 'image14.png' }
+      let(:image) { png_image_as_base64 'image14.jpg' }
       let(:ordering) { 2 }
       let(:alt_text_multiloc) { { 'en' => 'A cute puppy' } }
 

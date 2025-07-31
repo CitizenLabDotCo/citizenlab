@@ -1,6 +1,6 @@
 import { UseQueryResult } from '@tanstack/react-query';
-import moment from 'moment';
 import { isArray } from 'lodash-es';
+import moment from 'moment';
 
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { IInsights } from 'api/analysis_insights/types';

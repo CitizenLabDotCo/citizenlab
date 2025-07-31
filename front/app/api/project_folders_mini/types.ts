@@ -1,18 +1,12 @@
-import { Multiloc, IRelationship, Pagination, ILinks } from 'typings';
+import { Multiloc, IRelationship, ILinks } from 'typings';
 
 import { PublicationStatus } from 'api/projects/types';
-
-import { Keys } from 'utils/cl-react-query/types';
-
-import projectFoldersKeys from './keys';
-
-export type ProjectFoldersMiniKeys = Keys<typeof projectFoldersKeys>;
 
 export type Parameters = {
   status?: PublicationStatus[];
   managers?: string[];
   search?: string;
-} & Pagination;
+};
 
 export interface MiniProjectFolders {
   data: MiniProjectFolder[];
@@ -30,6 +24,12 @@ export interface MiniProjectFolder {
   relationships: {
     moderators: {
       data: IRelationship[];
+    };
+    images: {
+      data: {
+        id: string;
+        type: 'image';
+      }[];
     };
   };
 }

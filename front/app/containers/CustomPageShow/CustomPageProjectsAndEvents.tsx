@@ -75,6 +75,7 @@ const CustomPageProjectsAndEvents = ({
     rootLevelOnly: false,
     removeNotAllowedParents: true,
     onlyProjects: true,
+    remove_all_unlisted: true,
   });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();

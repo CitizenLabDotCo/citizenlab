@@ -291,7 +291,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     title_threshold = phase_for_input.similarity_threshold_title
     body_threshold = phase_for_input.similarity_threshold_body
-    cache_key = "similar_ideas/#{{ title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
+    cache_key = "similar_ideas/#{{ id: idea.id, title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
 
     json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
       scope = policy_scope(Idea)
@@ -465,7 +465,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_params_for_similarities
-    params.require(:idea).permit([:project_id, { title_multiloc: CL2_SUPPORTED_LOCALES, body_multiloc: CL2_SUPPORTED_LOCALES }])
+    params.require(:idea).permit([:id, :project_id, { title_multiloc: CL2_SUPPORTED_LOCALES, body_multiloc: CL2_SUPPORTED_LOCALES }])
   end
 
   def submittable_custom_fields(custom_form)

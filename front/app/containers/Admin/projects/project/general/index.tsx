@@ -58,6 +58,7 @@ import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
+import ProjectDiscoverabilityRadios from './components/ProjectDiscoverabilityRadios';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import ProjectNameInput from './components/ProjectNameInput';
@@ -464,6 +465,14 @@ const AdminProjectsProjectGeneral = () => {
       setSubmitState(submitState);
     };
 
+  const handleUnlistedOnChange = () => {
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      listed: !projectAttrs.listed,
+    }));
+    setSubmitState('enabled');
+  };
+
   const projectAttrs = {
     ...(!isNilOrError(project) ? project.data.attributes : {}),
     ...projectAttributesDiff,
@@ -557,6 +566,17 @@ const AdminProjectsProjectGeneral = () => {
             selectedTopicIds={selectedTopicIds}
             onChange={handleTopicsChange}
           />
+
+          {isNewProject && (
+            <Box mt="40px">
+              <ProjectDiscoverabilityRadios
+                listed={
+                  projectAttrs.listed === undefined ? true : projectAttrs.listed
+                }
+                onChange={handleUnlistedOnChange}
+              />
+            </Box>
+          )}
 
           <GeographicAreaInputs
             areaIds={projectAttrs.area_ids}

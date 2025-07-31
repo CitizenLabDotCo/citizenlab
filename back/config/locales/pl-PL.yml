@@ -343,6 +343,7 @@ pl:
       line_print_description: 'Narysuj trasę na poniższej mapie.'
       polygon_print_description: 'Narysuj kształt na poniższej mapie.'
       select_print_description: 'Wybierz tylko jedną opcję.'
+      date_print_description: 'Wpisz datę w formacie RRRR-MM-DD.'
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:

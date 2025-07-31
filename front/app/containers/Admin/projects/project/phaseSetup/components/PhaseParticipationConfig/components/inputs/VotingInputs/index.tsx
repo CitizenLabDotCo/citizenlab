@@ -9,9 +9,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Multiloc, CLErrors } from 'typings';
+import { CLErrors, IOption } from 'typings';
 
-import { VotingMethod } from 'api/phases/types';
+import { VoteTerm, VotingMethod } from 'api/phases/types';
 
 import {
   SectionDescription,
@@ -48,13 +48,11 @@ export interface VotingInputsProps {
   commenting_enabled: boolean | null | undefined;
   autoshare_results_enabled: boolean | null | undefined;
   voting_max_votes_per_idea?: number | null;
-  voting_term_plural_multiloc?: Multiloc | null;
-  voting_term_singular_multiloc?: Multiloc | null;
   handleVotingMinTotalChange: (newVotingMinTotal: string) => void;
   handleVotingMaxTotalChange: (newVotingMaxTotal: string | null) => void;
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
-  handleVoteTermPluralChange: (termMultiloc: Multiloc) => void;
-  handleVoteTermSingularChange: (termMultiloc: Multiloc) => void;
+  handleVoteTermChange: (option: IOption) => void;
+  voteTerm?: VoteTerm;
   toggleCommentingEnabled: () => void;
   toggleAutoshareResultsEnabled: () => void;
   apiErrors: CLErrors | null | undefined;
@@ -72,22 +70,18 @@ export interface VotingInputsProps {
   ) => void;
 }
 
-export default ({
+const VotingInputs = ({
   voting_method,
   voting_min_total,
   voting_max_total,
   commenting_enabled,
   autoshare_results_enabled,
   voting_max_votes_per_idea,
-  voting_term_plural_multiloc,
-  voting_term_singular_multiloc,
   handleVotingMinTotalChange,
   handleVotingMaxTotalChange,
   toggleCommentingEnabled,
   toggleAutoshareResultsEnabled,
   handleMaxVotesPerOptionAmountChange,
-  handleVoteTermPluralChange,
-  handleVoteTermSingularChange,
   apiErrors,
   validationErrors,
   presentation_mode,
@@ -98,6 +92,8 @@ export default ({
   similarity_threshold_body,
   handleSimilarityEnabledChange,
   handleThresholdChange,
+  handleVoteTermChange,
+  voteTerm,
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -184,18 +180,15 @@ export default ({
           <MultipleVotingInputs
             voting_max_total={voting_max_total}
             apiErrors={apiErrors}
-            voteTermError={validationErrors.voteTermError}
             maxTotalVotesError={validationErrors.maxTotalVotesError}
             maxVotesPerOptionError={validationErrors.maxVotesPerOptionError}
             voting_max_votes_per_idea={voting_max_votes_per_idea}
-            voting_term_plural_multiloc={voting_term_plural_multiloc}
-            voting_term_singular_multiloc={voting_term_singular_multiloc}
             handleMaxVotingAmountChange={handleVotingMaxTotalChange}
             handleMaxVotesPerOptionAmountChange={
               handleMaxVotesPerOptionAmountChange
             }
-            handleVoteTermPluralChange={handleVoteTermPluralChange}
-            handleVoteTermSingularChange={handleVoteTermSingularChange}
+            handleVoteTermChange={handleVoteTermChange}
+            voteTerm={voteTerm}
           />
         )}
         {voting_method === 'single_voting' && (
@@ -255,3 +248,5 @@ export default ({
     </>
   );
 };
+
+export default VotingInputs;

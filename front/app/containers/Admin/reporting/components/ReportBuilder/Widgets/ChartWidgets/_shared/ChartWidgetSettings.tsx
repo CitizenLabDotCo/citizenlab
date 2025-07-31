@@ -117,8 +117,8 @@ export const DateRangeInput = ({
       <Box w="100%" display="flex">
         <DateRangePicker
           selectedRange={{
-            from: parseBackendDateString(startAt),
-            to: parseBackendDateString(endAt),
+            from: startAt ? parseBackendDateString(startAt) : undefined,
+            to: endAt ? parseBackendDateString(endAt) : undefined,
           }}
           numberOfMonths={1}
           onUpdateRange={({ from, to }) => {

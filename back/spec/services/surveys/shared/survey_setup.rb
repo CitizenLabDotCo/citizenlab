@@ -397,6 +397,7 @@ RSpec.shared_context 'survey_setup' do
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
+        text_field.key => '', # Empty text field - can be saved from visitor survey with multiple pages
         select_field.key => 'la',
         multiselect_image_field.key => ['school'],
         ranking_field.key => %w[by_bike by_train by_foot],
@@ -410,6 +411,7 @@ RSpec.shared_context 'survey_setup' do
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
+        text_field.key => "   \n", # Empty text field - can be saved from visitor survey with multiple pages
         select_field.key => 'other',
         "#{select_field.key}_other" => 'Seattle',
         matrix_linear_scale_field.key => {

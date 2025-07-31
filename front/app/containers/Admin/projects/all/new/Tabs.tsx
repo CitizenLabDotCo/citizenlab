@@ -15,9 +15,10 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
 
-import { PARAMS as FOLDER_PARAMS } from './Folders/utils';
+import { Parameter, PARAMS as PROJECT_PARAMS } from './_shared/params';
 import messages from './messages';
-import { PARAMS as PROJECT_PARAMS } from './Projects/utils';
+
+const FOLDER_PARAMS: Parameter[] = ['status', 'managers', 'search'];
 
 interface TabProps {
   message: MessageDescriptor;
@@ -59,6 +60,8 @@ const Tabs = () => {
 
   const userIsAdmin = isAdmin(user);
 
+  const { highest_role } = user.data.attributes;
+
   return (
     <Box as="nav" display="flex" w="100%" mt="12px">
       <Tab
@@ -73,18 +76,20 @@ const Tabs = () => {
           removeSearchParams(['tab']);
         }}
       />
-      <Tab
-        message={messages.folders}
-        icon="folder-outline"
-        active={tab === 'folders'}
-        onClick={() => {
-          if ([null, 'timeline'].includes(tab)) {
-            removeSearchParams(PROJECT_PARAMS);
-          }
+      {highest_role !== 'project_moderator' && (
+        <Tab
+          message={messages.folders}
+          icon="folder-outline"
+          active={tab === 'folders'}
+          onClick={() => {
+            if ([null, 'timeline'].includes(tab)) {
+              removeSearchParams(PROJECT_PARAMS);
+            }
 
-          updateSearchParams({ tab: 'folders' });
-        }}
-      />
+            updateSearchParams({ tab: 'folders' });
+          }}
+        />
+      )}
       <Tab
         message={messages.timeline}
         icon="calendar"

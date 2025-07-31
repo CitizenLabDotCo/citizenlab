@@ -21,10 +21,11 @@ RSpec.describe ResetPasswordMailer do
 
       mailer.send_reset_password.deliver_now
 
-      expect(mailer_instance.mailgun_headers).to have_key('X-Mailgun-Variables')
+      expect(mailer_instance.mailgun_headers.keys).to match_array %w[X-Mailgun-Variables X-Mailgun-Track]
       expect(JSON.parse(mailer_instance.mailgun_headers['X-Mailgun-Variables'])).to match(
         hash_including('cl_tenant_id' => instance_of(String))
       )
+      expect(mailer_instance.mailgun_headers['X-Mailgun-Track']).to eq 'no'
     end
   end
 

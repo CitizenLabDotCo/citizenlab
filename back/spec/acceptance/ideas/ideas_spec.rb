@@ -431,7 +431,7 @@ resource 'Ideas' do
       end
 
       context 'Idea is not draft' do
-        let!(:idea) { create(:idea, project: phase.project, phases: [phase], creation_phase: phase, author: @user) }
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase], author: @user) }
 
         example '[empty idea] No draft ideas', document: false do
           do_request
@@ -467,6 +467,7 @@ resource 'Ideas' do
 
     post 'web_api/v1/ideas/similar_ideas' do
       with_options scope: :idea do
+        parameter :id, 'The identifier of the idea being edited (for exclusion from results)'
         parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
         parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
         parameter :project_id, 'The identifier of the project that hosts the idea'
@@ -529,6 +530,26 @@ resource 'Ideas' do
           expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
           expect(json_parse(response_body)[:data].pluck(:id)).not_to include(idea_outside_project.id)
           expect(json_parse(response_body)[:data].pluck(:id)).not_to include(idea_outside_scope.id)
+        end
+
+        example 'Excludes the current idea when editing' do
+          current_idea = create(:idea, project:)
+          create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: current_idea)
+
+          # Create another similar idea that should be included in results
+          another_similar_idea = create(:idea, project:)
+          create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: another_similar_idea)
+
+          # When editing current_idea, it should be excluded from results
+          # but other similar ideas should still be included
+          do_request(idea: {
+            id: current_idea.id,
+            title_multiloc: { 'en' => 'My similar idea' },
+            body_multiloc: { 'en' => 'This is the body of my similar idea' }
+          })
+          assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to include(idea_pizza.id, another_similar_idea.id)
+          expect(json_parse(response_body)[:data].pluck(:id)).not_to include(current_idea.id)
         end
       end
     end

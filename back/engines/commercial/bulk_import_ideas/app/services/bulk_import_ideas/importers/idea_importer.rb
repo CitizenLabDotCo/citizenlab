@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Importers
   class IdeaImporter < BaseImporter
-    DEFAULT_MAX_IDEAS = 500
+    DEFAULT_MAX_IDEAS = 1000
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
     def import(idea_rows)
@@ -77,7 +77,7 @@ module BulkImportIdeas::Importers
       author = nil
       if idea_row[:user_email].present? || idea_row[:user_first_name].present?
         author = idea_row[:user_email].present? ? User.find_by_cimail(idea_row[:user_email]) : nil
-        unless author
+        if !author && idea_row[:user_email].present?
           user_params = {
             locale: @locale,
             first_name: idea_row[:user_first_name],

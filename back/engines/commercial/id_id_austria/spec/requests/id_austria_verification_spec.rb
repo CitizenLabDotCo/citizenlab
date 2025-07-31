@@ -79,11 +79,11 @@ context 'id_austria verification' do
     host! 'example.org'
   end
 
-  def expect_user_to_be_verified(user)
+  def expect_user_to_be_verified(user, first_name: 'Otto', last_name: 'Ottakringer')
     expect(user.reload).to have_attributes({
       verified: true,
-      first_name: 'Otto',
-      last_name: 'Ottakringer'
+      first_name:,
+      last_name:
     })
     expect(user.verifications.first).to have_attributes({
       method_name: 'id_austria',
@@ -93,8 +93,8 @@ context 'id_austria verification' do
     })
   end
 
-  def expect_user_to_be_verified_and_identified(user)
-    expect_user_to_be_verified(user)
+  def expect_user_to_be_verified_and_identified(user, first_name: 'Otto', last_name: 'Ottakringer')
+    expect_user_to_be_verified(user, first_name:, last_name:)
     expect(user.identities.first).to have_attributes({
       provider: 'id_austria',
       user_id: user.id,
@@ -296,6 +296,16 @@ context 'id_austria verification' do
         follow_redirect!
 
         expect(ActionMailer::Base.deliveries).to be_empty
+      end
+
+      it 'only takes the first name if the first name field contains multiple names' do
+        auth_hash['info']['first_name'] = 'Franz Hans'
+        OmniAuth.config.mock_auth[:id_austria] = OmniAuth::AuthHash.new(auth_hash)
+        get '/auth/id_austria'
+        follow_redirect!
+        user = User.order(created_at: :asc).last
+        expect(user.first_name).to eq('Franz')
+        expect_user_to_be_verified_and_identified(user, first_name: 'Franz')
       end
     end
 

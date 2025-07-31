@@ -26,11 +26,11 @@ export function useSyncPhaseFiles() {
       // Get any files that we need to add
       const filesToAddPromises = phaseFiles
         .filter((file) => !file.remote)
-        .map((file, index) =>
+        .map((file) =>
           addPhaseFile({
             phaseId,
             base64: file.base64 || '',
-            ordering: index,
+            ordering: file.ordering!, // Use the ordering from drag-and-drop
             name: file.name,
             invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
           })

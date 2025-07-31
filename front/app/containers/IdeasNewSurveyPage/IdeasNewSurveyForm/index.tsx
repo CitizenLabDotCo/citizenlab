@@ -86,6 +86,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     <>
       <main id="e2e-idea-new-page">
         <IdeasNewSurveyMeta
+          project={project}
           surveyTitle={localize(phase.attributes.native_survey_title_multiloc)}
         />
         <Box

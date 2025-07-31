@@ -50,6 +50,9 @@ module Analysis
       scope = inputs
       if params[:input_custom_field_no_empty_values] && analysis.main_custom_field_id
         scope = scope.where.not("ideas.custom_field_values->>'#{analysis.main_custom_field.key}' IS NULL")
+          # Remove all sequences of one or more whitespace characters (including spaces, newlines, tabs),
+          # then check the result is not empty. TRIM would not handle newlines correctly.
+          .where("regexp_replace(custom_field_values->>'#{analysis.main_custom_field.key}', '[[:space:]]+', '', 'g') != ''")
       end
       scope
     end

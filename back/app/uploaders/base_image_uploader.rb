@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
+require 'open3'
+
 class BaseImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
-  ALLOWED_TYPES = %w[jpg jpeg gif png webp]
+  ALLOWED_TYPES = %w[jpg jpeg gif png webp avif]
 
   # Using process at the class level applies it to all versions, including the original.
-  process :auto_orient
   process :strip
 
   # We're not caching, since the external image optimization process will
@@ -51,7 +52,7 @@ class BaseImageUploader < BaseUploader
   end
 
   def gif_safe_transform!
-    MiniMagick::Tool::Convert.new do |image| # Calls imagemagick's "convert" command
+    MiniMagick::Tool::Convert.new do |image| # Calls imagemagick's 'convert' command
       image << @file.path
       image.coalesce # Remove optimizations so each layer shows the full image.
 
@@ -83,25 +84,34 @@ class BaseImageUploader < BaseUploader
     img.extent "#{target_width}x#{target_height}" if current_width != target_width || current_height != target_height
   end
 
-  # Auto-orient the image based on EXIF data, before we strip the metadata.
-  def auto_orient
-    manipulate! do |img|
-      img.auto_orient
-      img
-    end
-  end
-
-  # Strip the image of any profiles, comments or these PNG chunks: bKGD,cHRM,EXIF,gAMA,
-  # iCCP,iTXt,sRGB,tEXt,zCCP,zTXt,date.
-  # (https://imagemagick.org/script/command-line-options.php#strip)
-  #
-  # It is a bit heavy-handed and removes a lot of things, including colour profiles which
-  # can have an effect on the image rendering. It also recompresses the image. Overall, it
-  # seems to remove vibrancy from the image.
+  # Strip the image of EXIF metadata, except ICC color profile, orientation,
+  # and essential technical/structural metadata.
   def strip
-    manipulate! do |img|
-      img.strip
-      img
+    command = 'exiftool'
+    args = [
+      '-all=',
+      '-tagsFromFile', '@',
+      '-icc_profile',
+      '-orientation',
+      '-overwrite_original',
+      @file.path
+    ]
+
+    stdout, stderr, status = Open3.capture3(command, *args)
+
+    unless status.success?
+      ErrorReporter.report_msg(
+        'Exiftool command failed during image stripping.',
+        extra: {
+          file_path: @file.path,
+          exiftool_command: "#{command} #{args.join(' ')}",
+          exiftool_stdout: stdout,
+          exiftool_stderr: stderr,
+          exiftool_exit_status: status.exitstatus,
+          exiftool_error_signal: status.termsig
+        }
+      )
+      raise "Image stripping failed for #{@file.path}: #{stderr}"
     end
   end
 end

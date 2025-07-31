@@ -36,6 +36,7 @@ const SetAsProjectModerator = ({
   );
   const localize = useLocalize();
   const { data: adminPublications } = useAdminPublications({});
+
   const flatAdminPublications = adminPublications?.pages.flatMap(
     (page) => page.data
   );

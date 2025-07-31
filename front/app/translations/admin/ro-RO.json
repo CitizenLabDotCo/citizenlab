@@ -11,7 +11,6 @@
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Homepage customizable section",
   "app.components.ProjectTemplatePreview.close": "Închide",
   "app.components.ProjectTemplatePreview.createProject": "Create project",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Creați un proiect pe baza șablonului '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Întoarce-te",
   "app.components.ProjectTemplatePreview.goBackTo": "Întoarce-te la {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Doriți să utilizați acest șablon pentru proiectul dumneavoastră de bugetare participativă?",

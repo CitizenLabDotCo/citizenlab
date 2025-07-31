@@ -106,6 +106,16 @@ RSpec.describe Surveys::ResultsGenerator do
           }
         )
       end
+
+      # Documenting the behavior for 'empty' text fields explicitly.
+      it 'does not return count empty text responses' do
+        text_answers = project.phases.first.ideas
+          .where(Arel.sql("custom_field_values ? '#{text_field.key}'"))
+          .pluck(Arel.sql("custom_field_values->>'#{text_field.key}'"))
+
+        expect(text_answers).to include('', "   \n")
+        expect(generated_results[:results][1][:textResponses].pluck(:answer)).not_to include('', "   \n")
+      end
     end
 
     describe 'multiline text fields' do
@@ -583,19 +593,19 @@ RSpec.describe Surveys::ResultsGenerator do
               'house' => hash_including(
                 title_multiloc: { 'en' => 'House', 'fr-FR' => 'Maison', 'nl-NL' => 'Huis' },
                 image: {
-                  fb: end_with('.png'),
-                  large: end_with('.png'),
-                  medium: end_with('.png'),
-                  small: end_with('.png')
+                  fb: end_with('.jpg'),
+                  large: end_with('.jpg'),
+                  medium: end_with('.jpg'),
+                  small: end_with('.jpg')
                 }
               ),
               'school' => hash_including(
                 title_multiloc: { 'en' => 'School', 'fr-FR' => 'Ecole', 'nl-NL' => 'School' },
                 image: {
-                  fb: end_with('.png'),
-                  large: end_with('.png'),
-                  medium: end_with('.png'),
-                  small: end_with('.png')
+                  fb: end_with('.jpg'),
+                  large: end_with('.jpg'),
+                  medium: end_with('.jpg'),
+                  small: end_with('.jpg')
                 }
               )
             }

@@ -15,6 +15,7 @@ RSpec.describe Files::FilePolicy do
 
       it { is_expected.not_to permit(:show) }
       it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:destroy) }
     end
 
@@ -23,6 +24,7 @@ RSpec.describe Files::FilePolicy do
 
       it { is_expected.not_to permit(:show) }
       it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:destroy) }
     end
 
@@ -39,6 +41,7 @@ RSpec.describe Files::FilePolicy do
           before { file.save! }
 
           it { is_expected.not_to permit(:show) }
+          it { is_expected.not_to permit(:update) }
           it { is_expected.not_to permit(:destroy) }
         end
       end
@@ -53,6 +56,7 @@ RSpec.describe Files::FilePolicy do
           before { file.save! }
 
           it { is_expected.to permit(:show) }
+          it { is_expected.to permit(:update) }
           it { is_expected.not_to permit(:destroy) }
         end
       end
@@ -67,6 +71,7 @@ RSpec.describe Files::FilePolicy do
           before { file.save! }
 
           it { is_expected.to permit(:show) }
+          it { is_expected.to permit(:update) }
           it { is_expected.not_to permit(:destroy) }
         end
       end
@@ -81,6 +86,7 @@ RSpec.describe Files::FilePolicy do
           before { file.save! }
 
           it { is_expected.not_to permit(:show) }
+          it { is_expected.not_to permit(:update) }
           it { is_expected.not_to permit(:destroy) }
         end
       end
@@ -92,6 +98,7 @@ RSpec.describe Files::FilePolicy do
       context 'when the user is the uploader' do
         it { is_expected.to permit(:show) }
         it { is_expected.to permit(:create) }
+        it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
       end
 
@@ -100,6 +107,7 @@ RSpec.describe Files::FilePolicy do
 
         it { is_expected.to permit(:show) }
         it { is_expected.not_to permit(:create) }
+        it { is_expected.to permit(:update) }
         it { is_expected.to permit(:destroy) }
       end
     end

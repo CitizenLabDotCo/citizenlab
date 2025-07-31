@@ -47,8 +47,6 @@
   "app.components.ConsentManager.Banner.mainText": "Prin navigare, sunteți de acord cu {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Administrează",
   "app.components.ConsentManager.Banner.policyLink": "Politica Cookie",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Confirmă",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Dacă anulați, preferințele vor fi pierdute.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reclamă",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Folosim acest lucru pentru a personaliza și a măsura eficiența campaniilor publicitare de pe site-ului nostru. Nu vom afișa orice formă de publicitate pe această platformă, dar următoarele servicii ar putea oferi un anunț personalizat bazat pe paginile pe care le vizitați pe site-ul nostru.\n",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Permite",

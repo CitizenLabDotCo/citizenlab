@@ -44,6 +44,7 @@ export interface Props {
   canModerate?: boolean;
   projectIds?: string[];
   includeHidden?: boolean;
+  removeAllUnlisted?: boolean;
 }
 
 export interface QueryParameters {
@@ -55,6 +56,7 @@ export interface QueryParameters {
   filter_can_moderate?: boolean;
   filter_ids?: string[];
   include_hidden?: boolean;
+  remove_all_unlisted?: boolean;
 }
 
 // Responses
@@ -93,6 +95,7 @@ export interface IProjectAttributes {
   folder_id?: string | null;
   action_descriptors: ActionDescriptors;
   uses_content_builder: boolean;
+  listed: boolean;
 }
 
 export type ActionDescriptors = {
@@ -201,4 +204,5 @@ export interface IUpdatedProjectProperties {
   topic_ids?: string[];
   include_all_areas?: boolean;
   folder_id?: string | null;
+  listed?: boolean;
 }

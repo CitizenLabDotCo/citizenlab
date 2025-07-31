@@ -72,6 +72,19 @@ RSpec.describe Surveys::AverageGenerator do
         expect(averages).to eq({})
       end
     end
+
+    describe 'calculate_average' do
+      let(:values) { [1, 2, 3, 4, 5] }
+
+      it 'returns the average of the values' do
+        expect(generator.send(:calculate_average, values)).to eq(3.0)
+      end
+
+      it 'handles string values' do
+        values = %w[1 2 3 4 5]
+        expect(generator.send(:calculate_average, values)).to eq(3.0)
+      end
+    end
   end
 
   context 'community monitor survey' do

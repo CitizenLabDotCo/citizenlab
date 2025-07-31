@@ -341,6 +341,7 @@ ca:
       line_print_description: 'Si us plau, dibuixa una ruta al mapa següent.'
       polygon_print_description: 'Si us plau, dibuixa una forma al mapa següent.'
       select_print_description: 'Només tria una opció.'
+      date_print_description: 'Si us plau, escriviu una data amb el format AAAA-MM-DD.'
   project_copy:
     title_suffix: 'Còpia'
   confirmations_mailer:

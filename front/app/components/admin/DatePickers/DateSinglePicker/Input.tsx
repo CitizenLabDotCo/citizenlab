@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, InputContainer, Icon } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
-import InputContainer from '../_shared/InputContainer';
 import sharedMessages from '../_shared/messages';
 
 interface Props {
@@ -19,10 +18,16 @@ const Input = ({ id, disabled, selectedDate, onClick }: Props) => {
   const selectDate = formatMessage(sharedMessages.selectDate);
 
   return (
-    <InputContainer onClick={onClick} id={id} disabled={disabled}>
+    <InputContainer
+      onClick={onClick}
+      id={id}
+      disabled={disabled}
+      className="e2e-date-single-picker-input"
+    >
       <Box mr="8px">
         {selectedDate ? selectedDate.toLocaleDateString() : selectDate}
       </Box>
+      <Icon name="calendar" height="18px" />
     </InputContainer>
   );
 };

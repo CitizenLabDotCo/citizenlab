@@ -30,7 +30,7 @@ resource 'CustomFieldOptionImage' do
       with_options scope: :image do
         parameter :image, 'The base64 encoded image', required: true
       end
-      let(:image) { png_image_as_base64 'image13.png' }
+      let(:image) { png_image_as_base64 'image13.jpg' }
 
       example_request 'Add a CustomFieldOptionImage without an associated option' do
         expect(response_status).to eq 201
@@ -43,7 +43,7 @@ resource 'CustomFieldOptionImage' do
         parameter :image, 'The base64 encoded image'
       end
       let(:image_id) { create(:custom_field_option_image).id }
-      let(:image) { png_image_as_base64 'image14.png' }
+      let(:image) { png_image_as_base64 'image14.jpg' }
 
       example_request 'Update a CustomFieldOptionImage' do
         expect(response_status).to eq 200

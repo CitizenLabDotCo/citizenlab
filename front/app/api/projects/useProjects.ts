@@ -23,6 +23,7 @@ const useProjects = (
     canModerate,
     projectIds,
     includeHidden,
+    removeAllUnlisted,
   }: Props,
   { enabled = true }: { enabled?: boolean } = { enabled: true }
 ) => {
@@ -35,6 +36,7 @@ const useProjects = (
     filter_can_moderate: canModerate,
     filter_ids: projectIds,
     include_hidden: includeHidden,
+    remove_all_unlisted: removeAllUnlisted,
   };
 
   return useQuery<IProjects, CLErrors, IProjects, ProjectsKeys>({

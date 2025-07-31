@@ -17,7 +17,7 @@ module ProjectFolders
     end
 
     def index_for_admin?
-      user && UserRoleService.new.can_moderate?(record, user)
+      user&.admin? || user&.project_folder_moderator?
     end
 
     def show?

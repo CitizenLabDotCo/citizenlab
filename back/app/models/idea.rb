@@ -65,6 +65,7 @@ class Idea < ApplicationRecord
   include PgSearch::Model
   include GeoJsonHelpers
   include AnonymousParticipation
+  include Files::FileAttachable
   extend OrderAsSpecified
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze

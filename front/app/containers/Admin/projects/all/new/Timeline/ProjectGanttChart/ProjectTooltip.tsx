@@ -4,8 +4,9 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IPhaseData } from 'api/phases/types';
-import usePhases from 'api/phases/usePhases';
+import usePhasesByIds from 'api/phases/usePhasesByIds';
 import { getCurrentPhase } from 'api/phases/utils';
+import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -14,7 +15,10 @@ import { participationMethodMessage } from 'containers/Admin/projects/project/ph
 import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
-import { getPeriodRemainingUntil } from 'utils/dateUtils';
+import {
+  getPeriodRemainingUntil,
+  parseBackendDateString,
+} from 'utils/dateUtils';
 
 import messages from './messages';
 
@@ -98,28 +102,38 @@ const PhaseList = ({ phases }: { phases: IPhaseData[] }) => {
   );
 };
 
-const ProjectTooltip = ({ project }: { project: GanttItem }) => {
+interface ProjectTooltipProps {
+  ganttItem: GanttItem;
+  projectsById: Record<string, ProjectMiniAdminData>;
+}
+
+const ProjectTooltip = ({ ganttItem, projectsById }: ProjectTooltipProps) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: phasesData } = usePhases(project.id);
+  const project = projectsById[ganttItem.id];
 
-  const phases = phasesData?.data || [];
+  const phaseIds = project.relationships.phases?.data.map((phase) => phase.id);
+  const phasesMiniData = usePhasesByIds(phaseIds || []);
+  const phases = phasesMiniData
+    .map((query) => query.data?.data)
+    .filter((data): data is IPhaseData => data !== undefined);
+
   const currentPhase = getCurrentPhase(phases);
-  const folderName = project.folder || undefined;
+  const folderName = ganttItem.folder || undefined;
   const tenantTimezone =
     appConfiguration?.data.attributes.settings.core.timezone;
 
-  const startDate = project.start
-    ? new Date(project.start).toLocaleDateString()
+  const startDate = ganttItem.start
+    ? parseBackendDateString(ganttItem.start).toLocaleDateString()
     : undefined;
-  const endDate = project.end
-    ? new Date(project.end).toLocaleDateString()
+  const endDate = ganttItem.end
+    ? parseBackendDateString(ganttItem.end).toLocaleDateString()
     : undefined;
 
   return (
     <Box p="8px">
       <Text fontWeight="bold" color="white" my="0px">
-        {project.title}
+        {ganttItem.title}
       </Text>
       {folderName && (
         <Box>{formatMessage(messages.folder, { folderName })}</Box>
