@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "ਮਾਫ਼ ਕਰਨਾ, ਤੁਸੀਂ ਇਸ ਪੰਨੇ ਤੱਕ ਨਹੀਂ ਪਹੁੰਚ ਸਕਦੇ। ਇਸ ਨੂੰ ਐਕਸੈਸ ਕਰਨ ਲਈ ਤੁਹਾਨੂੰ ਲੌਗ ਇਨ ਜਾਂ ਸਾਈਨ ਅੱਪ ਕਰਨ ਦੀ ਲੋੜ ਹੋ ਸਕਦੀ ਹੈ।",
   "app.components.LocationInput.noOptions": "ਕੋਈ ਵਿਕਲਪ ਨਹੀਂ",
   "app.components.Modal.closeWindow": "ਵਿੰਡੋ ਬੰਦ ਕਰੋ",
+  "app.components.MultiSelect.clearButtonAction": "ਚੋਣ ਸਾਫ਼ ਕਰੋ",
+  "app.components.MultiSelect.clearSearchButtonAction": "ਖੋਜ ਸਾਫ਼ ਕਰੋ",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "ਇੱਕ ਨਵਾਂ ਈਮੇਲ ਪਤਾ ਦਾਖਲ ਕਰੋ",
   "app.components.PageNotFound.goBackToHomePage": "ਹੋਮਪੇਜ 'ਤੇ ਵਾਪਸ ਜਾਓ",
   "app.components.PageNotFound.notFoundTitle": "ਪੰਨਾ ਨਹੀਂ ਮਿਲਿਆ",
