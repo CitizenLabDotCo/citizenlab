@@ -6,13 +6,12 @@ module BulkImportIdeas::Importers
 
     SELECT_TYPES = %w[select multiselect].freeze
 
-    # Import all the projects
+    # Import all the projects (synchronous version only for testing via rake task)
     def import(projects)
       projects = projects.map do |project_data|
         import_project(project_data)
       end
       log "Imported #{projects.count} projects"
-      @import_log
     end
 
     # Preview the data that will be imported

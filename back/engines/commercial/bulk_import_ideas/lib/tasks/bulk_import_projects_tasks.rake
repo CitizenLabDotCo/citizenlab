@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'zip'
-
 # Usage:
 # rake bulk_import:projects[false, 'demo.stg.govocal.com', 'nl-BE']
+# NOTE: FOR DEVELOPMENT/DEBUG use only - only works with files already unzipped into the tmp/import_files/TENANT_SCHEMA directory
+# For production use, use the admin interface at /admin/project-importer
 namespace :bulk_import do
   desc 'Imports ideas from a csv file, as specified by the path argument, into the tenant specified by the host.'
   task :projects, %i[preview_only host locale] => [:environment] do |_t, args|
@@ -13,54 +13,28 @@ namespace :bulk_import do
     tenant.switch do
       preview_only = args[:preview_only] ? args[:preview_only] == 'true' : false
       locale = args[:locale] || AppConfiguration.instance.settings.dig('core', 'locales').first # TODO: pass the locale to the extractor
-      import_user = User.admin.order(:created_at).first # TODO: The first admin user for the tenant
+      import_user = User.admin.order(:created_at).first
 
-      upload_path = 'tmp/import_files'
-      import_path = "#{upload_path}/#{tenant.schema_name}"
-      import_zip = "#{import_path}.zip"
+      # TODO: Extract & import users from an xlsx files in the ZIP
 
-      if File.exist? import_zip
-        # Remove previous files if they exist
-        FileUtils.rm_rf(import_path)
+      # Extract & import projects, phases and content from the unzipped xlsx files currently on the file system
+      import_path = "tmp/import_files/#{tenant.schema_name}"
+      project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(import_path)
+      projects = project_extractor.projects
+      importer = BulkImportIdeas::Importers::ProjectImporter.new(import_user, locale)
 
-        # Unzip the import file - named for the tenant_schema
-        unzip_import_file(import_zip, upload_path)
-
-        # TODO: Extract & import users from an xlsx files in the ZIP
-        # TODO: Do a non-async version of the import here?
-
-        # Extract & import projects, phases and content from the xlsx files in the ZIP
-        project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(import_path)
-        projects = project_extractor.projects
-
-        importer = BulkImportIdeas::Importers::ProjectImporter.new(import_user, locale)
-        if preview_only
-          importer.preview(projects).each do |log_message|
-            Rails.logger.info log_message
-          end
-        else
-          num_projects = projects.count
-          import_id = importer.import_async(projects)
-          Rails.logger.info "Projects import started with ID: #{import_id}"
-          while BulkImportIdeas::ProjectImport.where(import_id: import_id).count < num_projects
-            Rails.logger.info "Waiting for projects to be imported... (#{BulkImportIdeas::ProjectImport.where(import_id: import_id).count}/#{num_projects})"
-            sleep 5
-          end
-          Rails.logger.info 'COMPLETE'
-        end
+      if preview_only
+        importer.preview(projects)
       else
-        Rails.logger.error("FILE #{import_zip} does not exist")
+        importer.import(projects)
       end
+
+      importer.import_log.each do |log_message|
+        Rails.logger.info log_message
+      end
+
+      Rails.logger.info 'COMPLETE'
     end
   end
 end
 
-def unzip_import_file(file, destination)
-  Zip::File.open(file) do |zip_file|
-    zip_file.each do |entry|
-      entry_path = File.join(destination, entry.name)
-      FileUtils.mkdir_p(File.dirname(entry_path))
-      zip_file.extract(entry, entry_path) unless File.exist?(entry_path)
-    end
-  end
-end
