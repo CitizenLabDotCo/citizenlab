@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.draft',
     defaultMessage: 'Draft',
   },
+  pendingApproval: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.pendingApproval',
+    defaultMessage: 'Pending approval',
+  },
   published: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.published',
     defaultMessage: 'Published',
