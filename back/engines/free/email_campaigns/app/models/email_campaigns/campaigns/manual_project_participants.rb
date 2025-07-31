@@ -20,6 +20,7 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -35,30 +36,25 @@ module EmailCampaigns
   class Campaigns::ManualProjectParticipants < Campaigns::BaseManual
     allow_lifecycle_stages except: %w[trial churned]
 
-    belongs_to :project, optional: false, foreign_key: :context_id, class_name: 'Project'
-
-    validates :context_id, presence: true
-
     recipient_filter :project_participants_and_followers
+
+    validates :context, presence: true
+    validates :context_type, inclusion: { in: ['Project'] }
 
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.project_participants'
     end
 
-    def manageable_by_project_moderator?
-      true
+    def self.supports_context?(context)
+      context.is_a?(Project)
     end
 
     private
 
-    def skip_context_absence?
-      true
-    end
-
     def project_participants_and_followers(users_scope, _options = {})
       users_scope
-        .where(id: ParticipantsService.new.projects_participants(project))
-        .or(users_scope.where(id: project.followers.pluck(:user_id)))
+        .where(id: ParticipantsService.new.projects_participants(context))
+        .or(users_scope.where(id: context.followers.pluck(:user_id)))
     end
   end
 end

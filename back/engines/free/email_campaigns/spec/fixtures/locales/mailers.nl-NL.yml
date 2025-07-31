@@ -352,9 +352,9 @@ nl:
       title_added_as_folderadmin: 'Je werd net mapbeheerder'
       x_projects: '%{numberOfProjects} projecten'
     project_phase_started:
-      cta_view_phase: 'Ontdek deze nieuwe fase'
+      cta_button: 'Ontdek deze nieuwe fase'
       event_description: 'Dit project is een nieuwe fase ingegaan op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!'
-      main_header: 'Een nieuwe fase is begonnen voor het project ''%{projectName}'''
+      title: 'Een nieuwe fase is begonnen voor het project ''%{projectName}'''
       subtitle: 'Over ''%{projectName}'''
       new_phase: 'Het project is de fase ''%{phaseTitle}'' ingegaan'
       subject: '%{projectName} ging een nieuwe fase in'

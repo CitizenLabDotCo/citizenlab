@@ -24,6 +24,10 @@ module EmailCampaigns
       end
     end
 
+    def reply_to
+      fallback_to_global(:reply_to)
+    end
+
     # For customisable regions we merge in the defaults for multilocs.
     def subject_multiloc
       merge_default_region_values(:subject_multiloc)
@@ -92,14 +96,14 @@ module EmailCampaigns
     end
 
     def merge_default_region_values(region_key)
-      values = self[region_key]
-      return values if manual?
+      value = fallback_to_global(region_key)
+      return value if manual?
 
       region = editable_regions.find { |r| r[:key] == region_key }
-      return values if region.nil?
+      return value if region.nil?
 
       allow_blank_locales = region[:allow_blank_locales]
-      region[:default_value_multiloc].merge(values) do |_, default, saved|
+      region[:default_value_multiloc].merge(value) do |_, default, saved|
         saved.blank? && !allow_blank_locales ? default : saved
       end
     end
@@ -120,6 +124,17 @@ module EmailCampaigns
 
     def empty_mailer
       @empty_mailer ||= mailer_class.new
+    end
+
+    def global_campaign
+      @global_campaign ||= !manual? && self.class.find_by(context: nil, type: self.class.name)
+    end
+
+    def fallback_to_global(attribute)
+      value = self[attribute]
+      return value unless value.blank? && context && global_campaign
+
+      global_campaign&.send(attribute)
     end
   end
 end

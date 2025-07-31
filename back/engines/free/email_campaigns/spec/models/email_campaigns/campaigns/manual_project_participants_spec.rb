@@ -3,20 +3,18 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::ManualProjectParticipants do
-  subject { build(:manual_project_participants_campaign, project: create(:project_with_active_ideation_phase)) }
+  subject { build(:manual_project_participants_campaign, context: create(:project_with_active_ideation_phase)) }
 
   describe 'Default factory' do
     it { is_expected.to be_valid }
   end
 
   describe 'validate context_id' do
-    it { is_expected.to validate_presence_of(:context_id) }
-
-    it { is_expected.to belong_to(:project) }
+    it { is_expected.to validate_presence_of(:context) }
 
     it 'destroys the campaign when the project is destroyed' do
       campaign = create(:manual_project_participants_campaign)
-      project = campaign.project
+      project = campaign.context
       project.destroy!
       expect { project.reload }.to raise_error(ActiveRecord::RecordNotFound)
       expect { campaign.reload }.to raise_error(ActiveRecord::RecordNotFound)
@@ -33,7 +31,7 @@ RSpec.describe EmailCampaigns::Campaigns::ManualProjectParticipants do
       create(:follower, followable: project, user: user)
       user
     end
-    let(:campaign) { create(:manual_project_participants_campaign, project: project) }
+    let(:campaign) { create(:manual_project_participants_campaign, context: project) }
 
     it 'includes project participants and followers' do
       recipients = campaign.apply_recipient_filters

@@ -131,6 +131,38 @@ describe EmailCampaigns::DeliveryService do
         end
       end
     end
+
+    context 'with contextual campaigns' do
+      let(:notification) { create(:project_phase_started) }
+      let!(:global_campaign) { create(:project_phase_started_campaign, context: nil) }
+      let!(:context_campaign) { create(:project_phase_started_campaign, context: notification.phase) }
+
+      it 'receives process_command for the context campaign' do
+        expect(service).to receive(:process_command).with(context_campaign, anything).once
+        expect(service).not_to receive(:process_command).with(global_campaign, anything)
+        service.send_on_activity(activity)
+      end
+
+      it 'receives process_command for the global campaign if the context does not match the context campaign' do
+        context_campaign.update!(context: create(:phase))
+        expect(service).to receive(:process_command).with(global_campaign, anything).once
+        expect(service).not_to receive(:process_command).with(context_campaign, anything)
+        service.send_on_activity(activity)
+      end
+
+      it 'does not receive process_command if the context campaign is disabled' do
+        context_campaign.update!(enabled: false)
+        expect(service).not_to receive(:process_command)
+        service.send_on_activity(activity)
+      end
+
+      it 'receives process_command for the global campaign if the context campaign is disabled but the context does not match the context campaign' do
+        context_campaign.update!(context: create(:phase), enabled: false)
+        expect(service).to receive(:process_command).with(global_campaign, anything).once
+        expect(service).not_to receive(:process_command).with(context_campaign, anything)
+        service.send_on_activity(activity)
+      end
+    end
   end
 
   describe 'send_now' do

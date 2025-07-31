@@ -15,7 +15,6 @@ export interface ICampaignData {
   id: string;
   type: string;
   attributes: {
-    context_id?: string;
     campaign_name: CampaignName;
     campaign_description_multiloc: Multiloc;
     // Only undefined for invite_received?
@@ -58,6 +57,9 @@ export interface ICampaignData {
   relationships: {
     author: {
       data: IRelationship;
+    };
+    context?: {
+      data?: IRelationship;
     };
     groups: {
       data: IRelationship[];
@@ -155,19 +157,24 @@ export type CampaignName =
   | RegisterUserCampaignName
   | AdminModeratorCampaignName;
 
-export interface QueryParameters {
-  campaignNames?: CampaignName[];
+export interface QueryParameters extends CampaignContext {
+  manual?: boolean;
   withoutCampaignNames?: CampaignName[];
   pageSize?: number;
   pageNumber?: number;
 }
 
-export interface CampaignAdd {
+export interface CampaignAdd extends CampaignContext {
   campaign_name: string;
+  enabled?: boolean;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
   sender: string;
   reply_to?: string;
   group_ids?: string[];
-  context_id?: string;
 }
+
+export type CampaignContext = {
+  phaseId?: string;
+  projectId?: string;
+};
