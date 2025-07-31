@@ -1,13 +1,17 @@
 import React from 'react';
 
+import { Discoverability } from 'api/projects_mini_admin/types';
+
 import FilterSelector from 'components/FilterSelector';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import { useParam, setParam } from '../../params';
+
 import messages from './messages';
 
 const OPTIONS: {
-  value: 'listed' | 'unlisted';
+  value: Discoverability;
   message: MessageDescriptor;
 }[] = [
   {
@@ -20,15 +24,11 @@ const OPTIONS: {
   },
 ];
 
-interface Props {
-  discoverability: ('listed' | 'unlisted')[];
-  onChange: (values: ('listed' | 'unlisted')[]) => void;
-}
-
-const DiscoverabilityFilter = ({ discoverability, onChange }: Props) => {
+const DiscoverabilityFilter = () => {
+  const value = useParam('discoverability') ?? [];
   const { formatMessage } = useIntl();
 
-  const values = OPTIONS.map((option) => ({
+  const options = OPTIONS.map((option) => ({
     text: formatMessage(option.message),
     value: option.value,
   }));
@@ -37,9 +37,11 @@ const DiscoverabilityFilter = ({ discoverability, onChange }: Props) => {
     <FilterSelector
       title={formatMessage(messages.discoverabilityLabel)}
       name="discoverability-filter"
-      values={values}
-      selected={discoverability}
-      onChange={onChange}
+      values={options}
+      selected={value}
+      onChange={(discoverability) => {
+        setParam('discoverability', discoverability as Discoverability[]);
+      }}
       multipleSelectionAllowed
     />
   );

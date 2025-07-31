@@ -6,6 +6,8 @@ import FilterSelector from 'components/FilterSelector';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import { setParam, useParam } from '../../params';
+
 import messages from './messages';
 
 const OPTIONS: {
@@ -26,15 +28,11 @@ const OPTIONS: {
   },
 ];
 
-interface Props {
-  visibility: Visibility[];
-  onChange: (values: Visibility[]) => void;
-}
-
-const VisibilityFilter = ({ visibility, onChange }: Props) => {
+const VisibilityFilter = () => {
+  const visibilities = useParam('visibility') ?? [];
   const { formatMessage } = useIntl();
 
-  const values = OPTIONS.map((option) => ({
+  const options = OPTIONS.map((option) => ({
     text: formatMessage(option.message),
     value: option.value,
   }));
@@ -43,9 +41,11 @@ const VisibilityFilter = ({ visibility, onChange }: Props) => {
     <FilterSelector
       title={formatMessage(messages.visibilityLabel)}
       name="visibility-filter"
-      values={values}
-      selected={visibility}
-      onChange={onChange}
+      values={options}
+      selected={visibilities}
+      onChange={(visibilities) => {
+        setParam('visibility', visibilities as Visibility[]);
+      }}
       multipleSelectionAllowed={true}
     />
   );

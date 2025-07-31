@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.couldNotLoadMarkdown',
     defaultMessage: 'Could not load markdown file.',
   },
+  generatingPreview: {
+    id: 'app.containers.AdminPage.ProjectFiles.generatingPreview',
+    defaultMessage: 'Generating preview...',
+  },
   csvPreviewError: {
     id: 'app.containers.AdminPage.ProjectFiles.csvPreviewError',
     defaultMessage: 'Could not load CSV preview.',

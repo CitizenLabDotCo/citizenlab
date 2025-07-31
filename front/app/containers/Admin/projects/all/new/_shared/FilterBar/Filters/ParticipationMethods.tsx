@@ -8,6 +8,8 @@ import FilterSelector from 'components/FilterSelector';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import { setParam, useParam } from '../../params';
+
 import messages from './messages';
 
 const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
@@ -50,12 +52,8 @@ const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
   },
 ];
 
-interface Props {
-  participationMethods: ParticipationMethod[];
-  onChange: (participationMethods: ParticipationMethod[]) => void;
-}
-
-const ParticipationMethods = ({ participationMethods, onChange }: Props) => {
+const ParticipationMethods = () => {
+  const participationMethods = useParam('participation_methods') ?? [];
   const { formatMessage } = useIntl();
 
   const options = OPTIONS.map((option) => ({
@@ -68,7 +66,8 @@ const ParticipationMethods = ({ participationMethods, onChange }: Props) => {
     const updatedMethods = selected.includes('survey')
       ? [...selected, 'native_survey', 'survey']
       : selected;
-    onChange(updatedMethods as ParticipationMethod[]);
+
+    setParam('participation_methods', updatedMethods as ParticipationMethod[]);
   };
 
   return (

@@ -22,7 +22,7 @@ export type Parameters = {
   folder_ids?: string[];
   participation_methods?: ParticipationMethod[];
   visibility?: Visibility[];
-  discoverability?: ('listed' | 'unlisted')[];
+  discoverability?: Discoverability[];
   sort:
     | 'recently_viewed'
     | 'phase_starting_or_ending_soon'
@@ -37,6 +37,8 @@ export type ParticipationState =
   | 'collecting_data'
   | 'informing'
   | 'past';
+
+export type Discoverability = 'listed' | 'unlisted';
 
 export type ProjectsMiniAdmin = {
   data: ProjectMiniAdminData[];

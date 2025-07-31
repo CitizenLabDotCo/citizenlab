@@ -9,8 +9,10 @@ import FilterSelector from 'components/FilterSelector';
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
-import { PUBLICATION_STATUS_LABELS } from '../constants';
-import messages from '../Projects/Filters/messages';
+import { PUBLICATION_STATUS_LABELS } from '../../constants';
+import { useParam, setParam } from '../../params';
+
+import messages from './messages';
 
 type OptionValue = PublicationStatus | 'pending_approval';
 
@@ -27,24 +29,14 @@ const ADMIN_ONLY_OPTIONS = [
 ] as const;
 
 interface Props {
-  selectedStatuses: PublicationStatus[];
-  selectedReviewState?: ReviewState;
   mr?: string;
-  onChange: (params: {
-    statuses: PublicationStatus[];
-    reviewState?: 'pending';
-  }) => void;
 }
 
-const Status = ({
-  selectedStatuses,
-  selectedReviewState,
-  mr,
-  onChange,
-}: Props) => {
+const Status = ({ mr }: Props) => {
   const { formatMessage } = useIntl();
   const { data: user } = useAuthUser();
   const isUserAdmin = isAdmin(user);
+  const statuses = useParam('status') ?? [];
 
   const OPTIONS = [
     { value: 'draft', message: PUBLICATION_STATUS_LABELS.draft },
@@ -58,29 +50,15 @@ const Status = ({
     text: formatMessage(option.message),
   }));
 
-  const selectedValues: OptionValue[] = [...selectedStatuses];
-  if (selectedReviewState === 'pending') {
-    selectedValues.push('pending_approval');
-  }
-
-  const handleChange = (values: OptionValue[]) => {
-    const reviewState = values.includes('pending_approval')
-      ? 'pending'
-      : undefined;
-    const statuses = values.filter(
-      (v) => v !== 'pending_approval'
-    ) as PublicationStatus[];
-
-    onChange({ statuses, reviewState });
-  };
-
   return (
     <FilterSelector
       multipleSelectionAllowed
-      selected={selectedValues}
+      selected={statuses}
       values={options}
       mr={mr}
-      onChange={handleChange}
+      onChange={(statuses) => {
+        setParam('status', statuses as PublicationStatus[]);
+      }}
       title={formatMessage(messages.status)}
       name="manager-select"
     />

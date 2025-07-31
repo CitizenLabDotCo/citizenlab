@@ -25,10 +25,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.status',
     defaultMessage: 'Status',
   },
-  search: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Search.search',
-    defaultMessage: 'Search project',
-  },
   participationStates: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates',
     defaultMessage: 'Participation state',
@@ -128,5 +124,17 @@ export default defineMessages({
   discoverabilityHidden: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.hidden',
     defaultMessage: 'Hidden',
+  },
+  addFilter: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.addFilter',
+    defaultMessage: 'Add filter',
+  },
+  noMoreFilters: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters',
+    defaultMessage: 'No more filters to add',
+  },
+  manager: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager',
+    defaultMessage: 'Manager',
   },
 });
