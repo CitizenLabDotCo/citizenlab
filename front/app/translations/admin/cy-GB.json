@@ -2308,6 +2308,7 @@
   "app.containers.AdminPage.ProjectFiles.filePreviewLabel2": "Rhagolwg",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Ni fydd y ffeil hon yn cael ei huwchlwytho, gan ei bod yn fwy na'r terfyn uchaf o 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Llwythwyd pob ffeil i fyny'n llwyddiannus",
+  "app.containers.AdminPage.ProjectFiles.generatingPreview": "Wrthi'n cynhyrchu rhagolwg...",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Gwybodaeth",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Description": "E.e. WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Title": "Cyfweliadau sain, recordiadau Neuadd y Dref",
