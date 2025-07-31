@@ -108,20 +108,17 @@ function getConsentRequired(
 export function useConsentRequired() {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const activeDestinations = getActiveDestinations(
-    appConfiguration?.data,
-    authUser?.data
-  );
-  const [isConsentRequired, setIsConsentRequired] = useState(() => {
-    // Initialize with the actual cookie value to prevent flash
-    const cookieConsent = getConsent();
-    return getConsentRequired(cookieConsent, activeDestinations);
-  });
+
+  const [isConsentRequired, setIsConsentRequired] = useState(false);
 
   useEffect(() => {
+    const activeDestinations = getActiveDestinations(
+      appConfiguration?.data,
+      authUser?.data
+    );
     const cookieConsent = getConsent();
     setIsConsentRequired(getConsentRequired(cookieConsent, activeDestinations));
-  }, [activeDestinations]);
+  }, [appConfiguration?.data, authUser?.data]);
 
   return isConsentRequired;
 }
