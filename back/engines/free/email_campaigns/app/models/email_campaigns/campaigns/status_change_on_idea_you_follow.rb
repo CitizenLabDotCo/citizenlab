@@ -40,6 +40,7 @@ module EmailCampaigns
     include RecipientConfigurable
     include Trackable
     include LifecycleStageRestrictable
+    include ContextConfigurable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_notification_recipient
@@ -70,6 +71,16 @@ module EmailCampaigns
 
     def self.trigger_multiloc_key
       'email_campaigns.admin_labels.trigger.input_status_changes'
+    end
+
+    def activity_context(activity)
+      return nil unless activity.item.is_a?(::Notification)
+
+      activity.item.idea&.phases&.last
+    end
+
+    def self.supported_context_class
+      Phase
     end
 
     def generate_commands(recipient:, activity:)
