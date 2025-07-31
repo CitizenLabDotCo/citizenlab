@@ -21,7 +21,8 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import { useIntl } from 'utils/cl-intl';
 
 import ColHeader from '../../_shared/ColHeader';
-import { useParams } from '../utils';
+import sharedMessages from '../../_shared/messages';
+import { useParams } from '../../_shared/params';
 
 import EmptyRow from './EmptyRow';
 import messages from './messages';
@@ -65,15 +66,15 @@ const Table = () => {
 
   const getSentinelMessage = () => {
     if (isFetchingNextPage) {
-      return messages.loadingMore;
+      return sharedMessages.loadingMore;
     }
 
     if (hasNextPage) {
-      return messages.scrollDownToLoadMore;
+      return sharedMessages.scrollDownToLoadMore;
     }
 
     if (status === 'success') {
-      return messages.allProjectsHaveLoaded;
+      return sharedMessages.allProjectsHaveLoaded;
     }
 
     return null;

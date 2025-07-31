@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Tooltip } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import { format } from 'date-fns';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
@@ -8,7 +8,7 @@ import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import { useParam, setParam } from '../utils';
+import { useParam, setParam } from '../../params';
 
 import messages from './messages';
 
@@ -24,11 +24,12 @@ const toString = (date?: Date) => {
 
 const Dates = () => {
   const { formatMessage } = useIntl();
+
   const fromStr = useParam('min_start_date');
   const toStr = useParam('max_start_date');
 
   return (
-    <Tooltip content={formatMessage(messages.projectStartDate)}>
+    <Box display="flex" alignItems="center">
       <DateRangePicker
         selectedRange={{ from: toDate(fromStr), to: toDate(toStr) }}
         onUpdateRange={({ from: fromDate, to: toDate }) => {
@@ -39,7 +40,12 @@ const Dates = () => {
           setParam('max_start_date', to);
         }}
       />
-    </Tooltip>
+      <IconTooltip
+        content={formatMessage(messages.projectStartDate)}
+        placement="top"
+        ml="4px"
+      />
+    </Box>
   );
 };
 

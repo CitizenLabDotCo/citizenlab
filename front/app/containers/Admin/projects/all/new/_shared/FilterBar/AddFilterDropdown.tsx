@@ -1,4 +1,4 @@
-import React, { ComponentType, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -10,28 +10,20 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
-import { FilterComponentProps } from './ActiveFilter';
-import { FilterType } from './DynamicFilters';
-import messages from './messages';
-
-interface FilterConfig {
-  type: FilterType;
-  label: string;
-  paramKey: string;
-  component: ComponentType<FilterComponentProps>;
-}
+import { FilterKey, FILTER_CONFIG } from './constants';
+import messages from './Filters/messages';
 
 interface Props {
-  availableFilters: FilterConfig[];
-  onAddFilter: (filterType: FilterType) => void;
+  availableFilters: FilterKey[];
+  onAddFilter: (filterKey: FilterKey) => void;
 }
 
 const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
   const { formatMessage } = useIntl();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleAddFilter = (filterType: FilterType) => {
-    onAddFilter(filterType);
+  const handleAddFilter = (filterKey: FilterKey) => {
+    onAddFilter(filterKey);
     setIsOpen(false);
   };
 
@@ -44,6 +36,8 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
           icon="plus"
           text={formatMessage(messages.addFilter)}
           disabled
+          m="0"
+          ml="-16px"
         />
       </Tooltip>
     );
@@ -57,18 +51,20 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
         onClick={() => setIsOpen(!isOpen)}
         text={formatMessage(messages.addFilter)}
         iconSize="20px"
+        m="0"
+        ml="-16px"
       />
       <Dropdown
         opened={isOpen}
         onClickOutside={() => setIsOpen(false)}
         content={
           <Box>
-            {availableFilters.map((filter, index) => (
+            {availableFilters.map((filterKey, index) => (
               <DropdownListItem
                 key={index}
-                onClick={() => handleAddFilter(filter.type)}
+                onClick={() => handleAddFilter(filterKey)}
               >
-                {filter.label}
+                {formatMessage(FILTER_CONFIG[filterKey])}
               </DropdownListItem>
             ))}
           </Box>
