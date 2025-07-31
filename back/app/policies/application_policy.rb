@@ -5,7 +5,7 @@ class ApplicationPolicy
   # Pundit policy lookup when in test environment.
   # This list will specifically target Shoulda::Matchers temporary models.
   EXCLUDED_TEST_POLICY_MODEL_NAME_PATTERNS = [
-    /^Shoulda::Matchers::ActiveRecord::Uniqueness::TestModels::/,
+    /^Shoulda::Matchers::ActiveRecord::Uniqueness::TestModels::/
   ].freeze
 
   module Helpers
@@ -29,7 +29,6 @@ class ApplicationPolicy
       if target_scope_or_klass.is_a?(Class) &&
          EXCLUDED_TEST_POLICY_MODEL_NAME_PATTERNS.any? { |pattern| target_scope_or_klass.name.match?(pattern) }
 
-        Rails.logger.debug "DEBUG: ApplicationPolicy::Helpers#handle_excluded_models: Matched and skipping model: #{target_scope_or_klass.name.inspect}"
         return target_scope_or_klass.none # Return an empty ActiveRecord::Relation
       end
 
