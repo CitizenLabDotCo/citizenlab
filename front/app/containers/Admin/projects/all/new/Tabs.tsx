@@ -15,9 +15,10 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
 
-import { PARAMS as FOLDER_PARAMS } from './Folders/utils';
+import { Parameter, PARAMS as PROJECT_PARAMS } from './_shared/params';
 import messages from './messages';
-import { PARAMS as PROJECT_PARAMS } from './Projects/utils';
+
+const FOLDER_PARAMS: Parameter[] = ['status', 'managers', 'search'];
 
 interface TabProps {
   message: MessageDescriptor;
