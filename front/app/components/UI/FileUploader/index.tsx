@@ -181,13 +181,37 @@ const FileUploader = ({
       >
         <Box mt="20px">
           {showSelectExistingFiles && (
-            <SelectExistingFile setFiles={setFiles} attachedFiles={files} />
+            <SelectExistingFile
+              setFiles={setFiles}
+              attachedFiles={files}
+              setShowModal={setIsModalOpen}
+            />
           )}
           <FilesUpload
             showInformationSection={false}
             showTitle={false}
+            setModalOpen={setIsModalOpen}
             onFileSelect={() => {
               setShowSelectExistingFiles(false);
+            }}
+            afterUpload={(uploadedFiles) => {
+              const newFiles: FileType[] = uploadedFiles.map((file) => ({
+                id: file.id,
+                name: file.file.name,
+                size: file.file.size || 0,
+                url: '',
+                remote: true,
+              }));
+
+              setFiles((prev) => {
+                // Filter out files that already exist to prevent duplicates
+                const filesToAdd = newFiles.filter(
+                  (newFile) =>
+                    !prev.some((existingFile) => existingFile.id === newFile.id)
+                );
+
+                return [...prev, ...filesToAdd];
+              });
             }}
           />
         </Box>

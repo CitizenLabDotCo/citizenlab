@@ -3,10 +3,8 @@ import React, { useState } from 'react';
 import {
   Box,
   colors,
-  Icon,
   Select,
   Spinner,
-  Text,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
@@ -19,14 +17,17 @@ import messages from '../messages';
 
 type Props = {
   setFiles?: React.Dispatch<React.SetStateAction<FileType[]>>;
+  setShowModal?: React.Dispatch<React.SetStateAction<boolean>>;
   attachedFiles?: FileType[];
 };
-const SelectExistingFile = ({ setFiles, attachedFiles }: Props) => {
+const SelectExistingFile = ({
+  setFiles,
+  attachedFiles,
+  setShowModal,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   const [fileId, setFileId] = useState<string | null>(null);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [fileNameAdded, setFileNameAdded] = useState('');
 
   // Get projectID from params
   const { projectId } = useParams() as {
@@ -92,29 +93,13 @@ const SelectExistingFile = ({ setFiles, attachedFiles }: Props) => {
               // Clear the current selection
               setFileId(null);
 
-              // Show a success message
-              setShowSuccessMessage(true);
-              setFileNameAdded(option.label);
+              // Close modal
+              setShowModal?.(false);
             }}
             placeholder={formatMessage(messages.selectFile)}
             options={fileOptions}
             label={formatMessage(messages.fromExistingFiles)}
           />
-          {showSuccessMessage && (
-            <Text m="0px" textAlign="right" color="success" fontSize="s">
-              {formatMessage(messages.fileAttachedSuccessfully, {
-                fileName: fileNameAdded,
-              })}
-              <Icon
-                name="check"
-                fill={colors.success}
-                width="16px"
-                height="16px"
-                mb="2px"
-                ml="4px"
-              />
-            </Text>
-          )}
         </>
       )}
     </Box>
