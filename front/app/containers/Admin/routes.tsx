@@ -51,6 +51,10 @@ const FullscreenPreview = React.lazy(
 // TODO remove this when project planning is fully rolled out
 const NewProjectsPage = React.lazy(() => import('./projects/all/new'));
 
+const ProjectImporter = React.lazy(
+  () => import('containers/Admin/ProjectImporter')
+);
+
 export type AdminRoute<T extends string = string> = `/admin/${T}`;
 
 export type AdminRouteTypes =
@@ -188,6 +192,10 @@ const createAdminRoutes = () => {
       {
         path: 'projects-redesign-early-access',
         element: <NewProjectsPage />,
+      },
+      {
+        path: 'project-importer',
+        element: <ProjectImporter />,
       },
     ],
   };

@@ -19,9 +19,6 @@ namespace :bulk_import do
       import_path = "#{upload_path}/#{tenant.schema_name}"
       import_zip = "#{import_path}.zip"
 
-      source_file =
-
-
       if File.exist? import_zip
         # Remove previous files if they exist
         FileUtils.rm_rf(import_path)
@@ -30,6 +27,7 @@ namespace :bulk_import do
         unzip_import_file(import_zip, upload_path)
 
         # TODO: Extract & import users from an xlsx files in the ZIP
+        # TODO: Do a non-async version of the import here?
 
         # Extract & import projects, phases and content from the xlsx files in the ZIP
         project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(import_path)

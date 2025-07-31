@@ -111,6 +111,7 @@ module BulkImportIdeas
       send_data URI.open(idea_import_file.file_content_url).read, type: 'application/octet-stream'
     end
 
+
     private
 
     def bulk_create_params

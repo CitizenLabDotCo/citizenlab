@@ -26,6 +26,15 @@ module BulkImportIdeas
       def create_user?
         active_moderator?
       end
+
+      # TODO: Needs to be super user
+      def bulk_create_projects?
+        active_moderator?
+      end
+
+      def show_project_import?
+        active_moderator?
+      end
     end
   end
 end
