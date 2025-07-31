@@ -11,8 +11,11 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 import ImportZipModal from './ImportZipModal';
+import { isSuperAdmin } from 'utils/permissions/roles';
+import useAuthUser from 'api/me/useAuthUser';
 
 const ProjectImporter = () => {
+  const { data: authUser } = useAuthUser();
   const [searchParams] = useSearchParams();
   const importId = searchParams.get('id') || undefined;
   const numProjects = searchParams.get('num_projects') || undefined;
@@ -41,6 +44,9 @@ const ProjectImporter = () => {
       `/admin/project-importer?id=${data.id}&num_projects=${data.attributes.projects_to_import}` as any
     ); // TODO: Sort out types
   };
+
+  // This feature is only for super admins
+  if (!isSuperAdmin(authUser)) return null;
 
   return (
     <Box>

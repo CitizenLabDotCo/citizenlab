@@ -27,13 +27,13 @@ module BulkImportIdeas
         active_moderator?
       end
 
-      # TODO: Needs to be super user
+      # Bulk create projects is only allowed for super admins
       def bulk_create_projects?
-        active_moderator?
+        user.super_admin?
       end
 
       def show_project_import?
-        active_moderator?
+        user.super_admin?
       end
     end
   end
