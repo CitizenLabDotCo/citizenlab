@@ -13,7 +13,7 @@ namespace :single_use do
     # ActiveRecord::Base.logger = dev_null
 
     cutoff_date = args[:date] ? Date.parse(args[:date]) : Time.zone.today
-    image_extensions = %w[jpg jpeg png gif tiff]
+    image_extensions = %w[jpg jpeg gif png webp]
     total_images = 0
 
     tenant_host = 'mitgestalten.wien.gv.at'
