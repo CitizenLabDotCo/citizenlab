@@ -28,7 +28,6 @@ module Files
     def generate_descriptions!(file)
       return false unless generate_descriptions?(file)
 
-      validate_file!(file)
       descriptions = generate_descriptions(file, tenant_locales)
 
       file.with_lock do
@@ -42,8 +41,6 @@ module Files
     end
 
     private
-
-    def validate_file!(file); end
 
     # Get configured locales for the application
     #
