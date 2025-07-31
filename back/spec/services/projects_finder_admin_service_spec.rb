@@ -40,10 +40,12 @@ describe ProjectsFinderAdminService do
     let!(:project_in_folder2) { create(:project, folder: folder2) }
     let!(:project_without_folder) { create(:project) }
 
-    let!(:user) { create(:user, roles: [
-      { 'type' => 'project_moderator', project_id: project_without_folder.id },
-      { 'type' => 'project_folder_moderator', project_folder_id: folder1.id }
-    ]) }
+    let!(:user) do
+      create(:user, roles: [
+        { 'type' => 'project_moderator', project_id: project_without_folder.id },
+        { 'type' => 'project_folder_moderator', project_folder_id: folder1.id }
+      ])
+    end
 
     it 'returns all projects for admin user' do
       admin_user = create(:admin)
