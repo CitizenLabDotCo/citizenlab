@@ -881,6 +881,7 @@
   "app.containers.Admin.emails.fieldTo": "To",
   "app.containers.Admin.emails.fieldToTooltip": "You can select the user groups that will receive your email",
   "app.containers.Admin.emails.formSave": "Save",
+  "app.containers.Admin.emails.formSaveAsDraft": "Save as draft",
   "app.containers.Admin.emails.from": "From:",
   "app.containers.Admin.emails.groups": "Groups",
   "app.containers.Admin.emails.helmetDescription": "Send out manual emails to user groups and activate automated campaigns",
