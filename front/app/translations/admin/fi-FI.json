@@ -2293,6 +2293,7 @@
   "app.containers.AdminPage.ProjectFiles.filePreviewLabel2": "Esikatselu",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Tätä tiedostoa ei ladata, koska se ylittää 50 Mt:n enimmäiskoon.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Kaikki tiedostot ladattiin onnistuneesti",
+  "app.containers.AdminPage.ProjectFiles.generatingPreview": "Esikatselua luodaan...",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Tiedot",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Description": "Esim. WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Title": "Äänihaastattelut, kaupungintalon tallenteet",
