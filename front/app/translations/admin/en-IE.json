@@ -2293,6 +2293,7 @@
   "app.containers.AdminPage.ProjectFiles.filePreviewLabel2": "Preview",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "This file will not be uploaded, as it exceeds the maximum limit of 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "All files uploaded successfully",
+  "app.containers.AdminPage.ProjectFiles.generatingPreview": "Generating preview...",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Information",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Description": "E.g. WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Title": "Audio interviews, Town Hall recordings",
