@@ -37,6 +37,7 @@ module EmailCampaigns
     include Consentable
     include Disableable
     include ContentConfigurable
+    include ContextConfigurable
     include ActivityTriggerable
     include RecipientConfigurable
     include LifecycleStageRestrictable
@@ -44,8 +45,6 @@ module EmailCampaigns
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_notification_recipient
-
-    validates :context_type, inclusion: { in: ['Phase'], allow_blank: true }
 
     def activity_triggers
       { 'Notifications::CommentOnIdeaYouFollow' => { 'created' => true } }
@@ -81,8 +80,8 @@ module EmailCampaigns
       'email_campaigns.admin_labels.trigger.user_comments'
     end
 
-    def self.supports_context?(context)
-      context.is_a?(Phase)
+    def self.supported_context_class
+      Phase
     end
 
     def generate_commands(recipient:, activity:, time: nil)
