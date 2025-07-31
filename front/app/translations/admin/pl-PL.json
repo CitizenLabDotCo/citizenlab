@@ -2308,6 +2308,7 @@
   "app.containers.AdminPage.ProjectFiles.filePreviewLabel2": "Podgląd",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Ten plik nie zostanie przesłany, ponieważ przekracza maksymalny limit 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Wszystkie pliki zostały przesłane pomyślnie",
+  "app.containers.AdminPage.ProjectFiles.generatingPreview": "Generowanie podglądu...",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Informacje",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Description": "Np. WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Title": "Wywiady audio, nagrania z ratusza",
