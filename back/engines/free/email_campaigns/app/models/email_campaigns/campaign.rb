@@ -206,10 +206,5 @@ module EmailCampaigns
 
       errors.add(:base, :no_recipients, message: "Can't send a campaign without recipients")
     end
-
-    # Will be used to fall back on custom copy from the global campaign.
-    def global_campaign
-      @global_campaign ||= !manual? && self.class.find_by(context: nil, type: self.class.name)
-    end
   end
 end
