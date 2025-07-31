@@ -132,7 +132,7 @@ resource 'Campaigns' do
 
         example 'List only campaigns supported by the context', document: false do
           create(:comment_on_idea_you_follow_campaign, context: nil)
-          create(:comment_on_idea_you_follow_campaign, context: manual_project.context)
+          build(:comment_on_idea_you_follow_campaign, context: manual_project.context).save!(validate: false) # TODO: Change when campaigns are different per phase participation method
 
           do_request
 
@@ -169,7 +169,7 @@ resource 'Campaigns' do
       example_request 'Lists all campaigns supported for an ideation phase' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes)).to match_array %w[project_phase_started]
+        expect(json_response.dig(:data, :attributes)).to eq %w[comment_on_idea_you_follow comment_on_your_comment project_phase_started]
       end
     end
 

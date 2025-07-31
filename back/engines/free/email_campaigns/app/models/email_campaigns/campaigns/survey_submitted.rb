@@ -38,6 +38,7 @@ module EmailCampaigns
     include Disableable
     include Trackable
     include LifecycleStageRestrictable
+    include ContextConfigurable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_recipient
@@ -68,6 +69,15 @@ module EmailCampaigns
 
     def self.trigger_multiloc_key
       'email_campaigns.admin_labels.trigger.input_is_published'
+    end
+
+    def activity_context(activity)
+      return nil unless activity.item.is_a?(::Idea)
+      activity.item.phases.last
+    end
+
+    def self.supported_context_class
+      Phase
     end
 
     def generate_commands(recipient:, activity:)
