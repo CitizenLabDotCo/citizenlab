@@ -54,7 +54,7 @@ module BulkImportIdeas::Importers
         project_data[:phases]&.each do |phase_data|
           phase = find_or_create_phase(project, phase_data.except(:idea_rows, :idea_custom_fields, :user_custom_fields))
           next unless phase
-          next unless phase_data[:idea_rows].present? # No ideas means no form or fields either
+          next if phase_data[:idea_rows].blank? # No ideas means no form or fields either
 
           # Create any user fields if they don't already exist
           create_user_fields(phase_data[:user_custom_fields])
@@ -147,7 +147,7 @@ module BulkImportIdeas::Importers
       # Assumption is that methods other than native survey will only use the default form so we do not need to create a custom form
       return unless phase.participation_method == 'native_survey'
 
-      log "Creating native survey form for phase"
+      log 'Creating native survey form for phase'
 
       begin
         # Create the form and form fields
@@ -202,7 +202,7 @@ module BulkImportIdeas::Importers
         log "Imported #{ideas.count} ideas"
       rescue StandardError => e
         log "ERROR importing ideas for phase '#{phase.title_multiloc[@locale]}': #{e.message}"
-        end
+      end
     end
 
     def remove_idea_import_records(ideas)

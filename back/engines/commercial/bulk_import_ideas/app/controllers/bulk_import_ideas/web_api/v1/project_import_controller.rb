@@ -59,7 +59,7 @@ module BulkImportIdeas
 
       # Write the decoded content to a temporary file
       temp_zip_path = 'tmp/temp.zip'
-      File.open(temp_zip_path, 'wb') { |file| file.write(decoded_zip) }
+      File.binwrite(temp_zip_path, decoded_zip)
 
       # Extract the contents of the ZIP file
       Zip::File.open(temp_zip_path) do |zip_file|

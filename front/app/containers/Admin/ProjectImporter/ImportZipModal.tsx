@@ -17,6 +17,9 @@ import useAddProjectImportAsync from 'api/project_imports/useAddProjectImportAsy
 
 import useLocale from 'hooks/useLocale';
 
+import LocalePicker from 'containers/Admin/projects/project/inputImporter/ImportModal/LocalePicker';
+import messages from 'containers/Admin/projects/project/inputImporter/ImportModal/messages';
+
 import Feedback from 'components/HookForm/Feedback';
 import SingleFileUploader from 'components/HookForm/SingleFileUploader';
 import Modal from 'components/UI/Modal';
@@ -25,8 +28,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // TODO: Remove these references
-import LocalePicker from 'containers/Admin/projects/project/inputImporter/ImportModal/LocalePicker';
-import messages from 'containers/Admin/projects/project/inputImporter/ImportModal/messages';
 
 interface FormValues {
   locale: SupportedLocale;
@@ -64,7 +65,6 @@ const ImportZipModal = ({ open, onClose, onImport }: Props) => {
   const submitFile = async ({ file, ...rest }: FormValues) => {
     if (!file) return;
 
-    console.log('Uploading');
     try {
       const response = await addProjectImport({
         file: file.base64,

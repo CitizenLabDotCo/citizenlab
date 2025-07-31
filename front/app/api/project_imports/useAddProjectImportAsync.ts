@@ -32,8 +32,7 @@ const addProjectImportAsync = () => {
 
   return useMutation<JobIdResponse, CLErrors, RequestParams>({
     mutationFn: addProjectImport,
-    onSuccess: (_, params) => {
-      console.log(params);
+    onSuccess: (_) => {
       queryClient.invalidateQueries({
         queryKey: projectImportKeys.list({}),
       });

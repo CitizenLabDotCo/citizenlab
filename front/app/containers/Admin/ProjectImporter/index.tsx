@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
+
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-import ImportZipModal from './ImportZipModal';
-import clHistory from 'utils/cl-router/history';
-import useProjectImports from 'api/project_imports/useProjectImports';
 import { useSearchParams } from 'react-router-dom';
-import Link from 'utils/cl-router/Link';
+
+import useProjectImports from 'api/project_imports/useProjectImports';
+
 import useLocalize from 'hooks/useLocalize';
+
+import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
+
+import ImportZipModal from './ImportZipModal';
 
 const ProjectImporter = () => {
   const [searchParams] = useSearchParams();
@@ -18,7 +23,7 @@ const ProjectImporter = () => {
 
   const [isImporting, setIsImporting] = useState(false);
   const { data: projectImports } = useProjectImports(
-    { importId: importId },
+    { importId },
     { pollingEnabled: isImporting }
   );
   const localize = useLocalize();
@@ -29,7 +34,7 @@ const ProjectImporter = () => {
     } else {
       setIsImporting(false);
     }
-  }, [projectImports]);
+  }, [projectImports, numProjects]);
 
   const setImportData = (data) => {
     clHistory.push(
@@ -98,10 +103,10 @@ const ProjectImporter = () => {
         onImport={(data) => setImportData(data)}
       />
 
-      {/*<h2>Previous imports</h2>*/}
-      {/*<ul>*/}
+      {/* <h2>Previous imports</h2>*/}
+      {/* <ul>*/}
       {/*  <li>Date - 10 projects - ID</li>*/}
-      {/*</ul>*/}
+      {/* </ul>*/}
     </Box>
   );
 };

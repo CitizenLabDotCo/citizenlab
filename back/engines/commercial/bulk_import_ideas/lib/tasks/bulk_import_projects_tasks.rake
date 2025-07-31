@@ -46,7 +46,7 @@ namespace :bulk_import do
             Rails.logger.info "Waiting for projects to be imported... (#{BulkImportIdeas::ProjectImport.where(import_id: import_id).count}/#{num_projects})"
             sleep 5
           end
-          Rails.logger.info "COMPLETE"
+          Rails.logger.info 'COMPLETE'
         end
       else
         Rails.logger.error("FILE #{import_zip} does not exist")
