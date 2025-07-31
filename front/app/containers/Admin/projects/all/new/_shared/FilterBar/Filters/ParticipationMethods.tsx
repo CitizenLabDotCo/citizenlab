@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Tooltip } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 
@@ -71,13 +71,7 @@ const ParticipationMethods = () => {
   };
 
   return (
-    <Tooltip
-      content={
-        <Box w="240px">
-          {formatMessage(messages.filterByCurrentPhaseMethod)}
-        </Box>
-      }
-    >
+    <Box display="flex" alignItems="center">
       <FilterSelector
         name="participation-methods-select"
         title={formatMessage(messages.participationMethodLabel)}
@@ -86,7 +80,12 @@ const ParticipationMethods = () => {
         values={options}
         onChange={handleOnChange}
       />
-    </Tooltip>
+      <IconTooltip
+        content={formatMessage(messages.filterByCurrentPhaseMethod)}
+        placement="top"
+        ml="4px"
+      />
+    </Box>
   );
 };
 
