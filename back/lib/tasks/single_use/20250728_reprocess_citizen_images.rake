@@ -60,7 +60,7 @@ namespace :single_use do
       rescue StandardError => e
         errored_records << { id: record.id, error: e.message, error_class: e.class.name }
         puts "  ERROR: Failed to process image for #{model_name} ID: #{record.id}: #{e.message}"
-        
+
         ErrorReporter.report_msg(
           'Image reprocessing failed during Rake task',
           extra: {
