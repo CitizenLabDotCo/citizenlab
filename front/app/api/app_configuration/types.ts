@@ -276,6 +276,7 @@ export interface IAppConfigurationSettings {
   project_planning?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;
+  customised_automated_context_emails?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
