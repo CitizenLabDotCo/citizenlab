@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class ApplicationPolicy
-  # Define patterns for class names that should be *excluded* from Pundit policy lookup.
+  # Define patterns for class names that should be *excluded* from
+  # Pundit policy lookup when in test environment.
   # This list will specifically target Shoulda::Matchers temporary models.
-  EXCLUDED_POLICY_MODEL_NAME_PATTERNS = [
+  EXCLUDED_TEST_POLICY_MODEL_NAME_PATTERNS = [
     /^Shoulda::Matchers::ActiveRecord::Uniqueness::TestModels::/,
   ].freeze
 
@@ -26,7 +27,7 @@ class ApplicationPolicy
 
     def handle_excluded_models(target_scope_or_klass)
       if target_scope_or_klass.is_a?(Class) &&
-         EXCLUDED_POLICY_MODEL_NAME_PATTERNS.any? { |pattern| target_scope_or_klass.name.match?(pattern) }
+         EXCLUDED_TEST_POLICY_MODEL_NAME_PATTERNS.any? { |pattern| target_scope_or_klass.name.match?(pattern) }
 
         Rails.logger.debug "DEBUG: ApplicationPolicy::Helpers#handle_excluded_models: Matched and skipping model: #{target_scope_or_klass.name.inspect}"
         return target_scope_or_klass.none # Return an empty ActiveRecord::Relation
