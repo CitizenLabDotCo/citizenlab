@@ -58,7 +58,7 @@ const referenceDisplayValue = (
     }
   }
   if (customFieldInputType === 'multiselect') {
-    if (customFieldValues[customFieldKey].includes('other')) {
+    if (customFieldValues[customFieldKey]?.includes('other')) {
       return customFieldValues[`${customFieldKey}_other`];
     }
   }

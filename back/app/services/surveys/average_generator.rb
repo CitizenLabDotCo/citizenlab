@@ -120,7 +120,7 @@ module Surveys
 
     def calculate_average(values)
       values = values.compact # Remove any nils
-      total = values.sum { |a| a || 0 }
+      total = values.sum { |a| a.to_i || 0 }
       count = values.count
       count > 0 ? (total.to_f / values.count).round(1) : 0.0
     end

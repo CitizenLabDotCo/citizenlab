@@ -21,6 +21,7 @@ export interface Props {
   projectId: string;
   firstPublishedAt: string | null;
   folderId?: string;
+  color?: string;
   setError: (error: string | null) => void;
   setIsRunningAction?: (actionType: ActionType, isRunning: boolean) => void;
 }
@@ -29,6 +30,7 @@ const ProjectMoreActionsMenu = ({
   projectId,
   firstPublishedAt,
   folderId,
+  color,
   setError,
   setIsRunningAction,
 }: Props) => {
@@ -143,7 +145,7 @@ const ProjectMoreActionsMenu = ({
         ml="1rem"
         data-testid="moreProjectActionsMenu"
       >
-        <MoreActionsMenu showLabel={false} actions={actions} />
+        <MoreActionsMenu showLabel={false} actions={actions} color={color} />
       </Box>
     );
   }
