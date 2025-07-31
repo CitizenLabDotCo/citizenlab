@@ -9,7 +9,7 @@ import useUsers from 'api/users/useUsers';
 
 import useLocalize from 'hooks/useLocalize';
 
-import projectFilterMessages from 'containers/Admin/projects/all/new/Projects/Filters/messages';
+import projectFilterMessages from 'containers/Admin/projects/all/new/_shared/FilterBar/Filters/messages';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 

@@ -1,6 +1,6 @@
 import { FormatMessage, IOption } from 'typings';
 
-import projectFilterMessages from 'containers/Admin/projects/all/new/Projects/Filters/messages';
+import projectFilterMessages from 'containers/Admin/projects/all/new/_shared/FilterBar/Filters/messages';
 
 import messages from '../messages';
 
