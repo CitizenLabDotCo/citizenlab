@@ -3,16 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectImports from 'api/project_imports/useProjectImports';
 
 import useLocalize from 'hooks/useLocalize';
 
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { isSuperAdmin } from 'utils/permissions/roles';
 
 import ImportZipModal from './ImportZipModal';
-import { isSuperAdmin } from 'utils/permissions/roles';
-import useAuthUser from 'api/me/useAuthUser';
 
 const ProjectImporter = () => {
   const { data: authUser } = useAuthUser();
@@ -32,7 +32,10 @@ const ProjectImporter = () => {
   const localize = useLocalize();
 
   useEffect(() => {
-    if (numProjects && projectImports?.data?.length < parseInt(numProjects)) {
+    if (
+      numProjects &&
+      projectImports?.data?.length < parseInt(numProjects, 10)
+    ) {
       setIsImporting(true);
     } else {
       setIsImporting(false);

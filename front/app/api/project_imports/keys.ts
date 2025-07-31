@@ -1,6 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseImportedIdeaKey = {
+const baseProjectImportKey = {
   type: 'project_import',
 };
 
@@ -8,10 +8,12 @@ export interface QueryParams {
   importId?: string;
 }
 
-export const projectImportKeys = {
-  all: () => [baseImportedIdeaKey],
-  lists: () => [{ ...baseImportedIdeaKey, operation: 'list' }],
+const projectImportKeys = {
+  all: () => [baseProjectImportKey],
+  lists: () => [{ ...baseProjectImportKey, operation: 'list' }],
   list: (parameters: QueryParams) => [
-    { ...baseImportedIdeaKey, operation: 'list', parameters },
+    { ...baseProjectImportKey, operation: 'list', parameters },
   ],
 } satisfies QueryKeys;
+
+export default projectImportKeys;

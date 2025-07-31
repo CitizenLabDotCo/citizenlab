@@ -2,9 +2,10 @@
 
 module BulkImportIdeas::Extractors
   class ProjectExtractor < BaseExtractor
-    def initialize(xlsx_file_path)
-      @xlsx_file_path = xlsx_file_path
-      @workbook = RubyXL::Parser.parse_buffer(open("#{xlsx_file_path}/projects.xlsx").read)
+    def initialize(locale, xlsx_folder_path)
+      super(locale)
+      @xlsx_folder_path = xlsx_folder_path
+      @workbook = RubyXL::Parser.parse_buffer(open("#{xlsx_folder_path}/projects.xlsx").read)
     end
 
     # Return a list of projects, with phases and content
@@ -27,6 +28,7 @@ module BulkImportIdeas::Extractors
             # TODO: Do try catch here to handle missing files / classes
             klass_name = "BulkImportIdeas::Extractors::#{phase[:type]}PhaseExtractor"
             extractor = klass_name.constantize.new(
+              locale,
               phase[:file],
               phase[:tab],
               config,
@@ -63,7 +65,7 @@ module BulkImportIdeas::Extractors
 
         phases[project_title] ||= []
         phases[project_title] << {
-          file: row.cells[5]&.value.present? ? "#{@xlsx_file_path}/inputs/#{row.cells[5].value}" : nil,
+          file: row.cells[5]&.value.present? ? "#{@xlsx_folder_path}/inputs/#{row.cells[5].value}" : nil,
           tab: row.cells[6]&.value,
           type: row.cells[7]&.value.presence || nil,
           attributes: {

@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { QueryParams, projectImportKeys } from './keys';
+import projectImportKeys, { QueryParams } from './keys';
 
 const fetchProjectImports = ({ importId }: QueryParams) =>
   fetcher<any>({

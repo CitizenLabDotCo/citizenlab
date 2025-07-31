@@ -5,7 +5,7 @@ import { IBackgroundJobData } from 'api/background_jobs/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { projectImportKeys } from './keys';
+import projectImportKeys from './keys';
 
 interface RequestParams {
   file: string;

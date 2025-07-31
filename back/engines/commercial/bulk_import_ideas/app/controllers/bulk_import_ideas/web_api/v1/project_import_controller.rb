@@ -16,7 +16,7 @@ module BulkImportIdeas
       # TODO: Extract & import users from an xlsx files in the ZIP
 
       # Extract & import projects, phases and content from the xlsx files in the ZIP
-      project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(import_path)
+      project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(locale, import_path)
       projects = project_extractor.projects
       importer = BulkImportIdeas::Importers::ProjectImporter.new(current_user, locale)
       num_projects = projects.count

@@ -19,7 +19,7 @@ namespace :bulk_import do
 
       # Extract & import projects, phases and content from the unzipped xlsx files currently on the file system
       import_path = "tmp/import_files/#{tenant.schema_name}"
-      project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(import_path)
+      project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(locale, import_path)
       projects = project_extractor.projects
       importer = BulkImportIdeas::Importers::ProjectImporter.new(import_user, locale)
 
@@ -37,4 +37,3 @@ namespace :bulk_import do
     end
   end
 end
-

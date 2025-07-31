@@ -4,7 +4,8 @@
 
 module BulkImportIdeas::Extractors
   class BasePhaseExtractor < BaseExtractor
-    def initialize(xlsx_file_path, worksheet_name, config = {}, attributes = {})
+    def initialize(locale, xlsx_file_path, worksheet_name, config = {}, attributes = {})
+      super(locale)
       workbook = RubyXL::Parser.parse_buffer(open(xlsx_file_path).read)
       @worksheet = workbook.worksheets.find { |sheet| sheet.sheet_name == worksheet_name }
       @idea_columns = []
