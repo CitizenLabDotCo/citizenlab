@@ -8,6 +8,8 @@ import adminPublicationsKeys from './keys';
 
 export type AdminPublicationsKeys = Keys<typeof adminPublicationsKeys>;
 
+export type ReviewState = 'pending' | 'approved';
+
 export interface IQueryParameters {
   topicIds?: string[] | null;
   areaIds?: string[] | null;
@@ -19,7 +21,7 @@ export interface IQueryParameters {
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
   onlyProjects?: boolean;
-  review_state?: 'pending' | 'approved';
+  review_state?: ReviewState;
   filter_is_moderator_of?: boolean;
   filter_user_is_moderator_of?: string;
   // This excludes projects that are already inside included folders from the result set, so we don't show duplicates.
