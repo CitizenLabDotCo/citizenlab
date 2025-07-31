@@ -28,7 +28,7 @@ module Files
     STATUSES = %w[pending completed failed].freeze
 
     attribute :status, :string, default: 'pending'
-    validates :status, presence: true, inclusion: { in: STATUSES }
+    validates :status, inclusion: { in: STATUSES }
     validates :content, presence: true, if: :completed?
 
     mount_uploader :content, PreviewUploader

@@ -4,11 +4,11 @@ module Files
 
     def run(preview)
       PreviewService.new.generate_preview_content(preview)
-    rescue StandardError => e
-      if error_count >= (self.class.maximum_retry_count - 1)
+    rescue StandardError
+      if error_count >= (maximum_retry_count - 1)
         preview.update!(status: 'failed')
       end
-      raise e
+      raise
     end
   end
 end

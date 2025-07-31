@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe Files::PreviewService do
   subject(:service) { described_class.new }
 
-  let(:pdf_file) { create(:file) }
-  let(:docx_file) { create(:file, name: 'david.docx') }
+  let!(:pdf_file) { create(:file) }
+  let!(:docx_file) { create(:file, name: 'david.docx') }
 
   describe '#enqueue_preview' do
     it 'enqueues a job to generate a preview for a docx file' do
@@ -26,11 +26,9 @@ RSpec.describe Files::PreviewService do
       preview = docx_file.create_preview!
       expect(preview.content).to be_blank
 
-      VcrHelper.use_cassette_library_dir(Rails.root / 'spec' / 'fixtures' / 'vcr_cassettes') do
-        VCR.use_cassette('generate_preview_content_docx') do
-          service.generate_preview_content(preview)
-          expect(preview.content).to be_present
-        end
+      VCR.use_cassette('generate_preview_content_docx') do
+        service.generate_preview_content(preview)
+        expect(preview.content).to be_present
       end
     end
   end

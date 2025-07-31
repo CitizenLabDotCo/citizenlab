@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class GotenbergClient
-  FileTypeUnsupportedError = Class.new(StandardError)
+  class FileTypeUnsupportedError < StandardError; end
+  class GotenbergServiceUnavailableError < StandardError; end
 
   def initialize
     @api_url = ENV.fetch('GOTENBURG_PDF_URL', 'http://gotenberg:3000')
@@ -9,7 +10,7 @@ class GotenbergClient
 
   # Use Gotenberg web service (separate docker container) to render html to PDF
   def render_html_to_pdf(html)
-    return false unless up?
+    raise GotenbergServiceUnavailableError unless up?
 
     payload = {
       'preferCssPageSize' => true,
@@ -38,10 +39,8 @@ class GotenbergClient
   end
 
   def render_libreoffice_to_pdf(file, content_type, file_name)
-    return false unless up?
+    raise GotenbergServiceUnavailableError unless up?
     raise FileTypeUnsupportedError unless supported_by_libreoffice?(file)
-
-    # content_type = Marcel::MimeType.for(file, name: File.basename(file.path))
 
     url = "#{@api_url}/forms/libreoffice/convert"
     payload = {
@@ -74,6 +73,8 @@ class GotenbergClient
         File.extname(file.path).downcase
       elsif file.is_a?(String)
         File.extname(file).downcase
+      else
+        raise ArgumentError, 'Unsupported file type for extension check'
       end
 
     supported_extensions.include?(ext)
