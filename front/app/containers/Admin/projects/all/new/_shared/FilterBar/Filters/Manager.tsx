@@ -13,9 +13,10 @@ import messages from './messages';
 
 interface Props {
   mr?: string;
+  onClear?: () => void;
 }
 
-const Manager = ({ mr = '0px' }: Props) => {
+const Manager = ({ mr = '0px', onClear }: Props) => {
   const managerIds = useParam('managers') ?? [];
   const { formatMessage } = useIntl();
 
@@ -39,6 +40,7 @@ const Manager = ({ mr = '0px' }: Props) => {
         setParam('managers', managerIds);
       }}
       title={formatMessage(messages.manager)}
+      onClear={onClear}
     />
   );
 };

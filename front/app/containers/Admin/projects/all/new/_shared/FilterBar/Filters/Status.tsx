@@ -19,9 +19,10 @@ const OPTIONS = [
 
 interface Props {
   mr?: string;
+  onClear?: () => void;
 }
 
-const Status = ({ mr }: Props) => {
+const Status = ({ mr, onClear }: Props) => {
   const { formatMessage } = useIntl();
   const statuses = useParam('status') ?? [];
 
@@ -39,6 +40,7 @@ const Status = ({ mr }: Props) => {
         setParam('status', statuses as PublicationStatus[]);
       }}
       title={formatMessage(messages.status)}
+      onClear={onClear}
     />
   );
 };

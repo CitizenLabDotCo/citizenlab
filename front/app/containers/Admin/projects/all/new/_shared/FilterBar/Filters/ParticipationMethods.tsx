@@ -52,7 +52,11 @@ const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
   },
 ];
 
-const ParticipationMethods = () => {
+interface Props {
+  onClear: () => void;
+}
+
+const ParticipationMethods = ({ onClear }: Props) => {
   const participationMethods = useParam('participation_methods') ?? [];
   const { formatMessage } = useIntl();
 
@@ -77,6 +81,7 @@ const ParticipationMethods = () => {
         selected={participationMethods}
         options={options}
         onChange={handleOnChange}
+        onClear={onClear}
       />
       <IconTooltip
         content={formatMessage(messages.filterByCurrentPhaseMethod)}

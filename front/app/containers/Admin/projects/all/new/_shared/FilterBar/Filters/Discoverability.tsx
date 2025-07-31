@@ -24,7 +24,11 @@ const OPTIONS: {
   },
 ];
 
-const DiscoverabilityFilter = () => {
+interface Props {
+  onClear: () => void;
+}
+
+const DiscoverabilityFilter = ({ onClear }: Props) => {
   const value = useParam('discoverability') ?? [];
   const { formatMessage } = useIntl();
 
@@ -41,6 +45,7 @@ const DiscoverabilityFilter = () => {
       onChange={(discoverability) => {
         setParam('discoverability', discoverability as Discoverability[]);
       }}
+      onClear={onClear}
     />
   );
 };

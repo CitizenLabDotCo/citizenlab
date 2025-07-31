@@ -29,7 +29,11 @@ const OPTIONS: { value: ParticipationState; message: MessageDescriptor }[] = [
   },
 ];
 
-const ParticipationStates = () => {
+interface Props {
+  onClear: () => void;
+}
+
+const ParticipationStates = ({ onClear }: Props) => {
   const participationStates = useParam('participation_states') ?? [];
   const { formatMessage } = useIntl();
 
@@ -49,6 +53,7 @@ const ParticipationStates = () => {
           participationStates as ParticipationState[]
         );
       }}
+      onClear={onClear}
     />
   );
 };

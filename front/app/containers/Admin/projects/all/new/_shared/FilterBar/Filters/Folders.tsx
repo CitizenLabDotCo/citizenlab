@@ -12,7 +12,11 @@ import { useParam, setParam } from '../../params';
 
 import messages from './messages';
 
-const Folders = () => {
+interface Props {
+  onClear: () => void;
+}
+
+const Folders = ({ onClear }: Props) => {
   const folderIds = useParam('folder_ids') ?? [];
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -45,6 +49,7 @@ const Folders = () => {
       onChange={(folderIds) => {
         setParam('folder_ids', folderIds);
       }}
+      onClear={onClear}
     />
   );
 };

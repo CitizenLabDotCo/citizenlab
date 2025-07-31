@@ -28,7 +28,11 @@ const OPTIONS: {
   },
 ];
 
-const VisibilityFilter = () => {
+interface Props {
+  onClear: () => void;
+}
+
+const VisibilityFilter = ({ onClear }: Props) => {
   const visibilities = useParam('visibility') ?? [];
   const { formatMessage } = useIntl();
 
@@ -45,6 +49,7 @@ const VisibilityFilter = () => {
       onChange={(visibilities) => {
         setParam('visibility', visibilities as Visibility[]);
       }}
+      onClear={onClear}
     />
   );
 };

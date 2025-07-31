@@ -56,7 +56,7 @@ const DynamicFilters = () => {
           <ActiveFilter
             key={filterKey}
             filterKey={filterKey}
-            onRemove={handleRemoveFilter}
+            onRemove={() => handleRemoveFilter(filterKey)}
           />
         );
       })}
