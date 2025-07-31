@@ -2308,6 +2308,7 @@
   "app.containers.AdminPage.ProjectFiles.filePreviewLabel2": "Eksempel",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "Denne fil vil ikke blive uploadet, da den overskrider den maksimale grænse på 50 MB.",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "Alle filer er uploadet med succes",
+  "app.containers.AdminPage.ProjectFiles.generatingPreview": "Genererer forhåndsvisning...",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Information",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Description": "F.eks. WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Title": "Lydinterviews, optagelser fra borgermøder",
