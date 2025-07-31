@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
@@ -58,9 +58,11 @@ const FileUploader = ({
   const isDataRepositoryEnabled = useFeatureFlag({
     name: 'data_repository',
   });
+  // Track if we're currently dragging to prevent conflicts
+  const isDragging = useRef(false);
 
   useEffect(() => {
-    if (initialFiles) {
+    if (initialFiles && !isDragging.current) {
       setFiles(initialFiles);
     }
   }, [initialFiles]);
@@ -83,22 +85,31 @@ const FileUploader = ({
     };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    // Create a working copy of the files array
-    const filesCopy = [...files];
+    isDragging.current = true;
 
-    // Remove the file from its original position and store it
-    const [movedFile] = filesCopy.splice(fromIndex, 1);
+    setFiles((prevFiles) => {
+      // Create a copy of the files array
+      const filesCopy = [...prevFiles];
 
-    // Insert the file at its new position
-    filesCopy.splice(toIndex, 0, movedFile);
+      // Remove the file from its original position and store it
+      const [movedFile] = filesCopy.splice(fromIndex, 1);
 
-    filesCopy.forEach((file, index) => {
-      file.ordering = index;
+      // Insert the file at its new position
+      filesCopy.splice(toIndex, 0, movedFile);
+
+      filesCopy.forEach((file, index) => {
+        file.ordering = index;
+      });
+
+      // Notify parent component about the change
+      onFileReorder?.(filesCopy);
+      return filesCopy;
     });
+  };
 
-    // Update state and notify parent component about the change
-    setFiles(filesCopy);
-    onFileReorder?.(filesCopy);
+  // Reset dragging flag when drag ends
+  const handleDragEnd = () => {
+    isDragging.current = false;
   };
 
   const fileNames = files.map((file) => file.name).join(', ');
@@ -141,11 +152,12 @@ const FileUploader = ({
                 id={file.id || file.name}
                 index={index}
                 moveRow={handleDragRow}
+                dropRow={handleDragEnd}
                 isLastItem={index === files.length - 1}
               >
                 <Box w="100%">
                   <FileDisplay
-                    key={`item-${file.name}-${file.id}`}
+                    key={`item-${file.id || file.name}-display`}
                     onDeleteClick={handleFileOnRemove(file)}
                     file={file}
                   />
@@ -154,6 +166,7 @@ const FileUploader = ({
             ) : (
               <Box key={`item-${file.name}-${file.id}`} w="100%">
                 <FileDisplay
+                  key={`item-${file.id || file.name}-display`}
                   onDeleteClick={handleFileOnRemove(file)}
                   file={file}
                 />
