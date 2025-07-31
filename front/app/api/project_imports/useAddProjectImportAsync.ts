@@ -27,7 +27,7 @@ const addProjectImport = async ({
     body: { import: { file, locale } },
   });
 
-const addProjectImportAsync = () => {
+const useAddProjectImportAsync = () => {
   const queryClient = useQueryClient();
 
   return useMutation<JobIdResponse, CLErrors, RequestParams>({
@@ -40,4 +40,4 @@ const addProjectImportAsync = () => {
   });
 };
 
-export default addProjectImportAsync;
+export default useAddProjectImportAsync;
