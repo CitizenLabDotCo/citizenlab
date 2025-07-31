@@ -29,6 +29,7 @@ const Filters = () => {
   const participationMethods = useParam('participation_methods') ?? [];
   const visibility = useParam('visibility') ?? [];
   const discoverability = useParam('discoverability') ?? [];
+  const reviewState = useParam('review_state');
 
   return (
     <Box
@@ -77,9 +78,11 @@ const Filters = () => {
           />
           <Status
             mr="0px"
-            values={statuses}
-            onChange={(publicationStatuses) => {
-              setParam('status', publicationStatuses);
+            selectedStatuses={statuses}
+            selectedReviewState={reviewState}
+            onChange={({ statuses, reviewState }) => {
+              setParam('status', statuses);
+              setParam('review_state', reviewState);
             }}
           />
           <Folders
