@@ -6,6 +6,7 @@ module Files
   # @example Basic usage
   #   Files::DescriptionGenerator.new.generate_descriptions!(file)
   class DescriptionGenerator
+    PROMPT_TOKENS = 162
     PROMPT = <<~PROMPT
       Analyze the provided document and generate a concise description or abstract (2-3 sentences) that accurately summarizes its nature, main purpose, key content, and relevant context. 
       The description should be informative and capture the essential meaning of the document.
@@ -80,7 +81,7 @@ module Files
 
         Files::DescriptionGenerationJob.with_tracking.perform_later(file)
         true
-      rescue PG::UniqueViolation
+      rescue ActiveRecord::RecordNotUnique
         Rails.logger.info('Description generation job already exists for file.', file_id: file.id)
         false
       end
