@@ -57,32 +57,19 @@ namespace :single_use do
             puts "    (Note: Image URL #{uploader.url} exists in DB, but file not not found by CarrierWave. Check S3 or Fog config or if file was orphaned.)"
           end
         end
-      rescue CarrierWave::ProcessingError => e
-        errored_records << { id: record.id, error: "Processing Error: #{e.message}" }
-        puts "  ERROR: Failed to process image for #{model_name} ID: #{record.id}: #{e.message}"
-        ErrorReporter.report_msg(
-          'Image reprocessing failed during Rake task (CarrierWave Processing Error).',
-          extra: {
-            model_name: model_name,
-            record_id: record.id,
-            uploader_mount: uploader_mount,
-            tenant: tenant_host,
-            error_message: e.message,
-            backtrace: e.backtrace.first(5).join("\n")
-          }
-        )
       rescue StandardError => e
-        errored_records << { id: record.id, error: e.message }
+        errored_records << { id: record.id, error: e.message, error_class: e.class.name }
         puts "  ERROR: Failed to process image for #{model_name} ID: #{record.id}: #{e.message}"
+        
         ErrorReporter.report_msg(
-          'Image reprocessing failed during Rake task (General Error).',
+          'Image reprocessing failed during Rake task',
           extra: {
             model_name: model_name,
             record_id: record.id,
             uploader_mount: uploader_mount,
             tenant: tenant_host,
             error_message: e.message,
-            backtrace: e.backtrace.first(5).join("\n")
+            error_class: e.class.name
           }
         )
       end

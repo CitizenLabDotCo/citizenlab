@@ -11,6 +11,7 @@ module AdminApi
     # @param [String] template_yaml
     # @param [String, NilClass] folder_id
     def run(template_yaml, folder_id = nil)
+      puts "CopyProjectJob started!"
       check_in_tenant!
       folder = ProjectFolders::Folder.find(folder_id) if folder_id
       template = ::MultiTenancy::Templates::Utils.parse_yml(template_yaml)
