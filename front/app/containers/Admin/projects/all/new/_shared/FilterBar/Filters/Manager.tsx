@@ -2,7 +2,7 @@ import React from 'react';
 
 import useUsers from 'api/users/useUsers';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
@@ -27,20 +27,18 @@ const Manager = ({ mr = '0px' }: Props) => {
   const options =
     managers?.data.map((manager) => ({
       value: manager.id,
-      text: getFullName(manager),
+      label: getFullName(manager),
     })) ?? [];
 
   return (
-    <FilterSelector
-      multipleSelectionAllowed
+    <MultiSelect
       selected={managerIds}
-      values={options}
+      options={options}
       mr={mr}
       onChange={(managerIds) => {
         setParam('managers', managerIds);
       }}
       title={formatMessage(messages.manager)}
-      name="manager-select"
     />
   );
 };
