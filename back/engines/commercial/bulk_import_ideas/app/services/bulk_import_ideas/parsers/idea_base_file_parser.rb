@@ -182,6 +182,8 @@ module BulkImportIdeas::Parsers
         field[:value] = field[:value].downcase == 'x'
       elsif field[:input_type] == 'date' && field[:value].present?
         field[:value] = format_date(field[:value])
+      elsif field[:input_type] == 'matrix_linear_scale' && field[:value].present?
+        field[:value] = extract_matrix_value(field)
       else
         field[:value] = field[:value].to_s
       end
@@ -212,6 +214,35 @@ module BulkImportIdeas::Parsers
       email = email.gsub(/(com|co|org|gov|uk|fr|be|nl|de|cl|us|dk|ca|at|nu)$/, '.\1') # Single domain suffixes
 
       email&.match(User::EMAIL_REGEX) ? email : nil
+    end
+
+    # Format the matrix field as: { "one_az7": 4, "blah_3w8": 2, "this_fn0": 1, "that_ptu": 4 }
+    # NOTE: This does not currently follow the model of other fields (ie the form_fields in template_data)
+    # This would be too complex to implement at this time
+    def extract_matrix_value(field)
+      return nil if field[:value].blank?
+
+      multiloc_service = MultilocService.new
+      matrix_field = CustomField.find_by(key: field[:key])
+
+      label_values = (1..matrix_field.maximum).each_with_object({}) do |i, res|
+        label_attr = :"linear_scale_label_#{i}_multiloc"
+        label = I18n.with_locale(@locale) { multiloc_service.t(matrix_field[label_attr]) }
+        res[label] = i if label.present?
+      end
+
+      statement_keys = matrix_field.matrix_statements.each_with_object({}) do |statement, res|
+        statement_title = I18n.with_locale(@locale) { multiloc_service.t(statement.title_multiloc) }
+        res[statement_title] = statement.key if statement_title.present?
+      end
+
+      # Extract the matrix value from the string
+      field[:value].split(';').each_with_object({}) do |statement, res|
+        key, val = statement.split(':').map(&:strip)
+        key = statement_keys[key]
+        val = label_values[val]
+        res[key] = val.to_i if key && val
+      end
     end
   end
 end
