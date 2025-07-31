@@ -25,7 +25,7 @@ fr-BE:
       "mention_in_internal_comment": Mention dans un commentaire interne
       "new_comment_for_admin": Nouveau commentaire dans un projet que je modère
       "new_idea_for_admin_published": Une nouvelle contribution a été publiée dans un projet que je modère
-      "new_idea_for_admin_prescreening": Nouvelles données à approuver dans le cadre d'un projet I modéré
+      "new_idea_for_admin_prescreening": Nouvelle contribution en attente d’approbation dans un projet que je modère
       "official_feedback_on_idea_you_follow": Mise à jour d'une idée que vous suivez
       "password_reset": Réinitialisation du mot de passe
       "project_moderation_rights_received": Droits de modération de projet reçus
@@ -129,7 +129,7 @@ fr-BE:
       subject: 'Voici votre rapport hebdomadaire du %{time}'
       preheader: 'Rapport hebdomadaire de la plateforme de %{organizationName}'
       title: '%{firstName}, voici votre rapport hebdomadaire !'
-      event_description: 'Voici une sélection des idées les plus actives la semaine dernière. Découvrez ce qui se passe sur votre plateforme !'
+      event_description: 'Nous avons sélectionné pour vous les contributions qui ont suscité le plus d''activité au cours de la semaine dernière. Découvrez ce qui se passe sur votre plateforme !'
       cta_button: 'Visitez votre plateforme'
       new_users: 'Nouveaux utilisateurs'
       new_inputs: 'Nouvelles contributions'
@@ -183,7 +183,7 @@ fr-BE:
     assignee_digest:
       subject: 'Idées en attente de mise à jour: %{numberIdeas}'
       preheader: 'Rapport de gestion de %{organizationName}'
-      title: '%{firstName}, la contribution des citoyens est en attente de votre mise à jour'
+      title: '%{firstName}, une contribution attend votre retour'
       cta_button: 'Gérez les contributions'
       x_inputs_need_your_feedback: 'contributions attendent votre retour'
       title_assignment_past_week: 'Dernières idées qui vous ont été attribuées'
