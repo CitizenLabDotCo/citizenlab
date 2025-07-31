@@ -1,15 +1,17 @@
 import React from 'react';
 
+import { useModalQueue } from 'containers/App/ModalQueue';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';
 import StyledButton from './StyledButton';
 
 const DefaultText = () => {
+  const { queueModal } = useModalQueue();
   const { formatMessage } = useIntl();
   const openConsentManager = () => {
-    eventEmitter.emit('openConsentManager');
+    queueModal('consent-modal');
   };
 
   return (

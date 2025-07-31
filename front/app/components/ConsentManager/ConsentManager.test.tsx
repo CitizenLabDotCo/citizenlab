@@ -2,9 +2,10 @@ import React from 'react';
 
 import { IUserData } from 'api/users/types';
 
-import eventEmitter from 'utils/eventEmitter';
+import { useModalQueue } from 'containers/App/ModalQueue';
+
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
-import { render, act, screen, userEvent } from 'utils/testUtils/rtl';
+import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 // mocked functions
 import { IConsentCookie, setConsent } from './consent';
@@ -78,6 +79,17 @@ registerDestination({
   name: () => 'Intercom',
 });
 
+function ModalTestWrapper() {
+  const { queueModal } = useModalQueue();
+  const openModal = () => queueModal('consent-modal');
+  return (
+    <>
+      <button onClick={openModal} data-testid="open-modal-button" />
+      <ConsentManager />
+    </>
+  );
+}
+
 describe('<ConsentManager />', () => {
   describe('logged out, no cookie exists yet', () => {
     beforeEach(() => {
@@ -86,7 +98,7 @@ describe('<ConsentManager />', () => {
     });
 
     it('renders the modal', async () => {
-      render(<ConsentManager />);
+      render(<ModalTestWrapper />);
       const modal = await screen.findByTestId(
         'consent-manager',
         {},
@@ -101,7 +113,7 @@ describe('<ConsentManager />', () => {
     it('opens and closes the preference modal', async () => {
       // opens
       const user = userEvent.setup();
-      const { container } = render(<ConsentManager />);
+      const { container } = render(<ModalTestWrapper />);
       expect(
         container.querySelector('#e2e-preference-dialog')
       ).not.toBeInTheDocument();
@@ -122,7 +134,7 @@ describe('<ConsentManager />', () => {
 
     it('saves correct cookie if all cookies are accepted', async () => {
       const user = userEvent.setup();
-      render(<ConsentManager />);
+      render(<ModalTestWrapper />);
       await user.click(screen.getByTestId('accept-cookies-btn'));
 
       expect(setConsent).toHaveBeenCalledWith({
@@ -138,7 +150,7 @@ describe('<ConsentManager />', () => {
 
     it('rejects all cookies except functional if modal is closed', async () => {
       const user = userEvent.setup();
-      render(<ConsentManager />);
+      render(<ModalTestWrapper />);
       await user.keyboard('[Escape]');
 
       expect(setConsent).toHaveBeenCalledWith({
@@ -154,7 +166,7 @@ describe('<ConsentManager />', () => {
 
     it('rejects all cookies except functional if preference modal is opened and confirmed without changes', async () => {
       const user = userEvent.setup();
-      render(<ConsentManager />);
+      render(<ModalTestWrapper />);
       await user.click(screen.getByTestId('manage-preferences-btn'));
       await user.click(screen.getByTestId('preferences-save'));
 
@@ -173,12 +185,12 @@ describe('<ConsentManager />', () => {
       // This test is important because I removed setting of preferences after saving all cookies, thinking it was redundant.
       // However, it turned out that the modal was not able to remember choices (without page refresh).
       const user = userEvent.setup();
-      const { container } = render(<ConsentManager />);
+      const { container } = render(<ModalTestWrapper />);
       await user.click(screen.getByTestId('accept-cookies-btn'));
       expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
       // Simulate opening the consent manager again.
       // We use events to trigger the modal from e.g. the platform footer.
-      act(() => eventEmitter.emit('openConsentManager'));
+      await user.click(screen.getByTestId('open-modal-button'));
       await user.click(screen.getByTestId('manage-preferences-btn'));
       // By default, this is set to false, so checking that it's true confirms that the modal remembers choices.
       expect(container.querySelector('#analytics-radio-true')).toBeChecked();
@@ -186,7 +198,7 @@ describe('<ConsentManager />', () => {
 
     it('accepts only functional and analytics cookies if analytics is enabled in preference modal', async () => {
       const user = userEvent.setup();
-      const { container } = render(<ConsentManager />);
+      const { container } = render(<ModalTestWrapper />);
       await user.click(screen.getByTestId('manage-preferences-btn'));
       await user.click(container.querySelector('#analytics-radio-true'));
       await user.click(screen.getByTestId('preferences-save'));
@@ -231,13 +243,13 @@ describe('<ConsentManager />', () => {
     });
 
     it('still allows cookies to be changed through modal', async () => {
-      const { container } = render(<ConsentManager />);
+      const { container } = render(<ModalTestWrapper />);
       const user = userEvent.setup();
       expect(
         container.querySelector('#e2e-preference-dialog')
       ).not.toBeInTheDocument();
 
-      act(() => eventEmitter.emit('openConsentManager'));
+      await user.click(screen.getByTestId('open-modal-button'));
 
       await user.click(screen.getByTestId('manage-preferences-btn'));
 
@@ -266,10 +278,11 @@ describe('<ConsentManager />', () => {
       // The function that dealt with "accept all" was also once implemented in a way that kept existing preferences
       // (even if they were false).
       const user = userEvent.setup();
-      render(<ConsentManager />);
+      render(<ModalTestWrapper />);
+
       // Simulate opening the consent manager.
       // We use events to trigger the modal from e.g. the platform footer.
-      act(() => eventEmitter.emit('openConsentManager'));
+      await user.click(screen.getByTestId('open-modal-button'));
       expect(screen.getByTestId('consent-manager')).toBeVisible();
       await user.click(screen.getByTestId('accept-cookies-btn'));
 
@@ -285,7 +298,7 @@ describe('<ConsentManager />', () => {
 
       expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
 
-      act(() => eventEmitter.emit('openConsentManager'));
+      await user.click(screen.getByTestId('open-modal-button'));
       expect(screen.getByTestId('consent-manager')).toBeVisible();
       await user.click(screen.getByTestId('accept-cookies-btn'));
 
@@ -310,10 +323,11 @@ describe('<ConsentManager />', () => {
       // (even if they were false).
       // Hence we have a test for this when rejecting as well.
       const user = userEvent.setup();
-      render(<ConsentManager />);
+      render(<ModalTestWrapper />);
+
       // Simulate opening the consent manager.
       // We use events to trigger the modal from e.g. the platform footer.
-      act(() => eventEmitter.emit('openConsentManager'));
+      await user.click(screen.getByTestId('open-modal-button'));
       expect(screen.getByTestId('consent-manager')).toBeVisible();
       await user.click(screen.getByTestId('reject-cookies-btn'));
 
@@ -329,7 +343,7 @@ describe('<ConsentManager />', () => {
       });
       expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
 
-      act(() => eventEmitter.emit('openConsentManager'));
+      await user.click(screen.getByTestId('open-modal-button'));
       expect(screen.getByTestId('consent-manager')).toBeVisible();
 
       await user.click(screen.getByTestId('reject-cookies-btn'));

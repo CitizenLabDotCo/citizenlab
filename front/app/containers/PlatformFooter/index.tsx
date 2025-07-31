@@ -17,9 +17,10 @@ import { TPolicyPage } from 'api/custom_pages/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
+import { useModalQueue } from 'containers/App/ModalQueue';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -222,6 +223,7 @@ const MESSAGES_MAP: { [key in TFooterPage]: MessageDescriptor } = {
 };
 
 const PlatformFooter = ({ className }: Props) => {
+  const { queueModal } = useModalQueue();
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const isTabletOrSmaller = useBreakpoint('tablet');
@@ -234,7 +236,7 @@ const PlatformFooter = ({ className }: Props) => {
   );
 
   const openConsentManager = () => {
-    eventEmitter.emit('openConsentManager');
+    queueModal('consent-modal');
   };
 
   /* 

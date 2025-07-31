@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
-import useObserveEvent from 'hooks/useObserveEvent';
-
 import { useModalQueue } from 'containers/App/ModalQueue';
 
 import { useConsentRequired } from './utils';
@@ -29,10 +27,6 @@ const ConsentManager = () => {
       queueModal('consent-modal');
     }
   }, [from, isConsentRequired, queueModal, removeModal]);
-
-  useObserveEvent('openConsentManager', () => {
-    queueModal('consent-modal');
-  });
 
   return null;
 };
