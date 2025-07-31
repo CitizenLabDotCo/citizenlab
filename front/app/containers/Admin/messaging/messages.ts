@@ -146,6 +146,10 @@ export default defineMessages({
   },
   formSave: {
     id: 'app.containers.Admin.emails.formSave',
+    defaultMessage: 'Save',
+  },
+  formSaveAsDraft: {
+    id: 'app.containers.Admin.emails.formSaveAsDraft',
     defaultMessage: 'Save as draft',
   },
   previewTitle: {
