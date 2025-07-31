@@ -25,10 +25,10 @@ import GanttItemIconBar from 'components/UI/GanttChart/components/GanttItemIconB
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import { PUBLICATION_STATUS_LABELS } from '../../_shared/constants';
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
 import { getStatusColor } from '../../_shared/utils';
-import { PUBLICATION_STATUS_LABELS } from '../../constants';
 
 import messages from './messages';
 
