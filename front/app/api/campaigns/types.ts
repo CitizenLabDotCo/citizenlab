@@ -64,6 +64,9 @@ export interface ICampaignData {
     groups: {
       data: IRelationship[];
     };
+    conflicting_contexts?: {
+      data?: IRelationship[];
+    };
   };
 }
 
