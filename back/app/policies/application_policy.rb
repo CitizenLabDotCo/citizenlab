@@ -3,7 +3,7 @@
 class ApplicationPolicy
   # Define patterns for class names that should be *excluded* from
   # Pundit policy lookup when in test environment.
-  # This list will specifically target Shoulda::Matchers temporary models.
+  # This list specifically targets Shoulda::Matchers temporary models.
   EXCLUDED_TEST_POLICY_MODEL_NAME_PATTERNS = [
     /^Shoulda::Matchers::ActiveRecord::Uniqueness::TestModels::/
   ].freeze
