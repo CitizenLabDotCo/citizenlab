@@ -2293,6 +2293,7 @@
   "app.containers.AdminPage.ProjectFiles.filePreviewLabel2": "ਝਲਕ",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "ਇਹ ਫਾਈਲ ਅੱਪਲੋਡ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ, ਕਿਉਂਕਿ ਇਹ 50 MB ਦੀ ਵੱਧ ਤੋਂ ਵੱਧ ਸੀਮਾ ਤੋਂ ਵੱਧ ਹੈ।",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "ਸਾਰੀਆਂ ਫਾਈਲਾਂ ਸਫਲਤਾਪੂਰਵਕ ਅੱਪਲੋਡ ਕੀਤੀਆਂ ਗਈਆਂ",
+  "app.containers.AdminPage.ProjectFiles.generatingPreview": "ਪੂਰਵਦਰਸ਼ਨ ਤਿਆਰ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "ਜਾਣਕਾਰੀ",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Description": "ਜਿਵੇਂ ਕਿ WAV, MP3",
   "app.containers.AdminPage.ProjectFiles.informationPoint1Title": "ਆਡੀਓ ਇੰਟਰਵਿਊ, ਟਾਊਨ ਹਾਲ ਰਿਕਾਰਡਿੰਗਾਂ",
