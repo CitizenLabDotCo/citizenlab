@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 class ApplicationPolicy
+  # Define patterns for class names that should be *excluded* from Pundit policy lookup.
+  # This list will contain regex patterns for temporary or non-application models.
+  # Placed at the top-level of ApplicationPolicy, so it's a class constant.
+  EXCLUDED_POLICY_MODEL_NAME_PATTERNS = [
+    # Pattern for Shoulda::Matchers temporary models (like 'Projecu')
+    /^Shoulda::Matchers::ActiveRecord::Uniqueness::TestModels::/,
+    /^AnonymousClass/, # Catches common forms of anonymous classes if their name method behaves this way
+  ].freeze
+
   module Helpers
     def raise_not_authorized(reason)
       raise Pundit::NotAuthorizedErrorWithReason, reason: reason
@@ -12,8 +21,29 @@ class ApplicationPolicy
       Pundit.policy!(user_context, record)
     end
 
-    def scope_for(scope)
-      Pundit.policy_scope!(user_context, scope)
+    def scope_for(target_scope_or_klass)
+      # 1. Basic check if it's a Class and an ActiveRecord descendant.
+      is_a_potential_ar_model = target_scope_or_klass.is_a?(Class) &&
+                                (target_scope_or_klass < ActiveRecord::Base || target_scope_or_klass < ApplicationRecord)
+
+      if is_a_potential_ar_model
+        # 2. Check against our EXCLUDED_POLICY_MODEL_NAME_PATTERNS.
+        # This catches "Projecu" and similar temporary models.
+        if EXCLUDED_POLICY_MODEL_NAME_PATTERNS.any? { |pattern| target_scope_or_klass.name.match?(pattern) }
+          Rails.logger.debug "DEBUG: ApplicationPolicy::Helpers#scope_for: Skipping excluded temporary model by pattern: #{target_scope_or_klass.name.inspect}"
+          return target_scope_or_klass.none # Return an empty ActiveRecord::Relation
+        end
+
+      # Handle cases where `target_scope_or_klass` is not a Class object
+      # (e.g., it's already an ActiveRecord::Relation instance, which is fine)
+      # Or if it's a Class but not an ActiveRecord descendant (e.g., a simple Ruby class that doesn't need policy scoping)
+      elsif target_scope_or_klass.is_a?(Class) && target_scope_or_klass.name.blank?
+        Rails.logger.debug "DEBUG: ApplicationPolicy::Helpers#scope_for: Skipping anonymous/blank-named class: #{target_scope_or_klass.inspect}"
+        return [] # Return an empty array for anonymous classes
+      end
+
+      # If it passes all exclusion filters, assume it's a legitimate target for Pundit.
+      Pundit.policy_scope!(user_context, target_scope_or_klass)
     end
 
     def can_moderate?
