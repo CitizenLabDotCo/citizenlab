@@ -34,9 +34,9 @@ const Filters = () => {
         />
         <Status
           mr="8px"
-          values={statuses}
-          onChange={(publicationStatuses) => {
-            setParam('status', publicationStatuses);
+          selectedStatuses={statuses}
+          onChange={({ statuses }) => {
+            setParam('status', statuses);
           }}
         />
       </Box>
