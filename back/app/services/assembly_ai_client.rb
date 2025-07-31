@@ -12,7 +12,7 @@ class AssemblyAIClient
   class RateLimitError < Error; end
   class TranscriptNotFoundError < Error; end
 
-  API_BASE_URL = 'https://api.assemblyai.com/v2'
+  API_BASE_URL = 'https://api.assemblyai.com'
 
   def initialize(api_key: nil)
     @api_key = api_key || ENV.fetch('ASSEMBLYAI_API_KEY', nil)
@@ -23,21 +23,26 @@ class AssemblyAIClient
   # @param audio_url [String] URL of the audio/video file to transcribe
   # @param options [Hash] Optional transcription parameters
   # @return [Hash] Response containing transcript ID and status
-  def submit_transcript(audio_url, options = {})
+  def submit_transcript_from_url(audio_url, options = {})
     payload = {
       audio_url: audio_url,
       **default_options.merge(options)
     }
 
-    response = post('/transcript', payload)
+    response = post('/v2/transcript', payload)
     handle_response(response)
+  end
+
+  def submit_transcript_from_file(file, options = {})
+    url = upload_file(file)
+    submit_transcript_from_url(url, options)
   end
 
   # Get transcript status and results
   # @param transcript_id [String] AssemblyAI transcript ID
   # @return [Hash] Transcript data including status and results
   def get_transcript(transcript_id)
-    response = get("/transcript/#{transcript_id}")
+    response = get("/v2/transcript/#{transcript_id}")
     handle_response(response)
   end
 
@@ -51,26 +56,32 @@ class AssemblyAIClient
     false
   end
 
-  # Health check for AssemblyAI service
-  # @return [Boolean] True if service is accessible
-  def healthy?
-    response = get('/transcript/list?limit=1')
-    response.status == 200
-  rescue StandardError
-    false
-  end
-
   private
 
   attr_reader :api_key
 
+  def upload_file(file_path)
+    conn = Faraday.new(url: API_BASE_URL) do |faraday|
+      faraday.response :json
+      faraday.request :multipart
+      faraday.headers['Authorization'] = api_key
+      faraday.headers['Content-Type'] = 'application/octet-stream'
+    end
+    file_data = File.read(file_path)
+    response = conn.post('/v2/upload') do |req|
+      req.body = file_data
+    end
+    body = handle_response(response)
+    body['upload_url']
+  end
+
   def connection
-    @connection ||= Faraday.new(url: API_BASE_URL) do |conn|
-      conn.request :json
-      conn.response :json
-      conn.headers['Authorization'] = api_key
-      conn.headers['Content-Type'] = 'application/json'
-      conn.adapter Faraday.default_adapter
+    @connection ||= Faraday.new(url: API_BASE_URL) do |faraday|
+      faraday.request :json
+      faraday.response :json
+      faraday.headers['Authorization'] = api_key
+      faraday.headers['Content-Type'] = 'application/json'
+      faraday.adapter Faraday.default_adapter
     end
   end
 

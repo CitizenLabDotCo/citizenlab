@@ -16,34 +16,33 @@ module Files
     MAX_DELAY = 5.minutes
 
     # Perform transcript generation or status checking
-    # @param transcript_id [String] UUID of the transcript record
+    # @param transcript [Files::Transcript] Transcript record
     # @param attempt [Integer] Current attempt number (for re-enqueued jobs)
-    def perform(transcript_id, attempt = 1)
-      transcript = Files::Transcript.find(transcript_id)
+    def run(transcript, attempt = 1)
       service = Files::TranscriptService.new(transcript.file)
 
       case transcript.status
       when 'pending'
         # Submit transcript to AssemblyAI
-        Rails.logger.info "Submitting transcript #{transcript_id} to AssemblyAI"
+        Rails.logger.info "Submitting transcript #{transcript.id} to AssemblyAI"
         service.submit_transcript(transcript)
 
         # Re-enqueue to check status
-        self.class.set(wait: BASE_DELAY).perform_later(transcript_id, attempt + 1)
+        self.class.set(wait: BASE_DELAY).perform_later(transcript, attempt + 1)
 
       when 'processing'
         # Check status with AssemblyAI
-        Rails.logger.info "Checking transcript #{transcript_id} status (attempt #{attempt})"
+        Rails.logger.info "Checking transcript #{transcript.id} status (attempt #{attempt})"
         service.check_transcript_status(transcript)
 
         # Re-enqueue if still processing and under max attempts
         if transcript.reload.processing? && attempt < MAX_ATTEMPTS
           delay = calculate_delay(attempt)
-          Rails.logger.info "Re-enqueuing transcript #{transcript_id} check in #{delay} seconds"
-          self.class.set(wait: delay).perform_later(transcript_id, attempt + 1)
+          Rails.logger.info "Re-enqueuing transcript #{transcript.id} check in #{delay} seconds"
+          self.class.set(wait: delay).perform_later(transcript, attempt + 1)
         elsif transcript.processing? && attempt >= MAX_ATTEMPTS
           # Mark as failed if max attempts reached
-          Rails.logger.error "Transcript #{transcript_id} timed out after #{MAX_ATTEMPTS} attempts"
+          Rails.logger.error "Transcript #{transcript.id} timed out after #{MAX_ATTEMPTS} attempts"
           transcript.update!(
             status: 'failed',
             error_message: "Transcription timed out after #{MAX_ATTEMPTS} attempts (#{MAX_ATTEMPTS * BASE_DELAY / 60} minutes)"
@@ -52,20 +51,20 @@ module Files
 
       when 'completed', 'failed'
         # Job is complete, nothing more to do
-        Rails.logger.info "Transcript #{transcript_id} is #{transcript.status}"
+        Rails.logger.info "Transcript #{transcript.id} is #{transcript.status}"
 
       else
-        Rails.logger.error "Unknown transcript status for #{transcript_id}: #{transcript.status}"
+        Rails.logger.error "Unknown transcript status for #{transcript.id}: #{transcript.status}"
       end
     rescue ActiveRecord::RecordNotFound
-      Rails.logger.error "Transcript #{transcript_id} not found"
+      Rails.logger.error "Transcript #{transcript.id} not found"
     rescue StandardError => e
-      Rails.logger.error "Error processing transcript #{transcript_id}: #{e.message}"
+      Rails.logger.error "Error processing transcript #{transcript.id}: #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
 
       # Try to mark transcript as failed if we can find it
       begin
-        transcript = Files::Transcript.find(transcript_id)
+        transcript = Files::Transcript.find(transcript.id)
         transcript.update!(
           status: 'failed',
           error_message: "Job failed: #{e.message}"
@@ -75,7 +74,7 @@ module Files
       end
 
       # Re-raise to trigger job retry mechanism
-      raise e
+      raise
     end
 
     private

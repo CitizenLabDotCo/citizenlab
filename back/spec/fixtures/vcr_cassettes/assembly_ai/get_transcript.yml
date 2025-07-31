@@ -1,0 +1,78 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.assemblyai.com/v2/transcript/6db87a5b-db5e-4f59-a05c-503b64cdb7a9
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - 387eed0f33c24d74bafd9a70fd9516f7
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Faraday v2.12.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 31 Jul 2025 13:23:06 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '1809'
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - AWSALB=4L32aKZkTJ97jhLn9/6lkotpkNrfx7F2ovUTnWelOch43EHb1akx23O5y1i+rR4TysuR+x3sHFScfcvxCHEQ3+draFlVEUriF9uzGI+D6bBR3gCZOv3B9K4LObYo;
+        Expires=Thu, 07 Aug 2025 13:23:06 GMT; Path=/
+      - AWSALBCORS=4L32aKZkTJ97jhLn9/6lkotpkNrfx7F2ovUTnWelOch43EHb1akx23O5y1i+rR4TysuR+x3sHFScfcvxCHEQ3+draFlVEUriF9uzGI+D6bBR3gCZOv3B9K4LObYo;
+        Expires=Thu, 07 Aug 2025 13:23:06 GMT; Path=/; SameSite=None; Secure
+      - AWSALBTG=dpo8cexRbb1XvoRsktr6kFCPsSfWN6VFZcTcNJSrJQoi33b3TZ2T1JSPRKbN/wb6K/B84fh8FLpZdzcTauyQFqloqZnGJzagSfJ48X6uBQYApUp+A0KFX+pgp17MreGDTNr6cQJfWOMoM31zftOz6qh6/bICAnUK7ViZup1dtzCT;
+        Expires=Thu, 07 Aug 2025 13:23:06 GMT; Path=/
+      - AWSALBTGCORS=dpo8cexRbb1XvoRsktr6kFCPsSfWN6VFZcTcNJSrJQoi33b3TZ2T1JSPRKbN/wb6K/B84fh8FLpZdzcTauyQFqloqZnGJzagSfJ48X6uBQYApUp+A0KFX+pgp17MreGDTNr6cQJfWOMoM31zftOz6qh6/bICAnUK7ViZup1dtzCT;
+        Expires=Thu, 07 Aug 2025 13:23:06 GMT; Path=/; SameSite=None; Secure
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - Content-Type, Authorization, X-Requested-With, User-Agent, AssemblyAI-Agent
+      Access-Control-Allow-Methods:
+      - POST, PUT, GET, OPTIONS
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Etag:
+      - '"d339361514a7b221681ecae364de19273b23528e"'
+    body:
+      encoding: UTF-8
+      string: '{"id": "6db87a5b-db5e-4f59-a05c-503b64cdb7a9", "language_model": "assemblyai_default",
+        "acoustic_model": "assemblyai_default", "language_code": null, "status": "error",
+        "audio_url": "https://example.com/audio.mp3", "text": null, "words": null,
+        "utterances": null, "confidence": null, "audio_duration": 0, "punctuate":
+        true, "format_text": true, "dual_channel": false, "webhook_url": null, "webhook_status_code":
+        null, "webhook_auth": false, "webhook_auth_header_name": null, "speed_boost":
+        false, "auto_highlights_result": null, "auto_highlights": false, "audio_start_from":
+        null, "audio_end_at": null, "word_boost": [], "boost_param": null, "prompt":
+        null, "keyterms_prompt": [], "filter_profanity": false, "redact_pii": false,
+        "redact_pii_audio": false, "redact_pii_audio_quality": null, "redact_pii_audio_options":
+        null, "redact_pii_policies": null, "redact_pii_sub": null, "speaker_labels":
+        true, "speaker_options": null, "error": "Download error, unable to download
+        https://example.com/audio.mp3. Please make sure the file exists and is accessible
+        from the internet.", "content_safety": null, "iab_categories": null, "content_safety_labels":
+        {}, "iab_categories_result": {}, "language_detection": true, "language_confidence_threshold":
+        null, "language_confidence": null, "custom_spelling": null, "throttled": false,
+        "auto_chapters": false, "summarization": false, "summary_type": null, "summary_model":
+        null, "custom_topics": false, "topics": [], "speech_threshold": null, "speech_model":
+        null, "chapters": null, "disfluencies": false, "entity_detection": false,
+        "sentiment_analysis": false, "sentiment_analysis_results": null, "entities":
+        null, "speakers_expected": null, "summary": null, "custom_topics_results":
+        null, "is_deleted": null, "multichannel": null, "project_id": 667342, "token_id":
+        673447}'
+  recorded_at: Thu, 31 Jul 2025 13:23:06 GMT
+recorded_with: VCR 6.2.0

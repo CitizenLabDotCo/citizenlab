@@ -120,7 +120,7 @@ module Files
             'speaker_labels' => { 'type' => %w[boolean null] },
             'summarization' => { 'type' => %w[boolean null] },
             'auto_highlights' => { 'type' => %w[boolean null] },
-            'content_safety' => { 'type' => %w[boolean null] },
+            # 'content_safety' => { 'type' => %w[boolean null] },
             'entity_detection' => { 'type' => %w[boolean null] },
             'sentiment_analysis' => { 'type' => %w[boolean null] }
           },

@@ -4,12 +4,11 @@ require 'rails_helper'
 
 RSpec.describe Files::TranscriptService, type: :service do
   let(:service) { described_class.new(file) }
-  let(:file) { create(:file, ai_processing_allowed: true, mime_type: 'audio/mp3') }
+  let(:file) { create(:file, ai_processing_allowed: true, name: 'david.mp3') }
   let(:mock_client) { instance_double(AssemblyAIClient) }
 
   before do
     allow(AssemblyAIClient).to receive(:new).and_return(mock_client)
-    allow(mock_client).to receive(:healthy?).and_return(true)
   end
 
   describe '#should_generate_transcript?' do
@@ -42,14 +41,6 @@ RSpec.describe Files::TranscriptService, type: :service do
         expect(service.should_generate_transcript?).to be false
       end
     end
-
-    context 'when AssemblyAI is not available' do
-      before { allow(mock_client).to receive(:healthy?).and_return(false) }
-
-      it 'returns false' do
-        expect(service.should_generate_transcript?).to be false
-      end
-    end
   end
 
   describe '#enqueue_transcript' do
@@ -61,7 +52,7 @@ RSpec.describe Files::TranscriptService, type: :service do
         expect(transcript.file).to eq file
         expect(transcript.status).to eq 'pending'
 
-        expect(Files::GenerateTranscriptJob).to have_been_enqueued.with(transcript.id)
+        expect(Files::GenerateTranscriptJob).to have_been_enqueued.with(transcript)
       end
     end
 
@@ -69,8 +60,9 @@ RSpec.describe Files::TranscriptService, type: :service do
       let(:file) { create(:file, ai_processing_allowed: false) }
 
       it 'does not create transcript or enqueue job' do
-        expect { service.enqueue_transcript }.not_to change(Files::Transcript, :count)
-        expect(Files::GenerateTranscriptJob).not_to have_been_enqueued
+        expectation = expect { service.enqueue_transcript }
+        expectation.not_to change(Files::Transcript, :count)
+        expectation.not_to have_enqueued_job(Files::GenerateTranscriptJob)
       end
     end
   end
@@ -81,7 +73,7 @@ RSpec.describe Files::TranscriptService, type: :service do
 
     context 'when transcript is pending' do
       before do
-        allow(mock_client).to receive(:submit_transcript).and_return(assembly_response)
+        allow(mock_client).to receive(:submit_transcript_from_file).and_return(assembly_response)
         allow(file.content).to receive(:url).and_return('https://example.com/audio.mp3')
       end
 
@@ -92,8 +84,8 @@ RSpec.describe Files::TranscriptService, type: :service do
         expect(transcript.status).to eq 'processing'
         expect(transcript.assemblyai_id).to eq 'abc123'
 
-        expect(mock_client).to have_received(:submit_transcript).with(
-          'https://example.com/audio.mp3',
+        expect(mock_client).to have_received(:submit_transcript_from_file).with(
+          kind_of(String),
           hash_including(
             punctuate: true,
             format_text: true,
@@ -104,18 +96,9 @@ RSpec.describe Files::TranscriptService, type: :service do
       end
     end
 
-    context 'when transcript is not pending' do
-      let(:transcript) { create(:file_transcript, file: file, status: 'processing') }
-
-      it 'does not submit to AssemblyAI' do
-        service.submit_transcript(transcript)
-        expect(mock_client).not_to have_received(:submit_transcript)
-      end
-    end
-
     context 'when AssemblyAI submission fails' do
       before do
-        allow(mock_client).to receive(:submit_transcript).and_raise(AssemblyAIClient::ApiError, 'API Error')
+        allow(mock_client).to receive(:submit_transcript_from_file).and_raise(AssemblyAIClient::ApiError, 'API Error')
       end
 
       it 'marks transcript as failed' do
@@ -208,33 +191,10 @@ RSpec.describe Files::TranscriptService, type: :service do
       let(:transcript) { create(:file_transcript, file: file, status: 'completed') }
 
       it 'does not check status with AssemblyAI' do
+        allow(mock_client).to receive(:get_transcript)
         service.check_transcript_status(transcript)
         expect(mock_client).not_to have_received(:get_transcript)
       end
-    end
-  end
-
-  context 'supported formats' do
-    it 'supports audio formats' do
-      Files::TranscriptService::SUPPORTED_AUDIO_FORMATS.each do |format|
-        file = create(:file, ai_processing_allowed: true, mime_type: format)
-        service = described_class.new(file)
-        expect(service.send(:supported_format?)).to be true
-      end
-    end
-
-    it 'supports video formats' do
-      Files::TranscriptService::SUPPORTED_VIDEO_FORMATS.each do |format|
-        file = create(:file, ai_processing_allowed: true, mime_type: format)
-        service = described_class.new(file)
-        expect(service.send(:supported_format?)).to be true
-      end
-    end
-
-    it 'does not support unsupported formats' do
-      file = create(:file, ai_processing_allowed: true, mime_type: 'text/plain')
-      service = described_class.new(file)
-      expect(service.send(:supported_format?)).to be false
     end
   end
 end

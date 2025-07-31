@@ -27,7 +27,6 @@ module Files
       return false unless file.ai_processing_allowed?
       return false if file.transcript.present?
       return false unless supported_format?
-      return false unless assembly_ai_available?
 
       true
     end
@@ -38,7 +37,7 @@ module Files
       return unless should_generate_transcript?
 
       transcript = create_transcript_record
-      Files::GenerateTranscriptJob.perform_later(transcript.id)
+      Files::GenerateTranscriptJob.perform_later(transcript)
       transcript
     end
 
@@ -99,13 +98,6 @@ module Files
       SUPPORTED_FORMATS.include?(file.mime_type.downcase)
     end
 
-    def assembly_ai_available?
-      @assembly_ai_client ||= AssemblyAIClient.new
-      @assembly_ai_client.healthy?
-    rescue StandardError
-      false
-    end
-
     def create_transcript_record
       Files::Transcript.create!(
         file: file,
@@ -117,15 +109,16 @@ module Files
       client = AssemblyAIClient.new
 
       # Get publicly accessible URL for the file
-      file_url = file.content.url
-      unless file_url.start_with?('http')
-        # Convert relative URL to absolute URL
-        base_url = Rails.application.routes.default_url_options[:host] || 'localhost:3000'
-        protocol = Rails.env.production? ? 'https' : 'http'
-        file_url = "#{protocol}://#{base_url}#{file_url}"
-      end
+      # file_url = file.content.url
+      # unless file_url.start_with?('http')
+      #   # Convert relative URL to absolute URL
+      #   base_url = Rails.application.routes.default_url_options[:host] || 'localhost:3000'
+      #   protocol = Rails.env.production? ? 'https' : 'http'
+      #   file_url = "#{protocol}://#{base_url}#{file_url}"
+      # end
+      # response = client.submit_transcript_from_url(file_url, transcript_options)
 
-      response = client.submit_transcript(file_url, transcript_options)
+      response = client.submit_transcript_from_file(file.content.file.file, transcript_options)
       response['id']
     end
 
