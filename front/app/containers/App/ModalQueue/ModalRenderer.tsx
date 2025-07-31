@@ -12,7 +12,7 @@ const ModalRenderer = ({ modalId }: { modalId: ModalId | null }) => {
   return (
     // Suspense is needed because the modals are loaded lazily.
     // Removing the Suspense will cause an error if there are multiple
-    // modals being rendered and the next one takes some time to load.
+    // modals queued and the next one takes some time to load.
     <Suspense fallback={<Spinner />}>
       <ModalComponent />
     </Suspense>
