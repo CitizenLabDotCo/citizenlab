@@ -57,10 +57,10 @@ const MultiSelect = ({
 
   const selectorId = useId();
 
-  const showClearButton = onClear && selected.length > 0 && (hover || focused);
+  const showClearButton = onClear && (hover || focused);
 
   return (
-    <Box {...boxProps}>
+    <Box {...boxProps} onMouseLeave={() => setHover(undefined)}>
       <Box position="relative">
         <InputContainer
           id={selectorId}
