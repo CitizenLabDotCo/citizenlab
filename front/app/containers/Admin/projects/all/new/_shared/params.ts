@@ -7,7 +7,33 @@ import { Parameters } from 'api/projects_mini_admin/types';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-export const setParam = <ParamName extends keyof Parameters>(
+export type Parameter = keyof Parameters;
+
+export const PARAMS: Parameter[] = [
+  'status',
+  'managers',
+  'search',
+  'min_start_date',
+  'max_start_date',
+  'sort',
+  'participation_states',
+  'folder_ids',
+  'participation_methods',
+  'visibility',
+  'discoverability',
+];
+
+const MULTISELECT_PARAMS = new Set<string>([
+  'status',
+  'managers',
+  'participation_states',
+  'folder_ids',
+  'participation_methods',
+  'visibility',
+  'discoverability',
+] satisfies Parameter[]);
+
+export const setParam = <ParamName extends Parameter>(
   paramName: ParamName,
   paramValue: Parameters[ParamName]
 ) => {
@@ -21,17 +47,7 @@ export const setParam = <ParamName extends keyof Parameters>(
   }
 };
 
-const MULTISELECT_PARAMS = new Set<string>([
-  'status',
-  'managers',
-  'participation_states',
-  'folder_ids',
-  'participation_methods',
-  'visibility',
-  'discoverability',
-]);
-
-export const useParam = <ParamName extends keyof Parameters>(
+export const useParam = <ParamName extends Parameter>(
   paramName: ParamName
 ): Parameters[ParamName] | undefined => {
   const [searchParams] = useSearchParams();
@@ -46,20 +62,6 @@ export const useParam = <ParamName extends keyof Parameters>(
 
   return (paramValue ?? undefined) as Parameters[typeof paramName] | undefined;
 };
-
-export const PARAMS: (keyof Parameters)[] = [
-  'status',
-  'managers',
-  'search',
-  'min_start_date',
-  'max_start_date',
-  'sort',
-  'participation_states',
-  'folder_ids',
-  'participation_methods',
-  'visibility',
-  'discoverability',
-];
 
 export const useParams = () => {
   const [searchParams] = useSearchParams();
