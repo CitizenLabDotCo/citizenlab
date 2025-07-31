@@ -12,7 +12,7 @@ const fetchPreviewByFileId = (id?: string | null) =>
     action: 'get',
   });
 
-const useFilePreview = (id?: string | null) => {
+const useFilePreview = (id?: string) => {
   return useQuery<IFilePreview, CLErrors, IFilePreview, FilePreviewKeys>({
     queryKey: filePreviewsKeys.item({ id }),
     queryFn: () => fetchPreviewByFileId(id),
