@@ -52,7 +52,10 @@ const Insights = () => {
 
   if (isFileSelectionOpen) {
     return (
-      <FileSelectionView setIsFileSelectionOpen={setIsFileSelectionOpen} />
+      <FileSelectionView
+        setIsFileSelectionOpen={setIsFileSelectionOpen}
+        analysisId={analysisId}
+      />
     );
   }
   return (
@@ -95,7 +98,10 @@ const Insights = () => {
           </Text>
         </Box>
 
-        <AddFileContext setIsFileSelectionOpen={setIsFileSelectionOpen} />
+        <AddFileContext
+          setIsFileSelectionOpen={setIsFileSelectionOpen}
+          analysisId={analysisId}
+        />
       </Box>
 
       {isQuestionInputOpen && (

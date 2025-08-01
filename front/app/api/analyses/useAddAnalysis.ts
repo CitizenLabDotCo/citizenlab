@@ -16,6 +16,7 @@ const addAnalysis = async (requestBody: IAddAnalysis) =>
         phase_id: requestBody.phaseId,
         additional_custom_field_ids: requestBody.additionalCustomFields,
         main_custom_field_id: requestBody.mainCustomField,
+        files: requestBody.files,
       },
     },
   });

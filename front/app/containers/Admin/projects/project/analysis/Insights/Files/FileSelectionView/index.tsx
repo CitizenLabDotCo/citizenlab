@@ -6,6 +6,7 @@ import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { array, object, string } from 'yup';
 
+import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useFiles from 'api/files/useFiles';
 
 import FilesUpload from 'containers/Admin/projects/project/files/components/FilesUpload';
@@ -20,10 +21,13 @@ import messages from '../messages';
 
 type Props = {
   setIsFileSelectionOpen: (isOpen: boolean) => void;
+  analysisId: string;
 };
 
-const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
+const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
   const projectId = useParams<{ projectId: string }>().projectId;
+  const { mutate: updateAnalysis } = useUpdateAnalysis();
+
   const { data: files } = useFiles({
     project: [projectId || ''],
     enabled: !!projectId,
@@ -55,8 +59,11 @@ const FileSelectionView = ({ setIsFileSelectionOpen }: Props) => {
   });
 
   const onFormSubmit = useCallback(async () => {
-    // TODO: Implement the logic to handle form submission.
-  }, []);
+    updateAnalysis({
+      id: analysisId,
+      files: watchedFileIds,
+    });
+  }, [analysisId, updateAnalysis, watchedFileIds]);
 
   // Auto-submit when file_ids changes
   useEffect(() => {
