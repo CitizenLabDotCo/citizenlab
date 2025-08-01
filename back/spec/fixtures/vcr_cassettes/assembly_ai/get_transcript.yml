@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.assemblyai.com/v2/transcript/e5f1bf25-d869-4bb3-81ee-87ac9c92dfd1
+    uri: https://api.eu.assemblyai.com/v2/transcript/e5f1bf25-d869-4bb3-81ee-87ac9c92dfd1
     body:
       encoding: US-ASCII
       string: ''

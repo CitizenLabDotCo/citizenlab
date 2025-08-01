@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.assemblyai.com/v2/transcript
+    uri: https://api.eu.assemblyai.com/v2/transcript
     body:
       encoding: UTF-8
       string: '{"audio_url":"https://example.com/audio.mp3","punctuate":true,"format_text":true,"language_detection":true,"speaker_labels":true}'

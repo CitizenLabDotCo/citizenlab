@@ -12,10 +12,9 @@ class AssemblyAIClient
   class RateLimitError < Error; end
   class TranscriptNotFoundError < Error; end
 
-  API_BASE_URL = 'https://api.assemblyai.com'
-
-  def initialize(api_key: nil)
+  def initialize(api_key: nil, region: nil)
     @api_key = api_key || ENV.fetch('ASSEMBLYAI_API_KEY', nil)
+    @region = region || ENV.fetch('ASSEMBLYAI_REGION', 'eu')
     raise ArgumentError, 'AssemblyAI API key is required' if @api_key.blank?
   end
 
@@ -58,10 +57,21 @@ class AssemblyAIClient
 
   private
 
-  attr_reader :api_key
+  attr_reader :api_key, :region
+
+  def api_base_url
+    case region
+    when 'us'
+      'https://api.assemblyai.com'
+    when 'eu'
+      'https://api.eu.assemblyai.com'
+    else
+      raise ArgumentError, "Unsupported region: #{region}"
+    end
+  end
 
   def upload_file(file_path)
-    conn = Faraday.new(url: API_BASE_URL) do |faraday|
+    conn = Faraday.new(url: api_base_url) do |faraday|
       faraday.response :json
       faraday.request :multipart
       faraday.headers['Authorization'] = api_key
@@ -76,7 +86,7 @@ class AssemblyAIClient
   end
 
   def connection
-    @connection ||= Faraday.new(url: API_BASE_URL) do |faraday|
+    @connection ||= Faraday.new(url: api_base_url) do |faraday|
       faraday.request :json
       faraday.response :json
       faraday.headers['Authorization'] = api_key

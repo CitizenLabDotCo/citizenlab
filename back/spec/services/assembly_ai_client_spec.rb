@@ -31,7 +31,7 @@ RSpec.describe AssemblyAIClient, type: :service do
 
     context 'when API returns error' do
       it 'raises AuthenticationError for 401' do
-        stub_request(:post, 'https://api.assemblyai.com/v2/transcript')
+        stub_request(:post, 'https://api.eu.assemblyai.com/v2/transcript')
           .to_return(status: 401)
 
         expect { client.submit_transcript_from_url(audio_url) }
@@ -39,7 +39,7 @@ RSpec.describe AssemblyAIClient, type: :service do
       end
 
       it 'raises RateLimitError for 429' do
-        stub_request(:post, 'https://api.assemblyai.com/v2/transcript')
+        stub_request(:post, 'https://api.eu.assemblyai.com/v2/transcript')
           .to_return(status: 429)
 
         expect { client.submit_transcript_from_url(audio_url) }
@@ -62,7 +62,7 @@ RSpec.describe AssemblyAIClient, type: :service do
 
     context 'when transcript not found' do
       it 'raises TranscriptNotFoundError for 404' do
-        stub_request(:get, "https://api.assemblyai.com/v2/transcript/#{transcript_id}")
+        stub_request(:get, "https://api.eu.assemblyai.com/v2/transcript/#{transcript_id}")
           .to_return(status: 404)
 
         expect { client.get_transcript(transcript_id) }
