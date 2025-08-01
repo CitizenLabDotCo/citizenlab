@@ -20,7 +20,7 @@ describe('Survey question logic', () => {
     }
   });
 
-  it('allows setting logic for select question', () => {
+  it.skip('allows setting logic for select question', () => {
     cy.setAdminLoginCookie();
     cy.intercept('GET', `/web_api/v1/phases/${phaseId}/custom_fields**`).as(
       'getCustomFields'

@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Excuus, je hebt geen toegang tot deze pagina. Je moet mogelijk opnieuw inloggen of je aanmelden om toegang te krijgen.",
   "app.components.LocationInput.noOptions": "Geen opties",
   "app.components.Modal.closeWindow": "Venster sluiten",
+  "app.components.MultiSelect.clearButtonAction": "Selectie wissen",
+  "app.components.MultiSelect.clearSearchButtonAction": "Duidelijk zoeken",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Voer een nieuw e-mailadres in",
   "app.components.PageNotFound.goBackToHomePage": "Terug naar de startpagina",
   "app.components.PageNotFound.notFoundTitle": "Pagina niet gevonden",

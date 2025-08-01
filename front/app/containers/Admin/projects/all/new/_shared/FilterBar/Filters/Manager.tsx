@@ -2,21 +2,24 @@ import React from 'react';
 
 import useUsers from 'api/users/useUsers';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
+import { useParam, setParam } from '../../params';
+
 import messages from './messages';
 
 interface Props {
-  managerIds: string[];
   mr?: string;
-  onChange: (managers: string[]) => void;
+  onClear?: () => void;
 }
 
-const Manager = ({ managerIds, mr = '0px', onChange }: Props) => {
+const Manager = ({ mr = '0px', onClear }: Props) => {
+  const managerIds = useParam('managers') ?? [];
   const { formatMessage } = useIntl();
+
   const { data: managers } = useUsers({
     pageSize: 500,
     can_moderate: true,
@@ -25,18 +28,19 @@ const Manager = ({ managerIds, mr = '0px', onChange }: Props) => {
   const options =
     managers?.data.map((manager) => ({
       value: manager.id,
-      text: getFullName(manager),
+      label: getFullName(manager),
     })) ?? [];
 
   return (
-    <FilterSelector
-      multipleSelectionAllowed
+    <MultiSelect
       selected={managerIds}
-      values={options}
+      options={options}
       mr={mr}
-      onChange={onChange}
+      onChange={(managerIds) => {
+        setParam('managers', managerIds);
+      }}
       title={formatMessage(messages.manager)}
-      name="manager-select"
+      onClear={onClear}
     />
   );
 };

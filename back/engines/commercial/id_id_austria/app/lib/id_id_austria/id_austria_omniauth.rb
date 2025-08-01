@@ -10,7 +10,7 @@ module IdIdAustria
 
     def profile_to_user_attrs(auth)
       {
-        first_name: auth.info.first_name,
+        first_name: split_first_name(auth.info.first_name),
         last_name: auth.info.last_name,
         email: auth.info.email,
         locale: AppConfiguration.instance.closest_locale_to('de-DE')
@@ -67,6 +67,13 @@ module IdIdAustria
 
     def issuer
       "https://#{host}"
+    end
+
+    # If the first name fields contains multiple names (ie middle names too) only return the first
+    def split_first_name(first_name)
+      return nil unless first_name
+
+      first_name.split.first
     end
   end
 end
