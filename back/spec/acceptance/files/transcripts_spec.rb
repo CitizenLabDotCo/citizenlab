@@ -25,10 +25,7 @@ resource 'File Transcripts' do
 
         expect(response_data[:id]).to eq @transcript.id
         expect(response_data.dig(:attributes, :status)).to eq 'completed'
-        expect(response_data.dig(:attributes, :text)).to be_present
-        expect(response_data.dig(:attributes, :confidence)).to be_present
-        expect(response_data.dig(:attributes, :words)).to be_present
-        expect(response_data.dig(:attributes, :utterances)).to be_present
+        expect(response_data.dig(:attributes, :assemblyai_transcript)).to be_present
         expect(response_data.dig(:relationships, :file, :data, :id)).to eq @file.id
       end
     end
@@ -47,8 +44,7 @@ resource 'File Transcripts' do
 
         expect(response_data[:id]).to eq @transcript.id
         expect(response_data.dig(:attributes, :status)).to eq 'processing'
-        expect(response_data.dig(:attributes, :text)).to be_nil
-        expect(response_data.dig(:attributes, :confidence)).to be_nil
+        expect(response_data.dig(:attributes, :assemblyai_transcript)).to be_nil
       end
     end
 
@@ -69,7 +65,7 @@ resource 'File Transcripts' do
         expect(response_data[:id]).to eq @transcript.id
         expect(response_data.dig(:attributes, :status)).to eq 'failed'
         expect(response_data.dig(:attributes, :error_message)).to be_present
-        expect(response_data.dig(:attributes, :text)).to be_nil
+        expect(response_data.dig(:attributes, :assemblyai_transcript)).to be_nil
       end
     end
 

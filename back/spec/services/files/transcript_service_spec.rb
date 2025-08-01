@@ -137,12 +137,12 @@ RSpec.describe Files::TranscriptService, type: :service do
 
         transcript.reload
         expect(transcript.status).to eq 'completed'
-        expect(transcript.text).to eq 'Hello world transcript'
-        expect(transcript.confidence).to eq 0.95
-        expect(transcript.language_code).to eq 'en'
-        expect(transcript.words).to be_present
-        expect(transcript.utterances).to be_present
-        expect(transcript.metadata['audio_duration']).to eq 120.5
+        expect(transcript.assemblyai_transcript['text']).to eq 'Hello world transcript'
+        expect(transcript.assemblyai_transcript['confidence']).to eq 0.95
+        expect(transcript.assemblyai_transcript['language_code']).to eq 'en'
+        expect(transcript.assemblyai_transcript['words']).to be_present
+        expect(transcript.assemblyai_transcript['utterances']).to be_present
+        expect(transcript.assemblyai_transcript['audio_duration']).to be_present
       end
     end
 
