@@ -67,9 +67,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
 
   // Auto-submit when file_ids changes
   useEffect(() => {
-    if (watchedFileIds.length > 0) {
-      methods.handleSubmit(onFormSubmit)();
-    }
+    methods.handleSubmit(onFormSubmit)();
   }, [watchedFileIds, methods, onFormSubmit]);
 
   const fileOptions =
@@ -78,20 +76,18 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
       label: file.attributes.name,
     })) || [];
 
-  const updateSelectedFiles = useCallback(
+  // Function to add any newly uploaded files to the selection
+  const addNewlyUploadedFilesToSelection = useCallback(
     (uploadedFiles: FileWithMeta[]) => {
       const currentFiles = methods.getValues('file_ids');
+
+      // Extract the IDs of the newly uploaded files
       const newFileIds = uploadedFiles
         .map((file) => file.id)
-        .filter((fileId): fileId is string => fileId !== undefined); // Type predicate
-
-      // Filter out any file IDs that are already selected
-      const filteredNewFiles = newFileIds.filter(
-        (id) => !currentFiles.includes(id) // id is now guaranteed to be string
-      );
+        .filter((fileId): fileId is string => fileId !== undefined);
 
       // Update the form state with the new file IDs
-      const newValues: string[] = [...currentFiles, ...filteredNewFiles];
+      const newValues: string[] = [...currentFiles, ...newFileIds];
       methods.setValue('file_ids', newValues, { shouldDirty: true });
     },
     [methods]
@@ -107,7 +103,9 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
             onClick={() => setIsFileSelectionOpen(false)}
           />
           <Title fontWeight="semi-bold" m="0px" variant="h4" mt="2px" ml="16px">
-            {formatMessage(messages.attachFiles)}
+            {formatMessage(messages.attachFilesWithCurrentCount, {
+              numberAttachedFiles: watchedFileIds.length || 0,
+            })}
           </Title>
         </Box>
         <Text>{formatMessage(messages.attachFilesDescription)}</Text>
@@ -120,7 +118,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
         <Box mt="16px">
           <FilesUpload
             showInformationSection={false}
-            afterUpload={updateSelectedFiles}
+            afterUpload={addNewlyUploadedFilesToSelection}
             showTitle={false}
           />
         </Box>
