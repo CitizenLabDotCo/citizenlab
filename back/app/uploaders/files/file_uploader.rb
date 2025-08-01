@@ -14,6 +14,7 @@ module Files
       # them in test environment to prevent the file factories from running
       # them.
       return if Rails.env.test?
+      return unless AppConfiguration.instance.feature_activated?('data_repository_transcription')
 
       Files::TranscriptService.new(model).enqueue_transcript
     end
