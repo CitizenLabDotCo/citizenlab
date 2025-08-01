@@ -1,13 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationPolicy
-  # Define patterns for class names that should be *excluded* from
-  # Pundit policy lookup when in test environment.
-  # This list specifically targets Shoulda::Matchers temporary models.
-  EXCLUDED_TEST_POLICY_MODEL_NAME_PATTERNS = [
-    /^Shoulda::Matchers::ActiveRecord::Uniqueness::TestModels::/
-  ].freeze
-
   module Helpers
     def raise_not_authorized(reason)
       raise Pundit::NotAuthorizedErrorWithReason, reason: reason
@@ -20,23 +13,7 @@ class ApplicationPolicy
     end
 
     def scope_for(target_scope_or_klass)
-      if Rails.env.test?
-        filtered_scope = handle_excluded_models(target_scope_or_klass)
-
-        return filtered_scope if filtered_scope
-      end
-
       Pundit.policy_scope!(user_context, target_scope_or_klass)
-    end
-
-    def handle_excluded_models(target_scope_or_klass)
-      if target_scope_or_klass.is_a?(Class) &&
-         EXCLUDED_TEST_POLICY_MODEL_NAME_PATTERNS.any? { |pattern| target_scope_or_klass.name.match?(pattern) }
-
-        return target_scope_or_klass.none # Return an empty ActiveRecord::Relation
-      end
-
-      nil # If no filter was applied, return nil
     end
 
     def can_moderate?
