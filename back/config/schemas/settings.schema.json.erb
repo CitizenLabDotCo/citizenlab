@@ -1444,7 +1444,19 @@
       "data_repository": {
         "type": "object",
         "title": "Data repository",
-        "description": "New data repository feature that is currently under development. [DO NOT ENABLE]",
+        "description": "Data Repository feature (360 Input). Enables a files tab in the project back office, where admins & PMs can upload files and documents related to the project.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "data_repository_ai_analysis": {
+        "type": "object",
+        "title": "Data repository: AI analysis",
+        "description": "Enables the AI Analysis features for the Data Repository (360 Input).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
