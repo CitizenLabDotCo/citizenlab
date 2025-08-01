@@ -11,10 +11,11 @@ import { IUser } from 'api/users/types';
 
 import useLocale from 'hooks/useLocale';
 
-import Fields from 'components/Form/Components/Fields';
 import { parseRequiredMultilocsData } from 'components/Form/parseRequiredMultilocs';
 
 import messages from './messages';
+
+const Fields = React.lazy(() => import('components/Form/Components/Fields'));
 
 // Todo :
 /*
