@@ -8,7 +8,7 @@ http_interactions:
       string: '{"audio_url":"https://example.com/audio.mp3","punctuate":true,"format_text":true,"language_detection":true,"speaker_labels":true}'
     headers:
       Authorization:
-      - 387eed0f33c24d74bafd9a70fd9516f7
+      - <ASSEMBLYAI_API_KEY>
       Content-Type:
       - application/json
       User-Agent:
