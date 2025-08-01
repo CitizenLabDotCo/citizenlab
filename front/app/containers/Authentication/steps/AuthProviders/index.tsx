@@ -12,7 +12,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { ErrorCode } from 'containers/Authentication/typings';
 
 import Outlet from 'components/Outlet';
-import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -22,6 +21,10 @@ import TextButton from '../_components/TextButton';
 
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import messages from './messages';
+
+const FranceConnectButton = lazy(
+  () => import('components/UI/FranceConnectButton')
+);
 
 const ClaveUnicaExpandedAuthProviderButton = lazy(
   () => import('./ClaveUnicaExpandedAuthProviderButton')

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
 
@@ -6,12 +6,15 @@ import { TVerificationMethod } from 'api/verification_methods/types';
 
 import { AUTH_PATH } from 'containers/App/constants';
 
-import FranceConnectButton from 'components/UI/FranceConnectButton';
 import messages from 'components/UI/FranceConnectButton/messages';
 
 import { getJwt } from 'utils/auth/jwt';
 import { injectIntl } from 'utils/cl-intl';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
+
+const FranceConnectButton = lazy(
+  () => import('components/UI/FranceConnectButton')
+);
 
 interface Props {
   method: TVerificationMethod;
@@ -34,10 +37,14 @@ const VerificationFranceConnectButton = ({
 
   return (
     <div id="e2e-franceconnect-button">
-      <FranceConnectButton
-        onClick={handleOnClick}
-        logoAlt={formatMessage(messages.franceConnectVerificationButtonAltText)}
-      />
+      <Suspense fallback={null}>
+        <FranceConnectButton
+          onClick={handleOnClick}
+          logoAlt={formatMessage(
+            messages.franceConnectVerificationButtonAltText
+          )}
+        />
+      </Suspense>
     </div>
   );
 };
