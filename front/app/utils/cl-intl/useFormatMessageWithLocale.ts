@@ -1,4 +1,4 @@
-import { useContext, useCallback } from 'react';
+import { useContext, useCallback, useEffect } from 'react';
 
 import { MessageDescriptor } from 'react-intl';
 import { SupportedLocale } from 'typings';
@@ -10,8 +10,12 @@ import CustomIntlContext from 'containers/LanguageProvider/CustomIntlContext';
 import { handleFormatMessage, FormatMessageValues } from './useIntl';
 
 const useFormatMessageWithLocale = () => {
-  const intlShapes = useContext(CustomIntlContext);
+  const { intlShapes, loadLocales } = useContext(CustomIntlContext);
   const { data: appConfig } = useAppConfiguration();
+
+  useEffect(() => {
+    loadLocales();
+  }, [loadLocales]);
 
   const formatMessageWithLocale = useCallback(
     (
