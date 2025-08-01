@@ -46,7 +46,7 @@
   "app.components.Admin.Campaigns.statsButton": "Στατιστικά στοιχεία",
   "app.components.Admin.Campaigns.subject": "Subject",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
+  "app.components.Admin.ImageCropper.info": "Αυτή η εικόνα περικόπτεται πάντα σε μια συγκεκριμένη αναλογία για να διασφαλιστεί ότι όλες οι κρίσιμες πτυχές εμφανίζονται ανά πάσα στιγμή. Το {link} για αυτόν τον τύπο εικόνας είναι {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.Admin.ImageCropper.mobileCropExplanation": "Σημείωση: Οποιαδήποτε σημαντική περιοχή της εικόνας θα πρέπει να περιέχεται εντός των κάθετων διακεκομμένων γραμμών, καθώς η εικόνα θα περικοπεί σε αναλογία 3:1 στις κινητές συσκευές.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Κείμενο κεφαλίδας για εγγεγραμμένους χρήστες",
