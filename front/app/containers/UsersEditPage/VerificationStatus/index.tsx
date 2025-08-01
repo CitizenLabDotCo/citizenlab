@@ -143,14 +143,50 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 addVerificationBadge
                 aria-hidden
               />
-              {/* ... rest of the component's content ... */}
+              <Content>
+                <Title>
+                  <FormattedMessage {...messages.verifiedIdentityTitle} />
+                </Title>
+                <Text>
+                  <FormattedMessage {...messages.verifiedIdentitySubtitle} />
+                </Text>
+                <Text>
+                  <FormattedMessage
+                    {...messages.updateverification}
+                    values={{ reverifyButton }}
+                  />
+                </Text>
+              </Content>
             </>
           ) : (
             <>
               <AvatarAndShield aria-hidden>
-                {/* ... rest of the component's content ... */}
+                <StyledAvatar
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                  userId={authUser?.data.id}
+                  size={52}
+                  bgColor="transparent"
+                  padding={0}
+                  borderThickness={2}
+                  borderColor="#fff"
+                />
+                <ShieldIcon name="shield-check" />
               </AvatarAndShield>
-              {/* ... rest of the component's content ... */}
+              <Content>
+                <Title>
+                  <FormattedMessage {...messages.becomeVerifiedTitle} />
+                </Title>
+                <StyledText>
+                  <FormattedMessage {...messages.becomeVerifiedSubtitle} />
+                </StyledText>
+              </Content>
+              <VerifyButton
+                onClick={triggerVerificationOnly}
+                id="e2e-verify-user-button"
+              >
+                <FormattedMessage {...messages.verifyNow} />
+              </VerifyButton>
             </>
           )}
         </Container>
