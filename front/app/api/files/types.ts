@@ -61,6 +61,7 @@ export interface GetFilesParameters {
   sort?: FileSortOptions;
   search?: string;
   deleted?: boolean;
+  enabled?: boolean;
 }
 
 export interface IFiles {

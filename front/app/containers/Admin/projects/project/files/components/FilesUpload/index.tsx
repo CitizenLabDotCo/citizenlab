@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -23,13 +23,22 @@ import { countFilesWithStatus } from './utils';
 type Props = {
   setModalOpen?: (open: boolean) => void;
   setShowFirstUploadView?: (value: boolean) => void;
+  showInformationSection?: boolean;
+  showTitle?: boolean;
+  afterUpload?: (uploadedFiles: FileWithMeta[]) => void;
 };
 
 const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_FILES = 35;
 
-const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
+const FilesUpload = ({
+  setModalOpen,
+  setShowFirstUploadView,
+  showInformationSection = true,
+  afterUpload,
+  showTitle = true,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
 
@@ -89,13 +98,37 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
     hasStartedUploading &&
     fileList.every(({ status }) => FINISHED_STATUSES.includes(status));
 
+  const aiCheckboxDisabled = hasStartedUploading || finishedUploading;
+
+  useEffect(() => {
+    if (finishedUploading) {
+      // If the upload is finished, return the list of successfully uploaded files
+      // to the parent component, if this callback is provided.
+      if (afterUpload) {
+        const successfullyUploadedFiles = fileList.filter(
+          (file) => file.status === 'uploaded'
+        );
+        afterUpload(successfullyUploadedFiles);
+      }
+    }
+  }, [
+    fileList,
+    finishedUploading,
+    setModalOpen,
+    setShowFirstUploadView,
+    afterUpload,
+  ]);
+
   return (
     <>
       {fileList.length > 0 ? (
         <>
-          <Title fontWeight="semi-bold" color="coolGrey700" variant="h3">
-            {formatMessage(messages.confirmAndUploadFiles)}
-          </Title>
+          {showTitle && (
+            <Title fontWeight="semi-bold" color="coolGrey700" variant="h3">
+              {formatMessage(messages.confirmAndUploadFiles)}
+            </Title>
+          )}
+
           <Box maxHeight="300px" overflowY="auto" overflowX="hidden" mt="20px">
             {fileList.map((item, index) => (
               <SelectedFile
@@ -119,7 +152,11 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
           <Box mt="20px">
             <CheckboxWithLabel
               checked={allowAiProcessing}
+              disabled={hasStartedUploading || finishedUploading}
               onChange={(event) => {
+                // If the checkbox is disabled, do not allow changes
+                if (aiCheckboxDisabled) return;
+
                 setAllowAiProcessing(event.target.checked);
                 // Update the AI processing flag for all files in the list
                 setFileList((prev) =>
@@ -165,7 +202,7 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
         </>
       ) : (
         <>
-          <InformationSection />
+          {showInformationSection && <InformationSection />}
           <FileDropzone
             getDropzoneRootProps={getDropzoneRootProps}
             getDropzoneInputProps={getDropzoneInputProps}
