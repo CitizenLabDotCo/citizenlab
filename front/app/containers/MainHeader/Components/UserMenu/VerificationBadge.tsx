@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import FeatureFlag from 'components/FeatureFlag';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
+
+const FeatureFlag = lazy(() => import('components/FeatureFlag'));
 
 const Badge = styled.div`
   color: #fff;
@@ -28,15 +28,17 @@ interface Props {
 }
 
 const VerificationBadge = ({ isVerified }: Props) => (
-  <FeatureFlag name="verification">
-    <Badge color={isVerified ? colors.success : colors.textSecondary}>
-      {isVerified ? (
-        <FormattedMessage {...messages.verified} />
-      ) : (
-        <FormattedMessage {...messages.unverified} />
-      )}
-    </Badge>
-  </FeatureFlag>
+  <Suspense fallback={null}>
+    <FeatureFlag name="verification">
+      <Badge color={isVerified ? colors.success : colors.textSecondary}>
+        {isVerified ? (
+          <FormattedMessage {...messages.verified} />
+        ) : (
+          <FormattedMessage {...messages.unverified} />
+        )}
+      </Badge>
+    </FeatureFlag>
+  </Suspense>
 );
 
 export default VerificationBadge;
