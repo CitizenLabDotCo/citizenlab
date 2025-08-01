@@ -25,6 +25,7 @@ PublicApi::Engine.routes.draw do
       route_mapper.resources :email_campaign_deliveries
       route_mapper.resources :events
       route_mapper.resources :event_attendances
+      route_mapper.resources :files
       route_mapper.resources :ideas
       route_mapper.resources :phases
       route_mapper.resources :project_folders
