@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Sorry, you can't access this page. You may need to log in or sign up to access it.",
   "app.components.LocationInput.noOptions": "No options",
   "app.components.Modal.closeWindow": "Close window",
+  "app.components.MultiSelect.clearButtonAction": "Clear selection",
+  "app.components.MultiSelect.clearSearchButtonAction": "Clear search",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Enter a new email address",
   "app.components.PageNotFound.goBackToHomePage": "Back to the homepage",
   "app.components.PageNotFound.notFoundTitle": "Page not found",
