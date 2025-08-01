@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormSetError } from 'react-hook-form';
@@ -78,12 +78,16 @@ const IdeaForm = ({
         <form>
           <Feedback />
           {questions && (
-            <CustomFields
-              questions={questions}
-              projectId={projectId}
-              phase={phase?.data}
-              participationMethod={phase?.data.attributes.participation_method}
-            />
+            <Suspense>
+              <CustomFields
+                questions={questions}
+                projectId={projectId}
+                phase={phase?.data}
+                participationMethod={
+                  phase?.data.attributes.participation_method
+                }
+              />
+            </Suspense>
           )}
         </form>
       </FormProvider>

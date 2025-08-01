@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
@@ -127,11 +127,13 @@ const IdeasNewIdeationForm = ({
                     pb={isSmallerThanPhone ? '0' : '80px'}
                     display="flex"
                   >
-                    <IdeationForm
-                      projectId={project.data.id}
-                      phaseId={phaseId}
-                      participationMethod={participationMethod}
-                    />
+                    <Suspense>
+                      <IdeationForm
+                        projectId={project.data.id}
+                        phaseId={phaseId}
+                        participationMethod={participationMethod}
+                      />
+                    </Suspense>
                   </Box>
                 </Box>
               </Box>

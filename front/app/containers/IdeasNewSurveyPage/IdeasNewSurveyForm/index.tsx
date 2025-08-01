@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 
 import {
   Box,
@@ -126,11 +126,13 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
               pb={isSmallerThanPhone ? '0' : '80px'}
               display="flex"
             >
-              <SurveyForm
-                projectId={project.data.id}
-                phaseId={phaseId}
-                participationMethod={'native_survey'}
-              />
+              <Suspense>
+                <SurveyForm
+                  projectId={project.data.id}
+                  phaseId={phaseId}
+                  participationMethod={'native_survey'}
+                />
+              </Suspense>
             </Box>
           </Box>
         </Box>

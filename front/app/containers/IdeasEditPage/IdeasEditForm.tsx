@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
@@ -130,14 +130,16 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                     display="flex"
                   >
                     {project && (
-                      <IdeationForm
-                        projectId={project.data.id}
-                        phaseId={phaseId}
-                        participationMethod={
-                          phase?.data.attributes.participation_method
-                        }
-                        idea={idea?.data}
-                      />
+                      <Suspense>
+                        <IdeationForm
+                          projectId={project.data.id}
+                          phaseId={phaseId}
+                          participationMethod={
+                            phase?.data.attributes.participation_method
+                          }
+                          idea={idea?.data}
+                        />
+                      </Suspense>
                     )}
                   </Box>
                 </Box>
