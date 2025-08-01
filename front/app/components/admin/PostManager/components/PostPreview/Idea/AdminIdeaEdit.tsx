@@ -9,11 +9,14 @@ import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import { Top } from 'components/admin/PostManager/components/PostPreview';
-import IdeationForm from 'components/CustomFieldsForm/IdeationForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
+
+const IdeationForm = React.lazy(
+  () => import('components/CustomFieldsForm/IdeationForm')
+);
 
 const AdminIdeaEdit = ({
   ideaId,

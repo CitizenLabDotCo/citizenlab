@@ -7,10 +7,13 @@ import { useParams } from 'react-router-dom';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 
-import CustomFields from 'components/CustomFieldsForm/CustomFields';
 import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
 import { FormValues } from 'components/Form/typings';
 import Feedback from 'components/HookForm/Feedback';
+
+const CustomFields = React.lazy(
+  () => import('components/CustomFieldsForm/CustomFields')
+);
 
 interface Props {
   formData: FormValues;

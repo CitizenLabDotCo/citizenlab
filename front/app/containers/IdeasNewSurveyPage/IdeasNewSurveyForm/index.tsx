@@ -15,7 +15,6 @@ import { IProject } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import SurveyForm from 'components/CustomFieldsForm/SurveyForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -25,6 +24,10 @@ import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
 
 import SurveyHeading from './SurveyHeading';
 import { calculateDynamicHeight } from './utils';
+
+const SurveyForm = React.lazy(
+  () => import('components/CustomFieldsForm/SurveyForm')
+);
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
