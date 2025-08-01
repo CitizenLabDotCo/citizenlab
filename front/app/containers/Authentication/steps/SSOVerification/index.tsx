@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
@@ -6,11 +6,7 @@ import { SSOProvider } from 'api/authentication/singleSignOn';
 import { TVerificationMethodName } from 'api/verification_methods/types';
 import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
-import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
-
-import ClaveUnicaButton from 'components/UI/ClaveUnicaButton/ClaveUnicaButton';
 import claveUnicaButtonMessages from 'components/UI/ClaveUnicaButton/messages';
-import FranceConnectButton from 'components/UI/FranceConnectButton';
 import franceConnectButtonMessages from 'components/UI/FranceConnectButton/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -18,6 +14,17 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import TextButton from '../_components/TextButton';
 
 import messages from './messages';
+
+const SSOVerificationButton = lazy(
+  () =>
+    import('containers/Authentication/steps/_components/SSOVerificationButton')
+);
+const ClaveUnicaButton = lazy(
+  () => import('components/UI/ClaveUnicaButton/ClaveUnicaButton')
+);
+const FranceConnectButton = lazy(
+  () => import('components/UI/FranceConnectButton')
+);
 
 interface Props {
   onClickSSO: (ssoProvider: SSOProvider) => void;
@@ -73,7 +80,7 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
 
   return (
     <Box>
-      {methodButton(methodName)}
+      <Suspense fallback={null}>{methodButton(methodName)}</Suspense>
       <Text mt="20px" mb="0">
         <FormattedMessage
           {...messages.alreadyHaveAnAccount}
