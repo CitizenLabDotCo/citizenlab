@@ -49,7 +49,7 @@
   "app.components.Admin.Campaigns.subject": "Subject",
   "app.components.Admin.Campaigns.to": "A",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
+  "app.components.Admin.ImageCropper.info": "Aquesta imatge sempre es retalla a una proporció determinada per assegurar-se que tots els aspectes crucials es mostrin en tot moment. El {link} per a aquest tipus d'imatge és {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.Admin.ImageCropper.mobileCropExplanation": "Nota: Qualsevol àrea important de la imatge ha d'estar dins de les línies verticals discontínues, ja que la imatge es retallarà a una relació de 3:1 en dispositius mòbils.",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Text de la capçalera per als usuaris registrats",
