@@ -21,7 +21,6 @@ module Files
       RubyLLM::UnsupportedAttachmentError,
       RubyLLM::BadRequestError
     ].freeze
-    private_constant :UNRECOVERABLE_ERRORS
 
     def handle_error(error)
       case error
