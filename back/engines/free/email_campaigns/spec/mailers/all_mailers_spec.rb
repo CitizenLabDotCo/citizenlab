@@ -6,21 +6,23 @@ RSpec.describe 'AllMailers' do
   describe 'editable regions' do
     EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.each do |campaign_class|
       campaign = campaign_class.new
-      if campaign.mailer_class.respond_to?(:editable_regions)
+      mailer = campaign.mailer_class.new
+      if mailer.respond_to?(:editable_regions)
         it "#{campaign_class} has editable regions that match defined multilocs" do
           campaign = campaign_class.new
-          campaign.mailer_class.editable_regions.each do |region|
+          mailer.editable_regions.each do |region|
             expect { campaign.send(region[:key]) }.not_to raise_error
           end
         end
 
         it "#{campaign_class} has valid variables defined that match the default text" do
-          campaign.mailer_class.editable_regions.each do |region|
-            region_variables = region[:variables] || []
-            # Extract variables in format {{variable}} from the default value text
-            variables_in_text = region[:default_value_multiloc].values.join(' ').scan(/\{\{(.*?)}}/).flatten
+          editable_region_variables = mailer.substitution_variables.keys.map(&:to_s) || []
+          mailer.editable_regions.each do |region|
+            # Extract variables in format {{variable}} from the default english value text
+            region_default_value = region.dig(:default_value_multiloc, 'en')
+            variables_in_text = region_default_value ? region_default_value.scan(/\{\{(.*?)}}/).flatten : []
             variables_in_text.each do |variable|
-              expect(region_variables).to include(variable.strip)
+              expect(editable_region_variables).to include(variable.strip)
             end
           end
         end
