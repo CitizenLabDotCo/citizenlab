@@ -26,8 +26,35 @@ const Container = ({
       <Warning>
         <Box>
           <Text>
+            <FormattedMessage {...messages.cropSentenceOne} />
+          </Text>
+          <ul>
+            <li>
+              <Text>
+                <FormattedMessage
+                  {...messages.cropSentenceTwo}
+                  values={{
+                    aspect: `${aspectRatioWidth}:${aspectRatioHeight}`,
+                  }}
+                />
+              </Text>
+            </li>
+            {show3x1MobileCropLines && (
+              <li>
+                <Text>
+                  <FormattedMessage {...messages.cropSentenceMobileRatio} />
+                </Text>
+              </li>
+            )}
+          </ul>
+          {show3x1MobileCropLines && (
+            <Text>
+              <FormattedMessage {...messages.cropSentenceMobileCrop} />
+            </Text>
+          )}
+          <Text>
             <FormattedMessage
-              {...messages.info}
+              {...messages.cropFinalSentence}
               values={{
                 link: (
                   <a
@@ -38,16 +65,9 @@ const Container = ({
                     <FormattedMessage {...messages.infoLinkText} />
                   </a>
                 ),
-                aspect: `${aspectRatioWidth}:${aspectRatioHeight}`,
               }}
             />
           </Text>
-
-          {show3x1MobileCropLines && (
-            <Text fontStyle="italic">
-              <FormattedMessage {...messages.mobileCropExplanation} />
-            </Text>
-          )}
         </Box>
       </Warning>
     </Box>
