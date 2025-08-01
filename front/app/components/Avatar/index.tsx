@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, lazy, Suspense } from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import BoringAvatar from 'boring-avatars';
@@ -8,8 +8,6 @@ import styled, { useTheme } from 'styled-components';
 
 import useUserById from 'api/users/useUserById';
 
-import FeatureFlag from 'components/FeatureFlag';
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -17,6 +15,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
+
+const FeatureFlag = lazy(() => import('components/FeatureFlag'));
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;
@@ -264,13 +264,15 @@ const AvatarInner = ({
       )}
 
       {verified && addVerificationBadge && (
-        <FeatureFlag name="verification">
-          <BadgeIcon
-            name="check-circle"
-            size={badgeSize}
-            fill={colors.success}
-          />
-        </FeatureFlag>
+        <Suspense fallback={null}>
+          <FeatureFlag name="verification">
+            <BadgeIcon
+              name="check-circle"
+              size={badgeSize}
+              fill={colors.success}
+            />
+          </FeatureFlag>
+        </Suspense>
       )}
     </Container>
   );
