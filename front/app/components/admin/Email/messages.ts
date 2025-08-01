@@ -29,6 +29,11 @@ export default defineMessages({
     id: 'app.components.Admin.Campaigns.deliveryStatus_bounced',
     defaultMessage: 'Bounced',
   },
+  deliveryStatus_openedTooltip: {
+    id: 'app.components.Admin.Campaigns.deliveryStatus_openedTooltip',
+    defaultMessage:
+      'This shows how many recipients opened the email. Please note that some security systems (like Microsoft Defender) may pre-load content for scanning, which can result in false opens.',
+  },
   deliveryStatus_clickedTooltip: {
     id: 'app.components.Admin.Campaigns.deliveryStatus_clickedTooltip',
     defaultMessage:
