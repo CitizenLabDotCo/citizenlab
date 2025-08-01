@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useState, MouseEvent } from 'react';
+import React, {
+  ChangeEvent,
+  useState,
+  MouseEvent,
+  lazy,
+  Suspense,
+} from 'react';
 
 import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
 import { uniq, isEmpty } from 'lodash-es';
@@ -14,7 +20,6 @@ import { IPhaseData } from 'api/phases/types';
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 
 import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
-import FeatureFlag from 'components/FeatureFlag';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
 
@@ -39,6 +44,8 @@ import SubRow from './SubRow';
 import { getRemovedPhase, ideaHasVotesInPhase } from './utils';
 
 import { TitleLink } from '.';
+
+const FeatureFlag = lazy(() => import('components/FeatureFlag'));
 
 type Props = {
   type: ManagerType;
@@ -404,9 +411,11 @@ const IdeaRow = ({
 
     if (!featureFlag) return Content;
     return (
-      <FeatureFlag name={featureFlag} key={name}>
-        {Content}
-      </FeatureFlag>
+      <Suspense fallback={null}>
+        <FeatureFlag name={featureFlag} key={name}>
+          {Content}
+        </FeatureFlag>
+      </Suspense>
     );
   };
 
