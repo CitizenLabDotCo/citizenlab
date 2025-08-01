@@ -35,7 +35,7 @@ const useInfiniteProjectsMiniAdmin = (
   const paramsWithLocale = { ...params, locale };
 
   return useInfiniteQuery<ProjectsMiniAdmin, CLErrors>(
-    miniProjectsKeys.list(paramsWithLocale),
+    miniProjectsKeys.list({ ...paramsWithLocale, pageSize }),
     ({ pageParam = 1 }) => fetchPage(paramsWithLocale, pageParam, pageSize),
     {
       getNextPageParam: (lastPage) => {

@@ -17,6 +17,7 @@ export type ResolvedName =
   | 'MethodsUsedWidget'
   | 'ParticipationWidget'
   | 'ProjectsWidget'
+  | 'ProjectsTimelineWidget'
   | 'DeviceTypesWidget';
 
 export interface BaseParams {

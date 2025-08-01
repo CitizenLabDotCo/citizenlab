@@ -9,7 +9,7 @@ const baseKey = {
 const miniProjectsKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (parameters: Parameters) => [
+  list: (parameters: Parameters & { pageSize?: number }) => [
     { ...baseKey, operation: 'list', parameters },
   ],
   item: ({ id }: { id?: string }) => [
