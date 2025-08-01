@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Um auf diese Seite zuzugreifen, melde Dich bitte an:",
   "app.components.LocationInput.noOptions": "Keine Optionen",
   "app.components.Modal.closeWindow": "Fenster schließen",
+  "app.components.MultiSelect.clearButtonAction": "Auswahl löschen",
+  "app.components.MultiSelect.clearSearchButtonAction": "Suche löschen",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Geben Sie eine neue E-Mail-Adresse ein",
   "app.components.PageNotFound.goBackToHomePage": "Zurück zur Startseite",
   "app.components.PageNotFound.notFoundTitle": "Seite nicht gefunden",

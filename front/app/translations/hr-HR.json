@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Nažalost, nemate pristup ovoj stranici. Možda ćete se morati prijaviti ili registrirati za pristup.",
   "app.components.LocationInput.noOptions": "Bez mogućnosti",
   "app.components.Modal.closeWindow": "Zatvori prozor",
+  "app.components.MultiSelect.clearButtonAction": "Poništi odabir",
+  "app.components.MultiSelect.clearSearchButtonAction": "Obriši pretragu",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Unesite novu adresu e-pošte",
   "app.components.PageNotFound.goBackToHomePage": "Natrag na početnu stranicu",
   "app.components.PageNotFound.notFoundTitle": "Stranica nije pronađena",
