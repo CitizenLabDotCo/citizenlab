@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import {
   Box,
@@ -10,9 +10,9 @@ import {
 import styled from 'styled-components';
 import { ITab } from 'typings';
 
-import FeatureFlag from 'components/FeatureFlag';
-
 import Tab from './Tab';
+
+const FeatureFlag = lazy(() => import('components/FeatureFlag'));
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;
@@ -90,19 +90,21 @@ const TabbedResource = ({
       {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {tabs && tabs.length > 0 && (
         <TabbedNav className="e2e-resource-tabs">
-          {tabs.map((tab) => {
-            return tab.feature ? (
-              <FeatureFlag key={tab.url} name={tab.feature}>
-                <Tab tab={tab} className={`intercom-admin-tab-${tab.name}`} />
-              </FeatureFlag>
-            ) : (
-              <Tab
-                key={tab.url}
-                tab={tab}
-                className={`intercom-admin-tab-${tab.name}`}
-              />
-            );
-          })}
+          <Suspense fallback={null}>
+            {tabs.map((tab) => {
+              return tab.feature ? (
+                <FeatureFlag key={tab.url} name={tab.feature}>
+                  <Tab tab={tab} className={`intercom-admin-tab-${tab.name}`} />
+                </FeatureFlag>
+              ) : (
+                <Tab
+                  key={tab.url}
+                  tab={tab}
+                  className={`intercom-admin-tab-${tab.name}`}
+                />
+              );
+            })}
+          </Suspense>
         </TabbedNav>
       )}
       {contentWrapper ? (
