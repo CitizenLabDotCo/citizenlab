@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class BaseUploader < CarrierWave::Uploader::Base
+  def full_url
+    self.class.use_fog_engine? ? url : path
+  end
+
   def self.use_fog_engine?
     return false if Rails.env.test?
     return false if Rails.env.development? && ENV['USE_AWS_S3_IN_DEV'] != 'true'
