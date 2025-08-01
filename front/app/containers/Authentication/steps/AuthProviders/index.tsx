@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, lazy, Suspense } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -21,8 +21,11 @@ import Link from 'utils/cl-router/Link';
 import TextButton from '../_components/TextButton';
 
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
-import ClaveUnicaExpandedAuthProviderButton from './ClaveUnicaExpandedAuthProviderButton';
 import messages from './messages';
+
+const ClaveUnicaExpandedAuthProviderButton = lazy(
+  () => import('./ClaveUnicaExpandedAuthProviderButton')
+);
 
 const Container = styled.div`
   display: flex;
@@ -169,12 +172,14 @@ const AuthProviders = memo<Props>(
         className={className}
       >
         {showFCButton && (
-          <FranceConnectButton
-            onClick={handleOnFranceConnectSelected}
-            logoAlt={formatMessage(messages.signUpButtonAltText, {
-              loginMechanismName: 'FranceConnect',
-            })}
-          />
+          <Suspense fallback={null}>
+            <FranceConnectButton
+              onClick={handleOnFranceConnectSelected}
+              logoAlt={formatMessage(messages.signUpButtonAltText, {
+                loginMechanismName: 'FranceConnect',
+              })}
+            />
+          </Suspense>
         )}
         {showMainAuthMethods && franceconnectLoginEnabled && <Or />}
         {fakeSsoEnabled && (
@@ -189,10 +194,12 @@ const AuthProviders = memo<Props>(
           </StyledAuthProviderButton>
         )}
         {claveUnicaLoginEnabled && (
-          <StyledClaveUnicaExpandedAuthProviderButton
-            flow={flow}
-            onSelectAuthProvider={onSelectAuthProvider}
-          />
+          <Suspense fallback={null}>
+            <StyledClaveUnicaExpandedAuthProviderButton
+              flow={flow}
+              onSelectAuthProvider={onSelectAuthProvider}
+            />
+          </Suspense>
         )}
         {hoplrLoginEnabled && (
           <StyledAuthProviderButton
