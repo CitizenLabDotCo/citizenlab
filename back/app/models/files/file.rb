@@ -112,7 +112,6 @@ module Files
       dependent: :destroy
     )
 
-    # TODO: Maybe reconsider the name of this column.
     mount_base64_file_uploader :content, FileUploader
 
     validates :name, presence: true
