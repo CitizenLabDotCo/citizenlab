@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import {
   IDIdAustriaMethod,
@@ -6,9 +6,12 @@ import {
 } from 'api/verification_methods/types';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
 
-import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
-
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
+const SSOVerificationButton = lazy(
+  () =>
+    import('containers/Authentication/steps/_components/SSOVerificationButton')
+);
 
 const verificationMethodName: TVerificationMethodName = 'id_austria';
 const configuration: ModuleConfiguration = {
@@ -27,11 +30,13 @@ const configuration: ModuleConfiguration = {
           verificationMethods
         );
         return (
-          <SSOVerificationButton
-            verificationMethod={method as IDIdAustriaMethod}
-            last={last}
-            {...props}
-          />
+          <Suspense fallback={null}>
+            <SSOVerificationButton
+              verificationMethod={method as IDIdAustriaMethod}
+              last={last}
+              {...props}
+            />
+          </Suspense>
         );
       }
 
