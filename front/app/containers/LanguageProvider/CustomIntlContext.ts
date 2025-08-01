@@ -4,7 +4,7 @@ import { IntlShapes } from './types';
 
 const CustomIntlContext = createContext<{
   intlShapes: IntlShapes;
-  loadLocales: () => void;
+  loadLocales: () => Promise<void>;
 }>({} as any);
 
 export default CustomIntlContext;

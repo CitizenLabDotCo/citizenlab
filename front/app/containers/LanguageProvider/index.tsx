@@ -67,12 +67,14 @@ const LanguageProvider = ({ children }: Props) => {
     [messages]
   );
 
-  const loadLocales = useCallback(() => {
+  const loadLocales = useCallback(async () => {
     if (!tenantLocales) return;
 
-    tenantLocales.forEach((locale) => {
-      loadLocale(locale);
+    const promises = tenantLocales.map((locale) => {
+      return loadLocale(locale);
     });
+
+    await Promise.all(promises);
   }, [tenantLocales, loadLocale]);
 
   useEffect(() => {

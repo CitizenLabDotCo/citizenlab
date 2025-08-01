@@ -61,7 +61,7 @@ const Settings = () => {
     groupId: node.data.props.groupId,
   }));
 
-  if (!appConfigurationLocales) return null;
+  if (!appConfigurationLocales || !formatMessageWithLocale) return null;
 
   const setCustomFieldId = (
     value?: string,

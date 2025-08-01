@@ -88,7 +88,8 @@ const PlatformTemplateContent = ({
     !userFields ||
     !stats ||
     !projects ||
-    !appConfiguration
+    !appConfiguration ||
+    !formatMessageWithLocale
   ) {
     return null;
   }

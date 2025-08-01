@@ -41,6 +41,7 @@ const PhaseTemplateContent = ({ phaseId }: Props) => {
   });
 
   if (!phase || !appConfigurationLocales) return null;
+  if (!formatMessageWithLocale) return null;
 
   const projectId = phase.data.relationships.project.data.id;
 
