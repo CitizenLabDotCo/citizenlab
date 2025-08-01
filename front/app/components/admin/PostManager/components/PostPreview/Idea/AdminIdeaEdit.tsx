@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -45,13 +45,15 @@ const AdminIdeaEdit = ({
       </Top>
 
       <Box className="idea-form">
-        <IdeationForm
-          projectId={project.data.id}
-          phaseId={phaseId}
-          participationMethod={phase?.data.attributes.participation_method}
-          idea={idea.data}
-          goBack={goBack}
-        />
+        <Suspense>
+          <IdeationForm
+            projectId={project.data.id}
+            phaseId={phaseId}
+            participationMethod={phase?.data.attributes.participation_method}
+            idea={idea.data}
+            goBack={goBack}
+          />
+        </Suspense>
       </Box>
     </Box>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { JsonSchema7, Layout, isCategorization } from '@jsonforms/core';
@@ -76,20 +76,22 @@ const UserCustomFieldsForm = ({
 
   return (
     <Box overflow={layout === 'inline' ? 'visible' : 'auto'} flex="1">
-      <Fields
-        data={data}
-        schema={schema}
-        uiSchema={uiSchema}
-        getAjvErrorMessage={getAjvErrorMessage}
-        locale={locale}
-        showAllErrors={showAllErrors}
-        setShowAllErrors={setShowAllErrors}
-        onChange={(data) => {
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          data && onChange?.(data);
-        }}
-      />
+      <Suspense>
+        <Fields
+          data={data}
+          schema={schema}
+          uiSchema={uiSchema}
+          getAjvErrorMessage={getAjvErrorMessage}
+          locale={locale}
+          showAllErrors={showAllErrors}
+          setShowAllErrors={setShowAllErrors}
+          onChange={(data) => {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            data && onChange?.(data);
+          }}
+        />
+      </Suspense>
     </Box>
   );
 };
