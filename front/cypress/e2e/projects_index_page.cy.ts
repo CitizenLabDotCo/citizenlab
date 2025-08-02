@@ -95,8 +95,6 @@ describe('Project overview page', () => {
 
     cy.get('.e2e-projects-list');
 
-    cy.acceptCookies();
-
     const initialCards = cy.get(
       '.e2e-projects-list.active-tab > .e2e-admin-publication-card'
     );
@@ -123,7 +121,6 @@ describe('Project overview page', () => {
 
     cy.get('#e2e-projects-container');
     cy.get('.e2e-projects-list');
-    cy.acceptCookies();
 
     // search for a unique project title
     cy.get('#search-input').type(projectTitleOne);

@@ -94,9 +94,6 @@ describe('Survey question logic', () => {
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.reload();
 
-    cy.acceptCookies();
-    cy.get('[data-testid="radio-container"]').first();
-    cy.wait(1000);
     // Select first option
     cy.get('[data-testid="radio-container"]').first().click({ force: true });
 
@@ -369,7 +366,6 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
   it('navigates through the survey correctly (question skipped)', () => {
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
 
     // Go to next page
     cy.wait(1000);
@@ -382,7 +378,6 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
   it('navigates through the survey correctly (option 1)', () => {
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
 
     // Select first option
     cy.get('[data-testid="radio-container"]').first();

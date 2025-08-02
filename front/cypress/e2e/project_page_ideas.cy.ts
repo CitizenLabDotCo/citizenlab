@@ -115,6 +115,7 @@ describe('New timeline project with active ideation phase', () => {
   beforeEach(() => {
     cy.visit(`/projects/${projectTitle}`);
     cy.clearCookies();
+    cy.acceptCookies();
   });
 
   // TODO: Improve this test
@@ -146,7 +147,7 @@ describe('New timeline project with active ideation phase', () => {
   it('redirects to the idea creation form when pressing the post-your-idea button when logged in', () => {
     cy.setLoginCookie(email, password);
     cy.visit(`/projects/${projectTitle}`);
-    cy.acceptCookies();
+
     cy.get('#project-ideabutton').should('be.visible');
     cy.get('#project-ideabutton').click();
     cy.wait(4000);
@@ -415,13 +416,13 @@ describe('Ideation CTA bar', () => {
 
   it('shows the CTA to the user to submit their idea when the user has not yet participated', () => {
     cy.visit(`/en/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('#e2e-ideation-cta-button').should('exist');
   });
 
   it('shows the see ideas button to the user if posting is not enabled', () => {
     cy.visit(`/en/projects/${postingRestrictedProjectSlug}`);
-    cy.acceptCookies();
+
     cy.get('#e2e-ideation-see-ideas-button').should('exist');
   });
 

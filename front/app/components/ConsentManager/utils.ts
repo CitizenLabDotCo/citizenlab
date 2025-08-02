@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react';
+
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import { IUserData } from 'api/users/types';
 
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-import { IConsentCookie } from './consent';
+import { getConsent, IConsentCookie } from './consent';
 import {
   allCategories,
   getDestinationConfigs,
@@ -87,10 +89,10 @@ export const getCurrentPreferences = (
   return output;
 };
 
-export const getConsentRequired = (
+function getConsentRequired(
   cookieConsent: IConsentCookie | null,
   activeDestinations: IDestinationConfig[]
-) => {
+): boolean {
   const isConsentRequired =
     !cookieConsent ||
     !!activeDestinations.find(
@@ -99,4 +101,19 @@ export const getConsentRequired = (
     );
 
   return isConsentRequired;
-};
+}
+
+export function useConsentRequired(activeDestinations: IDestinationConfig[]) {
+  const [isConsentRequired, setIsConsentRequired] = useState(() => {
+    // Initialize with the actual cookie value to prevent flash
+    const cookieConsent = getConsent();
+    return getConsentRequired(cookieConsent, activeDestinations);
+  });
+
+  useEffect(() => {
+    const cookieConsent = getConsent();
+    setIsConsentRequired(getConsentRequired(cookieConsent, activeDestinations));
+  }, [activeDestinations]);
+
+  return isConsentRequired;
+}

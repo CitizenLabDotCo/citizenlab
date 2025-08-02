@@ -62,7 +62,7 @@ describe('Form builder single choice field', () => {
   it('allows submitting when there is an other option that is not selected and is not filled out', () => {
     const questionTitle = randomString();
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.acceptCookies();
+
     cy.dataCy('e2e-single-choice');
     cy.wait(2000);
     cy.dataCy('e2e-single-choice').click();
@@ -92,7 +92,7 @@ describe('Form builder single choice field', () => {
     const questionTitle = randomString();
     const otherAnswer = 'Walking';
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
-    cy.acceptCookies();
+
     cy.dataCy('e2e-single-choice');
     cy.wait(2000);
     cy.dataCy('e2e-single-choice').click();
