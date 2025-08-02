@@ -22,91 +22,71 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => (
   <ModalQueueProvider>{children}</ModalQueueProvider>
 );
 
-describe('ModalQueueProvider', () => {
-  // Basic functionality tests (keep the ones that were working)
-  describe('queueModal', () => {
-    it('should add a modal to the queue', () => {
-      const TestComponent = () => {
-        const { queueModal } = useModalQueue();
+describe('ModalQueueProvider Integration', () => {
+  it('should integrate with modal registry and render highest priority modal', () => {
+    const TestComponent = () => {
+      const { queueModal } = useModalQueue();
 
-        useEffect(() => {
-          queueModal('community-monitor');
-        }, [queueModal]);
+      useEffect(() => {
+        // Add modals in random order to test registry integration + priority sorting
+        queueModal('community-monitor'); // priority 25
+        queueModal('consent-modal'); // priority 100
+        queueModal('user-session-recording'); // priority 50
+      }, [queueModal]);
 
-        return null;
-      };
+      return null;
+    };
 
-      const { container } = render(
-        <ModalQueueProvider>
-          <TestComponent />
-        </ModalQueueProvider>
-      );
+    const { container } = render(
+      <ModalQueueProvider>
+        <TestComponent />
+      </ModalQueueProvider>
+    );
 
-      expect(container.textContent).toContain('community-monitor');
-    });
-
-    it('should handle multiple different modals and sort by priority', () => {
-      const TestComponent = () => {
-        const { queueModal } = useModalQueue();
-        useEffect(() => {
-          queueModal('community-monitor'); // priority 25
-          queueModal('consent-modal'); // priority 100
-          queueModal('user-session-recording'); // priority 50
-        }, [queueModal]);
-        return null;
-      };
-
-      const { container } = render(
-        <ModalQueueProvider>
-          <TestComponent />
-        </ModalQueueProvider>
-      );
-
-      // Should show highest priority modal first
-      expect(container.textContent).toContain('consent-modal');
-    });
+    // Should render highest priority modal (consent-modal)
+    expect(container.textContent).toContain('consent-modal');
+    expect(
+      container.querySelector('[data-testid="modal-renderer"]')
+    ).not.toBeNull();
   });
 
-  describe('removeModal', () => {
-    it('should remove a modal from the queue', () => {
-      const TestComponent = () => {
-        const { queueModal, removeModal } = useModalQueue();
+  it('should update rendered modal when queue changes', () => {
+    const TestComponent = () => {
+      const { queueModal, removeModal } = useModalQueue();
 
-        useEffect(() => {
-          queueModal('community-monitor');
-          queueModal('consent-modal');
-        }, [queueModal]);
+      useEffect(() => {
+        queueModal('consent-modal'); // priority 100
+        queueModal('community-monitor'); // priority 25
+      }, [queueModal]);
 
-        return (
-          <button
-            onClick={() => removeModal('consent-modal')}
-            data-testid="remove-modal"
-          >
-            Remove Modal
-          </button>
-        );
-      };
-
-      const { getByTestId, container } = render(
-        <ModalQueueProvider>
-          <TestComponent />
-        </ModalQueueProvider>
+      return (
+        <button
+          onClick={() => removeModal('consent-modal')}
+          data-testid="remove-modal"
+        >
+          Remove Modal
+        </button>
       );
+    };
 
-      // Initially should show consent-modal (higher priority)
-      expect(container.textContent).toContain('consent-modal');
+    const { getByTestId, container } = render(
+      <ModalQueueProvider>
+        <TestComponent />
+      </ModalQueueProvider>
+    );
 
-      act(() => {
-        getByTestId('remove-modal').click();
-      });
+    // Initially should show consent-modal (higher priority)
+    expect(container.textContent).toContain('consent-modal');
 
-      // Should show community-monitor after removing consent-modal
-      expect(container.textContent).toContain('community-monitor');
+    act(() => {
+      getByTestId('remove-modal').click();
     });
-  });
-});
 
-describe('edge cases', () => {
+    // Should update to show community-monitor after removing consent-modal
+    expect(container.textContent).toContain('community-monitor');
+    expect(container.textContent).not.toContain('consent-modal');
+  });
+
   it('should handle empty queue gracefully', () => {
     const TestComponent = () => {
       const { queueModal: _queueModal } = useModalQueue();
@@ -126,10 +106,8 @@ describe('edge cases', () => {
     ).toBeNull();
     expect(container.textContent).toContain('No modal queued');
   });
-});
 
-describe('performance', () => {
-  it('should maintain referential stability of queue functions', () => {
+  it('should maintain function referential stability', () => {
     const { result, rerender } = renderHook(() => useModalQueue(), {
       wrapper: TestWrapper,
     });
