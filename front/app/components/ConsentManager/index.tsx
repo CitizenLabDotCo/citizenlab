@@ -123,8 +123,8 @@ const ConsentManager = () => {
       allCategories().map((category) => [category, true])
     );
 
-    // Setting preferences here is needed to ensure that the modal can reliably (and not by coincidence) remember choices after accepting all cookies.
-    // Otherwise, the modal would not be able to remember choices without a page reload.
+    // Setting preferences here is needed to ensure that the modal remembers choices after accepting all cookies.
+    // Without this, the modal would not be able to remember choices without a page reload.
     setPreferences(newPreferences);
     saveConsent(newPreferences);
     setScreen(null);
