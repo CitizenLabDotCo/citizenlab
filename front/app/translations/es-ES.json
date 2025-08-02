@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Lo sentimos, no puede acceder a esta página. Es posible que tenga que iniciar sesión o registrarse antes.",
   "app.components.LocationInput.noOptions": "No hay opciones",
   "app.components.Modal.closeWindow": "Cerrar ventana",
+  "app.components.MultiSelect.clearButtonAction": "Borrar selección",
+  "app.components.MultiSelect.clearSearchButtonAction": "Limpiar búsqueda",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Introduzca una nueva dirección de correo electrónico",
   "app.components.PageNotFound.goBackToHomePage": "Vuelta a la página principal",
   "app.components.PageNotFound.notFoundTitle": "Página no encontrada",
