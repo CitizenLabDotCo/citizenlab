@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Valitettavasti et pääse tälle sivulle. Saatat joutua kirjautumaan sisään tai rekisteröitymään päästäksesi siihen.",
   "app.components.LocationInput.noOptions": "Ei vaihtoehtoja",
   "app.components.Modal.closeWindow": "Sulje ikkuna",
+  "app.components.MultiSelect.clearButtonAction": "Tyhjennä valinta",
+  "app.components.MultiSelect.clearSearchButtonAction": "Tyhjennä haku",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Kirjoita uusi sähköpostiosoite",
   "app.components.PageNotFound.goBackToHomePage": "Takaisin etusivulle",
   "app.components.PageNotFound.notFoundTitle": "Sivua ei löydetty",
