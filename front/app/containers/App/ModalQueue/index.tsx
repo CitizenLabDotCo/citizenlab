@@ -25,7 +25,6 @@ type Modal = {
 
 interface ModalQueueState {
   queue: Modal[];
-  currentModalId: ModalId | null;
 }
 
 const sortModalsByPriority = (modals: Modal[]): Modal[] => {
@@ -64,8 +63,6 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
 
           return {
             queue: sortedQueue,
-            currentModalId:
-              sortedQueue.length > 0 ? sortedQueue[0].modalId : null,
           };
         }
 
@@ -76,8 +73,6 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
 
           return {
             queue: filteredQueue,
-            currentModalId:
-              filteredQueue.length > 0 ? filteredQueue[0].modalId : null,
           };
         }
 
@@ -87,7 +82,6 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
     },
     {
       queue: [],
-      currentModalId: null,
     }
   );
 
@@ -116,7 +110,9 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-      <ModalRenderer modalId={state.currentModalId} />
+      <ModalRenderer
+        modalId={state.queue.length > 0 ? state.queue[0].modalId : null}
+      />
     </ModalQueueContext.Provider>
   );
 };
