@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Atvainojiet, šī lapa jums nav pieejama. Lai tai piekļūtu, jums var būt nepieciešams pierakstīties vai reģistrēties.",
   "app.components.LocationInput.noOptions": "Iespēju nav",
   "app.components.Modal.closeWindow": "Aizvērt logu",
+  "app.components.MultiSelect.clearButtonAction": "Skaidra atlase",
+  "app.components.MultiSelect.clearSearchButtonAction": "Skaidra meklēšana",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Ievadiet jaunu e-pasta adresi",
   "app.components.PageNotFound.goBackToHomePage": "Atpakaļ uz mājaslapu",
   "app.components.PageNotFound.notFoundTitle": "Lapa nav atrasta",
