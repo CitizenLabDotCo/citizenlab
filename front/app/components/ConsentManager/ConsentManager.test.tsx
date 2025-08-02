@@ -254,7 +254,7 @@ describe('<ConsentManager />', () => {
       // (e.g. after we launch the modal again from the platform footer).
       // There used to be a bug where the modal would not close after accepting cookies for the second time.
       // The function that dealt with "accept all" was also once implemented in a way that kept existing preferences
-      // (even if they were false).
+      // (even if the settings were "false"), so "accept all" didn't work as intended.
       const user = userEvent.setup();
       render(<ConsentManager />);
       // Simulate opening the consent manager.
@@ -296,8 +296,6 @@ describe('<ConsentManager />', () => {
       // This test is important because we can reject all cookies multiple times
       // (e.g. after we launch the modal again from the platform footer).
       // There used to be a bug where the modal would not close after accepting all cookies for the second time.
-      // The function that dealt with "accept all" was also once implemented in a way that kept existing preferences
-      // (even if they were false).
       // Hence we have a test for this when rejecting as well.
       const user = userEvent.setup();
       render(<ConsentManager />);
