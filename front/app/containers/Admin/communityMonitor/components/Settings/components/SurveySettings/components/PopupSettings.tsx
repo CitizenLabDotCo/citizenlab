@@ -15,7 +15,7 @@ import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonito
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
-import { triggerCommunityMonitorModal } from 'containers/App/CommunityMonitorModal/events';
+import { triggerCommunityMonitorModal } from 'containers/App/ModalQueue/modals/CommunityMonitor/events';
 
 import Error from 'components/UI/Error';
 

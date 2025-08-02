@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-import { get, set } from 'js-cookie';
+import { get } from 'js-cookie';
 import { useLocation } from 'react-router-dom';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
@@ -10,23 +9,16 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import SurveyTimeToComplete from 'components/SurveyTimeToComplete';
-import Modal from 'components/UI/Modal';
-
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
-import QuestionPreview from './components/QuestionPreview';
+import { useModalQueue } from '../..';
+
 import { triggerCommunityMonitorModal$ } from './events';
 import { isAllowedOnUrl } from './utils';
 
-type CommunityMonitorModalProps = {
-  showModal?: boolean;
-};
-
-const CommunityMonitorModal = ({
-  showModal = false,
-}: CommunityMonitorModalProps) => {
+const CommunityMonitorModalManager = () => {
   const location = useLocation();
+  const { queueModal } = useModalQueue();
 
   const { data: authUser } = useAuthUser();
   const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser);
@@ -44,10 +36,6 @@ const CommunityMonitorModal = ({
 
   // Check if we have already stored a cookie, indicating the user has seen the modal
   const hasSeenModal = get('community_monitor_modal_seen');
-
-  const [modalOpened, setModalOpened] = useState(
-    hasSeenModal ? false : showModal // If the user has seen the modal already, don't show it again.
-  );
 
   // Get the community monitor project/phase & check if the survey is currently open
   const { data: project } = useCommunityMonitorProject({
@@ -96,51 +84,22 @@ const CommunityMonitorModal = ({
   // Display the modal if it should be shown
   useEffect(() => {
     if (shouldShowModal()) {
-      setModalOpened(true);
+      queueModal('community-monitor');
     }
-  }, [shouldShowModal]);
+  }, [shouldShowModal, queueModal]);
 
   // Listen for any action that triggers the community monitor modal
   useEffect(() => {
     const subscription = triggerCommunityMonitorModal$.subscribe((event) => {
       event.eventValue['preview']
-        ? setModalOpened(true) // If the admin is triggering a preview, we open the modal directly
-        : shouldShowModal(true) && setModalOpened(true); // Otherwise, we check first if we should show it
+        ? queueModal('community-monitor') // If the admin is triggering a preview, we open the modal directly
+        : shouldShowModal(true) && queueModal('community-monitor'); // Otherwise, we check first if we should show it
     });
 
     return () => subscription.unsubscribe();
-  }, [shouldShowModal]);
+  }, [shouldShowModal, queueModal]);
 
-  const onClose = () => {
-    // Set cookie expiration date to 3 months from today
-    const expirationDate = new Date();
-    expirationDate.setMonth(expirationDate.getMonth() + 3);
-
-    set('community_monitor_modal_seen', 'true', {
-      expires: expirationDate,
-    });
-    setModalOpened(false);
-  };
-
-  if (!project || !phaseId) {
-    return null;
-  }
-
-  return (
-    <Modal opened={modalOpened} close={onClose} width="460px">
-      <Box mt="40px">
-        <QuestionPreview
-          projectSlug={project.data.attributes.slug}
-          phaseId={phaseId}
-          projectId={project.data.id}
-          onClose={onClose}
-        />
-      </Box>
-      <Box display="flex" justifyContent="center" alignItems="center">
-        <SurveyTimeToComplete projectId={project.data.id} phaseId={phaseId} />
-      </Box>
-    </Modal>
-  );
+  return null;
 };
 
-export default CommunityMonitorModal;
+export default CommunityMonitorModalManager;
