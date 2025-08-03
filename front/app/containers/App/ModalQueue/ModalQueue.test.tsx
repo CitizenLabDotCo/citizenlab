@@ -18,10 +18,6 @@ jest.mock('./modals/modalRegistry', () => ({
   'community-monitor': { priority: 25 },
 }));
 
-const TestWrapper = ({ children }: { children: React.ReactNode }) => (
-  <ModalQueueProvider>{children}</ModalQueueProvider>
-);
-
 describe('ModalQueueProvider Integration', () => {
   it('should integrate with modal registry and render highest priority modal', () => {
     const TestComponent = () => {
@@ -96,17 +92,21 @@ describe('ModalQueueProvider Integration', () => {
   });
 
   it('should maintain function referential stability', () => {
-    const { result, rerender } = renderHook(() => useModalQueue(), {
-      wrapper: TestWrapper,
-    });
+    let hookResult;
 
-    const firstQueueModal = result.current.queueModal;
-    const firstRemoveModal = result.current.removeModal;
+    function TestComponent() {
+      hookResult = useModalQueue();
+      return null;
+    }
 
-    rerender();
+    const { rerender } = render(<TestComponent />);
 
-    // Functions should maintain same reference (due to useCallback)
-    expect(result.current.queueModal).toBe(firstQueueModal);
-    expect(result.current.removeModal).toBe(firstRemoveModal);
+    const firstQueueModal = hookResult.queueModal;
+    const firstRemoveModal = hookResult.removeModal;
+
+    rerender(<TestComponent />);
+
+    expect(hookResult.queueModal).toBe(firstQueueModal);
+    expect(hookResult.removeModal).toBe(firstRemoveModal);
   });
 });
