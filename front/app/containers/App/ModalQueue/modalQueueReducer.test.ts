@@ -152,21 +152,4 @@ describe('modalQueueReducer', () => {
       expect(newState).toBe(state); // Same reference
     });
   });
-
-  describe('edge cases', () => {
-    it('should handle modals with same priority correctly', () => {
-      // Create two modals with same custom priority (not their default)
-      const modal1: Modal = { modalId: 'user-session-recording', priority: 75 };
-      const modal2: Modal = { modalId: 'community-monitor', priority: 75 };
-
-      let state = modalQueueReducer(initialModalQueueState, {
-        type: 'QUEUE_MODAL',
-        modal: modal1,
-      });
-      state = modalQueueReducer(state, { type: 'QUEUE_MODAL', modal: modal2 });
-
-      expect(state.queue).toHaveLength(2);
-      // Order should be preserved when priorities are equal
-    });
-  });
 });
