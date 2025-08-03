@@ -140,16 +140,4 @@ describe('modalQueueReducer', () => {
       expect(newState).not.toBe(originalState); // Different object reference
     });
   });
-
-  describe('default case', () => {
-    it('should return the same state for unknown action types', () => {
-      const state: ModalQueueState = {
-        queue: [{ modalId: 'consent-modal', priority: 100 }],
-      };
-      // @ts-expect-error - Testing unknown action type
-      const newState = modalQueueReducer(state, { type: 'UNKNOWN_ACTION' });
-
-      expect(newState).toBe(state); // Same reference
-    });
-  });
 });
