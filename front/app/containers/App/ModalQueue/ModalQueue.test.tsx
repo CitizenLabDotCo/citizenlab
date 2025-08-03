@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 
-import { render, renderHook, act } from 'utils/testUtils/rtl';
+import { render, userEvent, screen } from 'utils/testUtils/rtl';
 
-import { ModalQueueProvider, useModalQueue } from '.';
+import { useModalQueue } from '.';
 
 // Mock the ModalRenderer component
 jest.mock('./ModalRenderer', () => {
@@ -33,16 +33,17 @@ describe('ModalQueueProvider Integration', () => {
       return null;
     };
 
-    const { container } = render(<TestComponent />);
+    render(<TestComponent />);
 
     // Should render highest priority modal (consent-modal)
-    expect(container.textContent).toContain('consent-modal');
-    expect(
-      container.querySelector('[data-testid="modal-renderer"]')
-    ).not.toBeNull();
+    expect(screen.getByTestId('modal-queue-provider').textContent).toContain(
+      'consent-modal'
+    );
+    expect(screen.getByTestId('modal-renderer')).not.toBeNull();
   });
 
-  it('should update rendered modal when queue changes', () => {
+  it('should update rendered modal when queue changes', async () => {
+    const user = userEvent.setup();
     const TestComponent = () => {
       const { queueModal, removeModal } = useModalQueue();
 
@@ -61,18 +62,22 @@ describe('ModalQueueProvider Integration', () => {
       );
     };
 
-    const { container } = render(<TestComponent />);
+    render(<TestComponent />);
 
     // Initially should show consent-modal (higher priority)
-    expect(container.textContent).toContain('consent-modal');
-
-    act(() => {
-      getByTestId('remove-modal').click();
-    });
+    expect(screen.getByTestId('modal-queue-provider').textContent).toContain(
+      'consent-modal'
+    );
+    await user.click(screen.getByTestId('remove-modal'));
 
     // Should update to show community-monitor after removing consent-modal
-    expect(container.textContent).toContain('community-monitor');
-    expect(container.textContent).not.toContain('consent-modal');
+
+    expect(screen.getByTestId('modal-queue-provider').textContent).toContain(
+      'community-monitor'
+    );
+    expect(
+      screen.getByTestId('modal-queue-provider').textContent
+    ).not.toContain('consent-modal');
   });
 
   it('should handle empty queue gracefully', () => {
@@ -82,13 +87,13 @@ describe('ModalQueueProvider Integration', () => {
       return <div>No modal queued</div>;
     };
 
-    const { container } = render(<TestComponent />);
+    render(<TestComponent />);
 
     // Should not render any modal when queue is empty
-    expect(
-      container.querySelector('[data-testid="modal-renderer"]')
-    ).toBeNull();
-    expect(container.textContent).toContain('No modal queued');
+    expect(screen.queryByTestId('modal-renderer')).toBeNull();
+    expect(screen.getByTestId('modal-queue-provider').textContent).toContain(
+      'No modal queued'
+    );
   });
 
   it('should maintain function referential stability', () => {

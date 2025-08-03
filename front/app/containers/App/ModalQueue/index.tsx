@@ -49,10 +49,12 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
         removeModal,
       }}
     >
-      {children}
-      <ModalRenderer
-        modalId={state.queue.length > 0 ? state.queue[0].modalId : null}
-      />
+      <div data-testid="modal-queue-provider">
+        {children}
+        <ModalRenderer
+          modalId={state.queue.length > 0 ? state.queue[0].modalId : null}
+        />
+      </div>
     </ModalQueueContext.Provider>
   );
 };
