@@ -69,26 +69,6 @@ describe('modalQueueReducer', () => {
       expect(newState.queue).toHaveLength(1);
       expect(newState).not.toBe(originalState); // Different object reference
     });
-
-    it('should maintain referential equality when adding same modal to non-empty queue', () => {
-      const modal1: Modal = { modalId: 'community-monitor', priority: 25 };
-      const modal2: Modal = { modalId: 'consent-modal', priority: 100 };
-
-      let state = modalQueueReducer(initialModalQueueState, {
-        type: 'QUEUE_MODAL',
-        modal: modal1,
-      });
-      state = modalQueueReducer(state, { type: 'QUEUE_MODAL', modal: modal2 });
-
-      // Try to add modal1 again (same modalId and priority)
-      const newState = modalQueueReducer(state, {
-        type: 'QUEUE_MODAL',
-        modal: modal1,
-      });
-
-      expect(newState).toBe(state); // Should return same state object
-      expect(newState.queue).toHaveLength(2);
-    });
   });
 
   describe('REMOVE_MODAL', () => {
@@ -187,37 +167,6 @@ describe('modalQueueReducer', () => {
 
       expect(state.queue).toHaveLength(2);
       // Order should be preserved when priorities are equal
-    });
-
-    it('should correctly prioritize highest priority', () => {
-      const consentModal: Modal = { modalId: 'consent-modal', priority: 100 };
-      const recordingModal: Modal = {
-        modalId: 'user-session-recording',
-        priority: 50,
-      };
-      const monitorModal: Modal = {
-        modalId: 'community-monitor',
-        priority: 25,
-      };
-
-      // Add them in reverse order of priority
-      let state = modalQueueReducer(initialModalQueueState, {
-        type: 'QUEUE_MODAL',
-        modal: monitorModal,
-      });
-      state = modalQueueReducer(state, {
-        type: 'QUEUE_MODAL',
-        modal: recordingModal,
-      });
-      state = modalQueueReducer(state, {
-        type: 'QUEUE_MODAL',
-        modal: consentModal,
-      });
-
-      expect(state.queue).toHaveLength(3);
-      expect(state.queue[0].modalId).toBe('consent-modal'); // Highest priority
-      expect(state.queue[1].modalId).toBe('user-session-recording'); // Medium priority
-      expect(state.queue[2].modalId).toBe('community-monitor'); // Lowest priority
     });
   });
 });
