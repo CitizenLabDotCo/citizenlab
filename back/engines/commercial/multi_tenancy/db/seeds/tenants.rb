@@ -519,6 +519,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            data_repository_transcription: {
+              enabled: true,
+              allowed: true
+            },
             project_planning: {
               enabled: false,
               allowed: false
