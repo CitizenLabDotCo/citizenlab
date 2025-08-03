@@ -33,30 +33,14 @@ export const modalQueueReducer = (
         (modal) => modal.modalId === action.modal.modalId
       );
 
-      let newQueue: Modal[];
-
       if (existingModalIndex >= 0) {
-        // Check if the modal is actually different before replacing
-        const existingModal = state.queue[existingModalIndex];
-        if (existingModal.priority === action.modal.priority) {
-          // Modal is identical, return current state unchanged
-          return state;
-        }
-
-        // Modal is different, so replace existing modal
-        newQueue = [...state.queue];
-        newQueue[existingModalIndex] = action.modal;
+        return state;
       } else {
         // Add new modal
-        newQueue = [...state.queue, action.modal];
+        return {
+          queue: sortModalsByPriority([...state.queue, action.modal]),
+        };
       }
-
-      // Sort by priority
-      const sortedQueue = sortModalsByPriority(newQueue);
-
-      return {
-        queue: sortedQueue,
-      };
     }
 
     case 'REMOVE_MODAL': {

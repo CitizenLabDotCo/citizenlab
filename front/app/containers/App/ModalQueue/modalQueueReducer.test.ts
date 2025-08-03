@@ -55,50 +55,6 @@ describe('modalQueueReducer', () => {
       expect(newState.queue).toHaveLength(1);
     });
 
-    it('should replace existing modal when same modalId but different priority', () => {
-      const modal1: Modal = { modalId: 'user-session-recording', priority: 50 };
-      const modal1Updated: Modal = {
-        modalId: 'user-session-recording',
-        priority: 100,
-      };
-
-      const state = modalQueueReducer(initialModalQueueState, {
-        type: 'QUEUE_MODAL',
-        modal: modal1,
-      });
-      const newState = modalQueueReducer(state, {
-        type: 'QUEUE_MODAL',
-        modal: modal1Updated,
-      });
-
-      expect(newState.queue).toHaveLength(1);
-      expect(newState.queue[0]).toEqual(modal1Updated);
-      expect(newState.queue[0].priority).toBe(100);
-    });
-
-    it('should maintain correct order when replacing modal with different priority', () => {
-      const modal1: Modal = { modalId: 'community-monitor', priority: 25 };
-      const modal2: Modal = { modalId: 'user-session-recording', priority: 50 };
-      const modal1Updated: Modal = {
-        modalId: 'community-monitor',
-        priority: 100,
-      };
-
-      let state = modalQueueReducer(initialModalQueueState, {
-        type: 'QUEUE_MODAL',
-        modal: modal1,
-      });
-      state = modalQueueReducer(state, { type: 'QUEUE_MODAL', modal: modal2 });
-      state = modalQueueReducer(state, {
-        type: 'QUEUE_MODAL',
-        modal: modal1Updated,
-      });
-
-      expect(state.queue).toHaveLength(2);
-      expect(state.queue[0]).toEqual(modal1Updated); // community-monitor with priority 100, should be first
-      expect(state.queue[1]).toEqual(modal2); // user-session-recording, priority 50
-    });
-
     it('should not mutate the original state', () => {
       const modal: Modal = { modalId: 'consent-modal', priority: 100 };
       const originalState: ModalQueueState = { queue: [] };
