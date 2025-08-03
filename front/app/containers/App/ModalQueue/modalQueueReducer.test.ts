@@ -1,12 +1,13 @@
 // modalQueueReducer.test.ts
-import {
-  modalQueueReducer,
-  initialModalQueueState,
-  Modal,
-  ModalQueueState,
-} from './modalQueueReducer';
+import { modalQueueReducer, Modal, ModalQueueState } from './modalQueueReducer';
 
 describe('modalQueueReducer', () => {
+  let initialModalQueueState: ModalQueueState;
+
+  beforeEach(() => {
+    initialModalQueueState = { queue: [] };
+  });
+
   describe('QUEUE_MODAL', () => {
     it('should add a new modal to empty queue', () => {
       const modal: Modal = { modalId: 'community-monitor', priority: 25 };
