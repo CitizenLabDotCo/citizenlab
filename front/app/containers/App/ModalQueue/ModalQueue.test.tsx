@@ -37,11 +37,7 @@ describe('ModalQueueProvider Integration', () => {
       return null;
     };
 
-    const { container } = render(
-      <ModalQueueProvider>
-        <TestComponent />
-      </ModalQueueProvider>
-    );
+    const { container } = render(<TestComponent />);
 
     // Should render highest priority modal (consent-modal)
     expect(container.textContent).toContain('consent-modal');
@@ -69,11 +65,7 @@ describe('ModalQueueProvider Integration', () => {
       );
     };
 
-    const { getByTestId, container } = render(
-      <ModalQueueProvider>
-        <TestComponent />
-      </ModalQueueProvider>
-    );
+    const { container } = render(<TestComponent />);
 
     // Initially should show consent-modal (higher priority)
     expect(container.textContent).toContain('consent-modal');
@@ -94,11 +86,7 @@ describe('ModalQueueProvider Integration', () => {
       return <div>No modal queued</div>;
     };
 
-    const { container } = render(
-      <ModalQueueProvider>
-        <TestComponent />
-      </ModalQueueProvider>
-    );
+    const { container } = render(<TestComponent />);
 
     // Should not render any modal when queue is empty
     expect(
