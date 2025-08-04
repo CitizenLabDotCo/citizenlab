@@ -299,7 +299,7 @@ lt:
       subject: 'Gavote atsakymą į savo komentarą %{organizationName}platformoje.'
       preheader: '%{authorName} atsakė į Jūsų komentarą apie %{organizationName}''s platformą'
       title: '%{authorName} atsakė į jūsų komentarą'
-      event_description: '%{authorName} parašė atsakymą į jūsų komentarą "%{post}" dalyvavimo platformoje. Spustelėkite toliau esantį mygtuką, kad tęstumėte pokalbį su %{authorFirstName}.'
+      event_description: '%{authorNameFull} parašė atsakymą į jūsų komentarą "%{post}" dalyvavimo platformoje. Spustelėkite toliau esantį mygtuką, kad tęstumėte pokalbį su %{authorName}.'
       cta_button: 'Atsakyti į %{authorFirstName}'
       replied: '%{authorFirstName} atsakė:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ lt:
       event_description: '%{authorNameFull} pakomentavo jūsų vidinį komentarą.'
       subject: 'Gavote komentarą apie savo vidinį komentarą ''%{post}'''
       title: 'Gavote komentarą apie savo vidinį komentarą ''%{post}'''
-      preheader: '%{authorNameFull} atsakė į jūsų vidinį komentarą apie ''%{post}'''
+      preheader: '%{authorName} atsakė į jūsų vidinį komentarą apie ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Peržiūrėti komentarą %{firstName}'
       event_description: '%{authorNameFull} komentuoti jums priskirtą įvestį.'
@@ -342,7 +342,7 @@ lt:
       event_description: '%{organizationName} paminėjo jus savo atsiliepimuose apie idėją "%{post}". Spustelėkite toliau pateiktą nuorodą, jei norite prisijungti prie pokalbio su %{organizationName}.'
       title: 'Buvote paminėtas'
       subject: '%{organizationName} paminėjo jus savo atsiliepimuose'
-      preheader: '%{organizationName} paminėjo jus atsiliepimuose'
+      preheader: '%{commentAuthor} paminėjo jus atsiliepimuose'
     project_moderation_rights_received:
       cta_manage_project: 'Valdykite šį projektą'
       message_you_became_moderator: 'Dalyvavimo platformos %{organizationName} administratorius ką tik paskyrė jus šio projekto vadovu:'
