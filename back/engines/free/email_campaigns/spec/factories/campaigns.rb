@@ -106,7 +106,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :new_idea_for_admin_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdmin do
+  factory :new_idea_for_admin_published_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdminPublished do
+    enabled { true }
+  end
+
+  factory :new_idea_for_admin_prescreening_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdminPrescreening do
     enabled { true }
   end
 

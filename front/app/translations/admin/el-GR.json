@@ -480,7 +480,6 @@
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Στείλτε τώρα",
   "app.containers.Admin.emails.sendTestEmailButton": "Στείλτε μου ένα δοκιμαστικό email",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Όταν κάνετε κλικ σε αυτόν τον σύνδεσμο, ένα δοκιμαστικό email θα σταλεί μόνο στη δική σας διεύθυνση email. Αυτό σας επιτρέπει να ελέγξετε πώς φαίνεται το email στην πραγματικότητα.",
   "app.containers.Admin.emails.senderRecipients": "Αποστολέας και παραλήπτες",
   "app.containers.Admin.emails.sending": "Αποστολή",
   "app.containers.Admin.emails.sent": "Sent",

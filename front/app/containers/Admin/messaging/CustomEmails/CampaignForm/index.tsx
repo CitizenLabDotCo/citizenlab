@@ -51,13 +51,6 @@ const StyledSectionTitle = styled(SectionTitle)`
   font-size: ${fontSizes.xl}px;
 `;
 
-export const PageTitle = styled.h1`
-  width: 100%;
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 2rem 0 1rem;
-`;
-
 export interface FormValues {
   sender: 'author' | 'organization';
   reply_to: string;
@@ -146,7 +139,7 @@ const CampaignForm = ({
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
         <StyledSection>
           <StyledSectionField>
-            <Feedback />
+            <Feedback onlyShowErrors={true} />
           </StyledSectionField>
           <StyledSectionTitle>
             <FormattedMessage {...messages.senderRecipients} />
@@ -214,7 +207,7 @@ const CampaignForm = ({
         </StyledSection>
         <StyledSection>
           <StyledSectionTitle>
-            <FormattedMessage {...messages.fieldSubject} />
+            <FormattedMessage {...messages.fieldGroupContent} />
           </StyledSectionTitle>
           <SectionField className="e2e-campaign_subject_multiloc">
             <InputMultilocWithLocaleSwitcher
@@ -226,9 +219,6 @@ const CampaignForm = ({
               maxCharCount={80}
             />
           </SectionField>
-          <StyledSectionTitle>
-            <FormattedMessage {...messages.fieldBody} />
-          </StyledSectionTitle>
           <SectionField className="e2e-campaign_body_multiloc">
             <QuillMultilocWithLocaleSwitcher
               name="body_multiloc"
@@ -248,7 +238,7 @@ const CampaignForm = ({
             type="submit"
             processing={isLoading}
           >
-            {formatMessage(messages.formSave)}
+            {formatMessage(messages.formSaveAsDraft)}
           </Button>
         </Box>
       </form>

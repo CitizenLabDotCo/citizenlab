@@ -2,22 +2,19 @@
 
 module EmailCampaigns
   class CommunityMonitorReportMailer < ApplicationMailer
-    private
+    include EditableWithPreview
 
-    def subject
-      format_message('subject')
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    def header_title
-      format_message('title')
-    end
-
-    def header_message
-      format_message('text_introduction')
-    end
-
-    def preheader
-      format_message('subject')
+    def preview_command(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          report_url: "#{Frontend::UrlService.new.home_url(locale: Locale.new(recipient.locale))}/admin/community-monitor/reports"
+        }
+      }
     end
   end
 end
