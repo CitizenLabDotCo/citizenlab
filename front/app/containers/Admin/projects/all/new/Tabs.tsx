@@ -34,7 +34,7 @@ const Tab = ({ message, active, icon, onClick }: TabProps) => {
 
   return (
     <Box
-      borderBottom={active ? `2px solid ${colors.teal400}` : undefined}
+      borderBottom={active ? `2px solid ${colors.primary}` : undefined}
       pb="4px"
       mr="20px"
     >
@@ -44,8 +44,8 @@ const Tab = ({ message, active, icon, onClick }: TabProps) => {
         m="0"
         icon={icon}
         iconSize="16px"
-        textColor={active ? colors.primary : undefined}
-        iconColor={active ? colors.primary : undefined}
+        textColor={active ? colors.textPrimary : undefined}
+        iconColor={active ? colors.textPrimary : undefined}
         onClick={onClick}
       >
         {formatMessage(message)}
