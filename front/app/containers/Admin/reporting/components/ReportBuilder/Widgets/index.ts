@@ -1,6 +1,3 @@
-import FileAttachment, {
-  fileAttachmentTitle,
-} from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpace/messages';
 
@@ -51,7 +48,6 @@ export const WIDGETS = {
   WhiteSpace,
   SurveyQuestionResultWidget,
   CommunityMonitorHealthScoreWidget,
-  FileAttachment,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,
   MostReactedIdeasWidget,
@@ -79,7 +75,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ImageMultiloc: imageMultilocTitle,
   SurveyQuestionResultWidget: surveyQuestionResultTitle,
   CommunityMonitorHealthScoreWidget: communityMonitorHealthScoreTitle,
-  FileAttachment: fileAttachmentTitle,
   MostReactedIdeasWidget: mostReactedIdeasTitle,
   SingleIdeaWidget: singleIdeaTitle,
   VisitorsWidget: visitorsTitle,

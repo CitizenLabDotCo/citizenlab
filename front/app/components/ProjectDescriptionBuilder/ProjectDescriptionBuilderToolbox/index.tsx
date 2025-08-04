@@ -93,7 +93,7 @@ const ProjectDescriptionBuilderToolbox = ({
           label={formatMessage(ButtonMultiloc.craft.custom.title)}
         />
         <DraggableElement
-          id="e2e-draggable-container"
+          id="e2e-draggable-file-attachment"
           component={<FileAttachment />}
           icon="file"
           label={formatMessage(FileAttachment.craft.custom.title)}

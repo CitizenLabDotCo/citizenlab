@@ -19,7 +19,6 @@ import AccordionMultiloc, {
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
-import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import IframeMultiloc, {
   iframeTitle,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
@@ -261,12 +260,6 @@ const HomepageBuilderToolbox = ({
           }
           icon="button"
           label={formatMessage(buttonMultilocTitle)}
-        />
-        <DraggableElement
-          id="e2e-draggable-container"
-          component={<FileAttachment />}
-          icon="file"
-          label={formatMessage(messages.fileAttachment)}
         />
         <DraggableElement
           id="e2e-draggable-image"

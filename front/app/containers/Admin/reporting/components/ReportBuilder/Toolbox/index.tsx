@@ -26,7 +26,6 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
-import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { trackEventByName } from 'utils/analytics';
@@ -193,12 +192,6 @@ const ReportBuilderToolbox = ({
               component={<ImageMultiloc stretch />}
               icon="image"
               label={formatMessage(WIDGET_TITLES.ImageMultiloc)}
-            />
-            <DraggableElement
-              id="e2e-draggable-file-attachment"
-              component={<FileAttachment />}
-              icon="file"
-              label={formatMessage(WIDGET_TITLES.FileAttachment)}
             />
             <DraggableElement
               id="e2e-draggable-two-column"
