@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Sākt",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Statuss",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Statuss:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Šajā slejā tiek izmantoti kešētie dalībnieku dati. Lai skatītu jaunākos skaitļus, pārbaudiet projekta cilni \"Dalībnieki\".",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Redzamība",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Redzamība:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} grupas",
