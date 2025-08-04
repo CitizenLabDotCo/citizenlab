@@ -299,7 +299,7 @@ sr-Cyrl:
       subject: 'Добили сте одговор на ваш коментар на платформи %{organizationName}'
       preheader: '%{authorName} је одговорио на ваш коментар на платформи %{organizationName}'
       title: '%{authorName} replied to your comment'
-      event_description: '%{authorName} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorFirstName}.'
+      event_description: '%{authorNameFull} је написао/ла одговор на ваш коментар на ''%{post}'' на платформи за учешће. Кликните на дугме испод да бисте наставили разговор са %{authorName}.'
       cta_button: 'Reply to %{authorFirstName}'
       replied: '%{authorFirstName} је одговорио:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ sr-Cyrl:
       event_description: '%{authorNameFull} је коментарисало ваш интерни коментар.'
       subject: 'Примили сте коментар на свој интерни коментар на ''%{post}'''
       title: 'You have received a comment on your internal comment on ''%{post}'''
-      preheader: '%{authorNameFull} replied to your internal comment on ''%{post}'''
+      preheader: '%{authorName} је одговорио на ваш интерни коментар на ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисао унос који вам је додељен.'
@@ -342,7 +342,7 @@ sr-Cyrl:
       event_description: '%{organizationName} вас је поменуо у својим повратним информацијама о идеји ''%{post}''. Кликните на везу испод да бисте ушли у разговор са %{organizationName}'
       title: 'You have been mentioned'
       subject: '%{organizationName} вас је поменуо у својим повратним информацијама'
-      preheader: '%{organizationName} mentioned you in feedback'
+      preheader: '%{commentAuthor} вас је поменуо у повратним информацијама'
     project_moderation_rights_received:
       cta_manage_project: 'Управљајте овим пројектом'
       message_you_became_moderator: 'Администратор платформе за учешће %{organizationName} управо вас је поставио за менаџера пројекта следећег пројекта:'
