@@ -51,7 +51,6 @@ module BulkImportIdeas::Extractors
       generate_fields(@user_columns, fixed_key: true)
     end
 
-    # TODO: Make this a @idea_rows ||= method instead
     def generate_idea_rows
       data = []
 

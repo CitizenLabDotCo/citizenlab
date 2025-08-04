@@ -27,7 +27,7 @@ module BulkImportIdeas::Patches::Idea
         }
 
         # Did the author change and was a new one created? Assume if created within the last 30 minutes it probably was
-        new_author_created = author_id_changed? && author&.created_at >= 30.minutes.ago
+        new_author_created = author_id_changed? && (author&.created_at&.>= 30.minutes.ago)
         update_attributes = update_attributes.merge({ user_created: true, user_consent: true }) if new_author_created
 
         idea_import.update!(update_attributes)
