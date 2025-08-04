@@ -299,7 +299,7 @@ nb:
       subject: 'Du har fått svar på kommentaren din på plattformen til %{organizationName}'
       preheader: '%{authorName} svarte på din kommentar i %{organizationName} sin medvirkningsplattform'
       title: '%{authorName} svarte på kommentaren din'
-      event_description: '%{authorName} skrev et svar til kommentaren din på ''%{post}'' på deltakelsesplattformen. Klikk på knappen nedenfor for å fortsette samtalen med %{authorFirstName}.'
+      event_description: '%{authorNameFull} skrev et svar til kommentaren din på ''%{post}'' på medvirkningsplattformen. Klikk på knappen nedenfor for å fortsette samtalen med %{authorName}.'
       cta_button: 'Svar til %{authorFirstName}'
       replied: '%{authorFirstName} svarte:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ nb:
       event_description: '%{authorNameFull} kommenterte den interne kommentaren din.'
       subject: 'Du har mottatt en kommentar til din interne kommentar på ''%{post}'''
       title: 'Du har mottatt en kommentar til din interne kommentar på ''%{post}'''
-      preheader: '%{authorNameFull} svarte på din interne kommentar på ''%{post}'''
+      preheader: '%{authorName} svarte på din interne kommentar på ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} kommenterte internt på et innspill du har fått tildelt.'
@@ -342,7 +342,7 @@ nb:
       event_description: '%{organizationName} nevnte deg i sin tilbakemelding på ideen ''%{post}''. Klikk på lenken nedenfor for å delta i samtalen med %{organizationName}'
       title: 'Du har blitt nevnt'
       subject: '%{organizationName} nevnte deg i tilbakemeldingen sin'
-      preheader: '%{organizationName} nevnte deg i tilbakemeldingen'
+      preheader: '%{commentAuthor} nevnte deg i tilbakemeldingen'
     project_moderation_rights_received:
       cta_manage_project: 'Administrer dette prosjektet'
       message_you_became_moderator: 'En administrator av medvirkningsplattformen til %{organizationName} har nettopp gjort deg til prosjektleder for følgende prosjekt:'
