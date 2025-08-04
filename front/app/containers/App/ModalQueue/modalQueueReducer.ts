@@ -17,8 +17,6 @@ export const initialModalQueueState: ModalQueueState = {
   queue: [],
 };
 
-// You'll need to import this function or define it here
-// Assuming it sorts modals by priority (higher priority first)
 const sortModalsByPriority = (modals: Modal[]): Modal[] => {
   return [...modals].sort((a, b) => b.priority - a.priority);
 };
