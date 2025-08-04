@@ -299,7 +299,7 @@ lb:
       subject: 'Dir hutt eng Äntwert op Äre Kommentar op der Plattform %{organizationName} kritt'
       preheader: '%{authorName} huet op de Kommentar op der Plattform %{organizationName} geäntwert'
       title: '%{authorName} huet op Äre Kommentar geäntwert'
-      event_description: '%{authorName} huet eng Äntwert op Äre Kommentar op ''%{post}'' op der Participatiounsplattform geschriwwen. Klickt op de Knäppchen hei ënnendrënner fir d''Gespréich mat %{authorFirstName}weiderzeféieren.'
+      event_description: '%{authorNameFull} huet eng Äntwert zu Ärem Kommentar zu ''%{post}'' op der participativer Plattform geschriwwen. Klickt hei ënnendrënner fir d’Gespréich mam %{authorName} weiderzeféieren.'
       cta_button: 'Äntwert op %{authorFirstName}'
       replied: '%{authorFirstName} huet geäntwert:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ lb:
       event_description: '%{authorNameFull} kommentéiert Ären internen Kommentar.'
       subject: 'Dir hutt e Kommentar zu Ärem internen Kommentar op ''%{post}'' kritt'
       title: 'Dir hutt e Kommentar zu Ärem internen Kommentar op ''%{post}'' kritt.'
-      preheader: '%{authorNameFull} huet op Äre internen Kommentar op ''%{post}'' geäntwert'
+      preheader: '%{authorName} huet op Ären interne Kommentar op ''%{post}'' geäntwert'
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Kommentar vun %{firstName}kucken'
       event_description: '%{authorNameFull} kommentéiert intern op en Input deen Iech zougewisen gouf.'
@@ -342,7 +342,7 @@ lb:
       event_description: '%{organizationName} hunn Iech an hirem Feedback zu der Iddi ''%{post}‘ ernimmt. Klickt op de Link hei ënnendrënner, fir Iech mat %{organizationName} z’ënnerhalen'
       title: 'Dir sidd ernimmt ginn'
       subject: '%{organizationName} hunn Iech an hirem Feedback ernimmmt'
-      preheader: '%{organizationName} huet dech am Feedback erwähnt'
+      preheader: '%{commentAuthor} huet Iech am Feedback ernimmt'
     project_moderation_rights_received:
       cta_manage_project: 'Verwalten dëse Projet'
       message_you_became_moderator: 'En Administrateur vun der participativer Plattform %{organizationName} huet Iech grad zum Projetsmanager vum folgende Projet gemaach:'
