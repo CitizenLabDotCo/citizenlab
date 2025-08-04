@@ -77,7 +77,7 @@ module BulkImportIdeas::Importers
       author = nil
       if idea_row[:user_email].present? || idea_row[:user_first_name].present?
         author = idea_row[:user_email].present? ? User.find_by_cimail(idea_row[:user_email]) : nil
-        if !author && idea_row[:user_email].present?
+        unless author
           user_params = {
             locale: @locale,
             first_name: idea_row[:user_first_name],
