@@ -199,7 +199,7 @@ class Idea < ApplicationRecord
       .where(projects: { admin_publications: { publication_status: publication_status } })
   end)
 
-  scope :order_new, ->(direction = :desc) {
+  scope :order_new, lambda { |direction = :desc|
     order(Arel.sql("ideas.published_at IS NOT NULL, COALESCE(ideas.published_at, ideas.created_at) #{direction}"))
   }
 
