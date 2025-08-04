@@ -299,7 +299,7 @@ pa:
       subject: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਮਿਲਿਆ ਹੈ'
       preheader: '%{authorName} ਨੇ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
       title: '%{authorName} ਨੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
-      event_description: '%{authorName} ਨੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਲਿਖਿਆ। %{authorFirstName}ਨਾਲ ਗੱਲਬਾਤ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
+      event_description: '%{authorNameFull} ਨੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਲਿਖਿਆ। %{authorName}ਨਾਲ ਗੱਲਬਾਤ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
       cta_button: '%{authorFirstName}ਦਾ ਜਵਾਬ ਦਿਓ'
       replied: '%{authorFirstName} ਨੇ ਜਵਾਬ ਦਿੱਤਾ:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ pa:
       event_description: '%{authorNameFull} ਨੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
       subject: 'ਤੁਹਾਨੂੰ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਪ੍ਰਾਪਤ ਹੋਈ ਹੈ।'
       title: 'ਤੁਹਾਨੂੰ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਪ੍ਰਾਪਤ ਹੋਈ ਹੈ।'
-      preheader: '%{authorNameFull} ਨੇ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ।'
+      preheader: '%{authorName} ਨੇ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
     internal_comment_on_idea_assigned_to_you:
       cta_button: '%{firstName}ਦੀ ਟਿੱਪਣੀ ਵੇਖੋ'
       event_description: '%{authorNameFull} ਨੇ ਤੁਹਾਨੂੰ ਸੌਂਪੇ ਗਏ ਇੱਕ ਇਨਪੁਟ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
@@ -342,7 +342,7 @@ pa:
       event_description: '%{organizationName} ਨੇ ''%{post}'' ਵਿਚਾਰ ''ਤੇ ਆਪਣੇ ਫੀਡਬੈਕ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ। %{organizationName}ਨਾਲ ਗੱਲਬਾਤ ਵਿੱਚ ਦਾਖਲ ਹੋਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਲਿੰਕ ''ਤੇ ਕਲਿੱਕ ਕਰੋ'
       title: 'ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ।'
       subject: '%{organizationName} ਨੇ ਆਪਣੇ ਫੀਡਬੈਕ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ'
-      preheader: '%{organizationName} ਨੇ ਫੀਡਬੈਕ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ'
+      preheader: '%{commentAuthor} ਨੇ ਫੀਡਬੈਕ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ'
     project_moderation_rights_received:
       cta_manage_project: 'ਇਸ ਪ੍ਰੋਜੈਕਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
       message_you_became_moderator: '%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਦੇ ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਨੇ ਤੁਹਾਨੂੰ ਹੇਠਾਂ ਦਿੱਤੇ ਪ੍ਰੋਜੈਕਟ ਦਾ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਬਣਾਇਆ ਹੈ:'
