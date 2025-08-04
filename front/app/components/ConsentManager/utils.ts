@@ -1,9 +1,13 @@
+import { useEffect, useState } from 'react';
+
 import { IAppConfigurationData } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-import { IConsentCookie } from './consent';
+import { getConsent, IConsentCookie } from './consent';
 import {
   allCategories,
   getDestinationConfigs,
@@ -87,10 +91,10 @@ export const getCurrentPreferences = (
   return output;
 };
 
-export const getConsentRequired = (
+function getConsentRequired(
   cookieConsent: IConsentCookie | null,
   activeDestinations: IDestinationConfig[]
-) => {
+): boolean {
   const isConsentRequired =
     !cookieConsent ||
     !!activeDestinations.find(
@@ -99,4 +103,22 @@ export const getConsentRequired = (
     );
 
   return isConsentRequired;
-};
+}
+
+export function useConsentRequired() {
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: authUser } = useAuthUser();
+
+  const [isConsentRequired, setIsConsentRequired] = useState(false);
+
+  useEffect(() => {
+    const activeDestinations = getActiveDestinations(
+      appConfiguration?.data,
+      authUser?.data
+    );
+    const cookieConsent = getConsent();
+    setIsConsentRequired(getConsentRequired(cookieConsent, activeDestinations));
+  }, [appConfiguration?.data, authUser?.data]);
+
+  return isConsentRequired;
+}

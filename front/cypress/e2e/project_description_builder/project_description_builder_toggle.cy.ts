@@ -61,12 +61,13 @@ describe('Project description builder toggle', () => {
 
     // Attach a project file
     cy.visit(`admin/projects/${projectId}/settings`);
+    cy.wait(2000);
     cy.scrollTo('bottom');
-    cy.acceptCookies();
+
     cy.get('#e2e-project-file-uploader').selectFile(
       'cypress/fixtures/example.pdf'
     );
-    cy.wait(4000);
+    cy.wait(2000);
 
     // Submit project
     cy.get('.e2e-submit-wrapper-button button').click();
@@ -102,13 +103,15 @@ describe('Project description builder toggle', () => {
 
     // Attach a project file
     cy.visit(`admin/projects/${projectId}/settings`);
+    cy.wait(2000);
     cy.scrollTo('bottom');
-    cy.acceptCookies();
+
     cy.dataCy('e2e-project-file-uploader').should('exist');
     cy.dataCy('e2e-project-file-uploader').selectFile(
       'cypress/fixtures/example.pdf'
     );
     cy.contains('example.pdf').should('exist');
+    cy.wait(2000);
 
     // Submit project
     cy.get('.e2e-submit-wrapper-button button').click();

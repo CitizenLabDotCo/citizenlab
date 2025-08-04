@@ -51,7 +51,7 @@ describe('Project with single voting phase', () => {
             );
             cy.visit(`/en/projects/${projectSlug}`);
             cy.setLoginCookie(email, password);
-            cy.acceptCookies();
+
             cy.wait(1000);
           });
       });

@@ -16,7 +16,7 @@ describe('Admin: access rights', () => {
       const projectId = project.body.data.id;
 
       cy.visit('/admin/projects/all');
-      cy.acceptCookies();
+
       cy.dataCy('e2e-admins-only-permissions-tag').first().click();
 
       cy.location('pathname').should(
