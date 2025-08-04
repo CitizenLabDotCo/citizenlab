@@ -13,9 +13,15 @@ import Link from 'utils/cl-router/Link';
 import { isSuperAdmin } from 'utils/permissions/roles';
 
 import ImportZipModal from './ImportZipModal';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const ProjectImporter = () => {
   const { data: authUser } = useAuthUser();
+
+  const isFeatureEnabled = useFeatureFlag({
+    name: 'project_importer',
+  });
+
   const [searchParams] = useSearchParams();
   const importId = searchParams.get('id') || undefined;
   const numProjects = searchParams.get('num_projects') || undefined;
@@ -48,8 +54,9 @@ const ProjectImporter = () => {
     ); // TODO: Sort out types
   };
 
-  // This feature is only for super admins
-  if (!isSuperAdmin(authUser)) return null;
+  // This feature is only for super admins when the feature flag is enabled
+  if (!(isFeatureEnabled && isSuperAdmin(authUser)))
+    return <h1>Not allowed</h1>;
 
   return (
     <Box>
@@ -111,11 +118,6 @@ const ProjectImporter = () => {
         onClose={closeImportZipModal}
         onImport={(data) => setImportData(data)}
       />
-
-      {/* <h2>Previous imports</h2>*/}
-      {/* <ul>*/}
-      {/*  <li>Date - 10 projects - ID</li>*/}
-      {/* </ul>*/}
     </Box>
   );
 };

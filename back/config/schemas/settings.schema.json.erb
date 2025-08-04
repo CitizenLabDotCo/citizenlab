@@ -1475,6 +1475,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "project_importer": {
+        "type": "object",
+        "title": "Project importer [Alpha]",
+        "description": "Super admin only feature to import project, phases and content from XLSX.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
