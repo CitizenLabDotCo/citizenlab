@@ -71,7 +71,6 @@ describe('ModalQueueProvider Integration', () => {
     await user.click(screen.getByTestId('remove-modal'));
 
     // Should update to show community-monitor after removing consent-modal
-
     expect(screen.getByTestId('modal-queue-provider').textContent).toContain(
       'community-monitor'
     );
