@@ -2295,7 +2295,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "محفوظ کریں۔",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "فائل کامیابی کے ساتھ اپ ڈیٹ ہو گئی۔",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "فائلیں تلاش کریں۔",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "فائل کی قسم",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "اسٹریٹجک منصوبہ",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "آپ ایک وقت میں زیادہ سے زیادہ صرف {maxFiles} فائلیں اپ لوڈ کر سکتے ہیں۔",
   "app.containers.AdminPage.ProjectFiles.unknown": "نامعلوم",
