@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Début",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Statut",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Statut :",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Cette colonne utilise des données de participants mises en cache. Pour connaître les derniers chiffres, consultez l'onglet \"Participants\" du projet.",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Visibilité",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Visibilité :",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} groupes",
