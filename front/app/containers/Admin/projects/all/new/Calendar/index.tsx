@@ -23,7 +23,7 @@ import ProjectGanttChart from './ProjectGanttChart';
 
 const PAGE_SIZE = 10;
 
-const Timeline = () => {
+const Calendar = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const params = useParams();
@@ -125,4 +125,4 @@ const Timeline = () => {
   );
 };
 
-export default Timeline;
+export default Calendar;
