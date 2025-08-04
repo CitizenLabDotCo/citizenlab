@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# NOTE: Only supports native_survey phases at the moment
-
 module BulkImportIdeas::Extractors
   class BasePhaseExtractor < BaseExtractor
     def initialize(locale, xlsx_file_path, worksheet_name, config = {}, attributes = {})
@@ -10,7 +8,6 @@ module BulkImportIdeas::Extractors
       @worksheet = workbook.worksheets.find { |sheet| sheet.sheet_name == worksheet_name }
       @idea_columns = []
       @user_columns = []
-      @participation_method = participation_method
       @attributes = attributes
       @config = config # any defined: ignored_columns, user_columns, renamed_columns, override_field_types
       @idea_rows = generate_idea_rows
@@ -35,10 +32,6 @@ module BulkImportIdeas::Extractors
     end
 
     private
-
-    def participation_method
-      'native_survey'
-    end
 
     def phase_title
       @worksheet.sheet_name

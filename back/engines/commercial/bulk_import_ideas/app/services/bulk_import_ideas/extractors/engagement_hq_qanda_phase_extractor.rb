@@ -33,6 +33,7 @@ module BulkImportIdeas::Extractors
     def participation_method_attributes
       {
         participation_method: 'ideation',
+        input_term: 'question',
         campaigns_settings: { project_phase_started: true }
       }
     end
