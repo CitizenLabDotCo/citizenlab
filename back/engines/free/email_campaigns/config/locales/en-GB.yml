@@ -298,7 +298,7 @@ en-GB:
       subject: 'You have received a reply on your comment on the platform of %{organizationName}'
       preheader: '%{authorName} replied to your comment on %{organizationName}''s platform'
       title: '%{authorName} replied to your comment'
-      event_description: '%{authorName} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorFirstName}.'
+      event_description: '%{authorNameFull} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorName}.'
       cta_button: 'Reply to %{authorFirstName}'
       replied: '%{authorFirstName} replied:'
     internal_comment_on_your_internal_comment:
@@ -341,7 +341,7 @@ en-GB:
       event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
       title: 'You have been mentioned'
       subject: '%{organizationName} mentioned you in their feedback'
-      preheader: '%{organizationName} mentioned you in feedback'
+      preheader: '%{commentAuthor} mentioned you in feedback'
     project_moderation_rights_received:
       cta_manage_project: 'Manage this project'
       message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
