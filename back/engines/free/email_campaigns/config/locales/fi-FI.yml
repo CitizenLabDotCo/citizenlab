@@ -299,7 +299,7 @@ fi:
       subject: 'Olet saanut vastauksen kommenttiisi %{organizationName}alustalla'
       preheader: '%{authorName} vastasi kommenttiisi käyttäjän %{organizationName}alustalla'
       title: '%{authorName} vastasi kommenttiisi'
-      event_description: '%{authorName} vastasi kommenttiisi aiheesta ''%{post}'' osallistumisalustalla. Klikkaa alla olevaa painiketta jatkaaksesi keskustelua käyttäjän %{authorFirstName}kanssa.'
+      event_description: '%{authorNameFull} kirjoitti vastauksen kommenttiisi "%{post}" osallistumisalustalla. Napsauta alla olevaa painiketta jatkaaksesi keskustelua %{authorName}kanssa.'
       cta_button: 'Vastaus käyttäjälle %{authorFirstName}'
       replied: '%{authorFirstName} vastasi:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ fi:
       event_description: '%{authorNameFull} kommentoi sisäistä kommenttiasi.'
       subject: 'Olet saanut kommentin sisäiseen kommenttiisi ''%{post}'''
       title: 'Olet saanut kommentin sisäiseen kommenttiisi aiheesta ''%{post}'''
-      preheader: '%{authorNameFull} vastasi sisäiseen kommenttiisi aiheesta ''%{post}'''
+      preheader: '%{authorName} vastasi sisäiseen kommenttiisi aiheesta%{post}'
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Näytä kommentti käyttäjältä %{firstName}'
       event_description: '%{authorNameFull} kommentoi sisäisesti sinulle määritettyä syötettä.'
@@ -342,7 +342,7 @@ fi:
       event_description: '%{organizationName} mainitsi sinut palautteessaan ideasta ''%{post}''. Napsauta alla olevaa linkkiä päästäksesi keskusteluun %{organizationName}:n kanssa'
       title: 'Sinut on mainittu'
       subject: '%{organizationName} mainitsi sinut palautteessaan'
-      preheader: '%{organizationName} mainitsi sinut palautteessa'
+      preheader: '%{commentAuthor} mainitsi sinut palautteessa'
     project_moderation_rights_received:
       cta_manage_project: 'Hallinnoi tätä projektia'
       message_you_became_moderator: 'Osallistumisalustan %{organizationName} ylläpitäjä teki sinusta juuri seuraavan projektin projektipäällikön:'
