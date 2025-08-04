@@ -299,7 +299,7 @@ cy:
       subject: 'Rydych chi wedi derbyn ateb ar eich sylw ar y platfform o %{organizationName}'
       preheader: 'Atebodd %{authorName} eich sylw ar blatfform %{organizationName}'
       title: '%{authorName} atebodd eich sylw'
-      event_description: 'Ysgrifennodd %{authorName} ateb i''ch sylw ar ''%{post}'' ar y platfform cyfranogiad. Cliciwch y botwm isod i barhau â''r sgwrs gyda %{authorFirstName}.'
+      event_description: 'Ysgrifennodd %{authorNameFull} ateb i''ch sylw ar ''%{post}'' ar y llwyfan cyfranogiad. Cliciwch y botwm isod i barhau â''r sgwrs gyda %{authorName}.'
       cta_button: 'Ateb i %{authorFirstName}'
       replied: '%{authorFirstName} atebodd:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ cy:
       event_description: '%{authorNameFull} sylw ar eich sylw mewnol.'
       subject: 'Rydych wedi derbyn sylw ar eich sylw mewnol ar ''%{post}'''
       title: 'Rydych chi wedi derbyn sylw ar eich sylw mewnol ar ''%{post}'''
-      preheader: '%{authorNameFull} atebodd eich sylw mewnol ar ''%{post}'''
+      preheader: 'Ymatebodd %{authorName} i''ch sylw mewnol ar ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Gweld sylw gan %{firstName}'
       event_description: '%{authorNameFull} sylwadau mewnol ar fewnbwn a neilltuwyd i chi.'
@@ -342,7 +342,7 @@ cy:
       event_description: 'Soniodd %{organizationName} amdanoch chi yn eu hadborth ar y syniad ''%{post}''. Cliciwch y ddolen isod i fynd i mewn i''r sgwrs gyda %{organizationName}'
       title: 'Rydych chi wedi cael eich crybwyll'
       subject: '%{organizationName} sôn amdanoch chi yn eu hadborth'
-      preheader: '%{organizationName} soniodd amdanoch chi yn yr adborth'
+      preheader: '%{commentAuthor} sôn amdanoch chi mewn adborth'
     project_moderation_rights_received:
       cta_manage_project: 'Rheoli''r prosiect hwn'
       message_you_became_moderator: 'Mae gweinyddwr y platfform cyfranogiad o %{organizationName} newydd eich gwneud yn rheolwr prosiect y prosiect canlynol:'
