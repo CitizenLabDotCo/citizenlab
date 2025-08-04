@@ -299,7 +299,7 @@ el:
       subject: 'Λάβατε απάντηση στο σχόλιό σας στην πλατφόρμα %{organizationName}'
       preheader: '%{authorName} απάντησε στο σχόλιό σας στο %{organizationName}''s platform'
       title: '%{authorName} απάντησε στο σχόλιό σας'
-      event_description: '%{authorName} έγραψε μια απάντηση στο σχόλιό σας στο ''%{post}'' στην πλατφόρμα συμμετοχής. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorFirstName}.'
+      event_description: '%{authorNameFull} έγραψε μια απάντηση στο σχόλιό σας στο ''%{post}'' στην πλατφόρμα συμμετοχής. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
       cta_button: 'Απάντηση στο %{authorFirstName}'
       replied: '%{authorFirstName} απάντησε:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ el:
       event_description: '%{authorNameFull} σχολίασε το εσωτερικό σας σχόλιο.'
       subject: 'Έχετε λάβει ένα σχόλιο σχετικά με το εσωτερικό σας σχόλιο για το ''%{post}'''
       title: 'Έχετε λάβει ένα σχόλιο σχετικά με το εσωτερικό σας σχόλιο στο ''%{post}'''
-      preheader: '%{authorNameFull} απάντησε στο εσωτερικό σας σχόλιο στο ''%{post}'''
+      preheader: '%{authorName} απάντησε στο εσωτερικό σας σχόλιο στο ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Προβολή σχολίου από %{firstName}'
       event_description: '%{authorNameFull} σχολιάσατε εσωτερικά μια είσοδο που σας έχει ανατεθεί.'
@@ -342,7 +342,7 @@ el:
       event_description: '%{organizationName} σας ανέφεραν στα σχόλιά τους για την ιδέα ''%{post}''. Κάντε κλικ στον παρακάτω σύνδεσμο για να μπείτε στη συζήτηση με το %{organizationName}.'
       title: 'Έχετε αναφερθεί'
       subject: '%{organizationName} σας ανέφεραν στα σχόλιά τους'
-      preheader: '%{organizationName} σας ανέφερα στα σχόλια'
+      preheader: '%{commentAuthor} σας ανέφερα στα σχόλια'
     project_moderation_rights_received:
       cta_manage_project: 'Διαχειριστείτε αυτό το έργο'
       message_you_became_moderator: 'Ένας διαχειριστής της πλατφόρμας συμμετοχής του %{organizationName} μόλις σας έκανε διαχειριστή του ακόλουθου έργου:'
