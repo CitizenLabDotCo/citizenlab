@@ -883,7 +883,7 @@
   "app.containers.Admin.emails.fieldSubjectTooltip": "Ceci sera visible dans la champ \"objet\" de l'email et dans la boîte emails des utilisateurs. Assurez que c'est clair et qu'il pousse à l'action.",
   "app.containers.Admin.emails.fieldTo": "À",
   "app.containers.Admin.emails.fieldToTooltip": "Choisissez quel(s) groupe(s) d'utilisateurs recevera votre email.",
-  "app.containers.Admin.emails.formSave": "Enregistrer",
+  "app.containers.Admin.emails.formSave": "Enregistrer comme brouillon",
   "app.containers.Admin.emails.formSaveAsDraft": "Enregistrer comme brouillon",
   "app.containers.Admin.emails.from": "De :",
   "app.containers.Admin.emails.groups": "Groupes",
