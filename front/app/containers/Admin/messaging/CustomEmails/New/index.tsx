@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Title } from '@citizenlab/cl2-component-library';
 
 import useAddCampaign from 'api/campaigns/useAddCampaign';
 import useAuthUser from 'api/me/useAuthUser';
@@ -12,7 +12,7 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
-import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
+import CampaignForm, { FormValues } from '../CampaignForm';
 
 const New = () => {
   const { data: authUser } = useAuthUser();
@@ -22,7 +22,9 @@ const New = () => {
       campaign_name: 'manual',
       ...values,
     });
-    clHistory.push(`/admin/messaging/emails/custom/${response.data.id}`);
+    clHistory.push(
+      `/admin/messaging/emails/custom/${response.data.id}/edit?created=true`
+    );
   };
 
   const goBack = () => {
@@ -32,9 +34,9 @@ const New = () => {
   return (
     <Box background={colors.white} p="40px">
       <GoBackButton onClick={goBack} />
-      <PageTitle>
+      <Title>
         <FormattedMessage {...messages.addCampaignTitle} />
-      </PageTitle>
+      </Title>
       <CampaignForm
         isLoading={isLoading}
         defaultValues={{

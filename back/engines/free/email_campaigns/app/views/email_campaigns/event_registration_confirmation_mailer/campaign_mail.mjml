@@ -31,7 +31,4 @@
   </mj-column>
 </mj-section>
 
-<%= render partial: 'custom_cta_section', locals: {
-  href: event.event_url,
-  message: format_message('cta_go_to_event')
-} %>
+<%= render partial: 'custom_cta_section' %>

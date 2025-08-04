@@ -95,6 +95,10 @@ blint back-lint-autocorrect:
 r rspec:
 	docker compose run --rm web bin/rspec ${file}
 
+# SSH session onto the running web container.
+bash-exec:
+	docker exec -it cl-back-web /bin/bash
+
 # Usage examples:
 # make feature-flag feature=initiative_cosponsors enabled=true
 # make feature-flag feature=initiative_cosponsors allowed=false enabled=false

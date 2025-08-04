@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class ManualCampaignMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       # TODO: generate commands with campaign#generate_commands method

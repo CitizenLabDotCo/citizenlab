@@ -2,24 +2,30 @@
 
 module EmailCampaigns
   class CommentDeletedByAdminMailer < ApplicationMailer
-    protected
+    include EditableWithPreview
 
-    def subject
-      format_message('subject', values: { organizationName: organization_name })
+    def editable
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
-    private
-
-    def header_title
-      format_message('main_header', values: { organizationName: organization_name })
+    def substitution_variables
+      {
+        organizationName: organization_name
+      }
     end
 
-    def header_message
-      format_message('event_description', values: { organizationName: organization_name })
-    end
-
-    def preheader
-      format_message('preheader')
+    def preview_command(recipient)
+      data = preview_service.preview_data(recipient)
+      {
+        recipient: recipient,
+        event_payload: {
+          comment_created_at: Time.now.iso8601,
+          comment_body_multiloc: data.comment.body_multiloc,
+          reason_code: 'other',
+          other_reason: data.comment.deleted_reason,
+          idea_url: data.idea.url
+        }
+      }
     end
   end
 end

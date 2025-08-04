@@ -55,7 +55,7 @@ const Table = () => {
   );
 
   const projectIds = projects.map((project) => project.id);
-  const { data: participantsCounts } = useParticipantCounts(projectIds);
+  const participantsCounts = useParticipantCounts(projectIds);
 
   const { loadMoreRef } = useInfiniteScroll({
     isLoading: isFetchingNextPage,
@@ -108,11 +108,7 @@ const Table = () => {
             <Row
               key={project.id}
               project={project}
-              participantsCount={
-                participantsCounts?.data.attributes.participant_counts[
-                  project.id
-                ]
-              }
+              participantsCount={participantsCounts[project.id]}
             />
           ))}
         </Tbody>

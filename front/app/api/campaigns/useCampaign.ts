@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import campaignsKeys from './keys';
 import { ICampaign, CampaignsKeys } from './types';
 
-const fetchCampaignExample = ({ campaignId }: { campaignId: string }) =>
+const fetchCampaign = ({ campaignId }: { campaignId: string }) =>
   fetcher<ICampaign>({
     path: `/campaigns/${campaignId}`,
     action: 'get',
@@ -15,7 +15,7 @@ const fetchCampaignExample = ({ campaignId }: { campaignId: string }) =>
 const useCampaign = (campaignId: string) => {
   return useQuery<ICampaign, CLErrors, ICampaign, CampaignsKeys>({
     queryKey: campaignsKeys.item({ campaignId }),
-    queryFn: () => fetchCampaignExample({ campaignId }),
+    queryFn: () => fetchCampaign({ campaignId }),
   });
 };
 

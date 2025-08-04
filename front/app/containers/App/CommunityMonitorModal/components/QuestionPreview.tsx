@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 
 import { Spinner, Text } from '@citizenlab/cl2-component-library';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
-
-import CustomFields from 'components/CustomFieldsForm/CustomFields';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -13,6 +11,10 @@ import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 import tracks from '../tracks';
+
+const CustomFields = React.lazy(
+  () => import('components/CustomFieldsForm/CustomFields')
+);
 
 type QuestionPreviewProps = {
   projectSlug?: string;
@@ -72,11 +74,13 @@ const QuestionPreview = ({
 
   return (
     <FormProvider {...methods}>
-      <CustomFields
-        questions={[{ ...firstSentimentLinearScale, required: true }]}
-        projectId={projectId}
-        participationMethod={'native_survey'}
-      />
+      <Suspense>
+        <CustomFields
+          questions={[{ ...firstSentimentLinearScale, required: true }]}
+          projectId={projectId}
+          participationMethod={'native_survey'}
+        />
+      </Suspense>
       <Text textAlign="center" color="textSecondary" fontSize="s">
         {formatMessage(messages.surveyDescription)}
       </Text>
