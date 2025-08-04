@@ -122,8 +122,6 @@ module BulkImportIdeas::Extractors
       number = number_field_attributes(column_name)
       return number if number
 
-      # get_matrix_values(column_name)
-
       # TODO: If not a number field (or date?) then we need to ensure all values are strings
 
       # Is this a matrix field?
@@ -242,27 +240,6 @@ module BulkImportIdeas::Extractors
       return values if new_values.nil? || new_values.length != values.length
 
       new_values
-    end
-
-    def get_matrix_values(column_name)
-      # TODO: Work in progress to extract matrix values
-      if column_name.start_with? 'What is your level of satisfaction with the quantity and quality of the following park services, activities, paths, and amenities (features in a park) in the City of New Westminster?'
-        gpt_mini = Analysis::LLM::GPT4oMini.new
-        prompt = <<~GPT_PROMPT
-          At the end of this message, you’ll find a list separated by ;; of field values answered in a matrix style survey question 
-          In these values there are matrix values that are delimited by commas and colons,
-          Return two lists 1) the matrix statements and 2) the names of the options that can be selected for each statement.
-          Order the option names from most negative to most positive.
-  
-          List of strings:
-          #{@idea_rows.take(10).pluck(column_name).join(';;')}
-        GPT_PROMPT
-        gpt_mini.chat(prompt)
-
-        # Cache these responses for a day to avoid hitting the API when things have not changed
-
-        # binding.pry
-      end
     end
 
     def ignore_row?(_row)
