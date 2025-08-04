@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Start",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Status:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Deze kolom gebruikt deelnemersgegevens uit de cache. Kijk op het tabblad \"Deelnemers\" van het project om de meest recente cijfers te zien.",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Zichtbaarheid",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Zichtbaarheid:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} groepen",
