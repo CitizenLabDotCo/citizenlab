@@ -299,7 +299,7 @@ pt:
       subject: 'Você recebeu uma resposta ao seu comentário sobre a plataforma de %{organizationName}'
       preheader: '%{authorName} respondeu ao seu comentário sobre a plataforma de %{organizationName}'
       title: '%{authorName} respondeu ao seu comentário'
-      event_description: '%{authorName} escreveu uma resposta ao seu comentário sobre ''%{post}'' na plataforma de participação. Clique no botão abaixo para continuar a conversa com %{authorFirstName}.'
+      event_description: '%{authorNameFull} escreveu uma resposta ao seu comentário sobre ''%{post}'' na plataforma de participação. Clique no botão embaixo para continuar a conversa com '' %{authorName}.'
       cta_button: 'Responder a %{authorFirstName}'
       replied: '%{authorFirstName} respondeu:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ pt:
       event_description: '%{authorNameFull} comentou o seu comentário interno.'
       subject: 'Recebeu um comentário sobre o seu comentário interno em ''%{post}'''
       title: 'Você recebeu um comentário sobre seu comentário interno em ''%{post}'''
-      preheader: '%{authorNameFull} Respondeu ao seu comentário interno sobre ''%{post}'''
+      preheader: '%{authorName} respondeu ao seu comentário interno sobre ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Ver comentário de %{firstName}'
       event_description: '%{authorNameFull} comentou dentro de uma entrada que lhe foi atribuída.'
@@ -342,7 +342,7 @@ pt:
       event_description: '%{organizationName} mencionaram-no na sua opinião sobre a idéia ''%{post}''. Clique no link embaixo para entrar na conversa com '' %{organizationName}'
       title: 'Você foi mencionado'
       subject: '%{organizationName} mencionou você na sua opinião'
-      preheader: '%{organizationName} mencionei você no feedback'
+      preheader: '%{commentAuthor} mencionou você na opinião'
     project_moderation_rights_received:
       cta_manage_project: 'Gerenciar este projeto'
       message_you_became_moderator: 'Um administrador da plataforma de %{organizationName} acabou de fazer você gerente do seguinte projeto:'
