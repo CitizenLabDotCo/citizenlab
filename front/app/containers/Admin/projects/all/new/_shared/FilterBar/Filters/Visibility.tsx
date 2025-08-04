@@ -4,11 +4,13 @@ import { Visibility } from 'api/projects/types';
 
 import MultiSelect from 'components/UI/MultiSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import { setParam, useParam } from '../../params';
 
 import messages from './messages';
+import tracks from './tracks';
 
 const OPTIONS: {
   value: Visibility;
@@ -48,6 +50,9 @@ const VisibilityFilter = ({ onClear }: Props) => {
       selected={visibilities}
       onChange={(visibilities) => {
         setParam('visibility', visibilities as Visibility[]);
+        trackEventByName(tracks.setVisibility, {
+          visibilities: JSON.stringify(visibilities),
+        });
       }}
       onClear={onClear}
     />

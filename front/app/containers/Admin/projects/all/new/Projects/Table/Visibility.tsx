@@ -11,6 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import GanttItemIconBar from 'components/UI/GanttChart/components/GanttItemIconBar';
 
+import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import sharedMessages from '../../_shared/messages';
@@ -18,6 +19,7 @@ import { getStatusColor } from '../../_shared/utils';
 import { VISIBILITY_LABELS } from '../constants';
 
 import messages from './messages';
+import tracks from './tracks';
 
 const PUBLICATION_STATUSES: Record<PublicationStatus, MessageDescriptor> = {
   draft: sharedMessages.draft,
@@ -109,6 +111,11 @@ const Visibility = ({ project }: Props) => {
         </Box>
       }
       theme="dark"
+      onShow={() => {
+        trackEventByName(tracks.visibilityTooltip, {
+          projectId: project.id,
+        });
+      }}
     >
       <Box display="flex">
         <GanttItemIconBar

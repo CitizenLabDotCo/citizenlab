@@ -12,10 +12,12 @@ import useLocalize from 'hooks/useLocalize';
 
 import { PARTICIPATION_METHOD_LABELS } from 'containers/Admin/inspirationHub/constants';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   project: ProjectMiniAdminData;
@@ -205,6 +207,11 @@ const CurrentPhase = ({ project }: Props) => {
       }
       theme="dark"
       disabled={!currentPhase && !nextPhase}
+      onShow={() => {
+        trackEventByName(tracks.currentPhaseTooltip, {
+          projectId: project.id,
+        });
+      }}
     >
       <div>
         <Text m="0" fontSize="s">
