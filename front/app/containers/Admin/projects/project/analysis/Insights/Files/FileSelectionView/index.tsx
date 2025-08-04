@@ -31,7 +31,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
   const { data: files } = useFiles({
     project: [projectId || ''],
     enabled: !!projectId,
-  });
+  }); // TODO: Add a whitelisting mechanism to only fetch files that can be added to an analysis.
 
   const { formatMessage } = useIntl();
 
@@ -63,6 +63,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
       id: analysisId,
       files: watchedFileIds,
     });
+    // TODO: Handle any errors here once the BE is implemented.
   }, [analysisId, updateAnalysis, watchedFileIds]);
 
   // Auto-submit when file_ids changes
