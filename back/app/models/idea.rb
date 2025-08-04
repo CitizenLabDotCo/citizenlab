@@ -199,7 +199,10 @@ class Idea < ApplicationRecord
       .where(projects: { admin_publications: { publication_status: publication_status } })
   end)
 
-  scope :order_new, ->(direction = :desc) { order(published_at: direction) }
+  scope :order_new, ->(direction = :desc) {
+    order(Arel.sql("ideas.published_at IS NOT NULL, COALESCE(ideas.published_at, ideas.created_at) #{direction}"))
+  }
+
   scope :order_random, lambda { |user|
     hash_part_for_today_and_user = Time.zone.today.to_s + user&.id.to_s
     order(Arel.sql("md5(concat(#{table_name}.id, '#{hash_part_for_today_and_user}'))"))
