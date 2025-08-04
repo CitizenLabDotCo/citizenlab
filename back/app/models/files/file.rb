@@ -179,6 +179,14 @@ module Files
       !!@being_destroyed
     end
 
+    def image?
+      content.content_type.start_with?('image/')
+    end
+
+    def text?
+      content.content_type.start_with?('text/')
+    end
+
     private
 
     def mark_as_being_destroyed

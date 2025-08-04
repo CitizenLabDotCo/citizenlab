@@ -19,11 +19,14 @@ module Files
 
     UNRECOVERABLE_ERRORS = [
       RubyLLM::UnsupportedAttachmentError,
-      RubyLLM::BadRequestError
+      RubyLLM::BadRequestError,
+      DescriptionGenerator::ImageSizeLimitExceededError
     ].freeze
 
     def handle_error(error)
       case error
+      # TODO: Move this logic to the ApplicationJob class
+      when ApplicationJob::RetryInError then retry_in(error.retry_in)
       when *UNRECOVERABLE_ERRORS then expire
       else super
       end

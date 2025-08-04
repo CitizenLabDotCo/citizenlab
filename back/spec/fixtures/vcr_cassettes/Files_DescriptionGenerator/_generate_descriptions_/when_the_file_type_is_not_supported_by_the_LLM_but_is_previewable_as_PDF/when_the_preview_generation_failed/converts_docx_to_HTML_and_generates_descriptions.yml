@@ -1,0 +1,93 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4.1","messages":[{"role":"user","content":[{"type":"text","text":"Analyze
+        the provided document and generate a concise description or abstract (2-3
+        sentences) that accurately summarizes its nature, main purpose, key content,
+        and relevant context. \nThe description should be informative and capture
+        the essential meaning of the document.\n\nRequirements:\n- Avoid starting
+        the summary with \"The document is...\" or similar generic introductions if
+        possible\n- Ensure translations are culturally appropriate and linguistically
+        natural for each locale\n- Values must be the description text accurately
+        translated for each respective locale\n- All translations should maintain
+        the same meaning and level of detail\n"},{"type":"file","file":{"filename":"minimal_pdf.pdf","file_data":"data:application/pdf;base64,JVBERi0xLgoxIDAgb2JqPDwvUGFnZXMgMiAwIFI+PmVuZG9iagoyIDAgb2JqPDwvS2lkc1szIDAgUl0vQ291bnQgMT4+ZW5kb2JqCjMgMCBvYmo8PC9QYXJlbnQgMiAwIFI+PmVuZG9iagp0cmFpbGVyIDw8L1Jvb3QgMSAwIFI+Pg=="}}]}],"stream":false,"temperature":0.7,"response_format":{"type":"json_schema","json_schema":{"name":"response","schema":{"type":"object","required":["en","fr-FR","nl-NL"],"properties":{"en":{"type":"string","minLength":1,"maxLength":1000},"fr-FR":{"type":"string","minLength":1,"maxLength":1000},"nl-NL":{"type":"string","minLength":1,"maxLength":1000}},"additionalProperties":false},"strict":true}}}'
+    headers:
+      User-Agent:
+      - Faraday v2.12.2
+      Authorization:
+      - Bearer <OPENAI_API_KEY>
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 04 Aug 2025 07:39:52 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - citizenlab
+      Openai-Processing-Ms:
+      - '4368'
+      Openai-Project:
+      - proj_TXtYJItFSu3RsJfLbtCfsOI6
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '4563'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '2000000'
+      X-Ratelimit-Remaining-Requests:
+      - '9999'
+      X-Ratelimit-Remaining-Tokens:
+      - '1999073'
+      X-Ratelimit-Reset-Requests:
+      - 6ms
+      X-Ratelimit-Reset-Tokens:
+      - 27ms
+      X-Request-Id:
+      - req_1884ac6f638206f552b4b1af10d1ec9b
+      X-Envoy-Decorator-Operation:
+      - router.openai.svc.cluster.local:5004/*
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=ZZgp.aRExFoljDrjeR0wWNnMDnExDj6USEySGNUs_Dg-1754293192-1.0.1.1-MZEEGvJlheEZuO4ZOTRNnNJZC67LL0KXxYFek5T3cfcBNLQyLNVQn6u7NijOO2LttdnscL6LoAmAV76ya8iI38O8E_ki1Sl4c5H552X6L9w;
+        path=/; expires=Mon, 04-Aug-25 08:09:52 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=YV_MGTcaqntQjj1f_62Fk5noqqGB12BSSv2Q1ThMEco-1754293192331-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 969c67251f2db780-BRU
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        ewogICJpZCI6ICJjaGF0Y21wbC1DMGs1TWtlZHM3V1lGY1VMVTA3T3NVU3hoUjNENCIsCiAgIm9iamVjdCI6ICJjaGF0LmNvbXBsZXRpb24iLAogICJjcmVhdGVkIjogMTc1NDI5MzE4OCwKICAibW9kZWwiOiAiZ3B0LTQuMS0yMDI1LTA0LTE0IiwKICAiY2hvaWNlcyI6IFsKICAgIHsKICAgICAgImluZGV4IjogMCwKICAgICAgIm1lc3NhZ2UiOiB7CiAgICAgICAgInJvbGUiOiAiYXNzaXN0YW50IiwKICAgICAgICAiY29udGVudCI6ICJ7XCJlblwiOlwiTm8gcmVhZGFibGUgdGV4dCBvciBpbWFnZXMgd2VyZSBmb3VuZCBpbiB0aGUgcHJvdmlkZWQgZG9jdW1lbnQsIHNvIGl0IGNhbm5vdCBiZSBzdW1tYXJpemVkIG9yIGRlc2NyaWJlZCBpbiB0ZXJtcyBvZiBjb250ZW50LCBwdXJwb3NlLCBvciBjb250ZXh0LlwiLFwiZnItRlJcIjpcIkF1Y3VuIHRleHRlIG5pIGltYWdlIGxpc2libGUgbidhIMOpdMOpIHRyb3V2w6kgZGFucyBsZSBkb2N1bWVudCBmb3VybmksIGlsIG4nZXN0IGRvbmMgcGFzIHBvc3NpYmxlIGQnZW4gcsOpc3VtZXIgb3UgZMOpY3JpcmUgbGUgY29udGVudSwgbCdvYmplY3RpZiBvdSBsZSBjb250ZXh0ZS5cIixcIm5sLU5MXCI6XCJFciB6aWpuIGdlZW4gbGVlc2JhcmUgdGVrc3RlbiBvZiBhZmJlZWxkaW5nZW4gZ2V2b25kZW4gaW4gaGV0IGFhbmdlbGV2ZXJkZSBkb2N1bWVudCwgd2FhcmRvb3IgaGV0IG5pZXQgbW9nZWxpamsgaXMgb20gZGUgaW5ob3VkLCBoZXQgZG9lbCBvZiBkZSBjb250ZXh0IHNhbWVuIHRlIHZhdHRlbiBvZiB0ZSBiZXNjaHJpanZlbi5cIn0iLAogICAgICAgICJyZWZ1c2FsIjogbnVsbCwKICAgICAgICAiYW5ub3RhdGlvbnMiOiBbXQogICAgICB9LAogICAgICAibG9ncHJvYnMiOiBudWxsLAogICAgICAiZmluaXNoX3JlYXNvbiI6ICJzdG9wIgogICAgfQogIF0sCiAgInVzYWdlIjogewogICAgInByb21wdF90b2tlbnMiOiAzODIsCiAgICAiY29tcGxldGlvbl90b2tlbnMiOiAxMTcsCiAgICAidG90YWxfdG9rZW5zIjogNDk5LAogICAgInByb21wdF90b2tlbnNfZGV0YWlscyI6IHsKICAgICAgImNhY2hlZF90b2tlbnMiOiAwLAogICAgICAiYXVkaW9fdG9rZW5zIjogMAogICAgfSwKICAgICJjb21wbGV0aW9uX3Rva2Vuc19kZXRhaWxzIjogewogICAgICAicmVhc29uaW5nX3Rva2VucyI6IDAsCiAgICAgICJhdWRpb190b2tlbnMiOiAwLAogICAgICAiYWNjZXB0ZWRfcHJlZGljdGlvbl90b2tlbnMiOiAwLAogICAgICAicmVqZWN0ZWRfcHJlZGljdGlvbl90b2tlbnMiOiAwCiAgICB9CiAgfSwKICAic2VydmljZV90aWVyIjogImRlZmF1bHQiLAogICJzeXN0ZW1fZmluZ2VycHJpbnQiOiAiZnBfYjNmMTE1NzI0OSIKfQo=
+  recorded_at: Mon, 04 Aug 2025 07:39:52 GMT
+recorded_with: VCR 6.2.0
