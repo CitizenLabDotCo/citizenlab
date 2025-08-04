@@ -4,12 +4,14 @@ import useUsers from 'api/users/useUsers';
 
 import MultiSelect from 'components/UI/MultiSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import { useParam, setParam } from '../../params';
 
 import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   mr?: string;
@@ -38,6 +40,9 @@ const Manager = ({ mr = '0px', onClear }: Props) => {
       mr={mr}
       onChange={(managerIds) => {
         setParam('managers', managerIds);
+        trackEventByName(tracks.setManager, {
+          managerIds: JSON.stringify(managerIds),
+        });
       }}
       title={formatMessage(messages.manager)}
       onClear={onClear}
