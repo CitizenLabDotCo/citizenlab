@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Start",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Status:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Denna kolumn använder cachade deltagaruppgifter. För att se de senaste siffrorna, kolla fliken \"Deltagare\" i projektet.",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Synlighet",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Synlighet:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} grupper",
