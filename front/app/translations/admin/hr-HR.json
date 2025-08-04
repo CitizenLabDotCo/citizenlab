@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Start",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Status:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Ovaj stupac koristi predmemorirane podatke o sudionicima. Da biste vidjeli najnovije brojeve, provjerite karticu \"Sudionici\" u projektu.",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Vidljivost",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Vidljivost:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} grupe",
