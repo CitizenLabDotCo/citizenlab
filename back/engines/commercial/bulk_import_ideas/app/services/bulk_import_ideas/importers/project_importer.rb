@@ -140,6 +140,7 @@ module BulkImportIdeas::Importers
           phase
         rescue StandardError => e
           log "ERROR: Creating phase '#{phase_attributes[:title_multiloc][@locale]}': #{e.message}"
+          nil
         end
       end
     end
