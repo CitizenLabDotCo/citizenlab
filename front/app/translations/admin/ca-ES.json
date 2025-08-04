@@ -480,7 +480,6 @@
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Enviar ara",
   "app.containers.Admin.emails.sendTestEmailButton": "Envieu-me un correu electrònic de prova",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Quan feu clic a aquest enllaç, només s'enviarà un correu electrònic de prova a la vostra adreça electrònica. Això us permet comprovar com es veu el correu electrònic a la vida real.",
   "app.containers.Admin.emails.senderRecipients": "Remitent i destinataris",
   "app.containers.Admin.emails.sending": "Enviament",
   "app.containers.Admin.emails.sent": "Sent",

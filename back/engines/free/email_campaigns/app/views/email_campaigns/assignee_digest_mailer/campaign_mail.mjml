@@ -42,18 +42,18 @@
   <mj-column>
     <mj-text>
       <h3 style="padding: 20px 0">
-        <% if event.succesful_assigned_inputs.present? %>
+        <% if event.successful_assigned_inputs.present? %>
           <%= format_message('title_successful_past_week') %>
         <% end %>
       </h3>
     </mj-text>
 
     <mj-table cellpadding="15" padding-top="20px">
-      <mj-raw><% event.succesful_assigned_inputs.each do |succesful_assigned_input| %></mj-raw>
-        <%= render 'email_campaigns/ideas/idea-minimal', serialized_idea: succesful_assigned_input %>
+      <mj-raw><% event.successful_assigned_inputs.each do |successful_assigned_input| %></mj-raw>
+        <%= render 'email_campaigns/ideas/idea-minimal', serialized_idea: successful_assigned_input %>
       <mj-raw><% end %></mj-raw>
     </mj-table>
   </mj-column>
 </mj-section>
 
-<%= render partial: 'application/cta_button', locals: { href: url_service.admin_ideas_url, message: format_message('cta_manage_your_input') } %>
+<%= render partial: 'application/cta_button', locals: { href: url_service.admin_ideas_url, message: cta_button_text } %>

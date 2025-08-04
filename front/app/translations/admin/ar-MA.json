@@ -359,7 +359,6 @@
   "app.containers.Admin.emails.send": "إرسال",
   "app.containers.Admin.emails.sendNowButton": "أرسل الآن",
   "app.containers.Admin.emails.sendTestEmailButton": "أرسل لي رسالة اختبار إلكترونية",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "عند النقر على هذا الرابط، سيتم إرسال رسالة اختبار إلكترونية إلى عنوان بريدك الإلكتروني فقط. يتيح لك ذلك التحقق من شكل الرسالة الإلكترونية في الحياة الواقعية.",
   "app.containers.Admin.emails.senderRecipients": "المُرسل والمستلمون",
   "app.containers.Admin.emails.sending": "إرسال",
   "app.containers.Admin.emails.sent": "تم الإرسال",

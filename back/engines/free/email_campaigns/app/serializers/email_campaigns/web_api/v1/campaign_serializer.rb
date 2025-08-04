@@ -76,7 +76,7 @@ module EmailCampaigns
       Delivery.status_counts(object.id)
     end
 
-    attribute :sender, :reply_to, if: proc { |object|
+    attribute :sender, if: proc { |object|
       sender_configurable? object
     }
 
@@ -85,7 +85,7 @@ module EmailCampaigns
     }
 
     # For customised emails
-    attribute :subject_multiloc, :title_multiloc, :button_text_multiloc, if: proc { |object|
+    attribute :reply_to, :subject_multiloc, :title_multiloc, :button_text_multiloc, if: proc { |object|
       content_configurable?(object)
     }
 
@@ -104,7 +104,13 @@ module EmailCampaigns
     attribute :editable_regions, if: proc { |object|
       content_configurable?(object)
     } do |object|
-      editable_regions?(object) ? object.mailer_class.editable_regions : {}
+      editable_regions?(object) ? object.editable_regions : {}
+    end
+
+    attribute :substitution_variable_keys, if: proc { |object|
+      content_configurable?(object)
+    } do |object|
+      editable_regions?(object) ? object.substitution_variables.keys : []
     end
 
     attribute :has_preview do |object|
@@ -134,11 +140,11 @@ module EmailCampaigns
     end
 
     def self.previewable?(object)
-      object.mailer_class.respond_to?(:preview_command)
+      object.respond_to?(:preview_command)
     end
 
     def self.editable_regions?(object)
-      object.mailer_class.respond_to?(:editable_regions)
+      object.respond_to?(:editable_regions)
     end
 
     def self.trackable?(object)
