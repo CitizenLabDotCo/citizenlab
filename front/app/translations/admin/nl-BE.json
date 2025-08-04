@@ -883,7 +883,7 @@
   "app.containers.Admin.emails.fieldSubjectTooltip": "Dit wordt weergegeven in de onderwerpregel van de e-mail en in de inbox van de gebruiker. Maak het duidelijk en boeiend.",
   "app.containers.Admin.emails.fieldTo": "Aan",
   "app.containers.Admin.emails.fieldToTooltip": "Bepaal de gebruikersgroep(en) die je e-mail zal/zullen ontvangen.",
-  "app.containers.Admin.emails.formSave": "Bewaar",
+  "app.containers.Admin.emails.formSave": "Bewaar als concept",
   "app.containers.Admin.emails.formSaveAsDraft": "Bewaar als concept",
   "app.containers.Admin.emails.from": "Van:",
   "app.containers.Admin.emails.groups": "Groepen",
