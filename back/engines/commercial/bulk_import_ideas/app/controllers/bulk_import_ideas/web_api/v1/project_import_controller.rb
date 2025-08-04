@@ -36,12 +36,6 @@ module BulkImportIdeas
       }
     end
 
-    def project_import_params
-      params
-        .require(:import)
-        .permit(%i[file locale])
-    end
-
     def show_project_import
       import_id = params[:import_id]
       project_import = BulkImportIdeas::ProjectImport.where(import_id: import_id)
@@ -54,6 +48,12 @@ module BulkImportIdeas
     end
 
     private
+
+    def project_import_params
+      params
+        .require(:import)
+        .permit(%i[file locale])
+    end
 
     def unzip_base64_encoded_zip(base64_zip, destination)
       # Strip out data;...base64 prefix if it's there
