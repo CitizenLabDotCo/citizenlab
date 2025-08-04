@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
@@ -23,6 +23,9 @@ const fetchParticipantCounts = async (projectIds: string[]) => {
 const PARTICIPANTS_PER_PROJECT_CACHE: Record<string, number> = {};
 
 const useParticipantCounts = (projectIds: string[]) => {
+  const [participantsPerProjectCache, setParticipantsPerProjectCache] =
+    useState(PARTICIPANTS_PER_PROJECT_CACHE);
+
   // Only fetch project ids that are not already cached
   const projectIdsToFetch = projectIds.filter(
     (projectId) => !(projectId in PARTICIPANTS_PER_PROJECT_CACHE)
@@ -49,10 +52,15 @@ const useParticipantCounts = (projectIds: string[]) => {
           PARTICIPANTS_PER_PROJECT_CACHE[projectId] = count;
         }
       );
+
+      // Update the state to trigger a re-render with the new cache
+      setParticipantsPerProjectCache({
+        ...PARTICIPANTS_PER_PROJECT_CACHE,
+      });
     }
   }, [participantCountsResponse]);
 
-  return PARTICIPANTS_PER_PROJECT_CACHE;
+  return participantsPerProjectCache;
 };
 
 export default useParticipantCounts;
