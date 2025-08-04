@@ -73,6 +73,7 @@ module EmailCampaigns
 
     def activity_context(activity)
       return nil unless activity.item.is_a?(::Idea)
+
       activity.item.phases.last
     end
 

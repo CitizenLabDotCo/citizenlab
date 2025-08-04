@@ -75,6 +75,7 @@ module EmailCampaigns
 
     def activity_context(activity)
       return nil unless activity.item.is_a?(::Notification)
+
       activity.item.idea&.phases&.last
     end
 
