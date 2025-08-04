@@ -30,7 +30,6 @@ export const phasesData: IPhaseData[] = [
       campaigns_settings: { project_phase_started: true },
       votes_count: 0,
       vote_term: 'vote',
-
       baskets_count: 0,
       report_public: false,
       total_votes_amount: 0,
@@ -77,7 +76,6 @@ export const phasesData: IPhaseData[] = [
       campaigns_settings: { project_phase_started: true },
       votes_count: 0,
       vote_term: 'vote',
-
       baskets_count: 0,
       report_public: false,
       total_votes_amount: 0,
@@ -120,7 +118,6 @@ export const phasesData: IPhaseData[] = [
       campaigns_settings: { project_phase_started: true },
       votes_count: 0,
       vote_term: 'vote',
-
       baskets_count: 0,
       report_public: false,
       total_votes_amount: 0,
