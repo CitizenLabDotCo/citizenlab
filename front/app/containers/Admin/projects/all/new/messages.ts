@@ -17,4 +17,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.ordering',
     defaultMessage: 'Ordering',
   },
+  searchProjects: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects',
+    defaultMessage: 'Search projects',
+  },
+  searchFolders: {
+    id: 'app.containers.Admin.projects.all.new.Folders.Filters.searchFolders',
+    defaultMessage: 'Search folders',
+  },
 });
