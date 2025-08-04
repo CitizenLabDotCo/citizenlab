@@ -4,11 +4,13 @@ import { Discoverability } from 'api/projects_mini_admin/types';
 
 import MultiSelect from 'components/UI/MultiSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import { useParam, setParam } from '../../params';
 
 import messages from './messages';
+import tracks from './tracks';
 
 const OPTIONS: {
   value: Discoverability;
@@ -44,6 +46,9 @@ const DiscoverabilityFilter = ({ onClear }: Props) => {
       selected={value}
       onChange={(discoverability) => {
         setParam('discoverability', discoverability as Discoverability[]);
+        trackEventByName(tracks.setDiscoverability, {
+          discoverabilities: JSON.stringify(discoverability),
+        });
       }}
       onClear={onClear}
     />
