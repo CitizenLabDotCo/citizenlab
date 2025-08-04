@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Rozpocznij",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Status:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Ta kolumna wykorzystuje buforowane dane uczestników. Aby zobaczyć najnowsze dane, sprawdź zakładkę \"Uczestnicy\" w projekcie.",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Widoczność",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Widoczność:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} grupy",
