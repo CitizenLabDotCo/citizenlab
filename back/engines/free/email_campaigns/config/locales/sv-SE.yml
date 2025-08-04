@@ -299,7 +299,7 @@ sv:
       subject: 'Du har fått svar på din kommentar på plattformen för %{organizationName}'
       preheader: '%{authorName} svarade på din kommentar på %{organizationName}s plattform'
       title: '%{authorName} svarade på din kommentar'
-      event_description: '%{authorName} skrev ett svar på din kommentar till ''%{post}'' på deltagarplattformen. Klicka på knappen nedan för att fortsätta konversationen med %{authorFirstName}.'
+      event_description: '%{authorNameFull} skrev ett svar på din kommentar för %{post} på involveringsplattformen. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
       cta_button: 'Svara till %{authorFirstName}'
       replied: '%{authorFirstName} svarade:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ sv:
       event_description: '%{authorNameFull} kommenterade din interna kommentar.'
       subject: 'Du har fått en kommentar på din interna kommentar på ''%{post}'''
       title: 'Du har fått en kommentar på din interna kommentar på ''%{post}'''
-      preheader: '%{authorNameFull} svarade på din interna kommentar om ''%{post}'''
+      preheader: '%{authorName} svarade på din interna kommentar om ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Visa kommentar av %{firstName}'
       event_description: '%{authorNameFull} kommenterat internt på en input som tilldelats dig.'
@@ -342,7 +342,7 @@ sv:
       event_description: '%{organizationName} nämnde dig i sin återkoppling för idén %{post}. Klicka på länken nedan för att gå in i konversationen med %{organizationName}'
       title: 'Du har blivit omnämnd'
       subject: '%{organizationName} nämnde dig i sin återkoppling'
-      preheader: '%{organizationName} nämnde dig i feedback'
+      preheader: '%{commentAuthor} nämnde dig i återkoppling'
     project_moderation_rights_received:
       cta_manage_project: 'Hantera det här projektet'
       message_you_became_moderator: 'En administratör för plattformen för deltagande för %{organizationName} har precis gjort dig till projektledare för följande projekt:'
