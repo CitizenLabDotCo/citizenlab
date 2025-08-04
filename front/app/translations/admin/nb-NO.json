@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Start",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Status:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Denne kolonnen bruker mellomlagrede deltakerdata. For å se de nyeste tallene, sjekk fanen \"Deltakere\" i prosjektet.",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Synlighet",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Synlighet:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} grupper",
