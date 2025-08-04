@@ -11,6 +11,7 @@ import {
   stylingConsts,
   Spinner,
   Icon,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 import useParticipantCounts from 'api/participant_counts/useParticipantCounts';
@@ -92,7 +93,12 @@ const Table = () => {
           <Tr background={colors.grey50}>
             <ColHeader>{formatMessage(messages.project)}</ColHeader>
             <ColHeader>
-              <Icon name="users" height="16px" fill={colors.black} mr="8px" />
+              <Box display="flex" alignItems="center">
+                <Icon name="users" height="16px" fill={colors.black} mr="0px" />
+                <IconTooltip
+                  content={formatMessage(messages.thisColumnUsesCache)}
+                />
+              </Box>
             </ColHeader>
             <ColHeader>{formatMessage(messages.phase)}</ColHeader>
             <ColHeader>{formatMessage(messages.manager)}</ColHeader>
