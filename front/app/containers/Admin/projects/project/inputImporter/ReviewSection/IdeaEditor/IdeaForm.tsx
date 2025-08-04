@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormSetError } from 'react-hook-form';
@@ -7,10 +7,13 @@ import { useParams } from 'react-router-dom';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 
-import CustomFields from 'components/CustomFieldsForm/CustomFields';
 import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
 import { FormValues } from 'components/Form/typings';
 import Feedback from 'components/HookForm/Feedback';
+
+const CustomFields = React.lazy(
+  () => import('components/CustomFieldsForm/CustomFields')
+);
 
 interface Props {
   formData: FormValues;
@@ -75,12 +78,16 @@ const IdeaForm = ({
         <form>
           <Feedback />
           {questions && (
-            <CustomFields
-              questions={questions}
-              projectId={projectId}
-              phase={phase?.data}
-              participationMethod={phase?.data.attributes.participation_method}
-            />
+            <Suspense>
+              <CustomFields
+                questions={questions}
+                projectId={projectId}
+                phase={phase?.data}
+                participationMethod={
+                  phase?.data.attributes.participation_method
+                }
+              />
+            </Suspense>
           )}
         </form>
       </FormProvider>

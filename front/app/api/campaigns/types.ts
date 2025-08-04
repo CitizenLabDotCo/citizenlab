@@ -28,6 +28,7 @@ export interface ICampaignData {
     sender: 'author' | 'organization';
     reply_to: 'author' | 'organization';
     editable_regions?: EditableRegion[];
+    editable_region_variable_keys?: string[];
     created_at: string;
     updated_at: string;
     deliveries_count: number;
@@ -78,7 +79,6 @@ export interface CampaignFormValues {
 export interface EditableRegion {
   key: string;
   type: 'html' | 'text';
-  variables: string[];
   default_value_multiloc?: Multiloc;
   allow_blank_locales: boolean;
 }

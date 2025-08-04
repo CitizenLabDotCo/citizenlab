@@ -40,4 +40,4 @@
 </mj-section>
 
 
-<%= render partial: 'application/cta_button', locals: { href: event.idea_url, message: format_message('cta_review') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.idea_url, message: cta_button_text } %>

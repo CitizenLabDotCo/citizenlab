@@ -4,7 +4,7 @@ module IdeaAssignment
   module Patches
     module EmailCampaigns
       module Campaigns
-        module NewIdeaForAdmin
+        module NewIdeaForAdminBase
           def filter_recipient(users_scope, activity:, time: nil)
             idea = activity.item
 

@@ -2,12 +2,10 @@
 
 module EmailCampaigns
   class CommentOnIdeaYouFollowMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
-      campaign = EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.new
-      command = campaign.mailer_class.preview_command(recipient: recipient_user)
-      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+      preview_campaign_mail(EmailCampaigns::Campaigns::CommentOnIdeaYouFollow)
     end
   end
 end

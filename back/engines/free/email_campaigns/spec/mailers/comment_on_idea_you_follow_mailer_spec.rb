@@ -20,39 +20,37 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
 
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
-    context 'default mail' do
-      let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
-      let_it_be(:mail) { mailer.campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
 
-      include_examples 'campaign delivery tracking'
+    include_examples 'campaign delivery tracking'
 
-      it 'renders the subject' do
-        expect(mail.subject).to be_present
-      end
+    it 'renders the subject' do
+      expect(mail.subject).to be_present
+    end
 
-      it 'renders the receiver email' do
-        expect(mail.to).to eq([recipient.email])
-      end
+    it 'renders the receiver email' do
+      expect(mail.to).to eq([recipient.email])
+    end
 
-      it 'renders the sender email' do
-        expect(mail.from).to all(end_with('@citizenlab.co'))
-      end
+    it 'renders the sender email' do
+      expect(mail.from).to all(end_with('@citizenlab.co'))
+    end
 
-      it 'assigns organisation name' do
-        expect(mail_body(mail)).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
-      end
+    it 'assigns organisation name' do
+      expect(mail_body(mail)).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
+    end
 
-      it 'includes the comment author name' do
-        expect(mail_body(mail)).to include('Marion')
-      end
+    it 'includes the comment author name' do
+      expect(mail_body(mail)).to include('Marion')
+    end
 
-      it 'includes the comment body' do
-        expect(mail_body(mail)).to include('I agree')
-      end
+    it 'includes the comment body' do
+      expect(mail_body(mail)).to include('I agree')
+    end
 
-      it 'includes the unfollow url' do
-        expect(mail_body(mail)).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
-      end
+    it 'includes the unfollow url' do
+      expect(mail_body(mail)).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
     end
 
     context 'with custom text' do

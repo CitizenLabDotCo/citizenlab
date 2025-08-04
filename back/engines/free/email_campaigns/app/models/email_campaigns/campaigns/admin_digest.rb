@@ -35,6 +35,7 @@ module EmailCampaigns
   class Campaigns::AdminDigest < Campaign
     include Disableable
     include Consentable
+    include ContentConfigurable
     include Schedulable
     include RecipientConfigurable
     include Trackable

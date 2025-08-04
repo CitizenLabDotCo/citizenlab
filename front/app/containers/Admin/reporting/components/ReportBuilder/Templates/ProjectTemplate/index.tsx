@@ -76,7 +76,8 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
     !report ||
     !projectModerator ||
     !userFields ||
-    !templateData
+    !templateData ||
+    !formatMessageWithLocale
   ) {
     return null;
   }
