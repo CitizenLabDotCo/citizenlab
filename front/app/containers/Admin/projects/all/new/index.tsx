@@ -3,6 +3,8 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { useIntl } from 'utils/cl-intl';
 
 import Search from './_shared/FilterBar/Filters/Search';
@@ -19,6 +21,12 @@ const AdminProjectsListNew = () => {
   const [searchParams] = useSearchParams();
   const { formatMessage } = useIntl();
   const tab = searchParams.get('tab');
+  const calendarViewEnabled = useFeatureFlag({
+    name: 'project_planning_calendar',
+  });
+
+  const showProjectSearch =
+    tab === null || (tab === 'timeline' && calendarViewEnabled);
 
   return (
     <Box
@@ -38,7 +46,7 @@ const AdminProjectsListNew = () => {
         height="44px"
       >
         <Tabs />
-        {[null, 'timeline'].includes(tab) && (
+        {showProjectSearch && (
           <Search placeholder={formatMessage(messages.searchProjects)} />
         )}
         {tab === 'folders' && (
