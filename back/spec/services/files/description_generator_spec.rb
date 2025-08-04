@@ -47,6 +47,17 @@ RSpec.describe Files::DescriptionGenerator do
       expect(file.description_multiloc.keys).to match_array %w[en nl-NL fr-FR]
     end
 
+    it 'includes the file name in the prompt' do
+      file = create_ai_file(name: 'afvalkalender.pdf')
+
+      expect_any_instance_of(RubyLLM::Chat)
+        .to receive(:ask)
+        .with(satisfy { |prompt| prompt.include?(file.name) }, anything)
+        .and_return(instance_double(RubyLLM::Message, content: {}))
+
+      service.generate_descriptions!(file)
+    end
+
     it 'raises RubyLLM::BadRequestError for unsupported file', :vcr do
       file = create_ai_file(name: 'david.mp3')
 

@@ -6,18 +6,6 @@ module Files
   # @example Basic usage
   #   Files::DescriptionGenerator.new.generate_descriptions!(file)
   class DescriptionGenerator
-    PROMPT_TOKENS = 162
-    PROMPT = <<~PROMPT
-      Analyze the provided document and generate a concise description or abstract (2-3 sentences) that accurately summarizes its nature, main purpose, key content, and relevant context. 
-      The description should be informative and capture the essential meaning of the document.
-
-      Requirements:
-      - Avoid starting the summary with "The document is..." or similar generic introductions if possible
-      - Ensure translations are culturally appropriate and linguistically natural for each locale
-      - Values must be the description text accurately translated for each respective locale
-      - All translations should maintain the same meaning and level of detail
-    PROMPT
-
     delegate :generate_descriptions?, to: :class
 
     # Generate and update the descriptions for the given file
@@ -54,9 +42,10 @@ module Files
     def generate_descriptions(file, locales)
       schema = description_schema(locales)
       chat = RubyLLM.chat(model: 'gpt-4.1').with_schema(schema)
+      prompt = build_prompt(file.name)
 
       with_preprocessed_file_content(file) do |source|
-        chat.ask(PROMPT, with: source).content
+        chat.ask(prompt, with: source).content
       end
     end
 
@@ -149,6 +138,21 @@ module Files
         # Adding the loose check for the file extension bc docx exported by some tools (Google Docs) don't have
         # the correct content type.
         file.name.rpartition('.').last == 'docx'
+    end
+
+    def build_prompt(file_name)
+      <<~PROMPT
+        Analyze the provided document and generate a concise description or abstract (2-3 sentences) that accurately summarizes its nature, main purpose, key content, and relevant context. 
+        The description should be informative and capture the essential meaning of the document.
+
+        Requirements:
+        - Avoid starting the summary with "The document is..." or similar generic introductions if possible
+        - Ensure translations are culturally appropriate and linguistically natural for each locale
+        - Values must be the description text accurately translated for each respective locale
+        - All translations should maintain the same meaning and level of detail
+
+        As extra context, the filename is: "#{file_name}"
+      PROMPT
     end
 
     def description_schema(locales)
