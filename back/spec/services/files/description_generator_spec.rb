@@ -58,6 +58,10 @@ RSpec.describe Files::DescriptionGenerator do
       service.generate_descriptions!(file)
     end
 
+    # BadRequestError is raised when an unsupported file is included in the request sent
+    # to the LLM. Sometimes, it's not possible to determine in advance whether a file is
+    # supported. For example, some MP3 files are supported while others aren't, depending
+    # on the specific variant.
     it 'raises RubyLLM::BadRequestError for unsupported file', :vcr do
       file = create_ai_file(name: 'david.mp3')
 
@@ -65,6 +69,8 @@ RSpec.describe Files::DescriptionGenerator do
         .to raise_error(RubyLLM::BadRequestError)
     end
 
+    # UnsupportedAttachmentError is raised when a file is detected as an unsupported type
+    # before the request is sent to the LLM.
     it 'raises RubyLLM::UnsupportedAttachmentError for unsupported file' do
       file = create_ai_file(name: 'keylogger.exe')
 
@@ -170,7 +176,7 @@ RSpec.describe Files::DescriptionGenerator do
 
     context 'when file is not eligible' do
       it 'returns false when AI processing is not allowed' do
-        file = create(:file)
+        file = create(:file, ai_processing_allowed: false)
         expect(described_class.generate_descriptions?(file)).to be(false)
       end
 

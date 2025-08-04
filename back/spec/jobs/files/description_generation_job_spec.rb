@@ -90,7 +90,7 @@ RSpec.describe Files::DescriptionGenerationJob do
         expect(job.tracker).to be_present
         expect(job.tracker.root_job_type).to eq('Files::DescriptionGenerationJob')
         expect(job.tracker.context).to eq(file)
-        expect(job.tracker.project_id).to be_nil # Files don't have projects by default
+        expect(job.tracker.project_id).to be_nil
       end
     end
   end

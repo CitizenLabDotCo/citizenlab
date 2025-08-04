@@ -71,7 +71,7 @@ module Files
         preprocess_image(file)
       elsif previewable_as_pdf?(file)
         preprocess_previewable_as_pdf(file)
-      else
+      else # rubocop:disable Lint/DuplicateBranch
         file.content
       end
     end
