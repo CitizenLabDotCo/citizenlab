@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Aloita",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Status:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Tässä sarakkeessa käytetään välimuistissa olevia osallistujatietoja. Näet uusimmat luvut projektin \"Osallistujat\"-välilehdeltä.",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Näkyvyys",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Näkyvyys:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} ryhmät",
