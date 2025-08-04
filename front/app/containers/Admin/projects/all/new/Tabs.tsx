@@ -85,7 +85,7 @@ const Tabs = () => {
           icon="folder-outline"
           active={tab === 'folders'}
           onClick={() => {
-            if ([null, 'timeline'].includes(tab)) {
+            if ([null, 'calendar'].includes(tab)) {
               removeSearchParams(PROJECT_PARAMS);
             }
 
@@ -95,21 +95,21 @@ const Tabs = () => {
         />
       )}
       <Tab
-        message={messages.timeline}
+        message={messages.calendar}
         icon="calendar"
-        active={tab === 'timeline'}
+        active={tab === 'calendar'}
         onClick={() => {
           if (tab === 'folders') {
             removeSearchParams(FOLDER_PARAMS);
           }
 
-          updateSearchParams({ tab: 'timeline' });
-          trackEventByName(tracks.setTab, { tab: 'timeline' });
+          updateSearchParams({ tab: 'calendar' });
+          trackEventByName(tracks.setTab, { tab: 'calendar' });
         }}
       />
       {userIsAdmin && (
         <Tab
-          message={messages.ordering}
+          message={messages.arrangeProjects}
           icon="drag-handle"
           active={tab === 'ordering'}
           onClick={() => {
