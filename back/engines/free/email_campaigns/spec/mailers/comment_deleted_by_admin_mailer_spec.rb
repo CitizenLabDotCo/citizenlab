@@ -74,8 +74,6 @@ RSpec.describe EmailCampaigns::CommentDeletedByAdminMailer do
 
       context 'on a global campaign' do
         let(:campaign) { global_campaign }
-        let(:mailer) { described_class.with(command: command, campaign: campaign) }
-        let(:mail) { mailer.campaign_mail.deliver_now }
 
         it 'can customise the subject' do
           expect(mail.subject).to eq 'Custom Global Subject - Liege'
@@ -105,8 +103,6 @@ RSpec.describe EmailCampaigns::CommentDeletedByAdminMailer do
 
       context 'on a context campaign' do
         let(:campaign) { context_campaign }
-        let(:mailer) { described_class.with(command: command, campaign: campaign) }
-        let(:mail) { mailer.campaign_mail.deliver_now }
 
         it 'can customise the subject' do
           expect(mail.subject).to eq 'Custom Context Subject - Liege'
