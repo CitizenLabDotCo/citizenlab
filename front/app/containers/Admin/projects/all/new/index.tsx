@@ -20,13 +20,21 @@ const AdminProjectsListNew = () => {
   const tab = searchParams.get('tab');
 
   return (
-    <Box bgColor={colors.white} w="100%" h="100vh" px="51px" py="45px">
+    <Box
+      bgColor={colors.white}
+      w="100%"
+      h="100vh"
+      px="51px"
+      py="45px"
+      maxWidth="1400px"
+    >
       <Header />
       <Box
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         borderBottom={`1px solid ${colors.grey200}`}
+        height="44px"
       >
         <Tabs />
         {[null, 'timeline'].includes(tab) && (
