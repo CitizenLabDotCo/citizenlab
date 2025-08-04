@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "ਸ਼ੁਰੂ ਕਰੋ",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "ਸਥਿਤੀ",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "ਸਥਿਤੀ:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "ਇਹ ਕਾਲਮ ਕੈਸ਼ ਕੀਤੇ ਭਾਗੀਦਾਰ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ। ਨਵੀਨਤਮ ਸੰਖਿਆਵਾਂ ਦੇਖਣ ਲਈ, ਪ੍ਰੋਜੈਕਟ ਦੇ \"ਭਾਗੀਦਾਰ\" ਟੈਬ ਦੀ ਜਾਂਚ ਕਰੋ।",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "ਦਿੱਖ",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "ਦਿੱਖ:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} ਸਮੂਹ",
