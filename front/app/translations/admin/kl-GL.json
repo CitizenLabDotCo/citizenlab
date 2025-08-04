@@ -393,7 +393,6 @@
   "app.containers.Admin.emails.send": "Nassiutiguk",
   "app.containers.Admin.emails.sendNowButton": "Massakkut nassiuguk",
   "app.containers.Admin.emails.sendTestEmailButton": "Mailimik misiligummik nassinnga",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Linki una toorukku, e-mail misiligut taamaallaat illit mailadressinnut nassiunneqassaaq. Tamatuma e-mailip qanoq isikkoqarnerata takunissaannut periarfississavaatit.",
   "app.containers.Admin.emails.senderRecipients": "Nassiussisoq aamma tigusisoq",
   "app.containers.Admin.emails.sending": "Nassiutilerpoq",
   "app.containers.Admin.emails.sent": "Sent",

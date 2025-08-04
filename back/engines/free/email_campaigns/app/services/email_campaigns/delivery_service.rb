@@ -29,7 +29,8 @@ module EmailCampaigns
       Campaigns::ModeratorDigest,
       Campaigns::NativeSurveyNotSubmitted,
       Campaigns::NewCommentForAdmin,
-      Campaigns::NewIdeaForAdmin,
+      Campaigns::NewIdeaForAdminPublished,
+      Campaigns::NewIdeaForAdminPrescreening,
       Campaigns::OfficialFeedbackOnIdeaYouFollow,
       Campaigns::ProjectFolderModerationRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
@@ -94,7 +95,7 @@ module EmailCampaigns
       commands = if campaign.manual?
         generate_commands(campaign, recipient)
       else
-        [campaign.mailer_class.preview_command(recipient:)].compact
+        [campaign.preview_command(recipient)].compact
       end
       return unless commands.any?
 
@@ -107,7 +108,7 @@ module EmailCampaigns
       command = if campaign.manual?
         generate_commands(campaign, recipient).first
       else
-        campaign.mailer_class.preview_command(recipient:)
+        campaign.preview_command(recipient)
       end
       return {} unless command
 
@@ -115,6 +116,13 @@ module EmailCampaigns
       return {} unless mail
 
       {
+        to: if campaign.class.recipient_segment_multiloc_key
+              I18n.t(campaign.class.recipient_segment_multiloc_key, locale: recipient.locale)
+            else
+              campaign.groups.map { |g| MultilocService.new.t(g.title_multiloc, recipient.locale) }.join(', ')
+        end,
+        from: mail[:from].value,
+        reply_to: mail.reply_to.first,
         subject: mail.subject,
         html: mail.body.to_s
       }
