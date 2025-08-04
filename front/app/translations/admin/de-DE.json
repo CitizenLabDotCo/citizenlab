@@ -1161,7 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Beginn",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Status:",
-  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Diese Spalte verwendet zwischengespeicherte Teilnehmerdaten. Um die neuesten Zahlen zu sehen, besuchen Sie die Registerkarte \"Teilnehmer\" des Projekts.",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Diese Spalte verwendet zwischengespeicherte Teilnehmerdaten. Um die neuesten Zahlen zu sehen, besuchen Sie die Registerkarte \"Teilnehmende\" des Projekts.",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Sichtbarkeit",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Sichtbarkeit:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} Gruppen",
