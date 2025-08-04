@@ -79,11 +79,13 @@ module BulkImportIdeas::Importers
 
     def find_or_create_project(project_data)
       if project_data[:id]
-        project = Project.find(project_data[:id])
-        if project
+        begin
+          project = Project.find(project_data[:id])
           log "FOUND existing project: #{project_data[:id]}"
-        else
+          project
+        rescue StandardError => e
           log "ERROR: Project with ID #{project_data[:id]} not found"
+          nil
         end
       else
         # Make sure no slug conflicts with existing projects
@@ -99,8 +101,9 @@ module BulkImportIdeas::Importers
         # Create the project thumbnail image if it exists
         create_project_thumbnail_image(project, project_data)
         log "Created new project: #{project_data[:slug]} (#{project.id})"
+        project
       end
-      project
+
     end
 
     def create_project_thumbnail_image(project, project_data)
@@ -120,11 +123,13 @@ module BulkImportIdeas::Importers
 
     def find_or_create_phase(project, phase_attributes)
       if phase_attributes[:id]
-        phase = Phase.find(phase_attributes[:id])
-        if phase
+        begin
+          phase = Phase.find(phase_attributes[:id])
           log "FOUND existing phase: #{phase_attributes[:id]}"
-        else
+          phase
+        rescue StandardError => e
           log "ERROR: Phase with ID #{phase_attributes[:id]} not found"
+          nil
         end
       else
         log "Importing phase: '#{phase_attributes[:title_multiloc][@locale]}'"
@@ -133,11 +138,11 @@ module BulkImportIdeas::Importers
           update_description_images(phase)
           Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
           log "Created '#{phase.participation_method}' phase"
+          phase
         rescue StandardError => e
           log "ERROR: Creating phase '#{phase_attributes[:title_multiloc][@locale]}': #{e.message}"
         end
       end
-      phase
     end
 
     def create_user_fields(user_custom_fields)

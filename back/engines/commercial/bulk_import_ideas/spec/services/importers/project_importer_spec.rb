@@ -5,6 +5,38 @@ require 'rails_helper'
 describe BulkImportIdeas::Importers::ProjectImporter do
   let(:service) { described_class.new(create(:admin), 'en') }
 
+
+  describe '#find_or_create_project' do
+    let(:project_data) do
+      {
+        title_multiloc: { 'en' => 'Test Project' },
+        slug: 'test-project',
+        description_multiloc: { 'en' => 'This is a test project.' },
+        admin_publication_attributes: { publication_status: 'published' }
+      }
+    end
+
+    it 'creates a new project if it does not exist' do
+      project = service.send(:find_or_create_project, project_data)
+      expect(project.title_multiloc['en']).to eq('Test Project')
+      expect(project.slug).to eq('test-project')
+    end
+
+    it 'finds an existing project if it exists by id' do
+      existing_project = create(:project, title_multiloc: { 'en' => 'Existing Project' }, slug: 'existing-project')
+      project_data[:id] = existing_project.id
+      project = service.send(:find_or_create_project, project_data)
+      expect(project.title_multiloc['en']).to eq('Existing Project')
+      expect(project.slug).to eq('existing-project')
+    end
+
+    it 'returns nil if the project cannot be found by id' do
+      project_data[:id] = "NON_EXISTENT_ID"
+      project = service.send(:find_or_create_project, project_data)
+      expect(project).to be_nil
+    end
+  end
+
   describe '#increment_title' do
     let(:project_data) { { title_multiloc: { 'en' => 'Test Project' }, slug: 'test-project' } }
     let(:new_project_data) { service.send(:increment_title, project_data) }
