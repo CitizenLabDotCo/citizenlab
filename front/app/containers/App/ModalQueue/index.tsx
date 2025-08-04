@@ -6,6 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 
+import { initialModalQueueState, modalQueueReducer } from './modalQueueReducer';
 import ModalRenderer from './ModalRenderer';
 import modalRegistry, { ModalId } from './modals/modalRegistry';
 
@@ -18,71 +19,10 @@ const ModalQueueContext = createContext<ModalQueueContextType | undefined>(
   undefined
 );
 
-type Modal = {
-  modalId: ModalId;
-  priority: number; // Higher number means higher priority
-};
-
-interface ModalQueueState {
-  queue: Modal[];
-}
-
-const sortModalsByPriority = (modals: Modal[]): Modal[] => {
-  return [...modals].sort((a, b) => {
-    return b.priority - a.priority; // Higher priority first
-  });
-};
-
 const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(
-    (
-      state: ModalQueueState,
-      action:
-        | { type: 'QUEUE_MODAL'; modal: Modal }
-        | { type: 'REMOVE_MODAL'; modalId: ModalId }
-    ): ModalQueueState => {
-      switch (action.type) {
-        case 'QUEUE_MODAL': {
-          const existingModalIndex = state.queue.findIndex(
-            (modal) => modal.modalId === action.modal.modalId
-          );
-
-          let newQueue: Modal[];
-
-          if (existingModalIndex >= 0) {
-            // Replace existing modal
-            newQueue = [...state.queue];
-            newQueue[existingModalIndex] = action.modal;
-          } else {
-            // Add new modal
-            newQueue = [...state.queue, action.modal];
-          }
-
-          // Sort by priority and determine current modal
-          const sortedQueue = sortModalsByPriority(newQueue);
-
-          return {
-            queue: sortedQueue,
-          };
-        }
-
-        case 'REMOVE_MODAL': {
-          const filteredQueue = state.queue.filter(
-            (modal) => modal.modalId !== action.modalId
-          );
-
-          return {
-            queue: filteredQueue,
-          };
-        }
-
-        default:
-          return state;
-      }
-    },
-    {
-      queue: [],
-    }
+    modalQueueReducer,
+    initialModalQueueState
   );
 
   // Wrapping with useCallback to prevent endless re-renders
@@ -109,10 +49,12 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
         removeModal,
       }}
     >
-      {children}
-      <ModalRenderer
-        modalId={state.queue.length > 0 ? state.queue[0].modalId : null}
-      />
+      <div data-testid="modal-queue-provider">
+        {children}
+        <ModalRenderer
+          modalId={state.queue.length > 0 ? state.queue[0].modalId : null}
+        />
+      </div>
     </ModalQueueContext.Provider>
   );
 };
