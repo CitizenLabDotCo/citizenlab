@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Dechrau",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Statws",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Statws:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Mae'r golofn hon yn defnyddio data cyfranogwyr sydd wedi'i storio yn y storfa dros dro. I weld y niferoedd diweddaraf, edrychwch ar y tab \"Cyfranogwyr\" yn y prosiect.",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Gwelededd",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Gwelededd:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "grwpiau {numberOfGroups}",
