@@ -879,7 +879,7 @@
   "app.containers.Admin.emails.fieldSubjectTooltip": "This will be shown in the subject line of the email and in the user’s inbox overview. Make it clear and engaging.",
   "app.containers.Admin.emails.fieldTo": "To",
   "app.containers.Admin.emails.fieldToTooltip": "You can select the user groups that will receive your email",
-  "app.containers.Admin.emails.formSave": "Save",
+  "app.containers.Admin.emails.formSave": "Save as draft",
   "app.containers.Admin.emails.formSaveAsDraft": "Save as draft",
   "app.containers.Admin.emails.from": "From:",
   "app.containers.Admin.emails.groups": "Groups",
