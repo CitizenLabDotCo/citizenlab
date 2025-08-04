@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "شروع کریں۔",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "حیثیت",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "حیثیت:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "یہ کالم کیش شدہ شریک ڈیٹا استعمال کرتا ہے۔ تازہ ترین نمبرز دیکھنے کے لیے، پروجیکٹ کے \"شرکاء\" ٹیب کو چیک کریں۔",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "مرئیت",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "مرئیت:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} گروپس",
