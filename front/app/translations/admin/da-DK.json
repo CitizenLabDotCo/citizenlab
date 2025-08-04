@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Start",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Status:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Denne kolonne bruger cachelagrede deltagerdata. For at se de seneste tal skal du tjekke fanen \"Deltagere\" i projektet.",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Synlighed",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Synlighed:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} grupper",
