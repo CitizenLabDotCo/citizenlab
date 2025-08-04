@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Pradžia",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Statusas",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Būklė:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Šiame stulpelyje naudojami į talpyklą įrašyti dalyvių duomenys. Norėdami pamatyti naujausius duomenis, patikrinkite projekto skirtuką \"Dalyviai\".",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Matomumas",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Matomumas:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} grupės",
