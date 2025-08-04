@@ -6,13 +6,14 @@ import { useSearchParams } from 'react-router-dom';
 import { useIntl } from 'utils/cl-intl';
 
 import Search from './_shared/FilterBar/Filters/Search';
-import Calendar from './Calendar';
 import Folders from './Folders';
 import Header from './Header';
 import messages from './messages';
 import Ordering from './Ordering';
 import Projects from './Projects';
 import Tabs from './Tabs';
+
+const Calendar = React.lazy(() => import('./Calendar'));
 
 const AdminProjectsListNew = () => {
   const [searchParams] = useSearchParams();
