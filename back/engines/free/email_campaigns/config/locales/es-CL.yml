@@ -299,7 +299,7 @@ es-CL:
       subject: 'Usted ha recibido una respuesta sobre su comentario en la plataforma %{organizationName}'
       preheader: '%{authorName} ha respondido a su comentario sobre la plataforma de %{organizationName}'
       title: '%{authorName} reaccionó ante tu comentario'
-      event_description: '%{authorName} escribió una respuesta a su comentario sobre ''%{post}'' en la plataforma de participación. Haga clic en el botón de abajo para continuar la conversación con %{authorFirstName}.'
+      event_description: '%{authorNameFull} escribió una respuesta a su comentario sobre ''%{post}'' en la plataforma de participación. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
       cta_button: 'Responder a %{authorFirstName}'
       replied: '%{authorFirstName} respuesta:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ es-CL:
       event_description: '%{authorNameFull} comentó sobre tu comentario interno.'
       subject: 'Has recibido un comentario sobre tu comentario interno en ''%{post}'''
       title: 'Has recibido un comentario sobre tu comentario interno en ''%{post}'''
-      preheader: '%{authorNameFull} respondió a tu comentario interno sobre ''%{post}'''
+      preheader: '%{authorName} respondió a tu comentario interno sobre ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Ver comentario de %{firstName}'
       event_description: '%{authorNameFull} comentó internamente en un aporte que te fue asignado.'
@@ -342,7 +342,7 @@ es-CL:
       event_description: '%{organizationName} te ha mencionado en su comentario sobre la idea ''%{post}''. Haga clic en el siguiente enlace para entrar en la conversación con %{organizationName}'
       title: 'Has sido mencionado'
       subject: '%{organizationName} te mencionó en sus comentarios'
-      preheader: '%{organizationName} te mencionó en una actualización oficial'
+      preheader: '%{commentAuthor} te mencionó en sus comentarios'
     project_moderation_rights_received:
       cta_manage_project: 'Gestionar este proyecto'
       message_you_became_moderator: 'Un administrador de la plataforma de participación %{organizationName} acaba de nombrarte moderador del siguiente proyecto:'
