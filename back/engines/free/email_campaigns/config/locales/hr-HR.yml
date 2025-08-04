@@ -299,7 +299,7 @@ hr:
       subject: 'Dobili ste odgovor na svoj komentar na %{organizationName} platformi '
       preheader: '%{authorName} je odgovorio/la na vaš komentar na platformi %{organizationName}'
       title: '%{authorName} odgovorio/la je na tvoj komentar'
-      event_description: '%{authorName} je napisao/la odgovor na vaš komentar na ''%{post}'' na platformi za sudjelovanje. Kliknite gumb ispod za nastavak razgovora s %{authorFirstName}.'
+      event_description: '%{authorNameFull} je napisao/la odgovor na vaš komentar u okviru objave ''%{post}'' na platformi za sudjelovanje. Kliknite na gumb u nastavku kako biste nastavili razgovor s %{authorName}.'
       cta_button: 'Odgovor na %{authorFirstName}'
       replied: '%{authorFirstName} je odgovorio/la:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ hr:
       event_description: '%{authorNameFull} je komentirao vaš interni komentar.'
       subject: 'Dobili ste komentar na svoj interni komentar na ''%{post}'''
       title: 'Primili ste komentar na vaš interni komentar na ''%{post}'''
-      preheader: '%{authorNameFull} odgovorio/la je na vaš interni komentar na ''%{post}'''
+      preheader: '%{authorName} je odgovorio na vaš interni komentar na ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Pogledajte komentar korisnika %{firstName}'
       event_description: '%{authorNameFull} je interno komentirao unos koji vam je dodijeljen.'
@@ -342,7 +342,7 @@ hr:
       event_description: 'Spomenuti ste od strane %{organizationName} i upućene su vam povratne informacije o ideji „%{post}“. Kliknite na poveznicu dolje kako biste započeli razgovor s %{organizationName}'
       title: 'Spomenuti ste'
       subject: '%{organizationName} vas je spomenuo/la u povratnim informacijama'
-      preheader: '%{organizationName} vas je spomenuo/la u povratnim informacijama'
+      preheader: '%{commentAuthor} vas je spomenuo/la u povratnim informacijama'
     project_moderation_rights_received:
       cta_manage_project: 'Upravljajte ovim projektom'
       message_you_became_moderator: 'Administrator %{organizationName} platforme za sudjelovanje vas je postavio za voditelja sljedećeg projekta:'
