@@ -299,7 +299,7 @@ ur:
       subject: 'آپ کو %{organizationName}کے پلیٹ فارم پر آپ کے تبصرے کا جواب موصول ہوا ہے۔'
       preheader: '%{authorName} نے %{organizationName}کے پلیٹ فارم پر آپ کے تبصرے کا جواب دیا'
       title: '%{authorName} نے آپ کے تبصرے کا جواب دیا۔'
-      event_description: '%{authorName} نے شرکت کے پلیٹ فارم پر ''%{post}'' پر آپ کے تبصرے کا جواب لکھا۔ %{authorFirstName}کے ساتھ بات چیت جاری رکھنے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
+      event_description: '%{authorNameFull} نے شرکت کے پلیٹ فارم پر ''%{post}'' پر آپ کے تبصرے کا جواب لکھا۔ %{authorName}کے ساتھ بات چیت جاری رکھنے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
       cta_button: '%{authorFirstName}کو جواب دیں۔'
       replied: '%{authorFirstName} نے جواب دیا:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ ur:
       event_description: '%{authorNameFull} نے آپ کے اندرونی تبصرے پر تبصرہ کیا۔'
       subject: 'آپ کو ''%{post}'' پر اپنے اندرونی تبصرے پر تبصرہ موصول ہوا ہے۔'
       title: 'آپ کو ''%{post}'' پر اپنے اندرونی تبصرے پر تبصرہ موصول ہوا ہے۔'
-      preheader: '%{authorNameFull} نے ''%{post}'' پر آپ کے اندرونی تبصرے کا جواب دیا'
+      preheader: '%{authorName} نے ''%{post}'' پر آپ کے اندرونی تبصرے کا جواب دیا'
     internal_comment_on_idea_assigned_to_you:
       cta_button: '%{firstName}کے ذریعے تبصرہ دیکھیں'
       event_description: '%{authorNameFull} نے آپ کو تفویض کردہ ان پٹ پر اندرونی طور پر تبصرہ کیا۔'
@@ -342,7 +342,7 @@ ur:
       event_description: '%{organizationName} نے ''%{post}'' خیال پر اپنے تاثرات میں آپ کا ذکر کیا۔ %{organizationName}کے ساتھ گفتگو میں داخل ہونے کے لیے نیچے دیے گئے لنک پر کلک کریں۔'
       title: 'آپ کا ذکر ہو چکا ہے۔'
       subject: '%{organizationName} نے اپنے تاثرات میں آپ کا ذکر کیا۔'
-      preheader: '%{organizationName} نے تاثرات میں آپ کا ذکر کیا۔'
+      preheader: '%{commentAuthor} نے تاثرات میں آپ کا ذکر کیا۔'
     project_moderation_rights_received:
       cta_manage_project: 'اس پروجیکٹ کا انتظام کریں۔'
       message_you_became_moderator: '%{organizationName} کے شرکت کے پلیٹ فارم کے منتظم نے ابھی آپ کو درج ذیل پروجیکٹ کا پروجیکٹ مینیجر بنایا ہے:'
