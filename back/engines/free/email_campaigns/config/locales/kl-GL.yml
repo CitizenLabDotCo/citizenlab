@@ -298,7 +298,7 @@ kl:
       subject: '%{organizationName}mi platformimi oqaaseqaatinnut akissutisivutit'
       preheader: '%{authorName} %{organizationName}p platformiani oqaaseqaatinnut akissuteqarpoq'
       title: '%{authorName} replied to your comment'
-      event_description: '%{authorName} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorFirstName}.'
+      event_description: '%{authorNameFull} oqaaseqaaternut "%{post}"mut peqataanermi platformimi akissuteqarpoq. %{authorName}mik oqaloqateqarneq ingerlateqqinniarlugu ataaniittoq tuugassaq tooruk.'
       cta_button: 'Reply to %{authorFirstName}'
       replied: '%{authorFirstName} akivoq:'
     internal_comment_on_your_internal_comment:
@@ -341,7 +341,7 @@ kl:
       event_description: '%{organizationName} isumassarsiami ''%{post}''mi oqaaseqaammini taavaatit. Linki ataaniittoq tooruk %{organizationName} oqaloqatiginiarukku'
       title: 'You have been mentioned'
       subject: '%{organizationName}p oqaaseqaammini taavaatit'
-      preheader: '%{organizationName} mentioned you in feedback'
+      preheader: '%{commentAuthor}ip oqaaseqaammini taavaatit'
     project_moderation_rights_received:
       cta_manage_project: 'Manage this project'
       message_you_became_moderator: '%{organizationName}p ilaasortaanut aqutsisup suliniutit ukua ilinnut tunniuppai:'
