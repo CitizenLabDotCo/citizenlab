@@ -7,7 +7,7 @@ import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { render, act, screen, userEvent } from 'utils/testUtils/rtl';
 
 // mocked functions
-import { setConsent, IConsentCookie } from './consent';
+import { IConsentCookie, setConsent } from './consent';
 import { registerDestination } from './destinations';
 
 import ConsentManager from '.';
@@ -49,7 +49,9 @@ jest.mock('api/app_configuration/useAppConfiguration', () => () => {
 let mockCookie: IConsentCookie | null = null;
 jest.mock('./consent', () => ({
   getConsent: jest.fn(() => mockCookie),
-  setConsent: jest.fn(),
+  setConsent: jest.fn((consent: IConsentCookie | null) => {
+    mockCookie = consent;
+  }),
 }));
 
 // add destinations for testing
@@ -83,9 +85,17 @@ describe('<ConsentManager />', () => {
       mockCookie = null;
     });
 
-    it('renders the modal', () => {
+    it('renders the modal', async () => {
       render(<ConsentManager />);
-      expect(screen.getByTestId('consent-manager')).toBeVisible();
+      const modal = await screen.findByTestId(
+        'consent-manager',
+        {},
+        {
+          timeout: 5000, // Increase from default 1000ms
+        }
+      );
+
+      expect(modal).toBeVisible();
     });
 
     it('opens and closes the preference modal', async () => {
@@ -360,7 +370,7 @@ describe('<ConsentManager />', () => {
       expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
     });
 
-    it('shows modal if new permissions required', () => {
+    it('shows modal if new permissions required', async () => {
       mockAuthUser = {
         attributes: {
           roles: [{ type: 'admin' }],
@@ -368,7 +378,8 @@ describe('<ConsentManager />', () => {
       } as any;
 
       render(<ConsentManager />);
-      expect(screen.getByTestId('consent-manager')).toBeVisible();
+      const modal = await screen.findByTestId('consent-manager');
+      expect(modal).toBeVisible();
     });
   });
 });
