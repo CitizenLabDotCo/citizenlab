@@ -28,8 +28,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin } from 'utils/permissions/roles';
 
-import Header from '../_shared/Header';
-
+import Header from './Header';
 import NonSortableProjectList from './Lists/NonSortableProjectList';
 import SortableProjectList from './Lists/SortableProjectList';
 import messages from './messages';

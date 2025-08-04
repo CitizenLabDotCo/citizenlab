@@ -3,9 +3,8 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
-import Header from '../_shared/Header';
-
 import Folders from './Folders';
+import Header from './Header';
 import Ordering from './Ordering';
 import Projects from './Projects';
 import Tabs from './Tabs';
