@@ -80,8 +80,8 @@ module BulkImportIdeas::Importers
         Project.find(project_data[:id])
         log "FOUND existing project: #{project_data[:id]}"
       else
-        # Whilst in dev, we want to destroy the existing project first
-        Project.find_by(slug: project_data[:slug])&.destroy
+        # Make sure no slug conflicts with existing projects
+        project_data = increment_title(project_data)
 
         # Create a new project only visible to admins
         project_attributes = project_data.except(:phases, :thumbnail_url)
@@ -150,7 +150,7 @@ module BulkImportIdeas::Importers
 
       begin
         # Create the form and form fields
-        # TODO: Destroy the existing form if it exists
+        # TODO: Destroy the existing form if it exists?
         form = CustomForm.create!(participation_context: phase)
 
         # Start page
@@ -194,7 +194,6 @@ module BulkImportIdeas::Importers
         idea_rows = xlsx_data_parser.parse_rows(phase_idea_rows)
         ideas = import_service.import(idea_rows)
         ideas.each do |idea|
-          # TODO: Have changed this to stop it creating an empty user on import
           idea.update!(publication_status: 'published') # Is there a method that imports to published anyway?
         end
 
@@ -217,6 +216,28 @@ module BulkImportIdeas::Importers
           imageable: record
         )
       )
+    end
+
+    # If the project already exists, increment the slug and title to avoid conflicts
+    def increment_title(project_data)
+      slug = project_data[:slug]
+      title = project_data[:title_multiloc]
+      while Project.find_by(slug: slug)
+        increment = 1
+        match = slug.match(/-(\d+)$/)
+        if match
+          increment = match[1].to_i + 1
+          slug = slug.sub(/-\d+$/, "-#{increment}")
+          title = title.transform_values { |value| value.sub(/\(\d+\)$/, "(#{increment})") }
+        else
+          slug = "#{slug}-#{increment}"
+          title = title.transform_values { |value| "#{value} (#{increment})" }
+        end
+        project_data[:slug] = slug
+        project_data[:title_multiloc] = title
+      end
+
+      project_data
     end
 
     def log(message)
