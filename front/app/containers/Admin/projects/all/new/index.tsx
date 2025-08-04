@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import Header from '../_shared/Header';
@@ -16,7 +16,7 @@ const AdminProjectsListNew = () => {
   const tab = searchParams.get('tab');
 
   return (
-    <Box>
+    <Box bgColor={colors.white} w="100%" h="100vh" px="51px" py="45px">
       <Header />
       <Tabs />
       <Box mt="20px">
