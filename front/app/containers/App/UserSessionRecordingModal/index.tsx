@@ -15,7 +15,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';
