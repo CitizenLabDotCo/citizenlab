@@ -299,7 +299,7 @@ tr:
       subject: '%{organizationName} platformundaki yorumunuz hakkında bir yanıt aldınız'
       preheader: '%{authorName} %{organizationName} platformundaki yorumunuzu yanıtladı'
       title: '%{authorName} yorumunuza cevap verdi'
-      event_description: '%{authorName} katılım platformunda ''%{post}'' hakkındaki yorumunuza bir cevap yazdı. %{authorFirstName}ile sohbete devam etmek için aşağıdaki butona tıklayınız.'
+      event_description: '%{authorNameFull} katılım platformundaki ''%{post}'' ile ilgili yorumunuza yanıt yazdı. %{authorName} ile sohbete devam etmek için aşağıdaki düğmeye tıklayın.'
       cta_button: 'Yanıtla %{authorFirstName}'
       replied: '%{authorFirstName} yanıtı:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ tr:
       event_description: '%{authorNameFull} iç yorumunuz üzerine yorum yaptı.'
       subject: '''%{post}'' hakkındaki dahili yorumunuz hakkında bir yorum aldınız.'
       title: '''%{post}'' hakkındaki dahili yorumunuz hakkında bir yorum aldınız.'
-      preheader: '%{authorNameFull} ''%{post}'' hakkındaki dahili yorumunuza yanıt verdi'
+      preheader: '%{authorName} ''%{post}'' hakkındaki dahili yorumunuza yanıt verdi'
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Yorumu görüntüle %{firstName}'
       event_description: '%{authorNameFull} Size atanan bir girdi hakkında dahili olarak yorum yaptı.'
@@ -342,7 +342,7 @@ tr:
       event_description: '%{organizationName} ''%{post}‘ ile ilgili geri bildiriminde sizden bahsetti. %{organizationName} ile sohbete katılmak için aşağıdaki bağlantıya tıklayın'
       title: 'Sizden bahsedildi'
       subject: '%{organizationName} geri bildiriminde sizden bahsetti'
-      preheader: '%{organizationName} geri bildirimde sizden bahsetti'
+      preheader: '%{commentAuthor} geri bildirimde sizden bahsetti'
     project_moderation_rights_received:
       cta_manage_project: 'Bu projeyi yönetin'
       message_you_became_moderator: '%{organizationName} katılım platformundaki bir yönetici sizi şu projenin proje yöneticisi yaptı:'
