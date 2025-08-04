@@ -299,7 +299,7 @@ da:
       subject: 'Du har modtaget et svar på din kommentar på platformen for %{organizationName}'
       preheader: '%{authorName} svarede på din kommentar på %{organizationName}s platform'
       title: '%{authorName} reagerede på din kommentar'
-      event_description: '%{authorName} skrev et svar til din kommentar på "%{post}" på inddragelsesplatformen. Klik på nedenstående knap, for at fortsætte samtalen med %{authorFirstName}.'
+      event_description: '%{authorNameFull} skrev et svar til din kommentar på "%{post}" på inddragelsesplatformen. Klik på nedenstående knap, for at fortsætte samtalen med %{authorName}.'
       cta_button: 'Svar til %{authorFirstName}'
       replied: '%{authorFirstName} svarede:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ da:
       event_description: '%{authorNameFull} kommenterede på din interne kommentar.'
       subject: 'Du har modtaget en kommentar til din interne kommentar på ''%{post}'''
       title: 'Du har modtaget en kommentar til din interne kommentar på ''%{post}'''
-      preheader: '%{authorNameFull} svarede på din interne kommentar på ''%{post}'''
+      preheader: '%{authorName} svarede på din interne kommentar på ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} har kommenteret internt på et input, som du har fået tildelt.'
@@ -342,7 +342,7 @@ da:
       event_description: '%{organizationName} har nævnt dig i sin kommentar til ideen ''%{post}''. Klik på linket herunder for at gå ind i samtalen med %{organizationName}'
       title: 'Du er blevet nævnt'
       subject: '%{organizationName} har nævnt dig i en kommentar'
-      preheader: '%{organizationName} nævnte dig i sin kommentar'
+      preheader: '%{commentAuthor} nævnte dig i sin kommentar'
     project_moderation_rights_received:
       cta_manage_project: 'Administrer dette projekt'
       message_you_became_moderator: 'En administrator af %{organizationName}s inddragelsesplatform har lige gjort dig til projektleder for følgende projekt:'
