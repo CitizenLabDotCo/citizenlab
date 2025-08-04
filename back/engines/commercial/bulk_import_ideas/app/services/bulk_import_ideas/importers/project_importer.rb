@@ -83,7 +83,7 @@ module BulkImportIdeas::Importers
           project = Project.find(project_data[:id])
           log "FOUND existing project: #{project_data[:id]}"
           project
-        rescue StandardError => e
+        rescue StandardError
           log "ERROR: Project with ID #{project_data[:id]} not found"
           nil
         end
@@ -103,7 +103,6 @@ module BulkImportIdeas::Importers
         log "Created new project: #{project_data[:slug]} (#{project.id})"
         project
       end
-
     end
 
     def create_project_thumbnail_image(project, project_data)
@@ -127,7 +126,7 @@ module BulkImportIdeas::Importers
           phase = Phase.find(phase_attributes[:id])
           log "FOUND existing phase: #{phase_attributes[:id]}"
           phase
-        rescue StandardError => e
+        rescue StandardError
           log "ERROR: Phase with ID #{phase_attributes[:id]} not found"
           nil
         end

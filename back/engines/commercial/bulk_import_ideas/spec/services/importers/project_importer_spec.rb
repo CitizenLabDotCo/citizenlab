@@ -5,7 +5,6 @@ require 'rails_helper'
 describe BulkImportIdeas::Importers::ProjectImporter do
   let(:service) { described_class.new(create(:admin), 'en') }
 
-
   describe '#find_or_create_project' do
     let(:project_data) do
       {
@@ -31,7 +30,7 @@ describe BulkImportIdeas::Importers::ProjectImporter do
     end
 
     it 'returns nil if the project cannot be found by id' do
-      project_data[:id] = "NON_EXISTENT_ID"
+      project_data[:id] = 'NON_EXISTENT_ID'
       project = service.send(:find_or_create_project, project_data)
       expect(project).to be_nil
     end
