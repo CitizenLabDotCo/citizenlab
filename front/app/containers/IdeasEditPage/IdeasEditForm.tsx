@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
@@ -12,7 +12,6 @@ import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
 import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
-import IdeationForm from 'components/CustomFieldsForm/IdeationForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,6 +20,10 @@ import eventEmitter from 'utils/eventEmitter';
 
 import IdeasEditMeta from './IdeasEditMeta';
 import messages from './messages';
+
+const IdeationForm = React.lazy(
+  () => import('components/CustomFieldsForm/IdeationForm')
+);
 
 interface Props {
   ideaId: string;
@@ -127,14 +130,16 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                     display="flex"
                   >
                     {project && (
-                      <IdeationForm
-                        projectId={project.data.id}
-                        phaseId={phaseId}
-                        participationMethod={
-                          phase?.data.attributes.participation_method
-                        }
-                        idea={idea?.data}
-                      />
+                      <Suspense>
+                        <IdeationForm
+                          projectId={project.data.id}
+                          phaseId={phaseId}
+                          participationMethod={
+                            phase?.data.attributes.participation_method
+                          }
+                          idea={idea?.data}
+                        />
+                      </Suspense>
                     )}
                   </Box>
                 </Box>

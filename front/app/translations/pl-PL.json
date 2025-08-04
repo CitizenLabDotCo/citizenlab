@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Przepraszamy, nie możesz uzyskać dostępu do tej strony. Aby uzyskać do niej dostęp, musisz się zalogować lub zarejestrować.",
   "app.components.LocationInput.noOptions": "Brak opcji",
   "app.components.Modal.closeWindow": "Zamknij okno",
+  "app.components.MultiSelect.clearButtonAction": "Wyczyść wybór",
+  "app.components.MultiSelect.clearSearchButtonAction": "Wyczyść wyszukiwanie",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Wprowadź nowy adres e-mail",
   "app.components.PageNotFound.goBackToHomePage": "Powrót do strony głównej",
   "app.components.PageNotFound.notFoundTitle": "Nie znaleziono strony",

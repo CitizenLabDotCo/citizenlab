@@ -13,4 +13,8 @@ class ApplicationJob < ActiveJob::Base
   def que_job
     @que_job ||= QueJob.by_job_id!(job_id)
   end
+
+  def maximum_retry_count
+    que_target.class.resolve_que_setting(:maximum_retry_count)
+  end
 end

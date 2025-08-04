@@ -12,8 +12,8 @@ class ApplicationPolicy
       Pundit.policy!(user_context, record)
     end
 
-    def scope_for(scope)
-      Pundit.policy_scope!(user_context, scope)
+    def scope_for(target_scope_or_klass)
+      Pundit.policy_scope!(user_context, target_scope_or_klass)
     end
 
     def can_moderate?

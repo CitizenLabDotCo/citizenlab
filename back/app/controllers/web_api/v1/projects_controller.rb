@@ -182,7 +182,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     @projects = paginate projects
-    @projects = @projects.includes(:phases, :admin_publication)
+    @projects = @projects.includes(:phases, :admin_publication, :project_images, :groups)
 
     authorize @projects, :index_for_admin?
 
@@ -190,7 +190,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectMiniAdminSerializer,
       params: jsonapi_serializer_params,
-      include: %i[phases]
+      include: %i[phases project_images groups]
     )
   end
 

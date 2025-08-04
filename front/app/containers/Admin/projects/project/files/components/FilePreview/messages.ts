@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'Preview not yet supported for this file type.',
   },
   filePreviewLabel: {
-    id: 'app.containers.AdminPage.ProjectFiles.filePreviewLabel',
-    defaultMessage: 'File preview',
+    id: 'app.containers.AdminPage.ProjectFiles.filePreviewLabel2',
+    defaultMessage: 'Preview',
   },
   downloadFile: {
     id: 'app.containers.AdminPage.ProjectFiles.filePreview.downloadFile',
@@ -16,6 +16,10 @@ export default defineMessages({
   couldNotLoadMarkdown: {
     id: 'app.containers.AdminPage.ProjectFiles.couldNotLoadMarkdown',
     defaultMessage: 'Could not load markdown file.',
+  },
+  generatingPreview: {
+    id: 'app.containers.AdminPage.ProjectFiles.generatingPreview',
+    defaultMessage: 'Generating preview...',
   },
   csvPreviewError: {
     id: 'app.containers.AdminPage.ProjectFiles.csvPreviewError',

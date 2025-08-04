@@ -8,7 +8,6 @@
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Homepage customizable section",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Create project",
-  "app.components.ProjectTemplatePreview.createProjectBasedOn": "Create a project based on the template '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Go back",
   "app.components.ProjectTemplatePreview.goBackTo": "Go back to the {goBackLink}.",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Want to use this template for your participation project?",

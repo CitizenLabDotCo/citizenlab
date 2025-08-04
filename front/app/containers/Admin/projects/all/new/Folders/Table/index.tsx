@@ -18,8 +18,9 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 import { useIntl } from 'utils/cl-intl';
 
-import projectMessages from '../../Projects/Table/messages';
-import { useParams } from '../utils';
+import ColHeader from '../../_shared/ColHeader';
+import sharedMessages from '../../_shared/messages';
+import { useParams } from '../../_shared/params';
 
 import messages from './messages';
 import Row from './Row';
@@ -53,11 +54,11 @@ const Table = () => {
 
   const getSentinelMessage = () => {
     if (isFetchingNextPage) {
-      return projectMessages.loadingMore;
+      return sharedMessages.loadingMore;
     }
 
     if (hasNextPage) {
-      return projectMessages.scrollDownToLoadMore;
+      return sharedMessages.scrollDownToLoadMore;
     }
 
     if (status === 'success') {
@@ -77,9 +78,9 @@ const Table = () => {
       >
         <Thead>
           <Tr background={colors.grey50}>
-            <Th py="16px">{formatMessage(messages.folder)}</Th>
-            <Th py="16px">{formatMessage(messages.managers)}</Th>
-            <Th py="16px">{formatMessage(messages.status)}</Th>
+            <ColHeader>{formatMessage(messages.folder)}</ColHeader>
+            <ColHeader>{formatMessage(messages.managers)}</ColHeader>
+            <ColHeader>{formatMessage(messages.status)}</ColHeader>
             <Th />
           </Tr>
         </Thead>

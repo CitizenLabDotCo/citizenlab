@@ -20,9 +20,11 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { useParams } from '../utils';
+import ColHeader from '../../_shared/ColHeader';
+import sharedMessages from '../../_shared/messages';
+import { useParams } from '../../_shared/params';
 
-import { COLUMN_VISIBILITY } from './constants';
+import EmptyRow from './EmptyRow';
 import messages from './messages';
 import Row from './Row';
 
@@ -53,7 +55,7 @@ const Table = () => {
   );
 
   const projectIds = projects.map((project) => project.id);
-  const { data: participantsCounts } = useParticipantCounts(projectIds);
+  const participantsCounts = useParticipantCounts(projectIds);
 
   const { loadMoreRef } = useInfiniteScroll({
     isLoading: isFetchingNextPage,
@@ -64,15 +66,15 @@ const Table = () => {
 
   const getSentinelMessage = () => {
     if (isFetchingNextPage) {
-      return messages.loadingMore;
+      return sharedMessages.loadingMore;
     }
 
     if (hasNextPage) {
-      return messages.scrollDownToLoadMore;
+      return sharedMessages.scrollDownToLoadMore;
     }
 
     if (status === 'success') {
-      return messages.allProjectsHaveLoaded;
+      return sharedMessages.allProjectsHaveLoaded;
     }
 
     return null;
@@ -88,45 +90,25 @@ const Table = () => {
       >
         <Thead>
           <Tr background={colors.grey50}>
-            <Th py="16px">{formatMessage(messages.project)}</Th>
-            {COLUMN_VISIBILITY.participants && (
-              <Th py="16px">
-                <Icon
-                  name="users"
-                  height="16px"
-                  fill={colors.primary}
-                  mr="8px"
-                />
-              </Th>
-            )}
-            {COLUMN_VISIBILITY.currentPhase && (
-              <Th py="16px">{formatMessage(messages.currentPhase)}</Th>
-            )}
-            {COLUMN_VISIBILITY.projectStart && (
-              <Th py="16px">{formatMessage(messages.projectStart)}</Th>
-            )}
-            {COLUMN_VISIBILITY.projectEnd && (
-              <Th py="16px">{formatMessage(messages.projectEnd)}</Th>
-            )}
-            {COLUMN_VISIBILITY.status && (
-              <Th py="16px">{formatMessage(messages.status)}</Th>
-            )}
-            {COLUMN_VISIBILITY.visibility && (
-              <Th py="16px">{formatMessage(messages.visibility)}</Th>
-            )}
+            <ColHeader>{formatMessage(messages.project)}</ColHeader>
+            <ColHeader>
+              <Icon name="users" height="16px" fill={colors.black} mr="8px" />
+            </ColHeader>
+            <ColHeader>{formatMessage(messages.phase)}</ColHeader>
+            <ColHeader>{formatMessage(messages.manager)}</ColHeader>
+            <ColHeader>{formatMessage(messages.visibility)}</ColHeader>
+            <ColHeader>{formatMessage(messages.start)}</ColHeader>
+            <ColHeader>{formatMessage(messages.end)}</ColHeader>
             <Th />
           </Tr>
         </Thead>
         <Tbody>
+          {projects.length === 0 && <EmptyRow />}
           {projects.map((project) => (
             <Row
               key={project.id}
               project={project}
-              participantsCount={
-                participantsCounts?.data.attributes.participant_counts[
-                  project.id
-                ]
-              }
+              participantsCount={participantsCounts[project.id]}
             />
           ))}
         </Tbody>

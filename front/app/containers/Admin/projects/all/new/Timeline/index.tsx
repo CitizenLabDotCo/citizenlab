@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Box, colors, Spinner, Text } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
 
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
@@ -13,27 +13,15 @@ import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import Filters from '../Projects/Filters';
-import projectMessages from '../Projects/Table/messages';
-import { useParams } from '../Projects/utils';
+import FilterBar from '../_shared/FilterBar';
+import sharedMessages from '../_shared/messages';
+import { useParams } from '../_shared/params';
+import { getStatusColor } from '../_shared/utils';
 
 import messages from './messages';
 import ProjectGanttChart from './ProjectGanttChart';
 
 const PAGE_SIZE = 10;
-
-const getStatusColor = (status?: string) => {
-  switch (status) {
-    case 'published':
-      return colors.green500;
-    case 'draft':
-      return colors.orange500;
-    case 'archived':
-      return colors.background;
-    default:
-      return undefined;
-  }
-};
 
 const Timeline = () => {
   const { formatMessage } = useIntl();
@@ -97,20 +85,20 @@ const Timeline = () => {
 
   const getSentinelMessage = () => {
     if (isFetching) {
-      return projectMessages.loadingMore;
+      return sharedMessages.loadingMore;
     }
 
     if (hasNextPage) {
-      return projectMessages.scrollDownToLoadMore;
+      return sharedMessages.scrollDownToLoadMore;
     }
 
-    return projectMessages.allProjectsHaveLoaded;
+    return sharedMessages.allProjectsHaveLoaded;
   };
   const sentinelMessage = getSentinelMessage();
 
   return (
     <Box>
-      <Filters />
+      <FilterBar />
       <Box position="relative" mt="16px">
         <ProjectGanttChart
           ganttItems={projectsGanttData}
