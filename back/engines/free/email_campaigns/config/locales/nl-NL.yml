@@ -299,7 +299,7 @@ nl:
       subject: 'Je hebt een reactie gekregen in een gesprek op het platform van %{organizationName}'
       preheader: '%{authorName} antwoordde op je reactie op het platform van %{organizationName}'
       title: '%{authorName} reageerde op je reactie'
-      event_description: '%{authorName} schreef een antwoord op je reactie op ''%{post}'' op het participatieplatform. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorFirstName}.'
+      event_description: '%{authorNameFull} schreef een antwoord op je reactie op ''%{post}'' op het participatieplatform. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
       cta_button: 'Reageer op %{authorFirstName}'
       replied: '%{authorFirstName} reageerde:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ nl:
       event_description: '%{authorNameFull} heeft gereageerd op je interne reactie.'
       subject: 'Je hebt een reactie ontvangen op je interne reactie op ''%{post}'''
       title: 'Je hebt een reactie ontvangen op je interne reactie op ''%{post}'''
-      preheader: '%{authorNameFull} heeft gereageerd op je interne reactie op ''%{post}'''
+      preheader: '%{authorName} heeft gereageerd op je interne reactie op ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Bekijk de reactie van %{firstName}'
       event_description: '%{authorNameFull} heeft een interne reactie gegeven op een aan jou toegewezen bijdrage.'
@@ -342,7 +342,7 @@ nl:
       event_description: '%{organizationName} heeft je genoemd in hun feedback op het idee ''%{post}''. Klik op onderstaande link om in gesprek te gaan met %{organizationName}'
       title: 'Je bent genoemd'
       subject: '%{organizationName} noemde je in hun feedback'
-      preheader: '%{organizationName} heeft je vermeld in feedback'
+      preheader: '%{commentAuthor} heeft je genoemd in feedback'
     project_moderation_rights_received:
       cta_manage_project: 'Beheer dit project'
       message_you_became_moderator: 'Een platformbeheerder van het platform van %{organizationName} heeft jou zojuist projectbeheerder gemaakt van het volgende project:'
