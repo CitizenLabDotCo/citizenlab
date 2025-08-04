@@ -21,6 +21,7 @@ import { getStatusColor } from '../_shared/utils';
 
 import messages from './messages';
 import ProjectGanttChart from './ProjectGanttChart';
+import UpsellNudge from './UpsellNudge';
 
 const PAGE_SIZE = 10;
 
@@ -129,7 +130,10 @@ const Calendar = () => {
 const CalendarWrapper = () => {
   const enabled = useFeatureFlag({ name: 'project_planning_calendar' });
 
-  if (!enabled) return null;
+  if (!enabled) {
+    return <UpsellNudge />;
+  }
+
   return <Calendar />;
 };
 
