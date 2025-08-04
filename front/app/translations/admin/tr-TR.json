@@ -1161,6 +1161,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.start": "Başlangıç",
   "app.containers.Admin.projects.all.new.Projects.Table.status": "Durum",
   "app.containers.Admin.projects.all.new.Projects.Table.statusColon": "Durum:",
+  "app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache": "Bu sütun önbelleğe alınmış katılımcı verilerini kullanır. En son sayıları görmek için projenin \"Katılımcılar\" sekmesini kontrol edin.",
   "app.containers.Admin.projects.all.new.Projects.Table.visibility": "Görünürlük",
   "app.containers.Admin.projects.all.new.Projects.Table.visibilityColon": "Görünürlük:",
   "app.containers.Admin.projects.all.new.Projects.Table.xGroups": "{numberOfGroups} gruplar",
