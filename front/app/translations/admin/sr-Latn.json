@@ -879,7 +879,7 @@
   "app.containers.Admin.emails.fieldSubjectTooltip": "Ovo će biti prikazano kao email naslov. Nastojte da bude jasno i da privlači pažnju.",
   "app.containers.Admin.emails.fieldTo": "Za",
   "app.containers.Admin.emails.fieldToTooltip": "Možete odabrati grupe korisnika koje će primiti vaš email.",
-  "app.containers.Admin.emails.formSave": "Save",
+  "app.containers.Admin.emails.formSave": "Sačuvajte kao nacrt",
   "app.containers.Admin.emails.formSaveAsDraft": "Save as draft",
   "app.containers.Admin.emails.from": "Од:",
   "app.containers.Admin.emails.groups": "Grupe",
