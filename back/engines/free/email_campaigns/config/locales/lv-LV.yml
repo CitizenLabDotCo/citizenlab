@@ -24,7 +24,8 @@ lv:
       "mention_in_official_feedback": Minēt atjauninājumā
       "mention_in_internal_comment": Pieminēšana iekšējā komentārā
       "new_comment_for_admin": Jauns komentārs projektā, kuru es moderēju
-      "new_idea_for_admin": Jauna ideja projektā, kuru es moderēju
+      "new_idea_for_admin_published": Jaunie publicētie ieguldījumi projektā, kuru es vadu
+      "new_idea_for_admin_prescreening": Jauns ieguldījums, kam nepieciešams apstiprinājums projektā, kuru es moderēju
       "official_feedback_on_idea_you_follow": Atjaunināt ideju, kurai sekojat
       "password_reset": Paroles atiestatīšana
       "project_moderation_rights_received": Saņemtās projekta moderēšanas tiesības
@@ -85,11 +86,22 @@ lv:
         "6": "Ik nedēļu sestdienās %{hourOfDay}"
       quarterly: "Ceturkšņa ceturksnis, ceturkšņa pirmajā dienā"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Doe'
-      display_name: 'Džeina Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Doe'
+      author_display_name: 'Džeina Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Projekta piemērs'
+      phase_title: 'Piemērs fāze'
       comment_body: 'Šis ir komentāra piemērs, ko izmanto e-pasta vēstuļu satura priekšskatīšanai. Tas nav īsts saturs.'
+      comment_deleted_reason: 'Jūsu komentārs par piemēru tika uzskatīts par nepiemērotu.'
       idea_title: 'Piemērs Ideja'
+      idea_body: 'Šis ir idejas satura piemērs, ko izmanto e-pasta vēstuļu satura priekšskatīšanai. Tas nav īsts saturs.'
+      event_title: 'Pasākuma piemērs'
+      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_address2: '3.a telpa, augšstāvā'
+      proposal_title: 'Priekšlikuma piemērs'
     footer:
       "link_privacy_policy": "Privātuma politika"
       "link_terms_conditions": "Noteikumi un nosacījumi"
@@ -103,22 +115,22 @@ lv:
     manual:
       preheader: 'Jums ir pasts no %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'Iemesls, kāpēc jūsu komentārs tika dzēsts:'
-      cta_view: 'Skatīt šo ideju'
+      subject: 'Jūsu komentārs ir dzēsts no %{organizationName} platformas.'
+      preheader: 'Jūsu komentārs ir dzēsts'
+      title: '%{organizationName} dzēsts jūsu komentārs'
       event_description: '%{organizationName} izdzēsa komentāru, ko jūs rakstījāt par ideju.'
-      main_header: '%{organizationName} izdzēsa jūsu komentāru'
+      cta_button: 'Apskatīt šo ideju'
+      reason: 'Iemesls, kāpēc jūsu komentārs tika dzēsts:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Jūsu komentārs tika uzskatīts par nepiemērotu'
       irrelevant_reason: 'Jūsu komentārs tika uzskatīts par nebūtisku šajā kontekstā.'
       no_reason: 'Iemesls nav norādīts'
-      subject: 'Jūsu komentārs ir dzēsts no %{organizationName} platformas.'
-      preheader: 'Jūsu komentārs ir dzēsts'
     admin_digest:
       subject: 'Jūsu nedēļas administratora ziņojums par %{time}'
       preheader: 'Administratora pārskats par %{organizationName}'
-      title_your_weekly_report: '%{firstName}, jūsu nedēļas pārskats'
-      text_introduction: 'Mēs esam atlasījuši tos ievadītos datus, kas pagājušajā nedēļā ir izraisījuši vislielāko aktivitāti. Uzziniet, kas notiek jūsu platformā!'
-      cta_visit_the_platform: 'Apmeklējiet savu platformu'
+      title: '%{firstName}, jūsu iknedēļas pārskats'
+      event_description: 'Mēs esam atlasījuši tos ievades datus, kas pagājušajā nedēļā ir izraisījuši vislielāko aktivitāti. Uzziniet, kas notiek jūsu platformā!'
+      cta_button: 'Apmeklējiet savu platformu'
       new_users: 'Jauni lietotāji'
       new_inputs: 'Jauni ievades dati'
       new_comments: 'Jauni komentāri'
@@ -129,10 +141,11 @@ lv:
       today_by_author: 'Šodien %{author}'
       x_days_ago_by_author: 'pirms %{x} dienām %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Pārvaldiet savu platformu'
-      message_you_became_administrator: 'Jums ir piešķirtas administratora tiesības %{organizationName} līdzdalības platformai.'
-      preheader: 'Jums tika piešķirtas administratora tiesības %{organizationName} līdzdalības platformai.'
       subject: 'Jūs kļuvāt par %{organizationName} platformas administratoru.'
+      preheader: 'Jums tika piešķirtas administratora tiesības %{organizationName} līdzdalības platformai.'
+      title: 'Jūs kļuvāt par administratoru'
+      event_description: 'Jums ir piešķirtas %{organizationName}dalības platformas administratora tiesības.'
+      cta_button: 'Pārvaldiet savu platformu'
       text_create_participatory_process: 'Būdams administrators, varat veidot un konfigurēt jaunus līdzdalības projektus. Jūs varat pievienot jaunus posmus, izmantojot laika grafiku. Katram no šiem posmiem var būt sava uzvedība attiecībā uz ideju publicēšanu, komentēšanu un balsošanu.'
       text_moderate_analyse_input: 'Tiklīdz projekti ir uzsākti, tiks saņemtas pirmās idejas. Jūs saņemsiet nedēļas pārskatus ar visām galvenajām darbībām, lai jūs būtu lietas kursā. Ideju pārskats palīdzēs jums moderēt ievadītos datus un sadarboties to apstrādē.'
       text_platform_setup: 'Būdams administrators, varat izveidot savu līdzdalības platformu. Izvēlieties logotipu, attēlus un krāsas, uzrakstiet personisku vēstījumu savā sākumlapā, izsūtiet uzaicinājumus, definējiet, ko vēlaties zināt par saviem lietotājiem, ...'
@@ -140,38 +153,38 @@ lv:
       title_moderate_analyse_input: 'Moderēt un analizēt ievadītos datus'
       title_platform_setup: 'Platformas iestatīšana'
       title_what_can_you_do_administrator: 'Ko jūs varat darīt kā administrators?'
-      title_you_became_administrator: 'Jūs kļuvāt par administratoru'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} ziņoja par šo komentāru kā surogātpastu'
+      preheader: 'Rīkojieties sakarā ar šo komentāru, kas tika ziņots kā surogātpasts'
+      title: '%{firstName} %{lastName} ziņoja šo komentāru kā surogātpastu'
+      cta_button: 'Pārskata komentārs'
       by_author: 'autors: %{authorName}'
       commented: '%{authorName} komentēja:'
-      cta_review_comment: 'Pārskatīt komentāru'
       days_ago: 'pirms %{numberOfDays} dienām'
       event_description: 'Tika ziņots par šādu <strong>''%{post}''</strong> publicēto komentāru:'
       inappropriate_content: 'Komentārs ir nepiemērots vai aizvainojošs.'
-      preheader: 'Rīkojieties sakarā ar šo komentāru, kas tika ziņots kā surogātpasts'
       reported_this_because: '%{reporterFirstName} ziņoja par šo, jo:'
-      subject: '%{organizationName}: %{firstName} %{lastName} ziņoja par šo komentāru kā surogātpastu'
-      title_comment_spam_report: '%{firstName} %{lastName} ziņoja par šo komentāru kā surogātpastu'
       today: Šodien
       wrong_content: 'Komentārs nav būtisks.'
       yesterday: Vakar
     community_monitor_report:
       subject: 'Ir pieejams jauns Kopienas monitoringa ziņojums'
+      preheader: 'Ir pieejams jauns Kopienas monitoringa ziņojums'
       title: 'Ir pieejams jauns Kopienas monitoringa ziņojums'
-      text_introduction: 'Par iepriekšējo ceturksni ir izveidots kopienas uzraudzības ziņojums. Tam var piekļūt, noklikšķinot uz zemāk redzamās pogas un pieslēdzoties.'
-      cta_report_button: 'Apskatīt ziņojumu'
+      event_description: 'Par iepriekšējo ceturksni ir izveidots kopienas uzraudzības ziņojums. Tam var piekļūt, noklikšķinot uz zemāk redzamās pogas un pieslēdzoties.'
+      cta_button: 'Apskatīt ziņojumu'
       report_name: 'Kopienas uzraudzības ziņojums'
     cosponsor_of_your_idea:
-      cta_reply_to: 'Pārskatīt savu priekšlikumu'
-      event_description: 'Apsveicam! %{cosponsorName} ir pieņēmis jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
-      main_header: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
       subject: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
       preheader: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
+      title: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
+      event_description: 'Apsveicam! %{cosponsorName} ir pieņēmis jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
+      cta_button: 'Pārskatīt savu priekšlikumu'
     assignee_digest:
       subject: 'Idejas, kurām nepieciešama jūsu atsauksme: %{numberIdeas}'
       preheader: 'Izpildītāja pārskats par %{organizationName}'
-      title_your_weekly_report: '%{firstName}, pilsoņa ievadītie dati gaida jūsu atsauksmes'
-      cta_manage_your_input: 'Pārvaldiet savus ievadītos datus'
+      title: '%{firstName}, pilsoņu ieguldījums gaida jūsu atsauksmes'
+      cta_button: 'Pārvaldiet savu ieguldījumu'
       x_inputs_need_your_feedback: 'ievades datiem ir nepieciešama jūsu atgriezeniskā saite'
       title_assignment_past_week: 'Jaunākās jums piešķirtās idejas'
       title_no_assignment_past_week: 'Pagājušajā nedēļā jums netika piešķirtas jaunas idejas'
@@ -180,36 +193,36 @@ lv:
       x_days_ago_by_author: 'pirms %{x} dienām %{author}'
       title_successful_past_week: 'Jums piešķirts, kas sasniedzis slieksni'
     idea_marked_as_spam:
-      cta_review: 'Pārskats'
-      report_inappropriate_offensive_content: 'Es uzskatu, ka šis saturs ir nepiemērots vai aizskarošs.'
-      report_not_an_idea: 'Šis saturs nav ideja, un tas nepieder šeit.'
       subject: 'Jums ir ziņojums par surogātpastu %{organizationName} platformā'
       preheader: 'Rīkojieties sakarā ar šo ziņojumu par surogātpastu'
+      title: '%{firstName} %{lastName} ziņots par surogātpastu'
+      cta_button: 'Pārskats'
+      report_inappropriate_offensive_content: 'Es uzskatu, ka šis saturs ir nepiemērots vai aizskarošs.'
+      report_not_an_idea: 'Šis saturs nav ideja, un tas nepieder šeit.'
       reported_this_because: '%{reporterFirstName} ziņoja par šo, jo:'
-      title_spam_report: '%{firstName} %{lastName} ziņoja par surogātpastu'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'Šā priekšlikuma līdzfinansēšana'
+      subject: 'Jūs esat aicināts kļūt par priekšlikuma līdzfinansētāju.'
+      preheader: 'Jūs esat aicināts līdzfinansēt %{authorName}priekšlikumu.'
+      title: 'Jūs esat aicināts kļūt par priekšlikuma līdzfinansētāju.'
       event_description: '%{authorName} ir izstrādājusi jaunu priekšlikumu un vēlas, lai jūs to atbalstītu.'
       event_description_cosponsoring: 'Priekšlikuma līdzfinansēšana nozīmē, ka <strong>jūsu vārds tiks norādīts</strong> kopā ar citu priekšlikuma līdzfinansētāju vārdiem.'
       event_description_before_action: 'Lai redzētu priekšlikumu un pieņemtu uzaicinājumu, jums ir jābūt pieteicies savā kontā.'
       event_description_action: 'Noklikšķiniet tālāk, lai iepazītos ar priekšlikumu.'
-      main_header: 'Jūs esat aicināts kļūt par priekšlikuma līdzfinansētāju.'
-      subject: 'Jūs esat aicināts kļūt par priekšlikuma līdzfinansētāju.'
-      preheader: 'Jūs esat aicināts līdzfinansēt %{authorName}priekšlikumu.'
+      cta_button: 'Šā priekšlikuma līdzfinansēšana'
     invite_reminder:
-      cta_accept_invitation: 'Pieņemt jūsu uzaicinājumu'
-      invitation_header: 'Jūsu uzaicinājums vēl nav pieņemts'
-      preheader: '%{organizationName} pirms dažām dienām nosūtīja jums uzaicinājumu pievienoties viņu līdzdalības platformai.'
-      invitation_expiry_message: 'Šis ielūgums beidzas aptuveni pēc %{expiryDaysRemaining} dienām.'
       subject: 'Gaidāmais uzaicinājums uz %{organizationName} līdzdalības platformu'
+      preheader: '%{organizationName} pirms dažām dienām nosūtīja jums uzaicinājumu pievienoties viņu līdzdalības platformai.'
+      title: 'Jūsu ielūgums tiek gaidīts'
+      cta_button: 'Pieņemt ielūgumu'
+      invitation_expiry_message: 'Šis ielūgums beidzas aptuveni pēc %{expiryDaysRemaining} dienām.'
     invite_received:
-      added_a_message: '%{organizationName} uzrakstīja šādu ziņojumu:'
-      cta_accept_invitation: 'Pieņemt jūsu uzaicinājumu'
-      invitation_header: 'Jūs esat laipni aicināti!'
-      invitation_header_message: '%{organizationName} uzaicināja jūs piedalīties viņu līdzdalības platformā.'
-      invitation_expiry_message: 'Šis ielūgums beidzas pēc %{expiryDays} dienām.'
       preheader: '%{organizationName} nosūtīja jums uzaicinājumu pievienoties viņu līdzdalības platformai.'
       subject: 'Jūs esat aicināts pievienoties %{organizationName} platformai'
+      title: 'Jūs esat laipni aicināti!'
+      event_description: '%{organizationName} aicināja jūs piedalīties savā dalības platformā.'
+      cta_button: 'Pieņemt ielūgumu'
+      added_a_message: '%{organizationName} uzrakstīja šādu ziņojumu:'
+      invitation_expiry_message: 'Šis ielūgums beidzas pēc %{expiryDays} dienām.'
     mention_in_comment:
       cta_reply_to: 'Atbildēt %{commentAuthor}'
       event_description: '%{commentAuthorFull} ir pieminējis jūs savā komentārā par ideju ''%{post}''. Noklikšķiniet uz zemāk redzamās saites, lai iesaistītos sarunā ar %{commentAuthor}'
@@ -217,17 +230,17 @@ lv:
       subject: 'Kāds pieminēja jūs %{organizationName} platformā.'
       preheader: '%{commentAuthor} pieminēja jūs komentārā'
     mention_in_internal_comment:
-      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      cta_button: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} jūs pieminēja iekšējā komentārā.'
       subject: '%{firstName} jūs pieminēja iekšējā komentārā.'
-      main_header: '%{firstName} jūs pieminēja iekšējā komentārā.'
+      title: '%{firstName} jūs pieminēja iekšējā komentārā.'
       preheader: '%{authorNameFull} jūs pieminēja iekšējā komentārā.'
     moderator_digest:
       subject: 'Jūsu nedēļas projekta vadītāja pārskats par %{project_title}'
       preheader: 'Projekta vadītāja pārskats par %{organizationName}'
-      title_your_weekly_report: '%{firstName}, jūsu nedēļas pārskats'
-      text_introduction: 'Mēs esam atlasījuši tos ievadītos datus, kas pagājušajā nedēļā ir izraisījuši vislielāko aktivitāti. Uzziniet, kas notiek ar jūsu projektu!'
-      cta_manage: 'Projekta pārvaldība'
+      title: '%{firstName}, jūsu iknedēļas pārskats'
+      event_description: 'Mēs esam atlasījuši tos ievades datus, kas pagājušajā nedēļā ir izraisījuši vislielāko aktivitāti. Uzziniet, kas notiek ar jūsu projektu!'
+      cta_button: 'Projekta pārvaldība'
       new_users: 'Jauni lietotāji'
       new_ideas: 'Jaunas idejas'
       new_comments: 'Jauni komentāri'
@@ -239,17 +252,20 @@ lv:
       x_days_ago_by_author: 'pirms %{x} dienām %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} komentēja:'
-      cta_reply_to: 'Skatīt %{commentAuthor} komentāru'
+      cta_button: 'Skatīt %{authorFirstName}''s komentārs'
       days_ago: 'pirms %{numberOfDays} dienām'
       event_description: '%{authorName} pievienoja jaunu komentāru jūsu platformā.'
-      main_header: '%{firstName}, jūsu platformā ir publicēts jauns komentārs.'
+      title: '%{firstName}, jūsu platformā ir publicēts jauns komentārs'
       subject: '%{organizationName} platformā ir publicēts jauns komentārs.'
       preheader: '%{authorName} atstāja komentāru'
       today: Šodien
       yesterday: Vakar
     comment_on_idea_you_follow:
-      cta_reply_to: 'Atbildēt %{commentAuthor}'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} atstāja komentāru par ideju par %{organizationName}'
+      title: '%{authorName} komentēja ievades, kuru jūs sekojat'
       event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      cta_button: 'Atbildēt %{commentAuthor}'
       main_header:
         idea: '%{authorName} komentēja ideju, kurai tu seko'
         question: '%{authorName} komentēja jautājumu, kas jums seko'
@@ -259,56 +275,61 @@ lv:
         option: '%{authorName} komentēja iespēju, kuru jūs sekojat'
         proposal: '%{authorName} komentēja priekšlikumu, kam tu seko'
         petition: '%{authorName} komentēja lūgumrakstu, kam tu seko'
-      subject: 'There''s a new comment on "%{input_title}"'
-      preheader: '%{authorName} atstāja komentāru par ideju par %{organizationName}'
-    new_idea_for_admin:
-      main_header_publication: 'Jūsu platformā ir publicēts jauns ievade'
-      event_description_publication: '%{authorName} ir iesniedzis jaunu ievades ziņojumu par jūsu platformu. Atklājiet to tagad, sniedziet atsauksmes vai mainiet tā statusu!'
-      cta_publication: 'Sniedziet atgriezenisko saiti uz %{authorName}'
-      main_header_prescreening: 'Ir nepieciešams jūsu pārskats par ievades datiem'
-      event_description_prescreening: '%{authorName} ir iesniedzis jaunu ievades ziņojumu par jūsu platformu.'
-      input_not_visible_prescreening: '<b>Ievads nebūs redzams,</b> kamēr nemainīsiet tā statusu.'
-      cta_prescreening: 'Pārbaudiet ievades datus'
-      days_ago: 'pirms %{numberOfDays} dienām'
-      preheader: '%{authorName} publicēja jaunu ideju jūsu platformā'
+    new_idea_for_admin_published:
+      subject: 'Jūsu platformā ir publicēts jauns ieguldījums'
+      preheader: '%{authorName} publicēts jauns ievade jūsu platformā.'
+      title: 'Jūsu platformā ir publicēts jauns ieguldījums'
+      event_description: '%{authorName} ir iesniedzis jaunu ieguldījumu jūsu platformā. Atklājiet to tagad, sniedziet atsauksmes vai mainiet tā statusu!'
+      cta_button: 'Sniedziet atgriezenisko saiti uz %{authorName}'
+      days_ago: '%{numberOfDays} pirms vairākām dienām'
+      today: Šodien
+      yesterday: Vakar
+    new_idea_for_admin_prescreening:
+      subject: 'Ir nepieciešams jūsu pārskats par ievades datiem'
+      preheader: '%{authorName} publicēts jauns ievade jūsu platformā.'
+      title: 'Ir nepieciešams jūsu pārskats par ievades datiem'
+      cta_button: 'Pārbaudiet ievades datus'
+      event_description: '%{authorName} ir iesniedzis jaunu ieguldījumu jūsu platformā.'
+      input_not_visible: '<b>Ievads nebūs redzams,</b> kamēr nemainīsiet tā statusu.'
+      days_ago: '%{numberOfDays} pirms vairākām dienām'
       today: Šodien
       yesterday: Vakar
     comment_on_your_comment:
-      cta_reply_to: 'Atbildēt %{firstName}'
-      event_description: '%{authorNameFull} uzrakstīja atbildi uz jūsu komentāru par ''%{post}'' līdzdalības platformā. Noklikšķiniet uz zemāk redzamās pogas, lai turpinātu sarunu ar %{authorName}.'
       subject: 'Jūs esat saņēmis atbildi uz savu komentāru %{organizationName} platformā.'
-      main_header: '%{authorName} atbildēja uz jūsu komentāru'
       preheader: '%{authorName} atbildēja uz jūsu komentāru %{organizationName} platformā'
+      title: '%{authorName} atbildēja uz jūsu komentāru'
+      event_description: '%{authorNameFull} uzrakstīja atbildi uz jūsu komentāru par ''%{post}'' līdzdalības platformā. Noklikšķiniet uz zemāk redzamās pogas, lai turpinātu sarunu ar %{authorName}.'
+      cta_button: 'Atbildēt %{authorFirstName}'
       replied: '%{authorFirstName} atbildēja:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      cta_button: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} komentēja jūsu iekšējo komentāru.'
       subject: 'Jūs esat saņēmis komentāru par savu iekšējo komentāru vietnē ''%{post}'''
-      main_header: 'Jūs esat saņēmis komentāru par savu iekšējo komentāru vietnē ''%{post}'''
+      title: 'Jūs esat saņēmis komentāru par savu iekšējo komentāru vietnē ''%{post}'''
       preheader: '%{authorName} atbildēja uz jūsu iekšējo komentāru par ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
-      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      cta_button: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēja jums piešķirto ievadi.'
       subject: '''%{post}'' ir jauns iekšējais komentārs'
-      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      title: 'Jauns iekšējais komentārs par "%{post}'
       preheader: '''%{post}'' ir jauns iekšējais komentārs'
     internal_comment_on_idea_you_commented_internally_on:
-      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      cta_button: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēja ievades datus, kurus jūs komentējāt iekšēji.'
       subject: '''%{post}'' ir jauns iekšējais komentārs'
-      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      title: 'Jauns iekšējais komentārs par "%{post}'
       preheader: '''%{post}'' ir jauns iekšējais komentārs'
     internal_comment_on_idea_you_moderate:
-      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      cta_button: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēt ievades ievades failu jūsu pārvaldītajā projektā vai mapē.'
       subject: '''%{post}'' ir jauns iekšējais komentārs'
-      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      title: 'Jauns iekšējais komentārs par "%{post}'
       preheader: '''%{post}'' ir jauns iekšējais komentārs'
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
+      cta_button: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēja nepiešķirtu ievadi neapsaimniekotā projektā.'
       subject: '''%{post}'' ir jauns iekšējais komentārs'
-      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      title: 'Jauns iekšējais komentārs par "%{post}'
       preheader: '''%{post}'' ir jauns iekšējais komentārs'
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
@@ -316,9 +337,9 @@ lv:
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:
-      cta_reply_to: 'Atbildēt %{organizationName}'
+      cta_button: 'Atbildēt %{organizationName}'
       event_description: '%{organizationName} pieminēja jūs atsauksmēs par ideju ''%{post}''. Noklikšķiniet uz zemāk redzamās saites, lai iesaistītos sarunā ar %{organizationName}'
-      main_header: 'Jūs esat pieminēts'
+      title: 'Jūs esat pieminēts'
       subject: '%{organizationName} pieminēja jūs savā atsauksmē'
       preheader: '%{commentAuthor} pieminēja jūs atsauksmē'
     project_moderation_rights_received:
@@ -420,7 +441,10 @@ lv:
       message_welcome: 'Apsveicam, jūs veiksmīgi reģistrējāties %{organizationName} līdzdalības platformā. Tagad jūs varat iepazīties ar platformu un paust savu viedokli. Jūs varat arī pievienot profila attēlu un īsu aprakstu, lai citiem pastāstītu par sevi.'
       preheader: 'Lūk, ko jūs varat darīt %{organizationName} platformā.'
     idea_published:
-      subject:
+      subject: 'Jūsu ideja ir publicēta'
+      preheader: '%{firstName}, apsveicam ar pirmās idejas publicēsanu %{organizationName} platformā. Tagad savāciet atbalstu savai idejai'
+      title: 'Jūs ievietojāt "%{input_title}"'
+      input_type_subject:
         idea: 'Jūsu ideja ir publicēta'
         question: 'Jūsu jautājums ir publicēts'
         contribution: 'Jūsu ieguldījums ir publicēts'
@@ -429,7 +453,6 @@ lv:
         option: 'Jūsu opcija ir publicēta'
         proposal: 'Jūsu priekšlikums ir publicēts'
         petition: 'Jūsu lūgumraksts ir publicēts'
-      main_header: 'Jūs publicējāt ideju! Pārliecināsimies, ka tā tiek izlasīta.'
       header_message: 'Pārliecināsimies, ka tas tiek izlasīts.'
       message_get_votes: 'Sasniedziet vairāk cilvēku ar savu ideju:'
       action_published_idea: 'Publicētā ideja'
@@ -441,7 +464,6 @@ lv:
       send_email: e-pasts
       action_share_link: 'Kopīgojiet to jebkurā kanālā, kopējot %{link}'
       link: saite
-      preheader: '%{firstName}, apsveicam ar pirmās idejas publicēsanu %{organizationName} platformā. Tagad savāciet atbalstu savai idejai'
     your_input_in_screening:
       main_header:
         idea: 'Jūsu ideja ir "%{prescreening_status_title}"'
@@ -465,10 +487,10 @@ lv:
     native_survey_not_submitted:
       subject: '%{organizationName}: Gandrīz ir! Nosūtiet savas atbildes'
       preheader: 'Jūs neesat aizpildījis savu aptaujas atbildi %{organizationName}dalības platformā.'
-      title_native_survey_not_submitted: 'Gandrīz ir! Nosūtiet savas atbildes'
-      body_native_survey_not_submitted: 'Jūs sākāt dalīties ar savām atbildēm vietnē %{phaseTitle} , bet tās neiesūtījāt. Iesniegšana beigsies %{phaseEndDate}. Noklikšķiniet uz zemāk redzamās pogas, lai turpinātu, kur esat pārtraucis.'
-      body_native_survey_not_submitted_no_date: 'Jūs sākāt dalīties ar savām atbildēm vietnē %{phaseTitle} , bet tās neiesūtījāt. Noklikšķiniet uz zemāk redzamās pogas, lai turpinātu, kur esat pārtraucis.'
-      cta_complete_your_survey_response: 'Turpiniet atbildēt uz aptaujas jautājumiem'
+      title: 'Gandrīz ir! Nosūtiet savas atbildes'
+      event_description: 'Jūs sākāt dalīties ar savām atbildēm vietnē %{phaseTitle} , bet tās neiesūtījāt. Noklikšķiniet uz zemāk redzamās pogas, lai turpinātu, kur esat pārtraucis.'
+      cta_button: 'Turpiniet atbildēt uz aptaujas jautājumiem'
+      submissions_close: 'Pieteikumu iesniegšana tiks slēgta %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Jūs neiesūtījāt savas balsis'
       preheader: 'Jūs neiesniedzāt savas balsis %{organizationName}dalības platformā.'
@@ -495,7 +517,7 @@ lv:
     event_registration_confirmation:
       subject: "Jūs esat iekļauts! Jūsu reģistrācija \"%{eventTitle}\" ir apstiprināta"
       preheader: "%{firstName}, paldies par reģistrēšanos %{eventTitle}"
-      header_message: "%{firstName}, paldies par reģistrēšanos"
+      title: "%{firstName}, paldies par reģistrēšanos"
       event_details:
         labels:
           date: 'Datums'
@@ -503,7 +525,7 @@ lv:
           online_link: 'Tiešsaistes saite'
           description: 'Apraksts'
           project: 'Projekts'
-      cta_go_to_event: 'Apskatīt notikumu'
+      cta_button: 'Apskatīt notikumu'
       cta_add_to_calendar: 'Pievienot kalendāram'
     voting_phase_started:
       subject: '%{organizationName}: Sācies %{projectName}balsošanas posms'
