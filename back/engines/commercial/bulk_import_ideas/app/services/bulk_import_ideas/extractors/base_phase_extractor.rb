@@ -21,6 +21,7 @@ module BulkImportIdeas::Extractors
       title = @attributes[:title].presence || phase_title
       description = @attributes[:description]
       {
+        id: @attributes[:id],
         title_multiloc: multiloc(title),
         description_multiloc: multiloc(description),
         start_at: @attributes[:start_at],

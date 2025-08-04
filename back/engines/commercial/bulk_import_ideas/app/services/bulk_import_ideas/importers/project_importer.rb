@@ -48,6 +48,7 @@ module BulkImportIdeas::Importers
       project = nil
       begin
         project = find_or_create_project(project_data)
+        return nil unless project
 
         # Create each phase (if there are any)
         project_data[:phases]&.each do |phase_data|
@@ -59,7 +60,8 @@ module BulkImportIdeas::Importers
           create_user_fields(phase_data[:user_custom_fields])
 
           # Create the form for the phase
-          create_form(phase, phase_data[:idea_custom_fields])
+          form_ok = create_form(phase, phase_data[:idea_custom_fields])
+          next unless form_ok # Don't try and import ideas if the form creation failed
 
           # Import the ideas
           import_ideas(phase, phase_data[:idea_rows])
@@ -77,8 +79,12 @@ module BulkImportIdeas::Importers
 
     def find_or_create_project(project_data)
       if project_data[:id]
-        Project.find(project_data[:id])
-        log "FOUND existing project: #{project_data[:id]}"
+        project = Project.find(project_data[:id])
+        if project
+          log "FOUND existing project: #{project_data[:id]}"
+        else
+          log "ERROR: Project with ID #{project_data[:id]} not found"
+        end
       else
         # Make sure no slug conflicts with existing projects
         project_data = increment_title(project_data)
@@ -93,8 +99,8 @@ module BulkImportIdeas::Importers
         # Create the project thumbnail image if it exists
         create_project_thumbnail_image(project, project_data)
         log "Created new project: #{project_data[:slug]} (#{project.id})"
-        project
       end
+      project
     end
 
     def create_project_thumbnail_image(project, project_data)
@@ -113,15 +119,23 @@ module BulkImportIdeas::Importers
     end
 
     def find_or_create_phase(project, phase_attributes)
-      log "Importing phase: '#{phase_attributes[:title_multiloc][@locale]}'"
-      phase = nil
-      begin
-        phase = Phase.create!(phase_attributes.merge(project: project))
-        update_description_images(phase)
-        Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
-        log "Created '#{phase.participation_method}' phase"
-      rescue StandardError => e
-        log "ERROR: Creating phase '#{phase_attributes[:title_multiloc][@locale]}': #{e.message}"
+      if phase_attributes[:id]
+        phase = Phase.find(phase_attributes[:id])
+        if phase
+          log "FOUND existing phase: #{phase_attributes[:id]}"
+        else
+          log "ERROR: Phase with ID #{phase_attributes[:id]} not found"
+        end
+      else
+        log "Importing phase: '#{phase_attributes[:title_multiloc][@locale]}'"
+        begin
+          phase = Phase.create!(phase_attributes.merge(project: project))
+          update_description_images(phase)
+          Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
+          log "Created '#{phase.participation_method}' phase"
+        rescue StandardError => e
+          log "ERROR: Creating phase '#{phase_attributes[:title_multiloc][@locale]}': #{e.message}"
+        end
       end
       phase
     end
@@ -144,13 +158,12 @@ module BulkImportIdeas::Importers
 
     def create_form(phase, idea_custom_fields)
       # Assumption is that methods other than native survey will only use the default form so we do not need to create a custom form
-      return unless phase.participation_method == 'native_survey'
+      return true unless phase.participation_method == 'native_survey'
 
       log 'Creating native survey form for phase'
 
       begin
-        # Create the form and form fields
-        # TODO: Destroy the existing form if it exists?
+        # Create the form and form fields - should error if already exists
         form = CustomForm.create!(participation_context: phase)
 
         # Start page
@@ -179,8 +192,10 @@ module BulkImportIdeas::Importers
         CustomField.create!(input_type: 'page', page_layout: 'default', key: 'form_end', resource: form)
 
         log "Created form with #{form.custom_fields.count} fields"
+        true
       rescue StandardError => e
         log "ERROR creating form for phase '#{phase.title_multiloc[@locale]}': #{e.message}"
+        false
       end
     end
 

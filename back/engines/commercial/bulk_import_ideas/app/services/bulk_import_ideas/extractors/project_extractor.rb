@@ -19,7 +19,7 @@ module BulkImportIdeas::Extractors
         publication_status = row.cells[1].value || 'published'
         description_html = row.cells[2].value || ''
         thumbnail_url = row.cells[3]&.value
-        id = row.cells[4]&.value # Project ID - in case we need to update an existing project
+        id = row.cells[4]&.value # Project ID - if we need to update an existing project
 
         # Extract phases (if there are any)
         phases = phase_details[title]&.map do |phase|
@@ -61,6 +61,7 @@ module BulkImportIdeas::Extractors
       phases = {}
       @workbook.worksheets[1].drop(1).each do |row|
         project_title = row.cells[0]&.value
+        id = row.cells[8]&.value # Phase ID - if we need to update an existing phase instead of creating a new one
         next unless project_title
 
         phases[project_title] ||= []
@@ -69,6 +70,7 @@ module BulkImportIdeas::Extractors
           tab: row.cells[6]&.value,
           type: row.cells[7]&.value.presence || nil,
           attributes: {
+            id: id,
             title: row.cells[1].value,
             description: row.cells[2].value,
             start_at: row.cells[3]&.value.presence || nil,
@@ -81,6 +83,7 @@ module BulkImportIdeas::Extractors
 
     def information_phase(phase_attributes)
       {
+        id: phase_attributes[:id],
         title_multiloc: multiloc(phase_attributes[:title]),
         description_multiloc: multiloc(phase_attributes[:description]),
         start_at: phase_attributes[:start_at],
