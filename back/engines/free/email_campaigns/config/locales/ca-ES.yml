@@ -299,7 +299,7 @@ ca:
       subject: 'Heu rebut una resposta al vostre comentari a la plataforma de %{organizationName}'
       preheader: '%{authorName} ha respost al teu comentari a la plataforma de %{organizationName}'
       title: '%{authorName} ha respost al teu comentari'
-      event_description: '%{authorName} ha escrit una resposta al teu comentari a ''%{post}'' a la plataforma de participació. Fes clic al botó següent per continuar la conversa amb %{authorFirstName}.'
+      event_description: '%{authorNameFull} ha escrit una resposta al teu comentari a "%{post}" a la plataforma de participació. Feu clic al botó següent per continuar la conversa amb %{authorName}.'
       cta_button: 'Respon a %{authorFirstName}'
       replied: '%{authorFirstName} va respondre:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ ca:
       event_description: '%{authorNameFull} ha comentat el teu comentari intern.'
       subject: 'Heu rebut un comentari sobre el vostre comentari intern a "%{post}"'
       title: 'Has rebut un comentari sobre el teu comentari intern a ''%{post}'''
-      preheader: '%{authorNameFull} ha respost al teu comentari intern a ''%{post}'''
+      preheader: '%{authorName} ha respost al teu comentari intern sobre "%{post}"'
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Veure comentari de %{firstName}'
       event_description: '%{authorNameFull} ha comentat internament una entrada que se t''ha assignat.'
@@ -342,7 +342,7 @@ ca:
       event_description: '%{organizationName} t''ha mencionat en els seus comentaris sobre la idea "%{post}". Feu clic a l''enllaç següent per entrar a la conversa amb %{organizationName}'
       title: 'T''han esmentat'
       subject: '%{organizationName} t''han mencionat als seus comentaris'
-      preheader: '%{organizationName} t''ha esmentat als comentaris'
+      preheader: '%{commentAuthor} t''han mencionat als comentaris'
     project_moderation_rights_received:
       cta_manage_project: 'Gestionar aquest projecte'
       message_you_became_moderator: 'Un administrador de la plataforma de participació de %{organizationName} us acaba de fer cap de projecte del següent projecte:'
