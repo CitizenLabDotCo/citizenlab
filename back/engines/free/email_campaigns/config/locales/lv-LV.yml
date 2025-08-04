@@ -299,7 +299,7 @@ lv:
       subject: 'Jūs esat saņēmis atbildi uz savu komentāru %{organizationName} platformā.'
       preheader: '%{authorName} atbildēja uz jūsu komentāru %{organizationName} platformā'
       title: '%{authorName} atbildēja uz jūsu komentāru'
-      event_description: '%{authorName} uzrakstīja atbildi uz jūsu komentāru par ''%{post}'' par līdzdalības platformā. Noklikšķiniet uz pogas zemāk, lai turpinātu sarunu ar %{authorFirstName}.'
+      event_description: '%{authorNameFull} uzrakstīja atbildi uz jūsu komentāru par ''%{post}'' līdzdalības platformā. Noklikšķiniet uz zemāk redzamās pogas, lai turpinātu sarunu ar %{authorName}.'
       cta_button: 'Atbildēt %{authorFirstName}'
       replied: '%{authorFirstName} atbildēja:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ lv:
       event_description: '%{authorNameFull} komentēja jūsu iekšējo komentāru.'
       subject: 'Jūs esat saņēmis komentāru par savu iekšējo komentāru vietnē ''%{post}'''
       title: 'Jūs esat saņēmis komentāru par savu iekšējo komentāru vietnē ''%{post}'''
-      preheader: '%{authorNameFull} atbildēja uz jūsu iekšējo komentāru par ''%{post}'''
+      preheader: '%{authorName} atbildēja uz jūsu iekšējo komentāru par ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēja jums piešķirto ievadi.'
@@ -342,7 +342,7 @@ lv:
       event_description: '%{organizationName} pieminēja jūs atsauksmēs par ideju ''%{post}''. Noklikšķiniet uz zemāk redzamās saites, lai iesaistītos sarunā ar %{organizationName}'
       title: 'Jūs esat pieminēts'
       subject: '%{organizationName} pieminēja jūs savā atsauksmē'
-      preheader: '%{organizationName} jūs pieminēja atsauksmēs'
+      preheader: '%{commentAuthor} pieminēja jūs atsauksmē'
     project_moderation_rights_received:
       cta_manage_project: 'Šī projekta pārvaldība'
       message_you_became_moderator: '%{organizationName} līdzdalības platformas administrators tikko iecēla jūs par šā projekta vadītāju:'
