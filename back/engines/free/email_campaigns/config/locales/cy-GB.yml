@@ -24,7 +24,8 @@ cy:
       "mention_in_official_feedback": Soniwch mewn diweddariad
       "mention_in_internal_comment": Crybwyll mewn sylw mewnol
       "new_comment_for_admin": Sylw newydd mewn prosiect dwi'n ei gymedroli
-      "new_idea_for_admin": Syniad newydd mewn prosiect dwi'n ei gymedroli
+      "new_idea_for_admin_published": Mewnbwn cyhoeddedig newydd mewn prosiect rwy'n ei gymedroli
+      "new_idea_for_admin_prescreening": Mewnbwn newydd sydd angen cymeradwyaeth mewn prosiect rwy'n ei gymedroli
       "official_feedback_on_idea_you_follow": Diweddariad ar syniad rydych chi'n ei ddilyn
       "password_reset": Ailosod cyfrinair
       "project_moderation_rights_received": Hawliau cymedroli prosiect wedi'u derbyn
@@ -85,11 +86,22 @@ cy:
         "6": "Yn wythnosol, ar ddydd Sadwrn am %{hourOfDay}"
       quarterly: "Chwarterol, ar y dydd cyntaf o'r chwarter"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Iâr'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Iâr'
+      author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Prosiect enghreifftiol'
+      phase_title: 'Cyfnod enghreifftiol'
       comment_body: 'Dyma sylw enghreifftiol a ddefnyddir ar gyfer rhagolwg cynnwys negeseuon e-bost. Nid cynnwys go iawn yw hwn.'
+      comment_deleted_reason: 'Ystyriwyd bod eich sylw enghreifftiol yn amhriodol.'
       idea_title: 'Syniad Enghraifft'
+      idea_body: 'Dyma rai syniadau enghreifftiol ar gyfer cynnwys a ddefnyddir ar gyfer rhagolwg cynnwys negeseuon e-bost. Nid cynnwys go iawn yw hwn.'
+      event_title: 'Digwyddiad Enghraifft'
+      event_address1: '10 Stryd Example, Exampleton, Swydd Example'
+      event_address2: 'Ystafell 3a, Llawr Uchaf'
+      proposal_title: 'Cynnig Enghraifft'
     footer:
       "link_privacy_policy": "Polisi Preifatrwydd"
       "link_terms_conditions": "Telerau ac Amodau"
@@ -103,22 +115,22 @@ cy:
     manual:
       preheader: 'Mae gennych bost gan %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'Y rheswm pam y cafodd eich sylw ei ddileu:'
-      cta_view: 'Gweld y syniad hwn'
+      subject: 'Mae eich sylw wedi''i ddileu o''r platfform o %{organizationName}'
+      preheader: 'Mae eich sylw wedi''i ddileu'
+      title: '%{organizationName} wedi dileu eich sylw'
       event_description: 'Dileodd %{organizationName} y sylw a ysgrifennoch chi ar syniad.'
-      main_header: 'Dileodd %{organizationName} eich sylw'
+      cta_button: 'Gweld y syniad hwn'
+      reason: 'Y rheswm pam y cafodd eich sylw ei ddileu:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Ystyriwyd bod eich sylw yn amhriodol'
       irrelevant_reason: 'Ystyriwyd bod eich sylw yn amherthnasol ar gyfer y cyd-destun hwnnw'
       no_reason: 'Ni nodwyd unrhyw reswm'
-      subject: 'Mae eich sylw wedi''i ddileu o''r platfform o %{organizationName}'
-      preheader: 'Mae eich sylw wedi''i ddileu'
     admin_digest:
       subject: 'Eich adroddiad gweinyddol wythnosol o %{time}'
       preheader: 'Crynhoad gweinyddol o %{organizationName}'
-      title_your_weekly_report: '%{firstName}, eich adroddiad wythnosol'
-      text_introduction: 'Rydym wedi curadu ar eich cyfer y mewnbwn sydd wedi cynhyrchu''r mwyaf o weithgarwch dros yr wythnos ddiwethaf. Darganfyddwch beth sy''n digwydd ar eich platfform!'
-      cta_visit_the_platform: 'Ymwelwch â''ch platfform'
+      title: '%{firstName}, eich adroddiad wythnosol'
+      event_description: 'Rydyn ni wedi curadu i chi''r mewnbwn sydd wedi creu''r gweithgaredd mwyaf dros yr wythnos ddiwethaf. Darganfyddwch beth sy''n digwydd ar eich platfform!'
+      cta_button: 'Ewch i''ch platfform'
       new_users: 'Defnyddwyr newydd'
       new_inputs: 'Mewnbynnau newydd'
       new_comments: 'Sylwadau newydd'
@@ -129,10 +141,11 @@ cy:
       today_by_author: 'Heddiw erbyn %{author}'
       x_days_ago_by_author: '%{x} diwrnod yn ôl erbyn %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Rheoli eich platfform'
-      message_you_became_administrator: 'Rydych wedi cael hawliau gweinyddwr ar gyfer y llwyfan cyfranogiad o %{organizationName}.'
-      preheader: 'Rhoddwyd hawliau gweinyddwr i chi ar gyfer platfform cyfranogiad %{organizationName}'
       subject: 'Daethoch yn weinyddwr ar y platfform o %{organizationName}'
+      preheader: 'Rhoddwyd hawliau gweinyddwr i chi ar gyfer platfform cyfranogiad %{organizationName}'
+      title: 'Daethoch chi''n weinyddwr'
+      event_description: 'Rydych chi wedi cael hawliau gweinyddwr ar gyfer platfform cyfranogiad %{organizationName}.'
+      cta_button: 'Rheoli eich platfform'
       text_create_participatory_process: 'Fel gweinyddwr, gallwch greu a ffurfweddu prosiectau cyfranogiad newydd. Gallwch ychwanegu cyfnodau newydd gan ddefnyddio''r llinell amser. Gall pob un o''r cyfnodau hyn gael ei ymddygiad ei hun o ran postio syniadau, rhoi sylwadau a phleidleisio.'
       text_moderate_analyse_input: 'Unwaith y bydd prosiectau wedi''u lansio, bydd y syniadau cyntaf yn dod i mewn. Byddwch yn derbyn adroddiadau wythnosol gyda''r holl weithgareddau allweddol fel eich bod yn cadw ar ben y cyfan. Bydd y trosolwg syniadau yn eich helpu i gymedroli''r mewnbwn a chydweithio i''w brosesu.'
       text_platform_setup: 'Fel gweinyddwr gallwch chi sefydlu''ch platfform cyfranogiad. Dewiswch logo, delweddau a lliwiau, ysgrifennwch neges bersonol ar eich tudalen gartref, anfonwch wahoddiadau, diffiniwch yr hyn yr hoffech ei wybod am eich defnyddwyr, ...'
@@ -140,38 +153,38 @@ cy:
       title_moderate_analyse_input: 'Cymedroli a dadansoddi''r mewnbwn'
       title_platform_setup: 'Gosodwch eich platfform'
       title_what_can_you_do_administrator: 'Beth allwch chi ei wneud fel gweinyddwr?'
-      title_you_became_administrator: 'Daethoch yn weinyddwr'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} adroddodd y sylw hwn fel sbam'
+      preheader: 'Gweithredu ar y sylw hwn a adroddwyd fel sbam'
+      title: '%{firstName} %{lastName} adroddodd y sylw hwn fel sbam'
+      cta_button: 'Sylw adolygu'
       by_author: 'gan %{authorName}'
       commented: '%{authorName} sylw:'
-      cta_review_comment: 'Sylw adolygu'
       days_ago: '%{numberOfDays} diwrnod yn ôl'
       event_description: 'Adroddwyd am y sylw canlynol a bostiwyd ar <strong>''%{post}''</strong> :'
       inappropriate_content: 'Mae''r sylw yn amhriodol neu''n sarhaus.'
-      preheader: 'Gweithredu ar y sylw hwn a adroddwyd fel sbam'
       reported_this_because: 'Adroddodd %{reporterFirstName} hyn oherwydd:'
-      subject: '%{organizationName}: %{firstName} %{lastName} adroddodd y sylw hwn fel sbam'
-      title_comment_spam_report: '%{firstName} %{lastName} adroddodd y sylw hwn fel sbam'
       today: Heddiw
       wrong_content: 'Nid yw''r sylw yn berthnasol.'
       yesterday: Ddoe
     community_monitor_report:
       subject: 'Mae adroddiad monitro cymunedol newydd ar gael'
+      preheader: 'Mae adroddiad monitro cymunedol newydd ar gael'
       title: 'Mae adroddiad monitro cymunedol newydd ar gael'
-      text_introduction: 'Mae adroddiad monitro cymunedol wedi''i greu ar gyfer y chwarter blaenorol. Gallwch gael mynediad iddo trwy glicio ar y botwm isod a mewngofnodi.'
-      cta_report_button: 'Gweld adroddiad'
+      event_description: 'Mae adroddiad monitro cymunedol wedi''i greu ar gyfer y chwarter blaenorol. Gallwch gael mynediad iddo drwy glicio''r botwm isod a mewngofnodi.'
+      cta_button: 'Gweld adroddiad'
       report_name: 'Adroddiad monitro cymunedol'
     cosponsor_of_your_idea:
-      cta_reply_to: 'Gweld eich cynnig'
-      event_description: 'Llongyfarchiadau! Mae %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig.'
-      main_header: 'Mae %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig'
       subject: 'Mae %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig'
       preheader: 'Mae %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig'
+      title: 'Mae %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig'
+      event_description: 'Llongyfarchiadau! Mae %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig.'
+      cta_button: 'Gweld eich cynnig'
     assignee_digest:
       subject: 'Syniadau sy''n gofyn am eich adborth: %{numberIdeas}'
       preheader: 'Crynhoad aseinai o %{organizationName}'
-      title_your_weekly_report: '%{firstName}, mae mewnbwn dinasyddion yn aros am eich adborth'
-      cta_manage_your_input: 'Rheoli eich mewnbwn'
+      title: '%{firstName}, mae mewnbwn dinasyddion yn aros am eich adborth'
+      cta_button: 'Rheoli eich mewnbwn'
       x_inputs_need_your_feedback: 'mae angen eich adborth ar fewnbynnau'
       title_assignment_past_week: 'Syniadau diweddaraf a neilltuwyd i chi'
       title_no_assignment_past_week: 'Dim syniadau newydd wedi''u neilltuo i chi yr wythnos diwethaf'
@@ -180,36 +193,36 @@ cy:
       x_days_ago_by_author: '%{x} diwrnod yn ôl erbyn %{author}'
       title_successful_past_week: 'Wedi''i neilltuo i chi a gyrhaeddodd y trothwy'
     idea_marked_as_spam:
-      cta_review: 'Adolygu'
-      report_inappropriate_offensive_content: 'Mae''r cynnwys hwn yn amhriodol neu''n sarhaus yn fy marn i.'
-      report_not_an_idea: 'Nid yw''r cynnwys hwn yn syniad ac nid yw''n perthyn yma.'
       subject: 'Mae gennych adroddiad sbam ar y platfform o %{organizationName}'
       preheader: 'Gweithredu ar yr adroddiad sbam hwn'
+      title: '%{firstName} %{lastName} sbam wedi''i adrodd'
+      cta_button: 'Adolygiad'
+      report_inappropriate_offensive_content: 'Mae''r cynnwys hwn yn amhriodol neu''n sarhaus yn fy marn i.'
+      report_not_an_idea: 'Nid yw''r cynnwys hwn yn syniad ac nid yw''n perthyn yma.'
       reported_this_because: 'Adroddodd %{reporterFirstName} hyn oherwydd:'
-      title_spam_report: '%{firstName} %{lastName} sbam wedi''i adrodd'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'Cyd-noddi''r cynnig hwn'
+      subject: 'Rydych wedi cael eich gwahodd i gyd-noddi cynnig'
+      preheader: 'Rydych wedi cael eich gwahodd i gyd-noddi''r cynnig o %{authorName}'
+      title: 'Rydych wedi cael gwahoddiad i gyd-noddi cynnig'
       event_description: '%{authorName} wedi creu cynnig newydd a hoffem i chi ei gyd-noddi.'
       event_description_cosponsoring: 'Mae cyd-noddi cynnig yn golygu <strong>bydd eich enw yn cael ei arddangos</strong> gydag enwau cyd-noddwyr eraill y cynnig.'
       event_description_before_action: 'I weld y cynnig a derbyn y gwahoddiad, rhaid i chi fod wedi mewngofnodi i''ch cyfrif.'
       event_description_action: 'Cliciwch isod i ddarllen y cynnig.'
-      main_header: 'Rydych wedi cael eich gwahodd i gyd-noddi cynnig'
-      subject: 'Rydych wedi cael eich gwahodd i gyd-noddi cynnig'
-      preheader: 'Rydych wedi cael eich gwahodd i gyd-noddi''r cynnig o %{authorName}'
+      cta_button: 'Cyd-noddi''r cynnig hwn'
     invite_reminder:
-      cta_accept_invitation: 'Derbyn eich gwahoddiad'
-      invitation_header: 'Mae eich gwahoddiad yn aros amdanoch'
-      preheader: 'Anfonodd %{organizationName} wahoddiad atoch i ymuno â''u platfform cyfranogiad rai dyddiau yn ôl.'
-      invitation_expiry_message: 'Daw''r gwahoddiad hwn i ben ymhen tua %{expiryDaysRemaining} diwrnod.'
       subject: 'Gwahoddiad ar y gweill ar gyfer y llwyfan cyfranogiad o %{organizationName}'
+      preheader: 'Anfonodd %{organizationName} wahoddiad atoch i ymuno â''u platfform cyfranogiad rai dyddiau yn ôl.'
+      title: 'Mae eich gwahoddiad yn yr arfaeth'
+      cta_button: 'Derbyniwch eich gwahoddiad'
+      invitation_expiry_message: 'Daw''r gwahoddiad hwn i ben ymhen tua %{expiryDaysRemaining} diwrnod.'
     invite_received:
-      added_a_message: 'Ysgrifennodd %{organizationName} y neges ganlynol:'
-      cta_accept_invitation: 'Derbyn eich gwahoddiad'
-      invitation_header: 'Mae gwahoddiad i chi!'
-      invitation_header_message: '%{organizationName} yn eich gwahodd i''w lwyfan cyfranogi.'
-      invitation_expiry_message: 'Daw''r gwahoddiad hwn i ben mewn %{expiryDays} diwrnod.'
       preheader: 'Anfonodd %{organizationName} wahoddiad atoch i ymuno â''u platfform cyfranogiad.'
       subject: 'Fe''ch gwahoddir i ymuno â''r platfform o %{organizationName}'
+      title: 'Rydych chi wedi cael gwahoddiad!'
+      event_description: '%{organizationName} gwahoddodd chi i''w platfform cyfranogiad.'
+      cta_button: 'Derbyniwch eich gwahoddiad'
+      added_a_message: 'Ysgrifennodd %{organizationName} y neges ganlynol:'
+      invitation_expiry_message: 'Daw''r gwahoddiad hwn i ben mewn %{expiryDays} diwrnod.'
     mention_in_comment:
       cta_reply_to: 'Ymateb i %{commentAuthor}'
       event_description: 'Mae %{commentAuthorFull} wedi sôn amdanoch chi yn ei sylw ar y syniad ''%{post}''. Cliciwch y ddolen isod i fynd i mewn i''r sgwrs gyda %{commentAuthor}'
@@ -217,17 +230,17 @@ cy:
       subject: 'Soniodd rhywun amdanoch chi ar y platfform o %{organizationName}'
       preheader: '%{commentAuthor} sôn amdanoch chi mewn sylw'
     mention_in_internal_comment:
-      cta_reply_to: 'Gweld y sylw gan %{firstName}'
+      cta_button: 'Gweld sylw gan %{firstName}'
       event_description: '%{authorNameFull} sôn amdanoch chi mewn sylw mewnol.'
       subject: '%{firstName} sôn amdanoch chi mewn sylw mewnol.'
-      main_header: '%{firstName} sôn amdanoch chi mewn sylw mewnol.'
+      title: '%{firstName} soniodd amdanat ti mewn sylw mewnol.'
       preheader: '%{authorNameFull} sôn amdanoch chi mewn sylw mewnol.'
     moderator_digest:
       subject: 'Eich adroddiad rheolwr prosiect wythnosol o %{project_title}'
       preheader: 'Crynhoad rheolwr prosiect o %{organizationName}'
-      title_your_weekly_report: '%{firstName}, eich adroddiad wythnosol'
-      text_introduction: 'Rydym wedi curadu ar eich cyfer y mewnbwn sydd wedi cynhyrchu''r mwyaf o weithgarwch dros yr wythnos ddiwethaf. Darganfyddwch beth sy''n digwydd gyda''ch prosiect!'
-      cta_manage: 'Rheoli eich prosiect'
+      title: '%{firstName}, eich adroddiad wythnosol'
+      event_description: 'Rydyn ni wedi curadu i chi''r mewnbwn sydd wedi creu''r gweithgaredd mwyaf dros yr wythnos ddiwethaf. Darganfyddwch beth sy''n digwydd gyda''ch prosiect!'
+      cta_button: 'Rheoli eich prosiect'
       new_users: 'Defnyddwyr newydd'
       new_ideas: 'Syniadau newydd'
       new_comments: 'Sylwadau newydd'
@@ -239,17 +252,20 @@ cy:
       x_days_ago_by_author: '%{x} diwrnod yn ôl erbyn %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} sylw:'
-      cta_reply_to: 'Gweld y sylw %{commentAuthor}'
+      cta_button: 'Gweld sylw %{authorFirstName}'
       days_ago: '%{numberOfDays} diwrnod yn ôl'
       event_description: 'Ychwanegodd %{authorName} sylw newydd ar eich platfform.'
-      main_header: '%{firstName}, mae sylw newydd wedi''i bostio ar eich platfform'
+      title: '%{firstName}, mae sylw newydd wedi''i bostio ar eich platfform'
       subject: 'Mae sylw newydd wedi''i bostio ar y llwyfan %{organizationName}''s'
       preheader: 'Gadawodd %{authorName} sylw'
       today: Heddiw
       yesterday: Ddoe
     comment_on_idea_you_follow:
-      cta_reply_to: 'Ymateb i %{commentAuthor}'
+      subject: 'Mae sylw newydd ar "%{input_title}"'
+      preheader: 'Gadawodd %{authorName} sylw ar syniad ar gyfer %{organizationName}'
+      title: '%{authorName} wedi gwneud sylw ar fewnbwn rydych chi''n ei ddilyn'
       event_description: 'Gwnaeth %{authorNameFull} ymateb ar ''%{inputTitle}''. Cliciwch y botwm isod i barhau â’r sgwrs gyda %{authorName}.'
+      cta_button: 'Ateb i %{commentAuthor}'
       main_header:
         idea: '%{authorName} sylw ar syniad rydych chi''n ei ddilyn'
         question: 'Gwnaeth %{authorName} roi sylw ar gwestiwn rydych chi’n ei ddilyn'
@@ -259,56 +275,61 @@ cy:
         option: 'Gwnaeth %{authorName} sylwadau ar opsiwn rydych chi''n ei ddilyn'
         proposal: 'Gwnaeth %{authorName} sylw ar gynnig yr ydych yn ei ddilyn'
         petition: '%{authorName} sylw ar ddeiseb rydych yn ei dilyn'
-      subject: 'Mae sylw newydd ar "%{input_title}"'
-      preheader: 'Gadawodd %{authorName} sylw ar syniad ar gyfer %{organizationName}'
-    new_idea_for_admin:
-      main_header_publication: 'Mae mewnbwn newydd wedi''i gyhoeddi ar eich platfform'
-      event_description_publication: 'Mae %{authorName} wedi cyflwyno mewnbwn newydd ar eich platfform. Darganfyddwch ef nawr, rhowch ychydig o adborth neu newidiwch ei statws!'
-      cta_publication: 'Rhowch adborth i %{authorName}'
-      main_header_prescreening: 'Mae mewnbwn yn gofyn am eich adolygiad'
-      event_description_prescreening: 'Mae %{authorName} wedi cyflwyno mewnbwn newydd ar eich platfform.'
-      input_not_visible_prescreening: '<b>Ni fydd y mewnbwn yn weladwy</b> nes i chi addasu ei statws.'
-      cta_prescreening: 'Adolygu''r mewnbwn'
+    new_idea_for_admin_published:
+      subject: 'Mae mewnbwn newydd wedi''i gyhoeddi ar eich platfform'
+      preheader: '%{authorName} wedi cyhoeddi mewnbwn newydd ar eich platfform'
+      title: 'Mae mewnbwn newydd wedi''i gyhoeddi ar eich platfform'
+      event_description: 'Mae %{authorName} wedi cyflwyno mewnbwn newydd ar eich platfform. Darganfyddwch ef nawr, rhowch adborth neu newidiwch ei statws!'
+      cta_button: 'Rhoi adborth i %{authorName}'
       days_ago: '%{numberOfDays} diwrnod yn ôl'
-      preheader: 'Cyhoeddodd %{authorName} syniad newydd ar eich platfform'
+      today: Heddiw
+      yesterday: Ddoe
+    new_idea_for_admin_prescreening:
+      subject: 'Mae angen eich adolygiad ar fewnbwn'
+      preheader: '%{authorName} wedi cyhoeddi mewnbwn newydd ar eich platfform'
+      title: 'Mae angen eich adolygiad ar fewnbwn'
+      cta_button: 'Adolygu''r mewnbwn'
+      event_description: 'Mae %{authorName} wedi cyflwyno mewnbwn newydd ar eich platfform.'
+      input_not_visible: '<b>Ni fydd y mewnbwn yn weladwy</b> nes i chi addasu ei statws.'
+      days_ago: '%{numberOfDays} diwrnod yn ôl'
       today: Heddiw
       yesterday: Ddoe
     comment_on_your_comment:
-      cta_reply_to: 'Ymateb i %{firstName}'
-      event_description: 'Ysgrifennodd %{authorNameFull} ateb i''ch sylw ar ''%{post}'' ar y llwyfan cyfranogiad. Cliciwch y botwm isod i barhau â''r sgwrs gyda %{authorName}.'
       subject: 'Rydych chi wedi derbyn ateb ar eich sylw ar y platfform o %{organizationName}'
-      main_header: '%{authorName} atebodd eich sylw'
       preheader: 'Atebodd %{authorName} eich sylw ar blatfform %{organizationName}'
+      title: '%{authorName} atebodd eich sylw'
+      event_description: 'Ysgrifennodd %{authorNameFull} ateb i''ch sylw ar ''%{post}'' ar y llwyfan cyfranogiad. Cliciwch y botwm isod i barhau â''r sgwrs gyda %{authorName}.'
+      cta_button: 'Ateb i %{authorFirstName}'
       replied: '%{authorFirstName} atebodd:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: 'Gweld y sylw gan %{firstName}'
+      cta_button: 'Gweld sylw gan %{firstName}'
       event_description: '%{authorNameFull} sylw ar eich sylw mewnol.'
       subject: 'Rydych wedi derbyn sylw ar eich sylw mewnol ar ''%{post}'''
-      main_header: 'Rydych wedi derbyn sylw ar eich sylw mewnol ar ''%{post}'''
+      title: 'Rydych chi wedi derbyn sylw ar eich sylw mewnol ar ''%{post}'''
       preheader: 'Ymatebodd %{authorName} i''ch sylw mewnol ar ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
-      cta_reply_to: 'Gweld y sylw gan %{firstName}'
+      cta_button: 'Gweld sylw gan %{firstName}'
       event_description: '%{authorNameFull} sylwadau mewnol ar fewnbwn a neilltuwyd i chi.'
       subject: 'Mae gan ''%{post}'' sylw mewnol newydd'
-      main_header: 'Mae gan ''%{post}'' sylw mewnol newydd'
+      title: 'Sylw mewnol newydd ar ''%{post}'''
       preheader: 'Mae gan ''%{post}'' sylw mewnol newydd'
     internal_comment_on_idea_you_commented_internally_on:
-      cta_reply_to: 'Gweld y sylw gan %{firstName}'
+      cta_button: 'Gweld sylw gan %{firstName}'
       event_description: '%{authorNameFull} sylwadau mewnol ar fewnbwn y gwnaethoch sylwadau mewnol arno.'
       subject: 'Mae gan ''%{post}'' sylw mewnol newydd'
-      main_header: 'Mae gan ''%{post}'' sylw mewnol newydd'
+      title: 'Sylw mewnol newydd ar ''%{post}'''
       preheader: 'Mae gan ''%{post}'' sylw mewnol newydd'
     internal_comment_on_idea_you_moderate:
-      cta_reply_to: 'Gweld y sylw gan %{firstName}'
+      cta_button: 'Gweld sylw gan %{firstName}'
       event_description: '%{authorNameFull} sylwadau mewnol ar fewnbwn mewn prosiect neu ffolder yr ydych yn ei reoli.'
       subject: 'Mae gan ''%{post}'' sylw mewnol newydd'
-      main_header: 'Mae gan ''%{post}'' sylw mewnol newydd'
+      title: 'Sylw mewnol newydd ar ''%{post}'''
       preheader: 'Mae gan ''%{post}'' sylw mewnol newydd'
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_reply_to: 'Gweld y sylw gan %{firstName}'
+      cta_button: 'Gweld sylw gan %{firstName}'
       event_description: '%{authorNameFull} sylwadau mewnol ar fewnbwn heb ei neilltuo mewn prosiect heb ei reoli.'
       subject: 'Mae gan ''%{post}'' sylw mewnol newydd'
-      main_header: 'Mae gan ''%{post}'' sylw mewnol newydd'
+      title: 'Sylw mewnol newydd ar ''%{post}'''
       preheader: 'Mae gan ''%{post}'' sylw mewnol newydd'
     official_feedback_on_idea_you_follow:
       header_message: 'Rhoddodd %{feedback_author_name} ddiweddariad ar ''%{input_title}''.'
@@ -316,9 +337,9 @@ cy:
       subject: 'Postiwyd adborth swyddogol ar "%{input_title}"'
       preheader: 'Mae diweddariad ar fewnbwn rydych chi''n ei ddilyn'
     mention_in_official_feedback:
-      cta_reply_to: 'Ymateb i %{organizationName}'
+      cta_button: 'Ateb i %{organizationName}'
       event_description: 'Soniodd %{organizationName} amdanoch chi yn eu hadborth ar y syniad ''%{post}''. Cliciwch y ddolen isod i fynd i mewn i''r sgwrs gyda %{organizationName}'
-      main_header: 'Yr ydych wedi cael eich crybwyll'
+      title: 'Rydych chi wedi cael eich crybwyll'
       subject: '%{organizationName} sôn amdanoch chi yn eu hadborth'
       preheader: '%{commentAuthor} sôn amdanoch chi mewn adborth'
     project_moderation_rights_received:
@@ -420,16 +441,18 @@ cy:
       message_welcome: 'Llongyfarchiadau, gwnaethoch gofrestru''n llwyddiannus i lwyfan cyfranogi %{organizationName}. Gallwch bellach chwilio’r llwyfan a sicrhau bod eich llais yn cael ei glywed. Gallwch hefyd ychwanegu llun proffil a disgrifiad byr i ddweud wrth eraill pwy ydych chi.'
       preheader: 'Dyma beth allwch chi ei wneud ar y platfform o %{organizationName}'
     idea_published:
-      subject:
-        idea: 'Mae eich syniad wedi''i gyhoeddi'
-        question: 'Mae eich cwestiwn wedi’i gyhoeddi'
+      subject: 'Mae eich syniad wedi cael ei gyhoeddi'
+      preheader: '%{firstName}, llongyfarchiadau ar bostio''ch syniad ar lwyfan %{organizationName}. Nawr casglwch gefnogaeth.'
+      title: 'Fe wnaethoch chi bostio "%{input_title}"'
+      input_type_subject:
+        idea: 'Mae eich syniad wedi cael ei gyhoeddi'
+        question: 'Mae eich cwestiwn wedi cael ei gyhoeddi'
         contribution: 'Mae eich cyfraniad wedi''i gyhoeddi'
-        project: 'Mae eich prosiect wedi''i gyhoeddi'
-        issue: 'Mae eich rhifyn wedi''i gyhoeddi'
+        project: 'Mae eich prosiect wedi cael ei gyhoeddi'
+        issue: 'Mae eich mater wedi''i gyhoeddi'
         option: 'Mae eich opsiwn wedi''i gyhoeddi'
-        proposal: 'Mae eich cynnig wedi’i gyhoeddi'
+        proposal: 'Mae eich cynnig wedi''i gyhoeddi'
         petition: 'Mae eich deiseb wedi''i chyhoeddi'
-      main_header: 'Fe wnaethoch chi bostio syniad! Gadewch i ni sicrhau ei fod yn cael ei ddarllen.'
       header_message: 'Gadewch i ni sicrhau ei fod yn cael ei ddarllen.'
       message_get_votes: 'Cyrraedd mwy o bobl gyda''ch syniad:'
       action_published_idea: 'Syniad wedi''i gyhoeddi'
@@ -441,7 +464,6 @@ cy:
       send_email: ebost
       action_share_link: 'Rhannwch trwy unrhyw sianel trwy gopïo''r cyswllt %{link}'
       link: cyswllt
-      preheader: '%{firstName}, llongyfarchiadau ar bostio''ch syniad ar lwyfan %{organizationName}. Nawr casglwch gefnogaeth.'
     your_input_in_screening:
       main_header:
         idea: 'Mae eich syniad yn "%{prescreening_status_title}"'
@@ -465,10 +487,10 @@ cy:
     native_survey_not_submitted:
       subject: '%{organizationName}: Bron yno! Cyflwyno''ch atebion'
       preheader: 'Ni wnaethoch gwblhau eich ymateb i''r arolwg ar y llwyfan cyfranogiad o %{organizationName}'
-      title_native_survey_not_submitted: 'Bron yna! Cyflwyno''ch atebion'
-      body_native_survey_not_submitted: 'Dechreuoch chi rannu''ch atebion ar %{phaseTitle} ond ni wnaethoch eu cyflwyno. Bydd cyflwyniadau’n cau ar %{phaseEndDate}. Cliciwch ar y botwm isod i barhau.'
-      body_native_survey_not_submitted_no_date: 'Dechreuoch chi rannu''ch atebion ar %{phaseTitle} ond ni wnaethoch eu cyflwyno. Cliciwch ar y botwm isod i barhau.'
-      cta_complete_your_survey_response: 'Ailddechrau eich ymateb i''r arolwg'
+      title: 'Bron yno! Cyflwynwch eich atebion'
+      event_description: 'Dechreuoch chi rannu eich atebion ar %{phaseTitle} ond wnaethoch chi ddim eu cyflwyno. Cliciwch ar y botwm isod i barhau lle gwnaethoch chi stopio.'
+      cta_button: 'Ailgychwyn eich ymateb i''r arolwg'
+      submissions_close: 'Bydd cyflwyniadau''n cau ar %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Ni wnaethoch gyflwyno eich pleidleisiau'
       preheader: 'Ni wnaethoch gyflwyno''ch pleidleisiau ar y llwyfan cyfranogiad o %{organizationName}'
@@ -495,7 +517,7 @@ cy:
     event_registration_confirmation:
       subject: "Rydych chi i mewn! Mae eich cofrestriad ar gyfer \"%{eventTitle}\" wedi ei gadarnhau"
       preheader: "%{firstName}, diolch am gofrestru ar gyfer %{eventTitle}"
-      header_message: "%{firstName}, diolch am gofrestru ar gyfer"
+      title: "%{firstName}, diolch am gofrestru ar gyfer"
       event_details:
         labels:
           date: 'Dyddiad'
@@ -503,7 +525,7 @@ cy:
           online_link: 'Dolen ar-lein'
           description: 'Disgrifiad'
           project: 'Prosiect'
-      cta_go_to_event: 'Gweld y digwyddiad'
+      cta_button: 'Gweld y digwyddiad'
       cta_add_to_calendar: 'Ychwanegu at eich calendr'
     voting_phase_started:
       subject: '%{organizationName}: Dechreuodd y cyfnod pleidleisio ar gyfer %{projectName}'
