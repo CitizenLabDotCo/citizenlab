@@ -299,7 +299,7 @@ ar:
       subject: 'لديك رد على تعليقك على منصة %{organizationName}'
       preheader: 'رد %{authorName} على تعليقك على منصة %{organizationName}'
       title: '%{authorName} رد على تعليقك'
-      event_description: 'ردّ %{authorName} على تعليقك على ''%{post}'' على منصة المشاركة. انقر على الزر أدناه لمواصلة المحادثة مع %{authorFirstName}.'
+      event_description: 'كتب %{authorNameFull} ردًا على تعليقك على ''%{post}'' على منصة المشاركة. انقر الزر أدناه لمتابعة الحوار مع %{authorName}.'
       cta_button: 'الرد على %{authorFirstName}'
       replied: 'كتب %{authorFirstName}:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ ar:
       event_description: '%{authorNameFull} علق على تعليقك الداخلي.'
       subject: 'لقد تلقيت تعليقًا على تعليقك الداخلي على "%{post}"'
       title: 'لقد تلقيت تعليقًا على تعليقك الداخلي على ''%{post}'''
-      preheader: '%{authorNameFull} رد على تعليقك الداخلي على ''%{post}'''
+      preheader: '%{authorName} رد على تعليقك الداخلي على ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'عرض التعليق بواسطة %{firstName}'
       event_description: '%{authorNameFull} علق داخليًا على إدخال مخصص لك.'
@@ -342,7 +342,7 @@ ar:
       event_description: 'ذكرك %{organizationName} في ملاحظات على الفكرة ''%{post}‘. انقر على الرابط أدناه للمشاركة في حوار مع %{organizationName}'
       title: 'لقد تم ذكرك'
       subject: 'ذكرك %{organizationName} في الملاحظات'
-      preheader: '%{organizationName} ذكرك في التعليقات'
+      preheader: 'ذكرك %{commentAuthor} في ملاحظات'
     project_moderation_rights_received:
       cta_manage_project: 'إدارة هذا المشروع'
       message_you_became_moderator: 'لقد جعلك مسؤول منصة المشاركة الخاصة بـ %{organizationName} للتوّ "مدير مشروع" للمشروع التالي:'
