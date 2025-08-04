@@ -299,7 +299,7 @@ hu:
       subject: 'Válasz érkezett megjegyzésére a %{organizationName}platformon'
       preheader: '%{authorName} válaszolt a megjegyzésedre %{organizationName}platformján'
       title: '%{authorName} válaszolt a hozzászólásodra'
-      event_description: '%{authorName} válaszolt a hozzászólásodra a(z) ''%{post}'' témában a részvételi platformon. Kattints az alábbi gombra a beszélgetés folytatásához %{authorFirstName}felhasználóval.'
+      event_description: '%{authorNameFull} válaszolt az Ön megjegyzésére a részvételi platformon: ''%{post}''. Kattintson az alábbi gombra a beszélgetés folytatásához %{authorName}.'
       cta_button: 'Válasz %{authorFirstName}-nak'
       replied: '%{authorFirstName} válaszolt:'
     internal_comment_on_your_internal_comment:
@@ -307,7 +307,7 @@ hu:
       event_description: '%{authorNameFull} megjegyzést fűzött a belső megjegyzésedhez.'
       subject: 'Megjegyzés érkezett a(z) „%{post}” című belső megjegyzéséhez'
       title: 'Kaptál egy hozzászólást a(z) ''%{post}'' bejegyzéshez tartozó belső hozzászólásodhoz.'
-      preheader: '%{authorNameFull} válaszolt a belső hozzászólásodra a(z) ''%{post}'' témában'
+      preheader: '%{authorName} válaszolt az Ön belső megjegyzésére a következőhöz: "%{post}"'
     internal_comment_on_idea_assigned_to_you:
       cta_button: '%{firstName}hozzászólásának megtekintése'
       event_description: '%{authorNameFull} belső megjegyzést fűzött egy Önhöz rendelt bemenethez.'
@@ -342,7 +342,7 @@ hu:
       event_description: '%{organizationName} megemlített téged a „%{post}” ötlettel kapcsolatos visszajelzésében. Kattintson az alábbi linkre, hogy belépjen a beszélgetésbe %{organizationName}-vel'
       title: 'Megemlítettek téged'
       subject: '%{organizationName} megemlítette Önt visszajelzésében'
-      preheader: '%{organizationName} megemlített téged a visszajelzésedben'
+      preheader: '%{commentAuthor} megemlítette Önt visszajelzésében'
     project_moderation_rights_received:
       cta_manage_project: 'A projekt kezelése'
       message_you_became_moderator: 'A %{organizationName} részvételi platformjának adminisztrátora éppen a következő projekt projektvezetőjévé tette:'
