@@ -5,12 +5,14 @@ import { format } from 'date-fns';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
 import { useParam, setParam } from '../../params';
 
 import messages from './messages';
+import tracks from './tracks';
 
 const toDate = (str?: string) => {
   if (!str) return;
@@ -38,6 +40,7 @@ const Dates = () => {
 
           setParam('min_start_date', from);
           setParam('max_start_date', to);
+          trackEventByName(tracks.setDates, { from, to });
         }}
       />
       <IconTooltip
