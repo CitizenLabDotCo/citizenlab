@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { CLErrors, UploadFile } from 'typings';
@@ -12,11 +12,11 @@ import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Error from 'components/UI/Error';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import FileDisplay, { FileType } from './FileDisplay';
 import FileInput from './FileInput';
-import FileLibraryModal from './FileLibraryModal';
+import LibraryFileUploader from './LibraryFileUploader';
 import messages from './messages';
 
 export interface Props {
@@ -25,22 +25,22 @@ export interface Props {
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove?: (fileToRemove: FileType) => void;
   onFileReorder?: (updatedFiles: FileType[]) => void;
-  onFilesSelectFromLibrary?: (files: FileType[]) => void;
+  onFileAddFromLibrary?: (files: FileType[]) => void;
   files: FileType[] | null;
   apiErrors?: CLErrors | null;
   enableDragAndDrop?: boolean;
   multiple?: boolean;
   maxSizeMb?: number;
   dataCy?: string;
-  allowSelectingFromDataRepository?: boolean; // Whether to allow selecting files from the data repository
+  allowFromDataRepository?: boolean; // Whether to allow selecting files from the data repository
 }
 
 const FileUploader = ({
   onFileAdd,
   onFileRemove,
   onFileReorder,
-  allowSelectingFromDataRepository = false,
-  onFilesSelectFromLibrary,
+  allowFromDataRepository = false,
+  onFileAddFromLibrary,
   files: initialFiles,
   apiErrors,
   id,
@@ -50,10 +50,7 @@ const FileUploader = ({
   maxSizeMb,
   dataCy,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
-
-  const [isFileLibraryModalOpen, setIsFileLibraryModalOpen] = useState(false);
 
   const isDataRepositoryEnabled = useFeatureFlag({
     name: 'data_repository',
@@ -123,17 +120,10 @@ const FileUploader = ({
         data-cy="e2e-file-uploader-container"
         w="100%"
       >
-        {isDataRepositoryEnabled && allowSelectingFromDataRepository ? (
-          <>
-            <Button
-              mt="12px"
-              icon="file-add"
-              buttonStyle="secondary-outlined"
-              onClick={() => setIsFileLibraryModalOpen(true)}
-            >
-              {formatMessage(messages.clickToSelectAFile)}
-            </Button>
-          </>
+        {isDataRepositoryEnabled && allowFromDataRepository ? (
+          // Use the new file uploader, where you can also select from the existing file library.
+          // For now we support both the old and new file uploader, but eventually we want to remove the old one.
+          <LibraryFileUploader onFileAddFromLibrary={onFileAddFromLibrary} />
         ) : (
           <FileInput
             onAdd={handleFileOnAdd}
@@ -185,14 +175,6 @@ const FileUploader = ({
           />
         </ScreenReaderOnly>
       </Box>
-      {isDataRepositoryEnabled && (
-        <FileLibraryModal
-          isModalOpen={isFileLibraryModalOpen}
-          setIsModalOpen={setIsFileLibraryModalOpen}
-          onFilesSelectFromLibrary={onFilesSelectFromLibrary}
-          files={files}
-        />
-      )}
     </>
   );
 

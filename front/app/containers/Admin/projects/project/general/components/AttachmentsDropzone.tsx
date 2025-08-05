@@ -41,7 +41,6 @@ const AttachmentsDropzone = ({
       files={projectFiles}
       apiErrors={apiErrors}
       onFileReorder={onFileReorder}
-      allowSelectingFromDataRepository={true}
       enableDragAndDrop
       multiple
     />

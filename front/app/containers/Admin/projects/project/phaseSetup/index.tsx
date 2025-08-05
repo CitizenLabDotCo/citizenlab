@@ -412,8 +412,9 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             </SubSectionTitle>
             <FileUploader
               id="project-timeline-edit-form-file-uploader"
-              onFileAdd={handlePhaseFileOnAdd}
-              onFilesSelectFromLibrary={(files) => {
+              onFileAdd={handlePhaseFileOnAdd} // For old file uploader, which we will remove once the feature is released.
+              onFileAddFromLibrary={(files: FileType[]) => {
+                // Here, we handle files added from the new File Library uploader.
                 setInStatePhaseFiles((prev) => [...prev, ...files]);
                 setSubmitState('enabled');
               }}
@@ -423,7 +424,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
               enableDragAndDrop
               multiple
               apiErrors={errors}
-              allowSelectingFromDataRepository={true}
+              allowFromDataRepository={true}
             />
           </SectionField>
           {Object.keys(flatCampaigns).length > 0 && (

@@ -16,17 +16,15 @@ import { FileType } from '../FileDisplay';
 import messages from '../messages';
 
 type Props = {
-  setFiles?: React.Dispatch<React.SetStateAction<FileType[]>>;
   setShowModal?: React.Dispatch<React.SetStateAction<boolean>>;
   attachedFiles?: FileType[];
-  onFilesSelectFromLibrary?: (files: FileType[]) => void;
+  onFileAddFromLibrary?: (files: FileType[]) => void;
 };
 
 const SelectExistingFile = ({
-  setFiles,
   attachedFiles,
   setShowModal,
-  onFilesSelectFromLibrary,
+  onFileAddFromLibrary,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -49,6 +47,11 @@ const SelectExistingFile = ({
         label: file.attributes.name,
       }))
     : [];
+
+  // Filter out already attached files
+  const filteredFileOptions = fileOptions.filter(
+    (option) => !attachedFiles?.some((file) => file.id === option.value)
+  );
 
   return (
     <Box
@@ -76,30 +79,12 @@ const SelectExistingFile = ({
                 !attachedFiles?.some((file) => file.id === option.value) &&
                 selectedFile
               ) {
-                setFiles
-                  ? setFiles((prev) => [
-                      ...prev,
-                      {
-                        id: selectedFile.id,
-                        name: selectedFile.attributes.name,
-                        size: selectedFile.attributes.size
-                          ? selectedFile.attributes.size
-                          : 0,
-                        url: selectedFile.attributes.content.url || '',
-                        remote: false, // Set to false, so we trigger the File Attachment process.
-                      },
-                    ])
-                  : null;
-              }
-
-              // If an afterFileSelect callback is provided, call it with the selected file
-              if (onFilesSelectFromLibrary) {
-                onFilesSelectFromLibrary([
+                onFileAddFromLibrary?.([
                   {
-                    id: option.value,
-                    name: option.label,
-                    size: selectedFile?.attributes.size || 0,
-                    url: selectedFile?.attributes.content.url || '',
+                    id: selectedFile.id,
+                    name: selectedFile.attributes.name,
+                    size: selectedFile.attributes.size || 0,
+                    url: selectedFile.attributes.content.url || '',
                     remote: false,
                   },
                 ]);
@@ -112,7 +97,7 @@ const SelectExistingFile = ({
               setShowModal?.(false);
             }}
             placeholder={formatMessage(messages.selectFile)}
-            options={fileOptions}
+            options={filteredFileOptions}
             label={formatMessage(messages.fromExistingFiles)}
           />
         </>
