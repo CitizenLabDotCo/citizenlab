@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Spiacente, non puoi accedere a questa pagina. Potrebbe essere necessario effettuare il login o registrarsi per accedervi.",
   "app.components.LocationInput.noOptions": "Nessuna opzione",
   "app.components.Modal.closeWindow": "Chiudi la finestra",
+  "app.components.MultiSelect.clearButtonAction": "Cancella la selezione",
+  "app.components.MultiSelect.clearSearchButtonAction": "Ricerca libera",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Inserire un nuovo indirizzo e-mail",
   "app.components.PageNotFound.goBackToHomePage": "Torna alla homepage",
   "app.components.PageNotFound.notFoundTitle": "Pagina non trovata",
