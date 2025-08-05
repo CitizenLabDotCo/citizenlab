@@ -2,7 +2,7 @@ import React from 'react';
 
 import useUsers from 'api/users/useUsers';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
@@ -13,9 +13,10 @@ import messages from './messages';
 
 interface Props {
   mr?: string;
+  onClear?: () => void;
 }
 
-const Manager = ({ mr = '0px' }: Props) => {
+const Manager = ({ mr = '0px', onClear }: Props) => {
   const managerIds = useParam('managers') ?? [];
   const { formatMessage } = useIntl();
 
@@ -27,20 +28,19 @@ const Manager = ({ mr = '0px' }: Props) => {
   const options =
     managers?.data.map((manager) => ({
       value: manager.id,
-      text: getFullName(manager),
+      label: getFullName(manager),
     })) ?? [];
 
   return (
-    <FilterSelector
-      multipleSelectionAllowed
+    <MultiSelect
       selected={managerIds}
-      values={options}
+      options={options}
       mr={mr}
       onChange={(managerIds) => {
         setParam('managers', managerIds);
       }}
       title={formatMessage(messages.manager)}
-      name="manager-select"
+      onClear={onClear}
     />
   );
 };

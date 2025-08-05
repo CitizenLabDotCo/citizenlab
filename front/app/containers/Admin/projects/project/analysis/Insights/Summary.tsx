@@ -44,6 +44,10 @@ const Summary = ({ insight }: Props) => {
     id: insight.relationships.insightable.data.id,
   });
 
+  const fileIds = summary?.data.relationships.files?.data.map(
+    (file) => file.id
+  );
+
   const handleSummaryDelete = (id: string) => {
     if (window.confirm(formatMessage(messages.deleteSummaryConfirmation))) {
       deleteSummary(
@@ -101,6 +105,7 @@ const Summary = ({ insight }: Props) => {
         <InsightBody
           text={summaryText}
           filters={summary.data.attributes.filters}
+          fileIds={fileIds}
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}

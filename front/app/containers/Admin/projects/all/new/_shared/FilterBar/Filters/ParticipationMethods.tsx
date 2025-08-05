@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Box, Tooltip } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -52,13 +52,17 @@ const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
   },
 ];
 
-const ParticipationMethods = () => {
+interface Props {
+  onClear: () => void;
+}
+
+const ParticipationMethods = ({ onClear }: Props) => {
   const participationMethods = useParam('participation_methods') ?? [];
   const { formatMessage } = useIntl();
 
   const options = OPTIONS.map((option) => ({
     value: option.value,
-    text: formatMessage(option.message),
+    label: formatMessage(option.message),
   }));
 
   const handleOnChange = (selected: string[]) => {
@@ -71,22 +75,20 @@ const ParticipationMethods = () => {
   };
 
   return (
-    <Tooltip
-      content={
-        <Box w="240px">
-          {formatMessage(messages.filterByCurrentPhaseMethod)}
-        </Box>
-      }
-    >
-      <FilterSelector
-        name="participation-methods-select"
+    <Box display="flex" alignItems="center">
+      <MultiSelect
         title={formatMessage(messages.participationMethodLabel)}
-        multipleSelectionAllowed
         selected={participationMethods}
-        values={options}
+        options={options}
         onChange={handleOnChange}
+        onClear={onClear}
       />
-    </Tooltip>
+      <IconTooltip
+        content={formatMessage(messages.filterByCurrentPhaseMethod)}
+        placement="top"
+        ml="4px"
+      />
+    </Box>
   );
 };
 

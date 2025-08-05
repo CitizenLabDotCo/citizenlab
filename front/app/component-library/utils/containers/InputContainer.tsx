@@ -1,12 +1,8 @@
 import React from 'react';
 
-import {
-  defaultInputStyle,
-  colors,
-  fontSizes,
-  Icon,
-} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { defaultInputStyle, colors, fontSizes } from '../styleUtils';
 
 const Container = styled.button<{ disabled: boolean }>`
   ${defaultInputStyle};
@@ -48,23 +44,41 @@ interface Props {
   id?: string;
   disabled?: boolean;
   children: React.ReactNode;
-  onClick: () => void;
+  className?: string;
+  onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
-const InputContainer = ({ id, disabled = false, children, onClick }: Props) => {
+const InputContainer = ({
+  id,
+  disabled = false,
+  children,
+  className,
+  onClick,
+  onMouseEnter,
+  onMouseLeave,
+  onFocus,
+  onBlur,
+}: Props) => {
   return (
     <Container
       id={id}
-      className="e2e-date-phase-picker-input"
+      className={className}
       disabled={disabled}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       onClick={(e) => {
         if (disabled) return;
         e.preventDefault();
-        onClick();
+        onClick?.();
       }}
+      onFocus={onFocus}
+      onBlur={onBlur}
     >
       {children}
-      <Icon name="calendar" height="18px" />
     </Container>
   );
 };

@@ -1854,11 +1854,14 @@ resource 'Projects' do
       before do
         @listed_projects = create_list(:project, 5)
         @unlisted_projects = create_list(:project, 4, listed: false)
+        @listed_projects_user_moderates = create_list(:project, 3)
         @unlisted_projects_user_moderates = create_list(:project, 2, listed: false)
 
-        @moderator = create(:project_moderator, projects: @unlisted_projects_user_moderates)
+        @projects_user_moderates = @listed_projects_user_moderates + @unlisted_projects_user_moderates
 
-        @unlisted_projects_user_moderates.each do |project|
+        @moderator = create(:project_moderator, projects: @projects_user_moderates)
+
+        @projects_user_moderates.each do |project|
           @moderator.add_role 'project_moderator', project_id: project.id
         end
 
@@ -1867,12 +1870,12 @@ resource 'Projects' do
         header_token_for(@moderator)
       end
 
-      example 'Shows unlisted projects that user moderates' do
+      example 'Only shows projects that user moderates, including unlisted' do
         do_request
         assert_status 200
-        expect(response_data.size).to eq 7
+        expect(response_data.size).to eq 5
         expect(response_data.pluck(:id).sort).to match_array [
-          *@listed_projects.pluck(:id),
+          *@listed_projects_user_moderates.pluck(:id),
           *@unlisted_projects_user_moderates.pluck(:id)
         ].sort
       end

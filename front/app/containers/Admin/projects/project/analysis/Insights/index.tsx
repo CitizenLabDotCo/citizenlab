@@ -35,6 +35,10 @@ const Insights = () => {
     onlyCheckAllowed: true,
   });
 
+  const isDataRepositoryAIAnalysisEnabled = useFeatureFlag({
+    name: 'data_repository_ai_analysis',
+  });
+
   const filters = useAnalysisFilterParams();
 
   const { data: allInputs } = useInfiniteAnalysisInputs({
@@ -52,7 +56,10 @@ const Insights = () => {
 
   if (isFileSelectionOpen) {
     return (
-      <FileSelectionView setIsFileSelectionOpen={setIsFileSelectionOpen} />
+      <FileSelectionView
+        setIsFileSelectionOpen={setIsFileSelectionOpen}
+        analysisId={analysisId}
+      />
     );
   }
   return (
@@ -95,7 +102,12 @@ const Insights = () => {
           </Text>
         </Box>
 
-        <AddFileContext setIsFileSelectionOpen={setIsFileSelectionOpen} />
+        {isDataRepositoryAIAnalysisEnabled && (
+          <AddFileContext
+            setIsFileSelectionOpen={setIsFileSelectionOpen}
+            analysisId={analysisId}
+          />
+        )}
       </Box>
 
       {isQuestionInputOpen && (
