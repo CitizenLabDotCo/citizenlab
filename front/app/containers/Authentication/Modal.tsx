@@ -5,6 +5,8 @@ import { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
+import { useModalQueue } from 'containers/App/ModalQueue';
+
 import T from 'components/T';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
@@ -42,7 +44,8 @@ import useSteps from './useSteps';
 // but this one was the worst in terms of bundle size impact
 const CustomFields = lazy(() => import('./steps/CustomFields'));
 
-const AuthModal = () => {
+const AuthenticationModal = () => {
+  const { removeModal } = useModalQueue();
   const {
     currentStep,
     state,
@@ -68,7 +71,9 @@ const AuthModal = () => {
 
   const handleClose = () => {
     if (!closable) return;
+    // Does this need to be adjusted?
     transition(currentStep, 'CLOSE')();
+    removeModal('authentication');
   };
 
   const marginX = smallerThanPhone ? '16px' : '32px';
@@ -82,7 +87,7 @@ const AuthModal = () => {
     <Modal
       zIndex={10000001}
       width="580px"
-      opened={currentStep !== 'closed'}
+      opened
       close={handleClose}
       hideCloseButton={!closable}
       closeOnClickOutside={false}
@@ -144,6 +149,7 @@ const AuthModal = () => {
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SIGN_IN')}
+            // Adjust all these transition calls with 'CLOSE' to use handleClose?
             closeModal={transition(currentStep, 'CLOSE')}
           />
         )}
@@ -310,4 +316,4 @@ const AuthModal = () => {
   );
 };
 
-export default AuthModal;
+export default AuthenticationModal;

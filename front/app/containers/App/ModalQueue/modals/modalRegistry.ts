@@ -1,5 +1,7 @@
 import { lazy } from 'react';
 
+import AuthenticationModal from 'containers/Authentication/Modal';
+
 const ConsentManagerModal = lazy(
   () => import('components/ConsentManager/ConsentManagerModal')
 );
@@ -21,7 +23,8 @@ type ModalPriority = keyof typeof MODAL_PRIORITIES;
 export type ModalId =
   | 'consent-modal'
   | 'user-session-recording'
-  | 'community-monitor';
+  | 'community-monitor'
+  | 'authentication';
 
 const modalRegistry: Record<
   ModalId,
@@ -35,6 +38,11 @@ const modalRegistry: Record<
     component: UserSessionRecordingModal,
     priority: 50,
   },
+  authentication: {
+    component: AuthenticationModal,
+    priority: 25,
+  },
+  // This community-monitor modal probably needs to get a lower priority
   'community-monitor': {
     component: CommunityMonitorModal,
     priority: 25,
