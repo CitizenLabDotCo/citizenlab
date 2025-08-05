@@ -12,7 +12,7 @@ RSpec.describe 'Footer' do
   let(:recipient) { create(:user, locale: locale) }
   let(:campaign) { EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.create! }
   let(:command) do
-    create(:comment_on_idea_you_follow_campaign).generate_commands(
+    campaign.generate_commands(
       activity: create(:activity, item: create(:comment_on_idea_you_follow), action: 'created'),
       recipient: recipient
     ).first.merge({ recipient: recipient })

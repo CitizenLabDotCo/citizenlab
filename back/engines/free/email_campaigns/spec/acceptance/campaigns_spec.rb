@@ -3,13 +3,30 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+def create_campaign_params(context)
+  context.parameter :campaign_name, "The type of campaign. One of #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: true, scope: :campaign
+  context.parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", required: false, scope: :campaign
+  context.parameter :reply_to, 'The e-mail of the reply-to address. Defaults to the author', required: false, scope: :campaign
+  context.parameter :subject_multiloc, 'The subject of the email, as a multiloc string', required: false, scope: :campaign
+  context.parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: false, scope: :campaign
+  context.parameter :enabled, 'Whether the campaign is enabled or not, as a boolean', required: false, scope: :campaign
+end
+
+def update_campaign_params(context)
+  context.parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", scope: :campaign
+  context.parameter :reply_to, 'The e-mail of the reply-to address. Defaults to the author', scope: :campaign
+  context.parameter :subject_multiloc, 'The subject of the email, as a multiloc string', scope: :campaign
+  context.parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', scope: :campaign
+  context.parameter :enabled, 'Whether the campaign is enabled or not, as a boolean', scope: :campaign
+end
+
 resource 'Campaigns' do
   explanation 'E-mail campaigns, both automated and manual'
 
   before do
     @manual_campaigns = create_list(:manual_campaign, 4)
     @manual_project_participants_campaign = create(:manual_project_participants_campaign)
-    @automated_campaigns = create_list(:official_feedback_on_idea_you_follow_campaign, 2)
+    @automated_campaigns = [create(:official_feedback_on_idea_you_follow_campaign), create(:welcome_campaign)]
   end
 
   context 'as an admin' do
@@ -25,52 +42,45 @@ resource 'Campaigns' do
         parameter :number, 'Page number'
         parameter :size, 'Number of campaigns per page'
       end
-      parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
-      parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false
 
       example_request 'List all campaigns' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 7
-      end
-
-      example 'List campaigns that are specific type(s)' do
-        do_request(campaign_names: %w[manual])
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 6
       end
 
       example 'List all campaigns that are not specific type(s)' do
         do_request(without_campaign_names: %w[manual])
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 2
       end
 
       example 'List all manual campaigns' do
         do_request(manual: true)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].size).to eq 4
       end
 
       example 'List ALL automatic campaigns' do
-        # Create one of every type of automated campaign
+        EmailCampaigns::Campaign.all.each(&:destroy!)
         SettingsService.new.activate_feature! 'community_monitor'
+        # Create one of every type of automated campaign
         @campaigns = EmailCampaigns::DeliveryService.new.campaign_classes.each do |klaz|
           factory_type = :"#{klaz.name.demodulize.underscore}_campaign"
           create(factory_type)
         end
 
         do_request(manual: false)
-        expect(response_data.size).to eq 50
+        expect(response_data.size).to eq 48
       end
 
       example 'List all manual campaigns when one has been sent' do
         create_list(:delivery, 5, campaign: @manual_campaigns.first)
         do_request(manual: true)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].size).to eq 4
 
         sent_campaign = json_response[:data].find { |c| c[:id] == @manual_campaigns.first.id }
         unsent_campaign = json_response[:data].find { |c| c[:id] == @manual_campaigns.second.id }
@@ -97,10 +107,69 @@ resource 'Campaigns' do
         content_type_multiloc = multiloc_service.i18n_to_multiloc(@automated_campaigns[0].class.content_type_multiloc_key).transform_keys(&:to_sym)
         trigger_multiloc = multiloc_service.i18n_to_multiloc(@automated_campaigns[0].class.trigger_multiloc_key).transform_keys(&:to_sym)
 
-        expect(json_response[:data][0][:attributes][:recipient_role_multiloc]).to eq    recipient_role_multiloc
-        expect(json_response[:data][0][:attributes][:recipient_segment_multiloc]).to eq recipient_segment_multiloc
-        expect(json_response[:data][0][:attributes][:content_type_multiloc]).to eq      content_type_multiloc
-        expect(json_response[:data][0][:attributes][:trigger_multiloc]).to eq           trigger_multiloc
+        expect(json_response[:data][1][:attributes][:recipient_role_multiloc]).to eq    recipient_role_multiloc
+        expect(json_response[:data][1][:attributes][:recipient_segment_multiloc]).to eq recipient_segment_multiloc
+        expect(json_response[:data][1][:attributes][:content_type_multiloc]).to eq      content_type_multiloc
+        expect(json_response[:data][1][:attributes][:trigger_multiloc]).to eq           trigger_multiloc
+      end
+    end
+
+    context 'Listing all campaigns scoped under a context' do
+      let!(:manual_global) { create(:manual_campaign) }
+      let!(:manual_project) { create(:manual_project_participants_campaign) }
+      let!(:global_phase) { create(:project_phase_started_campaign, context: nil) }
+      let!(:automated_phase) { create(:project_phase_started_campaign, context: create(:phase)) }
+
+      get '/web_api/v1/projects/:context_id/campaigns' do
+        let(:context_id) { manual_project.context_id }
+
+        example_request 'List all campaigns scoped under a project' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
+        end
+
+        example 'List only campaigns supported by the context', document: false do
+          create(:comment_on_idea_you_follow_campaign, context: nil)
+          create(:comment_on_idea_you_follow_campaign, context: manual_project.context)
+
+          do_request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
+        end
+      end
+
+      get '/web_api/v1/phases/:context_id/campaigns' do
+        let(:context_id) { automated_phase.context_id }
+
+        example_request 'List all campaigns scoped under a phase' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].pluck(:id)).to eq [automated_phase.id]
+        end
+
+        example '[Unauthorized] List no campaigns, for a user that cannot moderate campaigns', document: false do
+          header_token_for create(:project_moderator)
+
+          do_request
+          assert_status 200
+          expect(json_parse(response_body)[:data].size).to eq 0
+        end
+      end
+    end
+
+    get '/web_api/v1/phases/:context_id/campaigns/supported_campaign_names' do
+      let(:context_id) { create(:ideation_phase).id }
+
+      example_request 'Lists all campaigns supported for an ideation phase' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes)).to match_array %w[project_phase_started]
       end
     end
 
@@ -145,52 +214,132 @@ resource 'Campaigns' do
     end
 
     post 'web_api/v1/campaigns' do
-      with_options scope: :campaign do
-        parameter :campaign_name, "The type of campaign. One of #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: true
-        parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", required: true
-        parameter :reply_to, 'The e-mail of the reply-to address. Defaults to the author', required: false
-        parameter :subject_multiloc, 'The of the email, as a multiloc string', required: true
-        parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: true
-        parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
-      end
+      create_campaign_params(self)
       ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
-      let(:campaign) { build(:manual_campaign) }
-      let(:campaign_name) { 'manual' }
-      let(:subject_multiloc) { campaign.subject_multiloc }
-      let(:body_multiloc) { campaign.body_multiloc }
-      let(:sender) { 'author' }
-      let(:reply_to) { 'test@emailer.com' }
-      let(:group_ids) { [create(:group).id] }
+      context 'manual campaigns' do
+        with_options scope: :campaign do
+          parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
+        end
 
-      example_request 'Create a campaign' do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
-        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
-        expect(json_response.dig(:data, :attributes, :sender)).to match sender
-        expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
-        expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
-        expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
+        let(:campaign) { build(:manual_campaign) }
+        let(:campaign_name) { 'manual' }
+        let(:subject_multiloc) { campaign.subject_multiloc }
+        let(:body_multiloc) { campaign.body_multiloc }
+        let(:sender) { 'author' }
+        let(:reply_to) { 'test@emailer.com' }
+        let(:group_ids) { [create(:group).id] }
+
+        example_request 'Create a campaign' do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
+          expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+          expect(json_response.dig(:data, :attributes, :sender)).to match sender
+          expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
+          expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
+          expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
+        end
+      end
+    end
+
+    post 'web_api/v1/projects/:project_id/campaigns' do
+      create_campaign_params(self)
+      ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
+
+      context 'moderator' do # TODO: Move out of admin context
+        before do
+          @user = create(:project_moderator)
+          header_token_for @user
+        end
+
+        let(:project_id) { @user.roles.first['project_id'] }
+        let(:campaign) { build(:manual_project_participants_campaign) }
+        let(:campaign_name) { 'manual_project_participants' }
+        let(:subject_multiloc) { campaign.subject_multiloc }
+        let(:body_multiloc) { campaign.body_multiloc }
+        let(:sender) { 'author' }
+        let(:reply_to) { 'test@emailer.com' }
+
+        context 'manual campaigns' do
+          with_options scope: :campaign do
+            parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
+          end
+
+          example_request 'Create a campaign, manageable by project moderator, for moderated project' do
+            expect(response_status).to eq 201
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
+            expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+            expect(json_response.dig(:data, :attributes, :sender)).to match sender
+            expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
+            expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
+          end
+
+          describe do
+            let(:project_id) { create(:project).id }
+
+            example '[Unauthorized] Create campaign, manageable by project moderator, for unmoderated project', document: false do
+              do_request
+              expect(response_status).to eq 401
+            end
+          end
+
+          example '[Unauthorized] Create campaign, not manageable by project moderator', document: false do
+            do_request(campaign: { campaign_name: 'manual' })
+            expect(response_status).to eq 401
+          end
+        end
+      end
+
+      post 'web_api/v1/phases/:phase_id/campaigns' do
+        create_campaign_params(self)
+        ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
+
+        context 'moderator' do # TODO: Move out of admin context
+          before do
+            @user = create(:project_moderator)
+            header_token_for @user
+          end
+
+          context 'automated campaigns' do
+            let(:phase_id) { create(:phase, project_id: @user.roles.first['project_id']).id }
+            let!(:campaign) { create(:project_phase_started_campaign, context: nil) }
+            let(:campaign_name) { 'project_phase_started' }
+            # let(:subject_multiloc) { campaign.subject_multiloc }
+            # let(:body_multiloc) { campaign.body_multiloc }
+            # let(:sender) { 'author' }
+            # let(:reply_to) { 'test@emailer.com' }
+
+            example_request 'Create a campaign' do
+              expect(response_status).to eq 201
+              json_response = json_parse(response_body)
+              # TODO: Uncomment when they are content and sender configurable
+              # expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
+              # expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+              # expect(json_response.dig(:data, :attributes, :sender)).to match sender
+              # expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
+              expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
+            end
+          end
+        end
       end
     end
 
     patch 'web_api/v1/campaigns/:id' do
+      update_campaign_params(self)
+      ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
+
+      let(:id) { campaign.id }
+      let(:subject_multiloc) { { 'en' => 'New subject' } }
+      let(:body_multiloc) { { 'en' => 'New body' } }
+
       context 'manual campaigns' do
         with_options scope: :campaign do
-          parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", required: true
-          parameter :reply_to, 'The e-mail of the reply-to address. Defaults to the author', required: true
-          parameter :subject_multiloc, 'The subject of the email, as a multiloc string', required: true
-          parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: true
           parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
-          parameter :enabled, 'Whether the campaign is enabled or not, as a boolean', required: false
         end
-        ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
         let(:campaign) { create(:manual_campaign) }
-        let(:id) { campaign.id }
-        let(:subject_multiloc) { { 'en' => 'New subject' } }
-        let(:body_multiloc) { { 'en' => 'New body' } }
         let(:sender) { 'organization' }
         let(:reply_to) { 'otherguy@organization.net' }
         let(:group_ids) { [create(:group).id] }
@@ -206,74 +355,78 @@ resource 'Campaigns' do
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
           expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
         end
+      end
 
-        context 'when updating ProjectPhaseStarted campaign' do
-          let!(:phase_with_campaign_enabled) { create(:phase, campaigns_settings: { project_phase_started: true }) }
-          let!(:phase_with_campaign_disabled) { create(:phase, campaigns_settings: { project_phase_started: false }) }
-
-          context do
-            let(:campaign) { create(:project_phase_started_campaign, enabled: true) }
-            let(:id) { campaign.id }
-            let(:enabled) { false }
-
-            example_request 'Update campaign enabled to false' do
-              assert_status 200
-              expect(phase_with_campaign_enabled.reload.campaigns_settings['project_phase_started']).to be false
-              expect(phase_with_campaign_disabled.reload.campaigns_settings['project_phase_started']).to be false
-            end
+      context 'global campaigns' do
+        context 'automated campaigns' do
+          with_options scope: :campaign do
+            parameter :subject_multiloc, 'The subject of the email, as a multiloc string with Liquid substitutions', required: true
+            parameter :title_multiloc, 'The header title of the email campaign as a multiloc string with Liquid substitutions', required: false
+            parameter :intro_multiloc, 'The intro paragraph of the email as a multiloc string with Liquid substitutions - supports HTML', required: false
+            parameter :button_text_multiloc, 'The text of the CTA button as a multiloc string with Liquid substitutions - supports HTML', required: false
           end
 
-          context do
-            let(:campaign) { create(:project_phase_started_campaign, enabled: false) }
-            let(:id) { campaign.id }
-            let(:enabled) { true }
+          let(:campaign) { create(:comment_on_idea_you_follow_campaign, enabled: true) }
+          let(:title_multiloc) { { 'en' => 'New title' } }
+          let(:intro_multiloc) { { 'en' => '' } }
+          let(:button_text_multiloc) { { 'en' => 'Reply to {{commentAuthor}}' } }
 
-            example_request 'Update campaign enabled to true' do
+          example_request 'Update an automated campaign' do
+            assert_status 200
+
+            attributes = response_data[:attributes]
+
+            # Updates english, but returns french defaults
+            expect(attributes.dig(:subject_multiloc, :en)).to eq 'New subject'
+            expect(attributes.dig(:subject_multiloc, :'fr-FR')).to eq 'Il y a un nouveau commentaire sur « {{input_title}} »'
+
+            expect(attributes.dig(:title_multiloc, :en)).to eq 'New title'
+            expect(attributes.dig(:title_multiloc, :'fr-FR')).to eq '{{authorName}} a commenté une idée que vous suivez'
+
+            # Allows blank value in button_text_multiloc
+            expect(attributes.dig(:intro_multiloc, :en)).to eq ''
+
+            # Does not allow blank value in button_text_multiloc and returns default
+            expect(attributes.dig(:button_text_multiloc, :en)).to eq 'Reply to {{commentAuthor}}'
+
+            # Does not save body_multiloc, as it is not applicable to automated campaigns
+            expect(attributes[:body_multiloc]).to eq({})
+          end
+
+          describe do
+            let(:enabled) { false }
+
+            example_request 'Disable the campaign' do
               assert_status 200
-              expect(phase_with_campaign_enabled.reload.campaigns_settings['project_phase_started']).to be true
-              expect(phase_with_campaign_disabled.reload.campaigns_settings['project_phase_started']).to be false
+              expect(campaign.reload.enabled).to be false
             end
           end
         end
       end
 
-      context 'automated campaigns' do
-        with_options scope: :campaign do
-          parameter :subject_multiloc, 'The subject of the email, as a multiloc string with Liquid substitutions', required: true
-          parameter :title_multiloc, 'The header title of the email campaign as a multiloc string with Liquid substitutions', required: false
-          parameter :intro_multiloc, 'The intro paragraph of the email as a multiloc string with Liquid substitutions - supports HTML', required: false
-          parameter :button_text_multiloc, 'The text of the CTA button as a multiloc string with Liquid substitutions - supports HTML', required: false
+      context 'context campaigns' do
+        let(:phase) { create(:ideation_phase) }
+        let!(:global_campaign) { create(:project_phase_started_campaign, enabled: true, context: nil) }
+        let(:context_campaign) { create(:project_phase_started_campaign, enabled: false, context: phase) }
+        let(:id) { context_campaign.id }
+        let(:enabled) { true }
+
+        context 'when moderator' do
+          before { header_token_for create(:project_moderator, projects: [phase.project]) }
+
+          example_request 'Enable the campaign' do
+            assert_status 200
+            expect(context_campaign.reload.enabled).to be true
+          end
         end
-        ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
-        let(:campaign) { create(:comment_on_idea_you_follow_campaign) }
-        let(:id) { campaign.id }
-        let(:subject_multiloc) { { 'en' => 'New subject' } }
-        let(:title_multiloc) { { 'en' => 'New title' } }
-        let(:intro_multiloc) { { 'en' => '' } }
-        let(:button_text_multiloc) { { 'en' => '' } }
-        let(:body_multiloc) { { 'en' => 'Body' } }
+        context 'when not moderator' do
+          before { header_token_for create(:project_moderator) }
 
-        example_request 'Update an automated campaign' do
-          assert_status 200
-
-          attributes = response_data[:attributes]
-
-          # Updates english, but returns french defaults
-          expect(attributes.dig(:subject_multiloc, :en)).to eq 'New subject'
-          expect(attributes.dig(:subject_multiloc, :'fr-FR')).to eq 'Il y a un nouveau commentaire sur « {{input_title}} »'
-
-          expect(attributes.dig(:title_multiloc, :en)).to eq 'New title'
-          expect(attributes.dig(:title_multiloc, :'fr-FR')).to eq '{{authorName}} a commenté une idée que vous suivez'
-
-          # Allows blank value in button_text_multiloc
-          expect(attributes.dig(:intro_multiloc, :en)).to eq ''
-
-          # Does not allow blank value in button_text_multiloc and returns default
-          expect(attributes.dig(:button_text_multiloc, :en)).to eq 'Reply to {{commentAuthor}}'
-
-          # Does not save body_multiloc, as it is not applicable to automated campaigns
-          expect(attributes[:body_multiloc]).to eq({})
+          example '[error] Update campaign', document: false do
+            do_request(campaign: { body_multiloc: { 'en' => 'Updated body' } })
+            expect(response_status).to eq 401
+          end
         end
       end
     end
@@ -367,55 +520,17 @@ resource 'Campaigns' do
         })
       end
     end
-
-    get 'web_api/v1/projects/:context_id/email_campaigns' do
-      let(:campaign1) { create(:manual_project_participants_campaign) }
-      let(:campaign2) { create(:manual_campaign) }
-      let(:context_id) { campaign1.project.id }
-
-      example_request 'List all campaigns associated with a project' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].pluck(:id)).to match_array [campaign1.id]
-      end
-    end
   end
 
   context 'as a project moderator' do
     before do
       header 'Content-Type', 'application/json'
-      @user = create(:user, roles: [{ type: 'project_moderator', project_id: @manual_project_participants_campaign.project.id }])
+      @user = create(:user, roles: [{ type: 'project_moderator', project_id: @manual_project_participants_campaign.context_id }])
       EmailCampaigns::UnsubscriptionToken.create!(user_id: @user.id)
       header_token_for @user
     end
 
     let!(:manual_project_participants_campaign_not_moderated_by_this_pm) { create(:manual_project_participants_campaign) }
-
-    get '/web_api/v1/campaigns' do
-      with_options scope: :page do
-        parameter :number, 'Page number'
-        parameter :size, 'Number of campaigns per page'
-      end
-      parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
-      parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
-      parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
-      parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false
-
-      example 'List all campaigns only lists campaigns manageable by the project moderator' do
-        phase_started = create(:project_phase_started_campaign)
-
-        do_request
-        assert_status 200
-        json_response = json_parse(response_body)
-
-        expect(EmailCampaigns::Campaign.count).to eq 9
-        expect(EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::ManualProjectParticipants').size)
-          .to eq 2
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].pluck(:id)).to match_array [@manual_project_participants_campaign.id, phase_started.id]
-      end
-    end
 
     get '/web_api/v1/campaigns/:id' do
       let(:id) { @manual_project_participants_campaign.id }
@@ -467,98 +582,6 @@ resource 'Campaigns' do
 
       example_request '[Unauthorized] Get preview, for campaign not manageable by project moderator', document: false do
         assert_status 401
-      end
-    end
-
-    post 'web_api/v1/campaigns' do
-      with_options scope: :campaign do
-        parameter :campaign_name, "The type of campaign. One of #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: true
-        parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", required: true
-        parameter :reply_to, 'The e-mail of the reply-to address. Defaults to the author', required: false
-        parameter :subject_multiloc, 'The of the email, as a multiloc string', required: true
-        parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: true
-        parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
-        parameter :context_id, 'ID of the context with which the campaign is associated (required for some campaigns)', required: false
-      end
-      ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
-
-      let(:campaign) { build(:manual_project_participants_campaign) }
-      let(:campaign_name) { 'manual_project_participants' }
-      let(:subject_multiloc) { campaign.subject_multiloc }
-      let(:body_multiloc) { campaign.body_multiloc }
-      let(:sender) { 'author' }
-      let(:reply_to) { 'test@emailer.com' }
-      let(:context_id) { @user.roles.first['project_id'] }
-
-      example_request 'Create a campaign, manageable by project moderator, for moderated project' do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
-        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
-        expect(json_response.dig(:data, :attributes, :sender)).to match sender
-        expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
-        expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
-      end
-
-      example '[Unauthorized] Create campaign, manageable by project moderator, for unmoderated project', document: false do
-        do_request(campaign: {
-          context_id: manual_project_participants_campaign_not_moderated_by_this_pm.project.id,
-          campaign_name: 'manual_project_participants'
-        })
-        expect(response_status).to eq 401
-      end
-
-      example '[Unauthorized] Create campaign, not manageable by project moderator', document: false do
-        do_request(campaign: { campaign_name: 'manual' })
-        expect(response_status).to eq 401
-      end
-    end
-
-    patch 'web_api/v1/campaigns/:id' do
-      with_options scope: :campaign do
-        parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", required: true
-        parameter :reply_to, 'The e-mail of the reply-to address. Defaults to the author', required: true
-        parameter :subject_multiloc, 'The of the email, as a multiloc string', required: true
-        parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: true
-        parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
-        parameter :enabled, 'Whether the campaign is enabled or not, as a boolean', required: false
-      end
-      ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
-
-      let(:campaign) { build(:manual_project_participants_campaign) }
-      let(:id) { @manual_project_participants_campaign.id }
-      let(:subject_multiloc) { { 'en' => 'New subject' } }
-      let(:body_multiloc) { { 'en' => 'New body' } }
-      let(:sender) { 'organization' }
-      let(:reply_to) { 'otherguy@organization.net' }
-      let(:group_ids) { [create(:group).id] }
-
-      example_request 'Update a campaign' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
-        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
-        expect(json_response.dig(:data, :attributes, :sender)).to match sender
-        expect(json_response.dig(:data, :attributes, :campaign_description_multiloc).stringify_keys).to eq campaign.class.campaign_description_multiloc
-        expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
-        expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @manual_project_participants_campaign.author_id
-        expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
-      end
-
-      example '[Unauthorized] Update campaign, manageable by project moderator, for unmoderated project', document: false do
-        do_request(
-          id: manual_project_participants_campaign_not_moderated_by_this_pm.id,
-          campaign: { body_multiloc: { 'en' => 'Updated body' } }
-        )
-        expect(response_status).to eq 401
-      end
-
-      example '[Unauthorized] Update campaign, not manageable by project moderator', document: false do
-        do_request(
-          id: @automated_campaigns.first.id,
-          campaign: { enabled: false }
-        )
-        expect(response_status).to eq 401
       end
     end
 
@@ -644,7 +667,7 @@ resource 'Campaigns' do
 
       example '[Unauthorized] Get the delivery statistics of a sent campaign manageable by project moderator, for unmoderated project', document: false do
         other_project = create(:project)
-        @user.update(roles: [{ type: 'project_moderator', project_id: other_project.id }])
+        @user.update!(roles: [{ type: 'project_moderator', project_id: other_project.id }])
 
         do_request(id: @manual_project_participants_campaign.id)
         assert_status 401

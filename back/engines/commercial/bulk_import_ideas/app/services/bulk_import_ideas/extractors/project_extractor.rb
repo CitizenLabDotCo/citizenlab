@@ -48,6 +48,7 @@ module BulkImportIdeas::Extractors
           admin_publication_attributes: {
             publication_status: publication_status.downcase || 'draft'
           },
+          visible_to: 'admins',
           phases: phases
         }
       end

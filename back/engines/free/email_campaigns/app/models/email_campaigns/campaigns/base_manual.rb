@@ -20,6 +20,7 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -64,6 +65,12 @@ module EmailCampaigns
 
     def manual?
       true
+    end
+
+    protected
+
+    def unique_campaigns_per_context?
+      false
     end
 
     private
