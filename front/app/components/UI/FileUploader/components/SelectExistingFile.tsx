@@ -21,6 +21,7 @@ type Props = {
   attachedFiles?: FileType[];
   afterFileSelect?: (files: FileType[]) => void;
 };
+
 const SelectExistingFile = ({
   setFiles,
   attachedFiles,
@@ -70,7 +71,7 @@ const SelectExistingFile = ({
                 (file) => file.id === option.value
               );
 
-              // If the file isn't already in the list, add it
+              // If the file isn't already in the attachments list, add it
               if (
                 !attachedFiles?.some((file) => file.id === option.value) &&
                 selectedFile
@@ -79,14 +80,13 @@ const SelectExistingFile = ({
                   ? setFiles((prev) => [
                       ...prev,
                       {
-                        // Add the selected file to the attachments list.
-                        id: option.value,
-                        name: option.label,
+                        id: selectedFile.id,
+                        name: selectedFile.attributes.name,
                         size: selectedFile.attributes.size
                           ? selectedFile.attributes.size
                           : 0,
                         url: selectedFile.attributes.content.url || '',
-                        remote: false,
+                        remote: false, // Set to false, so we trigger the File Attachment process.
                       },
                     ])
                   : null;
