@@ -523,6 +523,10 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
+            project_planning_calendar: {
+              enabled: false,
+              allowed: false
+            },
             customised_automated_emails: {
               enabled: true,
               allowed: true

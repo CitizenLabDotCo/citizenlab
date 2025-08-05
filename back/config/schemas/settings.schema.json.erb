@@ -1465,6 +1465,18 @@
         }
       },
 
+      "project_planning_calendar": {
+        "type": "object",
+        "title": "Project planning: calendar view",
+        "description": "Feature flag for calendar view in new projects page",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "customised_automated_emails": {
         "type": "object",
         "title": "Customised automated emails",
