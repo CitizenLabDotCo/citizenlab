@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Sajnos nem férhet hozzá ehhez az oldalhoz. Előfordulhat, hogy a hozzáféréshez be kell jelentkeznie vagy regisztrálnia kell.",
   "app.components.LocationInput.noOptions": "Nincs lehetőség",
   "app.components.Modal.closeWindow": "Zárja be az ablakot",
+  "app.components.MultiSelect.clearButtonAction": "Kijelölés törlése",
+  "app.components.MultiSelect.clearSearchButtonAction": "Keresés törlése",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Adjon meg egy új e-mail címet",
   "app.components.PageNotFound.goBackToHomePage": "Vissza a kezdőlapra",
   "app.components.PageNotFound.notFoundTitle": "Az oldal nem található",
