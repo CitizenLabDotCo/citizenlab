@@ -7,8 +7,6 @@ import { CLErrors, UploadFile } from 'typings';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import FilesUpload from 'containers/Admin/projects/project/files/components/FilesUpload';
-
 import { List } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Error from 'components/UI/Error';
@@ -16,11 +14,9 @@ import Error from 'components/UI/Error';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import Modal from '../Modal';
-
-import SelectExistingFile from './components/SelectExistingFile';
 import FileDisplay, { FileType } from './FileDisplay';
 import FileInput from './FileInput';
+import FileLibraryModal from './FileLibraryModal';
 import messages from './messages';
 
 export interface Props {
@@ -29,39 +25,40 @@ export interface Props {
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove?: (fileToRemove: FileType) => void;
   onFileReorder?: (updatedFiles: FileType[]) => void;
-  afterFileSelect?: (files: FileType[]) => void;
+  onFilesSelectFromLibrary?: (files: FileType[]) => void;
   files: FileType[] | null;
   apiErrors?: CLErrors | null;
   enableDragAndDrop?: boolean;
   multiple?: boolean;
   maxSizeMb?: number;
   dataCy?: string;
-  allowSelectingFromDataRepository?: boolean;
+  allowSelectingFromDataRepository?: boolean; // Whether to allow selecting files from the data repository
 }
 
 const FileUploader = ({
   onFileAdd,
   onFileRemove,
   onFileReorder,
-  afterFileSelect,
+  allowSelectingFromDataRepository = false,
+  onFilesSelectFromLibrary,
   files: initialFiles,
   apiErrors,
   id,
   className,
   enableDragAndDrop = false,
-  allowSelectingFromDataRepository = false,
   multiple = false,
   maxSizeMb,
   dataCy,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
-  const [showSelectExistingFiles, setShowSelectExistingFiles] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isFileLibraryModalOpen, setIsFileLibraryModalOpen] = useState(false);
 
   const isDataRepositoryEnabled = useFeatureFlag({
     name: 'data_repository',
   });
+
   // Track if we're currently dragging to prevent conflicts
   const isDragging = useRef(false);
 
@@ -132,7 +129,7 @@ const FileUploader = ({
               mt="12px"
               icon="file-add"
               buttonStyle="secondary-outlined"
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setIsFileLibraryModalOpen(true)}
             >
               {formatMessage(messages.clickToSelectAFile)}
             </Button>
@@ -188,54 +185,14 @@ const FileUploader = ({
           />
         </ScreenReaderOnly>
       </Box>
-      <Modal
-        opened={isModalOpen}
-        close={() => {
-          setIsModalOpen(false);
-          // Reset the state to show the select existing files view
-          setShowSelectExistingFiles(true);
-        }}
-      >
-        <Box mt="20px">
-          {showSelectExistingFiles && (
-            <SelectExistingFile
-              setFiles={setFiles}
-              attachedFiles={files}
-              setShowModal={setIsModalOpen}
-              afterFileSelect={afterFileSelect}
-            />
-          )}
-          <FilesUpload
-            showInformationSection={false}
-            showTitle={false}
-            setModalOpen={setIsModalOpen}
-            onFileSelect={() => {
-              setShowSelectExistingFiles(false);
-            }}
-            afterUpload={(uploadedFiles) => {
-              const newFiles: FileType[] = uploadedFiles.map((file) => ({
-                id: file.id,
-                name: file.file.name,
-                size: file.file.size || 0,
-                url: '',
-                remote: false,
-              }));
-
-              setFiles((prev) => {
-                // Filter out files that already exist to prevent duplicates
-                const filesToAdd = newFiles.filter(
-                  (newFile) =>
-                    !prev.some((existingFile) => existingFile.id === newFile.id)
-                );
-
-                afterFileSelect?.(filesToAdd);
-
-                return [...prev, ...filesToAdd];
-              });
-            }}
-          />
-        </Box>
-      </Modal>
+      {isDataRepositoryEnabled && (
+        <FileLibraryModal
+          isModalOpen={isFileLibraryModalOpen}
+          setIsModalOpen={setIsFileLibraryModalOpen}
+          onFilesSelectFromLibrary={onFilesSelectFromLibrary}
+          files={files}
+        />
+      )}
     </>
   );
 

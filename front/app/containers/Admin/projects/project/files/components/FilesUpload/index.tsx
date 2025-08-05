@@ -59,6 +59,7 @@ const FilesUpload = ({
     multiple: true,
     validator: () => null, // Allow all file types to be uploaded.
     onDrop: (acceptedFiles) => {
+      // If a callback to do something after a file is selected, call it.
       onFileSelect?.();
 
       // First check if user is trying to drop more than the maximum allowed files

@@ -130,6 +130,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     }
   }, [phaseFiles]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!formatMessageWithLocale) return null;
 
   const handlePhaseParticipationConfigChange = (
@@ -412,7 +413,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             <FileUploader
               id="project-timeline-edit-form-file-uploader"
               onFileAdd={handlePhaseFileOnAdd}
-              afterFileSelect={(files) => {
+              onFilesSelectFromLibrary={(files) => {
                 setInStatePhaseFiles((prev) => [...prev, ...files]);
                 setSubmitState('enabled');
               }}

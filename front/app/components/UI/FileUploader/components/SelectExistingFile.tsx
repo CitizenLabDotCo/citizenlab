@@ -19,14 +19,14 @@ type Props = {
   setFiles?: React.Dispatch<React.SetStateAction<FileType[]>>;
   setShowModal?: React.Dispatch<React.SetStateAction<boolean>>;
   attachedFiles?: FileType[];
-  afterFileSelect?: (files: FileType[]) => void;
+  onFilesSelectFromLibrary?: (files: FileType[]) => void;
 };
 
 const SelectExistingFile = ({
   setFiles,
   attachedFiles,
   setShowModal,
-  afterFileSelect,
+  onFilesSelectFromLibrary,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -93,8 +93,8 @@ const SelectExistingFile = ({
               }
 
               // If an afterFileSelect callback is provided, call it with the selected file
-              if (afterFileSelect) {
-                afterFileSelect([
+              if (onFilesSelectFromLibrary) {
+                onFilesSelectFromLibrary([
                   {
                     id: option.value,
                     name: option.label,
