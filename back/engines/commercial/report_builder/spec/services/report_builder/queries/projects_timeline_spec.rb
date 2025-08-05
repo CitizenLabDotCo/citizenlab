@@ -60,6 +60,31 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
       expect(timeline_items).not_to be_empty
     end
 
+    it 'filters by folder ids' do
+      # Create a folder and associate project1 with it
+      folder = create(:project_folder)
+      project1.update!(folder: folder)
+
+      result = query.run_query({ folder_ids: [folder.id] })
+
+      timeline_items = result[:timeline_items]
+      expect(timeline_items).not_to be_empty
+      expect(timeline_items.map { |item| item[:id] }).to include(project1.id)
+    end
+
+    it 'filters by managers' do
+      # Create a user and make them a moderator of project1
+      manager = create(:user)
+      manager.add_role('project_moderator', { project_id: project1.id })
+      manager.save!
+
+      result = query.run_query({ managers: [manager.id] })
+
+      timeline_items = result[:timeline_items]
+      expect(timeline_items).not_to be_empty
+      expect(timeline_items.map { |item| item[:id] }).to include(project1.id)
+    end
+
     it 'limits the number of projects' do
       result = query.run_query({ number_of_projects: 1 })
 
