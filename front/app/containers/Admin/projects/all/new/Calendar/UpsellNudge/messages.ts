@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'Understand what is happening and when',
   },
   upsellDescription: {
-    id: 'app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription',
+    id: 'app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2',
     defaultMessage:
-      'Get a visual overview of your project and phase timelines in our calendar view. Easily identify overlapping phases and potential bottlenecks.',
+      'Get a visual overview of your project timelines in our calendar view. Quickly identify which projects and phases are starting or ending soon and require action.',
   },
   featureNotIncluded: {
     id: 'app.containers.Admin.projects.all.calendar.UpsellNudge.featureNotIncluded',
