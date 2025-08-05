@@ -1,7 +1,8 @@
 import { lazy } from 'react';
 
-import AuthenticationModal from 'containers/Authentication/Modal';
-
+const AuthenticationModal = lazy(
+  () => import('containers/Authentication/Modal')
+);
 const ConsentManagerModal = lazy(
   () => import('components/ConsentManager/ConsentManagerModal')
 );
