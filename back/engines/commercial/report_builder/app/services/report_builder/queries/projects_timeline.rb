@@ -40,33 +40,49 @@ module ReportBuilder
       # Get the projects
       projects = projects_query.to_a
 
-      # Get phases for the projects
-      project_ids = projects.map(&:id)
-      phases = Phase.where(project_id: project_ids).order(:start_at)
-
-      # Group phases by project
-      phases_by_project = phases.group_by(&:project_id)
+      # Get phases for the projects using SQL for better performance and nil handling
+      projects_with_phases = Project
+        .where(id: projects.map(&:id))
+        .joins(
+          'LEFT JOIN LATERAL (' \
+          'SELECT phases.id AS first_phase_id, phases.start_at AS first_phase_start_at ' \
+          'FROM phases ' \
+          'WHERE phases.project_id = projects.id ' \
+          'ORDER BY phases.start_at ASC ' \
+          'LIMIT 1' \
+          ') AS first_phases ON true'
+        )
+        .joins(
+          'LEFT JOIN LATERAL (' \
+          'SELECT phases.id AS last_phase_id, phases.end_at AS last_phase_end_at ' \
+          'FROM phases ' \
+          'WHERE phases.project_id = projects.id ' \
+          'ORDER BY phases.end_at DESC ' \
+          'LIMIT 1' \
+          ') AS last_phases ON true'
+        )
+        .joins(
+          'LEFT JOIN LATERAL (' \
+          'SELECT phases.id AS current_phase_id, phases.start_at AS current_phase_start_at, phases.end_at AS current_phase_end_at ' \
+          'FROM phases ' \
+          'WHERE phases.project_id = projects.id ' \
+          'AND phases.start_at <= CURRENT_DATE ' \
+          'AND (phases.end_at IS NULL OR phases.end_at >= CURRENT_DATE) ' \
+          'ORDER BY phases.start_at DESC ' \
+          'LIMIT 1' \
+          ') AS current_phases ON true'
+        )
+        .select('projects.*, first_phases.first_phase_start_at, last_phases.last_phase_end_at, current_phases.current_phase_start_at, current_phases.current_phase_end_at')
 
       # Build timeline data
-      timeline_items = projects.map do |project|
-        project_phases = phases_by_project[project.id] || []
-
-        # Find first and last phase dates
-        first_phase = project_phases.min_by(&:start_at)
-        last_phase = project_phases.max_by(&:end_at)
-
-        # Find current phase (if any)
-        current_phase = project_phases.find do |phase|
-          phase.start_at <= Date.current && (phase.end_at.nil? || phase.end_at >= Date.current)
-        end
-
+      timeline_items = projects_with_phases.map do |project|
         {
           id: project.id,
           title: project.title_multiloc,
-          start_date: first_phase&.start_at || project.first_published_at,
-          end_date: last_phase&.end_at,
-          current_phase_start_date: current_phase&.start_at,
-          current_phase_end_date: current_phase&.end_at,
+          start_date: project.first_phase_start_at || project.first_published_at,
+          end_date: project.last_phase_end_at,
+          current_phase_start_date: project.current_phase_start_at,
+          current_phase_end_date: project.current_phase_end_at,
           publication_status: project.admin_publication.publication_status,
           folder_title_multiloc: project.folder&.title_multiloc
         }
@@ -141,17 +157,13 @@ module ReportBuilder
 
     def apply_sorting(query, sort)
       case sort
-      when 'recently_viewed'
-        # This would need to be implemented based on your view tracking logic
-        # For now, fall back to created_at order
-        query.order(created_at: :desc)
       when 'phase_starting_or_ending_soon'
         ProjectsFinderAdminService.sort_phase_starting_or_ending_soon(query)
-      when 'recently_created'
-        query.order(created_at: :desc)
       when 'alphabetically_asc', 'alphabetically_desc'
         ProjectsFinderAdminService.sort_alphabetically(query, { sort: sort })
       else
+        # Default fallback for recently_viewed, recently_created, and any other sort values
+        # TODO: Implement proper recently_viewed logic based on view tracking
         query.order(created_at: :desc)
       end
     end
