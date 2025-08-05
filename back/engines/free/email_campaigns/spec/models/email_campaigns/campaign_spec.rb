@@ -39,20 +39,40 @@ RSpec.describe EmailCampaigns::Campaign do
     it 'deletes the associated campaigns on destroy' do
       phase = create(:phase)
       project = create(:project)
-      phase_campaigns = create_list(:project_phase_started_campaign, 2, context: phase)
-      project_campaign = create(:manual_project_participants_campaign, context: project)
+      phase_campaign = create(:project_phase_started_campaign, context: phase)
+      project_campaigns = create_list(:manual_project_participants_campaign, 2, context: project)
       global_campaign = create(:welcome_campaign)
 
-      expect { phase.destroy }.to change(described_class, :count).by(-2)
-      phase_campaigns.each do |campaign|
-        expect(described_class.exists?(campaign.id)).to be false
+      expect { phase.destroy }.to change(described_class, :count).by(-1)
+      expect(described_class.exists?(phase_campaign.id)).to be false
+      project_campaigns.each do |campaign|
+        expect(described_class.exists?(campaign.id)).to be true
       end
-      expect(described_class.exists?(project_campaign.id)).to be true
       expect(described_class.exists?(global_campaign.id)).to be true
 
-      expect { project.destroy }.to change(described_class, :count).by(-1)
-      expect(described_class.exists?(project_campaign.id)).to be false
+      expect { project.destroy }.to change(described_class, :count).by(-2)
+      project_campaigns.each do |campaign|
+        expect(described_class.exists?(campaign.id)).to be false
+      end
       expect(described_class.exists?(global_campaign.id)).to be true
+    end
+
+    it 'does not support multiple campaigns of the same type per context for automated campaigns' do
+      phase = create(:phase)
+      create(:project_phase_started_campaign, context: phase)
+
+      expect do
+        create(:project_phase_started_campaign, context: phase)
+      end.to raise_error(ActiveRecord::RecordInvalid, /Context has already been taken/)
+    end
+
+    it 'supports multiple campaigns of the same type per context for manual campaigns' do
+      context = create(:project)
+      create(:manual_project_participants_campaign, context:)
+
+      expect do
+        create(:manual_project_participants_campaign, context: context)
+      end.not_to raise_error
     end
   end
 end

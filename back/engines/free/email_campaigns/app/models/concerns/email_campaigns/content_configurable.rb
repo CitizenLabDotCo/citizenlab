@@ -113,7 +113,9 @@ module EmailCampaigns
       editable_regions.each do |region|
         field = region[:key]
         self[field] = self[field].reject do |locale, value|
-          value == region[:default_value_multiloc][locale]
+          next true if region[:default_value_multiloc][locale] == value
+
+          global_campaign && global_campaign[field]&.dig(locale) == value
         end
       end
     end
@@ -127,7 +129,7 @@ module EmailCampaigns
     end
 
     def global_campaign
-      @global_campaign ||= !manual? && self.class.find_by(context: nil, type: self.class.name)
+      @global_campaign ||= !manual? && context && self.class.find_by(context: nil, type: self.class.name)
     end
 
     def fallback_to_global(attribute)

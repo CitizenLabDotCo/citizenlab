@@ -14,11 +14,10 @@ const fetchCampaigns = (filters: QueryParameters) => {
     withoutCampaignNames: without_campaign_names,
     pageNumber,
     pageSize,
-    projectId,
-    phaseId,
+    context,
   } = filters;
   return fetcher<ICampaignsData>({
-    path: `/${getCampaignsContextPath({ projectId, phaseId })}`,
+    path: `/${getCampaignsContextPath(context)}`,
     action: 'get',
     queryParams: {
       manual,

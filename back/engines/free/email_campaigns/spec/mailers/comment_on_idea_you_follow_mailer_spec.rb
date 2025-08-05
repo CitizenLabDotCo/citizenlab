@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
     let_it_be(:notification) { create(:comment_on_idea_you_follow, recipient: recipient, idea: idea, comment: comment, initiating_user: initiator) }
     let_it_be(:command) do
       activity = create(:activity, item: notification, action: 'created')
-      create(:comment_on_idea_you_follow_campaign).generate_commands(
+      campaign.generate_commands(
         activity: activity,
         recipient: recipient
       ).first.merge({ recipient: recipient })
