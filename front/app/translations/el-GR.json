@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Λυπάμαι, δεν μπορείτε να έχετε πρόσβαση σε αυτή τη σελίδα. Ίσως χρειαστεί να συνδεθείτε ή να εγγραφείτε για να αποκτήσετε πρόσβαση.",
   "app.components.LocationInput.noOptions": "Δεν υπάρχουν επιλογές",
   "app.components.Modal.closeWindow": "Κλείσιμο παραθύρου",
+  "app.components.MultiSelect.clearButtonAction": "Εκκαθάριση επιλογής",
+  "app.components.MultiSelect.clearSearchButtonAction": "Εκκαθάριση αναζήτησης",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Εισάγετε μια νέα διεύθυνση email",
   "app.components.PageNotFound.goBackToHomePage": "Επιστροφή στην αρχική σελίδα",
   "app.components.PageNotFound.notFoundTitle": "Η σελίδα δεν βρέθηκε",

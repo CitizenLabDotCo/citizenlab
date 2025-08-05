@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -9,11 +9,14 @@ import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import { Top } from 'components/admin/PostManager/components/PostPreview';
-import IdeationForm from 'components/CustomFieldsForm/IdeationForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
+
+const IdeationForm = React.lazy(
+  () => import('components/CustomFieldsForm/IdeationForm')
+);
 
 const AdminIdeaEdit = ({
   ideaId,
@@ -42,13 +45,15 @@ const AdminIdeaEdit = ({
       </Top>
 
       <Box className="idea-form">
-        <IdeationForm
-          projectId={project.data.id}
-          phaseId={phaseId}
-          participationMethod={phase?.data.attributes.participation_method}
-          idea={idea.data}
-          goBack={goBack}
-        />
+        <Suspense>
+          <IdeationForm
+            projectId={project.data.id}
+            phaseId={phaseId}
+            participationMethod={phase?.data.attributes.participation_method}
+            idea={idea.data}
+            goBack={goBack}
+          />
+        </Suspense>
       </Box>
     </Box>
   );

@@ -4,11 +4,13 @@ import { ParticipationState } from 'api/projects_mini_admin/types';
 
 import MultiSelect from 'components/UI/MultiSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import { setParam, useParam } from '../../params';
 
 import messages from './messages';
+import tracks from './tracks';
 
 const OPTIONS: { value: ParticipationState; message: MessageDescriptor }[] = [
   {
@@ -52,6 +54,10 @@ const ParticipationStates = ({ onClear }: Props) => {
           'participation_states',
           participationStates as ParticipationState[]
         );
+
+        trackEventByName(tracks.setParticipationState, {
+          participationStates: JSON.stringify(participationStates),
+        });
       }}
       onClear={onClear}
     />

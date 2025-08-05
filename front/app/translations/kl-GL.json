@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Ajuusaarpugut, quppernermut uunga isersinnaanngilatit. Iserniaruit iseriarlutit misilissinnaavat imaluunniit atuisumik pilersitsillutit.",
   "app.components.LocationInput.noOptions": "No options",
   "app.components.Modal.closeWindow": "Close window",
+  "app.components.MultiSelect.clearButtonAction": "Clear selection",
+  "app.components.MultiSelect.clearSearchButtonAction": "Clear search",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Enter a new email address",
   "app.components.PageNotFound.goBackToHomePage": "Back to the homepage",
   "app.components.PageNotFound.notFoundTitle": "Page not found",

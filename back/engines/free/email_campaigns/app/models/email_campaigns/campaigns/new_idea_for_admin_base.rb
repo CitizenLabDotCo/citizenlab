@@ -32,23 +32,20 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::NewIdeaForAdmin < Campaign
+  class Campaigns::NewIdeaForAdminBase < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
     include Disableable
     include LifecycleStageRestrictable
     include Trackable
+    include ContentConfigurable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_recipient
 
     def self.consentable_roles
       %w[admin project_moderator project_folder_moderator]
-    end
-
-    def mailer_class
-      NewIdeaForAdminMailer
     end
 
     # The submitted action is created when the idea is first submitted,
@@ -92,8 +89,7 @@ module EmailCampaigns
           idea_published_at: idea.published_at&.iso8601,
           idea_title_multiloc: idea.title_multiloc,
           idea_author_name: idea.author_name,
-          idea_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
-          idea_publication_status: idea.publication_status
+          idea_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
         }
       }]
     end
@@ -106,4 +102,4 @@ module EmailCampaigns
   end
 end
 
-EmailCampaigns::Campaigns::NewIdeaForAdmin.prepend(IdeaAssignment::Patches::EmailCampaigns::Campaigns::NewIdeaForAdmin)
+EmailCampaigns::Campaigns::NewIdeaForAdminBase.prepend(IdeaAssignment::Patches::EmailCampaigns::Campaigns::NewIdeaForAdminBase)

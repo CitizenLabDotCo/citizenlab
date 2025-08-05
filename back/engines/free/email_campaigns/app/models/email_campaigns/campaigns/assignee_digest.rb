@@ -39,6 +39,7 @@ module EmailCampaigns
     include RecipientConfigurable
     include Trackable
     include LifecycleStageRestrictable
+    include ContentConfigurable
     allow_lifecycle_stages only: ['active']
 
     recipient_filter :user_filter_admins_moderators_only
@@ -79,10 +80,10 @@ module EmailCampaigns
       time ||= Time.now
       assigned = {
         assigned_inputs: assigned_inputs(recipient: recipient, time: time),
-        succesful_assigned_inputs: succesful_assigned_inputs(recipient: recipient, time: time)
+        successful_assigned_inputs: successful_assigned_inputs(recipient: recipient, time: time)
       }
       tracked_content = {
-        idea_ids: (assigned[:assigned_inputs] + assigned[:succesful_assigned_inputs]).pluck(:id).compact
+        idea_ids: (assigned[:assigned_inputs] + assigned[:successful_assigned_inputs]).pluck(:id).compact
       }
       if assigned.values.any?(&:present?)
         [{
@@ -124,7 +125,7 @@ module EmailCampaigns
         end
     end
 
-    def succesful_assigned_inputs(recipient:, time:)
+    def successful_assigned_inputs(recipient:, time:)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       recipient.assigned_ideas
         .feedback_needed

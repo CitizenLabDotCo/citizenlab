@@ -10,6 +10,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -17,6 +18,7 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import { Parameter, PARAMS as PROJECT_PARAMS } from './_shared/params';
 import messages from './messages';
+import tracks from './tracks';
 
 const FOLDER_PARAMS: Parameter[] = ['status', 'managers', 'search'];
 
@@ -74,6 +76,7 @@ const Tabs = () => {
           }
 
           removeSearchParams(['tab']);
+          trackEventByName(tracks.setTab, { tab: 'projects' });
         }}
       />
       {highest_role !== 'project_moderator' && (
@@ -87,6 +90,7 @@ const Tabs = () => {
             }
 
             updateSearchParams({ tab: 'folders' });
+            trackEventByName(tracks.setTab, { tab: 'folders' });
           }}
         />
       )}
@@ -100,6 +104,7 @@ const Tabs = () => {
           }
 
           updateSearchParams({ tab: 'timeline' });
+          trackEventByName(tracks.setTab, { tab: 'timeline' });
         }}
       />
       {userIsAdmin && (
@@ -110,6 +115,7 @@ const Tabs = () => {
           onClick={() => {
             removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
             updateSearchParams({ tab: 'ordering' });
+            trackEventByName(tracks.setTab, { tab: 'ordering' });
           }}
         />
       )}

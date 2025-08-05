@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Ho sentim, no podeu accedir a aquesta pàgina. És possible que hàgiu d'iniciar sessió o registrar-vos per accedir-hi.",
   "app.components.LocationInput.noOptions": "Sense opcions",
   "app.components.Modal.closeWindow": "Tanca la finestra",
+  "app.components.MultiSelect.clearButtonAction": "Esborra la selecció",
+  "app.components.MultiSelect.clearSearchButtonAction": "Esborra la cerca",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Introduïu una adreça de correu electrònic nova",
   "app.components.PageNotFound.goBackToHomePage": "Enrere a la pàgina d'inici",
   "app.components.PageNotFound.notFoundTitle": "Pàgina no trobada",
