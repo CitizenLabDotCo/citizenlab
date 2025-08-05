@@ -39,6 +39,7 @@ export type ParametersLive =
   | MethodsUsedParams
   | ParticipationParams
   | ProjectsParams
+  | ProjectsTimelineParams
   | DeviceTypesParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
@@ -179,6 +180,28 @@ export interface ProjectsProps extends DateProps {
 interface ProjectsParams extends BaseParams {
   resolved_name: 'ProjectsWidget';
   props: ProjectsProps;
+}
+
+export interface ProjectsTimelineProps extends DateProps {
+  publication_statuses?: ProjectReportsPublicationStatus[];
+  participation_states?: string[];
+  visibility?: string[];
+  discoverability?: string[];
+  managers?: string[];
+  folder_ids?: string[];
+  participation_methods?: string[];
+  sort?:
+    | 'recently_viewed'
+    | 'phase_starting_or_ending_soon'
+    | 'recently_created'
+    | 'alphabetically_asc'
+    | 'alphabetically_desc';
+  number_of_projects?: number;
+}
+
+export interface ProjectsTimelineParams extends BaseParams {
+  resolved_name: 'ProjectsTimelineWidget';
+  props: ProjectsTimelineProps;
 }
 
 export interface DeviceTypesProps extends DateProps, ProjectId {
