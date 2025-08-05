@@ -30,11 +30,28 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
       end
     end
 
-    it 'filters by participation states' do
+    it 'filters by participation states - informing' do
+      result = query.run_query({ participation_states: ['informing'] })
+
+      timeline_items = result[:timeline_items]
+      expect(timeline_items).not_to be_empty
+      # Should include project1 since it has a phase with participation_method: 'information'
+      expect(timeline_items.map { |item| item[:id] }).to include(project1.id)
+    end
+
+    it 'filters by participation states - collecting_data' do
+      # Create a project with a non-information phase
+      project3 = create(:project, title_multiloc: { en: 'Project 3' })
+      create(:phase, project: project3, participation_method: 'ideation', start_at: 1.month.ago, end_at: 1.month.from_now)
+
       result = query.run_query({ participation_states: ['collecting_data'] })
 
       timeline_items = result[:timeline_items]
       expect(timeline_items).not_to be_empty
+      # Should include project3 since it has a phase with participation_method: 'ideation' (not 'information')
+      expect(timeline_items.map { |item| item[:id] }).to include(project3.id)
+      # Should not include project1 since it has an 'information' phase
+      expect(timeline_items.map { |item| item[:id] }).not_to include(project1.id)
     end
 
     it 'filters by visibility' do
@@ -42,6 +59,8 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
 
       timeline_items = result[:timeline_items]
       expect(timeline_items).not_to be_empty
+      # Should include both projects since they are public by default
+      expect(timeline_items.map { |item| item[:id] }).to include(project1.id, project2.id)
     end
 
     it 'filters by discoverability' do
@@ -49,6 +68,8 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
 
       timeline_items = result[:timeline_items]
       expect(timeline_items).not_to be_empty
+      # Should include both projects since they are listed by default
+      expect(timeline_items.map { |item| item[:id] }).to include(project1.id, project2.id)
     end
 
     it 'filters by participation methods' do
@@ -56,6 +77,25 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
 
       timeline_items = result[:timeline_items]
       expect(timeline_items).not_to be_empty
+      # Should include project1 since it has a phase with participation_method: 'information'
+      expect(timeline_items.map { |item| item[:id] }).to include(project1.id)
+      # Should not include project2 since it doesn't have an information phase
+      expect(timeline_items.map { |item| item[:id] }).not_to include(project2.id)
+    end
+
+    it 'filters by participation methods - ideation' do
+      # Create a project with an ideation phase
+      project3 = create(:project, title_multiloc: { en: 'Project 3' })
+      create(:phase, project: project3, participation_method: 'ideation', start_at: 1.month.ago, end_at: 1.month.from_now)
+
+      result = query.run_query({ participation_methods: ['ideation'] })
+
+      timeline_items = result[:timeline_items]
+      expect(timeline_items).not_to be_empty
+      # Should include project3 since it has a phase with participation_method: 'ideation'
+      expect(timeline_items.map { |item| item[:id] }).to include(project3.id)
+      # Should not include project1 since it has an 'information' phase
+      expect(timeline_items.map { |item| item[:id] }).not_to include(project1.id)
     end
 
     it 'filters by folder ids' do
