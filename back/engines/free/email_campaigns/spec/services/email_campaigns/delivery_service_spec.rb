@@ -97,6 +97,18 @@ describe EmailCampaigns::DeliveryService do
         .exactly(1).times
     end
 
+    it 'doesn\'t raise errors while processing all types of campaigns' do
+      activities = [activity, create(:activity, item: create(:area))]
+      campaign.destroy!
+      service.campaign_classes.each do |klaz|
+        factory_type = :"#{klaz.name.demodulize.underscore}_campaign"
+        create(factory_type)
+      end
+      activities.each do |activity|
+        expect { service.send_on_activity(activity) }.not_to raise_error
+      end
+    end
+
     context 'on project_phase_upcoming notification' do
       let!(:campaign) { create(:project_phase_upcoming_campaign) }
       let(:notification) { create(:project_phase_upcoming) }
@@ -175,7 +187,7 @@ describe EmailCampaigns::DeliveryService do
     context 'Manual Campaign' do
       let(:campaign) { create(:manual_campaign, subject_multiloc: { en: 'MANUAL CAMPAIGN' }) }
 
-      it 'returns a command with the recipient' do
+      it 'returns a preview for manual campaigns' do
         preview = service.preview_email(campaign, recipient)
         expect(preview).to be_a(Hash)
         expect(preview[:subject]).to eq('MANUAL CAMPAIGN')
@@ -183,14 +195,17 @@ describe EmailCampaigns::DeliveryService do
       end
     end
 
-    context 'Automated Campaign' do
-      let(:campaign) { create(:comment_on_idea_you_follow_campaign, subject_multiloc: { en: 'AUTOMATED CAMPAIGN' }) }
-
-      it 'returns a command with the recipient' do
-        preview = service.preview_email(campaign, recipient)
-        expect(preview).to be_a(Hash)
-        expect(preview[:subject]).to eq('AUTOMATED CAMPAIGN')
-        expect(preview[:html]).to start_with('<!doctype html>')
+    context 'Automated Campaigns' do
+      EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.each do |campaign_class|
+        it "returns preview details for #{campaign_class}" do
+          campaign = campaign_class.new(subject_multiloc: { en: 'AUTOMATED CAMPAIGN' })
+          if campaign.respond_to?(:preview_command)
+            preview = service.preview_email(campaign, recipient)
+            expect(preview).to be_a(Hash)
+            expect(preview[:subject]).to eq('AUTOMATED CAMPAIGN')
+            expect(preview[:html]).to start_with('<!doctype html>')
+          end
+        end
       end
     end
   end

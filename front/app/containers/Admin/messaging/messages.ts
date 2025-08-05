@@ -74,6 +74,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.fieldSubject',
     defaultMessage: 'Email Subject',
   },
+  fieldGroupContent: {
+    id: 'app.containers.Admin.emails.fieldGroupContent',
+    defaultMessage: 'Email Content',
+  },
   fieldSubjectTooltip: {
     id: 'app.containers.Admin.emails.fieldSubjectTooltip',
     defaultMessage:
@@ -124,16 +128,28 @@ export default defineMessages({
     defaultMessage: 'Send a preview',
   },
   sendTestEmailTooltip: {
-    id: 'app.containers.Admin.emails.sendTestEmailTooltip',
+    id: 'app.containers.Admin.emails.sendTestEmailTooltip2',
     defaultMessage:
-      'Send this draft email to the email address with which you are logged in, to check how it looks like in ‘real life’.',
+      'When you click this link, a test email will be sent to your email address only. This allows you to check what the email looks like in ‘real life’.',
   },
   previewSentConfirmation: {
     id: 'app.containers.Admin.emails.previewSentConfirmation',
     defaultMessage: 'A preview email has been sent to your email address',
   },
+  emailUpdated: {
+    id: 'app.containers.Admin.emails.emailUpdated',
+    defaultMessage: 'Email successfully updated',
+  },
+  emailCreated: {
+    id: 'app.containers.Admin.emails.emailCreated',
+    defaultMessage: 'Email successfully created in draft',
+  },
   formSave: {
     id: 'app.containers.Admin.emails.formSave',
+    defaultMessage: 'Save',
+  },
+  formSaveAsDraft: {
+    id: 'app.containers.Admin.emails.formSaveAsDraft',
     defaultMessage: 'Save as draft',
   },
   previewTitle: {

@@ -11,6 +11,7 @@ import {
   stylingConsts,
   Spinner,
   Icon,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 import useParticipantCounts from 'api/participant_counts/useParticipantCounts';
@@ -55,7 +56,7 @@ const Table = () => {
   );
 
   const projectIds = projects.map((project) => project.id);
-  const { data: participantsCounts } = useParticipantCounts(projectIds);
+  const participantsCounts = useParticipantCounts(projectIds);
 
   const { loadMoreRef } = useInfiniteScroll({
     isLoading: isFetchingNextPage,
@@ -91,9 +92,14 @@ const Table = () => {
         <Thead>
           <Tr background={colors.grey50}>
             <ColHeader>{formatMessage(messages.project)}</ColHeader>
-            <ColHeader>
-              <Icon name="users" height="16px" fill={colors.black} mr="8px" />
-            </ColHeader>
+            <Th py="16px">
+              <Box display="flex" alignItems="center">
+                <Icon name="users" height="16px" fill={colors.black} mr="0px" />
+                <IconTooltip
+                  content={formatMessage(messages.thisColumnUsesCache)}
+                />
+              </Box>
+            </Th>
             <ColHeader>{formatMessage(messages.phase)}</ColHeader>
             <ColHeader>{formatMessage(messages.manager)}</ColHeader>
             <ColHeader>{formatMessage(messages.visibility)}</ColHeader>
@@ -108,11 +114,7 @@ const Table = () => {
             <Row
               key={project.id}
               project={project}
-              participantsCount={
-                participantsCounts?.data.attributes.participant_counts[
-                  project.id
-                ]
-              }
+              participantsCount={participantsCounts[project.id]}
             />
           ))}
         </Tbody>

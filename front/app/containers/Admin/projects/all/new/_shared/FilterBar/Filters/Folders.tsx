@@ -4,17 +4,21 @@ import useProjectFolders from 'api/project_folders/useProjectFolders';
 
 import useLocalize from 'hooks/useLocalize';
 
-import FilterSelector, {
-  IFilterSelectorValue,
-} from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import { useParam, setParam } from '../../params';
 
 import messages from './messages';
+import tracks from './tracks';
 
-const Folders = () => {
+interface Props {
+  onClear: () => void;
+}
+
+const Folders = ({ onClear }: Props) => {
   const folderIds = useParam('folder_ids') ?? [];
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -24,10 +28,10 @@ const Folders = () => {
   const { data, isLoading, refetch } = useProjectFolders({}, false);
   const hasFetchedRef = useRef(false);
 
-  const folderOptions: IFilterSelectorValue[] =
+  const folderOptions =
     data?.data.map((folder) => ({
       value: folder.id,
-      text: localize(folder.attributes.title_multiloc),
+      label: localize(folder.attributes.title_multiloc),
     })) ?? [];
 
   const handleOpen = () => {
@@ -38,18 +42,19 @@ const Folders = () => {
   };
 
   return (
-    <FilterSelector
+    <MultiSelect
       title={formatMessage(messages.folders)}
-      name="folders"
-      values={folderOptions}
-      multipleSelectionAllowed
+      options={folderOptions}
       selected={folderIds}
-      filterSelectorStyle="text"
       isLoading={isLoading}
       onOpen={handleOpen}
       onChange={(folderIds) => {
         setParam('folder_ids', folderIds);
+        trackEventByName(tracks.setFolder, {
+          folderIds: JSON.stringify(folderIds),
+        });
       }}
+      onClear={onClear}
     />
   );
 };

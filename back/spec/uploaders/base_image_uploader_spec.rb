@@ -90,8 +90,8 @@ RSpec.describe BaseImageUploader do
   end
 
   it 'whitelists exactly [image/jpg image/jpeg image/gif image/png image/webp]' do
-    expect(uploader.extension_allowlist).to match_array %w[jpg jpeg gif png webp]
-    expect(uploader.content_type_allowlist).to match_array %w[image/jpg image/jpeg image/gif image/png image/webp]
+    expect(uploader.extension_allowlist).to match_array %w[jpg jpeg gif png webp avif]
+    expect(uploader.content_type_allowlist).to match_array %w[image/jpg image/jpeg image/gif image/png image/webp image/avif]
     expect(uploader.extension_denylist).to be_blank
     expect(uploader.content_type_denylist).to be_blank
   end

@@ -2,19 +2,16 @@ import React from 'react';
 
 import { PublicationStatus } from 'api/projects/types';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import { PUBLICATION_STATUS_LABELS } from '../../constants';
 import { useParam, setParam } from '../../params';
 
 import messages from './messages';
-
-type Option = {
-  value: PublicationStatus;
-  text: string;
-};
+import tracks from './tracks';
 
 const OPTIONS = [
   { value: 'published', message: PUBLICATION_STATUS_LABELS.published },
@@ -24,28 +21,31 @@ const OPTIONS = [
 
 interface Props {
   mr?: string;
+  onClear?: () => void;
 }
 
-const Status = ({ mr }: Props) => {
+const Status = ({ mr, onClear }: Props) => {
   const { formatMessage } = useIntl();
   const statuses = useParam('status') ?? [];
 
-  const options: Option[] = OPTIONS.map((option) => ({
+  const options = OPTIONS.map((option) => ({
     value: option.value,
-    text: formatMessage(option.message),
+    label: formatMessage(option.message),
   }));
 
   return (
-    <FilterSelector
-      multipleSelectionAllowed
+    <MultiSelect
       selected={statuses}
-      values={options}
+      options={options}
       mr={mr}
       onChange={(statuses) => {
         setParam('status', statuses as PublicationStatus[]);
+        trackEventByName(tracks.setStatus, {
+          statuses: JSON.stringify(statuses),
+        });
       }}
       title={formatMessage(messages.status)}
-      name="manager-select"
+      onClear={onClear}
     />
   );
 };

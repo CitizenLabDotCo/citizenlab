@@ -13,7 +13,7 @@ end
 class AutomatedContentConfigurableCampaignMailer < ApplicationMailer
   include EmailCampaigns::EditableWithPreview
 
-  def self.editable_regions
+  def editable_regions
     [
       {
         key: :subject_multiloc,

@@ -2,20 +2,23 @@ import React from 'react';
 
 import useUsers from 'api/users/useUsers';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import { useParam, setParam } from '../../params';
 
 import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   mr?: string;
+  onClear?: () => void;
 }
 
-const Manager = ({ mr = '0px' }: Props) => {
+const Manager = ({ mr = '0px', onClear }: Props) => {
   const managerIds = useParam('managers') ?? [];
   const { formatMessage } = useIntl();
 
@@ -27,20 +30,22 @@ const Manager = ({ mr = '0px' }: Props) => {
   const options =
     managers?.data.map((manager) => ({
       value: manager.id,
-      text: getFullName(manager),
+      label: getFullName(manager),
     })) ?? [];
 
   return (
-    <FilterSelector
-      multipleSelectionAllowed
+    <MultiSelect
       selected={managerIds}
-      values={options}
+      options={options}
       mr={mr}
       onChange={(managerIds) => {
         setParam('managers', managerIds);
+        trackEventByName(tracks.setManager, {
+          managerIds: JSON.stringify(managerIds),
+        });
       }}
       title={formatMessage(messages.manager)}
-      name="manager-select"
+      onClear={onClear}
     />
   );
 };
