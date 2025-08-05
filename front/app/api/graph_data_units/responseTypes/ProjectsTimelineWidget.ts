@@ -1,6 +1,6 @@
 import { Multiloc } from 'typings';
 
-import { IProjectData, PublicationStatus } from 'api/projects/types';
+import { PublicationStatus } from 'api/projects/types';
 
 export interface TimelineItem {
   id: string;
@@ -18,7 +18,6 @@ export type ProjectsTimelineResponse = {
     type: 'report_builder_data_units';
     attributes: {
       timeline_items: TimelineItem[];
-      projects: IProjectData[];
     };
   };
 };

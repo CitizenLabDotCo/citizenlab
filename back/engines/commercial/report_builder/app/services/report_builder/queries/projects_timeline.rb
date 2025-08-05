@@ -7,8 +7,7 @@ module ReportBuilder
       timeline_items = build_timeline_items(projects_with_phases)
 
       {
-        timeline_items: timeline_items,
-        projects: serialize(projects, ::WebApi::V1::ProjectSerializer)
+        timeline_items: timeline_items
       }
     end
 

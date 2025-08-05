@@ -16,9 +16,7 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
       result = query.run_query
 
       expect(result).to have_key(:timeline_items)
-      expect(result).to have_key(:projects)
       expect(result[:timeline_items]).to be_an(Array)
-      expect(result[:projects]).to be_an(Array)
     end
 
     it 'filters by publication status' do
