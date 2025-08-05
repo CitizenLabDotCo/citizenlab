@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "requerit",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
-  "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Text de la capçalera per als usuaris registrats",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Avís: el color que heu seleccionat no té un contrast prou alt. Això pot resultar en un text difícil de llegir. Trieu un color més fosc per optimitzar la llegibilitat.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Afegir esdeveniments a la barra de navegació",
@@ -482,7 +480,6 @@
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Enviar ara",
   "app.containers.Admin.emails.sendTestEmailButton": "Envieu-me un correu electrònic de prova",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "Quan feu clic a aquest enllaç, només s'enviarà un correu electrònic de prova a la vostra adreça electrònica. Això us permet comprovar com es veu el correu electrònic a la vida real.",
   "app.containers.Admin.emails.senderRecipients": "Remitent i destinataris",
   "app.containers.Admin.emails.sending": "Enviament",
   "app.containers.Admin.emails.sent": "Sent",

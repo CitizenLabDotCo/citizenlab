@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "richiesto",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
-  "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Testo dell'intestazione per gli utenti registrati",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Attenzione: il colore che hai selezionato non ha un contrasto abbastanza alto. Questo può risultare in un testo difficile da leggere. Scegli un colore più scuro per ottimizzare la leggibilità.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Aggiungi Eventi alla barra di navigazione",
@@ -482,7 +480,6 @@
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Send now",
   "app.containers.Admin.emails.sendTestEmailButton": "Send me a test email",
-  "app.containers.Admin.emails.sendTestEmailTooltip": "When you click this link, a test email will be sent to your email address only. This allows you to check how the email looks like in real life.",
   "app.containers.Admin.emails.senderRecipients": "Sender and recipients",
   "app.containers.Admin.emails.sending": "Sending",
   "app.containers.Admin.emails.sent": "Sent",

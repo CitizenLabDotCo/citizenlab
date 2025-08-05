@@ -6,11 +6,13 @@ import useLocalize from 'hooks/useLocalize';
 
 import MultiSelect from 'components/UI/MultiSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import { useParam, setParam } from '../../params';
 
 import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   onClear: () => void;
@@ -48,6 +50,9 @@ const Folders = ({ onClear }: Props) => {
       onOpen={handleOpen}
       onChange={(folderIds) => {
         setParam('folder_ids', folderIds);
+        trackEventByName(tracks.setFolder, {
+          folderIds: JSON.stringify(folderIds),
+        });
       }}
       onClear={onClear}
     />

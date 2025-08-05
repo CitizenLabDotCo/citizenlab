@@ -111,7 +111,7 @@ class Phase < ApplicationRecord
   validates :prescreening_enabled, inclusion: { in: [true, false] }
   validate :validate_end_at
   validate :validate_previous_blank_end_at
-  validate :validate_start_at_before_end_at
+  validate :validate_start_at_before_end_at # Also enforced by the phases_start_before_end check constraint
   validate :validate_no_other_overlapping_phases
   validate :validate_campaigns_settings_keys_and_values
   validates :manual_voters_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }

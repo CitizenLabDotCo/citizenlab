@@ -24,7 +24,8 @@ ca:
       "mention_in_official_feedback": Esmenta en una actualització
       "mention_in_internal_comment": Esmenta en un comentari intern
       "new_comment_for_admin": Nou comentari en un projecte que modero
-      "new_idea_for_admin": Nova idea en un projecte que modero
+      "new_idea_for_admin_published": Nova publicació d'aportacions en un projecte que modero
+      "new_idea_for_admin_prescreening": Nova entrada que requereix aprovació en un projecte que modero
       "official_feedback_on_idea_you_follow": Actualitzeu una idea que seguiu
       "password_reset": Restabliu la contrasenya
       "project_moderation_rights_received": S'han rebut els drets de moderació del projecte
@@ -85,11 +86,22 @@ ca:
         "6": "Setmanalment, els dissabtes a les %{hourOfDay}"
       quarterly: "Trimestral, el primer dia del trimestre"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Daina'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Daina'
+      author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Projecte d''exemple'
+      phase_title: 'Fase d''exemple'
       comment_body: 'Aquest és un exemple de comentari que s''utilitza per previsualitzar el contingut dels correus electrònics. Això no és contingut real.'
+      comment_deleted_reason: 'El teu comentari d''exemple s''ha considerat inadequat.'
       idea_title: 'Idea d''exemple'
+      idea_body: 'Aquest és un exemple de contingut d''idees utilitzat per previsualitzar el contingut dels correus electrònics. Això no és contingut real.'
+      event_title: 'Esdeveniment d''exemple'
+      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_address2: 'Habitació 3a, planta superior'
+      proposal_title: 'Proposta d''exemple'
     footer:
       "link_privacy_policy": "Política de privacitat"
       "link_terms_conditions": "Termes i Condicions"
@@ -103,22 +115,22 @@ ca:
     manual:
       preheader: 'Tens correu de %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'El motiu pel qual s''ha suprimit el teu comentari:'
-      cta_view: 'Mira aquesta idea'
+      subject: 'El teu comentari s''ha eliminat de la plataforma de %{organizationName}'
+      preheader: 'El teu comentari s''ha suprimit'
+      title: '%{organizationName} ha esborrat el teu comentari'
       event_description: '%{organizationName} ha suprimit el comentari que vas escriure sobre una idea.'
-      main_header: '%{organizationName} ha suprimit el teu comentari'
+      cta_button: 'Veure aquesta idea'
+      reason: 'El motiu pel qual s''ha suprimit el teu comentari:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'El teu comentari s''ha considerat inadequat'
       irrelevant_reason: 'El teu comentari es va considerar irrellevant per a aquest context'
       no_reason: 'No s''ha especificat cap motiu'
-      subject: 'El teu comentari s''ha eliminat de la plataforma de %{organizationName}'
-      preheader: 'El teu comentari s''ha suprimit'
     admin_digest:
       subject: 'El vostre informe d''administració setmanal de %{time}'
       preheader: 'Resum d''administració de %{organizationName}'
-      title_your_weekly_report: '%{firstName}, el teu informe setmanal'
-      text_introduction: 'Hem seleccionat per a tu l''entrada que ha generat més activitat durant la setmana passada. Descobreix què passa a la teva plataforma!'
-      cta_visit_the_platform: 'Visiteu la vostra plataforma'
+      title: '%{firstName}, el vostre informe setmanal'
+      event_description: 'Hem seleccionat per a vosaltres les aportacions que han generat més activitat durant la setmana passada. Descobriu què està passant a la vostra plataforma!'
+      cta_button: 'Visita la teva plataforma'
       new_users: 'Usuaris nous'
       new_inputs: 'Noves entrades'
       new_comments: 'Nous comentaris'
@@ -129,10 +141,11 @@ ca:
       today_by_author: 'Avui a les %{author}'
       x_days_ago_by_author: 'fa %{x} dies per %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Gestiona la teva plataforma'
-      message_you_became_administrator: 'Se t''han concedit drets d''administrador per a la plataforma de participació de %{organizationName}.'
-      preheader: 'Se''t van concedir drets d''administrador per a la plataforma de participació de %{organizationName}'
       subject: 'T''has convertit en administrador a la plataforma de %{organizationName}'
+      preheader: 'Se''t van concedir drets d''administrador per a la plataforma de participació de %{organizationName}'
+      title: 'Vas esdevenir administrador/a'
+      event_description: 'Se us han atorgat drets d''administrador per a la plataforma de participació de %{organizationName}.'
+      cta_button: 'Gestiona la teva plataforma'
       text_create_participatory_process: 'Com a administrador, podeu crear i configurar nous projectes de participació. Podeu afegir noves fases mitjançant la línia de temps. Cadascuna d''aquestes fases pot tenir el seu propi comportament pel que fa a la publicació d''idees, comentaris i votacions.'
       text_moderate_analyse_input: 'Un cop engegats els projectes, apareixeran les primeres idees. Rebreu informes setmanals amb totes les activitats clau per estar al corrent de les coses. La visió general d''idees us ajudarà a moderar l''entrada i col·laborar en el seu processament.'
       text_platform_setup: 'Com a administrador, podeu configurar la vostra plataforma de participació. Tria un logotip, imatges i colors, escriu un missatge personal a la teva pàgina d''inici, envia invitacions, defineix què vols saber dels teus usuaris,...'
@@ -140,38 +153,38 @@ ca:
       title_moderate_analyse_input: 'Moderar i analitzar l''entrada'
       title_platform_setup: 'Configura la teva plataforma'
       title_what_can_you_do_administrator: 'Què pots fer com a administrador?'
-      title_you_became_administrator: 'T''has convertit en administrador'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} ha informat aquest comentari com a correu brossa'
+      preheader: 'Actueu en funció d''aquest comentari informat com a correu brossa'
+      title: '%{firstName} %{lastName} ha informat d''aquest comentari com a correu brossa'
+      cta_button: 'Comentari de la revisió'
       by_author: 'per %{authorName}'
       commented: '%{authorName} ha comentat:'
-      cta_review_comment: 'Revisa el comentari'
       days_ago: 'fa %{numberOfDays} dies'
       event_description: 'S''ha informat del següent comentari publicat el <strong>''%{post}''</strong>:'
       inappropriate_content: 'El comentari és inadequat o ofensiu.'
-      preheader: 'Actueu en funció d''aquest comentari informat com a correu brossa'
       reported_this_because: '%{reporterFirstName} ho han informat perquè:'
-      subject: '%{organizationName}: %{firstName} %{lastName} ha informat aquest comentari com a correu brossa'
-      title_comment_spam_report: '%{firstName} %{lastName} ha informat aquest comentari com a correu brossa'
       today: Avui
       wrong_content: 'El comentari no és rellevant.'
       yesterday: Ahir
     community_monitor_report:
       subject: 'Hi ha disponible un nou informe de monitor de la comunitat'
+      preheader: 'Hi ha disponible un nou informe de monitorització comunitària'
       title: 'Hi ha disponible un nou informe de monitor de la comunitat'
-      text_introduction: 'S''ha elaborat un informe del monitor comunitari del trimestre anterior. Podeu accedir-hi fent clic al botó següent i iniciant sessió.'
-      cta_report_button: 'Veure informe'
+      event_description: 'S''ha creat un informe de monitorització comunitària per al trimestre anterior. Podeu accedir-hi fent clic al botó següent i iniciant la sessió.'
+      cta_button: 'Veure l''informe'
       report_name: 'Informe del monitor comunitari'
     cosponsor_of_your_idea:
-      cta_reply_to: 'Consulta la teva proposta'
-      event_description: 'Felicitats! %{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta.'
-      main_header: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
       subject: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
       preheader: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
+      title: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
+      event_description: 'Felicitats! %{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta.'
+      cta_button: 'Veure la teva proposta'
     assignee_digest:
       subject: 'Idees que requereixen la vostra opinió: %{numberIdeas}'
       preheader: 'Resum del cessionari de %{organizationName}'
-      title_your_weekly_report: '%{firstName}, l''aportació del ciutadà està esperant els vostres comentaris'
-      cta_manage_your_input: 'Gestiona la teva entrada'
+      title: '%{firstName}, els ciutadans esperen els vostres comentaris'
+      cta_button: 'Gestiona la teva entrada'
       x_inputs_need_your_feedback: 'les entrades necessiten els vostres comentaris'
       title_assignment_past_week: 'Últimes idees que t''han assignat'
       title_no_assignment_past_week: 'La setmana passada no us van assignar idees noves'
@@ -180,36 +193,36 @@ ca:
       x_days_ago_by_author: 'fa %{x} dies per %{author}'
       title_successful_past_week: 'Se t''ha assignat que ha arribat al llindar'
     idea_marked_as_spam:
-      cta_review: 'Revisió'
-      report_inappropriate_offensive_content: 'Trobo que aquest contingut és inadequat o ofensiu.'
-      report_not_an_idea: 'Aquest contingut no és una idea i no pertany aquí.'
       subject: 'Tens un informe de correu brossa a la plataforma de %{organizationName}'
       preheader: 'Actueu sobre aquest informe de correu brossa'
+      title: '%{firstName} %{lastName} ha denunciat correu brossa'
+      cta_button: 'Revisió'
+      report_inappropriate_offensive_content: 'Trobo que aquest contingut és inadequat o ofensiu.'
+      report_not_an_idea: 'Aquest contingut no és una idea i no pertany aquí.'
       reported_this_because: '%{reporterFirstName} ho han informat perquè:'
-      title_spam_report: '%{firstName} %{lastName} informat de correu brossa'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'Copatrocina aquesta proposta'
+      subject: 'Us han convidat a copatrocinar una proposta'
+      preheader: 'Us han convidat a copatrocinar la proposta de %{authorName}'
+      title: 'Has estat convidat a copatrocinar una proposta'
       event_description: '%{authorName} ha creat una nova proposta i voldria que la copatrocinis.'
       event_description_cosponsoring: 'Copatrocinar una proposta significa que <strong>el vostre nom es mostrarà</strong> amb els noms d''altres copatrocinadors de la proposta.'
       event_description_before_action: 'Per veure la proposta i acceptar la invitació, heu d''iniciar sessió al vostre compte.'
       event_description_action: 'Feu clic a continuació per llegir la proposta.'
-      main_header: 'Us han convidat a copatrocinar una proposta'
-      subject: 'Us han convidat a copatrocinar una proposta'
-      preheader: 'Us han convidat a copatrocinar la proposta de %{authorName}'
+      cta_button: 'Copatrocina aquesta proposta'
     invite_reminder:
-      cta_accept_invitation: 'Accepta la teva invitació'
-      invitation_header: 'La teva invitació està pendent'
-      preheader: '%{organizationName} us va enviar una invitació per unir-vos a la seva plataforma de participació fa uns dies.'
-      invitation_expiry_message: 'Aquesta invitació caduca d''aquí a %{expiryDaysRemaining} dies aproximadament.'
       subject: 'Pendent invitació per a la plataforma de participació de %{organizationName}'
+      preheader: '%{organizationName} us va enviar una invitació per unir-vos a la seva plataforma de participació fa uns dies.'
+      title: 'La teva invitació està pendent'
+      cta_button: 'Accepta la teva invitació'
+      invitation_expiry_message: 'Aquesta invitació caduca d''aquí a %{expiryDaysRemaining} dies aproximadament.'
     invite_received:
-      added_a_message: '%{organizationName} ha escrit el missatge següent:'
-      cta_accept_invitation: 'Accepta la teva invitació'
-      invitation_header: 'Vostè està convidat!'
-      invitation_header_message: '%{organizationName} t''ha convidat a la seva plataforma de participació.'
-      invitation_expiry_message: 'Aquesta invitació caduca d''aquí a %{expiryDays} dies.'
       preheader: '%{organizationName} t''ha enviat una invitació per unir-te a la seva plataforma de participació.'
       subject: 'Esteu convidats a unir-vos a la plataforma de %{organizationName}'
+      title: 'Esteu convidats!'
+      event_description: '%{organizationName} t''ha convidat a la seva plataforma de participació.'
+      cta_button: 'Accepta la teva invitació'
+      added_a_message: '%{organizationName} ha escrit el missatge següent:'
+      invitation_expiry_message: 'Aquesta invitació caduca d''aquí a %{expiryDays} dies.'
     mention_in_comment:
       cta_reply_to: 'Respon a %{commentAuthor}'
       event_description: '%{commentAuthorFull} t''ha esmentat en el seu comentari sobre la idea ''%{post}''. Feu clic a l''enllaç següent per entrar a la conversa amb %{commentAuthor}'
@@ -217,17 +230,17 @@ ca:
       subject: 'Algú t''ha mencionat a la plataforma de %{organizationName}'
       preheader: '%{commentAuthor} t''ha mencionat en un comentari'
     mention_in_internal_comment:
-      cta_reply_to: 'Veure comentari per %{firstName}'
+      cta_button: 'Veure comentari de %{firstName}'
       event_description: '%{authorNameFull} t''ha mencionat en un comentari intern.'
       subject: '%{firstName} t''ha mencionat en un comentari intern.'
-      main_header: '%{firstName} t''ha mencionat en un comentari intern.'
+      title: '%{firstName} t''ha esmentat en un comentari intern.'
       preheader: '%{authorNameFull} t''ha mencionat en un comentari intern.'
     moderator_digest:
       subject: 'El vostre informe setmanal del gestor de projectes de %{project_title}'
       preheader: 'Resum del gestor de projectes de %{organizationName}'
-      title_your_weekly_report: '%{firstName}, el teu informe setmanal'
-      text_introduction: 'Hem seleccionat per a tu l''entrada que ha generat més activitat durant la setmana passada. Descobreix què està passant amb el teu projecte!'
-      cta_manage: 'Gestiona el teu projecte'
+      title: '%{firstName}, el vostre informe setmanal'
+      event_description: 'Hem seleccionat per a vosaltres les aportacions que han generat més activitat durant la setmana passada. Descobriu què està passant amb el vostre projecte!'
+      cta_button: 'Gestiona el teu projecte'
       new_users: 'Usuaris nous'
       new_ideas: 'Noves idees'
       new_comments: 'Nous comentaris'
@@ -239,17 +252,20 @@ ca:
       x_days_ago_by_author: 'fa %{x} dies per %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} ha comentat:'
-      cta_reply_to: 'Veure el comentari de %{commentAuthor}'
+      cta_button: 'Veure el comentari de %{authorFirstName}'
       days_ago: 'fa %{numberOfDays} dies'
       event_description: '%{authorName} ha afegit un comentari nou a la teva plataforma.'
-      main_header: '%{firstName}, s''ha publicat un nou comentari a la teva plataforma'
+      title: '%{firstName}, s''ha publicat un comentari nou a la teva plataforma'
       subject: 'S''ha publicat un nou comentari a la plataforma de %{organizationName}'
       preheader: '%{authorName} ha deixat un comentari'
       today: Avui
       yesterday: Ahir
     comment_on_idea_you_follow:
-      cta_reply_to: 'Respon a %{commentAuthor}'
+      subject: 'Hi ha un comentari nou a "%{input_title}"'
+      preheader: '%{authorName} va deixar un comentari sobre una idea per a %{organizationName}'
+      title: '%{authorName} ha comentat una entrada que segueixes'
       event_description: '%{authorNameFull} va fer una reacció a la teva idea "%{inputTitle}". Feu clic al botó següent per continuar la conversa amb %{authorName}.'
+      cta_button: 'Respon a %{commentAuthor}'
       main_header:
         idea: '%{authorName} ha comentat una idea que segueixes'
         question: '%{authorName} ha comentat una pregunta que segueixes'
@@ -259,56 +275,61 @@ ca:
         option: '%{authorName} ha comentat una opció que segueixes'
         proposal: '%{authorName} ha comentat una proposta que segueixes'
         petition: '%{authorName} ha comentat una petició que segueixes'
-      subject: 'Hi ha un comentari nou a "%{input_title}"'
-      preheader: '%{authorName} va deixar un comentari sobre una idea per a %{organizationName}'
-    new_idea_for_admin:
-      main_header_publication: 'S''ha publicat una nova entrada a la vostra plataforma'
-      event_description_publication: '%{authorName} ha enviat una entrada nova a la teva plataforma. Descobriu-lo ara, feu-ne un comentari o canvieu-ne l''estat!'
-      cta_publication: 'Envieu comentaris a %{authorName}'
-      main_header_prescreening: 'Una entrada requereix la vostra revisió'
-      event_description_prescreening: '%{authorName} ha enviat una entrada nova a la teva plataforma.'
-      input_not_visible_prescreening: '<b>L''entrada no serà visible</b> fins que no modifiqueu el seu estat.'
-      cta_prescreening: 'Revisa l''entrada'
-      days_ago: 'fa %{numberOfDays} dies'
-      preheader: '%{authorName} ha publicat una nova idea a la teva plataforma'
+    new_idea_for_admin_published:
+      subject: 'S''ha publicat una nova entrada a la vostra plataforma'
+      preheader: '%{authorName} ha publicat una nova entrada a la teva plataforma'
+      title: 'S''ha publicat una nova entrada a la vostra plataforma'
+      event_description: '%{authorName} ha enviat una nova entrada a la teva plataforma. Descobreix-la ara, envia els teus comentaris o canvia''n l''estat!'
+      cta_button: 'Dona comentaris a %{authorName}'
+      days_ago: 'Fa %{numberOfDays} dies'
+      today: Avui
+      yesterday: Ahir
+    new_idea_for_admin_prescreening:
+      subject: 'Una entrada requereix la teva revisió'
+      preheader: '%{authorName} ha publicat una nova entrada a la teva plataforma'
+      title: 'Una entrada requereix la teva revisió'
+      cta_button: 'Revisa l''entrada'
+      event_description: '%{authorName} ha enviat una nova entrada a la teva plataforma.'
+      input_not_visible: '<b>L''entrada no serà visible</b> fins que no en modifiqueu l''estat.'
+      days_ago: 'Fa %{numberOfDays} dies'
       today: Avui
       yesterday: Ahir
     comment_on_your_comment:
-      cta_reply_to: 'Respon a %{firstName}'
-      event_description: '%{authorNameFull} ha escrit una resposta al teu comentari a "%{post}" a la plataforma de participació. Feu clic al botó següent per continuar la conversa amb %{authorName}.'
       subject: 'Heu rebut una resposta al vostre comentari a la plataforma de %{organizationName}'
-      main_header: '%{authorName} han respost al teu comentari'
       preheader: '%{authorName} ha respost al teu comentari a la plataforma de %{organizationName}'
+      title: '%{authorName} ha respost al teu comentari'
+      event_description: '%{authorNameFull} ha escrit una resposta al teu comentari a "%{post}" a la plataforma de participació. Feu clic al botó següent per continuar la conversa amb %{authorName}.'
+      cta_button: 'Respon a %{authorFirstName}'
       replied: '%{authorFirstName} va respondre:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: 'Veure comentari per %{firstName}'
+      cta_button: 'Veure comentari de %{firstName}'
       event_description: '%{authorNameFull} ha comentat el teu comentari intern.'
       subject: 'Heu rebut un comentari sobre el vostre comentari intern a "%{post}"'
-      main_header: 'Heu rebut un comentari sobre el vostre comentari intern a "%{post}"'
+      title: 'Has rebut un comentari sobre el teu comentari intern a ''%{post}'''
       preheader: '%{authorName} ha respost al teu comentari intern sobre "%{post}"'
     internal_comment_on_idea_assigned_to_you:
-      cta_reply_to: 'Veure comentari per %{firstName}'
+      cta_button: 'Veure comentari de %{firstName}'
       event_description: '%{authorNameFull} ha comentat internament una entrada que se t''ha assignat.'
       subject: '''%{post}'' té un nou comentari intern'
-      main_header: '''%{post}'' té un nou comentari intern'
+      title: 'Nou comentari intern a ''%{post}'''
       preheader: '''%{post}'' té un nou comentari intern'
     internal_comment_on_idea_you_commented_internally_on:
-      cta_reply_to: 'Veure comentari per %{firstName}'
+      cta_button: 'Veure comentari de %{firstName}'
       event_description: '%{authorNameFull} va comentar internament una entrada que vau comentar internament.'
       subject: '''%{post}'' té un nou comentari intern'
-      main_header: '''%{post}'' té un nou comentari intern'
+      title: 'Nou comentari intern a ''%{post}'''
       preheader: '''%{post}'' té un nou comentari intern'
     internal_comment_on_idea_you_moderate:
-      cta_reply_to: 'Veure comentari per %{firstName}'
+      cta_button: 'Veure comentari de %{firstName}'
       event_description: '%{authorNameFull} ha comentat internament una entrada en un projecte o carpeta que gestioneu.'
       subject: '''%{post}'' té un nou comentari intern'
-      main_header: '''%{post}'' té un nou comentari intern'
+      title: 'Nou comentari intern a ''%{post}'''
       preheader: '''%{post}'' té un nou comentari intern'
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_reply_to: 'Veure comentari per %{firstName}'
+      cta_button: 'Veure comentari de %{firstName}'
       event_description: '%{authorNameFull} ha comentat internament una entrada no assignada en un projecte no gestionat.'
       subject: '''%{post}'' té un nou comentari intern'
-      main_header: '''%{post}'' té un nou comentari intern'
+      title: 'Nou comentari intern a ''%{post}'''
       preheader: '''%{post}'' té un nou comentari intern'
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} ha fet una actualització sobre %{input_title}''.'
@@ -316,9 +337,9 @@ ca:
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:
-      cta_reply_to: 'Respon a %{organizationName}'
+      cta_button: 'Respon a %{organizationName}'
       event_description: '%{organizationName} t''ha mencionat en els seus comentaris sobre la idea "%{post}". Feu clic a l''enllaç següent per entrar a la conversa amb %{organizationName}'
-      main_header: 'Has estat esmentat'
+      title: 'T''han esmentat'
       subject: '%{organizationName} t''han mencionat als seus comentaris'
       preheader: '%{commentAuthor} t''han mencionat als comentaris'
     project_moderation_rights_received:
@@ -420,16 +441,18 @@ ca:
       message_welcome: 'Enhorabona, t''has registrat amb èxit a la plataforma de participació de %{organizationName}. Ara pots descobrir la plataforma i fer sentir la teva veu. També pots afegir una foto de perfil i una breu descripció per dir als altres qui ets.'
       preheader: 'Aquí teniu el que podeu fer a la plataforma de %{organizationName}'
     idea_published:
-      subject:
+      subject: 'La teva idea ha estat publicada'
+      preheader: '%{firstName}, enhorabona per publicar la teva idea a la plataforma de %{organizationName}. Ara recollir suport.'
+      title: 'Has publicat "%{input_title}"'
+      input_type_subject:
         idea: 'La teva idea ha estat publicada'
-        question: 'La teva pregunta s''ha publicat'
-        contribution: 'La teva aportació ha estat publicada'
-        project: 'El teu projecte s''ha publicat'
-        issue: 'El teu problema s''ha publicat'
+        question: 'La teva pregunta ha estat publicada'
+        contribution: 'La teva contribució ha estat publicada'
+        project: 'El vostre projecte ha estat publicat'
+        issue: 'El vostre número s''ha publicat'
         option: 'La teva opció ha estat publicada'
-        proposal: 'La teva proposta s''ha publicat'
-        petition: 'La teva petició s''ha publicat'
-      main_header: 'Has publicat una idea! Assegurem-nos que es llegeix.'
+        proposal: 'La teva proposta ha estat publicada'
+        petition: 'La teva petició ha estat publicada'
       header_message: 'Assegurem-nos que es llegeix.'
       message_get_votes: 'Arribeu a més persones amb la vostra idea:'
       action_published_idea: 'Idea publicada'
@@ -441,7 +464,6 @@ ca:
       send_email: correu electrònic
       action_share_link: 'Comparteix-lo a través de qualsevol canal copiant el %{link}'
       link: enllaç
-      preheader: '%{firstName}, enhorabona per publicar la teva idea a la plataforma de %{organizationName}. Ara recollir suport.'
     your_input_in_screening:
       main_header:
         idea: 'La teva idea està a "%{prescreening_status_title}"'
@@ -465,10 +487,10 @@ ca:
     native_survey_not_submitted:
       subject: '%{organizationName}: Gairebé allà! Envieu les vostres respostes'
       preheader: 'No heu completat la resposta de l''enquesta a la plataforma de participació de %{organizationName}'
-      title_native_survey_not_submitted: 'Casi allà! Envieu les vostres respostes'
-      body_native_survey_not_submitted: 'Vas començar a compartir les teves respostes el %{phaseTitle} però no les has enviat. Els enviaments es tancaran el %{phaseEndDate}. Feu clic al botó de sota per continuar on ho vau deixar.'
-      body_native_survey_not_submitted_no_date: 'Vas començar a compartir les teves respostes el %{phaseTitle} però no les has enviat. Feu clic al botó de sota per continuar on ho vau deixar.'
-      cta_complete_your_survey_response: 'Reprèn la resposta de l''enquesta'
+      title: 'Ja gairebé hi som! Envieu les vostres respostes!'
+      event_description: 'Vas començar a compartir les teves respostes a %{phaseTitle} però no les vas enviar. Fes clic al botó següent per continuar on les vas deixar.'
+      cta_button: 'Reprendre la resposta a l''enquesta'
+      submissions_close: 'El termini d''enviament de propostes es tancarà el %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: no heu enviat els vostres vots'
       preheader: 'No heu enviat els vostres vots a la plataforma de participació de %{organizationName}'
@@ -495,7 +517,7 @@ ca:
     event_registration_confirmation:
       subject: "Estàs dins! El vostre registre per a \"%{eventTitle}\" està confirmat"
       preheader: "%{firstName}, gràcies per registrar-te a %{eventTitle}"
-      header_message: "%{firstName}, gràcies per registrar-te"
+      title: "%{firstName}, gràcies per registrar-te a"
       event_details:
         labels:
           date: 'Data'
@@ -503,7 +525,7 @@ ca:
           online_link: 'Enllaç en línia'
           description: 'Descripció'
           project: 'Projecte'
-      cta_go_to_event: 'Veure l''esdeveniment'
+      cta_button: 'Veure l''esdeveniment'
       cta_add_to_calendar: 'Afegeix al teu calendari'
     voting_phase_started:
       subject: '%{organizationName}: la fase de votació va començar per a %{projectName}'

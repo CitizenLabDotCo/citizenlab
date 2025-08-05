@@ -100,7 +100,7 @@ class AdminPublication < ApplicationRecord
   end
 
   def self.publication_types
-    polymorphic_associations :admin_publication, :publication
+    [Project, ProjectFolders::Folder]
   end
 
   private
