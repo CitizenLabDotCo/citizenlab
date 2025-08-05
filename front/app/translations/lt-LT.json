@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "Atsiprašome, negalite pasiekti šio puslapio. Norint jį pasiekti, gali tekti prisijungti arba užsiregistruoti.",
   "app.components.LocationInput.noOptions": "Nėra galimybių",
   "app.components.Modal.closeWindow": "Uždaryti langą",
+  "app.components.MultiSelect.clearButtonAction": "Išvalyti pasirinkimą",
+  "app.components.MultiSelect.clearSearchButtonAction": "Aiški paieška",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Įveskite naują el. pašto adresą",
   "app.components.PageNotFound.goBackToHomePage": "Grįžti į pagrindinį puslapį",
   "app.components.PageNotFound.notFoundTitle": "Puslapis nerastas",
