@@ -130,7 +130,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     }
   }, [phaseFiles]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!formatMessageWithLocale) return null;
 
   const handlePhaseParticipationConfigChange = (
