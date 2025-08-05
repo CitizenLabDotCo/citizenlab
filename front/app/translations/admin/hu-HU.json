@@ -32,7 +32,7 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Accepted",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Bounced",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Clicked",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "When you added one or more links to your email, the number of users who clicked a link will be shown here.",
+  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "Amikor egy vagy több linket adott hozzá az e-mailhez, itt jelenik meg a linkre kattintó felhasználók száma.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Delivered",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Failed",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Opened",
