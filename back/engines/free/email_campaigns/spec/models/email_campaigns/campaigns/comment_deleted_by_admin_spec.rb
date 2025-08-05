@@ -34,7 +34,8 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
     let(:service) { EmailCampaigns::DeliveryService.new }
     let(:phase) { create(:ideation_phase) }
     let(:idea) { create(:idea, phases: [phase]) }
-    let(:activity) { create(:activity, item: create(:comment_deleted_by_admin, idea: idea), action: 'created') }
+    let(:notification) { create(:comment_deleted_by_admin, idea: idea) }
+    let(:activity) { create(:activity, item_id: notification.id, item_type: notification.class.name, action: 'created') }
 
     it 'receives process_command for ideation phases' do
       expect(service).to receive(:process_command).with(campaign, anything).once
