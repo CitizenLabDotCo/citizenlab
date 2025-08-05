@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 
 import { isString } from 'lodash-es';
 
+import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
 import PhaseFilesKeys from 'api/phase_files/keys';
-import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import useUpdatePhaseFile from 'api/phase_files/useUpdatePhaseFile';
 
@@ -12,7 +12,8 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import { SyncPhaseFilesArguments } from './types';
 
 export function useSyncPhaseFiles() {
-  const { mutateAsync: addPhaseFile } = useAddPhaseFile();
+  const { mutateAsync: addPhaseFileAttachment } = useAddFileAttachment();
+
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { mutateAsync: updatePhaseFile } = useUpdatePhaseFile();
 
@@ -21,20 +22,26 @@ export function useSyncPhaseFiles() {
       phaseId,
       phaseFiles,
       filesToRemove,
+      filesToAttach,
       fileOrdering,
     }: SyncPhaseFilesArguments) => {
-      // Get any files that we need to add
-      const filesToAddPromises = phaseFiles
-        .filter((file) => !file.remote)
-        .map((file) =>
-          addPhaseFile({
-            phaseId,
-            base64: file.base64 || '',
-            ordering: file.ordering!, // Use the ordering from drag-and-drop
-            name: file.name,
-            invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
-          })
-        );
+      console.log({ phaseFiles, filesToRemove, filesToAttach });
+      // Create any missing File Attachments to the phase
+      if (filesToAttach && filesToAttach.length > 0) {
+        // Get any files that we need to attach
+        const filesToAttachPromises = phaseFiles
+          .filter((file) => !file.remote)
+          .map((file) =>
+            addPhaseFileAttachment({
+              file_id: file.id || '',
+              attachable_id: phaseId,
+              attachable_type: 'phase',
+            })
+          );
+
+        // Wait for the file attachments to be created
+        await Promise.all(filesToAttachPromises);
+      }
 
       // Get any files that we need to remove
       const filesToRemovePromises = filesToRemove
@@ -70,16 +77,12 @@ export function useSyncPhaseFiles() {
       );
 
       // Return a single promise that resolves when all mutations are done
-      await Promise.all([
-        ...filesToAddPromises,
-        ...filesToRemovePromises,
-        ...filesToReorderPromises,
-      ]);
+      await Promise.all([...filesToRemovePromises, ...filesToReorderPromises]);
 
       await queryClient.invalidateQueries({
         queryKey: PhaseFilesKeys.list({ phaseId }),
       });
     },
-    [addPhaseFile, deletePhaseFile, updatePhaseFile]
+    [addPhaseFileAttachment, deletePhaseFile, updatePhaseFile]
   );
 }

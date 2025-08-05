@@ -29,6 +29,7 @@ export interface Props {
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove?: (fileToRemove: FileType) => void;
   onFileReorder?: (updatedFiles: FileType[]) => void;
+  afterFileSelect?: (files: FileType[]) => void;
   files: FileType[] | null;
   apiErrors?: CLErrors | null;
   enableDragAndDrop?: boolean;
@@ -42,6 +43,7 @@ const FileUploader = ({
   onFileAdd,
   onFileRemove,
   onFileReorder,
+  afterFileSelect,
   files: initialFiles,
   apiErrors,
   id,
@@ -200,6 +202,7 @@ const FileUploader = ({
               setFiles={setFiles}
               attachedFiles={files}
               setShowModal={setIsModalOpen}
+              afterFileSelect={afterFileSelect}
             />
           )}
           <FilesUpload
@@ -215,7 +218,7 @@ const FileUploader = ({
                 name: file.file.name,
                 size: file.file.size || 0,
                 url: '',
-                remote: true,
+                remote: false,
               }));
 
               setFiles((prev) => {
@@ -224,6 +227,8 @@ const FileUploader = ({
                   (newFile) =>
                     !prev.some((existingFile) => existingFile.id === newFile.id)
                 );
+
+                afterFileSelect?.(filesToAdd);
 
                 return [...prev, ...filesToAdd];
               });

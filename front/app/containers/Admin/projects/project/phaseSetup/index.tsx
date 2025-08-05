@@ -190,9 +190,9 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     updateFormData({ description_multiloc });
   };
 
-  const handlePhaseFileOnAdd = (newFile: UploadFile) => {
+  const handlePhaseFileOnAdd = (newFile: FileType) => {
     const modifiedNewFile = {
-      name: newFile.name || newFile.filename,
+      name: newFile.name,
       size: newFile.size,
       remote: false,
       base64: newFile.base64,
@@ -270,6 +270,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
       phaseFiles: inStatePhaseFiles,
       filesToRemove: phaseFilesToRemove,
       fileOrdering: initialFileOrdering || {},
+      filesToAttach: inStatePhaseFiles.filter((file) => !file.remote),
     })
       .then(() => {
         setPhaseFilesToRemove([]);
@@ -416,6 +417,11 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             <FileUploader
               id="project-timeline-edit-form-file-uploader"
               onFileAdd={handlePhaseFileOnAdd}
+              afterFileSelect={(files) => {
+                console.log('HERE!', files);
+                setInStatePhaseFiles((prev) => [...prev, ...files]);
+                setSubmitState('enabled');
+              }}
               onFileRemove={handlePhaseFileOnRemove}
               onFileReorder={handleFilesReorder}
               files={inStatePhaseFiles}
