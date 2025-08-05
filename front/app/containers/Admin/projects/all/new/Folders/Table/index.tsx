@@ -91,7 +91,13 @@ const Table = () => {
         </Tbody>
       </TableComponent>
 
-      <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
+      <Box
+        ref={loadMoreRef}
+        mt="12px"
+        display="flex"
+        justifyContent="center"
+        color={colors.textPrimary}
+      >
         {sentinelMessage && formatMessage(sentinelMessage)}
       </Box>
 

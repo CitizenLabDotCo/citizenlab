@@ -126,6 +126,7 @@ const AdminPage = memo<Props>(({ className }) => {
 
   const noPadding =
     pathname.includes('admin/dashboard') ||
+    pathname.includes('admin/projects') ||
     pathname.includes('admin/messaging') ||
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||
@@ -134,6 +135,7 @@ const AdminPage = memo<Props>(({ className }) => {
 
   const fullWidth =
     pathname.includes('admin/dashboard') ||
+    pathname.includes('admin/projects') ||
     pathname.includes('admin/messaging') ||
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||

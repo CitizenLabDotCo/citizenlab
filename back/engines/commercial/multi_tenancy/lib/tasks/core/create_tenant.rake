@@ -346,6 +346,10 @@ namespace :cl2_back do
         project_planning: {
           enabled: false,
           allowed: false
+        },
+        project_planning_calendar: {
+          enabled: false,
+          allowed: false
         }
       }
     )
