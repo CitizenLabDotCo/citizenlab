@@ -140,8 +140,8 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
     it 'returns false for the other attributes' do
       %i[
-        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
-        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
+        voting_method voting_max_total voting_min_total
+        voting_max_votes_per_idea baskets_count votes_count
       ].each do |attribute|
         expect(participation_method.supports_serializing?(attribute)).to be false
       end
