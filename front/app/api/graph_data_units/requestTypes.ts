@@ -1,3 +1,5 @@
+import { ProjectSortableParam } from 'api/projects_mini_admin/types';
+
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // live
@@ -190,12 +192,7 @@ export interface ProjectsTimelineProps extends DateProps {
   managers?: string[];
   folder_ids?: string[];
   participation_methods?: string[];
-  sort?:
-    | 'recently_viewed'
-    | 'phase_starting_or_ending_soon'
-    | 'recently_created'
-    | 'alphabetically_asc'
-    | 'alphabetically_desc';
+  sort?: ProjectSortableParam;
   number_of_projects?: number;
 }
 
