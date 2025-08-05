@@ -413,7 +413,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             <FileUploader
               id="project-timeline-edit-form-file-uploader"
               onFileAdd={handlePhaseFileOnAdd} // For old file uploader, which we will remove once the feature is released.
-              onFileAddFromLibrary={(files: FileType[]) => {
+              onFileAddFromRepository={(files: FileType[]) => {
                 // Here, we handle files added from the new File Library uploader.
                 setInStatePhaseFiles((prev) => [...prev, ...files]);
                 setSubmitState('enabled');

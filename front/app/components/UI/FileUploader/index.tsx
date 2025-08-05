@@ -14,9 +14,9 @@ import Error from 'components/UI/Error';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import DataRepositoryFileSelector from './DataRepositoryFileSelector';
 import FileDisplay, { FileType } from './FileDisplay';
 import FileInput from './FileInput';
-import LibraryFileUploader from './LibraryFileUploader';
 import messages from './messages';
 
 export interface Props {
@@ -25,7 +25,7 @@ export interface Props {
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove?: (fileToRemove: FileType) => void;
   onFileReorder?: (updatedFiles: FileType[]) => void;
-  onFileAddFromLibrary?: (files: FileType[]) => void;
+  onFileAddFromRepository?: (files: FileType[]) => void;
   files: FileType[] | null;
   apiErrors?: CLErrors | null;
   enableDragAndDrop?: boolean;
@@ -40,7 +40,7 @@ const FileUploader = ({
   onFileRemove,
   onFileReorder,
   allowFromDataRepository = false,
-  onFileAddFromLibrary,
+  onFileAddFromRepository,
   files: initialFiles,
   apiErrors,
   id,
@@ -121,9 +121,11 @@ const FileUploader = ({
         w="100%"
       >
         {isDataRepositoryEnabled && allowFromDataRepository ? (
-          // Use the new file uploader, where you can also select from the existing file library.
+          // The new file uploader, where you can select from the existing file library.
           // For now we support both the old and new file uploader, but eventually we want to remove the old one.
-          <LibraryFileUploader onFileAddFromLibrary={onFileAddFromLibrary} />
+          <DataRepositoryFileSelector
+            onFileAddFromRepository={onFileAddFromRepository}
+          />
         ) : (
           <FileInput
             onAdd={handleFileOnAdd}

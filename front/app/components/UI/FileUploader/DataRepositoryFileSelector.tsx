@@ -14,9 +14,12 @@ import messages from './messages';
 
 type Props = {
   files?: FileType[];
-  onFileAddFromLibrary?: (files: FileType[]) => void;
+  onFileAddFromRepository?: (files: FileType[]) => void;
 };
-const LibraryFileUploader = ({ onFileAddFromLibrary, files }: Props) => {
+const DataRepositoryFileSelector = ({
+  onFileAddFromRepository,
+  files,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [showSelectExistingFiles, setShowSelectExistingFiles] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,7 +47,7 @@ const LibraryFileUploader = ({ onFileAddFromLibrary, files }: Props) => {
             <SelectExistingFile
               attachedFiles={files}
               setShowModal={setIsModalOpen}
-              onFileAddFromLibrary={onFileAddFromLibrary}
+              onFileAddFromRepository={onFileAddFromRepository}
             />
           )}
           <FilesUpload
@@ -69,7 +72,7 @@ const LibraryFileUploader = ({ onFileAddFromLibrary, files }: Props) => {
                   !files?.some((existingFile) => existingFile.id === newFile.id)
               );
 
-              onFileAddFromLibrary?.(filesToAdd);
+              onFileAddFromRepository?.(filesToAdd);
             }}
           />
         </Box>
@@ -78,4 +81,4 @@ const LibraryFileUploader = ({ onFileAddFromLibrary, files }: Props) => {
   );
 };
 
-export default LibraryFileUploader;
+export default DataRepositoryFileSelector;

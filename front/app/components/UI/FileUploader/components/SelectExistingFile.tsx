@@ -18,13 +18,13 @@ import messages from '../messages';
 type Props = {
   setShowModal?: React.Dispatch<React.SetStateAction<boolean>>;
   attachedFiles?: FileType[];
-  onFileAddFromLibrary?: (files: FileType[]) => void;
+  onFileAddFromRepository?: (files: FileType[]) => void;
 };
 
 const SelectExistingFile = ({
   attachedFiles,
   setShowModal,
-  onFileAddFromLibrary,
+  onFileAddFromRepository,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -79,7 +79,7 @@ const SelectExistingFile = ({
                 !attachedFiles?.some((file) => file.id === option.value) &&
                 selectedFile
               ) {
-                onFileAddFromLibrary?.([
+                onFileAddFromRepository?.([
                   {
                     id: selectedFile.id,
                     name: selectedFile.attributes.name,
