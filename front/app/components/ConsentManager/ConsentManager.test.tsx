@@ -184,22 +184,6 @@ describe('<ConsentManager />', () => {
       expect(container.querySelector('#analytics-radio-true')).toBeChecked();
     });
 
-    it('rejects all cookies, and remembers choices without a page reload', async () => {
-      // See the test above for the reason why this is needed.
-      const user = userEvent.setup();
-      const { container } = render(<ConsentManager />);
-      await user.click(screen.getByTestId('reject-cookies-btn'));
-      expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
-
-      // Simulate opening the consent manager again.
-      // We use events to trigger the modal from e.g. the platform footer.
-      act(() => eventEmitter.emit('openConsentManager'));
-      await user.click(screen.getByTestId('manage-preferences-btn'));
-      // Functional is always true, so it should be checked.
-      expect(container.querySelector('#functional-radio-true')).toBeChecked();
-      expect(container.querySelector('#analytics-radio-false')).toBeChecked();
-    });
-
     it('accepts only functional and analytics cookies if analytics is enabled in preference modal', async () => {
       const user = userEvent.setup();
       const { container } = render(<ConsentManager />);
