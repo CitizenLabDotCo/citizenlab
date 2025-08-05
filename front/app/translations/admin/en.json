@@ -32,7 +32,7 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Accepted",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Bounced",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Clicked",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "This shows how many recipients clicked a link in the email. Please note that some security systems may follow links automatically to scan them, which can result in false clicks.",
+  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip2": "This shows how many recipients clicked a link in the email. Please note that some security systems may follow links automatically to scan them, which can result in false clicks.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Delivered",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Failed",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Opened",

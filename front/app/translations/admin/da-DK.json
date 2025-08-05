@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Accepteret",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Afvist",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Klikede på",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "Når du har tilføjet et eller flere links til din e-mail, vil antallet af brugere, der har klikket på et link, blive vist her.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Leveret",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Mislykkedes",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Åbnet",

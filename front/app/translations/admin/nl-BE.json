@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Geaccepteerd",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Bounced",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Geklikt",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "Als je één of meer hyperlinks hebt toegevoegd aan je e-mail, kan je hier zien hoeveel gebruikers erop hebben geklikt.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Afgeleverd",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Mislukt",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Geopend",

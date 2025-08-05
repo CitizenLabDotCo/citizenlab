@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Priimtas",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Atšokęs",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Paspaudė",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "Kai į el. laišką pridėjote vieną ar daugiau nuorodų, čia bus rodomas naudotojų, kurie spustelėjo nuorodą, skaičius.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Pristatytas",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Nepavyko",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Atidaryta",

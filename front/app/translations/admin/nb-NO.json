@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Godkjent",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Avvist",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Klikket",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "Når du har lagt til en eller flere lenker i e-posten din, vil antall brukere som har klikket på en lenke, vises her.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Leveres",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Mislyktes",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Åpnet",

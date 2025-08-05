@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "ਸਵੀਕਾਰ ਕੀਤਾ",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "ਉਛਾਲਿਆ",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "ਕਲਿਕ ਕੀਤਾ",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "ਜਦੋਂ ਤੁਸੀਂ ਆਪਣੀ ਈਮੇਲ ਵਿੱਚ ਇੱਕ ਜਾਂ ਵੱਧ ਲਿੰਕ ਜੋੜਦੇ ਹੋ, ਤਾਂ ਲਿੰਕ 'ਤੇ ਕਲਿੱਕ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾਵਾਂ ਦੀ ਗਿਣਤੀ ਇੱਥੇ ਦਿਖਾਈ ਜਾਵੇਗੀ।",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "ਡਿਲੀਵਰ ਕੀਤਾ",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "ਅਸਫਲ ਰਿਹਾ",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "ਖੋਲ੍ਹਿਆ",

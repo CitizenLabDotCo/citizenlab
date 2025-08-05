@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Hyväksytty",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Pomppii",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Napsautettu",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "Kun lisäsit yhden tai useamman linkin sähköpostiisi, linkkiä napsauttaneiden käyttäjien määrä näkyy tässä.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Toimitettu",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Epäonnistui",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Avattu",
