@@ -422,6 +422,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
               enableDragAndDrop
               multiple
               apiErrors={errors}
+              allowSelectingFromDataRepository={true}
             />
           </SectionField>
           {Object.keys(flatCampaigns).length > 0 && (

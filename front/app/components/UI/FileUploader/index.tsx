@@ -35,6 +35,7 @@ export interface Props {
   multiple?: boolean;
   maxSizeMb?: number;
   dataCy?: string;
+  allowSelectingFromDataRepository?: boolean;
 }
 
 const FileUploader = ({
@@ -46,6 +47,7 @@ const FileUploader = ({
   id,
   className,
   enableDragAndDrop = false,
+  allowSelectingFromDataRepository = false,
   multiple = false,
   maxSizeMb,
   dataCy,
@@ -122,7 +124,7 @@ const FileUploader = ({
         data-cy="e2e-file-uploader-container"
         w="100%"
       >
-        {isDataRepositoryEnabled ? (
+        {isDataRepositoryEnabled && allowSelectingFromDataRepository ? (
           <>
             <Button
               mt="12px"
