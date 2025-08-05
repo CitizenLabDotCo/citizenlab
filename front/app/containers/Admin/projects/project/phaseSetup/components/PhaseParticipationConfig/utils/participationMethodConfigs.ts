@@ -15,8 +15,6 @@ export const defaultParticipationConfig: IUpdatedPhaseProperties = {
   voting_min_total: null,
   voting_max_total: null,
   voting_max_votes_per_idea: 1,
-  voting_term_singular_multiloc: null,
-  voting_term_plural_multiloc: null,
   presentation_mode: 'card',
   ideas_order: undefined,
   input_term: 'idea',
@@ -70,6 +68,7 @@ export const votingDefaultConfig: IUpdatedPhaseProperties = {
   presentation_mode: 'card',
   ideas_order: 'random',
   input_term: 'idea',
+  vote_term: 'vote',
 };
 
 export const surveyDefaultConfig: IUpdatedPhaseProperties = {

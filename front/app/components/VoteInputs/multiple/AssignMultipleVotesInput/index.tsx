@@ -15,8 +15,7 @@ import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
-
-import useLocalize from 'hooks/useLocalize';
+import { getPhaseVoteTermMessage } from 'api/phases/utils';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
@@ -65,7 +64,6 @@ const AssignMultipleVotesInput = ({
   // other
   const theme = useTheme();
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
   const isPhoneOrSmaller = useBreakpoint('phone');
 
   // action descriptors
@@ -126,27 +124,22 @@ const AssignMultipleVotesInput = ({
     return null;
   }
 
-  const {
-    voting_term_singular_multiloc,
-    voting_term_plural_multiloc,
-    voting_max_votes_per_idea,
-    voting_max_total,
-  } = phase.attributes;
+  const { voting_max_votes_per_idea, voting_max_total } = phase.attributes;
 
   if (isNil(voting_max_votes_per_idea)) return null;
 
-  const votingTermSingular =
-    localize(voting_term_singular_multiloc) ||
-    formatMessage(messages.vote).toLowerCase();
-  const votingTermPlural =
-    localize(voting_term_plural_multiloc) ||
-    formatMessage(messages.votes).toLowerCase();
+  const xVotesMessage = getPhaseVoteTermMessage(phase, {
+    vote: messages.xVotes,
+    point: messages.xPoints,
+    token: messages.xTokens,
+    credit: messages.xCredits,
+  });
 
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
   const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
-  const maxVotes = voting_max_total ?? 0;
+  const maxVotesInTotal = voting_max_total ?? 0;
 
   const action =
     phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
@@ -175,9 +168,7 @@ const AssignMultipleVotesInput = ({
     : undefined;
 
   const plusButtonDisabledExplanation = plusButtonDisabledMessage
-    ? formatMessage(plusButtonDisabledMessage, {
-        maxVotes: voting_max_votes_per_idea,
-      })
+    ? formatMessage(plusButtonDisabledMessage)
     : undefined;
 
   if (votes > 0) {
@@ -232,16 +223,14 @@ const AssignMultipleVotesInput = ({
               value={votes}
               max={Math.min(
                 voting_max_votes_per_idea,
-                maxVotes - (numberOfVotesCast ?? 0)
+                maxVotesInTotal - (numberOfVotesCast ?? 0)
               )}
               onChange={(newValue) => setVotes?.(ideaId, newValue)}
             />
           </Box>
           <Text fontSize="m" ml="8px" my="auto" aria-live="polite">
-            {formatMessage(messages.xVotes, {
+            {formatMessage(xVotesMessage, {
               votes,
-              singular: votingTermSingular,
-              plural: votingTermPlural,
             })}
           </Text>
         </Box>
@@ -268,28 +257,30 @@ const AssignMultipleVotesInput = ({
   }
 
   return (
-    <Tooltip
-      disabled={!plusButtonDisabledExplanation}
-      placement="bottom"
-      content={plusButtonDisabledExplanation}
-    >
-      <div>
-        <Button
-          buttonStyle="primary-outlined"
-          disabled={!!plusButtonDisabledExplanation}
-          processing={isProcessing}
-          className="e2e-multiple-votes-button"
-          icon="vote-ballot"
-          width="100%"
-          onClick={onAdd}
-          opacityDisabled="0.8"
-          textDisabledColor={colors.coolGrey700}
-          borderDisabledColor={colors.coolGrey700}
-        >
-          {formatMessage(messages.select)}
-        </Button>
-      </div>
-    </Tooltip>
+    <Box w="100%">
+      <Tooltip
+        disabled={!plusButtonDisabledExplanation}
+        placement="bottom"
+        content={plusButtonDisabledExplanation}
+      >
+        <div>
+          <Button
+            buttonStyle="primary-outlined"
+            disabled={!!plusButtonDisabledExplanation}
+            processing={isProcessing}
+            className="e2e-multiple-votes-button"
+            icon="vote-ballot"
+            width="100%"
+            onClick={onAdd}
+            opacityDisabled="0.8"
+            textDisabledColor={colors.coolGrey700}
+            borderDisabledColor={colors.coolGrey700}
+          >
+            {formatMessage(messages.select)}
+          </Button>
+        </div>
+      </Tooltip>
+    </Box>
   );
 };
 

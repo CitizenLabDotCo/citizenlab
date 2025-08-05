@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::InvitationToCosponsorIdeaMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:author) { create(:user) }
+    let_it_be(:author) { create(:user, first_name: 'Ned', last_name: 'Flanders') }
     let_it_be(:proposal) { create(:proposal, author: author) }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::InvitationToCosponsorIdea.create! }
     let_it_be(:author_name) { UserDisplayNameService.new(AppConfiguration.instance, author).display_name!(proposal.author) }
@@ -16,9 +16,12 @@ RSpec.describe EmailCampaigns::InvitationToCosponsorIdeaMailer do
       commands[0].merge({ recipient: recipient })
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('You have been invited to co-sponsor a proposal')
@@ -39,6 +42,35 @@ RSpec.describe EmailCampaigns::InvitationToCosponsorIdeaMailer do
     it 'assigns cta url' do
       proposal_url = Frontend::UrlService.new.model_to_url(proposal, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match(proposal_url)
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject' },
+          title_multiloc: { 'en' => 'NEW TITLE' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT - {{ authorName }}</b>' },
+          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE')
+      end
+
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT - Ned Flanders</b>')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail_body(mail)).to include('CLICK THE BUTTON')
+      end
     end
   end
 end

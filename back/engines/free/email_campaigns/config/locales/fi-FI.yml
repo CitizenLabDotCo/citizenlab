@@ -24,7 +24,8 @@ fi:
       "mention_in_official_feedback": Mainitse päivityksessä
       "mention_in_internal_comment": Mainitse sisäisessä kommentissa
       "new_comment_for_admin": Uusi kommentti moderoimassani projektissa
-      "new_idea_for_admin": Uusi idea moderoimassani projektissa
+      "new_idea_for_admin_published": Uusi julkaistu panos moderoimassani projektissa
+      "new_idea_for_admin_prescreening": Uusi hyväksyntää vaativa syöte moderoimassani projektissa
       "official_feedback_on_idea_you_follow": Päivitä ajatus, jota seuraat
       "password_reset": Salasanan nollaus
       "project_moderation_rights_received": Projektin moderointioikeudet saatu
@@ -84,6 +85,23 @@ fi:
         "5": "Viikoittain, perjantaisin kello %{hourOfDay}"
         "6": "Viikoittain lauantaisin kello %{hourOfDay}"
       quarterly: "Neljännesvuosittain, neljänneksen ensimmäisenä päivänä"
+    preview_data:
+      author_first_name: 'Jane'
+      author_last_name: 'Naaras'
+      author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Esimerkkiprojekti'
+      phase_title: 'Esimerkkivaihe'
+      comment_body: 'Tämä on esimerkkikommentti, jota käytetään sähköpostien sisällön esikatseluun. Tämä ei ole oikeaa sisältöä.'
+      comment_deleted_reason: 'Esimerkkikommenttiasi pidettiin sopimattomana.'
+      idea_title: 'Esimerkki-idea'
+      idea_body: 'Tämä on esimerkki ideasisällöstä, jota käytetään sähköpostien sisällön esikatseluun. Tämä ei ole oikeaa sisältöä.'
+      event_title: 'Esimerkkitapahtuma'
+      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_address2: 'Huone 3a, yläkerta'
+      proposal_title: 'Esimerkkiehdotus'
     footer:
       "link_privacy_policy": "Tietosuojakäytäntö"
       "link_terms_conditions": "käyttöehdot"
@@ -97,22 +115,22 @@ fi:
     manual:
       preheader: 'Sinulla on postia osoitteesta %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'Syy miksi kommenttisi poistettiin:'
-      cta_view: 'Katso tämä idea'
+      subject: 'Kommenttisi on poistettu alustalta %{organizationName}'
+      preheader: 'Kommenttisi on poistettu'
+      title: '%{organizationName} poisti kommenttisi'
       event_description: '%{organizationName} poisti ideasta kirjoittamasi kommentin.'
-      main_header: '%{organizationName} poisti kommenttisi'
+      cta_button: 'Näytä tämä idea'
+      reason: 'Syy miksi kommenttisi poistettiin:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Kommenttisi katsottiin sopimattomaksi'
       irrelevant_reason: 'Kommenttisi katsottiin epäolennaiseksi tässä kontekstissa'
       no_reason: 'Syytä ei kerrottu'
-      subject: 'Kommenttisi on poistettu alustalta %{organizationName}'
-      preheader: 'Kommenttisi on poistettu'
     admin_digest:
       subject: 'Viikoittainen järjestelmänvalvojaraporttisi %{time}'
       preheader: 'Järjestelmänvalvojan tiivistelmä kohteesta %{organizationName}'
-      title_your_weekly_report: '%{firstName}, viikkoraporttisi'
-      text_introduction: 'Olemme koonneet sinulle panoksen, joka on aiheuttanut eniten aktiivisuutta kuluneen viikon aikana. Ota selvää, mitä alustallasi tapahtuu!'
-      cta_visit_the_platform: 'Vieraile alustallasi'
+      title: '%{firstName}, viikoittainen raporttisi'
+      event_description: 'Olemme koonneet sinulle palautteen, joka on herättänyt eniten aktiivisuutta kuluneen viikon aikana. Ota selvää, mitä alustallasi tapahtuu!'
+      cta_button: 'Käy alustallasi'
       new_users: 'Uudet käyttäjät'
       new_inputs: 'Uudet sisääntulot'
       new_comments: 'Uusia kommentteja'
@@ -123,10 +141,11 @@ fi:
       today_by_author: 'Tänään %{author}'
       x_days_ago_by_author: '%{x} päivää sitten, kirjoittaja %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Hallinnoi alustaasi'
-      message_you_became_administrator: 'Sinulle on myönnetty järjestelmänvalvojan oikeudet osallistumisalustalle %{organizationName}.'
-      preheader: 'Sinulle myönnettiin järjestelmänvalvojan oikeudet osallistumisalustalle %{organizationName}'
       subject: 'Sinusta tuli järjestelmänvalvoja alustalla %{organizationName}'
+      preheader: 'Sinulle myönnettiin järjestelmänvalvojan oikeudet osallistumisalustalle %{organizationName}'
+      title: 'Sinusta tuli järjestelmänvalvoja'
+      event_description: 'Sinulle on myönnetty järjestelmänvalvojan oikeudet %{organizationName}osallistumisalustalle.'
+      cta_button: 'Hallitse alustaasi'
       text_create_participatory_process: 'Järjestelmänvalvojana voit luoda ja määrittää uusia osallistumisprojekteja. Voit lisätä uusia vaiheita käyttämällä aikajanaa. Jokaisella näistä vaiheista voi olla oma käyttäytymisensä idean julkaisemisen, kommentoimisen ja äänestämisen suhteen.'
       text_moderate_analyse_input: 'Kun projektit on käynnistetty, ensimmäiset ideat tulevat sisään. Saat viikoittain raportit kaikista tärkeimmistä toiminnoista, jotta pysyt ajan tasalla. Ideoiden yleiskatsauksen avulla voit moderoida syötteen ja tehdä yhteistyötä sen käsittelyssä.'
       text_platform_setup: 'Järjestelmänvalvojana voit määrittää osallistumisalustan. Valitse logo, kuvat ja värit, kirjoita kotisivullesi henkilökohtainen viesti, lähetä kutsuja, määrittele mitä haluat tietää käyttäjistäsi, ...'
@@ -134,38 +153,38 @@ fi:
       title_moderate_analyse_input: 'Moderoi ja analysoi syötettä'
       title_platform_setup: 'Aseta alustasi valmiiksi'
       title_what_can_you_do_administrator: 'Mitä voit tehdä järjestelmänvalvojana?'
-      title_you_became_administrator: 'Sinusta tuli järjestelmänvalvoja'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} ilmoitti tämän kommentin roskapostiksi'
+      preheader: 'Toimi tämän roskapostiksi ilmoitetun kommentin mukaan'
+      title: '%{firstName} %{lastName} ilmoitti tämän kommentin roskapostiksi'
+      cta_button: 'Arvostelun kommentti'
       by_author: 'kirjoittaja %{authorName}'
       commented: '%{authorName} kommentoi:'
-      cta_review_comment: 'Tarkista kommentti'
       days_ago: '%{numberOfDays} päivää sitten'
       event_description: 'Seuraava kommentti lähetetty <strong>''%{post}''</strong> raportoitiin:'
       inappropriate_content: 'Kommentti on sopimaton tai loukkaava.'
-      preheader: 'Toimi tämän roskapostiksi ilmoitetun kommentin mukaan'
       reported_this_because: '%{reporterFirstName} ilmoitti tästä, koska:'
-      subject: '%{organizationName}: %{firstName} %{lastName} ilmoitti tämän kommentin roskapostiksi'
-      title_comment_spam_report: '%{firstName} %{lastName} ilmoitti tämän kommentin roskapostiksi'
       today: Tänään
       wrong_content: 'Kommentti ei liity asiaan.'
       yesterday: Eilen
     community_monitor_report:
       subject: 'Uusi yhteisön valvontaraportti on saatavilla'
+      preheader: 'Uusi yhteisömonitoriraportti on saatavilla'
       title: 'Uusi yhteisön valvontaraportti on saatavilla'
-      text_introduction: 'Yhteisömonitoriraportti on luotu edelliseltä vuosineljännekseltä. Pääset siihen klikkaamalla alla olevaa painiketta ja kirjautumalla sisään.'
-      cta_report_button: 'Näytä raportti'
+      event_description: 'Edelliselle neljännekselle on luotu yhteisömonitorin raportti. Pääset siihen napsauttamalla alla olevaa painiketta ja kirjautumalla sisään.'
+      cta_button: 'Näytä raportti'
       report_name: 'Yhteisön valvontaraportti'
     cosponsor_of_your_idea:
-      cta_reply_to: 'Katso ehdotuksesi'
-      event_description: 'Onnittelut! %{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi.'
-      main_header: '%{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi'
       subject: '%{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi'
       preheader: '%{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi'
+      title: '%{cosponsorName} on hyväksynyt kutsusi ehdotuksesi yhteisrahoittajaksi'
+      event_description: 'Onnittelut! %{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi.'
+      cta_button: 'Katso ehdotuksesi'
     assignee_digest:
       subject: 'Palautteesi vaativat ideat: %{numberIdeas}'
       preheader: 'Vastaanotetun tiivistelmä %{organizationName}'
-      title_your_weekly_report: '%{firstName}, kansalaisten palaute odottaa palautettasi'
-      cta_manage_your_input: 'Muokkaa syötteitäsi'
+      title: '%{firstName}, kansalaisten palautetta odotetaan'
+      cta_button: 'Hallitse syötettäsi'
       x_inputs_need_your_feedback: 'syötteet tarvitsevat palautettasi'
       title_assignment_past_week: 'Uusimmat sinulle osoitetut ideat'
       title_no_assignment_past_week: 'Sinulle ei ole määrätty uusia ideoita viime viikolla'
@@ -174,36 +193,36 @@ fi:
       x_days_ago_by_author: '%{x} päivää sitten, kirjoittaja %{author}'
       title_successful_past_week: 'Määritetty sinulle, joka saavutti kynnyksen'
     idea_marked_as_spam:
-      cta_review: 'Arvostelu'
-      report_inappropriate_offensive_content: 'Pidän tätä sisältöä sopimattomana tai loukkaavana.'
-      report_not_an_idea: 'Tämä sisältö ei ole idea eikä kuulu tänne.'
       subject: 'Sinulla on roskapostiraportti alustalla %{organizationName}'
       preheader: 'Toimi tämän roskapostiraportin mukaan'
+      title: '%{firstName} %{lastName} ilmoitti roskapostista'
+      cta_button: 'Arvostelu'
+      report_inappropriate_offensive_content: 'Pidän tätä sisältöä sopimattomana tai loukkaavana.'
+      report_not_an_idea: 'Tämä sisältö ei ole idea eikä kuulu tänne.'
       reported_this_because: '%{reporterFirstName} ilmoitti tästä, koska:'
-      title_spam_report: '%{firstName} %{lastName} ilmoitti roskapostista'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'Kannata tätä ehdotusta'
+      subject: 'Sinut on kutsuttu tukemaan ehdotusta'
+      preheader: 'Sinut on kutsuttu tukemaan ehdotusta %{authorName}'
+      title: 'Sinut on kutsuttu ehdotuksen yhteissponsoriksi'
       event_description: '%{authorName} on luonut uuden ehdotuksen ja haluaa sinun tukevan sitä.'
       event_description_cosponsoring: 'Ehdotuksen yhteissponsorointi tarkoittaa, että <strong>nimesi näytetään</strong> ehdotuksen muiden tukisponsoreiden nimien kanssa.'
       event_description_before_action: 'Nähdäksesi ehdotuksen ja hyväksyäksesi kutsun sinun tulee olla kirjautuneena tilillesi.'
       event_description_action: 'Klikkaa alta lukeaksesi ehdotuksen.'
-      main_header: 'Sinut on kutsuttu tukemaan ehdotusta'
-      subject: 'Sinut on kutsuttu tukemaan ehdotusta'
-      preheader: 'Sinut on kutsuttu tukemaan ehdotusta %{authorName}'
+      cta_button: 'Tue tätä ehdotusta'
     invite_reminder:
-      cta_accept_invitation: 'Hyväksy kutsusi'
-      invitation_header: 'Kutsusi odottaa'
-      preheader: '%{organizationName} lähetti sinulle kutsun liittyä heidän osallistumisalustaan muutama päivä sitten.'
-      invitation_expiry_message: 'Tämä kutsu vanhenee noin %{expiryDaysRemaining} päivän kuluttua.'
       subject: 'Odottaa kutsua %{organizationName}osallistumisalustaan'
+      preheader: '%{organizationName} lähetti sinulle kutsun liittyä heidän osallistumisalustaan muutama päivä sitten.'
+      title: 'Kutsuasi odotetaan'
+      cta_button: 'Hyväksy kutsusi'
+      invitation_expiry_message: 'Tämä kutsu vanhenee noin %{expiryDaysRemaining} päivän kuluttua.'
     invite_received:
-      added_a_message: '%{organizationName} kirjoitti seuraavan viestin:'
-      cta_accept_invitation: 'Hyväksy kutsusi'
-      invitation_header: 'Sinut on kutsuttu!'
-      invitation_header_message: '%{organizationName} kutsui sinut osallistumisalustalleen.'
-      invitation_expiry_message: 'Tämä kutsu vanhenee %{expiryDays} päivän kuluttua.'
       preheader: '%{organizationName} lähetti sinulle kutsun liittyä heidän osallistumisalustaan.'
       subject: 'Sinut on kutsuttu liittymään %{organizationName}-alustalle'
+      title: 'Olet tervetullut!'
+      event_description: '%{organizationName} kutsui sinut osallistumisalustalleen.'
+      cta_button: 'Hyväksy kutsusi'
+      added_a_message: '%{organizationName} kirjoitti seuraavan viestin:'
+      invitation_expiry_message: 'Tämä kutsu vanhenee %{expiryDays} päivän kuluttua.'
     mention_in_comment:
       cta_reply_to: 'Vastaa %{commentAuthor}'
       event_description: '%{commentAuthorFull} on maininnut sinut kommentissaan ideasta ''%{post}''. Napsauta alla olevaa linkkiä päästäksesi keskusteluun %{commentAuthor}:n kanssa'
@@ -211,17 +230,17 @@ fi:
       subject: 'Joku mainitsi sinut alustalla %{organizationName}'
       preheader: '%{commentAuthor} mainitsi sinut kommentissa'
     mention_in_internal_comment:
-      cta_reply_to: 'Näytä kommentti käyttäjältä %{firstName}'
+      cta_button: 'Näytä kommentti käyttäjältä %{firstName}'
       event_description: '%{authorNameFull} mainitsi sinut sisäisessä kommentissa.'
       subject: '%{firstName} mainitsi sinut sisäisessä kommentissa.'
-      main_header: '%{firstName} mainitsi sinut sisäisessä kommentissa.'
+      title: '%{firstName} mainitsi sinut sisäisessä kommentissa.'
       preheader: '%{authorNameFull} mainitsi sinut sisäisessä kommentissa.'
     moderator_digest:
       subject: 'Viikoittainen projektipäällikköraporttisi %{time}'
       preheader: 'Projektipäällikkö tiivistelmä %{organizationName}'
-      title_your_weekly_report: '%{firstName}, viikkoraporttisi'
-      text_introduction: 'Olemme koonneet sinulle panoksen, joka on aiheuttanut eniten aktiivisuutta kuluneen viikon aikana. Ota selvää, mitä projektillesi tapahtuu!'
-      cta_manage: 'Muokkaa projektiasi'
+      title: '%{firstName}, viikoittainen raporttisi'
+      event_description: 'Olemme koonneet sinulle palautteen, joka on herättänyt eniten aktiivisuutta kuluneen viikon aikana. Ota selvää, mitä projektissasi tapahtuu!'
+      cta_button: 'Hallitse projektiasi'
       new_users: 'Uudet käyttäjät'
       new_ideas: 'Uusia ideoita'
       new_comments: 'Uusia kommentteja'
@@ -233,17 +252,20 @@ fi:
       x_days_ago_by_author: '%{x} päivää sitten, kirjoittaja %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} kommentoi:'
-      cta_reply_to: 'Katso käyttäjän %{commentAuthor}kommentti'
+      cta_button: 'Näytä käyttäjän %{authorFirstName}kommentti'
       days_ago: '%{numberOfDays} päivää sitten'
       event_description: '%{authorName} lisäsi uuden kommentin alustallesi.'
-      main_header: '%{firstName}, uusi kommentti on lähetetty alustallesi'
+      title: '%{firstName}, uusi kommentti on julkaistu alustallasi'
       subject: 'Uusi kommentti on lähetetty käyttäjän %{organizationName}alustalle'
       preheader: '%{authorName} jätti kommentin'
       today: Tänään
       yesterday: Eilen
     comment_on_idea_you_follow:
-      cta_reply_to: 'Vastaa %{commentAuthor}'
+      subject: '"%{input_title}" on uusi kommentti'
+      preheader: '%{authorName} jätti kommentin ideaan %{organizationName}'
+      title: '%{authorName} kommentoi seuraamaasi viestiä'
       event_description: '%{authorNameFull} asetti reaktion kohtaan ''%{inputTitle}''. Napsauta alla olevaa painiketta jatkaaksesi keskustelua %{authorName}kanssa.'
+      cta_button: 'Vastaus käyttäjälle %{commentAuthor}'
       main_header:
         idea: '%{authorName} kommentoi ideaa, jota seuraat'
         question: '%{authorName} kommentoi kysymystä, jota seuraat'
@@ -253,56 +275,61 @@ fi:
         option: '%{authorName} kommentoi valitsemaasi vaihtoehtoa'
         proposal: '%{authorName} kommentoi ehdotusta, jota seuraat'
         petition: '%{authorName} kommentoi seuraamaasi vetoomusta'
-      subject: '"%{input_title}" on uusi kommentti'
-      preheader: '%{authorName} jätti kommentin ideaan %{organizationName}'
-    new_idea_for_admin:
-      main_header_publication: 'Uusi syöte on julkaistu alustallasi'
-      event_description_publication: '%{authorName} on lähettänyt uuden syötteen alustallesi. Tutustu siihen nyt, anna palautetta tai muuta sen tilaa!'
-      cta_publication: 'Anna palautetta %{authorName}'
-      main_header_prescreening: 'Syöte vaatii tarkistuksen'
-      event_description_prescreening: '%{authorName} on lähettänyt uuden syötteen alustallesi.'
-      input_not_visible_prescreening: '<b>Syöte ei ole näkyvissä</b> ennen kuin muutat sen tilaa.'
-      cta_prescreening: 'Tarkista syöte'
+    new_idea_for_admin_published:
+      subject: 'Uusi syöte on julkaistu alustallasi'
+      preheader: '%{authorName} julkaisi uuden syötteen alustallasi'
+      title: 'Uusi syöte on julkaistu alustallasi'
+      event_description: '%{authorName} on lähettänyt uuden syötteen alustallesi. Löydä se nyt, anna palautetta tai muuta sen tilaa!'
+      cta_button: 'Anna palautetta käyttäjälle %{authorName}'
       days_ago: '%{numberOfDays} päivää sitten'
-      preheader: '%{authorName} julkaisi uuden idean alustallasi'
+      today: Tänään
+      yesterday: Eilen
+    new_idea_for_admin_prescreening:
+      subject: 'Syöte vaatii tarkistustasi'
+      preheader: '%{authorName} julkaisi uuden syötteen alustallasi'
+      title: 'Syöte vaatii tarkistustasi'
+      cta_button: 'Tarkista syöte'
+      event_description: '%{authorName} on lähettänyt uuden syötteen alustallesi.'
+      input_not_visible: '<b>Syöte ei ole näkyvissä</b> ennen kuin muokkaat sen tilaa.'
+      days_ago: '%{numberOfDays} päivää sitten'
       today: Tänään
       yesterday: Eilen
     comment_on_your_comment:
-      cta_reply_to: 'Vastaa %{firstName}'
-      event_description: '%{authorNameFull} kirjoitti vastauksen kommenttiisi "%{post}" osallistumisalustalla. Napsauta alla olevaa painiketta jatkaaksesi keskustelua %{authorName}kanssa.'
       subject: 'Olet saanut vastauksen kommenttiisi %{organizationName}alustalla'
-      main_header: '%{authorName} vastasi kommenttiisi'
       preheader: '%{authorName} vastasi kommenttiisi käyttäjän %{organizationName}alustalla'
+      title: '%{authorName} vastasi kommenttiisi'
+      event_description: '%{authorNameFull} kirjoitti vastauksen kommenttiisi "%{post}" osallistumisalustalla. Napsauta alla olevaa painiketta jatkaaksesi keskustelua %{authorName}kanssa.'
+      cta_button: 'Vastaus käyttäjälle %{authorFirstName}'
       replied: '%{authorFirstName} vastasi:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: 'Näytä kommentti käyttäjältä %{firstName}'
+      cta_button: 'Näytä kommentti käyttäjältä %{firstName}'
       event_description: '%{authorNameFull} kommentoi sisäistä kommenttiasi.'
       subject: 'Olet saanut kommentin sisäiseen kommenttiisi ''%{post}'''
-      main_header: 'Olet saanut kommentin sisäiseen kommenttiisi ''%{post}'''
+      title: 'Olet saanut kommentin sisäiseen kommenttiisi aiheesta ''%{post}'''
       preheader: '%{authorName} vastasi sisäiseen kommenttiisi aiheesta%{post}'
     internal_comment_on_idea_assigned_to_you:
-      cta_reply_to: 'Näytä kommentti käyttäjältä %{firstName}'
+      cta_button: 'Näytä kommentti käyttäjältä %{firstName}'
       event_description: '%{authorNameFull} kommentoi sisäisesti sinulle määritettyä syötettä.'
       subject: 'Kohteessa%{post}on uusi sisäinen kommentti'
-      main_header: 'Kohteessa%{post}on uusi sisäinen kommentti'
+      title: 'Uusi sisäinen kommentti viestiin ''%{post}'''
       preheader: 'Kohteessa%{post}on uusi sisäinen kommentti'
     internal_comment_on_idea_you_commented_internally_on:
-      cta_reply_to: 'Näytä kommentti käyttäjältä %{firstName}'
+      cta_button: 'Näytä kommentti käyttäjältä %{firstName}'
       event_description: '%{authorNameFull} kommentoi sisäisesti syötteitä, joita kommentoit sisäisesti.'
       subject: 'Kohteessa%{post}on uusi sisäinen kommentti'
-      main_header: 'Kohteessa%{post}on uusi sisäinen kommentti'
+      title: 'Uusi sisäinen kommentti viestiin ''%{post}'''
       preheader: 'Kohteessa%{post}on uusi sisäinen kommentti'
     internal_comment_on_idea_you_moderate:
-      cta_reply_to: 'Näytä kommentti käyttäjältä %{firstName}'
+      cta_button: 'Näytä kommentti käyttäjältä %{firstName}'
       event_description: '%{authorNameFull} kommentoi sisäisesti syötettä hallinnoimassasi projektissa tai kansiossa.'
       subject: 'Kohteessa%{post}on uusi sisäinen kommentti'
-      main_header: 'Kohteessa%{post}on uusi sisäinen kommentti'
+      title: 'Uusi sisäinen kommentti viestiin ''%{post}'''
       preheader: 'Kohteessa%{post}on uusi sisäinen kommentti'
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_reply_to: 'Näytä kommentti käyttäjältä %{firstName}'
+      cta_button: 'Näytä kommentti käyttäjältä %{firstName}'
       event_description: '%{authorNameFull} kommentoi sisäisesti määrittämätöntä syötettä hallitsemattomassa projektissa.'
       subject: 'Kohteessa%{post}on uusi sisäinen kommentti'
-      main_header: 'Kohteessa%{post}on uusi sisäinen kommentti'
+      title: 'Uusi sisäinen kommentti viestiin ''%{post}'''
       preheader: 'Kohteessa%{post}on uusi sisäinen kommentti'
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} antoi päivityksen aiheesta ''%{input_title}''.'
@@ -310,9 +337,9 @@ fi:
       subject: 'Virallinen palaute on lähetetty "%{input_title}"'
       preheader: 'Seuraamasi syötteessä on päivitys'
     mention_in_official_feedback:
-      cta_reply_to: 'Vastaa %{organizationName}'
+      cta_button: 'Vastaus käyttäjälle %{organizationName}'
       event_description: '%{organizationName} mainitsi sinut palautteessaan ideasta ''%{post}''. Napsauta alla olevaa linkkiä päästäksesi keskusteluun %{organizationName}:n kanssa'
-      main_header: 'Sinut on mainittu'
+      title: 'Sinut on mainittu'
       subject: '%{organizationName} mainitsi sinut palautteessaan'
       preheader: '%{commentAuthor} mainitsi sinut palautteessa'
     project_moderation_rights_received:
@@ -414,16 +441,18 @@ fi:
       message_welcome: 'Onnittelut, rekisteröidyit onnistuneesti %{organizationName}osallistumisalustalle. Nyt voit löytää alustan ja saada äänesi kuuluviin. Voit myös lisätä profiilikuvan ja lyhyen kuvauksen kertoaksesi muille, kuka olet.'
       preheader: 'Tässä on mitä voit tehdä alustalla %{organizationName}'
     idea_published:
-      subject:
+      subject: 'Ideasi on julkaistu'
+      preheader: '%{firstName}, onnittelut idean lähettämisestä %{organizationName}-alustalle. Kerää nyt tukea.'
+      title: 'Lähetit viestin "%{input_title}"'
+      input_type_subject:
         idea: 'Ideasi on julkaistu'
         question: 'Kysymyksesi on julkaistu'
-        contribution: 'Kirjoituksesi on julkaistu'
+        contribution: 'Osallistumisesi on julkaistu'
         project: 'Projektisi on julkaistu'
-        issue: 'Kommenttisi on julkaistu'
+        issue: 'Numerosi on julkaistu'
         option: 'Vaihtoehtosi on julkaistu'
         proposal: 'Ehdotuksesi on julkaistu'
         petition: 'Vetoomuksesi on julkaistu'
-      main_header: 'Lähetit "%{input_title}"'
       header_message: 'Varmistetaan, että se luetaan.'
       message_get_votes: 'Tavoita enemmän ihmisiä ideallasi:'
       action_published_idea: 'Julkaistu idea'
@@ -435,7 +464,6 @@ fi:
       send_email: sähköposti
       action_share_link: 'Jaa ideasi minkä tahansa kanavan kautta kopioimalla %{link}'
       link: linkki
-      preheader: '%{firstName}, onnittelut idean lähettämisestä %{organizationName}-alustalle. Kerää nyt tukea.'
     your_input_in_screening:
       main_header:
         idea: 'Ideasi on "%{prescreening_status_title}"'
@@ -459,10 +487,10 @@ fi:
     native_survey_not_submitted:
       subject: '%{organizationName}: Melkein perillä! Lähetä vastauksesi'
       preheader: 'Et vastannut kyselyyn osallistumisalustalla %{organizationName}'
-      title_native_survey_not_submitted: 'Melkein siellä! Lähetä vastauksesi'
-      body_native_survey_not_submitted: 'Aloit jakaa vastauksiasi %{phaseTitle} , mutta et lähettänyt niitä. Lähetys päättyy %{phaseEndDate}. Napsauta alla olevaa painiketta jatkaaksesi siitä, mihin jäit.'
-      body_native_survey_not_submitted_no_date: 'Aloit jakaa vastauksiasi %{phaseTitle} , mutta et lähettänyt niitä. Napsauta alla olevaa painiketta jatkaaksesi siitä, mihin jäit.'
-      cta_complete_your_survey_response: 'Jatka kyselyyn vastaamista'
+      title: 'Melkein valmis! Lähetä vastauksesi'
+      event_description: 'Aloitit vastaustesi jakamisen %{phaseTitle} , mutta et lähettänyt niitä. Klikkaa alla olevaa painiketta jatkaaksesi siitä, mihin jäit.'
+      cta_button: 'Jatka kyselyyn vastaamistasi'
+      submissions_close: 'Lähetys päättyy %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Et antanut ääniäsi'
       preheader: 'Et lähettänyt ääntäsi osallistumisalustalla %{organizationName}'
@@ -489,7 +517,7 @@ fi:
     event_registration_confirmation:
       subject: "Olet mukana! Rekisteröitymisesi kohteelle \"%{eventTitle}\" on vahvistettu"
       preheader: "%{firstName}, kiitos rekisteröitymisestä %{eventTitle}"
-      header_message: "%{firstName}, kiitos rekisteröitymisestä"
+      title: "%{firstName}, kiitos rekisteröitymisestä"
       event_details:
         labels:
           date: 'Päivämäärä'
@@ -497,7 +525,7 @@ fi:
           online_link: 'Online linkki'
           description: 'Kuvaus'
           project: 'Projekti'
-      cta_go_to_event: 'Katso tapahtuma'
+      cta_button: 'Katso tapahtuma'
       cta_add_to_calendar: 'Lisää kalenteriisi'
     voting_phase_started:
       subject: '%{organizationName}: Äänestysvaihe alkoi %{projectName}'

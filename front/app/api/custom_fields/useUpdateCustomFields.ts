@@ -31,8 +31,8 @@ const updateCustomField = async ({
   customForm,
 }: IUpdateCustomFieldProperties) => {
   const apiEndpoint = phaseId
-    ? `admin/phases/${phaseId}/custom_fields/update_all`
-    : `admin/projects/${projectId}/custom_fields/update_all`;
+    ? `phases/${phaseId}/custom_fields/update_all`
+    : `projects/${projectId}/custom_fields/update_all`;
   return fetcher<ICustomField>({
     path: `/${apiEndpoint}`,
     action: 'patch',

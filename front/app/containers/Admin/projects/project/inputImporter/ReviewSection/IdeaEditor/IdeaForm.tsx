@@ -1,117 +1,98 @@
-import React, { useCallback } from 'react';
+import React, { Suspense, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { JsonSchema7, Layout } from '@jsonforms/core';
-import { CLErrors } from 'typings';
+import { FormProvider, UseFormSetError } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
-import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
+import useCustomFields from 'api/custom_fields/useCustomFields';
+import usePhase from 'api/phases/usePhase';
 
-import ideaFormMessages from 'containers/IdeasNewPage/messages';
+import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
+import { FormValues } from 'components/Form/typings';
+import Feedback from 'components/HookForm/Feedback';
 
-import Fields from 'components/Form/Components/Fields';
-import {
-  ApiErrorGetter,
-  AjvErrorGetter,
-  FormValues,
-} from 'components/Form/typings';
-
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+const CustomFields = React.lazy(
+  () => import('components/CustomFieldsForm/CustomFields')
+);
 
 interface Props {
-  schema: JsonSchema7;
-  uiSchema: Layout;
-  showAllErrors: boolean;
   formData: FormValues;
-  ideaMetadata: ImportedIdeaMetadataResponse;
-  apiErrors?: CLErrors;
   setFormData: (formData: FormValues) => void;
+  setIdeaFormDataValid: (isValid: boolean) => void;
+  setError: React.MutableRefObject<UseFormSetError<FormValues> | undefined>;
 }
 
 const IdeaForm = ({
-  schema,
-  uiSchema,
-  showAllErrors,
-  apiErrors,
   formData,
-  ideaMetadata,
   setFormData,
+  setIdeaFormDataValid,
+  setError,
 }: Props) => {
-  const getApiErrorMessage: ApiErrorGetter = useCallback(
-    (error) => {
-      return (
-        ideaFormMessages[
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          `api_error_${uiSchema?.options?.inputTerm}_${error}`
-        ] ||
-        ideaFormMessages[`api_error_${error}`] ||
-        ideaFormMessages[`api_error_invalid`]
-      );
-    },
-    [uiSchema]
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
+
+  const { data: phase } = usePhase(phaseId);
+  const participationMethod = phase?.data.attributes.participation_method;
+
+  const { data: customFields } = useCustomFields({
+    projectId,
+    phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
+  });
+
+  const questions = customFields?.filter(
+    (field) =>
+      field.input_type !== 'page' &&
+      field.key !== 'topic_ids' &&
+      field.key !== 'cosponsor_ids' &&
+      field.key !== 'idea_images_attributes' &&
+      field.key !== 'idea_files_attributes'
   );
 
-  const getAjvErrorMessage: AjvErrorGetter = useCallback(
-    (error) => {
-      return (
-        ideaFormMessages[
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          `ajv_error_${uiSchema?.options?.inputTerm}_${
-            getFieldNameFromPath(error.instancePath) ||
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        ideaFormMessages[
-          `ajv_error_${
-            getFieldNameFromPath(error.instancePath) ||
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        undefined
-      );
-    },
-    [uiSchema]
-  );
+  const { methods } = usePageForm({
+    pageQuestions: questions || [],
+    defaultValues: formData,
+  });
+
+  // Ensure initial form validation state is correct
+  useEffect(() => {
+    setIdeaFormDataValid(methods.formState.isValid);
+  }, [setIdeaFormDataValid, methods.formState.isValid]);
+
+  // Watch for changes in form values and update formData and form validation state accordingly
+  useEffect(() => {
+    const subscription = methods.watch((values) => {
+      setFormData(values);
+      methods.trigger();
+    });
+    return () => subscription.unsubscribe();
+  }, [methods, formData, setFormData, setIdeaFormDataValid]);
+
+  // We are setting the setError function to the ref so that it can be used easily in the parent component for error handling
+  setError.current = methods.setError;
 
   return (
     <Box w="90%">
-      <Fields
-        showAllErrors={showAllErrors}
-        apiErrors={apiErrors}
-        schema={schema}
-        uiSchema={filterUiSchema(uiSchema)}
-        data={formData}
-        onChange={setFormData}
-        config="input"
-        locale={ideaMetadata.data.attributes.locale}
-        getApiErrorMessage={getApiErrorMessage}
-        getAjvErrorMessage={getAjvErrorMessage}
-      />
+      <FormProvider {...methods}>
+        <form>
+          <Feedback />
+          {questions && (
+            <Suspense>
+              <CustomFields
+                questions={questions}
+                projectId={projectId}
+                phase={phase?.data}
+                participationMethod={
+                  phase?.data.attributes.participation_method
+                }
+              />
+            </Suspense>
+          )}
+        </form>
+      </FormProvider>
     </Box>
   );
-};
-
-const NOT_SUPPORTED_SCOPES = new Set([
-  '#/properties/author_id',
-  '#/properties/idea_images_attributes',
-  '#/properties/idea_files_attributes',
-  '#/properties/topic_ids',
-  '#/properties/cosponsor_ids',
-]);
-
-const filterUiSchema = (uiSchema) => {
-  return {
-    options: uiSchema.options,
-    type: 'VerticalLayout',
-    elements: uiSchema.elements
-      .flatMap((category) => category.elements)
-      .filter((element) => !NOT_SUPPORTED_SCOPES.has(element.scope)),
-  };
 };
 
 export default IdeaForm;

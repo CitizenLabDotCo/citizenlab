@@ -345,6 +345,7 @@ ar-MA:
       line_print_description: 'يرجى رسم الطريق على الخريطة أدناه.'
       polygon_print_description: 'يرجى رسم الشكل على الخريطة أدناه.'
       select_print_description: 'اختر خيار واحد فقط'
+      date_print_description: 'الرجاء كتابة التاريخ بالتنسيق YYYY-MM-DD.'
   project_copy:
     title_suffix: 'نسخة'
   confirmations_mailer:

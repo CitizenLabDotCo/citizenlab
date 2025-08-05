@@ -1,8 +1,7 @@
 import { FormatMessage } from 'typings';
 
 import { IPhaseData } from 'api/phases/types';
-
-import { Localize } from 'hooks/useLocalize';
+import { getPhaseVoteTermMessage } from 'api/phases/utils';
 
 import voteInputMessages from 'components/VoteInputs/_shared/messages';
 
@@ -15,7 +14,6 @@ import messages from './messages';
 
 export const getVoteSubmissionDisabledExplanation = (
   formatMessage: FormatMessage,
-  localize: Localize,
   phase: IPhaseData,
   permissionsDisabledReason: DisabledReason | null,
   numberOfVotesCast: number,
@@ -67,15 +65,7 @@ export const getVoteSubmissionDisabledExplanation = (
     }
 
     if (numberOfVotesCast === 0) {
-      const { voting_term_plural_multiloc } = phase.attributes;
-
-      const votesTerm = voting_term_plural_multiloc
-        ? localize(voting_term_plural_multiloc)
-        : formatMessage(voteInputMessages.votes);
-
-      return formatMessage(messages.noVotesCast, {
-        votesTerm,
-      });
+      return formatMessage(messages.noVotesCast);
     }
   }
 
@@ -112,7 +102,6 @@ export const getVoteSubmissionDisabledExplanation = (
 
 export const getVotesCounter = (
   formatMessage: FormatMessage,
-  localize: Localize,
   phase: IPhaseData,
   numberOfVotesCast: number,
   formatCurrency: UseFormatCurrencyReturn
@@ -127,7 +116,7 @@ export const getVotesCounter = (
     } else {
       const votesLeft = voting_max_total - numberOfVotesCast;
 
-      return formatMessage(messages.votesLeft, {
+      return formatMessage(messages.numberOfVotesLeft, {
         votesLeft: votesLeft.toLocaleString(),
         totalNumberOfVotes: voting_max_total.toLocaleString(),
         voteTerm: formatMessage(voteInputMessages.vote),
@@ -141,21 +130,16 @@ export const getVotesCounter = (
 
     const votesLeft = voting_max_total - numberOfVotesCast;
 
-    const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
-      phase.attributes;
+    const votesLeftMessage = getPhaseVoteTermMessage(phase, {
+      vote: messages.numberOfVotesLeft,
+      point: messages.numberOfPointsLeft,
+      token: messages.numberOfTokensLeft,
+      credit: messages.numberOfCreditsLeft,
+    });
 
-    const voteTerm = voting_term_singular_multiloc
-      ? localize(voting_term_singular_multiloc)
-      : formatMessage(voteInputMessages.vote);
-    const votesTerm = voting_term_plural_multiloc
-      ? localize(voting_term_plural_multiloc)
-      : formatMessage(voteInputMessages.votes);
-
-    return formatMessage(messages.votesLeft, {
+    return formatMessage(votesLeftMessage, {
       votesLeft: votesLeft.toLocaleString(),
       totalNumberOfVotes: voting_max_total.toLocaleString(),
-      voteTerm,
-      votesTerm,
     });
   }
 

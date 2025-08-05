@@ -392,11 +392,11 @@ export const changeCursorOnHover = (event: any, mapView: MapView) => {
 // Description: Center a specific location on the map
 export const goToMapLocation = async (
   coordinates: GeoJSON.Point,
-  mapView: MapView,
+  mapView?: MapView,
   zoomLevel?: number
 ) => {
   mapView
-    .goTo(
+    ?.goTo(
       {
         center: [coordinates.coordinates[0], coordinates.coordinates[1]],
         zoom: zoomLevel || mapView.zoom,

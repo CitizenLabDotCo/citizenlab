@@ -71,7 +71,7 @@ export const getParticipationActionLabel = (action: IPhasePermissionAction) => {
     case 'annotating_document':
       return messages.annotatingDocument;
     case 'attending_event':
-      return messages.attendingEvent;
+      return messages.registeredForEvent;
     case 'volunteering':
       return messages.volunteering;
   }

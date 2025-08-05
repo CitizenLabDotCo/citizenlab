@@ -24,6 +24,7 @@
 #  preview_token                :string           not null
 #  header_bg_alt_text_multiloc  :jsonb
 #  hidden                       :boolean          default(FALSE), not null
+#  listed                       :boolean          default(TRUE), not null
 #
 # Indexes
 #
@@ -34,6 +35,7 @@
 #  fk_rails_...  (default_assignee_id => users.id)
 #
 class Project < ApplicationRecord
+  include Files::FileAttachable
   include PgSearch::Model
 
   attribute :preview_token, :string, default: -> { generate_preview_token }
@@ -69,6 +71,8 @@ class Project < ApplicationRecord
   has_many :followers, as: :followable, dependent: :destroy
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', dependent: :destroy
+  has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
+  has_many :files, through: :files_projects
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }

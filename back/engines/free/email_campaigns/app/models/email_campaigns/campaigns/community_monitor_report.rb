@@ -39,13 +39,14 @@ module EmailCampaigns
     include RecipientConfigurable
     include Trackable
     include LifecycleStageRestrictable
+    include ContentConfigurable
 
     allow_lifecycle_stages only: ['active']
 
     recipient_filter :user_filter_admins_moderators_only
     recipient_filter :user_filter_no_invitees
 
-    before_send :content_worth_sending?
+    filter :content_worth_sending?
 
     def mailer_class
       CommunityMonitorReportMailer

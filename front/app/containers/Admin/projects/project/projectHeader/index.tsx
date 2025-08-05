@@ -72,6 +72,8 @@ const ProjectHeader = ({ projectId }: Props) => {
       break;
   }
 
+  const { listed } = project.data.attributes;
+
   return (
     <NavigationTabs position="static" paddingLeft="24px">
       <Box
@@ -174,6 +176,28 @@ const ProjectHeader = ({ projectId }: Props) => {
           <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
             ·
           </Text>
+          <ButtonWithLink
+            linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
+            buttonStyle="text"
+            size="s"
+            padding="0px"
+          >
+            <Box display="flex" alignItems="center" gap="4px">
+              <Icon
+                name={listed ? 'eye' : 'eye-off'}
+                fill={colors.coolGrey600}
+                width="16px"
+              />
+              <Text color="coolGrey600" fontSize="s" m="0px">
+                {listed
+                  ? formatMessage(messages.public)
+                  : formatMessage(messages.hidden)}
+              </Text>
+            </Box>
+          </ButtonWithLink>
+          <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
+            ·
+          </Text>
           <Tooltip
             theme="dark"
             maxWidth={280}
@@ -192,7 +216,7 @@ const ProjectHeader = ({ projectId }: Props) => {
                     <FormattedMessage {...messages.users} />
                   </li>
                   <li>
-                    <FormattedMessage {...messages.attendees} />
+                    <FormattedMessage {...messages.registrants} />
                   </li>
                 </ul>
 

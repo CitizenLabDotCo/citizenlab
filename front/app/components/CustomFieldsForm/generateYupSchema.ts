@@ -9,6 +9,7 @@ import legacyMessages from 'components/Form/Components/Controls/messages';
 
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
+import { convertWKTToGeojson } from './Fields/MapField/multiPointUtils';
 import messages from './messages';
 
 // NOTE: When the question is a built-in field, it is necessary to
@@ -88,14 +89,23 @@ const generateYupValidationSchema = ({
       }
 
       case 'text':
-      case 'multiline_text': {
+      case 'multiline_text':
+      case 'date': {
+        let fieldSchema = string();
+
+        if (required) {
+          fieldSchema = fieldSchema
+            .required(fieldRequired)
+            .trim() // Removes leading/trailing whitespace before validation
+            .min(1, fieldRequired); // Ensures at least one character after trimming
+        }
+
         if (key === 'location_description') {
-          schema[key] =
-            required && enabled
-              ? string().required(fieldRequired).nullable()
-              : string().nullable();
+          schema[key] = enabled
+            ? fieldSchema.nullable()
+            : fieldSchema.nullable();
         } else {
-          schema[key] = required ? string().required(fieldRequired) : string();
+          schema[key] = fieldSchema;
         }
         break;
       }
@@ -301,6 +311,70 @@ const generateYupValidationSchema = ({
         // follow up field (never required)
         schema[`${key}_follow_up`] = string();
 
+        break;
+      }
+
+      case 'checkbox': {
+        schema[key] = required
+          ? string().test({
+              message: fieldRequired,
+              test: (value) => value === 'true',
+            })
+          : string().nullable();
+        break;
+      }
+
+      case 'file_upload':
+      case 'shapefile_upload': {
+        schema[key] = required
+          ? object().required(fieldRequired).nullable()
+          : object().nullable();
+        break;
+      }
+
+      case 'point': {
+        schema[key] = required
+          ? string().required(fieldRequired)
+          : string().nullable();
+        break;
+      }
+
+      case 'line': {
+        const line = string().test({
+          message: formatMessage(messages.atLeastTwoPointsRequired),
+          test: (value) => {
+            if (!value) return true;
+            const converted = convertWKTToGeojson({ line: value });
+            return (
+              converted.line &&
+              converted.line.type === 'LineString' &&
+              Array.isArray(converted.line.coordinates) &&
+              converted.line.coordinates.length > 1
+            );
+          },
+        });
+        schema[key] = required ? line.required(fieldRequired) : line.nullable();
+        break;
+      }
+
+      case 'polygon': {
+        const polygon = string().test({
+          message: formatMessage(messages.atLeastThreePointsRequired),
+          test: (value) => {
+            if (!value) return true;
+            const converted = convertWKTToGeojson({ polygon: value });
+            return (
+              converted.polygon &&
+              converted.polygon.type === 'Polygon' &&
+              Array.isArray(converted.polygon.coordinates) &&
+              converted.polygon.coordinates.length > 0 &&
+              converted.polygon.coordinates[0].length > 3
+            );
+          },
+        });
+        schema[key] = required
+          ? polygon.required(fieldRequired)
+          : polygon.nullable();
         break;
       }
     }

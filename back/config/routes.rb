@@ -208,6 +208,7 @@ Rails.application.routes.draw do
           get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
           get 'community_monitor', action: 'community_monitor'
           get 'for_admin', action: 'index_for_admin'
+          get 'participant_counts', action: 'participant_counts'
         end
 
         resource :review, controller: 'project_reviews'
@@ -343,6 +344,10 @@ Rails.application.routes.draw do
         resources :custom_field_options, controller: '/web_api/v1/custom_field_options', shallow: true do
           patch 'reorder', on: :member
         end
+      end
+
+      resources :files, controller: 'files/files' do
+        get 'preview', on: :member, to: 'files/previews#show'
       end
     end
   end

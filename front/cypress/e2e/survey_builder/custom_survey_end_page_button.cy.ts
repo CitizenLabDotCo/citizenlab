@@ -62,7 +62,8 @@ describe('Survey page logic', () => {
     // Check if we are on the survey end page
     cy.dataCy('e2e-after-submission').should('exist');
     // Check if the button text + link is the custom one we set up
-    cy.contains('See events').should('exist').click();
+    cy.contains('See events').should('exist');
+    cy.dataCy('e2e-after-submission').click();
     cy.url().should('include', '/events');
   });
 });

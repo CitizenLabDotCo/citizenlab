@@ -18,4 +18,8 @@ export default defineMessages({
     defaultMessage:
       '{numberOfProjects, plural, one {# project} other {# projects}}',
   },
+  allFoldersHaveLoaded: {
+    id: 'app.containers.Admin.projects.all.new.Folders.Table.allFoldersHaveLoaded',
+    defaultMessage: 'All folders have been loaded',
+  },
 });

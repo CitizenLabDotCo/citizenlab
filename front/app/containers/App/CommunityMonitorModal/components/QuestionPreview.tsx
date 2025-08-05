@@ -1,51 +1,52 @@
-import React from 'react';
+import React, { Suspense, useEffect } from 'react';
 
-import { JsonFormsCore, Layout } from '@jsonforms/core';
-import { JsonForms } from '@jsonforms/react';
-import { isEmpty } from 'lodash-es';
+import { Spinner, Text } from '@citizenlab/cl2-component-library';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import { JsonFormsSchema } from 'api/idea_json_form_schema/types';
-
-import useLocale from 'hooks/useLocale';
-
-import { ErrorToReadProvider } from 'components/Form/Components/Fields/ErrorToReadContext';
-import { selectRenderers } from 'components/Form/Components/Fields/formConfig';
-import { APIErrorsContext, FormContext } from 'components/Form/contexts';
+import useCustomFields from 'api/custom_fields/useCustomFields';
 
 import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 import tracks from '../tracks';
-import {
-  findFirstSentimentLinearScale,
-  schemaWithRequiredFirstQuestion,
-} from '../utils';
+
+const CustomFields = React.lazy(
+  () => import('components/CustomFieldsForm/CustomFields')
+);
 
 type QuestionPreviewProps = {
   projectSlug?: string;
   phaseId?: string;
-  schema: JsonFormsSchema | null;
-  uiSchema: Layout | null;
   onClose: () => void;
+  projectId: string;
 };
 
 const QuestionPreview = ({
   projectSlug,
   phaseId,
-  schema,
-  uiSchema,
   onClose,
+  projectId,
 }: QuestionPreviewProps) => {
-  const locale = useLocale();
+  const { formatMessage } = useIntl();
+  const methods = useForm();
+  const { data: customFields } = useCustomFields({
+    projectId,
+    phaseId,
+    publicFields: true,
+  });
+
+  const firstSentimentLinearScale = customFields?.find(
+    (field) => field.input_type === 'sentiment_linear_scale'
+  );
 
   // Extract the first sentiment question from the UI Schema
-  const uiSchemaFirstQuestion = findFirstSentimentLinearScale(uiSchema);
+  const fieldValue = methods.watch(firstSentimentLinearScale?.key || '');
 
-  const redirectToFullSurvey = (
-    data: Pick<JsonFormsCore, 'data' | 'errors'>
-  ) => {
-    if (!isEmpty(data.data)) {
+  // If the user has answered the question, redirect them to the full survey
+  useEffect(() => {
+    const redirectToFullSurvey = () => {
       // Close the modal
       onClose();
 
@@ -56,35 +57,34 @@ const QuestionPreview = ({
       clHistory.push(
         `/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
       );
+    };
+    if (fieldValue) {
+      redirectToFullSurvey();
     }
-  };
+  }, [fieldValue, onClose, projectSlug, phaseId]);
 
-  if (!schema || !uiSchemaFirstQuestion) {
+  if (!customFields) {
+    return <Spinner />;
+  }
+
+  // If there is no first sentiment linear scale, do not render anything
+  if (!firstSentimentLinearScale) {
     return null;
   }
 
   return (
-    <APIErrorsContext.Provider value={{}}>
-      <FormContext.Provider
-        value={{
-          getApiErrorMessage: () => {
-            return messages.formError;
-          },
-          setFormData: redirectToFullSurvey,
-          locale,
-        }}
-      >
-        <ErrorToReadProvider>
-          <JsonForms
-            renderers={selectRenderers('survey')}
-            uischema={uiSchemaFirstQuestion}
-            schema={schemaWithRequiredFirstQuestion(schema)}
-            onChange={redirectToFullSurvey}
-            data={{}}
-          />
-        </ErrorToReadProvider>
-      </FormContext.Provider>
-    </APIErrorsContext.Provider>
+    <FormProvider {...methods}>
+      <Suspense>
+        <CustomFields
+          questions={[{ ...firstSentimentLinearScale, required: true }]}
+          projectId={projectId}
+          participationMethod={'native_survey'}
+        />
+      </Suspense>
+      <Text textAlign="center" color="textSecondary" fontSize="s">
+        {formatMessage(messages.surveyDescription)}
+      </Text>
+    </FormProvider>
   );
 };
 

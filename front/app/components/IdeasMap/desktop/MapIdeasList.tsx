@@ -4,7 +4,6 @@ import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -17,7 +16,6 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
@@ -66,10 +64,6 @@ const MapIdeasList = memo<Props>(
     const hasInputFilterProps =
       onChangeStatus && onChangeTopics && handleSortOnChange;
 
-    const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
-      projectId,
-      phaseId,
-    });
     const { data: phase } = usePhase(phaseId);
 
     const sort =
@@ -93,8 +87,6 @@ const MapIdeasList = memo<Props>(
     }, []);
 
     const isFiltered = (search && search.length > 0) || topics.length > 0;
-
-    if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
     const methodConfig =
       // TODO: Fix this the next time the file is edited.

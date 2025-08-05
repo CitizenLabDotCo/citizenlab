@@ -342,6 +342,7 @@ hr:
       line_print_description: 'Molimo vas da nacrtate rutu na karti ispod.'
       polygon_print_description: 'Molimo vas da nacrtate oblik na karti ispod.'
       select_print_description: 'Odaberite samo jednu opciju.'
+      date_print_description: 'Molimo upišite datum u formatu GGGG-MM-DD.'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:

@@ -7,9 +7,9 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.create! }
     let_it_be(:idea) { create(:idea) }
-    let_it_be(:initiator) { create(:user, first_name: 'Marion') }
+    let_it_be(:initiator) { create(:user, first_name: 'Marion', last_name: 'Smith') }
     let_it_be(:comment) { create(:comment, idea: idea, body_multiloc: { 'en' => 'I agree' }, author: initiator) }
-    let_it_be(:notification) { create(:comment_on_idea_you_follow, recipient: recipient, idea: idea, comment: comment) }
+    let_it_be(:notification) { create(:comment_on_idea_you_follow, recipient: recipient, idea: idea, comment: comment, initiating_user: initiator) }
     let_it_be(:command) do
       activity = create(:activity, item: notification, action: 'created')
       create(:comment_on_idea_you_follow_campaign).generate_commands(
@@ -18,9 +18,12 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
       ).first.merge({ recipient: recipient })
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to be_present
@@ -35,19 +38,59 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
     end
 
     it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
+      expect(mail_body(mail)).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
     end
 
     it 'includes the comment author name' do
-      expect(mail.body.encoded).to include('Marion')
+      expect(mail_body(mail)).to include('Marion')
     end
 
     it 'includes the comment body' do
-      expect(mail.body.encoded).to include('I agree')
+      expect(mail_body(mail)).to include('I agree')
     end
 
     it 'includes the unfollow url' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
+      expect(mail_body(mail)).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ input_title }}' },
+          title_multiloc: { 'en' => 'NEW TITLE' },
+          intro_multiloc: { 'en' => '<b>BODY TEXT</b> new comment by {{ authorName }}' },
+          button_text_multiloc: { 'en' => 'CLICK ME to go to "{{ inputTitle }}"' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Plant more trees'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE')
+      end
+
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>BODY TEXT</b> new comment by Marion')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail_body(mail)).to include('CLICK ME to go to "Plant more trees"')
+      end
+
+      context 'title region has not been customised' do
+        before do
+          campaign.update!(title_multiloc: {})
+          command[:event_payload][:idea_input_term] = 'question'
+        end
+
+        it 'returns a title contextual to the input term when the region has not been customised' do
+          expect(mail_body(mail)).to include('Marion Smith commented on a question you follow')
+        end
+      end
     end
   end
 end

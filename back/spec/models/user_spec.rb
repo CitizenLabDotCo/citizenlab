@@ -23,6 +23,7 @@ RSpec.describe User do
     it { is_expected.to have_many(:requested_project_reviews).class_name('ProjectReview').with_foreign_key('requester_id').dependent(:nullify) }
     it { is_expected.to have_many(:assigned_project_reviews).class_name('ProjectReview').with_foreign_key('reviewer_id').dependent(:nullify) }
     it { is_expected.to have_many(:jobs_trackers).class_name('Jobs::Tracker').with_foreign_key('owner_id').dependent(:nullify) }
+    it { is_expected.to have_many(:files).class_name('Files::File').with_foreign_key('uploader_id').dependent(:nullify) }
 
     it 'nullifies idea import association' do
       idea_import = create(:idea_import, import_user: user)

@@ -35,6 +35,7 @@ module EmailCampaigns
   class Campaigns::AdminDigest < Campaign
     include Disableable
     include Consentable
+    include ContentConfigurable
     include Schedulable
     include RecipientConfigurable
     include Trackable
@@ -45,7 +46,7 @@ module EmailCampaigns
     recipient_filter :user_filter_admin_only
     recipient_filter :user_filter_no_invitees
 
-    before_send :content_worth_sending?
+    filter :content_worth_sending?
 
     N_TOP_IDEAS = 12
 

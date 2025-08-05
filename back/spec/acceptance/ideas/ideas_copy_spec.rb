@@ -44,7 +44,9 @@ resource 'Ideas' do
       let(:current_user) { create(:admin) }
 
       example 'Copy ideas into the target phase', :active_job_que_adapter do
-        expect { do_request }.to change(QueJob, :count).by(1)
+        expect { do_request }
+          .to change { QueJob.by_job_class(Ideas::CopyJob).count }.by(1)
+          .and change { QueJob.by_job_class(LogActivityJob).count }.by(1)
 
         expect(status).to eq(200)
 

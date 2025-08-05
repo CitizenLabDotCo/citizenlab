@@ -8,12 +8,13 @@ RSpec.describe EmailCampaigns::ProjectReviewRequestMailer do
     let_it_be(:recipient) { project_review.reviewer }
 
     let(:event_payload) { { project_review_id: project_review.id } }
+    let(:command) { { recipient: recipient, event_payload: event_payload } }
+    let(:campaign) { EmailCampaigns::Campaigns::ProjectReviewRequest.create! }
 
-    let(:mail) do
-      campaign = EmailCampaigns::Campaigns::ProjectReviewRequest.create!
-      command = { recipient: recipient, event_payload: event_payload }
-      described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now
-    end
+    let(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let(:mail) { mailer.campaign_mail.deliver_now }
+
+    include_examples 'campaign delivery tracking'
 
     it 'has the correct subject' do
       expect(mail.subject).to eq('Review request: A project is waiting for approval.')

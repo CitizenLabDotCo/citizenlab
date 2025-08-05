@@ -74,4 +74,20 @@ export default defineMessages({
     id: 'app.components.Admin.Campaigns.project',
     defaultMessage: 'Project',
   },
+  to: {
+    id: 'app.components.Admin.Campaigns.to',
+    defaultMessage: 'To',
+  },
+  from: {
+    id: 'app.components.Admin.Campaigns.from',
+    defaultMessage: 'From',
+  },
+  reply_to: {
+    id: 'app.components.Admin.Campaigns.reply_to',
+    defaultMessage: 'Reply-To',
+  },
+  subject: {
+    id: 'app.components.Admin.Campaigns.subject',
+    defaultMessage: 'Subject',
+  },
 });

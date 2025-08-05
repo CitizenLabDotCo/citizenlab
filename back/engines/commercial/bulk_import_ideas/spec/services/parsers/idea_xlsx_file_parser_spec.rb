@@ -32,6 +32,17 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     image_multiselect_field = create(:custom_field_multiselect_image, resource: custom_form, key: 'image_select_field', title_multiloc: { 'en' => 'Image select field' })
     create(:custom_field_option, custom_field: image_multiselect_field, key: 'image1', title_multiloc: { 'en' => 'Image 1' })
     create(:custom_field_option, custom_field: image_multiselect_field, key: 'image2', title_multiloc: { 'en' => 'Image 2' })
+
+    create(
+      :custom_field_matrix_linear_scale,
+      resource: custom_form,
+      key: 'matrix_field',
+      title_multiloc: { 'en' => 'Matrix field' },
+      maximum: 3,
+      linear_scale_label_1_multiloc: { 'en' => 'No' },
+      linear_scale_label_2_multiloc: { 'en' => 'Maybe' },
+      linear_scale_label_3_multiloc: { 'en' => 'Yes' }
+    )
   end
 
   describe 'parse_file_async' do
@@ -224,6 +235,75 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       expect(idea_rows.count).to eq 2
       expect(idea_rows[0][:custom_field_values][:text_field]).to eq '2'
       expect(idea_rows[1][:custom_field_values][:text_field]).to eq '2.2'
+    end
+
+    it 'parses matrix fields correctly' do
+      xlsx_ideas_array = [
+        { pdf_pages: [1], fields: { 'Matrix field' => 'We should send more animals into space: Yes; We should ride our bicycles more often: Maybe' } }
+      ]
+      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      expect(idea_rows.count).to eq 1
+      expect(idea_rows[0][:custom_field_values][:matrix_field]).to eq({ 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 2 })
+
+      # Misformatted matrix field - detects what it can
+      xlsx_ideas_array[0][:fields]['Matrix field'] = 'We should send more animals into spaceNo; We should ride our bicycles more often: Yes'
+      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      expect(idea_rows[0][:custom_field_values][:matrix_field]).to eq({ 'ride_bicycles_more_often' => 3 })
+    end
+
+    it 'parses user fields in surveys correctly' do
+      # Basic survey
+      phase = create(:native_survey_phase, user_fields_in_form: true, with_permissions: true)
+      custom_form = create(:custom_form, participation_context: phase)
+      create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' })
+      create(:custom_field_text, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Text field' })
+      create(:custom_field_form_end_page, resource: custom_form)
+
+      # User fields
+      create(:custom_field_gender, :with_options, key: 'gender', title_multiloc: { 'en' => 'Gender' })
+      create(:custom_field_checkbox, resource_type: 'User', key: 'checkbox', title_multiloc: { 'en' => 'A Checkbox field' })
+      create(:custom_field_date, resource_type: 'User', key: 'date', title_multiloc: { 'en' => 'A Date field' })
+
+      service = described_class.new(create(:admin), 'en', phase.id, false)
+
+      xlsx_ideas_array = [
+        {
+          pdf_pages: [1],
+          fields: {
+            'Text field' => 'Something',
+            'Gender' => 'Male',
+            'A Checkbox field' => 'X',
+            'A Date field' => '01-01-2025'
+          }
+        }
+      ]
+      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      expect(idea_rows.count).to eq 1
+      custom_field_values = idea_rows[0][:custom_field_values]
+      expect(custom_field_values[:text_field]).to eq 'Something'
+      expect(custom_field_values[:u_gender]).to eq 'male'
+      expect(custom_field_values[:u_checkbox]).to be true
+      expect(custom_field_values[:u_date]).to eq '2025-01-01'
+    end
+  end
+
+  describe 'format_date' do
+    it 'formats date strings in dd-mm-yyyy format' do
+      date_string = '15-08-2023'
+      formatted_date = service.send(:format_date, date_string)
+      expect(formatted_date).to eq '2023-08-15'
+    end
+
+    it 'formats date objects' do
+      date_object = Date.new(2023, 8, 15)
+      formatted_date = service.send(:format_date, date_object)
+      expect(formatted_date).to eq '2023-08-15'
+    end
+
+    it 'returns nil for invalid date strings' do
+      invalid_date_string = 'A DATE'
+      formatted_date = service.send(:format_date, invalid_date_string)
+      expect(formatted_date).to be_nil
     end
   end
 end

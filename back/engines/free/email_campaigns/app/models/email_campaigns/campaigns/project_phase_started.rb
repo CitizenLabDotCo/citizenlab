@@ -41,7 +41,7 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
 
-    before_send :campaign_enabled_for_phase?
+    filter :campaign_enabled_for_phase?
 
     recipient_filter :filter_notification_recipient
 

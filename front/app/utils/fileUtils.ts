@@ -1,6 +1,8 @@
 import { isString } from 'lodash-es';
 import { UploadFile } from 'typings';
 
+import { IFileData } from 'api/files/types';
+
 import { reportError } from 'utils/loggingUtils';
 
 import { isNilOrError } from './helperUtils';
@@ -139,5 +141,37 @@ export const base64ToBlob = (base64: string): Blob | null => {
   } catch (error) {
     console.error('Failed to convert base64 to Blob:', error);
     return null;
+  }
+};
+
+/**
+ * Downloads a file from a given URL by fetching it as a blob and triggering a client-side download.
+ * Works even if the server doesn't send a Content-Disposition header.
+ */
+export const saveFileToDisk = async (file: IFileData) => {
+  try {
+    // Fetch the file from its URL
+    const res = await fetch(file.attributes.content.url);
+
+    // Ensure the response was successful
+    if (!res.ok) throw new Error('Download failed');
+
+    // Convert the response to a Blob object
+    const blob = await res.blob();
+
+    // Create a temporary object URL for the blob
+    const url = URL.createObjectURL(blob);
+
+    // Create a hidden anchor element and trigger a download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = file.attributes.name || 'download';
+    a.click();
+
+    // Clean up the temporary URL to free memory
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    // Log any download or fetch errors
+    console.error('File download error:', e);
   }
 };

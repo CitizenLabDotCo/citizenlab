@@ -2,8 +2,20 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   xVotes: {
-    id: 'app.components.AssignMultipleVotesControl.xVotes2',
-    defaultMessage: '{votes, plural, one {{singular}} other {{plural}}}',
+    id: 'app.components.AssignMultipleVotesControl.xVotes3',
+    defaultMessage: '{votes, plural, one {vote} other {votes}}',
+  },
+  xPoints: {
+    id: 'app.components.AssignMultipleVotesControl.xPoints1',
+    defaultMessage: '{votes, plural, one {point} other {points}}',
+  },
+  xTokens: {
+    id: 'app.components.AssignMultipleVotesControl.xTokens1',
+    defaultMessage: '{votes, plural, one {token} other {tokens}}',
+  },
+  xCredits: {
+    id: 'app.components.AssignMultipleVotesControl.xCredits1',
+    defaultMessage: '{votes, plural, one {credit} other {credits}}',
   },
   numberManualVotes: {
     id: 'app.components.AssignMultipleVotesControl.numberManualVotes2',
@@ -14,14 +26,6 @@ export default defineMessages({
     id: 'app.components.AssignMultipleVotesControl.select',
     defaultMessage: 'Select',
   },
-  vote: {
-    id: 'app.components.AssignMultipleVotesControl.vote',
-    defaultMessage: 'Vote',
-  },
-  votes: {
-    id: 'app.components.AssignMultipleVotesControl.votes',
-    defaultMessage: 'votes',
-  },
   removeVote: {
     id: 'app.components.AssignMultipleVotesControl.removeVote',
     defaultMessage: 'Remove vote',
@@ -31,25 +35,51 @@ export default defineMessages({
     defaultMessage: 'Add vote',
   },
 
-  // disabled explanations
-  maxVotesPerIdeaReached: {
-    id: 'app.components.AssignMultipleVotesControl.maxVotesPerIdeaReached',
+  maxVotesPerInputReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxVotesPerInputReached1',
     defaultMessage:
-      'You have reached the maximum number of {maxVotes} votes per idea',
+      'You have distributed the maximum number of votes for this option.',
   },
-  maxVotesReached: {
-    id: 'app.components.AssignMultipleVotesControl.maxVotesReached',
-    defaultMessage: 'You have used all of your votes',
-  },
-  votesSubmitted: {
-    id: 'app.components.AssignMultipleVotesControl.votesSubmitted',
+  maxPointsPerInputReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxPointsPerInputReached',
     defaultMessage:
-      'You have already submitted your votes. Click "Modify your vote" to change your votes.',
+      'You have distributed the maximum number of points for this option.',
   },
-  votesSubmittedIdeaPage: {
-    id: 'app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage',
+  maxTokensPerInputReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxTokensPerInputReached',
     defaultMessage:
-      'You have already submitted your votes. To change your votes, go back to the project page and click "Modify your vote".',
+      'You have distributed the maximum number of tokens for this option.',
+  },
+  maxCreditsPerInputReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxCreditsPerInputReached',
+    defaultMessage:
+      'You have distributed the maximum number of credits for this option.',
+  },
+  maxVotesInTotalReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxVotesInTotalReached',
+    defaultMessage: 'You have distributed all of your votes.',
+  },
+  maxPointsInTotalReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxPointsInTotalReached',
+    defaultMessage: 'You have distributed all of your points.',
+  },
+  maxTokensInTotalReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxTokensInTotalReached',
+    defaultMessage: 'You have distributed all of your tokens.',
+  },
+  maxCreditsInTotalReached: {
+    id: 'app.components.AssignMultipleVotesControl.maxCreditsInTotalReached',
+    defaultMessage: 'You have distributed all of your credits.',
+  },
+  votesSubmitted1: {
+    id: 'app.components.AssignMultipleVotesControl.votesSubmitted1',
+    defaultMessage:
+      'You have already submitted your vote. To modify it, click "Modify your submission".',
+  },
+  votesSubmittedIdeaPage1: {
+    id: 'app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage1',
+    defaultMessage:
+      'You have already submitted your vote. To modify it, go back to the project page and click "Modify your submission".',
   },
   phaseNotActive: {
     id: 'app.components.AssignMultipleVotesControl.phaseNotActive',

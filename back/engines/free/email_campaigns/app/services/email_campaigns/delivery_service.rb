@@ -29,7 +29,8 @@ module EmailCampaigns
       Campaigns::ModeratorDigest,
       Campaigns::NativeSurveyNotSubmitted,
       Campaigns::NewCommentForAdmin,
-      Campaigns::NewIdeaForAdmin,
+      Campaigns::NewIdeaForAdminPublished,
+      Campaigns::NewIdeaForAdminPrescreening,
       Campaigns::OfficialFeedbackOnIdeaYouFollow,
       Campaigns::ProjectFolderModerationRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
@@ -91,18 +92,40 @@ module EmailCampaigns
     end
 
     def send_preview(campaign, recipient)
-      generate_commands(campaign, recipient).each do |command|
-        process_command(campaign, command.merge({ recipient: recipient }))
+      commands = if campaign.manual?
+        generate_commands(campaign, recipient)
+      else
+        [campaign.preview_command(recipient)].compact
+      end
+      return unless commands.any?
+
+      commands.each do |command|
+        process_command(campaign, command)
       end
     end
 
-    # This only works for emails that are sent out internally
-    def preview_html(campaign, recipient)
-      command = generate_commands(campaign, recipient).first&.merge(recipient: recipient)
-      return unless command
+    def preview_email(campaign, recipient)
+      command = if campaign.manual?
+        generate_commands(campaign, recipient).first
+      else
+        campaign.preview_command(recipient)
+      end
+      return {} unless command
 
-      mail = campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
-      mail.body.to_s
+      mail = campaign.mailer_class.with(campaign:, command:).campaign_mail
+      return {} unless mail
+
+      {
+        to: if campaign.class.recipient_segment_multiloc_key
+              I18n.t(campaign.class.recipient_segment_multiloc_key, locale: recipient.locale)
+            else
+              campaign.groups.map { |g| MultilocService.new.t(g.title_multiloc, recipient.locale) }.join(', ')
+        end,
+        from: mail[:from].value,
+        reply_to: mail.reply_to.first,
+        subject: mail.subject,
+        html: mail.body.to_s
+      }
     end
 
     private
@@ -111,7 +134,7 @@ module EmailCampaigns
     # * time: Time object when the sending command happened
     # * activity: Activity object which activity happened
     def apply_send_pipeline(campaign_candidates, options = {})
-      valid_campaigns           = filter_valid_campaigns_before_send(campaign_candidates, options)
+      valid_campaigns           = filter_campaigns(campaign_candidates, options)
       campaigns_with_recipients = assign_campaigns_recipients(valid_campaigns, options)
       campaigns_with_command    = assign_campaigns_command(campaigns_with_recipients, options)
 
@@ -119,8 +142,8 @@ module EmailCampaigns
       process_send_campaigns(campaigns_with_command)
     end
 
-    def filter_valid_campaigns_before_send(campaigns, options)
-      campaigns.select { |campaign| campaign.run_before_send_hooks(**options) }
+    def filter_campaigns(campaigns, options)
+      campaigns.select { |campaign| campaign.run_filter_hooks(**options) }
     end
 
     def assign_campaigns_recipients(campaigns, options)
@@ -133,13 +156,13 @@ module EmailCampaigns
     def assign_campaigns_command(campaigns_with_recipients, options)
       campaigns_with_recipients.flat_map do |(recipient, campaign)|
         generate_commands(campaign, recipient, options)
-          .map { |command| command.merge(recipient: recipient) }
           .zip([campaign].cycle)
       end
     end
 
     def process_send_campaigns(campaigns_with_command)
       campaigns_with_command.each do |(command, campaign)|
+        campaign.run_before_send_hooks(command)
         process_command(campaign, command)
         campaign.run_after_send_hooks(command)
       end
@@ -170,8 +193,7 @@ module EmailCampaigns
       campaign.generate_commands(recipient:, **options).map do |command|
         command.merge(
           recipient: recipient,
-          time: Time.zone.now,
-          delivery_id: SecureRandom.uuid # Needed to be included in the Mailgun headers, so Mailgun can update the delivery status
+          time: Time.zone.now
         )
       end
     end

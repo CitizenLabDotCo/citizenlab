@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::AdminDigestMailer do
   describe 'campaign_mail' do
-    let_it_be(:recipient) { create(:admin, locale: 'en') }
+    let_it_be(:recipient) { create(:admin, locale: 'en', first_name: 'Bob', last_name: 'Jones') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::AdminDigest.create! }
     let_it_be(:command) do
       top_ideas = create_list(:idea, 3)
@@ -42,10 +42,13 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
     let_it_be(:mail_document) { Nokogiri::HTML.fragment(mail.html_part.body.raw_source) }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('Your weekly admin report')
@@ -60,7 +63,7 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
     end
 
     it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
+      expect(mail_body(mail)).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
     end
 
     it 'renders links to the top project ideas' do
@@ -74,8 +77,37 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
     end
 
     it 'assigns home url' do
-      expect(mail.body.encoded)
+      expect(mail_body(mail))
         .to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ firstName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ firstName }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' },
+          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Bob'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE FOR Bob')
+      end
+
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT</b>')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail_body(mail)).to include('CLICK THE BUTTON')
+      end
     end
   end
 end

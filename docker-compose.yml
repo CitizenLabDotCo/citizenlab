@@ -96,7 +96,7 @@ services:
   # For generating PDFs
   gotenberg:
     container_name: cl-gotenberg
-    image: gotenberg/gotenberg:8
+    image: gotenberg/gotenberg:8.21
     restart: always
 
 volumes:

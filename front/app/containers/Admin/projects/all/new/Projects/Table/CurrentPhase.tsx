@@ -1,17 +1,23 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Tooltip } from '@citizenlab/cl2-component-library';
 import { differenceInDays, intervalToDuration } from 'date-fns';
 
-import usePhaseMini from 'api/phases_mini/usePhaseMini';
+import { IPhaseData } from 'api/phases/types';
+import usePhasesByIds from 'api/phases/usePhasesByIds';
+import { getCurrentPhase } from 'api/phases/utils';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { PARTICIPATION_METHOD_LABELS } from 'containers/Admin/inspirationHub/constants';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import { parseBackendDateString } from 'utils/dateUtils';
+import { parseBackendDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   project: ProjectMiniAdminData;
@@ -38,11 +44,42 @@ const getSignificantDuration = (start: Date, end: Date) => {
   return { unit: 'day', value: 0 } as const;
 };
 
+const getNextPhase = (phases: IPhaseData[], currentPhase?: IPhaseData) => {
+  if (!currentPhase) {
+    const firstPhase = phases.length > 0 ? phases[0] : undefined;
+    if (!firstPhase) return;
+
+    const firstPhaseInFuture =
+      pastPresentOrFuture(firstPhase.attributes.start_at) === 'future';
+
+    if (firstPhaseInFuture) {
+      return firstPhase;
+    }
+
+    return;
+  }
+
+  const currentPhaseIndex = phases.findIndex(
+    (phase) => phase.id === currentPhase.id
+  );
+
+  if (currentPhaseIndex === -1) return;
+
+  return phases[currentPhaseIndex + 1];
+};
+
 const CurrentPhase = ({ project }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: phase } = usePhaseMini(
-    project.relationships.current_phase?.data?.id
-  );
+  const localize = useLocalize();
+
+  const phaseIds = project.relationships.phases?.data.map((phase) => phase.id);
+  const phasesMiniData = usePhasesByIds(phaseIds || []);
+  const phases = phasesMiniData
+    .map((query) => query.data?.data)
+    .filter((data): data is IPhaseData => data !== undefined);
+
+  const currentPhase = getCurrentPhase(phases);
+  const nextPhase = getNextPhase(phases, currentPhase);
 
   const { first_phase_start_date } = project.attributes;
 
@@ -52,9 +89,11 @@ const CurrentPhase = ({ project }: Props) => {
     first_phase_start_date === null || new Date(first_phase_start_date) > now;
 
   const getCurrentPhaseText = () => {
-    if (phase) {
+    if (currentPhase) {
       return formatMessage(
-        PARTICIPATION_METHOD_LABELS[phase.data.attributes.participation_method]
+        PARTICIPATION_METHOD_LABELS[
+          currentPhase.attributes.participation_method
+        ]
       );
     }
 
@@ -64,13 +103,13 @@ const CurrentPhase = ({ project }: Props) => {
   };
 
   const getSubText = () => {
-    if (!phase && !projectStartingInFuture) return;
+    if (!currentPhase && !projectStartingInFuture) return;
 
-    if (phase) {
-      const phaseEndDate = phase.data.attributes.end_at;
-      const parsedPhaseEndDate = parseBackendDateString(
-        phaseEndDate ?? undefined
-      );
+    if (currentPhase) {
+      const phaseEndDate = currentPhase.attributes.end_at ?? undefined;
+      const parsedPhaseEndDate = phaseEndDate
+        ? parseBackendDateString(phaseEndDate)
+        : undefined;
       if (!parsedPhaseEndDate) return;
 
       const daysUntilPhaseEnds = differenceInDays(parsedPhaseEndDate, now);
@@ -92,9 +131,9 @@ const CurrentPhase = ({ project }: Props) => {
       }
     }
 
-    const parsedProjectStartDate = parseBackendDateString(
-      first_phase_start_date ?? undefined
-    );
+    const parsedProjectStartDate = first_phase_start_date
+      ? parseBackendDateString(first_phase_start_date)
+      : undefined;
     if (!parsedProjectStartDate) return;
 
     const daysUntilProjectStarts = differenceInDays(
@@ -118,17 +157,73 @@ const CurrentPhase = ({ project }: Props) => {
 
   const subText = getSubText();
 
+  const currentPhaseMethod =
+    currentPhase &&
+    formatMessage(
+      PARTICIPATION_METHOD_LABELS[currentPhase.attributes.participation_method]
+    );
+  const currentPhaseTitle =
+    currentPhase && localize(currentPhase.attributes.title_multiloc);
+
+  const nextPhaseMethod =
+    nextPhase &&
+    formatMessage(
+      PARTICIPATION_METHOD_LABELS[nextPhase.attributes.participation_method]
+    );
+  const nextPhaseTitle =
+    nextPhase && localize(nextPhase.attributes.title_multiloc);
+
   return (
-    <>
-      <Text m="0" fontSize="s" color="primary">
-        {getCurrentPhaseText()}
-      </Text>
-      {subText !== undefined && (
-        <Text m="0" fontSize="s" color="textSecondary">
-          {subText}
+    <Tooltip
+      content={
+        <Box p="8px">
+          {currentPhaseMethod && currentPhaseTitle && (
+            <>
+              <Text fontWeight="bold" color="white" m="0" fontSize="s">
+                {formatMessage(messages.currentPhase)}
+              </Text>
+              <Text color="grey100" m="0" fontSize="s">
+                {`${currentPhaseMethod}: ${currentPhaseTitle}`}
+              </Text>
+            </>
+          )}
+          {nextPhaseMethod && nextPhaseTitle && (
+            <>
+              <Text
+                fontWeight="bold"
+                color="white"
+                m="0"
+                fontSize="s"
+                mt={currentPhaseMethod && currentPhaseTitle ? '20px' : '0'}
+              >
+                {formatMessage(messages.nextPhase)}
+              </Text>
+              <Text color="grey100" m="0" fontSize="s">
+                {`${nextPhaseMethod}: ${nextPhaseTitle}`}
+              </Text>
+            </>
+          )}
+        </Box>
+      }
+      theme="dark"
+      disabled={!currentPhase && !nextPhase}
+      onShow={() => {
+        trackEventByName(tracks.currentPhaseTooltip, {
+          projectId: project.id,
+        });
+      }}
+    >
+      <div>
+        <Text m="0" fontSize="s">
+          {getCurrentPhaseText()}
         </Text>
-      )}
-    </>
+        {subText !== undefined && (
+          <Text m="0" fontSize="xs" color="textSecondary">
+            {subText}
+          </Text>
+        )}
+      </div>
+    </Tooltip>
   );
 };
 

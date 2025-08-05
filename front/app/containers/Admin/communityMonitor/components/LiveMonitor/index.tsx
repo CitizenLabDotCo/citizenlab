@@ -4,8 +4,6 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 
-import EarlyAccessBadge from 'components/admin/EarlyAccessBadge';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
@@ -37,9 +35,6 @@ const LiveMonitor = () => {
           <Title color="primary">
             {formatMessage(messages.communityMonitorLabel)}
           </Title>
-          <Box mt="8px">
-            <EarlyAccessBadge />
-          </Box>
         </Box>
 
         <Box display="flex" gap="16px">

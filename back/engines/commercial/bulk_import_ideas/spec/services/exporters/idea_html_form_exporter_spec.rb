@@ -6,7 +6,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let(:service) { described_class.new phase, 'en', false }
 
   let(:project) { create(:project, title_multiloc: { en: 'PROJECT' }) }
-  let(:phase) { create(:native_survey_phase, project: project, title_multiloc: { en: 'PHASE' }) }
+  let(:phase) { create(:native_survey_phase, project: project, title_multiloc: { en: 'PHASE' }, with_permissions: true) }
   let(:custom_form) { create(:custom_form, participation_context: phase) }
   let!(:page_field) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' }) }
   let!(:text_field) { create(:custom_field_text, resource: custom_form, required: true, title_multiloc: { 'en' => 'Text field' }) }
@@ -67,6 +67,10 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let!(:line_field) { create(:custom_field_line, resource: custom_form, title_multiloc: { 'en' => 'Line field' }) }
   let!(:polygon_field) { create(:custom_field_polygon, resource: custom_form, title_multiloc: { 'en' => 'Polygon field' }) }
   let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
+
+  # User fields
+  let_it_be(:checkbox_field) { create(:custom_field_checkbox, resource_type: 'User', title_multiloc: { 'en' => 'Checkbox field' }) }
+  let_it_be(:date_field) { create(:custom_field_date, resource_type: 'User', title_multiloc: { 'en' => 'Date field' }) }
 
   before do
     settings = AppConfiguration.instance.settings
@@ -248,6 +252,24 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
         expect(line.css('img').count).to eq 0
         expect(line.text).not_to include 'Please draw a route on the map below.'
         expect(line.text).to include 'This field cannot be completed on paper.'
+      end
+    end
+
+    context 'user_fields_in_form is enabled' do
+      let!(:parsed_html) do
+        phase.update!(user_fields_in_form: true)
+        Nokogiri::HTML(service.export)
+      end
+
+      it 'shows checkbox question' do
+        checkbox = parsed_html.css("div##{checkbox_field.id}")
+        expect(checkbox.text).to include 'Checkbox field'
+      end
+
+      it 'shows date question' do
+        date_html = parsed_html.css("div##{date_field.id}")
+        expect(date_html.text).to include 'Date field'
+        expect(date_html.text).to include 'Please write a date in the format YYYY-MM-DD.'
       end
     end
   end

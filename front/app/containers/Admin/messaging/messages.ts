@@ -28,6 +28,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  editDisabledTooltip: {
+    id: 'app.containers.Admin.emails.editDisabledTooltip2',
+    defaultMessage: 'Coming soon: This email cannot currently be edited.',
+  },
   fieldSender: {
     id: 'app.containers.Admin.emails.fieldSender',
     defaultMessage: 'From',
@@ -69,6 +73,10 @@ export default defineMessages({
   fieldSubject: {
     id: 'app.containers.Admin.emails.fieldSubject',
     defaultMessage: 'Email Subject',
+  },
+  fieldGroupContent: {
+    id: 'app.containers.Admin.emails.fieldGroupContent',
+    defaultMessage: 'Email Content',
   },
   fieldSubjectTooltip: {
     id: 'app.containers.Admin.emails.fieldSubjectTooltip',
@@ -120,16 +128,28 @@ export default defineMessages({
     defaultMessage: 'Send a preview',
   },
   sendTestEmailTooltip: {
-    id: 'app.containers.Admin.emails.sendTestEmailTooltip',
+    id: 'app.containers.Admin.emails.sendTestEmailTooltip2',
     defaultMessage:
-      'Send this draft email to the email address with which you are logged in, to check how it looks like in ‘real life’.',
+      'When you click this link, a test email will be sent to your email address only. This allows you to check what the email looks like in ‘real life’.',
   },
   previewSentConfirmation: {
     id: 'app.containers.Admin.emails.previewSentConfirmation',
     defaultMessage: 'A preview email has been sent to your email address',
   },
+  emailUpdated: {
+    id: 'app.containers.Admin.emails.emailUpdated',
+    defaultMessage: 'Email successfully updated',
+  },
+  emailCreated: {
+    id: 'app.containers.Admin.emails.emailCreated',
+    defaultMessage: 'Email successfully created in draft',
+  },
   formSave: {
     id: 'app.containers.Admin.emails.formSave',
+    defaultMessage: 'Save',
+  },
+  formSaveAsDraft: {
+    id: 'app.containers.Admin.emails.formSaveAsDraft',
     defaultMessage: 'Save as draft',
   },
   previewTitle: {
@@ -266,5 +286,33 @@ export default defineMessages({
   allParticipantsInProject: {
     id: 'app.containers.Admin.emails.allParticipantsInProject',
     defaultMessage: 'All participants in project',
+  },
+  editModalTitle: {
+    id: 'app.containers.Admin.messaging.automated.editModalTitle',
+    defaultMessage: 'Edit campaign fields',
+  },
+  variablesToolTip: {
+    id: 'app.containers.Admin.messaging.automated.variablesToolTip',
+    defaultMessage: 'You can use the following variables in your message:',
+  },
+  regionMultilocError: {
+    id: 'app.containers.Admin.emails.regionMultilocError',
+    defaultMessage: 'Please provide a value for all languages',
+  },
+  editRegion_subject_multiloc: {
+    id: 'app.containers.Admin.emails.editRegion_subject_multiloc',
+    defaultMessage: 'Subject',
+  },
+  editRegion_title_multiloc: {
+    id: 'app.containers.Admin.emails.editRegion_title_multiloc',
+    defaultMessage: 'Title',
+  },
+  editRegion_intro_multiloc: {
+    id: 'app.containers.Admin.emails.editRegion_intro_multiloc',
+    defaultMessage: 'Introduction',
+  },
+  editRegion_button_text_multiloc: {
+    id: 'app.containers.Admin.emails.editRegion_button_text_multiloc',
+    defaultMessage: 'Button text',
   },
 });

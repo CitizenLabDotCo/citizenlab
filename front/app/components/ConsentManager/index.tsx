@@ -1,19 +1,22 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
+import useObserveEvent from 'hooks/useObserveEvent';
+
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
+import Banner from './Banner';
 import {
   getConsent,
   IConsentCookie,
   ISavedDestinations,
   setConsent,
 } from './consent';
-import Container from './Container';
 import { allCategories, TCategory } from './destinations';
+import PreferencesModal from './PreferencesModal';
 import { IPreferences } from './typings';
 import {
   getCurrentPreferences,
@@ -30,19 +33,10 @@ const ConsentManager = () => {
   const [cookieConsent, setCookieConsent] = useState<IConsentCookie | null>(
     null
   );
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-
-  const resetPreferences = useCallback(() => {
-    setPreferences(
-      getCurrentPreferences(
-        appConfiguration?.data,
-        authUser?.data,
-        cookieConsent
-      )
-    );
-  }, [appConfiguration, authUser, cookieConsent]);
 
   useEffect(() => {
     const cookieConsent = getConsent();
@@ -66,49 +60,51 @@ const ConsentManager = () => {
     );
   }, [appConfiguration?.data, authUser?.data]);
 
-  const updatePreference = useCallback(
-    (category: TCategory, value: boolean) => {
-      setPreferences((preferences) => ({
-        ...preferences,
-        [category]: value,
-      }));
-    },
-    []
-  );
+  const resetPreferences = () => {
+    setPreferences(
+      getCurrentPreferences(
+        appConfiguration?.data,
+        authUser?.data,
+        cookieConsent
+      )
+    );
+  };
 
-  const saveConsent = useCallback(
-    (newPreferences: IPreferences) => {
-      if (isNilOrError(appConfiguration)) return;
-      const newChoices: ISavedDestinations = {};
+  const updatePreference = (category: TCategory, value: boolean) => {
+    setPreferences((preferences) => ({
+      ...preferences,
+      [category]: value,
+    }));
+  };
 
-      getActiveDestinations(appConfiguration.data, authUser?.data).forEach(
-        (config) => {
-          newChoices[config.key] =
-            newPreferences[getCategory(appConfiguration.data, config)];
-        }
-      );
+  const saveConsent = (newPreferences: IPreferences) => {
+    if (isNilOrError(appConfiguration)) return;
+    const newChoices: ISavedDestinations = {};
 
-      setConsent({
-        ...newPreferences,
-        savedChoices: {
-          ...cookieConsent?.savedChoices,
-          ...newChoices,
-        },
-      });
+    getActiveDestinations(appConfiguration.data, authUser?.data).forEach(
+      (config) => {
+        newChoices[config.key] =
+          newPreferences[getCategory(appConfiguration.data, config)];
+      }
+    );
 
-      eventEmitter.emit<ISavedDestinations>(
-        'destinationConsentChanged',
-        newChoices
-      );
+    setConsent({
+      ...newPreferences,
+      savedChoices: {
+        ...cookieConsent?.savedChoices,
+        ...newChoices,
+      },
+    });
 
-      setCookieConsent(getConsent());
-    },
-    [appConfiguration, authUser, cookieConsent?.savedChoices]
-  );
+    eventEmitter.emit<ISavedDestinations>(
+      'destinationConsentChanged',
+      newChoices
+    );
 
-  const onSaveConsent = () => saveConsent(preferences);
+    setCookieConsent(getConsent());
+  };
 
-  const accept = useCallback(() => {
+  const accept = () => {
     const newPreferences: IPreferences = {};
 
     allCategories().forEach((category) => {
@@ -118,9 +114,9 @@ const ConsentManager = () => {
 
     setPreferences(newPreferences);
     saveConsent(newPreferences);
-  }, [preferences, saveConsent]);
+  };
 
-  const reject = useCallback(() => {
+  const reject = () => {
     const newPreferences = {
       advertising: false,
       analytics: false,
@@ -129,61 +125,87 @@ const ConsentManager = () => {
 
     setPreferences(newPreferences);
     saveConsent(newPreferences);
-  }, [saveConsent]);
+  };
 
-  const toggleDefault = useCallback(
-    (modalOpened: boolean) => {
-      const newPreferences: IPreferences = {};
-      const modalIsCurrentlyOpening = !modalOpened;
+  const toggleDefault = (modalOpened: boolean) => {
+    const newPreferences: IPreferences = {};
+    const modalIsCurrentlyOpening = !modalOpened;
 
-      // If modal is currently opening: overwrite undefined preferences with false
-      if (modalIsCurrentlyOpening) {
-        allCategories().forEach((category) => {
-          newPreferences[category] =
-            preferences[category] === undefined ? false : preferences[category];
-        });
-      }
+    // If modal is currently opening: overwrite undefined preferences with false
+    if (modalIsCurrentlyOpening) {
+      allCategories().forEach((category) => {
+        newPreferences[category] =
+          preferences[category] === undefined ? false : preferences[category];
+      });
+    }
 
-      // If modal is currently closing: overwrite false preferences with undefined
-      if (!modalIsCurrentlyOpening) {
-        allCategories().forEach((category) => {
-          newPreferences[category] =
-            preferences[category] === false ? undefined : preferences[category];
-        });
-      }
+    // If modal is currently closing: overwrite false preferences with undefined
+    if (!modalIsCurrentlyOpening) {
+      allCategories().forEach((category) => {
+        newPreferences[category] =
+          preferences[category] === false ? undefined : preferences[category];
+      });
+    }
 
-      setPreferences(newPreferences);
-    },
-    [preferences]
+    setPreferences(newPreferences);
+  };
+
+  const openDialog = () => {
+    toggleDefault(false);
+    setIsDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    toggleDefault(true);
+    setIsDialogOpen(false);
+  };
+
+  useObserveEvent('openConsentManager', openDialog);
+
+  const handleSave = (e: FormEvent) => {
+    e.preventDefault();
+
+    setIsDialogOpen(false);
+    saveConsent(preferences);
+  };
+
+  const handleCancel = () => {
+    resetPreferences();
+    setIsDialogOpen(false);
+  };
+
+  const activeDestinations = getActiveDestinations(
+    appConfiguration?.data,
+    authUser?.data
   );
-
-  const activeDestinations = useMemo(
-    () => getActiveDestinations(appConfiguration?.data, authUser?.data),
-    [appConfiguration, authUser]
+  const activeCategorizedDestinations = categorizeDestinations(
+    appConfiguration?.data,
+    activeDestinations
   );
-
-  const activeCategorizedDestinations = useMemo(
-    () => categorizeDestinations(appConfiguration?.data, activeDestinations),
-    [appConfiguration, activeDestinations]
-  );
-
-  const isConsentRequired = useMemo(
-    () => getConsentRequired(cookieConsent, activeDestinations),
-    [cookieConsent, activeDestinations]
+  const isConsentRequired = getConsentRequired(
+    cookieConsent,
+    activeDestinations
   );
 
   return (
-    <Container
-      accept={accept}
-      reject={reject}
-      onToggleModal={toggleDefault}
-      updatePreference={updatePreference}
-      resetPreferences={resetPreferences}
-      saveConsent={onSaveConsent}
-      isConsentRequired={isConsentRequired}
-      preferences={preferences}
-      categorizedDestinations={activeCategorizedDestinations}
-    />
+    <>
+      {isConsentRequired && (
+        <Banner
+          onAccept={accept}
+          onChangePreferences={openDialog}
+          onClose={reject}
+        />
+      )}
+      <PreferencesModal
+        opened={isDialogOpen}
+        categorizedDestinations={activeCategorizedDestinations}
+        preferences={preferences}
+        handleCancel={handleCancel}
+        handleSave={handleSave}
+        onClose={closeDialog}
+        updatePreference={updatePreference}
+      />
+    </>
   );
 };
 

@@ -40,4 +40,5 @@ const EarlyAccessBadge = () => {
   );
 };
 
+// ts-prune-ignore-next
 export default EarlyAccessBadge;

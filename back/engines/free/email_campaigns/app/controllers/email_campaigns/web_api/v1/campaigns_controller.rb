@@ -38,7 +38,8 @@ module EmailCampaigns
     def create
       @campaign = EmailCampaigns::DeliveryService.new.campaign_classes.find do |claz|
         claz.campaign_name == params[:campaign][:campaign_name]
-      end.new(campaign_params)
+      end.new
+      @campaign.assign_attributes(campaign_params)
       @campaign.author ||= current_user
 
       authorize @campaign
@@ -109,8 +110,14 @@ module EmailCampaigns
     end
 
     def preview
-      html = EmailCampaigns::DeliveryService.new.preview_html(@campaign, current_user)
-      render json: { html: html }
+      preview = EmailCampaigns::DeliveryService.new.preview_email(@campaign, current_user)
+      render json: {
+        data: {
+          id: @campaign.id,
+          type: 'campaign_preview',
+          attributes: preview
+        }
+      }
     end
 
     def deliveries
@@ -139,6 +146,10 @@ module EmailCampaigns
     end
 
     def campaign_params
+      @campaign.manual? ? manual_campaign_params : automated_campaign_params
+    end
+
+    def manual_campaign_params
       params.require(:campaign).permit(
         :enabled,
         :sender,
@@ -147,6 +158,18 @@ module EmailCampaigns
         group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
+      )
+    end
+
+    def automated_campaign_params
+      params.require(:campaign).permit(
+        :enabled,
+        :reply_to,
+        :context_id,
+        subject_multiloc: I18n.available_locales,
+        title_multiloc: I18n.available_locales,
+        intro_multiloc: I18n.available_locales,
+        button_text_multiloc: I18n.available_locales
       )
     end
   end

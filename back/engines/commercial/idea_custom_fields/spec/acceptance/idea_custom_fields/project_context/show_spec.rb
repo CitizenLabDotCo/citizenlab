@@ -8,7 +8,7 @@ resource 'Idea Custom Fields' do
 
   before { header 'Content-Type', 'application/json' }
 
-  get 'web_api/v1/admin/projects/:project_id/custom_fields/:id' do
+  get 'web_api/v1/projects/:project_id/custom_fields/:id' do
     # let(:context) { create :project }
     # let(:project_id) { context.id }
     let(:custom_field) { create(:custom_field, :for_custom_form) }

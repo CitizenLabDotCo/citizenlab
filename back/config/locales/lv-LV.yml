@@ -342,6 +342,7 @@ lv:
       line_print_description: 'Lūdzu, uzzīmējiet maršrutu zemāk redzamajā kartē.'
       polygon_print_description: 'Lūdzu, uzzīmējiet figūru zemāk redzamajā kartē.'
       select_print_description: 'Izvēlieties tikai vienu iespēju.'
+      date_print_description: 'Lūdzu, ierakstiet datumu formātā GGGGG-MM-DD.'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:

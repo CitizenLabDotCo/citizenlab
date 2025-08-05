@@ -42,7 +42,7 @@ resource 'ProjectFolderImage' do
     end
     ValidationErrorHelper.new.error_fields(self, ProjectFolders::Image)
     let(:project_folder_id) { @project_folder.id }
-    let(:image) { png_image_as_base64 'image13.png' }
+    let(:image) { png_image_as_base64 'image13.jpg' }
     let(:ordering) { 1 }
     let(:alt_text_multiloc) { { 'en' => 'A cute puppy' } }
 
@@ -85,7 +85,7 @@ resource 'ProjectFolderImage' do
     ValidationErrorHelper.new.error_fields(self, ProjectFolders::Image)
     let(:project_folder_id) { @project_folder.id }
     let(:image_id) { ProjectFolders::Image.first.id }
-    let(:image) { png_image_as_base64 'image14.png' }
+    let(:image) { png_image_as_base64 'image14.jpg' }
     let(:ordering) { 2 }
     let(:alt_text_multiloc) { { 'en' => 'A cute puppy' } }
 

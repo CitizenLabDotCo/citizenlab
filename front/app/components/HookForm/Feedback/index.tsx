@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Text, Title, Box } from '@citizenlab/cl2-component-library';
+import { FontSize } from 'component-library/components/Title';
 import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
@@ -8,6 +9,7 @@ import { CLError, RHFErrors } from 'typings';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import Error, {
+  ErrorProps,
   findErrorMessage,
   getApiErrorValues,
   TFieldName,
@@ -22,9 +24,17 @@ import SuccessFeedback from './SuccessFeedback';
 type FeedbackProps = {
   successMessage?: string;
   onlyShowErrors?: boolean;
+  showErrorTitle?: boolean;
+  fontSize?: FontSize;
 };
 
-const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
+const Feedback = ({
+  successMessage,
+  onlyShowErrors,
+  showErrorTitle = true,
+  fontSize = 'base',
+  ...errorProps
+}: FeedbackProps & ErrorProps) => {
   const { formatMessage } = useIntl();
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
   const { data: appConfiguration } = useAppConfiguration();
@@ -109,6 +119,7 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
           {errorMessageIsShown && (
             <Error
               marginBottom="12px"
+              {...errorProps}
               text={
                 <>
                   {formContextErrors.submissionError ? (
@@ -119,15 +130,19 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
                       <Text
                         color="red600"
                         data-testid="feedbackSubmissionError"
+                        fontSize={fontSize}
                       >
                         {formatMessage(messages.submissionErrorText)}
                       </Text>
                     </>
                   ) : (
                     <Box data-testid="feedbackErrorMessage">
-                      <Title color="red600" variant="h4" mt="0px" mb="0px">
-                        {formatMessage(messages.errorTitle)}
-                      </Title>
+                      {showErrorTitle && (
+                        <Title color="red600" variant="h4" mt="0px" mb="0px">
+                          {formatMessage(messages.errorTitle)}
+                        </Title>
+                      )}
+
                       {getAllErrorMessages().map((error) => {
                         return error.message ? (
                           <Text
@@ -143,6 +158,7 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
                             style={{ cursor: 'pointer' }}
                             role="link"
                             tabIndex={0}
+                            fontSize={fontSize}
                           >
                             {error.message}
                           </Text>

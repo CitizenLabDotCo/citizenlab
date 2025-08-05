@@ -35,6 +35,7 @@ module EmailCampaigns
   class Campaigns::CommentOnIdeaYouFollow < Campaign
     include Consentable
     include Disableable
+    include ContentConfigurable
     include ActivityTriggerable
     include RecipientConfigurable
     include LifecycleStageRestrictable

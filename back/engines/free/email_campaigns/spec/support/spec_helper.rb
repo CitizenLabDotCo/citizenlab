@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../mailers/shared_examples_for_campaign_delivery_tracking'
+
 RSpec.configure do |config|
   config.include EmailCampaigns::MailerHelper
 

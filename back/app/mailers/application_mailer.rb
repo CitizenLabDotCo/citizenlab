@@ -9,7 +9,6 @@ class ApplicationMailer < ActionMailer::Base
   alias recipient user
 
   delegate :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, to: :url_service
-  delegate :first_name, to: :recipient, prefix: true
 
   helper_method :app_configuration, :app_settings, :header_title, :header_message,
     :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
@@ -113,15 +112,18 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def mailgun_headers
-    {
+    headers = {
       'X-Mailgun-Variables' => mailgun_variables.to_json
     }
+    return headers if mailgun_variables['cl_delivery_id'].present?
+
+    # Do not use the hook API for tracking if the delivery ID is not set.
+    headers.merge('X-Mailgun-Track' => 'no')
   end
 
   def mailgun_variables
     {
-      'cl_tenant_id' => app_configuration.id,
-      'cl_delivery_id' => command[:delivery_id]
+      'cl_tenant_id' => app_configuration.id
     }
   end
 
@@ -195,6 +197,10 @@ class ApplicationMailer < ActionMailer::Base
 
   def formatted_todays_date
     I18n.l(Time.zone.today, format: :long)
+  end
+
+  def recipient_first_name
+    recipient&.first_name
   end
 
   def days_since_publishing(resource)

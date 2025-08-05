@@ -39,7 +39,7 @@ const Container = styled(Box)`
   ${defaultCardStyle};
 `;
 
-const participationMethodMessage: Record<
+export const participationMethodMessage: Record<
   ParticipationMethod,
   MessageDescriptor
 > = {

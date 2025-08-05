@@ -26,9 +26,12 @@ RSpec.describe EmailCampaigns::CommentOnYourCommentMailer do
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to be_present
@@ -47,11 +50,40 @@ RSpec.describe EmailCampaigns::CommentOnYourCommentMailer do
     end
 
     it 'includes the comment author name' do
-      expect(mail.body.encoded).to include('Matthias')
+      expect(mail_body(mail)).to include('Matthias')
     end
 
     it 'includes the comment body' do
-      expect(mail.body.encoded).to include('huisbezoek')
+      expect(mail_body(mail)).to include('huisbezoek')
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ authorName }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT - {{ post }}</b>' },
+          button_text_multiloc: { 'en' => 'CLICK THE BUTTON - {{ authorFirstName }}' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Liege'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE FOR Matthias Geeke')
+      end
+
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT - Afschaffen of versoepelen wetgeving rond verharden van voortuin</b>')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail_body(mail)).to include('CLICK THE BUTTON - Matthias')
+      end
     end
   end
 end

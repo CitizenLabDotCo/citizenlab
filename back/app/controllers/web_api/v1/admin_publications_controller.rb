@@ -5,6 +5,15 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   before_action :set_admin_publication, only: %i[reorder show]
 
   def index
+    # By default, this endpoint will remove unlisted projects that the user cannot moderate.
+    # But if the `remove_all_unlisted` parameter is set to 'true', it will
+    # even remove all unlisted projects.
+    policy_context[:remove_unlisted] = if params[:remove_all_unlisted] == 'true'
+      'remove_all_unlisted'
+    else
+      'remove_unlisted_that_user_cannot_moderate'
+    end
+
     admin_publications = policy_scope(AdminPublication.includes(:parent))
     admin_publications = admin_publication_filterer.filter(admin_publications, params.merge(current_user: current_user))
 
@@ -71,6 +80,14 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   end
 
   def reorder
+    # The 'ordering' parameter should be a number representing the target
+    # position of the admin_publication in the list of its siblings.
+    # It is NOT an index! It indicates which item it should replace based on the
+    # value of the 'ordering' attribute.
+    # So for example, AdminPublication.pluck(:id, :ordering) could return something like
+    # [['a', 2], ['b', 3], ['c', 4]]
+    # To then move 'a' to the position of 'b', you would do
+    # web_api/v1/admin_publications/a/reorder?ordering=3
     if @admin_publication.insert_at(permitted_attributes(@admin_publication)[:ordering])
       SideFxAdminPublicationService.new.after_update(@admin_publication, current_user)
       render json: WebApi::V1::AdminPublicationSerializer.new(

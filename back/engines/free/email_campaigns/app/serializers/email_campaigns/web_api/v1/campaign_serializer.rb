@@ -79,20 +79,43 @@ module EmailCampaigns
     attribute :sender, if: proc { |object|
       sender_configurable? object
     }
-    attribute :reply_to, if: proc { |object|
-      sender_configurable? object
+
+    attribute :deliveries_count, if: proc { |object|
+      trackable? object
     }
-    attribute :subject_multiloc, if: proc { |object|
-      content_configurable? object
+
+    # For customised emails
+    attribute :reply_to, :subject_multiloc, :title_multiloc, :button_text_multiloc, if: proc { |object|
+      content_configurable?(object)
     }
+
     attribute :body_multiloc, if: proc { |object|
       content_configurable? object
     } do |object|
       TextImageService.new.render_data_images_multiloc object.body_multiloc, field: :body_multiloc, imageable: object
     end
-    attribute :deliveries_count, if: proc { |object|
-      trackable? object
-    }
+
+    attribute :intro_multiloc, if: proc { |object|
+      content_configurable? object
+    } do |object|
+      TextImageService.new.render_data_images_multiloc object.intro_multiloc, field: :intro_multiloc, imageable: object
+    end
+
+    attribute :editable_regions, if: proc { |object|
+      content_configurable?(object)
+    } do |object|
+      editable_regions?(object) ? object.editable_regions : {}
+    end
+
+    attribute :substitution_variable_keys, if: proc { |object|
+      content_configurable?(object)
+    } do |object|
+      editable_regions?(object) ? object.substitution_variables.keys : []
+    end
+
+    attribute :has_preview do |object|
+      content_configurable?(object) && previewable?(object)
+    end
 
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
 
@@ -114,6 +137,14 @@ module EmailCampaigns
 
     def self.content_configurable?(object)
       object.class.included_modules.include?(ContentConfigurable)
+    end
+
+    def self.previewable?(object)
+      object.respond_to?(:preview_command)
+    end
+
+    def self.editable_regions?(object)
+      object.respond_to?(:editable_regions)
     end
 
     def self.trackable?(object)

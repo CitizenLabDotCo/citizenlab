@@ -18,17 +18,17 @@ RSpec.describe EmailCampaigns::LifecycleStageRestrictable do
   context 'on a campaign limited to demo and active platforms' do
     let(:campaign) { LifecycleStageActiveAndDemoCampaignForTest.create! }
 
-    describe 'run_before_send_hooks' do
+    describe 'run_filter_hooks' do
       it 'returns true when the platform is active' do
         app_configuration.settings['core']['lifecycle_stage'] = 'active'
         app_configuration.save!
-        expect(campaign.run_before_send_hooks).to be true
+        expect(campaign.run_filter_hooks).to be true
       end
 
       it 'returns false when the platform is churned' do
         app_configuration.settings['core']['lifecycle_stage'] = 'churned'
         app_configuration.save!
-        expect(campaign.run_before_send_hooks).to be_falsy
+        expect(campaign.run_filter_hooks).to be_falsy
       end
     end
   end
@@ -36,17 +36,17 @@ RSpec.describe EmailCampaigns::LifecycleStageRestrictable do
   context 'on a campaign limited to non-demo platforms' do
     let(:campaign) { LifecycleStageNotChurnedCampaignForTest.create! }
 
-    describe 'run_before_send_hooks' do
+    describe 'run_filter_hooks' do
       it 'returns true when the platform is active' do
         app_configuration.settings['core']['lifecycle_stage'] = 'active'
         app_configuration.save!
-        expect(campaign.run_before_send_hooks).to be true
+        expect(campaign.run_filter_hooks).to be true
       end
 
       it 'returns false when the platform is demo' do
         app_configuration.settings['core']['lifecycle_stage'] = 'demo'
         app_configuration.update_column :settings, app_configuration.settings
-        expect(campaign.run_before_send_hooks).to be_falsy
+        expect(campaign.run_filter_hooks).to be_falsy
       end
     end
   end

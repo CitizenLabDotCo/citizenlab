@@ -144,8 +144,8 @@ const AddToBasketButton = ({
 
   if (basket?.data.attributes.submitted_at) {
     disabledMessage = onIdeaPage
-      ? messages.basketAlreadySubmittedIdeaPage
-      : messages.basketAlreadySubmitted;
+      ? messages.basketAlreadySubmittedIdeaPage1
+      : messages.basketAlreadySubmitted1;
   }
 
   if (!isPhaseActive(phase)) {

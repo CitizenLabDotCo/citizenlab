@@ -38,7 +38,9 @@ const singleVotingConfig: VotingMethodConfig = {
     phase,
     submissionState,
   }: GetStatusDescriptionProps) => {
-    const totalVotes = phase?.attributes.voting_max_total;
+    if (!phase) return null;
+
+    const totalVotes = phase.attributes.voting_max_total;
 
     if (submissionState === 'hasNotSubmitted') {
       const youCanVoteMessage = totalVotes
@@ -59,7 +61,7 @@ const singleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              totalVotes: phase?.attributes.voting_max_total,
+              totalVotes: phase.attributes.voting_max_total,
             }}
             {...youCanVoteMessage}
           />
@@ -75,21 +77,19 @@ const singleVotingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase?.attributes.end_at) {
+      if (phase.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              endDate: getLocalisedDateString(phase?.attributes.end_at),
+              endDate: getLocalisedDateString(phase.attributes.end_at),
             }}
             {...messages.votingSubmittedInstructions}
           />
         );
-      } else if (phase && !phase.attributes.end_at) {
+      } else {
         return (
           <FormattedMessage
             values={{
@@ -101,22 +101,10 @@ const singleVotingConfig: VotingMethodConfig = {
           />
         );
       }
-      return (
-        <FormattedMessage
-          values={{
-            b: (chunks) => (
-              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-            ),
-          }}
-          {...messages.votingSubmittedInstructionsContinuous}
-        />
-      );
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (submissionState === 'submissionEnded') {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const votingMax = phase?.attributes?.voting_max_total;
+      const votingMax = phase.attributes.voting_max_total;
       if (votingMax) {
         if (votingMax > 1 && phase.attributes.end_at) {
           return (
@@ -125,9 +113,7 @@ const singleVotingConfig: VotingMethodConfig = {
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                endDate: getLocalisedDateString(phase?.attributes.end_at),
+                endDate: getLocalisedDateString(phase.attributes.end_at),
                 // TODO: Fix this the next time the file is edited.
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 maxVotes: votingMax?.toLocaleString(),
@@ -143,9 +129,7 @@ const singleVotingConfig: VotingMethodConfig = {
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                endDate: getLocalisedDateString(phase?.attributes.end_at),
+                endDate: getLocalisedDateString(phase.attributes.end_at),
                 // TODO: Fix this the next time the file is edited.
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 maxVotes: votingMax?.toLocaleString(),
@@ -157,16 +141,14 @@ const singleVotingConfig: VotingMethodConfig = {
         } else {
           return null;
         }
-      } else if (phase?.attributes.end_at) {
+      } else if (phase.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              endDate: getLocalisedDateString(phase?.attributes.end_at),
+              endDate: getLocalisedDateString(phase.attributes.end_at),
             }}
             {...messages.singleVotingUnlimitedEnded}
           />
@@ -183,12 +165,6 @@ const singleVotingConfig: VotingMethodConfig = {
     } else {
       return messages.submittedVoteCountText;
     }
-  },
-  getSubmissionTerm: (form) => {
-    if (form === 'singular') {
-      return messages.vote;
-    }
-    return messages.votes;
   },
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;

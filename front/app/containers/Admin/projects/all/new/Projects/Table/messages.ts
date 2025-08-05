@@ -5,17 +5,21 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.project',
     defaultMessage: 'Project',
   },
-  currentPhase: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.currentPhase',
-    defaultMessage: 'Current phase',
+  phase: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.phase',
+    defaultMessage: 'Phase',
   },
-  projectStart: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.projectStart',
-    defaultMessage: 'Proj. start',
+  manager: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.manager',
+    defaultMessage: 'Manager',
   },
-  projectEnd: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.projectEnd',
-    defaultMessage: 'Proj. end',
+  start: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.start',
+    defaultMessage: 'Start',
+  },
+  end: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.end',
+    defaultMessage: 'End',
   },
   status: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.status',
@@ -60,5 +64,42 @@ export default defineMessages({
   yearsToStart: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.yearsToStart',
     defaultMessage: '{years}y to start',
+  },
+  currentPhase: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.currentPhase',
+    defaultMessage: 'Current phase:',
+  },
+  nextPhase: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.nextPhase',
+    defaultMessage: 'Next phase:',
+  },
+  statusColon: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.statusColon',
+    defaultMessage: 'Status: ',
+  },
+  visibilityColon: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.visibilityColon',
+    defaultMessage: 'Visibility: ',
+  },
+  xGroups: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.xGroups',
+    defaultMessage: '{numberOfGroups} groups',
+  },
+  hidden: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.hidden',
+    defaultMessage: 'Hidden',
+  },
+  public: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.public',
+    defaultMessage: 'Public',
+  },
+  discoverability: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.discoverability',
+    defaultMessage: 'Discoverability:',
+  },
+  thisColumnUsesCache: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache',
+    defaultMessage:
+      'This column uses cached participant data. To see the latest numbers, check the "Participants" tab of the project.',
   },
 });

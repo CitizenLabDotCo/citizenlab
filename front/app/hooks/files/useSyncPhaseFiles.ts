@@ -2,9 +2,12 @@ import { useCallback } from 'react';
 
 import { isString } from 'lodash-es';
 
+import PhaseFilesKeys from 'api/phase_files/keys';
 import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import useUpdatePhaseFile from 'api/phase_files/useUpdatePhaseFile';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { SyncPhaseFilesArguments } from './types';
 
@@ -23,12 +26,13 @@ export function useSyncPhaseFiles() {
       // Get any files that we need to add
       const filesToAddPromises = phaseFiles
         .filter((file) => !file.remote)
-        .map((file, index) =>
+        .map((file) =>
           addPhaseFile({
             phaseId,
             base64: file.base64 || '',
-            ordering: index,
+            ordering: file.ordering!, // Use the ordering from drag-and-drop
             name: file.name,
+            invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
           })
         );
 
@@ -39,6 +43,7 @@ export function useSyncPhaseFiles() {
           deletePhaseFile({
             phaseId,
             fileId: file.id,
+            invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
           })
         );
 
@@ -60,6 +65,7 @@ export function useSyncPhaseFiles() {
           file: {
             ordering: file.ordering,
           },
+          invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
         })
       );
 
@@ -69,6 +75,10 @@ export function useSyncPhaseFiles() {
         ...filesToRemovePromises,
         ...filesToReorderPromises,
       ]);
+
+      await queryClient.invalidateQueries({
+        queryKey: PhaseFilesKeys.list({ phaseId }),
+      });
     },
     [addPhaseFile, deletePhaseFile, updatePhaseFile]
   );

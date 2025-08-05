@@ -5,8 +5,8 @@ module EmailCampaigns
     extend ActiveSupport::Concern
 
     included do
-      before_send :filter_activity_triggered
-      before_send :filter_activity_too_old
+      filter :filter_activity_triggered
+      filter :filter_activity_too_old
     end
 
     def filter_activity_triggered(activity:, time: nil)

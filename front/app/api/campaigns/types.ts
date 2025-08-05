@@ -22,8 +22,13 @@ export interface ICampaignData {
     enabled?: boolean;
     subject_multiloc: Multiloc;
     body_multiloc: Multiloc;
+    title_multiloc?: Multiloc;
+    intro_multiloc?: Multiloc;
+    button_text_multiloc?: Multiloc;
     sender: 'author' | 'organization';
     reply_to: 'author' | 'organization';
+    editable_regions?: EditableRegion[];
+    editable_region_variable_keys?: string[];
     created_at: string;
     updated_at: string;
     deliveries_count: number;
@@ -38,6 +43,7 @@ export interface ICampaignData {
     schedule: any;
     // Undefined for campaigns that are not scheduled
     schedule_multiloc?: Multiloc;
+    has_preview: boolean;
     delivery_stats?: {
       sent: number;
       bounced: number;
@@ -64,7 +70,17 @@ export interface CampaignFormValues {
   reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
+  title_text_multiloc?: Multiloc;
+  intro_multiloc?: Multiloc;
+  button_text_multiloc?: Multiloc;
   group_ids?: string[];
+}
+
+export interface EditableRegion {
+  key: string;
+  type: 'html' | 'text';
+  default_value_multiloc?: Multiloc;
+  allow_blank_locales: boolean;
 }
 
 type CampaignUpdate =

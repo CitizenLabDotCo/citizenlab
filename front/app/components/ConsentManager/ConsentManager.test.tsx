@@ -88,6 +88,29 @@ describe('<ConsentManager />', () => {
       expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
     });
 
+    it('opens and closes the preference modal', () => {
+      // opens
+      const { container } = render(<ConsentManager />);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
+
+      fireEvent.click(container.querySelector('.integration-open-modal'));
+
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).toBeInTheDocument();
+
+      // closes
+      const closeButton = container.querySelectorAll(
+        '.e2e-modal-close-button'
+      )[0];
+      fireEvent.click(closeButton);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
+    });
+
     it('saves correct cookie if all cookies are accepted', () => {
       const { container } = render(<ConsentManager />);
       fireEvent.click(container.querySelector('.e2e-accept-cookies-btn'));
@@ -170,6 +193,13 @@ describe('<ConsentManager />', () => {
       const { container } = render(<ConsentManager />);
       expect(
         container.querySelector('#e2e-cookie-banner')
+      ).not.toBeInTheDocument();
+    });
+
+    it('does not render the preference modal/screen (yet)', () => {
+      const { container } = render(<ConsentManager />);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
       ).not.toBeInTheDocument();
     });
 

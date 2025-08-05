@@ -224,6 +224,7 @@ describe('Idea show page actions', () => {
           const commentBody = randomString();
           cy.get('.e2e-comment-reply-button').first().click({ force: true });
           cy.wait(1000);
+          cy.get('.e2e-childcomment-form textarea').first().type(' ');
           cy.get('.e2e-childcomment-form textarea').first().type(commentBody);
           cy.get('.e2e-submit-childcomment').first().click();
           cy.wait(2000);

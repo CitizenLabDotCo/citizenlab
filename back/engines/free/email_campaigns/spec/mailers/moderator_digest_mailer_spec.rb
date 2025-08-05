@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::ModeratorDigestMailer do
   describe 'campaign_mail' do
-    let_it_be(:recipient) { create(:admin, locale: 'en') }
+    let_it_be(:recipient) { create(:admin, locale: 'en', first_name: 'Barry') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::ModeratorDigest.create! }
     let_it_be(:project) { create(:single_phase_ideation_project) }
     let_it_be(:top_ideas) { create_list(:idea, 3, project: project) }
@@ -67,11 +67,14 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer do
       }
     end
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
 
     before_all do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end
+
+    include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('Weekly manager report')
@@ -93,6 +96,35 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer do
     it 'assigns project URL to the button' do
       expect(mail.body.encoded)
         .to match(Frontend::UrlService.new.admin_project_url(project.id))
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ organizationName }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ firstName }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT - {{ project_title }}</b>' },
+          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Liege'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE FOR Barry')
+      end
+
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT - Renew West Parc</b>')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail_body(mail)).to include('CLICK THE BUTTON')
+      end
     end
   end
 end

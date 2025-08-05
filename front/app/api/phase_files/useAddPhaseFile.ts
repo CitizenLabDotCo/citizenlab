@@ -21,14 +21,21 @@ const addPhaseFile = async ({ phaseId, ...requestBody }: AddPhaseFileObject) =>
 
 const useAddPhaseFile = () => {
   const queryClient = useQueryClient();
-  return useMutation<IPhaseFile, CLErrors, AddPhaseFileObject>({
-    mutationFn: addPhaseFile,
-    onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: phaseFilesKeys.list({
-          phaseId: variables.phaseId,
-        }),
-      });
+
+  return useMutation<
+    IPhaseFile,
+    CLErrors,
+    AddPhaseFileObject & { invalidate?: boolean }
+  >({
+    mutationFn: ({ invalidate: _invalidate, ...vars }) => addPhaseFile(vars),
+    onSuccess: (_data, { invalidate = true, ...variables }) => {
+      if (invalidate) {
+        queryClient.invalidateQueries({
+          queryKey: phaseFilesKeys.list({
+            phaseId: variables.phaseId,
+          }),
+        });
+      }
     },
   });
 };

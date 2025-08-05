@@ -9,20 +9,19 @@ export default defineMessages({
     id: 'app.components.AssignVoteControl.selected2',
     defaultMessage: 'Selected',
   },
-  votesSubmitted: {
-    id: 'app.components.AssignVoteControl.votesSubmitted',
+  votesSubmitted1: {
+    id: 'app.components.AssignVoteControl.votesSubmitted1',
     defaultMessage:
-      'You have already submitted your {votes, plural, one {vote} other {votes}}. Click "Modify your vote" to change your {votes, plural, one {vote} other {votes}}.',
+      'You have already submitted your vote. To modify it, click "Modify your submission".',
   },
-  votesSubmittedIdeaPage: {
-    id: 'app.components.AssignVoteControl.votesSubmittedIdeaPage',
+  votesSubmittedIdeaPage1: {
+    id: 'app.components.AssignVoteControl.votesSubmittedIdeaPage1',
     defaultMessage:
-      'You have already submitted your {votes, plural, one {vote} other {votes}}. To change your {votes, plural, one {vote} other {votes}}, go back to the project page and click "Modify your vote".',
+      'You have already submitted your vote. To modify it, go back to the project page and click "Modify your submission".',
   },
   maxVotesReached: {
-    id: 'app.components.AssignVoteControl.maxVotesReached',
-    defaultMessage:
-      'You have reached the maximum number of votes you can submit.',
+    id: 'app.components.AssignVoteControl.maxVotesReached1',
+    defaultMessage: 'You have distributed all of your votes.',
   },
   phaseNotActive: {
     id: 'app.components.AssignVoteControl.phaseNotActive',

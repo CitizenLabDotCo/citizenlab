@@ -38,6 +38,14 @@ resource 'Phases' do
         assert_status 200
         expect(json_response[:data].size).to eq 2
       end
+
+      example 'List all phases of unlisted project', document: false do
+        @project.update!(listed: false)
+        Permissions::PermissionsUpdateService.new.update_all_permissions
+        do_request
+        assert_status 200
+        expect(json_response[:data].size).to eq 2
+      end
     end
 
     context 'when admin' do
@@ -271,7 +279,8 @@ resource 'Phases' do
         parameter :end_at, 'The end date of the phase', required: true
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :ideas_order, 'The default order of ideas.'
-        parameter :input_term, 'The input term for something.'
+        parameter :input_term, 'The term used to describe an input. One of #{Phase::INPUT_TERMS.join(', ')}. Defaults to "idea".', required: false
+        parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", required: false
         parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
@@ -293,6 +302,7 @@ resource 'Phases' do
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
       let(:campaigns_settings) { phase.campaigns_settings }
+      let(:vote_term) { 'token' }
 
       example_request 'Create a phase for a project' do
         assert_status 201
@@ -311,6 +321,7 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be false
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
+        expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
         expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
         expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
         expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be false

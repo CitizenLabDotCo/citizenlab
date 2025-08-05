@@ -80,4 +80,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.unlimited',
     defaultMessage: 'Unlimited',
   },
+  voteTerm: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.voteTerm',
+    defaultMessage: 'Vote',
+  },
+  pointTerm: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.pointTerm',
+    defaultMessage: 'Point',
+  },
+  tokenTerm: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.tokenTerm',
+    defaultMessage: 'Token',
+  },
+  creditTerm: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.creditTerm',
+    defaultMessage: 'Credit',
+  },
 });

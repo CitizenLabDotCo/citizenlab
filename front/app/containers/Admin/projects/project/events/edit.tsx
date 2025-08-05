@@ -98,7 +98,9 @@ const AdminProjectEventEdit = () => {
     isCreatingNewEvent ? initializeEventTimes() : {}
   );
 
-  const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
+  const [registerButtonOptionsVisible, setRegisterButtonOptionsVisible] =
+    useState(false);
+  const [registrationLimitVisible, setRegistrationLimitVisible] =
     useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
@@ -155,10 +157,17 @@ const AdminProjectEventEdit = () => {
     }
   }, [remotePoint]);
 
+  useEffect(() => {
+    if (typeof eventAttrs.maximum_attendees === 'number') {
+      // If we have a maximum number of attendees, we want to ensure the toggle is on
+      setRegistrationLimitVisible(true);
+    }
+  }, [eventAttrs.maximum_attendees]);
+
   // If there is a custom button url, set the state accordingly
   useEffect(() => {
     if (eventAttrs.using_url) {
-      setAttendanceOptionsVisible(true);
+      setRegisterButtonOptionsVisible(true);
     }
   }, [eventAttrs.using_url]);
 
@@ -236,9 +245,29 @@ const AdminProjectEventEdit = () => {
     });
   };
 
+  const handleLimitToggleOnChange = (toggleValue: boolean) => {
+    setSubmitState('enabled');
+    setRegistrationLimitVisible(toggleValue);
+    setAttributeDiff({
+      ...attributeDiff,
+      maximum_attendees: toggleValue === false ? null : 100,
+    });
+  };
+
+  const handleMaximumRegistrantsChange = (maximum_attendees: string) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      // If maximum_attendees is an empty string, set it to 0.
+      // Number('') returns 0.
+      maximum_attendees: Number(maximum_attendees),
+    });
+    setErrors({});
+  };
+
   const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
     setSubmitState('enabled');
-    setAttendanceOptionsVisible(toggleValue);
+    setRegisterButtonOptionsVisible(toggleValue);
     setAttributeDiff({
       ...attributeDiff,
       using_url: '',
@@ -273,6 +302,7 @@ const AdminProjectEventEdit = () => {
   const handleOnImageAdd = (imageFiles: UploadFile[]) => {
     setSubmitState('enabled');
     setUploadedImage(imageFiles[0]);
+    setCroppedImgBase64(imageFiles[0].base64);
   };
 
   const handleOnImageRemove = () => {
@@ -467,6 +497,7 @@ const AdminProjectEventEdit = () => {
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
               onError: async (errors) => {
+                setSaving(false);
                 setErrors(errors.errors);
                 setSubmitState('error');
               },
@@ -590,7 +621,7 @@ const AdminProjectEventEdit = () => {
                 </SectionField>
               )}
 
-              <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
+              <Title variant="h4" color="primary" fontWeight="semi-bold">
                 {formatMessage(messages.eventDates)}
               </Title>
               {eventAttrs.start_at && eventAttrs.end_at && (
@@ -602,7 +633,7 @@ const AdminProjectEventEdit = () => {
                 />
               )}
 
-              <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
+              <Title variant="h4" color="primary" fontWeight="semi-bold">
                 {formatMessage(messages.eventLocation)}
               </Title>
               <SectionField>
@@ -700,45 +731,89 @@ const AdminProjectEventEdit = () => {
               <Title
                 variant="h4"
                 color="primary"
-                style={{ fontWeight: '600' }}
+                fontWeight="semi-bold"
                 mt="48px"
               >
-                {formatMessage(messages.attendanceButton)}
+                {formatMessage(messages.registrationLimit)}
               </Title>
               <SectionField>
                 <Toggle
                   label={
                     <Box display="flex">
-                      {formatMessage(
-                        messages.toggleCustomAttendanceButtonLabel
-                      )}
+                      {formatMessage(messages.toggleRegistrationLimitLabel)}
                       <Box ml="4px">
                         <IconTooltip
                           content={formatMessage(
-                            messages.toggleCustomAttendanceButtonTooltip
+                            messages.toggleRegistrationLimitTooltip
                           )}
                         />
                       </Box>
                     </Box>
                   }
-                  checked={attendanceOptionsVisible}
+                  checked={registrationLimitVisible}
                   onChange={() => {
-                    handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
+                    handleLimitToggleOnChange(!registrationLimitVisible);
                   }}
                 />
               </SectionField>
-              {attendanceOptionsVisible && (
+              {registrationLimitVisible && (
+                <SectionField>
+                  <Input
+                    id="maximum_attendees"
+                    label={formatMessage(messages.maximumRegistrants)}
+                    type="number"
+                    value={eventAttrs.maximum_attendees?.toString()}
+                    onChange={handleMaximumRegistrantsChange}
+                  />
+                  <ErrorComponent
+                    fieldName="maximum_attendees"
+                    apiErrors={get(errors, 'maximum_attendees')}
+                  />
+                </SectionField>
+              )}
+
+              <Title
+                variant="h4"
+                color="primary"
+                fontWeight="semi-bold"
+                mt="48px"
+              >
+                {formatMessage(messages.registerButton)}
+              </Title>
+              <SectionField>
+                <Toggle
+                  label={
+                    <Box display="flex">
+                      {formatMessage(messages.toggleCustomRegisterButtonLabel)}
+                      <Box ml="4px">
+                        <IconTooltip
+                          content={formatMessage(
+                            messages.toggleCustomRegisterButtonTooltip2
+                          )}
+                        />
+                      </Box>
+                    </Box>
+                  }
+                  checked={registerButtonOptionsVisible}
+                  onChange={() => {
+                    handleCustomButtonToggleOnChange(
+                      !registerButtonOptionsVisible
+                    );
+                  }}
+                />
+              </SectionField>
+              {registerButtonOptionsVisible && (
                 <>
                   <SectionField>
                     <Box maxWidth="400px">
                       <InputMultilocWithLocaleSwitcher
-                        id="event-address-2"
+                        id="custom-button-text"
                         label={formatMessage(messages.customButtonText)}
                         type="text"
                         valueMultiloc={eventAttrs.attend_button_multiloc}
                         onChange={handleCustomButtonMultilocOnChange}
                         labelTooltipText={formatMessage(
-                          messages.customButtonTextTooltip
+                          messages.customButtonTextTooltip3
                         )}
                         maxCharCount={28}
                       />
@@ -770,7 +845,9 @@ const AdminProjectEventEdit = () => {
                         icon={
                           // TODO: Fix this the next time the file is edited.
                           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                          attendanceOptionsVisible ? undefined : 'plus-circle'
+                          registerButtonOptionsVisible
+                            ? undefined
+                            : 'plus-circle'
                         }
                         iconSize="20px"
                         bgColor={theme.colors.tenantPrimary}
@@ -783,7 +860,7 @@ const AdminProjectEventEdit = () => {
                           ? // TODO: Fix this the next time the file is edited.
                             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                             eventAttrs?.attend_button_multiloc[locale]
-                          : formatMessage(messages.attend)}
+                          : formatMessage(messages.register)}
                       </ButtonWithLink>
                     </Box>
                   )}
@@ -793,7 +870,7 @@ const AdminProjectEventEdit = () => {
               <Title
                 variant="h4"
                 color="primary"
-                style={{ fontWeight: '600' }}
+                fontWeight="semi-bold"
                 mt="48px"
               >
                 {formatMessage(messages.additionalInformation)}

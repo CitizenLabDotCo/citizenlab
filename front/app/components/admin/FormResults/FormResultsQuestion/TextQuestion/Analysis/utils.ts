@@ -1,4 +1,5 @@
 import { UseQueryResult } from '@tanstack/react-query';
+import { isArray } from 'lodash-es';
 import moment from 'moment';
 
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
@@ -11,14 +12,14 @@ import {
 } from 'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils';
 
 // Convert all values in the filters object to strings
-// This is necessary because the filters are passed as query params
+// This is necessary because the way we are storing arrays in the URL: we encode them as JSON values
 export const convertFilterValuesToString = (filters?: IInputsFilterParams) => {
   return (
     filters &&
     Object.entries(filters).reduce((acc, [key, value]) => {
       return {
         ...acc,
-        [key]: JSON.stringify(value),
+        [key]: isArray(value) ? JSON.stringify(value) : value,
       };
     }, {})
   );

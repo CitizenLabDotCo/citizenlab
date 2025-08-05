@@ -34,8 +34,6 @@
   "app.components.ConsentManager.Banner.mainText": "This platform uses cookies in accordance with our {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Manage",
   "app.components.ConsentManager.Banner.policyLink": "Kaupapahere pihikete",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "Confirm",
-  "app.components.ConsentManager.Modal.CancelDialog.confirmation": "If you cancel, your preferences will be lost.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Advertising",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "We use this to personalise and measure the effectiveness of advertising campaigns of our website. We will not show any advertising on this platform, but the following services might offer you a personalised ad based on the pages you visit on our site.",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Allow",

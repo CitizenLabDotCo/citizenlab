@@ -40,7 +40,7 @@ module EmailCampaigns
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_input_author
-    before_send :status_is_prescreening?
+    filter :status_is_prescreening?
 
     def mailer_class
       YourInputInScreeningMailer

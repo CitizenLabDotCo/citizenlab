@@ -25,6 +25,7 @@ import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 import DesktopTopBar from './components/DesktopTopBar';
 import EventDescription from './components/EventDescription';
+import EventShowPageMeta from './components/EventShowPageMeta';
 import InformationColumnDesktop from './components/InformationColumnDesktop';
 import InformationSectionMobile from './components/InformationSectionMobile';
 import MobileTopBar from './components/MobileTopBar';
@@ -102,6 +103,7 @@ const EventsShowPage = () => {
 
   return (
     <>
+      <EventShowPageMeta event={event.data} />
       {isSmallerThanTablet ? (
         <MobileTopBar projectId={event.data.relationships.project.data.id} />
       ) : (

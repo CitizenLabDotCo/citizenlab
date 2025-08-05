@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
   describe 'campaign_mail' do
     let_it_be(:event) { create(:event, start_at: '2017-05-01 18:00', end_at: '2017-05-01 20:00') }
-    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:recipient) { create(:user, locale: 'en', first_name: 'Dave') }
 
     let(:event_attributes) { event.attributes }
 
@@ -19,11 +19,12 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
       }
     end
 
-    let(:mail) do
-      campaign = EmailCampaigns::Campaigns::EventRegistrationConfirmation.create!
-      command = { recipient: recipient, event_payload: event_payload }
-      described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now
-    end
+    let(:command) { { recipient: recipient, event_payload: event_payload } }
+    let(:campaign) { EmailCampaigns::Campaigns::EventRegistrationConfirmation.create! }
+    let(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let(:mail) { mailer.campaign_mail.deliver_now }
+
+    include_examples 'campaign delivery tracking'
 
     it 'has the correct subject' do
       event_title = event_attributes['title_multiloc'][recipient.locale]
@@ -52,6 +53,30 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
           .gsub(/^UID:.*$/, '')
 
         expect(content).to eq(expected_content)
+      end
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject - {{ eventTitle }}' },
+          title_multiloc: { 'en' => 'NEW TITLE FOR {{ firstName }}' },
+          button_text_multiloc: { 'en' => 'CLICK THE BUTTON' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject - Info session'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE FOR Dave')
+      end
+
+      it 'can customise the cta button' do
+        expect(mail_body(mail)).to include('CLICK THE BUTTON')
       end
     end
 

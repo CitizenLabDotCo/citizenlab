@@ -5,10 +5,32 @@ require 'rails_helper'
 RSpec.describe ConfirmationsMailer do
   describe 'send_confirmation_code' do
     let_it_be(:user) { create(:user_with_confirmation, email: 'some_email@email.com') }
-    let_it_be(:message) { described_class.with(user: user).send_confirmation_code.deliver_now }
+    let_it_be(:mailer) { described_class.with(user: user) }
+    let_it_be(:message) { mailer.send_confirmation_code.deliver_now }
 
     before do
       SettingsService.new.activate_feature! 'user_confirmation'
+    end
+
+    describe 'mailgun_headers' do
+      it 'includes X-Mailgun-Variables and cl_tenant_id' do
+        # We need to do this as we cannot directly access the true mailer instance
+        # when using `described_class.with(...)` in the test setup.
+        mailer_instance = nil
+        allow(described_class).to receive(:new).and_wrap_original do |original, *args|
+          mailer_instance = original.call(*args)
+          allow(mailer_instance).to receive(:mailgun_headers).and_call_original
+          mailer_instance
+        end
+
+        mailer.send_confirmation_code.deliver_now
+
+        expect(mailer_instance.mailgun_headers.keys).to match_array %w[X-Mailgun-Variables X-Mailgun-Track]
+        expect(JSON.parse(mailer_instance.mailgun_headers['X-Mailgun-Variables'])).to match(
+          hash_including('cl_tenant_id' => instance_of(String))
+        )
+        expect(mailer_instance.mailgun_headers['X-Mailgun-Track']).to eq 'no'
+      end
     end
 
     it 'renders the subject' do

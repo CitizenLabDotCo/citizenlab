@@ -145,7 +145,6 @@ module BulkImportIdeas::Parsers
     # @param [Hash] idea_row - comes from #ideas_to_idea_rows
     def process_custom_form_fields(fields, idea_row)
       merged_fields = merge_idea_with_form_fields(fields)
-      multi_select_types = %w[multiselect multiselect_image]
       custom_fields = {}
       merged_fields.each do |field|
         next if field[:key].nil? || field[:value].nil?
@@ -156,8 +155,7 @@ module BulkImportIdeas::Parsers
         else
           # Custom fields
           value = field[:value]
-          value = value.compact if multi_select_types.include?(field[:input_type])
-          value = value.compact.first if field[:input_type] == 'select' && value.is_a?(Array)
+          value = value.first if field[:input_type] == 'select' && value.is_a?(Array)
           custom_fields[field[:key].to_sym] = value if value.present?
         end
       end
@@ -174,15 +172,36 @@ module BulkImportIdeas::Parsers
             option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name] == value.strip }
             option[:key] if option
           end
-          field[:value] = options
+          field[:value] = options.compact.uniq
+        else
+          field[:value] = []
         end
       elsif %w[number linear_scale sentiment_linear_scale rating].include?(field[:input_type]) && field[:value].present?
         field[:value] = field[:value].to_i
+      elsif field[:input_type] == 'checkbox' && field[:value].present?
+        field[:value] = field[:value].downcase == 'x'
+      elsif field[:input_type] == 'date' && field[:value].present?
+        field[:value] = format_date(field[:value])
+      elsif field[:input_type] == 'matrix_linear_scale' && field[:value].present?
+        field[:value] = extract_matrix_value(field)
       else
         field[:value] = field[:value].to_s
       end
 
       field
+    end
+
+    def format_date(date)
+      return nil if date.blank?
+
+      parsed_date = begin
+        date.is_a?(Date) ? date : Date.parse(date)
+      rescue StandardError
+        nil
+      end
+      return nil unless parsed_date
+
+      parsed_date.strftime('%Y-%m-%d')
     end
 
     def fix_email_address(email)
@@ -195,6 +214,35 @@ module BulkImportIdeas::Parsers
       email = email.gsub(/(com|co|org|gov|uk|fr|be|nl|de|cl|us|dk|ca|at|nu)$/, '.\1') # Single domain suffixes
 
       email&.match(User::EMAIL_REGEX) ? email : nil
+    end
+
+    # Format the matrix field as: { "one_az7": 4, "blah_3w8": 2, "this_fn0": 1, "that_ptu": 4 }
+    # NOTE: This does not currently follow the model of other fields (ie the form_fields in template_data)
+    # This would be too complex to implement at this time
+    def extract_matrix_value(field)
+      return nil if field[:value].blank?
+
+      multiloc_service = MultilocService.new
+      matrix_field = CustomField.find_by(key: field[:key])
+
+      label_values = (1..matrix_field.maximum).each_with_object({}) do |i, res|
+        label_attr = :"linear_scale_label_#{i}_multiloc"
+        label = I18n.with_locale(@locale) { multiloc_service.t(matrix_field[label_attr]) }
+        res[label] = i if label.present?
+      end
+
+      statement_keys = matrix_field.matrix_statements.each_with_object({}) do |statement, res|
+        statement_title = I18n.with_locale(@locale) { multiloc_service.t(statement.title_multiloc) }
+        res[statement_title] = statement.key if statement_title.present?
+      end
+
+      # Extract the matrix value from the string
+      field[:value].split(';').each_with_object({}) do |statement, res|
+        key, val = statement.split(':').map(&:strip)
+        key = statement_keys[key]
+        val = label_values[val]
+        res[key] = val.to_i if key && val
+      end
     end
   end
 end

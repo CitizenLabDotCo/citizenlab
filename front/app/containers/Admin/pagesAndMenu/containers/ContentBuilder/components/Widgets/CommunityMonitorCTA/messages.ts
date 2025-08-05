@@ -30,11 +30,6 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorSubmitBtnText',
     defaultMessage: 'Button',
   },
-  xMinutesToComplete: {
-    id: 'app.components.CommunityMonitorModal.xMinutesToComplete',
-    defaultMessage:
-      '{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}',
-  },
   surveyCompletedUntilNextQuarter: {
     id: 'app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter',
     defaultMessage:
