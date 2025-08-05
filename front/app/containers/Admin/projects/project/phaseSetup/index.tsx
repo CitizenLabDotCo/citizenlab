@@ -413,7 +413,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
               id="project-timeline-edit-form-file-uploader"
               onFileAdd={handlePhaseFileOnAdd}
               afterFileSelect={(files) => {
-                console.log('HERE!', files);
                 setInStatePhaseFiles((prev) => [...prev, ...files]);
                 setSubmitState('enabled');
               }}

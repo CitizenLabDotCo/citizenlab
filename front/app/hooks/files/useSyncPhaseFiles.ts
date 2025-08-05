@@ -25,7 +25,6 @@ export function useSyncPhaseFiles() {
       filesToAttach,
       fileOrdering,
     }: SyncPhaseFilesArguments) => {
-      console.log({ phaseFiles, filesToRemove, filesToAttach });
       // Create any missing File Attachments to the phase
       if (filesToAttach && filesToAttach.length > 0) {
         // Get any files that we need to attach
