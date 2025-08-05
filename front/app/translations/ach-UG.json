@@ -305,6 +305,8 @@
   "app.components.IdeasShowPage.sorryNoAccess": "crwdns5023683:0crwdne5023683:0",
   "app.components.LocationInput.noOptions": "crwdns5023685:0crwdne5023685:0",
   "app.components.Modal.closeWindow": "crwdns5023687:0crwdne5023687:0",
+  "app.components.MultiSelect.clearButtonAction": "crwdns5049821:0crwdne5049821:0",
+  "app.components.MultiSelect.clearSearchButtonAction": "crwdns5049823:0crwdne5049823:0",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "crwdns5023689:0crwdne5023689:0",
   "app.components.PageNotFound.goBackToHomePage": "crwdns5023691:0crwdne5023691:0",
   "app.components.PageNotFound.notFoundTitle": "crwdns5023693:0crwdne5023693:0",
