@@ -64,7 +64,8 @@ module BulkImportIdeas::Importers
           next unless form_ok # Don't try and import ideas if the form creation failed
 
           # Import the ideas
-          import_ideas(phase, phase_data[:idea_rows])
+          idea_rows = phase_data[:idea_rows].map { |row| row.transform_keys(&:to_s) } # Ensure keys are strings - when stored in jobs they get changed to symbols
+          import_ideas(phase, idea_rows)
         end
 
         # Remove the idea import records for this project - not needed via this import
