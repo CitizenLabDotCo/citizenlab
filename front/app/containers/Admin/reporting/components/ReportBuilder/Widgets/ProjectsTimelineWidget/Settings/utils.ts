@@ -89,6 +89,16 @@ export const getParticipationMethodOptions = (
     value: 'volunteering',
     label: formatMessage(projectFilterMessages.participationMethodVolunteering),
   },
+  {
+    value: 'proposals',
+    label: formatMessage(projectFilterMessages.participationMethodProposals),
+  },
+  {
+    value: 'common_ground',
+    label: formatMessage(
+      projectFilterMessages.participationMethodDocumentCommonGround
+    ),
+  },
 ];
 
 export const getSortOptions = (formatMessage: FormatMessage): IOption[] => [

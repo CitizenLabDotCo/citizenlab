@@ -98,6 +98,13 @@ const Settings = () => {
   const handleMultiSelectChange =
     (propName: MultiSelectProp) => (options: IOption[]) => {
       const selectedValues = options.map((option) => option.value);
+      // survey should include both native and external surveys
+      if (
+        propName === 'participationMethods' &&
+        selectedValues.includes('survey')
+      ) {
+        selectedValues.push('native_survey');
+      }
       setProp(
         (props: ProjectsTimelineCardProps) => (props[propName] = selectedValues)
       );

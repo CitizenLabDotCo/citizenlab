@@ -10,6 +10,13 @@ import {
 import { ParticipationMethod } from 'api/phases/types';
 import { PublicationStatus, Visibility } from 'api/projects/types';
 
+export type ProjectSortableParam =
+  | 'recently_viewed'
+  | 'phase_starting_or_ending_soon'
+  | 'recently_created'
+  | 'alphabetically_asc'
+  | 'alphabetically_desc';
+
 export type Parameters = {
   status?: PublicationStatus[];
   managers?: string[];
@@ -21,12 +28,7 @@ export type Parameters = {
   participation_methods?: ParticipationMethod[];
   visibility?: Visibility[];
   discoverability?: Discoverability[];
-  sort:
-    | 'recently_viewed'
-    | 'phase_starting_or_ending_soon'
-    | 'recently_created'
-    | 'alphabetically_asc'
-    | 'alphabetically_desc';
+  sort: ProjectSortableParam;
   locale: SupportedLocale;
 } & Pagination;
 
