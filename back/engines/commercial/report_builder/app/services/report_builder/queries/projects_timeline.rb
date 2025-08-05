@@ -151,13 +151,13 @@ module ReportBuilder
 
     def apply_sorting(query, sort)
       case sort
+      when 'recently_viewed'
+        ProjectsFinderAdminService.sort_recently_viewed(query, @current_user)
       when 'phase_starting_or_ending_soon'
         ProjectsFinderAdminService.sort_phase_starting_or_ending_soon(query)
       when 'alphabetically_asc', 'alphabetically_desc'
         ProjectsFinderAdminService.sort_alphabetically(query, { sort: sort })
       else
-        # Default fallback for recently_viewed, recently_created, and any other sort values
-        # TODO: Implement proper recently_viewed logic based on view tracking
         query.order(created_at: :desc)
       end
     end
