@@ -28,4 +28,17 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
       ).to eq(notification.comment.created_at.iso8601)
     end
   end
+
+  describe 'send_on_activity' do
+    let!(:campaign) { create(:comment_deleted_by_admin_campaign) }
+    let(:service) { EmailCampaigns::DeliveryService.new }
+    let(:phase) { create(:ideation_phase) }
+    let(:idea) { create(:idea, phases: [phase]) }
+    let(:activity) { create(:activity, item: create(:comment_deleted_by_admin, idea: idea), action: 'created') }
+
+    it 'receives process_command for ideation phases' do
+      expect(service).to receive(:process_command).with(campaign, anything).once
+      service.send_on_activity(activity)
+    end
+  end
 end

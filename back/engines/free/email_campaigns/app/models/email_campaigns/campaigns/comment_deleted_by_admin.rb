@@ -79,6 +79,10 @@ module EmailCampaigns
       Phase
     end
 
+    def supports_context?(context)
+      super && context.participation_method == 'ideation'
+    end
+
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end
