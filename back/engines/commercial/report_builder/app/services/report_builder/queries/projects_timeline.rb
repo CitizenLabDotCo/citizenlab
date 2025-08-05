@@ -1,47 +1,64 @@
 module ReportBuilder
   class Queries::ProjectsTimeline < ReportBuilder::Queries::Base
     def run_query(params = {})
-      # Extract parameters with defaults
-      start_at = params[:start_at]
-      end_at = params[:end_at]
-      publication_statuses = params[:publication_statuses] || ['published']
-      participation_states = params[:participation_states] || []
-      visibility = params[:visibility] || []
-      discoverability = params[:discoverability] || []
-      managers = params[:managers] || []
-      folder_ids = params[:folder_ids] || []
-      participation_methods = params[:participation_methods] || []
-      sort = params[:sort] || 'phase_starting_or_ending_soon'
-      number_of_projects = params[:number_of_projects] || 10
+      extract_params = extract_parameters(params)
+      projects = fetch_filtered_projects(extract_params)
+      projects_with_phases = fetch_projects_with_phases(projects)
+      timeline_items = build_timeline_items(projects_with_phases)
 
-      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
+      {
+        timeline_items: timeline_items,
+        projects: serialize(projects, ::WebApi::V1::ProjectSerializer)
+      }
+    end
 
-      # Build the base query for projects
-      projects_query = Project
-        .joins(:admin_publication)
-        .not_hidden
+    private
 
-      # Apply filters
-      projects_query = apply_publication_status_filter(projects_query, publication_statuses)
-      projects_query = apply_participation_states_filter(projects_query, participation_states)
-      projects_query = apply_visibility_filter(projects_query, visibility)
-      projects_query = apply_discoverability_filter(projects_query, discoverability)
-      projects_query = apply_managers_filter(projects_query, managers)
-      projects_query = apply_folder_ids_filter(projects_query, folder_ids)
-      projects_query = apply_participation_methods_filter(projects_query, participation_methods)
-      projects_query = apply_date_range_filter(projects_query, start_date, end_date)
+    def extract_parameters(params)
+      {
+        start_at: params[:start_at],
+        end_at: params[:end_at],
+        publication_statuses: params[:publication_statuses] || ['published'],
+        participation_states: params[:participation_states] || [],
+        visibility: params[:visibility] || [],
+        discoverability: params[:discoverability] || [],
+        managers: params[:managers] || [],
+        folder_ids: params[:folder_ids] || [],
+        participation_methods: params[:participation_methods] || [],
+        sort: params[:sort] || 'phase_starting_or_ending_soon',
+        number_of_projects: params[:number_of_projects] || 10
+      }
+    end
 
-      # Apply sorting
-      projects_query = apply_sorting(projects_query, sort)
+    def fetch_filtered_projects(params)
+      start_date, end_date = TimeBoundariesParser.new(params[:start_at], params[:end_at]).parse
 
-      # Limit results
-      projects_query = projects_query.limit(number_of_projects)
+      projects_query = build_base_query
+      projects_query = apply_all_filters(projects_query, params, start_date, end_date)
+      projects_query = apply_sorting(projects_query, params[:sort])
+      projects_query = projects_query.limit(params[:number_of_projects])
 
-      # Get the projects
-      projects = projects_query.to_a
+      projects_query.to_a
+    end
 
-      # Get phases for the projects using SQL for better performance and nil handling
-      projects_with_phases = Project
+    def build_base_query
+      Project.joins(:admin_publication).not_hidden
+    end
+
+    def apply_all_filters(query, params, start_date, end_date)
+      query
+        .then { |q| apply_publication_status_filter(q, params[:publication_statuses]) }
+        .then { |q| apply_participation_states_filter(q, params[:participation_states]) }
+        .then { |q| apply_visibility_filter(q, params[:visibility]) }
+        .then { |q| apply_discoverability_filter(q, params[:discoverability]) }
+        .then { |q| apply_managers_filter(q, params[:managers]) }
+        .then { |q| apply_folder_ids_filter(q, params[:folder_ids]) }
+        .then { |q| apply_participation_methods_filter(q, params[:participation_methods]) }
+        .then { |q| apply_date_range_filter(q, start_date, end_date) }
+    end
+
+    def fetch_projects_with_phases(projects)
+      Project
         .where(id: projects.map(&:id))
         .joins(
           'LEFT JOIN LATERAL (' \
@@ -73,9 +90,10 @@ module ReportBuilder
           ') AS current_phases ON true'
         )
         .select('projects.*, first_phases.first_phase_start_at, last_phases.last_phase_end_at, current_phases.current_phase_start_at, current_phases.current_phase_end_at')
+    end
 
-      # Build timeline data
-      timeline_items = projects_with_phases.map do |project|
+    def build_timeline_items(projects_with_phases)
+      projects_with_phases.map do |project|
         {
           id: project.id,
           title: project.title_multiloc,
@@ -87,19 +105,10 @@ module ReportBuilder
           folder_title_multiloc: project.folder&.title_multiloc
         }
       end
-
-      {
-        timeline_items: timeline_items,
-        projects: serialize(projects, ::WebApi::V1::ProjectSerializer)
-      }
     end
 
-    private
-
     def apply_publication_status_filter(query, statuses)
-      return query if statuses.blank?
-
-      query.where(admin_publication: { publication_status: statuses })
+      ProjectsFinderAdminService.filter_status(query, { status: statuses })
     end
 
     def apply_participation_states_filter(query, states)
@@ -115,26 +124,11 @@ module ReportBuilder
     end
 
     def apply_managers_filter(query, manager_ids)
-      return query if manager_ids.blank?
-
-      # Filter projects that have any of the specified users as moderators
-      # Moderators are stored in the roles JSON field of users
-      moderator_conditions = manager_ids.map do |manager_id|
-        sanitized_manager_id = ActiveRecord::Base.connection.quote(manager_id)
-        "EXISTS (
-          SELECT 1 FROM users
-          WHERE users.id = #{sanitized_manager_id}
-          AND users.roles @> '[{\"type\": \"project_moderator\", \"project_id\": \"' || projects.id || '\"}]'
-        )"
-      end.join(' OR ')
-
-      query.where(moderator_conditions)
+      ProjectsFinderAdminService.filter_project_manager(query, { managers: manager_ids })
     end
 
     def apply_folder_ids_filter(query, folder_ids)
-      return query if folder_ids.blank?
-
-      query.where(folder_id: folder_ids)
+      ProjectsFinderAdminService.filter_by_folder_ids(query, { folder_ids: folder_ids })
     end
 
     def apply_participation_methods_filter(query, methods)
