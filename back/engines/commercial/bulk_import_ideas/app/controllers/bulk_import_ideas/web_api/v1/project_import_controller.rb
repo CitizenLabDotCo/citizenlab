@@ -4,6 +4,7 @@ module BulkImportIdeas
   class WebApi::V1::ProjectImportController < ApplicationController
     def bulk_create_projects
       base64_zip = project_import_params[:file]
+      locale = project_import_params[:locale]
       upload_path = 'tmp/import_files'
       import_path = "#{upload_path}/#{Tenant.current.schema_name}"
 
