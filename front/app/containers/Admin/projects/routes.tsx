@@ -40,6 +40,9 @@ const AdminProjectPermissions = lazy(
   () => import('./project/permissions/Project')
 );
 const AdminPhasePermissions = lazy(() => import('./project/permissions/Phase'));
+const AdminPhaseEmails = lazy(
+  () => import('./project/admin_phase_email_wrapper')
+);
 const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
 const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
@@ -71,6 +74,8 @@ const ReportTab = lazy(() => import('./project/information/ReportTab'));
 const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
 const AdminProjectsData = lazy(() => import('./project/data'));
+
+const EmailsEdit = lazy(() => import('../messaging/Edit'));
 
 export function adminProjectsProjectPath(projectId: string): RouteType {
   return `/admin/projects/${projectId}`;
@@ -108,6 +113,7 @@ export enum projectsRoutes {
   projectPhaseExternalSurveyResults = ':phaseId/survey-results',
   projectPhasePolls = ':phaseId/polls',
   projectPhaseAccessRights = ':phaseId/access-rights',
+  projectPhaseEmails = ':phaseId/emails',
   projectPhaseIdeas = ':phaseId/ideas',
   projectPhaseProposals = ':phaseId/proposals',
   projectPhaseIdeaForm = ':phaseId/form',
@@ -166,6 +172,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit?${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/emails`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
 const createAdminProjectsRoutes = () => {
@@ -473,6 +480,18 @@ const createAdminProjectsRoutes = () => {
                     <AdminPhasePermissions />
                   </PageLoading>
                 ),
+              },
+              {
+                path: projectsRoutes.projectPhaseEmails,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseEmails />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: ':phaseId/emails/:campaignId/edit',
+                element: <EmailsEdit campaignType="automated" />,
               },
               {
                 path: projectsRoutes.projectPhaseIdeas,

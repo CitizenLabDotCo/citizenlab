@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import useProjectCampaigns from 'api/campaigns/useProjectCampaigns';
+import useCampaigns from 'api/campaigns/useCampaigns';
 import { isDraft } from 'api/campaigns/util';
 
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
@@ -28,8 +28,8 @@ import NewCampaignButton from './NewCampaignButton';
 const CustomEmails = () => {
   const { projectId } = useParams() as { projectId: string };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: campaigns, fetchNextPage } = useProjectCampaigns({
-    projectId,
+  const { data: campaigns, fetchNextPage } = useCampaigns({
+    context: { projectId },
     pageSize: 10,
   });
 
