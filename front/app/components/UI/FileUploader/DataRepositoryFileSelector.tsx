@@ -21,8 +21,10 @@ const DataRepositoryFileSelector = ({
   files,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [showSelectExistingFiles, setShowSelectExistingFiles] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Track if the user is uploading new files, so we can hide the existing file selector
+  const [isUploadingNewFiles, setIsUploadingNewFiles] = useState(false);
 
   return (
     <>
@@ -38,12 +40,10 @@ const DataRepositoryFileSelector = ({
         opened={isModalOpen}
         close={() => {
           setIsModalOpen(false);
-          // Reset the state to show the select existing files view
-          setShowSelectExistingFiles(true);
         }}
       >
-        <Box mt="20px">
-          {showSelectExistingFiles && (
+        <Box mt="32px">
+          {!isUploadingNewFiles && (
             <SelectExistingFile
               attachedFiles={files}
               setShowModal={setIsModalOpen}
@@ -55,9 +55,11 @@ const DataRepositoryFileSelector = ({
             showTitle={false}
             setModalOpen={setIsModalOpen}
             onFileSelect={() => {
-              setShowSelectExistingFiles(false);
+              // This hides the existing file selector, so we only see the relevant uploading section
+              setIsUploadingNewFiles(true);
             }}
             afterUpload={(uploadedFiles) => {
+              // Convert FileWithMeta files to the FileType format
               const newFiles: FileType[] = uploadedFiles.map((file) => ({
                 id: file.id,
                 name: file.file.name,
@@ -66,13 +68,8 @@ const DataRepositoryFileSelector = ({
                 remote: false,
               }));
 
-              // Filter out files that already exist to prevent duplicates
-              const filesToAdd = newFiles.filter(
-                (newFile) =>
-                  !files?.some((existingFile) => existingFile.id === newFile.id)
-              );
-
-              onFileAddFromRepository?.(filesToAdd);
+              // Send the files to the parent component
+              onFileAddFromRepository?.(newFiles);
             }}
           />
         </Box>

@@ -211,6 +211,15 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     setSubmitState(isDuplicate ? submitState : 'enabled');
   };
 
+  const handlePhaseFilesOnAddFromRepository = (files: FileType[]) => {
+    // Check for duplicates
+    const newFiles = files.filter(
+      (newFile) => !inStatePhaseFiles.some((file) => file.id === newFile.id)
+    );
+
+    setInStatePhaseFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  };
+
   const handlePhaseFileOnRemove = (fileToRemove: FileType) => {
     setInStatePhaseFiles(
       inStatePhaseFiles.filter((file) => file.name !== fileToRemove.name)
@@ -412,12 +421,10 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             </SubSectionTitle>
             <FileUploader
               id="project-timeline-edit-form-file-uploader"
-              onFileAdd={handlePhaseFileOnAdd} // For old file uploader, which we will remove once the feature is released.
-              onFileAddFromRepository={(files: FileType[]) => {
-                // Here, we handle files added from the new File Library uploader.
-                setInStatePhaseFiles((prev) => [...prev, ...files]);
-                setSubmitState('enabled');
-              }}
+              // onFileAdd is for the old file uploader, which we will remove once the feature is released.
+              onFileAdd={handlePhaseFileOnAdd}
+              // onFileAddFromRepository handles files added from the new Data Repository uploader.
+              onFileAddFromRepository={handlePhaseFilesOnAddFromRepository}
               onFileRemove={handlePhaseFileOnRemove}
               onFileReorder={handleFilesReorder}
               files={inStatePhaseFiles}

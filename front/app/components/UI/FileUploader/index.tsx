@@ -122,7 +122,8 @@ const FileUploader = ({
       >
         {isDataRepositoryEnabled && allowFromDataRepository ? (
           // The new file uploader, where you can select from the existing file library.
-          // For now we support both the old and new file uploader, but eventually we want to remove the old one.
+          // For now we support both the old and new file uploader, but eventually we want to
+          // remove the old one and only use this one.
           <DataRepositoryFileSelector
             onFileAddFromRepository={onFileAddFromRepository}
           />
