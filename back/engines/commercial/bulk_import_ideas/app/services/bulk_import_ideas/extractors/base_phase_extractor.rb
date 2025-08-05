@@ -118,6 +118,9 @@ module BulkImportIdeas::Extractors
     end
 
     def field_attributes(column_name)
+      override_input_type = @config[:override_field_types][column_name]
+      return text_field_attributes(column_name) if override_input_type == 'text'
+
       # Is this a number field?
       number = number_field_attributes(column_name)
       return number if number
@@ -129,7 +132,7 @@ module BulkImportIdeas::Extractors
       return matrix if matrix
 
       # Select or Multiselect field?
-      select = select_field_attributes(column_name)
+      select = select_field_attributes(column_name, override_input_type)
       return select if select
 
       # Otherwise, it's a text field
@@ -155,29 +158,33 @@ module BulkImportIdeas::Extractors
       { input_type: input_type }
     end
 
-    def select_field_attributes(column_name)
+    def select_field_attributes(column_name, override_input_type)
+      # Use of AI is triggered by special field prefix 'ai_'
+      use_ai = override_input_type&.start_with? 'ai_'
+      override_input_type = override_input_type.sub('ai_', '') if use_ai
+
       values = remove_empty_array_values(@idea_rows.pluck(column_name))
       unique_values = values.uniq
 
       # Return a single select if specified in the config
-      override_input_type = @config[:override_field_types][column_name]
       return format_select_field('select', unique_values) if override_input_type == 'select'
 
       # Assume not a select if all values are unique
       return nil if values.size == unique_values.size
 
       # Attempt to split out multiselect values
-      multiselect_values = values.map { |value| value.split(multiselect_regex).map(&:strip) }.flatten.uniq
+      multiselect_values = unique_values.map { |value| value.split(multiselect_regex).map(&:strip) }.flatten.uniq
 
       input_type = 'select'
-      if multiselect_values.size != unique_values.size
-        unique_values = multiselect_values
+      if multiselect_values.size != unique_values.size || override_input_type == 'multiselect'
         input_type = 'multiselect'
+        unique_values = use_ai ? ai_multiselect_values(unique_values) : multiselect_values
       end
 
       unique_ratio = values.size / unique_values.size.to_f
       return nil if unique_ratio < 5 # Not enough unique values to warrant a select field
 
+      # TODO: Reformat the values by matching the value with the options
       reformat_multiselect_values(column_name) if input_type == 'multiselect'
 
       format_select_field(input_type, unique_values)
@@ -221,7 +228,7 @@ module BulkImportIdeas::Extractors
         statements = statements.uniq
         return nil if labels.size > 11 # Cannot support more than 11 labels
 
-        labels = order_by_sentiment(labels)
+        labels = ai_order_by_sentiment(labels)
 
         # Update values to ensure it matches our expected format with semicolons
         reformat_matrix_values(column_name)
@@ -247,24 +254,6 @@ module BulkImportIdeas::Extractors
       nil
     end
 
-    # Order a list of labels (mainly for Matrix) negative to positive using GPT
-    def order_by_sentiment(values)
-      gpt_mini = Analysis::LLM::GPT4oMini.new
-      prompt = <<~GPT_PROMPT
-        At the end of this message, you’ll find a list of strings delimited by ;. 
-        Return only the list, in the same format but ordered by sentiment, most negative first and most positive last
-
-        List of strings:
-        #{values.join(';')}
-      GPT_PROMPT
-      gpt_response = gpt_mini.chat(prompt)
-
-      new_values = gpt_response&.delete('"')&.split(';')
-      return values if new_values.nil? || new_values.length != values.length
-
-      new_values
-    end
-
     def ignore_row?(_row)
       false
     end
@@ -281,6 +270,41 @@ module BulkImportIdeas::Extractors
         native_survey_button_multiloc: { en: 'Take the Survey' },
         user_fields_in_form: true
       }
+    end
+
+    # AI methods
+
+    # Order a list of labels (mainly for Matrix) negative to positive using GPT
+    def ai_order_by_sentiment(values)
+      gpt_mini = Analysis::LLM::GPT4oMini.new
+      prompt = <<~GPT_PROMPT
+        At the end of this message, you’ll find a list of strings delimited by ||. 
+        Return only the list, in the same format but ordered by sentiment, most negative first and most positive last
+
+        List of strings:
+        #{values.join('||')}
+      GPT_PROMPT
+      gpt_response = gpt_mini.chat(prompt)
+
+      new_values = gpt_response&.delete('"')&.split(';')
+      return values if new_values.nil? || new_values.length != values.length
+
+      new_values
+    end
+
+    # Detect multiselect values using AI - useful particularly when options have commas in them
+    def ai_multiselect_values(values)
+      gpt_mini = Analysis::LLM::GPT4oMini.new
+      prompt = <<~GPT_PROMPT
+        At the end of this message, you’ll find a list of responses to a multiselect question separated by ||
+        Each option is separated by a comma
+        Return only the list of all the possible options, separated by ||
+  
+        List of responses:
+        #{values.take(10).join('||')}
+      GPT_PROMPT
+      response = gpt_mini.chat(prompt)
+      response.split('||').map(&:strip)
     end
   end
 end
