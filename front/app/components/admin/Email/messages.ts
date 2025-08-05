@@ -35,9 +35,9 @@ export default defineMessages({
       'This shows how many recipients opened the email. Please note that some security systems (like Microsoft Defender) may pre-load content for scanning, which can result in false opens.',
   },
   deliveryStatus_clickedTooltip: {
-    id: 'app.components.Admin.Campaigns.deliveryStatus_clickedTooltip',
+    id: 'app.components.Admin.Campaigns.deliveryStatus_clickedTooltip2',
     defaultMessage:
-      'When you added one or more links to your email, the number of users who clicked a link will be shown here.',
+      'This shows how many recipients clicked a link in the email. Please note that some security systems may follow links automatically to scan them, which can result in false clicks.',
   },
   recipientsTitle: {
     id: 'app.components.Admin.Campaigns.recipientsTitle',
