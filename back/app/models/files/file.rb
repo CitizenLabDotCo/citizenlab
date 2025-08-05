@@ -4,17 +4,18 @@
 #
 # Table name: files
 #
-#  id                                          :uuid             not null, primary key
-#  name                                        :string
-#  content                                     :string
-#  uploader_id(the user who uploaded the file) :uuid
-#  created_at                                  :datetime         not null
-#  updated_at                                  :datetime         not null
-#  size(in bytes)                              :integer
-#  mime_type                                   :string
-#  category                                    :string           default("other"), not null
-#  description_multiloc                        :jsonb
-#  tsvector                                    :tsvector
+#  id                                                                           :uuid             not null, primary key
+#  name                                                                         :string
+#  content                                                                      :string
+#  uploader_id(the user who uploaded the file)                                  :uuid
+#  created_at                                                                   :datetime         not null
+#  updated_at                                                                   :datetime         not null
+#  size(in bytes)                                                               :integer
+#  mime_type                                                                    :string
+#  category                                                                     :string           default("other"), not null
+#  description_multiloc                                                         :jsonb
+#  tsvector                                                                     :tsvector
+#  ai_processing_allowed(whether consent was given to process the file with AI) :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -74,6 +75,8 @@ module Files
   class File < ApplicationRecord
     include PgSearch::Model
 
+    attribute :ai_processing_allowed, :boolean, default: false
+
     enum :category, {
       meeting: 'meeting',
       interview: 'interview',
@@ -86,8 +89,19 @@ module Files
 
     belongs_to :uploader, class_name: 'User', optional: true
 
+    before_save :update_metadata
+
+    # This callback is used to break the circular destroy dependency between the +File+
+    # and +FileAttachment+ models (and more specifically with the
+    # +FileAttachment#destroy_orphaned_file+ callback). It needs to be defined before the
+    # associations with +dependent: :destroy+ for associated records to be able to check
+    # whether the file is being destroyed.
+    around_destroy :mark_as_being_destroyed
+
+    has_many :attachments, class_name: 'Files::FileAttachment', inverse_of: :file, dependent: :destroy
     has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
     has_many :projects, through: :files_projects
+    has_one :preview, class_name: 'Files::Preview', dependent: :destroy, inverse_of: :file
 
     # TODO: Maybe reconsider the name of this column.
     mount_base64_file_uploader :content, FileUploader
@@ -96,8 +110,7 @@ module Files
     validates :content, presence: true
     validates :size, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
     validates :description_multiloc, multiloc: { presence: false }
-
-    before_save :update_metadata
+    validates :ai_processing_allowed, inclusion: { in: [true, false] }
 
     # It is not meant to be used directly. See `search` scope below.
     pg_search_scope :_pg_search_only,
@@ -143,7 +156,18 @@ module Files
       from(all_matches).order('pg_search_rank DESC')
     }
 
+    def being_destroyed?
+      !!@being_destroyed
+    end
+
     private
+
+    def mark_as_being_destroyed
+      @being_destroyed = true
+      yield
+    ensure
+      @being_destroyed = false
+    end
 
     def update_metadata
       return unless content.present? && content_changed?

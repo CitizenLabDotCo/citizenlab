@@ -6,6 +6,7 @@ class WebApi::V1::Files::FilesController < ApplicationController
   def index
     files =
       Files::FileFinder.new(**finder_params).execute
+        .then { |scope| scope.includes(:preview) }
         .then { |scope| scope.order(**order_params) }
         .then { policy_scope(_1) }
         .then { paginate(_1) }
@@ -13,7 +14,8 @@ class WebApi::V1::Files::FilesController < ApplicationController
     render json: linked_json(
       files,
       WebApi::V1::FileV2Serializer,
-      params: jsonapi_serializer_params
+      params: jsonapi_serializer_params,
+      include: [:preview]
     )
   end
 
@@ -22,7 +24,8 @@ class WebApi::V1::Files::FilesController < ApplicationController
 
     render json: WebApi::V1::FileV2Serializer.new(
       file,
-      params: jsonapi_serializer_params
+      params: jsonapi_serializer_params,
+      include: [:preview]
     ).serializable_hash
   end
 
@@ -43,6 +46,21 @@ class WebApi::V1::Files::FilesController < ApplicationController
     end
   end
 
+  def update
+    file = authorize(Files::File.find(params[:id]))
+
+    side_fx.before_update(file, current_user)
+    if file.update(update_params)
+      side_fx.after_update(file, current_user)
+      render json: WebApi::V1::FileV2Serializer.new(
+        file,
+        params: jsonapi_serializer_params
+      ).serializable_hash
+    else
+      render json: { errors: file.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     file = authorize(Files::File.find(params[:id]))
 
@@ -56,12 +74,23 @@ class WebApi::V1::Files::FilesController < ApplicationController
   private
 
   def create_params
-    {
-      content_by_content: params.require(:file).permit(:content, :name),
-      uploader_id: current_user.id,
-      category: params.dig(:file, :category),
-      description_multiloc: params.dig(:file, :description_multiloc)
-    }.compact
+    params.require(:file).permit(
+      :category,
+      :ai_processing_allowed,
+      description_multiloc: CL2_SUPPORTED_LOCALES
+    ).tap do |create_params|
+      create_params[:content_by_content] = params.require(:file).permit(:content, :name)
+      create_params[:uploader_id] = current_user.id
+    end
+  end
+
+  def update_params
+    params.require(:file).permit(
+      :name,
+      :category,
+      :ai_processing_allowed,
+      description_multiloc: CL2_SUPPORTED_LOCALES
+    )
   end
 
   def finder_params

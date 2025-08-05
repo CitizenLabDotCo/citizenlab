@@ -78,33 +78,37 @@ RSpec.describe Idea do
     end
 
     context 'when publishing an idea' do
-      it 'creates an anonymous user when the author is nil' do
-        idea = create(:idea, publication_status: 'draft', author: nil)
-        create(:idea_import, idea: idea, user_created: false, user_consent: false)
-        idea.update!(publication_status: 'published')
-        expect(idea.reload.author).not_to be_nil
-      end
-
       it 'deletes an imported user that has been created but removed in the edit' do
         user = create(:user)
         idea = create(:idea, publication_status: 'draft', author: user)
         idea_import = create(:idea_import, idea: idea, user_created: true, user_consent: true)
         idea.update!(publication_status: 'published', author: nil)
 
-        expect(idea.reload.author.id).not_to eq user.id
+        expect(idea.reload.author).to be_nil
         expect { user.reload }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(idea_import.reload.user_created).to be true
+        expect(idea_import.reload.user_created).to be false
         expect(idea_import.reload.user_consent).to be false
       end
 
       it 'adds an existing user to an imported idea' do
         idea = create(:idea, publication_status: 'draft', author: nil)
         idea_import = create(:idea_import, idea: idea, user_created: false, user_consent: false)
-        user = create(:user)
+        user = create(:user, created_at: 10.days.ago)
         idea.update!(publication_status: 'published', author: user)
 
         expect(idea.reload.author.id).to eq user.id
         expect(idea_import.reload.user_created).to be false
+        expect(idea_import.reload.user_consent).to be true
+      end
+
+      it 'adds an new user to an imported idea' do
+        idea = create(:idea, publication_status: 'draft', author: nil)
+        idea_import = create(:idea_import, idea: idea, user_created: false, user_consent: false)
+        user = create(:user, created_at: 15.minutes.ago)
+        idea.update!(publication_status: 'published', author: user)
+
+        expect(idea.reload.author.id).to eq user.id
+        expect(idea_import.reload.user_created).to be true
         expect(idea_import.reload.user_consent).to be true
       end
     end

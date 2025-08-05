@@ -17,11 +17,15 @@ module EmailCampaigns
       with_options unless: :manual? do
         validates :title_multiloc, multiloc: { presence: true }
         validates :intro_multiloc, multiloc: { presence: false, html: true }
-        validates :button_text_multiloc, multiloc: { presence: true, html: true }
+        validates :button_text_multiloc, multiloc: { presence: true }, if: :editable_button_text?
         before_validation :sanitize_intro_multiloc
         before_validation :reject_default_region_values
         after_save :process_intro_images
       end
+    end
+
+    def reply_to
+      fallback_to_global(:reply_to)
     end
 
     # For customisable regions we merge in the defaults for multilocs.
@@ -39,6 +43,19 @@ module EmailCampaigns
 
     def button_text_multiloc
       merge_default_region_values(:button_text_multiloc)
+    end
+
+    # Methods to proxy mailer methods
+    def editable_regions
+      @editable_regions ||= empty_mailer.editable_regions
+    end
+
+    def preview_command(recipient)
+      @preview_command ||= empty_mailer.preview_command(recipient)
+    end
+
+    def substitution_variables
+      @substitution_variables ||= empty_mailer.substitution_variables
     end
 
     private
@@ -79,27 +96,47 @@ module EmailCampaigns
     end
 
     def merge_default_region_values(region_key)
-      values = self[region_key]
-      return values if manual?
+      value = fallback_to_global(region_key)
+      return value if manual?
 
-      region = mailer_class.editable_regions.find { |r| r[:key] == region_key }
-      return values if region.nil?
+      region = editable_regions.find { |r| r[:key] == region_key }
+      return value if region.nil?
 
       allow_blank_locales = region[:allow_blank_locales]
-      region[:default_value_multiloc].merge(values) do |_, default, saved|
+      region[:default_value_multiloc].merge(value) do |_, default, saved|
         saved.blank? && !allow_blank_locales ? default : saved
       end
     end
 
     # Reject default region values from the saved values, so that the defaults always remain the latest.
     def reject_default_region_values
-      regions = mailer_class.editable_regions
-      regions.each do |region|
+      editable_regions.each do |region|
         field = region[:key]
         self[field] = self[field].reject do |locale, value|
-          value == region[:default_value_multiloc][locale]
+          next true if region[:default_value_multiloc][locale] == value
+
+          global_campaign && global_campaign[field]&.dig(locale) == value
         end
       end
+    end
+
+    def editable_button_text?
+      editable_regions.any? { |region| region[:key] == :button_text_multiloc }
+    end
+
+    def empty_mailer
+      @empty_mailer ||= mailer_class.new
+    end
+
+    def global_campaign
+      @global_campaign ||= !manual? && context && self.class.find_by(context: nil, type: self.class.name)
+    end
+
+    def fallback_to_global(attribute)
+      value = self[attribute]
+      return value unless value.blank? && context && global_campaign
+
+      global_campaign&.send(attribute)
     end
   end
 end

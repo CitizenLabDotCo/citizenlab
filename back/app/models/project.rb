@@ -24,6 +24,7 @@
 #  preview_token                :string           not null
 #  header_bg_alt_text_multiloc  :jsonb
 #  hidden                       :boolean          default(FALSE), not null
+#  listed                       :boolean          default(TRUE), not null
 #
 # Indexes
 #
@@ -34,6 +35,7 @@
 #  fk_rails_...  (default_assignee_id => users.id)
 #
 class Project < ApplicationRecord
+  include Files::FileAttachable
   include PgSearch::Model
 
   attribute :preview_token, :string, default: -> { generate_preview_token }

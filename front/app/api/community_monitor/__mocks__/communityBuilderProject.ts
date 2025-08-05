@@ -26,6 +26,7 @@ export const project: IProjectData = {
     updated_at: '2023-03-22T08:36:22.662Z',
     folder_id: null,
     publication_status: 'published',
+    listed: true,
     description_multiloc: {
       en: '<p>You can propose anywhere you like, but we will only accept Koekenbakstraat</p>',
     },

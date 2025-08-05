@@ -14,8 +14,8 @@ import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 
+import messages from '../../../../messages';
 import { UploadStatus } from '../../../types';
-import messages from '../../messages';
 
 type Props = {
   status: UploadStatus;
@@ -30,8 +30,18 @@ export const StatusIcon = ({ status }: Props) => {
       return <Icon name="check" fill={colors.green500} />;
     case 'error':
       return (
-        // TODO: Confirm that any BE errors will show useful messages + UI looks polished.
-        <Tooltip content={<Feedback showBackground={false} showIcon={false} />}>
+        <Tooltip
+          content={
+            <Feedback
+              showBackground={false}
+              showIcon={false}
+              marginTop="0px"
+              marginBottom="0px"
+              showErrorTitle={false}
+              fontSize="s"
+            />
+          }
+        >
           <Icon fill={colors.red500} name="info-outline" />
         </Tooltip>
       );

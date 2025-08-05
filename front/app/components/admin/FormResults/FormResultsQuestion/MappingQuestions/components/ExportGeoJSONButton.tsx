@@ -37,7 +37,7 @@ const ExportGeoJSONButton = ({ phaseId, customFieldId }: Props) => {
   const handleExportInputs = async () => {
     try {
       const blob = await requestBlob(
-        `${API_PATH}/admin/phases/${phaseId}/custom_fields/${customFieldId}/as_geojson`,
+        `${API_PATH}/phases/${phaseId}/custom_fields/${customFieldId}/as_geojson`,
         'application/geo+json'
       );
       saveAs(blob, `${phaseTitle}_${moment().format('YYYY-MM-DD')}.geojson`);

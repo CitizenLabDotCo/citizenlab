@@ -238,7 +238,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
           flexDirection={isPhone ? 'column' : 'row'}
           flexWrap="wrap"
         >
-          <Box flex="1 1 140px">
+          <Box flex={isPhone ? '0 0 auto' : '1 1 140px'}>
             <Button
               buttonStyle="secondary-outlined"
               icon="check-circle"
@@ -252,7 +252,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
               {formatMessage(messages.agreeLabel)}
             </Button>
           </Box>
-          <Box flex="1 1 140px">
+          <Box flex={isPhone ? '0 0 auto' : '1 1 140px'}>
             <Button
               buttonStyle="secondary-outlined"
               icon="sentiment-neutral"
@@ -266,7 +266,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
               {formatMessage(messages.unsureLabel)}
             </Button>
           </Box>
-          <Box flex="1 1 140px">
+          <Box flex={isPhone ? '0 0 auto' : '1 1 140px'}>
             <Button
               buttonStyle="secondary-outlined"
               icon="cancel"

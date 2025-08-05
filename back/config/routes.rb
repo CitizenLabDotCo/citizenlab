@@ -346,7 +346,9 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :files, only: %i[create index show destroy], controller: 'files/files'
+      resources :files, controller: 'files/files' do
+        get 'preview', on: :member, to: 'files/previews#show'
+      end
     end
   end
 

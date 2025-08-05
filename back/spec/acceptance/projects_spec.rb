@@ -1191,6 +1191,22 @@ resource 'Projects' do
           expect(response_data.map { |d| d.dig(:attributes, :slug) }).to include 'community-monitor'
         end
       end
+
+      context 'When unlisted projects exist' do
+        before { @projects << create(:project, listed: false) }
+
+        example 'Returns unlisted projects by default', document: false do
+          do_request
+          assert_status 200
+          expect(json_response[:data].size).to eq(@projects.size)
+        end
+
+        example 'Does not return unlisted projects if remove_all_unlisted is true', document: false do
+          do_request remove_all_unlisted: true
+          assert_status 200
+          expect(json_response[:data].size).to eq(@projects.size - 1)
+        end
+      end
     end
 
     context 'when non-moderator/non-admin user' do
@@ -1816,6 +1832,52 @@ resource 'Projects' do
             end
           end
         end
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/finished_or_archived' do
+    before do
+      @listed_archived_project = create(:project_with_past_phases, admin_publication_attributes: { publication_status: 'archived' })
+      @unlisted_archived_project = create(:project_with_past_phases, listed: false, admin_publication_attributes: { publication_status: 'archived' })
+    end
+
+    example 'Returns only listed projects' do
+      do_request filter_by: 'finished_and_archived'
+      assert_status 200
+      expect(response_data.pluck(:id)).to match_array [@listed_archived_project.id]
+    end
+  end
+
+  get 'web_api/v1/projects/for_admin' do
+    context 'when moderator' do
+      before do
+        @listed_projects = create_list(:project, 5)
+        @unlisted_projects = create_list(:project, 4, listed: false)
+        @listed_projects_user_moderates = create_list(:project, 3)
+        @unlisted_projects_user_moderates = create_list(:project, 2, listed: false)
+
+        @projects_user_moderates = @listed_projects_user_moderates + @unlisted_projects_user_moderates
+
+        @moderator = create(:project_moderator, projects: @projects_user_moderates)
+
+        @projects_user_moderates.each do |project|
+          @moderator.add_role 'project_moderator', project_id: project.id
+        end
+
+        @moderator.save!
+
+        header_token_for(@moderator)
+      end
+
+      example 'Only shows projects that user moderates, including unlisted' do
+        do_request
+        assert_status 200
+        expect(response_data.size).to eq 5
+        expect(response_data.pluck(:id).sort).to match_array [
+          *@listed_projects_user_moderates.pluck(:id),
+          *@unlisted_projects_user_moderates.pluck(:id)
+        ].sort
       end
     end
   end

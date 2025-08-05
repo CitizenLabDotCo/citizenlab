@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
@@ -12,72 +12,96 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 
-import useProjectFoldersAdmin from 'api/project_folders_mini/useProjectFoldersAdmin';
+import useInfiniteProjectFoldersAdmin from 'api/project_folders_mini/useInfiniteProjectFoldersAdmin';
 
-import { PaginationWithoutPositioning } from 'components/Pagination';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 import { useIntl } from 'utils/cl-intl';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-import { useParams } from '../utils';
+import ColHeader from '../../_shared/ColHeader';
+import sharedMessages from '../../_shared/messages';
+import { useParams } from '../../_shared/params';
 
 import messages from './messages';
 import Row from './Row';
 
+const PAGE_SIZE = 10;
+
 const Table = () => {
   const { formatMessage } = useIntl();
-  const [currentPage, setCurrentPage] = useState(1);
+  const params = useParams();
 
-  const { data: folders, isFetching } = useProjectFoldersAdmin(useParams());
+  const {
+    data,
+    isFetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    status,
+  } = useInfiniteProjectFoldersAdmin(params, PAGE_SIZE);
 
-  const lastPageLink = folders?.links?.last;
-  const lastPage = lastPageLink ? getPageNumberFromUrl(lastPageLink) ?? 1 : 1;
+  const folders = useMemo(
+    () => data?.pages.flatMap((page) => page.data) ?? [],
+    [data?.pages]
+  );
+
+  const { loadMoreRef } = useInfiniteScroll({
+    isLoading: isFetchingNextPage,
+    hasNextPage: !!hasNextPage,
+    onLoadMore: fetchNextPage,
+    rootMargin: '0px 0px 100px 0px',
+  });
+
+  const getSentinelMessage = () => {
+    if (isFetchingNextPage) {
+      return sharedMessages.loadingMore;
+    }
+
+    if (hasNextPage) {
+      return sharedMessages.scrollDownToLoadMore;
+    }
+
+    if (status === 'success') {
+      return messages.allFoldersHaveLoaded;
+    }
+
+    return null;
+  };
+  const sentinelMessage = getSentinelMessage();
 
   return (
     <Box position="relative" w="100%" h="100%">
       <TableComponent
         border={`1px solid ${colors.grey300}`}
         borderRadius={stylingConsts.borderRadius}
-        innerBorders={{
-          bodyRows: true,
-        }}
+        innerBorders={{ bodyRows: true }}
       >
         <Thead>
           <Tr background={colors.grey50}>
-            <Th py="16px">{formatMessage(messages.folder)}</Th>
-            <Th py="16px">{formatMessage(messages.managers)}</Th>
-            <Th py="16px">{formatMessage(messages.status)}</Th>
+            <ColHeader>{formatMessage(messages.folder)}</ColHeader>
+            <ColHeader>{formatMessage(messages.managers)}</ColHeader>
+            <ColHeader>{formatMessage(messages.status)}</ColHeader>
             <Th />
           </Tr>
         </Thead>
         <Tbody>
-          {folders?.data.map((folder) => (
-            <Row folder={folder} key={folder.id} />
+          {folders.map((folder) => (
+            <Row key={folder.id} folder={folder} />
           ))}
         </Tbody>
       </TableComponent>
-      {lastPage > 1 && (
-        <Box mt="12px">
-          <PaginationWithoutPositioning
-            currentPage={currentPage}
-            totalPages={lastPage}
-            loadPage={setCurrentPage}
-          />
-        </Box>
-      )}
-      {isFetching && (
+
+      <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
+        {sentinelMessage && formatMessage(sentinelMessage)}
+      </Box>
+
+      {(isFetching || status === 'loading') && (
         <Box
-          position="absolute"
           w="100%"
-          top="0"
-          left="0"
-          right="0"
-          bottom="0"
-          bgColor="white"
+          p="4px"
           display="flex"
           alignItems="center"
           justifyContent="center"
-          opacity={0.7}
         >
           <Spinner />
         </Box>

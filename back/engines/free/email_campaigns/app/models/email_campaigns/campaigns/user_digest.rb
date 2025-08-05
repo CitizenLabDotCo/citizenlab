@@ -20,6 +20,7 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -134,6 +135,7 @@ module EmailCampaigns
 
       ideas = IdeaPolicy::Scope.new(nil, Idea).resolve
         .published
+        .where(project: { listed: true })
         .includes(:comments)
         .activity_after(time - 1.week)
 

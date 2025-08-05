@@ -165,4 +165,12 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription',
     defaultMessage: 'Edit description',
   },
+  public: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.public',
+    defaultMessage: 'Public',
+  },
+  hidden: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden',
+    defaultMessage: 'Hidden',
+  },
 });

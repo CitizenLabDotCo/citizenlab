@@ -15,22 +15,27 @@ import messages from '../messages';
 
 import FileDropzone from './components/FileDropzone';
 import FileUploadActions from './components/FileUploadActions';
+import InformationSection from './components/InformationSection/index';
 import SelectedFile from './components/SelectedFile';
 import { FileWithMeta, UploadStatus } from './types';
+import { countFilesWithStatus } from './utils';
 
 type Props = {
-  setModalOpen: (open: boolean) => void;
+  setModalOpen?: (open: boolean) => void;
+  setShowFirstUploadView?: (value: boolean) => void;
 };
 
+const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_FILES = 35;
 
-const FilesUpload = ({ setModalOpen }: Props) => {
+const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
 
   const [fileList, setFileList] = useState<FileWithMeta[]>([]);
   const [hasStartedUploading, setHasStartedUploading] = useState(false);
+  const [allowAiProcessing, setAllowAiProcessing] = useState(false);
   const [showMaxNumberFilesMessage, setShowMaxNumberFilesMessage] =
     useState(false);
 
@@ -66,16 +71,19 @@ const FilesUpload = ({ setModalOpen }: Props) => {
 
   const handleUpload = () => {
     setHasStartedUploading(true);
-    // Update the status of all queued files to 'uploading',
-    // which will trigger the upload process in the SelectedFile component.
+
+    // If uploading for the first time, this keeps the initial "First Upload" view visible
+    // in the UI until the upload is complete AND the user clicks "Done".
+    setShowFirstUploadView?.(true);
+
+    // Update the status of all queued files to 'uploading'.
+    // This then triggers the upload process to start in the "SelectedFile" components.
     setFileList((prev) =>
       prev.map((file) =>
         file.status === 'queued' ? { ...file, status: 'uploading' } : file
       )
     );
   };
-
-  const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
 
   const finishedUploading =
     hasStartedUploading &&
@@ -88,7 +96,7 @@ const FilesUpload = ({ setModalOpen }: Props) => {
           <Title fontWeight="semi-bold" color="coolGrey700" variant="h3">
             {formatMessage(messages.confirmAndUploadFiles)}
           </Title>
-          <Box maxHeight="300px" overflowY="auto" mt="20px">
+          <Box maxHeight="300px" overflowY="auto" overflowX="hidden" mt="20px">
             {fileList.map((item, index) => (
               <SelectedFile
                 key={`${item.file.name}-${index}`}
@@ -110,11 +118,20 @@ const FilesUpload = ({ setModalOpen }: Props) => {
 
           <Box mt="20px">
             <CheckboxWithLabel
-              checked={false}
-              onChange={() => {}} // TODO: Implement onChange logic once BE implemented.
+              checked={allowAiProcessing}
+              onChange={(event) => {
+                setAllowAiProcessing(event.target.checked);
+                // Update the AI processing flag for all files in the list
+                setFileList((prev) =>
+                  prev.map((file) => ({
+                    ...file,
+                    ai_processing_allowed: event.target.checked,
+                  }))
+                );
+              }}
               label={
                 <Text ml="8px" m="0px" color="coolGrey600" fontSize="s">
-                  TODO: Add label once Product decides on copy.
+                  {formatMessage(messages.allowAiProcessing)}
                 </Text>
               }
             />
@@ -127,12 +144,28 @@ const FilesUpload = ({ setModalOpen }: Props) => {
             onClose={() => {
               setFileList([]);
               setHasStartedUploading(false);
-              setModalOpen(false);
+              setModalOpen?.(false);
+              // If we're on the initial "First Upload" UI view, this will close it and open the full file list view.
+              setShowFirstUploadView?.(false);
             }}
           />
+          {/* Upload summary (# uploaded and # errors) */}
+          {finishedUploading && (
+            <Box display="flex" justifyContent="center">
+              <Text m="0px" mt="8px" color="coolGrey600" fontSize="s">
+                {formatMessage(messages.uploadSummary, {
+                  numberOfFiles: countFilesWithStatus(fileList, 'uploaded'),
+                  numberOfErrors:
+                    countFilesWithStatus(fileList, 'error') +
+                    countFilesWithStatus(fileList, 'too_large'),
+                })}
+              </Text>
+            </Box>
+          )}
         </>
       ) : (
         <>
+          <InformationSection />
           <FileDropzone
             getDropzoneRootProps={getDropzoneRootProps}
             getDropzoneInputProps={getDropzoneInputProps}

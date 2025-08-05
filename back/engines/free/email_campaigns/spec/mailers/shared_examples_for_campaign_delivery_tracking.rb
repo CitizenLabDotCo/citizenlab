@@ -14,7 +14,7 @@ RSpec.shared_examples 'campaign delivery tracking' do
       mailer.campaign_mail.deliver_now
       campaign.run_after_send_hooks(command)
 
-      expect(mailer_instance.mailgun_headers).to have_key('X-Mailgun-Variables')
+      expect(mailer_instance.mailgun_headers.keys).to eq %w[X-Mailgun-Variables]
       mailgun_variables = JSON.parse mailer_instance.mailgun_headers['X-Mailgun-Variables']
       expect(mailgun_variables).to match(
         hash_including(

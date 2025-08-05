@@ -152,6 +152,7 @@ resource 'Files' do
             name: file.name,
             description_multiloc: {},
             content: { url: file.content.url },
+            ai_processing_allowed: false,
             mime_type: 'application/pdf',
             category: file.category,
             size: 130,
@@ -160,9 +161,21 @@ resource 'Files' do
           },
           relationships: {
             uploader: { data: { id: file.uploader_id, type: 'user' } },
-            projects: { data: [{ id: project.id, type: 'project' }] }
+            projects: { data: [{ id: project.id, type: 'project' }] },
+            preview: { data: nil }
           }
         )
+      end
+
+      example 'Get one file with preview' do
+        file_preview = create(:file_preview, file:)
+        do_request
+        assert_status 200
+        expect(response_data.dig(:relationships, :preview, :data)).to include(
+          id: file_preview.id,
+          type: 'file_preview'
+        )
+        expect(json_response_body[:included].map { |i| i[:id] }).to include(file_preview.id)
       end
     end
 
@@ -177,12 +190,10 @@ resource 'Files' do
     with_options scope: :file do
       parameter :name, 'The name of the file', required: true
       parameter :content, 'The content of the file, encoded in Base64', required: true
-      parameter :project, 'The project to which the file will be uploaded', required: false
-      parameter :description_multiloc, 'The description of the file, as a multiloc string', required: false
-
-      parameter :category, <<~CATEGORY_DESC.squish, required: false
-        The category of the file (values: #{Files::File.categories.values.join(', ')})
-      CATEGORY_DESC
+      parameter :project, 'The project to which the file will be uploaded'
+      parameter :description_multiloc, 'The description of the file, as a multiloc string'
+      parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file (defaults to false)'
+      parameter :category, "The category of the file (values: #{Files::File.categories.values.join(', ')})"
     end
 
     let(:name) { 'afvalkalender.pdf' }
@@ -217,6 +228,7 @@ resource 'Files' do
             name: name,
             content: { url: file.content.url },
             description_multiloc: {},
+            ai_processing_allowed: false,
             mime_type: 'application/pdf',
             category: 'other',
             size: 1_645_987,
@@ -225,7 +237,8 @@ resource 'Files' do
           },
           relationships: {
             uploader: { data: { id: admin.id, type: 'user' } },
-            projects: { data: [{ id: project, type: 'project' }] }
+            projects: { data: [{ id: project, type: 'project' }] },
+            preview: { data: nil } # pdf file doesn't generate a preview
           }
         )
       end
@@ -251,6 +264,36 @@ resource 'Files' do
         file = Files::File.find(response_data[:id])
         expect(file.description_multiloc).to eq(description_multiloc)
       end
+
+      example 'Create a file with ai_processing_allowed set to true', document: false do
+        do_request(file: { name: name, content: content, ai_processing_allowed: true })
+
+        assert_status 201
+
+        expect(response_data[:attributes][:ai_processing_allowed]).to be true
+
+        file = Files::File.find(response_data[:id])
+        expect(file.ai_processing_allowed).to be true
+      end
+
+      example 'casts ai_processing_allowed to boolean', document: false do
+        do_request(file: { name: name, content: content, ai_processing_allowed: 'whatever' })
+        assert_status 201
+        expect(response_data[:attributes][:ai_processing_allowed]).to be true
+
+        do_request(file: { name: name, content: content, ai_processing_allowed: 'off' })
+        assert_status 201
+        expect(response_data[:attributes][:ai_processing_allowed]).to be false
+      end
+
+      example 'create a file that supports a PDF preview', document: false do
+        do_request(file: { name: 'test.docx', content: file_as_base64('david.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') })
+        assert_status 201
+        expect(response_data[:relationships][:preview][:data]).to include({
+          id: kind_of(String),
+          type: 'file_preview'
+        })
+      end
     end
   end
 
@@ -272,6 +315,86 @@ resource 'Files' do
         assert_status 204
         expect { Files::File.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+  end
+
+  patch '/web_api/v1/files/:id' do
+    with_options scope: :file do
+      parameter :name, 'The name of the file'
+      parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file'
+      parameter :description_multiloc, 'The description of the file, as a multiloc string'
+      parameter :category, "The category of the file (values: #{Files::File.categories.values.join(', ')})"
+    end
+
+    let(:project) { create(:project) }
+    let(:file) { create(:file, :meeting, :with_description, projects: [project]) }
+
+    # Parameters
+    let(:id) { file.id }
+    let(:name) { "updated-#{file.name}" }
+    let(:category) { 'other' }
+    let(:ai_processing_allowed) { !file.ai_processing_allowed }
+    let(:description_multiloc) { { 'en' => 'Updated description' } }
+
+    shared_examples 'update_file' do |document: false|
+      example 'Update a file', document: document do
+        do_request
+        assert_status 200
+
+        expect(response_data[:attributes].with_indifferent_access).to include(
+          name: name,
+          category: category,
+          ai_processing_allowed: ai_processing_allowed,
+          description_multiloc: description_multiloc
+        )
+
+        file.reload
+        expect(file.name).to eq name
+        expect(file.category).to eq category
+        expect(file.ai_processing_allowed).to eq ai_processing_allowed
+        expect(file.description_multiloc).to eq description_multiloc
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      include_examples 'update_file', document: true
+
+      example '[error] Update with invalid category', document: false do
+        do_request(file: { category: 'invalid_category' })
+
+        assert_status 422
+        expect(response_body).to include('category')
+      end
+    end
+
+    context 'when moderator of associated project' do
+      before do
+        moderator = create(:project_moderator, projects: [project])
+        header_token_for(moderator)
+      end
+
+      include_examples 'update_file'
+    end
+
+    context 'when moderator of other project' do
+      before do
+        moderator = create(:project_moderator)
+        header_token_for(moderator)
+      end
+
+      include_examples 'unauthorized'
+    end
+
+    context 'when regular user' do
+      before { resident_header_token }
+
+      include_examples 'unauthorized'
+    end
+
+    context 'when visitor' do
+      include_examples 'unauthorized'
     end
   end
 end

@@ -13,6 +13,7 @@ RSpec.describe Files::File do
     it { is_expected.to validate_numericality_of(:size).is_greater_than_or_equal_to(0).allow_nil }
     it { is_expected.to validate_inclusion_of(:category).in_array(described_class.categories.keys) }
     it { is_expected.to validate_presence_of(:category).with_message('is not included in the list') }
+    it { is_expected.to validate_inclusion_of(:ai_processing_allowed).in_array([true, false]) }
 
     it 'is valid for all file extensions' do
       file = build(:file, name: 'filename.unknown_ext')
@@ -249,6 +250,18 @@ RSpec.describe Files::File do
         results = described_class.search('2024')
         expect(results).to include(numeric_file)
       end
+    end
+  end
+
+  describe 'destroy!' do
+    # Destroying the last attachments the last attachment is also destroying the file.
+    # This test ensures that the callback does not fail because it was triggered by the
+    # file destroy callback.
+    it 'does not cause a circular dependency error' do
+      attachment = create(:file_attachment)
+      file = attachment.file
+
+      expect { file.destroy! }.not_to raise_error
     end
   end
 

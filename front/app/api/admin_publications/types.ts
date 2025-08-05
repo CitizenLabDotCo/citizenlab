@@ -1,6 +1,6 @@
-import { ILinks, IRelationship, Multiloc } from 'typings';
+import { Multiloc, ILinks, IRelationship } from 'typings';
 
-import { PublicationStatus } from 'api/projects/types';
+import { PublicationStatus, Visibility } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -25,6 +25,9 @@ export interface IQueryParameters {
   // This excludes projects that are already inside included folders from the result set, so we don't show duplicates.
   exclude_projects_in_included_folders?: boolean;
   include_publications?: boolean;
+  remove_all_unlisted?: boolean;
+  visibility?: Visibility[];
+  discoverability?: ('listed' | 'unlisted')[];
 }
 
 export type AdminPublicationType = 'project' | 'folder';

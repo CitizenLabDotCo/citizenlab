@@ -1,79 +1,55 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 
-import { Box, colors, Spinner, Text } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
 
-import { PublicationStatus } from 'api/projects/types';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
-import useProjectsMiniAdmin from 'api/projects_mini_admin/useProjectsMiniAdmin';
+import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
 
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import useLocalize from 'hooks/useLocalize';
 
-import { PaginationWithoutPositioning } from 'components/Pagination';
 import Centerer from 'components/UI/Centerer';
 import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-import Filters from '../Projects/Filters';
-import { useParams } from '../Projects/utils';
+import FilterBar from '../_shared/FilterBar';
+import sharedMessages from '../_shared/messages';
+import { useParams } from '../_shared/params';
+import { getStatusColor } from '../_shared/utils';
 
 import messages from './messages';
 import ProjectGanttChart from './ProjectGanttChart';
 
-const getStatusColor = (status?: PublicationStatus) => {
-  switch (status) {
-    case 'published':
-      return colors.green500;
-    case 'draft':
-      return colors.orange500;
-    case 'archived':
-      return colors.background;
-    default:
-      return undefined;
-  }
-};
+const PAGE_SIZE = 10;
 
 const Timeline = () => {
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const [currentPage, setCurrentPage] = useState(1);
+  const localize = useLocalize();
   const params = useParams();
 
-  const {
-    data: projects,
-    isLoading,
-    isFetching,
-    isError,
-  } = useProjectsMiniAdmin({
-    ...params,
-    sort: params.sort ?? 'phase_starting_or_ending_soon',
-    'page[size]': 10,
-    'page[number]': currentPage,
-  });
-
-  const projectsGanttData: GanttItem[] = (projects?.data || []).map(
-    (project) => ({
-      id: project.id,
-      title: localize(project.attributes.title_multiloc),
-      start: project.attributes.first_phase_start_date,
-      end: project.attributes.last_phase_end_date,
-      folder: localize(project.attributes.folder_title_multiloc),
-      highlight: {
-        start: project.attributes.current_phase_start_date,
-        end: project.attributes.current_phase_end_date,
+  const { data, isLoading, isFetching, isError, fetchNextPage, hasNextPage } =
+    useInfiniteProjectsMiniAdmin(
+      {
+        ...params,
+        sort: params.sort ?? 'phase_starting_or_ending_soon',
       },
-      color: getStatusColor(project.attributes.publication_status),
-      icon: localize(project.attributes.folder_title_multiloc)
-        ? 'folder-solid'
-        : undefined,
-    })
+      PAGE_SIZE
+    );
+
+  const allProjects = useMemo(
+    () => data?.pages.flatMap((page) => page.data) ?? [],
+    [data?.pages]
   );
 
-  const lastPageLink = projects?.links.last;
-  const lastPage = lastPageLink ? getPageNumberFromUrl(lastPageLink) ?? 1 : 1;
+  const { loadMoreRef } = useInfiniteScroll({
+    isLoading: isFetching,
+    hasNextPage: !!hasNextPage,
+    onLoadMore: fetchNextPage,
+    rootMargin: '0px 0px 200px 0px',
+  });
 
-  const projectsById = projects?.data.reduce(
+  const projectsById = allProjects.reduce(
     (acc, project) => ({
       ...acc,
       [project.id]: project,
@@ -81,7 +57,7 @@ const Timeline = () => {
     {} as Record<string, ProjectMiniAdminData>
   );
 
-  if (isLoading || !projectsById) {
+  if (isLoading) {
     return (
       <Centerer>
         <Spinner />
@@ -93,10 +69,36 @@ const Timeline = () => {
     return <Text>{formatMessage(messages.failedToLoadTimelineError)}</Text>;
   }
 
+  const projectsGanttData: GanttItem[] = allProjects.map((project) => ({
+    id: project.id,
+    title: localize(project.attributes.title_multiloc),
+    start: project.attributes.first_phase_start_date,
+    end: project.attributes.last_phase_end_date,
+    folder: localize(project.attributes.folder_title_multiloc),
+    highlight: {
+      start: project.attributes.current_phase_start_date,
+      end: project.attributes.current_phase_end_date,
+    },
+    color: getStatusColor(project.attributes.publication_status),
+    icon: project.attributes.folder_title_multiloc ? 'folder-solid' : undefined,
+  }));
+
+  const getSentinelMessage = () => {
+    if (isFetching) {
+      return sharedMessages.loadingMore;
+    }
+
+    if (hasNextPage) {
+      return sharedMessages.scrollDownToLoadMore;
+    }
+
+    return sharedMessages.allProjectsHaveLoaded;
+  };
+  const sentinelMessage = getSentinelMessage();
+
   return (
     <Box>
-      <Filters />
-
+      <FilterBar />
       <Box position="relative" mt="16px">
         <ProjectGanttChart
           ganttItems={projectsGanttData}
@@ -105,33 +107,20 @@ const Timeline = () => {
 
         {isFetching && (
           <Box
-            position="absolute"
             w="100%"
-            top="0"
-            left="0"
-            right="0"
-            bottom="0"
-            bg="rgba(255, 255, 255, 0.7)"
             display="flex"
             alignItems="center"
             justifyContent="center"
             borderRadius="8px"
-            zIndex="4"
           >
             <Spinner />
           </Box>
         )}
       </Box>
 
-      {lastPage > 1 && (
-        <Box mt="12px">
-          <PaginationWithoutPositioning
-            currentPage={currentPage}
-            totalPages={lastPage}
-            loadPage={setCurrentPage}
-          />
-        </Box>
-      )}
+      <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
+        {formatMessage(sentinelMessage)}
+      </Box>
     </Box>
   );
 };

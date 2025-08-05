@@ -17,7 +17,7 @@ import messages from './messages';
 import placeholderImage from './user.png';
 import { getFontSize } from './utils';
 
-const AvatarImageBubble = styled.img<{
+export const AvatarImageBubble = styled.img<{
   overlap: number;
   index: number;
   size: number;

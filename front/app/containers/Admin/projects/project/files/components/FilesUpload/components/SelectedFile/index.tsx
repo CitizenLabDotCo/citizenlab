@@ -1,10 +1,16 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconButton,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 
+import { FILE_CATEGORIES } from 'api/files/types';
 import useAddFile from 'api/files/useAddFile';
 
 import Select from 'components/HookForm/Select';
@@ -13,8 +19,8 @@ import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { getBase64FromFile } from 'utils/fileUtils';
 
+import messages from '../../../messages';
 import { FileWithMeta } from '../../types';
-import messages from '../messages';
 
 import { StatusIcon } from './components/StatusIcon';
 
@@ -34,10 +40,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
 
   // Setup for React hook form
   const schema = object({
-    semantic_type: string() // TODO: Replace with actual SemanticFileType when ready and create separate Type in another file.
-      .oneOf(['meeting', 'interview', 'other'])
-      .nullable()
-      .notRequired(),
+    category: string().oneOf(FILE_CATEGORIES).nullable().notRequired(), // Will default to 'other' if not selected
   });
   const methods = useForm({
     mode: 'onBlur',
@@ -46,8 +49,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
 
   // Function to upload the file
   const uploadFile = useCallback(
-    async (_semantic_type) => {
-      // TODO: Replace with actual semantic type once implemented
+    async (formData: FieldValues) => {
       const base64 = await getBase64FromFile(file);
 
       try {
@@ -55,7 +57,8 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
           content: base64,
           project: projectId,
           name: file.name,
-          // semantic_type  TODO: Replace with actual semantic type once BE implemented.
+          category: formData.category || 'other', // Default to 'other' if no category is selected
+          ai_processing_allowed: fileMeta.ai_processing_allowed,
         });
         onStatusUpdate({
           status: 'uploaded',
@@ -67,12 +70,19 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
         handleHookFormSubmissionError(error, methods.setError);
       }
     },
-    [file, addFile, projectId, methods.setError, onStatusUpdate]
+    [
+      file,
+      addFile,
+      projectId,
+      fileMeta.ai_processing_allowed,
+      onStatusUpdate,
+      methods.setError,
+    ]
   );
 
   // Handle form submission (trigger file upload)
-  const submit = methods.handleSubmit((formData) => {
-    uploadFile(formData.semantic_type);
+  const submit = methods.handleSubmit(async (formData) => {
+    await uploadFile(formData);
   });
 
   // Effect to handle the file upload when the status changes to 'uploading'
@@ -91,6 +101,7 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
           alignItems="center"
           justifyContent="space-between"
           mb="8px"
+          gap="8px"
         >
           <Box display="flex" alignItems="center" gap="4px">
             <StatusIcon status={status} />
@@ -108,18 +119,30 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
             >
               {file.name}
             </Text>
+            {/* Retry upload button if the file has an API error on uploading */}
+            {status === 'error' && (
+              <Tooltip content={formatMessage(messages.retryUpload)}>
+                <IconButton
+                  iconName="refresh"
+                  aria-label={formatMessage(messages.retryUpload)}
+                  onClick={() => {
+                    hasStarted.current = false;
+                    onStatusUpdate({ status: 'uploading' });
+                  }}
+                  a11y_buttonActionMessage={formatMessage(messages.retryUpload)}
+                />
+              </Tooltip>
+            )}
           </Box>
           <Box minWidth="200px">
             <form>
               <Select
-                name={'semantic_type'}
+                name={'category'}
                 placeholder={formatMessage(messages.selectFileType)}
-                options={[
-                  // TODO: Replace with actual options once implemented.
-                  { value: 'meeting', label: 'Meeting' },
-                  { value: 'interview', label: 'Interview' },
-                  { value: 'other', label: 'Other' },
-                ]}
+                options={FILE_CATEGORIES.map((category) => ({
+                  value: category,
+                  label: formatMessage(messages[category]),
+                }))}
                 disabled={status !== 'queued'}
               />
             </form>

@@ -36,6 +36,14 @@ module Files
       UserRoleService.new.moderatable_projects(user, projects).count == projects.count
     end
 
+    def update?
+      return false unless active?
+      return true if admin?
+
+      # Allow update if the user moderates at least one of the associated projects.
+      UserRoleService.new.moderatable_projects(user, record.projects).exists?
+    end
+
     def destroy?
       active_admin?
     end

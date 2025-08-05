@@ -10,6 +10,15 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Hidden community monitor project not included by default via AdminPublication policy scope
     policy_context[:include_hidden] = true if params[:include_hidden] == 'true'
 
+    # By default, this endpoint will remove unlisted projects that the user cannot moderate.
+    # But if the `remove_all_unlisted` parameter is set to 'true', it will
+    # even remove all unlisted projects.
+    policy_context[:remove_unlisted] = if params[:remove_all_unlisted] == 'true'
+      'remove_all_unlisted'
+    else
+      'remove_unlisted_that_user_cannot_moderate'
+    end
+
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
       .where(publication_type: Project.name)
@@ -60,6 +69,10 @@ class WebApi::V1::ProjectsController < ApplicationController
   # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
   # => [Project]
   def index_finished_or_archived
+    # In this widget, we always want to remove all unlisted projects,
+    # even those that the user can moderate.
+    policy_context[:remove_unlisted] = 'remove_all_unlisted'
+
     projects = policy_scope(Project)
     projects = ProjectsFinderService.new(projects, current_user, params).finished_or_archived
 
@@ -76,6 +89,10 @@ class WebApi::V1::ProjectsController < ApplicationController
   # AND (are followed by user OR relate to an idea, area, topic or folder followed by user),
   # ordered by the follow created_at (most recent first).
   def index_for_followed_item
+    # In this widget, we always want to remove all unlisted projects,
+    # even those that the user can moderate.
+    policy_context[:remove_unlisted] = 'remove_all_unlisted'
+
     projects = policy_scope(Project)
     projects = projects.not_draft
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
@@ -93,6 +110,10 @@ class WebApi::V1::ProjectsController < ApplicationController
   # AND in an active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_with_active_participatory_phase
+    # In this widget, we always want to remove all unlisted projects,
+    # even those that the user can moderate.
+    policy_context[:remove_unlisted] = 'remove_all_unlisted'
+
     projects = policy_scope(Project)
     projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
     projects = projects_and_descriptors[:projects]
@@ -115,6 +136,10 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Else: Returns all non-draft projects that are visible to user, for the areas user follows or for all-areas.
   # Ordered by created_at, newest first.
   def index_for_areas
+    # In this widget, we always want to remove all unlisted projects,
+    # even those that the user can moderate.
+    policy_context[:remove_unlisted] = 'remove_all_unlisted'
+
     projects = policy_scope(Project)
     projects = ProjectsFinderService.new(projects, current_user, params).projects_for_areas
 
@@ -130,6 +155,10 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Returns all non-draft projects that are visible to user, for the selected topics.
   # Ordered by created_at, newest first.
   def index_for_topics
+    # In this widget, we always want to remove all unlisted projects,
+    # even those that the user can moderate.
+    policy_context[:remove_unlisted] = 'remove_all_unlisted'
+
     projects = policy_scope(Project)
     projects = projects
       .not_draft
@@ -145,11 +174,15 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def index_for_admin
+    # In this endpoint, we only want to remove unlisted projects
+    # that the user cannot moderate.
+    policy_context[:remove_unlisted] = 'remove_unlisted_that_user_cannot_moderate'
+
     projects = policy_scope(Project).not_hidden
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     @projects = paginate projects
-    @projects = @projects.includes(:phases, :admin_publication)
+    @projects = @projects.includes(:phases, :admin_publication, :project_images, :groups)
 
     authorize @projects, :index_for_admin?
 
@@ -157,7 +190,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectMiniAdminSerializer,
       params: jsonapi_serializer_params,
-      include: %i[phases]
+      include: %i[phases project_images groups]
     )
   end
 

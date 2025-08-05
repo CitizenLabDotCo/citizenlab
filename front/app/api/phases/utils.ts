@@ -154,7 +154,7 @@ export function getPhaseVoteTermMessage(
   phase: IPhaseData,
   voteTermMessages: { [key in VoteTerm]: MessageDescriptor }
 ) {
-  const voteTermMessageKey: VoteTerm = phase.attributes.vote_term || 'vote';
+  const voteTermMessageKey = phase.attributes.vote_term;
   return voteTermMessages[voteTermMessageKey];
 }
 

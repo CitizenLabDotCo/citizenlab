@@ -1,4 +1,4 @@
-import { IRelationship } from 'typings';
+import { IRelationship, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -6,16 +6,32 @@ import filesKeys from './keys';
 
 export type FilesKeys = Keys<typeof filesKeys>;
 
+export const FILE_CATEGORIES = [
+  'meeting',
+  'interview',
+  'strategic_plan',
+  'info_sheet',
+  'policy',
+  'report',
+  'other',
+];
+
+export type FileCategory = (typeof FILE_CATEGORIES)[number];
+
 export interface IAddFileProperties {
   content: string;
   project?: string;
   name: string;
+  category: FileCategory;
+  ai_processing_allowed?: boolean;
 }
 
 export interface IUpdateFileProperties {
   id: string;
   file: {
     name: string;
+    category?: FileCategory;
+    description_multiloc?: Multiloc;
   };
 }
 
@@ -76,7 +92,12 @@ export interface IFileAttributes {
   name: string;
   mime_type: string;
   size: number; // in bytes,
+  category: FileCategory;
+  description_multiloc: Multiloc;
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
+  content: {
+    url: string;
+  };
 }
