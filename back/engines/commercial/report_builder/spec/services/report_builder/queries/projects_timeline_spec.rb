@@ -66,6 +66,14 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
       expect(result[:timeline_items].length).to eq(1)
     end
 
+    it 'returns available projects when fewer than requested' do
+      # Request more projects than exist
+      result = query.run_query({ number_of_projects: 100 })
+
+      # Should return all available projects (2 in this test)
+      expect(result[:timeline_items].length).to eq(2)
+    end
+
     it 'includes project timeline information' do
       result = query.run_query
       timeline_item = result[:timeline_items].find { |item| item[:id] == project1.id }
