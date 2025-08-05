@@ -548,6 +548,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Αναπτύξτε την εικόνα",
   "app.components.UI.MoreActionsMenu.moreOptions": "Περισσότερες επιλογές",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Εμφάνιση περισσότερων ενεργειών",
+  "app.components.UI.NewLabel.new": "ΝΕΑ",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Δεν βρέθηκαν κατάλληλες φάσεις για αυτό το έργο",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Κατάργηση",
   "app.components.UI.TranslateButton.original": "Αρχικό",
