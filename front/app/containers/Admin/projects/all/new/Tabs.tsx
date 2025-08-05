@@ -125,7 +125,7 @@ const Tabs = () => {
         >
           {formatMessage(messages.calendar)}
         </Button>
-        <NewLabel ml="4px" />
+        <NewLabel ml="4px" expiryDate={new Date('2025-12-01')} />
       </Box>
       {userIsAdmin && (
         <Tab

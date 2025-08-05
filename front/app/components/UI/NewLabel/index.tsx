@@ -12,8 +12,15 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const NewLabel = (props: BoxMarginProps) => {
+type Props = {
+  expiryDate?: Date;
+} & BoxMarginProps;
+
+const NewLabel = ({ expiryDate, ...props }: Props) => {
   const { formatMessage } = useIntl();
+
+  const showLabel = !expiryDate || expiryDate > new Date();
+  if (!showLabel) return null;
 
   return (
     <Box
