@@ -26,42 +26,45 @@ const AdminProjectsListNew = () => {
   });
 
   const showProjectSearch =
-    tab === null || (tab === 'timeline' && calendarViewEnabled);
+    tab === null || (tab === 'calendar' && calendarViewEnabled);
 
   return (
     <Box
       bgColor={colors.white}
       w="100%"
       h="100vh"
-      px="51px"
       py="45px"
-      maxWidth="1400px"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
     >
-      <Header />
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        borderBottom={`1px solid ${colors.grey200}`}
-        height="44px"
-      >
-        <Tabs />
-        {showProjectSearch && (
-          <Search placeholder={formatMessage(messages.searchProjects)} />
-        )}
-        {tab === 'folders' && (
-          <Search placeholder={formatMessage(messages.searchFolders)} />
-        )}
-      </Box>
-      <Box mt="20px">
-        {tab === null && <Projects />}
-        {tab === 'folders' && <Folders />}
-        {tab === 'calendar' && <Calendar />}
-        {tab === 'ordering' && (
-          <Box>
-            <Ordering />
-          </Box>
-        )}
+      <Box px="51px" maxWidth="1400px" w="100%">
+        <Header />
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          borderBottom={`1px solid ${colors.grey200}`}
+          height="44px"
+        >
+          <Tabs />
+          {showProjectSearch && (
+            <Search placeholder={formatMessage(messages.searchProjects)} />
+          )}
+          {tab === 'folders' && (
+            <Search placeholder={formatMessage(messages.searchFolders)} />
+          )}
+        </Box>
+        <Box mt="20px">
+          {tab === null && <Projects />}
+          {tab === 'folders' && <Folders />}
+          {tab === 'calendar' && <Calendar />}
+          {tab === 'ordering' && (
+            <Box>
+              <Ordering />
+            </Box>
+          )}
+        </Box>
       </Box>
     </Box>
   );
