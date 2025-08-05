@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "قبول کر لیا",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "اچھال دیا",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "کلک کیا۔",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "جب آپ اپنے ای میل میں ایک یا زیادہ لنکس شامل کرتے ہیں، تو لنک پر کلک کرنے والے صارفین کی تعداد یہاں دکھائی جائے گی۔",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "پہنچایا",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "ناکام",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "کھول دیا",

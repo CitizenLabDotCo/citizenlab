@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Accepterad",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Studsade",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Klickade",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "När du har lagt till en eller flera länkar i ditt e-postmeddelande visas antalet användare som har klickat på en länk här.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Levereras",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Misslyckades",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Öppnad",

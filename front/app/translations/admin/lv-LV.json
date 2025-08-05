@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Pieņemts",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Atbalsots",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Noklikšķiniet uz",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "Ja e-pastam pievienojāt vienu vai vairākas saites, šeit tiks parādīts to lietotāju skaits, kuri noklikšķināja uz saites.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Piegādāts",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Neveiksmīgs",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Atvērts",

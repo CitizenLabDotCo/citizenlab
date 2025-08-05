@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "قبلت",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "ارتد",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "تم النقر عليه",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "عند إضافة رابط واحد أو أكثر إلى بريدك الإلكتروني، سيظهر هنا عدد المستخدمين الذين نقروا على الرابط.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "تم التوصيل",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "فشل",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "افتتح",

@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Kabul Edildi",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Zıpladı",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Tıklandı",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "E-postanıza bir veya daha fazla bağlantı eklediğinizde, bir bağlantıya tıklayan kullanıcı sayısı burada gösterilecektir.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Teslim edildi",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Başarısız",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Açıldı",

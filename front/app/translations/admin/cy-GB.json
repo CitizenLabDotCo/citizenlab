@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Derbyniwyd",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Bownsio",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Wedi clicio",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "Pan ychwanegoch un neu fwy o ddolenni at eich e-bost, bydd nifer y defnyddwyr a gliciodd ddolen yn cael eu dangos yma.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Wedi'i gyflwyno",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Wedi methu",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Agorwyd",

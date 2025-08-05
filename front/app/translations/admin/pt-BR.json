@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Aceito",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Rejeitado",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Clicado",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "Quando você adicionou um ou mais links ao seu e-mail, o número de usuários que clicaram em um link será mostrado aqui.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Entregue",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Falha",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Aberto",

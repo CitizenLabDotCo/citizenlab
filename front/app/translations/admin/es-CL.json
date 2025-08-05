@@ -32,7 +32,6 @@
   "app.components.Admin.Campaigns.deliveryStatus_accepted": "Aceptado",
   "app.components.Admin.Campaigns.deliveryStatus_bounced": "Rebotado",
   "app.components.Admin.Campaigns.deliveryStatus_clicked": "Cliqueado",
-  "app.components.Admin.Campaigns.deliveryStatus_clickedTooltip": "Cuando tu agregas uno o más vínculos a tu correo, el número de usuarios que revisaron el vínculo será mostrado aquí.",
   "app.components.Admin.Campaigns.deliveryStatus_delivered": "Entregado",
   "app.components.Admin.Campaigns.deliveryStatus_failed": "Fallido",
   "app.components.Admin.Campaigns.deliveryStatus_opened": "Abierto",
