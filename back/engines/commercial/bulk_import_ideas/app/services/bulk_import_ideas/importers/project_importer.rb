@@ -17,15 +17,15 @@ module BulkImportIdeas::Importers
     # Preview the data that will be imported
     def preview(projects)
       projects.each do |project|
-        log "PROJECT: #{project[:title_multiloc][locale]}"
+        log "PROJECT: #{project[:title_multiloc][@locale]}"
         project[:phases]&.each do |phase|
-          log "  PHASE: #{phase[:title_multiloc][locale]}"
+          log "  PHASE: #{phase[:title_multiloc][@locale]}"
           log "    Start: #{phase[:start_at]}, End: #{phase[:end_at]}"
           log "    Participation Method: #{phase[:participation_method]}"
           log "    Ideas: #{phase[:idea_rows].count}"
           log "    Idea Custom Fields: #{phase[:idea_custom_fields].count}"
           phase[:idea_custom_fields]&.each do |field|
-            log "        Field: #{field[:title_multiloc][locale]} (#{field[:input_type]})"
+            log "        Field: #{field[:title_multiloc][@locale]} (#{field[:input_type]})"
           end
           log "    User Custom Fields: #{phase[:user_custom_fields].count}"
         end

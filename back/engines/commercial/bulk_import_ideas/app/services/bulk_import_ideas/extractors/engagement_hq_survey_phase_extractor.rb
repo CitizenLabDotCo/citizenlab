@@ -6,7 +6,7 @@ module BulkImportIdeas::Extractors
   class EngagementHqSurveyPhaseExtractor < BasePhaseExtractor
     private
 
-    def phase_title
+    def default_phase_title
       @worksheet.sheet_data[0][3].value
     end
 
@@ -26,6 +26,15 @@ module BulkImportIdeas::Extractors
       col_index == 3 ? 2 : 3 # Date column header is on different row!
     end
 
+    # Split by comma, space and capital letter to handle multiselects - assumes each option starts with a capital letter
+    def multiselect_regex
+      /, (?=[A-Z])/
+    end
+
+    def matrix_regex
+      /([^:]+)\s*:\s*([^,]+)(?:,\s*|$)/
+    end
+
     def reformat_multiselect_values(column_name)
       update_delimiters(column_name)
     end
@@ -37,7 +46,7 @@ module BulkImportIdeas::Extractors
     # Update values to ensure semicolons for multiselect, matrix fields, etc.
     def update_delimiters(column_name)
       @idea_rows = @idea_rows.map do |row|
-        row[column_name] = row[column_name].split(/[,;]/).map(&:strip).join('; ') if row[column_name]
+        row[column_name] = row[column_name].split(multiselect_regex).map(&:strip).join('; ') if row[column_name]
         row
       end
     end

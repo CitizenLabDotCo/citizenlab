@@ -15,7 +15,7 @@ module BulkImportIdeas::Extractors
 
     # Return a single phase with custom fields and idea rows
     def phase
-      title = @attributes[:title].presence || phase_title
+      title = @attributes[:title].presence || default_phase_title
       description = @attributes[:description]
       {
         id: @attributes[:id],
@@ -33,7 +33,7 @@ module BulkImportIdeas::Extractors
 
     private
 
-    def phase_title
+    def default_phase_title
       @worksheet.sheet_name
     end
 
@@ -155,28 +155,49 @@ module BulkImportIdeas::Extractors
       { input_type: input_type }
     end
 
-    # NOTE: Will not work if select options contain commas or semicolons
-    # TODO: Rewrite this - override stuff is messy & only applicable to select fields right now
     def select_field_attributes(column_name)
       values = remove_empty_array_values(@idea_rows.pluck(column_name))
+      unique_values = values.uniq
+
+      # Return a single select if specified in the config
       override_input_type = @config[:override_field_types][column_name]
-      maybe_multiselect = values.uniq.any? { |value| value.include?(',') || value.include?(';') } unless override_input_type == 'select'
-      values = values.map { |value| value.split(/[,;]/).map(&:strip) }.flatten if maybe_multiselect
+      return format_select_field('select', unique_values) if override_input_type == 'select'
 
-      unique_ratio = values.size / values.uniq.size.to_f
-      if unique_ratio > 10 || %w[select multiselect].include?(override_input_type)
-        input_type = override_input_type || (maybe_multiselect ? 'multiselect' : 'select')
+      # Assume not a select if all values are unique
+      return nil if values.size == unique_values.size
 
-        # Update multiselect values to ensure it matches our expected format with semicolons
-        reformat_multiselect_values(column_name) if input_type == 'multiselect'
+      # Attempt to split out multiselect values
+      multiselect_values = values.map { |value| value.split(multiselect_regex).map(&:strip) }.flatten.uniq
 
-        return {
-          input_type: input_type,
-          options: values.uniq.map { |value| { title_multiloc: multiloc(value), key: generate_key(value) } }
-        }
+      input_type = 'select'
+      if multiselect_values.size != unique_values.size
+        unique_values = multiselect_values
+        input_type = 'multiselect'
       end
 
-      nil
+      unique_ratio = values.size / unique_values.size.to_f
+      return nil if unique_ratio < 5 # Not enough unique values to warrant a select field
+
+      reformat_multiselect_values(column_name) if input_type == 'multiselect'
+
+      format_select_field(input_type, unique_values)
+    end
+
+    # Split by semicolon, space and capital letter to handle multiselects - assumes each option starts with a capital letter
+    def multiselect_regex
+      /; (?=[A-Z])/
+    end
+
+    # TODO: Change this to split by colon and semicolon by default
+    def matrix_regex
+      /([^:]+)\s*:\s*([^,]+)(?:,\s*|$)/
+    end
+
+    def format_select_field(input_type, values)
+      {
+        input_type: input_type,
+        options: values.map { |value| { title_multiloc: multiloc(value), key: generate_key(value) } }
+      }
     end
 
     def matrix_field_attributes(column_name)
@@ -184,6 +205,7 @@ module BulkImportIdeas::Extractors
 
       matrix_regex = /([^:]+)\s*:\s*([^,]+)(?:,\s*|$)/
       matches = values.first.scan(matrix_regex) # Test the first value, so we can determine if it's a matrix field
+
       if matches.any?
         labels = []
         statements = []
@@ -195,10 +217,11 @@ module BulkImportIdeas::Extractors
           end
         end
 
+        labels = labels.uniq
+        statements = statements.uniq
         return nil if labels.size > 11 # Cannot support more than 11 labels
 
-        labels = order_by_sentiment(labels.uniq)
-        statements = statements.uniq
+        labels = order_by_sentiment(labels)
 
         # Update values to ensure it matches our expected format with semicolons
         reformat_matrix_values(column_name)
@@ -244,6 +267,10 @@ module BulkImportIdeas::Extractors
 
     def ignore_row?(_row)
       false
+    end
+
+    def reformat_multiselect_values(_column_name)
+      nil
     end
 
     def participation_method_attributes
