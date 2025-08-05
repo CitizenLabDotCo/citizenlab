@@ -22,6 +22,7 @@
 module ProjectFolders
   class Folder < ::ApplicationRecord
     self.table_name = 'project_folders_folders'
+    include Files::FileAttachable
     include PgSearch::Model
 
     slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }

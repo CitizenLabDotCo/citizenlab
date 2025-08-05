@@ -57,7 +57,7 @@ RSpec.describe Phase do
     end
   end
 
-  describe 'timing validation' do
+  describe 'timing model validation' do
     it 'succeeds when start_at and end_at are equal' do
       phase = build(:phase)
       phase.end_at = phase.start_at
@@ -68,6 +68,18 @@ RSpec.describe Phase do
       phase = build(:phase)
       phase.end_at = phase.start_at - 1.day
       expect(phase).to be_invalid
+    end
+  end
+
+  describe 'timing database validation' do
+    it 'succeeds when start_at and end_at are equal' do
+      phase = create(:phase)
+      expect { phase.update_columns(end_at: phase.start_at) }.not_to raise_error
+    end
+
+    it 'fails when end_at is before start_at' do
+      phase = build(:phase)
+      expect { phase.update_columns(end_at: (phase.start_at - 1.day)) }.to raise_error(ActiveRecord::ActiveRecordError)
     end
   end
 
