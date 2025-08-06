@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "{months}kk alkuun",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Seuraava vaihe:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Ei määritetty",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "Odottaa hyväksyntää",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Vaihe",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Julkaisua edeltävä",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Projekti",
