@@ -78,7 +78,7 @@ interface Props {
     | IPageFileData
     | IEventFileData
     | IIdeaFileData;
-  fileNewType?: IFileData; // TODO: Rename this prop to "file" and remove the old one after planned refactoring & BE changes.
+  fileNewType?: IFileData; // TODO: Rename this prop to "file" and remove the old code after BE changes.
   className?: string;
 }
 
