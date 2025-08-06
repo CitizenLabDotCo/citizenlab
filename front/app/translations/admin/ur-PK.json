@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "شروع کرنے کے لیے {months}mo",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "اگلا مرحلہ:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "تفویض نہیں کیا گیا۔",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "زیر التواء منظوری",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "مرحلہ",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "پری لانچ",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "پروجیکٹ",
