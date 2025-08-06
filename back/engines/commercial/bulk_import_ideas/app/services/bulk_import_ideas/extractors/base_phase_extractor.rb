@@ -184,8 +184,7 @@ module BulkImportIdeas::Extractors
       unique_ratio = values.size / unique_values.size.to_f
       return nil if unique_ratio < 5 # Not enough unique values to warrant a select field
 
-      # TODO: Reformat the values by matching the value with the options
-      reformat_multiselect_values(column_name) if input_type == 'multiselect'
+      reformat_multiselect_values(column_name, values) if input_type == 'multiselect'
 
       format_select_field(input_type, unique_values)
     end
@@ -231,7 +230,7 @@ module BulkImportIdeas::Extractors
         labels = ai_order_by_sentiment(labels)
 
         # Update values to ensure it matches our expected format with semicolons
-        reformat_matrix_values(column_name)
+        reformat_matrix_values(column_name, labels)
 
         return {
           input_type: 'matrix_linear_scale',
@@ -258,7 +257,7 @@ module BulkImportIdeas::Extractors
       false
     end
 
-    def reformat_multiselect_values(_column_name)
+    def reformat_multiselect_values(_column_name, _values)
       nil
     end
 

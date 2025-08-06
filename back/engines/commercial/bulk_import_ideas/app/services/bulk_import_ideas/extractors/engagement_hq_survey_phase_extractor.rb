@@ -35,18 +35,24 @@ module BulkImportIdeas::Extractors
       /([^:]+)\s*:\s*([^,]+)(?:,\s*|$)/
     end
 
-    def reformat_multiselect_values(column_name)
-      update_delimiters(column_name)
+    def reformat_multiselect_values(column_name, values)
+      update_delimiters(column_name, values)
     end
 
-    def reformat_matrix_values(column_name)
-      update_delimiters(column_name)
+    def reformat_matrix_values(column_name, labels)
+      update_delimiters(column_name, labels)
     end
 
-    # Update values to ensure semicolons for multiselect, matrix fields, etc.
-    def update_delimiters(column_name)
+    # Update values to ensure semicolons for multiselect & matrix fields.
+    # TODO: What about spaces before the comma?
+    # Why is Play in a playground not valid? Do we need to lowercase match maybe?
+    def update_delimiters(column_name, values)
       @idea_rows = @idea_rows.map do |row|
-        row[column_name] = row[column_name].split(multiselect_regex).map(&:strip).join('; ') if row[column_name]
+        if row[column_name]
+          values.each do |value|
+            row[column_name] = row[column_name].sub("#{value},", "#{value};")
+          end
+        end
         row
       end
     end

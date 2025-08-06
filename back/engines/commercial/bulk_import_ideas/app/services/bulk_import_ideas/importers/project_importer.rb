@@ -19,15 +19,19 @@ module BulkImportIdeas::Importers
       projects.each do |project|
         log "PROJECT: #{project[:title_multiloc][@locale]}"
         project[:phases]&.each do |phase|
-          log "  PHASE: #{phase[:title_multiloc][@locale]}"
-          log "    Start: #{phase[:start_at]}, End: #{phase[:end_at]}"
-          log "    Participation Method: #{phase[:participation_method]}"
-          log "    Ideas: #{phase[:idea_rows].count}"
-          log "    Idea Custom Fields: #{phase[:idea_custom_fields].count}"
+          log " - PHASE: #{phase[:title_multiloc][@locale]}"
+          log " - - Start: #{phase[:start_at]}"
+          log " - - End: #{phase[:end_at]}"
+          log " - - Participation Method: #{phase[:participation_method]}"
+          log " - - Ideas: #{phase[:idea_rows].count}"
+          log " - - Idea Custom Fields: #{phase[:idea_custom_fields].count}"
           phase[:idea_custom_fields]&.each do |field|
-            log "        Field: #{field[:title_multiloc][@locale]} (#{field[:input_type]})"
+            log " - - - Field: #{field[:title_multiloc][@locale]} (#{field[:input_type]})"
           end
-          log "    User Custom Fields: #{phase[:user_custom_fields].count}"
+          log " - - User Custom Fields: #{phase[:user_custom_fields].count}"
+          phase[:user_custom_fields]&.each do |field|
+            log " - - - Field: #{field[:title_multiloc][@locale]} (#{field[:input_type]})"
+          end
         end
       end
       log "Will import #{projects.count} projects"
@@ -57,11 +61,11 @@ module BulkImportIdeas::Importers
           next if phase_data[:idea_rows].blank? # No ideas means no form or fields either
 
           # Create any user fields if they don't already exist
+          # TODO: Move this outside in a separate method? Extract the user fields from the project data and merge with any in the phase?
           create_user_fields(phase_data[:user_custom_fields])
 
           # Create the form for the phase
-          form_ok = create_form(phase, phase_data[:idea_custom_fields])
-          next unless form_ok # Don't try and import ideas if the form creation failed
+          create_form(phase, phase_data[:idea_custom_fields])
 
           # Import the ideas
           idea_rows = phase_data[:idea_rows].map { |row| row.transform_keys(&:to_s) } # Ensure keys are strings - when stored in jobs they get changed to symbols
@@ -170,7 +174,7 @@ module BulkImportIdeas::Importers
 
     def create_form(phase, idea_custom_fields)
       # Assumption is that methods other than native survey will only use the default form so we do not need to create a custom form
-      return true unless phase.participation_method == 'native_survey'
+      return unless phase.participation_method == 'native_survey'
 
       log 'Creating native survey form for phase'
 
@@ -204,18 +208,21 @@ module BulkImportIdeas::Importers
         CustomField.create!(input_type: 'page', page_layout: 'default', key: 'form_end', resource: form)
 
         log "Created form with #{form.custom_fields.count} fields"
-        true
       rescue StandardError => e
         log "ERROR creating form for phase '#{phase.title_multiloc[@locale]}': #{e.message}"
-        false
       end
     end
 
     def import_ideas(phase, phase_idea_rows)
       log "Importing ideas for phase: '#{phase.title_multiloc[@locale]}'"
 
+      # If the phase already has ideas, we skip the import
+      if phase.ideas.any?
+        log "ERROR: Phase '#{phase.title_multiloc[@locale]}' already has ideas. Skipping idea import."
+        return
+      end
+
       begin
-        # TODO: Destroy the existing ideas if they exist
         xlsx_data_parser = BulkImportIdeas::Parsers::IdeaXlsxDataParser.new(@import_user, @locale, phase.id, false)
         import_service = BulkImportIdeas::Importers::IdeaImporter.new(@import_user, @locale)
         idea_rows = xlsx_data_parser.parse_rows(phase_idea_rows)
@@ -225,6 +232,10 @@ module BulkImportIdeas::Importers
         end
 
         log "Imported #{ideas.count} ideas"
+
+        # How many users got created with the import?
+        num_users_created = BulkImportIdeas::IdeaImport.where(idea: ideas, user_created: true).count
+        log "Imported #{num_users_created} new users as idea authors"
       rescue StandardError => e
         log "ERROR importing ideas for phase '#{phase.title_multiloc[@locale]}': #{e.message}"
       end

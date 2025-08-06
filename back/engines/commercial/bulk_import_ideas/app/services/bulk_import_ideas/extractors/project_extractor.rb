@@ -25,7 +25,6 @@ module BulkImportIdeas::Extractors
         phases = phase_details[title]&.map do |phase|
           returned_phase = information_phase(phase[:attributes]) # Information phase is default when no type is specified
           unless phase[:type].nil?
-            # TODO: Do try catch here to handle missing files / classes
             klass_name = "BulkImportIdeas::Extractors::#{phase[:type]}PhaseExtractor"
             extractor = klass_name.constantize.new(
               locale,
