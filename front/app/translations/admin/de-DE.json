@@ -2732,7 +2732,7 @@
   "app.containers.AdminPage.projects.all.all": "Alle",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Neuer Ordner",
   "app.containers.AdminPage.projects.all.existingProjects": "Bestehende Projekte",
-  "app.containers.AdminPage.projects.all.homepageWarning1": "Auf dieser Seite können Sie die Reihenfolge der Projekte in der Dropdown-Liste \"Alle Projekte\" in der Navigationsleiste festlegen. Wenn Sie die Widgets \"Veröffentlichte Projekte und Ordner\" oder \"Projekte und Ordner (Legacy)\" auf Ihrer Homepage verwenden, wird die Reihenfolge der Projekte in diesen Widgets ebenfalls durch die Reihenfolge bestimmt, die Sie hier festlegen.",
+  "app.containers.AdminPage.projects.all.homepageWarning1": "Auf dieser Seite können Sie die Reihenfolge der Projekte in der Dropdown-Liste \"Alle Projekte\" in der Navigationsleiste festlegen. Wenn Sie die Widgets \"Veröffentlichte Projekte und Ordner\" oder \"Projekte und Ordner (alte Ansicht)\" auf Ihrer Homepage verwenden, wird die Reihenfolge der Projekte in diesen Widgets ebenfalls durch die Reihenfolge bestimmt, die Sie hier festlegen.",
   "app.containers.AdminPage.projects.all.moderatedProjectsEmpty": "Projekte, bei denen Sie Projektmanager*in sind, werden hier angezeigt.",
   "app.containers.AdminPage.projects.all.noProjects": "Keine Projekte gefunden.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Nur Administrator*innen können Projektordner erstellen.",
