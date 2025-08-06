@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "{months}m tot start",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Volgende fase:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Niet toegewezen",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "In afwachting van goedkeuring",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Fase",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Start binnenkort",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Projecten",
