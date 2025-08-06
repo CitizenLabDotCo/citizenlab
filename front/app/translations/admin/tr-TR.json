@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "{months}başlamak için mo",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Sonraki aşama:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Görevlendirilmedi",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "Onay bekliyor",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Aşama",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Lansman öncesi",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Proje",
