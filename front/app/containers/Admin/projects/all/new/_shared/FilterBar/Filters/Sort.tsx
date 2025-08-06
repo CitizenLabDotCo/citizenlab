@@ -31,7 +31,7 @@ const OPTIONS = [
 
 const Sort = () => {
   const { formatMessage } = useIntl();
-  const value = useParam('sort') ?? 'phase_starting_or_ending_soon';
+  const value = useParam('sort') ?? 'recently_viewed';
 
   const options: Option[] = OPTIONS.map((option) => ({
     value: option.value,
