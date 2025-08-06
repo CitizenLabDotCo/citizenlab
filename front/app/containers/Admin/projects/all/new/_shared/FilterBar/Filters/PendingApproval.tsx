@@ -8,6 +8,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
+
 import { useParam, setParam } from '../../params';
 
 const StyledInputContainer = styled(InputContainer)<{ isActive: boolean }>`
@@ -25,6 +27,16 @@ const StyledInputContainer = styled(InputContainer)<{ isActive: boolean }>`
 
 const PendingApproval = () => {
   const reviewState = useParam('review_state');
+
+  const pendingReviewParams = {
+    publicationStatusFilter: ['draft' as const],
+    review_state: 'pending' as const,
+    onlyProjects: true,
+    rootLevelOnly: false,
+  };
+
+  const { data: pendingReviewStatusCounts } =
+    useAdminPublicationsStatusCounts(pendingReviewParams);
 
   return (
     <Box position="relative">
@@ -51,7 +63,7 @@ const PendingApproval = () => {
         px="4px"
         borderRadius={stylingConsts.borderRadius}
       >
-        2
+        {pendingReviewStatusCounts?.data.attributes.status_counts.draft ?? 0}
       </Box>
     </Box>
   );
