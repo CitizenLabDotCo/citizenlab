@@ -15,16 +15,19 @@ const mainFeatures = [
     iconName: 'upload-file',
     mainText: messages.uploadAnyFile,
     secondaryText: messages.uploadAnyFileDescription,
+    name: 'uploadAnyFile',
   },
   {
     iconName: 'paperclip',
     mainText: messages.addFilesToProject,
     secondaryText: messages.addFilesToProjectDescription,
+    name: 'addFilesToProject',
   },
   {
     iconName: 'stars',
     mainText: messages.addFilesToSensemaking,
     secondaryText: messages.addFilesToSensemakingDescription,
+    name: 'addFilesToSensemaking',
   },
 ] as const;
 
@@ -45,6 +48,7 @@ const FeatureInformation = () => {
           iconName={feature.iconName}
           mainText={feature.mainText}
           secondaryText={feature.secondaryText}
+          disabled={feature.name === 'addFilesToSensemaking'}
         />
       ))}
       <Divider />
