@@ -20,6 +20,7 @@ module AdminApi
 
     def template_import
       puts "template import params: #{template_import_params.inspect}"
+      puts "request.headers['X-JWT']: #{request.headers['X-JWT']}"
       folder_id = template_import_params[:folder_id]
       template_yaml = template_import_params[:template_yaml]
       job = CopyProjectJob.perform_later(template_yaml, folder_id)
