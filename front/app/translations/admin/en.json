@@ -3053,7 +3053,6 @@
   "app.containers.admin.ContentBuilder.noFilesAvailable": "No files available. Please upload files to the project first.",
   "app.containers.admin.ContentBuilder.participationBox": "Participation Box",
   "app.containers.admin.ContentBuilder.selectFile": "Select File",
-  "app.containers.admin.ContentBuilder.selectProject": "Select Project",
   "app.containers.admin.ContentBuilder.textMultiloc": "Text",
   "app.containers.admin.ContentBuilder.threeColumnLayout": "3 column",
   "app.containers.admin.ContentBuilder.twoColumnLayout": "2 column",
