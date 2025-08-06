@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "{months}mo pradėti",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Kitas etapas:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Nepriskirta",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "Laukiama patvirtinimo",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Fazė",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Prieš paleidimą",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Projektas",
