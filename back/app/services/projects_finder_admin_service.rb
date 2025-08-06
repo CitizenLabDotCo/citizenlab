@@ -7,7 +7,7 @@ class ProjectsFinderAdminService
 
     # Apply filters
     projects = filter_moderatable(projects, current_user)
-    projects = filter_status(projects, params)
+    projects = filter_status_and_review_state(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
@@ -122,58 +122,16 @@ class ProjectsFinderAdminService
       )
   end
 
-  def self.filter_status(scope, params = {})
-    status = params[:status] || []
-    # We handle review_state in the status filter
-    # to ensure we get the union of both filters. In the UI, we are combining
-    # publication status and review state into a single filter.
-    # If both are selected, we need to handle them together.
+  # Handles the filtering of projects by their status and review state.
+  def self.filter_status_and_review_state(scope, params = {})
+    status = params[:status]
     review_state = params[:review_state]
-    return scope if status.blank? && review_state.blank?
 
-    # If we have both status and review_state, we need to handle them together
-    # to get union instead of intersection
-    if status.present? && review_state.present?
-      return filter_status_with_review_state(scope, status, review_state)
-    end
-
-    # Handle status only
-    if status.present?
-      scope
-        .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
-        .where(admin_publications: { publication_status: status })
-    # Handle review_state only
-    elsif review_state.present?
-      filter_review_state(scope, { review_state: review_state })
-    else
-      scope
-    end
-  end
-
-  def self.filter_status_with_review_state(scope, status, review_state)
-    # Get project IDs matching the status filter
-    status_project_ids = scope
-      .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
-      .where(admin_publications: { publication_status: status })
-      .pluck(:id)
-
-    review_project_ids = filter_review_state(scope, { review_state: review_state }).pluck(:id)
-
-    scope.where(id: status_project_ids + review_project_ids)
-  end
-
-  def self.filter_review_state(scope, params = {})
-    review_state = params[:review_state]
-    return scope if review_state.blank?
-
-    case review_state
-    when 'approved'
-      scope.joins(:review).where.not(project_reviews: { approved_at: nil })
-    when 'pending'
-      scope.joins(:review).where(project_reviews: { approved_at: nil })
-    else
-      scope
-    end
+    Project.filter_by_status_and_review_state(
+      scope,
+      status: status,
+      review_state: review_state
+    )
   end
 
   def self.filter_by_folder_ids(scope, params = {})
