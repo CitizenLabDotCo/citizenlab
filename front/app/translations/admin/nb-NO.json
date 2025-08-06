@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "Ikke påbegynt",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Statlig deltakelse",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Fortid",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "Avventer godkjenning",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "Søk i prosjekter",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Alfabetisk (a-z)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Alfabetisk (z-a)",
