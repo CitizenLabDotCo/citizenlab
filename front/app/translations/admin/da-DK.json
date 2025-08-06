@@ -1065,7 +1065,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.enableCalendarView": "Aktivér kalendervisning",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.featureNotIncluded": "Denne funktion er ikke inkluderet i jeres nuværende plan. Tal med Søren Kielgast eller jeres administrator for at låse den op.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.learnMore": "Lær mere ",
-  "app.containers.Admin.projects.all.calendar.UpsellNudge.timelineSupportArticle": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/en/articles/7034763-creating-and-customizing-your-projects#h_ce4c3c0fd9}}",
+  "app.containers.Admin.projects.all.calendar.UpsellNudge.timelineSupportArticle": "{tenantName, select, {https://matomo.org/} other {https://support.govocal.com/da/articles/7034763-oprettelse-og-tilpasning-af-dine-projekter}}",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Få et visuelt overblik over dine projekttidslinjer i vores kalendervisning. Identificer hurtigt, hvilke projekter og faser der snart starter eller slutter og kræver handling.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Forstå, hvad der sker og hvornår",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Alle spørgsmål vises på PDF'en. Følgende understøttes dog ikke i øjeblikket til import via FormSync: Billeder, tags og filupload.",
