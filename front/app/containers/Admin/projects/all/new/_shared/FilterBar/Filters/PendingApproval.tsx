@@ -10,7 +10,11 @@ import styled from 'styled-components';
 
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { useParam, setParam } from '../../params';
+
+import messages from './messages';
 
 const StyledInputContainer = styled(InputContainer)<{ isActive: boolean }>`
   ${({ isActive }) =>
@@ -27,6 +31,7 @@ const StyledInputContainer = styled(InputContainer)<{ isActive: boolean }>`
 
 const PendingApproval = () => {
   const reviewState = useParam('review_state');
+  const { formatMessage } = useIntl();
 
   const pendingReviewParams = {
     publicationStatusFilter: ['draft' as const],
@@ -49,7 +54,7 @@ const PendingApproval = () => {
           );
         }}
       >
-        Pending approval
+        {formatMessage(messages.pendingApproval)}
       </StyledInputContainer>
       <Box
         position="absolute"
