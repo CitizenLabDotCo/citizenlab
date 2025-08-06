@@ -85,13 +85,9 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   verification_taken: errorMessages.verification_taken,
 };
 
-type HelperTextKey =
-  | 'signup_helper_text'
-  | 'custom_fields_signup_helper_text'
-  | 'login_helper_text';
+type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';
 
 export const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
-  'sign-in:email-password': 'login_helper_text',
   'sign-up:auth-providers': 'signup_helper_text',
   'sign-up:email-password': 'signup_helper_text',
   'missing-data:custom-fields': 'custom_fields_signup_helper_text',

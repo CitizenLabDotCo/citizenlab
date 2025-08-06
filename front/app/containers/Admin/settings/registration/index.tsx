@@ -139,26 +139,6 @@ const SettingsRegistrationTab = () => {
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
-                valueMultiloc={latestAppConfigSettings.core.login_helper_text}
-                onChange={handleCoreSettingWithMultilocOnChange(
-                  'login_helper_text'
-                )}
-                label={
-                  <LabelTooltip>
-                    <FormattedMessage {...messages.loginHelper} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage {...messages.loginHelperTooltip} />
-                      }
-                    />
-                  </LabelTooltip>
-                }
-              />
-            </SectionField>
-
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
                 valueMultiloc={latestAppConfigSettings.core.signup_helper_text}
                 onChange={handleCoreSettingWithMultilocOnChange(
                   'signup_helper_text'
