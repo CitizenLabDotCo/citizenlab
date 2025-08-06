@@ -7,7 +7,7 @@ class ProjectsFinderAdminService
 
     # Apply filters
     projects = filter_moderatable(projects, current_user)
-    projects = filter_status(projects, params)
+    projects = filter_status_and_review_state(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
@@ -123,13 +123,16 @@ class ProjectsFinderAdminService
       )
   end
 
-  def self.filter_status(scope, params = {})
-    status = params[:status] || []
-    return scope if status.blank?
+  # Handles the filtering of projects by their status and review state.
+  def self.filter_status_and_review_state(scope, params = {})
+    status = params[:status]
+    review_state = params[:review_state]
 
-    scope
-      .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
-      .where(admin_publications: { publication_status: status })
+    Project.filter_by_status_and_review_state(
+      scope,
+      status: status,
+      review_state: review_state
+    )
   end
 
   def self.filter_by_folder_ids(scope, params = {})

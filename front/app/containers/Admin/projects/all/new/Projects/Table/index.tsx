@@ -110,11 +110,12 @@ const Table = () => {
         </Thead>
         <Tbody>
           {projects.length === 0 && <EmptyRow />}
-          {projects.map((project) => (
+          {projects.map((project, i) => (
             <Row
               key={project.id}
               project={project}
               participantsCount={participantsCounts[project.id]}
+              firstRow={i === 0}
             />
           ))}
         </Tbody>

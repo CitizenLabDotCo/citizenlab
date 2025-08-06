@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "Heb ei ddechrau",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Cyflwr cyfranogiad",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Gorffennol",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "Yn aros am gymeradwyaeth",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "Chwilio am brosiectau",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Yn nhrefn yr wyddor (az)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Yn nhrefn yr wyddor (za)",

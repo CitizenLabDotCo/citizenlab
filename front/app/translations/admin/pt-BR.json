@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "Não iniciado",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Estado de participação",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Passado",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "Aprovação pendente",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "Projetos de pesquisa",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Em ordem alfabética (a-z)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Em ordem alfabética (z-a)",
