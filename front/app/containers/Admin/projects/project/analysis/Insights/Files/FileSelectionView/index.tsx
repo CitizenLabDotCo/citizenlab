@@ -60,7 +60,7 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
         id: analysisId,
         files: watchedFileIds,
       })
-    );
+    )();
   }, [watchedFileIds, methods, updateAnalysis, analysisId]);
 
   // Generate options for the file select dropdown
