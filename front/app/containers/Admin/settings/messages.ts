@@ -119,7 +119,7 @@ export default defineMessages({
     defaultMessage: 'Login screen',
   },
   loginHelperTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.step1Tooltip',
+    id: 'app.containers.AdminPage.SettingsPage.loginHelperTooltip',
     defaultMessage: 'This is shown on the top of the login form.',
   },
   step1: {
