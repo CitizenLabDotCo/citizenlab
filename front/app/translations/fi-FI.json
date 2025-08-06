@@ -548,6 +548,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Laajenna kuva",
   "app.components.UI.MoreActionsMenu.moreOptions": "Lisää vaihtoehtoja",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Näytä lisää toimintoja",
+  "app.components.UI.NewLabel.new": "UUSI",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Tälle hankkeelle ei löytynyt sopivia vaiheita",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Poista",
   "app.components.UI.TranslateButton.original": "Alkuperäinen",
