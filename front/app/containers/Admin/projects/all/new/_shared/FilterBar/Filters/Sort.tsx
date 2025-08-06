@@ -23,7 +23,8 @@ const OPTIONS = [
     message: messages.phase_starting_or_ending_soon,
   },
   { value: 'recently_viewed', message: messages.recently_viewed },
-  { value: 'recently_created', message: messages.recently_created },
+  { value: 'recently_created_asc', message: messages.recently_created_asc },
+  { value: 'recently_created_desc', message: messages.recently_created_desc },
   { value: 'alphabetically_asc', message: messages.alphabetically_asc },
   { value: 'alphabetically_desc', message: messages.alphabetically_desc },
 ] as const;
