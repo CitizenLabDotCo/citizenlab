@@ -24,7 +24,8 @@ export type Parameters = {
   sort:
     | 'recently_viewed'
     | 'phase_starting_or_ending_soon'
-    | 'recently_created'
+    | 'recently_created_asc'
+    | 'recently_created_desc'
     | 'alphabetically_asc'
     | 'alphabetically_desc';
   locale: SupportedLocale;

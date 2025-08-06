@@ -45,7 +45,7 @@ const Table = () => {
   } = useInfiniteProjectsMiniAdmin(
     {
       ...params,
-      sort: sort ?? 'phase_starting_or_ending_soon',
+      sort: sort ?? 'recently_viewed',
     },
     PAGE_SIZE
   );
