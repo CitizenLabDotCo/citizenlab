@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "crwdns4786309:0crwdne4786309:0",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "crwdns4786311:0crwdne4786311:0",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "crwdns4786313:0crwdne4786313:0",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "crwdns5077261:0crwdne5077261:0",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "crwdns5050123:0crwdne5050123:0",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "crwdns4982645:0crwdne4982645:0",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "crwdns4982647:0crwdne4982647:0",
