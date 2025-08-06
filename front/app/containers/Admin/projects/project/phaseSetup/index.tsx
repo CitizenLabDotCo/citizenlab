@@ -185,9 +185,9 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     updateFormData({ description_multiloc });
   };
 
-  const handlePhaseFileOnAdd = (newFile: UploadFile) => {
+  const handlePhaseFileOnAdd = (newFile: FileType) => {
     const modifiedNewFile = {
-      name: newFile.name || newFile.filename,
+      name: newFile.name,
       size: newFile.size,
       remote: false,
       base64: newFile.base64,
@@ -208,6 +208,15 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
           [...(inStatePhaseFiles || []), modifiedNewFile]
     );
     setSubmitState(isDuplicate ? submitState : 'enabled');
+  };
+
+  const handlePhaseFilesOnAddFromRepository = (files: FileType[]) => {
+    // Check for duplicates
+    const newFiles = files.filter(
+      (newFile) => !inStatePhaseFiles.some((file) => file.id === newFile.id)
+    );
+
+    setInStatePhaseFiles((prevFiles) => [...prevFiles, ...newFiles]);
   };
 
   const handlePhaseFileOnRemove = (fileToRemove: FileType) => {
@@ -265,6 +274,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
       phaseFiles: inStatePhaseFiles,
       filesToRemove: phaseFilesToRemove,
       fileOrdering: initialFileOrdering || {},
+      filesToAttach: inStatePhaseFiles.filter((file) => !file.remote),
     })
       .then(() => {
         setPhaseFilesToRemove([]);
@@ -410,13 +420,17 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             </SubSectionTitle>
             <FileUploader
               id="project-timeline-edit-form-file-uploader"
+              // onFileAdd is for the old file uploader, which we will remove once the feature is released.
               onFileAdd={handlePhaseFileOnAdd}
+              // onFileAddFromRepository handles files added from the new Data Repository uploader.
+              onFileAddFromRepository={handlePhaseFilesOnAddFromRepository}
               onFileRemove={handlePhaseFileOnRemove}
               onFileReorder={handleFilesReorder}
               files={inStatePhaseFiles}
               enableDragAndDrop
               multiple
               apiErrors={errors}
+              allowFromDataRepository={true}
             />
           </SectionField>
           {Object.keys(flatCampaigns).length > 0 && (

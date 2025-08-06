@@ -5,6 +5,8 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { CLErrors, UploadFile } from 'typings';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { List } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Error from 'components/UI/Error';
@@ -12,6 +14,7 @@ import Error from 'components/UI/Error';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import DataRepositoryFileSelector from './DataRepositoryFileSelector';
 import FileDisplay, { FileType } from './FileDisplay';
 import FileInput from './FileInput';
 import messages from './messages';
@@ -22,18 +25,22 @@ export interface Props {
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove?: (fileToRemove: FileType) => void;
   onFileReorder?: (updatedFiles: FileType[]) => void;
+  onFileAddFromRepository?: (files: FileType[]) => void;
   files: FileType[] | null;
   apiErrors?: CLErrors | null;
   enableDragAndDrop?: boolean;
   multiple?: boolean;
   maxSizeMb?: number;
   dataCy?: string;
+  allowFromDataRepository?: boolean; // Whether to allow selecting files from the data repository
 }
 
 const FileUploader = ({
   onFileAdd,
   onFileRemove,
   onFileReorder,
+  allowFromDataRepository = false,
+  onFileAddFromRepository,
   files: initialFiles,
   apiErrors,
   id,
@@ -44,6 +51,11 @@ const FileUploader = ({
   dataCy,
 }: Props) => {
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
+
+  const isDataRepositoryEnabled = useFeatureFlag({
+    name: 'data_repository',
+  });
+
   // Track if we're currently dragging to prevent conflicts
   const isDragging = useRef(false);
 
@@ -99,61 +111,74 @@ const FileUploader = ({
   };
 
   const fileNames = files.map((file) => file.name).join(', ');
-  const content = (
-    <Box
-      className={className}
-      key={id}
-      data-cy="e2e-file-uploader-container"
-      w="100%"
-    >
-      <FileInput
-        onAdd={handleFileOnAdd}
-        id={id}
-        multiple={multiple}
-        maxSizeMb={maxSizeMb}
-        dataCy={dataCy}
-      />
-      <Error fieldName="file" apiErrors={apiErrors?.file} />
 
-      <List key={files.length} className="files-list e2e-files-list">
-        {files.map((file: FileType, index: number) =>
-          enableDragAndDrop ? (
-            <SortableRow
-              key={`item-${file.id || file.name}-row`}
-              id={file.id || file.name}
-              index={index}
-              moveRow={handleDragRow}
-              dropRow={handleDragEnd}
-              isLastItem={index === files.length - 1}
-            >
-              <Box w="100%">
+  const content = (
+    <>
+      <Box
+        className={className}
+        key={id}
+        data-cy="e2e-file-uploader-container"
+        w="100%"
+      >
+        {isDataRepositoryEnabled && allowFromDataRepository ? (
+          // The new file uploader, where you can select from the existing file library.
+          // For now we support both the old and new file uploader, but eventually we want to
+          // remove the old one and only use this one.
+          <DataRepositoryFileSelector
+            onFileAddFromRepository={onFileAddFromRepository}
+          />
+        ) : (
+          <FileInput
+            onAdd={handleFileOnAdd}
+            id={id}
+            multiple={multiple}
+            maxSizeMb={maxSizeMb}
+            dataCy={dataCy}
+          />
+        )}
+        <Error fieldName="file" apiErrors={apiErrors?.file} />
+
+        <List key={files.length} className="files-list e2e-files-list">
+          {files.map((file: FileType, index: number) =>
+            enableDragAndDrop ? (
+              <SortableRow
+                key={`item-${file.name}-${file.id}-row`}
+                id={file.id || file.name}
+                index={index}
+                moveRow={handleDragRow}
+                dropRow={handleDragEnd}
+                isLastItem={index === files.length - 1}
+              >
+                <Box w="100%">
+                  <FileDisplay
+                    key={`item-${file.id || file.name}-display`}
+                    onDeleteClick={handleFileOnRemove(file)}
+                    file={file}
+                  />
+                </Box>
+              </SortableRow>
+            ) : (
+              <Box key={`item-${file.name}-${file.id}`} w="100%">
                 <FileDisplay
                   key={`item-${file.id || file.name}-display`}
                   onDeleteClick={handleFileOnRemove(file)}
                   file={file}
                 />
               </Box>
-            </SortableRow>
-          ) : (
-            <Box key={`item-${file.id || file.name}-display`} w="100%">
-              <FileDisplay
-                onDeleteClick={handleFileOnRemove(file)}
-                file={file}
-              />
-            </Box>
-          )
-        )}
-      </List>
+            )
+          )}
+        </List>
 
-      <ScreenReaderOnly aria-live="polite">
-        <FormattedMessage
-          {...(files.length > 0
-            ? messages.a11y_filesToBeUploaded
-            : messages.a11y_noFiles)}
-          values={{ fileNames }}
-        />
-      </ScreenReaderOnly>
-    </Box>
+        <ScreenReaderOnly aria-live="polite">
+          <FormattedMessage
+            {...(files.length > 0
+              ? messages.a11y_filesToBeUploaded
+              : messages.a11y_noFiles)}
+            values={{ fileNames }}
+          />
+        </ScreenReaderOnly>
+      </Box>
+    </>
   );
 
   return enableDragAndDrop ? (
