@@ -92,6 +92,10 @@ module ParticipationMethod
       false
     end
 
+    def supported_email_campaigns
+      %w[project_phase_started]
+    end
+
     def supports_answer_visible_to?
       false
     end

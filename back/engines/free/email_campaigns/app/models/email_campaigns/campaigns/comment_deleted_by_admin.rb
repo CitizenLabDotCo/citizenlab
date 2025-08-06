@@ -80,7 +80,7 @@ module EmailCampaigns
     end
 
     def self.supports_context?(context)
-      super && context.participation_method == 'ideation'
+      supports_phase_participation_method?(context)
     end
 
     def self.recipient_role_multiloc_key
