@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -25,7 +25,6 @@ type Props = {
   setShowFirstUploadView?: (value: boolean) => void;
   showInformationSection?: boolean;
   showTitle?: boolean;
-  afterUpload?: (uploadedFiles: FileWithMeta[]) => void;
 };
 
 const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
@@ -36,7 +35,6 @@ const FilesUpload = ({
   setModalOpen,
   setShowFirstUploadView,
   showInformationSection = true,
-  afterUpload,
   showTitle = true,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -99,25 +97,6 @@ const FilesUpload = ({
     fileList.every(({ status }) => FINISHED_STATUSES.includes(status));
 
   const aiCheckboxDisabled = hasStartedUploading || finishedUploading;
-
-  useEffect(() => {
-    if (finishedUploading) {
-      // If the upload is finished, return the list of successfully uploaded files
-      // to the parent component, if this callback is provided.
-      if (afterUpload) {
-        const successfullyUploadedFiles = fileList.filter(
-          (file) => file.status === 'uploaded'
-        );
-        afterUpload(successfullyUploadedFiles);
-      }
-    }
-  }, [
-    fileList,
-    finishedUploading,
-    setModalOpen,
-    setShowFirstUploadView,
-    afterUpload,
-  ]);
 
   return (
     <>
