@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "{months}mj. za početak",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Sljedeća faza:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Nije dodijeljeno",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "Čeka odobrenje",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Faza",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Prije lansiranja",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Projekt",
