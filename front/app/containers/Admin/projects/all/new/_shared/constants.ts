@@ -5,11 +5,10 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 export const PUBLICATION_STATUS_LABELS: Record<
-  PublicationStatus | 'pending',
+  PublicationStatus,
   MessageDescriptor
 > = {
   draft: messages.draft,
-  pending: messages.pendingApproval,
   published: messages.published,
   archived: messages.archived,
 };
