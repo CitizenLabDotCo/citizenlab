@@ -1065,7 +1065,7 @@
   "app.containers.Admin.projects.all.calendar.UpsellNudge.enableCalendarView": "Kalenderansicht aktivieren",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.featureNotIncluded": "Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.learnMore": "Mehr erfahren",
-  "app.containers.Admin.projects.all.calendar.UpsellNudge.timelineSupportArticle": "https://support.govocal.com/en/articles/7034763-creating-and-customizing-your-projects#h_ce4c3c0fd9/de/",
+  "app.containers.Admin.projects.all.calendar.UpsellNudge.timelineSupportArticle": "https://support.govocal.com/de/articles/7034763-erstellen-und-anpassen-ihrer-projekte#h_ce4c3c0fd9",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellDescription2": "Verschaffen Sie sich einen visuellen Überblick über Ihre Projektzeitpläne in unserer Kalenderansicht. Erkennen Sie schnell, welche Projekte und Phasen bald beginnen oder enden und Maßnahmen erfordern.",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.upsellTitle": "Verstehen Sie, was passiert und wann es passiert",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Alle Fragen werden in der PDF-Datei angezeigt. Die folgenden Punkte werden jedoch derzeit nicht für den Import über Papier-Scans unterstützt: Bilder, Tags und Datei-Upload.",
