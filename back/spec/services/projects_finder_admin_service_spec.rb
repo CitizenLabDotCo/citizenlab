@@ -107,7 +107,7 @@ describe ProjectsFinderAdminService do
     end
 
     it 'returns union when both status and review_state are specified' do
-      result = described_class.filter_status_and_review_state(Project.all, { 
+      result = described_class.filter_status_and_review_state(Project.all, {
         status: %w[published],
         review_state: 'pending'
       })
@@ -117,7 +117,7 @@ describe ProjectsFinderAdminService do
     end
 
     it 'returns union when multiple statuses and review_state are specified' do
-      result = described_class.filter_status_and_review_state(Project.all, { 
+      result = described_class.filter_status_and_review_state(Project.all, {
         status: %w[published archived],
         review_state: 'pending'
       })
