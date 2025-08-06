@@ -100,6 +100,7 @@ export interface Props extends DefaultProps {
   size?: InputSize;
   placeholder?: string;
   mr?: string;
+  dataCy?: string;
 }
 
 const DEFAULT_VALUE = 'DEFAULT_SELECT_VALUE';
@@ -157,6 +158,7 @@ class Select extends PureComponent<Props> {
       value,
       placeholder,
       mr,
+      dataCy,
     } = this.props;
 
     const safeValue =
@@ -192,6 +194,7 @@ class Select extends PureComponent<Props> {
             }`}
             value={selectedValue}
             data-testid={testEnv('select')}
+            data-cy={dataCy}
           >
             {placeholder !== undefined && (
               <option
