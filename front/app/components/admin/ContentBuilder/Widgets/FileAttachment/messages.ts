@@ -13,4 +13,9 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.selectFile',
     defaultMessage: 'Select File',
   },
+  noFilesAvailable: {
+    id: 'app.containers.admin.ContentBuilder.noFilesAvailable',
+    defaultMessage:
+      'No files available. Please upload files to the project first.',
+  },
 });

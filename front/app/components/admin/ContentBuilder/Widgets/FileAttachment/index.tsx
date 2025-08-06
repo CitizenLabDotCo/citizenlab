@@ -5,14 +5,13 @@ import {
   colors,
   Select,
   Spinner,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+import { useParams } from 'react-router-dom';
 
 import useFileById from 'api/files/useFileById';
 import useFiles from 'api/files/useFiles';
-import useProjects from 'api/projects/useProjects';
-
-import useLocalize from 'hooks/useLocalize';
 
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
@@ -22,7 +21,6 @@ import messages from './messages';
 
 type FileAttachmentProps = {
   fileId?: string;
-  projectId?: string;
 };
 
 const FileAttachment = ({ fileId }: FileAttachmentProps) => {
@@ -39,33 +37,19 @@ const FileAttachmentSettings = () => {
   const {
     actions: { setProp },
     fileId,
-    projectId,
   } = useNode((node) => ({
     fileId: node.data.props.fileId,
-    projectId: node.data.props.projectId,
     id: node.id,
   }));
 
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  // Get list of projects user can access
-  const { data: projects, isLoading } = useProjects({
-    publicationStatuses: ['published', 'draft'],
-  });
+  const { projectId } = useParams();
 
   // Get files for selected project
   const { data: files, isFetching: isFetchingFiles } = useFiles({
     project: [projectId || ''],
   });
-
-  // Generate options for the project select dropdown
-  const projectOptions = projects
-    ? projects.data.map((project) => ({
-        value: project.id,
-        label: localize(project.attributes.title_multiloc),
-      }))
-    : [];
 
   // Generate options for the file select dropdown
   const fileOptions = files
@@ -75,8 +59,13 @@ const FileAttachmentSettings = () => {
       }))
     : [];
 
-  if (isLoading) {
+  if (isFetchingFiles) {
     return <Spinner />;
+  }
+
+  // If no files are available, show a message
+  if (fileOptions.length === 0) {
+    return <Text>{formatMessage(messages.noFilesAvailable)}</Text>;
   }
 
   return (
@@ -88,32 +77,16 @@ const FileAttachmentSettings = () => {
       gap="24px"
     >
       <Select
-        value={projectId}
+        value={fileId}
         onChange={(option) => {
           setProp((props: FileAttachmentProps) => {
-            props.projectId = option.value;
-            props.fileId = undefined; // Reset fileId when project changes
+            props.fileId = option.value;
           });
         }}
-        placeholder={formatMessage(messages.selectProject)}
-        options={projectOptions}
-        label={formatMessage(messages.selectProject)}
+        placeholder={formatMessage(messages.selectFile)}
+        options={fileOptions}
+        label={formatMessage(messages.selectFile)}
       />
-      {isFetchingFiles ? (
-        <Spinner />
-      ) : (
-        <Select
-          value={fileId}
-          onChange={(option) => {
-            setProp((props: FileAttachmentProps) => {
-              props.fileId = option.value;
-            });
-          }}
-          placeholder={formatMessage(messages.selectFile)}
-          options={fileOptions}
-          label={formatMessage(messages.selectFile)}
-        />
-      )}
     </Box>
   );
 };
