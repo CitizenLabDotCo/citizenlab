@@ -30,6 +30,11 @@ export default defineMessages({
     defaultMessage:
       'Allow advanced analytics of these files using AI processing.',
   },
+  allowAiProcessingSingleFile: {
+    id: 'app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile',
+    defaultMessage:
+      'Allow advanced analytics of this file using AI processing.',
+  },
   searchFiles: {
     id: 'app.containers.AdminPage.ProjectFiles.searchFiles',
     defaultMessage: 'Search files',

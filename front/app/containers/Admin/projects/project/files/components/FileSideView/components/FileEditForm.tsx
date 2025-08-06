@@ -109,7 +109,7 @@ const FileEditForm = ({ file, setEditingMetadata }: Props) => {
             name="ai_processing_allowed"
             label={
               <Text color="coolGrey600">
-                {formatMessage(messages.allowAiProcessing)}
+                {formatMessage(messages.allowAiProcessingSingleFile)}
               </Text>
             }
           />
