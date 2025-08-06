@@ -66,7 +66,7 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'self.filter_status' do
+  describe 'self.filter_status_and_review_state' do
     let!(:draft_project) do
       project = create(:project)
       admin_publication = AdminPublication.find_by(publication_id: project.id)
@@ -92,24 +92,24 @@ describe ProjectsFinderAdminService do
     end
 
     it 'filters by status' do
-      result = described_class.filter_status(Project.all, { status: %w[published archived] })
+      result = described_class.filter_status_and_review_state(Project.all, { status: %w[published archived] })
       expect(result.pluck(:id).sort).to eq([published_project.id, archived_project.id, pending_review_project.id].sort)
     end
 
     it 'returns all projects when no status specified' do
-      result = described_class.filter_status(Project.all, {})
+      result = described_class.filter_status_and_review_state(Project.all, {})
       expect(result.pluck(:id).sort).to match_array([draft_project.id, published_project.id, archived_project.id, pending_review_project.id].sort)
     end
 
     it 'filters by review_state only' do
-      result = described_class.filter_status(Project.all, { review_state: 'pending' })
+      result = described_class.filter_status_and_review_state(Project.all, { review_state: 'pending' })
       expect(result.pluck(:id)).to eq([pending_review_project.id])
     end
 
     it 'returns union when both status and review_state are specified' do
-      result = described_class.filter_status(Project.all, { 
-        status: %w[published], 
-        review_state: 'pending' 
+      result = described_class.filter_status_and_review_state(Project.all, { 
+        status: %w[published],
+        review_state: 'pending'
       })
       # Should return both published projects AND pending review projects
       # (union, not intersection)
@@ -117,41 +117,12 @@ describe ProjectsFinderAdminService do
     end
 
     it 'returns union when multiple statuses and review_state are specified' do
-      result = described_class.filter_status(Project.all, { 
-        status: %w[published archived], 
-        review_state: 'pending' 
+      result = described_class.filter_status_and_review_state(Project.all, { 
+        status: %w[published archived],
+        review_state: 'pending'
       })
       # Should return published, archived, AND pending review projects
       expect(result.pluck(:id).sort).to eq([published_project.id, archived_project.id, pending_review_project.id].sort)
-    end
-  end
-
-  describe 'self.filter_review_state' do
-    let!(:pending_review_project) do
-      project = create(:project)
-      create(:project_review, project: project)
-      project
-    end
-    let!(:approved_review_project) do
-      project = create(:project)
-      create(:project_review, :approved, project: project)
-      project
-    end
-    let!(:no_review_project) { create(:project) }
-
-    it 'filters by pending review state' do
-      result = described_class.filter_review_state(Project.all, { review_state: 'pending' })
-      expect(result.pluck(:id)).to eq([pending_review_project.id])
-    end
-
-    it 'filters by approved review state' do
-      result = described_class.filter_review_state(Project.all, { review_state: 'approved' })
-      expect(result.pluck(:id)).to eq([approved_review_project.id])
-    end
-
-    it 'returns all projects when no review state specified' do
-      result = described_class.filter_review_state(Project.all, {})
-      expect(result.pluck(:id).sort).to match_array([pending_review_project.id, approved_review_project.id, no_review_project.id].sort)
     end
   end
 
