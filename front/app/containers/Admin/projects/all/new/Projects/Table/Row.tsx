@@ -32,9 +32,10 @@ import Visibility from './Visibility';
 interface Props {
   project: ProjectMiniAdminData;
   participantsCount?: number;
+  firstRow: boolean;
 }
 
-const Row = ({ project, participantsCount }: Props) => {
+const Row = ({ project, participantsCount, firstRow }: Props) => {
   const localize = useLocalize();
 
   const imageId = project.relationships.project_images.data[0]?.id;
@@ -89,6 +90,11 @@ const Row = ({ project, participantsCount }: Props) => {
         style={{
           cursor: hover !== 'none' ? 'pointer' : 'default',
         }}
+        className={
+          firstRow
+            ? 'intercom-product-tour-project-page-first-table-row'
+            : undefined
+        }
       >
         <Box display="flex" alignItems="center">
           <RowImage

@@ -34,7 +34,7 @@ const Calendar = () => {
     useInfiniteProjectsMiniAdmin(
       {
         ...params,
-        sort: params.sort ?? 'phase_starting_or_ending_soon',
+        sort: params.sort ?? 'recently_viewed',
       },
       PAGE_SIZE
     );
