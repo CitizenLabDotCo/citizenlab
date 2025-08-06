@@ -23,7 +23,7 @@ export default defineMessages({
     defaultMessage: 'Add files as context to AI Analysis',
   },
   addFilesToSensemakingDescription: {
-    id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.addFilesToSensemakingDescription',
+    id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.addFilesToSensemakingDescription2',
     defaultMessage:
       'Add files to your AI Analyses to provide context and insights.',
   },
