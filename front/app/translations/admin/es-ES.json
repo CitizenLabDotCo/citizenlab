@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "{months}m para empezar",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Siguiente fase:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "No asignado",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "Pendiente de aprobación",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Fase",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Prelanzamiento",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Proyecto",
