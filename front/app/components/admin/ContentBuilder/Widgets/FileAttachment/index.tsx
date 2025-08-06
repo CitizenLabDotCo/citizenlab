@@ -47,7 +47,7 @@ const FileAttachmentSettings = () => {
 
   const { projectId } = useParams();
 
-  // Get files for selected project
+  // Get files for project
   const { data: files, isFetching: isFetchingFiles } = useFiles({
     project: [projectId || ''],
   });
