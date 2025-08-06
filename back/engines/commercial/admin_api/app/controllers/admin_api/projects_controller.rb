@@ -19,13 +19,11 @@ module AdminApi
     end
 
     def template_import
-      puts "template import params: #{template_import_params.inspect}"
-      # puts "request.headers['X-JWT']: #{request.headers['X-JWT']}"
-      auth_token = AuthToken::AuthToken.new(token: request.headers['X-JWT'])
-      puts "Decoded JWT payload: #{auth_token.payload.inspect}"
       folder_id = template_import_params[:folder_id]
       template_yaml = template_import_params[:template_yaml]
-      job = CopyProjectJob.perform_later(template_yaml, folder_id)
+      local_creator = get_local_creator
+
+      job = CopyProjectJob.perform_later(template_yaml, folder_id, local_creator)
     rescue StandardError => e
       ErrorReporter.report(e)
       raise ClErrors::TransactionError.new(error_key: :bad_template)
@@ -48,6 +46,14 @@ module AdminApi
         :new_publication_status,
         new_title_multiloc: CL2_SUPPORTED_LOCALES
       )
+    end
+
+    def get_local_creator
+      if template_import_params[:local_create] == true
+        auth_token = AuthToken::AuthToken.new(token: request.headers['X-JWT'])
+
+        User.find_by(id: auth_token.payload['sub'])
+      end
     end
   end
 end

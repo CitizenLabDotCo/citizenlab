@@ -1,21 +1,37 @@
 # frozen_string_literal: true
 
 class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
-  def import(template, folder: nil, local_copy: false)
-    same_template = MultiTenancy::Templates::Utils.translate_and_fix_locales(template)
+  def import(template, folder: nil, local_copy: false, local_creator: nil)
+    project = nil
 
-    created_objects_ids = ActiveRecord::Base.transaction do
-      tenant_deserializer.deserialize(same_template, validate: false, local_copy: local_copy)
+    ActiveRecord::Base.transaction do
+      same_template = MultiTenancy::Templates::Utils.translate_and_fix_locales(template)
+      created_objects_ids = tenant_deserializer.deserialize(same_template, validate: false, local_copy: local_copy)
+      project = Project.find(created_objects_ids['Project'].first)
+
+      unless local_copy
+        project.update!(slug: SlugService.new.generate_slug(project, project.slug))
+        project.set_default_topics!
+      end
+      project.update! folder: folder if folder
+
+      # This check needs to be after a folder is assigned (or not), so that folder moderator permissions are respected.
+      if local_creator
+        # local_creator = User.find('ce01844b-5da0-48c6-ad35-ef684f86648e') # Debug: try different types of user here.
+        policy = ProjectPolicy.new(local_creator, project)
+
+        unless policy.create?
+          raise ClErrors::TransactionError.new(error_key: :unauthorized, message: 'User not permitted to create this project. V2')
+        end
+      end
     end
 
-    project = Project.find(created_objects_ids['Project'].first)
-    unless local_copy
-      project.update!(slug: SlugService.new.generate_slug(project, project.slug))
-      project.set_default_topics!
+    # If the transaction was rolled back, project will not be persisted
+    if project && project.persisted?
+      project
+    else
+      nil
     end
-    project.update! folder: folder if folder
-
-    project
   end
 
   def export(
