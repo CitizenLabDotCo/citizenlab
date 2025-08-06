@@ -8,6 +8,6 @@ export default defineMessages({
   aiPoweredInsightsDescription: {
     id: 'app.containers.AdminPage.ProjectFiles.aiPoweredInsightsDescription2',
     defaultMessage:
-      'Include uploaded files in your AI Analyses to surface key topics.',
+      'Include uploaded files in your AI Analyses to add additional context and surface key topics.',
   },
 });
