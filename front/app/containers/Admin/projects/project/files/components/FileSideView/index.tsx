@@ -17,7 +17,6 @@ import { useIntl } from 'utils/cl-intl';
 import FilePreview from '../FilePreview';
 import messages from '../messages';
 
-import FileAnalysis from './components/FileAnalysis';
 import FileDescription from './components/FileDescription';
 import FileEditForm from './components/FileEditForm';
 import FileMetadata from './components/FileMetadata';
@@ -37,13 +36,13 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
     <SideModal
       opened={opened}
       close={() => setSideViewOpened(false)}
-      width="80dvw"
+      width="60dvw"
     >
       <Box display="flex" height="100dvh" overflow="hidden">
         {file?.data && (
           <>
             {/* Left scrollable section */}
-            <Box width="55%" overflowY="auto" p="24px" pr="32px">
+            <Box w="100%" overflowY="auto" p="24px" pr="32px">
               <StatusLabel
                 text={formatMessage(messages[file.data.attributes.category])}
                 backgroundColor={colors.teal500}
@@ -86,7 +85,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
               </Box>
             </Box>
 
-            {/* Right fixed section */}
+            {/* Right fixed section // TODO: Enable this once the BE is ready.
             <Box
               width="45%"
               p="24px"
@@ -96,7 +95,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
               justifyContent="flex-start"
             >
               <FileAnalysis />
-            </Box>
+            </Box> */}
           </>
         )}
       </Box>
