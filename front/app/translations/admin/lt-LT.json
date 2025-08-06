@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "Nepradėta",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Dalyvavimo valstybė",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Praeitis",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "Laukiama patvirtinimo",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "Projektų paieška",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Pagal abėcėlę (a-z)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Pagal abėcėlę (z-a)",
