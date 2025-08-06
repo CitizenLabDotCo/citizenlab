@@ -4,6 +4,8 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import FilesUpload from '../FilesUpload';
 
+import FeatureDescription from './components/FeatureDescription';
+
 type Props = {
   setShowFirstUploadView?: (value: boolean) => void;
 };
@@ -11,7 +13,7 @@ const FirstUploadView = ({ setShowFirstUploadView }: Props) => {
   return (
     <Box display="flex" justifyContent="center" mt="40px">
       <Box
-        p="42px"
+        p="32px"
         display="flex"
         justifyContent="center"
         bgColor={colors.white}
@@ -19,6 +21,9 @@ const FirstUploadView = ({ setShowFirstUploadView }: Props) => {
       >
         <Box>
           <FilesUpload setShowFirstUploadView={setShowFirstUploadView} />
+        </Box>
+        <Box width="400px">
+          <FeatureDescription />
         </Box>
       </Box>
     </Box>

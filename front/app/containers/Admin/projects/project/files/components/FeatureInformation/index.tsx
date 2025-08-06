@@ -22,11 +22,6 @@ const mainFeatures = [
     secondaryText: messages.addFilesToProjectDescription,
   },
   {
-    iconName: 'chart-bar',
-    mainText: messages.useAIOnFiles,
-    secondaryText: messages.useAIOnFilesDescription,
-  },
-  {
     iconName: 'stars',
     mainText: messages.addFilesToSensemaking,
     secondaryText: messages.addFilesToSensemakingDescription,
