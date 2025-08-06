@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "{months}mo, lai sāktu",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Nākamais posms:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Nav piešķirts",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "Līdz apstiprināšanai",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Fāze",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Pirms palaišanas",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Projekts",
