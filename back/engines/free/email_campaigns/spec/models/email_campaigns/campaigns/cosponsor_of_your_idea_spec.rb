@@ -2,16 +2,16 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment do
-  describe 'CommentOnYourComment Campaign default factory' do
+RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
+  describe 'CommentDeletedByAdmin Campaign default factory' do
     it 'is valid' do
-      expect(build(:comment_on_your_comment_campaign)).to be_valid
+      expect(build(:cosponsor_of_your_idea_campaign)).to be_valid
     end
   end
 
   describe '#generate_commands' do
-    let(:campaign) { create(:comment_on_your_comment_campaign) }
-    let(:notification) { create(:comment_on_your_comment) }
+    let(:campaign) { create(:cosponsor_of_your_idea_campaign) }
+    let(:notification) { create(:cosponsor_of_your_idea) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
     it 'generates a command with the desired payload and tracked content' do
@@ -21,45 +21,36 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment do
       ).first
 
       expect(
-        command.dig(:event_payload, :initiating_user_last_name)
-      ).to eq(notification.initiating_user.last_name)
+        command.dig(:event_payload, :initiating_user_id)
+      ).to be_blank
       expect(
-        command.dig(:event_payload, :comment_body_multiloc)
-      ).to eq(notification.comment.body_multiloc)
-    end
-
-    it 'generates a command with an abbreviated name' do
-      SettingsService.new.activate_feature! 'abbreviated_user_names'
-
-      expect(notification.recipient.admin?).to be false
-      expect(notification.initiating_user.admin?).to be false
-
-      command = campaign.generate_commands(
-        recipient: notification_activity.item.recipient,
-        activity: notification_activity
-      ).first
-
-      initial = "#{notification.initiating_user.last_name[0]}."
-      expect(command.dig(:event_payload, :initiating_user_last_name)).to eq(initial)
+        command.dig(:event_payload, :idea_title_multiloc)
+      ).not_to be_blank
     end
   end
 
   describe 'send_on_activity' do
-    let!(:global_campaign) { create(:comment_on_your_comment_campaign) }
-    let!(:context_campaign) { create(:comment_on_your_comment_campaign, context: create(:phase)) }
+    let!(:global_campaign) { create(:cosponsor_of_your_idea_campaign) }
+    let!(:context_campaign) { create(:cosponsor_of_your_idea_campaign, context: create(:phase)) }
     let(:service) { EmailCampaigns::DeliveryService.new }
     let(:phase) { create(:ideation_phase) }
     let(:idea) { create(:idea, phases: [phase]) }
-    let(:notification) { create(:comment_on_your_comment, idea: idea) }
+    let(:notification) { create(:cosponsor_of_your_idea, idea: idea) }
     let(:activity) { create(:activity, item_id: notification.id, item_type: notification.class.name, action: 'created') }
 
+    it 'receives process_command when falling back to the global campaign' do
+      expect(service).to receive(:process_command).with(global_campaign, anything).once
+      expect(service).not_to receive(:process_command).with(context_campaign, anything)
+      service.send_on_activity(activity)
+    end
+
     context 'for a context campaign' do
-      let!(:context_campaign) { create(:comment_on_your_comment_campaign, context: phase) }
+      let!(:context_campaign) { create(:cosponsor_of_your_idea_campaign, context: phase) }
 
       context 'on an ideation phase' do
         it 'receives process_command for the context campaign' do
-          expect(service).not_to receive(:process_command).with(global_campaign, anything)
-          expect(service).to receive(:process_command).with(context_campaign, anything).once
+          expect(service).to receive(:process_command).with(global_campaign, anything).once
+          expect(service).not_to receive(:process_command).with(context_campaign, anything)
           service.send_on_activity(activity)
         end
       end
@@ -78,8 +69,8 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment do
         let(:phase) { create(:single_voting_phase) }
 
         it 'receives process_command for the context campaign' do
-          expect(service).not_to receive(:process_command).with(global_campaign, anything)
-          expect(service).to receive(:process_command).with(context_campaign, anything).once
+          expect(service).to receive(:process_command).with(global_campaign, anything).once
+          expect(service).not_to receive(:process_command).with(context_campaign, anything)
           service.send_on_activity(activity)
         end
       end

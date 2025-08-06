@@ -376,10 +376,6 @@ module ParticipationMethod
       SlugService.new.generate_slug input, title
     end
 
-    def supported_email_campaigns
-      super + %w[comment_deleted_by_admin]
-    end
-
     def supports_answer_visible_to?
       true
     end

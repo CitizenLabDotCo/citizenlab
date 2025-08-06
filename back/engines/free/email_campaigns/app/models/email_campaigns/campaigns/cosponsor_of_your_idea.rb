@@ -101,6 +101,10 @@ module EmailCampaigns
       Phase
     end
 
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     private
 
     def idea_image_medium_url(idea)

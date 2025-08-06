@@ -24,6 +24,10 @@ module ParticipationMethod
       true
     end
 
+    def supported_email_campaigns
+      super + %w[cosponsor_of_your_idea]
+    end
+
     def supports_automated_statuses?
       true
     end

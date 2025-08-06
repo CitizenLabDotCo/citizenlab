@@ -80,6 +80,10 @@ module EmailCampaigns
       Phase
     end
 
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     def mailer_class
       CommentOnYourCommentMailer
     end
