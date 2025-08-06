@@ -344,12 +344,12 @@ namespace :cl2_back do
           allowed: true
         },
         project_planning: {
-          enabled: false,
-          allowed: false
+          enabled: true,
+          allowed: true
         },
         project_planning_calendar: {
-          enabled: false,
-          allowed: false
+          enabled: true,
+          allowed: true
         }
       }
     )
