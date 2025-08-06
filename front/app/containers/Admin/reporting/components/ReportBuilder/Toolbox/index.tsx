@@ -100,7 +100,9 @@ const ReportBuilderToolbox = ({
 
   const { data: phases } = usePhases(projectId);
   const { data: userFields } = useUserCustomFields({ inputTypes: ['select'] });
-  const projectPlanningEnabled = useFeatureFlag({ name: 'project_planning' });
+  const projectPlanningCalendarEnabled = useFeatureFlag({
+    name: 'project_planning_calendar',
+  });
 
   if (
     !appConfigurationLocales ||
@@ -378,7 +380,7 @@ const ReportBuilderToolbox = ({
               icon="projects"
               label={formatMessage(WIDGET_TITLES.ProjectsWidget)}
             />
-            {projectPlanningEnabled && (
+            {projectPlanningCalendarEnabled && (
               <DraggableElement
                 id="e2e-draggable-projects-timeline-widget"
                 component={
