@@ -23,6 +23,8 @@ const FeatureDescription = () => {
     name: 'data_repository_ai_analysis',
   });
 
+  const disabled = !isDataRepositoryAIAnalysisEnabled;
+
   return (
     <Box
       bgColor={colors.white}
@@ -31,23 +33,30 @@ const FeatureDescription = () => {
       gap="20px"
     >
       <img src={DocumentAnalysis} alt="" />
-      <Title m="0px" variant="h3" fontWeight="semi-bold">
-        {formatMessage(messages.aiPoweredInsights)}
-        {!isDataRepositoryAIAnalysisEnabled && (
-          <UpsellTooltip disabled={isDataRepositoryAIAnalysisEnabled}>
-            <Icon
-              name="lock"
-              mb="4px"
-              ml="4px"
-              width="20px"
-              fill={colors.coolGrey600}
-            />
-          </UpsellTooltip>
-        )}
-      </Title>
-      <Text m="0px" color="grey700">
-        {formatMessage(messages.aiPoweredInsightsDescription)}
-      </Text>
+      <UpsellTooltip disabled={!disabled}>
+        <>
+          <Title
+            m="0px"
+            color={disabled ? 'disabled' : 'grey700'}
+            variant="h3"
+            fontWeight="semi-bold"
+          >
+            {formatMessage(messages.aiPoweredInsights)}
+            {disabled && (
+              <Icon
+                name="lock"
+                mb="4px"
+                ml="4px"
+                width="20px"
+                fill={colors.disabled}
+              />
+            )}
+          </Title>
+          <Text m="0px" color={disabled ? 'disabled' : 'grey700'}>
+            {formatMessage(messages.aiPoweredInsightsDescription)}
+          </Text>
+        </>
+      </UpsellTooltip>
     </Box>
   );
 };
