@@ -2278,6 +2278,7 @@
   "app.containers.AdminPage.ProjectFiles.aiPoweredInsights": "AI-powered insights",
   "app.containers.AdminPage.ProjectFiles.aiPoweredInsightsDescription2": "Include uploaded files in your AI Analyses to surface key topics.",
   "app.containers.AdminPage.ProjectFiles.allowAiProcessing": "Allow advanced analytics of these files using AI processing.",
+  "app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile": "Allow advanced analytics of this file using AI processing.",
   "app.containers.AdminPage.ProjectFiles.askButton": "Ask",
   "app.containers.AdminPage.ProjectFiles.categoryLabel": "Category",
   "app.containers.AdminPage.ProjectFiles.chooseFiles": "Choose files",
