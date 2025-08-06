@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "Niet gestart",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Deelname staat",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Afgelopen",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "In afwachting van goedkeuring",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "Zoek projecten",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Alfabetisch (a-z)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Alfabetisch (z-a)",
