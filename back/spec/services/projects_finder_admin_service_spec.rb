@@ -85,15 +85,44 @@ describe ProjectsFinderAdminService do
       admin_publication.update!(publication_status: 'archived')
       project
     end
+    let!(:pending_review_project) do
+      project = create(:project)
+      create(:project_review, project: project)
+      project
+    end
 
     it 'filters by status' do
       result = described_class.filter_status(Project.all, { status: %w[published archived] })
-      expect(result.pluck(:id).sort).to eq([published_project.id, archived_project.id].sort)
+      expect(result.pluck(:id).sort).to eq([published_project.id, archived_project.id, pending_review_project.id].sort)
     end
 
     it 'returns all projects when no status specified' do
       result = described_class.filter_status(Project.all, {})
-      expect(result.pluck(:id).sort).to match_array([draft_project.id, published_project.id, archived_project.id].sort)
+      expect(result.pluck(:id).sort).to match_array([draft_project.id, published_project.id, archived_project.id, pending_review_project.id].sort)
+    end
+
+    it 'filters by review_state only' do
+      result = described_class.filter_status(Project.all, { review_state: 'pending' })
+      expect(result.pluck(:id)).to eq([pending_review_project.id])
+    end
+
+    it 'returns union when both status and review_state are specified' do
+      result = described_class.filter_status(Project.all, { 
+        status: %w[published], 
+        review_state: 'pending' 
+      })
+      # Should return both published projects AND pending review projects
+      # (union, not intersection)
+      expect(result.pluck(:id).sort).to eq([published_project.id, pending_review_project.id].sort)
+    end
+
+    it 'returns union when multiple statuses and review_state are specified' do
+      result = described_class.filter_status(Project.all, { 
+        status: %w[published archived], 
+        review_state: 'pending' 
+      })
+      # Should return published, archived, AND pending review projects
+      expect(result.pluck(:id).sort).to eq([published_project.id, archived_project.id, pending_review_project.id].sort)
     end
   end
 
