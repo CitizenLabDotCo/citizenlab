@@ -548,6 +548,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Afbeelding vergroten",
   "app.components.UI.MoreActionsMenu.moreOptions": "Meer opties",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Meer acties tonen",
+  "app.components.UI.NewLabel.new": "NIEUW",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Geen geschikte fases gevonden voor dit project",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Verwijder",
   "app.components.UI.TranslateButton.original": "Origineel",
