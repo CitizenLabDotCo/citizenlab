@@ -519,11 +519,23 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            data_repository_ai_analysis: {
+              enabled: true,
+              allowed: true
+            },
             project_planning: {
               enabled: false,
               allowed: false
             },
+            project_planning_calendar: {
+              enabled: false,
+              allowed: false
+            },
             customised_automated_emails: {
+              enabled: true,
+              allowed: true
+            },
+            project_importer: {
               enabled: true,
               allowed: true
             }

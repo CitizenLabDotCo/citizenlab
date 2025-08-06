@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { ReviewState } from 'api/admin_publications/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { PublicationStatus } from 'api/projects/types';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
@@ -13,13 +13,7 @@ import { PUBLICATION_STATUS_LABELS } from '../../constants';
 import { useParam, setParam } from '../../params';
 
 import messages from './messages';
-
-type OptionValue = PublicationStatus | 'pending_approval';
-
-type Option = {
-  value: OptionValue;
-  text: string;
-};
+import tracks from './tracks';
 
 const ADMIN_ONLY_OPTIONS = [
   {
@@ -30,9 +24,10 @@ const ADMIN_ONLY_OPTIONS = [
 
 interface Props {
   mr?: string;
+  onClear?: () => void;
 }
 
-const Status = ({ mr }: Props) => {
+const Status = ({ mr, onClear }: Props) => {
   const { formatMessage } = useIntl();
   const { data: user } = useAuthUser();
   const isUserAdmin = isAdmin(user);
@@ -45,22 +40,24 @@ const Status = ({ mr }: Props) => {
     { value: 'archived', message: PUBLICATION_STATUS_LABELS.archived },
   ] as const;
 
-  const options: Option[] = OPTIONS.map((option) => ({
+  const options = OPTIONS.map((option) => ({
     value: option.value,
-    text: formatMessage(option.message),
+    label: formatMessage(option.message),
   }));
 
   return (
-    <FilterSelector
-      multipleSelectionAllowed
+    <MultiSelect
       selected={statuses}
-      values={options}
+      options={options}
       mr={mr}
       onChange={(statuses) => {
         setParam('status', statuses as PublicationStatus[]);
+        trackEventByName(tracks.setStatus, {
+          statuses: JSON.stringify(statuses),
+        });
       }}
       title={formatMessage(messages.status)}
-      name="manager-select"
+      onClear={onClear}
     />
   );
 };

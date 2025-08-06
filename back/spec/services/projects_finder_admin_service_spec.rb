@@ -33,6 +33,39 @@ describe ProjectsFinderAdminService do
     project
   end
 
+  describe 'self.filter_moderatable' do
+    let!(:folder1) { create(:project_folder) }
+    let!(:folder2) { create(:project_folder) }
+    let!(:project_in_folder1) { create(:project, folder: folder1) }
+    let!(:project_in_folder2) { create(:project, folder: folder2) }
+    let!(:project_without_folder) { create(:project) }
+
+    let!(:user) do
+      create(:user, roles: [
+        { 'type' => 'project_moderator', project_id: project_without_folder.id },
+        { 'type' => 'project_folder_moderator', project_folder_id: folder1.id }
+      ])
+    end
+
+    it 'returns all projects for admin user' do
+      admin_user = create(:admin)
+      result = described_class.filter_moderatable(Project.all, admin_user)
+      expect(result.pluck(:id)).to match_array([
+        project_in_folder1.id,
+        project_in_folder2.id,
+        project_without_folder.id
+      ])
+    end
+
+    it 'returns projects user can moderate if not admin' do
+      result = described_class.filter_moderatable(Project.all, user)
+      expect(result.pluck(:id)).to match_array([
+        project_without_folder.id,
+        project_in_folder1.id
+      ])
+    end
+  end
+
   describe 'self.filter_status' do
     let!(:draft_project) do
       project = create(:project)
@@ -420,7 +453,7 @@ describe ProjectsFinderAdminService do
 
   describe 'self.execute' do
     describe 'sort: recently_viewed' do
-      let!(:user) { create(:user) }
+      let!(:user) { create(:admin) }
       let!(:p1) do
         project = create_project(start_at: Time.zone.today - 40.days, end_at: Time.zone.today - 5.days)
         create_session(project, Time.zone.today - 20.days)
@@ -513,7 +546,8 @@ describe ProjectsFinderAdminService do
       it 'sorts projects by phases starting or ending soon' do
         result = described_class.execute(
           Project.all,
-          { sort: 'phase_starting_or_ending_soon' }
+          { sort: 'phase_starting_or_ending_soon' },
+          current_user: create(:admin)
         )
 
         expect(result.pluck(:id)).to eq([
@@ -528,7 +562,8 @@ describe ProjectsFinderAdminService do
 
         result = described_class.execute(
           Project.all,
-          { sort: 'phase_starting_or_ending_soon', min_start_date: min_start_date, end_at: nil }
+          { sort: 'phase_starting_or_ending_soon', min_start_date: min_start_date, end_at: nil },
+          current_user: create(:admin)
         )
 
         expect(result.pluck(:id)).to eq([p6, p5, p7, p8].pluck(:id))

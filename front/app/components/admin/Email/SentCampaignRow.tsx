@@ -29,14 +29,16 @@ interface Props {
 }
 
 const SentCampaignRow = ({ campaign, context }: Props) => {
-  const { data: project } = useProjectById(campaign.attributes.context_id);
+  const { data: project } = useProjectById(
+    campaign.relationships.context?.data?.id
+  );
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   const statsLink: RouteType =
     context === 'global'
       ? `/admin/messaging/emails/custom/${campaign.id}`
-      : `/admin/projects/${campaign.attributes.context_id}/messaging/${campaign.id}`;
+      : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
 
   return (
     <Row id={campaign.id}>

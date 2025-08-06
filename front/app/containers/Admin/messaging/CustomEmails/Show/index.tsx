@@ -29,6 +29,7 @@ import Stamp from 'components/admin/Email/Stamp';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -101,7 +102,7 @@ const Show = () => {
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
   const { data: project } = useProjectById(
-    campaign?.data.attributes.context_id
+    campaign?.data.relationships.context?.data?.id
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -194,8 +195,13 @@ const Show = () => {
     const senderName = getSenderName(senderType);
     const noGroupsSelected = groupIds.length === 0;
 
+    const goBack = () => {
+      clHistory.push(`/admin/messaging/emails/custom`);
+    };
+
     return (
       <Box background={colors.white} p="40px" id="e2e-custom-email-container">
+        <GoBackButton onClick={goBack} />
         <Box display="flex" mb="20px">
           <Box display="flex" alignItems="center" mr="auto">
             <Title mr="12px">

@@ -18,7 +18,7 @@ FactoryBot.define do
     end
 
     factory :manual_project_participants_campaign, class: EmailCampaigns::Campaigns::ManualProjectParticipants do
-      association :project, factory: :project_with_active_ideation_phase
+      association :context, factory: :project_with_active_ideation_phase
     end
   end
 
@@ -106,7 +106,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :new_idea_for_admin_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdmin do
+  factory :new_idea_for_admin_published_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdminPublished do
+    enabled { true }
+  end
+
+  factory :new_idea_for_admin_prescreening_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdminPrescreening do
     enabled { true }
   end
 
@@ -138,7 +142,7 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :project_review_state_change_campaign, class: EmailCampaigns::Campaigns::ProjectReviewRequest do
+  factory :project_review_state_change_campaign, class: EmailCampaigns::Campaigns::ProjectReviewStateChange do
     enabled { true }
   end
 

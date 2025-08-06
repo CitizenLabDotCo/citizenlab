@@ -2,13 +2,15 @@ import React from 'react';
 
 import { Visibility } from 'api/projects/types';
 
-import FilterSelector from 'components/FilterSelector';
+import MultiSelect from 'components/UI/MultiSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import { setParam, useParam } from '../../params';
 
 import messages from './messages';
+import tracks from './tracks';
 
 const OPTIONS: {
   value: Visibility;
@@ -28,25 +30,31 @@ const OPTIONS: {
   },
 ];
 
-const VisibilityFilter = () => {
+interface Props {
+  onClear: () => void;
+}
+
+const VisibilityFilter = ({ onClear }: Props) => {
   const visibilities = useParam('visibility') ?? [];
   const { formatMessage } = useIntl();
 
   const options = OPTIONS.map((option) => ({
-    text: formatMessage(option.message),
+    label: formatMessage(option.message),
     value: option.value,
   }));
 
   return (
-    <FilterSelector
+    <MultiSelect
       title={formatMessage(messages.visibilityLabel)}
-      name="visibility-filter"
-      values={options}
+      options={options}
       selected={visibilities}
       onChange={(visibilities) => {
         setParam('visibility', visibilities as Visibility[]);
+        trackEventByName(tracks.setVisibility, {
+          visibilities: JSON.stringify(visibilities),
+        });
       }}
-      multipleSelectionAllowed={true}
+      onClear={onClear}
     />
   );
 };

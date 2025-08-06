@@ -4,11 +4,13 @@ import { Select } from '@citizenlab/cl2-component-library';
 
 import { Parameters } from 'api/projects_mini_admin/types';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import { setParam, useParam } from '../../params';
 
 import messages from './messages';
+import tracks from './tracks';
 
 type Option = {
   value: Parameters['sort'];
@@ -41,6 +43,7 @@ const Sort = () => {
       options={options}
       onChange={(option) => {
         setParam('sort', option.value);
+        trackEventByName(tracks.setSort, { sort: option.value });
       }}
       mr="20px"
     />

@@ -281,7 +281,6 @@ resource 'Phases' do
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The term used to describe an input. One of #{Phase::INPUT_TERMS.join(', ')}. Defaults to "idea".', required: false
         parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", required: false
-        parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
@@ -301,7 +300,6 @@ resource 'Phases' do
       let(:participation_method) { phase.participation_method }
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
-      let(:campaigns_settings) { phase.campaigns_settings }
       let(:vote_term) { 'token' }
 
       example_request 'Create a phase for a project' do

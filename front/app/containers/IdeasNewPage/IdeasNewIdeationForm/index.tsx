@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
@@ -13,7 +13,6 @@ import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
 import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
-import IdeationForm from 'components/CustomFieldsForm/IdeationForm';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -21,6 +20,10 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
 
 import IdeasNewMeta from '../IdeasNewMeta';
+
+const IdeationForm = React.lazy(
+  () => import('components/CustomFieldsForm/IdeationForm')
+);
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -124,11 +127,13 @@ const IdeasNewIdeationForm = ({
                     pb={isSmallerThanPhone ? '0' : '80px'}
                     display="flex"
                   >
-                    <IdeationForm
-                      projectId={project.data.id}
-                      phaseId={phaseId}
-                      participationMethod={participationMethod}
-                    />
+                    <Suspense>
+                      <IdeationForm
+                        projectId={project.data.id}
+                        phaseId={phaseId}
+                        participationMethod={participationMethod}
+                      />
+                    </Suspense>
                   </Box>
                 </Box>
               </Box>
