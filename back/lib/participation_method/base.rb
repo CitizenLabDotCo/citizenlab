@@ -95,7 +95,7 @@ module ParticipationMethod
     def supported_email_campaigns
       campaigns = %w[project_phase_started]
       campaigns += %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment] if supports_commenting?
-      campaigns += %w[idea_published] if supports_public_visibility?
+      campaigns += %w[idea_published mention_in_official_feedback] if supports_public_visibility?
       campaigns
     end
 

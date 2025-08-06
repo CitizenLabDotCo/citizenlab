@@ -84,6 +84,10 @@ module EmailCampaigns
       Phase
     end
 
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     def generate_commands(recipient:, activity:)
       idea = activity.item.idea
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)

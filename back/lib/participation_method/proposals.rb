@@ -25,7 +25,7 @@ module ParticipationMethod
     end
 
     def supported_email_campaigns
-      super + %w[cosponsor_of_your_idea]
+      super + %w[cosponsor_of_your_idea invitation_to_cosponsor_idea]
     end
 
     def supports_automated_statuses?

@@ -99,6 +99,10 @@ module EmailCampaigns
       Phase
     end
 
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     protected
 
     def set_enabled

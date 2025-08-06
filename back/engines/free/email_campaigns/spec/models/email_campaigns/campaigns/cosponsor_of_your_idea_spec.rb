@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
-  describe 'CommentDeletedByAdmin Campaign default factory' do
+RSpec.describe EmailCampaigns::Campaigns::CosponsorOfYourIdea do
+  describe 'CosponsorOfYourIdea Campaign default factory' do
     it 'is valid' do
       expect(build(:cosponsor_of_your_idea_campaign)).to be_valid
     end
@@ -30,12 +30,13 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
   end
 
   describe 'send_on_activity' do
+    before { create(:idea_status_proposed) }
+
     let!(:global_campaign) { create(:cosponsor_of_your_idea_campaign) }
     let!(:context_campaign) { create(:cosponsor_of_your_idea_campaign, context: create(:phase)) }
     let(:service) { EmailCampaigns::DeliveryService.new }
-    let(:phase) { create(:ideation_phase) }
-    let(:idea) { create(:idea, phases: [phase]) }
-    let(:notification) { create(:cosponsor_of_your_idea, idea: idea) }
+    let(:input) { create(:idea) }
+    let(:notification) { create(:cosponsor_of_your_idea, idea: input) }
     let(:activity) { create(:activity, item_id: notification.id, item_type: notification.class.name, action: 'created') }
 
     it 'receives process_command when falling back to the global campaign' do
@@ -45,9 +46,11 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
     end
 
     context 'for a context campaign' do
-      let!(:context_campaign) { create(:cosponsor_of_your_idea_campaign, context: phase) }
+      let!(:context_campaign) { create(:cosponsor_of_your_idea_campaign, context: input.creation_phase) }
 
       context 'on an ideation phase' do
+        let!(:context_campaign) { create(:cosponsor_of_your_idea_campaign, context: input.phases.last) }
+
         it 'receives process_command for the context campaign' do
           expect(service).to receive(:process_command).with(global_campaign, anything).once
           expect(service).not_to receive(:process_command).with(context_campaign, anything)
@@ -56,7 +59,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
       end
 
       context 'on a proposals phase' do
-        let(:phase) { create(:proposals_phase) }
+        let(:input) { create(:proposal) }
 
         it 'receives process_command for the context campaign' do
           expect(service).not_to receive(:process_command).with(global_campaign, anything)
@@ -65,28 +68,8 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
         end
       end
 
-      context 'on a voting phase' do
-        let(:phase) { create(:single_voting_phase) }
-
-        it 'receives process_command for the context campaign' do
-          expect(service).to receive(:process_command).with(global_campaign, anything).once
-          expect(service).not_to receive(:process_command).with(context_campaign, anything)
-          service.send_on_activity(activity)
-        end
-      end
-
-      context 'on an information phase' do
-        let(:phase) { create(:information_phase) }
-
-        it 'does not receive process_command for the context campaign' do
-          expect(service).to receive(:process_command).with(global_campaign, anything).once
-          expect(service).not_to receive(:process_command).with(context_campaign, anything)
-          service.send_on_activity(activity)
-        end
-      end
-
       context 'on an native survey phase' do
-        let(:phase) { create(:native_survey_phase) }
+        let(:input) { create(:native_survey_response) }
 
         it 'does not receive process_command for the context campaign' do
           expect(service).to receive(:process_command).with(global_campaign, anything).once

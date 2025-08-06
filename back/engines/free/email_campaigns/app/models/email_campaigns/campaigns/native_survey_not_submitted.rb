@@ -83,6 +83,10 @@ module EmailCampaigns
       Phase
     end
 
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     def generate_commands(recipient:, activity:)
       idea = activity.item.idea
       project_url = Frontend::UrlService.new.model_to_url(idea.project, locale: Locale.new(recipient.locale))
