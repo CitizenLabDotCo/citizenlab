@@ -56,13 +56,14 @@ module BulkImportIdeas::Extractors
 
         row_data = []
         row&.cells&.each do |cell|
+          next if cell.nil? || cell.value.blank? # Skip empty or nil cells
           next if cell.column < start_cell || cell.column > end_cell # Skip columns outside the defined range
-          next if cell.value.blank? # Skip empty cells
 
           header = column_header(cell.column)
           next unless header # Skip if header is nil
 
-          row_data << [header, cell.value]
+          value = clean_field_value(cell.value)
+          row_data << [header, value]
         end
         row_data = row_data.to_h
         row_data['Permission'] = 'X' if row_data['Email address'].present? # Add in permission where email is present
@@ -139,8 +140,7 @@ module BulkImportIdeas::Extractors
       text_field_attributes(column_name)
     end
 
-    # TODO: We could make this detect linear scale fields too
-    # TODO: Similar one for dates
+    # TODO: This could also detect linear scale fields too
     def number_field_attributes(column_name)
       values = @idea_rows.pluck(column_name).compact
       return nil unless values.all?(Integer)
@@ -184,7 +184,7 @@ module BulkImportIdeas::Extractors
       unique_ratio = values.size / unique_values.size.to_f
       return nil if unique_ratio < 5 # Not enough unique values to warrant a select field
 
-      reformat_multiselect_values(column_name, values) if input_type == 'multiselect'
+      reformat_multiselect_values(column_name, unique_values) if input_type == 'multiselect'
 
       format_select_field(input_type, unique_values)
     end
@@ -259,6 +259,14 @@ module BulkImportIdeas::Extractors
 
     def reformat_multiselect_values(_column_name, _values)
       nil
+    end
+
+    # Rogue spaces can cause issues, so we clean them up
+    def clean_field_value(value)
+      return value unless value.is_a?(String)
+
+      value = value.gsub(/\s+,\s+/, ', ') # Clean up spaces around commas
+      value.gsub(/\s+/, ' ').strip
     end
 
     def participation_method_attributes

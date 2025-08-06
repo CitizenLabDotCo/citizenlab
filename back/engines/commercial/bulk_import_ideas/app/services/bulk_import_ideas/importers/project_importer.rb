@@ -15,19 +15,22 @@ module BulkImportIdeas::Importers
     end
 
     # Preview the data that will be imported
+    # rubocop:disable Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/CyclomaticComplexity
     def preview(projects)
       num_projects_to_import = 0
       projects.each do |project|
         begin
-          project_exists = project[:id] ? !!Project.find(project[:id]) : false  # Check if the project exists
+          project_exists = project[:id] ? !!Project.find(project[:id]) : false # Check if the project exists
           if project_exists
             log "EXISTING PROJECT: #{project[:title_multiloc][@locale]} (#{project[:id]})"
           else
             log "NEW PROJECT: #{project[:title_multiloc][@locale]}"
           end
 
+          num_phases_to_import = 0
           project[:phases]&.each do |phase|
-            phase_exists = phase[:id] ? !!Phase.find(phase[:id]) : false  # Check if the project exists
+            phase_exists = phase[:id] ? !!Phase.find(phase[:id]) : false # Check if the project exists
             if phase_exists
               log "EXISTING PHASE: #{project[:title_multiloc][@locale]} (#{phase[:id]})"
             else
@@ -50,9 +53,9 @@ module BulkImportIdeas::Importers
             existing_user_fields = CustomField.where(resource_type: 'User', key: phase[:user_custom_fields].pluck(:key))
             user_fields_exist = existing_user_fields.count == phase[:user_custom_fields].count
             if user_fields_exist
-              log "EXISTING USER FIELDS FOR IDEA AUTHORS. None will be created."
+              log 'EXISTING USER FIELDS FOR IDEA AUTHORS. None will be created.'
             else
-              log "NEW USER CUSTOM FIELDS FOR IDEA AUTHORS:"
+              log 'NEW USER CUSTOM FIELDS FOR IDEA AUTHORS:'
               new_fields = phase[:user_custom_fields]&.reject { |field| existing_user_fields.pluck(:key).include? field[:key] }
               new_fields&.each do |field|
                 log " - Field: #{field[:title_multiloc][@locale]} (#{field[:input_type]})"
@@ -66,22 +69,25 @@ module BulkImportIdeas::Importers
               log "NEW IDEAS TO IMPORT: #{phase[:idea_rows].count} ideas will be imported"
             end
 
-            if project_exists && phase_exists && form_exists && user_fields_exist && ideas_exist
-              log "NOTHING will be imported for this project"
-            else
-              num_projects_to_import += 1
-            end
+            num_phases_to_import += 1 unless phase_exists && form_exists && user_fields_exist && ideas_exist
+          end
+
+          if project_exists && num_phases_to_import == 0
+            log 'NOTHING will be imported for this project'
+          else
+            num_projects_to_import += 1
           end
         rescue StandardError => e
           log "ERROR: '#{project[:title_multiloc][@locale]}': #{e.message}"
         end
 
-        log "------------------------------------------"
+        log '------------------------------------------'
       end
 
       log "Will import data for #{num_projects_to_import} projects"
-      @import_log
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     def import_async(projects)
       import_id = SecureRandom.uuid
