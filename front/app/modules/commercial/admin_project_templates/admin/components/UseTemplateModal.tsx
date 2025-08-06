@@ -120,7 +120,7 @@ interface IVariables {
   titleMultiloc: Multiloc;
   timelineStartAt: string;
   folderId: string | null;
-  thing: string;
+  localCreate: boolean;
 }
 
 const noFolderOption = 'NO_FOLDER_OPTION';
@@ -154,7 +154,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
     const [responseError, setResponseError] = useState<any>(null);
-    const thing = 'yolo'; // This is a placeholder for the 'thing' variable, adjust as needed.
+    const localCreate = true;
 
     const TEMPLATE_TITLE_QUERY = gql`
     {
@@ -172,14 +172,14 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
         $titleMultiloc: MultilocAttributes!
         $timelineStartAt: String
         $folderId: String
-        $thing: String
+        $localCreate: Boolean
       ) {
         applyProjectTemplate(
           projectTemplateId: $projectTemplateId
           titleMultiloc: $titleMultiloc
           timelineStartAt: $timelineStartAt
           folderId: $folderId
-          thing: $thing
+          localCreate: $localCreate
         ) {
           errors
         }
@@ -248,7 +248,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
               projectTemplateId: templateId,
               timelineStartAt: startDate,
               folderId: folderId !== noFolderOption ? folderId : null,
-              thing: thing,
+              localCreate: localCreate,
             },
           });
           queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });

@@ -34,7 +34,7 @@ module AdminApi
     end
 
     def template_import_params
-      params.require(:project).permit(:template_yaml, :folder_id, :thing)
+      params.require(:project).permit(:template_yaml, :folder_id, :local_create)
     end
 
     def template_export_params
