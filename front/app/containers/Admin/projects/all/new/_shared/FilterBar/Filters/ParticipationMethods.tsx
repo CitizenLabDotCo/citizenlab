@@ -6,11 +6,13 @@ import { ParticipationMethod } from 'api/phases/types';
 
 import MultiSelect from 'components/UI/MultiSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import { setParam, useParam } from '../../params';
 
 import messages from './messages';
+import tracks from './tracks';
 
 const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
   {
@@ -72,6 +74,9 @@ const ParticipationMethods = ({ onClear }: Props) => {
       : selected;
 
     setParam('participation_methods', updatedMethods as ParticipationMethod[]);
+    trackEventByName(tracks.setParticipationMethod, {
+      participation_methods: JSON.stringify(updatedMethods),
+    });
   };
 
   return (

@@ -19,7 +19,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
     let_it_be(:notification) { create(:official_feedback_on_idea_you_follow, recipient: recipient, idea: input, official_feedback: feedback) }
     let_it_be(:command) do
       activity = create(:activity, item: notification, action: 'created')
-      create(:official_feedback_on_idea_you_follow_campaign).generate_commands(
+      campaign.generate_commands(
         activity: activity,
         recipient: recipient
       ).first.merge({ recipient: recipient })

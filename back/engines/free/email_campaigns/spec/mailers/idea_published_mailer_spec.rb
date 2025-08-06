@@ -15,7 +15,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     let_it_be(:input) { create(:idea, author: recipient) }
     let_it_be(:activity) { create(:activity, item: input, action: 'published') }
     let_it_be(:command) do
-      create(:idea_published_campaign).generate_commands(
+      campaign.generate_commands(
         activity: activity,
         recipient: recipient
       ).first.merge({ recipient: recipient })

@@ -20,6 +20,7 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -34,6 +35,7 @@
 module EmailCampaigns
   class Campaign < ApplicationRecord
     belongs_to :author, class_name: 'User', optional: true
+    belongs_to :context, polymorphic: true, optional: true
     has_many :examples, class_name: 'EmailCampaigns::Example', dependent: :destroy
 
     # accepts_nested_attributes_for does not work for concerns
@@ -46,17 +48,11 @@ module EmailCampaigns
 
     before_validation :set_enabled, on: :create
 
-    validates :context_id, absence: true, unless: :skip_context_absence?
     validate :validate_recipients, on: :send
+    validates :context_id, uniqueness: { scope: :type }, if: :unique_campaigns_per_context?
 
     scope :manual, -> { where type: DeliveryService.new.manual_campaign_types }
     scope :automatic, -> { where.not(type: DeliveryService.new.manual_campaign_types) }
-
-    scope :manageable_by_project_moderator, lambda {
-      where(type: DeliveryService.new.campaign_classes.select do |campaign|
-                    campaign.new.manageable_by_project_moderator?
-                  end.map(&:name))
-    }
 
     def self.filter(action_symbol)
       @filter_hooks ||= []
@@ -109,6 +105,10 @@ module EmailCampaigns
     def self.content_type_multiloc_key; end
 
     def self.trigger_multiloc_key; end
+
+    def self.supports_context?(_context)
+      false
+    end
 
     def apply_recipient_filters(activity: nil, time: nil)
       current_class = self.class
@@ -174,12 +174,12 @@ module EmailCampaigns
       CampaignPolicy
     end
 
-    def manageable_by_project_moderator?
+    def manual?
       false
     end
 
-    def manual?
-      false
+    def activity_context(_activity)
+      nil
     end
 
     def extra_mailgun_variables(_command)
@@ -200,8 +200,9 @@ module EmailCampaigns
       }).serializable_hash
     end
 
-    def skip_context_absence?
-      false
+    def unique_campaigns_per_context?
+      # This is the default value and can be overwritten by each campaign subclass.
+      true
     end
 
     private

@@ -11,7 +11,7 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminPublishedMailer do
     let_it_be(:input) { create(:idea, title_multiloc: { en: 'My idea title' }, publication_status: 'published', author: author) }
     let_it_be(:command) do
       activity = create(:activity, item: input, action: 'submitted')
-      create(:new_idea_for_admin_published_campaign).generate_commands(
+      campaign.generate_commands(
         activity: activity,
         recipient: recipient
       ).first.merge({ recipient: recipient })

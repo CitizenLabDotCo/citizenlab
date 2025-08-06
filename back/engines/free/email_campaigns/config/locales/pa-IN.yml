@@ -24,7 +24,8 @@ pa:
       "mention_in_official_feedback": ਇੱਕ ਅਪਡੇਟ ਵਿੱਚ ਜ਼ਿਕਰ ਕਰੋ
       "mention_in_internal_comment": ਇੱਕ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਜ਼ਿਕਰ ਕਰੋ
       "new_comment_for_admin": ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵੀਂ ਟਿੱਪਣੀ ਜੋ ਮੈਂ ਸੰਚਾਲਿਤ ਕਰਦੀ ਹਾਂ
-      "new_idea_for_admin": ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵਾਂ ਵਿਚਾਰ ਜੋ ਮੈਂ ਸੰਚਾਲਿਤ ਕਰਦਾ ਹਾਂ
+      "new_idea_for_admin_published": ਮੇਰੇ ਵੱਲੋਂ ਸੰਚਾਲਿਤ ਕੀਤੇ ਗਏ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵਾਂ ਪ੍ਰਕਾਸ਼ਿਤ ਇਨਪੁਟ
+      "new_idea_for_admin_prescreening": ਮੇਰੇ ਵੱਲੋਂ ਸੰਚਾਲਿਤ ਕੀਤੇ ਗਏ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਪ੍ਰਵਾਨਗੀ ਦੀ ਲੋੜ ਵਾਲੇ ਨਵੇਂ ਇਨਪੁਟ
       "official_feedback_on_idea_you_follow": ਉਸ ਵਿਚਾਰ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦੀ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰਦੇ ਹੋ
       "password_reset": ਪਾਸਵਰਡ ਰੀਸੈੱਟ
       "project_moderation_rights_received": ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਨ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
@@ -85,11 +86,23 @@ pa:
         "6": "ਹਫਤਾਵਾਰੀ, ਸ਼ਨੀਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
       quarterly: "ਤਿਮਾਹੀ, ਤਿਮਾਹੀ ਦੇ ਪਹਿਲੇ ਦਿਨ"
     preview_data:
-      first_name: 'ਜੇਨ'
-      last_name: 'ਡੋ'
-      display_name: 'ਜੇਨ ਡੋ'
+      author_first_name: 'ਜੇਨ'
+      author_last_name: 'ਡੋ'
+      author_display_name: 'ਜੇਨ ਡੋ'
+      initiator_first_name: 'ਬੌਬ'
+      initiator_last_name: 'ਸਮਿਥ'
+      initiator_display_name: 'ਬੌਬ ਸਮਿਥ'
+      project_title: 'ਉਦਾਹਰਣ ਪ੍ਰੋਜੈਕਟ'
+      project_description_preview: 'ਇਹ ਈਮੇਲਾਂ ਦੀ ਸਮੱਗਰੀ ਦੀ ਝਲਕ ਦੇਖਣ ਲਈ ਵਰਤੀ ਜਾਂਦੀ ਪੜਾਅ ਸਮੱਗਰੀ ਦੀ ਕੁਝ ਉਦਾਹਰਣ ਹੈ। ਇਹ ਅਸਲ ਸਮੱਗਰੀ ਨਹੀਂ ਹੈ।'
+      phase_title: 'ਉਦਾਹਰਣ ਪੜਾਅ'
       comment_body: 'ਇਹ ਈਮੇਲਾਂ ਦੀ ਸਮੱਗਰੀ ਦੀ ਝਲਕ ਦੇਖਣ ਲਈ ਵਰਤੀ ਗਈ ਇੱਕ ਉਦਾਹਰਣ ਟਿੱਪਣੀ ਹੈ। ਇਹ ਅਸਲ ਸਮੱਗਰੀ ਨਹੀਂ ਹੈ।'
+      comment_deleted_reason: 'ਤੁਹਾਡੀ ਉਦਾਹਰਣ ਟਿੱਪਣੀ ਨੂੰ ਅਣਉਚਿਤ ਮੰਨਿਆ ਗਿਆ ਸੀ।'
       idea_title: 'ਉਦਾਹਰਨ ਵਿਚਾਰ'
+      idea_body: 'ਇਹ ਈਮੇਲਾਂ ਦੀ ਸਮੱਗਰੀ ਦੀ ਝਲਕ ਦੇਖਣ ਲਈ ਵਰਤੀ ਗਈ ਕੁਝ ਉਦਾਹਰਣ ਵਿਚਾਰ ਸਮੱਗਰੀ ਹੈ। ਇਹ ਅਸਲ ਸਮੱਗਰੀ ਨਹੀਂ ਹੈ।'
+      event_title: 'ਉਦਾਹਰਨ ਘਟਨਾ'
+      event_address1: '10 ਉਦਾਹਰਣ ਸਟਰੀਟ, ਉਦਾਹਰਣ, ਉਦਾਹਰਣਸ਼ਾਇਰ'
+      event_address2: 'ਕਮਰਾ 3a, ਉੱਪਰ'
+      proposal_title: 'ਉਦਾਹਰਨ ਪ੍ਰਸਤਾਵ'
     footer:
       "link_privacy_policy": "ਪਰਾਈਵੇਟ ਨੀਤੀ"
       "link_terms_conditions": "ਨਿਯਮ ਅਤੇ ਸ਼ਰਤਾਂ"
@@ -103,22 +116,22 @@ pa:
     manual:
       preheader: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਤੋਂ ਮੇਲ ਹੈ'
     comment_deleted_by_admin:
-      reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਮਿਟਾਉਣ ਦਾ ਕਾਰਨ:'
-      cta_view: 'ਇਸ ਵਿਚਾਰ ਨੂੰ ਵੇਖੋ'
+      subject: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ਤੋਂ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
+      preheader: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
+      title: '%{organizationName} ਨੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾਈ'
       event_description: '%{organizationName} ਨੇ ਇੱਕ ਵਿਚਾਰ ''ਤੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਲਿਖੀ ਗਈ ਟਿੱਪਣੀ ਨੂੰ ਮਿਟਾ ਦਿੱਤਾ।'
-      main_header: '%{organizationName} ਨੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ'
+      cta_button: 'ਇਸ ਵਿਚਾਰ ਨੂੰ ਵੇਖੋ'
+      reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਮਿਟਾਉਣ ਦਾ ਕਾਰਨ:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਅਣਉਚਿਤ ਮੰਨਿਆ ਗਿਆ ਸੀ'
       irrelevant_reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਉਸ ਸੰਦਰਭ ਲਈ ਅਪ੍ਰਸੰਗਿਕ ਮੰਨਿਆ ਗਿਆ ਸੀ'
       no_reason: 'ਕੋਈ ਕਾਰਨ ਨਹੀਂ ਦੱਸਿਆ ਗਿਆ'
-      subject: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ਤੋਂ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
-      preheader: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
     admin_digest:
       subject: '%{time}ਦੀ ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਪ੍ਰਬੰਧਕ ਰਿਪੋਰਟ'
       preheader: '%{organizationName}ਦਾ ਐਡਮਿਨ ਡਾਇਜੈਸਟ'
-      title_your_weekly_report: '%{firstName}, ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਰਿਪੋਰਟ'
-      text_introduction: 'ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਉਹ ਇਨਪੁਟ ਤਿਆਰ ਕੀਤਾ ਹੈ ਜਿਸ ਨੇ ਪਿਛਲੇ ਹਫ਼ਤੇ ਸਭ ਤੋਂ ਵੱਧ ਗਤੀਵਿਧੀ ਜਨਰੇਟ ਕੀਤੀ ਹੈ। ਪਤਾ ਕਰੋ ਕਿ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਕੀ ਹੋ ਰਿਹਾ ਹੈ!'
-      cta_visit_the_platform: 'ਆਪਣੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਜਾਓ'
+      title: '%{firstName}, ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਰਿਪੋਰਟ'
+      event_description: 'ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਪਿਛਲੇ ਹਫ਼ਤੇ ਸਭ ਤੋਂ ਵੱਧ ਗਤੀਵਿਧੀ ਪੈਦਾ ਕਰਨ ਵਾਲੇ ਇਨਪੁਟ ਨੂੰ ਤਿਆਰ ਕੀਤਾ ਹੈ। ਪਤਾ ਕਰੋ ਕਿ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਕੀ ਹੋ ਰਿਹਾ ਹੈ!'
+      cta_button: 'ਆਪਣੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਜਾਓ'
       new_users: 'ਨਵੇਂ ਉਪਭੋਗਤਾ'
       new_inputs: 'ਨਵੇਂ ਇਨਪੁਟਸ'
       new_comments: 'ਨਵੀਆਂ ਟਿੱਪਣੀਆਂ'
@@ -129,10 +142,11 @@ pa:
       today_by_author: 'ਅੱਜ %{author}ਦੁਆਰਾ'
       x_days_ago_by_author: '%{x} ਦਿਨ ਪਹਿਲਾਂ %{author}ਦੁਆਰਾ'
     admin_rights_received:
-      cta_manage_platform: 'ਆਪਣੇ ਪਲੇਟਫਾਰਮ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
-      message_you_became_administrator: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ।'
-      preheader: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਸਨ'
       subject: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਪ੍ਰਸ਼ਾਸਕ ਬਣ ਗਏ ਹੋ'
+      preheader: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਸਨ'
+      title: 'ਤੁਸੀਂ ਪ੍ਰਸ਼ਾਸਕ ਬਣ ਗਏ।'
+      event_description: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਪ੍ਰਸ਼ਾਸਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ।'
+      cta_button: 'ਆਪਣੇ ਪਲੇਟਫਾਰਮ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
       text_create_participatory_process: 'ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਦੇ ਰੂਪ ਵਿੱਚ, ਤੁਸੀਂ ਨਵੇਂ ਭਾਗੀਦਾਰੀ ਪ੍ਰੋਜੈਕਟ ਬਣਾ ਅਤੇ ਸੰਰਚਿਤ ਕਰ ਸਕਦੇ ਹੋ। ਤੁਸੀਂ ਟਾਈਮਲਾਈਨ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਨਵੇਂ ਪੜਾਅ ਜੋੜ ਸਕਦੇ ਹੋ। ਵਿਚਾਰ ਪੋਸਟਿੰਗ, ਟਿੱਪਣੀ, ਅਤੇ ਵੋਟਿੰਗ ਦੇ ਸਬੰਧ ਵਿੱਚ ਇਹਨਾਂ ਪੜਾਵਾਂ ਵਿੱਚੋਂ ਹਰ ਇੱਕ ਦਾ ਆਪਣਾ ਵਿਹਾਰ ਹੋ ਸਕਦਾ ਹੈ।'
       text_moderate_analyse_input: 'ਇੱਕ ਵਾਰ ਪ੍ਰੋਜੈਕਟ ਸ਼ੁਰੂ ਹੋਣ ਤੋਂ ਬਾਅਦ, ਪਹਿਲੇ ਵਿਚਾਰ ਆਉਣਗੇ। ਤੁਹਾਨੂੰ ਸਾਰੀਆਂ ਮੁੱਖ ਗਤੀਵਿਧੀਆਂ ਦੇ ਨਾਲ ਹਫਤਾਵਾਰੀ ਰਿਪੋਰਟਾਂ ਪ੍ਰਾਪਤ ਹੋਣਗੀਆਂ ਤਾਂ ਜੋ ਤੁਸੀਂ ਚੀਜ਼ਾਂ ਦੇ ਸਿਖਰ ''ਤੇ ਰਹੋ। ਵਿਚਾਰਾਂ ਦੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਤੁਹਾਨੂੰ ਇਨਪੁਟ ਨੂੰ ਸੰਚਾਲਿਤ ਕਰਨ ਅਤੇ ਇਸਦੀ ਪ੍ਰਕਿਰਿਆ ਕਰਨ ਵਿੱਚ ਸਹਿਯੋਗ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰੇਗੀ।'
       text_platform_setup: 'ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਵਜੋਂ ਤੁਸੀਂ ਆਪਣਾ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਸੈਟ ਅਪ ਕਰ ਸਕਦੇ ਹੋ। ਇੱਕ ਲੋਗੋ, ਚਿੱਤਰ ਅਤੇ ਰੰਗ ਚੁਣੋ, ਆਪਣੇ ਹੋਮ ਪੇਜ ''ਤੇ ਇੱਕ ਨਿੱਜੀ ਸੁਨੇਹਾ ਲਿਖੋ, ਸੱਦੇ ਭੇਜੋ, ਪਰਿਭਾਸ਼ਿਤ ਕਰੋ ਕਿ ਤੁਸੀਂ ਆਪਣੇ ਉਪਭੋਗਤਾਵਾਂ ਬਾਰੇ ਕੀ ਜਾਣਨਾ ਚਾਹੁੰਦੇ ਹੋ, ...'
@@ -140,38 +154,38 @@ pa:
       title_moderate_analyse_input: 'ਇੰਪੁੱਟ ਦਾ ਸੰਚਾਲਨ ਅਤੇ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ'
       title_platform_setup: 'ਆਪਣਾ ਪਲੇਟਫਾਰਮ ਸੈੱਟ ਕਰੋ'
       title_what_can_you_do_administrator: 'ਤੁਸੀਂ ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਵਜੋਂ ਕੀ ਕਰ ਸਕਦੇ ਹੋ?'
-      title_you_became_administrator: 'ਤੁਸੀਂ ਪ੍ਰਸ਼ਾਸਕ ਬਣ ਗਏ'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} ਨੇ ਇਸ ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ'
+      preheader: 'ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤੀ ਗਈ ਇਸ ਟਿੱਪਣੀ ''ਤੇ ਕਾਰਵਾਈ ਕਰੋ'
+      title: '%{firstName} %{lastName} ਨੇ ਇਸ ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ'
+      cta_button: 'ਟਿੱਪਣੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
       by_author: '%{authorName}ਦੁਆਰਾ'
       commented: '%{authorName} ਨੇ ਟਿੱਪਣੀ ਕੀਤੀ:'
-      cta_review_comment: 'ਟਿੱਪਣੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
       days_ago: '%{numberOfDays} ਦਿਨ ਪਹਿਲਾਂ'
       event_description: '<strong>''%{post}''</strong> ''ਤੇ ਪੋਸਟ ਕੀਤੀ ਗਈ ਹੇਠ ਦਿੱਤੀ ਟਿੱਪਣੀ ਦੀ ਰਿਪੋਰਟ ਕੀਤੀ ਗਈ ਸੀ:'
       inappropriate_content: 'ਟਿੱਪਣੀ ਅਣਉਚਿਤ ਜਾਂ ਅਪਮਾਨਜਨਕ ਹੈ।'
-      preheader: 'ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤੀ ਗਈ ਇਸ ਟਿੱਪਣੀ ''ਤੇ ਕਾਰਵਾਈ ਕਰੋ'
       reported_this_because: '%{reporterFirstName} ਨੇ ਇਸਦੀ ਰਿਪੋਰਟ ਕੀਤੀ ਕਿਉਂਕਿ:'
-      subject: '%{organizationName}: %{firstName} %{lastName} ਨੇ ਇਸ ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ'
-      title_comment_spam_report: '%{firstName} %{lastName} ਨੇ ਇਸ ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ'
       today: ਅੱਜ
       wrong_content: 'ਟਿੱਪਣੀ ਢੁਕਵੀਂ ਨਹੀਂ ਹੈ।'
       yesterday: ਕੱਲ੍ਹ
     community_monitor_report:
       subject: 'ਇੱਕ ਨਵੀਂ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਉਪਲਬਧ ਹੈ।'
+      preheader: 'ਇੱਕ ਨਵੀਂ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਉਪਲਬਧ ਹੈ।'
       title: 'ਇੱਕ ਨਵੀਂ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਉਪਲਬਧ ਹੈ।'
-      text_introduction: 'ਪਿਛਲੀ ਤਿਮਾਹੀ ਲਈ ਇੱਕ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਬਣਾਈ ਗਈ ਹੈ। ਤੁਸੀਂ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰਕੇ ਅਤੇ ਲੌਗਇਨ ਕਰਕੇ ਇਸਨੂੰ ਐਕਸੈਸ ਕਰ ਸਕਦੇ ਹੋ।'
-      cta_report_button: 'ਰਿਪੋਰਟ ਵੇਖੋ'
+      event_description: 'ਪਿਛਲੀ ਤਿਮਾਹੀ ਲਈ ਇੱਕ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਬਣਾਈ ਗਈ ਹੈ। ਤੁਸੀਂ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰਕੇ ਅਤੇ ਲੌਗਇਨ ਕਰਕੇ ਇਸਨੂੰ ਐਕਸੈਸ ਕਰ ਸਕਦੇ ਹੋ।'
+      cta_button: 'ਰਿਪੋਰਟ ਵੇਖੋ'
       report_name: 'ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ'
     cosponsor_of_your_idea:
-      cta_reply_to: 'ਆਪਣਾ ਪ੍ਰਸਤਾਵ ਦੇਖੋ'
-      event_description: 'ਵਧਾਈਆਂ! %{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ।'
-      main_header: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
       subject: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
       preheader: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
+      title: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡਾ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ।'
+      event_description: 'ਵਧਾਈਆਂ! %{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ।'
+      cta_button: 'ਆਪਣਾ ਪ੍ਰਸਤਾਵ ਵੇਖੋ'
     assignee_digest:
       subject: 'ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦੀ ਲੋੜ ਵਾਲੇ ਵਿਚਾਰ: %{numberIdeas}'
       preheader: '%{organizationName}ਦਾ ਸਪੁਰਦਗੀ ਡਾਇਜੈਸਟ'
-      title_your_weekly_report: '%{firstName}, ਨਾਗਰਿਕ ਇੰਪੁੱਟ ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ'
-      cta_manage_your_input: 'ਆਪਣੇ ਇੰਪੁੱਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
+      title: '%{firstName}, ਨਾਗਰਿਕਾਂ ਦੀ ਰਾਇ ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦੀ ਉਡੀਕ ਕਰ ਰਹੀ ਹੈ।'
+      cta_button: 'ਆਪਣੇ ਇਨਪੁੱਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
       x_inputs_need_your_feedback: 'ਇਨਪੁਟਸ ਨੂੰ ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦੀ ਲੋੜ ਹੈ'
       title_assignment_past_week: 'ਤੁਹਾਨੂੰ ਸੌਂਪੇ ਗਏ ਨਵੀਨਤਮ ਵਿਚਾਰ'
       title_no_assignment_past_week: 'ਪਿਛਲੇ ਹਫ਼ਤੇ ਤੁਹਾਨੂੰ ਕੋਈ ਨਵਾਂ ਵਿਚਾਰ ਨਹੀਂ ਸੌਂਪਿਆ ਗਿਆ'
@@ -180,36 +194,36 @@ pa:
       x_days_ago_by_author: '%{x} ਦਿਨ ਪਹਿਲਾਂ %{author}ਦੁਆਰਾ'
       title_successful_past_week: 'ਤੁਹਾਨੂੰ ਸੌਂਪਿਆ ਗਿਆ ਹੈ ਜੋ ਥ੍ਰੈਸ਼ਹੋਲਡ ''ਤੇ ਪਹੁੰਚ ਗਿਆ ਹੈ'
     idea_marked_as_spam:
-      cta_review: 'ਸਮੀਖਿਆ'
-      report_inappropriate_offensive_content: 'ਮੈਨੂੰ ਇਹ ਸਮੱਗਰੀ ਅਣਉਚਿਤ ਜਾਂ ਅਪਮਾਨਜਨਕ ਲੱਗਦੀ ਹੈ।'
-      report_not_an_idea: 'ਇਹ ਸਮਗਰੀ ਕੋਈ ਵਿਚਾਰ ਨਹੀਂ ਹੈ ਅਤੇ ਇਹ ਇੱਥੇ ਨਹੀਂ ਹੈ।'
       subject: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਸਪੈਮ ਰਿਪੋਰਟ ਹੈ'
       preheader: 'ਇਸ ਸਪੈਮ ਰਿਪੋਰਟ ''ਤੇ ਕਾਰਵਾਈ ਕਰੋ'
+      title: '%{firstName} %{lastName} ਸਪੈਮ ਦੀ ਰਿਪੋਰਟ ਕੀਤੀ ਗਈ'
+      cta_button: 'ਸਮੀਖਿਆ'
+      report_inappropriate_offensive_content: 'ਮੈਨੂੰ ਇਹ ਸਮੱਗਰੀ ਅਣਉਚਿਤ ਜਾਂ ਅਪਮਾਨਜਨਕ ਲੱਗਦੀ ਹੈ।'
+      report_not_an_idea: 'ਇਹ ਸਮਗਰੀ ਕੋਈ ਵਿਚਾਰ ਨਹੀਂ ਹੈ ਅਤੇ ਇਹ ਇੱਥੇ ਨਹੀਂ ਹੈ।'
       reported_this_because: '%{reporterFirstName} ਨੇ ਇਸਦੀ ਰਿਪੋਰਟ ਕੀਤੀ ਕਿਉਂਕਿ:'
-      title_spam_report: '%{firstName} %{lastName} ਨੇ ਸਪੈਮ ਦੀ ਰਿਪੋਰਟ ਕੀਤੀ'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'ਇਸ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰੋ'
+      subject: 'ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+      preheader: 'ਤੁਹਾਨੂੰ %{authorName}ਦੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+      title: 'ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ।'
       event_description: '%{authorName} ਨੇ ਇੱਕ ਨਵਾਂ ਪ੍ਰਸਤਾਵ ਬਣਾਇਆ ਹੈ ਅਤੇ ਤੁਸੀਂ ਇਸਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ।'
       event_description_cosponsoring: 'ਕਿਸੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਦਾ ਮਤਲਬ ਹੈ ਕਿ <strong>ਤੁਹਾਡਾ ਨਾਮ ਪ੍ਰਸਤਾਵ ਦੇ ਹੋਰ ਸਹਿ-ਪ੍ਰਾਯੋਜਕਾਂ ਦੇ ਨਾਵਾਂ ਦੇ ਨਾਲ</strong> ਪ੍ਰਦਰਸ਼ਿਤ ਕੀਤਾ ਜਾਵੇਗਾ।'
       event_description_before_action: 'ਪ੍ਰਸਤਾਵ ਨੂੰ ਦੇਖਣ ਅਤੇ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰਨ ਲਈ, ਤੁਹਾਨੂੰ ਆਪਣੇ ਖਾਤੇ ਵਿੱਚ ਲੌਗਇਨ ਕਰਨਾ ਪਵੇਗਾ।'
       event_description_action: 'ਪ੍ਰਸਤਾਵ ਨੂੰ ਪੜ੍ਹਨ ਲਈ ਹੇਠਾਂ ਕਲਿੱਕ ਕਰੋ।'
-      main_header: 'ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
-      subject: 'ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
-      preheader: 'ਤੁਹਾਨੂੰ %{authorName}ਦੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+      cta_button: 'ਇਸ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਯੋਜਿਤ ਕਰੋ'
     invite_reminder:
-      cta_accept_invitation: 'ਤੁਹਾਡਾ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰੋ'
-      invitation_header: 'ਤੁਹਾਡਾ ਸੱਦਾ ਵਿਚਾਰ-ਅਧੀਨ ਹੈ'
-      preheader: '%{organizationName} ਨੇ ਕੁਝ ਦਿਨ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਉਹਨਾਂ ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਣ ਲਈ ਇੱਕ ਸੱਦਾ ਭੇਜਿਆ ਸੀ।'
-      invitation_expiry_message: 'ਇਸ ਸੱਦੇ ਦੀ ਮਿਆਦ ਲਗਭਗ %{expiryDaysRemaining} ਦਿਨਾਂ ਵਿੱਚ ਸਮਾਪਤ ਹੋ ਜਾਵੇਗੀ।'
       subject: '%{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਬਕਾਇਆ ਸੱਦਾ'
+      preheader: '%{organizationName} ਨੇ ਕੁਝ ਦਿਨ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਉਹਨਾਂ ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਣ ਲਈ ਇੱਕ ਸੱਦਾ ਭੇਜਿਆ ਸੀ।'
+      title: 'ਤੁਹਾਡਾ ਸੱਦਾ ਵਿਚਾਰ-ਅਧੀਨ ਹੈ।'
+      cta_button: 'ਆਪਣਾ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰੋ'
+      invitation_expiry_message: 'ਇਸ ਸੱਦੇ ਦੀ ਮਿਆਦ ਲਗਭਗ %{expiryDaysRemaining} ਦਿਨਾਂ ਵਿੱਚ ਸਮਾਪਤ ਹੋ ਜਾਵੇਗੀ।'
     invite_received:
-      added_a_message: '%{organizationName} ਨੇ ਹੇਠਾਂ ਦਿੱਤਾ ਸੁਨੇਹਾ ਲਿਖਿਆ:'
-      cta_accept_invitation: 'ਤੁਹਾਡਾ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰੋ'
-      invitation_header: 'ਤੁਹਾਨੂੰ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ!'
-      invitation_header_message: '%{organizationName} ਨੇ ਤੁਹਾਨੂੰ ਉਹਨਾਂ ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਸੱਦਾ ਦਿੱਤਾ।'
-      invitation_expiry_message: 'ਇਸ ਸੱਦੇ ਦੀ ਮਿਆਦ %{expiryDays} ਦਿਨਾਂ ਵਿੱਚ ਸਮਾਪਤ ਹੋ ਜਾਵੇਗੀ।'
       preheader: '%{organizationName} ਨੇ ਤੁਹਾਨੂੰ ਉਹਨਾਂ ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਣ ਲਈ ਇੱਕ ਸੱਦਾ ਭੇਜਿਆ ਹੈ।'
       subject: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਣ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ'
+      title: 'ਤੁਹਾਨੂੰ ਸੱਦਾ ਹੈ!'
+      event_description: '%{organizationName} ਨੇ ਤੁਹਾਨੂੰ ਆਪਣੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਸੱਦਾ ਦਿੱਤਾ ਹੈ।'
+      cta_button: 'ਆਪਣਾ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰੋ'
+      added_a_message: '%{organizationName} ਨੇ ਹੇਠਾਂ ਦਿੱਤਾ ਸੁਨੇਹਾ ਲਿਖਿਆ:'
+      invitation_expiry_message: 'ਇਸ ਸੱਦੇ ਦੀ ਮਿਆਦ %{expiryDays} ਦਿਨਾਂ ਵਿੱਚ ਸਮਾਪਤ ਹੋ ਜਾਵੇਗੀ।'
     mention_in_comment:
       cta_reply_to: '%{commentAuthor}ਨੂੰ ਜਵਾਬ ਦਿਓ'
       event_description: '%{commentAuthorFull} ਨੇ ''%{post}'' ਵਿਚਾਰ ''ਤੇ ਆਪਣੀ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ ਹੈ। %{commentAuthor}ਨਾਲ ਗੱਲਬਾਤ ਵਿੱਚ ਦਾਖਲ ਹੋਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਲਿੰਕ ''ਤੇ ਕਲਿੱਕ ਕਰੋ'
@@ -217,17 +231,17 @@ pa:
       subject: '%{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਕਿਸੇ ਨੇ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ'
       preheader: '%{commentAuthor} ਨੇ ਇੱਕ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ'
     mention_in_internal_comment:
-      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      cta_button: '%{firstName}ਦੀ ਟਿੱਪਣੀ ਵੇਖੋ'
       event_description: '%{authorNameFull} ਨੇ ਇੱਕ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ।'
       subject: '%{firstName} ਨੇ ਇੱਕ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ।'
-      main_header: '%{firstName} ਨੇ ਇੱਕ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ।'
+      title: '%{firstName} ਨੇ ਇੱਕ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ।'
       preheader: '%{authorNameFull} ਨੇ ਇੱਕ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ।'
     moderator_digest:
       subject: '%{time}ਦੀ ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਰਿਪੋਰਟ'
       preheader: '%{organizationName}ਦਾ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਡਾਇਜੈਸਟ'
-      title_your_weekly_report: '%{firstName}, ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਰਿਪੋਰਟ'
-      text_introduction: 'ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਉਹ ਇਨਪੁਟ ਤਿਆਰ ਕੀਤਾ ਹੈ ਜਿਸ ਨੇ ਪਿਛਲੇ ਹਫ਼ਤੇ ਸਭ ਤੋਂ ਵੱਧ ਗਤੀਵਿਧੀ ਜਨਰੇਟ ਕੀਤੀ ਹੈ। ਪਤਾ ਕਰੋ ਕਿ ਤੁਹਾਡੇ ਪ੍ਰੋਜੈਕਟ ਨਾਲ ਕੀ ਹੋ ਰਿਹਾ ਹੈ!'
-      cta_manage: 'ਆਪਣੇ ਪ੍ਰੋਜੈਕਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
+      title: '%{firstName}, ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਰਿਪੋਰਟ'
+      event_description: 'ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਪਿਛਲੇ ਹਫ਼ਤੇ ਸਭ ਤੋਂ ਵੱਧ ਗਤੀਵਿਧੀ ਪੈਦਾ ਕਰਨ ਵਾਲੇ ਇਨਪੁਟ ਨੂੰ ਤਿਆਰ ਕੀਤਾ ਹੈ। ਪਤਾ ਕਰੋ ਕਿ ਤੁਹਾਡੇ ਪ੍ਰੋਜੈਕਟ ਨਾਲ ਕੀ ਹੋ ਰਿਹਾ ਹੈ!'
+      cta_button: 'ਆਪਣੇ ਪ੍ਰੋਜੈਕਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
       new_users: 'ਨਵੇਂ ਉਪਭੋਗਤਾ'
       new_ideas: 'ਨਵੇਂ ਵਿਚਾਰ'
       new_comments: 'ਨਵੀਆਂ ਟਿੱਪਣੀਆਂ'
@@ -239,17 +253,20 @@ pa:
       x_days_ago_by_author: '%{x} ਦਿਨ ਪਹਿਲਾਂ %{author}ਦੁਆਰਾ'
     new_comment_for_admin:
       commented: '%{authorFirstName} ਨੇ ਟਿੱਪਣੀ ਕੀਤੀ:'
-      cta_reply_to: '%{commentAuthor}ਦੀ ਟਿੱਪਣੀ ਦੇਖੋ'
+      cta_button: '%{authorFirstName}ਦੀ ਟਿੱਪਣੀ ਵੇਖੋ'
       days_ago: '%{numberOfDays} ਦਿਨ ਪਹਿਲਾਂ'
       event_description: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵੀਂ ਟਿੱਪਣੀ ਸ਼ਾਮਲ ਕੀਤੀ।'
-      main_header: '%{firstName}, ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵੀਂ ਟਿੱਪਣੀ ਪੋਸਟ ਕੀਤੀ ਗਈ ਹੈ'
+      title: '%{firstName}, ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵੀਂ ਟਿੱਪਣੀ ਪੋਸਟ ਕੀਤੀ ਗਈ ਹੈ।'
       subject: '%{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵੀਂ ਟਿੱਪਣੀ ਪੋਸਟ ਕੀਤੀ ਗਈ ਹੈ'
       preheader: '%{authorName} ਨੇ ਇੱਕ ਟਿੱਪਣੀ ਛੱਡੀ'
       today: ਅੱਜ
       yesterday: ਕੱਲ੍ਹ
     comment_on_idea_you_follow:
-      cta_reply_to: '%{commentAuthor}ਨੂੰ ਜਵਾਬ ਦਿਓ'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} ਨੇ %{organizationName}ਲਈ ਇੱਕ ਵਿਚਾਰ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਛੱਡੀ'
+      title: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੇ ਗਏ ਇਨਪੁੱਟ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
       event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      cta_button: '%{commentAuthor}ਦਾ ਜਵਾਬ ਦਿਓ'
       main_header:
         idea: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਚਾਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
         question: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਸਵਾਲ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
@@ -259,56 +276,61 @@ pa:
         option: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਕਲਪ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
         proposal: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
         petition: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੀ ਪਟੀਸ਼ਨ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
-      subject: 'There''s a new comment on "%{input_title}"'
-      preheader: '%{authorName} ਨੇ %{organizationName}ਲਈ ਇੱਕ ਵਿਚਾਰ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਛੱਡੀ'
-    new_idea_for_admin:
-      main_header_publication: 'ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
-      event_description_publication: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁਟ ਸਪੁਰਦ ਕੀਤਾ ਹੈ। ਇਸ ਨੂੰ ਹੁਣੇ ਖੋਜੋ, ਕੁਝ ਫੀਡਬੈਕ ਦਿਓ ਜਾਂ ਇਸਦੀ ਸਥਿਤੀ ਬਦਲੋ!'
-      cta_publication: '%{authorName}ਨੂੰ ਫੀਡਬੈਕ ਦਿਓ'
-      main_header_prescreening: 'ਇੱਕ ਇਨਪੁਟ ਲਈ ਤੁਹਾਡੀ ਸਮੀਖਿਆ ਦੀ ਲੋੜ ਹੈ'
-      event_description_prescreening: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁਟ ਸਪੁਰਦ ਕੀਤਾ ਹੈ।'
-      input_not_visible_prescreening: '<b>ਇਨਪੁਟ</b> ਉਦੋਂ ਤੱਕ ਦਿਖਾਈ ਨਹੀਂ ਦੇਵੇਗਾ ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ ਇਸਦੀ ਸਥਿਤੀ ਨੂੰ ਨਹੀਂ ਬਦਲਦੇ।'
-      cta_prescreening: 'ਇਨਪੁਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
+    new_idea_for_admin_published:
+      subject: 'ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁੱਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ।'
+      preheader: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਹੈ।'
+      title: 'ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁੱਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ।'
+      event_description: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁੱਟ ਜਮ੍ਹਾਂ ਕਰਵਾਇਆ ਹੈ। ਇਸਨੂੰ ਹੁਣੇ ਖੋਜੋ, ਕੁਝ ਫੀਡਬੈਕ ਦਿਓ ਜਾਂ ਇਸਦੀ ਸਥਿਤੀ ਬਦਲੋ!'
+      cta_button: '%{authorName}ਨੂੰ ਫੀਡਬੈਕ ਦਿਓ'
       days_ago: '%{numberOfDays} ਦਿਨ ਪਹਿਲਾਂ'
-      preheader: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਵਿਚਾਰ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ'
+      today: ਅੱਜ
+      yesterday: ਕੱਲ੍ਹ
+    new_idea_for_admin_prescreening:
+      subject: 'ਇੱਕ ਇਨਪੁੱਟ ਲਈ ਤੁਹਾਡੀ ਸਮੀਖਿਆ ਦੀ ਲੋੜ ਹੈ'
+      preheader: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਹੈ।'
+      title: 'ਇੱਕ ਇਨਪੁੱਟ ਲਈ ਤੁਹਾਡੀ ਸਮੀਖਿਆ ਦੀ ਲੋੜ ਹੈ'
+      cta_button: 'ਇਨਪੁੱਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
+      event_description: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁਟ ਜਮ੍ਹਾਂ ਕਰਵਾਇਆ ਹੈ।'
+      input_not_visible: '<b>ਇਨਪੁੱਟ</b> ਉਦੋਂ ਤੱਕ ਦਿਖਾਈ ਨਹੀਂ ਦੇਵੇਗਾ ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ ਇਸਦੀ ਸਥਿਤੀ ਨੂੰ ਸੋਧਦੇ ਨਹੀਂ ਹੋ।'
+      days_ago: '%{numberOfDays} ਦਿਨ ਪਹਿਲਾਂ'
       today: ਅੱਜ
       yesterday: ਕੱਲ੍ਹ
     comment_on_your_comment:
-      cta_reply_to: '%{firstName}ਨੂੰ ਜਵਾਬ ਦਿਓ'
-      event_description: '%{authorNameFull} ਨੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਲਿਖਿਆ। %{authorName}ਨਾਲ ਗੱਲਬਾਤ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
       subject: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਮਿਲਿਆ ਹੈ'
-      main_header: '%{authorName} ਨੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
       preheader: '%{authorName} ਨੇ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
+      title: '%{authorName} ਨੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
+      event_description: '%{authorNameFull} ਨੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਲਿਖਿਆ। %{authorName}ਨਾਲ ਗੱਲਬਾਤ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
+      cta_button: '%{authorFirstName}ਦਾ ਜਵਾਬ ਦਿਓ'
       replied: '%{authorFirstName} ਨੇ ਜਵਾਬ ਦਿੱਤਾ:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      cta_button: '%{firstName}ਦੀ ਟਿੱਪਣੀ ਵੇਖੋ'
       event_description: '%{authorNameFull} ਨੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
       subject: 'ਤੁਹਾਨੂੰ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਪ੍ਰਾਪਤ ਹੋਈ ਹੈ।'
-      main_header: 'ਤੁਹਾਨੂੰ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਪ੍ਰਾਪਤ ਹੋਈ ਹੈ।'
+      title: 'ਤੁਹਾਨੂੰ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਪ੍ਰਾਪਤ ਹੋਈ ਹੈ।'
       preheader: '%{authorName} ਨੇ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
     internal_comment_on_idea_assigned_to_you:
-      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      cta_button: '%{firstName}ਦੀ ਟਿੱਪਣੀ ਵੇਖੋ'
       event_description: '%{authorNameFull} ਨੇ ਤੁਹਾਨੂੰ ਸੌਂਪੇ ਗਏ ਇੱਕ ਇਨਪੁਟ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
       subject: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
-      main_header: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      title: '''%{post}'' ''ਤੇ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ'
       preheader: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
     internal_comment_on_idea_you_commented_internally_on:
-      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      cta_button: '%{firstName}ਦੀ ਟਿੱਪਣੀ ਵੇਖੋ'
       event_description: '%{authorNameFull} ਉਸ ਇਨਪੁਟ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ ਜਿਸ ''ਤੇ ਤੁਸੀਂ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ ਹੈ।'
       subject: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
-      main_header: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      title: '''%{post}'' ''ਤੇ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ'
       preheader: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
     internal_comment_on_idea_you_moderate:
-      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      cta_button: '%{firstName}ਦੀ ਟਿੱਪਣੀ ਵੇਖੋ'
       event_description: '%{authorNameFull} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਪ੍ਰਬੰਧਿਤ ਕੀਤੇ ਪ੍ਰੋਜੈਕਟ ਜਾਂ ਫੋਲਡਰ ਵਿੱਚ ਇੱਕ ਇਨਪੁਟ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
       subject: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
-      main_header: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      title: '''%{post}'' ''ਤੇ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ'
       preheader: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      cta_button: '%{firstName}ਦੀ ਟਿੱਪਣੀ ਵੇਖੋ'
       event_description: '%{authorNameFull} ਨੇ ਇੱਕ ਅਪ੍ਰਬੰਧਿਤ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਇੱਕ ਅਸਾਈਨ ਕੀਤੇ ਇਨਪੁਟ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
       subject: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
-      main_header: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      title: '''%{post}'' ''ਤੇ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ'
       preheader: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
@@ -316,9 +338,9 @@ pa:
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:
-      cta_reply_to: '%{organizationName}ਨੂੰ ਜਵਾਬ ਦਿਓ'
+      cta_button: '%{organizationName}ਦਾ ਜਵਾਬ ਦਿਓ'
       event_description: '%{organizationName} ਨੇ ''%{post}'' ਵਿਚਾਰ ''ਤੇ ਆਪਣੇ ਫੀਡਬੈਕ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ। %{organizationName}ਨਾਲ ਗੱਲਬਾਤ ਵਿੱਚ ਦਾਖਲ ਹੋਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਲਿੰਕ ''ਤੇ ਕਲਿੱਕ ਕਰੋ'
-      main_header: 'ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ'
+      title: 'ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ।'
       subject: '%{organizationName} ਨੇ ਆਪਣੇ ਫੀਡਬੈਕ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ'
       preheader: '%{commentAuthor} ਨੇ ਫੀਡਬੈਕ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ'
     project_moderation_rights_received:
@@ -352,9 +374,9 @@ pa:
       title_added_as_folderadmin: 'ਤੁਹਾਨੂੰ ਫੋਲਡਰ ਮੈਨੇਜਰ ਵਜੋਂ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ ਹੈ'
       x_projects: '%{numberOfProjects} ਪ੍ਰੋਜੈਕਟ'
     project_phase_started:
-      cta_view_phase: 'ਇਸ ਨਵੇਂ ਪੜਾਅ ਦੀ ਖੋਜ ਕਰੋ'
+      cta_button: 'ਇਸ ਨਵੇਂ ਪੜਾਅ ਦੀ ਖੋਜ ਕਰੋ'
       event_description: 'ਇਹ ਪ੍ਰੋਜੈਕਟ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਇਆ ਹੈ। ਹੋਰ ਜਾਣਨ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਲਿੰਕ ''ਤੇ ਕਲਿੱਕ ਕਰੋ!'
-      main_header: 'ਪ੍ਰੋਜੈਕਟ ''%{projectName}'' ਲਈ ਇੱਕ ਨਵਾਂ ਪੜਾਅ ਸ਼ੁਰੂ ਹੋਇਆ'
+      title: '''%{projectName}'' ਪ੍ਰੋਜੈਕਟ ਲਈ ਇੱਕ ਨਵਾਂ ਪੜਾਅ ਸ਼ੁਰੂ ਹੋਇਆ'
       subtitle: '''%{projectName}'' ਬਾਰੇ'
       new_phase: 'ਇਹ ਪ੍ਰੋਜੈਕਟ ''%{phaseTitle}'' ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਇਆ ਹੈ'
       subject: '%{projectName} ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਇਆ'
@@ -420,16 +442,18 @@ pa:
       message_welcome: 'ਵਧਾਈਆਂ, ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਸਫਲਤਾਪੂਰਵਕ ਸਾਈਨ ਅੱਪ ਕਰ ਲਿਆ ਹੈ। ਤੁਸੀਂ ਹੁਣ ਪਲੇਟਫਾਰਮ ਦੀ ਖੋਜ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਆਪਣੀ ਆਵਾਜ਼ ਸੁਣਾ ਸਕਦੇ ਹੋ। ਤੁਸੀਂ ਦੂਜਿਆਂ ਨੂੰ ਇਹ ਦੱਸਣ ਲਈ ਇੱਕ ਪ੍ਰੋਫਾਈਲ ਤਸਵੀਰ ਅਤੇ ਇੱਕ ਛੋਟਾ ਵੇਰਵਾ ਵੀ ਸ਼ਾਮਲ ਕਰ ਸਕਦੇ ਹੋ ਕਿ ਤੁਸੀਂ ਕੌਣ ਹੋ।'
       preheader: 'ਇਹ ਹੈ ਕਿ ਤੁਸੀਂ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਕੀ ਕਰ ਸਕਦੇ ਹੋ'
     idea_published:
-      subject:
-        idea: 'ਤੁਹਾਡਾ ਵਿਚਾਰ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
-        question: 'ਤੁਹਾਡਾ ਸਵਾਲ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
-        contribution: 'ਤੁਹਾਡਾ ਯੋਗਦਾਨ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
-        project: 'ਤੁਹਾਡਾ ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
-        issue: 'ਤੁਹਾਡਾ ਅੰਕ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
-        option: 'ਤੁਹਾਡਾ ਵਿਕਲਪ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
-        proposal: 'ਤੁਹਾਡਾ ਪ੍ਰਸਤਾਵ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
-        petition: 'ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਚੁੱਕੀ ਹੈ'
-      main_header: 'ਤੁਸੀਂ ਇੱਕ ਵਿਚਾਰ ਪੋਸਟ ਕੀਤਾ ਹੈ! ਆਓ ਇਹ ਯਕੀਨੀ ਕਰੀਏ ਕਿ ਇਹ ਪੜ੍ਹਿਆ ਜਾਂਦਾ ਹੈ.'
+      subject: 'ਤੁਹਾਡਾ ਵਿਚਾਰ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਿਆ ਹੈ।'
+      preheader: '%{firstName}, %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਆਪਣੇ ਵਿਚਾਰ ਪੋਸਟ ਕਰਨ ਲਈ ਵਧਾਈਆਂ। ਹੁਣ ਸਮਰਥਨ ਇਕੱਠਾ ਕਰੋ.'
+      title: 'ਤੁਸੀਂ "%{input_title}" ਪੋਸਟ ਕੀਤਾ ਹੈ।'
+      input_type_subject:
+        idea: 'ਤੁਹਾਡਾ ਵਿਚਾਰ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਿਆ ਹੈ।'
+        question: 'ਤੁਹਾਡਾ ਸਵਾਲ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।'
+        contribution: 'ਤੁਹਾਡਾ ਯੋਗਦਾਨ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।'
+        project: 'ਤੁਹਾਡਾ ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਿਆ ਹੈ।'
+        issue: 'ਤੁਹਾਡਾ ਅੰਕ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਿਆ ਹੈ।'
+        option: 'ਤੁਹਾਡਾ ਵਿਕਲਪ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।'
+        proposal: 'ਤੁਹਾਡਾ ਪ੍ਰਸਤਾਵ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।'
+        petition: 'ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਈ ਹੈ।'
       header_message: 'ਆਓ ਇਹ ਯਕੀਨੀ ਕਰੀਏ ਕਿ ਇਹ ਪੜ੍ਹਿਆ ਜਾਂਦਾ ਹੈ.'
       message_get_votes: 'ਆਪਣੇ ਵਿਚਾਰ ਨਾਲ ਹੋਰ ਲੋਕਾਂ ਤੱਕ ਪਹੁੰਚੋ:'
       action_published_idea: 'ਪ੍ਰਕਾਸ਼ਿਤ ਵਿਚਾਰ'
@@ -441,7 +465,6 @@ pa:
       send_email: ਈਮੇਲ
       action_share_link: '%{link}ਦੀ ਨਕਲ ਕਰਕੇ ਇਸਨੂੰ ਕਿਸੇ ਵੀ ਚੈਨਲ ਰਾਹੀਂ ਸਾਂਝਾ ਕਰੋ'
       link: ਲਿੰਕ
-      preheader: '%{firstName}, %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਆਪਣੇ ਵਿਚਾਰ ਪੋਸਟ ਕਰਨ ਲਈ ਵਧਾਈਆਂ। ਹੁਣ ਸਮਰਥਨ ਇਕੱਠਾ ਕਰੋ.'
     your_input_in_screening:
       main_header:
         idea: 'ਤੁਹਾਡਾ ਵਿਚਾਰ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ'
@@ -465,10 +488,10 @@ pa:
     native_survey_not_submitted:
       subject: '%{organizationName}: ਲਗਭਗ ਉੱਥੇ! ਆਪਣੇ ਜਵਾਬ ਦਰਜ ਕਰੋ'
       preheader: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਆਪਣਾ ਸਰਵੇਖਣ ਜਵਾਬ ਪੂਰਾ ਨਹੀਂ ਕੀਤਾ'
-      title_native_survey_not_submitted: 'ਲਗਭਗ ਉੱਥੇ! ਆਪਣੇ ਜਵਾਬ ਦਰਜ ਕਰੋ'
-      body_native_survey_not_submitted: 'ਤੁਸੀਂ %{phaseTitle} ''ਤੇ ਆਪਣੇ ਜਵਾਬ ਸਾਂਝੇ ਕਰਨੇ ਸ਼ੁਰੂ ਕਰ ਦਿੱਤੇ ਪਰ ਉਹਨਾਂ ਨੂੰ ਜਮ੍ਹਾ ਨਹੀਂ ਕੀਤਾ। ਸਬਮਿਸ਼ਨ %{phaseEndDate}ਨੂੰ ਬੰਦ ਹੋ ਜਾਣਗੇ। ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ ਉੱਥੇ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
-      body_native_survey_not_submitted_no_date: 'ਤੁਸੀਂ %{phaseTitle} ''ਤੇ ਆਪਣੇ ਜਵਾਬ ਸਾਂਝੇ ਕਰਨੇ ਸ਼ੁਰੂ ਕਰ ਦਿੱਤੇ ਪਰ ਉਹਨਾਂ ਨੂੰ ਜਮ੍ਹਾ ਨਹੀਂ ਕੀਤਾ। ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ ਉੱਥੇ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
-      cta_complete_your_survey_response: 'ਆਪਣੇ ਸਰਵੇਖਣ ਦੇ ਜਵਾਬ ਨੂੰ ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ'
+      title: 'ਲਗਭਗ ਹੋ ਗਿਆ! ਆਪਣੇ ਜਵਾਬ ਸਪੁਰਦ ਕਰੋ।'
+      event_description: 'ਤੁਸੀਂ ਆਪਣੇ ਜਵਾਬ %{phaseTitle} ''ਤੇ ਸਾਂਝੇ ਕਰਨੇ ਸ਼ੁਰੂ ਕਰ ਦਿੱਤੇ ਸਨ ਪਰ ਉਹਨਾਂ ਨੂੰ ਜਮ੍ਹਾਂ ਨਹੀਂ ਕੀਤਾ। ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰਕੇ ਉੱਥੇ ਹੀ ਜਾਰੀ ਰੱਖੋ ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ।'
+      cta_button: 'ਆਪਣਾ ਸਰਵੇਖਣ ਜਵਾਬ ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ'
+      submissions_close: 'ਸਬਮਿਸ਼ਨਾਂ %{phaseEndDate}ਨੂੰ ਬੰਦ ਹੋ ਜਾਣਗੀਆਂ।'
     voting_basket_not_submitted:
       subject: '%{organizationName}: ਤੁਸੀਂ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਨਹੀਂ ਕਰਵਾਈਆਂ'
       preheader: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾ ਨਹੀਂ ਕੀਤੀਆਂ'
@@ -495,7 +518,7 @@ pa:
     event_registration_confirmation:
       subject: "ਤੁਸੀਂ ਅੰਦਰ ਹੋ! \"%{eventTitle}\" ਲਈ ਤੁਹਾਡੀ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਦੀ ਪੁਸ਼ਟੀ ਹੋ ਗਈ ਹੈ"
       preheader: "%{firstName}, %{eventTitle}ਲਈ ਰਜਿਸਟਰ ਕਰਨ ਲਈ ਧੰਨਵਾਦ"
-      header_message: "%{firstName}, ਲਈ ਰਜਿਸਟਰ ਕਰਨ ਲਈ ਧੰਨਵਾਦ"
+      title: "%{firstName}, ਰਜਿਸਟਰ ਕਰਨ ਲਈ ਧੰਨਵਾਦ"
       event_details:
         labels:
           date: 'ਮਿਤੀ'
@@ -503,7 +526,7 @@ pa:
           online_link: 'ਔਨਲਾਈਨ ਲਿੰਕ'
           description: 'ਵਰਣਨ'
           project: 'ਪ੍ਰੋਜੈਕਟ'
-      cta_go_to_event: 'ਘਟਨਾ ਵੇਖੋ'
+      cta_button: 'ਘਟਨਾ ਵੇਖੋ'
       cta_add_to_calendar: 'ਆਪਣੇ ਕੈਲੰਡਰ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ'
     voting_phase_started:
       subject: '%{organizationName}: %{projectName}ਲਈ ਵੋਟਿੰਗ ਪੜਾਅ ਸ਼ੁਰੂ'

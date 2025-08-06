@@ -97,4 +97,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.discoverability',
     defaultMessage: 'Discoverability:',
   },
+  thisColumnUsesCache: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.thisColumnUsesCache',
+    defaultMessage:
+      'This column uses cached participant data. To see the latest numbers, check the "Participants" tab of the project.',
+  },
 });
