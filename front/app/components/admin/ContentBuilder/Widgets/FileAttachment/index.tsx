@@ -25,8 +25,6 @@ type FileAttachmentProps = {
   projectId?: string;
 };
 
-export const fileAttachmentTitle = messages.fileAttachment;
-
 const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   const { data: file } = useFileById(fileId);
 
