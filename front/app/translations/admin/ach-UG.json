@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "crwdns5043373:0{months}crwdne5043373:0",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "crwdns5043375:0crwdne5043375:0",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "crwdns5043377:0crwdne5043377:0",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "crwdns5063621:0crwdne5063621:0",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "crwdns5043381:0crwdne5043381:0",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "crwdns5043383:0crwdne5043383:0",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "crwdns5043385:0crwdne5043385:0",
