@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "{months}mo til å begynne med",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Neste fase:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Ikke tildelt",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "Avventer godkjenning",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Fase",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Før lansering",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Prosjekt",
