@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "لم يتم البدء",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "حالة المشاركة",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "ماضي",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "في انتظار الموافقة",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "البحث عن المشاريع",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "أبجديًا (az)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "أبجديًا (za)",
