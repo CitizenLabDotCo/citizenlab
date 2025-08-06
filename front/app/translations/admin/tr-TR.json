@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "Başlamadı",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Katılım durumu",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Geçmiş",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "Onay bekliyor",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "Proje arama",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Alfabetik olarak (a-z)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Alfabetik olarak (z-a)",

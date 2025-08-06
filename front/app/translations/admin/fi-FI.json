@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "Ei aloitettu",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Osallistumistila",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Menneisyys",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "Odottaa hyväksyntää",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "Hae projekteja",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Aakkosjärjestyksessä (az)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Aakkosjärjestyksessä (za)",

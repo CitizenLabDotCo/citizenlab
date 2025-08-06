@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "Nije započeto",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Stanje sudjelovanja",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Prošlost",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "Čeka odobrenje",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "Pretraživanje projekata",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Abecedno (az)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Abecedno (za)",

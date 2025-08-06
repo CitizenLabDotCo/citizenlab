@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "Ikke påbegyndt",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Status for deltagelse",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Fortid",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "Afventer godkendelse",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "Søg i projekter",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "Alfabetisk (a-å)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Alfabetisk (a-å)",
