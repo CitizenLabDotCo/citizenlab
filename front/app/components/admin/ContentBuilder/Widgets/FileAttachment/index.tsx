@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import useFileById from 'api/files/useFileById';
 import useFiles from 'api/files/useFiles';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
 import { useIntl } from 'utils/cl-intl';
@@ -63,11 +64,6 @@ const FileAttachmentSettings = () => {
     return <Spinner />;
   }
 
-  // If no files are available, show a message
-  if (fileOptions.length === 0) {
-    return <Text>{formatMessage(messages.noFilesAvailable)}</Text>;
-  }
-
   return (
     <Box
       background={colors.white}
@@ -76,17 +72,29 @@ const FileAttachmentSettings = () => {
       flexDirection="column"
       gap="24px"
     >
-      <Select
-        value={fileId}
-        onChange={(option) => {
-          setProp((props: FileAttachmentProps) => {
-            props.fileId = option.value;
-          });
-        }}
-        placeholder={formatMessage(messages.selectFile)}
-        options={fileOptions}
-        label={formatMessage(messages.selectFile)}
-      />
+      {fileOptions.length === 0 ? (
+        <Text m="0px">{formatMessage(messages.noFilesAvailable)}</Text>
+      ) : (
+        <Select
+          value={fileId}
+          onChange={(option) => {
+            setProp((props: FileAttachmentProps) => {
+              props.fileId = option.value;
+            });
+          }}
+          placeholder={formatMessage(messages.selectFile)}
+          options={fileOptions}
+          label={formatMessage(messages.selectFile)}
+        />
+      )}
+
+      <ButtonWithLink
+        linkTo={`/admin/projects/${projectId}/files`}
+        buttonStyle="secondary-outlined"
+        openLinkInNewTab={true}
+      >
+        {formatMessage(messages.uploadFiles)}
+      </ButtonWithLink>
     </Box>
   );
 };

@@ -18,4 +18,8 @@ export default defineMessages({
     defaultMessage:
       'No files available. Please upload files to the project first.',
   },
+  uploadFiles: {
+    id: 'app.containers.admin.ContentBuilder.uploadFiles',
+    defaultMessage: 'Upload Files',
+  },
 });
