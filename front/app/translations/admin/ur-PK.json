@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "شروع نہیں ہوا۔",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "شرکت کی حالت",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "ماضی",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "زیر التواء منظوری",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "پروجیکٹس تلاش کریں۔",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "حروف تہجی کے لحاظ سے (az)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "حروف تہجی کے لحاظ سے (za)",
