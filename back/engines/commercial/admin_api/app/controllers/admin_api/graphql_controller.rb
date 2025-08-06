@@ -3,6 +3,7 @@
 module AdminApi
   class GraphqlController < AdminApiController
     def execute
+      # Not called in template copy
       variables = ensure_hash(params[:variables])
       query = params[:query]
       operation_name = params[:operationName]
