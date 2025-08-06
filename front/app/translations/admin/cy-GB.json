@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "{months}mis i ddechrau",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Cyfnod nesaf:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Heb ei aseinio",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "Yn aros am gymeradwyaeth",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Cyfnod",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Cyn-lansio",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Prosiect",
