@@ -917,7 +917,7 @@
   "app.components.formBuilder.veryGood": "Zeer goed",
   "app.components.ideas.similarIdeas.engageHere": "Doe hier mee",
   "app.components.ideas.similarIdeas.noSimilarSubmissions": "Geen vergelijkbare inzendingen gevonden.",
-  "app.components.ideas.similarIdeas.similarSubmissionsDescription": "We hebben vergelijkbare inzendingen gevonden - door met deze inzendingen te interacteren kun je ze versterken!",
+  "app.components.ideas.similarIdeas.similarSubmissionsDescription": "We hebben vergelijkbare inzendingen gevonden. Is dit inderdaad het geval? Dan kun je dat aangeven door hieronder de vergelijkbare inzending te selecteren. Vervolgens kun je op de knop 'Doe hier mee' klikken om naar de inzending te gaan en daarop te reageren. Wil je liever je idee apart indienen, klik dan op 'Volgende'.",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Soortgelijke inzendingen die al geplaatst zijn:",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Op zoek naar vergelijkbare inzendingen ...",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Minder dan een dag} one {# dag} other {# dagen}} over",
