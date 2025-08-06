@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "ਸ਼ੁਰੂ ਨਹੀਂ ਹੋਇਆ",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "ਭਾਗੀਦਾਰੀ ਸਥਿਤੀ",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "ਭੂਤਕਾਲ",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "ਪ੍ਰਵਾਨਗੀ ਵਿਚਾਰ-ਅਧੀਨ ਹੈ",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "ਪ੍ਰੋਜੈਕਟ ਖੋਜੋ",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "ਵਰਣਮਾਲਾ ਕ੍ਰਮ ਵਿੱਚ (az)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "ਵਰਣਮਾਲਾ ਕ੍ਰਮ ਵਿੱਚ (za)",
