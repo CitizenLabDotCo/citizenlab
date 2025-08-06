@@ -1150,6 +1150,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.monthsToStart": "{months}ਸ਼ੁਰੂ ਕਰਨ ਵਿੱਚ ਮਹੀਨਾ ਬਾਕੀ",
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "ਅਗਲਾ ਪੜਾਅ:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "ਨਿਰਧਾਰਤ ਨਹੀਂ ਕੀਤਾ ਗਿਆ",
+  "app.containers.Admin.projects.all.new.Projects.Table.pendingApproval": "ਪ੍ਰਵਾਨਗੀ ਵਿਚਾਰ-ਅਧੀਨ ਹੈ",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "ਪੜਾਅ",
   "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "ਪ੍ਰੀ-ਲਾਂਚ",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "ਪ੍ਰੋਜੈਕਟ",
