@@ -2733,7 +2733,7 @@
   "app.containers.AdminPage.projects.all.all": "Alle",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Nieuwe map",
   "app.containers.AdminPage.projects.all.existingProjects": "Bestaande projecten",
-  "app.containers.AdminPage.projects.all.homepageWarning1": "Gebruik deze pagina om de volgorde van projecten in te stellen in de \"Alle projecten\" vervolgkeuzelijst in de navigatiebalk. Als je de widgets \"Gepubliceerde projecten en mappen\" of \"Projecten en mappen (legacy)\" op je startpagina gebruikt, wordt de volgorde van de projecten in deze widgets ook bepaald door de volgorde die je hier instelt.",
+  "app.containers.AdminPage.projects.all.homepageWarning1": "Gebruik deze pagina om de volgorde van projecten in te stellen in het \"Alle projecten\" menu-item in de navigatiebalk. Als je de widgets \"Gepubliceerde projecten en mappen\" of \"Projecten en mappen (legacy)\" op je startpagina gebruikt, wordt de volgorde van de projecten in deze widgets ook bepaald door de volgorde die je hier instelt.",
   "app.containers.AdminPage.projects.all.moderatedProjectsEmpty": "Projecten waar je Projectbeheerder van bent verschijnen hier.",
   "app.containers.AdminPage.projects.all.noProjects": "Geen projecten gevonden.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Alleen platformbeheerders kunnen projectmappen aanmaken.",
