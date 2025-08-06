@@ -1120,7 +1120,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Alphabetically (z-a)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "Manager",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "Phase starting or ending soon",
-  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created": "Recently created",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created": "Creato di recente",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_viewed": "Recently viewed",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins": "Amministratori",
