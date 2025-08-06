@@ -33,8 +33,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded',
     defaultMessage: 'All projects have been loaded',
   },
-  pendingApproval: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.pendingApproval',
-    defaultMessage: 'Pending approval',
-  },
 });
