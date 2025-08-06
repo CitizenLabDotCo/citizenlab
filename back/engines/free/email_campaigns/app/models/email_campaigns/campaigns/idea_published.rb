@@ -84,6 +84,10 @@ module EmailCampaigns
       Phase
     end
 
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
+    end
+
     def generate_commands(recipient:, activity:)
       idea = activity.item
       return [] if !idea.participation_method_on_creation.supports_public_visibility?
