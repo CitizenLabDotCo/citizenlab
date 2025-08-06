@@ -72,27 +72,39 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <form />
-      <Box display="flex" flexDirection="column" height="100%" maxWidth="500px">
-        <Box mt="12px" display="flex" justifyContent="flex-start">
-          <GoBackButton
-            showGoBackText={false}
-            onClick={() => setIsFileSelectionOpen(false)}
-          />
-          <Title fontWeight="semi-bold" m="0px" variant="h4" mt="2px" ml="16px">
-            {formatMessage(messages.attachFilesWithCurrentCount, {
-              numberAttachedFiles: watchedFileIds.length || 0,
-            })}
-          </Title>
-        </Box>
-        <Text>{formatMessage(messages.attachFilesDescription)}</Text>
+      <form>
+        <Box
+          display="flex"
+          flexDirection="column"
+          height="100%"
+          maxWidth="500px"
+        >
+          <Box mt="12px" display="flex" justifyContent="flex-start">
+            <GoBackButton
+              showGoBackText={false}
+              onClick={() => setIsFileSelectionOpen(false)}
+            />
+            <Title
+              fontWeight="semi-bold"
+              m="0px"
+              variant="h4"
+              mt="2px"
+              ml="16px"
+            >
+              {formatMessage(messages.attachFilesWithCurrentCount, {
+                numberAttachedFiles: watchedFileIds.length || 0,
+              })}
+            </Title>
+          </Box>
+          <Text>{formatMessage(messages.attachFilesDescription)}</Text>
 
-        <MultipleSelect
-          name="file_ids"
-          options={fileOptions}
-          placeholder={formatMessage(messages.attachFilesFromProject)}
-        />
-      </Box>
+          <MultipleSelect
+            name="file_ids"
+            options={fileOptions}
+            placeholder={formatMessage(messages.attachFilesFromProject)}
+          />
+        </Box>
+      </form>
     </FormProvider>
   );
 };
