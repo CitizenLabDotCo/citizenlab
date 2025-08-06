@@ -14,6 +14,7 @@ const Filters = () => {
       flexWrap="wrap"
       gap="8px"
       alignItems="center"
+      className="intercom-product-tour-project-page-filters"
     >
       <Sort />
       <Dates />
