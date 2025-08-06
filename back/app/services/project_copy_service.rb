@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
+  # local_copy => an existing project is being **copied** in the back-office
+  #               (source & copy are in the same tenant)
+  # local_creator => the user who is **creating** a project, using a project 
+  #                  template selected in the back-office
+  #                  (source & copy are probably in different tenants)
   def import(template, folder: nil, local_copy: false, local_creator: nil)
     project = nil
 
