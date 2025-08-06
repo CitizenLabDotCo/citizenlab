@@ -3050,6 +3050,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Image",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Short description of the image",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Adding \"alt text\" for images is important to make your platform accessible for users using screen readers.",
+  "app.containers.admin.ContentBuilder.noFilesAvailable": "No files available. Please upload files to the project first.",
   "app.containers.admin.ContentBuilder.participationBox": "Participation Box",
   "app.containers.admin.ContentBuilder.selectFile": "Select File",
   "app.containers.admin.ContentBuilder.selectProject": "Select Project",
