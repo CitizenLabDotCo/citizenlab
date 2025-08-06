@@ -3,13 +3,16 @@
 module EmailCampaigns
   class CampaignPolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
+      attr_reader :campaign_context
+
+      def initialize(user_context, scope, campaign_context = nil)
+        super(user_context, scope)
+        @campaign_context = campaign_context
+      end
+
       def resolve
-        if user&.active? && user.admin?
-          scope.all
-        elsif user&.active? && user.project_moderator?
-          scope.manageable_by_project_moderator.automatic.or(
-            scope.manageable_by_project_moderator.manual.where(context_id: user.moderatable_project_ids)
-          )
+        if user&.active? && UserRoleService.new.can_moderate?(campaign_context, user)
+          scope.where(context: campaign_context)
         else
           scope.none
         end
@@ -17,23 +20,17 @@ module EmailCampaigns
     end
 
     def create?
-      record.manual? && can_access_and_modify?
+      can_access_and_modify?
     end
 
     def show?
-      if record.manual?
-        can_access_and_modify?
-      else
-        user&.active? && user.admin?
-      end
+      can_access_and_modify?
     end
 
     def update?
-      if record.manual?
-        !(record.respond_to?(:sent?) && record.sent?) && can_access_and_modify?
-      else
-        user&.active? && user.admin?
-      end
+      return false if record.manual? && record.respond_to?(:sent?) && record.sent?
+
+      can_access_and_modify?
     end
 
     def do_send?
@@ -63,14 +60,7 @@ module EmailCampaigns
     private
 
     def can_access_and_modify?
-      user&.active? && (
-        user&.admin? ||
-        (user&.project_moderator? && moderator_can_access_and_modify?)
-      )
-    end
-
-    def moderator_can_access_and_modify?
-      record.manageable_by_project_moderator? && user.moderatable_project_ids.include?(record.context_id)
+      user&.active? && UserRoleService.new.can_moderate?(record.context, user)
     end
   end
 end

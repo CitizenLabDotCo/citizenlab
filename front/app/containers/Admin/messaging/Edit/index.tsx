@@ -80,11 +80,7 @@ const Edit = ({ campaignType }: EditProps) => {
   };
 
   const goBack = () => {
-    clHistory.push(
-      campaignType === 'custom'
-        ? `/admin/messaging/emails/custom/${campaign.data.id}`
-        : '/admin/messaging/emails/automated'
-    );
+    clHistory.goBack();
   };
 
   return (
@@ -125,7 +121,7 @@ const Edit = ({ campaignType }: EditProps) => {
             <CustomCampaignForm
               isLoading={isLoading}
               onSubmit={handleSubmit}
-              campaignContextId={campaign.data.attributes.context_id}
+              campaignContextId={campaign.data.relationships.context?.data?.id}
               defaultValues={{
                 sender: campaign.data.attributes.sender,
                 reply_to: campaign.data.attributes.reply_to,

@@ -26,7 +26,9 @@ const Search = ({ placeholder }: Props) => {
       }}
       a11y_numberOfSearchResults={0}
       placeholder={placeholder}
-      labelColor={colors.grey600}
+      labelColor={colors.textPrimary}
+      size="small"
+      hideLabel
     />
   );
 };

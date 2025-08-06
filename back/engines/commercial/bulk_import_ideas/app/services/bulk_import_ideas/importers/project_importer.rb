@@ -64,7 +64,8 @@ module BulkImportIdeas::Importers
           next unless form_ok # Don't try and import ideas if the form creation failed
 
           # Import the ideas
-          import_ideas(phase, phase_data[:idea_rows])
+          idea_rows = phase_data[:idea_rows].map { |row| row.transform_keys(&:to_s) } # Ensure keys are strings - when stored in jobs they get changed to symbols
+          import_ideas(phase, idea_rows)
         end
 
         # Remove the idea import records for this project - not needed via this import
@@ -109,11 +110,17 @@ module BulkImportIdeas::Importers
       thumbnail_url = project_data[:thumbnail_url]
       if thumbnail_url.present?
         begin
+          # Ensure the correct image format is used - to avoid exif stripping issues
+          image = MiniMagick::Image.open(project_data[:thumbnail_url])
+          image.format(image.data['format'].downcase)
+
+          # Create the project image
           ProjectImage.create!(
-            remote_image_url: thumbnail_url,
+            image: image,
             project: project,
             alt_text_multiloc: project_data[:title_multiloc]
           )
+          log('Created project thumbnail image.')
         rescue StandardError => e
           log "ERROR: Creating project thumbnail image: #{e.message}"
         end

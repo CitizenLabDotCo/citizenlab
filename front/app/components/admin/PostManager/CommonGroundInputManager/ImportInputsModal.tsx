@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Text, Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { IOption } from 'typings';
 
 import { IJob } from 'api/copy_inputs/types';
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
+import usePhase from 'api/phases/usePhase';
 
 import Modal from 'components/UI/Modal';
 import PhaseFilter from 'components/UI/PhaseFilter';
@@ -15,11 +16,11 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-type Props = {
+interface Props {
   showPastInputsModal: boolean;
   setShowPastInputsModal: (show: boolean) => void;
   currentPhaseid: string;
-};
+}
 
 const ImportInputsModal = ({
   showPastInputsModal,
@@ -34,6 +35,7 @@ const ImportInputsModal = ({
   const [phaseId, setPhaseId] = useState<string | undefined>();
   const [noOfInputs, setNoOfInputs] = useState<number | undefined>();
   const { mutate: copyInputs, isLoading: isCopying } = useCopyInputs();
+  const { data: currentPhase } = usePhase(currentPhaseid);
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
@@ -84,6 +86,8 @@ const ImportInputsModal = ({
     handleClose();
   }, [handleClose, phaseId, runCopyInputs]);
 
+  const currentPhaseStartDate = currentPhase?.data.attributes.start_at;
+
   return (
     <Modal
       width={520}
@@ -99,7 +103,6 @@ const ImportInputsModal = ({
           <Box mb="24px">
             <ProjectFilter
               selectedProjectId={selectedProjectId}
-              excludeProjectId={currentProjectId}
               emptyOptionMessage={messages.noProject}
               onProjectFilter={handleProjectFilter}
             />
@@ -111,6 +114,15 @@ const ImportInputsModal = ({
               phaseId={phaseId}
               participationMethods={['ideation', 'voting', 'common_ground']}
               onPhaseFilter={handlePhaseFilter}
+              customPhaseFilter={
+                selectedProjectId === currentProjectId && currentPhaseStartDate
+                  ? (phases) =>
+                      phases.filter(
+                        (phase) =>
+                          phase.attributes.start_at < currentPhaseStartDate
+                      )
+                  : undefined
+              }
             />
           )}
         </Box>

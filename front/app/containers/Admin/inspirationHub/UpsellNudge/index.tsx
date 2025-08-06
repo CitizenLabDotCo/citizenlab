@@ -11,6 +11,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+
 import { useIntl } from 'utils/cl-intl';
 
 import CardSkeletons from './CardSkeletons.svg';
@@ -55,9 +57,14 @@ const UpsellNudge = () => {
               </Button>
             </Tooltip>
 
-            <Button buttonStyle="text" textColor={theme.colors.tenantPrimary}>
+            <ButtonWithLink
+              buttonStyle="text"
+              textColor={theme.colors.tenantPrimary}
+              linkTo={formatMessage(messages.inspirationHubSupportArticle)}
+              openLinkInNewTab
+            >
               {formatMessage(messages.learnMore)}
-            </Button>
+            </ButtonWithLink>
           </Box>
         </Box>
         <Box

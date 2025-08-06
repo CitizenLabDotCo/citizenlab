@@ -1487,7 +1487,8 @@ CREATE TABLE public.email_campaigns_campaigns (
     context_id uuid,
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     intro_multiloc jsonb DEFAULT '{}'::jsonb,
-    button_text_multiloc jsonb DEFAULT '{}'::jsonb
+    button_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    context_type character varying
 );
 
 
@@ -7659,6 +7660,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250626072615'),
 ('20250624134747'),
 ('20250624102147'),
+('20250623094500'),
 ('20250618151933'),
 ('20250616142444'),
 ('20250611110008'),
