@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { ReviewState } from 'api/admin_publications/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { PublicationStatus } from 'api/projects/types';
 
@@ -17,8 +18,8 @@ import tracks from './tracks';
 
 const ADMIN_ONLY_OPTIONS = [
   {
-    value: 'pending_approval',
-    message: PUBLICATION_STATUS_LABELS.pending_approval,
+    value: 'pending',
+    message: PUBLICATION_STATUS_LABELS.pending,
   },
 ] as const;
 
@@ -32,6 +33,7 @@ const Status = ({ mr, onClear }: Props) => {
   const { data: user } = useAuthUser();
   const isUserAdmin = isAdmin(user);
   const statuses = useParam('status') ?? [];
+  const reviewState = useParam('review_state');
 
   const OPTIONS = [
     { value: 'draft', message: PUBLICATION_STATUS_LABELS.draft },
@@ -45,19 +47,47 @@ const Status = ({ mr, onClear }: Props) => {
     label: formatMessage(option.message),
   }));
 
+  // Combine statuses with review_state for display purposes
+  const selectedValues = [
+    ...statuses,
+    ...(reviewState === 'pending' ? ['pending'] : []),
+  ];
+
+  const handleClear = () => {
+    setParam('status', []);
+    setParam('review_state', undefined);
+    if (onClear) {
+      onClear();
+    }
+  };
+
   return (
     <MultiSelect
-      selected={statuses}
+      selected={selectedValues}
       options={options}
       mr={mr}
       onChange={(statuses) => {
-        setParam('status', statuses as PublicationStatus[]);
+        // Separate pending approval from actual publication statuses
+        const actualStatuses = statuses.filter(
+          (status) => status !== 'pending'
+        ) as PublicationStatus[];
+        const hasPendingApproval = statuses.includes('pending');
+
+        // Set the status parameter with only actual publication statuses
+        setParam('status', actualStatuses);
+
+        if (hasPendingApproval) {
+          setParam('review_state', 'pending' as ReviewState);
+        } else {
+          setParam('review_state', undefined);
+        }
+
         trackEventByName(tracks.setStatus, {
           statuses: JSON.stringify(statuses),
         });
       }}
       title={formatMessage(messages.status)}
-      onClear={onClear}
+      onClear={handleClear}
     />
   );
 };
