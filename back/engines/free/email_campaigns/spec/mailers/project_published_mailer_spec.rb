@@ -9,7 +9,7 @@ RSpec.describe EmailCampaigns::ProjectPublishedMailer do
     let_it_be(:project) { create(:project) }
     let_it_be(:command) do
       activity = create(:activity, item: project, action: 'published')
-      create(:project_published_campaign).generate_commands(
+      campaign.generate_commands(
         activity: activity,
         recipient: recipient
       ).first.merge({ recipient: recipient })

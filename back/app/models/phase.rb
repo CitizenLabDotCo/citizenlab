@@ -66,15 +66,15 @@ class Phase < ApplicationRecord
   include Surveys::SurveyPhase
   include Volunteering::VolunteeringPhase
   include DocumentAnnotation::DocumentAnnotationPhase
+  include Files::FileAttachable
 
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
-  FALLBACK_INPUT_TERM = 'idea'
-  VOTE_TERMS = %w[vote point token credit]
-  CAMPAIGNS = [:project_phase_started].freeze
+  FALLBACK_INPUT_TERM   = 'idea'
+  VOTE_TERMS            = %w[vote point token credit]
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
 
@@ -105,14 +105,12 @@ class Phase < ApplicationRecord
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
-  validates :campaigns_settings, presence: true
   validates :start_at, presence: true
   validates :prescreening_enabled, inclusion: { in: [true, false] }
   validate :validate_end_at
   validate :validate_previous_blank_end_at
-  validate :validate_start_at_before_end_at
+  validate :validate_start_at_before_end_at # Also enforced by the phases_start_before_end check constraint
   validate :validate_no_other_overlapping_phases
-  validate :validate_campaigns_settings_keys_and_values
   validates :manual_voters_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
   # This is a counter cache column, but it was too complex to implement it with counter_culture. It's
   # therefore updated manually by calling update_manual_votes_count! through the idea sidefx service.
@@ -324,17 +322,6 @@ class Phase < ApplicationRecord
     end
   end
 
-  def validate_campaigns_settings_keys_and_values
-    return if campaigns_settings.blank?
-
-    campaigns_settings.each do |key, value|
-      errors.add(:campaigns_settings, :invalid_key, message: 'invalid key') unless CAMPAIGNS.include?(key.to_sym)
-      next if Utils.boolean? value
-
-      errors.add(:campaigns_settings, :invalid_value, message: 'invalid value')
-    end
-  end
-
   def validate_start_at_before_end_at
     return unless start_at.present? && end_at.present? && start_at > end_at
 
@@ -412,3 +399,4 @@ end
 
 Phase.include(Analysis::Patches::Phase)
 Phase.include(ReportBuilder::Patches::Phase)
+Phase.include(EmailCampaigns::Extensions::Phase)

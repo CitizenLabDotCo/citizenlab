@@ -37,6 +37,11 @@ describe SimilarIdeasService do
         expect(result.ids).not_to include(idea_burger.id)
       end
 
+      it 'excludes the current idea from results' do
+        result = service.similar_ideas(title_threshold: 1.0, body_threshold: 1.0)
+        expect(result.ids).not_to include(idea.id)
+      end
+
       it 'applies the limit' do
         result = service.similar_ideas(limit: 2, title_threshold: 1.0, body_threshold: 1.0)
         expect(result.ids.size).to eq 2

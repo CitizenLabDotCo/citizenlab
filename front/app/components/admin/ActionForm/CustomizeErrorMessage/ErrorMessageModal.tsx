@@ -68,7 +68,7 @@ const ErrorMessageModal = ({
     }
   };
 
-  if (!locales) return null;
+  if (!locales || !formatMessageWithLocale) return null;
 
   return (
     <Modal

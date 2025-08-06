@@ -23,9 +23,9 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
-import EventShowPageMeta from './components/EventShowPageMeta';
 import DesktopTopBar from './components/DesktopTopBar';
 import EventDescription from './components/EventDescription';
+import EventShowPageMeta from './components/EventShowPageMeta';
 import InformationColumnDesktop from './components/InformationColumnDesktop';
 import InformationSectionMobile from './components/InformationSectionMobile';
 import MobileTopBar from './components/MobileTopBar';

@@ -24,7 +24,8 @@ sr-Latn:
       "mention_in_official_feedback": Pominjanje u objavi
       "mention_in_internal_comment": Поменути у интерном коментару
       "new_comment_for_admin": Novi komentar u projektu kojim upravljam
-      "new_idea_for_admin": Nova ideja u projektu kojim upravljam
+      "new_idea_for_admin_published": New published input in a project I moderate
+      "new_idea_for_admin_prescreening": New input requiring approval in a project I moderate
       "official_feedback_on_idea_you_follow": Update on an input that you follow
       "password_reset": Resetovanje lozinke
       "project_moderation_rights_received": Dodela prava za moderaciju projekta
@@ -85,11 +86,23 @@ sr-Latn:
         "6": "Седмично суботом %{hourOfDay}"
       quarterly: "Quarterly, on the first day of the quarter"
     preview_data:
-      first_name: 'Jane'
-      last_name: 'Doe'
-      display_name: 'Jane Doe'
+      author_first_name: 'Jane'
+      author_last_name: 'Doe'
+      author_display_name: 'Jane Doe'
+      initiator_first_name: 'Bob'
+      initiator_last_name: 'Smith'
+      initiator_display_name: 'Bob Smith'
+      project_title: 'Example project'
+      project_description_preview: 'This is some example phase content used for previewing the content of emails. This is not real content.'
+      phase_title: 'Example phase'
       comment_body: 'This is an example comment used for previewing the content of emails. This is not real content.'
+      comment_deleted_reason: 'Your example comment was considered inappropriate.'
       idea_title: 'Example Idea'
+      idea_body: 'This is some example idea content used for previewing the content of emails. This is not real content.'
+      event_title: 'Example Event'
+      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_address2: 'Room 3a, Upstairs'
+      proposal_title: 'Example Proposal'
     footer:
       "link_privacy_policy": "Politika privatnosti"
       "link_terms_conditions": "Uslovi korišćenja"
@@ -103,22 +116,22 @@ sr-Latn:
     manual:
       preheader: 'You have mail from %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'Razlog zašto je vaš komentar izbrisan:'
-      cta_view: 'Pogledajte ovu objavu'
+      subject: 'Vaš komentar je izbrisan sa platforme %{organizationName}'
+      preheader: 'Vaš komentar je izbrisan'
+      title: '%{organizationName} deleted your comment'
       event_description: 'Vaš komentar o ideji je obrisan od strane %{organizationName}.'
-      main_header: '%{organizationName} je izbrisao vaš komentar'
+      cta_button: 'View this idea'
+      reason: 'Razlog zašto je vaš komentar izbrisan:'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Vaš komentar je ocenjen kao neprikladan'
       irrelevant_reason: 'Vaš komentar se smatra nerelevantnim za traženi kontekst'
       no_reason: 'Nije naveden nijedan razlog'
-      subject: 'Vaš komentar je izbrisan sa platforme %{organizationName}'
-      preheader: 'Vaš komentar je izbrisan'
     admin_digest:
       subject: 'Vaš nedeljni administrativni izveštaj od %{time}'
       preheader: 'Administratorski izveštaj %{organizationName}'
-      title_your_weekly_report: '%{firstName}, vaš nedeljni izveštaj'
-      text_introduction: 'Odabrali smo objave koje su bile najpopularnije tokom prethodne nedelje. Budite u toku sa dešavanjima na vašoj platformi!'
-      cta_visit_the_platform: 'Posetite vašu platformu'
+      title: '%{firstName}, your weekly report'
+      event_description: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening on your platform!'
+      cta_button: 'Visit your platform'
       new_users: 'Novi korisnici'
       new_inputs: 'New inputs'
       new_comments: 'Novi komentari'
@@ -129,10 +142,11 @@ sr-Latn:
       today_by_author: 'Danas od autora %{author}'
       x_days_ago_by_author: 'pre %{x} dana od %{author}'
     admin_rights_received:
-      cta_manage_platform: 'Управљајте својом платформом'
-      message_you_became_administrator: 'Dodeljena su vam administratorska prava za %{organizationName} platformu.'
-      preheader: 'Dodeljena su vam administratorska prava za %{organizationName} platformu'
       subject: 'Postali ste administrator na %{organizationName} platformi'
+      preheader: 'Dodeljena su vam administratorska prava za %{organizationName} platformu'
+      title: 'You became an administrator'
+      event_description: 'You have been granted administrator rights for the participation platform of %{organizationName}.'
+      cta_button: 'Manage your platform'
       text_create_participatory_process: 'Kao administrator, možete da kreirate i konfigurišete nove participativne projekte. Pomoću vremenske linije možete dodati nove faze. Svaka od ovih faza može imati svoje specifičnosti u pogledu objavljivanja ideja, komentara i glasanja.'
       text_moderate_analyse_input: 'Kada se projekti pokrenu, prve ideje će se pojaviti. Primaćete nedeljne izveštaje kako biste bili u toku sa svim ključnim aktivnostima. Pregled ideja će vam pomoći da moderirate unos i radite na njegovoj obradi.'
       text_platform_setup: 'Kao administrator možete da podesite svoju participativnu platformu. Izaberite logo, slike i boje, napišite centralnu poruku na početnoj stranici, pošaljite pozivnice, definišite šta želite da saznate od svojih korisnika ...'
@@ -140,38 +154,38 @@ sr-Latn:
       title_moderate_analyse_input: 'Moderirajte i analizirajte unos'
       title_platform_setup: 'Podesite vašu platformu'
       title_what_can_you_do_administrator: 'Šta možete da radite kao administrator?'
-      title_you_became_administrator: 'Postali ste administrator'
     comment_marked_as_spam:
+      subject: '%{organizationName}: %{firstName} %{lastName} je prijavio/la ovaj komentar kao neželjenu poštu'
+      preheader: 'Reagujte na komentar koji je prijavljen kao spam'
+      title: '%{firstName} %{lastName} reported this comment as spam'
+      cta_button: 'Review comment'
       by_author: 'od %{authorName}'
       commented: '%{authorName} je komentarisao/la:'
-      cta_review_comment: 'Pregledajte komentar'
       days_ago: 'Pre %{numberOfDays} dana'
       event_description: 'Komentar objavljen na <strong>''%{post}''</strong> je prijavljen:'
       inappropriate_content: 'Komentar je neprimeren ili uvredljiv.'
-      preheader: 'Reagujte na komentar koji je prijavljen kao spam'
       reported_this_because: '%{reporterFirstName} je prijavio/la ovo jer:'
-      subject: '%{organizationName}: %{firstName} %{lastName} je prijavio/la ovaj komentar kao neželjenu poštu'
-      title_comment_spam_report: '%{firstName} %{lastName} je prijavio/la ovaj komentar kao spam'
       today: Danas
       wrong_content: 'Komentar nije relevantan.'
       yesterday: Juče
     community_monitor_report:
       subject: 'A new community monitor report is available'
+      preheader: 'A new community monitor report is available'
       title: 'A new community monitor report is available'
-      text_introduction: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
-      cta_report_button: 'View report'
+      event_description: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
+      cta_button: 'View report'
       report_name: 'Community monitor report'
     cosponsor_of_your_idea:
-      cta_reply_to: 'View your proposal'
-      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
-      main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
       subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
       preheader: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      title: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
+      cta_button: 'View your proposal'
     assignee_digest:
       subject: 'Objave za koje su potrebne vaše povratne informacije: %{numberIdeas}'
       preheader: '%{organizationName} sažetak'
-      title_your_weekly_report: '%{firstName}, unos korisnika čeka na vaše povratne informacije'
-      cta_manage_your_input: 'Upravljajte svojim unosom'
+      title: '%{firstName}, citizen input is awaiting your feedback'
+      cta_button: 'Manage your input'
       x_inputs_need_your_feedback: 'inputs need your feedback'
       title_assignment_past_week: 'Najnoviji postovi koji su vam dodeljeni'
       title_no_assignment_past_week: 'Prethodne nedelje vam nije dodeljena nijedna nova ideja'
@@ -180,36 +194,36 @@ sr-Latn:
       x_days_ago_by_author: 'pre %{x} dana od %{author}'
       title_successful_past_week: 'Assigned to you that reached the threshold'
     idea_marked_as_spam:
-      cta_review: 'Review'
-      report_inappropriate_offensive_content: 'Smatram da je ovaj sadržaj neprikladan ili uvredljiv.'
-      report_not_an_idea: 'Ovaj sadržaj nije ideja i ne pripada ovde.'
       subject: 'Imate izveštaj o spam sadržajima na %{organizationName} platformi'
       preheader: 'Reagujte spram ovog spam izveštaja '
+      title: '%{firstName} %{lastName} reported spam'
+      cta_button: 'Review'
+      report_inappropriate_offensive_content: 'Smatram da je ovaj sadržaj neprikladan ili uvredljiv.'
+      report_not_an_idea: 'Ovaj sadržaj nije ideja i ne pripada ovde.'
       reported_this_because: '%{reporterFirstName} je prijavio/la ovo jer:'
-      title_spam_report: '%{firstName} %{lastName} je prijavio/la neželjenu poštu'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'Co-sponsor this proposal'
+      subject: 'You have been invited to co-sponsor a proposal'
+      preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
+      title: 'You have been invited to co-sponsor a proposal'
       event_description: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
       event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
       event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
       event_description_action: 'Click below to read the proposal.'
-      main_header: 'You have been invited to co-sponsor a proposal'
-      subject: 'You have been invited to co-sponsor a proposal'
-      preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
+      cta_button: 'Co-sponsor this proposal'
     invite_reminder:
-      cta_accept_invitation: 'Prihvatite pozivnicu'
-      invitation_header: 'Pozivnica je na čekanju'
-      preheader: 'Pre nekoliko dana vam je poslata pozivnica za registraciju na %{organizationName} participativnoj platformi.'
-      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
       subject: 'Pozivnica za %{organizationName} participativnu platformu je na čekanju'
+      preheader: 'Pre nekoliko dana vam je poslata pozivnica za registraciju na %{organizationName} participativnoj platformi.'
+      title: 'Your invitation is pending'
+      cta_button: 'Accept your invitation'
+      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
     invite_received:
-      added_a_message: '%{organizationName} je napisao sledeću poruku:'
-      cta_accept_invitation: 'Prihvatite pozivnicu'
-      invitation_header: 'Vi ste pozvani!'
-      invitation_header_message: '%{organizationName} vas je pozvao na njihovu participativnu platformu.'
-      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
       preheader: '%{organizationName} vam je poslao poziv da se pridružite njihovoj participativnoj platformi.'
       subject: 'Pozvani ste da se pridružite %{organizationName} platformi '
+      title: 'You are invited!'
+      event_description: '%{organizationName} invited you to their participation platform.'
+      cta_button: 'Accept your invitation'
+      added_a_message: '%{organizationName} je napisao sledeću poruku:'
+      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
     mention_in_comment:
       cta_reply_to: 'Odgovorite %{commentAuthor}'
       event_description: 'Pomenuti ste od strane %{commentAuthorFull} u komentaru ideje „%{post}“. Kliknite na link ispod kako biste započeli razgovor sa %{commentAuthor}'
@@ -217,17 +231,17 @@ sr-Latn:
       subject: 'Neko vas je pomenuo na platformi %{organizationName}'
       preheader: '%{commentAuthor} vas je pomenuo u komentaru'
     mention_in_internal_comment:
-      cta_reply_to: 'Погледај коментар од %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} вас је поменуо у интерном коментару.'
       subject: '%{firstName} вас је поменуо у интерном коментару.'
-      main_header: '%{firstName} вас је поменуо у интерном коментару.'
+      title: '%{firstName} mentioned you in an internal comment.'
       preheader: '%{authorNameFull} вас је поменуо у интерном коментару.'
     moderator_digest:
       subject: 'Vaš nedeljni izveštaj za menadžere projekta od %{project_title}'
       preheader: 'Sažetak za menadžere projekta %{organizationName}'
-      title_your_weekly_report: '%{firstName}, vaš nedeljni izveštaj'
-      text_introduction: 'Odabrali smo objave koje su bile najpopularnije tokom prethodne nedelje. Budite u toku sa dešavanjima u vezi vašeg projekta!'
-      cta_manage: 'Управљајте својим пројектом'
+      title: '%{firstName}, your weekly report'
+      event_description: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
+      cta_button: 'Manage your project'
       new_users: 'Novi korisnici'
       new_ideas: 'Nove ideje'
       new_comments: 'Novi komentari'
@@ -239,17 +253,20 @@ sr-Latn:
       x_days_ago_by_author: 'pre %{x} dana od %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} je komentarisao/la:'
-      cta_reply_to: 'Proverite komentar od %{commentAuthor}'
+      cta_button: 'View %{authorFirstName}''s comment'
       days_ago: 'Pre %{numberOfDays} dana'
       event_description: '%{authorName} je napisao/la komentar na vašoj platformi. Pridružite se diskusiji i nastavite konverzaciju!'
-      main_header: '%{firstName}, novi komentar je objavljen na vašoj platformi'
+      title: '%{firstName}, a new comment has been posted on your platform'
       subject: 'Postoji novi komentar na %{organizationName} platformi '
       preheader: '%{authorName} je postavio/la komentar'
       today: Danas
       yesterday: Juče
     comment_on_idea_you_follow:
-      cta_reply_to: 'Reply to %{commentAuthor}'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} left a comment on an idea for %{organizationName}'
+      title: '%{authorName} commented on an input you follow'
       event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      cta_button: 'Reply to %{commentAuthor}'
       main_header:
         idea: '%{authorName} commented on an idea you follow'
         question: '%{authorName} commented on a question you follow'
@@ -259,56 +276,61 @@ sr-Latn:
         option: '%{authorName} commented on an option you follow'
         proposal: '%{authorName} commented on a proposal you follow'
         petition: '%{authorName} commented on a petition you follow'
-      subject: 'There''s a new comment on "%{input_title}"'
-      preheader: '%{authorName} left a comment on an idea for %{organizationName}'
-    new_idea_for_admin:
-      main_header_publication: 'A new input has been published on your platform'
-      event_description_publication: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
-      cta_publication: 'Give feedback to %{authorName}'
-      main_header_prescreening: 'An input requires your review'
-      event_description_prescreening: '%{authorName} has submitted a new input on your platform.'
-      input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
-      cta_prescreening: 'Review the input'
-      days_ago: 'Pre %{numberOfDays} dana'
-      preheader: '%{authorName} je objavio/la novu ideju na vašoj platformi'
-      today: Danas
-      yesterday: Juče
+    new_idea_for_admin_published:
+      subject: 'A new input has been published on your platform'
+      preheader: '%{authorName} published a new input on your platform'
+      title: 'A new input has been published on your platform'
+      event_description: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
+      cta_button: 'Give feedback to %{authorName}'
+      days_ago: '%{numberOfDays} days ago'
+      today: Today
+      yesterday: Yesterday
+    new_idea_for_admin_prescreening:
+      subject: 'An input requires your review'
+      preheader: '%{authorName} published a new input on your platform'
+      title: 'An input requires your review'
+      cta_button: 'Review the input'
+      event_description: '%{authorName} has submitted a new input on your platform.'
+      input_not_visible: '<b>The input won''t be visible</b> until you modify its status.'
+      days_ago: '%{numberOfDays} days ago'
+      today: Today
+      yesterday: Yesterday
     comment_on_your_comment:
-      cta_reply_to: 'Odgovorite %{firstName}'
-      event_description: '%{authorNameFull} je napisao/la odgovor na vaš komentar u okviru objave ''%{post}'' na participativnoj platformi. Kliknite na dugme u nastavku kako biste nastavili konverzaciju sa %{authorName}.'
       subject: 'Dobili ste odgovor na svoj komentar na %{organizationName} platformi '
-      main_header: '%{authorName} je odgovorio/la na vaš komentar'
       preheader: '%{authorName} je odgovorio/la na vaš komentar na platformi %{organizationName}'
+      title: '%{authorName} replied to your comment'
+      event_description: '%{authorNameFull} je napisao/la odgovor na vaš komentar u okviru objave ''%{post}'' na participativnoj platformi. Kliknite na dugme u nastavku kako biste nastavili konverzaciju sa %{authorName}.'
+      cta_button: 'Reply to %{authorFirstName}'
       replied: '%{authorFirstName} je odgovorio/la:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: 'Погледај коментар од %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} је коментарисало ваш интерни коментар.'
       subject: 'Примили сте коментар на свој интерни коментар на ''%{post}'''
-      main_header: 'Примили сте коментар на свој интерни коментар на ''%{post}'''
+      title: 'You have received a comment on your internal comment on ''%{post}'''
       preheader: '%{authorName} је одговорио на ваш интерни коментар на ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
-      cta_reply_to: 'Погледај коментар од %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисао унос који вам је додељен.'
       subject: '''%{post}'' има нови интерни коментар'
-      main_header: '''%{post}'' има нови интерни коментар'
+      title: 'New internal comment on ''%{post}'''
       preheader: '''%{post}'' има нови интерни коментар'
     internal_comment_on_idea_you_commented_internally_on:
-      cta_reply_to: 'Погледај коментар од %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисало унос који сте ви интерно коментарисали.'
       subject: '''%{post}'' има нови интерни коментар'
-      main_header: '''%{post}'' има нови интерни коментар'
+      title: 'New internal comment on ''%{post}'''
       preheader: '''%{post}'' има нови интерни коментар'
     internal_comment_on_idea_you_moderate:
-      cta_reply_to: 'Погледај коментар од %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисао унос у пројекту или фасцикли којом управљате.'
       subject: '''%{post}'' има нови интерни коментар'
-      main_header: '''%{post}'' има нови интерни коментар'
+      title: 'New internal comment on ''%{post}'''
       preheader: '''%{post}'' има нови интерни коментар'
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_reply_to: 'Погледај коментар од %{firstName}'
+      cta_button: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисао недодељени унос у пројекту којим се не управља.'
       subject: '''%{post}'' има нови интерни коментар'
-      main_header: '''%{post}'' има нови интерни коментар'
+      title: 'New internal comment on ''%{post}'''
       preheader: '''%{post}'' има нови интерни коментар'
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
@@ -316,9 +338,9 @@ sr-Latn:
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
     mention_in_official_feedback:
-      cta_reply_to: 'Odgovorite %{organizationName}'
+      cta_button: 'Reply to %{organizationName}'
       event_description: 'Pomenuti ste od strane %{organizationName} i upućene su vam povratne informacije o ideji „%{post}“. Kliknite na link ispod kako biste započeli razgovor sa %{organizationName}'
-      main_header: 'Pomenuti ste'
+      title: 'You have been mentioned'
       subject: '%{organizationName} vas je pomenuo'
       preheader: '%{commentAuthor} vas je pomenuo '
     project_moderation_rights_received:
@@ -352,9 +374,9 @@ sr-Latn:
       title_added_as_folderadmin: 'Dodati ste kao menadžer foldera'
       x_projects: '%{numberOfProjects} projekata'
     project_phase_started:
-      cta_view_phase: 'Otkrijte novu fazu'
+      cta_button: 'Discover this new phase'
       event_description: 'Ovaj projekat je ušao u novu fazu na %{organizationName} platformi. Kliknite na link u nastavku kako biste saznali više!'
-      main_header: 'Započela je nova faza projekta ''%{projectName}'''
+      title: 'A new phase started for project ''%{projectName}'''
       subtitle: 'О ''%{projectName}'''
       new_phase: 'Ovaj projekat je ušao u fazu ''%{phaseTitle}'''
       subject: '%{projectName} je ušao u novu fazu'
@@ -420,7 +442,10 @@ sr-Latn:
       message_welcome: 'Čestitamo, uspešno ste se prijavili na %{organizationName} participativnu platformu. Možete razgledati platformu i preduzeti korake kako bi se vaš glas čuo. Takođe možete dodati sliku profila i kratak opis kako biste drugima rekli više o sebi.'
       preheader: 'Evo šta možete da uradite na %{organizationName} platformi '
     idea_published:
-      subject:
+      subject: 'Your idea has been published'
+      preheader: '%{firstName}, čestitamo na objavljivanju vaše ideje na %{organizationName} platformi. Sada je vreme da prikupite podršku.'
+      title: 'You posted "%{input_title}"'
+      input_type_subject:
         idea: 'Your idea has been published'
         question: 'Your question has been published'
         contribution: 'Your contribution has been published'
@@ -429,7 +454,6 @@ sr-Latn:
         option: 'Your option has been published'
         proposal: 'Your proposal has been published'
         petition: 'Your petition has been published'
-      main_header: 'Objavili ste ideju! Hajde da se pobrinemo da bude pročitana.'
       header_message: 'Let''s make sure it gets read.'
       message_get_votes: 'Dođite do još više ljudi putem svoje objave:'
       action_published_idea: 'Postavljena objava'
@@ -441,7 +465,6 @@ sr-Latn:
       send_email: e-mail
       action_share_link: 'Delite putem bilo kog kanala kopiranjem %{link}'
       link: link
-      preheader: '%{firstName}, čestitamo na objavljivanju vaše ideje na %{organizationName} platformi. Sada je vreme da prikupite podršku.'
     your_input_in_screening:
       main_header:
         idea: 'Your idea is in "%{prescreening_status_title}"'
@@ -465,10 +488,10 @@ sr-Latn:
     native_survey_not_submitted:
       subject: '%{organizationName}: Almost there! Submit your answers'
       preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
-      title_native_survey_not_submitted: 'Almost there! Submit your answers'
-      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
-      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
-      cta_complete_your_survey_response: 'Resume your survey response'
+      title: 'Almost there! Submit your answers'
+      event_description: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
+      cta_button: 'Resume your survey response'
+      submissions_close: 'Submissions will close on %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
@@ -495,7 +518,7 @@ sr-Latn:
     event_registration_confirmation:
       subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
       preheader: "%{firstName}, thanks for registering for %{eventTitle}"
-      header_message: "%{firstName}, thanks for registering for"
+      title: "%{firstName}, thanks for registering for"
       event_details:
         labels:
           date: 'Date'
@@ -503,7 +526,7 @@ sr-Latn:
           online_link: 'Online link'
           description: 'Description'
           project: 'Project'
-      cta_go_to_event: 'View the event'
+      cta_button: 'View the event'
       cta_add_to_calendar: 'Add to your calendar'
     voting_phase_started:
       subject: '%{organizationName}: The voting phase started for %{projectName}'

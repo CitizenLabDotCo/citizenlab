@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  public: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.public',
-    defaultMessage: 'Public',
+  anyone: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.anyone',
+    defaultMessage: 'Anyone',
   },
   groups: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.groups',

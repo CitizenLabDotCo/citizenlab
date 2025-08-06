@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class StatusChangeOnIdeaYouFollowMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow.first

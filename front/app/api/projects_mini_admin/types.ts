@@ -4,6 +4,7 @@ import {
   ILinks,
   IRelationship,
   SupportedLocale,
+  ImageSizes,
 } from 'typings';
 
 import { ParticipationMethod } from 'api/phases/types';
@@ -19,7 +20,7 @@ export type Parameters = {
   folder_ids?: string[];
   participation_methods?: ParticipationMethod[];
   visibility?: Visibility[];
-  discoverability?: ('listed' | 'unlisted')[];
+  discoverability?: Discoverability[];
   sort:
     | 'recently_viewed'
     | 'phase_starting_or_ending_soon'
@@ -35,6 +36,8 @@ export type ParticipationState =
   | 'informing'
   | 'past';
 
+export type Discoverability = 'listed' | 'unlisted';
+
 export type ProjectsMiniAdmin = {
   data: ProjectMiniAdminData[];
   links: ILinks;
@@ -44,12 +47,19 @@ export type ProjectMiniAdminData = {
   id: string;
   type: 'project_mini_admin';
   attributes: {
+    current_phase_start_date: string | null;
+    current_phase_end_date: string | null;
     first_phase_start_date: string | null;
     first_published_at: string | null;
     folder_title_multiloc: Multiloc | null;
     last_phase_end_date: string | null;
-    current_phase_start_date: string | null;
-    current_phase_end_date: string | null;
+    listed: boolean;
+    project_managers: {
+      id: string;
+      first_name?: string;
+      last_name?: string;
+      avatar: ImageSizes;
+    }[];
     publication_status: PublicationStatus;
     title_multiloc: Multiloc;
     visible_to: Visibility;
@@ -60,6 +70,18 @@ export type ProjectMiniAdminData = {
     };
     phases?: {
       data: IRelationship[];
+    };
+    project_images: {
+      data: {
+        id: string;
+        type: 'project_image';
+      }[];
+    };
+    groups: {
+      data: {
+        id: string;
+        type: 'group';
+      }[];
     };
   };
 };
