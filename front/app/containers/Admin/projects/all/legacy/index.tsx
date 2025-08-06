@@ -28,13 +28,18 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin } from 'utils/permissions/roles';
 
-import Header from '../_shared/Header';
-
+import Header from './Header';
 import NonSortableProjectList from './Lists/NonSortableProjectList';
 import SortableProjectList from './Lists/SortableProjectList';
 import messages from './messages';
 
-const Container = styled.div``;
+const Container = styled.div`
+  max-width: 1400px;
+  padding-top: 45px;
+  padding-right: 51px;
+  padding-bottom: 45px;
+  padding-left: 51px;
+`;
 
 const ListsContainer = styled.div`
   min-height: 80vh;

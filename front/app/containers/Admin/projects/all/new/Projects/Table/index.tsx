@@ -45,7 +45,7 @@ const Table = () => {
   } = useInfiniteProjectsMiniAdmin(
     {
       ...params,
-      sort: sort ?? 'phase_starting_or_ending_soon',
+      sort: sort ?? 'recently_viewed',
     },
     PAGE_SIZE
   );
@@ -120,7 +120,13 @@ const Table = () => {
         </Tbody>
       </TableComponent>
 
-      <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
+      <Box
+        ref={loadMoreRef}
+        mt="12px"
+        display="flex"
+        justifyContent="center"
+        color={colors.textPrimary}
+      >
         {sentinelMessage && formatMessage(sentinelMessage)}
       </Box>
 

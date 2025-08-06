@@ -64,8 +64,8 @@ export default defineMessages({
       'Projects of which you are an assigned Project Manager will appear here.',
   },
   homepageWarning: {
-    id: 'app.containers.AdminPage.projects.all.homepageWarning',
+    id: 'app.containers.AdminPage.projects.all.homepageWarning1',
     defaultMessage:
-      'Customize your homepage display: admins can arrange projects and folders here to set the order on the homepage.',
+      'Use this page to set the order of projects in the "All projects" dropdown in the navigation bar. If you are using the "Published projects and folders" or "Projects and folders (legacy)" widgets on your homepage, the order of projects in these widget will also be determined by the order you set here.',
   },
 });

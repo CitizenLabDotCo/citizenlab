@@ -5,6 +5,7 @@ import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import useLocalize from 'hooks/useLocalize';
 
@@ -20,10 +21,11 @@ import { getStatusColor } from '../_shared/utils';
 
 import messages from './messages';
 import ProjectGanttChart from './ProjectGanttChart';
+import UpsellNudge from './UpsellNudge';
 
 const PAGE_SIZE = 10;
 
-const Timeline = () => {
+const Calendar = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const params = useParams();
@@ -32,7 +34,7 @@ const Timeline = () => {
     useInfiniteProjectsMiniAdmin(
       {
         ...params,
-        sort: params.sort ?? 'phase_starting_or_ending_soon',
+        sort: params.sort ?? 'recently_viewed',
       },
       PAGE_SIZE
     );
@@ -125,4 +127,14 @@ const Timeline = () => {
   );
 };
 
-export default Timeline;
+const CalendarWrapper = () => {
+  const enabled = useFeatureFlag({ name: 'project_planning_calendar' });
+
+  if (!enabled) {
+    return <UpsellNudge />;
+  }
+
+  return <Calendar />;
+};
+
+export default CalendarWrapper;
