@@ -2029,7 +2029,6 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Događaji",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Prilozi (max. 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Prilozi će biti prikazani na stranici sa informacijama o projektu.",
-  "app.containers.AdminPage.ProjectEdit.filesTab": "Files",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Pronađite volontere",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Zatražite od učesnika da volontiraju u različitim akcijama i povodima.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "As a folder manager, you can choose a folder when creating the project, but only an admin can change it afterward",

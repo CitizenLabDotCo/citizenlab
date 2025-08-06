@@ -2029,7 +2029,6 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Event",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Bilagor (max 50 MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Filer bör inte vara större än 50 MB. Tillagda filer visas på projektets informationssida.",
-  "app.containers.AdminPage.ProjectEdit.filesTab": "Filer",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Hitta personer som anmäler sig frivilligt",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Be deltagare att anmäla sig frivilligt för aktiviteter och sakfrågor.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Som mapphanterare kan du välja en mapp när du skapar projektet, men endast en administratör kan ändra den efteråt",

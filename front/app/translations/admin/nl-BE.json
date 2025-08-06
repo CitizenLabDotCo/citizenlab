@@ -2029,7 +2029,6 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Activiteiten",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Bijlagen (max. 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Bijlagen worden getoond op de informatiepagina van het project.",
-  "app.containers.AdminPage.ProjectEdit.filesTab": "Bestanden",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Vrijwilligers zoeken",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Vraag de deelnemers om zich als vrijwilliger op te geven voor een reeks acties.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Als mapbeheerder kun je een map kiezen bij het maken van het project, maar alleen een beheerder kan deze achteraf wijzigen.",
