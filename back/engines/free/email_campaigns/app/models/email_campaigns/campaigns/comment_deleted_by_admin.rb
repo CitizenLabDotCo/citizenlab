@@ -79,7 +79,7 @@ module EmailCampaigns
       Phase
     end
 
-    def supports_context?(context)
+    def self.supports_context?(context)
       super && context.participation_method == 'ideation'
     end
 
