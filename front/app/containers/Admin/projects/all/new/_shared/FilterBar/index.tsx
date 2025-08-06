@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import DynamicFilters from './DynamicFilters';
 import Dates from './Filters/Dates';
+import PendingApproval from './Filters/PendingApproval';
 import Sort from './Filters/Sort';
 
 const Filters = () => {
@@ -17,6 +18,7 @@ const Filters = () => {
       className="intercom-product-tour-project-page-filters"
     >
       <Sort />
+      <PendingApproval />
       <Dates />
       <DynamicFilters />
     </Box>
