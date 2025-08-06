@@ -1116,6 +1116,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted": "Ej påbörjat",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.participationStates": "Deltagande stat",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.past": "Tidigare",
+  "app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval": "Avvaktar godkännande",
   "app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects": "Sök projekt",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc": "I alfabetisk ordning (a-z)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "I alfabetisk ordning (z-a)",
