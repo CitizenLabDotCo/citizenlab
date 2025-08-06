@@ -11,30 +11,75 @@ module BulkImportIdeas::Importers
       projects = projects.map do |project_data|
         import_project(project_data)
       end
-      log "Imported #{projects.count} projects"
+      log "Processed #{projects.count} projects"
     end
 
     # Preview the data that will be imported
     def preview(projects)
+      num_projects_to_import = 0
       projects.each do |project|
-        log "PROJECT: #{project[:title_multiloc][@locale]}"
-        project[:phases]&.each do |phase|
-          log " - PHASE: #{phase[:title_multiloc][@locale]}"
-          log " - - Start: #{phase[:start_at]}"
-          log " - - End: #{phase[:end_at]}"
-          log " - - Participation Method: #{phase[:participation_method]}"
-          log " - - Ideas: #{phase[:idea_rows].count}"
-          log " - - Idea Custom Fields: #{phase[:idea_custom_fields].count}"
-          phase[:idea_custom_fields]&.each do |field|
-            log " - - - Field: #{field[:title_multiloc][@locale]} (#{field[:input_type]})"
+        begin
+          project_exists = project[:id] ? !!Project.find(project[:id]) : false  # Check if the project exists
+          if project_exists
+            log "EXISTING PROJECT: #{project[:title_multiloc][@locale]} (#{project[:id]})"
+          else
+            log "NEW PROJECT: #{project[:title_multiloc][@locale]}"
           end
-          log " - - User Custom Fields: #{phase[:user_custom_fields].count}"
-          phase[:user_custom_fields]&.each do |field|
-            log " - - - Field: #{field[:title_multiloc][@locale]} (#{field[:input_type]})"
+
+          project[:phases]&.each do |phase|
+            phase_exists = phase[:id] ? !!Phase.find(phase[:id]) : false  # Check if the project exists
+            if phase_exists
+              log "EXISTING PHASE: #{project[:title_multiloc][@locale]} (#{phase[:id]})"
+            else
+              log "NEW PHASE: #{phase[:title_multiloc][@locale]}"
+              log " - Start: #{phase[:start_at]}"
+              log " - End: #{phase[:end_at]}"
+              log " - Participation Method: #{phase[:participation_method]}"
+            end
+
+            form_exists = !!CustomForm.find_by(participation_context_id: phase[:id])
+            if form_exists
+              log "EXISTING FORM FOR PHASE: #{phase[:id]}"
+            else
+              log "NEW FORM & CUSTOM FIELDS: #{phase[:title_multiloc][@locale]}"
+              phase[:idea_custom_fields]&.each do |field|
+                log " - Field: #{field[:title_multiloc][@locale]} (#{field[:input_type]})"
+              end
+            end
+
+            existing_user_fields = CustomField.where(resource_type: 'User', key: phase[:user_custom_fields].pluck(:key))
+            user_fields_exist = existing_user_fields.count == phase[:user_custom_fields].count
+            if user_fields_exist
+              log "EXISTING USER FIELDS FOR IDEA AUTHORS. None will be created."
+            else
+              log "NEW USER CUSTOM FIELDS FOR IDEA AUTHORS:"
+              new_fields = phase[:user_custom_fields]&.reject { |field| existing_user_fields.pluck(:key).include? field[:key] }
+              new_fields&.each do |field|
+                log " - Field: #{field[:title_multiloc][@locale]} (#{field[:input_type]})"
+              end
+            end
+
+            ideas_exist = phase[:id] ? !!Phase.find(phase[:id])&.ideas&.any? : false
+            if ideas_exist
+              log "EXISTING IDEAS FOR PHASE: #{phase[:id]}"
+            else
+              log "NEW IDEAS TO IMPORT: #{phase[:idea_rows].count} ideas will be imported"
+            end
+
+            if project_exists && phase_exists && form_exists && user_fields_exist && ideas_exist
+              log "NOTHING will be imported for this project"
+            else
+              num_projects_to_import += 1
+            end
           end
+        rescue StandardError => e
+          log "ERROR: '#{project[:title_multiloc][@locale]}': #{e.message}"
         end
+
+        log "------------------------------------------"
       end
-      log "Will import #{projects.count} projects"
+
+      log "Will import data for #{num_projects_to_import} projects"
       @import_log
     end
 
@@ -48,7 +93,7 @@ module BulkImportIdeas::Importers
 
     # Import a single project
     def import_project(project_data)
-      log "Importing project: #{project_data[:slug]}"
+      log "Importing project: '#{project_data[:title_multiloc][@locale]}'"
       project = nil
       begin
         project = find_or_create_project(project_data)
@@ -60,8 +105,7 @@ module BulkImportIdeas::Importers
           next unless phase
           next if phase_data[:idea_rows].blank? # No ideas means no form or fields either
 
-          # Create any user fields if they don't already exist
-          # TODO: Move this outside in a separate method? Extract the user fields from the project data and merge with any in the phase?
+          # Create any user fields for idea authors if they don't already exist
           create_user_fields(phase_data[:user_custom_fields])
 
           # Create the form for the phase
@@ -177,8 +221,13 @@ module BulkImportIdeas::Importers
       return unless phase.participation_method == 'native_survey'
 
       log 'Creating native survey form for phase'
-
       begin
+        form_exists = phase[:id] && !!CustomForm.find_by(participation_context_id: phase[:id])
+        if form_exists
+          log "FOUND existing form for phase: '#{phase.title_multiloc[@locale]}'. Skipping form creation."
+          return
+        end
+
         # Create the form and form fields - should error if already exists
         form = CustomForm.create!(participation_context: phase)
 
@@ -218,7 +267,7 @@ module BulkImportIdeas::Importers
 
       # If the phase already has ideas, we skip the import
       if phase.ideas.any?
-        log "ERROR: Phase '#{phase.title_multiloc[@locale]}' already has ideas. Skipping idea import."
+        log "FOUND existing ideas for phase: '#{phase.title_multiloc[@locale]}'. Skipping idea import."
         return
       end
 
