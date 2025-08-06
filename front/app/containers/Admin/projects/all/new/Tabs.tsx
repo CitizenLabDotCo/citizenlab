@@ -68,7 +68,13 @@ const Tabs = () => {
   const { highest_role } = user.data.attributes;
 
   return (
-    <Box as="nav" display="flex" w="100%" mt="12px">
+    <Box
+      as="nav"
+      display="flex"
+      w="100%"
+      mt="12px"
+      className="intercom-product-tour-project-page-tabs"
+    >
       <Tab
         message={messages.projects}
         icon="projects"

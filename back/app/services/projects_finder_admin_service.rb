@@ -26,7 +26,8 @@ class ProjectsFinderAdminService
     when 'alphabetically_asc', 'alphabetically_desc'
       sort_alphabetically(projects, params)
     else
-      projects.order('projects.created_at DESC, projects.id ASC')
+      direction = params[:sort] == 'recently_created_desc' ? 'DESC' : 'ASC'
+      projects.order("projects.created_at #{direction}, projects.id ASC")
     end
   end
 
