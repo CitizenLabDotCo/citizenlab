@@ -19,6 +19,7 @@ module AdminApi
     end
 
     def template_import
+      puts "template import params: #{template_import_params.inspect}"
       folder_id = template_import_params[:folder_id]
       template_yaml = template_import_params[:template_yaml]
       job = CopyProjectJob.perform_later(template_yaml, folder_id)
@@ -30,7 +31,7 @@ module AdminApi
     end
 
     def template_import_params
-      params.require(:project).permit(:template_yaml, :folder_id)
+      params.require(:project).permit(:template_yaml, :folder_id, :thing)
     end
 
     def template_export_params
