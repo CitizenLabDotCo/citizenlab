@@ -12,7 +12,7 @@ namespace :single_use do
 
     cutoff_date = args[:date] ? Date.parse(args[:date]) : Time.zone.today
 
-    image_extensions = %w[jpg jpeg png gif tiff]
+    image_extensions = %w[jpg jpeg gif png webp]
 
     total_images = 0
     total_possibly_user_images = 0

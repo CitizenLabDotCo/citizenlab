@@ -238,7 +238,7 @@ const CampaignForm = ({
             type="submit"
             processing={isLoading}
           >
-            {formatMessage(messages.formSave)}
+            {formatMessage(messages.formSaveAsDraft)}
           </Button>
         </Box>
       </form>

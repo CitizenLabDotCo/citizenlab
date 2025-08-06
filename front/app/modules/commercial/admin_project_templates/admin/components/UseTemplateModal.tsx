@@ -301,8 +301,13 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       setTitleError(null);
       setStartDateError(null);
       setProcessing(false);
-      setSuccess(false);
       setResponseError(null);
+
+      // If the modal is not opened, (e.g. when closed) reset the success state.
+      // This avoids resetting on every prop change.
+      if (!opened) {
+        setSuccess(false);
+      }
 
       const folders: IOption[] =
         projectFolders &&

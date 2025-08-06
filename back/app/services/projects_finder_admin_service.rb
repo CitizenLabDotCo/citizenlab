@@ -3,14 +3,19 @@ class ProjectsFinderAdminService
 
   # EXECUTION
   def self.execute(scope, params = {}, current_user: nil)
+    projects = scope
+
     # Apply filters
-    projects = filter_status(scope, params)
+    projects = filter_moderatable(projects, current_user)
+    projects = filter_status(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
     projects = filter_start_date(projects, params)
     projects = filter_participation_states(projects, params)
     projects = filter_current_phase_participation_method(projects, params)
+    projects = filter_visibility(projects, params)
+    projects = filter_discoverability(projects, params)
 
     # Apply sorting
     case params[:sort]
@@ -96,6 +101,27 @@ class ProjectsFinderAdminService
   end
 
   # FILTERING METHODS
+  def self.filter_moderatable(scope, current_user)
+    return scope if current_user.admin?
+
+    moderatable_project_ids = current_user.moderatable_project_ids
+    moderated_folder_admin_publication_ids = AdminPublication.where(
+      publication_id: current_user.moderated_project_folder_ids,
+      publication_type: 'ProjectFolders::Folder'
+    ).pluck(:id)
+
+    scope
+      .joins(
+        'INNER JOIN admin_publications ON admin_publications.publication_id = projects.id ' \
+        "AND admin_publications.publication_type = 'Project'"
+      )
+      .where(
+        'projects.id IN (:project_ids) OR admin_publications.parent_id IN (:folder_admin_pub_ids)',
+        project_ids: moderatable_project_ids,
+        folder_admin_pub_ids: moderated_folder_admin_publication_ids
+      )
+  end
+
   def self.filter_status(scope, params = {})
     status = params[:status] || []
     return scope if status.blank?
@@ -234,6 +260,34 @@ class ProjectsFinderAdminService
       Date.parse(date_input)
     rescue ArgumentError
       nil
+    end
+  end
+
+  # Filter projects by visibility (access rights)
+  def self.filter_visibility(scope, params = {})
+    visibility_params = Array(params[:visibility])
+
+    valid_visibilities = %w[public groups admins]
+    selected_visibilities = visibility_params & valid_visibilities
+
+    return scope if selected_visibilities.blank?
+
+    scope.where(visible_to: selected_visibilities)
+  end
+
+  # Filter projects by discoverability (listed/unlisted status)
+  def self.filter_discoverability(scope, params = {})
+    discoverability_params = Array(params[:discoverability])
+
+    valid_discoverabilities = %w[listed unlisted]
+    selected_discoverabilities = discoverability_params & valid_discoverabilities
+
+    return scope if selected_discoverabilities.blank? || selected_discoverabilities.length == 2
+
+    if selected_discoverabilities.include?('listed')
+      scope.where(listed: true)
+    else
+      scope.where(listed: false)
     end
   end
 end

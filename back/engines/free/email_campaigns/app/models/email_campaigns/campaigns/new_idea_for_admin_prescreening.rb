@@ -47,7 +47,7 @@ module EmailCampaigns
     private
 
     def prescreening_only?(activity:, time: nil)
-      return false if !activity.item.is_a?(::Idea)
+      return false unless activity&.item.is_a?(::Idea)
 
       !activity.item.published?
     end

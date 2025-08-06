@@ -9,24 +9,20 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.folders',
     defaultMessage: 'Folders',
   },
-  timeline: {
-    id: 'app.containers.Admin.projects.all.new.timeline',
-    defaultMessage: 'Timeline',
+  calendar: {
+    id: 'app.containers.Admin.projects.all.new.calendar',
+    defaultMessage: 'Calendar',
   },
-  ordering: {
-    id: 'app.containers.Admin.projects.all.new.ordering',
-    defaultMessage: 'Ordering',
+  arrangeProjects: {
+    id: 'app.containers.Admin.projects.all.new.arrangeProjects',
+    defaultMessage: 'Arrange projects',
   },
-  draft: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.draft',
-    defaultMessage: 'Draft',
+  searchProjects: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Search.searchProjects',
+    defaultMessage: 'Search projects',
   },
-  published: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.published',
-    defaultMessage: 'Published',
-  },
-  archived: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.archived',
-    defaultMessage: 'Archived',
+  searchFolders: {
+    id: 'app.containers.Admin.projects.all.new.Folders.Filters.searchFolders',
+    defaultMessage: 'Search folders',
   },
 });

@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState, useCallback } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 
 import {
   Box,
@@ -108,49 +108,44 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     }
   }, [phaseFiles]);
 
-  const handlePhaseParticipationConfigChange = useCallback(
-    (participationContextConfig: IUpdatedPhaseProperties) => {
-      const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
-        acc[locale] = formatMessageWithLocale(
-          locale,
-          messages.defaultSurveyCTALabel
-        );
-        return acc;
-      }, {});
+  if (!formatMessageWithLocale) return null;
 
-      const surveyTitle = tenantLocales?.reduce((acc, locale) => {
-        acc[locale] = formatMessageWithLocale(
-          locale,
-          messages.defaultSurveyTitleLabel
-        );
-        return acc;
-      }, {});
+  const handlePhaseParticipationConfigChange = (
+    participationContextConfig: IUpdatedPhaseProperties
+  ) => {
+    const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyCTALabel
+      );
+      return acc;
+    }, {});
 
-      setSubmitState('enabled');
-      // Important to keep the order of the spread operators
-      setFormData((formData) => ({
-        ...formData,
-        ...participationContextConfig,
-        ...(participationContextConfig.participation_method ===
-          'native_survey' &&
-          !formData?.native_survey_button_multiloc &&
-          !phase?.data.attributes.native_survey_button_multiloc && {
-            native_survey_button_multiloc: surveyCTALabel,
-          }),
-        ...(participationContextConfig.participation_method ===
-          'native_survey' &&
-          !formData?.native_survey_title_multiloc &&
-          !phase?.data.attributes.native_survey_button_multiloc && {
-            native_survey_title_multiloc: surveyTitle,
-          }),
-      }));
-    },
-    [
-      formatMessageWithLocale,
-      phase?.data.attributes.native_survey_button_multiloc,
-      tenantLocales,
-    ]
-  );
+    const surveyTitle = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyTitleLabel
+      );
+      return acc;
+    }, {});
+
+    setSubmitState('enabled');
+    // Important to keep the order of the spread operators
+    setFormData((formData) => ({
+      ...formData,
+      ...participationContextConfig,
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !formData?.native_survey_button_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_button_multiloc: surveyCTALabel,
+        }),
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !formData?.native_survey_title_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_title_multiloc: surveyTitle,
+        }),
+    }));
+  };
 
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
     setSubmitState('enabled');

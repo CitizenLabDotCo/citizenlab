@@ -110,26 +110,6 @@ module EmailCampaigns
       false
     end
 
-    def reply_to
-      fallback_to_global(:reply_to)
-    end
-
-    def subject_multiloc
-      fallback_to_global(:subject_multiloc)
-    end
-
-    def title_multiloc
-      fallback_to_global(:title_multiloc)
-    end
-
-    def intro_multiloc
-      fallback_to_global(:intro_multiloc)
-    end
-
-    def button_text_multiloc
-      fallback_to_global(:button_text_multiloc)
-    end
-
     def apply_recipient_filters(activity: nil, time: nil)
       current_class = self.class
 
@@ -221,6 +201,7 @@ module EmailCampaigns
     end
 
     def unique_campaigns_per_context?
+      # This is the default value and can be overwritten by each campaign subclass.
       true
     end
 
@@ -230,17 +211,6 @@ module EmailCampaigns
       return if apply_recipient_filters.any?
 
       errors.add(:base, :no_recipients, message: "Can't send a campaign without recipients")
-    end
-
-    def global_campaign
-      @global_campaign ||= !manual? && context && self.class.find_by(context: nil, type: self.class.name)
-    end
-
-    def fallback_to_global(attribute)
-      value = self[attribute]
-      return value unless value.blank? && context && global_campaign
-
-      global_campaign&.send(attribute)
     end
   end
 end

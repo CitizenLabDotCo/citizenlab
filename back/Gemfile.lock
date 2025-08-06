@@ -949,6 +949,9 @@ GEM
     pg_search (2.3.6)
       activerecord (>= 5.2)
       activesupport (>= 5.2)
+    positioning (0.4.6)
+      activerecord (>= 6.1)
+      activesupport (>= 6.1)
     posthog-ruby (2.5.0)
       concurrent-ruby (~> 1)
     pp (0.6.2)
@@ -1179,7 +1182,7 @@ GEM
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     ruby-rc4 (0.1.5)
-    ruby-saml (1.18.0)
+    ruby-saml (1.18.1)
       nokogiri (>= 1.13.10)
       rexml
     ruby-vips (2.2.3)
@@ -1417,6 +1420,7 @@ DEPENDENCIES
   pg (~> 1.5.6)
   pg_search (~> 2.3.5)
   polls!
+  positioning (~> 0.4.6)
   posthog_integration!
   prawn (~> 2.5)
   prawn-grouping (~> 0.2.0)

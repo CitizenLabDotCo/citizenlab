@@ -125,6 +125,7 @@ const SurveyPage = ({
       clHistory.push({
         pathname: `/projects/${project?.data.attributes.slug}`,
       });
+      return;
     }
 
     try {

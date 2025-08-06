@@ -103,7 +103,8 @@ const ReportBuilderToolbox = ({
     !appConfigurationLocales ||
     !authUser ||
     (userIsModerator && !projects) ||
-    !userFields
+    !userFields ||
+    !formatMessageWithLocale
   ) {
     return (
       <Container>

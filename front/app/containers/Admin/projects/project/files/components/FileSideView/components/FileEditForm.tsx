@@ -23,9 +23,10 @@ import { getFileExtensionString, getFileNameWithoutExtension } from './utils';
 
 type Props = {
   file: IFile;
+  setEditingMetadata?: (editing: boolean) => void; // Optional prop to control editing state externally
 };
 
-const FileEditForm = ({ file }: Props) => {
+const FileEditForm = ({ file, setEditingMetadata }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: updateFile } = useUpdateFile();
   const fileName = file.data.attributes.name;
@@ -68,6 +69,7 @@ const FileEditForm = ({ file }: Props) => {
       // Reset the form values after successful submission
       const values = methods.getValues();
       methods.reset(values);
+      setEditingMetadata?.(false);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }

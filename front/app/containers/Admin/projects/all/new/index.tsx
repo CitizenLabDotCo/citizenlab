@@ -1,37 +1,70 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
-import Header from '../_shared/Header';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { useIntl } from 'utils/cl-intl';
+
+import Search from './_shared/FilterBar/Filters/Search';
 import Folders from './Folders';
+import Header from './Header';
+import messages from './messages';
 import Ordering from './Ordering';
 import Projects from './Projects';
 import Tabs from './Tabs';
-import Timeline from './Timeline';
+
+const Calendar = React.lazy(() => import('./Calendar'));
 
 const AdminProjectsListNew = () => {
   const [searchParams] = useSearchParams();
+  const { formatMessage } = useIntl();
   const tab = searchParams.get('tab');
+  const calendarViewEnabled = useFeatureFlag({
+    name: 'project_planning_calendar',
+  });
+
+  const showProjectSearch =
+    tab === null || (tab === 'calendar' && calendarViewEnabled);
 
   return (
-    <Box>
-      <Header />
-      <Tabs />
-      <Box mt="20px">
-        <Box display={tab === null ? 'block' : 'none'}>
-          <Projects />
+    <Box
+      bgColor={colors.white}
+      w="100%"
+      h="100vh"
+      py="45px"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
+      <Box px="51px" maxWidth="1400px" w="100%">
+        <Header />
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          borderBottom={`1px solid ${colors.grey200}`}
+          height="44px"
+        >
+          <Tabs />
+          {showProjectSearch && (
+            <Search placeholder={formatMessage(messages.searchProjects)} />
+          )}
+          {tab === 'folders' && (
+            <Search placeholder={formatMessage(messages.searchFolders)} />
+          )}
         </Box>
-        <Box display={tab === 'folders' ? 'block' : 'none'}>
-          <Folders />
+        <Box mt="20px">
+          {tab === null && <Projects />}
+          {tab === 'folders' && <Folders />}
+          {tab === 'calendar' && <Calendar />}
+          {tab === 'ordering' && (
+            <Box>
+              <Ordering />
+            </Box>
+          )}
         </Box>
-        {tab === 'timeline' && <Timeline />}
-        {tab === 'ordering' && (
-          <Box>
-            <Ordering />
-          </Box>
-        )}
       </Box>
     </Box>
   );

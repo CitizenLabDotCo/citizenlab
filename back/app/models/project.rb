@@ -35,6 +35,7 @@
 #  fk_rails_...  (default_assignee_id => users.id)
 #
 class Project < ApplicationRecord
+  include Files::FileAttachable
   include PgSearch::Model
 
   attribute :preview_token, :string, default: -> { generate_preview_token }
