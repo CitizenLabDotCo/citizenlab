@@ -1122,6 +1122,8 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Aakkosjärjestyksessä (za)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "Johtaja",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "Vaihe alkaa tai päättyy pian",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc1": "Äskettäin luotu (vanha-uusi)",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc1": "Äskettäin luotu (uusi-vanha)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_viewed": "Äskettäin katsotut",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins": "Ylläpitäjät",
