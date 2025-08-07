@@ -33,7 +33,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
     let!(:global_campaign) { create(:comment_deleted_by_admin_campaign) }
     let!(:context_campaign) { create(:comment_deleted_by_admin_campaign, context: create(:phase)) }
     let(:service) { EmailCampaigns::DeliveryService.new }
-    let(:phase) { create(:ideation_phase) }
+    let(:phase) { create(:ideation_phase, :ongoing) }
     let(:idea) { create(:idea, phases: [phase]) }
     let(:notification) { create(:comment_deleted_by_admin, idea: idea) }
     let(:activity) { create(:activity, item_id: notification.id, item_type: notification.class.name, action: 'created') }
@@ -56,7 +56,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
       end
 
       context 'on a proposals phase' do
-        let(:phase) { create(:proposals_phase) }
+        let(:phase) { create(:proposals_phase, :ongoing) }
 
         it 'receives process_command for the context campaign' do
           expect(service).not_to receive(:process_command).with(global_campaign, anything)
@@ -66,7 +66,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
       end
 
       context 'on a voting phase' do
-        let(:phase) { create(:single_voting_phase) }
+        let(:phase) { create(:single_voting_phase, :ongoing) }
 
         it 'receives process_command for the context campaign' do
           expect(service).not_to receive(:process_command).with(global_campaign, anything)
@@ -76,9 +76,9 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
       end
 
       context 'on an information phase' do
-        let(:phase) { create(:information_phase) }
+        let(:phase) { create(:information_phase, :ongoing) }
 
-        it 'does not receive process_command for the context campaign' do
+        it 'receives process_command for the global campaign' do
           expect(service).to receive(:process_command).with(global_campaign, anything).once
           expect(service).not_to receive(:process_command).with(context_campaign, anything)
           service.send_on_activity(activity)
@@ -86,9 +86,19 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
       end
 
       context 'on an native survey phase' do
-        let(:phase) { create(:native_survey_phase) }
+        let(:phase) { create(:native_survey_phase, :ongoing) }
 
-        it 'does not receive process_command for the context campaign' do
+        it 'receives process_command for the global campaign' do
+          expect(service).to receive(:process_command).with(global_campaign, anything).once
+          expect(service).not_to receive(:process_command).with(context_campaign, anything)
+          service.send_on_activity(activity)
+        end
+      end
+
+      context 'for a past phase' do
+        let(:phase) { create(:ideation_phase, start_at: Time.zone.today - 7.days, end_at: Time.zone.today - 1.day) }
+
+        it 'receives process_command for the global campaign' do
           expect(service).to receive(:process_command).with(global_campaign, anything).once
           expect(service).not_to receive(:process_command).with(context_campaign, anything)
           service.send_on_activity(activity)
