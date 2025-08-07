@@ -6,6 +6,7 @@ class ProjectsFinderAdminService
     projects = scope
 
     # Apply filters
+    projects = filter_with_admin_publication(projects)
     projects = filter_moderatable(projects, current_user)
     projects = filter_status_and_review_state(projects, params)
     projects = filter_by_folder_ids(projects, params)
@@ -102,6 +103,12 @@ class ProjectsFinderAdminService
   end
 
   # FILTERING METHODS
+  def self.filter_with_admin_publication(scope)
+    # Filter out projects that don't have an admin_publication to prevent crashes
+    # when trying to access publication_status or other admin_publication attributes
+    scope.joins(:admin_publication)
+  end
+
   def self.filter_moderatable(scope, current_user)
     return scope if current_user.admin?
 
