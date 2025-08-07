@@ -88,11 +88,6 @@ const ProjectImporter = () => {
       )}
 
       {projectImports?.data?.map((importedProject) => {
-        console.log(
-          localize(importedProject.attributes.project_title_multiloc)
-        );
-        console.log(importedProject.attributes.import_type);
-
         const projectTitle =
           localize(importedProject.attributes.project_title_multiloc) ||
           (importedProject.attributes.import_type === 'user'
