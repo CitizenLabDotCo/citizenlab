@@ -55,7 +55,35 @@ describe('Projects overview: admin (projects)', () => {
   });
 });
 
-// describe('Projects overview: admin (folders)', () => {});
+describe('Projects overview: admin (folders)', () => {
+  const folderTitle = randomString();
+  let folderId: string;
+
+  before(() => {
+    cy.apiCreateFolder({
+      title: folderTitle,
+      description: randomString(),
+    }).then((response) => {
+      folderId = response.body.data.id;
+    });
+  });
+
+  after(() => {
+    cy.apiRemoveFolder(folderId);
+  });
+
+  it('Finds folder through search', () => {
+    cy.setAdminLoginCookie();
+    cy.visit('/admin/projects');
+    cy.dataCy('projects-overview-folders-tab').click();
+
+    cy.dataCy('projects-overview-search-input').type(folderTitle);
+    cy.dataCy('projects-overview-folder-table-row').should('have.length', 1);
+    cy.dataCy('projects-overview-folder-table-row')
+      .first()
+      .contains(folderTitle);
+  });
+});
 
 // describe('Projects overview: project moderator', () => {
 

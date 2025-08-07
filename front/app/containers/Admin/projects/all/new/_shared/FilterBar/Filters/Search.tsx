@@ -29,6 +29,7 @@ const Search = ({ placeholder }: Props) => {
       labelColor={colors.textPrimary}
       size="small"
       hideLabel
+      dataCy="projects-overview-search-input"
     />
   );
 };
