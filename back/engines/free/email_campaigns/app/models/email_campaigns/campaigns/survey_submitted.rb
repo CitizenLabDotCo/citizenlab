@@ -74,7 +74,7 @@ module EmailCampaigns
     def activity_context(activity)
       return nil unless activity.item.is_a?(::Idea)
 
-      activity.item.phases.last
+      activity.item && TimelineService.new.current_phase(activity.item)
     end
 
     def self.supported_context_class
