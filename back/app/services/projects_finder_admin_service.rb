@@ -233,8 +233,15 @@ class ProjectsFinderAdminService
     end
 
     if participation_states.include?('past')
-      # Projects with no phases that end in the future
-      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE coalesce(end_at, 'infinity'::DATE) >= '#{today}')"
+      # Projects that have at least one phase and all phases have ended
+      conditions << <<-SQL.squish
+        projects.id IN (
+          SELECT project_id FROM phases 
+          GROUP BY project_id 
+          HAVING COUNT(*) > 0 
+          AND MAX(coalesce(end_at, 'infinity'::DATE)) < '#{today}'
+        )
+      SQL
     end
 
     scope.where(conditions.map { |c| "(#{c})" }.join(' OR '))
