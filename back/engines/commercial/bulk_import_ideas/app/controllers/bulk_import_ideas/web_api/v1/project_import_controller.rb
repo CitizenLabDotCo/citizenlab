@@ -32,7 +32,7 @@ module BulkImportIdeas
           id: import_id,
           attributes: {
             projects_to_import: num_projects,
-            preview: preview,
+            preview: preview
           }
         }
       }

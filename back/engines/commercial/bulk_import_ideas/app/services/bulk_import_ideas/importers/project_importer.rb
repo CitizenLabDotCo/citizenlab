@@ -17,6 +17,7 @@ module BulkImportIdeas::Importers
     # Preview the data that will be imported
     # rubocop:disable Metrics/PerceivedComplexity
     # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/MethodLength
     def preview(projects)
       num_projects_to_import = 0
       projects.each do |project|
@@ -92,6 +93,7 @@ module BulkImportIdeas::Importers
 
       log "Will import data for #{num_projects_to_import} projects"
     end
+    # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/PerceivedComplexity
 

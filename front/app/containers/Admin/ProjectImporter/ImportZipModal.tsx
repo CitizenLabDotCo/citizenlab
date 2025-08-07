@@ -20,13 +20,13 @@ import useLocale from 'hooks/useLocale';
 import LocalePicker from 'containers/Admin/projects/project/inputImporter/ImportModal/LocalePicker';
 import messages from 'containers/Admin/projects/project/inputImporter/ImportModal/messages';
 
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
 import SingleFileUploader from 'components/HookForm/SingleFileUploader';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 
 interface FormValues {
   locale: SupportedLocale;

@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectImports from 'api/project_imports/useProjectImports';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import clHistory from 'utils/cl-router/history';
@@ -13,7 +14,6 @@ import Link from 'utils/cl-router/Link';
 import { isSuperAdmin } from 'utils/permissions/roles';
 
 import ImportZipModal from './ImportZipModal';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const ProjectImporter = () => {
   const { data: authUser } = useAuthUser();
@@ -45,7 +45,7 @@ const ProjectImporter = () => {
     } else {
       setIsImporting(false);
     }
-  }, [projectImports, numProjects]);
+  }, [projectImports, numProjects, isPreview]);
 
   const setImportData = (data) => {
     clHistory.push(
@@ -54,8 +54,9 @@ const ProjectImporter = () => {
   };
 
   // This feature is only for super admins when the feature flag is enabled
-  if (!(isFeatureEnabled && isSuperAdmin(authUser)))
+  if (!(isFeatureEnabled && isSuperAdmin(authUser))) {
     return <h1>Not allowed</h1>;
+  }
 
   return (
     <Box>
