@@ -1,14 +1,11 @@
 import React from 'react';
 
-import {
-  Box,
-  InputContainer,
-  colors,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import { InputContainer, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
+
+import CountBadge from 'components/UI/CountBadge';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -44,33 +41,22 @@ const PendingApproval = () => {
     useAdminPublicationsStatusCounts(pendingReviewParams);
 
   return (
-    <Box position="relative">
-      <StyledInputContainer
-        isActive={reviewState === 'pending'}
-        onClick={() => {
-          setParam(
-            'review_state',
-            reviewState === 'pending' ? undefined : 'pending'
-          );
-        }}
-      >
-        {formatMessage(messages.pendingApproval)}
-      </StyledInputContainer>
-      <Box
-        position="absolute"
-        as="span"
-        top="0px"
-        right="4px"
-        bgColor={colors.red100}
-        color={colors.red800}
-        style={{ fontWeight: 'bold' }}
-        py="0"
-        px="4px"
-        borderRadius={stylingConsts.borderRadius}
-      >
-        {pendingReviewStatusCounts?.data.attributes.status_counts.draft ?? 0}
-      </Box>
-    </Box>
+    <StyledInputContainer
+      isActive={reviewState === 'pending'}
+      onClick={() => {
+        setParam(
+          'review_state',
+          reviewState === 'pending' ? undefined : 'pending'
+        );
+      }}
+    >
+      {formatMessage(messages.pendingApproval)}
+      <CountBadge
+        count={
+          pendingReviewStatusCounts?.data.attributes.status_counts.draft ?? 0
+        }
+      />
+    </StyledInputContainer>
   );
 };
 
