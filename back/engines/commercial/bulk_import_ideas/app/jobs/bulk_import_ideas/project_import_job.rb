@@ -16,7 +16,7 @@ module BulkImportIdeas
         import_id: import_id,
         log: log,
         locale: locale,
-        type: 'project'
+        import_type: 'project'
       )
     end
   end

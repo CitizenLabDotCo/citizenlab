@@ -12,7 +12,7 @@ module BulkImportIdeas
         import_id: import_id,
         log: preview_log,
         locale: locale,
-        type: 'preview'
+        import_type: 'preview'
       )
     end
   end

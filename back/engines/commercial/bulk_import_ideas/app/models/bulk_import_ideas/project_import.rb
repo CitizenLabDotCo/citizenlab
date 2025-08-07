@@ -34,6 +34,6 @@ module BulkImportIdeas
     belongs_to :project, optional: true
     belongs_to :import_user, class_name: 'User', optional: true
 
-    validates :type, inclusion: { in: IMPORT_TYPES }
+    validates :import_type, inclusion: { in: IMPORT_TYPES }
   end
 end
