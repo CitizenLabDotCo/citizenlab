@@ -49,7 +49,7 @@ describe('Admin: edit project', () => {
     const project = cy
       .dataCy('projects-overview-table-row')
       .first()
-      .get('td > p')
+      .get('td')
       .first();
     project.contains(projectTitle);
     project.click();
@@ -64,7 +64,7 @@ describe('Admin: edit project', () => {
     const project2 = cy
       .dataCy('projects-overview-table-row')
       .first()
-      .get('td > p')
+      .get('td')
       .first();
     project2.contains(projectTitle);
     project2.click();
@@ -77,7 +77,7 @@ describe('Admin: edit project', () => {
 
     cy.dataCy('projects-overview-table-row')
       .first()
-      .get('td > p')
+      .get('td')
       .first()
       .contains(projectTitle);
   });
