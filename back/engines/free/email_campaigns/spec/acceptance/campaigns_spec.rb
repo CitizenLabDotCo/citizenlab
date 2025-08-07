@@ -169,7 +169,7 @@ resource 'Campaigns' do
       example_request 'Lists all campaigns supported for an ideation phase' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes)).to eq %w[comment_on_idea_you_follow comment_on_your_comment project_phase_started]
+        expect(json_response.dig(:data, :attributes)).to eq %w[comment_deleted_by_admin comment_on_idea_you_follow comment_on_your_comment idea_published mention_in_official_feedback official_feedback_on_idea_you_follow project_phase_started status_change_on_idea_you_follow your_input_in_screening]
       end
     end
 

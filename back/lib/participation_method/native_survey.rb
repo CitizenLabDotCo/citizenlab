@@ -104,7 +104,7 @@ module ParticipationMethod
     end
 
     def supported_email_campaigns
-      super + %w[native_survey_not_submitted]
+      super + %w[native_survey_not_submitted survey_submitted]
     end
 
     def supports_permitted_by_everyone?
