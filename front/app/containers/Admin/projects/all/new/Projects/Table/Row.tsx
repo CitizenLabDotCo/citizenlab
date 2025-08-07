@@ -20,7 +20,7 @@ import ProjectMoreActionsMenu, {
 
 import Error from 'components/UI/Error';
 
-import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
 import { parseBackendDateString } from 'utils/dateUtils';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
@@ -76,17 +76,17 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
     }
   };
 
+  const link =
+    hover === 'folder'
+      ? (`/admin/projects/folders/${folderId}` as const)
+      : (`/admin/projects/${project.id}` as const);
+
   return (
     <Tr dataCy="projects-overview-table-row">
       <Td
         background={colors.grey50}
         onMouseEnter={() => setHover('project')}
         onMouseLeave={() => setHover('none')}
-        onClick={() => {
-          hover === 'project'
-            ? clHistory.push(`/admin/projects/${project.id}`)
-            : clHistory.push(`/admin/projects/folders/${folderId}`);
-        }}
         style={{
           cursor: hover !== 'none' ? 'pointer' : 'default',
         }}
@@ -96,7 +96,14 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
             : undefined
         }
       >
-        <Box display="flex" alignItems="center">
+        <Box
+          display="flex"
+          alignItems="center"
+          w="100%"
+          h="100%"
+          as={Link}
+          to={link}
+        >
           <RowImage
             imageUrl={imageUrl ?? undefined}
             alt={localize(title_multiloc)}
