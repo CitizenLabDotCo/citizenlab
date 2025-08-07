@@ -3,7 +3,7 @@
 class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   # local_copy => an existing project is being **copied** in the back-office
   #               (source & copy are in the same tenant)
-  # local_creator => the user who is **creating** a project, using a project 
+  # local_creator => the user who is **creating** a project, using a project
   #                  template selected in the back-office
   #                  (source & copy are probably in different tenants)
   def import(template, folder: nil, local_copy: false, local_creator: nil)
@@ -32,11 +32,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
 
     # If the transaction was rolled back, project will not be persisted
-    if project && project.persisted?
-      project
-    else
-      nil
-    end
+    project if project&.persisted?
   end
 
   def export(

@@ -21,7 +21,7 @@ module AdminApi
     def template_import
       folder_id = template_import_params[:folder_id]
       template_yaml = template_import_params[:template_yaml]
-      local_creator = get_local_creator
+      local_creator = local_creator_from_jwt
 
       job = CopyProjectJob.perform_later(template_yaml, folder_id, local_creator)
     rescue StandardError => e
@@ -48,7 +48,9 @@ module AdminApi
       )
     end
 
-    def get_local_creator
+    def local_creator_from_jwt
+      return nil unless template_import_params[:local_create].present?
+
       if template_import_params[:local_create] == true
         auth_token = AuthToken::AuthToken.new(token: request.headers['X-JWT'])
 
