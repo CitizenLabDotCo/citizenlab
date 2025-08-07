@@ -1122,8 +1122,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Alfabetisk (a-å)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "Projektleder",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "Fase starter eller slutter snart",
-  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc": "Nyligt oprettet (ny-gammel)",
-  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc": "Nyligt oprettet (gammel-nye)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_viewed": "Set for nylig",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins": "Administratorer",
