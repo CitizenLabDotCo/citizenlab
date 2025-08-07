@@ -3,7 +3,7 @@ import { randomString } from '../../../support/commands';
 describe('Admin: add project', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/projects/all');
+    cy.visit('/admin/projects');
     cy.acceptCookies();
     cy.dataCy('e2e-new-project-button').click();
     cy.wait(1000);
@@ -31,7 +31,7 @@ describe('Admin: add project', () => {
         cy.get('.e2e-submit-wrapper-button button').click();
 
         // Confirm the project is saved and appears as draft
-        cy.visit('/admin/projects/all');
+        cy.visit('/admin/projects');
         cy.url().should('include', '/admin/projects/');
         cy.get('#e2e-admin-projects-list-unsortable')
           .children()
