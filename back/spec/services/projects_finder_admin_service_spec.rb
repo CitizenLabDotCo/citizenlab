@@ -583,8 +583,9 @@ describe ProjectsFinderAdminService do
     it 'filters out projects without admin_publication' do
       all_projects = Project.all
       filtered_projects = described_class.filter_with_admin_publication(all_projects)
-      
+
       expect(filtered_projects).to include(project_with_admin_pub)
       expect(filtered_projects).not_to include(project_without_admin_pub)
     end
+  end
 end
