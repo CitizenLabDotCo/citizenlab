@@ -9,9 +9,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_viewed',
     defaultMessage: 'Recently viewed',
   },
-  recently_created: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created',
-    defaultMessage: 'Recently created',
+  recently_created_asc: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc',
+    defaultMessage: 'Recently created (new-old)',
+  },
+  recently_created_desc: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc',
+    defaultMessage: 'Recently created (old-new)',
   },
   alphabetically_asc: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc',
@@ -136,5 +140,9 @@ export default defineMessages({
   manager: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager',
     defaultMessage: 'Manager',
+  },
+  pendingApproval: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval',
+    defaultMessage: 'Pending approval',
   },
 });
