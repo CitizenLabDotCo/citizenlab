@@ -23,6 +23,7 @@ export interface SSOProviderMap {
   nemlog_in: 'nemlog_in';
   keycloak: 'keycloak';
   twoday: 'twoday';
+  rm_unify: 'rm_unify';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];

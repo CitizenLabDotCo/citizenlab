@@ -184,6 +184,13 @@ PATH
       rails (~> 7.0)
 
 PATH
+  remote: engines/commercial/id_rm_unify
+  specs:
+    id_rm_unify (1.0.0)
+      omniauth-saml (~> 2.2.0)
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_twoday
   specs:
     id_twoday (1.0.0)
@@ -1380,6 +1387,7 @@ DEPENDENCIES
   id_keycloak!
   id_nemlog_in!
   id_oostende_rrn!
+  id_rm_unify!
   id_twoday!
   id_vienna_saml!
   idea_assignment!

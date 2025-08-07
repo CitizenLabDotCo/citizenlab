@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyTwoday2',
     defaultMessage: 'Verify with BankID or Freja eID+',
   },
+  verifyRmUnify: {
+    id: 'app.components.VerificationModal.verifyRmUnify',
+    defaultMessage: 'Verify with Glow Connect',
+  },
   verifyAuth0: {
     id: 'app.components.VerificationModal.verifyAuth0',
     defaultMessage: 'Verify with NemID',

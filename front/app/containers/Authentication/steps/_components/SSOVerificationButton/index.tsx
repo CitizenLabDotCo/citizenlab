@@ -71,6 +71,10 @@ const SSOVerificationButton = ({
       label: messages.verifyTwoday,
       icon: 'bankId',
     },
+    rm_unify: {
+      label: messages.verifyRmUnify,
+      icon: 'bankId',
+    },
     auth0: {
       label: messages.verifyAuth0,
       icon: 'shield-check',

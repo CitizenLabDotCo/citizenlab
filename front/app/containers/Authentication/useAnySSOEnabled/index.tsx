@@ -37,6 +37,10 @@ export default function useAnySSOEnabled() {
     name: 'twoday_login',
   });
 
+  const rmUnifyLoginEnabled = useFeatureFlag({
+    name: 'rm_unify_login',
+  });
+
   const anySSOEnabled =
     fakeSSOEnabled ||
     googleLoginEnabled ||
@@ -50,6 +54,7 @@ export default function useAnySSOEnabled() {
     criiptoLoginEnabled ||
     keycloakLoginEnabled ||
     twodayLoginEnabled ||
+    rmUnifyLoginEnabled ||
     idAustriaLoginEnabled;
 
   return anySSOEnabled;
