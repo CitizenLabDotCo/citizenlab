@@ -24,7 +24,7 @@ const ProjectImporter = () => {
 
   const [searchParams] = useSearchParams();
   const importId = searchParams.get('id') || undefined;
-  const numProjects = searchParams.get('num_projects') || undefined;
+  const numImports = searchParams.get('num_imports') || undefined;
   const isPreview = searchParams.get('preview') === 'true';
 
   const [importZipModalOpen, setImportZipModalOpen] = useState(false);
@@ -39,17 +39,17 @@ const ProjectImporter = () => {
   const localize = useLocalize();
 
   useEffect(() => {
-    const numImportJobs = isPreview ? 1 : parseInt(numProjects || '0', 10);
+    const numImportJobs = isPreview ? 1 : parseInt(numImports || '0', 10);
     if (projectImports?.data?.length < numImportJobs) {
       setIsImporting(true);
     } else {
       setIsImporting(false);
     }
-  }, [projectImports, numProjects, isPreview]);
+  }, [projectImports, numImports, isPreview]);
 
   const setImportData = (data) => {
     clHistory.push(
-      `/admin/project-importer?id=${data.id}&num_projects=${data.attributes.projects_to_import}&preview=${data.attributes.preview}` as any
+      `/admin/project-importer?id=${data.id}&num_imports=${data.attributes.num_imports}&preview=${data.attributes.preview}` as any
     ); // TODO: Sort out types
   };
 
@@ -78,19 +78,28 @@ const ProjectImporter = () => {
       {isImporting ? (
         <p>
           {isPreview ? 'Previewing' : 'Importing'}:{' '}
-          {projectImports?.data?.length + 1} / {numProjects}
+          {projectImports?.data?.length + 1} / {numImports}
         </p>
       ) : (
         <p>
           {isPreview ? 'Previewed' : 'Imported'}: {projectImports?.data?.length}{' '}
-          projects
+          imports (projects and users).
         </p>
       )}
 
       {projectImports?.data?.map((importedProject) => {
+        console.log(
+          localize(importedProject.attributes.project_title_multiloc)
+        );
+        console.log(importedProject.attributes.import_type);
+
         const projectTitle =
           localize(importedProject.attributes.project_title_multiloc) ||
-          (isPreview ? 'IMPORT PREVIEW' : 'DELETED PROJECT');
+          (importedProject.attributes.import_type === 'user'
+            ? 'USER IMPORT'
+            : isPreview
+            ? 'IMPORT PREVIEW'
+            : 'DELETED PROJECT');
         const projectPath = importedProject.attributes.project_id
           ? (`/admin/projects/${importedProject.attributes.project_id}` as any) // TODO: Sort out types
           : undefined;
