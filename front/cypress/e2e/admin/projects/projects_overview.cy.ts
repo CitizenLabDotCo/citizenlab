@@ -1,4 +1,4 @@
-import { randomString } from '../../../support/commands';
+import { randomEmail, randomString } from '../../../support/commands';
 
 describe('Projects overview: admin (projects)', () => {
   const title = randomString();
@@ -85,9 +85,51 @@ describe('Projects overview: admin (folders)', () => {
   });
 });
 
-// describe('Projects overview: project moderator', () => {
+describe('Projects overview: project moderator', () => {
+  let projectId: string;
+  let userId: string;
+  const projectTitle = randomString();
+  const email = randomEmail();
+  const password = randomString();
 
-// });
+  before(() => {
+    cy.apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: randomString(),
+      description: randomString(),
+      publicationStatus: 'draft',
+    }).then((project) => {
+      projectId = project.body.data.id;
+      cy.apiCreateModeratorForProject({
+        firstName: 'John',
+        lastName: 'Doe',
+        email,
+        password,
+        projectId,
+      }).then((moderator) => {
+        userId = moderator.body.data.id;
+      });
+    });
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+    cy.apiRemoveUser(userId);
+  });
+
+  it('shows projects you can moderate', () => {
+    cy.setLoginCookie(email, password);
+    cy.visit('/admin/projects');
+    cy.dataCy('projects-overview-table-row').should('have.length', 1);
+    cy.dataCy('projects-overview-table-row').first().contains(projectTitle);
+  });
+
+  it('does not show folders tab', () => {
+    cy.setLoginCookie(email, password);
+    cy.visit('/admin/projects');
+    cy.dataCy('projects-overview-folders-tab').should('not.exist');
+  });
+});
 
 // describe('Projects overview: folder moderator', () => {
 
