@@ -121,29 +121,27 @@ resource 'Ideas' do
             expect(json_response_body.dig(:data, :relationships, :project, :data, :id)).to eq project_id
 
             # Verify that the input is saved correctly
-            inputs = project.reload.ideas
-            expect(inputs.size).to eq 1
-            input = inputs.first
+            input = project.reload.ideas.sole
             expect(input.phase_ids).to eq [project.phases.first.id]
             expect(input.creation_phase).to eq project.phases.first
 
             # Verify that the files are saved correctly
-            file1_id = input.custom_field_values['custom_field_name1']['id']
-            file2_id = input.custom_field_values['custom_field_name2']['id']
-            file1 = IdeaFile.find(file1_id)
-            file2 = IdeaFile.find(file2_id)
-            expect(input.idea_files.size).to eq 2
-            expect(input.idea_files.ids).to match_array([file1.id, file2.id])
-            expect(file1.name).to eq filename1
-            expect(file1.file.url).to match "/uploads/.+/idea_file/file/#{file1.id}/#{filename1}"
-            expect(file2.name).to eq filename2
-            expect(file2.file.url).to match "/uploads/.+/idea_file/file/#{file2.id}/#{filename2}"
+            expect(input.idea_files).to be_empty
+            expect(input.file_attachments.size).to eq(2)
+            expect(input.attached_files.size).to eq(2)
 
-            # Verify that the custom field value is saved correctly.
-            expect(input.custom_field_values).to eq({
-              'custom_field_name1' => { 'id' => file1.id, 'name' => file1.name },
-              'custom_field_name2' => { 'id' => file2.id, 'name' => file2.name }
-            })
+            file_attachment1_id = response_data.dig(:attributes, :custom_field_name1, :id)
+            attachment1 = input.file_attachments.find(file_attachment1_id)
+            expect(attachment1.file.name).to eq(filename1)
+
+            file_attachment2_id = response_data.dig(:attributes, :custom_field_name2, :id)
+            attachment2 = input.file_attachments.find(file_attachment2_id)
+            expect(attachment2.file.name).to eq(filename2)
+
+            expect(input.custom_field_values).to match(
+              'custom_field_name1' => { 'id' => file_attachment1_id, 'name' => filename1 },
+              'custom_field_name2' => { 'id' => file_attachment2_id, 'name' => filename2 }
+            )
           end
         end
 
@@ -155,7 +153,7 @@ resource 'Ideas' do
             survey = project.reload.ideas.first
             expect(survey.publication_status).to eq 'draft'
             expect(survey.custom_field_values.values).to match_array(
-              IdeaFile.all.map { |file| { 'id' => file.id, 'name' => file.name } }
+              survey.file_attachments.map { |attachment| { 'id' => attachment.id, 'name' => attachment.file.name } }
             )
           end
         end
@@ -211,29 +209,27 @@ resource 'Ideas' do
             expect(json_response_body.dig(:data, :relationships, :project, :data, :id)).to eq project_id
 
             # Verify that the input is saved correctly
-            inputs = project.reload.ideas
-            expect(inputs.size).to eq 1
-            input = inputs.first
+            input = project.reload.ideas.sole
             expect(input.phase_ids).to eq [project.phases.first.id]
             expect(input.creation_phase).to eq project.phases.first
 
             # Verify that the files are saved correctly
-            file1_id = input.custom_field_values['custom_field_name1']['id']
-            file2_id = input.custom_field_values['custom_field_name2']['id']
-            file1 = IdeaFile.find(file1_id)
-            file2 = IdeaFile.find(file2_id)
-            expect(input.idea_files.size).to eq 2
-            expect(input.idea_files.ids).to match_array([file1.id, file2.id])
-            expect(file1.name).to eq filename1
-            expect(file1.file.url).to match "/uploads/.+/idea_file/file/#{file1.id}/#{filename1}"
-            expect(file2.name).to eq filename2
-            expect(file2.file.url).to match "/uploads/.+/idea_file/file/#{file2.id}/#{filename2}"
+            expect(input.idea_files).to be_empty
+            expect(input.file_attachments.size).to eq(2)
+            expect(input.attached_files.size).to eq(2)
 
-            # Verify that the custom field value is saved correctly.
-            expect(input.custom_field_values).to eq({
-              'custom_field_name1' => { 'id' => file1.id, 'name' => file1.name },
-              'custom_field_name2' => { 'id' => file2.id, 'name' => file2.name }
-            })
+            file_attachment1_id = response_data.dig(:attributes, :custom_field_name1, :id)
+            attachment1 = input.file_attachments.find(file_attachment1_id)
+            expect(attachment1.file.name).to eq(filename1)
+
+            file_attachment2_id = response_data.dig(:attributes, :custom_field_name2, :id)
+            attachment2 = input.file_attachments.find(file_attachment2_id)
+            expect(attachment2.file.name).to eq filename2
+
+            expect(input.custom_field_values).to match(
+              'custom_field_name1' => { 'id' => file_attachment1_id, 'name' => filename1 },
+              'custom_field_name2' => { 'id' => file_attachment2_id, 'name' => filename2 }
+            )
           end
         end
 
@@ -245,7 +241,7 @@ resource 'Ideas' do
             survey = project.reload.ideas.first
             expect(survey.publication_status).to eq 'draft'
             expect(survey.custom_field_values.values).to match_array(
-              IdeaFile.all.map { |file| { 'id' => file.id, 'name' => file.name } }
+              survey.file_attachments.map { |attachment| { 'id' => attachment.id, 'name' => attachment.file.name } }
             )
           end
         end
@@ -535,18 +531,18 @@ resource 'Ideas' do
           example 'Create a survey response with file upload fields' do
             input.update!(publication_status: 'draft')
 
-            do_request
+            expect { do_request }
+              .to change(Files::FileAttachment, :count).by(1)
+              .and change(Files::File, :count).by(1)
+              .and not_change(IdeaFile, :count)
+
             assert_status 200
 
-            # Verify that the input is saved correctly
-            inputs = project.reload.ideas
-            expect(inputs.size).to eq 1
-            expect(IdeaFile.count).to eq 1
-            new_idea_file = IdeaFile.first
+            file_attachment = input.file_attachments.sole
+            expect(file_attachment.file.name).to eq(file_name)
 
-            # Verify that the custom field value is saved correctly.
             expect(input.reload.custom_field_values).to eq({
-              'custom_field_name2' => { 'id' => new_idea_file.id, 'name' => file_name }
+              'custom_field_name2' => { 'id' => file_attachment.id, 'name' => file_name }
             })
           end
         end
