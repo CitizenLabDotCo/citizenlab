@@ -1122,6 +1122,8 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "حروف تہجی کے لحاظ سے (za)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "مینیجر",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "جلد شروع یا ختم ہونے والا مرحلہ",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc1": "حال ہی میں بنایا گیا (پرانا نیا)",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc1": "حال ہی میں بنائے گئے (نئے پرانے)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_viewed": "حال ہی میں دیکھا گیا۔",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.status": "حیثیت",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins": "ایڈمنز",
