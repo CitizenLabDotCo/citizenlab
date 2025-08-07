@@ -221,4 +221,24 @@ describe UserRoleService do
       expect(service.moderates_something?(create(:project_folder_moderator))).to be true
     end
   end
+
+  describe 'moderators_per_folder' do
+    it 'works' do
+      f1, f2, f3, f4 = create_list(:project_folder, 4)
+      m1 = create(:project_folder_moderator, project_folders: [f1, f2])
+      m2 = create(:project_folder_moderator, project_folders: [f2])
+      m3 = create(:project_folder_moderator, project_folders: [f3])
+      m4 = create(:project_folder_moderator, project_folders: [f4])
+
+      expect(service.moderators_per_folder([f1.id, f2.id, f3.id])).to eq({
+        f1.id => [m1],
+        f2.id => [m1, m2],
+        f3.id => [m3]
+      })
+    end
+
+    # it 'TODO something more complicated' do
+      # TODO
+    # end
+  end
 end
