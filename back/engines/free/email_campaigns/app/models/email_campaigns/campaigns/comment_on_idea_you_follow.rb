@@ -53,7 +53,7 @@ module EmailCampaigns
     def activity_context(activity)
       return nil if !activity.item.is_a?(::Notification)
 
-      activity.item.idea&.phases&.last
+      activity.item.idea && TimelineService.new.current_phase(activity.item.idea)
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)

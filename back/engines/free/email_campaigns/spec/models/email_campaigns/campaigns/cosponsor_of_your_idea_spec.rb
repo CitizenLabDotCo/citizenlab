@@ -35,7 +35,8 @@ RSpec.describe EmailCampaigns::Campaigns::CosponsorOfYourIdea do
     let!(:global_campaign) { create(:cosponsor_of_your_idea_campaign) }
     let!(:context_campaign) { create(:cosponsor_of_your_idea_campaign, context: create(:phase)) }
     let(:service) { EmailCampaigns::DeliveryService.new }
-    let(:input) { create(:idea) }
+    let(:phase) { create(:proposals_phase, :ongoing) }
+    let(:input) { create(:proposal, phases: [phase], creation_phase: phase, project: phase.project) }
     let(:notification) { create(:cosponsor_of_your_idea, idea: input) }
     let(:activity) { create(:activity, item_id: notification.id, item_type: notification.class.name, action: 'created') }
 
@@ -46,10 +47,11 @@ RSpec.describe EmailCampaigns::Campaigns::CosponsorOfYourIdea do
     end
 
     context 'for a context campaign' do
-      let!(:context_campaign) { create(:cosponsor_of_your_idea_campaign, context: input.creation_phase) }
+      let!(:context_campaign) { create(:cosponsor_of_your_idea_campaign, context: phase) }
 
       context 'on an ideation phase' do
-        let!(:context_campaign) { create(:cosponsor_of_your_idea_campaign, context: input.phases.last) }
+        let(:phase) { create(:ideation_phase, :ongoing) }
+        let(:input) { create(:idea, phases: [phase], project: phase.project) }
 
         it 'receives process_command for the context campaign' do
           expect(service).to receive(:process_command).with(global_campaign, anything).once
@@ -59,8 +61,6 @@ RSpec.describe EmailCampaigns::Campaigns::CosponsorOfYourIdea do
       end
 
       context 'on a proposals phase' do
-        let(:input) { create(:proposal) }
-
         it 'receives process_command for the context campaign' do
           expect(service).not_to receive(:process_command).with(global_campaign, anything)
           expect(service).to receive(:process_command).with(context_campaign, anything).once
@@ -69,9 +69,20 @@ RSpec.describe EmailCampaigns::Campaigns::CosponsorOfYourIdea do
       end
 
       context 'on an native survey phase' do
-        let(:input) { create(:native_survey_response) }
+        let(:input) { create(:native_survey_response, phases: [phase], creation_phase: phase, project: phase.project) }
+        let(:phase) { create(:native_survey_phase, :ongoing) }
 
-        it 'does not receive process_command for the context campaign' do
+        it 'receives process_command for the global campaign' do
+          expect(service).to receive(:process_command).with(global_campaign, anything).once
+          expect(service).not_to receive(:process_command).with(context_campaign, anything)
+          service.send_on_activity(activity)
+        end
+      end
+
+      context 'for a past phase' do
+        let(:phase) { create(:proposals_phase, start_at: Time.zone.today - 7.days, end_at: Time.zone.today - 1.day) }
+
+        it 'receives process_command for the global campaign' do
           expect(service).to receive(:process_command).with(global_campaign, anything).once
           expect(service).not_to receive(:process_command).with(context_campaign, anything)
           service.send_on_activity(activity)
