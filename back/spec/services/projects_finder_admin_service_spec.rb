@@ -570,4 +570,21 @@ describe ProjectsFinderAdminService do
       end
     end
   end
+
+  describe '.filter_with_admin_publication' do
+    let!(:project_with_admin_pub) { create(:project) }
+    let!(:project_without_admin_pub) do
+      project = create(:project)
+      project.admin_publication.destroy!
+      project.reload
+      project
+    end
+
+    it 'filters out projects without admin_publication' do
+      all_projects = Project.all
+      filtered_projects = described_class.filter_with_admin_publication(all_projects)
+      
+      expect(filtered_projects).to include(project_with_admin_pub)
+      expect(filtered_projects).not_to include(project_without_admin_pub)
+    end
 end
