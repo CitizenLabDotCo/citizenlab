@@ -108,6 +108,7 @@ const DropdownContent = ({
             <CheckboxWithLabel
               tabIndex={-1}
               checked={checked}
+              dataCy={`multiselect-option-${option.value}`}
               label={
                 <Text as="span" color="textSecondary" fontSize="base" m="0">
                   {option.label}
