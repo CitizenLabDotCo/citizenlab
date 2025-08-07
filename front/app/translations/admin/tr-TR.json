@@ -2326,7 +2326,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Kaydet",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Dosya başarıyla güncellendi.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Dosya arama",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Dosya türü",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Stratejik plan",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Bir seferde en fazla {maxFiles} dosya yükleyebilirsiniz.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Bilinmiyor",
