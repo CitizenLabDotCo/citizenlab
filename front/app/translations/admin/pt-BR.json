@@ -1122,6 +1122,8 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Em ordem alfabética (z-a)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "Gerente",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "Fase que começa ou termina em breve",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc1": "Criado recentemente (antigo-novo)",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc1": "Criado recentemente (novo-antigo)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_viewed": "Visualizado recentemente",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins": "Administradores",
