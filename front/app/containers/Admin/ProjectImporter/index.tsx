@@ -90,9 +90,7 @@ const ProjectImporter = () => {
       {projectImports?.data?.map((importedProject) => {
         const projectTitle =
           localize(importedProject.attributes.project_title_multiloc) ||
-          isPreview
-            ? 'IMPORT PREVIEW'
-            : 'DELETED PROJECT';
+          (isPreview ? 'IMPORT PREVIEW' : 'DELETED PROJECT');
         const projectPath = importedProject.attributes.project_id
           ? (`/admin/projects/${importedProject.attributes.project_id}` as any) // TODO: Sort out types
           : undefined;
@@ -101,9 +99,9 @@ const ProjectImporter = () => {
             <h3>
               {projectPath ? (
                 <Link to={projectPath} target="_blank">
-                  {projectTitle} -
+                  {projectTitle}
                   <Text display="inline" fontSize="xs">
-                    {importedProject.attributes.created_at}
+                    - {importedProject.attributes.created_at}
                   </Text>
                 </Link>
               ) : (
