@@ -42,16 +42,16 @@ describe('Projects overview: admin (projects)', () => {
     cy.dataCy('projects-overview-add-filter-button').click();
     cy.dataCy('projects-overview-add-filter-status').click();
 
-    // Open filter, select draft
+    // Open filter, select published
     cy.dataCy('projects-overview-filter-status').click();
-    cy.dataCy('multiselect-option-draft').click();
+    cy.dataCy('multiselect-option-published').click();
 
     // Switch to calendar tab
     cy.dataCy('projects-overview-calendar-tab').click();
 
     // Assert that the filter is still there
     cy.dataCy('projects-overview-filter-status').should('exist');
-    cy.dataCy('projects-overview-filter-status').contains('Status: Draft');
+    cy.dataCy('projects-overview-filter-status').contains('Status: Published');
   });
 });
 
