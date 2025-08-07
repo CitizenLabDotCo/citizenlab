@@ -10,6 +10,7 @@ import projectImportKeys from './keys';
 interface RequestParams {
   file: string;
   locale: SupportedLocale;
+  preview?: boolean;
 }
 
 interface JobIdResponse {
@@ -20,11 +21,12 @@ interface JobIdResponse {
 const addProjectImport = async ({
   file,
   locale,
+  preview = false,
 }: RequestParams): Promise<JobIdResponse> =>
   fetcher<JobIdResponse>({
     path: `/importer/bulk_create_async/projects/`,
     action: 'post',
-    body: { import: { file, locale } },
+    body: { import: { file, locale, preview } },
   });
 
 const useAddProjectImportAsync = () => {

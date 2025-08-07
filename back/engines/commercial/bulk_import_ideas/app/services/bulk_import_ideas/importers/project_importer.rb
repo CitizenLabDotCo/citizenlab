@@ -40,6 +40,12 @@ module BulkImportIdeas::Importers
               log " - Participation Method: #{phase[:participation_method]}"
             end
 
+            # Skip everything else for information phases
+            if phase[:participation_method] == 'information'
+              num_phases_to_import += 1 unless phase_exists
+              next
+            end
+
             form_exists = !!CustomForm.find_by(participation_context_id: phase[:id])
             if form_exists
               log "EXISTING FORM FOR PHASE: #{phase[:id]}"
@@ -94,6 +100,13 @@ module BulkImportIdeas::Importers
       projects.each do |project_data|
         BulkImportIdeas::ProjectImportJob.perform_later(project_data, import_id, @import_user, @locale)
       end
+      import_id
+    end
+
+    def preview_async(projects)
+      import_id = SecureRandom.uuid
+      preview(projects) # First run the preview to generate the log
+      BulkImportIdeas::ProjectImportPreviewJob.perform_later(import_log, import_id, @import_user, @locale)
       import_id
     end
 
