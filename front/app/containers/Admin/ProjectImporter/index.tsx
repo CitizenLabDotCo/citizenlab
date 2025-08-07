@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectImports from 'api/project_imports/useProjectImports';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import clHistory from 'utils/cl-router/history';
@@ -13,7 +14,6 @@ import Link from 'utils/cl-router/Link';
 import { isSuperAdmin } from 'utils/permissions/roles';
 
 import ImportZipModal from './ImportZipModal';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const ProjectImporter = () => {
   const { data: authUser } = useAuthUser();
@@ -25,6 +25,7 @@ const ProjectImporter = () => {
   const [searchParams] = useSearchParams();
   const importId = searchParams.get('id') || undefined;
   const numProjects = searchParams.get('num_projects') || undefined;
+  const isPreview = searchParams.get('preview') === 'true';
 
   const [importZipModalOpen, setImportZipModalOpen] = useState(false);
   const openImportZipModal = () => setImportZipModalOpen(true);
@@ -38,25 +39,24 @@ const ProjectImporter = () => {
   const localize = useLocalize();
 
   useEffect(() => {
-    if (
-      numProjects &&
-      projectImports?.data?.length < parseInt(numProjects, 10)
-    ) {
+    const numImportJobs = isPreview ? 1 : parseInt(numProjects || '0', 10);
+    if (projectImports?.data?.length < numImportJobs) {
       setIsImporting(true);
     } else {
       setIsImporting(false);
     }
-  }, [projectImports, numProjects]);
+  }, [projectImports, numProjects, isPreview]);
 
   const setImportData = (data) => {
     clHistory.push(
-      `/admin/project-importer?id=${data.id}&num_projects=${data.attributes.projects_to_import}` as any
+      `/admin/project-importer?id=${data.id}&num_projects=${data.attributes.projects_to_import}&preview=${data.attributes.preview}` as any
     ); // TODO: Sort out types
   };
 
   // This feature is only for super admins when the feature flag is enabled
-  if (!(isFeatureEnabled && isSuperAdmin(authUser)))
+  if (!(isFeatureEnabled && isSuperAdmin(authUser))) {
     return <h1>Not allowed</h1>;
+  }
 
   return (
     <Box>
@@ -77,16 +77,20 @@ const ProjectImporter = () => {
 
       {isImporting ? (
         <p>
-          Importing: {projectImports?.data?.length + 1} / {numProjects}
+          {isPreview ? 'Previewing' : 'Importing'}:{' '}
+          {projectImports?.data?.length + 1} / {numProjects}
         </p>
       ) : (
-        <p>Imported: {projectImports?.data?.length} projects</p>
+        <p>
+          {isPreview ? 'Previewed' : 'Imported'}: {projectImports?.data?.length}{' '}
+          projects
+        </p>
       )}
 
       {projectImports?.data?.map((importedProject) => {
         const projectTitle =
           localize(importedProject.attributes.project_title_multiloc) ||
-          'DELETED PROJECT';
+          (isPreview ? 'IMPORT PREVIEW' : 'DELETED PROJECT');
         const projectPath = importedProject.attributes.project_id
           ? (`/admin/projects/${importedProject.attributes.project_id}` as any) // TODO: Sort out types
           : undefined;
@@ -95,9 +99,9 @@ const ProjectImporter = () => {
             <h3>
               {projectPath ? (
                 <Link to={projectPath} target="_blank">
-                  {projectTitle} -
+                  {projectTitle}
                   <Text display="inline" fontSize="xs">
-                    {importedProject.attributes.created_at}
+                    - {importedProject.attributes.created_at}
                   </Text>
                 </Link>
               ) : (

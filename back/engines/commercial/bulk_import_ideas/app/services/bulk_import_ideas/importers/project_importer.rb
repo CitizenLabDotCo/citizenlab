@@ -17,6 +17,7 @@ module BulkImportIdeas::Importers
     # Preview the data that will be imported
     # rubocop:disable Metrics/PerceivedComplexity
     # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/MethodLength
     def preview(projects)
       num_projects_to_import = 0
       projects.each do |project|
@@ -38,6 +39,12 @@ module BulkImportIdeas::Importers
               log " - Start: #{phase[:start_at]}"
               log " - End: #{phase[:end_at]}"
               log " - Participation Method: #{phase[:participation_method]}"
+            end
+
+            # Skip everything else for information phases
+            if phase[:participation_method] == 'information'
+              num_phases_to_import += 1 unless phase_exists
+              next
             end
 
             form_exists = !!CustomForm.find_by(participation_context_id: phase[:id])
@@ -86,6 +93,7 @@ module BulkImportIdeas::Importers
 
       log "Will import data for #{num_projects_to_import} projects"
     end
+    # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/PerceivedComplexity
 
@@ -94,6 +102,13 @@ module BulkImportIdeas::Importers
       projects.each do |project_data|
         BulkImportIdeas::ProjectImportJob.perform_later(project_data, import_id, @import_user, @locale)
       end
+      import_id
+    end
+
+    def preview_async(projects)
+      import_id = SecureRandom.uuid
+      preview(projects) # First run the preview to generate the log
+      BulkImportIdeas::ProjectImportPreviewJob.perform_later(import_log, import_id, @import_user, @locale)
       import_id
     end
 
