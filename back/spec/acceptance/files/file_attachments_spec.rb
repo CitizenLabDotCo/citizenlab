@@ -47,6 +47,16 @@ resource 'FileAttachments' do
         expect(response_ids).to match_array event_attachments.map(&:id)
       end
     end
+
+    context 'when there are legacy files marked as migrated' do
+      let!(:legacy_file) { create(:project_file, project: project, migrated_file: create(:file)) }
+
+      example_request 'List the file attachments' do
+        assert_status 200
+        expect(response_data.size).to eq(2)
+        expect(response_ids).to match_array file_attachment.map(&:id)
+      end
+    end
   end
 
   get 'web_api/v1/file_attachments/:id' do
@@ -87,6 +97,14 @@ resource 'FileAttachments' do
         project.admin_publication.update!(publication_status: 'draft')
         do_request
         assert_status 401
+      end
+    end
+
+    context 'when the legacy file is migrated' do
+      example 'Get a migrated legacy file by id [NOT FOUND]' do
+        migrated_file = create(:project_file, project: project, migrated_file: create(:file))
+        do_request(id: migrated_file.id)
+        assert_status 404
       end
     end
   end
@@ -256,6 +274,14 @@ resource 'FileAttachments' do
       assert_status 200
       expect(response_data.size).to eq(2)
     end
+
+    context 'when the legacy file is migrated' do
+      example 'Delete a migrated legacy file by id [NOT FOUND]' do
+        migrated_file = create(:project_file, project: project, migrated_file: create(:file))
+        do_request(id: migrated_file.id)
+        assert_status 404
+      end
+    end
   end
 
   shared_examples 'attachable resource' do |name, attachable_factory: name|
@@ -346,6 +372,20 @@ resource 'FileAttachments' do
       example '[error] Cannot attach an existing file to an idea', document: false do
         do_request
         assert_status 401
+      end
+    end
+
+    context 'when there are only migrated legacy files' do
+      before { create(:project_file, project: project, migrated_file: create(:file)) }
+
+      example 'Create a file as a file attachment' do
+        expect { do_request }
+          .to change(Files::File, :count).by(1)
+          .and(change(Files::FileAttachment, :count).by(1))
+          .and(change(Files::FilesProject, :count).by(1))
+          .and not_change(ProjectFile, :count)
+
+        assert_status 201
       end
     end
   end
