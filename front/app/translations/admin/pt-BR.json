@@ -2030,7 +2030,6 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Eventos",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Anexos (max. 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Os anexos são mostrados na página de informações do projeto.",
-  "app.containers.AdminPage.ProjectEdit.filesTab": "Arquivos",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Encontrar voluntários",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Peça aos participantes para serem voluntários em diversas atividades e causas",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Como um gerenciador de pastas, você pode escolher uma pasta ao criar o projeto, mas somente um administrador pode alterá-la posteriormente",

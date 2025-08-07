@@ -55,8 +55,8 @@ export default defineMessages({
     defaultMessage: 'Events',
   },
   filesTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.filesTab',
-    defaultMessage: 'Files',
+    id: 'app.containers.AdminPage.ProjectEdit.filesTab2',
+    defaultMessage: '360 Input',
   },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',

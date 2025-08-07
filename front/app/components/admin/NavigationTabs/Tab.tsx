@@ -74,7 +74,7 @@ const Container = styled.div`
 type TabProps = {
   className?: string;
   'data-cy'?: string;
-  label: string;
+  label: string | React.ReactNode;
   url: RouteType;
   active: boolean;
   badge?: React.ReactNode;
