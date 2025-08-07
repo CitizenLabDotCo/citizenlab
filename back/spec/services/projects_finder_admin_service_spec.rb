@@ -245,12 +245,12 @@ describe ProjectsFinderAdminService do
 
     it 'returns not_started projects' do
       result = described_class.filter_participation_states(Project.all, { participation_states: ['not_started'] })
-      expect(result.pluck(:id)).to eq([not_started_project.id])
+      expect(result.pluck(:id).sort).to match_array([not_started_project.id, project_without_phases.id].sort)
     end
 
-    it 'excludes projects without phases when filtering for not_started projects' do
+    it 'includes projects without phases when filtering for not_started projects' do
       result = described_class.filter_participation_states(Project.all, { participation_states: ['not_started'] })
-      expect(result.pluck(:id)).not_to include(project_without_phases.id)
+      expect(result.pluck(:id)).to include(project_without_phases.id)
     end
 
     it 'returns collecting_data projects' do
@@ -280,7 +280,7 @@ describe ProjectsFinderAdminService do
 
     it 'returns not_started, collecting_data, informing and past projects' do
       result = described_class.filter_participation_states(Project.all, { participation_states: %w[not_started collecting_data informing past] })
-      expect(result.pluck(:id).sort).to match_array([not_started_project.id, collecting_data_project.id, information_phase_project.id, past_project.id].sort)
+      expect(result.pluck(:id).sort).to match_array([not_started_project.id, project_without_phases.id, collecting_data_project.id, information_phase_project.id, past_project.id].sort)
     end
   end
 

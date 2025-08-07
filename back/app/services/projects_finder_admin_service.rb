@@ -206,15 +206,8 @@ class ProjectsFinderAdminService
     conditions = []
 
     if participation_states.include?('not_started')
-      # Projects that have at least one phase and no phases have started yet
-      conditions << <<-SQL.squish
-        projects.id IN (
-          SELECT project_id FROM phases 
-          GROUP BY project_id 
-          HAVING COUNT(*) > 0 
-          AND MIN(start_at) >= '#{today}'
-        )
-      SQL
+      # Projects with no phases that have started yet
+      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE start_at < '#{today}')"
     end
 
     if participation_states.include?('collecting_data')
