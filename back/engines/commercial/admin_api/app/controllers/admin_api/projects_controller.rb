@@ -49,7 +49,7 @@ module AdminApi
     end
 
     def local_creator_from_jwt
-      return nil unless template_import_params[:local_create].present?
+      return nil if template_import_params[:local_create].blank?
 
       if template_import_params[:local_create] == true
         auth_token = AuthToken::AuthToken.new(token: request.headers['X-JWT'])
