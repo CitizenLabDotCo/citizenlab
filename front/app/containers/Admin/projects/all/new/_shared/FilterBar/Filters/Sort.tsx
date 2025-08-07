@@ -42,6 +42,7 @@ const Sort = () => {
     <Select
       value={value}
       options={options}
+      dataCy="projects-overview-sort-select"
       onChange={(option) => {
         setParam('sort', option.value);
         trackEventByName(tracks.setSort, { sort: option.value });

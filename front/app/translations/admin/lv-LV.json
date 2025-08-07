@@ -1122,8 +1122,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "Pēc alfabēta (z-a)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "Vadītājs",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "Fāze sākas vai drīz beigsies",
-  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc": "Nesen izveidots (jauns-novs)",
-  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc": "Nesen izveidots (vecs-jauns)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_viewed": "Nesen skatīts",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.status": "Statuss",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins": "Administratori",

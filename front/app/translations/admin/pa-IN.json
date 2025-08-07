@@ -1122,8 +1122,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "ਵਰਣਮਾਲਾ ਕ੍ਰਮ ਵਿੱਚ (za)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "ਮੈਨੇਜਰ",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "ਪੜਾਅ ਜਲਦੀ ਸ਼ੁਰੂ ਹੋ ਰਿਹਾ ਹੈ ਜਾਂ ਖਤਮ ਹੋ ਰਿਹਾ ਹੈ",
-  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc": "ਹਾਲ ਹੀ ਵਿੱਚ ਬਣਾਇਆ ਗਿਆ (ਨਵਾਂ-ਪੁਰਾਣਾ)",
-  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc": "ਹਾਲ ਹੀ ਵਿੱਚ ਬਣਾਇਆ ਗਿਆ (ਪੁਰਾਣਾ-ਨਵਾਂ)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_viewed": "ਹਾਲ ਹੀ ਵਿੱਚ ਦੇਖੇ ਗਏ",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.status": "ਸਥਿਤੀ",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins": "ਐਡਮਿਨ",

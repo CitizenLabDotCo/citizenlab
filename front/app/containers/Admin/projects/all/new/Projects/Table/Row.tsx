@@ -77,7 +77,7 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
   };
 
   return (
-    <Tr>
+    <Tr dataCy="projects-overview-table-row">
       <Td
         background={colors.grey50}
         onMouseEnter={() => setHover('project')}

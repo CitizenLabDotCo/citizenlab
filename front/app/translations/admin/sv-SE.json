@@ -1122,8 +1122,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc": "I alfabetisk ordning (z-a)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager": "Chef",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.phase_starting_or_ending_soon": "Fas som börjar eller slutar snart",
-  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc": "Nyligen skapad (ny-gammal)",
-  "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc": "Nyligen skapad (gammal-ny)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_viewed": "Nyligen visad",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.status": "Status",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins": "Administratörer",
