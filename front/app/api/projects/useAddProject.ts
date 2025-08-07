@@ -5,6 +5,7 @@ import adminPublicationsKeys from 'api/admin_publications/keys';
 import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 import areasKeys from 'api/areas/keys';
 import meKeys from 'api/me/keys';
+import projectsMiniAdminKeys from 'api/projects_mini_admin/keys';
 import topicsKeys from 'api/topics/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -35,6 +36,9 @@ const useAddProject = () => {
         queryKey: adminPublicationsStatusCountsKeys.items(),
       });
       queryClient.invalidateQueries({ queryKey: meKeys.all() });
+      queryClient.invalidateQueries({
+        queryKey: projectsMiniAdminKeys.lists(),
+      });
     },
   });
 };
