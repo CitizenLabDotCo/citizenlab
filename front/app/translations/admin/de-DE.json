@@ -1151,7 +1151,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.nextPhase": "Nächste Phase:",
   "app.containers.Admin.projects.all.new.Projects.Table.notAssigned": "Nicht zugeordnet",
   "app.containers.Admin.projects.all.new.Projects.Table.phase": "Phase",
-  "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "Vor dem Start",
+  "app.containers.Admin.projects.all.new.Projects.Table.preLaunch": "noch nicht gestartet",
   "app.containers.Admin.projects.all.new.Projects.Table.project": "Projekt",
   "app.containers.Admin.projects.all.new.Projects.Table.public": "Öffentlich",
   "app.containers.Admin.projects.all.new.Projects.Table.published": "Veröffentlicht",
