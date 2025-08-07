@@ -62,7 +62,7 @@ module BulkImportIdeas::Extractors
           header = column_header(cell.column)
           next unless header # Skip if header is nil
 
-          value = clean_field_value(cell.value)
+          value = clean_string_value(cell.value)
           row_data << [header, value]
         end
         row_data = row_data.to_h
@@ -126,7 +126,8 @@ module BulkImportIdeas::Extractors
       number = number_field_attributes(column_name)
       return number if number
 
-      # TODO: If not a number field (or date?) then we need to ensure all values are strings
+      # If not a number field then we need to ensure all values are strings
+      @idea_rows = ensure_string_values(@idea_rows, column_name)
 
       # Is this a matrix field?
       matrix = matrix_field_attributes(column_name)
@@ -189,16 +190,6 @@ module BulkImportIdeas::Extractors
       format_select_field(input_type, unique_values)
     end
 
-    # Split by semicolon, space and capital letter to handle multiselects - assumes each option starts with a capital letter
-    def multiselect_regex
-      /; (?=[A-Z])/
-    end
-
-    # TODO: Change this to split by colon and semicolon by default
-    def matrix_regex
-      /([^:]+)\s*:\s*([^,]+)(?:,\s*|$)/
-    end
-
     def format_select_field(input_type, values)
       {
         input_type: input_type,
@@ -208,8 +199,6 @@ module BulkImportIdeas::Extractors
 
     def matrix_field_attributes(column_name)
       values = remove_empty_array_values(@idea_rows.pluck(column_name))
-
-      matrix_regex = /([^:]+)\s*:\s*([^,]+)(?:,\s*|$)/
       matches = values.first.scan(matrix_regex) # Test the first value, so we can determine if it's a matrix field
 
       if matches.any?
@@ -253,20 +242,22 @@ module BulkImportIdeas::Extractors
       nil
     end
 
+    # Default: Split by semicolon, space and capital letter to handle multiselects - assumes each option starts with a capital letter
+    def multiselect_regex
+      /; (?=[A-Z])/
+    end
+
+    # Default: Split by colon, and semi-colon to handle matrix fields
+    def matrix_regex
+      /([^:]+)\s*:\s*([^;]+)(?:;\s*|$)/
+    end
+
     def ignore_row?(_row)
       false
     end
 
     def reformat_multiselect_values(_column_name, _values)
       nil
-    end
-
-    # Rogue spaces can cause issues, so we clean them up
-    def clean_field_value(value)
-      return value unless value.is_a?(String)
-
-      value = value.gsub(/\s+,\s+/, ', ') # Clean up spaces around commas
-      value.gsub(/\s+/, ' ').strip
     end
 
     def participation_method_attributes

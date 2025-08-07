@@ -36,24 +36,11 @@ module BulkImportIdeas::Extractors
     end
 
     def reformat_multiselect_values(column_name, option_values)
-      update_delimiters(column_name, option_values)
+      @idea_rows = standardise_delimiters(@idea_rows, column_name, option_values, ',')
     end
 
     def reformat_matrix_values(column_name, labels)
-      update_delimiters(column_name, labels)
-    end
-
-    # Update values to ensure semicolons for multiselect & matrix fields.
-    # Updates the full string and not just , so that it can handle options like "Run, or jog" correctly.
-    def update_delimiters(column_name, values)
-      @idea_rows = @idea_rows.map do |row|
-        if row[column_name]
-          values.each do |value|
-            row[column_name] = row[column_name].sub("#{value}, ", "#{value}; ")
-          end
-        end
-        row
-      end
+      @idea_rows = standardise_delimiters(@idea_rows, column_name, labels, ',')
     end
   end
 end
