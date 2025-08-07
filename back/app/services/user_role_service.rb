@@ -78,4 +78,9 @@ class UserRoleService
   def moderates_something?(user)
     user.admin? || user.project_moderator? || user.project_folder_moderator?
   end
+
+  def moderators_per_folder(folder_ids)
+    # TODO
+    {}
+  end
 end
