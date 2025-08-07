@@ -53,6 +53,7 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
         iconSize="20px"
         m="0"
         ml="-16px"
+        dataCy="projects-overview-add-filter-button"
       />
       <Dropdown
         opened={isOpen}
@@ -62,6 +63,7 @@ const AddFilterDropdown = ({ availableFilters, onAddFilter }: Props) => {
             {availableFilters.map((filterKey, index) => (
               <DropdownListItem
                 key={index}
+                data-cy={`projects-overview-add-filter-${filterKey}`}
                 onClick={() => handleAddFilter(filterKey)}
               >
                 {formatMessage(FILTER_CONFIG[filterKey])}

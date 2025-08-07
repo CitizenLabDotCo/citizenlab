@@ -25,8 +25,6 @@ describe('Projects overview: admin (projects)', () => {
 
   it('Sorts by created date (desc)', () => {
     cy.setAdminLoginCookie();
-
-    // Visit projects overview
     cy.visit('/admin/projects');
 
     // Set sort
@@ -37,7 +35,23 @@ describe('Projects overview: admin (projects)', () => {
   });
 
   it('Persists filters from projects tab to calendar tab', () => {
-    // TODO
+    cy.setAdminLoginCookie();
+    cy.visit('/admin/projects');
+
+    // Add filter
+    cy.dataCy('projects-overview-add-filter-button').click();
+    cy.dataCy('projects-overview-add-filter-status').click();
+
+    // Open filter, select draft
+    cy.dataCy('projects-overview-filter-status').click();
+    cy.dataCy('multiselect-option-draft').click();
+
+    // Switch to calendar tab
+    cy.dataCy('projects-overview-calendar-tab').click();
+
+    // Assert that the filter is still there
+    cy.dataCy('projects-overview-filter-status').should('exist');
+    cy.dataCy('projects-overview-filter-status').contains('Status: Draft');
   });
 });
 

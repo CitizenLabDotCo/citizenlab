@@ -12,6 +12,7 @@ type Props = {
   dataTestId?: string;
   ariaLabel?: string;
   tabIndex?: number;
+  dataCy?: string;
 } & CheckboxProps &
   BoxPaddingProps &
   BoxMarginProps;
