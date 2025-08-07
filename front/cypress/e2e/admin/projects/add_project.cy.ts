@@ -32,15 +32,15 @@ describe('Admin: add project', () => {
 
         // Confirm the project is saved and appears as draft
         cy.visit('/admin/projects');
-        cy.url().should('include', '/admin/projects/');
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
+        cy.dataCy('projects-overview-sort-select').select(
+          'recently_created_desc'
+        );
+
+        cy.dataCy('projects-overview-table-row')
           .first()
           .contains(projectTitleEN);
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
-          .first()
-          .contains('Draft');
+
+        cy.dataCy('projects-overview-table-row').first().contains('Draft');
       });
     });
 
