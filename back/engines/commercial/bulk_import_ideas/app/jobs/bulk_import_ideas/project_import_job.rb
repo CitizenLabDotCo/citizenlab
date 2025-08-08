@@ -6,6 +6,7 @@ module BulkImportIdeas
     perform_retries false
 
     def run(project_data, import_id, import_user, locale)
+      locale = locale.to_sym # hashkeys get converted to symbols by the serializer
       importer = BulkImportIdeas::Importers::ProjectImporter.new(import_user, locale)
       project = importer.import_project(project_data)
       log = importer.import_log
@@ -15,7 +16,8 @@ module BulkImportIdeas
         import_user: import_user,
         import_id: import_id,
         log: log,
-        locale: locale
+        locale: locale,
+        import_type: 'project'
       )
     end
   end

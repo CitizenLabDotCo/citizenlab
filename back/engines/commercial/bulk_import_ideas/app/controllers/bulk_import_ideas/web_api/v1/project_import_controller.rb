@@ -16,14 +16,19 @@ module BulkImportIdeas
       # Unzip the import file - named for the tenant_schema
       unzip_base64_encoded_zip(base64_zip, upload_path)
 
-      # TODO: Extract & import users from an xlsx files in the ZIP
+      # Extract users from users.xlsx in the ZIP file
+      user_extractor = BulkImportIdeas::Extractors::UserExtractor.new(locale, nil, import_path)
+      users = user_extractor.users
+      user_custom_fields = user_extractor.custom_fields
 
-      # Extract & import projects, phases and content from the xlsx files in the ZIP
-      project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(locale, import_path)
+      # Extract projects, phases and content from the xlsx files in the ZIP
+      project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(locale, nil, import_path)
       projects = project_extractor.projects
+
+      # Import or preview
       importer = BulkImportIdeas::Importers::ProjectImporter.new(current_user, locale)
       num_projects = projects.count
-      import_id = preview ? importer.preview_async(projects) : importer.import_async(projects)
+      import_id = preview ? importer.preview_async(projects, users, user_custom_fields) : importer.import_async(projects, users, user_custom_fields)
 
       authorize Project.first # TODO: Fix this authorization
       render json: {
@@ -31,7 +36,7 @@ module BulkImportIdeas
           type: 'bulk_import_projects',
           id: import_id,
           attributes: {
-            projects_to_import: num_projects,
+            num_imports: num_projects + (users.any? ? 1 : 0), # +1 for the user import if users are present
             preview: preview
           }
         }
