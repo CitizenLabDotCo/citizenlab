@@ -15,6 +15,7 @@ module ReportBuilder
       'MethodsUsedWidget' => Queries::MethodsUsed,
       'ParticipationWidget' => Queries::Analytics::Participation,
       'ProjectsWidget' => Queries::Projects,
+      'ProjectsTimelineWidget' => Queries::ProjectsTimeline,
       'DeviceTypesWidget' => Queries::DeviceTypes,
       'VisitorsLanguagesWidget' => Queries::VisitorsLanguages
     }.freeze
