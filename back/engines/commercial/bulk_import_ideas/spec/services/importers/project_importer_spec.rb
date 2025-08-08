@@ -73,21 +73,18 @@ describe BulkImportIdeas::Importers::ProjectImporter do
   describe '#create_form' do
     let(:phase) { create(:native_survey_phase, project: create(:project)) }
 
-    it 'returns true if a new form is created for the project' do
-      form = service.send(:create_form, phase, [])
-      expect(form).to be true
+    it 'creates a new form for a native survey phase when it does not exist' do
+      expect { service.send(:create_form, phase, []) }.to change(CustomForm, :count).by(1)
     end
 
-    it 'returns false if the form already exists' do
+    it 'does not create a form if the form already exists' do
       create(:custom_form, participation_context: phase)
-      form = service.send(:create_form, phase, [])
-      expect(form).to be false
+      expect { service.send(:create_form, phase, []) }.not_to change(CustomForm, :count)
     end
 
-    it 'returns true (no form needs to be created) if an ideation phase' do
+    it 'does not create a form (no form needs to be created) if an ideation phase' do
       ideation_phase = create(:ideation_phase, project: create(:project))
-      form = service.send(:create_form, ideation_phase, [])
-      expect(form).to be true
+      expect { service.send(:create_form, ideation_phase, []) }.not_to change(CustomForm, :count)
     end
   end
 
@@ -113,6 +110,99 @@ describe BulkImportIdeas::Importers::ProjectImporter do
       new_project_data = service.send(:increment_title, project_data)
       expect(new_project_data[:slug]).to eq('test-project')
       expect(new_project_data[:title_multiloc]['en']).to eq('Test Project')
+    end
+  end
+
+  describe '#extract_project_user_data' do
+    let(:users) { [] }
+    let(:user_custom_fields) { [] }
+    let(:base_project_data) do
+      {
+        title_multiloc: { 'en' => 'Test Project' },
+        phases: []
+      }
+    end
+
+    it 'returns empty arrays when no user data exists' do
+      projects = [base_project_data]
+      result_users, result_custom_fields = service.send(:extract_project_user_data, projects, users, user_custom_fields)
+      expect(result_users).to be_empty
+      expect(result_custom_fields).to be_empty
+    end
+
+    it 'extracts user data from idea rows' do
+      projects = [{
+        **base_project_data,
+        phases: [{
+          idea_rows: [{
+            'Email address' => 'test@example.com',
+            'First Name(s)' => 'John',
+            'Last Name' => 'Doe'
+          }]
+        }]
+      }]
+
+      result_users, = service.send(:extract_project_user_data, projects, users, user_custom_fields)
+      expect(result_users.length).to eq(1)
+      expect(result_users.first).to include(
+        'Email address' => 'moc_elpmaxe_tset@example.com', # Email is replaced and reversed as we're on test
+        'First Name(s)' => 'John',
+        'Last Name' => 'Doe'
+      )
+    end
+
+    it 'does not duplicate users with the same email' do
+      existing_user = {
+        'Email address' => 'test@example.com',
+        'First Name(s)' => 'John',
+        'Last Name' => 'Doe'
+      }
+      projects = [{
+        **base_project_data,
+        phases: [{
+          idea_rows: [existing_user.dup]
+        }]
+      }]
+
+      result_users, = service.send(:extract_project_user_data, projects, [existing_user], user_custom_fields)
+      expect(result_users.length).to eq(1)
+    end
+
+    it 'merges user custom fields from phases if idea_rows are present' do
+      custom_field = {
+        title_multiloc: { 'en' => 'Custom Field' },
+        key: 'custom_field'
+      }
+      projects = [{
+        **base_project_data,
+        phases: [{
+          user_custom_fields: [custom_field],
+          idea_rows: [{ 'Organization' => 'ACME Corp' }]
+        }]
+      }]
+
+      _, result_custom_fields = service.send(:extract_project_user_data, projects, users, user_custom_fields)
+      expect(result_custom_fields).to include(custom_field)
+    end
+
+    it 'extracts user custom field values from idea rows' do
+      custom_field = {
+        title_multiloc: { 'en' => 'Organization' },
+        key: 'organization'
+      }
+      projects = [{
+        **base_project_data,
+        phases: [{
+          user_custom_fields: [custom_field],
+          idea_rows: [{
+            'Email address' => 'test@example.com',
+            'Organization' => 'ACME Corp'
+          }]
+        }]
+      }]
+
+      result_users, = service.send(:extract_project_user_data, projects, users, user_custom_fields)
+      expect(result_users.first['Organization']).to eq('ACME Corp')
     end
   end
 end

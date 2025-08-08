@@ -13,6 +13,7 @@
 #  string         :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  import_type    :string
 #
 # Indexes
 #
@@ -28,7 +29,11 @@ module BulkImportIdeas
   class ProjectImport < ApplicationRecord
     self.table_name = 'project_imports'
 
-    belongs_to :project
+    IMPORT_TYPES = %w[project user preview].freeze
+
+    belongs_to :project, optional: true
     belongs_to :import_user, class_name: 'User', optional: true
+
+    validates :import_type, inclusion: { in: IMPORT_TYPES }
   end
 end

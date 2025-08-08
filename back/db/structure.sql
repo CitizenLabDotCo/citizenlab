@@ -1449,7 +1449,8 @@ CREATE TABLE public.users (
     followings_count integer DEFAULT 0 NOT NULL,
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
-    last_active_at timestamp(6) without time zone
+    last_active_at timestamp(6) without time zone,
+    imported boolean DEFAULT false NOT NULL
 );
 
 
@@ -3184,7 +3185,8 @@ CREATE TABLE public.project_imports (
     locale character varying,
     string character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    import_type character varying
 );
 
 
@@ -7644,6 +7646,8 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250808071349'),
+('20250807120354'),
 ('20250730103628'),
 ('20250724190507'),
 ('20250724074646'),

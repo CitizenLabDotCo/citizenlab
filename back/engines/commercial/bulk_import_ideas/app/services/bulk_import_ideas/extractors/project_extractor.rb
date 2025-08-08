@@ -2,8 +2,8 @@
 
 module BulkImportIdeas::Extractors
   class ProjectExtractor < BaseExtractor
-    def initialize(locale, xlsx_folder_path)
-      super(locale)
+    def initialize(locale, config, xlsx_folder_path)
+      super(locale, config)
       @xlsx_folder_path = xlsx_folder_path
       @workbook = RubyXL::Parser.parse_buffer(open("#{xlsx_folder_path}/projects.xlsx").read)
     end
@@ -25,13 +25,12 @@ module BulkImportIdeas::Extractors
         phases = phase_details[title]&.map do |phase|
           returned_phase = information_phase(phase[:attributes]) # Information phase is default when no type is specified
           unless phase[:type].nil?
-            # TODO: Do try catch here to handle missing files / classes
             klass_name = "BulkImportIdeas::Extractors::#{phase[:type]}PhaseExtractor"
             extractor = klass_name.constantize.new(
               locale,
+              import_config,
               phase[:file],
               phase[:tab],
-              config,
               phase[:attributes]
             )
             returned_phase = extractor.phase
@@ -98,8 +97,8 @@ module BulkImportIdeas::Extractors
     end
 
     # Extracts any additional field configuration from the second worksheet of the XLSX file.
-    def config
-      @config ||= begin
+    def import_config
+      @import_config ||= begin
         config = {
           ignored_columns: [],
           user_columns: [],
@@ -107,7 +106,7 @@ module BulkImportIdeas::Extractors
           override_field_types: {}
         }
         @workbook.worksheets[2].drop(1).each do |row|
-          column_name = row.cells[0].value
+          column_name = clean_string_value(row.cells[0].value)
           next if column_name.blank?
 
           config[:user_columns] << column_name if row.cells[1]&.value&.downcase == 'user'

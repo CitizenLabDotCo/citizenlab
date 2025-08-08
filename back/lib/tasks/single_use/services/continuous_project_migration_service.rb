@@ -113,8 +113,6 @@ class Tasks::SingleUse::Services::ContinuousProjectMigrationService
       voting_max_votes_per_idea: project.voting_max_votes_per_idea,
       voting_max_total: project.voting_max_total,
       voting_min_total: project.voting_min_total,
-      voting_term_singular_multiloc: project.voting_term_singular_multiloc,
-      voting_term_plural_multiloc: project.voting_term_plural_multiloc,
 
       ideas_count: project.ideas_count,
       baskets_count: project.baskets_count,
