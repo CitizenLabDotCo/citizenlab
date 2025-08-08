@@ -1,5 +1,7 @@
 import { FormatMessage, IOption } from 'typings';
 
+import { ProjectSortableParam } from 'api/projects_mini_admin/types';
+
 import projectFilterMessages from 'containers/Admin/projects/all/new/_shared/FilterBar/Filters/messages';
 
 import messages from '../messages';
@@ -101,7 +103,14 @@ export const getParticipationMethodOptions = (
   },
 ];
 
-export const getSortOptions = (formatMessage: FormatMessage): IOption[] => [
+export interface ISortOption<T> {
+  value: T;
+  label: string;
+}
+
+export const getSortOptions = (
+  formatMessage: FormatMessage
+): ISortOption<ProjectSortableParam>[] => [
   {
     value: 'phase_starting_or_ending_soon',
     label: formatMessage(projectFilterMessages.phase_starting_or_ending_soon),
@@ -111,8 +120,12 @@ export const getSortOptions = (formatMessage: FormatMessage): IOption[] => [
     label: formatMessage(projectFilterMessages.recently_viewed),
   },
   {
-    value: 'recently_created',
-    label: formatMessage(projectFilterMessages.recently_created),
+    value: 'recently_created_asc',
+    label: formatMessage(projectFilterMessages.recently_created_asc),
+  },
+  {
+    value: 'recently_created_desc',
+    label: formatMessage(projectFilterMessages.recently_created_desc),
   },
   {
     value: 'alphabetically_asc',
