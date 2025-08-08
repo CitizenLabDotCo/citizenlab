@@ -278,6 +278,7 @@ export interface IAppConfigurationSettings {
   project_planning_calendar?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;
+  customised_automated_context_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;
 }
 

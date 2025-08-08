@@ -535,6 +535,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            customised_automated_context_emails: {
+              enabled: true,
+              allowed: true
+            },
             project_importer: {
               enabled: true,
               allowed: true
