@@ -4,7 +4,6 @@ import {
   ILinks,
   IRelationship,
   SupportedLocale,
-  ImageSizes,
 } from 'typings';
 
 import { ReviewState } from 'api/admin_publications/types';
@@ -57,12 +56,6 @@ export type ProjectMiniAdminData = {
     folder_title_multiloc: Multiloc | null;
     last_phase_end_date: string | null;
     listed: boolean;
-    project_managers: {
-      id: string;
-      first_name?: string;
-      last_name?: string;
-      avatar: ImageSizes;
-    }[];
     publication_status: PublicationStatus;
     title_multiloc: Multiloc;
     visible_to: Visibility;
@@ -85,6 +78,9 @@ export type ProjectMiniAdminData = {
         id: string;
         type: 'group';
       }[];
+    };
+    moderators: {
+      data: IRelationship[];
     };
   };
 };
