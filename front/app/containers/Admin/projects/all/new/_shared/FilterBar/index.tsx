@@ -27,7 +27,7 @@ const Filters = () => {
       <Sort />
       {isUserAdmin && <PendingApproval />}
       <Dates />
-      <DynamicFilters />
+      <DynamicFilters isUserAdmin={isUserAdmin} />
     </Box>
   );
 };

@@ -69,7 +69,7 @@ const IconContainer = styled.div<{ inputSize?: InputSize }>`
 `;
 
 export interface Props {
-  id: string;
+  id?: string;
   defaultValue?: string;
   placeholder: string;
   ariaLabel: string;
@@ -177,6 +177,7 @@ const SearchInput = ({
               iconColor={colors.textSecondary}
               iconColorOnHover="#000"
               a11y_buttonActionMessage={a11y_closeIconTitle}
+              mr="-5px"
             />
           ) : (
             <Icon name="search" fill={colors.textSecondary} />
