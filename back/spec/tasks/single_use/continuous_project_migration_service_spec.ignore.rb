@@ -57,9 +57,7 @@ RSpec.describe Tasks::SingleUse::Services::ContinuousProjectMigrationService do
         voting_method: continuous_project_attributes[:voting_method],
         voting_max_votes_per_idea: continuous_project_attributes[:voting_max_votes_per_idea],
         voting_max_total: continuous_project_attributes[:voting_max_total],
-        voting_min_total: continuous_project_attributes[:voting_min_total],
-        voting_term_singular_multiloc: continuous_project_attributes[:voting_term_singular_multiloc],
-        voting_term_plural_multiloc: continuous_project_attributes[:voting_term_plural_multiloc]
+        voting_min_total: continuous_project_attributes[:voting_min_total]
       })
     end
 
@@ -87,9 +85,7 @@ RSpec.describe Tasks::SingleUse::Services::ContinuousProjectMigrationService do
         voting_method: nil,
         voting_max_votes_per_idea: nil,
         voting_max_total: 10,
-        voting_min_total: 0,
-        voting_term_singular_multiloc: {},
-        voting_term_plural_multiloc: {}
+        voting_min_total: 0
       })
     end
 

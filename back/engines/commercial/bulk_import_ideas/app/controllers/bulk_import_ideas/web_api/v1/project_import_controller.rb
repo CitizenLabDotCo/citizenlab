@@ -5,6 +5,8 @@ module BulkImportIdeas
     def bulk_create_projects
       base64_zip = project_import_params[:file]
       locale = project_import_params[:locale]
+      preview = project_import_params[:preview]
+
       upload_path = 'tmp/import_files'
       import_path = "#{upload_path}/#{Tenant.current.schema_name}"
 
@@ -21,9 +23,7 @@ module BulkImportIdeas
       projects = project_extractor.projects
       importer = BulkImportIdeas::Importers::ProjectImporter.new(current_user, locale)
       num_projects = projects.count
-      import_id = importer.import_async(projects)
-
-      # TODO: No preview for projects do by creating new objects with the logs from importer.preview(projects)
+      import_id = preview ? importer.preview_async(projects) : importer.import_async(projects)
 
       authorize Project.first # TODO: Fix this authorization
       render json: {
@@ -31,7 +31,8 @@ module BulkImportIdeas
           type: 'bulk_import_projects',
           id: import_id,
           attributes: {
-            projects_to_import: num_projects
+            projects_to_import: num_projects,
+            preview: preview
           }
         }
       }
@@ -53,7 +54,7 @@ module BulkImportIdeas
     def project_import_params
       params
         .require(:import)
-        .permit(%i[file locale])
+        .permit(%i[file locale preview])
     end
 
     def unzip_base64_encoded_zip(base64_zip, destination)

@@ -28,7 +28,7 @@ module BulkImportIdeas
   class ProjectImport < ApplicationRecord
     self.table_name = 'project_imports'
 
-    belongs_to :project
+    belongs_to :project, optional: true
     belongs_to :import_user, class_name: 'User', optional: true
   end
 end

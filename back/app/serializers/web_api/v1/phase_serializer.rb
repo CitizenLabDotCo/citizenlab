@@ -47,18 +47,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     can_moderate?(phase, params)
   }
 
-  attribute :voting_term_singular_multiloc, if: proc { |phase|
-    phase.pmethod.supports_serializing?(:voting_term_singular_multiloc)
-  } do |phase|
-    phase.voting_term_singular_multiloc_with_fallback
-  end
-
-  attribute :voting_term_plural_multiloc, if: proc { |phase|
-    phase.pmethod.supports_serializing?(:voting_term_plural_multiloc)
-  } do |phase|
-    phase.voting_term_plural_multiloc_with_fallback
-  end
-
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
   end

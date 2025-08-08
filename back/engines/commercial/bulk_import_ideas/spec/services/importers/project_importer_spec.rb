@@ -73,21 +73,18 @@ describe BulkImportIdeas::Importers::ProjectImporter do
   describe '#create_form' do
     let(:phase) { create(:native_survey_phase, project: create(:project)) }
 
-    it 'returns true if a new form is created for the project' do
-      form = service.send(:create_form, phase, [])
-      expect(form).to be true
+    it 'creates a new form for a native survey phase when it does not exist' do
+      expect { service.send(:create_form, phase, []) }.to change(CustomForm, :count).by(1)
     end
 
-    it 'returns false if the form already exists' do
+    it 'does not create a form if the form already exists' do
       create(:custom_form, participation_context: phase)
-      form = service.send(:create_form, phase, [])
-      expect(form).to be false
+      expect { service.send(:create_form, phase, []) }.not_to change(CustomForm, :count)
     end
 
-    it 'returns true (no form needs to be created) if an ideation phase' do
+    it 'does not create a form (no form needs to be created) if an ideation phase' do
       ideation_phase = create(:ideation_phase, project: create(:project))
-      form = service.send(:create_form, ideation_phase, [])
-      expect(form).to be true
+      expect { service.send(:create_form, ideation_phase, []) }.not_to change(CustomForm, :count)
     end
   end
 
