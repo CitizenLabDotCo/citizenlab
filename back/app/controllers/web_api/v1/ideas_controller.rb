@@ -66,7 +66,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
+    ideas = ideas.includes(:author, :topics, :project, :idea_status)
 
     render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
@@ -78,7 +78,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user
     ).find_records
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
+    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files, :attached_files)
 
     with_cosponsors = AppConfiguration.instance.feature_activated?('input_cosponsorship')
     ideas = ideas.includes(:cosponsors) if with_cosponsors
