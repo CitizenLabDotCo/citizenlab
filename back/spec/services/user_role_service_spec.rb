@@ -222,6 +222,21 @@ describe UserRoleService do
     end
   end
 
+  describe 'moderators_per_project' do
+    it 'works' do
+      p1, p2, p3 = create_list(:project, 3)
+      m1 = create(:project_moderator, projects: [p1, p2])
+      m2 = create(:project_moderator, projects: [p2])
+      m3 = create(:project_moderator, projects: [p3])
+      m4 = create(:project_moderator, projects: [p3, p2])
+
+      expect(service.moderators_per_project([p1.id, p2.id])).to eq({
+        p1.id => [m1],
+        p2.id => [m1, m2, m4],
+      })
+    end
+  end
+
   describe 'moderators_per_folder' do
     it 'works' do
       f1, f2, f3, f4 = create_list(:project_folder, 4)

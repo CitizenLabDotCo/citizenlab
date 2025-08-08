@@ -79,6 +79,28 @@ class UserRoleService
     user.admin? || user.project_moderator? || user.project_folder_moderator?
   end
 
+  # Returns a hash with project IDs as keys and arrays of users as values
+  def moderators_per_project(project_ids)
+    project_ids_array = project_ids.map { |id| "'#{id}'" }.join(', ')
+    users = User.where(<<~SQL)
+      EXISTS (
+        SELECT 1 FROM jsonb_array_elements(roles) AS role
+        WHERE role->>'type' = 'project_moderator'
+          AND role->>'project_id' IN (#{project_ids_array})
+      )
+    SQL
+
+    users.each_with_object({}) do |user, hash|
+      user.roles.each do |role|
+        next unless role['type'] == 'project_moderator'
+        project_id = role['project_id']
+        next unless project_id && project_ids.include?(project_id)
+        hash[project_id] ||= []
+        hash[project_id] << user
+      end
+    end
+  end
+
   # Returns a hash with folder IDs as keys and arrays of users as values
   def moderators_per_folder(folder_ids)
     folder_ids_array = folder_ids.map { |id| "'#{id}'" }.join(', ')
