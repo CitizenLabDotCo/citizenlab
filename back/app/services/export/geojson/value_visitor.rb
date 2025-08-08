@@ -43,13 +43,15 @@ module Export
       end
 
       def visit_file_upload(field)
-        file = value_for(field)
+        file_id = value_for(field)['id']
+        return nil if file_id.blank?
 
-        return nil if file.nil? || file['id'].blank?
-
-        file_id = file['id']
-        idea_file = model.idea_files.detect { |f| f.id == file_id }
-        idea_file.file.url
+        if (file = model.idea_files.find { |f| f.id == file_id })
+          file.file.url
+        else
+          file_attachment = model.file_attachments.find { |f| f.id == file_id }
+          file_attachment.file.content.url
+        end
       end
 
       def visit_shapefile_upload(field)
