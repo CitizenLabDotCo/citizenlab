@@ -28,10 +28,11 @@ interface TabProps {
   message: MessageDescriptor;
   active: boolean;
   icon: IconNames;
+  dataCy?: string;
   onClick: () => void;
 }
 
-const Tab = ({ message, active, icon, onClick }: TabProps) => {
+const Tab = ({ message, active, icon, dataCy, onClick }: TabProps) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -39,6 +40,7 @@ const Tab = ({ message, active, icon, onClick }: TabProps) => {
       borderBottom={active ? `2px solid ${colors.primary}` : undefined}
       pb="4px"
       mr="20px"
+      data-cy={dataCy}
     >
       <Button
         buttonStyle="text"
@@ -68,11 +70,18 @@ const Tabs = () => {
   const { highest_role } = user.data.attributes;
 
   return (
-    <Box as="nav" display="flex" w="100%" mt="12px">
+    <Box
+      as="nav"
+      display="flex"
+      w="100%"
+      mt="12px"
+      className="intercom-product-tour-project-page-tabs"
+    >
       <Tab
         message={messages.projects}
         icon="projects"
         active={tab === null}
+        dataCy="projects-overview-projects-tab"
         onClick={() => {
           if (tab === 'folders') {
             removeSearchParams(FOLDER_PARAMS);
@@ -87,6 +96,7 @@ const Tabs = () => {
           message={messages.folders}
           icon="folder-outline"
           active={tab === 'folders'}
+          dataCy="projects-overview-folders-tab"
           onClick={() => {
             if ([null, 'calendar'].includes(tab)) {
               removeSearchParams(PROJECT_PARAMS);
@@ -105,6 +115,7 @@ const Tabs = () => {
         mr="20px"
         display="flex"
         alignItems="center"
+        data-cy="projects-overview-calendar-tab"
       >
         <Button
           buttonStyle="text"

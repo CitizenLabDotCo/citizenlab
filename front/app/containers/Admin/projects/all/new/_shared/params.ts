@@ -21,6 +21,7 @@ export const PARAMS: Parameter[] = [
   'participation_methods',
   'visibility',
   'discoverability',
+  'review_state',
 ];
 
 const MULTISELECT_PARAMS = new Set<string>([

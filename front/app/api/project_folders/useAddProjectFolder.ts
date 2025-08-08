@@ -4,6 +4,7 @@ import { CLErrors } from 'typings';
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 import projectFoldersKeys from 'api/project_folders/keys';
+import projectFoldersMiniKeys from 'api/project_folders_mini/keys';
 import projectsKeys from 'api/projects/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -26,6 +27,9 @@ const useAddProjectFolder = () => {
     onSuccess: async () => {
       queryClient.invalidateQueries({
         queryKey: projectFoldersKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: projectFoldersMiniKeys.lists(),
       });
       queryClient.invalidateQueries({
         queryKey: projectsKeys.lists(),

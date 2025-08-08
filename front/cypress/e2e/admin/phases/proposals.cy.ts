@@ -3,7 +3,7 @@ import { randomString } from '../../../support/commands';
 describe('Admin: proposal phase', () => {
   beforeEach(() => {
     cy.setConsentAndAdminLoginCookies();
-    cy.visit('/admin/projects/all');
+    cy.visit('/admin/projects');
     cy.dataCy('e2e-new-project-button').click();
     cy.wait(1000);
     cy.get('.e2e-project-general-form');
