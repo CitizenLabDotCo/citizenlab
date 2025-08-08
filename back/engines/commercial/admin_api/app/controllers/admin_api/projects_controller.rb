@@ -21,7 +21,9 @@ module AdminApi
     def template_import
       folder_id = template_import_params[:folder_id]
       template_yaml = template_import_params[:template_yaml]
-      job = CopyProjectJob.perform_later(template_yaml, folder_id)
+      local_creator = local_creator_from_jwt
+
+      job = CopyProjectJob.perform_later(template_yaml, folder_id, local_creator)
     rescue StandardError => e
       ErrorReporter.report(e)
       raise ClErrors::TransactionError.new(error_key: :bad_template)
@@ -30,7 +32,7 @@ module AdminApi
     end
 
     def template_import_params
-      params.require(:project).permit(:template_yaml, :folder_id)
+      params.require(:project).permit(:template_yaml, :folder_id, :local_create)
     end
 
     def template_export_params
@@ -44,6 +46,16 @@ module AdminApi
         :new_publication_status,
         new_title_multiloc: CL2_SUPPORTED_LOCALES
       )
+    end
+
+    def local_creator_from_jwt
+      return nil if template_import_params[:local_create].blank?
+
+      if template_import_params[:local_create] == true
+        auth_token = AuthToken::AuthToken.new(token: request.headers['X-JWT'])
+
+        User.find_by(id: auth_token.payload['sub'])
+      end
     end
   end
 end

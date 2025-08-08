@@ -84,9 +84,11 @@ resource 'Project', admin_api: true do
       example 'enqueues an AdminApi::CopyProjectJob' do
         template_yaml = template.to_yaml
 
+        local_creator = nil
+
         expect do
           do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id })
-        end.to enqueue_job(AdminApi::CopyProjectJob).with(template_yaml, folder.id)
+        end.to enqueue_job(AdminApi::CopyProjectJob).with(template_yaml, folder.id, local_creator)
 
         expect(status).to eq(202)
       end
