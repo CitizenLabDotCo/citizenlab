@@ -89,6 +89,8 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
     hasStartedUploading &&
     fileList.every(({ status }) => FINISHED_STATUSES.includes(status));
 
+  const aiCheckboxDisabled = hasStartedUploading || finishedUploading;
+
   return (
     <>
       {fileList.length > 0 ? (
@@ -96,6 +98,7 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
           <Title fontWeight="semi-bold" color="coolGrey700" variant="h3">
             {formatMessage(messages.confirmAndUploadFiles)}
           </Title>
+
           <Box maxHeight="300px" overflowY="auto" overflowX="hidden" mt="20px">
             {fileList.map((item, index) => (
               <SelectedFile
@@ -119,7 +122,11 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
           <Box mt="20px">
             <CheckboxWithLabel
               checked={allowAiProcessing}
+              disabled={hasStartedUploading || finishedUploading}
               onChange={(event) => {
+                // If the checkbox is disabled, do not allow changes
+                if (aiCheckboxDisabled) return;
+
                 setAllowAiProcessing(event.target.checked);
                 // Update the AI processing flag for all files in the list
                 setFileList((prev) =>

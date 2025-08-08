@@ -44,6 +44,10 @@ const Question = ({ insight }: Props) => {
     id: insight.relationships.insightable.data.id,
   });
 
+  const fileIds = question?.data.relationships.files?.data.map(
+    (file) => file.id
+  );
+
   const handleQuestionDelete = (id: string) => {
     if (window.confirm(formatMessage(messages.deleteQuestionConfirmation))) {
       deleteQuestion(
@@ -101,6 +105,7 @@ const Question = ({ insight }: Props) => {
         <InsightBody
           text={answer}
           filters={question.data.attributes.filters}
+          fileIds={fileIds}
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}

@@ -12,17 +12,19 @@ type IAnalysisUpdate = {
   id: string;
   show_insights?: boolean;
   additional_custom_field_ids?: string[];
+  files?: string[]; // An array of file IDs
 };
 
 const updateAnalysis = ({
   id,
   show_insights,
   additional_custom_field_ids,
+  files,
 }: IAnalysisUpdate) =>
   fetcher<IAnalysis>({
     path: `/analyses/${id}`,
     action: 'patch',
-    body: { analysis: { show_insights, additional_custom_field_ids } },
+    body: { analysis: { show_insights, additional_custom_field_ids, files } },
   });
 
 const useUpdateAnalysis = () => {
