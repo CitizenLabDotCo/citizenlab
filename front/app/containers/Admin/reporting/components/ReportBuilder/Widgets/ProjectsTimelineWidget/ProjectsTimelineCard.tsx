@@ -27,7 +27,7 @@ export interface ProjectsTimelineCardProps {
   title?: Multiloc;
   startAt?: string;
   endAt?: string | null;
-  publicationStatuses?: ProjectReportsPublicationStatus[];
+  status?: ProjectReportsPublicationStatus[];
   showTodayLine?: boolean;
   participationStates?: ParticipationState[];
   visibility?: Visibility[];
@@ -36,13 +36,13 @@ export interface ProjectsTimelineCardProps {
   folderIds?: string[];
   participationMethods?: ParticipationMethod[];
   sort?: ProjectSortableParam;
-  numberOfProjects?: number;
+  noOfProjects?: number;
 }
 
 const ProjectsTimelineCard = ({
   startAt,
   endAt,
-  publicationStatuses = ['published'],
+  status = ['published'],
   showTodayLine = true,
   participationStates = [],
   visibility = [],
@@ -51,22 +51,27 @@ const ProjectsTimelineCard = ({
   folderIds = [],
   participationMethods = [],
   sort = 'phase_starting_or_ending_soon',
-  numberOfProjects = 10,
+  noOfProjects = 10,
 }: ProjectsTimelineCardProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data, isLoading } = useProjectsTimeline({
     start_at: startAt,
     end_at: endAt,
-    publication_statuses: publicationStatuses,
-    participation_states: participationStates,
-    visibility,
-    discoverability,
+    status,
+    review_state: undefined,
     managers,
+    search: undefined,
+    min_start_date: undefined,
+    max_start_date: undefined,
+    participation_states: participationStates,
     folder_ids: folderIds,
     participation_methods: participationMethods,
+    visibility,
+    discoverability,
     sort,
-    number_of_projects: numberOfProjects,
+    locale: undefined,
+    no_of_projects: noOfProjects,
   });
 
   if (isLoading) {
