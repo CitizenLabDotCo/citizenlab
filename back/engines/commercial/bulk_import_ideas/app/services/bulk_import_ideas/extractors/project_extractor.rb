@@ -55,6 +55,28 @@ module BulkImportIdeas::Extractors
       projects.compact
     end
 
+    # Extracts any additional field configuration from the second worksheet of the XLSX file.
+    def import_config
+      @import_config ||= begin
+        config = {
+          ignored_columns: [],
+          user_columns: [],
+          renamed_columns: {},
+          override_field_types: {}
+        }
+        @workbook.worksheets[2].drop(1).each do |row|
+          column_name = clean_string_value(row.cells[0].value)
+          next if column_name.blank?
+
+          config[:user_columns] << column_name if row.cells[1]&.value&.downcase == 'user'
+          config[:ignored_columns] << column_name if row.cells[3]&.value&.downcase == 'yes'
+          config[:override_field_types][column_name] = row.cells[2]&.value if row.cells[2]&.value.present?
+          config[:renamed_columns][column_name] = row.cells[4]&.value if row.cells[4]&.value.present?
+        end
+        config
+      end
+    end
+
     private
 
     def phase_details
@@ -94,28 +116,6 @@ module BulkImportIdeas::Extractors
         user_custom_fields: [],
         idea_rows: []
       }
-    end
-
-    # Extracts any additional field configuration from the second worksheet of the XLSX file.
-    def import_config
-      @import_config ||= begin
-        config = {
-          ignored_columns: [],
-          user_columns: [],
-          renamed_columns: {},
-          override_field_types: {}
-        }
-        @workbook.worksheets[2].drop(1).each do |row|
-          column_name = clean_string_value(row.cells[0].value)
-          next if column_name.blank?
-
-          config[:user_columns] << column_name if row.cells[1]&.value&.downcase == 'user'
-          config[:ignored_columns] << column_name if row.cells[3]&.value&.downcase == 'yes'
-          config[:override_field_types][column_name] = row.cells[2]&.value if row.cells[2]&.value.present?
-          config[:renamed_columns][column_name] = row.cells[4]&.value if row.cells[4]&.value.present?
-        end
-        config
-      end
     end
   end
 end

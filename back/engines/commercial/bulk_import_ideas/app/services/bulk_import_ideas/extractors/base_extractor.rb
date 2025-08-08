@@ -45,7 +45,7 @@ module BulkImportIdeas::Extractors
       return text_field_attributes(rows, column_name) if override_input_type == 'text'
 
       # Is this a number field?
-      number = number_field_attributes(rows, column_name)
+      number = number_field_attributes(rows, column_name, override_input_type)
       return number if number
 
       # If not a number field then we need to ensure all values are strings
@@ -64,9 +64,9 @@ module BulkImportIdeas::Extractors
     end
 
     # TODO: This could also detect linear scale fields too
-    def number_field_attributes(rows, column_name)
+    def number_field_attributes(rows, column_name, override_input_type)
       values = rows.pluck(column_name).compact
-      return nil unless values.all?(Integer)
+      return nil unless values.all?(Integer) || override_input_type == 'number'
 
       {
         input_type: 'number'
@@ -105,7 +105,9 @@ module BulkImportIdeas::Extractors
       end
 
       unique_ratio = values.size / unique_values.size.to_f
-      return nil if unique_ratio < 5 # Not enough unique values to warrant a select field
+
+      # Are there enough unique values to warrant a select field? This may need to be tweaked or the field type overridden
+      return nil if unique_ratio < 5 && override_input_type != 'multiselect'
 
       reformat_multiselect_values(column_name, unique_values) if input_type == 'multiselect'
 

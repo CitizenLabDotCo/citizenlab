@@ -16,14 +16,15 @@ module BulkImportIdeas
       # Unzip the import file - named for the tenant_schema
       unzip_base64_encoded_zip(base64_zip, upload_path)
 
-      # Extract users from users.xlsx in the ZIP file
-      user_extractor = BulkImportIdeas::Extractors::UserExtractor.new(locale, nil, import_path)
-      users = user_extractor.users
-      user_custom_fields = user_extractor.custom_fields
-
       # Extract projects, phases and content from the xlsx files in the ZIP
       project_extractor = BulkImportIdeas::Extractors::ProjectExtractor.new(locale, nil, import_path)
       projects = project_extractor.projects
+
+      # Extract users from users.xlsx in the ZIP file
+      config = project_extractor.import_config # We reuse the config from the project extractor
+      user_extractor = BulkImportIdeas::Extractors::UserExtractor.new(locale, config, import_path)
+      users = user_extractor.users
+      user_custom_fields = user_extractor.custom_fields
 
       # Import or preview
       importer = BulkImportIdeas::Importers::ProjectImporter.new(current_user, locale)

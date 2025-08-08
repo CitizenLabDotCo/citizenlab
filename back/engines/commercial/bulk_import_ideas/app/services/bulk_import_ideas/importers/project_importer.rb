@@ -59,12 +59,15 @@ module BulkImportIdeas::Importers
             num_existing += 1
             log "FOUND: User already exists with email: #{user_row[USER_EMAIL]}"
           else
+            custom_field_values = process_user_custom_field_values(user_custom_fields, user_row)
+
             # Assumption is that we only import active users who have confirmed their email
             # Though they have to reset their password by email after import anyway
             user = User.create!(
               email: user_row[USER_EMAIL],
               first_name: user_row[USER_FIRST_NAME],
               last_name: user_row[USER_LAST_NAME] || '',
+              custom_field_values: custom_field_values,
               created_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
               last_active_at: user_row[USER_LAST_ACTIVE_AT] ? user_row[USER_LAST_ACTIVE_AT].to_time : Time.now,
               registration_completed_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
@@ -79,8 +82,38 @@ module BulkImportIdeas::Importers
           log "ERROR importing user '#{user_row[USER_EMAIL]}': #{e.message}"
         end
         log "Imported #{num_created} new users (#{num_existing} existing users were skipped)"
-        log 'CUSTOM FIELDS NOT IMPLEMENTED YET'
       end
+    end
+
+    # NOTE: Pinched a little from IdeaBaseFileParser. Could not think of way to share the code easily.
+    # Currently only works for fields we know we need to import for new west
+    def process_user_custom_field_values(custom_fields, user_row)
+      custom_field_values = {}
+      user_row.each do |field_name, value|
+        field = find_object_by_title(custom_fields, field_name)
+        next unless field && value
+
+        # If the field is a select or multiselect, we need to convert the value to the option keys
+        if SELECT_TYPES.include? field[:input_type]
+          split_values = value.to_s.split('; ')
+          option_keys = []
+          split_values.each do |option_title|
+            option = find_object_by_title(field[:options], option_title)
+            option_keys << option[:key] if option
+          end
+
+          value = option_keys.compact.uniq
+          value = value.first if field[:input_type] == 'select' && value.is_a?(Array)
+        elsif field[:input_type] == 'number'
+          value = value.to_i
+        end
+        custom_field_values[field[:key]] = value
+      end
+      custom_field_values
+    end
+
+    def find_object_by_title(custom_fields, title)
+      custom_fields.find { |f| f[:title_multiloc][@locale] == title }
     end
 
     # Import a single project
@@ -255,14 +288,14 @@ module BulkImportIdeas::Importers
     def create_user_fields(user_custom_fields)
       # Create any user fields if they don't already exist
       user_custom_fields.each do |field|
-        custom_field = CustomField.find_by(key: field[:key])
+        custom_field = CustomField.find_by(key: field[:key]) || CustomField.find_by(code: field[:key]) # Built in fields may have a code instead of a key
 
         if custom_field
-          log "FOUND existing custom_field with key '#{custom_field.key}'"
+          log "FOUND existing custom_field with key: '#{custom_field.key}'"
           next
         end
 
-        custom_field = CustomField.create!(field.except(:options, :statements).merge(resource_type: 'User'))
+        custom_field = CustomField.create!(field.except(:options, :statements).merge(resource_type: 'User', required: false))
         if SELECT_TYPES.include? field[:input_type]
           # If the field is a select type, we need to create options
           field[:options].each do |option|
