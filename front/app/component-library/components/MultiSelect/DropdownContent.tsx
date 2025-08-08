@@ -88,7 +88,7 @@ const DropdownContent = ({
           <SearchInput
             defaultValue={searchValue}
             placeholder={searchPlaceholder ?? ''}
-            onChange={onSearch}
+            onChange={(value) => onSearch(value ?? '')}
             ariaLabel=""
             hideLabel
             size="small"
