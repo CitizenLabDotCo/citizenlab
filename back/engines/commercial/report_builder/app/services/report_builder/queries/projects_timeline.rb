@@ -17,9 +17,7 @@ module ReportBuilder
         start_at: params[:start_at],
         end_at: params[:end_at],
         status: params[:status] || ['published'],
-        review_state: params[:review_state],
         managers: params[:managers] || [],
-        search: params[:search],
         min_start_date: params[:min_start_date],
         max_start_date: params[:max_start_date],
         participation_states: params[:participation_states] || [],
@@ -28,7 +26,6 @@ module ReportBuilder
         visibility: params[:visibility] || [],
         discoverability: params[:discoverability] || [],
         sort: params[:sort] || 'recently_created_desc',
-        locale: params[:locale],
         no_of_projects: params[:no_of_projects]
       }
     end

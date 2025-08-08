@@ -59,9 +59,7 @@ const ProjectsTimelineCard = ({
     start_at: undefined,
     end_at: undefined,
     status,
-    review_state: undefined,
     managers,
-    search: undefined,
     min_start_date: minStartDate,
     max_start_date: maxStartDate || undefined,
     participation_states: participationStates,
@@ -70,7 +68,6 @@ const ProjectsTimelineCard = ({
     visibility,
     discoverability,
     sort,
-    locale: undefined,
     no_of_projects: noOfProjects,
   });
 
