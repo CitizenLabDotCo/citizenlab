@@ -33,30 +33,6 @@ RSpec.describe Phase do
     end
   end
 
-  describe 'voting_term_singular_multiloc_with_fallback' do
-    it "falls back to the translations when there's no title_multiloc" do
-      item = create(:phase, voting_term_singular_multiloc: nil)
-      expect(item.voting_term_singular_multiloc_with_fallback).to match({ 'en' => 'vote', 'fr-FR' => 'vote', 'nl-NL' => 'stem' })
-    end
-
-    it 'returns the custom copy for locales with custom copy and falls back to the translations for other locales' do
-      item = create(:phase, voting_term_singular_multiloc: { 'nl-NL' => 'voorkeur' })
-      expect(item.voting_term_singular_multiloc_with_fallback).to match({ 'en' => 'vote', 'fr-FR' => 'vote', 'nl-NL' => 'voorkeur' })
-    end
-  end
-
-  describe 'voting_term_plural_multiloc_with_fallback' do
-    it "falls back to the translations when there's no title_multiloc" do
-      item = create(:phase, voting_term_plural_multiloc: nil)
-      expect(item.voting_term_plural_multiloc_with_fallback).to match({ 'en' => 'votes', 'fr-FR' => 'votes', 'nl-NL' => 'stemmen' })
-    end
-
-    it 'returns the custom copy for locales with custom copy and falls back to the translations for other locales' do
-      item = create(:phase, voting_term_plural_multiloc: { 'en' => 'preferences' })
-      expect(item.voting_term_plural_multiloc_with_fallback).to match({ 'en' => 'preferences', 'fr-FR' => 'votes', 'nl-NL' => 'stemmen' })
-    end
-  end
-
   describe 'timing model validation' do
     it 'succeeds when start_at and end_at are equal' do
       phase = build(:phase)
