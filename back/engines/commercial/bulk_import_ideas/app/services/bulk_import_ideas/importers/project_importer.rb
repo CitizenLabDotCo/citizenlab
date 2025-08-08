@@ -406,7 +406,7 @@ module BulkImportIdeas::Importers
       # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
       unless Rails.env.production?
         users = users.map do |user_row|
-          user_row['Email address'] = "#{user_row['Email address'].gsub(/[@.]/, '_').reverse}@example.com"
+          user_row['Email address'] = "#{user_row['Email address']&.gsub(/[@.]/, '_')&.reverse}@example.com"
           user_row
         end
       end
