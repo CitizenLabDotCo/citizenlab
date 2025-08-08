@@ -38,6 +38,10 @@ module BulkImportIdeas::Extractors
           header = clean_string_value(@worksheet[0][column_index]&.value)
           next unless header # Skip if header is nil
 
+          # Change some names to match our import format
+          renamed_columns = @config[:renamed_columns] || {}
+          header = renamed_columns[header] if renamed_columns.key?(header)
+
           value = clean_string_value(cell.value)
           row_data << [header, value]
         end
