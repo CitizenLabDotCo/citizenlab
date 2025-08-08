@@ -20,7 +20,7 @@ module BulkImportIdeas::Extractors
     def custom_fields
       return [] if @rows.empty?
 
-      columns = @rows.flat_map(&:keys).uniq - %w[Email FirstName LastName]
+      columns = @rows.flat_map(&:keys).uniq - %w[Email FirstName LastName DateCreated LastAccess]
       generate_fields(@rows, columns, fixed_key: true)
     end
 
@@ -46,7 +46,7 @@ module BulkImportIdeas::Extractors
       data
     end
 
-    # TODO: These are specific to EngagementHQ and should be moved to a specific extractor
+    # TODO: Custom field extraction is currently specific to EngagementHQ only
 
     # Split by comma, space and capital letter to handle multiselects - assumes each option starts with a capital letter
     def multiselect_regex
