@@ -8,6 +8,7 @@ import useProjectFolders from 'api/project_folders/useProjectFolders';
 import useUsers from 'api/users/useUsers';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
@@ -24,15 +25,17 @@ import { ProjectsTimelineCardProps } from '../ProjectsTimelineCard';
 import { getParticipationMethodOptions, getSortOptions } from './utils';
 
 type SettingsFieldProps = {
-  label: string;
+  label?: string;
   children: ReactNode;
 };
 
 const SettingsField = ({ label, children }: SettingsFieldProps) => (
   <Box mb="20px">
-    <Text variant="bodyM" color="textSecondary" mb="5px">
-      {label}
-    </Text>
+    {label && (
+      <Text variant="bodyM" color="textSecondary" mb="5px">
+        {label}
+      </Text>
+    )}
     {children}
   </Box>
 );
@@ -191,18 +194,27 @@ const Settings = () => {
   return (
     <Box>
       <TitleInput />
+      <SettingsField>
+        <MultiSelect
+          selected={managers}
+          options={managerOptions}
+          title={formatMessage(projectFilterMessages.manager)}
+          onChange={(managerIds) => {
+            handleMultiSelectChange('managers')(
+              managerIds.map((id) => ({
+                value: id,
+                label:
+                  managerOptions.find((opt) => opt.value === id)?.label || id,
+              }))
+            );
+          }}
+        />
+      </SettingsField>
       <SettingsField label={formatMessage(messages.publicationStatus)}>
         <MultipleSelect
           value={status}
           options={publicationStatusOptions}
           onChange={handleMultiSelectChange('status')}
-        />
-      </SettingsField>
-      <SettingsField label={formatMessage(projectFilterMessages.manager)}>
-        <MultipleSelect
-          value={managers}
-          options={managerOptions}
-          onChange={handleMultiSelectChange('managers')}
         />
       </SettingsField>
       <SettingsField label={formatMessage(projectFilterMessages.folders)}>
