@@ -12,9 +12,9 @@ module BulkImportIdeas::Importers
       import_users(users, user_custom_fields)
 
       # Import projects
-      # projects.each do |project_data|
-      #   import_project(project_data)
-      # end
+      projects.each do |project_data|
+        import_project(project_data)
+      end
     end
 
     def import_async(projects, users, user_custom_fields)
@@ -39,31 +39,29 @@ module BulkImportIdeas::Importers
         num_created = 0
         num_existing = 0
         users.each do |user_row|
-          begin
-            exists = User.find_by(email: user_row["Email"])
-            if exists
-              num_existing += 1
-              log "FOUND: User already exists with email: #{user_row["Email"]}"
-            else
-              # Assumption is that we only import active users who have confirmed their email
-              # Though they have to reset their password by email after import anyway
-              user = User.create!(
-                email: user_row["Email"],
-                first_name: user_row["FirstName"],
-                last_name: user_row["LastName"] || '',
-                created_at: user_row["DateCreated"] ? DateTime.parse(user_row["DateCreated"]) : Time.now,
-                last_active_at: user_row["LastAccess"] ? DateTime.parse(user_row["LastAccess"]) : Time.now,
-                registration_completed_at: user_row["DateCreated"] ? DateTime.parse(user_row["DateCreated"]) : Time.now,
-                email_confirmed_at: user_row["DateCreated"] ? DateTime.parse(user_row["DateCreated"]) : Time.now,
-                locale: @locale,
-                imported: true
-              )
-              num_created += 1
-              log "Imported user: #{user.email}"
-            end
-          rescue StandardError => e
-            log "ERROR importing user '#{user_row[:email]}': #{e.message}"
+          exists = User.find_by(email: user_row['Email'])
+          if exists
+            num_existing += 1
+            log "FOUND: User already exists with email: #{user_row['Email']}"
+          else
+            # Assumption is that we only import active users who have confirmed their email
+            # Though they have to reset their password by email after import anyway
+            user = User.create!(
+              email: user_row['Email'],
+              first_name: user_row['FirstName'],
+              last_name: user_row['LastName'] || '',
+              created_at: user_row['DateCreated'] ? DateTime.parse(user_row['DateCreated']) : Time.now,
+              last_active_at: user_row['LastAccess'] ? DateTime.parse(user_row['LastAccess']) : Time.now,
+              registration_completed_at: user_row['DateCreated'] ? DateTime.parse(user_row['DateCreated']) : Time.now,
+              email_confirmed_at: user_row['DateCreated'] ? DateTime.parse(user_row['DateCreated']) : Time.now,
+              locale: @locale,
+              imported: true
+            )
+            num_created += 1
+            log "Imported user: #{user.email}"
           end
+        rescue StandardError => e
+          log "ERROR importing user '#{user_row[:email]}': #{e.message}"
         end
         log "Imported #{num_created} new users (#{num_existing} existing users were skipped)"
         log 'CUSTOM FIELDS NOT IMPLEMENTED YET'

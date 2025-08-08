@@ -207,22 +207,20 @@ module BulkImportIdeas::Extractors
     end
 
     def ensure_string_values(rows, column_name)
-      rows.map do |row|
+      rows.each do |row|
         row[column_name] = row[column_name].to_s if row[column_name] # Ensure the value is a string
-        row
       end
     end
 
     # Update values to ensure semicolons as delimiters for multiselect & matrix fields - to match our standard
     # Updates the full string and not just the delimiter so that it can handle options like "Run, or jog" correctly.
     def standardise_delimiters(rows, column_name, values, original_delimiter)
-      rows.map do |row|
+      rows.each do |row|
         if row[column_name]
           values.each do |value|
             row[column_name] = row[column_name].gsub("#{value}#{original_delimiter} ", "#{value}; ")
           end
         end
-        row
       end
     end
 
