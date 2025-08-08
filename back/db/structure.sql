@@ -58,7 +58,9 @@ ALTER TABLE IF EXISTS ONLY public.project_files DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_bede8fb214;
 ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF EXISTS fk_rails_bde9116e72;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_bd36415a82;
+ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXISTS fk_rails_bc5577641e;
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS fk_rails_bb813b4549;
+ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_b8d87c000f;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b894d506a0;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_b4a1624855;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS fk_rails_b48da9e6c7;
@@ -85,6 +87,7 @@ ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_9268535f02;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_8fb43a173d;
+ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_8f9b3b56d6;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_8e3f01dacd;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS fk_rails_8cabeff294;
 ALTER TABLE IF EXISTS ONLY public.idea_relations DROP CONSTRAINT IF EXISTS fk_rails_8a385cdad7;
@@ -102,6 +105,7 @@ ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_7f
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS fk_rails_7f284a4f09;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
 ALTER TABLE IF EXISTS ONLY public.analysis_heatmap_cells DROP CONSTRAINT IF EXISTS fk_rails_7a39fbbdee;
+ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_7768309984;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_73e1dee5fd;
@@ -117,6 +121,7 @@ ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_604cfbcd8d;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_5ea1f11fd5;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
+ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS fk_rails_577d1fb456;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_5471f55cd6;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS fk_rails_5373344100;
@@ -147,6 +152,7 @@ ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS fk_rails_121f3a2011;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b472696;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_0b6ac3e1da;
+ALTER TABLE IF EXISTS ONLY public.project_files DROP CONSTRAINT IF EXISTS fk_rails_092f3b7f98;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_06b2d7a3a8;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_04be8cf6ba;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS fk_rails_0434b48643;
@@ -185,6 +191,7 @@ DROP INDEX IF EXISTS public.index_static_pages_topics_on_static_page_id;
 DROP INDEX IF EXISTS public.index_static_pages_on_slug;
 DROP INDEX IF EXISTS public.index_static_pages_on_code;
 DROP INDEX IF EXISTS public.index_static_page_files_on_static_page_id;
+DROP INDEX IF EXISTS public.index_static_page_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
@@ -208,7 +215,9 @@ DROP INDEX IF EXISTS public.index_project_images_on_project_id;
 DROP INDEX IF EXISTS public.index_project_folders_images_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_project_folders_folders_on_slug;
 DROP INDEX IF EXISTS public.index_project_folders_files_on_project_folder_id;
+DROP INDEX IF EXISTS public.index_project_folders_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_project_files_on_project_id;
+DROP INDEX IF EXISTS public.index_project_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_polls_responses_on_user_id;
 DROP INDEX IF EXISTS public.index_polls_responses_on_phase_id;
 DROP INDEX IF EXISTS public.index_polls_response_options_on_response_id;
@@ -219,6 +228,7 @@ DROP INDEX IF EXISTS public.index_phases_on_start_at_and_end_at;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
 DROP INDEX IF EXISTS public.index_phases_on_manual_voters_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_phase_id;
+DROP INDEX IF EXISTS public.index_phase_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_permissions_on_permission_scope_id;
 DROP INDEX IF EXISTS public.index_permissions_on_action;
 DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_permission_id;
@@ -293,6 +303,7 @@ DROP INDEX IF EXISTS public.index_idea_imports_on_file_id;
 DROP INDEX IF EXISTS public.index_idea_import_files_on_project_id;
 DROP INDEX IF EXISTS public.index_idea_import_files_on_parent_id;
 DROP INDEX IF EXISTS public.index_idea_images_on_idea_id;
+DROP INDEX IF EXISTS public.index_idea_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_idea_files_on_idea_id;
 DROP INDEX IF EXISTS public.index_id_id_card_lookup_id_cards_on_hashed_card_id;
 DROP INDEX IF EXISTS public.index_groups_projects_on_project_id;
@@ -328,6 +339,7 @@ DROP INDEX IF EXISTS public.index_events_attendances_on_created_at;
 DROP INDEX IF EXISTS public.index_events_attendances_on_attendee_id_and_event_id;
 DROP INDEX IF EXISTS public.index_events_attendances_on_attendee_id;
 DROP INDEX IF EXISTS public.index_event_images_on_event_id;
+DROP INDEX IF EXISTS public.index_event_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_event_files_on_event_id;
 DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embedding;
 DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embedded_attributes;
@@ -420,6 +432,7 @@ DROP INDEX IF EXISTS public.index_activities_on_item_type_and_item_id;
 DROP INDEX IF EXISTS public.index_activities_on_action;
 DROP INDEX IF EXISTS public.index_activities_on_acted_at;
 DROP INDEX IF EXISTS public.inappropriate_content_flags_flaggable;
+DROP INDEX IF EXISTS public.idx_on_context_type_context_id_root_job_type_d5d424e7c3;
 DROP INDEX IF EXISTS public.i_v_user;
 DROP INDEX IF EXISTS public.i_v_timestamp;
 DROP INDEX IF EXISTS public.i_v_referrer_type;
@@ -2407,8 +2420,16 @@ CREATE TABLE public.event_files (
     ordering integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    name character varying
+    name character varying,
+    migrated_file_id uuid
 );
+
+
+--
+-- Name: COLUMN event_files.migrated_file_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.event_files.migrated_file_id IS 'References the Files::File record after migration to new file system';
 
 
 --
@@ -2616,8 +2637,16 @@ CREATE TABLE public.idea_files (
     ordering integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    name character varying
+    name character varying,
+    migrated_file_id uuid
 );
+
+
+--
+-- Name: COLUMN idea_files.migrated_file_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.idea_files.migrated_file_id IS 'References the Files::File record after migration to new file system';
 
 
 --
@@ -3046,8 +3075,16 @@ CREATE TABLE public.phase_files (
     ordering integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    name character varying
+    name character varying,
+    migrated_file_id uuid
 );
+
+
+--
+-- Name: COLUMN phase_files.migrated_file_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.phase_files.migrated_file_id IS 'References the Files::File record after migration to new file system';
 
 
 --
@@ -3104,8 +3141,16 @@ CREATE TABLE public.project_files (
     ordering integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    name character varying
+    name character varying,
+    migrated_file_id uuid
 );
+
+
+--
+-- Name: COLUMN project_files.migrated_file_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.project_files.migrated_file_id IS 'References the Files::File record after migration to new file system';
 
 
 --
@@ -3119,8 +3164,16 @@ CREATE TABLE public.project_folders_files (
     name character varying,
     ordering integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    migrated_file_id uuid
 );
+
+
+--
+-- Name: COLUMN project_folders_files.migrated_file_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.project_folders_files.migrated_file_id IS 'References the Files::File record after migration to new file system';
 
 
 --
@@ -3363,8 +3416,16 @@ CREATE TABLE public.static_page_files (
     ordering integer,
     name character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    migrated_file_id uuid
 );
+
+
+--
+-- Name: COLUMN static_page_files.migrated_file_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.static_page_files.migrated_file_id IS 'References the Files::File record after migration to new file system';
 
 
 --
@@ -4619,6 +4680,13 @@ CREATE INDEX i_v_user ON public.analytics_fact_visits USING btree (dimension_use
 
 
 --
+-- Name: idx_on_context_type_context_id_root_job_type_d5d424e7c3; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_context_type_context_id_root_job_type_d5d424e7c3 ON public.jobs_trackers USING btree (context_type, context_id, root_job_type) WHERE ((root_job_type)::text = 'Files::DescriptionGenerationJob'::text);
+
+
+--
 -- Name: inappropriate_content_flags_flaggable; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5263,6 +5331,13 @@ CREATE INDEX index_event_files_on_event_id ON public.event_files USING btree (ev
 
 
 --
+-- Name: index_event_files_on_migrated_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_event_files_on_migrated_file_id ON public.event_files USING btree (migrated_file_id);
+
+
+--
 -- Name: index_event_images_on_event_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5505,6 +5580,13 @@ CREATE INDEX index_id_id_card_lookup_id_cards_on_hashed_card_id ON public.id_id_
 --
 
 CREATE INDEX index_idea_files_on_idea_id ON public.idea_files USING btree (idea_id);
+
+
+--
+-- Name: index_idea_files_on_migrated_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_files_on_migrated_file_id ON public.idea_files USING btree (migrated_file_id);
 
 
 --
@@ -6026,6 +6108,13 @@ CREATE INDEX index_permissions_on_permission_scope_id ON public.permissions USIN
 
 
 --
+-- Name: index_phase_files_on_migrated_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phase_files_on_migrated_file_id ON public.phase_files USING btree (migrated_file_id);
+
+
+--
 -- Name: index_phase_files_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6096,10 +6185,24 @@ CREATE INDEX index_polls_responses_on_user_id ON public.polls_responses USING bt
 
 
 --
+-- Name: index_project_files_on_migrated_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_files_on_migrated_file_id ON public.project_files USING btree (migrated_file_id);
+
+
+--
 -- Name: index_project_files_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_project_files_on_project_id ON public.project_files USING btree (project_id);
+
+
+--
+-- Name: index_project_folders_files_on_migrated_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_folders_files_on_migrated_file_id ON public.project_folders_files USING btree (migrated_file_id);
 
 
 --
@@ -6261,6 +6364,13 @@ CREATE INDEX index_spam_reports_on_reported_at ON public.spam_reports USING btre
 --
 
 CREATE INDEX index_spam_reports_on_user_id ON public.spam_reports USING btree (user_id);
+
+
+--
+-- Name: index_static_page_files_on_migrated_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_static_page_files_on_migrated_file_id ON public.static_page_files USING btree (migrated_file_id);
 
 
 --
@@ -6534,6 +6644,14 @@ ALTER TABLE ONLY public.invites
 
 
 --
+-- Name: project_files fk_rails_092f3b7f98; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_files
+    ADD CONSTRAINT fk_rails_092f3b7f98 FOREIGN KEY (migrated_file_id) REFERENCES public.files(id);
+
+
+--
 -- Name: invites fk_rails_0b6ac3e1da; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6774,6 +6892,14 @@ ALTER TABLE ONLY public.notifications
 
 
 --
+-- Name: event_files fk_rails_577d1fb456; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.event_files
+    ADD CONSTRAINT fk_rails_577d1fb456 FOREIGN KEY (migrated_file_id) REFERENCES public.files(id);
+
+
+--
 -- Name: ideas fk_rails_5ac7668cd3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6891,6 +7017,14 @@ ALTER TABLE ONLY public.analysis_additional_custom_fields
 
 ALTER TABLE ONLY public.analysis_questions
     ADD CONSTRAINT fk_rails_74e779db86 FOREIGN KEY (background_task_id) REFERENCES public.analysis_background_tasks(id);
+
+
+--
+-- Name: idea_files fk_rails_7768309984; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.idea_files
+    ADD CONSTRAINT fk_rails_7768309984 FOREIGN KEY (migrated_file_id) REFERENCES public.files(id);
 
 
 --
@@ -7027,6 +7161,14 @@ ALTER TABLE ONLY public.user_custom_fields_representativeness_ref_distributions
 
 ALTER TABLE ONLY public.static_pages_topics
     ADD CONSTRAINT fk_rails_8e3f01dacd FOREIGN KEY (static_page_id) REFERENCES public.static_pages(id);
+
+
+--
+-- Name: phase_files fk_rails_8f9b3b56d6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phase_files
+    ADD CONSTRAINT fk_rails_8f9b3b56d6 FOREIGN KEY (migrated_file_id) REFERENCES public.files(id);
 
 
 --
@@ -7238,11 +7380,27 @@ ALTER TABLE ONLY public.notifications
 
 
 --
+-- Name: static_page_files fk_rails_b8d87c000f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.static_page_files
+    ADD CONSTRAINT fk_rails_b8d87c000f FOREIGN KEY (migrated_file_id) REFERENCES public.files(id);
+
+
+--
 -- Name: polls_options fk_rails_bb813b4549; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.polls_options
     ADD CONSTRAINT fk_rails_bb813b4549 FOREIGN KEY (question_id) REFERENCES public.polls_questions(id);
+
+
+--
+-- Name: project_folders_files fk_rails_bc5577641e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_folders_files
+    ADD CONSTRAINT fk_rails_bc5577641e FOREIGN KEY (migrated_file_id) REFERENCES public.files(id);
 
 
 --
@@ -7644,9 +7802,12 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250807000000'),
+('20250730150828'),
 ('20250730103628'),
 ('20250724190507'),
 ('20250724074646'),
+('20250722135213'),
 ('20250716141100'),
 ('20250716102450'),
 ('20250715075008'),

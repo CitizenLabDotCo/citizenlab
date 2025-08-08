@@ -4,23 +4,28 @@
 #
 # Table name: idea_files
 #
-#  id         :uuid             not null, primary key
-#  idea_id    :uuid
-#  file       :string
-#  ordering   :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  name       :string
+#  id                                                                                     :uuid             not null, primary key
+#  idea_id                                                                                :uuid
+#  file                                                                                   :string
+#  ordering                                                                               :integer
+#  created_at                                                                             :datetime         not null
+#  updated_at                                                                             :datetime         not null
+#  name                                                                                   :string
+#  migrated_file_id(References the Files::File record after migration to new file system) :uuid
 #
 # Indexes
 #
-#  index_idea_files_on_idea_id  (idea_id)
+#  index_idea_files_on_idea_id           (idea_id)
+#  index_idea_files_on_migrated_file_id  (migrated_file_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (idea_id => ideas.id)
+#  fk_rails_...  (migrated_file_id => files.id)
 #
 class IdeaFile < ApplicationRecord
+  include FileMigratable
+
   mount_base64_file_uploader :file, IdeaFileUploader
   belongs_to :idea, inverse_of: :idea_files
 
