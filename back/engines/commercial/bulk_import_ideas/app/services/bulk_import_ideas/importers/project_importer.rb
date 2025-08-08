@@ -403,6 +403,14 @@ module BulkImportIdeas::Importers
       # Ensure unique custom fields by key
       user_custom_fields.uniq! { |field| field[:key] }
 
+      # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
+      unless Rails.env.production?
+        users = users.map do |user_row|
+          user_row['Email address'] = "#{user_row['Email address'].gsub(/[@.]/, '_').reverse}@example.com"
+          user_row
+        end
+      end
+
       [users, user_custom_fields]
     end
 
