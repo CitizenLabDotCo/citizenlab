@@ -376,6 +376,10 @@ module ParticipationMethod
       SlugService.new.generate_slug input, title
     end
 
+    def supported_email_campaigns
+      super + %w[your_input_in_screening]
+    end
+
     def supports_answer_visible_to?
       true
     end

@@ -25,6 +25,10 @@ module ParticipationMethod
       'ideation'
     end
 
+    def supported_email_campaigns
+      super + %w[voting_basket_not_submitted voting_last_chance voting_phase_started voting_results]
+    end
+
     def supports_submission?
       false
     end

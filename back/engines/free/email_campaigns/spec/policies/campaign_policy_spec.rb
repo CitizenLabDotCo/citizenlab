@@ -6,7 +6,7 @@ describe EmailCampaigns::CampaignPolicy do
   subject { described_class.new(user, context_campaign) }
 
   let(:scope) { EmailCampaigns::CampaignPolicy::Scope.new(user, context_campaign.class, context_campaign.context) }
-  let(:context) { create(:project) }
+  let(:context) { create(:phase) }
   let!(:global_campaign) { create(:comment_on_your_comment_campaign, context: nil) }
   let!(:context_campaign) { create(:comment_on_your_comment_campaign, context: context) }
 
@@ -50,11 +50,11 @@ describe EmailCampaigns::CampaignPolicy do
   end
 
   context 'for a project moderator' do
-    let(:project) { create(:project) }
-    let(:user) { create(:project_moderator, projects: [project]) }
+    let(:phase) { create(:phase) }
+    let(:user) { create(:project_moderator, projects: [phase.project]) }
 
     context 'of a project they moderate' do
-      let(:context) { project }
+      let(:context) { phase }
 
       it { is_expected.to permit(:show) }
       it { is_expected.to permit(:create) }
@@ -67,7 +67,7 @@ describe EmailCampaigns::CampaignPolicy do
     end
 
     context 'of a project they don\'t moderate' do
-      let(:project) { create(:project) }
+      let(:phase) { create(:phase) }
 
       it { is_expected.not_to permit(:show) }
       it { is_expected.not_to permit(:create) }
