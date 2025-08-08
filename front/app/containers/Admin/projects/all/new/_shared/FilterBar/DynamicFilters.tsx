@@ -14,13 +14,22 @@ import { FILTER_KEYS, FilterKey } from './constants';
 import messages from './messages';
 import tracks from './tracks';
 
-const DynamicFilters = () => {
+interface Props {
+  isUserAdmin: boolean;
+}
+
+const DynamicFilters = ({ isUserAdmin }: Props) => {
   const params = useParams();
   const { formatMessage } = useIntl();
 
   const [activeFilters, setActiveFilters] = useState(() => {
     return FILTER_KEYS.filter((key) => {
       const paramValue = params[key];
+
+      if (!isUserAdmin && key === 'managers') {
+        return false; // Skip manager filter for non-admin users
+      }
+
       return paramValue !== undefined && paramValue.length > 0;
     });
   });
