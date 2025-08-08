@@ -48,7 +48,7 @@ const SettingsField = ({ label, children }: SettingsFieldProps) => (
 );
 
 type MultiSelectProp =
-  | 'publicationStatuses'
+  | 'status'
   | 'managers'
   | 'folderIds'
   | 'participationStates'
@@ -62,7 +62,7 @@ const Settings = () => {
 
   const {
     actions: { setProp },
-    publicationStatuses,
+    status,
     showTodayLine,
     participationStates,
     visibility,
@@ -71,11 +71,11 @@ const Settings = () => {
     folderIds,
     participationMethods,
     sort,
-    numberOfProjects,
+    noOfProjects,
   } = useNode((node) => ({
-    publicationStatuses:
-      node.data.props.publicationStatuses?.length > 0
-        ? node.data.props.publicationStatuses
+    status:
+      node.data.props.status?.length > 0
+        ? node.data.props.status
         : ['published'],
     showTodayLine: node.data.props.showTodayLine ?? true,
     participationStates: node.data.props.participationStates || [],
@@ -85,7 +85,7 @@ const Settings = () => {
     folderIds: node.data.props.folderIds || [],
     participationMethods: node.data.props.participationMethods || [],
     sort: node.data.props.sort || 'phase_starting_or_ending_soon',
-    numberOfProjects: node.data.props.numberOfProjects || 10,
+    noOfProjects: node.data.props.noOfProjects || 10,
   }));
 
   const { data: managersData } = useUsers({
@@ -121,10 +121,10 @@ const Settings = () => {
     setProp((props: ProjectsTimelineCardProps) => (props.sort = value));
   };
 
-  const handleNumberOfProjectsChange = (value: string) => {
+  const handleNoOfProjectsChange = (value: string) => {
     setProp(
       (props: ProjectsTimelineCardProps) =>
-        (props.numberOfProjects = parseInt(value, 10))
+        (props.noOfProjects = parseInt(value, 10))
     );
   };
 
@@ -152,9 +152,9 @@ const Settings = () => {
       <TitleInput />
       <SettingsField label={formatMessage(messages.publicationStatus)}>
         <MultipleSelect
-          value={publicationStatuses}
+          value={status}
           options={publicationStatusOptions}
-          onChange={handleMultiSelectChange('publicationStatuses')}
+          onChange={handleMultiSelectChange('status')}
         />
       </SettingsField>
       <SettingsField label={formatMessage(messages.managers)}>
@@ -223,8 +223,8 @@ const Settings = () => {
       <SettingsField label={formatMessage(messages.numberOfProjects)}>
         <Input
           type="number"
-          value={numberOfProjects.toString()}
-          onChange={handleNumberOfProjectsChange}
+          value={noOfProjects.toString()}
+          onChange={handleNoOfProjectsChange}
         />
       </SettingsField>
     </Box>
