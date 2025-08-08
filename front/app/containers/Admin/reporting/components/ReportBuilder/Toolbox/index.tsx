@@ -386,8 +386,6 @@ const ReportBuilderToolbox = ({
                 component={
                   <ProjectsTimelineWidget
                     title={toMultiloc(WIDGET_TITLES.ProjectsTimelineWidget)}
-                    startAt={undefined}
-                    endAt={chartEndDate}
                   />
                 }
                 icon="chart-bar"
