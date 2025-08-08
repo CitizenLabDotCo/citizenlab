@@ -56,8 +56,14 @@ export const getVisibilityOptions = (
 export const getDiscoverabilityOptions = (
   formatMessage: FormatMessage
 ): IOption[] => [
-  { value: 'listed', label: formatMessage(messages.listed) },
-  { value: 'unlisted', label: formatMessage(messages.unlisted) },
+  {
+    value: 'listed',
+    label: formatMessage(projectFilterMessages.discoverabilityPublic),
+  },
+  {
+    value: 'unlisted',
+    label: formatMessage(projectFilterMessages.discoverabilityHidden),
+  },
 ];
 
 export const getParticipationMethodOptions = (

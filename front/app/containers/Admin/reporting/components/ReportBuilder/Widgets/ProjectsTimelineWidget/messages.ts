@@ -17,18 +17,6 @@ export default defineMessages({
     id: 'app.containers/Admin/reporting/components/ReportBuilder/ProjectsTimelineWidget.archived',
     defaultMessage: 'Archived',
   },
-  discoverability: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.discoverability',
-    defaultMessage: 'Discoverability',
-  },
-  listed: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.listed',
-    defaultMessage: 'Listed',
-  },
-  unlisted: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.unlisted',
-    defaultMessage: 'Unlisted',
-  },
   projects: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.projects',
     defaultMessage: 'Projects',
@@ -44,14 +32,6 @@ export default defineMessages({
   no: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.no',
     defaultMessage: 'No',
-  },
-  managers: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.managers',
-    defaultMessage: 'Managers',
-  },
-  folders: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.folders',
-    defaultMessage: 'Folders',
   },
   noProjectsFound: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.noProjectsFound',

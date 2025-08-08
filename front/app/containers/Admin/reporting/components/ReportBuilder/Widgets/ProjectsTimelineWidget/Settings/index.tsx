@@ -159,8 +159,14 @@ const Settings = () => {
   ];
 
   const discoverabilityOptions: IOption[] = [
-    { value: 'listed', label: formatMessage(messages.listed) },
-    { value: 'unlisted', label: formatMessage(messages.unlisted) },
+    {
+      value: 'listed',
+      label: formatMessage(projectFilterMessages.discoverabilityPublic),
+    },
+    {
+      value: 'unlisted',
+      label: formatMessage(projectFilterMessages.discoverabilityHidden),
+    },
   ];
 
   const booleanOptions: IOption[] = [
@@ -192,14 +198,14 @@ const Settings = () => {
           onChange={handleMultiSelectChange('status')}
         />
       </SettingsField>
-      <SettingsField label={formatMessage(messages.managers)}>
+      <SettingsField label={formatMessage(projectFilterMessages.manager)}>
         <MultipleSelect
           value={managers}
           options={managerOptions}
           onChange={handleMultiSelectChange('managers')}
         />
       </SettingsField>
-      <SettingsField label={formatMessage(messages.folders)}>
+      <SettingsField label={formatMessage(projectFilterMessages.folders)}>
         <MultipleSelect
           value={folderIds}
           options={folderOptions}
@@ -233,7 +239,9 @@ const Settings = () => {
           onChange={handleMultiSelectChange('visibility')}
         />
       </SettingsField>
-      <SettingsField label={formatMessage(messages.discoverability)}>
+      <SettingsField
+        label={formatMessage(projectFilterMessages.discoverabilityLabel)}
+      >
         <MultipleSelect
           value={discoverability}
           options={discoverabilityOptions}
