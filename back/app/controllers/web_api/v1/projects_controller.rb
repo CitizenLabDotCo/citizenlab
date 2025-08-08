@@ -194,7 +194,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       projects,
       WebApi::V1::ProjectMiniAdminSerializer,
       params: jsonapi_serializer_params(
-        moderators_per_project: moderators_per_project,
+        moderators_per_project: moderators_per_project
       ),
       include: %i[phases project_images groups]
     )
