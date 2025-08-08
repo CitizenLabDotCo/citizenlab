@@ -18,17 +18,13 @@ module BulkImportIdeas::Importers
       log "Processed #{projects.count} projects"
     end
 
-    # TODO: If there are users we should probably import these first before importing the projects / ideas
     def import_async(projects, users, user_custom_fields)
       import_id = SecureRandom.uuid
 
-      # One job for importing users (if not empty)
-      BulkImportIdeas::UserImportJob.perform_later(users, user_custom_fields, import_id, @import_user, @locale) if users.any?
+      # We trigger a single import job for the users (even if there are none) - this will then trigger the project import jobs
+      # This is because users MUST be imported before the projects, as they may be needed for the idea authors
+      BulkImportIdeas::UserImportJob.perform_later(users, user_custom_fields, projects, import_id, @import_user, @locale)
 
-      # One job for each project
-      projects.each do |project_data|
-        BulkImportIdeas::ProjectImportJob.perform_later(project_data, import_id, @import_user, @locale)
-      end
       import_id
     end
 
