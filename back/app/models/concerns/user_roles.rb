@@ -49,7 +49,6 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     }
 
     scope :project_folder_moderator, lambda { |*project_folder_ids|
-      binding.pry
       return where("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
 
       query = project_folder_ids.map do |id|
