@@ -44,10 +44,12 @@ module BulkImportIdeas::Importers
       if users.empty?
         log 'No users found. users.xlsx is either empty, does not exist and there are no users found as input authors.'
       else
-        log "Found #{users.count} users to import"
         log "Found #{user_custom_fields.count} user custom fields to import"
-        log 'Importing user custom fields - NOT IMPLEMENTED YET'
 
+        # Create any user fields for idea authors if they don't already exist
+        create_user_fields(user_custom_fields)
+
+        log "Found #{users.count} users to import"
         log 'Importing users'
         num_created = 0
         num_existing = 0
@@ -63,10 +65,10 @@ module BulkImportIdeas::Importers
               email: user_row[USER_EMAIL],
               first_name: user_row[USER_FIRST_NAME],
               last_name: user_row[USER_LAST_NAME] || '',
-              created_at: user_row[USER_CREATED_AT] ? DateTime.parse(user_row[USER_CREATED_AT]) : Time.now,
-              last_active_at: user_row[USER_LAST_ACTIVE_AT] ? DateTime.parse(user_row[USER_LAST_ACTIVE_AT]) : Time.now,
-              registration_completed_at: user_row[USER_CREATED_AT] ? DateTime.parse(user_row[USER_CREATED_AT]) : Time.now,
-              email_confirmed_at: user_row[USER_CREATED_AT] ? DateTime.parse(user_row[USER_CREATED_AT]) : Time.now,
+              created_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
+              last_active_at: user_row[USER_LAST_ACTIVE_AT] ? user_row[USER_LAST_ACTIVE_AT].to_time : Time.now,
+              registration_completed_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
+              email_confirmed_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
               locale: @locale,
               imported: true
             )
@@ -253,7 +255,12 @@ module BulkImportIdeas::Importers
     def create_user_fields(user_custom_fields)
       # Create any user fields if they don't already exist
       user_custom_fields.each do |field|
-        next if CustomField.find_by(key: field[:key])
+        custom_field = CustomField.find_by(key: field[:key])
+
+        if custom_field
+          log "FOUND existing custom_field with key '#{custom_field.key}'"
+          next
+        end
 
         custom_field = CustomField.create!(field.except(:options, :statements).merge(resource_type: 'User'))
         if SELECT_TYPES.include? field[:input_type]
@@ -313,11 +320,11 @@ module BulkImportIdeas::Importers
     end
 
     def import_ideas(phase, phase_idea_rows)
-      log "Importing ideas for phase: '#{phase.title_multiloc[@locale]}'"
+      log "Importing ideas for phase: '#{phase.title_multiloc[@locale.to_s]}'"
 
       # If the phase already has ideas, we skip the import
       if phase.ideas.any?
-        log "FOUND existing ideas for phase: '#{phase.title_multiloc[@locale]}'. Skipping idea import."
+        log "FOUND existing ideas for phase: '#{phase.title_multiloc[@locale.to_s]}'. Skipping idea import."
         return
       end
 
@@ -336,7 +343,7 @@ module BulkImportIdeas::Importers
         num_users_created = BulkImportIdeas::IdeaImport.where(idea: ideas, user_created: true).count
         log "WARNING: Imported #{num_users_created} new users as idea authors" if num_users_created > 0
       rescue StandardError => e
-        log "ERROR importing ideas for phase '#{phase.title_multiloc[@locale]}': #{e.message}"
+        log "ERROR importing ideas for phase '#{phase.title_multiloc[@locale.to_s]}': #{e.message}"
       end
     end
 
