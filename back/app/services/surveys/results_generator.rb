@@ -106,14 +106,16 @@ module Surveys
         .select("custom_field_values->'#{field.key}'->'id' as value")
         .where("custom_field_values->'#{field.key}' IS NOT NULL")
         .map(&:value)
-      files = IdeaFile.where(id: file_ids).map do |file|
-        { name: file.name, url: file.file.url }
-      end
-      response_count = files.size
 
-      core_field_attributes(field, response_count:).merge({
-        files: files
-      })
+      files = ::Files::FileAttachment.where(id: file_ids).map do |attachment|
+        { name: attachment.file.name, url: attachment.file.content.url }
+      end
+
+      files.concat(IdeaFile.where(id: file_ids).map do |file|
+        { name: file.name, url: file.file.url }
+      end)
+
+      core_field_attributes(field, response_count: files.size).merge(files: files)
     end
 
     def visit_shapefile_upload(field)

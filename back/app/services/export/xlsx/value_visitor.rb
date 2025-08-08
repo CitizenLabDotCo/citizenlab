@@ -103,13 +103,15 @@ module Export
       end
 
       def visit_file_upload(field)
-        file = value_for(field)
+        file_id = value_for(field)['id']
+        return '' unless file_id
 
-        return '' if file['id'].blank?
-
-        file_id = file['id']
-        idea_file = model.idea_files.detect { |f| f.id == file_id }
-        idea_file.file.url
+        if (file = model.idea_files.detect { |f| f.id == file_id })
+          file.file.url
+        else
+          file_attachment = model.file_attachments.detect { |f| f.id == file_id }
+          file_attachment.file.content.url
+        end
       end
 
       def visit_shapefile_upload(field)
@@ -134,9 +136,12 @@ module Export
       attr_reader :model, :option_index, :multiloc_service
 
       def built_in_files
-        return '' if model.idea_files.empty?
+        return '' if model.idea_files.empty? && model.attached_files.empty?
 
-        model.idea_files.map { |idea_file| idea_file.file.url }.join("\n")
+        urls = model.idea_files.map { |idea_file| idea_file.file.url } +
+               model.attached_files.map { |file| file.content.url }
+
+        urls.join("\n")
       end
 
       def value_for(field)
