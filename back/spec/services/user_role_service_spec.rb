@@ -239,6 +239,11 @@ describe UserRoleService do
     it 'does not crash if empty array is passed' do
       expect(service.moderators_per_project([])).to eq({})
     end
+
+    it 'does not crash if no moderators exist' do
+      p1 = create(:project)
+      expect(service.moderators_per_project([p1.id])).to eq({})
+    end
   end
 
   describe 'moderators_per_folder' do
@@ -259,6 +264,11 @@ describe UserRoleService do
 
     it 'does not crash if empty array is passed' do
       expect(service.moderators_per_project([])).to eq({})
+    end
+
+    it 'does not crash if no moderators exist' do
+      f1 = create(:project_folder)
+      expect(service.moderators_per_folder([f1.id])).to eq({})
     end
   end
 end
