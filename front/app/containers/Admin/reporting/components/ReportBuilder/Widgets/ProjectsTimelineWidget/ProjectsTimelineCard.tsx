@@ -25,8 +25,8 @@ import messages from './messages';
 
 export interface ProjectsTimelineCardProps {
   title?: Multiloc;
-  startAt?: string;
-  endAt?: string | null;
+  minStartDate?: string;
+  maxStartDate?: string | null;
   status?: ProjectReportsPublicationStatus[];
   showTodayLine?: boolean;
   participationStates?: ParticipationState[];
@@ -40,8 +40,8 @@ export interface ProjectsTimelineCardProps {
 }
 
 const ProjectsTimelineCard = ({
-  startAt,
-  endAt,
+  minStartDate,
+  maxStartDate,
   status = ['published'],
   showTodayLine = true,
   participationStates = [],
@@ -56,14 +56,14 @@ const ProjectsTimelineCard = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data, isLoading } = useProjectsTimeline({
-    start_at: startAt,
-    end_at: endAt,
+    start_at: undefined,
+    end_at: undefined,
     status,
     review_state: undefined,
     managers,
     search: undefined,
-    min_start_date: undefined,
-    max_start_date: undefined,
+    min_start_date: minStartDate,
+    max_start_date: maxStartDate || undefined,
     participation_states: participationStates,
     folder_ids: folderIds,
     participation_methods: participationMethods,
