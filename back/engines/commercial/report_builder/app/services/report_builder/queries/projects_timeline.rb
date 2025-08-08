@@ -34,12 +34,10 @@ module ReportBuilder
     end
 
     def fetch_projects_with_phases(params)
-      start_date, end_date = TimeBoundariesParser.new(params[:start_at], params[:end_at]).parse
       page_size = params[:no_of_projects]
 
       # Use ProjectsFinderAdminService.execute to handle all filtering and sorting
       projects_query = build_base_query
-      projects_query = apply_date_range_filter(projects_query, start_date, end_date)
       projects_query = ProjectsFinderAdminService.execute(projects_query, extract_parameters(params), current_user: @current_user)
 
       if page_size
@@ -70,20 +68,6 @@ module ReportBuilder
           publication_status: project.admin_publication.publication_status,
           folder_title_multiloc: project.folder&.title_multiloc
         }
-      end
-    end
-
-    def apply_date_range_filter(query, start_date, end_date)
-      if start_date && end_date
-        # Find projects that have phases overlapping with the date range
-        overlapping_project_ids = Phase
-          .select(:project_id)
-          .where("(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", start_date, end_date)
-          .distinct
-
-        query.where(id: overlapping_project_ids)
-      else
-        query
       end
     end
 
