@@ -107,7 +107,7 @@ module ReportBuilder
     end
 
     def apply_publication_status_filter(query, statuses)
-      ProjectsFinderAdminService.filter_status(query, { status: statuses })
+      ProjectsFinderAdminService.filter_status_and_review_state(query, { status: statuses })
     end
 
     def apply_participation_states_filter(query, states)
