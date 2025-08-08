@@ -7,31 +7,21 @@ import { IOption } from 'typings';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
 import useUsers from 'api/users/useUsers';
 
-import useLocalize from 'hooks/useLocalize';
-
-import projectFilterMessages from 'containers/Admin/projects/all/new/_shared/FilterBar/Filters/messages';
-
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import {
-  TitleInput,
-  DateRangeInput,
-} from '../../ChartWidgets/_shared/ChartWidgetSettings';
+import useLocalize from 'hooks/useLocalize';
+
+import { TitleInput } from '../../ChartWidgets/_shared/ChartWidgetSettings';
+
+import projectFilterMessages from 'containers/Admin/projects/all/new/_shared/FilterBar/Filters/messages';
+import DateRangeFilter from 'containers/Admin/projects/all/new/_shared/FilterBar/Filters/DateRangeFilter';
+
 import messages from '../messages';
 import { ProjectsTimelineCardProps } from '../ProjectsTimelineCard';
-
-import {
-  getPublicationStatusOptions,
-  getBooleanOptions,
-  getParticipationStateOptions,
-  getVisibilityOptions,
-  getDiscoverabilityOptions,
-  getParticipationMethodOptions,
-  getSortOptions,
-} from './utils';
+import { getParticipationMethodOptions, getSortOptions } from './utils';
 
 type SettingsFieldProps = {
   label: string;
@@ -63,36 +53,33 @@ const Settings = () => {
   const {
     actions: { setProp },
     status,
-    showTodayLine,
+    managers,
+    folderIds,
     participationStates,
     visibility,
     discoverability,
-    managers,
-    folderIds,
     participationMethods,
+    showTodayLine,
     sort,
     noOfProjects,
+    minStartDate,
+    maxStartDate,
   } = useNode((node) => ({
-    status:
-      node.data.props.status?.length > 0
-        ? node.data.props.status
-        : ['published'],
-    showTodayLine: node.data.props.showTodayLine ?? true,
+    status: node.data.props.status || ['published'],
+    managers: node.data.props.managers || [],
+    folderIds: node.data.props.folderIds || [],
     participationStates: node.data.props.participationStates || [],
     visibility: node.data.props.visibility || [],
     discoverability: node.data.props.discoverability || [],
-    managers: node.data.props.managers || [],
-    folderIds: node.data.props.folderIds || [],
     participationMethods: node.data.props.participationMethods || [],
+    showTodayLine: node.data.props.showTodayLine ?? true,
     sort: node.data.props.sort || 'phase_starting_or_ending_soon',
     noOfProjects: node.data.props.noOfProjects || 10,
+    minStartDate: node.data.props.minStartDate,
+    maxStartDate: node.data.props.maxStartDate,
   }));
 
-  const { data: managersData } = useUsers({
-    pageSize: 500,
-    can_moderate: true,
-  });
-
+  const { data: managersData } = useUsers({});
   const { data: foldersData } = useProjectFolders({});
 
   const handleMultiSelectChange =
@@ -128,11 +115,59 @@ const Settings = () => {
     );
   };
 
-  const publicationStatusOptions = getPublicationStatusOptions(formatMessage);
-  const booleanOptions = getBooleanOptions(formatMessage);
-  const participationStateOptions = getParticipationStateOptions(formatMessage);
-  const visibilityOptions = getVisibilityOptions(formatMessage);
-  const discoverabilityOptions = getDiscoverabilityOptions(formatMessage);
+  const handleDateRangeChange = (from?: string, to?: string) => {
+    setProp((props: ProjectsTimelineCardProps) => {
+      props.minStartDate = from;
+      props.maxStartDate = to;
+    });
+  };
+
+  const publicationStatusOptions: IOption[] = [
+    { value: 'published', label: formatMessage(messages.published) },
+    { value: 'archived', label: formatMessage(messages.archived) },
+  ];
+
+  const participationStateOptions: IOption[] = [
+    {
+      value: 'not_started',
+      label: formatMessage(projectFilterMessages.notStarted),
+    },
+    {
+      value: 'collecting_data',
+      label: formatMessage(projectFilterMessages.collectingData),
+    },
+    {
+      value: 'informing',
+      label: formatMessage(projectFilterMessages.informing),
+    },
+    { value: 'past', label: formatMessage(projectFilterMessages.past) },
+  ];
+
+  const visibilityOptions: IOption[] = [
+    {
+      value: 'public',
+      label: formatMessage(projectFilterMessages.visibilityPublic),
+    },
+    {
+      value: 'groups',
+      label: formatMessage(projectFilterMessages.visibilityGroups),
+    },
+    {
+      value: 'admins',
+      label: formatMessage(projectFilterMessages.visibilityAdmins),
+    },
+  ];
+
+  const discoverabilityOptions: IOption[] = [
+    { value: 'listed', label: formatMessage(messages.listed) },
+    { value: 'unlisted', label: formatMessage(messages.unlisted) },
+  ];
+
+  const booleanOptions: IOption[] = [
+    { value: 'true', label: formatMessage(messages.yes) },
+    { value: 'false', label: formatMessage(messages.no) },
+  ];
+
   const participationMethodOptions =
     getParticipationMethodOptions(formatMessage);
   const sortOptions = getSortOptions(formatMessage);
@@ -212,7 +247,16 @@ const Settings = () => {
           onChange={handleShowTodayLineChange}
         />
       </SettingsField>
-      <DateRangeInput />
+      <SettingsField
+        label={formatMessage(projectFilterMessages.projectStartDate)}
+      >
+        <DateRangeFilter
+          minStartDate={minStartDate}
+          maxStartDate={maxStartDate}
+          onDateRangeChange={handleDateRangeChange}
+          tooltipContent={formatMessage(projectFilterMessages.projectStartDate)}
+        />
+      </SettingsField>
       <SettingsField label={formatMessage(messages.sort)}>
         <Select
           value={sort}
