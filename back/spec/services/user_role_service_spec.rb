@@ -229,16 +229,13 @@ describe UserRoleService do
       m2 = create(:project_folder_moderator, project_folders: [f2])
       m3 = create(:project_folder_moderator, project_folders: [f3])
       m4 = create(:project_folder_moderator, project_folders: [f4])
+      m5 = create(:project_folder_moderator, project_folders: [f4, f3])
 
       expect(service.moderators_per_folder([f1.id, f2.id, f3.id])).to eq({
         f1.id => [m1],
         f2.id => [m1, m2],
-        f3.id => [m3]
+        f3.id => [m3, m5]
       })
     end
-
-    # it 'TODO something more complicated' do
-      # TODO
-    # end
   end
 end
