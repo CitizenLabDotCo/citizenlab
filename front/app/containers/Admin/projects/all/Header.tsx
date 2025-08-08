@@ -11,7 +11,7 @@ import Button from 'components/UI/ButtonWithLink';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
-import messages from '../../all/legacy/Header/messages';
+import messages from './messages';
 
 const Header = () => {
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });

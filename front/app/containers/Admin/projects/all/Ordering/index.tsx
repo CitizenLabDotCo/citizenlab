@@ -4,7 +4,7 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
-import SortableProjectList from '../../legacy/Lists/SortableProjectList';
+import SortableProjectList from './SortableProjectList';
 
 const Ordering = () => {
   const { data: adminPublications } = useAdminPublications({

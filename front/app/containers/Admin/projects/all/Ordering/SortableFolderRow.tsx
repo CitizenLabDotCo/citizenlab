@@ -1,33 +1,55 @@
 import React, { useState } from 'react';
 
+import styled from 'styled-components';
+
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAuthUser from 'api/me/useAuthUser';
+import { PublicationStatus } from 'api/projects/types';
 
-import { Row } from 'components/admin/ResourceList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 
-import ProjectFolderRow from '../../../projectFolders/components/ProjectFolderRow';
+import { isNilOrError } from 'utils/helperUtils';
+
+import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
 
 import FolderChildProjects from './FolderChildProjects';
 
-export interface Props {
+const StyledSortableRow = styled(SortableRow)`
+  & .sortablerow-draghandle {
+    align-self: flex-start;
+  }
+`;
+
+interface Props {
   id: string;
+  index: number;
+  moveRow: (fromIndex: number, toIndex: number) => void;
+  dropRow: (itemId: string, toIndex: number) => void;
   isLastItem: boolean;
   publication: IAdminPublicationData;
   search?: string;
 }
 
-const NonSortableFolderRow = ({
+const publicationStatuses: PublicationStatus[] = [
+  'draft',
+  'published',
+  'archived',
+];
+
+const SortableFolderRow = ({
   id,
-  isLastItem,
+  index,
+  moveRow,
+  dropRow,
   publication,
-  search,
+  isLastItem,
 }: Props) => {
   const { data: authUser } = useAuthUser();
 
   const { data } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
-    publicationStatusFilter: ['draft', 'published', 'archived'],
+    publicationStatusFilter: publicationStatuses,
   });
 
   const folderChildAdminPublications = data?.pages
@@ -36,37 +58,41 @@ const NonSortableFolderRow = ({
 
   const [folderOpen, setFolderOpen] = useState(false);
 
-  if (!authUser) {
+  if (isNilOrError(authUser)) {
     return null;
   }
-
-  const showProjects =
-    !!folderChildAdminPublications &&
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    folderChildAdminPublications?.length > 0 &&
-    !search;
 
   const toggleFolder = () => {
     setFolderOpen((folderOpen) => !folderOpen);
   };
+
+  const hasProjects =
+    !isNilOrError(folderChildAdminPublications) &&
+    folderChildAdminPublications.length > 0;
   const showBottomBorder = isLastItem && !folderOpen;
 
   const publicationRelation = publication.relationships.publication.data;
 
   const folderId =
     publicationRelation.type === 'folder' ? publicationRelation.id : undefined;
+
   return (
     <>
-      <Row id={id} isLastItem={showBottomBorder}>
+      <StyledSortableRow
+        id={id}
+        index={index}
+        moveRow={moveRow}
+        dropRow={dropRow}
+        isLastItem={showBottomBorder}
+      >
         <ProjectFolderRow
           publication={publication}
           toggleFolder={toggleFolder}
           isFolderOpen={folderOpen}
-          hasProjects={showProjects}
+          hasProjects={hasProjects}
         />
-      </Row>
-      {showProjects && folderOpen && (
+      </StyledSortableRow>
+      {hasProjects && folderOpen && (
         <FolderChildProjects
           folderChildAdminPublications={folderChildAdminPublications}
           folderId={folderId}
@@ -77,4 +103,4 @@ const NonSortableFolderRow = ({
   );
 };
 
-export default NonSortableFolderRow;
+export default SortableFolderRow;

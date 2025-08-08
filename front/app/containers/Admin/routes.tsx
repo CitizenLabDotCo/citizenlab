@@ -48,9 +48,6 @@ const FullscreenPreview = React.lazy(
   () => import('containers/ProjectDescriptionBuilder/FullscreenPreview')
 );
 
-// TODO remove this when project planning is fully rolled out
-const NewProjectsPage = React.lazy(() => import('./projects/all/new'));
-
 const ProjectImporter = React.lazy(
   () => import('containers/Admin/ProjectImporter')
 );
@@ -187,12 +184,6 @@ const createAdminRoutes = () => {
         element: <FullscreenPreview />,
       },
       ...moduleConfiguration.routes.admin,
-
-      // TODO remove this route when project planning is fully rolled out
-      {
-        path: 'projects-redesign-early-access',
-        element: <NewProjectsPage />,
-      },
       {
         path: 'project-importer',
         element: <ProjectImporter />,
