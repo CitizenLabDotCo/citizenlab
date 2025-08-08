@@ -81,6 +81,8 @@ class UserRoleService
 
   # Returns a hash with project IDs as keys and arrays of users as values
   def moderators_per_project(project_ids)
+    return {} if project_ids.empty?
+
     project_ids_array = project_ids.map { |id| "'#{id}'" }.join(', ')
     users = User.where(<<~SQL)
       EXISTS (
@@ -103,6 +105,8 @@ class UserRoleService
 
   # Returns a hash with folder IDs as keys and arrays of users as values
   def moderators_per_folder(folder_ids)
+    return {} if folder_ids.empty?
+
     folder_ids_array = folder_ids.map { |id| "'#{id}'" }.join(', ')
     users = User.where(<<~SQL)
       EXISTS (

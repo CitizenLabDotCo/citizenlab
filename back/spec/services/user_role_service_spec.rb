@@ -235,6 +235,10 @@ describe UserRoleService do
         p2.id => [m1, m2, m4],
       })
     end
+
+    it 'does not crash if empty array is passed' do
+      expect(service.moderators_per_project([])).to eq({})
+    end
   end
 
   describe 'moderators_per_folder' do
@@ -251,6 +255,10 @@ describe UserRoleService do
         f2.id => [m1, m2],
         f3.id => [m3, m5]
       })
+    end
+
+    it 'does not crash if empty array is passed' do
+      expect(service.moderators_per_project([])).to eq({})
     end
   end
 end
