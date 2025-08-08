@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import { colors } from '../../utils/styleUtils';
 import Box from '../Box';
 import CheckboxWithLabel from '../CheckboxWithLabel';
+import SearchInput from '../SearchInput';
 import Spinner from '../Spinner';
 import Text from '../Text';
 
-import SearchInput from './SearchInput';
 import { Option } from './typings';
 
 const CheckboxListItem = styled.li<{ disabled?: boolean }>`
@@ -84,14 +84,17 @@ const DropdownContent = ({
   return (
     <Box role="group" aria-labelledby={selectorId}>
       {onSearch && (
-        <SearchInput
-          value={searchValue}
-          placeholder={searchPlaceholder}
-          onSearch={onSearch}
-          a11y_clearSearchButtonActionMessage={
-            a11y_clearSearchButtonActionMessage
-          }
-        />
+        <Box mb="8px">
+          <SearchInput
+            defaultValue={searchValue}
+            placeholder={searchPlaceholder ?? ''}
+            onChange={onSearch}
+            ariaLabel=""
+            hideLabel
+            size="small"
+            a11y_closeIconTitle={a11y_clearSearchButtonActionMessage}
+          />
+        </Box>
       )}
 
       {options.map((option) => {
