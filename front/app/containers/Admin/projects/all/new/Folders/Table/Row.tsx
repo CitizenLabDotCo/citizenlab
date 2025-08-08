@@ -67,7 +67,7 @@ const Row = ({ folder }: Props) => {
   const { publication_status } = folder.attributes;
 
   return (
-    <Tr>
+    <Tr dataCy="projects-overview-folder-table-row">
       <StyledTd
         background={colors.grey50}
         onClick={() => {

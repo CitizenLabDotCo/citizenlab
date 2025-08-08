@@ -12,6 +12,7 @@ type Props = {
   dataTestId?: string;
   ariaLabel?: string;
   tabIndex?: number;
+  dataCy?: string;
 } & CheckboxProps &
   BoxPaddingProps &
   BoxMarginProps;
@@ -31,6 +32,7 @@ const CheckboxWithLabel = ({
   usePrimaryBorder,
   ariaLabel,
   tabIndex,
+  dataCy,
   ...boxProps
 }: Props) => {
   const handleLabelClick = (event: React.MouseEvent) => {
@@ -47,6 +49,7 @@ const CheckboxWithLabel = ({
       onClick={handleLabelClick}
       data-testid={dataTestId || `${testEnv('check-mark-label')}`}
       style={{ cursor: 'pointer' }}
+      data-cy={dataCy}
       {...boxProps}
     >
       <Checkbox

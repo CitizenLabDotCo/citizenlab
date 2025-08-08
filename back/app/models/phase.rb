@@ -169,8 +169,6 @@ class Phase < ApplicationRecord
   # voting?
   with_options if: :voting? do
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
-    validates :voting_term_singular_multiloc, multiloc: { presence: false }
-    validates :voting_term_plural_multiloc, multiloc: { presence: false }
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
   end
   validates :voting_min_total,
@@ -243,18 +241,6 @@ class Phase < ApplicationRecord
 
   def reacting_dislike_limited?
     reacting_dislike_method == 'limited'
-  end
-
-  def voting_term_singular_multiloc_with_fallback
-    MultilocService.new.i18n_to_multiloc('voting_method.default_voting_term_singular').merge(
-      voting_term_singular_multiloc || {}
-    )
-  end
-
-  def voting_term_plural_multiloc_with_fallback
-    MultilocService.new.i18n_to_multiloc('voting_method.default_voting_term_plural').merge(
-      voting_term_plural_multiloc || {}
-    )
   end
 
   def started?

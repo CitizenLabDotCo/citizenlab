@@ -9,6 +9,9 @@ import {
   Button,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
+
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -17,6 +20,7 @@ import messages from './messages';
 import PremiumIcon from './PremiumIcon';
 
 const UpsellNudge = () => {
+  const theme = useTheme();
   const { formatMessage } = useIntl();
 
   return (
@@ -38,9 +42,13 @@ const UpsellNudge = () => {
             </Button>
           </Tooltip>
 
-          {/* <Button buttonStyle="text" textColor={theme.colors.tenantPrimary}>
-              {formatMessage(messages.learnMore)}
-            </Button> */}
+          <ButtonWithLink
+            linkTo={formatMessage(messages.timelineSupportArticle)}
+            buttonStyle="text"
+            textColor={theme.colors.tenantPrimary}
+          >
+            {formatMessage(messages.learnMore)}
+          </ButtonWithLink>
         </Box>
       </Box>
       <Box

@@ -7,18 +7,21 @@ import {
   ImageSizes,
 } from 'typings';
 
+import { ReviewState } from 'api/admin_publications/types';
 import { ParticipationMethod } from 'api/phases/types';
 import { PublicationStatus, Visibility } from 'api/projects/types';
 
 export type ProjectSortableParam =
   | 'recently_viewed'
   | 'phase_starting_or_ending_soon'
-  | 'recently_created'
+  | 'recently_created_asc'
+  | 'recently_created_desc'
   | 'alphabetically_asc'
   | 'alphabetically_desc';
 
 export type Parameters = {
   status?: PublicationStatus[];
+  review_state?: ReviewState;
   managers?: string[];
   search?: string;
   min_start_date?: string;

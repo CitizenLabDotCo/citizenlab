@@ -25,6 +25,7 @@ export interface Props {
   a11y_numberOfSearchResults: number;
   setInputRef?: (ref: HTMLInputElement | null) => void;
   hideLabel?: boolean;
+  dataCy?: string;
 }
 
 const SearchInputWrapper = ({
@@ -40,6 +41,7 @@ const SearchInputWrapper = ({
   setInputRef,
   labelColor,
   hideLabel,
+  dataCy,
 }: Props & WrappedComponentProps) => (
   <>
     <SearchInput
@@ -55,6 +57,7 @@ const SearchInputWrapper = ({
       setInputRef={setInputRef}
       labelColor={labelColor}
       hideLabel={hideLabel}
+      dataCy={dataCy}
     />
     <ScreenReaderOnly aria-live="assertive">
       {formatMessage(messages.a11y_searchResultsHaveChanged1, {
