@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::Extractors::BaseExtractor do
-  let(:service) { described_class.new('en') }
+  let(:service) { described_class.new('en', nil) }
 
   let(:column_name) { 'A question name here' }
 

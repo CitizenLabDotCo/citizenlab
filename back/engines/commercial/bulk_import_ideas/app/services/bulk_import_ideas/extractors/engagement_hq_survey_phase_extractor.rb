@@ -31,16 +31,17 @@ module BulkImportIdeas::Extractors
       /, (?=[A-Z])/
     end
 
+    # Split by colon and comma to detect matrix fields
     def matrix_regex
       /([^:]+)\s*:\s*([^,]+)(?:,\s*|$)/
     end
 
     def reformat_multiselect_values(column_name, option_values)
-      @idea_rows = standardise_delimiters(@idea_rows, column_name, option_values, ',')
+      @rows = standardise_delimiters(@rows, column_name, option_values, ',')
     end
 
     def reformat_matrix_values(column_name, labels)
-      @idea_rows = standardise_delimiters(@idea_rows, column_name, labels, ',')
+      @rows = standardise_delimiters(@rows, column_name, labels, ',')
     end
   end
 end
