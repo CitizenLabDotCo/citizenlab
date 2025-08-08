@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
-  let(:user) { create(:user) }
+  let(:user) { create(:admin) }
   let(:query) { described_class.new(user) }
 
   describe '#run_query' do
@@ -11,6 +11,12 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
     let!(:project2) { create(:project, title_multiloc: { en: 'Project 2' }) }
     let!(:phase1) { create(:phase, project: project1, participation_method: 'information', start_at: 1.month.ago, end_at: 1.month.from_now) }
     let!(:phase2) { create(:phase, project: project2, start_at: 2.months.ago, end_at: 2.months.from_now) }
+
+    before do
+      # Ensure projects are published
+      project1.admin_publication.update!(publication_status: 'published')
+      project2.admin_publication.update!(publication_status: 'published')
+    end
 
     it 'returns timeline data for projects' do
       result = query.run_query
@@ -20,7 +26,7 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
     end
 
     it 'filters by publication status' do
-      result = query.run_query({ publication_statuses: ['published'] })
+      result = query.run_query({ status: ['published'] })
 
       timeline_items = result[:timeline_items]
       expect(timeline_items).not_to be_empty
@@ -42,6 +48,7 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
     it 'filters by participation states - collecting_data' do
       # Create a project with a non-information phase
       project3 = create(:project, title_multiloc: { en: 'Project 3' })
+      project3.admin_publication.update!(publication_status: 'published')
       create(:phase, project: project3, participation_method: 'ideation', start_at: 1.month.ago, end_at: 1.month.from_now)
 
       result = query.run_query({ participation_states: ['collecting_data'] })
@@ -86,6 +93,7 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
     it 'filters by participation methods - ideation' do
       # Create a project with an ideation phase
       project3 = create(:project, title_multiloc: { en: 'Project 3' })
+      project3.admin_publication.update!(publication_status: 'published')
       create(:phase, project: project3, participation_method: 'ideation', start_at: 1.month.ago, end_at: 1.month.from_now)
 
       result = query.run_query({ participation_methods: ['ideation'] })
@@ -123,15 +131,22 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
       expect(timeline_items.map { |item| item[:id] }).to include(project1.id)
     end
 
+    it 'returns all projects when no limit is specified' do
+      result = query.run_query({})
+
+      # Should return all available projects (2 in this test)
+      expect(result[:timeline_items].length).to eq(2)
+    end
+
     it 'limits the number of projects' do
-      result = query.run_query({ number_of_projects: 1 })
+      result = query.run_query({ no_of_projects: 1 })
 
       expect(result[:timeline_items].length).to eq(1)
     end
 
     it 'returns available projects when fewer than requested' do
       # Request more projects than exist
-      result = query.run_query({ number_of_projects: 100 })
+      result = query.run_query({ no_of_projects: 100 })
 
       # Should return all available projects (2 in this test)
       expect(result[:timeline_items].length).to eq(2)
