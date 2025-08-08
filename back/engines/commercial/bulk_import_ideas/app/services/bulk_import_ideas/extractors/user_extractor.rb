@@ -20,7 +20,8 @@ module BulkImportIdeas::Extractors
     def custom_fields
       return [] if @rows.empty?
 
-      columns = @rows.flat_map(&:keys).uniq - %w[Email FirstName LastName DateCreated LastAccess]
+      # Ignore the 'special' columns that are not custom fields
+      columns = @rows.flat_map(&:keys).uniq - ['Email address', 'First name(s)', 'Last name', 'DateCreated', 'LastAccess']
       generate_fields(@rows, columns, fixed_key: true)
     end
 
