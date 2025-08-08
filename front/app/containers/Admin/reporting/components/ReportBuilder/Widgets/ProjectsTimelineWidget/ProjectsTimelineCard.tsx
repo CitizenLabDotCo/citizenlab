@@ -7,7 +7,10 @@ import { useProjectsTimeline } from 'api/graph_data_units';
 import { ProjectReportsPublicationStatus } from 'api/graph_data_units/requestTypes';
 import { ParticipationMethod } from 'api/phases/types';
 import { Visibility } from 'api/projects/types';
-import { ParticipationState } from 'api/projects_mini_admin/types';
+import {
+  ParticipationState,
+  ProjectSortableParam,
+} from 'api/projects_mini_admin/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -32,12 +35,7 @@ export interface ProjectsTimelineCardProps {
   managers?: string[];
   folderIds?: string[];
   participationMethods?: ParticipationMethod[];
-  sort?:
-    | 'recently_viewed'
-    | 'phase_starting_or_ending_soon'
-    | 'recently_created'
-    | 'alphabetically_asc'
-    | 'alphabetically_desc';
+  sort?: ProjectSortableParam;
   numberOfProjects?: number;
 }
 
