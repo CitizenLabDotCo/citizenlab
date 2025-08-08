@@ -33,10 +33,14 @@ const Manager = ({ mr = '0px', onClear }: Props) => {
       label: getFullName(manager),
     })) ?? [];
 
+  const sortedOptions = options.sort((a, b) =>
+    a.label.localeCompare(b.label, undefined, { sensitivity: 'base' })
+  );
+
   return (
     <MultiSelect
       selected={managerIds}
-      options={options}
+      options={sortedOptions}
       mr={mr}
       onChange={(managerIds) => {
         setParam('managers', managerIds);
