@@ -48,14 +48,24 @@ module AdminApi
       )
     end
 
+    private
+
     def local_creator_from_jwt
-      return nil if template_import_params[:local_create].blank?
+      return nil unless template_import_params[:local_create] == true
 
-      if template_import_params[:local_create] == true
-        auth_token = AuthToken::AuthToken.new(token: request.headers['X-JWT'])
+      user_id = jwt_payload['sub']
+      user = User.find_by(id: user_id)
+      raise ClErrors::ApiError.new(error_key: :user_not_found, message: "User with id #{user_id} not found") if user.nil?
+      
+      user
+    end
 
-        User.find_by(id: auth_token.payload['sub'])
-      end
+    def jwt_payload
+      token = request.headers['X-JWT']
+      raise ClErrors::TransactionError.new(error_key: :missing_jwt, message: 'Missing X-JWT header') if token.blank?
+      auth_token = AuthToken::AuthToken.new(token: token)
+
+      auth_token.payload
     end
   end
 end
