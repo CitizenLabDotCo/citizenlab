@@ -125,14 +125,14 @@ resource 'Project', admin_api: true do
         let!(:user) { nil }
 
         example '[Error] Does not enqueue an AdminApi::CopyProjectJob' do
-          expect {
+          expect do
             do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id, local_create: true })
-          }.not_to enqueue_job(AdminApi::CopyProjectJob)
+          end.not_to enqueue_job(AdminApi::CopyProjectJob)
 
           expect(status).to eq(422)
         end
 
-        example "[Error] Raises 'User with id  from JWT payload not found'" do
+        example "[Error] Raises 'User with id {id.inspect} from JWT payload not found'" do
           do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id, local_create: true })
           expect(json_response_body.to_s).to include('User with id nil from JWT payload not found')
         end
@@ -143,9 +143,9 @@ resource 'Project', admin_api: true do
       let(:template_yaml) { template.to_yaml }
 
       example '[Error] Does not enqueue an AdminApi::CopyProjectJob' do
-        expect {
+        expect do
           do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id, local_create: true })
-        }.not_to enqueue_job(AdminApi::CopyProjectJob)
+        end.not_to enqueue_job(AdminApi::CopyProjectJob)
 
         expect(status).to eq(422)
       end
