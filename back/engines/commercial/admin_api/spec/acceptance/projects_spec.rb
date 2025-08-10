@@ -40,6 +40,7 @@ resource 'Project', admin_api: true do
       parameter :new_slug, 'The new slug for the copied project', required: false
       parameter :new_title_multiloc, 'The new title for the copied project', required: false
       parameter :new_publication_status, "The new publication status for the new project. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
+      parameter :local_create, 'Whether to the project copy was initiated locally, via the create project from template UI', required: false
     end
 
     let(:tenant_id) { Tenant.current.id }
@@ -80,17 +81,78 @@ resource 'Project', admin_api: true do
       end
     end
 
-    describe 'Import a project template' do
+    context 'when local_create param not true' do
+      describe 'Import a project template' do
+        example 'enqueues an AdminApi::CopyProjectJob' do
+          template_yaml = template.to_yaml
+
+          local_creator = nil
+
+          expect do
+            do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id })
+          end.to enqueue_job(AdminApi::CopyProjectJob).with(template_yaml, folder.id, local_creator)
+
+          expect(status).to eq(202)
+        end
+      end
+    end
+
+    context 'when local_create param IS true' do
+      # We use tenant.switch in the test to ensure all operations run in the
+      # correct tenant context for multi-tenant data isolation and job serialization.
+      let!(:user) do
+        tenant.switch { create(:user) }
+      end
+      let(:template_yaml) { template.to_yaml }
+
+      before do
+        allow_any_instance_of(AdminApi::ProjectsController)
+          .to receive(:jwt_payload)
+          .and_return({ 'sub' => user&.id })
+      end
+
       example 'enqueues an AdminApi::CopyProjectJob' do
-        template_yaml = template.to_yaml
+        tenant.switch do
+          expect do
+            do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id, local_create: true })
+          end.to enqueue_job(AdminApi::CopyProjectJob).with(template_yaml, folder.id, user)
 
-        local_creator = nil
+          expect(status).to eq(202)
+        end
+      end
 
-        expect do
-          do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id })
-        end.to enqueue_job(AdminApi::CopyProjectJob).with(template_yaml, folder.id, local_creator)
+      context 'when User with id from JWT payload not found' do
+        let!(:user) { nil }
 
-        expect(status).to eq(202)
+        example '[Error] Does not enqueue an AdminApi::CopyProjectJob' do
+          expect {
+            do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id, local_create: true })
+          }.not_to enqueue_job(AdminApi::CopyProjectJob)
+
+          expect(status).to eq(422)
+        end
+
+        example "[Error] Raises 'User with id  from JWT payload not found'" do
+          do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id, local_create: true })
+          expect(json_response_body.to_s).to include('User with id nil from JWT payload not found')
+        end
+      end
+    end
+
+    context 'when when local_create param IS true but no JWT header found' do
+      let(:template_yaml) { template.to_yaml }
+
+      example '[Error] Does not enqueue an AdminApi::CopyProjectJob' do
+        expect {
+          do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id, local_create: true })
+        }.not_to enqueue_job(AdminApi::CopyProjectJob)
+
+        expect(status).to eq(422)
+      end
+
+      example "[Error] Raises 'Missing X-JWT header'" do
+        do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id, local_create: true })
+        expect(json_response_body.to_s).to include('Missing X-JWT header')
       end
     end
   end
