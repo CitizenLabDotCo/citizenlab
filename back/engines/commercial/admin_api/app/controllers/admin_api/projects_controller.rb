@@ -56,13 +56,14 @@ module AdminApi
       user_id = jwt_payload['sub']
       user = User.find_by(id: user_id)
       raise ClErrors::ApiError.new(error_key: :user_not_found, message: "User with id #{user_id} not found") if user.nil?
-      
+
       user
     end
 
     def jwt_payload
       token = request.headers['X-JWT']
       raise ClErrors::TransactionError.new(error_key: :missing_jwt, message: 'Missing X-JWT header') if token.blank?
+
       auth_token = AuthToken::AuthToken.new(token: token)
 
       auth_token.payload
