@@ -2326,7 +2326,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Cadw",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Diweddarwyd y ffeil yn llwyddiannus.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Chwilio ffeiliau",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Math o ffeil",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Cynllun strategol",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Dim ond uchafswm o {maxFiles} ffeiliau y gallwch eu lanlwytho ar y tro.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Anhysbys",

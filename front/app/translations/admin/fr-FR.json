@@ -2326,7 +2326,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Enregistrer",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Fichier mis à jour.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Rechercher",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Type de fichier",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Plan stratégique",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Vous ne pouvez téléverser que {maxFiles} fichiers à la fois.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Inconnu",

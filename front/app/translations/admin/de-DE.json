@@ -2326,7 +2326,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Speichern",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Datei erfolgreich aktualisiert.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Dateien suchen",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Dateityp",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Strategieplan",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Sie können nur maximal {maxFiles} Dateien auf einmal hochladen.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Unbekannt",

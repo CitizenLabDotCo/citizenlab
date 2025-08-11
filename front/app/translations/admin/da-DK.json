@@ -2326,7 +2326,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Gem",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Filen er blevet opdateret.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Søg i filer",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Filtype",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Strategisk plan",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Du kan højst uploade {maxFiles} filer ad gangen.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Ukendt",

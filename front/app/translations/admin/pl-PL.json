@@ -2326,7 +2326,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Oszczędzaj",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Plik został pomyślnie zaktualizowany.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Wyszukaj pliki",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Typ pliku",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Plan strategiczny",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Jednocześnie możesz przesłać maksymalnie {maxFiles} plików.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Nieznany",
