@@ -83,12 +83,11 @@ class UserRoleService
   def moderators_per_project(project_ids)
     return {} if project_ids.empty?
 
-    project_ids_array = project_ids.map { |id| "'#{id}'" }.join(', ')
-    users = User.where(<<~SQL.squish)
+    users = User.where(<<~SQL.squish, project_ids)
       EXISTS (
         SELECT 1 FROM jsonb_array_elements(roles) AS role
         WHERE role->>'type' = 'project_moderator'
-          AND role->>'project_id' IN (#{project_ids_array})
+          AND role->>'project_id' = ANY (ARRAY[?]::varchar[])
       )
     SQL
 
@@ -109,12 +108,11 @@ class UserRoleService
   def moderators_per_folder(folder_ids)
     return {} if folder_ids.empty?
 
-    folder_ids_array = folder_ids.map { |id| "'#{id}'" }.join(', ')
-    users = User.where(<<~SQL.squish)
+    users = User.where(<<~SQL.squish, folder_ids)
       EXISTS (
         SELECT 1 FROM jsonb_array_elements(roles) AS role
         WHERE role->>'type' = 'project_folder_moderator'
-          AND role->>'project_folder_id' IN (#{folder_ids_array})
+          AND role->>'project_folder_id' = ANY(ARRAY[?]::varchar[])
       )
     SQL
 
