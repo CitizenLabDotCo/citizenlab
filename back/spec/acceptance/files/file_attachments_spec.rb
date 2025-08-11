@@ -10,12 +10,22 @@ resource 'FileAttachments' do
   before { admin_header_token }
 
   get 'web_api/v1/file_attachments' do
+    parameter :attachable_id, 'Filter by attachable id', required: false
+
     # TODO: test permissions
-    let_it_be(:file_attachments) { create_pair(:file_attachment) }
+    let_it_be(:event) { create(:event) }
+    let_it_be(:event_attachments) { create_pair(:file_attachment, attachable: event) }
+    let_it_be(:project_attachment) { create(:file_attachment) }
 
     example_request 'List all file attachments' do
       assert_status 200
-      expect(response_data.size).to eq(2)
+      expect(response_data.size).to eq(3)
+    end
+
+    example 'List all file attachments for a specific attachable', document: false do
+      do_request(attachable_id: event.id)
+      assert_status 200
+      expect(response_ids).to match_array event_attachments.map(&:id)
     end
   end
 
