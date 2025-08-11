@@ -71,7 +71,7 @@ const FileSize = styled.span`
 `;
 
 interface Props {
-  file?:
+  file:
     | IProjectFileData
     | IPhaseFileData
     | IPageFileData

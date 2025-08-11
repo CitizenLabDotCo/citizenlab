@@ -35,8 +35,8 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
     <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
       <FileDisplay
         file={{
-          // Transform the file data to match the current expected structure.
-          // TODO: In the future, once we remove the old file structure, we can simplify this.
+          // Transform the file data to match the current expected type structure.
+          // TODO: In the future, once we remove the old files structure/api, we can simplify this.
           ...file.data,
           attributes: {
             ...file.data.attributes,
