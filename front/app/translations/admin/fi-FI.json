@@ -2030,6 +2030,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Tapahtumat",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Liitteet (enintään 50 Mt)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Tiedostot eivät saa olla suurempia kuin 50 Mt. Lisätyt tiedostot näkyvät projektin tietosivulla.",
+  "app.containers.AdminPage.ProjectEdit.filesTab2": "360-syöte",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Etsi vapaaehtoisia",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Pyydä osallistujia tekemään vapaaehtoistyötä toimintoihin ja syihin.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Kansioiden hallintaohjelman käyttäjä voi valita kansion projektin luomisen yhteydessä, mutta vain järjestelmänvalvoja voi muuttaa sitä jälkikäteen.",
