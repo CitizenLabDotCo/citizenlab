@@ -121,13 +121,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.discoverabilityLabel',
     defaultMessage: 'Discoverability',
   },
-  discoverabilityPublic: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.public',
-    defaultMessage: 'Public',
+  discoverabilityListed: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed',
+    defaultMessage: 'Listed',
   },
-  discoverabilityHidden: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.hidden',
-    defaultMessage: 'Hidden',
+  discoverabilityUnlisted: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted',
+    defaultMessage: 'Unlisted',
   },
   addFilter: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.addFilter',
