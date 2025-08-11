@@ -350,7 +350,7 @@ Rails.application.routes.draw do
         get 'preview', on: :member, to: 'files/previews#show'
       end
 
-      resources :file_attachments, controller: 'files/file_attachment', only: %i[index show]
+      resources :file_attachments, controller: 'files/file_attachment', only: %i[index show destroy]
     end
   end
 

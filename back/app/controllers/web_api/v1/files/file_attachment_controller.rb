@@ -18,6 +18,13 @@ class WebApi::V1::Files::FileAttachmentController < ApplicationController
     ).serializable_hash
   end
 
+  def destroy
+    file_attachment.destroy!
+    head :ok
+  rescue ActiveRecord::RecordNotDestroyed
+    render json: { errors: file_attachment.errors.details }, status: :unprocessable_entity
+  end
+
   private
 
   def file_attachment
