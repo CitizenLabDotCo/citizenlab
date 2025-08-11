@@ -1,9 +1,15 @@
 # frozen_string_literal: true
 
-class WebApi::V1::Files::FileAttachmentController < ApplicationController
+class WebApi::V1::Files::FileAttachmentsController < ApplicationController
   def index
+    # Either the attachable_id is passed explicitly or the attachable is the parent
+    # resource if applicable.
+    attachable_id = params[:attachable_id] || params[params[:parent_param]]
+    where_conditions = { attachable_id: attachable_id }.compact
+
     file_attachments = policy_scope(Files::FileAttachment)
       .includes(:file, :attachable)
+      .where(where_conditions)
 
     render json: WebApi::V1::Files::FileAttachmentSerializer.new(
       file_attachments,
