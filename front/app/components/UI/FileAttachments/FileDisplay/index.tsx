@@ -16,6 +16,7 @@ import { IPhaseFileData } from 'api/phase_files/types';
 import { IProjectFileData } from 'api/project_files/types';
 
 import { returnFileSize } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;
@@ -80,31 +81,30 @@ interface Props {
 }
 
 const FileDisplay = ({ file, className }: Props) => {
-  if (!file) {
-    return null;
+  if (!isNilOrError(file)) {
+    const {
+      file: { url },
+      name,
+      size,
+    } = file.attributes;
+    return (
+      <Container className={className}>
+        <Paperclip name="paperclip" />
+        <FileDownloadLink
+          href={url}
+          download={name}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {name}
+        </FileDownloadLink>
+        <Spacer />
+        {size && <FileSize>({returnFileSize(size)})</FileSize>}
+      </Container>
+    );
   }
 
-  const {
-    file: { url },
-    name,
-    size,
-  } = file.attributes;
-
-  return (
-    <Container className={className}>
-      <Paperclip name="paperclip" />
-      <FileDownloadLink
-        href={url}
-        download={name}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {name}
-      </FileDownloadLink>
-      <Spacer />
-      {size && <FileSize>({returnFileSize(size)})</FileSize>}
-    </Container>
-  );
+  return null;
 };
 
 export default FileDisplay;
