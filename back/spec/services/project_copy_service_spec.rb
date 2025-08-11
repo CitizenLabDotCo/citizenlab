@@ -350,6 +350,106 @@ describe ProjectCopyService do
     end
   end
 
+  describe 'import when local_creator is present' do
+    describe 'when folder is not present' do
+      it 'permits an admin to create the project' do
+        template = service.export(create(:project), local_copy: true)
+        local_creator = create(:admin)
+
+        expect do
+          service.import(template, local_creator: local_creator)
+        end.not_to raise_error
+      end
+
+      # This aligns with project create policy, but atm (11-8-25) the
+      # project create from template UI in the back-office does not allow
+      # folder moderator to select root unless also a project moderator.
+      it 'permits folder moderator (who is not project moderator) to create project in root' do
+        template = service.export(create(:project), local_copy: true)
+        folder = create(:project_folder)
+        local_creator = create(
+          :user,
+          roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }]
+        )
+
+        expect do
+          service.import(template, folder: nil, local_creator: local_creator)
+        end.not_to raise_error
+      end
+
+      it 'permits project moderator to create project in root' do
+        template = service.export(create(:project), local_copy: true)
+        project = create(:project)
+        local_creator = create(
+          :user,
+          roles: [{ type: 'project_moderator', project_id: project.id }]
+        )
+
+        expect do
+          service.import(template, local_creator: local_creator)
+        end.not_to raise_error
+      end
+
+      it 'prevents regular user from creating project in root' do
+        template = service.export(create(:project), local_copy: true)
+        local_creator = create(:user)
+
+        expect do
+          service.import(template, folder: folder, local_creator: local_creator)
+        end.to raise_error
+      end
+    end
+
+    describe 'when folder is present' do
+      let!(:folder) { create(:project_folder, title_multiloc: { 'en' => 'My Folder' }) }
+
+      it 'permits an admin to create the project' do
+        template = service.export(create(:project), local_copy: true)
+        local_creator = create(:admin)
+
+        expect do
+          service.import(template, local_creator: local_creator)
+        end.not_to raise_error
+      end
+
+      it 'permits folder moderator of folder to create project in folder' do
+        template = service.export(create(:project), local_copy: true)
+        local_creator = create(
+          :user,
+          roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }]
+        )
+
+        expect do
+          service.import(template, folder: folder, local_creator: local_creator)
+        end.not_to raise_error
+      end
+
+      it 'prevents folder moderator of other folder to create project in folder' do
+        template = service.export(create(:project), local_copy: true)
+        local_creator = create(
+          :user,
+          roles: [{ type: 'project_folder_moderator', project_folder_id: 'other_folder_id' }]
+        )
+
+        expect do
+          service.import(template, folder: folder, local_creator: local_creator)
+        end.to raise_error
+      end
+
+      it 'prevents non-folder moderator from creating project in folder' do
+        template = service.export(create(:project), local_copy: true)
+        local_creator = create(
+          :user,
+          roles: [{ type: 'project_moderator', project_id: 'fake_project_id' }]
+        )
+
+        expect do
+          service.import(template, folder: folder, local_creator: local_creator)
+        end.to raise_error
+      end
+    end
+  end
+
   private
 
   def stub_easy_translate!

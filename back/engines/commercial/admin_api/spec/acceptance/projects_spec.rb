@@ -97,7 +97,7 @@ resource 'Project', admin_api: true do
       end
     end
 
-    context 'when local_create param IS true' do
+    context 'when local_create param IS true and JWT header found' do
       # We use tenant.switch in the test to ensure all operations run in the
       # correct tenant context for multi-tenant data isolation and job serialization.
       let!(:user) do

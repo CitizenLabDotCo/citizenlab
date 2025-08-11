@@ -22,7 +22,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
 
       # This check needs to be after a folder is assigned (or not), so that folder moderator permissions are respected.
       if local_creator
-        # local_creator = User.find('ce01844b-5da0-48c6-ad35-ef684f86648e') # Debug: try different types of user here.
+        # Moderators can only create draft projects
+        project.admin_publication.update!(publication_status: 'draft')
+
         policy = ProjectPolicy.new(local_creator, project)
 
         unless policy.create?
