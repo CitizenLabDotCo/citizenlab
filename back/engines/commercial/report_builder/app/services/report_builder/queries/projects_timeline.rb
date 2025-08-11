@@ -67,9 +67,5 @@ module ReportBuilder
         }
       end
     end
-
-    def serialize(entity, serializer)
-      serializer.new(entity, params: { current_user: @current_user }).serializable_hash[:data]
-    end
   end
 end
