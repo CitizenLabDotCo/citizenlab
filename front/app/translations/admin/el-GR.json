@@ -2027,7 +2027,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Events",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Συνημμένα αρχεία (μέγιστο 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Τα αρχεία δεν πρέπει να είναι μεγαλύτερα από 50MB. Τα προστιθέμενα αρχεία θα εμφανίζονται στη σελίδα πληροφοριών του έργου.",
-  "app.containers.AdminPage.ProjectEdit.filesTab": "Files",
+  "app.containers.AdminPage.ProjectEdit.filesTab": "Αρχεία",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Εύρεση εθελοντών",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Ζητήστε από τους συμμετέχοντες να συμμετάσχουν εθελοντικά σε δραστηριότητες και αιτίες.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "As a folder manager, you can choose a folder when creating the project, but only an admin can change it afterward",
