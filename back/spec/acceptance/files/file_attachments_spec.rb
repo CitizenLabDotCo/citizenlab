@@ -62,7 +62,11 @@ resource 'FileAttachments' do
     let(:attachable_id) { attachable.id }
     let(:position) { 2 }
 
-    example_request 'Create a file attachment' do
+    example 'Create a file attachment' do
+      expect { do_request }
+        .to enqueue_job(LogActivityJob)
+        .with(a_kind_of(Files::FileAttachment), 'created', anything, anything)
+
       assert_status 201
 
       expect(response_data).to match(
@@ -86,7 +90,8 @@ resource 'FileAttachments' do
 
     let(:id) { file_attachment.id }
 
-    example_request 'Delete a file attachment' do
+    example 'Delete a file attachment' do
+      expect { do_request }.to have_enqueued_job(LogActivityJob)
       expect(response_status).to eq(200)
       expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
