@@ -20,6 +20,7 @@ import useLocale from 'hooks/useLocale';
 import LocalePicker from 'containers/Admin/projects/project/inputImporter/ImportModal/LocalePicker';
 import messages from 'containers/Admin/projects/project/inputImporter/ImportModal/messages';
 
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
 import SingleFileUploader from 'components/HookForm/SingleFileUploader';
 import Modal from 'components/UI/Modal';
@@ -27,11 +28,10 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-// TODO: Remove these references
-
 interface FormValues {
   locale: SupportedLocale;
   file?: UploadFile;
+  preview: boolean;
 }
 
 interface Props {
@@ -49,6 +49,7 @@ const ImportZipModal = ({ open, onClose, onImport }: Props) => {
   const defaultValues: FormValues = {
     locale,
     file: undefined,
+    preview: false,
   };
 
   const schema = object({
@@ -103,6 +104,10 @@ const ImportZipModal = ({ open, onClose, onImport }: Props) => {
 
             <Box>
               <SingleFileUploader name="file" accept=".zip" />
+            </Box>
+
+            <Box mt="24px">
+              <CheckboxWithLabel name="preview" label="Preview the import?" />
             </Box>
 
             <Box w="100%" display="flex" mt="32px">

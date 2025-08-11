@@ -10,12 +10,12 @@ export default defineMessages({
     defaultMessage: 'Recently viewed',
   },
   recently_created_asc: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc',
-    defaultMessage: 'Recently created (new-old)',
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_asc1',
+    defaultMessage: 'Recently created (old-new)',
   },
   recently_created_desc: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc',
-    defaultMessage: 'Recently created (old-new)',
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc1',
+    defaultMessage: 'Recently created (new-old)',
   },
   alphabetically_asc: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_asc',
@@ -140,5 +140,9 @@ export default defineMessages({
   manager: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.manager',
     defaultMessage: 'Manager',
+  },
+  pendingApproval: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval',
+    defaultMessage: 'Pending approval',
   },
 });
