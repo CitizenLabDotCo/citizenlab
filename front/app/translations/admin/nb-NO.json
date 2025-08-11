@@ -2030,6 +2030,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Arrangementer",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Vedlegg (maks 50 MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Filene bør ikke være større enn 50 MB. Filer som legges til, vises på prosjektets informasjonsside.",
+  "app.containers.AdminPage.ProjectEdit.filesTab2": "360 Inndata",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Finn frivillige",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Be deltakerne melde seg som frivillige til aktiviteter og formål.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Som mappeansvarlig kan du velge en mappe når du oppretter prosjektet, men bare en administrator kan endre den i etterkant",
