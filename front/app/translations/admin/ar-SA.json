@@ -2034,7 +2034,6 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "الأحداث",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "المُرفقات (بحجم أقصى 50 ميغابايت)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "تُعرض المُرفقات في صفحة المعلومات الخاصة بالمشروع.",
-  "app.containers.AdminPage.ProjectEdit.filesTab": "الملفات",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "بحث عن متطوعين",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "اطلب من مشاركين التطوع في أنشطة وقضايا.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "باعتبارك مدير مجلدات، يمكنك اختيار مجلد عند إنشاء المشروع، ولكن لا يمكن لأحد سوى المسؤول تغييره بعد ذلك",

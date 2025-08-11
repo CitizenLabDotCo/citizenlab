@@ -2034,7 +2034,6 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Digwyddiadau",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Atodiadau (50MB ar y mwyaf)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Ni ddylai ffeiliau fod yn fwy na 50Mb. Bydd ffeiliau ychwanegol yn cael eu dangos ar dudalen gwybodaeth y prosiect.",
-  "app.containers.AdminPage.ProjectEdit.filesTab": "Ffeiliau",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Dod o hyd i wirfoddolwyr",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Gofynnwch i gyfranogwyr wirfoddoli ar gyfer gweithgareddau ac achosion.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Fel rheolwr ffolderi, gallwch ddewis ffolder wrth greu'r prosiect, ond dim ond gweinyddwr all ei newid wedyn.",

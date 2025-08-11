@@ -2034,7 +2034,6 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Notikumi",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Pielikumi (ne vairāk kā 50 MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Faili nedrīkst būt lielāki par 50 Mb. Pievienotie faili tiks parādīti projekta informācijas lapā.",
-  "app.containers.AdminPage.ProjectEdit.filesTab": "Faili",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Atrast brīvprātīgos",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Lūdziet dalībniekus brīvprātīgi iesaistīties aktivitātēs un pasākumos.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Kā mapju pārvaldnieks varat izvēlēties mapi, kad veidojat projektu, bet pēc tam to var mainīt tikai administrators.",
