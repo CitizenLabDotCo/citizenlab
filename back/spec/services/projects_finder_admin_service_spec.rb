@@ -113,8 +113,8 @@ describe ProjectsFinderAdminService do
     it 'returns all projects when no review_state specified' do
       result = described_class.filter_review_state(Project.all, {})
       expect(result.pluck(:id).sort).to match_array([
-        regular_project.id, 
-        pending_review_project.id, 
+        regular_project.id,
+        pending_review_project.id,
         approved_project.id
       ].sort)
     end
