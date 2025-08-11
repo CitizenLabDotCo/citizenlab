@@ -93,6 +93,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.unlisted',
     defaultMessage: 'Unlisted',
   },
+  hidden: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.hidden',
+    defaultMessage: 'Hidden',
+  },
   discoverability: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.discoverability',
     defaultMessage: 'Discoverability:',
