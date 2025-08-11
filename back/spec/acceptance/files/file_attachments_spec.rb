@@ -43,6 +43,44 @@ resource 'FileAttachments' do
     end
   end
 
+  post 'web_api/v1/file_attachments' do
+    let_it_be(:file) { create(:file) }
+    let_it_be(:attachable) { create(:project) }
+
+    with_options(scope: :file_attachment) do
+      with_options required: true do
+        parameter :file_id, 'ID of the file to attach'
+        parameter :attachable_type, 'Type of the resource to attach the file to'
+        parameter :attachable_id, 'ID of the resource to attach the file to'
+      end
+
+      parameter :position, 'Position of the file attachment'
+    end
+
+    let(:file_id) { file.id }
+    let(:attachable_type) { 'Project' }
+    let(:attachable_id) { attachable.id }
+    let(:position) { 2 }
+
+    example_request 'Create a file attachment' do
+      assert_status 201
+
+      expect(response_data).to match(
+        id: anything,
+        type: 'file_attachment',
+        attributes: {
+          position: 2,
+          created_at: anything,
+          updated_at: anything
+        },
+        relationships: {
+          file: { data: { id: file.id, type: 'file' } },
+          attachable: { data: { id: attachable.id, type: 'project' } }
+        }
+      )
+    end
+  end
+
   delete 'web_api/v1/file_attachments/:id' do
     let_it_be(:file_attachment) { create(:file_attachment) }
 

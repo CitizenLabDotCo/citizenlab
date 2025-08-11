@@ -18,6 +18,27 @@ class WebApi::V1::Files::FileAttachmentController < ApplicationController
     ).serializable_hash
   end
 
+  def create
+    create_params = params.require(:file_attachment).permit(
+      :file_id,
+      :attachable_id,
+      :attachable_type,
+      :position
+    )
+
+    file_attachment = Files::FileAttachment.new(create_params)
+    authorize(file_attachment)
+
+    if file_attachment.save
+      render json: WebApi::V1::Files::FileAttachmentSerializer.new(
+        file_attachment,
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :created
+    else
+      render json: { errors: file_attachment.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     file_attachment.destroy!
     head :ok
