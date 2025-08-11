@@ -2030,7 +2030,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Veranstaltungen",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Anhänge (max. 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Dateien sollten nicht größer als 50Mb sein. Hinzugefügte Dateien werden auf der Projektinformationsseite angezeigt.",
-  "app.containers.AdminPage.ProjectEdit.filesTab2": "360 Beitrag",
+  "app.containers.AdminPage.ProjectEdit.filesTab2": "Datenportal",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Teilnehmende finden",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Bitten Sie Teilnehmende, sich freiwillig für Aktivitäten und Anlässe zu melden.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Als Ordnermanager*in können Sie bei der Erstellung des Projekts einen Ordner auswählen, aber nur ein Admin kann ihn nachträglich ändern",
