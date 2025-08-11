@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import useUsers from 'api/users/useUsers';
 
@@ -19,6 +19,8 @@ interface Props {
 }
 
 const Manager = ({ mr = '0px', onClear }: Props) => {
+  const [searchValue, setSearchValue] = useState('');
+
   const managerIds = useParam('managers') ?? [];
   const { formatMessage } = useIntl();
 
@@ -27,16 +29,31 @@ const Manager = ({ mr = '0px', onClear }: Props) => {
     can_moderate: true,
   });
 
-  const options =
-    managers?.data.map((manager) => ({
+  const getOptions = () => {
+    if (!managers) return [];
+    const managersWithFullname = managers.data.map((manager) => ({
       value: manager.id,
       label: getFullName(manager),
-    })) ?? [];
+    }));
+
+    if (searchValue === '') return managersWithFullname;
+
+    return managersWithFullname.filter((option) =>
+      option.label.toLowerCase().includes(searchValue.toLowerCase())
+    );
+  };
+
+  const options = getOptions();
+
+  const sortedOptions = options.sort((a, b) =>
+    a.label.localeCompare(b.label, undefined, { sensitivity: 'base' })
+  );
 
   return (
     <MultiSelect
       selected={managerIds}
-      options={options}
+      options={sortedOptions}
+      searchValue={searchValue}
       mr={mr}
       onChange={(managerIds) => {
         setParam('managers', managerIds);
@@ -44,6 +61,7 @@ const Manager = ({ mr = '0px', onClear }: Props) => {
           managerIds: JSON.stringify(managerIds),
         });
       }}
+      onSearch={setSearchValue}
       title={formatMessage(messages.manager)}
       onClear={onClear}
     />
