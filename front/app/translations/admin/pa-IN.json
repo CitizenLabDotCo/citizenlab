@@ -2326,7 +2326,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "ਸੇਵ ਕਰੋ",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "ਫਾਈਲ ਸਫਲਤਾਪੂਰਵਕ ਅੱਪਡੇਟ ਕੀਤੀ ਗਈ।",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "ਫਾਈਲਾਂ ਖੋਜੋ",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "ਫਾਈਲ ਕਿਸਮ",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "ਰਣਨੀਤਕ ਯੋਜਨਾ",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "ਤੁਸੀਂ ਇੱਕ ਸਮੇਂ ਵਿੱਚ ਵੱਧ ਤੋਂ ਵੱਧ {maxFiles} ਫਾਈਲਾਂ ਹੀ ਅਪਲੋਡ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.containers.AdminPage.ProjectFiles.unknown": "ਅਣਜਾਣ",
