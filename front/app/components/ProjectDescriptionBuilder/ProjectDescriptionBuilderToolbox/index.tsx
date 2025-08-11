@@ -2,6 +2,8 @@ import React from 'react';
 
 import { SupportedLocale } from 'typings';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import messages from 'containers/ProjectDescriptionBuilder/messages';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
@@ -10,6 +12,7 @@ import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
@@ -30,6 +33,10 @@ const ProjectDescriptionBuilderToolbox = ({
   selectedLocale,
 }: ProjectDescriptionBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
+
+  const isDataRepositoryEnabled = useFeatureFlag({
+    name: 'data_repository',
+  });
 
   return (
     <Container
@@ -91,6 +98,14 @@ const ProjectDescriptionBuilderToolbox = ({
           icon="button"
           label={formatMessage(ButtonMultiloc.craft.custom.title)}
         />
+        {isDataRepositoryEnabled && (
+          <DraggableElement
+            id="e2e-draggable-file-attachment"
+            component={<FileAttachment />}
+            icon="file"
+            label={formatMessage(FileAttachment.craft.custom.title)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-image"
           component={<ImageMultiloc />}
