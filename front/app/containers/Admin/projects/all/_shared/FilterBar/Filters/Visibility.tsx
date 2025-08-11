@@ -18,7 +18,7 @@ const OPTIONS: {
 }[] = [
   {
     value: 'public',
-    message: messages.visibilityPublic,
+    message: messages.visibilityAnyone,
   },
   {
     value: 'groups',
