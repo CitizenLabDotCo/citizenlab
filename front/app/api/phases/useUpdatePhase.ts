@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import campaignsKeys from 'api/campaigns/keys';
+import campaignsKeys, { supportedCampaignNamesKeys } from 'api/campaigns/keys';
 import projectsKeys from 'api/projects/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -33,7 +33,9 @@ const useUpdatePhase = () => {
       });
       queryClient.invalidateQueries({ queryKey: campaignsKeys.lists() });
       queryClient.invalidateQueries({
-        queryKey: ['campaign', 'supported_campaign_names'],
+        queryKey: supportedCampaignNamesKeys.lists({
+          phaseId: variables.phaseId,
+        }),
       });
     },
   });
