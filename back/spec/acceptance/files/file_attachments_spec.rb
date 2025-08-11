@@ -49,17 +49,8 @@ resource 'FileAttachments' do
     let(:id) { file_attachment.id }
 
     example_request 'Delete a file attachment' do
-      puts "Making DELETE request to: /web_api/v1/file_attachments/#{id}"
-      puts "File attachment exists before request: #{Files::FileAttachment.exists?(id)}"
-
-      do_request
-
-      puts "Response status: #{response_status}"
-      puts "Response body: #{response_body}"
-      puts "File attachment exists after request: #{Files::FileAttachment.exists?(id)}"
-
       expect(response_status).to eq(200)
-      expect { Files::FileAttachment.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
