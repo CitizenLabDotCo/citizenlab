@@ -2030,6 +2030,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Événements",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Pièces jointes (max. 50Mo)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Les fichiers ajoutés seront visibles sur la page \"information\" du projet.",
+  "app.containers.AdminPage.ProjectEdit.filesTab2": "360 Contribution",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Trouver des bénévoles",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Demandez aux participants de se porter volontaires pour des activités et des causes.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "En tant que gestionnaire de dossiers, vous pouvez choisir un dossier lors de la création du projet, mais seul un administrateur peut le modifier par la suite",
