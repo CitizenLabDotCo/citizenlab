@@ -2027,7 +2027,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Events",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Fitxers adjunts (màxim 50 MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Els fitxers no han de ser més grans de 50 Mb. Els fitxers afegits es mostraran a la pàgina d'informació del projecte.",
-  "app.containers.AdminPage.ProjectEdit.filesTab": "Files",
+  "app.containers.AdminPage.ProjectEdit.filesTab": "Fitxers",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Cerqueu voluntaris",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Demaneu als participants que es facin voluntaris per a activitats i causes.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "As a folder manager, you can choose a folder when creating the project, but only an admin can change it afterward",
