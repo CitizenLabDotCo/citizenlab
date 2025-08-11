@@ -29,7 +29,9 @@ class WebApi::V1::Files::FileAttachmentController < ApplicationController
     file_attachment = Files::FileAttachment.new(create_params)
     authorize(file_attachment)
 
+    side_fx.before_create(file_attachment, current_user)
     if file_attachment.save
+      side_fx.after_create(file_attachment, current_user)
       render json: WebApi::V1::Files::FileAttachmentSerializer.new(
         file_attachment,
         params: jsonapi_serializer_params
@@ -40,7 +42,9 @@ class WebApi::V1::Files::FileAttachmentController < ApplicationController
   end
 
   def destroy
-    file_attachment.destroy!
+    side_fx.before_destroy(file_attachment, current_user)
+    destroyed_attachment = file_attachment.destroy!
+    side_fx.after_destroy(destroyed_attachment, current_user)
     head :ok
   rescue ActiveRecord::RecordNotDestroyed
     render json: { errors: file_attachment.errors.details }, status: :unprocessable_entity
@@ -52,5 +56,9 @@ class WebApi::V1::Files::FileAttachmentController < ApplicationController
     @file_attachment ||= authorize(
       Files::FileAttachment.includes(:file).find(params[:id])
     )
+  end
+
+  def side_fx
+    @side_fx ||= Files::SideFxFileAttachmentService.new
   end
 end
