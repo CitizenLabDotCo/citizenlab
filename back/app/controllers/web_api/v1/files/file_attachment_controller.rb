@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
 class WebApi::V1::Files::FileAttachmentController < ApplicationController
+  def index
+    file_attachments = policy_scope(Files::FileAttachment)
+      .includes(:file, :attachable)
+
+    render json: WebApi::V1::Files::FileAttachmentSerializer.new(
+      file_attachments,
+      params: jsonapi_serializer_params
+    ).serializable_hash
+  end
+
   def show
     render json: WebApi::V1::Files::FileAttachmentSerializer.new(
       file_attachment,
