@@ -41,6 +41,24 @@ class WebApi::V1::Files::FileAttachmentController < ApplicationController
     end
   end
 
+  def update
+    update_params = params.require(:file_attachment).permit(:position)
+
+    authorize(file_attachment)
+
+    side_fx.before_update(file_attachment, current_user)
+    if file_attachment.update(update_params)
+      side_fx.after_update(file_attachment, current_user)
+
+      render json: WebApi::V1::Files::FileAttachmentSerializer.new(
+        file_attachment,
+        params: jsonapi_serializer_params
+      ).serializable_hash
+    else
+      render json: { errors: file_attachment.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     side_fx.before_destroy(file_attachment, current_user)
     destroyed_attachment = file_attachment.destroy!

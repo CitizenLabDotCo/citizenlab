@@ -85,6 +85,27 @@ resource 'FileAttachments' do
     end
   end
 
+  patch 'web_api/v1/file_attachments/:id' do
+    with_options(scope: :file_attachment) do
+      parameter :position, 'Position of the file attachment'
+    end
+
+    let_it_be(:file_attachment) { create(:file_attachment, position: 1) }
+
+    let(:id) { file_attachment.id }
+    let(:position) { 2 }
+
+    example 'Update a file attachment' do
+      expect { do_request }
+        .to enqueue_job(LogActivityJob)
+        .with(file_attachment, 'changed', anything, anything)
+
+      assert_status 200
+      expect(response_data.dig(:attributes, :position)).to eq(2)
+      expect(file_attachment.reload.position).to eq(2)
+    end
+  end
+
   delete 'web_api/v1/file_attachments/:id' do
     let_it_be(:file_attachment) { create(:file_attachment) }
 
