@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import { useProjectsTimeline } from 'api/graph_data_units';
@@ -22,6 +23,10 @@ import { GanttItem } from 'components/UI/GanttChart/types';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+
+const StyledBox = styled(Box)`
+  box-sizing: border-box;
+`;
 
 export interface ProjectsTimelineCardProps {
   title?: Multiloc;
@@ -109,11 +114,13 @@ const ProjectsTimelineCard = ({
   }));
 
   return (
-    <GanttChart
-      items={ganttItems}
-      showTodayLine={showTodayLine}
-      chartTitle={formatMessage(messages.projects)}
-    />
+    <StyledBox>
+      <GanttChart
+        items={ganttItems}
+        showTodayLine={showTodayLine}
+        chartTitle={formatMessage(messages.projects)}
+      />
+    </StyledBox>
   );
 };
 

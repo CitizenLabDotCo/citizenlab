@@ -23,7 +23,7 @@ const StyledBox = styled(Box)<{ isRoot: boolean; outlineColor?: string }>`
         max-width: 1000px;
         background-color: #fff;
         min-height: 160px;
-        box-sizing: border-box;
+        box-sizing: content-box;
       `
       : 'cursor: move;'}
 
