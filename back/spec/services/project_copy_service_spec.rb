@@ -395,8 +395,8 @@ describe ProjectCopyService do
         local_creator = create(:user)
 
         expect do
-          service.import(template, folder: folder, local_creator: local_creator)
-        end.to raise_error
+          service.import(template, local_creator: local_creator)
+        end.to raise_error(ClErrors::TransactionError)
       end
     end
 
@@ -433,7 +433,7 @@ describe ProjectCopyService do
 
         expect do
           service.import(template, folder: folder, local_creator: local_creator)
-        end.to raise_error
+        end.to raise_error(ClErrors::TransactionError)
       end
 
       it 'prevents non-folder moderator from creating project in folder' do
@@ -445,7 +445,7 @@ describe ProjectCopyService do
 
         expect do
           service.import(template, folder: folder, local_creator: local_creator)
-        end.to raise_error
+        end.to raise_error(ClErrors::TransactionError)
       end
     end
   end
