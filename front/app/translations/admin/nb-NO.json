@@ -2319,7 +2319,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Spar",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Filen ble oppdatert.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Søk i filer",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Filtype",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Strategisk plan",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Du kan bare laste opp maksimalt {maxFiles} filer om gangen.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Ukjent",

@@ -2319,7 +2319,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Bewaar",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Bestand succesvol bijgewerkt.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Bestanden zoeken",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Soort bestand",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Strategisch plan",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Je kunt maximaal {maxFiles} bestanden tegelijk uploaden.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Onbekend",

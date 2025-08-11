@@ -8,7 +8,6 @@ import { BubbleContainer } from 'components/AvatarBubbles/Containers';
 import placeholderImage from 'components/AvatarBubbles/user.png';
 
 import { useIntl } from 'utils/cl-intl';
-import { truncate } from 'utils/textUtils';
 
 import messages from './messages';
 
@@ -28,9 +27,8 @@ const OVERLAP = 12;
 const ManagerBubbles = ({ managers }: Props) => {
   const { formatMessage } = useIntl();
 
-  const getFullName = (firstName?: string, lastName?: string) => {
-    if (!firstName || !lastName) return 'No name';
-    return truncate(`${firstName} ${lastName}`, 13);
+  const getFullName = (firstName?: string, lastName?: string): string => {
+    return [firstName, lastName].filter(Boolean).join(' ');
   };
 
   if (managers.length === 0) {
@@ -68,7 +66,12 @@ const ManagerBubbles = ({ managers }: Props) => {
             />
           </BubbleContainer>
         </Box>
-        <Text m="0" fontSize="s" color="textPrimary">
+        <Text 
+          m="0" 
+          fontSize="s" 
+          color="textPrimary"
+          wordBreak="break-word"
+        >
           {getFullName(managers[0].first_name, managers[0].last_name)}
         </Text>
       </Box>

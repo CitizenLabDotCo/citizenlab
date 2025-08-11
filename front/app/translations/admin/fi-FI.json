@@ -2319,7 +2319,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "Tallentaa",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "Tiedosto päivitetty onnistuneesti.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "Hae tiedostoja",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "Tiedostotyyppi",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Strateginen suunnitelma",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "Voit ladata kerrallaan enintään {maxFiles} tiedostoa.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Tuntematon",

@@ -2319,7 +2319,6 @@
   "app.containers.AdminPage.ProjectFiles.save": "يحفظ",
   "app.containers.AdminPage.ProjectFiles.saveFileMetadataSuccessMessage": "تم تحديث الملف بنجاح.",
   "app.containers.AdminPage.ProjectFiles.searchFiles": "البحث عن الملفات",
-  "app.containers.AdminPage.ProjectFiles.selectFileType": "نوع الملف",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "الخطة الاستراتيجية",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "يمكنك تحميل ما يصل إلى {maxFiles} من الملفات كحد أقصى في المرة الواحدة.",
   "app.containers.AdminPage.ProjectFiles.unknown": "مجهول",
