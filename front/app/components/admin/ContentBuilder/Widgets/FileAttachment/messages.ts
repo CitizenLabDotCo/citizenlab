@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'File Attachment',
   },
   selectFile: {
-    id: 'app.containers.admin.ContentBuilder.selectFile',
-    defaultMessage: 'Select File',
+    id: 'app.containers.admin.ContentBuilder.selectFile2',
+    defaultMessage: 'Select existing file',
   },
   noFilesAvailable: {
     id: 'app.containers.admin.ContentBuilder.noFilesAvailable',
@@ -15,7 +15,7 @@ export default defineMessages({
       'No files available. Please upload files to the project first.',
   },
   uploadFiles: {
-    id: 'app.containers.admin.ContentBuilder.uploadFiles',
-    defaultMessage: 'Upload Files',
+    id: 'app.containers.admin.ContentBuilder.uploadFiles2',
+    defaultMessage: 'Upload files to project',
   },
 });

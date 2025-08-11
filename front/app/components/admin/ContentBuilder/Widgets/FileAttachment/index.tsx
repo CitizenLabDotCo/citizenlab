@@ -27,9 +27,26 @@ type FileAttachmentProps = {
 const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   const { data: file } = useFileById(fileId);
 
+  if (!file) {
+    return null;
+  }
+
   return (
     <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
-      <FileDisplay fileNewType={file?.data} />
+      <FileDisplay
+        file={{
+          // Transform the file data to match the current expected structure.
+          // TODO: In the future, once we remove the old file structure, we can simplify this.
+          ...file.data,
+          attributes: {
+            ...file.data.attributes,
+            file: {
+              url: file.data.attributes.content.url,
+            },
+            ordering: null,
+          },
+        }}
+      />
     </Box>
   );
 };
@@ -49,7 +66,7 @@ const FileAttachmentSettings = () => {
 
   // Get files for project
   const { data: files, isFetching: isFetchingFiles } = useFiles({
-    project: [projectId || ''],
+    project: projectId ? [projectId] : [],
   });
 
   // Generate options for the file select dropdown

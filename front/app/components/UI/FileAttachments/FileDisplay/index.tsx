@@ -10,14 +10,12 @@ import { lighten } from 'polished';
 import styled from 'styled-components';
 
 import { IEventFileData } from 'api/event_files/types';
-import { IFileData } from 'api/files/types';
 import { IIdeaFileData } from 'api/idea_files/types';
 import { IPageFileData } from 'api/page_files/types';
 import { IPhaseFileData } from 'api/phase_files/types';
 import { IProjectFileData } from 'api/project_files/types';
 
 import { returnFileSize } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;
@@ -78,58 +76,35 @@ interface Props {
     | IPageFileData
     | IEventFileData
     | IIdeaFileData;
-  fileNewType?: IFileData; // TODO: Rename this prop to "file" and remove the old code after BE changes.
   className?: string;
 }
 
-const FileDisplay = ({ file, fileNewType, className }: Props) => {
-  if (!isNilOrError(fileNewType)) {
-    const {
-      content: { url },
-      name,
-      size,
-    } = fileNewType.attributes;
-    return (
-      <Container className={className}>
-        <Paperclip name="paperclip" />
-        <FileDownloadLink
-          href={url}
-          download={name}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {name}
-        </FileDownloadLink>
-        <Spacer />
-        {size && <FileSize>({returnFileSize(size)})</FileSize>}
-      </Container>
-    );
+const FileDisplay = ({ file, className }: Props) => {
+  if (!file) {
+    return null;
   }
 
-  if (!isNilOrError(file)) {
-    const {
-      file: { url },
-      name,
-      size,
-    } = file.attributes;
-    return (
-      <Container className={className}>
-        <Paperclip name="paperclip" />
-        <FileDownloadLink
-          href={url}
-          download={name}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {name}
-        </FileDownloadLink>
-        <Spacer />
-        {size && <FileSize>({returnFileSize(size)})</FileSize>}
-      </Container>
-    );
-  }
+  const {
+    file: { url },
+    name,
+    size,
+  } = file.attributes;
 
-  return null;
+  return (
+    <Container className={className}>
+      <Paperclip name="paperclip" />
+      <FileDownloadLink
+        href={url}
+        download={name}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {name}
+      </FileDownloadLink>
+      <Spacer />
+      {size && <FileSize>({returnFileSize(size)})</FileSize>}
+    </Container>
+  );
 };
 
 export default FileDisplay;
