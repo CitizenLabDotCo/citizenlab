@@ -21,6 +21,7 @@ import FileAnalysis from './components/FileAnalysis';
 import FileDescription from './components/FileDescription';
 import FileEditForm from './components/FileEditForm';
 import FileMetadata from './components/FileMetadata';
+import FileTranscription from './components/FileTranscription';
 
 type Props = {
   opened: boolean;
@@ -82,6 +83,10 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
                 </Box>
                 <Box mt="32px">
                   <FilePreview file={file} />
+                </Box>
+
+                <Box mt="32px">
+                  <FileTranscription file={file.data} />
                 </Box>
               </Box>
             </Box>
