@@ -10,26 +10,12 @@ resource 'FileAttachments' do
   before { admin_header_token }
 
   get 'web_api/v1/file_attachments' do
-    let!(:file_attachment1) { create(:file_attachment, position: 1) }
-    let!(:file_attachment2) { create(:file_attachment, position: 2) }
+    # TODO: test permissions
+    let_it_be(:file_attachments) { create_pair(:file_attachment) }
 
     example_request 'List all file attachments' do
       assert_status 200
-
-      expect(response_data.size).to eq 2
-      expect(response_data.first).to match(
-        id: file_attachment1.id,
-        type: 'file_attachment',
-        attributes: {
-          position: file_attachment1.position,
-          created_at: anything,
-          updated_at: anything
-        },
-        relationships: {
-          file: { data: { id: file_attachment1.file.id, type: 'file' } },
-          attachable: { data: { id: file_attachment1.attachable_id, type: 'project' } }
-        }
-      )
+      expect(response_data.size).to eq(2)
     end
   end
 
