@@ -349,6 +349,8 @@ Rails.application.routes.draw do
       resources :files, controller: 'files/files' do
         get 'preview', on: :member, to: 'files/previews#show'
       end
+
+      resources :file_attachments, controller: 'files/file_attachment', only: [:show]
     end
   end
 
