@@ -45,7 +45,7 @@ const Table = () => {
   } = useInfiniteProjectsMiniAdmin(
     {
       ...params,
-      sort: sort ?? 'phase_starting_or_ending_soon',
+      sort: sort ?? 'recently_viewed',
     },
     PAGE_SIZE
   );
@@ -110,17 +110,24 @@ const Table = () => {
         </Thead>
         <Tbody>
           {projects.length === 0 && <EmptyRow />}
-          {projects.map((project) => (
+          {projects.map((project, i) => (
             <Row
               key={project.id}
               project={project}
               participantsCount={participantsCounts[project.id]}
+              firstRow={i === 0}
             />
           ))}
         </Tbody>
       </TableComponent>
 
-      <Box ref={loadMoreRef} mt="12px" display="flex" justifyContent="center">
+      <Box
+        ref={loadMoreRef}
+        mt="12px"
+        display="flex"
+        justifyContent="center"
+        color={colors.textPrimary}
+      >
         {sentinelMessage && formatMessage(sentinelMessage)}
       </Box>
 

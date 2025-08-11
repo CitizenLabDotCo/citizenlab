@@ -46,6 +46,7 @@ const Status = ({ mr, onClear }: Props) => {
       }}
       title={formatMessage(messages.status)}
       onClear={onClear}
+      dataCy="projects-overview-filter-status"
     />
   );
 };
