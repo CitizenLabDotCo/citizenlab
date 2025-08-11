@@ -105,9 +105,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label',
     defaultMessage: 'Visibility',
   },
-  visibilityPublic: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.public',
-    defaultMessage: 'Public',
+  visibilityAnyone: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.anyone',
+    defaultMessage: 'Anyone',
   },
   visibilityGroups: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups',
