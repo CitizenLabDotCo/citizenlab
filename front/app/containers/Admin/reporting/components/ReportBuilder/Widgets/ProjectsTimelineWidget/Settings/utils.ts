@@ -2,7 +2,7 @@ import { FormatMessage, IOption } from 'typings';
 
 import { ProjectSortableParam } from 'api/projects_mini_admin/types';
 
-import projectFilterMessages from 'containers/Admin/projects/all/new/_shared/FilterBar/Filters/messages';
+import projectFilterMessages from 'containers/Admin/projects/all/_shared/FilterBar/Filters/messages';
 
 export const getParticipationMethodOptions = (
   formatMessage: FormatMessage

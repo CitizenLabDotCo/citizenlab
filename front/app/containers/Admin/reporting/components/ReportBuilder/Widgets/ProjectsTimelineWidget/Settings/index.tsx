@@ -7,21 +7,21 @@ import { IOption } from 'typings';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
 import useUsers from 'api/users/useUsers';
 
+import useLocalize from 'hooks/useLocalize';
+
+import DateRangeFilter from 'containers/Admin/projects/all/_shared/FilterBar/Filters/DateRangeFilter';
+import projectFilterMessages from 'containers/Admin/projects/all/_shared/FilterBar/Filters/messages';
+
 import MultipleSelect from 'components/UI/MultipleSelect';
 import MultiSelect from 'components/UI/MultiSelect';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import useLocalize from 'hooks/useLocalize';
-
 import { TitleInput } from '../../ChartWidgets/_shared/ChartWidgetSettings';
-
-import projectFilterMessages from 'containers/Admin/projects/all/new/_shared/FilterBar/Filters/messages';
-import DateRangeFilter from 'containers/Admin/projects/all/new/_shared/FilterBar/Filters/DateRangeFilter';
-
 import messages from '../messages';
 import { ProjectsTimelineCardProps } from '../ProjectsTimelineCard';
+
 import { getParticipationMethodOptions, getSortOptions } from './utils';
 
 type SettingsFieldProps = {

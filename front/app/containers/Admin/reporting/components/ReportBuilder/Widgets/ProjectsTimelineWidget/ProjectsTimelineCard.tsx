@@ -15,7 +15,7 @@ import {
 
 import useLocalize from 'hooks/useLocalize';
 
-import { getStatusColor } from 'containers/Admin/projects/all/new/_shared/utils';
+import { getStatusColor } from 'containers/Admin/projects/all/_shared/utils';
 
 import GanttChart from 'components/UI/GanttChart';
 import { GanttItem } from 'components/UI/GanttChart/types';
