@@ -548,6 +548,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Ampliar imagen",
   "app.components.UI.MoreActionsMenu.moreOptions": "Más opciones",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Mostrar más acciones",
+  "app.components.UI.NewLabel.new": "NUEVO",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "No se han encontrado fases adecuadas para este proyecto",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Eliminar",
   "app.components.UI.TranslateButton.original": "Original",
