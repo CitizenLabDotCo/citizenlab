@@ -34,11 +34,16 @@ const DynamicFilters = ({ isUserAdmin }: Props) => {
     });
   });
 
+  // Track which filters should be opened by default when added
+  const [filtersToOpen, setFiltersToOpen] = useState<FilterKey[]>([]);
+
   const showClearButton = activeFilters.length > 0;
 
   const handleAddFilter = (filterKey: FilterKey) => {
     if (!activeFilters.includes(filterKey)) {
       setActiveFilters([...activeFilters, filterKey]);
+      // Mark this filter to be opened by default
+      setFiltersToOpen([...filtersToOpen, filterKey]);
 
       trackEventByName(tracks.addFilter, {
         filter: filterKey,
@@ -48,6 +53,8 @@ const DynamicFilters = ({ isUserAdmin }: Props) => {
 
   const handleRemoveFilter = (filterKey: FilterKey) => {
     setActiveFilters(activeFilters.filter((f) => f !== filterKey));
+    // Remove from filters to open list
+    setFiltersToOpen(filtersToOpen.filter((f) => f !== filterKey));
 
     // Clear the parameter when removing the filter
     setParam(filterKey, undefined);
@@ -62,8 +69,15 @@ const DynamicFilters = ({ isUserAdmin }: Props) => {
     removeSearchParams(activeFilters);
     // Clear all active filters
     setActiveFilters([]);
+    // Clear all filters to open
+    setFiltersToOpen([]);
 
     trackEventByName(tracks.clearFilters);
+  };
+
+  const handleFilterOpened = (filterKey: FilterKey) => {
+    // Remove from filters to open list once it's been opened
+    setFiltersToOpen(filtersToOpen.filter((f) => f !== filterKey));
   };
 
   const availableFilters = FILTER_KEYS.filter(
@@ -78,6 +92,8 @@ const DynamicFilters = ({ isUserAdmin }: Props) => {
             key={filterKey}
             filterKey={filterKey}
             onRemove={() => handleRemoveFilter(filterKey)}
+            shouldOpenByDefault={filtersToOpen.includes(filterKey)}
+            onOpened={() => handleFilterOpened(filterKey)}
           />
         );
       })}
