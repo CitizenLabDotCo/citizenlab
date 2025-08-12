@@ -2028,6 +2028,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Događaji",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Privici (maks. 50 MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Datoteke ne smiju biti veće od 50 MB. Privici će biti prikazani na stranici sa informacijama o projektu.",
+  "app.containers.AdminPage.ProjectEdit.filesTab2": "360 ulaz",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Pronađi volontere",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Zatražite od sudionika da volontiraju za aktivnosti i povode.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Kao upravitelj mapa, možete odabrati mapu prilikom stvaranja projekta, ali samo administrator je može naknadno promijeniti.",
