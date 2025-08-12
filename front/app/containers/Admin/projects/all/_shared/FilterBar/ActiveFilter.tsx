@@ -12,24 +12,73 @@ import Visibility from './Filters/Visibility';
 interface Props {
   filterKey: FilterKey;
   onRemove: () => void;
+  shouldOpenByDefault?: boolean;
+  onOpened?: () => void;
 }
 
-const ActiveFilter = ({ filterKey, onRemove }: Props) => {
+const ActiveFilter = ({
+  filterKey,
+  onRemove,
+  shouldOpenByDefault,
+  onOpened,
+}: Props) => {
   switch (filterKey) {
     case 'status':
-      return <Status onClear={onRemove} />;
+      return (
+        <Status
+          onClear={onRemove}
+          shouldOpenByDefault={shouldOpenByDefault}
+          onOpened={onOpened}
+        />
+      );
     case 'managers':
-      return <Manager onClear={onRemove} />;
+      return (
+        <Manager
+          onClear={onRemove}
+          shouldOpenByDefault={shouldOpenByDefault}
+          onOpened={onOpened}
+        />
+      );
     case 'folder_ids':
-      return <Folders onClear={onRemove} />;
+      return (
+        <Folders
+          onClear={onRemove}
+          shouldOpenByDefault={shouldOpenByDefault}
+          onOpened={onOpened}
+        />
+      );
     case 'participation_states':
-      return <ParticipationStates onClear={onRemove} />;
+      return (
+        <ParticipationStates
+          onClear={onRemove}
+          shouldOpenByDefault={shouldOpenByDefault}
+          onOpened={onOpened}
+        />
+      );
     case 'participation_methods':
-      return <ParticipationMethods onClear={onRemove} />;
+      return (
+        <ParticipationMethods
+          onClear={onRemove}
+          shouldOpenByDefault={shouldOpenByDefault}
+          onOpened={onOpened}
+        />
+      );
     case 'visibility':
-      return <Visibility onClear={onRemove} />;
+      return (
+        <Visibility
+          onClear={onRemove}
+          shouldOpenByDefault={shouldOpenByDefault}
+          onOpened={onOpened}
+        />
+      );
     case 'discoverability':
-      return <Discoverability onClear={onRemove} />;
+      return (
+        <Discoverability
+          onClear={onRemove}
+          shouldOpenByDefault={shouldOpenByDefault}
+          onOpened={onOpened}
+        />
+      );
   }
 };
 
