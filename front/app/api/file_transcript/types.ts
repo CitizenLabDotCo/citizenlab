@@ -92,10 +92,8 @@ export interface AssemblyAITranscriptData {
   sentiment_analysis: boolean;
   sentiment_analysis_results: SentimentAnalysisResult[] | null;
   is_deleted: boolean | null;
-  // Project and token fields from your sample
   project_id: number;
   token_id: number;
-  // Additional fields that may be present but not in core API docs
   prompt: string | null;
   keyterms_prompt: string[];
   speaker_options: Record<string, any> | null;
