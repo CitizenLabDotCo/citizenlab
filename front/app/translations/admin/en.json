@@ -2319,6 +2319,8 @@
   "app.containers.AdminPage.ProjectFiles.selectFileType": "File type",
   "app.containers.AdminPage.ProjectFiles.strategic_plan": "Strategic plan",
   "app.containers.AdminPage.ProjectFiles.tooManyFiles": "You can only upload a maximum of {maxFiles} files at a time.",
+  "app.containers.AdminPage.ProjectFiles.transcription": "Transcript",
+  "app.containers.AdminPage.ProjectFiles.unableToGenerateTranscription": "Unable to generate a transcript.",
   "app.containers.AdminPage.ProjectFiles.unknown": "Unknown",
   "app.containers.AdminPage.ProjectFiles.upload": "Upload",
   "app.containers.AdminPage.ProjectFiles.uploadSummary": "{numberOfFiles, plural, one {# file} other {# files}} uploaded successfully, {numberOfErrors, plural, one {# error} other {# errors}}.",
