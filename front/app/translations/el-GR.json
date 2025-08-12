@@ -119,7 +119,7 @@
   "app.components.ConsentManager.Banner.close": "Κλείσιμο",
   "app.components.ConsentManager.Banner.mainText": "Αυτή η πλατφόρμα χρησιμοποιεί cookies σύμφωνα με την {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Διαχείριση",
-  "app.components.ConsentManager.Banner.policyLink": "Πολιτική cookie",
+  "app.components.ConsentManager.Banner.policyLink": "Πολιτική cookies",
   "app.components.ConsentManager.Banner.reject": "Απόρριψη",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Διαφήμιση",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "Το χρησιμοποιούμε για την εξατομίκευση και τη μέτρηση της αποτελεσματικότητας των διαφημιστικών εκστρατειών του ιστότοπού μας. Δεν θα προβάλλουμε καμία διαφήμιση σε αυτή την πλατφόρμα, αλλά οι ακόλουθες υπηρεσίες ενδέχεται να σας προσφέρουν μια εξατομικευμένη διαφήμιση με βάση τις σελίδες που επισκέπτεστε στον ιστότοπό μας.",
