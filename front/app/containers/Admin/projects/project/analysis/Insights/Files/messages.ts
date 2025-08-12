@@ -26,16 +26,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.files.save',
     defaultMessage: 'Save',
   },
-  addFilesTabMessageWithLink: {
-    id: 'app.containers.AdminPage.projects.project.analysis.files.addFilesTabMessageWithLink',
-    defaultMessage: 'You can add additional files in the {filesTab}.',
-  },
-  filesTabLink: {
-    id: 'app.containers.AdminPage.projects.project.analysis.files.filesTabLink',
-    defaultMessage: 'Files tab',
-  },
-  filesTab: {
-    id: 'app.containers.AdminPage.projects.project.analysis.files.filesTab',
-    defaultMessage: 'Files tab',
-  },
 });
