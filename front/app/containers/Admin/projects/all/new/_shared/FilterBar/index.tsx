@@ -2,16 +2,18 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
+import useAuthUser from 'api/me/useAuthUser';
+
+import { isAdmin } from 'utils/permissions/roles';
 
 import DynamicFilters from './DynamicFilters';
 import Dates from './Filters/Dates';
-import Search from './Filters/Search';
+import PendingApproval from './Filters/PendingApproval';
 import Sort from './Filters/Sort';
-import messages from './messages';
 
 const Filters = () => {
-  const { formatMessage } = useIntl();
+  const { data: user } = useAuthUser();
+  const isUserAdmin = isAdmin(user);
 
   return (
     <Box
@@ -20,9 +22,10 @@ const Filters = () => {
       flexWrap="wrap"
       gap="8px"
       alignItems="center"
+      className="intercom-product-tour-project-page-filters"
     >
-      <Search placeholder={formatMessage(messages.search)} />
       <Sort />
+      {isUserAdmin && <PendingApproval />}
       <Dates />
       <DynamicFilters />
     </Box>

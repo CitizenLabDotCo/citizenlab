@@ -102,7 +102,7 @@ const Show = () => {
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
   const { data: project } = useProjectById(
-    campaign?.data.attributes.context_id
+    campaign?.data.relationships.context?.data?.id
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

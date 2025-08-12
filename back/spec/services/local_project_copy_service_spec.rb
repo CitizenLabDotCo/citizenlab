@@ -255,7 +255,6 @@ describe LocalProjectCopyService do
       ignore_attributes = %i[
         id project_id start_at end_at updated_at created_at
         voting_method voting_max_total voting_min_total voting_max_votes_per_idea
-        voting_term_singular_multiloc voting_term_plural_multiloc
         survey_embed_url survey_service
       ]
       copied_project = service.copy(timeline_project)

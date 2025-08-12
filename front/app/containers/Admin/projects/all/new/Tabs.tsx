@@ -10,6 +10,8 @@ import { useSearchParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import NewLabel from 'components/UI/NewLabel';
+
 import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -26,17 +28,19 @@ interface TabProps {
   message: MessageDescriptor;
   active: boolean;
   icon: IconNames;
+  dataCy?: string;
   onClick: () => void;
 }
 
-const Tab = ({ message, active, icon, onClick }: TabProps) => {
+const Tab = ({ message, active, icon, dataCy, onClick }: TabProps) => {
   const { formatMessage } = useIntl();
 
   return (
     <Box
-      borderBottom={active ? `2px solid ${colors.teal400}` : undefined}
+      borderBottom={active ? `2px solid ${colors.primary}` : undefined}
       pb="4px"
       mr="20px"
+      data-cy={dataCy}
     >
       <Button
         buttonStyle="text"
@@ -44,8 +48,8 @@ const Tab = ({ message, active, icon, onClick }: TabProps) => {
         m="0"
         icon={icon}
         iconSize="16px"
-        textColor={active ? colors.primary : undefined}
-        iconColor={active ? colors.primary : undefined}
+        textColor={active ? colors.textPrimary : undefined}
+        iconColor={active ? colors.textPrimary : undefined}
         onClick={onClick}
       >
         {formatMessage(message)}
@@ -58,6 +62,7 @@ const Tabs = () => {
   const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab');
   const { data: user } = useAuthUser();
+  const { formatMessage } = useIntl();
   if (!user) return null;
 
   const userIsAdmin = isAdmin(user);
@@ -65,11 +70,18 @@ const Tabs = () => {
   const { highest_role } = user.data.attributes;
 
   return (
-    <Box as="nav" display="flex" w="100%" mt="12px">
+    <Box
+      as="nav"
+      display="flex"
+      w="100%"
+      mt="12px"
+      className="intercom-product-tour-project-page-tabs"
+    >
       <Tab
         message={messages.projects}
         icon="projects"
         active={tab === null}
+        dataCy="projects-overview-projects-tab"
         onClick={() => {
           if (tab === 'folders') {
             removeSearchParams(FOLDER_PARAMS);
@@ -84,8 +96,9 @@ const Tabs = () => {
           message={messages.folders}
           icon="folder-outline"
           active={tab === 'folders'}
+          dataCy="projects-overview-folders-tab"
           onClick={() => {
-            if ([null, 'timeline'].includes(tab)) {
+            if ([null, 'calendar'].includes(tab)) {
               removeSearchParams(PROJECT_PARAMS);
             }
 
@@ -94,22 +107,40 @@ const Tabs = () => {
           }}
         />
       )}
-      <Tab
-        message={messages.timeline}
-        icon="calendar"
-        active={tab === 'timeline'}
-        onClick={() => {
-          if (tab === 'folders') {
-            removeSearchParams(FOLDER_PARAMS);
-          }
+      <Box
+        borderBottom={
+          tab === 'calendar' ? `2px solid ${colors.primary}` : undefined
+        }
+        pb="4px"
+        mr="20px"
+        display="flex"
+        alignItems="center"
+        data-cy="projects-overview-calendar-tab"
+      >
+        <Button
+          buttonStyle="text"
+          p="0"
+          m="0"
+          icon="calendar"
+          iconSize="16px"
+          textColor={tab === 'calendar' ? colors.textPrimary : undefined}
+          iconColor={tab === 'calendar' ? colors.textPrimary : undefined}
+          onClick={() => {
+            if (tab === 'folders') {
+              removeSearchParams(FOLDER_PARAMS);
+            }
 
-          updateSearchParams({ tab: 'timeline' });
-          trackEventByName(tracks.setTab, { tab: 'timeline' });
-        }}
-      />
+            updateSearchParams({ tab: 'calendar' });
+            trackEventByName(tracks.setTab, { tab: 'calendar' });
+          }}
+        >
+          {formatMessage(messages.calendar)}
+        </Button>
+        <NewLabel ml="4px" expiryDate={new Date('2025-12-01')} />
+      </Box>
       {userIsAdmin && (
         <Tab
-          message={messages.ordering}
+          message={messages.arrangeProjects}
           icon="drag-handle"
           active={tab === 'ordering'}
           onClick={() => {

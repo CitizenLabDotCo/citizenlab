@@ -30,16 +30,14 @@ module MultiTenancy
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'proposals',
           start_at: Time.zone.today - 30.days,
-          end_at: Time.zone.today - 11.days,
-          campaigns_settings: { project_phase_started: true }
+          end_at: Time.zone.today - 11.days
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Current ideation phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'ideation',
           start_at: Time.zone.today - 10.days,
-          end_at: Time.zone.today + 10.days,
-          campaigns_settings: { project_phase_started: true }
+          end_at: Time.zone.today + 10.days
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Future native survey phase' },
@@ -47,7 +45,6 @@ module MultiTenancy
           participation_method: 'native_survey',
           start_at: Time.zone.today + 11.days,
           end_at: nil,
-          campaigns_settings: { project_phase_started: true },
           native_survey_title_multiloc: { 'en' => 'Survey' },
           native_survey_button_multiloc: { 'en' => 'Take the survey' }
         )
@@ -68,8 +65,7 @@ module MultiTenancy
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'information',
           start_at: Time.zone.today - 30.days,
-          end_at: Time.zone.today - 11.days,
-          campaigns_settings: { project_phase_started: true }
+          end_at: Time.zone.today - 11.days
         )
         project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
       end
@@ -124,8 +120,7 @@ module MultiTenancy
             description_multiloc: runner.rand_description_multiloc,
             start_at: start_at,
             end_at: (start_at += rand(150).days),
-            participation_method: %w[ideation voting poll information ideation ideation][rand(6)],
-            campaigns_settings: { project_phase_started: true }
+            participation_method: %w[ideation voting poll information ideation ideation][rand(6)]
           })
           if phase.voting?
             phase.assign_attributes(voting_method: 'budgeting', voting_max_total: rand(100..1_000_099).round(-2))

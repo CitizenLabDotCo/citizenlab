@@ -275,6 +275,7 @@ export interface IAppConfigurationSettings {
   user_fields_in_surveys?: AppConfigurationFeature;
   html_pdfs?: AppConfigurationFeature;
   project_planning?: AppConfigurationFeature;
+  project_planning_calendar?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;

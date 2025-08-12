@@ -81,6 +81,8 @@ export interface Props {
   size?: InputSize;
   setInputRef?: (arg: HTMLInputElement) => void;
   labelColor?: string;
+  hideLabel?: boolean;
+  dataCy?: string;
 }
 
 const SearchInput = ({
@@ -95,6 +97,8 @@ const SearchInput = ({
   size,
   setInputRef,
   labelColor,
+  hideLabel = false,
+  dataCy,
 }: Props) => {
   const [internalSearchTerm, setInternalSearchTerm] = useState(
     defaultValue ?? null
@@ -140,15 +144,17 @@ const SearchInput = ({
   const isLabelFloating = isFocused || !!internalSearchTerm;
 
   return (
-    <Box className={className || ''} position="relative">
+    <Box className={className || ''} position="relative" data-cy={dataCy}>
       <StyledInputWrapper>
-        <StyledLabel
-          htmlFor={id}
-          isFloating={isLabelFloating}
-          color={labelColor}
-        >
-          {placeholder}
-        </StyledLabel>
+        {!hideLabel && (
+          <StyledLabel
+            htmlFor={id}
+            isFloating={isLabelFloating}
+            color={labelColor}
+          >
+            {placeholder}
+          </StyledLabel>
+        )}
         <StyledInput
           id={id}
           className="e2e-search-input"
