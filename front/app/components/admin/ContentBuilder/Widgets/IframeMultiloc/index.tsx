@@ -27,16 +27,14 @@ import messages from './messages';
 
 interface Props {
   url: string;
-  height: number;
   hasError: boolean;
   errorType?: string;
   title?: Multiloc;
   selectedLocale: SupportedLocale;
 }
 
-const IframeMultiloc = ({ url, height, hasError, title }: Props) => {
+const IframeMultiloc = ({ url, hasError, title }: Props) => {
   const localize = useLocalize();
-
   const componentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
@@ -52,9 +50,11 @@ const IframeMultiloc = ({ url, height, hasError, title }: Props) => {
           src={url}
           title={localize(title)}
           width="100%"
-          height={height}
           style={{
             border: '0px',
+            // This is the new, modern way to set aspect ratio.
+            // It replaces the need for a fixed height or a padding trick.
+            aspectRatio: '16/9',
           }}
         />
       )}
@@ -66,7 +66,6 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
   const {
     actions: { setProp },
     url,
-    height,
     id,
     hasError,
     errorType,
@@ -74,7 +73,6 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     selectedLocale,
   } = useNode((node) => ({
     url: node.data.props.url,
-    height: node.data.props.height,
     id: node.id,
     title: node.data.props.title,
     hasError: node.data.props.hasError,
@@ -125,20 +123,6 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
         )}
       </Box>
       <Box flex="0 0 100%">
-        <Input
-          labelTooltipText={formatMessage(
-            messages.embedIframeHeightLabelTooltip
-          )}
-          label={formatMessage(messages.embedIframeHeightLabel)}
-          placeholder={formatMessage(messages.iframeHeightPlaceholder)}
-          type="number"
-          value={height}
-          onChange={(value) => {
-            setProp((props) => (props.height = value));
-          }}
-        />
-      </Box>
-      <Box flex="0 0 100%">
         <Label htmlFor="e2e-content-builder-iframe-title-input">
           <span>
             {formatMessage(messages.embedIframeTitleLabel)}{' '}
@@ -165,7 +149,6 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
 IframeMultiloc.craft = {
   props: {
     url: '',
-    height: '',
   },
   related: {
     settings: IframeSettings,
