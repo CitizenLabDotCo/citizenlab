@@ -13,6 +13,7 @@ import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { ModalQueueProvider } from 'containers/App/ModalQueue';
+
 import history from 'utils/browserHistory';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 

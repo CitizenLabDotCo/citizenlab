@@ -10,6 +10,7 @@ const CommunityMonitorModal = lazy(() => import('./CommunityMonitor/Modal'));
 
 const MODAL_PRIORITIES = {
   100: 'CRITICAL',
+  75: 'IMPORTANT',
   50: 'HIGH',
   25: 'MEDIUM',
   10: 'LOW',
@@ -21,20 +22,26 @@ type ModalPriority = keyof typeof MODAL_PRIORITIES;
 export type ModalId =
   | 'consent-modal'
   | 'user-session-recording'
-  | 'community-monitor';
+  | 'community-monitor'
+  | 'authentication';
 
 const modalRegistry: Record<
   ModalId,
-  { component: React.FC<any>; priority: ModalPriority }
+  { component: React.FC<any> | undefined; priority: ModalPriority }
 > = {
+  authentication: {
+    component: undefined,
+    priority: 100,
+  },
   'consent-modal': {
     component: ConsentManagerModal,
-    priority: 100,
+    priority: 75,
   },
   'user-session-recording': {
     component: UserSessionRecordingModal,
     priority: 50,
   },
+  // This community-monitor modal probably needs to get a lower priority
   'community-monitor': {
     component: CommunityMonitorModal,
     priority: 25,
