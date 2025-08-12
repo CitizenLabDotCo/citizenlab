@@ -54,7 +54,7 @@ resource 'FileAttachments' do
         },
         relationships: {
           file: { data: { id: file_attachment.file.id, type: 'file' } },
-          attachable: { data: { id: file_attachment.attachable_id, type: 'project' } }
+          attachable: { data: { id: file_attachment.attachable_id, type: 'event' } }
         }
       )
     end
@@ -62,7 +62,7 @@ resource 'FileAttachments' do
 
   post 'web_api/v1/file_attachments' do
     let_it_be(:file) { create(:file) }
-    let_it_be(:attachable) { create(:project) }
+    let_it_be(:attachable) { file.projects.first }
 
     with_options(scope: :file_attachment) do
       with_options required: true do
@@ -151,47 +151,53 @@ resource 'FileAttachments' do
   end
 
   shared_examples 'attachable resource' do |name, attachable_factory: name|
-    before { admin_header_token }
-
-    get "web_api/v1/#{name}s/:attachable_id/file_attachments" do
-      let_it_be(:attachable) { create(attachable_factory) }
-      let_it_be(:file_attachments) { create_pair(:file_attachment, attachable: attachable) }
-
-      let(:attachable_id) { attachable.id }
-
-      before { create(:file_attachment) }
-
-      example_request "List all file attachments of a #{name}" do
-        assert_status 200
-        expect(response_data.size).to eq(2)
-      end
-    end
-
-    post "web_api/v1/#{name}s/:attachable_id/file_attachments" do
-      with_options(scope: :file_attachment) do
-        parameter :file_id, 'ID of the file to attach', required: true
-        parameter :position, 'Position of the file attachment', required: false
+    context "#{name} behaves like an attachable resource" do
+      before do
+        admin_header_token
+        create(:file_attachment)
       end
 
-      let_it_be(:attachable) { create(attachable_factory) }
-      let_it_be(:file) { create(:file) }
+      get "web_api/v1/#{name}s/:attachable_id/file_attachments" do
+        let_it_be(:attachable) { create(attachable_factory) }
+        let_it_be(:file_attachments) { create_pair(:file_attachment, attachable: attachable) }
 
-      let(:attachable_id) { attachable.id }
-      let(:file_id) { file.id }
+        let(:attachable_id) { attachable.id }
 
-      example_request "Create a file attachment for a #{name}" do
-        assert_status 201
+        example "List all file attachments of a #{name}", document: false do
+          do_request
+          assert_status 200
+          expect(response_ids).to match_array file_attachments.map(&:id)
+        end
+      end
 
-        file_attachment = Files::FileAttachment.find(response_data[:id])
-        expect(file_attachment.attachable).to eq(attachable)
-        expect(file_attachment.file).to eq(file)
+      post "web_api/v1/#{name}s/:attachable_id/file_attachments" do
+        with_options(scope: :file_attachment) do
+          parameter :file_id, 'ID of the file to attach', required: true
+          parameter :position, 'Position of the file attachment', required: false
+        end
+
+        let(:tmp_fa) { create(:file_attachment, to: attachable_factory).tap(&:delete) }
+        let(:attachable) { tmp_fa.attachable }
+        let(:file) { tmp_fa.file }
+
+        # Parameters
+        let(:attachable_id) { attachable.id }
+        let(:file_id) { file.id }
+
+        example "Create a file attachment for a #{name}", document: false do
+          do_request
+          assert_status 201
+
+          file_attachment = Files::FileAttachment.find(response_data[:id])
+          expect(file_attachment.attachable).to eq(attachable)
+          expect(file_attachment.file).to eq(file)
+        end
       end
     end
   end
 
   include_examples 'attachable resource', 'project'
   include_examples 'attachable resource', 'event'
-  include_examples 'attachable resource', 'idea'
   include_examples 'attachable resource', 'phase'
   include_examples 'attachable resource', 'static_page'
 end

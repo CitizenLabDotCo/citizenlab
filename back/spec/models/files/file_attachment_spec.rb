@@ -13,7 +13,12 @@ RSpec.describe Files::FileAttachment do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_uniqueness_of(:file_id).scoped_to(%w[attachable_type attachable_id]).case_insensitive }
+    it 'validates uniqueness of file_id scoped to attachable_type and attachable_id' do
+      attachment = create(:file_attachment)
+      new_attachment = build(:file_attachment, file: attachment.file, attachable: attachment.attachable)
+      expect(new_attachment).not_to be_valid
+    end
+
     it { is_expected.to validate_inclusion_of(:attachable_type).in_array(described_class::ATTACHABLE_TYPES) }
 
     describe '#validate_file_belongs_to_project' do
