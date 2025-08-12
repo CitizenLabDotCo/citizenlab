@@ -85,6 +85,7 @@ const ParticipationMethods = ({ onClear }: Props) => {
         title={formatMessage(messages.participationMethodLabel)}
         selected={participationMethods}
         options={options}
+        openedDefaultValue={participationMethods.length === 0}
         onChange={handleOnChange}
         onClear={onClear}
       />
