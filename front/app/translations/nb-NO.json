@@ -548,6 +548,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Utvid bildet",
   "app.components.UI.MoreActionsMenu.moreOptions": "Flere alternativer",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Vis flere handlinger",
+  "app.components.UI.NewLabel.new": "NYHET",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Ingen passende faser funnet for dette prosjektet",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Fjern",
   "app.components.UI.TranslateButton.original": "Original",
