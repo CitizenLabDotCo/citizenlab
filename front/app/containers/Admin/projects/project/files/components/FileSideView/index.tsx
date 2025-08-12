@@ -10,11 +10,14 @@ import {
 
 import useFileById from 'api/files/useFileById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import SideModal from 'components/UI/SideModal';
 
 import { useIntl } from 'utils/cl-intl';
 
 import FilePreview from '../FilePreview';
+import { AUDIO_MIMETYPES } from '../FilePreview/utils';
 import messages from '../messages';
 
 import FileAnalysis from './components/FileAnalysis';
@@ -33,6 +36,10 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
   const { formatMessage } = useIntl();
   const { data: file } = useFileById(selectedFileId);
   const [editingMetadata, setEditingMetadata] = useState(false);
+
+  const isTranscriptionEnabled = useFeatureFlag({
+    name: 'data_repository_transcription',
+  });
 
   return (
     <SideModal
@@ -85,9 +92,12 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
                   <FilePreview file={file} />
                 </Box>
 
-                <Box mt="32px">
-                  <FileTranscription file={file.data} />
-                </Box>
+                {isTranscriptionEnabled &&
+                  AUDIO_MIMETYPES.has(file.data.attributes.mime_type) && (
+                    <Box mt="32px">
+                      <FileTranscription file={file.data} />
+                    </Box>
+                  )}
               </Box>
             </Box>
 

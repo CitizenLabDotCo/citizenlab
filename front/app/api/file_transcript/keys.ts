@@ -1,7 +1,7 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
-  type: 'file_transcript',
+  type: 'transcript',
 };
 
 const fileTranscriptKeys = {
