@@ -6,8 +6,8 @@ import SuccessActions from './SuccessActions';
 const Authentication = () => {
   return (
     <>
-      <Modal />
       <SuccessActions />
+      <Modal />
     </>
   );
 };

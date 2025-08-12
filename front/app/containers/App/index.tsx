@@ -31,6 +31,7 @@ import {
   localeGetter,
   locales,
 } from 'containers/App/constants';
+import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
 import ConsentManager from 'components/ConsentManager';
@@ -351,6 +352,9 @@ const App = ({ children }: Props) => {
                 closeUserDeletedModal={closeUserDeletedModal}
                 userSuccessfullyDeleted={userSuccessfullyDeleted}
               />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <Authentication />
             </ErrorBoundary>
             <ErrorBoundary>
               <div id="modal-portal" />

@@ -42,7 +42,7 @@ import useSteps from './useSteps';
 // but this one was the worst in terms of bundle size impact
 const CustomFields = lazy(() => import('./steps/CustomFields'));
 
-const AuthenticationModal = () => {
+const AuthModal = () => {
   const {
     currentStep,
     state,
@@ -310,4 +310,4 @@ const AuthenticationModal = () => {
   );
 };
 
-export default AuthenticationModal;
+export default AuthModal;
