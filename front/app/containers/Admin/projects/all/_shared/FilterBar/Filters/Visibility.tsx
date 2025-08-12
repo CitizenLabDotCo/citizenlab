@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { Visibility } from 'api/projects/types';
 
@@ -9,6 +9,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import { setParam, useParam } from '../../params';
 
+import { useFilterOpenByDefault } from './hooks/useFilterOpenByDefault';
 import messages from './messages';
 import tracks from './tracks';
 
@@ -32,11 +33,24 @@ const OPTIONS: {
 
 interface Props {
   onClear: () => void;
+  shouldOpenByDefault?: boolean;
+  onOpened?: () => void;
 }
 
-const VisibilityFilter = ({ onClear }: Props) => {
+const VisibilityFilter = ({
+  onClear,
+  shouldOpenByDefault,
+  onOpened,
+}: Props) => {
   const visibilities = useParam('visibility') ?? [];
   const { formatMessage } = useIntl();
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  const { isOpened, setIsOpened } = useFilterOpenByDefault({
+    shouldOpenByDefault,
+    onOpened,
+    filterRef,
+  });
 
   const options = OPTIONS.map((option) => ({
     label: formatMessage(option.message),
@@ -44,18 +58,23 @@ const VisibilityFilter = ({ onClear }: Props) => {
   }));
 
   return (
-    <MultiSelect
-      title={formatMessage(messages.visibilityLabel)}
-      options={options}
-      selected={visibilities}
-      onChange={(visibilities) => {
-        setParam('visibility', visibilities as Visibility[]);
-        trackEventByName(tracks.setVisibility, {
-          visibilities: JSON.stringify(visibilities),
-        });
-      }}
-      onClear={onClear}
-    />
+    <div ref={filterRef}>
+      <MultiSelect
+        title={formatMessage(messages.visibilityLabel)}
+        options={options}
+        selected={visibilities}
+        onChange={(visibilities) => {
+          setParam('visibility', visibilities as Visibility[]);
+          trackEventByName(tracks.setVisibility, {
+            visibilities: JSON.stringify(visibilities),
+          });
+        }}
+        onClear={onClear}
+        dataCy="projects-overview-filter-visibility"
+        opened={isOpened}
+        onOpen={() => setIsOpened(true)}
+      />
+    </div>
   );
 };
 
