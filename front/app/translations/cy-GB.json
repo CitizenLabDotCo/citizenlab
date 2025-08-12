@@ -545,6 +545,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Ehangu delwedd",
   "app.components.UI.MoreActionsMenu.moreOptions": "Mwy o opsiynau",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Dangos mwy o gamau gweithredu",
+  "app.components.UI.NewLabel.new": "NEWYDD",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Ni chanfuwyd unrhyw gamau priodol ar gyfer y prosiect hwn",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Dileu",
   "app.components.UI.TranslateButton.original": "Gwreiddiol",

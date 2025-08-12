@@ -273,15 +273,12 @@ resource 'Phases' do
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
-        parameter :voting_term_singular_multiloc, 'A multiloc term that is used to refer to the voting in singular form', required: false
-        parameter :voting_term_plural_multiloc, 'A multiloc term that is used to refer to the voting in plural form', required: false
         parameter :start_at, 'The start date of the phase', required: true
         parameter :end_at, 'The end date of the phase', required: true
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The term used to describe an input. One of #{Phase::INPUT_TERMS.join(', ')}. Defaults to "idea".', required: false
         parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", required: false
-        parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
@@ -301,7 +298,6 @@ resource 'Phases' do
       let(:participation_method) { phase.participation_method }
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
-      let(:campaigns_settings) { phase.campaigns_settings }
       let(:vote_term) { 'token' }
 
       example_request 'Create a phase for a project' do
@@ -397,8 +393,7 @@ resource 'Phases' do
           let(:voting_method) { 'multiple_voting' }
           let(:voting_max_total) { 10 }
           let(:voting_max_votes_per_idea) { 5 }
-          let(:voting_term_singular_multiloc) { { 'en' => 'bean' } }
-          let(:voting_term_plural_multiloc) { { 'en' => 'beans' } }
+          let(:vote_term) { 'point' }
 
           example_request 'Create a voting (multiple voting) phase' do
             assert_status 201
@@ -407,8 +402,7 @@ resource 'Phases' do
             expect(response_data.dig(:attributes, :voting_max_total)).to eq 10
             expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
             expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 5
-            expect(response_data.dig(:attributes, :voting_term_singular_multiloc, :en)).to eq 'bean'
-            expect(response_data.dig(:attributes, :voting_term_plural_multiloc, :en)).to eq 'beans'
+            expect(response_data.dig(:attributes, :vote_term)).to eq 'point'
             expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
           end
         end
@@ -582,8 +576,7 @@ resource 'Phases' do
         parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
         parameter :manual_voters_amount, 'The number of voters from collected offline votes.', required: false
-        parameter :voting_term_singular_multiloc, 'A multiloc term that is used to refer to the voting in singular form', required: false
-        parameter :voting_term_plural_multiloc, 'A multiloc term that is used to refer to the voting in plural form', required: false
+        parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", required: false
         parameter :start_at, 'The start date of the phase'
         parameter :end_at, 'The end date of the phase'
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
@@ -653,8 +646,7 @@ resource 'Phases' do
         let(:voting_min_total) { 3 }
         let(:voting_max_total) { 15 }
         let(:voting_max_votes_per_idea) { 1 } # Should ignore this
-        let(:voting_term_singular_multiloc) { { 'en' => 'Grocery shopping' } }
-        let(:voting_term_plural_multiloc) { { 'en' => 'Groceries shoppings' } }
+        let(:vote_term) { 'token' }
 
         example_request 'Update a voting phase' do
           assert_status 200
@@ -662,8 +654,7 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 3
           expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 15
           expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to be_nil
-          expect(json_response.dig(:data, :attributes, :voting_term_singular_multiloc, :en)).to eq 'Grocery shopping'
-          expect(json_response.dig(:data, :attributes, :voting_term_plural_multiloc, :en)).to eq 'Groceries shoppings'
+          expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
         end
 
         describe do

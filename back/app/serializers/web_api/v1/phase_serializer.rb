@@ -5,7 +5,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   include Surveys::WebApi::V1::SurveyPhaseSerializer
   include DocumentAnnotation::WebApi::V1::DocumentAnnotationPhaseSerializer
 
-  attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count, :campaigns_settings,
+  attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count,
     :participation_method, :submission_enabled, :commenting_enabled,
     :reacting_enabled, :reacting_like_method, :reacting_like_limited_max,
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
@@ -46,18 +46,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   has_one :manual_voters_last_updated_by, record_type: :user, serializer: WebApi::V1::UserSerializer, if: proc { |phase, params|
     can_moderate?(phase, params)
   }
-
-  attribute :voting_term_singular_multiloc, if: proc { |phase|
-    phase.pmethod.supports_serializing?(:voting_term_singular_multiloc)
-  } do |phase|
-    phase.voting_term_singular_multiloc_with_fallback
-  end
-
-  attribute :voting_term_plural_multiloc, if: proc { |phase|
-    phase.pmethod.supports_serializing?(:voting_term_plural_multiloc)
-  } do |phase|
-    phase.voting_term_plural_multiloc_with_fallback
-  end
 
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object

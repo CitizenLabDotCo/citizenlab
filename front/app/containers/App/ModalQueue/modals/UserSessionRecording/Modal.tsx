@@ -13,7 +13,6 @@ import { set } from 'js-cookie';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 
 import { useModalQueue } from '../..';
@@ -52,12 +51,13 @@ const UserSessionRecordingModal = () => {
         <Text fontSize="l">{formatMessage(messages.modalDescription1)}</Text>
         <Text fontSize="l">
           {formatMessage(messages.modalDescription2)}{' '}
-          <Link
-            to="https://docs.google.com/document/d/1a1hlDcMHIJrSJb2sD1AenOGfWpjxcsrzkjrDhlTtzNw"
+          <a
+            href="https://docs.google.com/document/d/1a1hlDcMHIJrSJb2sD1AenOGfWpjxcsrzkjrDhlTtzNw"
             target="_blank"
+            rel="noopener noreferrer" // Good practice for target="_blank"
           >
             {formatMessage(messages.modalDescriptionFaq)}
-          </Link>
+          </a>
         </Text>
         <Text fontSize="l">{formatMessage(messages.modalDescription3)}</Text>
 

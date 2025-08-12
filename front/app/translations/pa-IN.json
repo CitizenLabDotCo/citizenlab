@@ -545,6 +545,7 @@
   "app.components.UI.FullscreenImage.expandImage": "ਚਿੱਤਰ ਦਾ ਵਿਸਤਾਰ ਕਰੋ",
   "app.components.UI.MoreActionsMenu.moreOptions": "ਹੋਰ ਵਿਕਲਪ",
   "app.components.UI.MoreActionsMenu.showMoreActions": "ਹੋਰ ਕਾਰਵਾਈਆਂ ਦਿਖਾਓ",
+  "app.components.UI.NewLabel.new": "ਨਵਾਂ",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "ਇਸ ਪ੍ਰੋਜੈਕਟ ਲਈ ਕੋਈ ਢੁਕਵੇਂ ਪੜਾਅ ਨਹੀਂ ਮਿਲੇ",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "ਹਟਾਓ",
   "app.components.UI.TranslateButton.original": "ਮੂਲ",

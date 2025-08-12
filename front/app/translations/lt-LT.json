@@ -545,6 +545,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Išplėsti vaizdą",
   "app.components.UI.MoreActionsMenu.moreOptions": "Daugiau galimybių",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Rodyti daugiau veiksmų",
+  "app.components.UI.NewLabel.new": "NAUJIENA",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Šiam projektui tinkamų etapų nerasta",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Pašalinti",
   "app.components.UI.TranslateButton.original": "Originalus",

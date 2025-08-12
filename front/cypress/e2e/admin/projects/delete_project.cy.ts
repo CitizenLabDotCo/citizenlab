@@ -17,18 +17,18 @@ describe('Admin: delete project', () => {
       publicationStatus: 'published',
     }).then((project) => {
       const projectId = project.body.data.id;
-      cy.visit('/admin/projects/all');
+      cy.visit('/admin/projects');
 
-      cy.get('#e2e-admin-projects-list-unsortable')
-        .children()
-        .first()
-        .contains(projectTitle);
+      cy.dataCy('projects-overview-sort-select').select(
+        'recently_created_desc'
+      );
+      cy.dataCy('projects-overview-table-row').first().contains(projectTitle);
 
       cy.get('[data-testid="moreOptionsButton"]').first().should('exist');
       cy.get('[data-testid="moreOptionsButton"]').first().click();
 
       cy.intercept(`**/projects/${projectId}`).as('deleteProject');
-      cy.intercept('GET', '**/admin_publications**').as('getAdminPublications');
+      cy.intercept('GET', '**/projects/for_admin**').as('getProjectsForAdmin');
 
       cy.contains('Delete project').should('exist');
       cy.contains('Delete project').click();
@@ -36,7 +36,7 @@ describe('Admin: delete project', () => {
       cy.on('window:confirm', () => true);
 
       cy.wait('@deleteProject');
-      cy.wait('@getAdminPublications');
+      cy.wait('@getProjectsForAdmin');
 
       cy.contains(projectTitle).should('not.exist');
     });
@@ -47,7 +47,9 @@ describe('Admin: delete project', () => {
       const folderTitleToDelete =
         folder.body.data.attributes.title_multiloc['en'];
       const folderId = folder.body.data.id;
-      cy.visit('/admin/projects/all');
+
+      cy.visit('/admin/projects');
+      cy.dataCy('projects-overview-folders-tab').click();
 
       cy.contains(folderTitleToDelete).should('exist');
 
@@ -55,7 +57,9 @@ describe('Admin: delete project', () => {
       cy.get('[data-testid="moreOptionsButton"]').first().click();
 
       cy.intercept(`**/project_folders/${folderId}`).as('deleteFolder');
-      cy.intercept('GET', '**/admin_publications**').as('getAdminPublications');
+      cy.intercept('GET', '**/project_folders/for_admin**').as(
+        'getFoldersForAdmin'
+      );
 
       cy.contains('Delete folder').should('exist');
       cy.contains('Delete folder').click();
@@ -63,7 +67,7 @@ describe('Admin: delete project', () => {
       cy.on('window:confirm', () => true);
 
       cy.wait('@deleteFolder');
-      cy.wait('@getAdminPublications');
+      cy.wait('@getFoldersForAdmin');
 
       cy.contains(folderTitleToDelete).should('not.exist');
     });

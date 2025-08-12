@@ -97,6 +97,39 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.filter_review_state' do
+    let!(:regular_project) { create(:project) }
+    let!(:pending_review_project) do
+      project = create(:project)
+      create(:project_review, project: project)
+      project
+    end
+    let!(:approved_project) do
+      project = create(:project)
+      create(:project_review, project: project, approved_at: Time.zone.now)
+      project
+    end
+
+    it 'returns all projects when no review_state specified' do
+      result = described_class.filter_review_state(Project.all, {})
+      expect(result.pluck(:id).sort).to match_array([
+        regular_project.id,
+        pending_review_project.id,
+        approved_project.id
+      ].sort)
+    end
+
+    it 'filters by review_state = pending' do
+      result = described_class.filter_review_state(Project.all, { review_state: 'pending' })
+      expect(result.pluck(:id)).to eq([pending_review_project.id])
+    end
+
+    it 'filters by review_state = approved' do
+      result = described_class.filter_review_state(Project.all, { review_state: 'approved' })
+      expect(result.pluck(:id)).to eq([approved_project.id])
+    end
+  end
+
   describe 'self.filter_project_manager' do
     let!(:p1) { create(:project) }
     let!(:p2) { create(:project) }
@@ -197,6 +230,11 @@ describe ProjectsFinderAdminService do
       project
     end
 
+    # Project without any phases
+    let!(:project_without_phases) do
+      create(:project)
+    end
+
     it 'returns all projects when no participation states specified' do
       result = described_class.filter_participation_states(Project.all, {})
       expect(result.pluck(:id).sort).to match_array([
@@ -204,13 +242,19 @@ describe ProjectsFinderAdminService do
         collecting_data_project.id,
         information_phase_project.id,
         past_project.id,
-        gap_project.id
+        gap_project.id,
+        project_without_phases.id
       ].sort)
     end
 
     it 'returns not_started projects' do
       result = described_class.filter_participation_states(Project.all, { participation_states: ['not_started'] })
-      expect(result.pluck(:id)).to eq([not_started_project.id])
+      expect(result.pluck(:id).sort).to match_array([not_started_project.id, project_without_phases.id].sort)
+    end
+
+    it 'includes projects without phases when filtering for not_started projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['not_started'] })
+      expect(result.pluck(:id)).to include(project_without_phases.id)
     end
 
     it 'returns collecting_data projects' do
@@ -228,6 +272,11 @@ describe ProjectsFinderAdminService do
       expect(result.pluck(:id)).to eq([past_project.id])
     end
 
+    it 'excludes projects without phases when filtering for past projects' do
+      result = described_class.filter_participation_states(Project.all, { participation_states: ['past'] })
+      expect(result.pluck(:id)).not_to include(project_without_phases.id)
+    end
+
     it 'returns collecting_data and past projects' do
       result = described_class.filter_participation_states(Project.all, { participation_states: %w[collecting_data past] })
       expect(result.pluck(:id).sort).to match_array([collecting_data_project.id, past_project.id].sort)
@@ -235,7 +284,7 @@ describe ProjectsFinderAdminService do
 
     it 'returns not_started, collecting_data, informing and past projects' do
       result = described_class.filter_participation_states(Project.all, { participation_states: %w[not_started collecting_data informing past] })
-      expect(result.pluck(:id).sort).to match_array([not_started_project.id, collecting_data_project.id, information_phase_project.id, past_project.id].sort)
+      expect(result.pluck(:id).sort).to match_array([not_started_project.id, project_without_phases.id, collecting_data_project.id, information_phase_project.id, past_project.id].sort)
     end
   end
 
@@ -539,6 +588,24 @@ describe ProjectsFinderAdminService do
 
         expect(result.pluck(:id)).to eq([p6, p5, p7, p8].pluck(:id))
       end
+    end
+  end
+
+  describe '.filter_with_admin_publication' do
+    let!(:project_with_admin_pub) { create(:project) }
+    let!(:project_without_admin_pub) do
+      project = create(:project)
+      project.admin_publication.destroy!
+      project.reload
+      project
+    end
+
+    it 'filters out projects without admin_publication' do
+      all_projects = Project.all
+      filtered_projects = described_class.filter_with_admin_publication(all_projects)
+
+      expect(filtered_projects).to include(project_with_admin_pub)
+      expect(filtered_projects).not_to include(project_without_admin_pub)
     end
   end
 end

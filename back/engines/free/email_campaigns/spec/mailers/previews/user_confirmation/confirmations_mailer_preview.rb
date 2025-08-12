@@ -2,7 +2,7 @@
 
 module UserConfirmation
   class ConfirmationsMailerPreview < ActionMailer::Preview
-    include EmailCampaigns::MailerPreviewRecipient
+    include EmailCampaigns::MailerPreview
 
     def send_confirmation_code
       ::ConfirmationsMailer.with(user: recipient_user).send_confirmation_code

@@ -545,6 +545,7 @@
   "app.components.UI.FullscreenImage.expandImage": "توسيع الصورة",
   "app.components.UI.MoreActionsMenu.moreOptions": "المزيد من الخيارات",
   "app.components.UI.MoreActionsMenu.showMoreActions": "عرض المزيد من الإجراءات",
+  "app.components.UI.NewLabel.new": "جديد",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "لم يتم العثور على المراحل المناسبة لهذا المشروع",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "إزالة",
   "app.components.UI.TranslateButton.original": "الأصلي",

@@ -545,6 +545,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Amplia la imatge",
   "app.components.UI.MoreActionsMenu.moreOptions": "Més opcions",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Mostra més accions",
+  "app.components.UI.NewLabel.new": "NOU",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "No s'han trobat fases adequades per a aquest projecte",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Eliminar",
   "app.components.UI.TranslateButton.original": "Original",
