@@ -28,7 +28,6 @@ describe('Copy projects outside folder', () => {
 
   it('allows user to copy project', () => {
     cy.visit('/admin/projects');
-    cy.acceptCookies();
 
     cy.dataCy('projects-overview-sort-select').select('recently_created_desc');
     cy.dataCy('projects-overview-table-row').first().contains(projectTitle);

@@ -8,7 +8,8 @@ class ProjectsFinderAdminService
     # Apply filters
     projects = filter_with_admin_publication(projects)
     projects = filter_moderatable(projects, current_user)
-    projects = filter_status_and_review_state(projects, params)
+    projects = filter_status(projects, params)
+    projects = filter_review_state(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
@@ -130,18 +131,32 @@ class ProjectsFinderAdminService
       )
   end
 
-  # Handles the filtering of projects by their status and review state.
-  def self.filter_status_and_review_state(scope, params = {})
-    status = params[:status]
-    review_state = params[:review_state]
+  def self.filter_status(scope, params = {})
+    status = params[:status] || []
+    return scope if status.blank?
 
-    Project.filter_by_status_and_review_state(
-      scope,
-      status: status,
-      review_state: review_state
-    )
+    scope
+      .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
+      .where(admin_publications: { publication_status: status })
   end
 
+  def self.filter_review_state(scope, params = {})
+    review_state = params[:review_state] || []
+    return scope if review_state.blank?
+
+    scope = scope.joins(:review)
+
+    case review_state
+    when 'pending'
+      scope.where(project_reviews: { approved_at: nil })
+    when 'approved'
+      scope.where.not(project_reviews: { approved_at: nil })
+    else
+      scope
+    end
+  end
+
+  # Filter projects by folder IDs
   def self.filter_by_folder_ids(scope, params = {})
     folder_ids = params[:folder_ids] || []
     return scope if folder_ids.blank?

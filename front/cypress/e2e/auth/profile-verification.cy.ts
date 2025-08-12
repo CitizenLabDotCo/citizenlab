@@ -15,7 +15,6 @@ describe('', () => {
     );
     cy.setLoginCookie(peasantEmail, peasantPassword);
     cy.visit('/profile/edit');
-    cy.acceptCookies();
   });
 
   it('show not verified status box, goes through the verification flow and allows you to reverify afterwards', () => {

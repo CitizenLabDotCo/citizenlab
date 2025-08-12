@@ -76,7 +76,7 @@ describe('Timeline project with poll phase', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.wait(2000);
   });
 
@@ -100,6 +100,7 @@ describe('Timeline project with poll phase', () => {
     cy.clearCookies();
     cy.setLoginCookie(email, password);
     cy.visit(`/projects/${projectSlug}`);
+    cy.acceptCookies();
 
     cy.wait(100);
     cy.get('.e2e-timeline-project-poll-container')
