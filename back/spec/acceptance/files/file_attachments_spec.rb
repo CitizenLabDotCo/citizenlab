@@ -11,6 +11,7 @@ resource 'FileAttachments' do
 
   get 'web_api/v1/file_attachments' do
     parameter :attachable_id, 'Filter by attachable id', required: false
+    parameter :file_id, 'Filter by file id', required: false
 
     # TODO: test permissions
     let_it_be(:event) { create(:event) }
@@ -26,6 +27,12 @@ resource 'FileAttachments' do
       do_request(attachable_id: event.id)
       assert_status 200
       expect(response_ids).to match_array event_attachments.map(&:id)
+    end
+
+    example 'List all file attachments for a specific file', document: false do
+      do_request(file_id: project_attachment.file.id)
+      assert_status 200
+      expect(response_ids).to match_array [project_attachment.id]
     end
   end
 
@@ -125,6 +132,21 @@ resource 'FileAttachments' do
       expect { do_request }.to have_enqueued_job(LogActivityJob)
       expect(response_status).to eq(200)
       expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  get 'web_api/v1/files/:file_id/attachments' do
+    let_it_be(:file) { create(:file) }
+    let_it_be(:file_attachments) { create_pair(:file_attachment, file: file) }
+
+    let(:file_id) { file.id }
+
+    # Add a file attachment that should not be returned.
+    before { create(:file_attachment) }
+
+    example_request 'List all file attachments of a file' do
+      assert_status 200
+      expect(response_data.size).to eq(2)
     end
   end
 

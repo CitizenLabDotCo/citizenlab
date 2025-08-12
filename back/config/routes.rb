@@ -44,7 +44,7 @@ Rails.application.routes.draw do
         unless resources :file_attachments,
           controller: 'files/file_attachments',
           only: %i[index create],
-          defaults: { attachable_type: options[:attachable_type] }
+          defaults: { attachable_type: options[:attachable_type], concern: :file_attachable }
         end
       end
 
@@ -369,6 +369,7 @@ Rails.application.routes.draw do
 
       resources :files, controller: 'files/files' do
         get 'preview', on: :member, to: 'files/previews#show'
+        resources :attachments, controller: 'files/file_attachments', only: %i[index]
       end
 
       resources :file_attachments, controller: 'files/file_attachments'
