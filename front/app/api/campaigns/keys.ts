@@ -1,6 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-import { CampaignContext, QueryParameters } from './types';
+import { QueryParameters } from './types';
 
 const baseKey = { type: 'campaign' };
 
@@ -18,11 +18,5 @@ const campaignsKeys = {
     },
   ],
 } satisfies QueryKeys;
-
-export const supportedCampaignNamesKeys = {
-  lists: (context?: CampaignContext) => [
-    { ...baseKey, operation: 'supported_campaign_names', context },
-  ],
-};
 
 export default campaignsKeys;

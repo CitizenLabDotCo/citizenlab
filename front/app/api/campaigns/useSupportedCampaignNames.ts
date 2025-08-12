@@ -5,7 +5,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import { CampaignContext } from './types';
 import { getCampaignsContextPath } from './util';
-import { supportedCampaignNamesKeys } from './keys';
+import supportedCampaignNamesKeys from 'api/supported_campaign_names/keys';
 
 interface ISupportedCampaignNamesData {
   data: {
