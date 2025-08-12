@@ -1,4 +1,4 @@
-import React, { useId, useState } from 'react';
+import React, { useId, useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 
@@ -31,6 +31,7 @@ export type Props = {
   onSearch?: (searchTerm: string) => void;
   onClear?: () => void;
   onOpen?: () => void;
+  opened?: boolean;
   a11y_clearbuttonActionMessage: string;
   a11y_clearSearchButtonActionMessage: string;
   dataCy?: string;
@@ -48,18 +49,45 @@ const MultiSelect = ({
   onSearch,
   onClear,
   onOpen,
+  opened: externalOpened,
   a11y_clearbuttonActionMessage,
   a11y_clearSearchButtonActionMessage,
   dataCy,
   ...boxProps
 }: Props) => {
-  const [opened, setOpened] = useState(false);
+  const [internalOpened, setInternalOpened] = useState(false);
   const [hover, setHover] = useState<'trigger' | 'clear'>();
   const [focused, setFocused] = useState(false);
 
   const selectorId = useId();
 
+  // Use external opened state if provided, otherwise use internal state
+  const opened = externalOpened !== undefined ? externalOpened : internalOpened;
+
+  // Update internal state when external state changes
+  useEffect(() => {
+    if (externalOpened !== undefined) {
+      setInternalOpened(externalOpened);
+    }
+  }, [externalOpened]);
+
   const showClearButton = onClear && (hover || focused);
+
+  const handleToggle = () => {
+    if (!opened) {
+      onOpen?.();
+    }
+
+    if (externalOpened === undefined) {
+      setInternalOpened(!opened);
+    }
+  };
+
+  const handleClickOutside = () => {
+    // Always allow closing by clicking outside
+    setInternalOpened(false);
+    setFocused(false);
+  };
 
   return (
     <Box
@@ -71,12 +99,7 @@ const MultiSelect = ({
         <InputContainer
           id={selectorId}
           className={opened ? 'focus' : ''}
-          onClick={() => {
-            if (!opened) {
-              onOpen?.();
-            }
-            setOpened(!opened);
-          }}
+          onClick={handleToggle}
           onMouseEnter={() => setHover('trigger')}
           onMouseLeave={() => setHover(undefined)}
           onFocus={() => setFocused(true)}
@@ -117,10 +140,7 @@ const MultiSelect = ({
       </Box>
       <Dropdown
         opened={opened}
-        onClickOutside={() => {
-          setOpened(false);
-          setFocused(false);
-        }}
+        onClickOutside={handleClickOutside}
         content={
           <DropdownContent
             selectorId={selectorId}
