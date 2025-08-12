@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 
@@ -11,6 +11,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import { setParam, useParam } from '../../params';
 
+import { useFilterOpenByDefault } from './hooks/useFilterOpenByDefault';
 import messages from './messages';
 import tracks from './tracks';
 
@@ -56,11 +57,24 @@ const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
 
 interface Props {
   onClear: () => void;
+  shouldOpenByDefault?: boolean;
+  onOpened?: () => void;
 }
 
-const ParticipationMethods = ({ onClear }: Props) => {
+const ParticipationMethods = ({
+  onClear,
+  shouldOpenByDefault,
+  onOpened,
+}: Props) => {
   const participationMethods = useParam('participation_methods') ?? [];
   const { formatMessage } = useIntl();
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  const { isOpened, setIsOpened } = useFilterOpenByDefault({
+    shouldOpenByDefault,
+    onOpened,
+    filterRef,
+  });
 
   const options = OPTIONS.map((option) => ({
     value: option.value,
@@ -80,20 +94,25 @@ const ParticipationMethods = ({ onClear }: Props) => {
   };
 
   return (
-    <Box display="flex" alignItems="center">
-      <MultiSelect
-        title={formatMessage(messages.participationMethodLabel)}
-        selected={participationMethods}
-        options={options}
-        onChange={handleOnChange}
-        onClear={onClear}
-      />
-      <IconTooltip
-        content={formatMessage(messages.filterByCurrentPhaseMethod)}
-        placement="top"
-        ml="4px"
-      />
-    </Box>
+    <div ref={filterRef}>
+      <Box display="flex" alignItems="center">
+        <MultiSelect
+          title={formatMessage(messages.participationMethodLabel)}
+          selected={participationMethods}
+          options={options}
+          onChange={handleOnChange}
+          onClear={onClear}
+          dataCy="projects-overview-filter-participation-methods"
+          opened={isOpened}
+          onOpen={() => setIsOpened(true)}
+        />
+        <IconTooltip
+          content={formatMessage(messages.filterByCurrentPhaseMethod)}
+          placement="top"
+          ml="4px"
+        />
+      </Box>
+    </div>
   );
 };
 
