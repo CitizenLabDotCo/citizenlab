@@ -13,11 +13,17 @@ EmailCampaigns::Engine.routes.draw do
         get 'examples/:id', action: 'show', controller: 'examples', on: :collection
       end
 
+      %w[projects phases].each do |context|
+        resources context.to_sym, only: [] do
+          resources :campaigns, defaults: { campaign_context: context.classify }, only: %i[index create] do
+            get :supported_campaign_names, on: :collection
+          end
+        end
+      end
+
       resources :consents, only: %i[index update] do
         patch 'by_campaign_id/:campaign_id', action: 'update_by_campaign_id', on: :collection
       end
-
-      get 'projects/:context_id/email_campaigns', to: 'campaigns#index'
     end
   end
 

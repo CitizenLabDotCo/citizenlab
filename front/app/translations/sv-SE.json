@@ -548,6 +548,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Expandera bilden",
   "app.components.UI.MoreActionsMenu.moreOptions": "Fler alternativ",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Visa fler åtgärder",
+  "app.components.UI.NewLabel.new": "NYHET",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Inga lämpliga faser hittades för detta projekt",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ta bort",
   "app.components.UI.TranslateButton.original": "Original",
