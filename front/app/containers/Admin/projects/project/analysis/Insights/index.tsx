@@ -12,7 +12,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
-import AddFileContext from './Files/AddFileContextButton';
+import AnalysisFileUploader from './Files/AnalysisFileUploader';
 import FileSelectionView from './Files/FileSelectionView';
 import messages from './messages';
 import Question from './Question';
@@ -98,7 +98,7 @@ const Insights = () => {
           </Text>
         </Box>
 
-        <AddFileContext
+        <AnalysisFileUploader
           setIsFileSelectionOpen={setIsFileSelectionOpen}
           analysisId={analysisId}
         />

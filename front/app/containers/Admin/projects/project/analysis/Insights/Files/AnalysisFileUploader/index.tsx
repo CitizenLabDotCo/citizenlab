@@ -12,7 +12,10 @@ type Props = {
   setIsFileSelectionOpen: (isOpen: boolean) => void;
   analysisId: string;
 };
-const AddFileContext = ({ setIsFileSelectionOpen, analysisId }: Props) => {
+const AnalysisFileUploader = ({
+  setIsFileSelectionOpen,
+  analysisId,
+}: Props) => {
   const { data: analysis } = useAnalysis(analysisId);
 
   const numberAttachedFiles =
@@ -35,4 +38,4 @@ const AddFileContext = ({ setIsFileSelectionOpen, analysisId }: Props) => {
   );
 };
 
-export default AddFileContext;
+export default AnalysisFileUploader;

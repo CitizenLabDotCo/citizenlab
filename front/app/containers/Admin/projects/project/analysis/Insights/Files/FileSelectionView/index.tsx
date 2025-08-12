@@ -53,14 +53,18 @@ const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
     name: 'file_ids',
   });
 
-  // Auto-submit when file_ids changes
+  // Auto-submit when file_ids changes (debounced by 500ms)
   useEffect(() => {
-    methods.handleSubmit(() =>
-      updateAnalysis({
-        id: analysisId,
-        files: watchedFileIds,
-      })
-    )();
+    const timeoutId = setTimeout(() => {
+      methods.handleSubmit(() =>
+        updateAnalysis({
+          id: analysisId,
+          files: watchedFileIds,
+        })
+      )();
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
   }, [watchedFileIds, methods, updateAnalysis, analysisId]);
 
   // Generate options for the file select dropdown
