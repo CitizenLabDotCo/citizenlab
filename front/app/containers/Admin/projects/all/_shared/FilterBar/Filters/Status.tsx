@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { PublicationStatus } from 'api/projects/types';
 
@@ -10,6 +10,7 @@ import { useIntl } from 'utils/cl-intl';
 import { PUBLICATION_STATUS_LABELS } from '../../constants';
 import { useParam, setParam } from '../../params';
 
+import { useFilterOpenByDefault } from './hooks/useFilterOpenByDefault';
 import messages from './messages';
 import tracks from './tracks';
 
@@ -22,11 +23,20 @@ const OPTIONS = [
 interface Props {
   mr?: string;
   onClear?: () => void;
+  shouldOpenByDefault?: boolean;
+  onOpened?: () => void;
 }
 
-const Status = ({ mr, onClear }: Props) => {
+const Status = ({ mr, onClear, shouldOpenByDefault, onOpened }: Props) => {
   const { formatMessage } = useIntl();
   const statuses = useParam('status') ?? [];
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  const { isOpened, setIsOpened } = useFilterOpenByDefault({
+    shouldOpenByDefault,
+    onOpened,
+    filterRef,
+  });
 
   const options = OPTIONS.map((option) => ({
     value: option.value,
@@ -34,20 +44,24 @@ const Status = ({ mr, onClear }: Props) => {
   }));
 
   return (
-    <MultiSelect
-      selected={statuses}
-      options={options}
-      mr={mr}
-      onChange={(statuses) => {
-        setParam('status', statuses as PublicationStatus[]);
-        trackEventByName(tracks.setStatus, {
-          statuses: JSON.stringify(statuses),
-        });
-      }}
-      title={formatMessage(messages.status)}
-      onClear={onClear}
-      dataCy="projects-overview-filter-status"
-    />
+    <div ref={filterRef}>
+      <MultiSelect
+        selected={statuses}
+        options={options}
+        mr={mr}
+        onChange={(statuses) => {
+          setParam('status', statuses as PublicationStatus[]);
+          trackEventByName(tracks.setStatus, {
+            statuses: JSON.stringify(statuses),
+          });
+        }}
+        title={formatMessage(messages.status)}
+        onClear={onClear}
+        dataCy="projects-overview-filter-status"
+        opened={isOpened}
+        onOpen={() => setIsOpened(true)}
+      />
+    </div>
   );
 };
 
