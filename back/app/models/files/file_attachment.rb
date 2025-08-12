@@ -41,6 +41,7 @@ module Files
 
     validates :file_id, uniqueness: { scope: %i[attachable_type attachable_id] }
     validates :attachable_type, inclusion: { in: ATTACHABLE_TYPES }
+    validate :validate_file_belongs_to_project
 
     scope :ordered, -> { order(:position) }
 
@@ -61,6 +62,19 @@ module Files
       return if file.being_destroyed? || file.attachments.reload.present?
 
       file.destroy!
+    end
+
+    def validate_file_belongs_to_project
+      return unless attachable_type.in?(%w[Project Phase Event Idea])
+      return unless file.present? && attachable.present?
+
+      # Using `files_projects` instead of `projects` because `projects` does not include
+      # projects whose corresponding `files_project` records have not yet been persisted.
+      project_ids = file.files_projects.map(&:project_id)
+
+      if project_ids.exclude?(attachable.project_id)
+        errors.add(:file, :does_not_belong_to_project, message: 'does not belong to the project')
+      end
     end
   end
 end
