@@ -105,7 +105,7 @@ const Visibility = ({ project }: Props) => {
               {formatMessage(messages.discoverability)}
             </Text>
             <Text m="0" color="white" fontSize="s" display="inline-block">
-              {formatMessage(listed ? messages.public : messages.hidden)}
+              {formatMessage(listed ? messages.listed : messages.unlisted)}
             </Text>
           </Box>
         </Box>

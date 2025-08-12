@@ -149,7 +149,7 @@ const Settings = () => {
   const visibilityOptions: IOption[] = [
     {
       value: 'public',
-      label: formatMessage(projectFilterMessages.visibilityPublic),
+      label: formatMessage(projectFilterMessages.visibilityAnyone),
     },
     {
       value: 'groups',
@@ -164,11 +164,11 @@ const Settings = () => {
   const discoverabilityOptions: IOption[] = [
     {
       value: 'listed',
-      label: formatMessage(projectFilterMessages.discoverabilityPublic),
+      label: formatMessage(projectFilterMessages.discoverabilityListed),
     },
     {
       value: 'unlisted',
-      label: formatMessage(projectFilterMessages.discoverabilityHidden),
+      label: formatMessage(projectFilterMessages.discoverabilityUnlisted),
     },
   ];
 

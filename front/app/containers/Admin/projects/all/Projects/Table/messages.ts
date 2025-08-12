@@ -85,13 +85,17 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Table.xGroups',
     defaultMessage: '{numberOfGroups} groups',
   },
+  listed: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.listed',
+    defaultMessage: 'Listed',
+  },
+  unlisted: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.unlisted',
+    defaultMessage: 'Unlisted',
+  },
   hidden: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.hidden',
     defaultMessage: 'Hidden',
-  },
-  public: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Table.public',
-    defaultMessage: 'Public',
   },
   discoverability: {
     id: 'app.containers.Admin.projects.all.new.Projects.Table.discoverability',
