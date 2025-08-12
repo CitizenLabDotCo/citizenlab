@@ -124,8 +124,8 @@ const LogicSettings = ({ field, builderConfig }: LogicSettingsProps) => {
             </Box>
           )}
           {answers &&
-            answers.map((answer) => (
-              <Box key={answer.key}>
+            answers.map((answer, i) => (
+              <Box key={i}>
                 <QuestionRuleInput
                   field={field}
                   validationError={validationError}

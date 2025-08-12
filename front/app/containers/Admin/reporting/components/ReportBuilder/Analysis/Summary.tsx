@@ -35,6 +35,7 @@ const Summary = ({
 
   const summary = data?.data.attributes.summary;
   const filters = data?.data.attributes.filters;
+  const fileIds = data?.data.relationships.files?.data.map((file) => file.id);
   const generatedAt = data?.data.attributes.generated_at;
 
   if (!summary) {
@@ -87,6 +88,7 @@ const Summary = ({
         <InsightBody
           text={summary}
           filters={filters}
+          fileIds={fileIds}
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}

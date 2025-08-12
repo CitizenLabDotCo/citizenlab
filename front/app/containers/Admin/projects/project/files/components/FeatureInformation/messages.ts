@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'Upload any file',
   },
   uploadAnyFileDescription: {
-    id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.uploadAnyFileDescription',
-    defaultMessage: 'PDF, DOCX, PPTX, CSV, PNG, MP3...',
+    id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.uploadAnyFileDescription2',
+    defaultMessage: 'All file types are supported.',
   },
   addFilesToProject: {
     id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.addFilesToProject',
@@ -18,22 +18,14 @@ export default defineMessages({
     defaultMessage:
       'Attach files from this list to your project, phases, and events.',
   },
-  useAIOnFiles: {
-    id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFiles',
-    defaultMessage: 'Use AI to analyze files',
-  },
-  useAIOnFilesDescription: {
-    id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.useAIOnFilesDescription',
-    defaultMessage: 'Process transcripts, etc.',
-  },
   addFilesToSensemaking: {
-    id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.addFilesToSensemaking',
-    defaultMessage: 'Add files as context to Sensemaking',
+    id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.addFilesToSensemaking2',
+    defaultMessage: 'Add files as context to AI Analysis',
   },
   addFilesToSensemakingDescription: {
-    id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.addFilesToSensemakingDescription',
+    id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.addFilesToSensemakingDescription2',
     defaultMessage:
-      'Add files to your Sensemaking project to provide context and insights.',
+      'Add files to your AI Analyses to provide context and insights.',
   },
   comingSoon: {
     id: 'app.containers.AdminPage.ProjectFiles.FeatureInformation.comingSoon',

@@ -1,7 +1,14 @@
 import React from 'react';
 
-import { Box, Label, Image, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Label,
+  Image,
+  Text,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 
+import useFilePreview from 'api/files/filePreviews/useFilePreview';
 import { IFile } from 'api/files/types';
 
 import { useIntl } from 'utils/cl-intl';
@@ -29,9 +36,31 @@ type Props = {
 const FilePreview = ({ file }: Props) => {
   const { formatMessage } = useIntl();
 
+  const { data: filePreview, isLoading: isLoadingPreview } = useFilePreview(
+    file.data.id
+  );
+
   const getFilePreviewByType = () => {
     const mimeType = file.data.attributes.mime_type;
     const fileUrl = file.data.attributes.content.url;
+
+    if (isLoadingPreview) {
+      return <Spinner />;
+    }
+    if (
+      filePreview?.data.attributes.content.url &&
+      !CSV_MIMETYPES.has(mimeType) // We use a specific component for CSV preview
+    ) {
+      return (
+        <Box mt="24px">
+          <IframePreview
+            url={filePreview.data.attributes.content.url}
+            title={file.data.attributes.name}
+            height={700}
+          />
+        </Box>
+      );
+    }
 
     if (fileUrl) {
       if (IMAGE_MIMETYPES.has(mimeType)) {
@@ -85,6 +114,25 @@ const FilePreview = ({ file }: Props) => {
       }
     }
 
+    // If the file preview is still generating, show a spinner
+    if (filePreview?.data.attributes.status === 'pending') {
+      return (
+        <Box
+          display="flex"
+          alignItems="center"
+          flexDirection="column"
+          gap="8px"
+          mt="24px"
+        >
+          <Spinner />
+          <Text fontSize="s" color="coolGrey600" fontStyle="italic">
+            {formatMessage(messages.generatingPreview)}
+          </Text>
+        </Box>
+      );
+    }
+
+    // Default case: if we can't preview the file, we show a message and a download button
     return (
       <Box pt="4px">
         <Text fontSize="s" color="coolGrey600" fontStyle="italic">

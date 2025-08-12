@@ -5,7 +5,7 @@ describe('email consent', () => {
     cy.acceptCookies();
   });
 
-  it('lets admins create a custom email, this email contains a link to unsubscribe and turns off subscription', () => {
+  it('lets admins create a custom email, this email contains a link to unsubscribe', () => {
     // creates a custom email
     cy.get('#e2e-reply-to-input').clear().type('test@test.com');
 
@@ -35,10 +35,8 @@ describe('email consent', () => {
     });
 
     cy.get('#e2e-campaign-form-save-button').click();
-    cy.get('#e2e-custom-email-container');
-    cy.get('#e2e-custom-email-container iframe');
 
-    cy.get('#e2e-custom-email-container iframe')
+    cy.get('#e2e-email-preview-iframe')
       .its('0.contentDocument.body')
       .should('not.be.empty')
       .then(cy.wrap)

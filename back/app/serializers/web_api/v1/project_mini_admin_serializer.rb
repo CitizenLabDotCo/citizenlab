@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
-  attributes(:title_multiloc, :visible_to)
+  attributes(:title_multiloc, :visible_to, :listed)
 
   attribute :publication_status do |object|
     object.admin_publication.publication_status
@@ -37,5 +37,13 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
 
   has_one :folder
 
+  has_many :project_images, serializer: WebApi::V1::ImageSerializer
+
   has_many :phases, serializer: WebApi::V1::PhaseSerializer
+
+  has_many :groups, serializer: WebApi::V1::GroupSerializer
+
+  has_many :moderators, serializer: ::WebApi::V1::UserSerializer do |object, params|
+    params.dig(:moderators_per_project, object.id) || []
+  end
 end

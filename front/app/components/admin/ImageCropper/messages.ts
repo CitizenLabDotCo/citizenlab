@@ -1,11 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  info: {
-    id: 'app.components.Admin.ImageCropper.info',
-    defaultMessage:
-      'This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is { aspect }.',
-  },
   infoLinkText: {
     id: 'app.components.Admin.ImageCropper.infoLinkText',
     defaultMessage: 'recommended ratio',
@@ -15,9 +10,26 @@ export default defineMessages({
     defaultMessage:
       'https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
-  mobileCropExplanation: {
-    id: 'app.components.Admin.ImageCropper.mobileCropExplanation',
+  cropSentenceOne: {
+    id: 'app.components.Admin.ImageCropper.cropSentenceOne',
+    defaultMessage: 'The image is cropped automatically:',
+  },
+  cropSentenceTwo: {
+    id: 'app.components.Admin.ImageCropper.cropSentenceTwo',
+    defaultMessage: '{aspect} on desktop (full width shown)',
+  },
+  cropSentenceMobileRatio: {
+    id: 'app.components.Admin.ImageCropper.cropSentenceMobileRatio',
     defaultMessage:
-      'Note: Any important area of the image should be contained within the vertical dashed lines, as the image will be cropped to a 3:1 ratio on mobile devices.',
+      '3:1 on mobile (only the area between the dotted lines is shown)',
+  },
+  cropSentenceMobileCrop: {
+    id: 'app.components.Admin.ImageCropper.cropSentenceMobileCrop',
+    defaultMessage:
+      "Keep key content inside the dotted lines to ensure it's always visible.",
+  },
+  cropFinalSentence: {
+    id: 'app.components.Admin.ImageCropper.cropFinalSentence',
+    defaultMessage: 'See also: {link}.',
   },
 });

@@ -201,6 +201,7 @@ module EmailCampaigns
     end
 
     def unique_campaigns_per_context?
+      # This is the default value and can be overwritten by each campaign subclass.
       true
     end
 

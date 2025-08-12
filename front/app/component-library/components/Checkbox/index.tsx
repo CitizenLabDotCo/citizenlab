@@ -97,6 +97,7 @@ export type CheckboxProps = {
 type Props = {
   id?: string;
   dataTestId?: string;
+  tabIndex?: number;
 } & CheckboxProps &
   BoxPaddingProps &
   BoxMarginProps;
@@ -117,6 +118,7 @@ const Checkbox = ({
   checkedColor,
   usePrimaryBorder = false,
   name,
+  tabIndex = 0,
   ...boxProps
 }: Props) => {
   const handleOnCheckboxClick = (event: React.MouseEvent) => {
@@ -137,7 +139,7 @@ const Checkbox = ({
         onChange={onChange}
         checked={checked}
         disabled={disabled}
-        tabIndex={0}
+        tabIndex={tabIndex}
         name={name}
       />
       <StyledCheckbox

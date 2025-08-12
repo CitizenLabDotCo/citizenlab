@@ -472,5 +472,16 @@ resource 'ProjectFolder' do
         expect(response_status).to eq 401
       end
     end
+
+    get 'web_api/v1/project_folders/for_admin' do
+      example 'it only returns folders the user moderates' do
+        do_request
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data].first[:id]).to eq moderated_folder.id
+        expect(json_response[:data].first.dig(:relationships, :moderators, :data).pluck(:id)).to eq [user.id]
+      end
+    end
   end
 end

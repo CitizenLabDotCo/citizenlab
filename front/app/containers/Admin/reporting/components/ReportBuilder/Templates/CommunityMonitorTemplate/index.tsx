@@ -39,6 +39,8 @@ const CommunityMonitorTemplateContent = ({ year, quarter }: Props) => {
     return null;
   }
 
+  if (!formatMessageWithLocale) return null;
+
   const filteredSurveyQuestions =
     surveyQuestions?.data.filter(
       (field) => field.attributes.input_type === 'sentiment_linear_scale'

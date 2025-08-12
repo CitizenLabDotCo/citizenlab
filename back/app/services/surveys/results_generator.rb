@@ -311,6 +311,9 @@ module Surveys
       inputs
         .select("custom_field_values->'#{field_key}' as value")
         .where("custom_field_values->'#{field_key}' IS NOT NULL")
+        # Remove all sequences of one or more whitespace characters (including spaces, newlines, tabs),
+        # then check the result is not empty. TRIM would not handle newlines correctly.
+        .where("regexp_replace(custom_field_values->>'#{field_key}', '[[:space:]]+', '', 'g') != ''")
         .map { |answer| { answer: answer.value.to_s } }
         .sort_by { |a| a[:answer] }
     end

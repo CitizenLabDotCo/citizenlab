@@ -93,7 +93,13 @@ const HomepageBuilderToolbox = ({
 
   const { data: appConfiguration } = useAppConfiguration();
 
-  if (!appConfigurationLocales || !appConfiguration) return null;
+  if (
+    !appConfigurationLocales ||
+    !appConfiguration ||
+    !formatMessageWithLocale
+  ) {
+    return null;
+  }
 
   const toMultiloc = (message: MessageDescriptor) => {
     return createMultiloc(appConfigurationLocales, (locale) => {

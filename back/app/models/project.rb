@@ -35,6 +35,7 @@
 #  fk_rails_...  (default_assignee_id => users.id)
 #
 class Project < ApplicationRecord
+  include Files::FileAttachable
   include PgSearch::Model
 
   attribute :preview_token, :string, default: -> { generate_preview_token }
@@ -151,6 +152,25 @@ class Project < ApplicationRecord
       .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
   }
 
+  scope :with_status, lambda { |status|
+    return none if status.blank?
+
+    joins(:admin_publication).where(admin_publications: { publication_status: status })
+  }
+
+  scope :with_review_state, lambda { |state|
+    return none if state.blank?
+
+    case state
+    when 'approved'
+      joins(:review).where.not(project_reviews: { approved_at: nil })
+    when 'pending'
+      joins(:review).where(project_reviews: { approved_at: nil })
+    else
+      none
+    end
+  }
+
   alias project_id id
 
   delegate :published?, :ever_published?, :never_published?, to: :admin_publication, allow_nil: true
@@ -237,6 +257,37 @@ class Project < ApplicationRecord
 
   def hidden?
     hidden
+  end
+
+  # Filters projects by publication status and/or review state.
+  # When both status and review_state are provided, returns the union of both filters
+  # (projects matching either condition), not the intersection.
+  #
+  # @example Filter by status only
+  #   Project.filter_by_status_and_review_state(Project.all, status: 'published')
+  #
+  # @example Filter by review state only
+  #   Project.filter_by_status_and_review_state(Project.all, review_state: 'pending')
+  #
+  # @example Filter by both (union)
+  #   Project.filter_by_status_and_review_state(Project.all, status: 'published', review_state: 'pending')
+  #   # Returns projects that are published OR have pending review
+  def self.filter_by_status_and_review_state(scope, status: nil, review_state: nil)
+    has_status = status.present?
+    has_review_state = review_state.present?
+
+    return scope unless has_status || has_review_state
+
+    if has_status && has_review_state
+      status_project_ids = scope.with_status(status).pluck(:id)
+      review_project_ids = scope.with_review_state(review_state).pluck(:id)
+
+      scope.where(id: status_project_ids + review_project_ids)
+    elsif has_status
+      scope.with_status(status)
+    else
+      scope.with_review_state(review_state)
+    end
   end
 
   private

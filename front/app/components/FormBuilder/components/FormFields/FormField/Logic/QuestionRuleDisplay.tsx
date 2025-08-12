@@ -16,7 +16,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 
 interface Props {
-  key: string;
   answerTitle: string | undefined;
   targetPage: string | undefined;
   isRuleValid: boolean;
@@ -24,7 +23,6 @@ interface Props {
 }
 
 export const QuestionRuleDisplay = ({
-  key,
   answerTitle,
   targetPage,
   isRuleValid,
@@ -39,7 +37,6 @@ export const QuestionRuleDisplay = ({
 
   return (
     <Box
-      key={key}
       display="flex"
       data-cy="e2e-field-rule-display"
       ml="68px"

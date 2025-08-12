@@ -7,7 +7,7 @@ def create_campaign_params(context)
   context.parameter :campaign_name, "The type of campaign. One of #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: true, scope: :campaign
   context.parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", required: false, scope: :campaign
   context.parameter :reply_to, 'The e-mail of the reply-to address. Defaults to the author', required: false, scope: :campaign
-  context.parameter :subject_multiloc, 'The of the email, as a multiloc string', required: false, scope: :campaign
+  context.parameter :subject_multiloc, 'The subject of the email, as a multiloc string', required: false, scope: :campaign
   context.parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: false, scope: :campaign
   context.parameter :enabled, 'Whether the campaign is enabled or not, as a boolean', required: false, scope: :campaign
 end
