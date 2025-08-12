@@ -15,7 +15,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     let_it_be(:input) { create(:idea, author: recipient) }
     let_it_be(:activity) { create(:activity, item: input, action: 'published') }
     let_it_be(:command) do
-      create(:idea_published_campaign).generate_commands(
+      campaign.generate_commands(
         activity: activity,
         recipient: recipient
       ).first.merge({ recipient: recipient })
@@ -57,6 +57,30 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     it 'includes the CTA' do
       expect(body).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
         with_text(/Go to your idea/)
+      end
+    end
+
+    context 'with custom text' do
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      before do
+        campaign.update!(
+          subject_multiloc: { 'en' => 'Custom Subject' },
+          title_multiloc: { 'en' => 'NEW TITLE' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' }
+        )
+      end
+
+      it 'can customise the subject' do
+        expect(mail.subject).to eq 'Custom Subject'
+      end
+
+      it 'can customise the title' do
+        expect(mail_body(mail)).to include('NEW TITLE')
+      end
+
+      it 'can customise the body including HTML' do
+        expect(mail_body(mail)).to include('<b>NEW BODY TEXT</b>')
       end
     end
   end

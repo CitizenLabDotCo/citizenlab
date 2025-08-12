@@ -35,6 +35,7 @@
 #  onboarding                          :jsonb            not null
 #  unique_code                         :string
 #  last_active_at                      :datetime
+#  imported                            :boolean          default(FALSE), not null
 #
 # Indexes
 #

@@ -545,6 +545,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Proširi sliku",
   "app.components.UI.MoreActionsMenu.moreOptions": "Više mogućnosti",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Prikaži više radnji",
+  "app.components.UI.NewLabel.new": "NOVI",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Nisu pronađene odgovarajuće faze za ovaj projekt",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ukloni",
   "app.components.UI.TranslateButton.original": "Original",

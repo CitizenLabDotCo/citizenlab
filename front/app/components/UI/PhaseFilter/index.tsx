@@ -19,6 +19,7 @@ interface Props {
   phaseId?: string;
   participationMethods: ParticipationMethod[];
   onPhaseFilter: (filter: IOption) => void;
+  customPhaseFilter?: (phases: IPhaseData[]) => IPhaseData[];
 }
 
 const isCorrectPhase =
@@ -33,15 +34,25 @@ const PhaseFilter = ({
   phaseId,
   participationMethods,
   onPhaseFilter,
+  customPhaseFilter,
 }: Props) => {
   const { data: phases } = usePhases(projectId);
   const localize = useLocalize();
 
   const correctPhases = useMemo(() => {
-    return phases
-      ? phases.data.filter(isCorrectPhase(participationMethods))
-      : null;
-  }, [phases, participationMethods]);
+    if (!phases) return null;
+
+    let filteredPhases = phases.data.filter(
+      isCorrectPhase(participationMethods)
+    );
+
+    // Apply custom filter if provided
+    if (customPhaseFilter) {
+      filteredPhases = customPhaseFilter(filteredPhases);
+    }
+
+    return filteredPhases;
+  }, [phases, participationMethods, customPhaseFilter]);
 
   const phaseOptions = useMemo(() => {
     return correctPhases

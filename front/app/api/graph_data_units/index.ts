@@ -12,6 +12,7 @@ import {
   MethodsUsedProps,
   ParticipationProps,
   ProjectsProps,
+  ProjectsTimelineProps,
   DeviceTypesProps,
   VisitorsLanguagesProps,
 } from './requestTypes';
@@ -22,6 +23,7 @@ import { MethodsUsedResponse } from './responseTypes/MethodsUsedWidget';
 import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
 import { ParticipantsResponse } from './responseTypes/ParticipantsWidget';
 import { ParticipationResponse } from './responseTypes/ParticipationWidget';
+import { ProjectsTimelineResponse } from './responseTypes/ProjectsTimelineWidget';
 import { ProjectsResponse } from './responseTypes/ProjectsWidget';
 import { ReactionsByTimeResponse } from './responseTypes/ReactionsByTimeWidget';
 import { RegistrationsResponse } from './responseTypes/RegistrationsWidget';
@@ -248,6 +250,13 @@ export const useParticipationLive = (
 export const useProjects = (props: ProjectsProps = {}) => {
   return useGraphDataUnits<ProjectsResponse>({
     resolved_name: 'ProjectsWidget',
+    props,
+  });
+};
+
+export const useProjectsTimeline = (props: ProjectsTimelineProps = {}) => {
+  return useGraphDataUnits<ProjectsTimelineResponse>({
+    resolved_name: 'ProjectsTimelineWidget',
     props,
   });
 };

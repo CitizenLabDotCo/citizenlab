@@ -3,8 +3,7 @@ import { randomString } from '../../../support/commands';
 describe('Admin: add project', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/projects/all');
-
+    cy.visit('/admin/projects');
     cy.dataCy('e2e-new-project-button').click();
     cy.wait(1000);
     cy.get('.e2e-project-general-form');
@@ -31,16 +30,16 @@ describe('Admin: add project', () => {
         cy.get('.e2e-submit-wrapper-button button').click();
 
         // Confirm the project is saved and appears as draft
-        cy.visit('/admin/projects/all');
-        cy.url().should('include', '/admin/projects/');
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
+        cy.visit('/admin/projects');
+        cy.dataCy('projects-overview-sort-select').select(
+          'recently_created_desc'
+        );
+
+        cy.dataCy('projects-overview-table-row')
           .first()
           .contains(projectTitleEN);
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
-          .first()
-          .contains('Draft');
+
+        cy.dataCy('projects-overview-table-row').first().contains('Draft');
       });
     });
 

@@ -545,6 +545,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Kép kibontása",
   "app.components.UI.MoreActionsMenu.moreOptions": "További lehetőségek",
   "app.components.UI.MoreActionsMenu.showMoreActions": "További műveletek megjelenítése",
+  "app.components.UI.NewLabel.new": "ÚJ",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Nem található megfelelő fázis ehhez a projekthez",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Távolítsa el",
   "app.components.UI.TranslateButton.original": "Eredeti",

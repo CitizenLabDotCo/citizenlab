@@ -545,6 +545,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Izvērst attēlu",
   "app.components.UI.MoreActionsMenu.moreOptions": "Vairāk iespēju",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Rādīt vairāk darbību",
+  "app.components.UI.NewLabel.new": "JAUNUMS",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Šim projektam nav atrasti piemēroti posmi",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Noņemt",
   "app.components.UI.TranslateButton.original": "Oriģināls",

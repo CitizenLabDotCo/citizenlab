@@ -33,31 +33,7 @@ RSpec.describe Phase do
     end
   end
 
-  describe 'voting_term_singular_multiloc_with_fallback' do
-    it "falls back to the translations when there's no title_multiloc" do
-      item = create(:phase, voting_term_singular_multiloc: nil)
-      expect(item.voting_term_singular_multiloc_with_fallback).to match({ 'en' => 'vote', 'fr-FR' => 'vote', 'nl-NL' => 'stem' })
-    end
-
-    it 'returns the custom copy for locales with custom copy and falls back to the translations for other locales' do
-      item = create(:phase, voting_term_singular_multiloc: { 'nl-NL' => 'voorkeur' })
-      expect(item.voting_term_singular_multiloc_with_fallback).to match({ 'en' => 'vote', 'fr-FR' => 'vote', 'nl-NL' => 'voorkeur' })
-    end
-  end
-
-  describe 'voting_term_plural_multiloc_with_fallback' do
-    it "falls back to the translations when there's no title_multiloc" do
-      item = create(:phase, voting_term_plural_multiloc: nil)
-      expect(item.voting_term_plural_multiloc_with_fallback).to match({ 'en' => 'votes', 'fr-FR' => 'votes', 'nl-NL' => 'stemmen' })
-    end
-
-    it 'returns the custom copy for locales with custom copy and falls back to the translations for other locales' do
-      item = create(:phase, voting_term_plural_multiloc: { 'en' => 'preferences' })
-      expect(item.voting_term_plural_multiloc_with_fallback).to match({ 'en' => 'preferences', 'fr-FR' => 'votes', 'nl-NL' => 'stemmen' })
-    end
-  end
-
-  describe 'timing validation' do
+  describe 'timing model validation' do
     it 'succeeds when start_at and end_at are equal' do
       phase = build(:phase)
       phase.end_at = phase.start_at
@@ -68,6 +44,18 @@ RSpec.describe Phase do
       phase = build(:phase)
       phase.end_at = phase.start_at - 1.day
       expect(phase).to be_invalid
+    end
+  end
+
+  describe 'timing database validation' do
+    it 'succeeds when start_at and end_at are equal' do
+      phase = create(:phase)
+      expect { phase.update_columns(end_at: phase.start_at) }.not_to raise_error
+    end
+
+    it 'fails when end_at is before start_at' do
+      phase = build(:phase)
+      expect { phase.update_columns(end_at: (phase.start_at - 1.day)) }.to raise_error(ActiveRecord::ActiveRecordError)
     end
   end
 
@@ -151,33 +139,6 @@ RSpec.describe Phase do
       phase = build(:phase, input_term: nil)
       expect_any_instance_of(ParticipationMethod::Ideation).to receive(:assign_defaults_for_phase).and_call_original
       expect { phase.validate }.to change { phase.input_term }.from(nil).to('idea')
-    end
-  end
-
-  describe 'campaigns_settings validation' do
-    it 'fails when null' do
-      phase = build(:phase, campaigns_settings: nil)
-      expect(phase).to be_invalid
-    end
-
-    it 'fails when empty' do
-      phase = build(:phase, campaigns_settings: {})
-      expect(phase).to be_invalid
-    end
-
-    it 'fails when contains invalid key' do
-      phase = build(:phase, campaigns_settings: { invalid_key: true })
-      expect(phase).to be_invalid
-    end
-
-    it 'fails when contains invalid value' do
-      phase = build(:phase, campaigns_settings: { project_phase_started: 'not_a_boolean' })
-      expect(phase).to be_invalid
-    end
-
-    it 'succeeds when contains valid key and value' do
-      phase = build(:phase, campaigns_settings: { project_phase_started: true })
-      expect(phase).to be_valid
     end
   end
 

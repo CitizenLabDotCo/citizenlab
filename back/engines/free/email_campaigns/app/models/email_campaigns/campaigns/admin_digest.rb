@@ -20,6 +20,7 @@
 #  title_multiloc       :jsonb
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
+#  context_type         :string
 #
 # Indexes
 #
@@ -35,6 +36,7 @@ module EmailCampaigns
   class Campaigns::AdminDigest < Campaign
     include Disableable
     include Consentable
+    include ContentConfigurable
     include Schedulable
     include RecipientConfigurable
     include Trackable

@@ -545,6 +545,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Bild erweideren",
   "app.components.UI.MoreActionsMenu.moreOptions": "Méi Optiounen",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Méi Aktioune weisen",
+  "app.components.UI.NewLabel.new": "NEI",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Keng passende Phasen fir dëse Projet fonnt",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ewechhuelen",
   "app.components.UI.TranslateButton.original": "Original",
