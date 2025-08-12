@@ -1449,7 +1449,8 @@ CREATE TABLE public.users (
     followings_count integer DEFAULT 0 NOT NULL,
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
-    last_active_at timestamp(6) without time zone
+    last_active_at timestamp(6) without time zone,
+    imported boolean DEFAULT false NOT NULL
 );
 
 
@@ -1487,7 +1488,8 @@ CREATE TABLE public.email_campaigns_campaigns (
     context_id uuid,
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     intro_multiloc jsonb DEFAULT '{}'::jsonb,
-    button_text_multiloc jsonb DEFAULT '{}'::jsonb
+    button_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    context_type character varying
 );
 
 
@@ -3183,7 +3185,8 @@ CREATE TABLE public.project_imports (
     locale character varying,
     string character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    import_type character varying
 );
 
 
@@ -7643,6 +7646,8 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250808071349'),
+('20250807120354'),
 ('20250730103628'),
 ('20250724190507'),
 ('20250724074646'),
@@ -7659,6 +7664,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250626072615'),
 ('20250624134747'),
 ('20250624102147'),
+('20250623094500'),
 ('20250618151933'),
 ('20250616142444'),
 ('20250611110008'),

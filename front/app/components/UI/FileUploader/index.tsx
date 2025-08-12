@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { CLErrors, UploadFile } from 'typings';
@@ -12,7 +12,7 @@ import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Error from 'components/UI/Error';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import DataRepositoryFileSelector from './DataRepositoryFileSelector';
 import FileDisplay, { FileType } from './FileDisplay';
@@ -50,6 +50,7 @@ const FileUploader = ({
   maxSizeMb,
   dataCy,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
 
   const isDataRepositoryEnabled = useFeatureFlag({
@@ -120,14 +121,7 @@ const FileUploader = ({
         data-cy="e2e-file-uploader-container"
         w="100%"
       >
-        {isDataRepositoryEnabled && allowFromDataRepository ? (
-          // The new file uploader, where you can select from the existing file library.
-          // For now we support both the old and new file uploader, but eventually we want to
-          // remove the old one and only use this one.
-          <DataRepositoryFileSelector
-            onFileAddFromRepository={onFileAddFromRepository}
-          />
-        ) : (
+        <>
           <FileInput
             onAdd={handleFileOnAdd}
             id={id}
@@ -135,7 +129,18 @@ const FileUploader = ({
             maxSizeMb={maxSizeMb}
             dataCy={dataCy}
           />
-        )}
+          {isDataRepositoryEnabled && allowFromDataRepository && (
+            // Select from the existing file library.
+            <Box mb="12px">
+              <Text color="coolGrey600" m="0px" mb="4px" textAlign="center">
+                {formatMessage(messages.or)}
+              </Text>
+              <DataRepositoryFileSelector
+                onFileAddFromRepository={onFileAddFromRepository}
+              />
+            </Box>
+          )}
+        </>
         <Error fieldName="file" apiErrors={apiErrors?.file} />
 
         <List key={files.length} className="files-list e2e-files-list">

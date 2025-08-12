@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -23,24 +23,13 @@ import { countFilesWithStatus } from './utils';
 type Props = {
   setModalOpen?: (open: boolean) => void;
   setShowFirstUploadView?: (value: boolean) => void;
-  showInformationSection?: boolean;
-  showTitle?: boolean;
-  afterUpload?: (uploadedFiles: FileWithMeta[]) => void;
-  onFileSelect?: () => void;
 };
 
 const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_FILES = 35;
 
-const FilesUpload = ({
-  setModalOpen,
-  setShowFirstUploadView,
-  showInformationSection = true,
-  afterUpload,
-  showTitle = true,
-  onFileSelect,
-}: Props) => {
+const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
 
@@ -59,9 +48,6 @@ const FilesUpload = ({
     multiple: true,
     validator: () => null, // Allow all file types to be uploaded.
     onDrop: (acceptedFiles) => {
-      // If a callback to do something after a file is selected, call it.
-      onFileSelect?.();
-
       // First check if user is trying to drop more than the maximum allowed files
       if (acceptedFiles.length > MAX_FILES) {
         // If so, show message to the user and do not proceed with the upload
@@ -105,34 +91,13 @@ const FilesUpload = ({
 
   const aiCheckboxDisabled = hasStartedUploading || finishedUploading;
 
-  useEffect(() => {
-    if (finishedUploading) {
-      // If the upload is finished, return the list of successfully uploaded files
-      // to the parent component, if this callback is provided.
-      if (afterUpload) {
-        const successfullyUploadedFiles = fileList.filter(
-          (file) => file.status === 'uploaded'
-        );
-        afterUpload(successfullyUploadedFiles);
-      }
-    }
-  }, [
-    fileList,
-    finishedUploading,
-    setModalOpen,
-    setShowFirstUploadView,
-    afterUpload,
-  ]);
-
   return (
     <>
       {fileList.length > 0 ? (
         <>
-          {showTitle && (
-            <Title fontWeight="semi-bold" color="coolGrey700" variant="h3">
-              {formatMessage(messages.confirmAndUploadFiles)}
-            </Title>
-          )}
+          <Title fontWeight="semi-bold" color="coolGrey700" variant="h3">
+            {formatMessage(messages.confirmAndUploadFiles)}
+          </Title>
 
           <Box maxHeight="300px" overflowY="auto" overflowX="hidden" mt="20px">
             {fileList.map((item, index) => (
@@ -207,7 +172,7 @@ const FilesUpload = ({
         </>
       ) : (
         <>
-          {showInformationSection && <InformationSection />}
+          <InformationSection />
           <FileDropzone
             getDropzoneRootProps={getDropzoneRootProps}
             getDropzoneInputProps={getDropzoneInputProps}

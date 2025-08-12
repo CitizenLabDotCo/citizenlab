@@ -35,4 +35,9 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.UpsellNudge.bulletPoint3',
     defaultMessage: 'Filter by method, city size & country.',
   },
+  inspirationHubSupportArticle: {
+    id: 'app.containers.Admin.inspirationHub.UpsellNudge.inspirationHubSupportArticle',
+    defaultMessage:
+      'https://support.govocal.com/en/articles/11093736-using-the-inspiration-hub',
+  },
 });

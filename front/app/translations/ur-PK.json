@@ -548,6 +548,7 @@
   "app.components.UI.FullscreenImage.expandImage": "تصویر کو پھیلائیں۔",
   "app.components.UI.MoreActionsMenu.moreOptions": "مزید اختیارات",
   "app.components.UI.MoreActionsMenu.showMoreActions": "مزید کارروائیاں دکھائیں۔",
+  "app.components.UI.NewLabel.new": "نیا",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "اس منصوبے کے لیے کوئی مناسب مراحل نہیں ملے",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "ہٹا دیں۔",
   "app.components.UI.TranslateButton.original": "اصل",

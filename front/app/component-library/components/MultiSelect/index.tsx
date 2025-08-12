@@ -33,6 +33,7 @@ export type Props = {
   onOpen?: () => void;
   a11y_clearbuttonActionMessage: string;
   a11y_clearSearchButtonActionMessage: string;
+  dataCy?: string;
 } & BoxMarginProps;
 
 /** @deprecated Please use components/UI/MultiSelect instead */
@@ -49,6 +50,7 @@ const MultiSelect = ({
   onOpen,
   a11y_clearbuttonActionMessage,
   a11y_clearSearchButtonActionMessage,
+  dataCy,
   ...boxProps
 }: Props) => {
   const [opened, setOpened] = useState(false);
@@ -60,7 +62,11 @@ const MultiSelect = ({
   const showClearButton = onClear && (hover || focused);
 
   return (
-    <Box {...boxProps} onMouseLeave={() => setHover(undefined)}>
+    <Box
+      {...boxProps}
+      data-cy={dataCy}
+      onMouseLeave={() => setHover(undefined)}
+    >
       <Box position="relative">
         <InputContainer
           id={selectorId}

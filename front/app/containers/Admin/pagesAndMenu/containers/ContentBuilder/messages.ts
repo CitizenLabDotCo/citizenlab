@@ -47,4 +47,8 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultSurveyButtonText',
     defaultMessage: 'Take the survey',
   },
+  fileAttachment: {
+    id: 'app.containers.admin.ContentBuilder.homepage.fileAttachment',
+    defaultMessage: 'File attachment',
+  },
 });

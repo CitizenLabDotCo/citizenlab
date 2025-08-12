@@ -58,7 +58,6 @@ class CommunityMonitorService
           commenting_enabled: false,
           reacting_enabled: false,
           start_at: Time.now,
-          campaigns_settings: { project_phase_started: true },
           native_survey_title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
           native_survey_button_multiloc: multiloc_service.i18n_to_multiloc('phases.native_survey_button')
         )

@@ -92,6 +92,7 @@ declare global {
       uploadProjectFolderImage: typeof uploadProjectFolderImage;
       uploadProjectImage: typeof uploadProjectImage;
       apiCreateModeratorForProject: typeof apiCreateModeratorForProject;
+      apiCreateModeratorForFolder: typeof apiCreateModeratorForFolder;
       apiCreateNativeSurveyPhase: typeof apiCreateNativeSurveyPhase;
       createProjectWithNativeSurveyPhase: typeof createProjectWithNativeSurveyPhase;
       createProjectWithIdeationPhase: typeof createProjectWithIdeationPhase;
@@ -480,6 +481,41 @@ function apiCreateModeratorForProject({
         url: `web_api/v1/projects/${projectId}/moderators`,
         body: {
           moderator: {
+            user_id: userId,
+          },
+        },
+      });
+    });
+  });
+}
+
+function apiCreateModeratorForFolder({
+  firstName,
+  lastName,
+  email,
+  password,
+  folderId,
+}: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  folderId: string;
+}) {
+  return cy.apiSignup(firstName, lastName, email, password).then((response) => {
+    const userId = response.body.data.id;
+    return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+      const adminJwt = response.body.jwt;
+
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'POST',
+        url: `web_api/v1/project_folders/${folderId}/moderators`,
+        body: {
+          project_folder_moderator: {
             user_id: userId,
           },
         },
@@ -1204,7 +1240,6 @@ function apiCreatePhase({
           survey_service: surveyService,
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
-          campaigns_settings: { project_phase_started: true },
           voting_max_votes_per_idea: votingMaxVotesPerIdea,
           voting_min_total: votingMinTotal,
           native_survey_button_multiloc: nativeSurveyButtonMultiloc,
@@ -2201,6 +2236,10 @@ Cypress.Commands.add('uploadProjectImage', uploadProjectImage);
 Cypress.Commands.add(
   'apiCreateModeratorForProject',
   apiCreateModeratorForProject
+);
+Cypress.Commands.add(
+  'apiCreateModeratorForFolder',
+  apiCreateModeratorForFolder
 );
 Cypress.Commands.add('apiCreateNativeSurveyPhase', apiCreateNativeSurveyPhase);
 Cypress.Commands.add(

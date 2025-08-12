@@ -1,20 +1,36 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  overviewPageTitle: {
-    id: 'app.containers.AdminPage.ProjectDashboard.overviewPageTitle',
-    defaultMessage: 'Projects',
+  notAssigned: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.notAssigned',
+    defaultMessage: 'Not assigned',
   },
-  onlyAdminsCanCreateFolders: {
-    id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders',
-    defaultMessage: 'Only admins can create project folders.',
+  xManagers: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.xManagers',
+    defaultMessage: '{numberOfManagers} managers',
   },
-  createProjectFolder: {
-    id: 'app.containers.AdminPage.projects.all.createProjectFolder',
-    defaultMessage: 'New folder',
+  draft: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.draft',
+    defaultMessage: 'Draft',
   },
-  newProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.createProject',
-    defaultMessage: 'New project',
+  published: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.published',
+    defaultMessage: 'Published',
+  },
+  archived: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.archived',
+    defaultMessage: 'Archived',
+  },
+  loadingMore: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.loadingMore',
+    defaultMessage: 'Loading more…',
+  },
+  scrollDownToLoadMore: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.scrollDownToLoadMore',
+    defaultMessage: 'Scroll down to load more',
+  },
+  allProjectsHaveLoaded: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded',
+    defaultMessage: 'All projects have been loaded',
   },
 });

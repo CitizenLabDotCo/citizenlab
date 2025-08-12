@@ -1,7 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 
 import {
-  Text,
   Box,
   Title,
   IconTooltip,
@@ -10,8 +9,6 @@ import {
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
-import { CampaignName, ICampaignData } from 'api/campaigns/types';
-import useCampaigns from 'api/campaigns/useCampaigns';
 import { IPhaseFiles } from 'api/phase_files/types';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -23,10 +20,6 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { useSyncPhaseFiles } from 'hooks/files/useSyncPhaseFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-import useLocalize from 'hooks/useLocalize';
-
-import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
-import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 
 import {
   Section,
@@ -48,7 +41,6 @@ import {
 import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-import CampaignRow from './components/CampaignRow';
 // import DateSetup from './components/DateSetup';
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
@@ -78,10 +70,9 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 interface Props {
   projectId: string;
   phase: IPhase | undefined;
-  flatCampaigns: ICampaignData[];
 }
 
-const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
+const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const phaseId = phase?.data.id;
   const { data: phaseFiles } = usePhaseFiles(phaseId || null);
   const { data: phases } = usePhases(projectId);
@@ -99,28 +90,15 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
   );
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
 
-  const initialCampaignsSettings = flatCampaigns.reduce((acc, campaign) => {
-    acc[campaign.attributes.campaign_name] = campaign.attributes.enabled;
-    return acc;
-  }, {});
-
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
     // If no phase is selected, we initialize the form data with default values.
-    setFormData(
-      phase
-        ? phase.data.attributes
-        : {
-            campaigns_settings: initialCampaignsSettings,
-            ...ideationDefaultConfig,
-          }
-    );
+    setFormData(phase ? phase.data.attributes : ideationDefaultConfig);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
@@ -344,17 +322,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     }
   };
 
-  const handleCampaignEnabledOnChange = (campaign: CampaignData) => {
-    const campaignKey = campaign.attributes.campaign_name;
-
-    updateFormData({
-      campaigns_settings: {
-        ...formData?.campaigns_settings,
-        [campaignKey]: !formData?.campaigns_settings?.[campaignKey],
-      },
-    });
-  };
-
   if (!formData) return null;
 
   return (
@@ -433,30 +400,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
               allowFromDataRepository={true}
             />
           </SectionField>
-          {Object.keys(flatCampaigns).length > 0 && (
-            <SectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.automatedEmails} />
-              </SubSectionTitle>
-              <Text color="coolGrey600" mt="0px" fontSize="m">
-                <FormattedMessage {...messages.automatedEmailsDescription} />
-              </Text>
-              {flatCampaigns.map((campaign) => (
-                <CampaignRow
-                  campaign={stringifyCampaignFields(campaign, localize)}
-                  checked={
-                    // TODO: Fix this the next time the file is edited.
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    !!formData?.campaigns_settings?.[
-                      campaign.attributes.campaign_name
-                    ]
-                  }
-                  key={campaign.id}
-                  handleOnEnabledToggle={handleCampaignEnabledOnChange}
-                />
-              ))}
-            </SectionField>
-          )}
 
           {/* TODO: Fix this the next time the file is edited. */}
           {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
@@ -502,29 +445,17 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   );
 };
 
-const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
-
 const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
-  const { data: campaigns } = useCampaigns({
-    campaignNames: CONFIGURABLE_CAMPAIGN_NAMES,
-    pageSize: 250,
-  });
 
-  const flatCampaigns = campaigns?.pages.flatMap((page) => page.data);
-
-  if (!projectId || !flatCampaigns) return null;
+  if (!projectId) return null;
 
   const phaseLoading = phaseId && phase?.data.id !== phaseId;
   if (phaseLoading) return null;
 
   return (
-    <AdminPhaseEdit
-      projectId={projectId}
-      phase={phaseId ? phase : undefined}
-      flatCampaigns={flatCampaigns}
-    />
+    <AdminPhaseEdit projectId={projectId} phase={phaseId ? phase : undefined} />
   );
 };
 

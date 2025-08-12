@@ -6,7 +6,7 @@ const baseKey = {
   type: 'project_mini_admin',
 };
 
-const miniProjectsKeys = {
+const projectsMiniAdminKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
   list: (parameters: Parameters) => [
@@ -21,4 +21,4 @@ const miniProjectsKeys = {
   ],
 } satisfies QueryKeys;
 
-export default miniProjectsKeys;
+export default projectsMiniAdminKeys;

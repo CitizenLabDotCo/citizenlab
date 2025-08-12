@@ -16,14 +16,12 @@ import { FileType } from '../FileDisplay';
 import messages from '../messages';
 
 type Props = {
-  setShowModal?: React.Dispatch<React.SetStateAction<boolean>>;
   attachedFiles?: FileType[];
   onFileAddFromRepository?: (files: FileType[]) => void;
 };
 
 const SelectExistingFile = ({
   attachedFiles,
-  setShowModal,
   onFileAddFromRepository,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -92,13 +90,9 @@ const SelectExistingFile = ({
 
               // Clear the current selection
               setFileId(null);
-
-              // Close modal
-              setShowModal?.(false);
             }}
-            placeholder={formatMessage(messages.selectFile)}
+            placeholder={formatMessage(messages.fromExistingFiles)}
             options={filteredFileOptions}
-            label={formatMessage(messages.fromExistingFiles)}
           />
         </>
       )}

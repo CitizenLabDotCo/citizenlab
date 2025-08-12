@@ -10,12 +10,12 @@ export default defineMessages({
     defaultMessage: 'Select a file',
   },
   fromExistingFiles: {
-    id: 'app.components.FileUploader.fromExistingFiles',
-    defaultMessage: 'From existing files',
+    id: 'app.components.FileUploader.fromExistingFiles2',
+    defaultMessage: 'Select from existing files',
   },
-  clickToSelectAFile: {
-    id: 'app.components.FileUploader.clickToSelectAFile',
-    defaultMessage: 'Click to select a file',
+  or: {
+    id: 'app.components.FileUploader.or',
+    defaultMessage: 'or',
   },
   fileAttachedSuccessfully: {
     id: 'app.components.FileUploader.fileAttachedSuccessfully',
