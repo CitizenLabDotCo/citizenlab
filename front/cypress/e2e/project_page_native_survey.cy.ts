@@ -123,13 +123,13 @@ describe('Native survey CTA bar', () => {
 
   it('shows the CTA to the user to take the survey when taking survey is open', () => {
     cy.visit(`/en/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('#project-survey-button').should('exist');
   });
 
   it('does not show the CTA to take the survey when the user already taken the survey', () => {
     cy.visit(`/en/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.setAdminLoginCookie();
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/access-rights`);
@@ -143,10 +143,11 @@ describe('Native survey CTA bar', () => {
 
     cy.logout();
     cy.setLoginCookie(email, password);
+    cy.acceptCookies();
 
     // Take the survey
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('.e2e-idea-button')
       .find('button')
       .should('not.have.attr', 'disabled');

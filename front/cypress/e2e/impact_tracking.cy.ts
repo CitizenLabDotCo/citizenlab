@@ -53,7 +53,7 @@ describe('Impact tracking: Session tracking', () => {
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
     );
-    cy.acceptCookies();
+
     cy.get('#site-map-link').click();
     cy.wait('@trackPageview').then((interception) => {
       expect(interception.response?.statusCode).to.eq(201);

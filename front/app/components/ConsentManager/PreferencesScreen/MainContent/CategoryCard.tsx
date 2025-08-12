@@ -15,8 +15,12 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { getDestinationConfig, IDestination, TCategory } from '../destinations';
-import messages from '../messages';
+import {
+  getDestinationConfig,
+  IDestination,
+  TCategory,
+} from '../../destinations';
+import messages from '../../messages';
 
 const Container = styled.div`
   display: flex;
