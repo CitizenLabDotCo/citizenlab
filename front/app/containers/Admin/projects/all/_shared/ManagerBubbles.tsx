@@ -66,12 +66,7 @@ const ManagerBubbles = ({ managers }: Props) => {
             />
           </BubbleContainer>
         </Box>
-        <Text 
-          m="0" 
-          fontSize="s" 
-          color="textPrimary"
-          wordBreak="break-word"
-        >
+        <Text m="0" fontSize="s" color="textPrimary" wordBreak="break-word">
           {getFullName(managers[0].first_name, managers[0].last_name)}
         </Text>
       </Box>

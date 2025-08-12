@@ -32,6 +32,7 @@ export interface IUpdateFileProperties {
     name: string;
     category?: FileCategory;
     description_multiloc?: Multiloc;
+    ai_processing_allowed?: boolean;
   };
 }
 
@@ -61,6 +62,7 @@ export interface GetFilesParameters {
   sort?: FileSortOptions;
   search?: string;
   deleted?: boolean;
+  enabled?: boolean;
 }
 
 export interface IFiles {
@@ -94,6 +96,7 @@ export interface IFileAttributes {
   size: number; // in bytes,
   category: FileCategory;
   description_multiloc: Multiloc;
+  ai_processing_allowed: boolean;
   created_at: string;
   updated_at: string;
   deleted_at: string | null;

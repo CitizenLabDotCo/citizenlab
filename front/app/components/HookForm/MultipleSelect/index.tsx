@@ -41,7 +41,10 @@ const MultipleSelect = ({ name, scrollErrorIntoView, ...rest }: Props) => {
               onChange={(newOption: IOption[]) => {
                 setValue(
                   name,
-                  newOption.map((o) => o.value)
+                  newOption.map((o) => o.value),
+                  {
+                    shouldDirty: true,
+                  }
                 );
                 trigger(name);
               }}

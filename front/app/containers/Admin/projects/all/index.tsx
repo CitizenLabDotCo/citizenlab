@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
@@ -58,7 +58,11 @@ const AdminProjectsListNew = () => {
         <Box mt="20px">
           {tab === null && <Projects />}
           {tab === 'folders' && <Folders />}
-          {tab === 'calendar' && <Calendar />}
+          {tab === 'calendar' && (
+            <Suspense>
+              <Calendar />
+            </Suspense>
+          )}
           {tab === 'ordering' && (
             <Box>
               <Ordering />

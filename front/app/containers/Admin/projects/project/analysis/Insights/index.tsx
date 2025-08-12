@@ -12,6 +12,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
+import AnalysisFileUploader from './Files/AnalysisFileUploader';
+import FileSelectionView from './Files/FileSelectionView';
 import messages from './messages';
 import Question from './Question';
 import QuestionButton from './QuestionButton';
@@ -22,6 +24,7 @@ import Summary from './Summary';
 const Insights = () => {
   const { formatMessage } = useIntl();
   const [isQuestionInputOpen, setIsQuestionInputOpen] = useState(false);
+  const [isFileSelectionOpen, setIsFileSelectionOpen] = useState(false);
   const { analysisId } = useParams() as { analysisId: string };
   const { data: insights, isLoading } = useAnalysisInsights({
     analysisId,
@@ -32,11 +35,16 @@ const Insights = () => {
     onlyCheckAllowed: true,
   });
 
+  const isDataRepositoryAnalysisEnabled = useFeatureFlag({
+    name: 'data_repository_ai_analysis',
+  });
+
   const filters = useAnalysisFilterParams();
 
   const { data: allInputs } = useInfiniteAnalysisInputs({
     analysisId,
   });
+
   const { data: filteredInputs } = useInfiniteAnalysisInputs({
     analysisId,
     queryParams: filters,
@@ -46,6 +54,14 @@ const Insights = () => {
   const filteredInputsCount = filteredInputs?.pages[0].meta.filtered_count || 0;
   const applyInputsLimit = !largeSummariesAllowed && filteredInputsCount > 30;
 
+  if (isFileSelectionOpen) {
+    return (
+      <FileSelectionView
+        setIsFileSelectionOpen={setIsFileSelectionOpen}
+        analysisId={analysisId}
+      />
+    );
+  }
   return (
     <Box display="flex" flexDirection="column" height="100%">
       <Box display="flex" gap="4px">
@@ -66,23 +82,32 @@ const Insights = () => {
         m="0"
         my="8px"
         display="flex"
-        justifyContent="center"
+        justifyContent="space-between"
         alignItems="center"
         gap="4px"
       >
-        {applyInputsLimit && (
-          <Icon name="alert-circle" fill={colors.orange500} />
-        )}
+        <Box>
+          {applyInputsLimit && (
+            <Icon name="alert-circle" fill={colors.orange500} />
+          )}
 
-        <Text
-          fontSize="s"
-          m="0"
-          variant="bodyXs"
-          color={applyInputsLimit ? 'orange500' : 'textSecondary'}
-        >
-          {`${filteredInputsCount} / ${inputsCount}`}{' '}
-          {formatMessage(messages.inputsSelected)}
-        </Text>
+          <Text
+            fontSize="s"
+            m="0"
+            variant="bodyXs"
+            color={applyInputsLimit ? 'orange500' : 'textSecondary'}
+          >
+            {`${filteredInputsCount} / ${inputsCount}`}{' '}
+            {formatMessage(messages.inputsSelected)}
+          </Text>
+        </Box>
+
+        {isDataRepositoryAnalysisEnabled && (
+          <AnalysisFileUploader
+            setIsFileSelectionOpen={setIsFileSelectionOpen}
+            analysisId={analysisId}
+          />
+        )}
       </Box>
 
       {isQuestionInputOpen && (
