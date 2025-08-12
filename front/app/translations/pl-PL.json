@@ -548,6 +548,7 @@
   "app.components.UI.FullscreenImage.expandImage": "Rozwiń obraz",
   "app.components.UI.MoreActionsMenu.moreOptions": "Więcej opcji",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Pokaż więcej działań",
+  "app.components.UI.NewLabel.new": "NOWOŚĆ",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Nie znaleziono odpowiednich faz dla tego projektu",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Usuń",
   "app.components.UI.TranslateButton.original": "Oryginał",
