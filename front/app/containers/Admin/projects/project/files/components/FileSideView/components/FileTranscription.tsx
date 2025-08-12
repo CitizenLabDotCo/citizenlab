@@ -23,12 +23,12 @@ const FileTranscription = ({ file }: Props) => {
       <Box pt="12px" display="flex">
         <Label>
           {formatMessage(messages.transcription)}
-          {transcriptionStatus === 'pending' ||
-            (transcriptionStatus === 'processing' && (
-              <Box ml="4px">
-                <Spinner size="12px" />
-              </Box>
-            ))}
+          {(transcriptionStatus === 'pending' ||
+            transcriptionStatus === 'processing') && (
+            <Box ml="4px">
+              <Spinner size="12px" />
+            </Box>
+          )}
         </Label>
       </Box>
       {transcriptionStatus === 'completed' && (
