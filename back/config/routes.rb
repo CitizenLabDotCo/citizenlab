@@ -37,11 +37,15 @@ Rails.application.routes.draw do
       end
 
       concern :file_attachable do |options|
-        resources :file_attachments,
+        unless options.key?(:attachable_type)
+          raise 'attachable_type option is required for concern :file_attachable'
+        end
+
+        unless resources :file_attachments,
           controller: 'files/file_attachments',
           only: %i[index create],
-          param: :attachable_id,
           defaults: { attachable_type: options[:attachable_type] }
+        end
       end
 
       concerns :permissionable # for the global permission scope (with parent_param = nil)
@@ -51,6 +55,8 @@ Rails.application.routes.draw do
       resources :ideas,
         concerns: %i[reactable spam_reportable followable permissionable],
         defaults: { reactable: 'Idea', spam_reportable: 'Idea', followable: 'Idea', parent_param: :idea_id } do
+        concerns :file_attachable, attachable_type: 'Idea'
+
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
         resources :cosponsorships, defaults: { container_type: 'Idea' } do

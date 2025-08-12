@@ -3,9 +3,8 @@
 class WebApi::V1::Files::FileAttachmentsController < ApplicationController
   def index
     # Either the attachable_id is passed explicitly or the attachable is the parent
-    # resource if applicable.
-    attachable_id = params[:attachable_id] || params[params[:parent_param]]
-    where_conditions = { attachable_id: attachable_id }.compact
+    # resource. For example, .../projects/:project_id/file_attachments.
+    where_conditions = { attachable_id: parent_ids.last || params[:attachable_id] }.compact
 
     file_attachments = policy_scope(Files::FileAttachment)
       .includes(:file, :attachable)
@@ -25,13 +24,6 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
   end
 
   def create
-    create_params = params.require(:file_attachment).permit(
-      :file_id,
-      :attachable_id,
-      :attachable_type,
-      :position
-    )
-
     file_attachment = Files::FileAttachment.new(create_params)
     authorize(file_attachment)
 
@@ -84,5 +76,26 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
 
   def side_fx
     @side_fx ||= Files::SideFxFileAttachmentService.new
+  end
+
+  def create_params
+    # If the resource is nested (for example, /projects/:project_id/file_attachments),
+    # the attachable_id and attachable_type are inferred from the path.
+    # In this case, parameters inferred from the path take precedence.
+    from_path = {
+      attachable_id: parent_ids.last,
+      attachable_type: request.path_parameters[:attachable_type]
+    }.compact
+
+    params.require(:file_attachment).permit(
+      :file_id,
+      :position,
+      :attachable_id,
+      :attachable_type
+    ).merge(from_path)
+  end
+
+  def parent_ids
+    request.path_parameters.select { |k, _| k.to_s.end_with?('_id') }.values
   end
 end
