@@ -35,6 +35,10 @@ const Insights = () => {
     onlyCheckAllowed: true,
   });
 
+  const isDataRepositoryAnalysisEnabled = useFeatureFlag({
+    name: 'data_repository_ai_analysis',
+  });
+
   const filters = useAnalysisFilterParams();
 
   const { data: allInputs } = useInfiniteAnalysisInputs({
@@ -98,10 +102,12 @@ const Insights = () => {
           </Text>
         </Box>
 
-        <AnalysisFileUploader
-          setIsFileSelectionOpen={setIsFileSelectionOpen}
-          analysisId={analysisId}
-        />
+        {isDataRepositoryAnalysisEnabled && (
+          <AnalysisFileUploader
+            setIsFileSelectionOpen={setIsFileSelectionOpen}
+            analysisId={analysisId}
+          />
+        )}
       </Box>
 
       {isQuestionInputOpen && (
