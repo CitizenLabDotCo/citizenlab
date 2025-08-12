@@ -31,7 +31,7 @@ import {
   localeGetter,
   locales,
 } from 'containers/App/constants';
-import AuthenticationModalManager from 'containers/Authentication/ModalManager';
+import AuthenticationModalManager from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
 import ConsentManager from 'components/ConsentManager';
