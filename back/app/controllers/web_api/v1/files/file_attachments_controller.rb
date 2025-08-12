@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
 class WebApi::V1::Files::FileAttachmentsController < ApplicationController
+  skip_before_action :authenticate_user, only: %i[index show]
+
   def index
-    # Either the attachable_id is passed explicitly or the attachable is the parent
-    # resource. For example, .../projects/:project_id/file_attachments.
-    where_conditions = { attachable_id: parent_ids.last || params[:attachable_id] }.compact
+    where_conditions = {
+      file_id: params[:file_id],
+      # Either the attachable_id is passed explicitly or the attachable is the parent
+      # resource. For example, .../projects/:project_id/file_attachments.
+      attachable_id: attachable_id_from_path || params[:attachable_id]
+    }.compact
 
     file_attachments = policy_scope(Files::FileAttachment)
       .includes(:file, :attachable)
@@ -80,11 +85,11 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
 
   def create_params
     # If the resource is nested (for example, /projects/:project_id/file_attachments),
-    # the attachable_id and attachable_type are inferred from the path.
+    # the +attachable_id+ and +attachable_type+ are inferred from the path.
     # In this case, parameters inferred from the path take precedence.
     from_path = {
-      attachable_id: parent_ids.last,
-      attachable_type: request.path_parameters[:attachable_type]
+      attachable_id: attachable_id_from_path,
+      attachable_type: attachable_type_from_path
     }.compact
 
     params.require(:file_attachment).permit(
@@ -93,6 +98,18 @@ class WebApi::V1::Files::FileAttachmentsController < ApplicationController
       :attachable_id,
       :attachable_type
     ).merge(from_path)
+  end
+
+  def attachable_type_from_path
+    @attachable_type_from_path ||= if request.path_parameters[:concern] == :file_attachable
+      request.path_parameters.fetch(:attachable_type)
+    end
+  end
+
+  def attachable_id_from_path
+    @attachable_id_from_path ||= if request.path_parameters[:concern] == :file_attachable
+      parent_ids.last
+    end
   end
 
   def parent_ids
