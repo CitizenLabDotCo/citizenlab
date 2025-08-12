@@ -15,6 +15,42 @@ RSpec.describe Files::FileAttachment do
   describe 'validations' do
     it { is_expected.to validate_uniqueness_of(:file_id).scoped_to(%w[attachable_type attachable_id]).case_insensitive }
     it { is_expected.to validate_inclusion_of(:attachable_type).in_array(described_class::ATTACHABLE_TYPES) }
+
+    describe '#validate_file_belongs_to_project' do
+      it 'is invalid when the file and resource belong to different projects' do
+        project = create(:project)
+        file = create(:file)
+
+        attachables = [
+          project,
+          create(:event, project: project),
+          create(:idea, project: project),
+          create(:phase, project: project)
+        ]
+
+        attachables.each do |attachable|
+          attachment = build(:file_attachment, attachable: attachable, file: file)
+          expect(attachment).not_to be_valid
+        end
+      end
+
+      it 'is valid when the file and resource belong to the same project' do
+        project = create(:project)
+        file = create(:file, projects: [project])
+
+        attachables = [
+          project,
+          create(:event, project: project),
+          create(:idea, project: project),
+          create(:phase, project: project)
+        ]
+
+        attachables.each do |attachable|
+          attachment = build(:file_attachment, attachable: attachable, file: file)
+          expect(attachment).to be_valid
+        end
+      end
+    end
   end
 
   describe 'ATTACHABLE_TYPES' do
