@@ -42,7 +42,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
         {file?.data && (
           <>
             {/* Left scrollable section */}
-            <Box width="100%" overflowY="auto" p="24px" pr="32px">
+            <Box w="100%" overflowY="auto" p="24px" pr="32px">
               <StatusLabel
                 text={formatMessage(messages[file.data.attributes.category])}
                 backgroundColor={colors.teal500}
