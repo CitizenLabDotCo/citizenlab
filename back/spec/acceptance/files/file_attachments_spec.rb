@@ -127,4 +127,49 @@ resource 'FileAttachments' do
       expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
+  shared_examples 'attachable resource' do |name, attachable_factory: name|
+    before { admin_header_token }
+
+    get "web_api/v1/#{name}s/:attachable_id/file_attachments" do
+      let_it_be(:attachable) { create(attachable_factory) }
+      let_it_be(:file_attachments) { create_pair(:file_attachment, attachable: attachable) }
+
+      let(:attachable_id) { attachable.id }
+
+      before { create(:file_attachment) }
+
+      example_request "List all file attachments of a #{name}" do
+        assert_status 200
+        expect(response_data.size).to eq(2)
+      end
+    end
+
+    post "web_api/v1/#{name}s/:attachable_id/file_attachments" do
+      with_options(scope: :file_attachment) do
+        parameter :file_id, 'ID of the file to attach', required: true
+        parameter :position, 'Position of the file attachment', required: false
+      end
+
+      let_it_be(:attachable) { create(attachable_factory) }
+      let_it_be(:file) { create(:file) }
+
+      let(:attachable_id) { attachable.id }
+      let(:file_id) { file.id }
+
+      example_request "Create a file attachment for a #{name}" do
+        assert_status 201
+
+        file_attachment = Files::FileAttachment.find(response_data[:id])
+        expect(file_attachment.attachable).to eq(attachable)
+        expect(file_attachment.file).to eq(file)
+      end
+    end
+  end
+
+  include_examples 'attachable resource', 'project'
+  include_examples 'attachable resource', 'event'
+  include_examples 'attachable resource', 'idea'
+  include_examples 'attachable resource', 'phase'
+  include_examples 'attachable resource', 'static_page'
 end
