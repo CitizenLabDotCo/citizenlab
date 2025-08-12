@@ -4,12 +4,19 @@ import {
   ILinks,
   IRelationship,
   SupportedLocale,
-  ImageSizes,
 } from 'typings';
 
 import { ReviewState } from 'api/admin_publications/types';
 import { ParticipationMethod } from 'api/phases/types';
 import { PublicationStatus, Visibility } from 'api/projects/types';
+
+export type ProjectSortableParam =
+  | 'recently_viewed'
+  | 'phase_starting_or_ending_soon'
+  | 'recently_created_asc'
+  | 'recently_created_desc'
+  | 'alphabetically_asc'
+  | 'alphabetically_desc';
 
 export type Parameters = {
   status?: PublicationStatus[];
@@ -23,13 +30,7 @@ export type Parameters = {
   participation_methods?: ParticipationMethod[];
   visibility?: Visibility[];
   discoverability?: Discoverability[];
-  sort:
-    | 'recently_viewed'
-    | 'phase_starting_or_ending_soon'
-    | 'recently_created_asc'
-    | 'recently_created_desc'
-    | 'alphabetically_asc'
-    | 'alphabetically_desc';
+  sort: ProjectSortableParam;
   locale: SupportedLocale;
 } & Pagination;
 
@@ -57,12 +58,6 @@ export type ProjectMiniAdminData = {
     folder_title_multiloc: Multiloc | null;
     last_phase_end_date: string | null;
     listed: boolean;
-    project_managers: {
-      id: string;
-      first_name?: string;
-      last_name?: string;
-      avatar: ImageSizes;
-    }[];
     publication_status: PublicationStatus;
     title_multiloc: Multiloc;
     visible_to: Visibility;
@@ -85,6 +80,9 @@ export type ProjectMiniAdminData = {
         id: string;
         type: 'group';
       }[];
+    };
+    moderators: {
+      data: IRelationship[];
     };
   };
 };

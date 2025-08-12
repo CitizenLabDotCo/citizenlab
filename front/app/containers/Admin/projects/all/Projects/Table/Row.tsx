@@ -11,6 +11,8 @@ import {
 
 import useProjectImage from 'api/project_images/useProjectImage';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
+import { IUser } from 'api/users/types';
+import useUsersWithIds from 'api/users/useUsersWithIds';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -59,6 +61,14 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
     last_phase_end_date,
     title_multiloc,
   } = project.attributes;
+
+  const moderatorIds = project.relationships.moderators.data.map(
+    (user) => user.id
+  );
+  const moderatorsData = useUsersWithIds(moderatorIds);
+  const moderators = moderatorsData
+    .map((result) => result.data)
+    .filter((user): user is IUser => !!user);
 
   const formatDate = (date: string | null) => {
     const parsedDate = date ? parseBackendDateString(date) : undefined;
@@ -154,7 +164,13 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
         <CurrentPhase project={project} />
       </Td>
       <Td background={colors.grey50} width="140px">
-        <ManagerBubbles managers={project.attributes.project_managers} />
+        <ManagerBubbles
+          managers={moderators.map(({ data: { attributes } }) => ({
+            first_name: attributes.first_name ?? undefined,
+            last_name: attributes.last_name ?? undefined,
+            avatar: attributes.avatar,
+          }))}
+        />
       </Td>
       <Td background={colors.grey50} width="140px">
         <Visibility project={project} />

@@ -1,3 +1,5 @@
+import { Parameters } from 'api/projects_mini_admin/types';
+
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // live
@@ -17,6 +19,7 @@ export type ResolvedName =
   | 'MethodsUsedWidget'
   | 'ParticipationWidget'
   | 'ProjectsWidget'
+  | 'ProjectsTimelineWidget'
   | 'DeviceTypesWidget';
 
 export interface BaseParams {
@@ -38,6 +41,7 @@ export type ParametersLive =
   | MethodsUsedParams
   | ParticipationParams
   | ProjectsParams
+  | ProjectsTimelineParams
   | DeviceTypesParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
@@ -79,6 +83,7 @@ export interface MostReactedIdeasProps {
   phase_id?: string | null;
   number_of_ideas?: number;
 }
+
 export interface MostReactedIdeasParams extends BaseParams {
   resolved_name: 'MostReactedIdeasWidget';
   props: MostReactedIdeasProps;
@@ -88,6 +93,7 @@ export interface SingleIdeaProps {
   phase_id?: string | null;
   idea_id?: string;
 }
+
 export interface SingleIdeaParams extends BaseParams {
   resolved_name: 'SingleIdeaWidget';
   props: SingleIdeaProps;
@@ -103,6 +109,7 @@ export interface VisitorsParams extends BaseParams {
 export interface VisitorsTrafficSourcesProps extends DateProps, ProjectId {
   exclude_roles?: ExcludeRoles;
 }
+
 export interface VisitorsTrafficSourcesParams extends BaseParams {
   resolved_name: 'VisitorsTrafficSourcesWidget';
   props: VisitorsTrafficSourcesProps;
@@ -112,6 +119,7 @@ export interface VisitorsLanguagesProps extends DateProps {
   project_id?: string;
   exclude_roles?: ExcludeRoles;
 }
+
 export interface VisitorsLanguagesParams extends BaseParams {
   resolved_name: 'VisitorsLanguagesWidget';
   props: VisitorsLanguagesProps;
@@ -178,6 +186,19 @@ export interface ProjectsProps extends DateProps {
 interface ProjectsParams extends BaseParams {
   resolved_name: 'ProjectsWidget';
   props: ProjectsProps;
+}
+
+export interface ProjectsTimelineProps
+  extends DateProps,
+    Omit<Parameters, 'sort' | 'locale'> {
+  sort?: Parameters['sort'];
+  locale?: Parameters['locale'];
+  no_of_projects?: number;
+}
+
+export interface ProjectsTimelineParams extends BaseParams {
+  resolved_name: 'ProjectsTimelineWidget';
+  props: ProjectsTimelineProps;
 }
 
 export interface DeviceTypesProps extends DateProps, ProjectId {

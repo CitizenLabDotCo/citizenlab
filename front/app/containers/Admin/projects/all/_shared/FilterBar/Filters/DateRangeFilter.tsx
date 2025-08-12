@@ -5,14 +5,10 @@ import { format } from 'date-fns';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import { useParam, setParam } from '../../params';
-
 import messages from './messages';
-import tracks from './tracks';
 
 const toDate = (str?: string) => {
   if (!str) return;
@@ -24,27 +20,34 @@ const toString = (date?: Date) => {
   return format(date, 'yyyy-MM-dd');
 };
 
-const Dates = () => {
-  const { formatMessage } = useIntl();
+interface DateRangeFilterProps {
+  minStartDate?: string;
+  maxStartDate?: string;
+  onDateRangeChange: (from?: string, to?: string) => void;
+  tooltipContent?: string;
+}
 
-  const fromStr = useParam('min_start_date');
-  const toStr = useParam('max_start_date');
+const DateRangeFilter = ({
+  minStartDate,
+  maxStartDate,
+  onDateRangeChange,
+  tooltipContent,
+}: DateRangeFilterProps) => {
+  const { formatMessage } = useIntl();
 
   return (
     <Box display="flex" alignItems="center">
       <DateRangePicker
-        selectedRange={{ from: toDate(fromStr), to: toDate(toStr) }}
+        selectedRange={{ from: toDate(minStartDate), to: toDate(maxStartDate) }}
         onUpdateRange={({ from: fromDate, to: toDate }) => {
           const from = toString(fromDate);
           const to = toString(toDate);
 
-          setParam('min_start_date', from);
-          setParam('max_start_date', to);
-          trackEventByName(tracks.setDates, { from, to });
+          onDateRangeChange(from, to);
         }}
       />
       <IconTooltip
-        content={formatMessage(messages.projectStartDate)}
+        content={tooltipContent || formatMessage(messages.projectStartDate)}
         placement="top"
         ml="4px"
       />
@@ -52,4 +55,4 @@ const Dates = () => {
   );
 };
 
-export default Dates;
+export default DateRangeFilter;
