@@ -31,7 +31,6 @@ import {
   localeGetter,
   locales,
 } from 'containers/App/constants';
-import AuthenticationModalManager from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
 import ConsentManager from 'components/ConsentManager';
@@ -347,7 +346,6 @@ const App = ({ children }: Props) => {
               <UserSessionRecordingModalManager />
               <ConsentManager />
               <CommunityMonitorModalManager />
-              <AuthenticationModalManager />
               <UserDeletedModal
                 modalOpened={userDeletedSuccessfullyModalOpened}
                 closeUserDeletedModal={closeUserDeletedModal}

@@ -6,6 +6,8 @@ import React, {
   useCallback,
 } from 'react';
 
+import Authentication from 'containers/Authentication';
+
 import { initialModalQueueState, modalQueueReducer } from './modalQueueReducer';
 import ModalRenderer from './ModalRenderer';
 import modalRegistry, { ModalId } from './modals/modalRegistry';
@@ -50,6 +52,8 @@ const ModalQueueProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       <div data-testid="modal-queue-provider">
+        {/* Authentication must always be mounted */}
+        <Authentication />
         {children}
         <ModalRenderer
           modalId={state.queue.length > 0 ? state.queue[0].modalId : null}

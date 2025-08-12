@@ -9,6 +9,13 @@ const ModalRenderer = ({ modalId }: { modalId: ModalId | null }) => {
 
   const ModalComponent = modalRegistry[modalId].component;
 
+  if (modalId === 'authentication') {
+    return null; // Authentication modal is handled separately
+  }
+
+  // Type guard, should not happen
+  if (!ModalComponent) return null;
+
   return (
     // Suspense is needed because the modals are loaded lazily.
     // Removing the Suspense will cause an error if there are multiple

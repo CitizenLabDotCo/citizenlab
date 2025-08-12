@@ -1,8 +1,5 @@
 import { lazy } from 'react';
 
-const AuthenticationModal = lazy(
-  () => import('containers/Authentication/Modal')
-);
 const ConsentManagerModal = lazy(
   () => import('components/ConsentManager/ConsentManagerModal')
 );
@@ -30,10 +27,10 @@ export type ModalId =
 
 const modalRegistry: Record<
   ModalId,
-  { component: React.FC<any>; priority: ModalPriority }
+  { component: React.FC<any> | undefined; priority: ModalPriority }
 > = {
   authentication: {
-    component: AuthenticationModal,
+    component: undefined,
     priority: 100,
   },
   'consent-modal': {
