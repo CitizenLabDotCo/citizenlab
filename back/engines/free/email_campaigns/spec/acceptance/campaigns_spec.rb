@@ -129,18 +129,6 @@ resource 'Campaigns' do
           expect(json_response[:data].size).to eq 1
           expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
         end
-
-        example 'List only campaigns supported by the context', document: false do
-          create(:comment_on_idea_you_follow_campaign, context: nil)
-          build(:comment_on_idea_you_follow_campaign, context: manual_project.context).save!(validate: false) # TODO: Change when campaigns are different per phase participation method
-
-          do_request
-
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 1
-          expect(json_response[:data].pluck(:id)).to eq [manual_project.id]
-        end
       end
 
       get '/web_api/v1/phases/:context_id/campaigns' do
@@ -151,6 +139,26 @@ resource 'Campaigns' do
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
           expect(json_response[:data].pluck(:id)).to eq [automated_phase.id]
+        end
+
+        context 'voting phase' do
+          let(:context) { create(:budgeting_phase) }
+          let(:context_id) { context.id }
+
+          example 'List only campaigns supported by the context', document: false do
+            create(:comment_on_idea_you_follow_campaign, context: nil)
+            create(:voting_basket_not_submitted_campaign, context: nil)
+            voting_campaign = create(:voting_basket_not_submitted_campaign, context: context)
+            create(:cosponsor_of_your_idea_campaign, context: nil)
+            create(:cosponsor_of_your_idea_campaign, context: context)
+
+            do_request
+
+            assert_status 200
+            json_response = json_parse(response_body)
+            expect(json_response[:data].size).to eq 1
+            expect(json_response[:data].pluck(:id)).to eq [voting_campaign.id]
+          end
         end
 
         example '[Unauthorized] List no campaigns, for a user that cannot moderate campaigns', document: false do
