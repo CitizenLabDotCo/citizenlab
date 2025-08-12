@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { ParticipationState } from 'api/projects_mini_admin/types';
 
@@ -9,6 +9,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import { setParam, useParam } from '../../params';
 
+import { useFilterOpenByDefault } from './hooks/useFilterOpenByDefault';
 import messages from './messages';
 import tracks from './tracks';
 
@@ -33,11 +34,24 @@ const OPTIONS: { value: ParticipationState; message: MessageDescriptor }[] = [
 
 interface Props {
   onClear: () => void;
+  shouldOpenByDefault?: boolean;
+  onOpened?: () => void;
 }
 
-const ParticipationStates = ({ onClear }: Props) => {
+const ParticipationStates = ({
+  onClear,
+  shouldOpenByDefault,
+  onOpened,
+}: Props) => {
   const participationStates = useParam('participation_states') ?? [];
   const { formatMessage } = useIntl();
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  const { isOpened, setIsOpened } = useFilterOpenByDefault({
+    shouldOpenByDefault,
+    onOpened,
+    filterRef,
+  });
 
   const options = OPTIONS.map((option) => ({
     value: option.value,
@@ -45,22 +59,27 @@ const ParticipationStates = ({ onClear }: Props) => {
   }));
 
   return (
-    <MultiSelect
-      selected={participationStates}
-      options={options}
-      title={formatMessage(messages.participationStates)}
-      onChange={(participationStates) => {
-        setParam(
-          'participation_states',
-          participationStates as ParticipationState[]
-        );
+    <div ref={filterRef}>
+      <MultiSelect
+        selected={participationStates}
+        options={options}
+        title={formatMessage(messages.participationStates)}
+        onChange={(participationStates) => {
+          setParam(
+            'participation_states',
+            participationStates as ParticipationState[]
+          );
 
-        trackEventByName(tracks.setParticipationState, {
-          participationStates: JSON.stringify(participationStates),
-        });
-      }}
-      onClear={onClear}
-    />
+          trackEventByName(tracks.setParticipationState, {
+            participationStates: JSON.stringify(participationStates),
+          });
+        }}
+        onClear={onClear}
+        dataCy="projects-overview-filter-participation-states"
+        opened={isOpened}
+        onOpen={() => setIsOpened(true)}
+      />
+    </div>
   );
 };
 
