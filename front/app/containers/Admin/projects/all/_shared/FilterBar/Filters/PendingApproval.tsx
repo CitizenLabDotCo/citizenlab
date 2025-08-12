@@ -31,7 +31,11 @@ const PendingApproval = () => {
   const { formatMessage } = useIntl();
 
   const pendingReviewParams = {
-    publicationStatusFilter: ['draft' as const],
+    publicationStatusFilter: [
+      'draft' as const,
+      'published' as const,
+      'archived' as const,
+    ],
     review_state: 'pending' as const,
     onlyProjects: true,
     rootLevelOnly: false,
@@ -39,6 +43,11 @@ const PendingApproval = () => {
 
   const { data: pendingReviewStatusCounts } =
     useAdminPublicationsStatusCounts(pendingReviewParams);
+
+  const totalPendingCount =
+    (pendingReviewStatusCounts?.data.attributes.status_counts.draft ?? 0) +
+    (pendingReviewStatusCounts?.data.attributes.status_counts.published ?? 0) +
+    (pendingReviewStatusCounts?.data.attributes.status_counts.archived ?? 0);
 
   return (
     <StyledInputContainer
@@ -51,11 +60,7 @@ const PendingApproval = () => {
       }}
     >
       {formatMessage(messages.pendingApproval)}
-      <CountBadge
-        count={
-          pendingReviewStatusCounts?.data.attributes.status_counts.draft ?? 0
-        }
-      />
+      <CountBadge count={totalPendingCount} />
     </StyledInputContainer>
   );
 };
