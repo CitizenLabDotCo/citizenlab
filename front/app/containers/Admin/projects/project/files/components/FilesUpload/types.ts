@@ -13,5 +13,4 @@ export type FileWithMeta = {
   error?: string;
   category?: FileCategory;
   ai_processing_allowed?: boolean;
-  id?: string; // Holds the ID for files once they are uploaded
 };

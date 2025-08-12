@@ -12,7 +12,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
-import AddFileContext from './Files/AddFileContextButton';
+import AnalysisFileUploader from './Files/AnalysisFileUploader';
 import FileSelectionView from './Files/FileSelectionView';
 import messages from './messages';
 import Question from './Question';
@@ -35,7 +35,7 @@ const Insights = () => {
     onlyCheckAllowed: true,
   });
 
-  const isDataRepositoryAIAnalysisEnabled = useFeatureFlag({
+  const isDataRepositoryAnalysisEnabled = useFeatureFlag({
     name: 'data_repository_ai_analysis',
   });
 
@@ -102,8 +102,8 @@ const Insights = () => {
           </Text>
         </Box>
 
-        {isDataRepositoryAIAnalysisEnabled && (
-          <AddFileContext
+        {isDataRepositoryAnalysisEnabled && (
+          <AnalysisFileUploader
             setIsFileSelectionOpen={setIsFileSelectionOpen}
             analysisId={analysisId}
           />

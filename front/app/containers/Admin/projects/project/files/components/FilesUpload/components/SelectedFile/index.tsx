@@ -53,23 +53,17 @@ const SelectedFile = ({ fileMeta, projectId, onStatusUpdate }: Props) => {
       const base64 = await getBase64FromFile(file);
 
       try {
-        await addFile(
-          {
-            content: base64,
-            project: projectId,
-            name: file.name,
-            category: formData.category || 'other', // Default to 'other' if no category is selected
-            ai_processing_allowed: fileMeta.ai_processing_allowed,
-          },
-          {
-            onSuccess: (file) => {
-              onStatusUpdate({
-                status: 'uploaded',
-                id: file.data.id, // Set the ID once the file is uploaded
-              });
-            },
-          }
-        );
+        await addFile({
+          content: base64,
+          project: projectId,
+          name: file.name,
+          category: formData.category || 'other', // Default to 'other' if no category is selected
+          ai_processing_allowed: fileMeta.ai_processing_allowed,
+        });
+
+        onStatusUpdate({
+          status: 'uploaded',
+        });
       } catch (error) {
         onStatusUpdate({
           status: 'error',

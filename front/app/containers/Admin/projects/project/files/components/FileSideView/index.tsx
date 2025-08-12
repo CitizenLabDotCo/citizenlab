@@ -84,18 +84,6 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
                 </Box>
               </Box>
             </Box>
-
-            {/* Right fixed section // TODO: Enable this once the BE is ready.
-            <Box
-              width="45%"
-              p="24px"
-              borderLeft={`1px solid ${colors.grey300}`}
-              display="flex"
-              flexDirection="column"
-              justifyContent="flex-start"
-            >
-              <FileAnalysis />
-            </Box> */}
           </>
         )}
       </Box>
