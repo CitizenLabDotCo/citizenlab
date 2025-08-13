@@ -3252,7 +3252,7 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsLanguageData.count": "Aantal",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsLanguageData.language": "Taal",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.campaigns": "Campagnes",
-  "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.directEntry": "Directe bijdrage",
+  "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.directEntry": "Directe invoer",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.numberOfVisitors": "Aantal bezoekers",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.percentageOfVisits": "Percentage bezoeken",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTrafficSourcesData.referrer": "Verwijzer",
