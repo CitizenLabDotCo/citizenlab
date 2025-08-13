@@ -121,7 +121,7 @@ class ParticipantsService
   def projects_participants(projects, options = {})
     since = options[:since]
     actions = options[:actions] || PROJECT_PARTICIPANT_ACTIONS
-    ideas = Idea.where(project: projects)
+    ideas = Idea.where(project: projects).where(publication_status: 'published')
     participants = ideas_participants(ideas, options)
 
     # Voting
