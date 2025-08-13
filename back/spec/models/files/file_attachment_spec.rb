@@ -21,6 +21,46 @@ RSpec.describe Files::FileAttachment do
 
     it { is_expected.to validate_inclusion_of(:attachable_type).in_array(described_class::ATTACHABLE_TYPES) }
 
+    context 'when a file is already attached to an idea' do
+      it 'is invalid to attach the same file to another resource' do
+        attachment = create(:file_attachment, to: :idea)
+        file = attachment.file
+
+        attachment2 = build(:file_attachment, file: file, to: :idea)
+        expect(attachment2).not_to be_valid
+        expect(attachment2.errors[:file]).to include(
+          'cannot be attached to other resources because it is already attached to an idea'
+        )
+
+        attachment3 = build(:file_attachment, file: file, to: :project)
+        expect(attachment3).not_to be_valid
+        expect(attachment3.errors[:file]).to include(
+          'cannot be attached to other resources because it is already attached to an idea'
+        )
+      end
+    end
+
+    context 'when a file is attached to a resource' do
+      it 'is invalid to attach the file to an idea' do
+        attachment = create(:file_attachment, to: :project)
+        file = attachment.file
+
+        attachment2 = build(:file_attachment, file: file, to: :idea)
+        expect(attachment2).not_to be_valid
+        expect(attachment2.errors[:file]).to include(
+          'cannot be attached to an idea because it is already attached to another resource'
+        )
+      end
+    end
+
+    it 'is valid to attach a file to multiple non-idea resources' do
+      attachment1 = create(:file_attachment, to: :event)
+      file = attachment1.file
+
+      attachment2 = build(:file_attachment, file: file, to: :project)
+      expect(attachment2).to be_valid
+    end
+
     describe '#validate_file_belongs_to_project' do
       it 'is invalid when the file and resource belong to different projects' do
         project = create(:project)
