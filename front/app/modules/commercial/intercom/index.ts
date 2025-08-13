@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { combineLatest } from 'rxjs';
 
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
