@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { combineLatest } from 'rxjs';
 
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
@@ -46,7 +45,6 @@ const configuration: ModuleConfiguration = {
       authUserStream,
       initializeFor('intercom'),
     ]).subscribe(([tenant, user, _]) => {
-      console.log('initializing intercom...');
       if (!INTERCOM_APP_ID) return;
 
       (function () {

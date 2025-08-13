@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { isEqual } from 'lodash-es';
 import { Subject, Observable, concat, combineLatest } from 'rxjs';
 import {
@@ -56,14 +55,8 @@ export const initializeFor = (destination: IDestination) => {
     authUserStream,
   ]).pipe(
     filter(([consent, tenant, user]) => {
-      console.log('initializeFor:');
       if (tenant) {
         const config = getDestinationConfig(destination);
-        console.log({ config, consent });
-        if (config) {
-          console.log('destination active:');
-          console.log(isDestinationActive(config, tenant.data, user?.data));
-        }
 
         return (
           consent.eventValue[destination] &&
