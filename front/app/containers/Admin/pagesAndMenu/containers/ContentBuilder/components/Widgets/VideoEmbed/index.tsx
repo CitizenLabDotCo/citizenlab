@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import messages from './messages';
+import Settings from './Settings';
 
 const Container = styled.div`
   overflow: hidden;
@@ -34,6 +35,12 @@ const VideoEmbed = ({ markup }: Props) => {
       </Box>
     </Box>
   );
+};
+
+VideoEmbed.craft = {
+  related: {
+    settings: Settings,
+  },
 };
 
 export const videoEmbedTitle = messages.videoEmbed;
