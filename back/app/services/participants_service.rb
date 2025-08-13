@@ -119,14 +119,10 @@ class ParticipantsService
   end
 
   def projects_participants(projects, options = {})
-    puts "options_found: #{options.inspect}"
     since = options[:since]
     actions = options[:actions] || PROJECT_PARTICIPANT_ACTIONS
     ideas = Idea.where(project: projects).where(publication_status: 'published')
     participants = ideas_participants(ideas, options)
-
-    puts "projects_participants_ideas: #{ideas.inspect}"
-    puts "projects_participants_participants: #{participants.inspect}"
 
     # Voting
     if actions.include? :voting
