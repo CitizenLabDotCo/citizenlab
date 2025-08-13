@@ -41,11 +41,10 @@ Rails.application.routes.draw do
           raise 'attachable_type option is required for concern :file_attachable'
         end
 
-        unless resources :file_attachments,
+        resources :file_attachments,
           controller: 'files/file_attachments',
           only: %i[index create],
           defaults: { attachable_type: options[:attachable_type], concern: :file_attachable }
-        end
       end
 
       concerns :permissionable # for the global permission scope (with parent_param = nil)
