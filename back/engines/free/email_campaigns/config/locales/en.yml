@@ -436,10 +436,10 @@ en:
       subject: '"%{input_title}" reached the voting threshold'
       preheader: 'Make sure to take the next steps'
     welcome:
-      cta_join_platform: 'Discover the platform'
+      cta_button: 'Discover the platform'
       subject: 'Welcome to the platform of %{organizationName}'
-      main_header: Welcome!
-      message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
+      title: Welcome!
+      event_description: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
       preheader: 'Here''s what you can do on the platform of %{organizationName}'
     idea_published:
       subject: 'Your idea has been published'

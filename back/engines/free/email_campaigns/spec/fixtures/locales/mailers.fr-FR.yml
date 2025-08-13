@@ -415,10 +415,10 @@ fr:
       subject: '"%{input_title}" a atteint le nombre de voix requis sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     welcome:
-      cta_join_platform: 'Découvrir la plateforme'
+      cta_button: 'Découvrir la plateforme'
       subject: 'Bienvenue sur la plateforme de %{organizationName}'
-      main_header: Bienvenue !
-      message_welcome: 'Félicitations, vous vous êtes inscrit.e avec succès sur la plateforme de participation de %{organizationName}. Vous pouvez maintenant découvrir la plateforme et faire entendre votre voix. Vous pouvez également ajouter une photo de profil et une courte description pour dire aux autres qui vous êtes.'
+      title: Bienvenue !
+      event_description: 'Félicitations, vous vous êtes inscrit.e avec succès sur la plateforme de participation de %{organizationName}. Vous pouvez maintenant découvrir la plateforme et faire entendre votre voix. Vous pouvez également ajouter une photo de profil et une courte description pour dire aux autres qui vous êtes.'
       preheader: 'Voici ce que vous pouvez faire sur la plateforme de %{organizationName}'
     idea_published:
       subject: 'Votre idée a été publiée'

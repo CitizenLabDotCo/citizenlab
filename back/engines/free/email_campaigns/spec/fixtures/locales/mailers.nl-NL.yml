@@ -414,10 +414,10 @@ nl:
       subject: '"%{input_title}" heeft het benodigd aantal stemmen op je platform bereikt'
       preheader: 'Tijd om de volgende stappen te nemen'
     welcome:
-      cta_join_platform: 'Ontdek het platform'
+      cta_button: 'Ontdek het platform'
       subject: 'Welkom op het platform van %{organizationName}'
-      main_header: Welkom!
-      message_welcome: 'Leuk dat je je hebt geregistreerd op het participatieplatform van %{organizationName}. Je kan het platform nu ontdekken en je stem laten horen. Je kan ook een profielfoto en een korte beschrijving toevoegen om anderen te vertellen wie je bent.'
+      title: Welkom!
+      event_description: 'Leuk dat je je hebt geregistreerd op het participatieplatform van %{organizationName}. Je kan het platform nu ontdekken en je stem laten horen. Je kan ook een profielfoto en een korte beschrijving toevoegen om anderen te vertellen wie je bent.'
       preheader: 'Hier is wat je kan doen op het platform van %{organizationName}'
     idea_published:
       subject: 'Je idee is gepubliceerd'
