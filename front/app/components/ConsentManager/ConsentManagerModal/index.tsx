@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState, useEffect, FormEvent } from 'react';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -57,11 +56,6 @@ const ConsentManagerModal = () => {
     }
 
     setPreferences(defaultPreferences);
-
-    console.log('useEffect:');
-    console.log({ appConfiguration });
-    console.log({ authUser });
-    console.log({ consent });
 
     eventEmitter.emit<ISavedDestinations>(
       'destinationConsentChanged',
