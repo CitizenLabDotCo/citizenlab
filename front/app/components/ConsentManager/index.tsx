@@ -25,11 +25,11 @@ const ConsentManager = () => {
   const isConsentRequired = useConsentRequired();
 
   // Code that should run every time the app is first loaded.
-  // Initialized everything that needs to be initialized,
+  // Initialize everything that needs to be initialized,
   // for which cookies already were accepted prior.
   // E.g. if you accepted cookies for intercom last session,
   // this session we need to make sure intercom gets
-  // initialized automatically.
+  // initialized when the app loads. This code handles that.
   useEffect(() => {
     const consent = getConsent();
 
