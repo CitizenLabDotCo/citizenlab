@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
@@ -109,17 +107,11 @@ export function useConsentRequired() {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
 
-  const [isConsentRequired, setIsConsentRequired] = useState(false);
+  const activeDestinations = getActiveDestinations(
+    appConfiguration?.data,
+    authUser?.data
+  );
+  const cookieConsent = getConsent();
 
-  useEffect(() => {
-    const activeDestinations = getActiveDestinations(
-      appConfiguration?.data,
-      authUser?.data
-    );
-    const cookieConsent = getConsent();
-
-    setIsConsentRequired(getConsentRequired(cookieConsent, activeDestinations));
-  }, [appConfiguration?.data, authUser?.data]);
-
-  return isConsentRequired;
+  return getConsentRequired(cookieConsent, activeDestinations);
 }
