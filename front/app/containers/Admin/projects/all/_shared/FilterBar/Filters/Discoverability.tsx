@@ -18,11 +18,11 @@ const OPTIONS: {
 }[] = [
   {
     value: 'listed',
-    message: messages.discoverabilityPublic,
+    message: messages.discoverabilityListed,
   },
   {
     value: 'unlisted',
-    message: messages.discoverabilityHidden,
+    message: messages.discoverabilityUnlisted,
   },
 ];
 

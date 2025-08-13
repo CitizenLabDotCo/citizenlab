@@ -26,13 +26,13 @@ const ProjectDiscoverabilityRadios = ({ listed, onChange }: Props) => {
       </Text>
       <Box>
         <Radio
-          name="public"
+          name="listed"
           value={true}
           currentValue={listed}
           label={
             <Box>
               <Text color="primary" fontWeight="bold" mt="-1px" mb="0">
-                {formatMessage(messages.public)}
+                {formatMessage(messages.listed)}
               </Text>
               <Text color="primary" fontSize="s" mt="4px" mb="0px">
                 {formatMessage(messages.thisProjectIsVisibleToEveryone)}
@@ -42,13 +42,13 @@ const ProjectDiscoverabilityRadios = ({ listed, onChange }: Props) => {
           onChange={onChange}
         />
         <Radio
-          name="hidden"
+          name="unlisted"
           value={false}
           currentValue={listed}
           label={
             <Box>
               <Text color="primary" fontWeight="bold" mt="-1px" mb="0">
-                {formatMessage(messages.hidden)}
+                {formatMessage(messages.unlisted)}
               </Text>
               <Text color="primary" fontSize="s" mt="4px" mb="0px">
                 {formatMessage(messages.thisProjectWillBeHidden)}
