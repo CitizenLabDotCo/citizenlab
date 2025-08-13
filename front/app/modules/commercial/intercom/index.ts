@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { combineLatest } from 'rxjs';
 
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
@@ -45,15 +46,20 @@ const configuration: ModuleConfiguration = {
       authUserStream,
       initializeFor('intercom'),
     ]).subscribe(([tenant, user, _]) => {
+      console.log('initializing intercom...');
       if (!INTERCOM_APP_ID) return;
+
+      console.log('initializing intercom 1');
 
       (function () {
         const w = window;
         const ic = w.Intercom;
         if (typeof ic === 'function') {
+          console.log('initializing intercom 2');
           ic('reattach_activator');
           ic('update', w.intercomSettings);
         } else {
+          console.log('initializing intercom 3');
           const d = document;
           const i = function () {
             // eslint-disable-next-line prefer-rest-params
@@ -65,6 +71,7 @@ const configuration: ModuleConfiguration = {
           };
           w.Intercom = i;
           const l = function () {
+            console.log('initializing intercom 4');
             const s = d.createElement('script');
             s.type = 'text/javascript';
             s.async = true;
@@ -75,14 +82,19 @@ const configuration: ModuleConfiguration = {
             x?.parentNode?.insertBefore(s, x);
           };
           if (document.readyState === 'complete') {
+            console.log('initializing intercom 5');
             l();
           } else if (w.attachEvent) {
+            console.log('initializing intercom 6');
             w.attachEvent('onload', l);
           } else {
+            console.log('initializing intercom 7');
             w.addEventListener('load', l, false);
           }
         }
       })();
+
+      console.log('initializing intercom 8');
 
       tenant &&
         window.Intercom &&
@@ -112,7 +124,9 @@ const configuration: ModuleConfiguration = {
     });
 
     shutdownFor('intercom').subscribe(() => {
+      console.log('shutting down intercom...');
       if (window.Intercom) {
+        console.log('shutting down intercom 1');
         window.Intercom('shutdown');
       }
     });
@@ -138,6 +152,7 @@ const configuration: ModuleConfiguration = {
       }
     });
 
+    console.log('registering intercom...');
     registerDestination(destinationConfig);
   },
 };
