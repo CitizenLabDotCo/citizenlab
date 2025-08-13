@@ -56,11 +56,6 @@ const ConsentManagerModal = () => {
     }
 
     setPreferences(defaultPreferences);
-
-    eventEmitter.emit<ISavedDestinations>(
-      'destinationConsentChanged',
-      consent?.savedChoices || {}
-    );
   }, [appConfiguration?.data, authUser?.data]);
 
   const updatePreference = (category: TCategory, value: boolean) => {

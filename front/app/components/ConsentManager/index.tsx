@@ -2,19 +2,54 @@ import { useEffect } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+
 import useObserveEvent from 'hooks/useObserveEvent';
 
 import { useModalQueue } from 'containers/App/ModalQueue';
 
-import { useConsentRequired } from './utils';
+import eventEmitter from 'utils/eventEmitter';
+
+import { getConsent, ISavedDestinations } from './consent';
+import { useConsentRequired, getCurrentPreferences } from './utils';
 
 const ConsentManager = () => {
   const { queueModal, removeModal } = useModalQueue();
+  const { data: authUser } = useAuthUser();
+  const { data: appConfiguration } = useAppConfiguration();
 
   const [searchParams] = useSearchParams();
   const from = searchParams.get('from');
 
   const isConsentRequired = useConsentRequired();
+
+  // Code that should run every time the app is first loaded.
+  // Initialized everything that needs to be initialized,
+  // for which cookies already were accepted prior.
+  // E.g. if you accepted cookies for intercom last session,
+  // this session we need to make sure intercom gets
+  // initialized automatically.
+  useEffect(() => {
+    const consent = getConsent();
+
+    const defaultPreferences = getCurrentPreferences(
+      appConfiguration?.data,
+      authUser?.data,
+      consent
+    );
+
+    if (defaultPreferences.functional === undefined) {
+      defaultPreferences.functional = true;
+    }
+
+    // setPreferences(defaultPreferences);
+
+    eventEmitter.emit<ISavedDestinations>(
+      'destinationConsentChanged',
+      consent?.savedChoices || {}
+    );
+  }, [appConfiguration?.data, authUser?.data]);
 
   useEffect(() => {
     /*
