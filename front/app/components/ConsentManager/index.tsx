@@ -43,8 +43,6 @@ const ConsentManager = () => {
       defaultPreferences.functional = true;
     }
 
-    // setPreferences(defaultPreferences);
-
     eventEmitter.emit<ISavedDestinations>(
       'destinationConsentChanged',
       consent?.savedChoices || {}
