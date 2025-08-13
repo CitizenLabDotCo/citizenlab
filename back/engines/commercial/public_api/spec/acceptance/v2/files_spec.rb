@@ -151,4 +151,88 @@ resource 'Files' do
   end
 
   include_examples '/api/v2/.../deleted', :files
+
+  post '/api/v2/files' do
+    route_summary 'Upload a file'
+    route_description 'Upload a new file to the platform, in the scope of a specific project.'
+    include_context 'common_auth'
+    header 'Content-Type', 'application/json'
+
+    with_options scope: :file do
+      parameter :name, 'Name of the file', required: true, type: :string
+      parameter :project_id, 'ID of the project to associate the file with', required: true, type: :string
+      parameter :content, 'The content of the file, encoded in Base64', required: true, type: :file
+      parameter :category, "Category of the file', required: false, type: :string. One of #{Files::File.categories.keys.map { "`#{_1}`" }.join(', ')}"
+      parameter :description_multiloc, 'The description of the file, as a an object with locale keys', required: false, type: :object
+      parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file (defaults to false)', required: false, type: :boolean
+    end
+
+    let(:name) { 'Test File' }
+    let(:project_id) { project.id }
+    let(:content) { file_as_base64('minimal_pdf.pdf', 'application/pdf') }
+    let(:category) { 'other' }
+    let(:description_multiloc) { { 'en' => 'Test file description' } }
+    let(:ai_processing_allowed) { false }
+
+    example_request 'Uploads a file' do
+      assert_status 201
+      expect(json_response_body[:file]).to include({
+        name: 'Test File',
+        category: 'other',
+        uploader_id: nil,
+        description: 'Test file description',
+        ai_processing_allowed: false,
+        created_at: kind_of(String),
+        updated_at: kind_of(String),
+        size: 130,
+        url: kind_of(String)
+      })
+    end
+  end
+
+  put '/api/v2/files/:id' do
+    route_summary 'Update a file'
+    route_description 'Update the metadata of an existing file. Changing the content of the file is not supported.'
+    include_context 'common_auth'
+    header 'Content-Type', 'application/json'
+
+    with_options scope: :file do
+      parameter :name, 'New name of the file', required: false, type: :string
+      parameter :category, "New category of the file', required: false, type: :string. One of #{Files::File.categories.keys.map { "`#{_1}`" }.join(', ')}"
+      parameter :description_multiloc, 'New description of the file, as a an object with locale keys', required: false, type: :object
+      parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file (defaults to false)', required: false, type: :boolean
+    end
+    let(:file) { files[0] }
+    let(:id) { file.id }
+    let(:name) { 'Updated File Name' }
+    let(:category) { 'meeting' }
+    let(:description_multiloc) { { 'en' => 'Updated description' } }
+    let(:ai_processing_allowed) { true }
+
+    example_request 'Updates the file metadata' do
+      assert_status 200
+      expect(json_response_body[:file]).to include({
+        id: id,
+        name: 'Updated File Name',
+        category: 'meeting',
+        description: 'Updated description',
+        ai_processing_allowed: true,
+        updated_at: kind_of(String)
+      })
+    end
+  end
+
+  delete '/api/v2/files/:id' do
+    route_summary 'Delete a file'
+    route_description 'Delete an existing file from the platform.'
+    include_context 'common_auth'
+
+    let(:file) { files[0] }
+    let(:id) { file.id }
+
+    example_request 'Deletes the file' do
+      assert_status 204
+      expect { Files::File.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
