@@ -117,6 +117,7 @@ export function useConsentRequired() {
       authUser?.data
     );
     const cookieConsent = getConsent();
+
     setIsConsentRequired(getConsentRequired(cookieConsent, activeDestinations));
   }, [appConfiguration?.data, authUser?.data]);
 
