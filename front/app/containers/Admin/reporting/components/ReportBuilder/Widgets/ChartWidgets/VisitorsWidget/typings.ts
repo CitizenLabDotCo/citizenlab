@@ -2,7 +2,7 @@ import { TimeSeriesWidgetProps } from '../typings';
 
 import { parseStats } from './useVisitors/parse';
 
-export interface Props extends Omit<TimeSeriesWidgetProps, 'projectId'> {
+export interface Props extends TimeSeriesWidgetProps {
   compareStartAt?: string;
   compareEndAt?: string;
   hideStatistics?: boolean;
