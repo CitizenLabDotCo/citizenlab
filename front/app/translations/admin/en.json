@@ -2692,6 +2692,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Who can take the poll?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Who can take the survey?",
   "app.containers.AdminPage.groups.permissions.permissionAction_volunteering_subtitle": "Who can volunteer?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_vote_input_subtitle": "Who can vote on inputs?",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle": "Who can vote on proposals?",
   "app.containers.AdminPage.groups.permissions.permissionAction_voting_subtitle": "Who can vote?",
   "app.containers.AdminPage.groups.permissions.questionDescription": "Question description",
