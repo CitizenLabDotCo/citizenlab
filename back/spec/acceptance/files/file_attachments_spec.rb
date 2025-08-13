@@ -7,56 +7,87 @@ require_relative '../shared/errors_examples'
 
 resource 'FileAttachments' do
   header 'Content-Type', 'application/json'
-  before { admin_header_token }
 
   get 'web_api/v1/file_attachments' do
     parameter :attachable_id, 'Filter by attachable id', required: false
     parameter :file_id, 'Filter by file id', required: false
 
-    # TODO: test permissions
-    let_it_be(:event) { create(:event) }
-    let_it_be(:event_attachments) { create_pair(:file_attachment, attachable: event) }
-    let_it_be(:project_attachment) { create(:file_attachment) }
+    let!(:event) { create(:event) }
+    let!(:event_attachments) { create_pair(:file_attachment, attachable: event) }
+    let!(:project) { create(:project) }
+    let!(:project_attachment) { create(:file_attachment, attachable: project) }
 
-    example_request 'List all file attachments' do
-      assert_status 200
-      expect(response_data.size).to eq(3)
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'List all file attachments' do
+        assert_status 200
+        expect(response_data.size).to eq(3)
+      end
+
+      example 'List all file attachments for a specific attachable', document: false do
+        do_request(attachable_id: event.id)
+        assert_status 200
+        expect(response_ids).to match_array event_attachments.map(&:id)
+      end
+
+      example 'List all file attachments for a specific file', document: false do
+        do_request(file_id: project_attachment.file.id)
+        assert_status 200
+        expect(response_ids).to match_array [project_attachment.id]
+      end
     end
 
-    example 'List all file attachments for a specific attachable', document: false do
-      do_request(attachable_id: event.id)
-      assert_status 200
-      expect(response_ids).to match_array event_attachments.map(&:id)
-    end
+    context 'when visitor' do
+      before { project.admin_publication.update!(publication_status: 'draft') }
 
-    example 'List all file attachments for a specific file', document: false do
-      do_request(file_id: project_attachment.file.id)
-      assert_status 200
-      expect(response_ids).to match_array [project_attachment.id]
+      example 'List file attachments of attachables that the user can view', document: false do
+        do_request
+        assert_status 200
+        expect(response_ids).to match_array event_attachments.map(&:id)
+      end
     end
   end
 
   get 'web_api/v1/file_attachments/:id' do
-    let(:file_attachment) { create(:file_attachment) }
+    let_it_be(:project, reload: true) { create(:project) }
+    let_it_be(:file_attachment) { create(:file_attachment, attachable: project) }
 
     let(:id) { file_attachment.id }
 
-    example_request 'Get a file attachment by id' do
-      assert_status 200
+    context 'when admin' do
+      before { admin_header_token }
 
-      expect(response_data).to match(
-        id: file_attachment.id,
-        type: 'file_attachment',
-        attributes: {
-          position: file_attachment.position,
-          created_at: anything,
-          updated_at: anything
-        },
-        relationships: {
-          file: { data: { id: file_attachment.file.id, type: 'file' } },
-          attachable: { data: { id: file_attachment.attachable_id, type: 'event' } }
-        }
-      )
+      example_request 'Get a file attachment by id' do
+        assert_status 200
+
+        expect(response_data).to match(
+          id: file_attachment.id,
+          type: 'file_attachment',
+          attributes: {
+            position: file_attachment.position,
+            created_at: anything,
+            updated_at: anything
+          },
+          relationships: {
+            file: { data: { id: file_attachment.file.id, type: 'file' } },
+            attachable: { data: { id: file_attachment.attachable_id, type: 'project' } }
+          }
+        )
+      end
+    end
+
+    context 'when visitor' do
+      example 'Get a file attachment for an attachable that the user can view', document: false do
+        do_request
+        assert_status 200
+      end
+
+      example '[error] Get a file attachment for an attachable that the user cannot view', document: false do
+        project.admin_publication.update!(publication_status: 'draft')
+        do_request
+        assert_status 401
+      end
     end
   end
 
@@ -79,26 +110,54 @@ resource 'FileAttachments' do
     let(:attachable_id) { attachable.id }
     let(:position) { 2 }
 
-    example 'Create a file attachment' do
-      expect { do_request }
-        .to enqueue_job(LogActivityJob)
-        .with(a_kind_of(Files::FileAttachment), 'created', anything, anything)
+    context 'when admin' do
+      before { admin_header_token }
 
-      assert_status 201
+      example 'Create a file attachment' do
+        expect { do_request }
+          .to enqueue_job(LogActivityJob)
+          .with(a_kind_of(Files::FileAttachment), 'created', anything, anything)
 
-      expect(response_data).to match(
-        id: anything,
-        type: 'file_attachment',
-        attributes: {
-          position: 2,
-          created_at: anything,
-          updated_at: anything
-        },
-        relationships: {
-          file: { data: { id: file.id, type: 'file' } },
-          attachable: { data: { id: attachable.id, type: 'project' } }
-        }
-      )
+        assert_status 201
+
+        expect(response_data).to match(
+          id: anything,
+          type: 'file_attachment',
+          attributes: {
+            position: 2,
+            created_at: anything,
+            updated_at: anything
+          },
+          relationships: {
+            file: { data: { id: file.id, type: 'file' } },
+            attachable: { data: { id: attachable.id, type: 'project' } }
+          }
+        )
+      end
+    end
+
+    context 'when moderator of the project to which the attachable belongs' do
+      before do
+        moderator = create(:project_moderator, projects: [attachable])
+        header_token_for(moderator)
+      end
+
+      example 'Create a file attachment' do
+        do_request
+        assert_status 201
+      end
+    end
+
+    context 'when moderator of another project' do
+      before do
+        moderator = create(:project_moderator)
+        header_token_for(moderator)
+      end
+
+      example '[error] Create a file attachment', document: false do
+        do_request
+        assert_status 401
+      end
     end
   end
 
@@ -107,31 +166,80 @@ resource 'FileAttachments' do
       parameter :position, 'Position of the file attachment'
     end
 
-    let_it_be(:file_attachment) { create(:file_attachment, position: 1) }
-
+    let(:file_attachment) { create(:file_attachment, to: :project, position: 1) }
     let(:id) { file_attachment.id }
     let(:position) { 2 }
 
-    example 'Update a file attachment' do
-      expect { do_request }
-        .to enqueue_job(LogActivityJob)
-        .with(file_attachment, 'changed', anything, anything)
+    context 'when admin' do
+      before { admin_header_token }
 
-      assert_status 200
-      expect(response_data.dig(:attributes, :position)).to eq(2)
-      expect(file_attachment.reload.position).to eq(2)
+      example 'Update a project file attachment' do
+        expect { do_request }
+          .to change { file_attachment.reload.position }.from(1).to(2)
+          .and enqueue_job(LogActivityJob)
+          .with(file_attachment, 'changed', anything, anything)
+
+        assert_status 200
+        expect(response_data.dig(:attributes, :position)).to eq(2)
+      end
+    end
+
+    context 'when normal user' do
+      let(:user) { create(:user) }
+
+      before { header_token_for(user) }
+
+      example '[error] Update a project file attachment', document: false do
+        do_request
+        assert_status 401
+      end
+
+      example 'Update a file attachment on their own idea', document: false do
+        idea = create(:idea, author: user)
+        file_attachment = create(:file_attachment, attachable: idea, position: 1)
+
+        do_request(id: file_attachment.id, position: 2)
+
+        assert_status 200
+        expect(file_attachment.reload.position).to eq(2)
+      end
     end
   end
 
   delete 'web_api/v1/file_attachments/:id' do
-    let_it_be(:file_attachment) { create(:file_attachment) }
+    let_it_be(:file_attachment) { create(:file_attachment, to: :event) }
 
     let(:id) { file_attachment.id }
 
-    example 'Delete a file attachment' do
-      expect { do_request }.to have_enqueued_job(LogActivityJob)
-      expect(response_status).to eq(200)
-      expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    context 'when admin' do
+      before { admin_header_token }
+
+      example 'Delete a file attachment' do
+        expect { do_request }.to have_enqueued_job(LogActivityJob)
+        expect(response_status).to eq(200)
+        expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when normal user' do
+      let(:user) { create(:user) }
+
+      before { header_token_for(user) }
+
+      example '[error] Delete an event file attachment', document: false do
+        do_request
+        assert_status 401
+      end
+
+      example 'Delete a file attachment on their own idea', document: false do
+        idea = create(:idea, author: user)
+        file_attachment = create(:file_attachment, attachable: idea)
+
+        do_request(id: file_attachment.id)
+
+        assert_status 200
+        expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
   end
 
@@ -151,17 +259,17 @@ resource 'FileAttachments' do
   end
 
   shared_examples 'attachable resource' do |name, attachable_factory: name|
-    context "#{name} behaves like an attachable resource" do
-      before do
-        admin_header_token
-        create(:file_attachment)
-      end
+    context "#{name}s behave like an attachable resource" do
+      before { admin_header_token } # rubocop:disable RSpec/ScatteredSetup
 
       get "web_api/v1/#{name}s/:attachable_id/file_attachments" do
         let_it_be(:attachable) { create(attachable_factory) }
         let_it_be(:file_attachments) { create_pair(:file_attachment, attachable: attachable) }
 
         let(:attachable_id) { attachable.id }
+
+        # Add a file attachment that should not be returned.
+        before { create(:file_attachment) } # rubocop:disable RSpec/ScatteredSetup
 
         example "List all file attachments of a #{name}", document: false do
           do_request
@@ -200,4 +308,45 @@ resource 'FileAttachments' do
   include_examples 'attachable resource', 'event'
   include_examples 'attachable resource', 'phase'
   include_examples 'attachable resource', 'static_page'
+
+  # Special case for ideas: the attachments cannot be created directly.
+  # They are automatically managed when creating or replacing the files on the idea.
+  context 'ideas behave like an attachable resource' do
+    before { admin_header_token } # rubocop:disable RSpec/ScatteredSetup
+
+    get 'web_api/v1/ideas/:attachable_id/file_attachments' do
+      let_it_be(:idea) { create(:idea) }
+      let_it_be(:file_attachments) { create_pair(:file_attachment, attachable: idea) }
+
+      let(:attachable_id) { idea.id }
+
+      # Add a file attachment that should not be returned.
+      before { create(:file_attachment) } # rubocop:disable RSpec/ScatteredSetup
+
+      example 'List all file attachments of an idea', document: false do
+        do_request
+        assert_status 200
+        expect(response_ids).to match_array file_attachments.map(&:id)
+      end
+    end
+
+    post 'web_api/v1/ideas/:attachable_id/file_attachments' do
+      with_options(scope: :file_attachment) do
+        parameter :file_id, 'ID of the file to attach', required: true
+        parameter :position, 'Position of the file attachment', required: false
+      end
+
+      let(:attachable) { create(:idea) }
+      let(:file) { create(:file, projects: [attachable.project]) }
+
+      # Parameters
+      let(:attachable_id) { attachable.id }
+      let(:file_id) { file.id }
+
+      example '[error] Cannot attach an existing file to an idea', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+  end
 end
