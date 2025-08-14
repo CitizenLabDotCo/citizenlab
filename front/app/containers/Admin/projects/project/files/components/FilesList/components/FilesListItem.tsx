@@ -98,15 +98,19 @@ const FilesListItem = ({
           <Text fontSize="s" color={'coolGrey500'} m="0px">
             {formatMessage(messages[file.attributes.category])}
           </Text>
-          <Text fontSize="s" color={'coolGrey500'} m="0px">
-            •
-          </Text>
-          <UserName
-            userId={file.relationships.uploader.data.id}
-            fontSize={14}
-            color={colors.coolGrey500}
-            showAvatar={true}
-          />
+          {file.relationships.uploader.data && (
+            <>
+              <Text fontSize="s" color={'coolGrey500'} m="0px">
+                •
+              </Text>
+              <UserName
+                userId={file.relationships.uploader.data.id}
+                fontSize={14}
+                color={colors.coolGrey500}
+                showAvatar={true}
+              />
+            </>
+          )}
         </Box>
       </Box>
       <Box

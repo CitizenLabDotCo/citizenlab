@@ -17,7 +17,6 @@ import SideModal from 'components/UI/SideModal';
 import { useIntl } from 'utils/cl-intl';
 
 import FilePreview from '../FilePreview';
-import { AUDIO_MIMETYPES } from '../FilePreview/utils';
 import messages from '../messages';
 
 import FileDescription from './components/FileDescription';
