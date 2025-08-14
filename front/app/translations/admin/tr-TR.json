@@ -1001,6 +1001,7 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.title": "Başlık",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.embedCode": "Yerleştirme kodu",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.videoEmbed": "Video Gömme",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.warningEmbedCode": "UYARI: GÜVENİLMEYEN KAYNAKLARDAN KOD YAPIŞTIRMAYIN. Yalnızca YouTube veya Vimeo gibi güvenilir video platformlarından yerleştirme kodları kullanın.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXDays": "{days} gün içinde başlıyor",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXWeeks": "{weeks} haftasında başlıyor",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.xDaysAgo": "{days} günler önce",
