@@ -45,7 +45,20 @@ export default defineMessages({
   },
   transcription: {
     id: 'app.containers.AdminPage.ProjectFiles.transcription',
-    defaultMessage: 'Transcript',
+    defaultMessage: 'Transcription',
+  },
+  transcriptionPending: {
+    id: 'app.containers.AdminPage.ProjectFiles.transcriptionPending',
+    defaultMessage:
+      'The transcription is being generated. This can take a few minutes.',
+  },
+  transcriptionChapters: {
+    id: 'app.containers.AdminPage.ProjectFiles.transcriptionChapters',
+    defaultMessage: 'Chapters',
+  },
+  speakerA: {
+    id: 'app.containers.AdminPage.ProjectFiles.speakerA',
+    defaultMessage: 'Speaker {speaker}',
   },
   unableToGenerateTranscription: {
     id: 'app.containers.AdminPage.ProjectFiles.unableToGenerateTranscription',

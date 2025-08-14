@@ -92,7 +92,7 @@ const FileSideView = ({ opened, selectedFileId, setSideViewOpened }: Props) => {
                 </Box>
 
                 {isTranscriptionEnabled &&
-                  AUDIO_MIMETYPES.has(file.data.attributes.mime_type) && (
+                  file.data.relationships.transcript.data && (
                     <Box mt="32px">
                       <FileTranscription file={file.data} />
                     </Box>
