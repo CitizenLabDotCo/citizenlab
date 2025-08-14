@@ -2030,6 +2030,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Begivenheder",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Vedhæftede filer (maks. 50 MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Filer bør ikke være større end 50 Mb. Tilføjede filer vil blive vist på projektinformationssiden.",
+  "app.containers.AdminPage.ProjectEdit.filesTab2": "360 Input",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Find frivillige",
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Bed deltagerne om at melde sig frivilligt til aktiviteter og projekter.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip2": "Som mappeadministrator kan du vælge en mappe, når du opretter projektet, men kun en administrator kan ændre den bagefter.",
