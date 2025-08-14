@@ -32,8 +32,8 @@ class AssemblyAIClient
     handle_response(response)
   end
 
-  def submit_transcript_from_file(file, options = {})
-    url = upload_file(file)
+  def submit_transcript_from_file(file_io, options = {})
+    url = upload_file(file_io)
     submit_transcript_from_url(url, options)
   end
 
@@ -70,16 +70,15 @@ class AssemblyAIClient
     end
   end
 
-  def upload_file(file_path)
+  def upload_file(file_io)
     conn = Faraday.new(url: api_base_url) do |faraday|
       faraday.response :json
       faraday.request :multipart
       faraday.headers['Authorization'] = api_key
       faraday.headers['Content-Type'] = 'application/octet-stream'
     end
-    file_data = File.read(file_path)
     response = conn.post('/v2/upload') do |req|
-      req.body = file_data
+      req.body = file_io.read
     end
     body = handle_response(response)
     body['upload_url']

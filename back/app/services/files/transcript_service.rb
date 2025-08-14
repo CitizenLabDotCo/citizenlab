@@ -48,7 +48,7 @@ module Files
       return transcript unless transcript.pending?
 
       begin
-        assemblyai_id = submit_to_assembly_ai(transcript)
+        assemblyai_id = submit_to_assembly_ai
         transcript.update!(
           status: 'processing',
           assemblyai_id: assemblyai_id
@@ -105,7 +105,7 @@ module Files
       )
     end
 
-    def submit_to_assembly_ai(_transcript)
+    def submit_to_assembly_ai
       client = AssemblyAIClient.new
 
       # To make it work in development mode with local files, we're uploading the file to assemblyAI as opposed to using a URL.
@@ -121,7 +121,8 @@ module Files
       # end
       # response = client.submit_transcript_from_url(file_url, transcript_options)
 
-      response = client.submit_transcript_from_file(file.content.file.file, transcript_options)
+      file_io = StringIO.new(file.content.read)
+      response = client.submit_transcript_from_file(file_io, transcript_options)
       response['id']
     end
 
