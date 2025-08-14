@@ -1001,6 +1001,7 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.title": "crwdns5124449:0crwdne5124449:0",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.embedCode": "crwdns5124451:0crwdne5124451:0",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.videoEmbed": "crwdns5124453:0crwdne5124453:0",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.warningEmbedCode": "crwdns5130909:0crwdne5130909:0",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXDays": "crwdns5124455:0{days}crwdne5124455:0",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXWeeks": "crwdns5124457:0{weeks}crwdne5124457:0",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.xDaysAgo": "crwdns5124459:0{days}crwdne5124459:0",
