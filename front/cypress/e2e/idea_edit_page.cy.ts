@@ -48,7 +48,6 @@ describe('Idea edit page', () => {
 
     // check original values
     cy.visit(`/ideas/${ideaSlug}`);
-    cy.acceptCookies();
 
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-title').should('exist').contains(ideaTitle);
@@ -181,7 +180,7 @@ describe('Idea edit page', () => {
     // Visit idea edit page as Admin
     cy.visit(`/ideas/edit/${ideaId}`);
     cy.wait('@getPhases', { timeout: 10000 });
-    cy.acceptCookies();
+
     // Search and select an author
     cy.get('[data-cy="e2e-user-select"]').should('be.visible');
     cy.dataCy('e2e-user-select')

@@ -90,6 +90,8 @@ describe('Native survey project page actions', () => {
       cy.clearCookies();
       // Visit the project page
       cy.visit(`/projects/${projectSlugWithOneOpenEndedPhase}`);
+      cy.acceptCookies();
+
       // Check that correct text and actions shown
       cy.wait(3000); // I think the content build error is causing some flaky behaviour. This wait seems to fix it.
       cy.get('.e2e-idea-button').first().find('button').should('exist');

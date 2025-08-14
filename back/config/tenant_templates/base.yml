@@ -425,8 +425,6 @@ models:
       start_at_timediff: -1440
       end_at: null
       participation_method: ideation
-      campaigns_settings:
-        project_phase_started: true
       submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true

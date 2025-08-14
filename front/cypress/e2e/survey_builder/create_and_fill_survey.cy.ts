@@ -54,7 +54,7 @@ describe('Survey builder', () => {
 
     // Try filling in the survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
     cy.contains(questionTitle).should('exist');
 
     // Try going to the next page without filling in the survey
@@ -82,7 +82,6 @@ describe('Survey builder', () => {
   it('can click button in survey page to navigate to the survey builder', () => {
     // Navigate to the survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
 
     cy.dataCy('e2e-edit-survey-link').click();
     cy.location('pathname').should(
@@ -164,7 +163,7 @@ describe('Survey builder', () => {
 
     // Navigate to the survey page
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
     cy.contains(multipleChoiceChooseOneTitle).should('exist');
     cy.contains(multipleChoiceChooseManyTitle).should('exist');
     cy.contains(linearScaleTitle).should('exist');
@@ -259,7 +258,7 @@ describe('Survey builder', () => {
 
     // Navigate to the survey page
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
     cy.contains(questionTitle).should('exist');
 
     cy.get(`*[id^="${questionTitle}"]`).type(numberAnswer, {
@@ -301,7 +300,7 @@ describe('Survey builder', () => {
 
     // Navigate to the survey page
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
     cy.contains(questionTitle).should('exist');
 
     cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
@@ -351,7 +350,7 @@ describe('Survey builder', () => {
 
     // Take the survey
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('#project-survey-button')
       .find('button')
       .should('not.have.attr', 'disabled');
@@ -437,7 +436,7 @@ describe('Survey builder', () => {
 
     // Try filling in the survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
     cy.contains(questionTitle).should('exist');
 
     // Selecting the first option results in a submit button
@@ -563,7 +562,7 @@ describe('Survey builder', () => {
 
     // Try filling in the survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
     cy.wait(2000);
     cy.contains(questionTitle).should('exist');
 
@@ -647,7 +646,7 @@ describe('Survey builder', () => {
 
     // Take the survey
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
+
     cy.get('.e2e-idea-button')
       .first()
       .find('button')
@@ -846,7 +845,7 @@ describe('Survey builder', () => {
 
     // Try filling in the survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
     // First page
     cy.contains(questionTitle).should('exist');
     cy.contains(multipleChoiceChooseOneTitle).should('exist');
@@ -950,7 +949,7 @@ describe('Survey builder', () => {
 
     // Try filling in the survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
     // First page
     cy.contains(questionTitle).should('exist');
 

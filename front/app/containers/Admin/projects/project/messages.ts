@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.phaseAccessRights',
     defaultMessage: 'Access rights',
   },
+  phaseEmails: {
+    id: 'app.containers.AdminPage.ProjectEdit.phaseEmails',
+    defaultMessage: 'Emails',
+  },
   pollTab: {
     id: 'app.containers.AdminPage.ProjectEdit.pollTab',
     defaultMessage: 'Poll',
@@ -51,8 +55,8 @@ export default defineMessages({
     defaultMessage: 'Events',
   },
   filesTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.filesTab',
-    defaultMessage: 'Files',
+    id: 'app.containers.AdminPage.ProjectEdit.filesTab2',
+    defaultMessage: '360 Input',
   },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',

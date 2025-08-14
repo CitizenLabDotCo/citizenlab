@@ -6,19 +6,21 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import campaignsKeys from './keys';
 import { ICampaignsData, QueryParameters, CampaignsKeys } from './types';
+import { getCampaignsContextPath } from './util';
 
 const fetchCampaigns = (filters: QueryParameters) => {
   const {
-    campaignNames: campaign_names,
+    manual: manual,
     withoutCampaignNames: without_campaign_names,
     pageNumber,
     pageSize,
+    context,
   } = filters;
   return fetcher<ICampaignsData>({
-    path: '/campaigns',
+    path: `/${getCampaignsContextPath(context)}`,
     action: 'get',
     queryParams: {
-      campaign_names,
+      manual,
       without_campaign_names,
       'page[number]': pageNumber || 1,
       'page[size]': pageSize || 20,
@@ -36,10 +38,9 @@ const useCampaigns = (queryParams: QueryParameters) => {
     queryKey: campaignsKeys.list(queryParams),
     queryFn: ({ pageParam }) =>
       fetchCampaigns({ ...queryParams, pageNumber: pageParam }),
+    // Should still be needed for pagination in CustomEmails
     getNextPageParam: (lastPage) => {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const hasNextPage = lastPage.links?.next;
+      const hasNextPage = lastPage.links.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
 
       return hasNextPage && pageNumber ? pageNumber + 1 : null;

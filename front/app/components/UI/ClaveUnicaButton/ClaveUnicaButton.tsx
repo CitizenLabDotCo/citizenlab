@@ -39,7 +39,6 @@ const ButtonWrapper = styled(ClaveUnicaButtonContainer)`
 
 const ClaveUnicaButtonLabel = styled.span`
   padding-left: 3px;
-  text-decoration: underline;
   box-sizing: border-box;
 `;
 
