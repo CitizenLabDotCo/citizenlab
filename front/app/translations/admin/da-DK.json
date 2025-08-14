@@ -999,7 +999,7 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.showAvatars": "Vis avatarer",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.spotlight": "Spotlight",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.title": "Titel",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.embedCode": "Indlejringskode",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.embedCode": "Indlejr kode",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.videoEmbed": "Indlejring af video",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXDays": "Starter om {days} dage",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXWeeks": "Starter om {weeks} uger",
