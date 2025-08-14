@@ -38,6 +38,7 @@ const Status = ({ mr, onClear }: Props) => {
       selected={statuses}
       options={options}
       mr={mr}
+      openedDefaultValue={statuses.length === 0}
       onChange={(statuses) => {
         setParam('status', statuses as PublicationStatus[]);
         trackEventByName(tracks.setStatus, {
