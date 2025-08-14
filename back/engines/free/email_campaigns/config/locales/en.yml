@@ -103,6 +103,8 @@ en:
       event_address1: '10 Example Street, Exampleton, Exampleshire'
       event_address2: 'Room 3a, Upstairs'
       proposal_title: 'Example Proposal'
+      input_status_title: 'Example Status'
+      input_status_description: 'An example of a status for an input (e.g. accepted, rejected, implemented...)'
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
@@ -475,7 +477,7 @@ en:
         option: 'Your option is in "%{prescreening_status_title}"'
         proposal: 'Your proposal is in "%{prescreening_status_title}"'
         petition: 'Your petition is in "%{prescreening_status_title}"'
-      message: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
+      event_description: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
     voting_basket_submitted:
