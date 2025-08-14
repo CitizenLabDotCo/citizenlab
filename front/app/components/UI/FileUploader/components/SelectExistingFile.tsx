@@ -46,6 +46,7 @@ const SelectExistingFile = ({
       }))
     : [];
 
+  debugger;
   // Filter out already attached files
   const filteredFileOptions = fileOptions.filter(
     (option) => !attachedFiles?.some((file) => file.id === option.value)

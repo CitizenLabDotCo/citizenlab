@@ -13,7 +13,7 @@ export const addFileAttachment = async (
     path: `/file_attachments`,
     action: 'post',
     body: {
-      file: { ...requestBody },
+      file_attachment: { ...requestBody },
     },
   });
 };

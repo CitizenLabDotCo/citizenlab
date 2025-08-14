@@ -195,6 +195,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     );
 
     setInStatePhaseFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    setSubmitState('enabled');
   };
 
   const handlePhaseFileOnRemove = (fileToRemove: FileType) => {

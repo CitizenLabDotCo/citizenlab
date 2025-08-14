@@ -34,7 +34,7 @@ export function useSyncPhaseFiles() {
             addPhaseFileAttachment({
               file_id: file.id || '',
               attachable_id: phaseId,
-              attachable_type: 'phase',
+              attachable_type: 'Phase',
             })
           );
 
