@@ -999,6 +999,8 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.showAvatars": "ਅਵਤਾਰ ਦਿਖਾਓ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.spotlight": "ਸਪੌਟਲਾਈਟ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.title": "ਸਿਰਲੇਖ",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.embedCode": "ਕੋਡ ਸ਼ਾਮਲ ਕਰੋ",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.videoEmbed": "ਵੀਡੀਓ ਏਮਬੈਡ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXDays": "{days} ਦਿਨਾਂ ਵਿੱਚ ਸ਼ੁਰੂ ਹੋ ਰਿਹਾ ਹੈ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXWeeks": "{weeks} ਹਫ਼ਤਿਆਂ ਵਿੱਚ ਸ਼ੁਰੂ ਹੋ ਰਿਹਾ ਹੈ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.xDaysAgo": "{days} ਦਿਨ ਪਹਿਲਾਂ",
