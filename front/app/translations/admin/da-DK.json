@@ -1001,6 +1001,7 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.title": "Titel",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.embedCode": "Indlejr kode",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.videoEmbed": "Indlejring af video",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.warningEmbedCode": "ADVARSEL: INDSÆT IKKE KODE FRA UPÅLIDELIGE KILDER. Brug kun indlejringskoder fra pålidelige videoplatforme som YouTube eller Vimeo.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXDays": "Starter om {days} dage",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXWeeks": "Starter om {weeks} uger",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.xDaysAgo": "{days} dage siden",
