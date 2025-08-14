@@ -42,8 +42,7 @@ describe('Projects overview: admin (projects)', () => {
     cy.dataCy('projects-overview-add-filter-button').click();
     cy.dataCy('projects-overview-add-filter-status').click();
 
-    // Open filter, select published
-    cy.dataCy('projects-overview-filter-status').click();
+    // Select published
     cy.dataCy('multiselect-option-published').click();
 
     // Switch to calendar tab
