@@ -103,21 +103,22 @@ const ModerationContentCell = memo<Props>(
             }}
           />
 
-          {(contentBody[selectedLocale] as string).length > 300 && (
-            <ReadMoreButton
-              onMouseDown={removeFocusAfterMouseClick}
-              onClick={handleOnReadMore}
-            >
-              {!expanded ? (
-                <>
-                  <FormattedMessage {...messages.readMore} />
-                  ...
-                </>
-              ) : (
-                <FormattedMessage {...messages.collapse} />
-              )}
-            </ReadMoreButton>
-          )}
+          {contentBody[selectedLocale] &&
+            (contentBody[selectedLocale] as string).length > 300 && (
+              <ReadMoreButton
+                onMouseDown={removeFocusAfterMouseClick}
+                onClick={handleOnReadMore}
+              >
+                {!expanded ? (
+                  <>
+                    <FormattedMessage {...messages.readMore} />
+                    ...
+                  </>
+                ) : (
+                  <FormattedMessage {...messages.collapse} />
+                )}
+              </ReadMoreButton>
+            )}
         </Content>
       </Container>
     );

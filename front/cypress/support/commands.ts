@@ -200,6 +200,7 @@ function setLoginCookie(email: string, password: string) {
 
 function setAdminLoginCookie() {
   cy.setLoginCookie('admin@govocal.com', 'democracy2.0');
+  cy.setConsentCookie();
 }
 
 function setModeratorLoginCookie() {
@@ -530,8 +531,7 @@ function logout() {
 }
 
 function acceptCookies() {
-  cy.get('#e2e-cookie-banner');
-  cy.get('#e2e-cookie-banner .e2e-accept-cookies-btn').click();
+  cy.dataCy('e2e-accept-cookies-btn').should('be.visible').click();
   cy.wait(200);
 }
 

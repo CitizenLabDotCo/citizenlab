@@ -4,7 +4,6 @@ describe('Admin: can', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/pages-menu/');
-    cy.acceptCookies();
   });
 
   describe('create', () => {

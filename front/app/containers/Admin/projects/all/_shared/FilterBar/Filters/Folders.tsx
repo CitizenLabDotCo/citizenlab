@@ -47,6 +47,7 @@ const Folders = ({ onClear }: Props) => {
       options={folderOptions}
       selected={folderIds}
       isLoading={isLoading}
+      openedDefaultValue={folderIds.length === 0}
       onOpen={handleOpen}
       onChange={(folderIds) => {
         setParam('folder_ids', folderIds);

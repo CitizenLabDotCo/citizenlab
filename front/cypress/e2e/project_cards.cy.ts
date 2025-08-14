@@ -32,7 +32,6 @@ describe('Project and folder cards on front page', () => {
 
   beforeEach(() => {
     cy.goToLandingPage();
-    cy.acceptCookies();
   });
 
   it('shows published project but not archived project if tab === Active', () => {
@@ -121,7 +120,6 @@ describe('Native survey project card', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit(`/`);
-    cy.acceptCookies();
   });
 
   it('Correct CTA button on card is shown', () => {
