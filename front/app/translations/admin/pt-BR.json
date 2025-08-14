@@ -1001,6 +1001,7 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.title": "Título",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.embedCode": "Incorporar código",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.videoEmbed": "Incorporação de vídeo",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.VideoEmbed.warningEmbedCode": "AVISO: NÃO COLE CÓDIGOS DE FONTES NÃO CONFIÁVEIS. Use somente códigos incorporados de plataformas de vídeo confiáveis, como YouTube ou Vimeo.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXDays": "A partir de {days} dias",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.startsInXWeeks": "A partir de {weeks} semanas",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.ProjectCarrousel.xDaysAgo": "{days} dias atrás",
