@@ -20,12 +20,14 @@ ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_f1d8986d29;
 ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS fk_rails_f09b1bc4cd;
 ALTER TABLE IF EXISTS ONLY public.file_attachments DROP CONSTRAINT IF EXISTS fk_rails_f06e641e03;
+ALTER TABLE IF EXISTS ONLY public.project_imports DROP CONSTRAINT IF EXISTS fk_rails_efff220342;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_e8076fb9f6;
 ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS fk_rails_e6f48b841d;
 ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS fk_rails_e51f754cf7;
+ALTER TABLE IF EXISTS ONLY public.project_imports DROP CONSTRAINT IF EXISTS fk_rails_e32dbeb2df;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_dfb57cbce2;
 ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS fk_rails_df4dbb0098;
@@ -200,6 +202,8 @@ DROP INDEX IF EXISTS public.index_projects_allowed_input_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_project_reviews_on_reviewer_id;
 DROP INDEX IF EXISTS public.index_project_reviews_on_requester_id;
 DROP INDEX IF EXISTS public.index_project_reviews_on_project_id;
+DROP INDEX IF EXISTS public.index_project_imports_on_project_id;
+DROP INDEX IF EXISTS public.index_project_imports_on_import_user_id;
 DROP INDEX IF EXISTS public.index_project_images_on_project_id;
 DROP INDEX IF EXISTS public.index_project_folders_images_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_project_folders_folders_on_slug;
@@ -454,6 +458,7 @@ ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS proj
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS projects_allowed_input_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS project_reviews_pkey;
+ALTER TABLE IF EXISTS ONLY public.project_imports DROP CONSTRAINT IF EXISTS project_imports_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_images DROP CONSTRAINT IF EXISTS project_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_folders_folders DROP CONSTRAINT IF EXISTS project_folders_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS project_folder_images_pkey;
@@ -576,6 +581,7 @@ DROP TABLE IF EXISTS public.public_api_api_clients;
 DROP TABLE IF EXISTS public.projects_topics;
 DROP TABLE IF EXISTS public.projects_allowed_input_topics;
 DROP TABLE IF EXISTS public.project_reviews;
+DROP TABLE IF EXISTS public.project_imports;
 DROP TABLE IF EXISTS public.project_images;
 DROP TABLE IF EXISTS public.project_folders_images;
 DROP TABLE IF EXISTS public.project_folders_folders;
@@ -1444,7 +1450,8 @@ CREATE TABLE public.users (
     followings_count integer DEFAULT 0 NOT NULL,
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
-    last_active_at timestamp(6) without time zone
+    last_active_at timestamp(6) without time zone,
+    imported boolean DEFAULT false NOT NULL
 );
 
 
@@ -1482,7 +1489,8 @@ CREATE TABLE public.email_campaigns_campaigns (
     context_id uuid,
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     intro_multiloc jsonb DEFAULT '{}'::jsonb,
-    button_text_multiloc jsonb DEFAULT '{}'::jsonb
+    button_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    context_type character varying
 );
 
 
@@ -3166,6 +3174,24 @@ CREATE TABLE public.project_images (
 
 
 --
+-- Name: project_imports; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.project_imports (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    project_id uuid,
+    import_user_id uuid,
+    import_id uuid,
+    log character varying[] DEFAULT '{}'::character varying[],
+    locale character varying,
+    string character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    import_type character varying
+);
+
+
+--
 -- Name: project_reviews; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4302,6 +4328,14 @@ ALTER TABLE ONLY public.project_folders_folders
 
 ALTER TABLE ONLY public.project_images
     ADD CONSTRAINT project_images_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: project_imports project_imports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_imports
+    ADD CONSTRAINT project_imports_pkey PRIMARY KEY (id);
 
 
 --
@@ -6107,6 +6141,20 @@ CREATE INDEX index_project_images_on_project_id ON public.project_images USING b
 
 
 --
+-- Name: index_project_imports_on_import_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_imports_on_import_user_id ON public.project_imports USING btree (import_user_id);
+
+
+--
+-- Name: index_project_imports_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_imports_on_project_id ON public.project_imports USING btree (project_id);
+
+
+--
 -- Name: index_project_reviews_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7448,6 +7496,14 @@ ALTER TABLE ONLY public.permissions_custom_fields
 
 
 --
+-- Name: project_imports fk_rails_e32dbeb2df; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_imports
+    ADD CONSTRAINT fk_rails_e32dbeb2df FOREIGN KEY (import_user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: analysis_comments_summaries fk_rails_e51f754cf7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7493,6 +7549,14 @@ ALTER TABLE ONLY public.static_pages_topics
 
 ALTER TABLE ONLY public.idea_files
     ADD CONSTRAINT fk_rails_efb12f53ad FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: project_imports fk_rails_efff220342; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_imports
+    ADD CONSTRAINT fk_rails_efff220342 FOREIGN KEY (project_id) REFERENCES public.projects(id);
 
 
 --
@@ -7590,7 +7654,10 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250808071349'),
+('20250807120354'),
 ('20250730150828'),
+('20250730103628'),
 ('20250724190507'),
 ('20250724074646'),
 ('20250716141100'),
@@ -7606,6 +7673,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250626072615'),
 ('20250624134747'),
 ('20250624102147'),
+('20250623094500'),
 ('20250618151933'),
 ('20250616142444'),
 ('20250611110008'),
