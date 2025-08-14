@@ -1444,7 +1444,7 @@
       "data_repository": {
         "type": "object",
         "title": "Data repository",
-        "description": "New data repository feature that is currently under development. [DO NOT ENABLE]",
+        "description": "Data Repository feature (360 Input). Enables a files tab in the project back office, where admins & PMs can upload files and documents related to the project.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1465,10 +1465,22 @@
         }
       },
 
-      "project_planning": {
+      "data_repository_ai_analysis": {
         "type": "object",
-        "title": "Project planning",
-        "description": "New back office projects overview [DO NOT ENABLE]",
+        "title": "Data repository: AI analysis",
+        "description": "Enables the AI Analysis features for the Data Repository (360 Input).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_planning_calendar": {
+        "type": "object",
+        "title": "Project planning: calendar view",
+        "description": "Feature flag for calendar view in new projects page",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1481,6 +1493,18 @@
         "type": "object",
         "title": "Customised automated emails",
         "description": "Override text of the default emails and preview [DO NOT ENABLE]",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_importer": {
+        "type": "object",
+        "title": "Project importer [Alpha]",
+        "description": "Super admin only feature to import project, phases and content from XLSX.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

@@ -6,7 +6,7 @@ const baseKey = {
   type: 'folder_mini',
 };
 
-const projectFoldersKeys = {
+const projectFoldersMiniKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
   list: (parameters: Parameters) => [
@@ -14,4 +14,4 @@ const projectFoldersKeys = {
   ],
 } satisfies QueryKeys;
 
-export default projectFoldersKeys;
+export default projectFoldersMiniKeys;

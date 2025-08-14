@@ -6,8 +6,10 @@ class ProjectsFinderAdminService
     projects = scope
 
     # Apply filters
+    projects = filter_with_admin_publication(projects)
     projects = filter_moderatable(projects, current_user)
     projects = filter_status(projects, params)
+    projects = filter_review_state(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
     projects = search(projects, params)
@@ -26,7 +28,8 @@ class ProjectsFinderAdminService
     when 'alphabetically_asc', 'alphabetically_desc'
       sort_alphabetically(projects, params)
     else
-      projects.order('projects.created_at DESC, projects.id ASC')
+      direction = params[:sort] == 'recently_created_desc' ? 'DESC' : 'ASC'
+      projects.order("projects.created_at #{direction}, projects.id ASC")
     end
   end
 
@@ -101,6 +104,12 @@ class ProjectsFinderAdminService
   end
 
   # FILTERING METHODS
+  def self.filter_with_admin_publication(scope)
+    # Filter out projects that don't have an admin_publication to prevent crashes
+    # when trying to access publication_status or other admin_publication attributes
+    scope.joins(:admin_publication)
+  end
+
   def self.filter_moderatable(scope, current_user)
     return scope if current_user.admin?
 
@@ -131,6 +140,23 @@ class ProjectsFinderAdminService
       .where(admin_publications: { publication_status: status })
   end
 
+  def self.filter_review_state(scope, params = {})
+    review_state = params[:review_state] || []
+    return scope if review_state.blank?
+
+    scope = scope.joins(:review)
+
+    case review_state
+    when 'pending'
+      scope.where(project_reviews: { approved_at: nil })
+    when 'approved'
+      scope.where.not(project_reviews: { approved_at: nil })
+    else
+      scope
+    end
+  end
+
+  # Filter projects by folder IDs
   def self.filter_by_folder_ids(scope, params = {})
     folder_ids = params[:folder_ids] || []
     return scope if folder_ids.blank?
@@ -229,8 +255,15 @@ class ProjectsFinderAdminService
     end
 
     if participation_states.include?('past')
-      # Projects with no phases that end in the future
-      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE coalesce(end_at, 'infinity'::DATE) >= '#{today}')"
+      # Projects that have at least one phase and all phases have ended
+      conditions << <<-SQL.squish
+        projects.id IN (
+          SELECT project_id FROM phases 
+          GROUP BY project_id 
+          HAVING COUNT(*) > 0 
+          AND MAX(coalesce(end_at, 'infinity'::DATE)) < '#{today}'
+        )
+      SQL
     end
 
     scope.where(conditions.map { |c| "(#{c})" }.join(' OR '))

@@ -88,11 +88,11 @@ const ProjectMoreActionsMenu = ({
           copyProject(projectId, {
             onSuccess: () => {
               setError(null);
-              setLoadingState('deleting', false);
+              setLoadingState('copying', false);
             },
             onError: () => {
               setError(formatMessage(messages.copyProjectError));
-              setLoadingState('deleting', false);
+              setLoadingState('copying', false);
             },
           });
         },

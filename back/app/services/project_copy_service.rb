@@ -304,7 +304,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'project_ref' => lookup_ref(phase.project_id, :project),
         'title_multiloc' => phase.title_multiloc,
         'description_multiloc' => phase.description_multiloc,
-        'campaigns_settings' => phase.campaigns_settings,
         'start_at' => shift_timestamp(phase.start_at, shift_timestamps, leave_blank: false)&.iso8601,
         'end_at' => shift_timestamp(phase.end_at, shift_timestamps, leave_blank: false)&.iso8601,
         'created_at' => shift_timestamp(phase.created_at, shift_timestamps)&.iso8601,
@@ -342,8 +341,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         yml_phase['voting_max_total'] = phase.voting_max_total
         yml_phase['voting_min_total'] = phase.voting_min_total
         yml_phase['voting_max_votes_per_idea'] = phase.voting_max_votes_per_idea
-        yml_phase['voting_term_singular_multiloc'] = phase.voting_term_singular_multiloc
-        yml_phase['voting_term_plural_multiloc'] = phase.voting_term_plural_multiloc
         yml_phase['vote_term'] = phase.vote_term
         yml_phase['autoshare_results_enabled'] = phase.autoshare_results_enabled
       end

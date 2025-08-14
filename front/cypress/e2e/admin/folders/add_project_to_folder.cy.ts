@@ -25,8 +25,7 @@ describe('Admin: add projects to folder', async () => {
         projectId2 = projectTwoResponse.body.data.id;
 
         cy.setAdminLoginCookie();
-        cy.visit('/admin/projects/all');
-        cy.acceptCookies();
+        cy.visit('/admin/projects');
 
         cy.dataCy('e2e-new-project-folder-button').click();
         const folderTitle = randomString();

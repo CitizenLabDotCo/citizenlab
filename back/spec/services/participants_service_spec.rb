@@ -367,6 +367,15 @@ describe ParticipantsService do
 
       expect(service.projects_participants([project]).map(&:id)).to match_array [author.id]
     end
+
+    # Regression test: mainly to avoid counting unsubmitted survey responses as project participation
+    it 'does not return users who have only an un-published idea in the project' do
+      project = create(:project)
+      author = create(:user)
+      create(:idea, project: project, author: author, publication_status: 'draft')
+
+      expect(service.projects_participants([project]).map(&:id)).to be_empty
+    end
   end
 
   describe 'topics_participants' do

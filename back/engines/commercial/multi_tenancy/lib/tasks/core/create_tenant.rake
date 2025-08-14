@@ -343,9 +343,13 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        project_planning: {
-          enabled: false,
-          allowed: false
+        data_repository_ai_analysis: {
+          enabled: true,
+          allowed: true
+        },
+        project_planning_calendar: {
+          enabled: true,
+          allowed: true
         }
       }
     )

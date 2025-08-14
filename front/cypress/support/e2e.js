@@ -18,4 +18,5 @@ beforeEach(() => {
       success: true,
     },
   });
+  cy.setConsentCookie();
 });
