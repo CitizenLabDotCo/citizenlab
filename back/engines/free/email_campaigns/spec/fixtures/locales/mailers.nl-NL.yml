@@ -392,9 +392,9 @@ nl:
       subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
       commented: "%{authorFirstName} schreef:"
       preheader: "Dit gebeurde er vorige week op het platform"
-      title_your_weekly_report: "Ontdek wat er vorige week is gebeurd"
-      intro_text: "Hier is een overzicht van wat er is gebeurd op het participatieplatform van %{organizationName}."
-      cta_go_to_the_platform: "Ga naar het platform"
+      title: "Ontdek wat er vorige week is gebeurd"
+      event_description: "Hier is een overzicht van wat er is gebeurd op het participatieplatform van %{organizationName}."
+      cta_button: "Ga naar het platform"
       title_no_activity_past_week: "Geen activiteit de afgelopen week"
       successful_proposals_title: "Bereikte het benodigd aantal stemmen"
       successful_proposals_text: "Deze voorstellen hebben genoeg steun gevonden om naar de volgende stap te gaan! Klik op het voorstel om meer te weten te komen over wat er hierna gebeurt."
@@ -414,10 +414,10 @@ nl:
       subject: '"%{input_title}" heeft het benodigd aantal stemmen op je platform bereikt'
       preheader: 'Tijd om de volgende stappen te nemen'
     welcome:
-      cta_join_platform: 'Ontdek het platform'
+      cta_button: 'Ontdek het platform'
       subject: 'Welkom op het platform van %{organizationName}'
-      main_header: Welkom!
-      message_welcome: 'Leuk dat je je hebt geregistreerd op het participatieplatform van %{organizationName}. Je kan het platform nu ontdekken en je stem laten horen. Je kan ook een profielfoto en een korte beschrijving toevoegen om anderen te vertellen wie je bent.'
+      title: Welkom!
+      event_description: 'Leuk dat je je hebt geregistreerd op het participatieplatform van %{organizationName}. Je kan het platform nu ontdekken en je stem laten horen. Je kan ook een profielfoto en een korte beschrijving toevoegen om anderen te vertellen wie je bent.'
       preheader: 'Hier is wat je kan doen op het platform van %{organizationName}'
     idea_published:
       subject: 'Je idee is gepubliceerd'

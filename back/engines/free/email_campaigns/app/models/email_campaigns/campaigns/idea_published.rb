@@ -104,7 +104,8 @@ module EmailCampaigns
               versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
           end,
-          input_term: idea.input_term
+          input_term: idea.input_term,
+          project_title_multiloc: idea.project.title_multiloc
         }
       }]
     end

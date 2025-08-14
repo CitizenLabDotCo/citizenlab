@@ -40,6 +40,7 @@ en:
       "voting_last_chance": Last chance to vote
       "voting_phase_started": New project phase with voting
       "voting_results": Voting results
+      "your_input_in_screening": My input awaits screening
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
@@ -375,9 +376,9 @@ en:
       subject: "Your activity on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"
       preheader: "Weekly overview of %{organizationName}"
-      title_your_weekly_report: "Discover what happened last week"
-      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
-      cta_go_to_the_platform: "Go to the platform"
+      title: "Discover what happened last week"
+      event_description: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      cta_button: "Go to the platform"
       title_no_activity_past_week: "No activity in the past week"
       title_proposals: "Proposals started"
       proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
@@ -400,10 +401,10 @@ en:
       subject: 'An initiative reached the voting threshold on your platform'
       preheader: 'Make sure to take the next steps'
     welcome:
-      cta_join_platform: 'Discover the platform'
+      cta_button: 'Discover the platform'
       subject: 'Welcome to the platform of %{organizationName}'
-      main_header: Welcome!
-      message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
+      title: Welcome!
+      event_description: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
       preheader: 'Here''s what you can do on the platform of %{organizationName}'
     idea_published:
       subject: 'Your idea has been published'
@@ -478,6 +479,19 @@ en:
           project: 'Project'
       cta_button: 'View the event'
       cta_add_to_calendar: 'Add to your calendar'
+    your_input_in_screening:
+      main_header: 
+        idea: 'Your idea is in "%{prescreening_status_title}"'
+        question: 'Your question is in "%{prescreening_status_title}"'
+        contribution: 'Your contribution is in "%{prescreening_status_title}"'
+        project: 'Your project is in "%{prescreening_status_title}"'
+        issue: 'Your issue is in "%{prescreening_status_title}"'
+        option: 'Your option is in "%{prescreening_status_title}"'
+        proposal: 'Your proposal is in "%{prescreening_status_title}"'
+        petition: 'Your petition is in "%{prescreening_status_title}"'
+      event_description: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
+      subject: '"%{input_title}" is almost published'
+      preheader: 'It''s currently in %{prescreening_status_title}'
     admin_labels:
       recipient_role:
         admins: 'To admins'
