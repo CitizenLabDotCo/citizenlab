@@ -41,6 +41,7 @@ module EmailCampaigns
     include Trackable
     include LifecycleStageRestrictable
     include ContentConfigurable
+    include ContextConfigurable
     allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_notification_recipient
@@ -71,6 +72,20 @@ module EmailCampaigns
 
     def self.trigger_multiloc_key
       'email_campaigns.admin_labels.trigger.user_is_invited_to_cosponsor_a_proposal'
+    end
+
+    def activity_context(activity)
+      return nil unless activity.item.is_a?(::Notification)
+
+      activity.item.idea && TimelineService.new.current_phase(activity.item.idea.project)
+    end
+
+    def self.supported_context_class
+      Phase
+    end
+
+    def self.supports_context?(context)
+      supports_phase_participation_method?(context)
     end
 
     def generate_commands(recipient:, activity:)
