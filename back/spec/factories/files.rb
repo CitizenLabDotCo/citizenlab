@@ -51,5 +51,9 @@ FactoryBot.define do
         end
       end
     end
+
+    trait :ai do
+      ai_processing_allowed { true }
+    end
   end
 end
