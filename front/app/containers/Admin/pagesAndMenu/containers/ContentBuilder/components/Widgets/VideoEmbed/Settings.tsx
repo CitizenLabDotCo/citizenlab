@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Error } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
 import TextArea from 'components/UI/TextArea';
@@ -21,14 +21,17 @@ const Settings = () => {
 
   return (
     <Box background="#ffffff" marginBottom="20px">
-      <TextArea
-        label={formatMessage(messages.embedCode)}
-        minRows={5}
-        value={markup}
-        onChange={(value) => {
-          setProp((props) => (props.markup = value));
-        }}
-      />
+      <Error text={formatMessage(messages.warningEmbedCode)} />
+      <Box mt="28px">
+        <TextArea
+          label={formatMessage(messages.embedCode)}
+          minRows={5}
+          value={markup}
+          onChange={(value) => {
+            setProp((props) => (props.markup = value));
+          }}
+        />
+      </Box>
     </Box>
   );
 };
