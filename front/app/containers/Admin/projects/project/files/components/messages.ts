@@ -38,6 +38,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully',
     defaultMessage: 'All files uploaded successfully',
   },
+  transcription: {
+    id: 'app.containers.AdminPage.ProjectFiles.transcription',
+    defaultMessage: 'Transcript',
+  },
+  unableToGenerateTranscription: {
+    id: 'app.containers.AdminPage.ProjectFiles.unableToGenerateTranscription',
+    defaultMessage: 'Unable to generate a transcript.',
+  },
   unknown: {
     id: 'app.containers.AdminPage.ProjectFiles.unknown',
     defaultMessage: 'Unknown',
