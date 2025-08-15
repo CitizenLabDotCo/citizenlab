@@ -52,7 +52,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     # So the user will only be included in the scope if they
     # have moderation rights for all the specified project folders.
     scope :project_folder_moderator, lambda { |*project_folder_ids|
-      return where("roles::jsonb @> ?", '[{"type": "project_folder_moderator"}]') if project_folder_ids.empty?
+      return where('roles::jsonb @> ?', '[{"type": "project_folder_moderator"}]') if project_folder_ids.empty?
 
       query = project_folder_ids.map do |id|
         { type: 'project_folder_moderator', project_folder_id: id }
