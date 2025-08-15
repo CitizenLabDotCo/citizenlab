@@ -195,6 +195,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     );
 
     setInStatePhaseFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    setSubmitState('enabled');
   };
 
   const handlePhaseFileOnRemove = (fileToRemove: FileType) => {
@@ -252,7 +253,9 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
       phaseFiles: inStatePhaseFiles,
       filesToRemove: phaseFilesToRemove,
       fileOrdering: initialFileOrdering || {},
-      filesToAttach: inStatePhaseFiles.filter((file) => !file.remote),
+      filesToAttach: inStatePhaseFiles.filter(
+        (file) => file.id && !file.remote // Files exist, but aren't attached to this phase yet
+      ),
     })
       .then(() => {
         setPhaseFilesToRemove([]);

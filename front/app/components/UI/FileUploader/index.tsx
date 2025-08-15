@@ -126,6 +126,7 @@ const FileUploader = ({
             <Box mb="12px">
               <DataRepositoryFileSelector
                 onFileAddFromRepository={onFileAddFromRepository}
+                files={files}
               />
             </Box>
           )}
