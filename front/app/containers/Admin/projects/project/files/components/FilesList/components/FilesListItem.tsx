@@ -58,7 +58,17 @@ const FilesListItem = ({
   };
 
   const deleteFileHandler = (fileId: string) => () => {
-    confirm(formatMessage(messages.confirmDelete)) &&
+    const isBeingUsedAsAttachment =
+      file.relationships.attachments?.data.length &&
+      file.relationships.attachments.data.length > 0;
+
+    confirm(
+      formatMessage(
+        isBeingUsedAsAttachment
+          ? messages.confirmDeleteEvenIfUsed
+          : messages.confirmDelete
+      )
+    ) &&
       deleteFile(fileId, {
         onError: (_error) => {
           // TODO: Handle any file deletion errors.
