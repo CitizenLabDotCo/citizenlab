@@ -17,6 +17,8 @@ PublicApi::Engine.routes.draw do
       get 'deleted', on: :collection
     end
 
+    resources :files, concerns: :deleted_items
+
     with_options only: %i[index show], concerns: :deleted_items do |route_mapper|
       route_mapper.resources :comments
       route_mapper.resources :baskets
