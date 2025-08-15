@@ -79,7 +79,7 @@ const SelectExistingFile = ({
                     name: selectedFile.attributes.name,
                     size: selectedFile.attributes.size || 0,
                     url: selectedFile.attributes.content.url || '',
-                    // Note: When "id" exists and "remote" is false, we can use this to identify
+                    // Note: When "id" exists and "remote" is false, we can use this in the parent component to identify
                     // files uploaded to the data repository that just haven't been attached to the Phase/Project/Event yet.
                     id: selectedFile.id,
                     remote: false,
