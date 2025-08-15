@@ -31,9 +31,9 @@ export default defineMessages({
       'Allow advanced analytics of these files using AI processing.',
   },
   confirmDeleteEvenIfUsed: {
-    id: 'app.containers.AdminPage.ProjectFiles.confirmDeleteEvenIfUsed',
+    id: 'app.containers.AdminPage.ProjectFiles.confirmDeleteEvenIfUsed2',
     defaultMessage:
-      'This file is being used as an attachment. Are you sure you want to delete it? This will remove it from all places where it is used.',
+      'This file is currently being used as an attachment. Are you sure you want to delete it? This will remove it from all locations where it is used.',
   },
   allowAiProcessingSingleFile: {
     id: 'app.containers.AdminPage.ProjectFiles.allowAiProcessingSingleFile',
