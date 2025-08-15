@@ -188,6 +188,16 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     setSubmitState(isDuplicate ? submitState : 'enabled');
   };
 
+  const handlePhaseFilesOnAddFromRepository = (files: FileType[]) => {
+    // Check for duplicates
+    const newFiles = files.filter(
+      (newFile) => !inStatePhaseFiles.some((file) => file.id === newFile.id)
+    );
+
+    setInStatePhaseFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    setSubmitState('enabled');
+  };
+
   const handlePhaseFileOnRemove = (fileToRemove: FileType) => {
     setInStatePhaseFiles(
       inStatePhaseFiles.filter((file) => file.name !== fileToRemove.name)
@@ -378,12 +388,15 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             <FileUploader
               id="project-timeline-edit-form-file-uploader"
               onFileAdd={handlePhaseFileOnAdd}
+              // onFileAddFromRepository handles adding existing files from the new Data Repository.
+              onFileAddFromRepository={handlePhaseFilesOnAddFromRepository}
               onFileRemove={handlePhaseFileOnRemove}
               onFileReorder={handleFilesReorder}
               files={inStatePhaseFiles}
               enableDragAndDrop
               multiple
               apiErrors={errors}
+              allowFromDataRepository={true}
             />
           </SectionField>
 
