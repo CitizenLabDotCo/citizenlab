@@ -21,16 +21,20 @@ module AdminApi
     def template_import
       folder_id = template_import_params[:folder_id]
       template_yaml = template_import_params[:template_yaml]
-      job = CopyProjectJob.perform_later(template_yaml, folder_id)
+      local_creator = local_creator_from_jwt
+
+      job = CopyProjectJob.perform_later(template_yaml, folder_id, local_creator)
     rescue StandardError => e
       ErrorReporter.report(e)
-      raise ClErrors::TransactionError.new(error_key: :bad_template)
+      error_key = e.respond_to?(:error_key) ? e.error_key : :bad_template
+      message = e.message
+      raise ClErrors::TransactionError.new(error_key: error_key, message: message)
     else
       render json: { job_id: job.job_id }, status: :accepted
     end
 
     def template_import_params
-      params.require(:project).permit(:template_yaml, :folder_id)
+      params.require(:project).permit(:template_yaml, :folder_id, :local_create)
     end
 
     def template_export_params
@@ -44,6 +48,30 @@ module AdminApi
         :new_publication_status,
         new_title_multiloc: CL2_SUPPORTED_LOCALES
       )
+    end
+
+    private
+
+    def local_creator_from_jwt
+      return nil unless template_import_params[:local_create] == true
+
+      user_id = jwt_payload['sub']
+      user = User.find_by(id: user_id)
+
+      # TODO: comment this line out for 1 month, until all JWTs are updated
+      raise "User with id #{user_id.inspect} from JWT payload not found" if user.nil?
+
+      user
+    end
+
+    def jwt_payload
+      token = request.headers['X-JWT']
+      # TODO: comment this line out for 1 month, until all JWTs are updated
+      raise 'Missing X-JWT header' if token.blank?
+
+      auth_token = AuthToken::AuthToken.new(token: token)
+
+      auth_token.payload
     end
   end
 end

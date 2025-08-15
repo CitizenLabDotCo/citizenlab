@@ -10,11 +10,11 @@ module AdminApi
     # those links would be lost during the serialization-deserialization of job arguments.
     # @param [String] template_yaml
     # @param [String, NilClass] folder_id
-    def run(template_yaml, folder_id = nil)
+    def run(template_yaml, folder_id = nil, local_creator = nil)
       check_in_tenant!
       folder = ProjectFolders::Folder.find(folder_id) if folder_id
       template = ::MultiTenancy::Templates::Utils.parse_yml(template_yaml)
-      ProjectCopyService.new.import(template, folder: folder)
+      ProjectCopyService.new.import(template, folder: folder, local_creator: local_creator)
 
       # Wait before destroying the job record to allow clients to poll the job status via
       # the API.
