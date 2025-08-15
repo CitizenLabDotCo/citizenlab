@@ -2,14 +2,19 @@ import { useCallback } from 'react';
 
 import { isString } from 'lodash-es';
 
+import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
+import projectFilesKeys from 'api/project_files/keys';
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
 import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 import useUpdateProjectFile from 'api/project_files/useUpdateProjectFile';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { SyncProjectFilesArguments } from './types';
 
 export function useSyncProjectFiles() {
   const { mutateAsync: addProjectFile } = useAddProjectFile();
+  const { mutateAsync: addProjectFileAttachment } = useAddFileAttachment();
   const { mutateAsync: updateProjectFile } = useUpdateProjectFile();
   const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
 
@@ -20,8 +25,31 @@ export function useSyncProjectFiles() {
       filesToRemove,
       fileOrdering,
     }: SyncProjectFilesArguments) => {
+      // First, create any File Attachments for existing files from File Library
+      const filesToAttach = projectFiles.filter(
+        (file) => !file.remote && file.id
+      );
+      if (filesToAttach.length > 0) {
+        const filesToAttachPromises = filesToAttach.map((file) =>
+          addProjectFileAttachment({
+            file_id: file.id || '',
+            attachable_id: projectId,
+            attachable_type: 'Project',
+          }).then((attachment) => {
+            // After attaching, also update the file's ordering
+            return updateProjectFile({
+              projectId,
+              fileId: attachment.data.id,
+              file: { ordering: file.ordering },
+            });
+          })
+        );
+
+        await Promise.all(filesToAttachPromises);
+      }
+
       const filesToAddPromises = projectFiles
-        .filter((file) => !file.remote)
+        .filter((file) => !file.remote && !file.id) // Newly uploaded files
         .map((file) =>
           addProjectFile({
             projectId,
@@ -68,7 +96,17 @@ export function useSyncProjectFiles() {
         ...filesToRemovePromises,
         ...filesToReorderPromises,
       ]);
+
+      // Refresh the data
+      await queryClient.invalidateQueries({
+        queryKey: projectFilesKeys.list({ projectId }),
+      });
     },
-    [addProjectFile, deleteProjectFile, updateProjectFile]
+    [
+      addProjectFile,
+      addProjectFileAttachment,
+      deleteProjectFile,
+      updateProjectFile,
+    ]
   );
 }

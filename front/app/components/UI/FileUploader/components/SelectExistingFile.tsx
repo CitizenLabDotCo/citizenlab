@@ -72,18 +72,15 @@ const SelectExistingFile = ({
                 (file) => file.id === option.value
               );
 
-              // If the file isn't already in the attachments list, add it
-              if (
-                !attachedFiles?.some((file) => file.id === option.value) &&
-                selectedFile
-              ) {
+              // Add the selected file to the attachments using the callback provided.
+              if (selectedFile) {
                 onFileAddFromRepository?.([
                   {
                     id: selectedFile.id,
                     name: selectedFile.attributes.name,
                     size: selectedFile.attributes.size || 0,
                     url: selectedFile.attributes.content.url || '',
-                    remote: false,
+                    remote: false, // "False" is used to indicate that the file isn't a new upload, but it's not an attachment on the resource yet either.
                   },
                 ]);
               }

@@ -284,6 +284,18 @@ const AdminProjectsProjectGeneral = () => {
     });
     setSubmitState((submitState) => (isDuplicate ? submitState : 'enabled'));
   };
+
+  const handleProjectFileOnAddFromRepository = (newFiles: UploadFile[]) => {
+    setSubmitState('enabled');
+    setProjectFiles((projectFiles) => {
+      const newProjectFiles = newFiles.filter(
+        (newFile) =>
+          !projectFiles.some((file) => file.base64 === newFile.base64)
+      );
+      return [...projectFiles, ...newProjectFiles];
+    });
+  };
+
   const handleProjectFileOnRemove = (projectFileToRemove: UploadFile) => {
     setSubmitState('enabled');
     setProjectFiles((projectFiles) =>
@@ -657,6 +669,9 @@ const AdminProjectsProjectGeneral = () => {
             apiErrors={apiErrors}
             handleProjectFileOnAdd={handleProjectFileOnAdd}
             handleProjectFileOnRemove={handleProjectFileOnRemove}
+            handleProjectFileOnAddFromRepository={
+              handleProjectFileOnAddFromRepository
+            }
             onFileReorder={handleFilesReorder}
           />
         </Section>
