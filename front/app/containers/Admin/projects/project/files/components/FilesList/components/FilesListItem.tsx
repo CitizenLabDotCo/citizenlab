@@ -126,12 +126,7 @@ const FilesListItem = ({
         close={() => setIsDeleteModalOpen(false)}
         width="540px"
       >
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          flexDirection="column"
-          mt="20px"
-        >
+        <Box display="flex" flexDirection="column" mt="20px">
           {isBeingUsedAsAttachment && (
             <Text textAlign="center" fontWeight="bold">
               <FormattedMessage {...messages.fileBeingUsed} />
