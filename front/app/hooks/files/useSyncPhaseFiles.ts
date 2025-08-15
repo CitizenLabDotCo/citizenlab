@@ -41,7 +41,7 @@ export function useSyncPhaseFiles() {
               phaseId,
               fileId: attachment.data.id,
               file: { ordering: file.ordering },
-              invalidate: false,
+              invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
             });
           })
         );
@@ -59,7 +59,7 @@ export function useSyncPhaseFiles() {
           base64: file.base64 || '',
           ordering: file.ordering!,
           name: file.name,
-          invalidate: false,
+          invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
         })
       );
 
@@ -70,7 +70,7 @@ export function useSyncPhaseFiles() {
           deletePhaseFile({
             phaseId,
             fileId: file.id,
-            invalidate: false,
+            invalidate: false, // Prevents re-fetching the list after each update. We handle it once instead at the end.
           })
         );
 
@@ -80,8 +80,8 @@ export function useSyncPhaseFiles() {
         return (
           file.remote &&
           typeof file.ordering !== 'undefined' &&
-          initialOrdering !== undefined &&
-          file.ordering !== initialOrdering
+          (typeof initialOrdering === 'undefined' ||
+            file.ordering !== initialOrdering)
         );
       });
 

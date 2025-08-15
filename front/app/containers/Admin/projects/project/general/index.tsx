@@ -288,6 +288,7 @@ const AdminProjectsProjectGeneral = () => {
   const handleProjectFileOnAddFromRepository = (newFiles: UploadFile[]) => {
     setSubmitState('enabled');
     setProjectFiles((projectFiles) => {
+      // Check for duplicates
       const newProjectFiles = newFiles.filter(
         (newFile) =>
           !projectFiles.some((file) => file.base64 === newFile.base64)

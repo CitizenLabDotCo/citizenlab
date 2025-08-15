@@ -27,7 +27,7 @@ export function useSyncProjectFiles() {
     }: SyncProjectFilesArguments) => {
       // First, create any File Attachments for existing files from File Library
       const filesToAttach = projectFiles.filter(
-        (file) => !file.remote && file.id
+        (file) => !file.remote && file.id // Files with IDs that aren't remote yet are considered new attachments.
       );
       if (filesToAttach.length > 0) {
         const filesToAttachPromises = filesToAttach.map((file) =>
